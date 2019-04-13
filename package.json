@@ -1,0 +1,28 @@
+{
+  "name": "pecs-frontend",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Frontend rendering app for the PECS service",
+  "homepage": "https://github.com/ministryofjustice/pecs-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/ministryofjustice/pecs-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ministryofjustice/pecs-frontend.git"
+  },
+  "engines": {
+    "node": "11"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)"
+  ],
+  "keywords": [
+    "ministryofjustice",
+    "pecs"
+  ]
+}
