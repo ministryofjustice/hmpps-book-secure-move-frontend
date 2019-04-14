@@ -20,6 +20,9 @@
     "start": "node start.js",
     "lint": "eslint ./"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "contributors": [
     "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)"
   ],
@@ -41,6 +44,7 @@
     "eslint-plugin-import": "^2.17.1",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.1.1",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "pre-commit": "^1.2.2"
   }
 }
