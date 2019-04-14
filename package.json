@@ -14,9 +14,10 @@
   "engines": {
     "node": "11"
   },
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start.js"
   },
   "contributors": [
     "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)"
@@ -24,5 +25,13 @@
   "keywords": [
     "ministryofjustice",
     "pecs"
-  ]
+  ],
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "http-errors": "^1.7.2",
+    "nunjucks": "^3.2.0"
+  }
 }
