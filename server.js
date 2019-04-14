@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const createError = require('http-errors')
 const cookieParser = require('cookie-parser')
 const express = require('express')
+const morgan = require('morgan')
 const nunjucks = require('nunjucks')
 
 const { isDev } = require('./config')
@@ -22,6 +23,7 @@ nunjucks.configure([
   express: app,
 })
 
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())

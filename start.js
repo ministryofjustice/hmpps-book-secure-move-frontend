@@ -1,9 +1,8 @@
 require('dotenv').config()
-
-const debug = require('debug')('app:server')
 const http = require('http')
 
 const app = require('./server')
+const logger = require('./config/logger')
 const { port } = require('./config')
 
 /**
@@ -56,5 +55,6 @@ function onListening () {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port
-  debug('Listening on ' + bind)
+
+  logger.info(`Listening on ${bind}`)
 }
