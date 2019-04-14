@@ -21,6 +21,12 @@ This is the rendering application for the PECS service.
    npm install
    ```
 
+1. Create a copy of the example environment variable file and add values for the keys:
+
+   ```
+   cp .env.example .env
+   ```
+
 1. Run the application:
 
    ```
