@@ -5,6 +5,19 @@
   <!--[if gt IE 8]><!--><link href="/stylesheets/styles.css" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
 {% endblock %}
 
+{% block pageTitle %}
+  {{ SERVICE_NAME }}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "/",
+    serviceUrl: "/",
+    serviceName: SERVICE_NAME,
+    containerClasses: "govuk-width-container"
+  }) }}
+{% endblock %}
+
 {% block bodyEnd %}
   <script src="/javascripts/app.js"></script>
 {% endblock %}
