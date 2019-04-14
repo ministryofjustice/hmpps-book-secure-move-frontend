@@ -9,7 +9,7 @@ const express = require('express')
 const morgan = require('morgan')
 const nunjucks = require('nunjucks')
 
-const { isDev } = require('./config')
+const { isDev, buildDirectory } = require('./config')
 const router = require('./app/router')
 
 const app = express()
@@ -17,6 +17,8 @@ const app = express()
 // view engine setup
 app.set('view engine', 'njk')
 nunjucks.configure([
+  `./node_modules/govuk-frontend`,
+  `./node_modules/govuk-frontend/components`,
   `./app/views`,
 ], {
   autoescape: true,
@@ -31,6 +33,8 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(buildDirectory))
+app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
 
 // Routing
 app.use(router)
