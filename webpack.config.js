@@ -7,9 +7,9 @@ const { isDev, buildDirectory } = require('./config')
 
 module.exports = {
   entry: {
-    styles: './app/assets/scss/application.scss',
-    'styles-ie8': './app/assets/scss/application-ie8.scss',
-    app: './app/assets/javascripts/application.js',
+    styles: './common/assets/scss/application.scss',
+    'styles-ie8': './common/assets/scss/application-ie8.scss',
+    app: './common/assets/javascripts/application.js',
   },
 
   output: {
