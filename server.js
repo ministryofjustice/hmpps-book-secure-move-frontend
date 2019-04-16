@@ -30,7 +30,7 @@ app.use(express.static(config.buildDirectory))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
 
 // Routing
-app.use(router)
+router.bind(app)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

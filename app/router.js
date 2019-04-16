@@ -1,11 +1,7 @@
-const express = require('express')
-const router = express.Router()
+// Local dependencies
+const index = require('./index')
 
-/* GET home page. */
-router.get('/', function (req, res) {
-  res.render('index', {
-    title: 'PECS Frontend',
-  })
-})
-
-module.exports = router
+// Export
+module.exports.bind = app => {
+  app.use(index.router)
+}
