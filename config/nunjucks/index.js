@@ -3,17 +3,17 @@ const nunjucks = require('nunjucks')
 const templateGlobals = require('./globals')
 const filters = require('./filters')
 
-module.exports = (app, config) => {
+module.exports = (app, { ROOT, IS_DEV, NO_CACHE }) => {
   const env = nunjucks.configure([
-    `${config.root}/node_modules/govuk-frontend`,
-    `${config.root}/node_modules/govuk-frontend/components`,
-    `${config.root}/common/templates`,
-    `${config.root}/app`,
+    `${ROOT}/node_modules/govuk-frontend`,
+    `${ROOT}/node_modules/govuk-frontend/components`,
+    `${ROOT}/common/templates`,
+    `${ROOT}/app`,
   ], {
     autoescape: true,
     express: app,
-    watch: config.isDev,
-    noCache: config.noCache,
+    watch: IS_DEV,
+    noCache: NO_CACHE,
   })
 
   // Custom filters
