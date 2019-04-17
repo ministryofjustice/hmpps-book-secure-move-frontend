@@ -27,8 +27,14 @@ This is the rendering application for the PECS service.
    cp .env.example .env
    ```
 
-1. Run the application:
+1. Run the application in
 
-   ```
-   npm start
-   ```
+    production mode:
+    ```
+    npm start
+    ```
+
+    development mode:
+    ```
+    npm run develop
+    ```
