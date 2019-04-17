@@ -4,27 +4,34 @@ const templateGlobals = require('./globals')
 const filters = require('./filters')
 
 module.exports = (app, { ROOT, IS_DEV, NO_CACHE }) => {
-  const env = nunjucks.configure([
+  const views = [
     `${ROOT}/node_modules/govuk-frontend`,
     `${ROOT}/node_modules/govuk-frontend/components`,
     `${ROOT}/common/templates`,
     `${ROOT}/app`,
-  ], {
-    autoescape: true,
+  ]
+  const nunjucksConfiguration = {
     express: app,
+    autoescape: true,
+    throwOnUndefined: false,
+    trimBlocks: true,
+    lstripBlocks: true,
     watch: IS_DEV,
-    noCache: NO_CACHE,
-  })
+    noCache: IS_DEV,
+  }
+
+  // Initialise nunjucks environment
+  const nunjucksEnvironment = nunjucks.configure(views, nunjucksConfiguration)
 
   // Custom filters
   Object.keys(filters).forEach((filter) => {
-    env.addFilter(filter, filters[filter])
+    nunjucksEnvironment.addFilter(filter, filters[filter])
   })
 
   // Global variables
   Object.keys(templateGlobals).forEach((global) => {
-    env.addGlobal(global, templateGlobals[global])
+    nunjucksEnvironment.addGlobal(global, templateGlobals[global])
   })
 
-  return env
+  return nunjucksEnvironment
 }
