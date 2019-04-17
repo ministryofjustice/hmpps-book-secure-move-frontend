@@ -16,9 +16,10 @@
   },
   "main": "start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node start.js",
     "build": "webpack --config webpack.config.js",
+    "server": "node start.js",
+    "start": "npm run build && npm run server",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./"
   },
   "pre-commit": [

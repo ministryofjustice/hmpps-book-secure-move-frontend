@@ -3,22 +3,22 @@ const path = require('path')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const { isDev, buildDirectory } = require('./config')
+const { IS_DEV, BUILD_DIRECTORY } = require('./config')
 
 module.exports = {
   entry: {
-    styles: './app/assets/scss/application.scss',
-    'styles-ie8': './app/assets/scss/application-ie8.scss',
-    app: './app/assets/javascripts/application.js',
+    styles: './common/assets/scss/application.scss',
+    'styles-ie8': './common/assets/scss/application-ie8.scss',
+    app: './common/assets/javascripts/application.js',
   },
 
   output: {
-    path: buildDirectory,
+    path: BUILD_DIRECTORY,
     filename: 'javascripts/[name].js',
     publicPath: '/',
   },
 
-  mode: isDev ? 'development' : 'production',
+  mode: IS_DEV ? 'development' : 'production',
 
   plugins: [
     new MiniCssExtractPlugin({
@@ -52,7 +52,7 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               publicPath: '../',
-              hmr: isDev,
+              hmr: IS_DEV,
             },
           },
           {
