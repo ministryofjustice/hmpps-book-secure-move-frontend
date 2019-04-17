@@ -3,12 +3,12 @@ const http = require('http')
 
 const app = require('./server')
 const logger = require('./config/logger')
-const { port } = require('./config')
+const { PORT } = require('./config')
 
 /**
  * Get port from config and store in Express.
  */
-app.set('port', port)
+app.set('port', PORT)
 
 /**
  * Create HTTP server.
@@ -18,7 +18,7 @@ const server = http.createServer(app)
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port)
+server.listen(PORT)
 server.on('error', onError)
 server.on('listening', onListening)
 
@@ -30,9 +30,9 @@ function onError (error) {
     throw error
   }
 
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port
+  const bind = typeof PORT === 'string'
+    ? 'Pipe ' + PORT
+    : 'Port ' + PORT
 
   // handle specific listen errors with friendly messages
   switch (error.code) {

@@ -1,16 +1,16 @@
 /* eslint no-process-env: "off" */
 const path = require('path')
 
-const root = path.normalize(`${__dirname}/..`)
-const isDev = process.env.NODE_ENV !== 'production'
+const ROOT = path.normalize(`${__dirname}/..`)
+const IS_DEV = process.env.NODE_ENV !== 'production'
+const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
-const config = {
-  root,
-  isDev,
-  port: process.env.PORT || 3000,
-  logLevel: process.env.LOG_LEVEL || (isDev ? 'debug' : 'error'),
-  buildDirectory: path.resolve(root, '.build'),
-  noCache: process.env.CACHE_ASSETS ? false : isDev,
+module.exports = {
+  ROOT,
+  IS_DEV,
+  IS_PRODUCTION,
+  PORT: process.env.PORT || 3000,
+  LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
+  BUILD_DIRECTORY: path.resolve(ROOT, '.build'),
+  NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
 }
-
-module.exports = config
