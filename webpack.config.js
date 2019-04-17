@@ -1,11 +1,11 @@
-
 const path = require('path')
+const merge = require('webpack-merge')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const { IS_DEV, BUILD_DIRECTORY } = require('./config')
+const { IS_DEV, IS_PRODUCTION, BUILD_DIRECTORY } = require('./config')
 
-module.exports = {
+const commonConfig = {
   entry: {
     styles: './common/assets/scss/application.scss',
     'styles-ie8': './common/assets/scss/application-ie8.scss',
@@ -88,3 +88,9 @@ module.exports = {
     },
   },
 }
+
+const webpackEnvironment = IS_PRODUCTION ? 'production' : 'develop'
+const environmentConfig = require(`./webpack.config.${webpackEnvironment}`)
+const webpackConfig = merge.smart(commonConfig, environmentConfig)
+
+module.exports = webpackConfig

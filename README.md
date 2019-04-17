@@ -27,14 +27,26 @@ This is the rendering application for the PECS service.
    cp .env.example .env
    ```
 
-1. Run the application in
+1. Build the assets
 
-    production mode:
     ```
-    npm start
+    npm run build
     ```
 
-    development mode:
-    ```
-    npm run develop
-    ```
+## Running the application
+
+#### In production mode
+
+```
+NODE_ENV=production npm start
+```
+
+The app will run on port 3000 by default and be available at [http://localhost:3000](http://localhost:3000).
+
+#### In development mode
+
+```
+npm run develop
+```
+
+The app will be running at [http://localhost:3000](http://localhost:3000) or with browsersync at [http://localhost:3001](http://localhost:3001).
