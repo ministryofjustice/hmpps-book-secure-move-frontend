@@ -24,4 +24,23 @@ module.exports = {
     'dot-notation': 'error',
     'no-process-env': 'error',
   },
+  overrides: [
+    {
+      files: ['*.test.js','*.spec.js'],
+      env: {
+        mocha: true,
+      },
+      globals: {
+        expect: 'readonly',
+        sinon: 'readonly',
+      },
+      rules: {
+        'no-unused-expressions': 'off',
+        'mocha/no-exclusive-tests': 'error',
+      },
+      plugins: [
+        'mocha',
+      ],
+    },
+  ],
 }
