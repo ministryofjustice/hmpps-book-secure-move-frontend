@@ -3,7 +3,6 @@ const path = require('path')
 
 // NPM dependencies
 const bodyParser = require('body-parser')
-const createError = require('http-errors')
 const cookieParser = require('cookie-parser')
 const express = require('express')
 const morgan = require('morgan')
@@ -11,6 +10,7 @@ const morgan = require('morgan')
 // Local dependencies
 const config = require('./config')
 const nunjucks = require('./config/nunjucks')
+const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 
 // Global constants
@@ -34,20 +34,8 @@ app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-fron
 // Routing
 router.bind(app)
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404))
-})
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = config.IS_DEV ? err : {}
-
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
-})
+// error handling
+app.use(errorHandlers.notFound)
+app.use(errorHandlers.catchAll(config.IS_DEV))
 
 module.exports = app
