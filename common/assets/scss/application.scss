@@ -1,4 +1,7 @@
+@import url("https://rsms.me/inter/inter.css");
+
 $govuk-global-styles: true;
+$govuk-font-family: "Inter", system-ui, sans-serif;
 
 @import "govuk-frontend/all.scss";
 
