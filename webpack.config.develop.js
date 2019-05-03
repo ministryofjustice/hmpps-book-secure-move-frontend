@@ -5,9 +5,8 @@ const { PORT } = require('./config')
 module.exports = {
   plugins: [
     new BrowserSyncPlugin({
-      script: './start.js',
-    }, {
       proxy: `http://localhost:${PORT}`,
+      port: '3001',
       open: false,
       files: [
         '.build/**/*.*',
