@@ -22,9 +22,11 @@
     "develop": "run-p watch:js:*",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha ./app/**/*.test.js --opts ./test/unit/mocha.opts",
     "lint": "eslint ./",
-    "coverage": "nyc --reporter=html --reporter=text --reporter=lcov npm run test",
+    "coverage": "nyc --reporter=html --reporter=lcov npm test",
     "watch:js:client": "webpack --watch --progress",
-    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect"
+    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
+    "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"
   },
   "pre-commit": [
     "lint"
