@@ -50,3 +50,15 @@ npm run develop
 ```
 
 The app will be running at [http://localhost:3000](http://localhost:3000) or with browsersync at [http://localhost:3001](http://localhost:3001).
+
+## Testing and linting
+
+### Code coverage
+
+Code coverage is provided by Istanbul's command line tool, [nyc](https://www.npmjs.com/package/nyc).
+
+To see coverage reports run:
+
+```
+npm run coverage
+```
