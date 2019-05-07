@@ -1,0 +1,80 @@
+.app-pagination {
+  display: block;
+  list-style: none;
+}
+
+.app-pagination__list {
+  padding-left: 0;
+  margin: 0;
+}
+
+.app-pagination__list-item {
+  display: block;
+
+  & + & {
+    margin-top: govuk-spacing(4);
+  }
+}
+
+.app-pagination__link {
+  display: inline-block;
+}
+
+.app-pagination__link-title {
+  @include govuk-font($size: 19, $weight: bold);
+  display: block;
+  font-weight: 700;
+}
+
+.app-pagination__link-text {
+  display: inline-block;
+  text-decoration: underline;
+
+  .app-pagination__list-item--prev &,
+  .app-pagination__list-item--next & {
+    margin-left: govuk-spacing(2);
+  }
+}
+
+.app-pagination__link-icon {
+  @include govuk-font($size: 24);
+  display: inline-block;
+  height: .682em;
+  width: .63em;
+  position: relative;
+  top: 1px;
+}
+
+.app-pagination__link-divider {
+  @include govuk-visually-hidden;
+}
+
+.app-pagination__link-label {
+  @include govuk-font($size: 16);
+  margin-left: 25px;
+}
+
+// Modifiers
+.app-pagination--inline {
+  .app-pagination__list-item {
+    display: inline;
+  }
+
+  .app-pagination__list-item--next {
+    margin-top: 0;
+    margin-left: govuk-spacing(6);
+
+    .app-pagination__link-text {
+      margin-left: 0;
+      margin-right: govuk-spacing(2);
+    }
+
+    .app-pagination__link-icon {
+      float: right;
+    }
+
+    .app-pagination__link-label {
+      margin-left: 0;
+    }
+  }
+}
