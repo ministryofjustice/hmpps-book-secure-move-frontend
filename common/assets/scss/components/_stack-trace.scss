@@ -1,0 +1,21 @@
+.app-stack-trace {
+  max-width: 100%;
+  background: govuk-colour("grey-4");
+  border: 1px solid $govuk-border-colour;
+  padding: govuk-spacing(4);
+  margin-top: govuk-spacing(6);
+}
+
+.app-stack-trace__heading {
+  @include govuk-font($size: 24, $weight: bold);
+  margin-bottom: govuk-spacing(2);
+}
+
+.app-stack-trace__details {
+  @include govuk-font($size: 16);
+  font-family: monospace;
+  margin: 0;
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
