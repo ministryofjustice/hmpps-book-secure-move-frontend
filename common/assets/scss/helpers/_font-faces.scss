@@ -1,0 +1,50 @@
+////
+/// @group helpers
+////
+
+@import "govuk-frontend/tools/exports";
+
+/// Font Face - Inter UI
+///
+/// Outputs the font-face declaration for Inter at the root of the CSS document
+/// the first time it is called.
+///
+/// @access private
+
+@mixin _inter-ui-font-face {
+  @include govuk-exports("app/helpers/font-face") {
+    @at-root {
+      // Regular font weight
+      @font-face {
+        font-family: 'Inter';
+        font-style:  normal;
+        font-weight: 400;
+        src: govuk-font-url("Inter-Regular.woff2") format("woff2"),
+             govuk-font-url("Inter-Regular.woff") format("woff");
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style:  italic;
+        font-weight: 400;
+        src: govuk-font-url("Inter-Italic.woff2") format("woff2"),
+             govuk-font-url("Inter-Italic.woff") format("woff");
+      }
+
+      // Bold font weight
+      @font-face {
+        font-family: 'Inter';
+        font-style:  normal;
+        font-weight: 700;
+        src: govuk-font-url("Inter-Bold.woff2") format("woff2"),
+             govuk-font-url("Inter-Bold.woff") format("woff");
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style:  italic;
+        font-weight: 700;
+        src: govuk-font-url("Inter-BoldItalic.woff2") format("woff2"),
+             govuk-font-url("Inter-BoldItalic.woff") format("woff");
+      }
+    }
+  }
+}

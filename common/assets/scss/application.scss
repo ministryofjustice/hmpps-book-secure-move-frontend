@@ -1,10 +1,14 @@
-@import url("https://rsms.me/inter/inter.css");
-
-@import "helpers/font-face";
-
 $govuk-global-styles: true;
+
+// Override font styles to replace NTA with Inter UI
+$govuk-fonts-path: "../fonts/inter/";
 $govuk-font-family: "Inter", system-ui, sans-serif;
 
+// Import GOV.UK Frontend
 @import "govuk-frontend/all.scss";
 
+// Import app settings/tools/helpers
+@import "helpers/all";
+
+// Import app level components and styles
 @import "components/stack-trace";
