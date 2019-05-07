@@ -1,0 +1,77 @@
+version: 2.1
+
+aliases:
+  - &node_version               circleci/node:11
+
+  # Common steps
+  - &install_dependencies
+    run:
+      name: Install NPM dependencies
+      command: npm install
+  - &restore_cache
+    restore_cache:
+      name: Restore NPM cache
+      key: dependency-cache-{{ checksum "package.json" }}
+  - &save_cache
+    save_cache:
+      name: Save NPM cache
+      key: dependency-cache-{{ checksum "package.json" }}
+      paths:
+        - ./node_modules
+
+jobs:
+  build:
+    docker:
+      - image: *node_version
+    steps:
+      - checkout
+      - *restore_cache
+      - *install_dependencies
+      - *save_cache
+      - run: npm run build
+  lint:
+    docker:
+      - image: *node_version
+    steps:
+      - checkout
+      - *restore_cache
+      - *install_dependencies
+      - *save_cache
+      - run: mkdir reports
+      - run:
+          name: npm run lint
+          command: |
+            npm run circle:lint
+          when: always
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: ./reports/eslint/eslint.xml
+  unit_test:
+    docker:
+      - image: *node_version
+    steps:
+      - checkout
+      - *restore_cache
+      - *install_dependencies
+      - run: npm install mocha-junit-reporter # just for CircleCI
+      - *save_cache
+      - run: mkdir reports
+      - run:
+          name: npm test
+          command: |
+            npm run circle:coverage
+          when: always
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: ./reports/mocha/test-results.xml
+      - store_artifacts:
+          path: coverage
+
+workflows:
+  pecs-frontend:
+    jobs:
+      - build
+      - lint
+      - unit_test
