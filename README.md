@@ -53,6 +53,18 @@ The app will be running at [http://localhost:3000](http://localhost:3000) or wit
 
 ## Testing and linting
 
+### Unit tests
+
+Unit tests are run using the [Mocha](https://mochajs.org/) test framework and the [Chai](https://www.chaijs.com/) library for assertions.
+
+It also includes the [Sinon](https://sinonjs.org/) library for test spies, stubs and mocks.
+
+To check unit tests results run:
+
+```
+npm run test
+```
+
 ### Code coverage
 
 Code coverage is provided by Istanbul's command line tool, [nyc](https://www.npmjs.com/package/nyc).
@@ -61,4 +73,16 @@ To see coverage reports run:
 
 ```
 npm run coverage
+```
+
+### Linting
+
+[ESLint](https://eslint.org/) is used to lint JavaScript code and keep a consistent standard in the way it is written within this project.
+
+The config uses the [StandardJS](https://standardjs.com/) style as a base with [some custom tweaks](./.eslintrc.js).
+
+To check linting results run:
+
+```
+npm run lint
 ```
