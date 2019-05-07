@@ -1,6 +1,6 @@
 const controllers = require('./controllers')
 
-describe('Index app', function () {
+describe('Dashboard app', function () {
   describe('#getController()', function () {
     it('should render a template', function () {
       const req = {}
