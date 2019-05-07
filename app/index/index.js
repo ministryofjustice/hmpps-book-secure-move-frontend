@@ -2,7 +2,7 @@
 const express = require('express')
 
 // Local dependencies
-const getController = require('./get.controller')
+const controllers = require('./controllers')
 
 // Initialisation
 const router = new express.Router()
@@ -11,7 +11,7 @@ const paths = {
 }
 
 // Routing
-router.get(paths.index, getController)
+router.get(paths.index, controllers.get)
 
 // Export
 module.exports = {
