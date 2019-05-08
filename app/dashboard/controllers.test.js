@@ -1,6 +1,6 @@
-const index = require('./get.controller')
+const controllers = require('./controllers')
 
-describe('Index app', function () {
+describe('Dashboard app', function () {
   describe('#getController()', function () {
     it('should render a template', function () {
       const req = {}
@@ -8,7 +8,7 @@ describe('Index app', function () {
         render: sinon.spy(),
       }
 
-      index(req, res)
+      controllers.get(req, res)
 
       expect(res.render.calledOnce).to.be.true
     })

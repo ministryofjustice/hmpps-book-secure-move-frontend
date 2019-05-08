@@ -1,7 +1,7 @@
 // Local dependencies
-const index = require('./index')
+const dashboard = require('./dashboard')
 
 // Export
 module.exports.bind = app => {
-  app.use(index.router)
+  app.use(dashboard.router)
 }
