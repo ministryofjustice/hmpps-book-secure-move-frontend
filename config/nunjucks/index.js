@@ -3,12 +3,13 @@ const nunjucks = require('nunjucks')
 const templateGlobals = require('./globals')
 const filters = require('./filters')
 
-module.exports = (app, { ROOT, IS_DEV, NO_CACHE }) => {
+module.exports = (app, { IS_DEV, NO_CACHE }, paths) => {
   const views = [
-    `${ROOT}/node_modules/govuk-frontend`,
-    `${ROOT}/node_modules/govuk-frontend/components`,
-    `${ROOT}/common/templates`,
-    `${ROOT}/app`,
+    `${paths.root}/node_modules/govuk-frontend`,
+    `${paths.root}/node_modules/govuk-frontend/components`,
+    paths.templates,
+    paths.components,
+    paths.app,
   ]
   const nunjucksConfiguration = {
     express: app,

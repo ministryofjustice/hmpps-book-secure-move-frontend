@@ -9,6 +9,7 @@ const morgan = require('morgan')
 
 // Local dependencies
 const config = require('./config')
+const configPaths = require('./config/paths')
 const nunjucks = require('./config/nunjucks')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
@@ -18,7 +19,7 @@ const app = express()
 
 // view engine setup
 app.set('view engine', 'njk')
-nunjucks(app, config)
+nunjucks(app, config, configPaths)
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(config.BUILD_DIRECTORY))
+app.use(express.static(configPaths.build))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
 
 // Routing
