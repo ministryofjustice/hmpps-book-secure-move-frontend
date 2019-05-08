@@ -63,6 +63,7 @@ const commonConfig = {
             options: {
               includePaths: [
                 path.resolve(__dirname, 'node_modules'),
+                path.resolve(__dirname, 'common', 'components'),
               ],
             },
           },
