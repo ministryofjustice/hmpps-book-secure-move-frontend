@@ -3,7 +3,8 @@ const merge = require('webpack-merge')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const { IS_DEV, IS_PRODUCTION, BUILD_DIRECTORY } = require('./config')
+const { IS_DEV, IS_PRODUCTION } = require('./config')
+const configPaths = require('./config/paths')
 
 const commonConfig = {
   entry: {
@@ -13,7 +14,7 @@ const commonConfig = {
   },
 
   output: {
-    path: BUILD_DIRECTORY,
+    path: configPaths.build,
     filename: 'javascripts/[name].js',
     publicPath: '/',
   },
@@ -63,7 +64,7 @@ const commonConfig = {
             options: {
               includePaths: [
                 path.resolve(__dirname, 'node_modules'),
-                path.resolve(__dirname, 'common', 'components'),
+                configPaths.components,
               ],
             },
           },
