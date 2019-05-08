@@ -8,6 +8,7 @@ module.exports = (app, { ROOT, IS_DEV, NO_CACHE }) => {
     `${ROOT}/node_modules/govuk-frontend`,
     `${ROOT}/node_modules/govuk-frontend/components`,
     `${ROOT}/common/templates`,
+    `${ROOT}/common/components`,
     `${ROOT}/app`,
   ]
   const nunjucksConfiguration = {
