@@ -38,11 +38,11 @@
 
 .app-pagination__link-icon {
   @include govuk-font($size: 24);
-  display: inline-block;
-  height: .682em;
-  width: .63em;
+  float: left;
+  height: .8em;
   position: relative;
   top: 1px;
+  width: .63em;
 }
 
 .app-pagination__link-divider {
@@ -58,6 +58,10 @@
 .app-pagination--inline {
   .app-pagination__list-item {
     display: inline;
+  }
+
+  .app-pagination__link-text {
+    font-weight: normal;
   }
 
   .app-pagination__list-item--next {
