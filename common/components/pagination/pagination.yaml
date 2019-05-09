@@ -1,0 +1,70 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element. Use `app-pagination--inline` to create the inline variation.
+- name: previous
+  type: object
+  required: true
+  description: Previous navigation item
+  params:
+    - name: href
+      type: string
+      required: true
+      description: The destination of the previous link
+    - name: text
+      type: string
+      required: false
+      description: The text to use as the main title. If not provided, defaults to `Previous`
+    - name: label
+      type: string
+      required: false
+      description: Supporting label to give a more detailed description of the previous page
+- name: next
+  type: object
+  required: true
+  description: Next navigation item
+  params:
+    - name: href
+      type: string
+      required: true
+      description: The destination of the next link
+    - name: text
+      type: string
+      required: false
+      description: The text to use as the main title. If not provided, defaults to `Next`
+    - name: label
+      type: string
+      required: false
+      description: Supporting label to give a more detailed description of the next page
+
+examples:
+  - name: default
+    data:
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+  - name: with labels
+    data:
+      previous:
+        href: "/page-1"
+        label: "1 of 300"
+      next:
+        href: "/page-3"
+        label: "3 of 300"
+  - name: with custom title text
+    data:
+      previous:
+        href: "/previous-day"
+        text: "Previous day"
+      next:
+        href: "/next-day"
+        label: "Next day"
+  - name: inline variation
+    data:
+      classes: app-pagination--inline
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"

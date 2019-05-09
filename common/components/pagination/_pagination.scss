@@ -1,0 +1,102 @@
+.app-pagination {
+  display: block;
+  list-style: none;
+  margin-left: -(govuk-spacing(3));
+  margin-right: -(govuk-spacing(3));
+}
+
+.app-pagination__list {
+  padding-left: 0;
+  margin: 0;
+}
+
+.app-pagination__list-item {
+  display: block;
+}
+
+.app-pagination__link {
+  display: block;
+  padding: govuk-spacing(3);
+
+  &:link,
+  &:visited,
+  &:active,
+  &:hover {
+    color: $govuk-link-colour;
+  }
+
+  &:focus {
+    background-color: transparent;
+  }
+
+  &:hover {
+    background-color: govuk-colour("grey-4");
+  }
+}
+
+.app-pagination__link-title {
+  @include govuk-font($size: 19, $weight: bold);
+  display: block;
+  font-weight: 700;
+}
+
+.app-pagination__link-text {
+  display: inline-block;
+  text-decoration: none;
+
+  .app-pagination__list-item--prev &,
+  .app-pagination__list-item--next & {
+    margin-left: govuk-spacing(2);
+  }
+}
+
+.app-pagination__link-icon {
+  @include govuk-font($size: 24);
+  float: left;
+  height: 1em;
+  position: relative;
+  top: 1px;
+  width: .63em;
+}
+
+.app-pagination__link-divider {
+  @include govuk-visually-hidden;
+}
+
+.app-pagination__link-label {
+  @include govuk-font($size: 16);
+  display: inline-block;
+  text-decoration: underline;
+  margin-left: 25px;
+  margin-top: 0.1em;
+}
+
+// Modifiers
+.app-pagination--inline {
+  .app-pagination__list-item {
+    display: inline;
+  }
+
+  .app-pagination__link {
+    display: inline-block;
+  }
+
+  .app-pagination__link-text {
+    font-weight: normal;
+  }
+
+  .app-pagination__list-item--next {
+    .app-pagination__link-text {
+      margin-left: 0;
+      margin-right: govuk-spacing(2);
+    }
+
+    .app-pagination__link-icon {
+      float: right;
+    }
+
+    .app-pagination__link-label {
+      margin-left: 0;
+    }
+  }
+}
