@@ -20,7 +20,7 @@
     "build": "npm run clean && webpack --config webpack.config.js",
     "start": "node --use-strict start.js",
     "develop": "run-p watch:js:*",
-    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' --opts ./test/unit/mocha.opts",
+    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
     "lint": "eslint ./",
     "coverage": "nyc --reporter=html --reporter=lcov npm test",
     "watch:js:client": "webpack --watch --progress",
