@@ -1,0 +1,22 @@
+params:
+  - name: datetime
+    type: datetime
+    required: true
+    description: The value to be used for the datetime attribute. Follow accepted formats for the <time> element.
+  - name: text
+    type: string
+    required: false
+    description: Alternative text to be displayed within the element.
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the element.
+
+examples:
+  - name: default
+    data:
+      datetime: "2019-01-10"
+  - name: with custom text
+    data:
+      datetime: "2019-01-10"
+      text: "Today"
