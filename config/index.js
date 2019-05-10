@@ -8,4 +8,9 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
+  DATE_FORMATS: {
+    SHORT: 'D M YYYY',
+    LONG: 'D MMM YYYY',
+    WITH_DAY: 'dddd D MMM YYYY',
+  },
 }
