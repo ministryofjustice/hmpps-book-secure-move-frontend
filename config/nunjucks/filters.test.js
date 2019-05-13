@@ -45,4 +45,52 @@ describe('Nunjucks filters', () => {
       expect(formattedDate).to.equal('Tuesday 5 Jan 2010')
     })
   })
+
+  describe('#formatDateAsRelativeDay()', () => {
+    beforeEach(() => {
+      const mockDate = new Date('2017-08-10')
+      this.clock = sinon.useFakeTimers(mockDate.getTime())
+    })
+
+    afterEach(() => {
+      this.clock.restore()
+    })
+
+    context('when current date is today', () => {
+      it('should return `Today`', () => {
+        const formattedDate = filters.formatDateAsRelativeDay('2017-08-10')
+        expect(formattedDate).to.equal('Today')
+      })
+    })
+
+    context('when current date is tomorrow', () => {
+      it('should return `Tomorrow`', () => {
+        const formattedDate = filters.formatDateAsRelativeDay('2017-08-11')
+        expect(formattedDate).to.equal('Tomorrow')
+      })
+    })
+
+    context('when current date is yesterday', () => {
+      it('should return `Yesterday`', () => {
+        const formattedDate = filters.formatDateAsRelativeDay('2017-08-09')
+        expect(formattedDate).to.equal('Yesterday')
+      })
+    })
+
+    context('when date is another date', () => {
+      context('when no custom format is supplied', () => {
+        it('should return date in default format', () => {
+          const formattedDate = filters.formatDateAsRelativeDay('2017-08-01')
+          expect(formattedDate).to.equal('Tuesday 1 Aug 2017')
+        })
+      })
+
+      context('when a custom format is supplied', () => {
+        it('should return date in custom formatt', () => {
+          const formattedDate = filters.formatDateAsRelativeDay('2017-08-01', 'DD/MM/YY')
+          expect(formattedDate).to.equal('01/08/17')
+        })
+      })
+    })
+  })
 })
