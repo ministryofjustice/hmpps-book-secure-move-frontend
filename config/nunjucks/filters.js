@@ -1,5 +1,8 @@
 const {
   format,
+  isToday,
+  isTomorrow,
+  isYesterday,
   parse: parseDate,
   isValid: isValidDate,
 } = require('date-fns')
@@ -40,7 +43,35 @@ function formatDateWithDay (value) {
   return formatDate(value, DATE_FORMATS.WITH_DAY)
 }
 
+/**
+ * Returns today, tomorrow or yesterday if they match, otherwise
+ * it will return that date formatted with day by default or in
+ * the format supplied
+ *
+ * @param  {Any} a any type
+ * @return {String} a formatted date
+ *
+ * @example {{ "2019-02-21" | formatDateAsRelativeDay }}
+ * @example {{ "2019-02-21" | formatDateAsRelativeDay("DD/MM/YYYY") }}
+ */
+function formatDateAsRelativeDay (value, formattedDateStr = DATE_FORMATS.WITH_DAY) {
+  if (isToday(value)) {
+    return 'Today'
+  }
+
+  if (isTomorrow(value)) {
+    return 'Tomorrow'
+  }
+
+  if (isYesterday(value)) {
+    return 'Yesterday'
+  }
+
+  return formatDate(value, formattedDateStr)
+}
+
 module.exports = {
   formatDate,
   formatDateWithDay,
+  formatDateAsRelativeDay,
 }
