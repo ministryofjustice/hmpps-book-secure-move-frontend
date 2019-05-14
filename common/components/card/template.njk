@@ -1,0 +1,58 @@
+{% from "_tag/macro.njk" import appTag %}
+
+{% set headingLevel = params.headingLevel if params.headingLevel else 2 %}
+
+<div class="app-card{%- if params.classes %} {{ params.classes }}{% endif %}">
+  {% if params.image_path %}
+    <aside class="app-card__aside">
+      <img class="app-card__image" src="{{ params.image_path }}">
+    </aside>
+  {% endif %}
+
+  <div class="app-card__content">
+    <header class="app-card__header">
+      {% if params.caption.html or params.caption.text %}
+        <span class="app-card__caption">
+          {{ params.caption.html | safe if params.caption.html else params.caption.text }}
+        </span>
+      {% endif %}
+
+      <h2 class="app-card__title">
+        {% if params.href %}
+          <a href="{{ params.href }}"  class="app-card__link">
+        {% endif %}
+        {{ params.title.html | safe if params.title.html else params.title.text }}
+        {% if params.href %}
+          </a>
+        {% endif %}
+      </h2>
+    </header>
+
+    {% if params.meta.items.length %}
+      <dl class="app-card__meta-list">
+        {% for item in params.meta.items %}
+          {% if item.label and (item.html or item.text) %}
+            <div class="app-card__meta-list-item">
+              <dt class="app-card__meta-list-key{% if item.hideLabel %} govuk-visually-hidden{% endif %}">
+                {{ item.label }}
+              </dt>
+              <dd class="app-card__meta-list-value">
+                {{ item.html | safe if item.html else item.text }}
+              </dd>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </dl>
+    {% endif %}
+
+    {% if params.tags.items.length %}
+      <ul class="app-card__tag-list">
+        {% for item in params.tags.items %}
+          <li class="app-card__tag-list-item">
+            {{ appTag(item) }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
