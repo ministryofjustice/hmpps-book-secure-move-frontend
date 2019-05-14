@@ -4,6 +4,7 @@
 {% from "_tag/macro.njk"              import appTag %}
 
 {# App level components #}
+{% from "internal-header/macro.njk"   import appInternalHeader %}
 {% from "pagination/macro.njk"        import appPagination %}
 {% from "time/macro.njk"              import appTime %}
 
@@ -17,10 +18,10 @@
 {% endblock %}
 
 {% block header %}
-  {{ govukHeader({
+  {{ appInternalHeader({
     homepageUrl: "/",
-    serviceUrl: "/",
-    serviceName: SERVICE_NAME,
+    siteName: "HMPPS",
+    productName: SERVICE_NAME,
     containerClasses: "govuk-width-container"
   }) }}
 {% endblock %}
