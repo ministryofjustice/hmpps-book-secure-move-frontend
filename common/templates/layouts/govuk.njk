@@ -1,5 +1,9 @@
 {% extends "template.njk" %}
 
+{# Components that clash with GOV.UK Frontend namespace #}
+{% from "_tag/macro.njk"              import appTag %}
+
+{# App level components #}
 {% from "pagination/macro.njk"        import appPagination %}
 {% from "time/macro.njk"              import appTime %}
 

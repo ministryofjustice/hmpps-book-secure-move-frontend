@@ -1,0 +1,8 @@
+{% set element = "a" if params.href else "strong" %}
+
+<{{ element }}
+  class="app-tag{% if params.classes %} {{ params.classes }}{% endif %}"
+  {% if params.href %}href="{{ params.href }}"{% endif %}
+  >
+  {{ params.html | safe if params.html else params.text }}
+</{{ element }}>
