@@ -1,0 +1,30 @@
+params:
+- name: text
+  type: string
+  required: true
+  description: If `html` is set, this is not required. Text to use within the tag component. If `html` is provided, the `text` argument will be ignored.
+- name: html
+  type: string
+  required: true
+  description: If `text` is set, this is not required. HTML to use within the tag component. If `html` is provided, the `text` argument will be ignored.
+- name: href
+  type: string
+  required: false
+  description: Optional href if the tag should link somewhere.
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the tag.
+
+examples:
+ - name: default
+   data:
+    text: alpha
+ - name: inactive
+   data:
+    text: alpha
+    classes: govuk-tag--inactive
+ - name: with link
+   data:
+    text: alpha
+    href: /a-link

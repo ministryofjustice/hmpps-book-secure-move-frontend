@@ -46,3 +46,13 @@ And then used within a view like this:
   paramTwo: "World"
 }) }}
 ```
+
+## Clashes with other Design System
+
+Currently with the way components are imported, if the folder name is the same as
+one in another Design System like GOV.UK it will cause problems trying to load
+that macro in the base layout.
+
+As a way around that if the folder is prefixed with an underscore (`_`) the
+component can be structured and loaded in the same way, including structuring
+tests.
