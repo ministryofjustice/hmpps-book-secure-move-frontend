@@ -87,6 +87,12 @@ To check linting results run:
 npm run lint
 ```
 
+## Environment variables
+
+| Name | Description |
+|:-----|:------------|
+| API_BASE_URL | The base url for the backend API server for this service |
+
 ## Components
 
 See the [components readme](./common/components/README.md) for more detail on how to structure app level components.
