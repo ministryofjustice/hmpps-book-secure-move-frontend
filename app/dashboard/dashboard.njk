@@ -28,4 +28,13 @@
     }) }}
   </div>
 </div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% for move in moves %}
+      <pre>{{ move | dump(1) }}</pre>
+      <hr>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

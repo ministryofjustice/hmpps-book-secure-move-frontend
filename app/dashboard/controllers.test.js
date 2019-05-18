@@ -1,28 +1,32 @@
 const controllers = require('./controllers')
+const apiClient = require('../../common/lib/api-client')
+
+const movesStub = {
+  data: [
+    { foo: 'bar' },
+    { fizz: 'buzz' },
+  ],
+}
+const errorStub = new Error('Problem')
 
 describe('Dashboard app', function () {
   describe('#getController()', function () {
-    beforeEach(() => {
-      const mockDate = new Date('2017-08-10')
-      this.clock = sinon.useFakeTimers(mockDate.getTime())
-    })
-
-    afterEach(() => {
-      this.clock.restore()
-    })
-
     context('when query contains no move date', () => {
+      const mockDate = '2017-08-10'
       let req, res
 
-      beforeEach(() => {
-        req = {
-          query: {},
-        }
-        res = {
-          render: sinon.spy(),
-        }
+      beforeEach(async () => {
+        sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
+        this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
-        controllers.get(req, res)
+        req = { query: {} }
+        res = { render: sinon.spy() }
+
+        await controllers.get(req, res)
+      })
+
+      afterEach(() => {
+        this.clock.restore()
       })
 
       it('should render a template', function () {
@@ -37,7 +41,7 @@ describe('Dashboard app', function () {
         it('should contain move date as current date', function () {
           const params = res.render.args[0][1]
           expect(params).to.have.property('moveDate')
-          expect(params.moveDate).to.equal('2017-08-10')
+          expect(params.moveDate).to.equal(mockDate)
         })
 
         it('should contain pagination with correct links', function () {
@@ -46,23 +50,30 @@ describe('Dashboard app', function () {
           expect(params.pagination.nextUrl).to.equal('?move-date=2017-08-11')
           expect(params.pagination.prevUrl).to.equal('?move-date=2017-08-09')
         })
+
+        it('should contain moves property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('moves')
+          expect(params.moves).to.deep.equal(movesStub.data)
+        })
       })
     })
 
     context('when query contatins a move date', () => {
+      const mockDate = '2018-05-10'
       let req, res
 
-      beforeEach(() => {
+      beforeEach(async () => {
+        sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
+
         req = {
           query: {
-            'move-date': '2018-05-10',
+            'move-date': mockDate,
           },
         }
-        res = {
-          render: sinon.spy(),
-        }
+        res = { render: sinon.spy() }
 
-        controllers.get(req, res)
+        await controllers.get(req, res)
       })
 
       it('should render a template', function () {
@@ -77,7 +88,7 @@ describe('Dashboard app', function () {
         it('should contain move date as current date', function () {
           const params = res.render.args[0][1]
           expect(params).to.have.property('moveDate')
-          expect(params.moveDate).to.equal('2018-05-10')
+          expect(params.moveDate).to.equal(mockDate)
         })
 
         it('should contain pagination with correct links', function () {
@@ -86,6 +97,37 @@ describe('Dashboard app', function () {
           expect(params.pagination.nextUrl).to.equal('?move-date=2018-05-11')
           expect(params.pagination.prevUrl).to.equal('?move-date=2018-05-09')
         })
+
+        it('should contain moves property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('moves')
+          expect(params.moves).to.deep.equal(movesStub.data)
+        })
+      })
+    })
+
+    context('when API call returns an error', () => {
+      let req, res, nextSpy
+
+      beforeEach(async () => {
+        sinon.stub(apiClient, 'getMovesByDate').throws(errorStub)
+
+        req = {
+          query: {},
+        }
+        res = { render: sinon.spy() }
+        nextSpy = sinon.spy()
+
+        await controllers.get(req, res, nextSpy)
+      })
+
+      it('should not render a template', () => {
+        expect(res.render.calledOnce).to.be.false
+      })
+
+      it('should send error to next function', () => {
+        expect(nextSpy.calledOnce).to.be.true
+        expect(nextSpy).to.be.calledWith(errorStub)
       })
     })
   })
