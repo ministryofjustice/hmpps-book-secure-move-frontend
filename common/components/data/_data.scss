@@ -1,0 +1,29 @@
+.app-data__label {
+  @include govuk-font($size: 19, $weight: regular);
+  display: block;
+  margin: 0;
+}
+
+.app-data__value {
+  @include govuk-font($size: 36, $weight: bold);
+  display: block;
+  margin: 0;
+}
+
+.app-data--s {
+  .app-data__value {
+    @include govuk-font($size: 24, $weight: bold);
+  }
+}
+
+.app-data--l {
+  .app-data__value {
+    @include govuk-font($size: 48, $weight: bold);
+  }
+}
+
+.app-data--xl {
+  .app-data__value {
+    @include govuk-font($size: 80, $weight: bold);
+  }
+}

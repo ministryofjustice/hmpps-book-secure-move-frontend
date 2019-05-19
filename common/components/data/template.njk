@@ -1,0 +1,21 @@
+{% set element = params.element if params.element else "div" %}
+
+<{{ element }}
+  class="app-data{% if params.classes %} {{ params.classes }}{% endif %}"
+  >
+  {% if params.inverted %}
+    <span class="app-data__label">
+      {{ params.label }}
+    </span>
+  {% endif %}
+
+  <span class="app-data__value">
+    {{ params.value }}
+  </span>
+
+  {% if not params.inverted %}
+    <span class="app-data__label">
+      {{ params.label }}
+    </span>
+  {% endif %}
+</{{ element }}>
