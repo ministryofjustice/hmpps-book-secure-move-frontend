@@ -1,0 +1,39 @@
+params:
+- name: value
+  type: string
+  required: true
+  description: The value to display for this data item.
+- name: element
+  type: string
+  required: false
+  description: Optional element to use for component. Defaults to `div`.
+- name: inverted
+  type: boolean
+  required: false
+  description: Whether to display the label before the value. By default will show value, then label.
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the data component.
+
+examples:
+ - name: default
+   data:
+    label: emails sent
+    value: 25
+ - name: inverted
+   data:
+    inverted: true
+    label: Moving to
+    value: Rochester
+ - name: extra large variation
+   data:
+    classes: app-data--xl
+    label: emails sent
+    value: 25
+ - name: with heading as element
+   data:
+    element: h2
+    inverted: true
+    label: Moving to
+    value: Rochester
