@@ -7,8 +7,9 @@ const presenters = require('../../../common/presenters')
 
 module.exports = function list (req, res) {
   const { moveDate, movesByDate } = res.locals
-  const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
-  const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
+  const today = format(new Date(), 'YYYY-MM-DD')
+  const previousDay = format(subDays(moveDate, 1), 'YYYY-MM-DD')
+  const nextDay = format(addDays(moveDate, 1), 'YYYY-MM-DD')
   const canViewMove = permissions.check(
     'move:view',
     get(req.session, 'user.permissions')
@@ -18,11 +19,14 @@ module.exports = function list (req, res) {
     pageTitle: 'moves:dashboard.upcoming_moves',
     destinations: presenters.movesByToLocation(movesByDate),
     pagination: {
+      todayUrl: getQueryString(req.query, {
+        'move-date': today,
+      }),
       nextUrl: getQueryString(req.query, {
-        'move-date': tomorrow,
+        'move-date': nextDay,
       }),
       prevUrl: getQueryString(req.query, {
-        'move-date': yesterday,
+        'move-date': previousDay,
       }),
     },
   }

@@ -2,6 +2,7 @@
   "create_move": "Create a move",
   "previous_day": "Previous day",
   "next_day": "Next day",
+  "current_day": "Today",
   "back": "Back",
   "back_to_dashboard": "$t(actions:back) to dashboard",
   "back_to_move": "$t(actions:back) to move",

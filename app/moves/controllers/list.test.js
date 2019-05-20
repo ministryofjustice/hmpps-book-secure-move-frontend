@@ -11,6 +11,7 @@ describe('Moves controllers', function () {
     let req, res
 
     beforeEach(function () {
+      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
       req = { query: {} }
       res = {
@@ -20,6 +21,10 @@ describe('Moves controllers', function () {
         },
         render: sinon.spy(),
       }
+    })
+
+    afterEach(function () {
+      this.clock.restore()
     })
 
     describe('template params', function () {
@@ -34,6 +39,7 @@ describe('Moves controllers', function () {
       it('should contain pagination with correct links', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('pagination')
+        expect(params.pagination.todayUrl).to.equal('?move-date=2019-10-10')
         expect(params.pagination.nextUrl).to.equal('?move-date=2019-10-11')
         expect(params.pagination.prevUrl).to.equal('?move-date=2019-10-09')
       })

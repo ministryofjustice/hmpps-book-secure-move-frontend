@@ -28,7 +28,11 @@
           next: {
             href: pagination.nextUrl,
             text: t("actions:next_day")
-          }
+          },
+          items: [{
+            href: pagination.todayUrl,
+            text: t("actions:current_day")
+          }]
         }) }}
 
         {% block headerActions %}{% endblock %}
