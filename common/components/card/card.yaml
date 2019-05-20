@@ -1,0 +1,116 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element.
+- name: title
+  type: object
+  required: true
+  description: Options for the title.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the title. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the title. If `html` is provided, the `text` argument will be ignored.
+- name: caption
+  type: object
+  required: false
+  description: Options for the caption.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the caption. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the caption. If `html` is provided, the `text` argument will be ignored.
+- name: href
+  type: string
+  required: false
+  description: Link to use on title.
+- name: image_path
+  type: string
+  required: false
+  description: Optional image path for left hand image.
+- name: meta
+  type: object
+  required: false
+  description: Options for meta items.
+  params:
+  - name: items
+    type: array
+    required: true
+    description: Array of meta item objects.
+    params:
+    - name: label
+      type: string
+      required: true
+      description: Label to use for meta item.
+    - name: hideLabel
+      type: boolean
+      required: false
+      description: If true, label will be visually hidden.
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+- name: tags
+  type: object
+  required: false
+  description: Options for tag items.
+  params:
+  - name: items
+    type: array
+    required: true
+    description: Array of tag components. See `Tag` component for options.
+
+examples:
+  - name: default
+    data:
+      title:
+        text: Card title
+  - name: with image
+    data:
+      title:
+        text: Card with image
+      image_path: https://via.placeholder.com/80x105.png
+  - name: with caption
+    data:
+      title:
+        text: Card with caption
+      caption:
+        text: REF/12345
+  - name: with link
+    data:
+      title:
+        text: Card with link
+      href: http://google.com
+  - name: with meta items
+    data:
+      title:
+        text: Card with meta data
+      meta:
+        items:
+        - label: Date of birth
+          text: 10/10/1970
+        - label: HTML
+          html: <em>Foo</em>
+        - label: Escaped HTML
+          text: <em>Bar</em>
+  - name: with tags
+    data:
+      title:
+        text: Card with tags
+      tags:
+        items:
+        - text: Incomplete
+        - text: Delayed
