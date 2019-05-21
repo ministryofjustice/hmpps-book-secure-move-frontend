@@ -13,6 +13,7 @@ const configPaths = require('./config/paths')
 const nunjucks = require('./config/nunjucks')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
+const locals = require('./common/middleware/locals')
 
 // Global constants
 const app = express()
@@ -31,6 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
+
+// Locals
+app.use(locals)
 
 // Routing
 router.bind(app)
