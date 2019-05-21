@@ -5,7 +5,19 @@ $govuk-fonts-path: "../fonts/inter/";
 $govuk-font-family: "Inter", system-ui, sans-serif;
 
 // Import GOV.UK Frontend
-@import "govuk-frontend/all.scss";
+@import "govuk-frontend/settings/all";
+@import "govuk-frontend/tools/all";
+@import "govuk-frontend/helpers/all";
+
+@import "govuk-frontend/core/all";
+@import "govuk-frontend/objects/all";
+
+@import "govuk-frontend/components/header/header.scss";
+@import "govuk-frontend/components/footer/footer.scss";
+@import "govuk-frontend/components/skip-link/skip-link.scss";
+
+@import "govuk-frontend/utilities/all";
+@import "govuk-frontend/overrides/all";
 
 // Import app settings/tools/helpers
 @import "helpers/all";
