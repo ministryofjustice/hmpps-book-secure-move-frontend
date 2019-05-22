@@ -2,6 +2,8 @@ const path = require('path')
 const merge = require('webpack-merge')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const WebpackAssetsManifest = require('webpack-assets-manifest')
 
 const { IS_DEV, IS_PRODUCTION } = require('./config')
 const configPaths = require('./config/paths')
@@ -20,13 +22,6 @@ const commonConfig = {
   },
 
   mode: IS_DEV ? 'development' : 'production',
-
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'stylesheets/[name].css',
-      chunkFilename: '[id].css',
-    }),
-  ],
 
   module: {
     rules: [
@@ -94,7 +89,10 @@ const commonConfig = {
   },
 
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
+    minimizer: [
+      new UglifyJsPlugin(),
+      new OptimizeCSSAssetsPlugin({}),
+    ],
     splitChunks: {
       cacheGroups: {
         vendors: {
@@ -109,6 +107,10 @@ const commonConfig = {
       name: true,
     },
   },
+
+  plugins: [
+    new WebpackAssetsManifest(),
+  ],
 }
 
 const webpackEnvironment = IS_PRODUCTION ? 'production' : 'develop'

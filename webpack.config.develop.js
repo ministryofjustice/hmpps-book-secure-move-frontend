@@ -1,4 +1,5 @@
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const { PORT } = require('./config')
 
@@ -13,6 +14,11 @@ module.exports = {
         'app/**/*.njk',
         'common/**/*.njk',
       ],
+    }),
+
+    new MiniCssExtractPlugin({
+      filename: 'stylesheets/[name].css',
+      chunkFilename: '[id].css',
     }),
   ],
 }

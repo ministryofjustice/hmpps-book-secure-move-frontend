@@ -16,4 +16,5 @@ module.exports = {
     LONG: 'D MMM YYYY',
     WITH_DAY: 'dddd D MMM YYYY',
   },
+  ASSETS_HOST: process.env.ASSETS_HOST || '',
 }
