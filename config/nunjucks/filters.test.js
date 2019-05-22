@@ -93,4 +93,67 @@ describe('Nunjucks filters', () => {
       })
     })
   })
+
+  describe('#calculateAge()', () => {
+    context('when given an invalid date', () => {
+      it('should return input value', () => {
+        const age = filters.calculateAge('2010-45-5')
+        expect(age).to.equal('2010-45-5')
+      })
+
+      it('should return input value', () => {
+        const age = filters.calculateAge('not a date')
+        expect(age).to.equal('not a date')
+      })
+    })
+
+    context('when given a valid date', () => {
+      let dateOfBirth = '1979-01-10'
+
+      context('the day before a birthday', () => {
+        beforeEach(() => {
+          this.clock = sinon.useFakeTimers(new Date('2019-01-09').getTime())
+        })
+
+        afterEach(() => {
+          this.clock.restore()
+        })
+
+        it('should return the age in years', () => {
+          const age = filters.calculateAge(dateOfBirth)
+          expect(age).to.equal(39)
+        })
+      })
+
+      context('on a birthday', () => {
+        beforeEach(() => {
+          this.clock = sinon.useFakeTimers(new Date('2019-01-10').getTime())
+        })
+
+        afterEach(() => {
+          this.clock.restore()
+        })
+
+        it('should return the age in years', () => {
+          const age = filters.calculateAge(dateOfBirth)
+          expect(age).to.equal(40)
+        })
+      })
+
+      context('the day after a birthday', () => {
+        beforeEach(() => {
+          this.clock = sinon.useFakeTimers(new Date('2019-01-11').getTime())
+        })
+
+        afterEach(() => {
+          this.clock.restore()
+        })
+
+        it('should return the age in years', () => {
+          const age = filters.calculateAge(dateOfBirth)
+          expect(age).to.equal(40)
+        })
+      })
+    })
+  })
 })
