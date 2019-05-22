@@ -5,6 +5,7 @@ const {
 } = require('date-fns')
 
 const { getQueryString } = require('../../common/lib/request')
+const mappers = require('../../common/mappers')
 const api = require('../../common/lib/api-client')
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const params = {
         moveDate,
-        moves: moves.data,
+        moves: moves.data.map(mappers.moveToCardComponent),
         pageTitle: 'Upcoming moves',
         pagination: {
           nextUrl: getQueryString(req.query, {
