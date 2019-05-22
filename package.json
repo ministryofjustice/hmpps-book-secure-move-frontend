@@ -18,7 +18,7 @@
   "scripts": {
     "clean": "del .build/",
     "build": "npm run clean && webpack --config webpack.config.js",
-    "start": "node --use-strict start.js",
+    "start": "node start.js",
     "develop": "run-p watch:js:*",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
     "lint": "eslint ./",
