@@ -14,7 +14,7 @@ const errorStub = new Error('Problem')
 describe('Dashboard app', function () {
   describe('#getController()', function () {
     beforeEach(() => {
-      sinon.stub(presenters, 'moveToCardComponent').returnsArg(0)
+      sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
     })
 
     context('when query contains no move date', () => {
@@ -57,10 +57,10 @@ describe('Dashboard app', function () {
           expect(params.pagination.prevUrl).to.equal('?move-date=2017-08-09')
         })
 
-        it('should contain moves property', function () {
+        it('should contain destinations property', function () {
           const params = res.render.args[0][1]
-          expect(params).to.have.property('moves')
-          expect(params.moves).to.deep.equal(movesStub.data)
+          expect(params).to.have.property('destinations')
+          expect(params.destinations).to.deep.equal(movesStub.data)
         })
       })
     })
@@ -104,10 +104,10 @@ describe('Dashboard app', function () {
           expect(params.pagination.prevUrl).to.equal('?move-date=2018-05-09')
         })
 
-        it('should contain moves property', function () {
+        it('should contain destinations property', function () {
           const params = res.render.args[0][1]
-          expect(params).to.have.property('moves')
-          expect(params.moves).to.deep.equal(movesStub.data)
+          expect(params).to.have.property('destinations')
+          expect(params.destinations).to.deep.equal(movesStub.data)
         })
       })
     })

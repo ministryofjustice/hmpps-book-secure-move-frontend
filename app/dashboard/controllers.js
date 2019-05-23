@@ -12,13 +12,13 @@ module.exports = {
   get: async (req, res, next) => {
     try {
       const moveDate = req.query['move-date'] || format(new Date(), 'YYYY-MM-DD')
-      const moves = await api.getMovesByDate(moveDate)
+      const response = await api.getMovesByDate(moveDate)
       const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const params = {
         moveDate,
-        moves: moves.data.map(presenters.moveToCardComponent),
         pageTitle: 'Upcoming moves',
+        destinations: presenters.movesByToLocation(response.data),
         pagination: {
           nextUrl: getQueryString(req.query, {
             'move-date': tomorrow,
