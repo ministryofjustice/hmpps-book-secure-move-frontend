@@ -14,6 +14,8 @@ const nunjucks = require('./config/nunjucks')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 const locals = require('./common/middleware/locals')
+const session = require('./config/session')
+const grant = require('./config/grant')
 
 // Global constants
 const app = express()
@@ -27,6 +29,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(session)
+app.use(grant)
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

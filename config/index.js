@@ -17,4 +17,8 @@ module.exports = {
     WITH_DAY: 'dddd D MMM YYYY',
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  AUTH_PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
+  AUTH_PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
+  OKTA_SUBDOMAIN: process.env.OKTA_SUBDOMAIN,
 }
