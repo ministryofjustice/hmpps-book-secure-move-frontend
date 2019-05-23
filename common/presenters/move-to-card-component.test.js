@@ -3,7 +3,7 @@ const filters = require('../../config/nunjucks/filters')
 
 const { data } = require('../../test/fixtures/api-client/moves.get.deserialized.json')
 
-describe('Mappers', function () {
+describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
     beforeEach(function () {
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')

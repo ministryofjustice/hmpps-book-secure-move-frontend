@@ -1,4 +1,4 @@
-const mappers = require('../../common/mappers')
+const presenters = require('../../common/presenters')
 const apiClient = require('../../common/lib/api-client')
 
 const controllers = require('./controllers')
@@ -14,7 +14,7 @@ const errorStub = new Error('Problem')
 describe('Dashboard app', function () {
   describe('#getController()', function () {
     beforeEach(() => {
-      sinon.stub(mappers, 'moveToCardComponent').returnsArg(0)
+      sinon.stub(presenters, 'moveToCardComponent').returnsArg(0)
     })
 
     context('when query contains no move date', () => {
