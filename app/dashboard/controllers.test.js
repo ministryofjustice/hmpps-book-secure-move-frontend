@@ -28,9 +28,7 @@ describe('Dashboard app', function () {
         req = { query: {} }
         res = { render: sinon.spy() }
 
-        await controllers.get(req, res, (error) => {
-          console.log(error)
-        })
+        await controllers.get(req, res)
       })
 
       afterEach(() => {
