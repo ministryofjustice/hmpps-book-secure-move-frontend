@@ -1,5 +1,7 @@
-const controllers = require('./controllers')
+const mappers = require('../../common/mappers')
 const apiClient = require('../../common/lib/api-client')
+
+const controllers = require('./controllers')
 
 const movesStub = {
   data: [
@@ -11,6 +13,10 @@ const errorStub = new Error('Problem')
 
 describe('Dashboard app', function () {
   describe('#getController()', function () {
+    beforeEach(() => {
+      sinon.stub(mappers, 'moveToCardComponent').returnsArg(0)
+    })
+
     context('when query contains no move date', () => {
       const mockDate = '2017-08-10'
       let req, res
@@ -22,7 +28,9 @@ describe('Dashboard app', function () {
         req = { query: {} }
         res = { render: sinon.spy() }
 
-        await controllers.get(req, res)
+        await controllers.get(req, res, (error) => {
+          console.log(error)
+        })
       })
 
       afterEach(() => {

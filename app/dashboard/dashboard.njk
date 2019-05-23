@@ -29,12 +29,8 @@
   </div>
 </div>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
     {% for move in moves %}
-      <pre>{{ move | dump(1) }}</pre>
-      <hr>
+      {{ appCard(move) }}
     {% endfor %}
-  </div>
-</div>
+
 {% endblock %}

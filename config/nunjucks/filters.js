@@ -3,6 +3,7 @@ const {
   isToday,
   isTomorrow,
   isYesterday,
+  differenceInYears,
   parse: parseDate,
   isValid: isValidDate,
 } = require('date-fns')
@@ -70,8 +71,22 @@ function formatDateAsRelativeDay (value, formattedDateStr = DATE_FORMATS.WITH_DA
   return formatDate(value, formattedDateStr)
 }
 
+/**
+ * Returns an age based on a date
+ * @param  {Any} a any type
+ * @return {String} an age as a string
+ * @example {{ "2000-02-21" | calculateAge }}
+ */
+function calculateAge (value) {
+  const parsedDate = parseDate(value)
+
+  if (!isValidDate(parsedDate)) { return value }
+  return differenceInYears(new Date(), parsedDate)
+}
+
 module.exports = {
   formatDate,
   formatDateWithDay,
   formatDateAsRelativeDay,
+  calculateAge,
 }
