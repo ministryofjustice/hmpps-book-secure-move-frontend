@@ -105,6 +105,7 @@
     "webpack": "^4.30.0",
     "webpack-assets-manifest": "^3.1.1",
     "webpack-cli": "^3.3.0",
+    "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1"
   }
 }

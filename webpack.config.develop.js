@@ -5,6 +5,10 @@ const { PORT } = require('./config')
 
 module.exports = {
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'stylesheets/[name].css',
+      chunkFilename: '[id].css',
+    }),
     new BrowserSyncPlugin({
       proxy: `http://localhost:${PORT}`,
       port: '3001',
@@ -14,11 +18,6 @@ module.exports = {
         'app/**/*.njk',
         'common/**/*.njk',
       ],
-    }),
-
-    new MiniCssExtractPlugin({
-      filename: 'stylesheets/[name].css',
-      chunkFilename: '[id].css',
     }),
   ],
 }

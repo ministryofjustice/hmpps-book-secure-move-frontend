@@ -4,7 +4,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const { IS_DEV, IS_PRODUCTION } = require('./config')
 const configPaths = require('./config/paths')
@@ -111,12 +110,6 @@ const commonConfig = {
 
   plugins: [
     new WebpackAssetsManifest(),
-    new CopyWebpackPlugin([
-      {
-        from: configPaths.images,
-        to: 'images',
-      },
-    ]),
   ],
 }
 
