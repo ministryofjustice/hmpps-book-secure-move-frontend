@@ -20,6 +20,7 @@ module.exports = {
       exports: 'never',
       functions: 'ignore',
     }],
+    'curly': ['error', 'all'],
     'object-curly-spacing': ['error', 'always'],
     'dot-notation': 'error',
     'no-process-env': 'error',

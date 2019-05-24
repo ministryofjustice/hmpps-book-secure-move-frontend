@@ -1,11 +1,17 @@
 function ensureAuthenticated (req, res, next) {
-  if (!authExpired(req)) return next()
+  if (!authExpired(req)) {
+    return next()
+  }
+
   req.session.postAuthRedirect = req.originalUrl
   res.redirect('/connect/okta')
 }
 
 function authExpired (req) {
-  if (!authExpiry(req)) return true
+  if (!authExpiry(req)) {
+    return true
+  }
+
   return authExpiry(req) < Math.floor(new Date() / 1000)
 }
 
