@@ -5,6 +5,7 @@ function isAuthenticated (req, res, next) {
 }
 
 function authExpired (req) {
+  if (!authExpiry(req)) return true
   return authExpiry(req) < Math.floor(new Date() / 1000)
 }
 

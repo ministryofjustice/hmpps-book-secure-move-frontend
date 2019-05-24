@@ -14,17 +14,19 @@ const getUserInfo = function (accessToken) {
 module.exports = {
   get: async (req, res, next) => {
     try {
-      const { session } = req
+      if (typeof req.session.grant === 'undefined') return res.redirect('/')
 
-      if (typeof session.grant === 'undefined') return res.redirect('/')
+      const authResponse = req.session.grant.response
+      const userInfoResponse = await getUserInfo(authResponse.access_token)
+      const redirectUrl = req.session.postAuthRedirect
 
-      const authResponse = session.grant.response
-      const response = await getUserInfo(authResponse.access_token)
+      req.session.regenerate(function (err) {
+        if (err) throw err
+        req.session.authExpiry = authResponse.id_token.payload.exp
+        req.session.userInfo = userInfoResponse.body
 
-      session.authExpiry = authResponse.id_token.payload.exp
-      session.userInfo = response.body
-
-      res.redirect(session.postAuthRedirect)
+        res.redirect(redirectUrl)
+      })
     } catch (error) {
       next(error)
     }
