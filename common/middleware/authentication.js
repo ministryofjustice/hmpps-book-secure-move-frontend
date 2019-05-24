@@ -1,4 +1,4 @@
-function isAuthenticated (req, res, next) {
+function ensureAuthenticated (req, res, next) {
   if (!authExpired(req)) return next()
   req.session.postAuthRedirect = req.originalUrl
   res.redirect('/connect/okta')
@@ -14,7 +14,7 @@ function authExpiry (req) {
 }
 
 module.exports = {
-  isAuthenticated,
+  ensureAuthenticated,
   authExpired,
   authExpiry,
 }

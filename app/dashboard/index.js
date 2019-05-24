@@ -12,7 +12,7 @@ const paths = {
 }
 
 // Routing
-router.get(paths.index, auth.isAuthenticated, controllers.get)
+router.get(paths.index, auth.ensureAuthenticated, controllers.get)
 
 // Export
 module.exports = {
