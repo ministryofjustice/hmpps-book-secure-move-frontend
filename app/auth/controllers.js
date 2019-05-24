@@ -1,9 +1,9 @@
 const getUserInfo = function (accessToken) {
   const got = require('got')
-  const { OKTA_SUBDOMAIN } = require('../../config')
+  const { AUTH } = require('../../config')
 
   return got(
-    `https://${OKTA_SUBDOMAIN}.okta.com/oauth2/v1/userinfo`,
+    `https://${AUTH.OKTA_SUBDOMAIN}.okta.com/oauth2/v1/userinfo`,
     {
       headers: { 'Authorization': `Bearer ${accessToken}` },
       json: true,

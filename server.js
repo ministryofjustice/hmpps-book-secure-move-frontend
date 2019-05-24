@@ -14,8 +14,39 @@ const nunjucks = require('./config/nunjucks')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 const locals = require('./common/middleware/locals')
-const session = require('./config/session')
-const grant = require('./config/grant')
+
+// Session management
+const session = require('express-session')
+const sessionConfig = session({
+  name: 'pecs-id',
+  secret: config.SESSION.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: config.IS_PRODUCTION,
+    maxAge: 1800000, // 30 mins
+    httpOnly: true,
+  },
+})
+
+// User authentication
+const grant = require('grant-express')
+const grantConfig = grant({
+  defaults: {
+    protocol: 'http',
+    host: 'localhost:3000',
+    transport: 'session',
+    state: true,
+  },
+  okta: {
+    key: config.AUTH.PROVIDER_KEY,
+    secret: config.AUTH.PROVIDER_SECRET,
+    scope: ['openid', 'groups', 'profile'],
+    nonce: true,
+    subdomain: config.AUTH.OKTA_SUBDOMAIN,
+    callback: '/auth',
+  },
+})
 
 // Global constants
 const app = express()
@@ -29,8 +60,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
-app.use(session)
-app.use(grant)
+app.use(sessionConfig)
+app.use(grantConfig)
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))
