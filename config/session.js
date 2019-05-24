@@ -10,5 +10,6 @@ module.exports = session({
   cookie: {
     secure: IS_PRODUCTION,
     maxAge: 1800000, // 30 mins
+    httpOnly: true,
   },
 })
