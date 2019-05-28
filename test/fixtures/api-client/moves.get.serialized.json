@@ -263,8 +263,7 @@
           "id": "59c4b0fc-b5b6-4380-8311-d10af5b62186",
           "type": "locations",
           "attributes": {
-              "label": "HMP Brixton",
-              "description": null,
+              "description": "HMP Brixton",
               "location_type": "prison"
           }
       },
@@ -272,8 +271,7 @@
           "id": "c324d18f-da9d-4ef5-a5be-f986e922ea17",
           "type": "locations",
           "attributes": {
-              "label": "Barrow in Furness Magistrates Court",
-              "description": null,
+              "description": "Barrow in Furness Magistrates Court",
               "location_type": "court"
           }
       },
@@ -290,8 +288,7 @@
           "id": "58abf903-8d6c-4c88-bc75-80771aa6274c",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Sudbury",
-              "description": null,
+              "description": "HMP/YOI Sudbury",
               "location_type": "prison"
           }
       },
@@ -308,8 +305,7 @@
           "id": "55904578-f07c-45ab-8912-7d3a70c811ad",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Standford Hill",
-              "description": null,
+              "description": "HMP/YOI Standford Hill",
               "location_type": "prison"
           }
       },
@@ -317,8 +313,7 @@
           "id": "ae87a610-825c-4ab9-b397-a6a34fa740ee",
           "type": "locations",
           "attributes": {
-              "label": "Wimbledon Crown Court",
-              "description": null,
+              "description": "Wimbledon Crown Court",
               "location_type": "court"
           }
       },
@@ -326,8 +321,7 @@
           "id": "3af3af14-bdb1-40a3-bfe7-b6e0a0d72f1f",
           "type": "locations",
           "attributes": {
-              "label": "HMP Bullwood Hall",
-              "description": null,
+              "description": "HMP Bullwood Hall",
               "location_type": "prison"
           }
       },
@@ -335,8 +329,7 @@
           "id": "23897b10-42a7-4435-b1c6-30e47da72d37",
           "type": "locations",
           "attributes": {
-              "label": "HMP Frankland",
-              "description": null,
+              "description": "HMP Frankland",
               "location_type": "prison"
           }
       },
@@ -344,8 +337,7 @@
           "id": "cb4039e7-eb22-4029-aa03-72042d2e9de8",
           "type": "locations",
           "attributes": {
-              "label": "HMP Dorchester",
-              "description": null,
+              "description": "HMP Dorchester",
               "location_type": "prison"
           }
       },
@@ -353,8 +345,7 @@
           "id": "c45a7e1c-395b-4f0e-86e3-d81b7560bc38",
           "type": "locations",
           "attributes": {
-              "label": "HMP Northallerton",
-              "description": null,
+              "description": "HMP Northallerton",
               "location_type": "prison"
           }
       },
@@ -362,8 +353,7 @@
           "id": "1770c6dd-4a03-4c94-8ba4-ca1ffd73bfaf",
           "type": "locations",
           "attributes": {
-              "label": "HMYOI Wetherby",
-              "description": null,
+              "description": "HMYOI Wetherby",
               "location_type": "prison"
           }
       },
@@ -380,8 +370,7 @@
           "id": "25001e48-b2c4-4998-b652-39171aa9b793",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Wandsworth",
-              "description": null,
+              "description": "HMP/YOI Wandsworth",
               "location_type": "prison"
           }
       },
@@ -389,8 +378,7 @@
           "id": "d9c5271d-d958-4ba8-9994-9bbb603cb9c5",
           "type": "locations",
           "attributes": {
-              "label": "HMP Stocken",
-              "description": null,
+              "description": "HMP Stocken",
               "location_type": "prison"
           }
       },
@@ -398,8 +386,7 @@
           "id": "850da449-1f84-4a60-b9bb-d7ce02c4d670",
           "type": "locations",
           "attributes": {
-              "label": "HMP Risley",
-              "description": null,
+              "description": "HMP Risley",
               "location_type": "prison"
           }
       },
@@ -416,8 +403,7 @@
           "id": "85bd5ae5-5f56-456b-bf88-400c5978cdce",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Forest Bank",
-              "description": null,
+              "description": "HMP/YOI Forest Bank",
               "location_type": "prison"
           }
       },
@@ -434,8 +420,7 @@
           "id": "c73dd1e3-7377-463c-82bc-87497d1592a0",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI East Sutton Park",
-              "description": null,
+              "description": "HMP/YOI East Sutton Park",
               "location_type": "prison"
           }
       },
@@ -443,8 +428,7 @@
           "id": "a9b24a43-ffc2-4321-8bc7-8c6309bc5da2",
           "type": "locations",
           "attributes": {
-              "label": "Derby County Court",
-              "description": null,
+              "description": "Derby County Court",
               "location_type": "court"
           }
       },
@@ -461,8 +445,7 @@
           "id": "964a50bd-b84a-48d3-976b-08b36168cd63",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Bullingdon",
-              "description": null,
+              "description": "HMP/YOI Bullingdon",
               "location_type": "prison"
           }
       },
@@ -470,8 +453,7 @@
           "id": "c94748ff-5188-4315-9016-04c1b793dfec",
           "type": "locations",
           "attributes": {
-              "label": "HMP/YOI Kirklevington Grange",
-              "description": null,
+              "description": "HMP/YOI Kirklevington Grange",
               "location_type": "prison"
           }
       },
@@ -479,8 +461,7 @@
           "id": "53876742-9bc8-457d-adbc-50d734f6b69f",
           "type": "locations",
           "attributes": {
-              "label": "HMP Full Sutton",
-              "description": null,
+              "description": "HMP Full Sutton",
               "location_type": "prison"
           }
       },
@@ -488,8 +469,7 @@
           "id": "c3238a01-4ead-41c3-97d6-f60de57ad981",
           "type": "locations",
           "attributes": {
-              "label": "HMYOI Feltham",
-              "description": null,
+              "description": "HMYOI Feltham",
               "location_type": "prison"
           }
       },
@@ -497,8 +477,7 @@
           "id": "b190e025-0072-43b2-9597-ed9346af8eca",
           "type": "locations",
           "attributes": {
-              "label": "Bedford Magistrates Court",
-              "description": null,
+              "description": "Bedford Magistrates Court",
               "location_type": "court"
           }
       },
@@ -515,8 +494,7 @@
           "id": "d5b5f97e-ed33-45e0-92cb-15f2d3634018",
           "type": "locations",
           "attributes": {
-              "label": "HMP Ashfield",
-              "description": null,
+              "description": "HMP Ashfield",
               "location_type": "prison"
           }
       },
@@ -524,8 +502,7 @@
           "id": "79c48207-fd1a-4b3f-9cde-f2f98706367a",
           "type": "locations",
           "attributes": {
-              "label": "Barnstaple Magistrates Court",
-              "description": null,
+              "description": "Barnstaple Magistrates Court",
               "location_type": "court"
           }
       }

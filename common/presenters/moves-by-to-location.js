@@ -13,5 +13,5 @@ module.exports = function movesByToLocation (data) {
     })
   })
 
-  return sortBy(locations, 'location.label')
+  return sortBy(locations, 'location.description')
 }
