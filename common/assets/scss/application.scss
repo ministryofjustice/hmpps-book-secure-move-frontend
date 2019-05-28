@@ -24,3 +24,6 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 
 // Import app level components and styles
 @import "components/all";
+
+// Import app utilities and overrides
+@import "utilities/all";

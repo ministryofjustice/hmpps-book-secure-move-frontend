@@ -1,0 +1,57 @@
+////
+/// @group utilities
+////
+
+/// Directions for border
+///
+/// @type Map
+/// @access private
+
+$_border-directions: (
+  "top",
+  "right",
+  "bottom",
+  "left"
+) !default;
+
+/// Widths for border
+///
+/// @type Map
+/// @access private
+$_border-widths: (
+  "1",
+  "2",
+  "5",
+  "10"
+) !default;
+
+/// Border utility classes
+///
+/// Generate border classes
+///
+/// @example scss
+///   .app-border-top-1 {
+///      border-top: [default border...]
+///   }
+///
+///  .app-border-top-5 {
+///     border-top: 5px solid [default border colour...]
+///   }
+///
+/// @access private
+
+@mixin _app-generate-border-classes() {
+  @each $direction in $_border-directions {
+    @each $width in $_border-widths {
+      .app-border-#{$direction}-#{$width} {
+        border-#{$direction}: #{$width}px solid $govuk-border-colour;
+      }
+    }
+  }
+
+  .app-border--black {
+    border-color: govuk-colour("black");
+  }
+}
+
+@include _app-generate-border-classes;
