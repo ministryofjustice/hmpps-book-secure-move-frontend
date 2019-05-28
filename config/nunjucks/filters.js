@@ -84,9 +84,41 @@ function calculateAge (value) {
   return differenceInYears(new Date(), parsedDate)
 }
 
+/**
+ * Formats a time
+ *
+ * @param  {Any} a datetime
+ * @return {String} a formatted time as string
+ * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
+ */
+function formatTime (value) {
+  const parsedDate = parseDate(value)
+
+  if (!isValidDate(parsedDate)) {
+    return value
+  }
+
+  const hours = format(parsedDate, 'h')
+  const parsedMins = format(parsedDate, 'mm')
+  const minutes = parsedMins !== '00' ? `:${parsedMins}` : ''
+  const suffix = format(parsedDate, 'a')
+  const timeStr = `${hours}${minutes}${suffix}`
+
+  if (timeStr === '12am') {
+    return 'Midnight'
+  }
+
+  if (timeStr === '12pm') {
+    return 'Midday'
+  }
+
+  return `${hours}${minutes}${suffix}`
+}
+
 module.exports = {
   formatDate,
   formatDateWithDay,
   formatDateAsRelativeDay,
   calculateAge,
+  formatTime,
 }
