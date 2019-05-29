@@ -1,7 +1,7 @@
 const controllers = require('./controllers')
 
-describe('Authentication app', function () {
-  describe('#get action', function () {
+describe('Authentication app', () => {
+  describe('#get()', () => {
     let req, res, url
 
     beforeEach(async () => {
@@ -19,8 +19,12 @@ describe('Authentication app', function () {
       await controllers.get(req, res)
     })
 
-    it('redirects to the intended URL', function () {
-      expect(res.redirect.calledWith(url)).to.be.true
+    it('redirects to the intended URL', () => {
+      expect(res.redirect).to.be.calledWith(url)
+    })
+
+    it('unsets session.postAuthRedirect', () => {
+      expect(req.session.postAuthRedirect).to.eq(null)
     })
   })
 })

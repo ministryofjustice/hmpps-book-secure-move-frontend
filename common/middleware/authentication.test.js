@@ -3,7 +3,7 @@ const nock = require('nock')
 const { AUTH } = require('../../config')
 
 describe('Authentication middleware', () => {
-  describe('#ensureAuthenticated', () => {
+  describe('#ensureAuthenticated()', () => {
     let req, res, nextSpy
 
     beforeEach(() => {
@@ -25,7 +25,7 @@ describe('Authentication middleware', () => {
       })
 
       it('redirects to the Okta authentication URL', () => {
-        expect(res.redirect.calledWith('/connect/okta')).to.be.true
+        expect(res.redirect).to.be.calledWith('/connect/okta')
       })
 
       it('sets the redirect URL in the session', () => {
@@ -40,7 +40,7 @@ describe('Authentication middleware', () => {
       })
 
       it('redirects to the Okta authentication URL', () => {
-        expect(res.redirect.calledWith('/connect/okta')).to.be.true
+        expect(res.redirect).to.be.calledWith('/connect/okta')
       })
 
       it('sets the redirect URL in the session', () => {
@@ -80,7 +80,7 @@ describe('Authentication middleware', () => {
     context('when there is no grant response', () => {
       it('redirects to root', () => {
         authentication.processAuthResponse(req, res, nextSpy)
-        expect(res.redirect.calledWith('/')).to.be.true
+        expect(res.redirect).to.be.calledWith('/')
       })
     })
 
