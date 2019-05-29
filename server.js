@@ -44,7 +44,7 @@ app.use(session({
 app.use(grant({
   defaults: {
     protocol: 'http',
-    host: 'localhost:3000',
+    host: config.SERVER_HOST,
     transport: 'session',
     state: true,
   },
