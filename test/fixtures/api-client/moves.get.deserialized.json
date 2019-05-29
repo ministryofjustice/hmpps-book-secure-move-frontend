@@ -17,15 +17,13 @@
       "from_location": {
         "id": "59c4b0fc-b5b6-4380-8311-d10af5b62186",
         "type": "locations",
-        "label": "HMP Brixton",
-        "description": null,
+        "description": "HMP Brixton",
         "location_type": "prison"
       },
       "to_location": {
         "id": "c324d18f-da9d-4ef5-a5be-f986e922ea17",
         "type": "locations",
-        "label": "Barrow in Furness Magistrates Court",
-        "description": null,
+        "description": "Barrow in Furness Magistrates Court",
         "location_type": "court"
       }
     },
@@ -46,15 +44,13 @@
       "from_location": {
         "id": "d9c5271d-d958-4ba8-9994-9bbb603cb9c5",
         "type": "locations",
-        "label": "HMP Stocken",
-        "description": null,
+        "description": "HMP Stocken",
         "location_type": "prison"
       },
       "to_location": {
         "id": "b190e025-0072-43b2-9597-ed9346af8eca",
         "type": "locations",
-        "label": "Bedford Magistrates Court",
-        "description": null,
+        "description": "Bedford Magistrates Court",
         "location_type": "court"
       }
     },
@@ -75,15 +71,13 @@
       "from_location": {
         "id": "58abf903-8d6c-4c88-bc75-80771aa6274c",
         "type": "locations",
-        "label": "HMP/YOI Sudbury",
-        "description": null,
+        "description": "HMP/YOI Sudbury",
         "location_type": "prison"
       },
       "to_location": {
         "id": "c324d18f-da9d-4ef5-a5be-f986e922ea17",
         "type": "locations",
-        "label": "Barrow in Furness Magistrates Court",
-        "description": null,
+        "description": "Barrow in Furness Magistrates Court",
         "location_type": "court"
       }
     },
@@ -104,15 +98,13 @@
       "from_location": {
         "id": "55904578-f07c-45ab-8912-7d3a70c811ad",
         "type": "locations",
-        "label": "HMP/YOI Standford Hill",
-        "description": null,
+        "description": "HMP/YOI Standford Hill",
         "location_type": "prison"
       },
       "to_location": {
         "id": "ae87a610-825c-4ab9-b397-a6a34fa740ee",
         "type": "locations",
-        "label": "Wimbledon Crown Court",
-        "description": null,
+        "description": "Wimbledon Crown Court",
         "location_type": "court"
       }
     },
@@ -133,15 +125,13 @@
       "from_location": {
         "id": "25001e48-b2c4-4998-b652-39171aa9b793",
         "type": "locations",
-        "label": "HMP/YOI Wandsworth",
-        "description": null,
+        "description": "HMP/YOI Wandsworth",
         "location_type": "prison"
       },
       "to_location": {
         "id": "ae87a610-825c-4ab9-b397-a6a34fa740ee",
         "type": "locations",
-        "label": "Wimbledon Crown Court",
-        "description": null,
+        "description": "Wimbledon Crown Court",
         "location_type": "court"
       }
     },
@@ -162,15 +152,13 @@
       "from_location": {
         "id": "85bd5ae5-5f56-456b-bf88-400c5978cdce",
         "type": "locations",
-        "label": "HMP/YOI Forest Bank",
-        "description": null,
+        "description": "HMP/YOI Forest Bank",
         "location_type": "prison"
       },
       "to_location": {
         "id": "ae87a610-825c-4ab9-b397-a6a34fa740ee",
         "type": "locations",
-        "label": "Wimbledon Crown Court",
-        "description": null,
+        "description": "Wimbledon Crown Court",
         "location_type": "court"
       }
     },
@@ -191,15 +179,13 @@
       "from_location": {
         "id": "c73dd1e3-7377-463c-82bc-87497d1592a0",
         "type": "locations",
-        "label": "HMP/YOI East Sutton Park",
-        "description": null,
+        "description": "HMP/YOI East Sutton Park",
         "location_type": "prison"
       },
       "to_location": {
         "id": "a9b24a43-ffc2-4321-8bc7-8c6309bc5da2",
         "type": "locations",
-        "label": "Derby County Court",
-        "description": null,
+        "description": "Derby County Court",
         "location_type": "court"
       }
     },
@@ -220,15 +206,13 @@
       "from_location": {
         "id": "d5b5f97e-ed33-45e0-92cb-15f2d3634018",
         "type": "locations",
-        "label": "HMP Ashfield",
-        "description": null,
+        "description": "HMP Ashfield",
         "location_type": "prison"
       },
       "to_location": {
         "id": "79c48207-fd1a-4b3f-9cde-f2f98706367a",
         "type": "locations",
-        "label": "Barnstaple Magistrates Court",
-        "description": null,
+        "description": "Barnstaple Magistrates Court",
         "location_type": "court"
       }
     }
