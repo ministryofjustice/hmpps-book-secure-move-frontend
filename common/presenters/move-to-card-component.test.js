@@ -3,7 +3,7 @@ const filters = require('../../config/nunjucks/filters')
 
 const { data } = require('../../test/fixtures/api-client/moves.get.deserialized.json')
 
-describe('Mappers', function () {
+describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
     beforeEach(function () {
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
@@ -20,20 +20,21 @@ describe('Mappers', function () {
       describe('response', function () {
         it('should contain a href', function () {
           expect(transformedResponse).to.have.property('href')
-          expect(transformedResponse.href).to.equal('/moves/2d59052c-86b3-4e50-89f8-28c39c09c106')
+          expect(transformedResponse.href).to.equal(`/moves/${data[0].id}`)
         })
 
         it('should contain a title', function () {
+          const person = data[0].person
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
-            text: 'HOWE, EDGARDO',
+            text: `${person.last_name.toUpperCase()}, ${person.first_names.toUpperCase()}`,
           })
         })
 
         it('should contain a caption', function () {
           expect(transformedResponse).to.have.property('caption')
           expect(transformedResponse.caption).to.deep.equal({
-            text: '2d59052c-86b3-4e50-89f8-28c39c09c106',
+            text: data[0].id,
           })
         })
 

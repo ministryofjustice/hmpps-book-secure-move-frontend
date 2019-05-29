@@ -5,32 +5,50 @@
 {% endblock %}
 
 {% block content %}
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <span class="govuk-caption-xl">{{ pageTitle }} for</span>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-xl">{{ pageTitle }} for</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-      {{ appTime({
-        datetime: moveDate,
-        text: moveDate | formatDateAsRelativeDay
+        {{ appTime({
+          datetime: moveDate,
+          text: moveDate | formatDateAsRelativeDay
+        }) }}
+      </h1>
+
+      {{ appPagination({
+        classes: "app-pagination--inline",
+        previous: {
+          href: pagination.prevUrl,
+          text: "Previous day"
+        },
+        next: {
+          href: pagination.nextUrl,
+          text: "Next day"
+        }
       }) }}
-    </h1>
-
-    {{ appPagination({
-      classes: "app-pagination--inline",
-      previous: {
-        href: pagination.prevUrl,
-        text: "Previous day"
-      },
-      next: {
-        href: pagination.nextUrl,
-        text: "Next day"
-      }
-    }) }}
+    </div>
   </div>
-</div>
 
-    {% for move in moves %}
-      {{ appCard(move) }}
-    {% endfor %}
+  {% for destination in destinations %}
+    <div class="
+      govuk-!-margin-top-7
+      app-border-top-2
+      app-border--black
+      ">
+      <div class="govuk-!-padding-top-2 govuk-!-padding-bottom-2">
+        {{ appData({
+          inverted: true,
+          classes: "app-data--s",
+          label: "Move to",
+          value: destination.location.description
+        }) }}
+      </div>
+
+      {% for move in destination.items %}
+        {{ appCard(move) }}
+      {% endfor %}
+    </div>
+  {% endfor %}
 
 {% endblock %}
