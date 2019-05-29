@@ -8,25 +8,29 @@ function ensureAuthenticated (req, res, next) {
 }
 
 async function processAuthResponse (req, res, next) {
-  if (typeof req.session.grant === 'undefined') {
-    return res.redirect('/')
-  }
-
-  const authResponse = req.session.grant.response
-  const userInfoResponse = await getUserInfo(authResponse.access_token)
-  const redirectUrl = req.session.postAuthRedirect
-
-  req.session.regenerate(function (err) {
-    if (err) {
-      return next(err)
+  try {
+    if (typeof req.session.grant === 'undefined') {
+      return res.redirect('/')
     }
 
-    req.session.authExpiry = authResponse.id_token.payload.exp
-    req.session.userInfo = userInfoResponse.body
-    req.session.postAuthRedirect = redirectUrl
+    const authResponse = req.session.grant.response
+    const userInfoResponse = await getUserInfo(authResponse.access_token)
+    const redirectUrl = req.session.postAuthRedirect
 
-    return next()
-  })
+    req.session.regenerate((error) => {
+      if (error) {
+        throw error
+      }
+
+      req.session.authExpiry = authResponse.id_token.payload.exp
+      req.session.userInfo = userInfoResponse.body
+      req.session.postAuthRedirect = redirectUrl
+
+      return next()
+    })
+  } catch (error) {
+    next(error)
+  }
 }
 
 function authExpired (req) {
@@ -57,6 +61,4 @@ function getUserInfo (accessToken) {
 module.exports = {
   ensureAuthenticated,
   processAuthResponse,
-  authExpired,
-  authExpiry,
 }

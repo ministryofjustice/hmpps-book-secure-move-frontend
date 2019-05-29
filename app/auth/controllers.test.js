@@ -12,7 +12,9 @@ describe('Authentication app', function () {
           postAuthRedirect: url,
         },
       }
-      res = { redirect: sinon.spy() }
+      res = {
+        redirect: sinon.spy(),
+      }
 
       await controllers.get(req, res)
     })
