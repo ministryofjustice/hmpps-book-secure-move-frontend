@@ -1,16 +1,16 @@
 const controllers = require('./controllers')
 
-describe.only('Authentication app', function () {
+describe('Authentication app', function () {
   describe('#get action', function () {
     let req, res, url
 
     beforeEach(async () => {
-      url = "/test"
+      url = '/test'
       req = {
         query: {},
         session: {
-          postAuthRedirect: url
-        }
+          postAuthRedirect: url,
+        },
       }
       res = { redirect: sinon.spy() }
 

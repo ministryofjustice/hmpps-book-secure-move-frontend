@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const express = require('express')
 const morgan = require('morgan')
+const session = require('express-session')
+const grant = require('grant-express')
 
 // Local dependencies
 const config = require('./config')
@@ -15,9 +17,19 @@ const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 const locals = require('./common/middleware/locals')
 
-// Session management
-const session = require('express-session')
-const sessionConfig = session({
+// Global constants
+const app = express()
+
+// view engine setup
+app.set('view engine', 'njk')
+nunjucks(app, config, configPaths)
+
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(session({
   name: 'pecs-id',
   secret: config.SESSION.SECRET,
   resave: false,
@@ -27,11 +39,9 @@ const sessionConfig = session({
     maxAge: 1800000, // 30 mins
     httpOnly: true,
   },
-})
+}))
 
-// User authentication
-const grant = require('grant-express')
-const grantConfig = grant({
+app.use(grant({
   defaults: {
     protocol: 'http',
     host: 'localhost:3000',
@@ -46,22 +56,7 @@ const grantConfig = grant({
     subdomain: config.AUTH.OKTA_SUBDOMAIN,
     callback: '/auth',
   },
-})
-
-// Global constants
-const app = express()
-
-// view engine setup
-app.set('view engine', 'njk')
-nunjucks(app, config, configPaths)
-
-app.use(morgan('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
-app.use(sessionConfig)
-app.use(grantConfig)
+}))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

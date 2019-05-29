@@ -54,8 +54,6 @@ function getUserInfo (accessToken) {
   )
 }
 
-
-
 module.exports = {
   ensureAuthenticated,
   processAuthResponse,
