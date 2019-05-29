@@ -11,12 +11,6 @@
 
   <div class="app-card__content">
     <header class="app-card__header">
-      {% if params.caption.html or params.caption.text %}
-        <span class="app-card__caption">
-          {{ params.caption.html | safe if params.caption.html else params.caption.text }}
-        </span>
-      {% endif %}
-
       <h2 class="app-card__title">
         {% if params.href %}
           <a href="{{ params.href }}"  class="app-card__link">
@@ -26,6 +20,12 @@
           </a>
         {% endif %}
       </h2>
+
+      {% if params.caption.html or params.caption.text %}
+        <span class="app-card__caption">
+          {{ params.caption.html | safe if params.caption.html else params.caption.text }}
+        </span>
+      {% endif %}
     </header>
 
     {% if params.meta.items.length %}

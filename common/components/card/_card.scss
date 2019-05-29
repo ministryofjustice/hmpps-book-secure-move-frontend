@@ -2,14 +2,9 @@
   @include govuk-clearfix;
   display: flex;
   align-items: flex-start;
-  border-bottom: 1px solid $govuk-border-colour;
   border-top: 1px solid $govuk-border-colour;
   padding-top: govuk-spacing(3);
   padding-bottom: govuk-spacing(3);
-
-  & + & {
-    border-top: 0;
-  }
 }
 
 .app-card__aside {
@@ -21,17 +16,21 @@
 }
 
 .app-card__caption {
-  @include govuk-font($size: 19, $weight: bold);
+  @include govuk-clearfix;
+}
 
-  @include mq ($from: desktop) {
-    margin-right: govuk-spacing(2);
-    float: left;
-  }
+.app-card__caption {
+  @include govuk-font($size: 19);
 }
 
 .app-card__title {
   @include govuk-font($size: 19, $weight: bold);
   margin: 0;
+
+  @include mq ($from: desktop) {
+    margin-right: govuk-spacing(2);
+    float: left;
+  }
 }
 
 .app-card__content {
