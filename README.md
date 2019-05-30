@@ -39,7 +39,11 @@ Set the environment variables accordingly.
 
 You will need to provide Okta account credentials. For development purposes, you can sign up for a free account at https://developer.okta.com/
 
-Once signed up, create a new application and select the 'Authorization Code' grant type. Set your login redirect URL to http://localhost:3000 and the initiale login URL to http://localhost:3000/connect/okta (or different if so configured). Copy and paste the Client ID and secret into the corresponding environment variables in `.env`.
+Once signed up, create a new application and select the 'Authorization Code' grant type.
+
+In the Okta application Sign On settings, set your login redirect URL to `http://localhost:3000/connect/okta/callback` and the initiate login URL to `http://localhost:3000/connect/okta` (or different if so configured).
+
+Copy and paste the Client ID and secret into the corresponding environment variables in `.env`. Copy your Okta subdomain from the Org URL, found in the top right of the dashboard. For example, `dev-299999`, to the `OKTA_SUBDOMAIN` environment variable in `.env`.
 
 In future iterations there will be statically-named groups and association users required to be configured in Okta.
 
