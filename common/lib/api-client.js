@@ -98,4 +98,8 @@ jsonApi.getMovesByDate = (moveDate) => {
   })
 }
 
+jsonApi.getMoveById = (id) => {
+  return jsonApi.find('move', id)
+}
+
 module.exports = jsonApi
