@@ -1,22 +1,22 @@
 // NPM dependencies
-const express = require('express')
+const router = require('express').Router()
 
 // Local dependencies
 const { get } = require('./controllers')
 const { setMove } = require('./middleware')
+const { ensureAuthenticated } = require('../../common/middleware/authentication')
 
-// Initialisation
-const router = new express.Router()
-const paths = {
-  index: '/moves/:moveId',
-}
-
-// Routing
+// Define param middleware
 router.param('moveId', setMove)
-router.get(paths.index, get)
+
+// Load router middleware
+router.use(ensureAuthenticated)
+
+// Define routes
+router.get('/:moveId', get)
 
 // Export
 module.exports = {
   router,
-  paths,
+  mountpath: '/moves',
 }
