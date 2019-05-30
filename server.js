@@ -8,6 +8,7 @@ const express = require('express')
 const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
+const RedisStore = require('connect-redis')(session)
 
 // Local dependencies
 const config = require('./config')
@@ -30,6 +31,11 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(session({
+  store: new RedisStore({
+    host: config.REDIS.HOST,
+    port: config.REDIS.PORT,
+    db: config.SESSION.REDIS_STORE_DATABASE,
+  }),
   name: 'pecs-id',
   secret: config.SESSION.SECRET,
   resave: false,

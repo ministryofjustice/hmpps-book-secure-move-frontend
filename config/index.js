@@ -20,6 +20,11 @@ module.exports = {
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   SESSION: {
     SECRET: process.env.SESSION_SECRET,
+    REDIS_STORE_DATABASE: process.env.REDIS_SESSION_DB,
+  },
+  REDIS: {
+    HOST: process.env.REDIS_HOST,
+    PORT: process.env.REDIS_PORT,
   },
   AUTH: {
     PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
