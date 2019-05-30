@@ -29,7 +29,7 @@ describe('Authentication middleware', () => {
       })
 
       it('sets the redirect URL in the session', () => {
-        expect(req.session.postAuthRedirect).to.eq('/test')
+        expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
 
@@ -44,7 +44,7 @@ describe('Authentication middleware', () => {
       })
 
       it('sets the redirect URL in the session', () => {
-        expect(req.session.postAuthRedirect).to.eq('/test')
+        expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
 
@@ -123,19 +123,19 @@ describe('Authentication middleware', () => {
       })
 
       it('regenerates the session', async () => {
-        expect(req.session.id).to.eq('456')
+        expect(req.session.id).to.equal('456')
       })
 
       it('sets the auth expiry time on the session', () => {
-        expect(req.session.authExpiry).to.eq(expiryTime)
+        expect(req.session.authExpiry).to.equal(expiryTime)
       })
 
       it('sets the user info on the session', () => {
-        expect(req.session.userInfo.test).to.eq(userInfo.test)
+        expect(req.session.userInfo.test).to.equal(userInfo.test)
       })
 
       it('sets the redirect URL in the session', () => {
-        expect(req.session.postAuthRedirect).to.eq('/test')
+        expect(req.session.postAuthRedirect).to.equal('/test')
       })
 
       it('calls the next action', () => {

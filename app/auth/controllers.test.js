@@ -24,7 +24,7 @@ describe('Authentication app', () => {
     })
 
     it('unsets session.postAuthRedirect', () => {
-      expect(req.session.postAuthRedirect).to.eq(null)
+      expect(req.session.postAuthRedirect).to.equal(null)
     })
   })
 })
