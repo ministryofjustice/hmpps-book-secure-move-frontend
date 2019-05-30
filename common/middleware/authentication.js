@@ -1,5 +1,5 @@
 function ensureAuthenticated (req, res, next) {
-  if (!authExpired(req)) {
+  if (!isAuthExpired(req)) {
     return next()
   }
 
@@ -33,16 +33,12 @@ async function processAuthResponse (req, res, next) {
   }
 }
 
-function authExpired (req) {
-  if (!authExpiry(req)) {
+function isAuthExpired (req) {
+  if (!req.session.authExpiry) {
     return true
   }
 
-  return authExpiry(req) < Math.floor(new Date() / 1000)
-}
-
-function authExpiry (req) {
-  return req.session.authExpiry
+  return req.session.authExpiry < Math.floor(new Date() / 1000)
 }
 
 function getUserInfo (accessToken) {
