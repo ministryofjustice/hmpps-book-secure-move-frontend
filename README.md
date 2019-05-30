@@ -21,17 +21,34 @@ This is the rendering application for the PECS service.
    npm install
    ```
 
-1. Create a copy of the example environment variable file and add values for the keys:
-
-   ```
-   cp .env.example .env
-   ```
-
 1. Build the assets
 
     ```
     npm run build
     ```
+
+## Configuring the application
+
+Create a copy of the example environment variable file and add values for the keys:
+
+   ```
+   cp .env.example .env
+   ```
+
+Set the environment variables accordingly.
+
+You will need to provide Okta account credentials. For development purposes, you can sign up for a free account at https://developer.okta.com/
+
+Once signed up, create a new application and select the 'Authorization Code' grant type.
+
+In the Okta application Sign On settings, set your login redirect URL to `http://localhost:3000/connect/okta/callback` and the initiate login URL to `http://localhost:3000/connect/okta` (or different if so configured).
+
+Copy and paste the Client ID and secret into the corresponding environment variables in `.env`. Copy your Okta subdomain from the Org URL, found in the top right of the dashboard. For example, `dev-299999`, to the `OKTA_SUBDOMAIN` environment variable in `.env`.
+
+In future iterations there will be statically-named groups and association users required to be configured in Okta.
+
+It is anticipated that HMPPS SSO will be the auth provider in future iterations.
+
 
 ## Running the application
 
@@ -92,6 +109,11 @@ npm run lint
 | Name | Description |
 |:-----|:------------|
 | API_BASE_URL | The base url for the backend API server for this service |
+| SERVER_HOST | The (accessible) hostname (and port) of the listening web server, e.g. `localhost:3000`. Used by Grant to construct re-direct URLs after OAuth authentication |
+| SESSION_SECRET | A complex string unique to the environment, used to encrypt cookies |
+| AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication |
+| AUTH_PROVIDER_SECRET | The client secret provided by the OAuth2 provider for user authentication |
+| OKTA_SUBDOMAIN | The Okta subdomain provided to you (while Okta is the OAuth2 provider). Should be unique to the environment |
 
 ## Components
 

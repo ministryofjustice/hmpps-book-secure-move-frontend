@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const express = require('express')
 const morgan = require('morgan')
+const session = require('express-session')
+const grant = require('grant-express')
 
 // Local dependencies
 const config = require('./config')
@@ -27,6 +29,34 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(session({
+  name: 'pecs-id',
+  secret: config.SESSION.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: config.IS_PRODUCTION,
+    maxAge: 1800000, // 30 mins
+    httpOnly: true,
+  },
+}))
+
+app.use(grant({
+  defaults: {
+    protocol: 'http',
+    host: config.SERVER_HOST,
+    transport: 'session',
+    state: true,
+  },
+  okta: {
+    key: config.AUTH.PROVIDER_KEY,
+    secret: config.AUTH.PROVIDER_SECRET,
+    scope: ['openid', 'groups', 'profile'],
+    nonce: true,
+    subdomain: config.AUTH.OKTA_SUBDOMAIN,
+    callback: '/auth',
+  },
+}))
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

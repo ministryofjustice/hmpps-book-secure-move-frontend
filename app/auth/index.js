@@ -8,11 +8,11 @@ const controllers = require('./controllers')
 // Initialisation
 const router = new express.Router()
 const paths = {
-  index: '/',
+  index: '/auth',
 }
 
 // Routing
-router.get(paths.index, auth.ensureAuthenticated, controllers.get)
+router.get(paths.index, auth.processAuthResponse, controllers.get)
 
 // Export
 module.exports = {

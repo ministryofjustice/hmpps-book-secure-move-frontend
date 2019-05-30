@@ -6,6 +6,7 @@ module.exports = {
   IS_DEV,
   IS_PRODUCTION,
   PORT: process.env.PORT || 3000,
+  SERVER_HOST: process.env.SERVER_HOST,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   API: {
@@ -17,4 +18,12 @@ module.exports = {
     WITH_DAY: 'dddd D MMM YYYY',
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
+  SESSION: {
+    SECRET: process.env.SESSION_SECRET,
+  },
+  AUTH: {
+    PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
+    PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
+    OKTA_SUBDOMAIN: process.env.OKTA_SUBDOMAIN,
+  },
 }
