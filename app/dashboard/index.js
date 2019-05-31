@@ -1,21 +1,18 @@
 // NPM dependencies
-const express = require('express')
+const router = require('express').Router()
 
 // Local dependencies
-const auth = require('../../common/middleware/authentication')
-const controllers = require('./controllers')
+const { get } = require('./controllers')
+const { ensureAuthenticated } = require('../../common/middleware/authentication')
 
-// Initialisation
-const router = new express.Router()
-const paths = {
-  index: '/',
-}
+// Load router middleware
+router.use(ensureAuthenticated)
 
-// Routing
-router.get(paths.index, auth.ensureAuthenticated, controllers.get)
+// Define routes
+router.get('/', get)
 
 // Export
 module.exports = {
   router,
-  paths,
+  mountpath: '/',
 }

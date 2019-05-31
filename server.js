@@ -73,7 +73,7 @@ app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-fron
 app.use(locals)
 
 // Routing
-router.bind(app)
+app.use(router)
 
 // error handling
 app.use(errorHandlers.notFound)

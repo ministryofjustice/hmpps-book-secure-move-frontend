@@ -1,11 +1,20 @@
-// Local dependencies
-const dashboard = require('./dashboard')
-const moves = require('./moves')
-const auth = require('./auth')
+const router = require('express').Router()
+const fs = require('fs')
 
-// Export
-module.exports.bind = app => {
-  app.use(dashboard.router)
-  app.use(moves.router)
-  app.use(auth.router)
-}
+const subApps = fs.readdirSync(__dirname)
+
+const appRouters = subApps.map(subAppDir => {
+  const subApp = require(`./${subAppDir}`)
+
+  if (subApp.router) {
+    if (subApp.mountpath) {
+      return router.use(subApp.mountpath, subApp.router)
+    }
+
+    return router.use(subApp.router)
+  }
+
+  return (req, res, next) => next()
+})
+
+module.exports = appRouters
