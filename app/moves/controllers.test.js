@@ -6,6 +6,11 @@ describe('Moves controllers', function () {
       const req = {}
       const res = {
         render: sinon.spy(),
+        locals: {
+          move: {
+            person: {},
+          },
+        },
       }
 
       controllers.get(req, res)
