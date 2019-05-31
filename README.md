@@ -109,17 +109,17 @@ npm run lint
 
 ## Environment variables
 
-| Name | Description |
-|:-----|:------------|
-| API_BASE_URL | The base url for the backend API server for this service |
-| SERVER_HOST | The (accessible) hostname (and port) of the listening web server, e.g. `localhost:3000`. Used by Grant to construct re-direct URLs after OAuth authentication |
-| SESSION_SECRET | A complex string unique to the environment, used to encrypt cookies |
-| AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication |
-| AUTH_PROVIDER_SECRET | The client secret provided by the OAuth2 provider for user authentication |
-| OKTA_SUBDOMAIN | The Okta subdomain provided to you (while Okta is the OAuth2 provider). Should be unique to the environment |
-| REDIS_HOST | The hostname or IP address the Redis server is listening on |
-| REDIS_PORT | The port number the Redis server is listening on (e.g. 6379) |
-| REDIS_SESSION_DB | The Redis database index in which to store session data (e.g. 0) |
+| Name | Description | Default |
+|:-----|:------------|:--------|
+| API_BASE_URL | The base url for the backend API server for this service | http://localhost:5000/api/v1 |
+| SERVER_HOST | The (accessible) hostname (and port) of the listening web server, e.g. `localhost:3000`. Used by Grant to construct re-direct URLs after OAuth authentication | localhost:{PORT} |
+| SESSION_SECRET | A complex string unique to the environment, used to encrypt cookies | |
+| AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication | |
+| AUTH_PROVIDER_SECRET | The client secret provided by the OAuth2 provider for user authentication | |
+| OKTA_SUBDOMAIN | The Okta subdomain provided to you (while Okta is the OAuth2 provider). Should be unique to the environment | |
+| REDIS_HOST | The hostname or IP address the Redis server is listening on | localhost |
+| REDIS_PORT | The port number the Redis server is listening on | 6379 |
+| REDIS_SESSION_DB | The Redis database index in which to store session data | 0 |
 
 ## Components
 
