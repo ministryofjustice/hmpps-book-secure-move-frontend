@@ -6,6 +6,7 @@ This is the rendering application for the PECS service.
 
 - [Node.js](https://nodejs.org/en/) (>= 11.14.0)
 - [NPM](https://www.npmjs.com/) (>= 6.7.0)
+- [Redis](https://redis.io/) (>= 5.0.5)
 
 ## Installation
 
@@ -62,6 +63,8 @@ The app will run on port 3000 by default and be available at [http://localhost:3
 
 #### In development mode
 
+Ensure Redis is installed and running.
+
 ```
 npm run develop
 ```
@@ -114,6 +117,9 @@ npm run lint
 | AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication |
 | AUTH_PROVIDER_SECRET | The client secret provided by the OAuth2 provider for user authentication |
 | OKTA_SUBDOMAIN | The Okta subdomain provided to you (while Okta is the OAuth2 provider). Should be unique to the environment |
+| REDIS_HOST | The hostname or IP address the Redis server is listening on |
+| REDIS_PORT | The port number the Redis server is listening on (e.g. 6379) |
+| REDIS_SESSION_DB | The Redis database index in which to store session data (e.g. 0) |
 
 ## Components
 
