@@ -1,5 +1,15 @@
 {% extends "layouts/govuk.njk" %}
 
+{% set fullname %}
+ {{ move.person.last_name | upper }}, {{ move.person.first_names | upper }}
+{% endset %}
+
+{% set relativeMoveDate = move.date | formatDateAsRelativeDay(false) %}
+
+{% block pageTitle %}
+  Move details for {{ fullname }}
+{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -10,7 +20,19 @@
 {% endblock %}
 
 {% block content %}
+  {% set dateOfBirth %}
+    {{ appTime({
+      datetime: move.person.date_of_birth,
+      text: move.person.date_of_birth | formatDate
+    }) }}
+    (Age {{ move.person.date_of_birth | calculateAge }})
+  {% endset %}
+
   <header>
+    <span class="govuk-caption-xl">
+      {{ move.id }}
+    </span>
+
     <h1 class="govuk-heading-xl">
       {{ fullname }}
     </h1>
@@ -23,6 +45,75 @@
       </h2>
 
       {{ govukSummaryList(personalDetailsSummary) }}
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="app-border-top-2 app-border--blue govuk-!-padding-top-4">
+
+        <h3 class="govuk-heading-m">{{ fullname }}</h3>
+
+        {%- set timeDue -%}
+          {% if move.time_due %}
+            {{ appTime({
+              datetime: move.time_due,
+              text: move.time_due | formatTime
+            }) }}
+          {% endif %}
+        {%- endset -%}
+
+        {%- set moveDate -%}
+          {% set moveDateLabel %}
+            {{ move.date | formatDateWithDay }}
+
+            {% if relativeMoveDate %}
+              ({{ relativeMoveDate }})
+            {% endif %}
+          {% endset %}
+
+          {{ appTime({
+            datetime: move.date,
+            text: moveDateLabel
+          }) }}
+        {%- endset -%}
+
+        {{ appMetaList({
+          items: [
+            {
+              key: {
+                text: "From"
+              },
+              value: {
+                text: move.from_location.description
+              }
+            },
+            {
+              key: {
+                text: "To"
+              },
+              value: {
+                text: move.to_location.description
+              }
+            },
+            {
+              key: {
+                text: "Date"
+              },
+              value: {
+                html: moveDate
+              }
+            },
+            {
+              key: {
+                text: "Time due"
+              },
+              value: {
+                html: timeDue
+              }
+            }
+          ]
+        }) }}
+
+      </div>
     </div>
   </div>
 
