@@ -1,0 +1,24 @@
+.app-meta-list {
+  @include govuk-font($size: 19);
+  width: 100%;
+  margin: govuk-spacing(2) 0 0;
+}
+
+.app-meta-list__item {
+  & + & {
+    margin-top: govuk-spacing(3);
+  }
+}
+
+.app-meta-list__key,
+.app-meta-list__value {
+  display: block;
+}
+
+.app-meta-list__key {
+  @include govuk-typography-weight-bold;
+}
+
+.app-meta-list__value {
+  margin: 0;
+}
