@@ -1,5 +1,8 @@
 {% extends "template.njk" %}
 
+{# GOV.UK Design System Components #}
+{% from "back-link/macro.njk"         import govukBackLink %}
+
 {# Components that clash with GOV.UK Frontend namespace #}
 {% from "_tag/macro.njk"              import appTag %}
 

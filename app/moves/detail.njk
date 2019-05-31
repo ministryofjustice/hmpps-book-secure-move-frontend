@@ -1,5 +1,14 @@
 {% extends "layouts/govuk.njk" %}
 
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back to dashboard",
+    href: "/"
+  }) }}
+{% endblock %}
+
 {% block content %}
   <header>
     <h1 class="govuk-heading-xl">
