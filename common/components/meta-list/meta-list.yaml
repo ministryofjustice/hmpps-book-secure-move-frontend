@@ -1,0 +1,49 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element.
+- name: items
+  type: array
+  required: true
+  description: Array of item objects.
+  params:
+  - name: key
+    type: string
+    required: true
+    description: Key object for an item
+    params:
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use within each item key. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use within each item key. If `html` is provided, the `text` argument will be ignored.
+  - name: value
+    type: string
+    required: true
+    description: Value object for an item
+    params:
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use within each item value. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use within each item value. If `html` is provided, the `text` argument will be ignored.
+
+examples:
+  - name: default
+    data:
+      items:
+      - key:
+          text: From
+        value:
+          text: Home
+      - key:
+          text: To
+        value:
+          text: Work
