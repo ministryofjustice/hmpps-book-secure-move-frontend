@@ -12,6 +12,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/core/all";
 @import "govuk-frontend/objects/all";
 
+@import "govuk-frontend/components/back-link/back-link.scss";
 @import "govuk-frontend/components/header/header.scss";
 @import "govuk-frontend/components/footer/footer.scss";
 @import "govuk-frontend/components/skip-link/skip-link.scss";
@@ -27,3 +28,4 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 
 // Import app utilities and overrides
 @import "utilities/all";
+@import "overrides/all";
