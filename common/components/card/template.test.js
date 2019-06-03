@@ -2,52 +2,52 @@ const { render, getExamples } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('card')
 
-describe('Card component', () => {
-  context('by default', () => {
+describe('Card component', function () {
+  context('by default', function () {
     let $component
 
-    beforeEach(() => {
+    beforeEach(function () {
       const $ = render('card', examples.default)
       $component = $('.app-card')
     })
 
-    it('should render component', () => {
+    it('should render component', function () {
       expect($component.get(0).tagName).to.equal('div')
     })
 
-    it('should render title', () => {
+    it('should render title', function () {
       const $title = $component.find('.app-card__title')
       expect($title.text().trim()).to.equal('Card title')
     })
 
-    it('should not render image', () => {
+    it('should not render image', function () {
       const $image = $component.find('.app-card__image')
       expect($image.length).to.equal(0)
     })
 
-    it('should not render caption', () => {
+    it('should not render caption', function () {
       const $caption = $component.find('.app-card__caption')
       expect($caption.length).to.equal(0)
     })
 
-    it('should not render as link', () => {
+    it('should not render as link', function () {
       const $link = $component.find('.app-card__link')
       expect($link.length).to.equal(0)
     })
 
-    it('should not render meta data', () => {
+    it('should not render meta data', function () {
       const $metaList = $component.find('.app-card__meta-list')
       expect($metaList.length).to.equal(0)
     })
 
-    it('should not render tags', () => {
+    it('should not render tags', function () {
       const $tagList = $component.find('.app-card__tag-list')
       expect($tagList.length).to.equal(0)
     })
   })
 
-  context('with image', () => {
-    it('should render image', () => {
+  context('with image', function () {
+    it('should render image', function () {
       const $ = render('card', examples['with image'])
       const $image = $('.app-card__image')
 
@@ -56,8 +56,8 @@ describe('Card component', () => {
     })
   })
 
-  context('with classes param', () => {
-    it('should render classes', () => {
+  context('with classes param', function () {
+    it('should render classes', function () {
       const $ = render('card', {
         title: { text: 'Title' },
         classes: 'app-card--compact',
@@ -68,9 +68,9 @@ describe('Card component', () => {
     })
   })
 
-  context('with caption', () => {
-    context('when html is passed to text', () => {
-      it('should render escaped html', () => {
+  context('with caption', function () {
+    context('when html is passed to text', function () {
+      it('should render escaped html', function () {
         const $ = render('card', {
           title: { text: 'Title' },
           caption: {
@@ -83,9 +83,9 @@ describe('Card component', () => {
       })
     })
 
-    context('when html is passed to html', () => {
-      it('should render unescaped html', () => {
-        it('should render escaped html', () => {
+    context('when html is passed to html', function () {
+      it('should render unescaped html', function () {
+        it('should render escaped html', function () {
           const $ = render('card', {
             title: { text: 'Title' },
             caption: {
@@ -99,8 +99,8 @@ describe('Card component', () => {
       })
     })
 
-    context('when both html and text params are used', () => {
-      it('should render unescaped html', () => {
+    context('when both html and text params are used', function () {
+      it('should render unescaped html', function () {
         const $ = render('card', {
           title: { text: 'Title' },
           caption: {
@@ -115,8 +115,8 @@ describe('Card component', () => {
     })
   })
 
-  context('with link', () => {
-    it('should render link', () => {
+  context('with link', function () {
+    it('should render link', function () {
       const $ = render('card', examples['with link'])
       const $link = $('.app-card__link')
 
@@ -125,9 +125,9 @@ describe('Card component', () => {
     })
   })
 
-  context('with meta data', () => {
-    context('with empty items array', () => {
-      it('should not render meta', () => {
+  context('with meta data', function () {
+    context('with empty items array', function () {
+      it('should not render meta', function () {
         const $ = render('card', {
           title: { text: 'Title' },
           meta: { items: [] },
@@ -138,20 +138,20 @@ describe('Card component', () => {
       })
     })
 
-    context('with items', () => {
+    context('with items', function () {
       let $, $items
 
-      beforeEach(() => {
+      beforeEach(function () {
         $ = render('card', examples['with meta items'])
         const $meta = $('.app-card__meta-list')
         $items = $meta.find('.app-card__meta-list-item')
       })
 
-      it('should render correct number of items', () => {
+      it('should render correct number of items', function () {
         expect($items.length).to.equal(3)
       })
 
-      it('should render correct items', () => {
+      it('should render correct items', function () {
         const $item1 = $($items[0])
         const $item2 = $($items[1])
         const $item3 = $($items[2])
@@ -168,9 +168,9 @@ describe('Card component', () => {
     })
   })
 
-  context('with tags', () => {
-    context('with empty items array', () => {
-      it('should not render tags', () => {
+  context('with tags', function () {
+    context('with empty items array', function () {
+      it('should not render tags', function () {
         const $ = render('card', {
           title: { text: 'Title' },
           tags: { items: [] },
@@ -181,8 +181,8 @@ describe('Card component', () => {
       })
     })
 
-    context('with items', () => {
-      it('should render correct number of items', () => {
+    context('with items', function () {
+      it('should render correct number of items', function () {
         const $ = render('card', examples['with tags'])
         const $meta = $('.app-card__tag-list')
         const $items = $meta.find('.app-card__tag-list-item')

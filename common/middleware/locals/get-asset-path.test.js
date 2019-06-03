@@ -6,36 +6,36 @@ const getAssetPath = require('./get-asset-path')
 const existingManifestPath = path.join(configPaths.fixtures, 'manifest.json')
 const missingManifestPath = path.join(configPaths.fixtures, 'MISSING.json')
 
-describe('getAssetPath', () => {
-  context('when manifest file exists', () => {
-    context('when key exists', () => {
-      it('should find path', () => {
+describe('getAssetPath', function () {
+  context('when manifest file exists', function () {
+    context('when key exists', function () {
+      it('should find path', function () {
         const assetPath = getAssetPath('styles.css', existingManifestPath)
         expect(assetPath).to.equal('/stylesheets/styles.123.css')
       })
     })
 
-    context('when key does not exist', () => {
-      it('should return the key', () => {
+    context('when key does not exist', function () {
+      it('should return the key', function () {
         const assetPath = getAssetPath('foo.css', existingManifestPath)
         expect(assetPath).to.equal('/foo.css')
       })
     })
   })
 
-  context('when manifest does not exist', () => {
+  context('when manifest does not exist', function () {
     let assetPath
 
-    beforeEach(() => {
+    beforeEach(function () {
       sinon.spy(logger, 'error')
       assetPath = getAssetPath('styles.css', missingManifestPath)
     })
 
-    it('should log an error', () => {
+    it('should log an error', function () {
       expect(logger.error).to.have.been.calledOnce
     })
 
-    it('should return the key', () => {
+    it('should return the key', function () {
       expect(assetPath).to.equal('/styles.css')
     })
   })

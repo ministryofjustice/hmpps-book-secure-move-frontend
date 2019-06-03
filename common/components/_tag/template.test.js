@@ -2,26 +2,26 @@ const { render, getExamples } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('_tag')
 
-describe('Tag component', () => {
-  context('by default', () => {
+describe('Tag component', function () {
+  context('by default', function () {
     let $component
 
-    beforeEach(() => {
+    beforeEach(function () {
       const $ = render('_tag', examples.default)
       $component = $('.app-tag')
     })
 
-    it('should render with strong element', () => {
+    it('should render with strong element', function () {
       expect($component.get(0).tagName).to.equal('strong')
     })
 
-    it('should render text', () => {
+    it('should render text', function () {
       expect($component.text()).to.contain('alpha')
     })
   })
 
-  context('with classes param', () => {
-    it('should render classes', () => {
+  context('with classes param', function () {
+    it('should render classes', function () {
       const $ = render('_tag', {
         classes: 'app-tag--inactive',
         text: 'alpha',
@@ -32,10 +32,10 @@ describe('Tag component', () => {
     })
   })
 
-  context('with href param', () => {
+  context('with href param', function () {
     let $component
 
-    beforeEach(() => {
+    beforeEach(function () {
       const $ = render('_tag', {
         text: 'alpha',
         href: '/a-link',
@@ -43,17 +43,17 @@ describe('Tag component', () => {
       $component = $('.app-tag')
     })
 
-    it('should render with anchor element', () => {
+    it('should render with anchor element', function () {
       expect($component.get(0).tagName).to.equal('a')
     })
 
-    it('should render href attribute', () => {
+    it('should render href attribute', function () {
       expect($component.attr('href')).to.equal('/a-link')
     })
   })
 
-  context('when html is passed to text', () => {
-    it('should render escaped html', () => {
+  context('when html is passed to text', function () {
+    it('should render escaped html', function () {
       const $ = render('_tag', {
         text: '<span>alpha</span>',
       })
@@ -63,8 +63,8 @@ describe('Tag component', () => {
     })
   })
 
-  context('when html is passed to html', () => {
-    it('should render unescaped html', () => {
+  context('when html is passed to html', function () {
+    it('should render unescaped html', function () {
       const $ = render('_tag', {
         html: '<span>alpha</span>',
       })
@@ -74,8 +74,8 @@ describe('Tag component', () => {
     })
   })
 
-  context('when both html and text params are used', () => {
-    it('should render unescaped html', () => {
+  context('when both html and text params are used', function () {
+    it('should render unescaped html', function () {
       const $ = render('_tag', {
         html: '<span>alpha</span>',
         text: '<span>alpha</span>',

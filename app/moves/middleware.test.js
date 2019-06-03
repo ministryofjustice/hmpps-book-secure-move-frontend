@@ -16,7 +16,7 @@ describe('Moves middleware', function () {
     context('when no move ID exists', function () {
       let res, nextSpy
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'getMoveById').resolves(moveStub)
 
         res = { locals: {} }
@@ -25,16 +25,16 @@ describe('Moves middleware', function () {
         await middleware.setMove({}, res, nextSpy)
       })
 
-      it('should call next with no argument', () => {
+      it('should call next with no argument', function () {
         expect(nextSpy.calledOnce).to.be.true
         expect(nextSpy).to.be.calledWith()
       })
 
-      it('should not call API with move ID', () => {
+      it('should not call API with move ID', function () {
         expect(apiClient.getMoveById).not.to.be.called
       })
 
-      it('should not set response data to locals object', () => {
+      it('should not set response data to locals object', function () {
         expect(res.locals).not.to.have.property('move')
       })
     })
@@ -43,7 +43,7 @@ describe('Moves middleware', function () {
       context('when API call returns succesfully', function () {
         let res, nextSpy
 
-        beforeEach(async () => {
+        beforeEach(async function () {
           sinon.stub(apiClient, 'getMoveById').resolves(moveStub)
 
           res = { locals: {} }
@@ -52,16 +52,16 @@ describe('Moves middleware', function () {
           await middleware.setMove({}, res, nextSpy, mockMoveId)
         })
 
-        it('should call API with move ID', () => {
+        it('should call API with move ID', function () {
           expect(apiClient.getMoveById).to.be.calledWith(mockMoveId)
         })
 
-        it('should set response data to locals object', () => {
+        it('should set response data to locals object', function () {
           expect(res.locals).to.have.property('move')
           expect(res.locals.move).to.equal(moveStub.data)
         })
 
-        it('should call next with no argument', () => {
+        it('should call next with no argument', function () {
           expect(nextSpy.calledOnce).to.be.true
           expect(nextSpy).to.be.calledWith()
         })
@@ -70,7 +70,7 @@ describe('Moves middleware', function () {
       context('when API call returns an error', function () {
         let res, nextSpy
 
-        beforeEach(async () => {
+        beforeEach(async function () {
           sinon.stub(apiClient, 'getMoveById').throws(errorStub)
 
           res = { locals: {} }
@@ -79,11 +79,11 @@ describe('Moves middleware', function () {
           await middleware.setMove({}, res, nextSpy, mockMoveId)
         })
 
-        it('should not set a value on the locals object', () => {
+        it('should not set a value on the locals object', function () {
           expect(res.locals).not.to.have.property('move')
         })
 
-        it('should send error to next function', () => {
+        it('should send error to next function', function () {
           expect(nextSpy.calledOnce).to.be.true
           expect(nextSpy).to.be.calledWith(errorStub)
         })

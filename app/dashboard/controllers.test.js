@@ -13,15 +13,15 @@ const errorStub = new Error('Problem')
 
 describe('Dashboard app', function () {
   describe('#getController()', function () {
-    beforeEach(() => {
+    beforeEach(function () {
       sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
     })
 
-    context('when query contains no move date', () => {
+    context('when query contains no move date', function () {
       const mockDate = '2017-08-10'
       let req, res
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
         this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
@@ -31,7 +31,7 @@ describe('Dashboard app', function () {
         await controllers.get(req, res)
       })
 
-      afterEach(() => {
+      afterEach(function () {
         this.clock.restore()
       })
 
@@ -39,7 +39,7 @@ describe('Dashboard app', function () {
         expect(res.render.calledOnce).to.be.true
       })
 
-      describe('template params', () => {
+      describe('template params', function () {
         it('should contain a page title', function () {
           expect(res.render.args[0][1]).to.have.property('pageTitle')
         })
@@ -65,11 +65,11 @@ describe('Dashboard app', function () {
       })
     })
 
-    context('when query contatins a move date', () => {
+    context('when query contatins a move date', function () {
       const mockDate = '2018-05-10'
       let req, res
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
 
         req = {
@@ -86,7 +86,7 @@ describe('Dashboard app', function () {
         expect(res.render.calledOnce).to.be.true
       })
 
-      describe('template params', () => {
+      describe('template params', function () {
         it('should contain a page title', function () {
           expect(res.render.args[0][1]).to.have.property('pageTitle')
         })
@@ -112,10 +112,10 @@ describe('Dashboard app', function () {
       })
     })
 
-    context('when API call returns an error', () => {
+    context('when API call returns an error', function () {
       let req, res, nextSpy
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'getMovesByDate').throws(errorStub)
 
         req = {
@@ -127,11 +127,11 @@ describe('Dashboard app', function () {
         await controllers.get(req, res, nextSpy)
       })
 
-      it('should not render a template', () => {
+      it('should not render a template', function () {
         expect(res.render.calledOnce).to.be.false
       })
 
-      it('should send error to next function', () => {
+      it('should send error to next function', function () {
         expect(nextSpy.calledOnce).to.be.true
         expect(nextSpy).to.be.calledWith(errorStub)
       })

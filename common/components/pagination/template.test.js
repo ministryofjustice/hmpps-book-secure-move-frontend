@@ -2,9 +2,9 @@ const { render, getExamples } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('pagination')
 
-describe('Pagination component', () => {
-  context('default', () => {
-    it('should render previous link', () => {
+describe('Pagination component', function () {
+  context('default', function () {
+    it('should render previous link', function () {
       const $ = render('pagination', examples.default)
 
       const $component = $('.app-pagination')
@@ -16,7 +16,7 @@ describe('Pagination component', () => {
       expect($itemLink.attr('href')).to.equal('/previous-page')
     })
 
-    it('should render next link', () => {
+    it('should render next link', function () {
       const $ = render('pagination', examples.default)
 
       const $component = $('.app-pagination')
@@ -29,8 +29,8 @@ describe('Pagination component', () => {
     })
   })
 
-  context('without next or previous', () => {
-    it('should not render previous link', () => {
+  context('without next or previous', function () {
+    it('should not render previous link', function () {
       const $ = render('pagination', {})
 
       const $component = $('.app-pagination')
@@ -38,7 +38,7 @@ describe('Pagination component', () => {
       expect($item.length).to.equal(0)
     })
 
-    it('should not render next link', () => {
+    it('should not render next link', function () {
       const $ = render('pagination', {})
 
       const $component = $('.app-pagination')
@@ -47,8 +47,8 @@ describe('Pagination component', () => {
     })
   })
 
-  context('with classes', () => {
-    it('should render classes', () => {
+  context('with classes', function () {
+    it('should render classes', function () {
       const $ = render('pagination', {
         classes: 'app-pagination--custom-class',
       })
@@ -58,8 +58,8 @@ describe('Pagination component', () => {
     })
   })
 
-  context('with labels', () => {
-    it('should render previous label', () => {
+  context('with labels', function () {
+    it('should render previous label', function () {
       const $ = render('pagination', {
         previous: {
           href: '/page-1',
@@ -76,7 +76,7 @@ describe('Pagination component', () => {
       expect($itemLink.attr('href')).to.equal('/page-1')
     })
 
-    it('should render next label', () => {
+    it('should render next label', function () {
       const $ = render('pagination', {
         next: {
           href: '/page-3',
@@ -94,8 +94,8 @@ describe('Pagination component', () => {
     })
   })
 
-  context('with custom text', () => {
-    it('should render previous text', () => {
+  context('with custom text', function () {
+    it('should render previous text', function () {
       const $ = render('pagination', {
         previous: {
           href: '/previous-day',
@@ -112,7 +112,7 @@ describe('Pagination component', () => {
       expect($itemLink.attr('href')).to.equal('/previous-day')
     })
 
-    it('should render next label', () => {
+    it('should render next label', function () {
       const $ = render('pagination', {
         next: {
           href: '/next-day',

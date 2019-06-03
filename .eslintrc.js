@@ -38,6 +38,7 @@ module.exports = {
       rules: {
         'no-unused-expressions': 'off',
         'mocha/no-exclusive-tests': 'error',
+        'mocha/no-mocha-arrows': 'error',
       },
       plugins: [
         'mocha',

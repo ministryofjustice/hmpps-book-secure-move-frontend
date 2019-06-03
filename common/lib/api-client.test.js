@@ -8,11 +8,11 @@ const movesGetSerialized = require('../../test/fixtures/api-client/moves.get.ser
 
 describe('API Client', function () {
   describe('#getMovesByDate()', function () {
-    context('when request returns 200', () => {
+    context('when request returns 200', function () {
       const mockDate = '2017-08-10'
       let moves
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
         nock(API.BASE_URL)
@@ -28,11 +28,11 @@ describe('API Client', function () {
         moves = await apiClient.getMovesByDate(mockDate)
       })
 
-      afterEach(() => {
+      afterEach(function () {
         this.clock.restore()
       })
 
-      it('should get moves from API with current date', () => {
+      it('should get moves from API with current date', function () {
         expect(nock.isDone()).to.be.true
       })
 
