@@ -1,4 +1,5 @@
-var proxyquire = require('proxyquire')
+const proxyquire = require('proxyquire')
+const timezoneMock = require('timezone-mock')
 
 const filters = proxyquire('./filters', {
   '../index': {
@@ -152,6 +153,137 @@ describe('Nunjucks filters', function () {
         it('should return the age in years', function () {
           const age = filters.calculateAge(dateOfBirth)
           expect(age).to.equal(40)
+        })
+      })
+    })
+  })
+
+  describe('#formatTime()', function () {
+    context('when given an invalid datetime', function () {
+      it('should return input value', function () {
+        const age = filters.formatTime('2010-45-5')
+        expect(age).to.equal('2010-45-5')
+      })
+
+      it('should return input value', function () {
+        const age = filters.formatTime('not a date')
+        expect(age).to.equal('not a date')
+      })
+    })
+
+    context('when given a valid datetime', function () {
+      context('when the time is 12am', function () {
+        it('should midnight as a string', function () {
+          const time = filters.formatTime('2000-01-01T00:00:00Z')
+          expect(time).to.equal('Midnight')
+        })
+      })
+
+      context('when the time is 12pm', function () {
+        it('should midday as a string', function () {
+          const time = filters.formatTime('2000-01-01T12:00:00Z')
+          expect(time).to.equal('Midday')
+        })
+      })
+
+      context('when time is in the morning', function () {
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T08:00:00Z')
+          expect(time).to.equal('8am')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T10:00:00Z')
+          expect(time).to.equal('10am')
+        })
+      })
+
+      context('when time is in the afternoon', function () {
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T14:00:00Z')
+          expect(time).to.equal('2pm')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T17:00:00Z')
+          expect(time).to.equal('5pm')
+        })
+      })
+
+      context('when time isn\'t on the hour', function () {
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T23:59:59Z')
+          expect(time).to.equal('11:59pm')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T11:59:59Z')
+          expect(time).to.equal('11:59am')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T09:30:00Z')
+          expect(time).to.equal('9:30am')
+        })
+      })
+
+      context('when timezone is UTC', function () {
+        beforeEach(function () {
+          timezoneMock.register('UTC')
+        })
+
+        afterEach(function () {
+          timezoneMock.unregister()
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T01:00:00Z')
+          expect(time).to.equal('1am')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-06-01T01:00:00Z')
+          expect(time).to.equal('1am')
+        })
+      })
+
+      context('when timezone is US/Pacific', function () {
+        beforeEach(function () {
+          timezoneMock.register('US/Pacific')
+        })
+
+        afterEach(function () {
+          timezoneMock.unregister()
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-01-01T01:00:00Z')
+          expect(time).to.equal('5pm')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2000-06-01T01:00:00Z')
+          expect(time).to.equal('6pm')
+        })
+      })
+
+      context('when timezone is Brazil/East', function () {
+        beforeEach(function () {
+          timezoneMock.register('Brazil/East')
+        })
+
+        afterEach(function () {
+          timezoneMock.unregister()
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2018-01-01T01:00:00Z')
+          expect(time).to.equal('11pm')
+        })
+
+        it('should return correct format', function () {
+          const time = filters.formatTime('2018-06-01T01:00:00Z')
+          expect(time).to.equal('10pm')
         })
       })
     })
