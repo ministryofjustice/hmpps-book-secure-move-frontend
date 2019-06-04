@@ -23,6 +23,8 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 // Import app settings/tools/helpers
 @import "helpers/all";
 
+@import "core/all";
+
 // Import app level components and styles
 @import "components/all";
 
