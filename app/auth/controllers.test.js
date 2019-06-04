@@ -1,10 +1,10 @@
 const controllers = require('./controllers')
 
-describe('Authentication app', () => {
-  describe('#get()', () => {
+describe('Authentication app', function () {
+  describe('#get()', function () {
     let req, res, url
 
-    beforeEach(async () => {
+    beforeEach(async function () {
       url = '/test'
       req = {
         query: {},
@@ -19,11 +19,11 @@ describe('Authentication app', () => {
       await controllers.get(req, res)
     })
 
-    it('redirects to the intended URL', () => {
+    it('redirects to the intended URL', function () {
       expect(res.redirect).to.be.calledWith(url)
     })
 
-    it('unsets session.postAuthRedirect', () => {
+    it('unsets session.postAuthRedirect', function () {
       expect(req.session.postAuthRedirect).to.equal(null)
     })
   })

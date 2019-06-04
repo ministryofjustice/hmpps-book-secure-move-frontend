@@ -2,11 +2,11 @@ const authentication = require('./authentication')
 const nock = require('nock')
 const { AUTH } = require('../../config')
 
-describe('Authentication middleware', () => {
-  describe('#ensureAuthenticated()', () => {
+describe('Authentication middleware', function () {
+  describe('#ensureAuthenticated()', function () {
     let req, res, nextSpy
 
-    beforeEach(() => {
+    beforeEach(function () {
       nextSpy = sinon.spy()
       req = {
         originalUrl: '/test',
@@ -19,51 +19,51 @@ describe('Authentication middleware', () => {
       }
     })
 
-    context('when there is no access token', () => {
-      beforeEach(() => {
+    context('when there is no access token', function () {
+      beforeEach(function () {
         authentication.ensureAuthenticated(req, res, nextSpy)
       })
 
-      it('redirects to the Okta authentication URL', () => {
+      it('redirects to the Okta authentication URL', function () {
         expect(res.redirect).to.be.calledWith('/connect/okta')
       })
 
-      it('sets the redirect URL in the session', () => {
+      it('sets the redirect URL in the session', function () {
         expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
 
-    context('when the access token has expired', () => {
-      beforeEach(() => {
+    context('when the access token has expired', function () {
+      beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) - 1000
         authentication.ensureAuthenticated(req, res, nextSpy)
       })
 
-      it('redirects to the Okta authentication URL', () => {
+      it('redirects to the Okta authentication URL', function () {
         expect(res.redirect).to.be.calledWith('/connect/okta')
       })
 
-      it('sets the redirect URL in the session', () => {
+      it('sets the redirect URL in the session', function () {
         expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
 
-    context('when the access token has not expired', () => {
-      beforeEach(() => {
+    context('when the access token has not expired', function () {
+      beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) + 1000
         authentication.ensureAuthenticated(req, res, nextSpy)
       })
 
-      it('calls the next action', () => {
+      it('calls the next action', function () {
         expect(nextSpy.calledOnce).to.be.true
       })
     })
   })
 
-  describe('#processAuthResponse', () => {
+  describe('#processAuthResponse', function () {
     let req, res, nextSpy
 
-    beforeEach(() => {
+    beforeEach(function () {
       nextSpy = sinon.spy()
 
       req = {
@@ -77,17 +77,17 @@ describe('Authentication middleware', () => {
       }
     })
 
-    context('when there is no grant response', () => {
-      it('redirects to root', () => {
+    context('when there is no grant response', function () {
+      it('redirects to root', function () {
         authentication.processAuthResponse(req, res, nextSpy)
         expect(res.redirect).to.be.calledWith('/')
       })
     })
 
-    context('when there is a grant response', () => {
+    context('when there is a grant response', function () {
       let accessToken, expiryTime, userInfo
 
-      beforeEach(async () => {
+      beforeEach(async function () {
         accessToken = 'test'
         expiryTime = 1000
         userInfo = {
@@ -122,23 +122,23 @@ describe('Authentication middleware', () => {
         await authentication.processAuthResponse(req, res, nextSpy)
       })
 
-      it('regenerates the session', async () => {
+      it('regenerates the session', async function () {
         expect(req.session.id).to.equal('456')
       })
 
-      it('sets the auth expiry time on the session', () => {
+      it('sets the auth expiry time on the session', function () {
         expect(req.session.authExpiry).to.equal(expiryTime)
       })
 
-      it('sets the user info on the session', () => {
+      it('sets the user info on the session', function () {
         expect(req.session.userInfo.test).to.equal(userInfo.test)
       })
 
-      it('sets the redirect URL in the session', () => {
+      it('sets the redirect URL in the session', function () {
         expect(req.session.postAuthRedirect).to.equal('/test')
       })
 
-      it('calls the next action', () => {
+      it('calls the next action', function () {
         expect(nextSpy.calledOnce).to.be.true
       })
     })

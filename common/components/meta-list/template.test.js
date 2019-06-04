@@ -2,27 +2,27 @@ const { render, getExamples } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('meta-list')
 
-describe('Meta list component', () => {
-  context('default', () => {
+describe('Meta list component', function () {
+  context('default', function () {
     let $, $component, $items
 
-    beforeEach(() => {
+    beforeEach(function () {
       $ = render('meta-list', examples.default)
       $component = $('.app-meta-list')
       $items = $component.find('.app-meta-list__item')
     })
 
-    it('should render', () => {
+    it('should render', function () {
       expect($component.length).to.equal(1)
     })
 
-    it('should render correct number of items', () => {
+    it('should render correct number of items', function () {
       expect($items.length).to.equal(2)
     })
   })
 
-  context('with classes', () => {
-    it('should render classes', () => {
+  context('with classes', function () {
+    it('should render classes', function () {
       const $ = render('meta-list', {
         classes: 'app-meta-list--custom-class',
       })
@@ -32,10 +32,10 @@ describe('Meta list component', () => {
     })
   })
 
-  context('items with text', () => {
+  context('items with text', function () {
     let $, $items
 
-    beforeEach(() => {
+    beforeEach(function () {
       $ = render('meta-list', {
         items: [
           {
@@ -59,7 +59,7 @@ describe('Meta list component', () => {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should render text', () => {
+    it('should render text', function () {
       const $item1 = $($items[0])
       const $key = $item1.find('.app-meta-list__key')
       const $value = $item1.find('.app-meta-list__value')
@@ -68,7 +68,7 @@ describe('Meta list component', () => {
       expect($value.html().trim()).to.equal('Home')
     })
 
-    it('should escape HTML', () => {
+    it('should escape HTML', function () {
       const $item2 = $($items[1])
       const $key = $item2.find('.app-meta-list__key')
       const $value = $item2.find('.app-meta-list__value')
@@ -78,10 +78,10 @@ describe('Meta list component', () => {
     })
   })
 
-  context('items with html', () => {
+  context('items with html', function () {
     let $, $items
 
-    beforeEach(() => {
+    beforeEach(function () {
       $ = render('meta-list', {
         items: [
           {
@@ -97,7 +97,7 @@ describe('Meta list component', () => {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should render HTML', () => {
+    it('should render HTML', function () {
       const $item1 = $($items[0])
       const $key = $item1.find('.app-meta-list__key')
       const $value = $item1.find('.app-meta-list__value')
