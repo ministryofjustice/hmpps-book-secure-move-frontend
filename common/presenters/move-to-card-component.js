@@ -1,16 +1,7 @@
+const { get } = require('lodash')
+
+const { removeEmptyItems } = require('./_utilities')
 const filters = require('../../config/nunjucks/filters')
-
-function _removeEmpty (items, keys) {
-  return items.filter((item) => {
-    let include = false
-
-    keys.forEach((k) => {
-      include = item[k]
-    })
-
-    return include
-  })
-}
 
 module.exports = function moveToCardComponent ({ id, person }) {
   const meta = [
@@ -22,12 +13,12 @@ module.exports = function moveToCardComponent ({ id, person }) {
     {
       label: 'Gender',
       hideLabel: true,
-      text: person.gender,
+      text: get(person, 'gender.title'),
     },
     {
       label: 'Ethnicity',
       hideLabel: true,
-      text: person.ethnicity,
+      text: get(person, 'ethnicity.title'),
     },
   ]
 
@@ -40,7 +31,7 @@ module.exports = function moveToCardComponent ({ id, person }) {
       text: id,
     },
     meta: {
-      items: _removeEmpty(meta, ['text', 'html']),
+      items: removeEmptyItems(meta, ['text', 'html']),
     },
   }
 }

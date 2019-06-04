@@ -1,26 +1,8 @@
 /* eslint-disable camelcase */
-const { find, get } = require('lodash')
+const { get } = require('lodash')
 
+const { getIdentifier, removeEmptyItems } = require('./_utilities')
 const filters = require('../../config/nunjucks/filters')
-
-function _removeEmpty (items, paths) {
-  return items.filter((item) => {
-    let include = false
-
-    paths.forEach((path) => {
-      if (get(item, path)) {
-        include = true
-      }
-    })
-
-    return include
-  })
-}
-
-function _getIdentifier (identifiers, type) {
-  const identifier = find(identifiers, { identifier_type: type })
-  return get(identifier, 'value')
-}
 
 module.exports = function personToSummaryListComponent ({ date_of_birth, gender, ethnicity, identifiers }) {
   const rows = [
@@ -53,7 +35,7 @@ module.exports = function personToSummaryListComponent ({ date_of_birth, gender,
         html: '<abbr title="Criminal Records Office">CRO</abbr> number',
       },
       value: {
-        text: _getIdentifier(identifiers, 'cro_number'),
+        text: getIdentifier(identifiers, 'cro_number'),
       },
     },
     {
@@ -61,7 +43,7 @@ module.exports = function personToSummaryListComponent ({ date_of_birth, gender,
         text: 'Custody number',
       },
       value: {
-        text: _getIdentifier(identifiers, 'athena_reference'),
+        text: getIdentifier(identifiers, 'athena_reference'),
       },
     },
     {
@@ -69,7 +51,7 @@ module.exports = function personToSummaryListComponent ({ date_of_birth, gender,
         html: '<abbr title="Police National Computer">PNC</abbr> number',
       },
       value: {
-        text: _getIdentifier(identifiers, 'pnc_number'),
+        text: getIdentifier(identifiers, 'pnc_number'),
       },
     },
     {
@@ -77,12 +59,12 @@ module.exports = function personToSummaryListComponent ({ date_of_birth, gender,
         text: 'Prisoner number',
       },
       value: {
-        text: _getIdentifier(identifiers, 'prison_number'),
+        text: getIdentifier(identifiers, 'prison_number'),
       },
     },
   ]
 
   return {
-    rows: _removeEmpty(rows, ['value.text', 'value.html']),
+    rows: removeEmptyItems(rows, ['value.text', 'value.html']),
   }
 }

@@ -13,6 +13,7 @@ module.exports = {
     try {
       const moveDate = req.query['move-date'] || format(new Date(), 'YYYY-MM-DD')
       const response = await api.getMovesByDate(moveDate)
+      console.log(response.data[0].person)
       const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const params = {

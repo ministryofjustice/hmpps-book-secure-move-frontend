@@ -20,6 +20,7 @@
 {% endblock %}
 
 {% block content %}
+<pre>{{move|dump(1)}}</pre>
   {% set dateOfBirth %}
     {{ appTime({
       datetime: move.person.date_of_birth,
