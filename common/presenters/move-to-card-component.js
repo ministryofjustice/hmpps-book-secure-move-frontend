@@ -5,7 +5,9 @@ function _removeEmpty (items, keys) {
     let include = false
 
     keys.forEach((k) => {
-      include = item[k]
+      if (item[k]) {
+        include = true
+      }
     })
 
     return include
@@ -22,12 +24,12 @@ module.exports = function moveToCardComponent ({ id, person }) {
     {
       label: 'Gender',
       hideLabel: true,
-      text: person.gender,
+      text: person.gender ? person.gender.title : '',
     },
     {
       label: 'Ethnicity',
       hideLabel: true,
-      text: person.ethnicity,
+      text: person.ethnicity ? person.ethnicity.title : '',
     },
   ]
 

@@ -1,7 +1,7 @@
 const moveToCardComponent = require('./move-to-card-component')
 const filters = require('../../config/nunjucks/filters')
 
-const { data } = require('../../test/fixtures/api-client/moves.get.deserialized.json')
+const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
 
 describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
@@ -14,17 +14,17 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToCardComponent(data[0])
+        transformedResponse = moveToCardComponent(mockMove)
       })
 
       describe('response', function () {
         it('should contain a href', function () {
           expect(transformedResponse).to.have.property('href')
-          expect(transformedResponse.href).to.equal(`/moves/${data[0].id}`)
+          expect(transformedResponse.href).to.equal(`/moves/${mockMove.id}`)
         })
 
         it('should contain a title', function () {
-          const person = data[0].person
+          const person = mockMove.person
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
             text: `${person.last_name.toUpperCase()}, ${person.first_names.toUpperCase()}`,
@@ -34,7 +34,7 @@ describe('Presenters', function () {
         it('should contain a caption', function () {
           expect(transformedResponse).to.have.property('caption')
           expect(transformedResponse.caption).to.deep.equal({
-            text: data[0].id,
+            text: mockMove.id,
           })
         })
 
@@ -45,12 +45,20 @@ describe('Presenters', function () {
               hideLabel: true,
               label: 'Date of birth',
               html: '18 Jun 1960 (Age 50)',
+            }, {
+              hideLabel: true,
+              label: 'Gender',
+              text: mockMove.person.gender.title,
+            }, {
+              hideLabel: true,
+              label: 'Ethnicity',
+              text: mockMove.person.ethnicity.title,
             }],
           })
         })
       })
 
-      context('when meta contains falsey values', function () {
+      context('when meta contains all falsey values', function () {
         let transformedResponse
 
         beforeEach(function () {
@@ -68,6 +76,34 @@ describe('Presenters', function () {
         it('should correctly remove false items', function () {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta.items.length).to.equal(0)
+        })
+      })
+
+      context('when meta contains some falsey values', function () {
+        let transformedResponse
+
+        beforeEach(function () {
+          transformedResponse = moveToCardComponent({
+            person: {
+              last_name: 'Jones',
+              first_names: 'Steve',
+              date_of_birth: '',
+              gender: mockMove.person.gender,
+              ethnicity: undefined,
+            },
+          })
+        })
+
+        it('should correctly remove false items', function () {
+          expect(transformedResponse).to.have.property('meta')
+          expect(transformedResponse.meta.items.length).to.equal(1)
+          expect(transformedResponse.meta).to.deep.equal({
+            items: [{
+              hideLabel: true,
+              label: 'Gender',
+              text: mockMove.person.gender.title,
+            }],
+          })
         })
       })
     })

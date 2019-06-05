@@ -1,0 +1,77 @@
+{
+  "data": {
+    "id": "c017c5b6-a4bf-4046-9eda-210d417a7e46",
+    "type": "court",
+    "status": "scheduled",
+    "updated_at": "2019-06-05T10:57:43Z",
+    "time_due": "2000-01-01T14:00:00Z",
+    "date": "2019-06-09",
+    "person": {
+      "id": "ca2b0927-b283-4b44-baf1-34a883118244",
+      "type": "people",
+      "first_names": "Henry",
+      "last_name": "Medhurst",
+      "date_of_birth": "1966-11-05",
+      "risk_alerts": [],
+      "health_alerts": [{
+          "description": "Health issue",
+          "comments": "Broken arm",
+          "date": null,
+          "expiry_date": null,
+          "profile_attribute_type_id": "4bd04257-24c4-493c-b5dc-a3847b26ea3b"
+        },
+        {
+          "description": "Pregnant",
+          "comments": "",
+          "date": null,
+          "expiry_date": null,
+          "profile_attribute_type_id": "72446621-4a57-41cd-8d36-88d00d85a8f1"
+        },
+        {
+          "description": "Special diet or allergy",
+          "comments": "Lactose intolerant",
+          "date": null,
+          "expiry_date": null,
+          "profile_attribute_type_id": "5d932353-2b35-4420-b7c6-1da48db80c0d"
+        }
+      ],
+      "court_information": [],
+      "identifiers": [{
+          "identifier_type": "pnc_number",
+          "value": "211112"
+        },
+        {
+          "identifier_type": "niche_reference",
+          "value": "798324"
+        }
+      ],
+      "ethnicity": {
+        "id": "f8f3c4b0-e8fe-4bac-8a96-282becb874d4",
+        "type": "ethnicities",
+        "code": "W2",
+        "title": "White (Irish)",
+        "description": "W2 - White (Irish)"
+      },
+      "gender": {
+        "id": "3660587d-624f-410e-93ac-21658ee35f83",
+        "type": "genders",
+        "title": "Male",
+        "description": null
+      }
+    },
+    "from_location": {
+      "id": "82d4c484-080f-4e88-8858-ff3c315222f2",
+      "type": "locations",
+      "description": "HMP/YOI Berwyn",
+      "location_type": "prison",
+      "location_code": null
+    },
+    "to_location": {
+      "id": "f5fb0359-9184-4bd3-b337-21663d1e55f8",
+      "type": "locations",
+      "description": "Axminster County Court",
+      "location_type": "court",
+      "location_code": null
+    }
+  }
+}
