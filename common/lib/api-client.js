@@ -32,29 +32,17 @@ function defineModels (jsonApi) {
     first_names: '',
     last_name: '',
     date_of_birth: '',
+    identifiers: '',
+    risk_alerts: '',
+    health_alerts: '',
+    court_information: '',
     gender: {
       jsonApi: 'hasOne',
-      type: 'gender',
+      type: 'genders',
     },
     ethnicity: {
       jsonApi: 'hasOne',
-      type: 'ethnicity',
-    },
-    identifiers: {
-      jsonApi: 'hasMany',
-      type: 'profile_identifier',
-    },
-    risk_alerts: {
-      jsonApi: 'hasMany',
-      type: 'profile_attribute',
-    },
-    health_alerts: {
-      jsonApi: 'hasMany',
-      type: 'profile_attribute',
-    },
-    court_information: {
-      jsonApi: 'hasMany',
-      type: 'profile_attribute',
+      type: 'ethnicities',
     },
   })
 
@@ -67,18 +55,6 @@ function defineModels (jsonApi) {
     code: '',
     title: '',
     description: '',
-  })
-
-  jsonApi.define('profile_identifier', {
-    value: '',
-    identifier_type: '',
-  })
-
-  jsonApi.define('profile_attribute', {
-    date: '',
-    expiry_date: '',
-    description: '',
-    comments: '',
   })
 
   jsonApi.define('location', {
