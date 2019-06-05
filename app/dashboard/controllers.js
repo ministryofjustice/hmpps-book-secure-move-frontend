@@ -15,7 +15,7 @@ module.exports = {
       const response = await api.getMovesByDate(moveDate)
       const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
-      const params = {
+      const locals = {
         moveDate,
         pageTitle: 'Upcoming moves',
         destinations: presenters.movesByToLocation(response.data),
@@ -29,7 +29,7 @@ module.exports = {
         },
       }
 
-      res.render('dashboard/dashboard', params)
+      res.render('dashboard/dashboard', locals)
     } catch (error) {
       next(error)
     }
