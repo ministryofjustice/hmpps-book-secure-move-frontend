@@ -1,5 +1,11 @@
 {% extends "layouts/govuk.njk" %}
 
+{% set relativeMoveDate = move.date | formatDateAsRelativeDay(false) %}
+
+{% block pageTitle %}
+  Move details for {{ fullname | upper }}
+{% endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -24,6 +30,13 @@
 
       {{ govukSummaryList(personalDetailsSummary) }}
     </div>
-  </div>
 
+    <div class="govuk-grid-column-one-third">
+      <div class="app-border-top-2 app-border--blue govuk-!-padding-top-4">
+        <h3 class="govuk-heading-m">{{ fullname | upper }}</h3>
+
+        {{ appMetaList(moveSummary) }}
+      </div>
+    </div>
+  </div>
 {% endblock %}

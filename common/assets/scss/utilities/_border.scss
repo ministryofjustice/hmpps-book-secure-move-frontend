@@ -52,6 +52,10 @@ $_border-widths: (
   .app-border--black {
     border-color: govuk-colour("black");
   }
+
+  .app-border--blue {
+    border-color: govuk-colour("blue");
+  }
 }
 
 @include _app-generate-border-classes;

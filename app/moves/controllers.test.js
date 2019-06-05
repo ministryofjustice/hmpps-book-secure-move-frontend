@@ -2,12 +2,7 @@ const presenters = require('../../common/presenters')
 
 const controllers = require('./controllers')
 
-const mockMove = {
-  person: {
-    first_names: 'STEVE',
-    last_name: 'Smith',
-  },
-}
+const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
 
 describe('Moves controllers', function () {
   describe('#get()', function () {
@@ -34,7 +29,7 @@ describe('Moves controllers', function () {
     it('should contain fullname param', function () {
       const params = res.render.args[0][1]
       expect(params).to.have.property('fullname')
-      expect(params.fullname).to.equal('Smith, STEVE')
+      expect(params.fullname).to.equal(`${mockMove.person.last_name}, ${mockMove.person.first_names}`)
     })
 
     it('should contain personal details summary param', function () {
