@@ -16,12 +16,15 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/components/header/header.scss";
 @import "govuk-frontend/components/footer/footer.scss";
 @import "govuk-frontend/components/skip-link/skip-link.scss";
+@import "govuk-frontend/components/summary-list/summary-list.scss";
 
 @import "govuk-frontend/utilities/all";
 @import "govuk-frontend/overrides/all";
 
 // Import app settings/tools/helpers
 @import "helpers/all";
+
+@import "core/all";
 
 // Import app level components and styles
 @import "components/all";
