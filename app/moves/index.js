@@ -4,11 +4,11 @@ const wizard = require('hmpo-form-wizard')
 
 // Local dependencies
 const steps = require('./steps')
+const fields = require('./fields')
 const { get, form } = require('./controllers')
 const { setMove } = require('./middleware')
 const { ensureAuthenticated } = require('../../common/middleware/authentication')
 
-const fields = {}
 const wizardConfig = {
   controller: form,
   name: 'new-move',
