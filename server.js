@@ -25,6 +25,9 @@ const app = express()
 app.set('view engine', 'njk')
 nunjucks(app, config, configPaths)
 
+// Locals
+app.use(locals)
+
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -68,9 +71,6 @@ app.use(grant({
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
-
-// Locals
-app.use(locals)
 
 // Routing
 app.use(router)

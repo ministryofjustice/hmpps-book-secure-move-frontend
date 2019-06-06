@@ -1,0 +1,30 @@
+{% extends "layouts/govuk.njk" %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {% if backLink %}
+    {{ govukBackLink({
+      text: "Back",
+      href: backLink
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        {{ options.heading }}
+      </h1>
+    </div>
+  </header>
+
+  <form method="post">
+    <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+
+    {{ govukButton({
+      text: "Continue"
+    }) }}
+  </form>
+{% endblock %}
