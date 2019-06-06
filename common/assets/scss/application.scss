@@ -14,9 +14,12 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 
 @import "govuk-frontend/components/back-link/back-link.scss";
 @import "govuk-frontend/components/button/button.scss";
+@import "govuk-frontend/components/checkboxes/checkboxes.scss";
 @import "govuk-frontend/components/error-summary/error-summary.scss";
 @import "govuk-frontend/components/footer/footer.scss";
 @import "govuk-frontend/components/header/header.scss";
+@import "govuk-frontend/components/input/input.scss";
+@import "govuk-frontend/components/radios/radios.scss";
 @import "govuk-frontend/components/skip-link/skip-link.scss";
 @import "govuk-frontend/components/summary-list/summary-list.scss";
 
