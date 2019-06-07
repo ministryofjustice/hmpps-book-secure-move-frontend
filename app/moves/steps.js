@@ -20,11 +20,21 @@ module.exports = {
   },
   '/move-details': {
     heading: 'Where is this person moving?',
-    next: 'risk-information',
+    next: [
+      { field: 'to_location', value: 'court', next: 'court-information' },
+      'risk-information',
+    ],
     fields: [
       'from_location',
       'to_location',
       'date',
+    ],
+  },
+  '/court-information': {
+    heading: 'Is there information for the court?',
+    next: 'risk-information',
+    fields: [
+      'court',
     ],
   },
   '/risk-information': {
@@ -36,15 +46,8 @@ module.exports = {
   },
   '/health-information': {
     heading: 'Does this person’s health affect transport?',
-    next: 'court-information',
     fields: [
       'health',
-    ],
-  },
-  '/court-information': {
-    heading: 'Is there information for the court?',
-    fields: [
-      'court',
     ],
   },
 }

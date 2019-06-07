@@ -94,9 +94,11 @@ module.exports = {
     name: 'to_location',
     items: [
       {
+        value: 'court',
         text: 'Court',
       },
       {
+        value: 'prison',
         text: 'Prison',
       },
     ],
