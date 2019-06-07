@@ -6,6 +6,72 @@ const controller = new Controller({ route: '/' })
 
 describe('Moves controllers', function () {
   describe('Form', function () {
+    describe('#getErrors()', function () {
+      let errors
+
+      beforeEach(function () {
+        sinon.stub(FormController.prototype, 'getErrors')
+      })
+
+      context('when parent returns empty errors object', function () {
+        beforeEach(function () {
+          FormController.prototype.getErrors.returns({})
+          errors = controller.getErrors({}, {})
+        })
+
+        it('should set an empty error list property', function () {
+          expect(errors.errorList.length).to.equal(0)
+        })
+      })
+
+      context('when parent returns an errors object', function () {
+        beforeEach(function () {
+          FormController.prototype.getErrors.returns({
+            fieldOne: {
+              key: 'fieldOne',
+              type: 'required',
+              url: '/step-url',
+            },
+            fieldTwo: {
+              key: 'fieldTwo',
+              type: 'required',
+              url: '/step-url',
+            },
+          })
+          errors = controller.getErrors({}, {})
+        })
+
+        it('should contain correct number of errors', function () {
+          expect(errors.errorList.length).to.equal(2)
+        })
+
+        it('should transform and append messages property', function () {
+          expect(errors).to.deep.equal({
+            fieldOne: {
+              key: 'fieldOne',
+              type: 'required',
+              url: '/step-url',
+            },
+            fieldTwo: {
+              key: 'fieldTwo',
+              type: 'required',
+              url: '/step-url',
+            },
+            errorList: [
+              {
+                href: '#fieldOne-error',
+                text: 'fieldOne required',
+              },
+              {
+                href: '#fieldTwo-error',
+                text: 'fieldTwo required',
+              },
+            ],
+          })
+        })
+      })
+    })
+
     describe('#errorHandler()', function () {
       let errorMock, resMock
 
