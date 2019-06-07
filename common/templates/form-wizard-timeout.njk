@@ -1,0 +1,17 @@
+{% extends "layouts/govuk.njk" %}
+
+{% block content %}
+  <header class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Session timeout
+      </h1>
+    </div>
+  </header>
+
+  <p>Your session has timed out due to a long period of inactivity.</p>
+
+  <p>
+    <a href="{{ journeyBaseUrl }}" class="govuk-button">Restart</a>
+  </p>
+{% endblock %}
