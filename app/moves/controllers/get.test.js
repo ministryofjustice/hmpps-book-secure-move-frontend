@@ -1,8 +1,8 @@
-const presenters = require('../../common/presenters')
+const presenters = require('../../../common/presenters')
 
-const controllers = require('./controllers')
+const controllers = require('./')
 
-const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
+const { data: mockMove } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 
 describe('Moves controllers', function () {
   describe('#get()', function () {
