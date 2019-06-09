@@ -12,6 +12,13 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors.errorList.length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem with this page",
+      errorList: errors.errorList
+    }) }}
+  {% endif %}
+
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
