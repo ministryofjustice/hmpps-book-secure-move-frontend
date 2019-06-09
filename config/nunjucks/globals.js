@@ -1,3 +1,3 @@
 module.exports = {
-  SERVICE_NAME: 'Move a prisoner',
+  SERVICE_NAME: 'Book a secure move',
 }
