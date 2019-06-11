@@ -1,0 +1,26 @@
+{
+  "data": [{
+    "id": "d335715f-c9d1-415c-a7c8-06e830158214",
+    "type": "genders",
+    "attributes": {
+      "title": "Female",
+      "description": null
+    }
+  },
+  {
+    "id": "4d9e344e-1f89-4ca8-a95f-ac14df3f1a24",
+    "type": "genders",
+    "attributes": {
+      "title": "Male",
+      "description": null
+    }
+  },
+  {
+    "id": "86c2f34a-987c-4b3a-80ad-0f3af66b1190",
+    "type": "genders",
+    "attributes": {
+      "title": "Transexual",
+      "description": null
+    }
+  }]
+}

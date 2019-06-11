@@ -50,12 +50,16 @@ function defineModels (jsonApi) {
   jsonApi.define('gender', {
     title: '',
     description: '',
+  }, {
+    collectionPath: 'reference/genders',
   })
 
   jsonApi.define('ethnicity', {
     code: '',
     title: '',
     description: '',
+  }, {
+    collectionPath: 'reference/ethnicities',
   })
 
   jsonApi.define('location', {
