@@ -2,6 +2,7 @@
   "data": {
     "id": "c017c5b6-a4bf-4046-9eda-210d417a7e46",
     "type": "court",
+    "reference": "KE6CYT9M",
     "status": "scheduled",
     "updated_at": "2019-06-05T10:57:43Z",
     "time_due": "2000-01-01T14:00:00Z",

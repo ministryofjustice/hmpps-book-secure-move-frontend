@@ -14,7 +14,7 @@ function _removeEmpty (items, keys) {
   })
 }
 
-module.exports = function moveToCardComponent ({ id, person }) {
+module.exports = function moveToCardComponent ({ id, reference, person }) {
   const meta = [
     {
       label: 'Date of birth',
@@ -39,7 +39,7 @@ module.exports = function moveToCardComponent ({ id, person }) {
       text: `${person.last_name.toUpperCase()}, ${person.first_names.toUpperCase()}`,
     },
     caption: {
-      text: id,
+      text: reference,
     },
     meta: {
       items: _removeEmpty(meta, ['text', 'html']),

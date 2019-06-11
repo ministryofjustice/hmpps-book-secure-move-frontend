@@ -9,6 +9,7 @@ const jsonApi = new JsonApi({
 
 function defineModels (jsonApi) {
   jsonApi.define('move', {
+    reference: '',
     type: '',
     status: '',
     updated_at: '',

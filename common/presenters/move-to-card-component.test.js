@@ -34,7 +34,7 @@ describe('Presenters', function () {
         it('should contain a caption', function () {
           expect(transformedResponse).to.have.property('caption')
           expect(transformedResponse.caption).to.deep.equal({
-            text: mockMove.id,
+            text: mockMove.reference,
           })
         })
 
