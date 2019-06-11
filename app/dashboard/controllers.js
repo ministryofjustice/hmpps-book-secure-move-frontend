@@ -6,13 +6,13 @@ const {
 
 const { getQueryString } = require('../../common/lib/request')
 const presenters = require('../../common/presenters')
-const api = require('../../common/lib/api-client')
+const moveService = require('../../common/services/move')
 
 module.exports = {
   get: async (req, res, next) => {
     try {
       const moveDate = req.query['move-date'] || format(new Date(), 'YYYY-MM-DD')
-      const response = await api.getMovesByDate(moveDate)
+      const response = await moveService.getMovesByDate(moveDate)
       const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const locals = {
