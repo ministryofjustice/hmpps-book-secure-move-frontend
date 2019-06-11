@@ -12,6 +12,14 @@ const filters = proxyquire('./filters', {
 
 describe('Nunjucks filters', function () {
   describe('#formatDate()', function () {
+    context('when no date is provided', function () {
+      it('should return input value', function () {
+        const formattedDate = filters.formatDate('')
+
+        expect(formattedDate).to.equal('')
+      })
+    })
+
     context('when given an invalid date', function () {
       it('should return input value', function () {
         const formattedDate = filters.formatDate('2010-45-5')
