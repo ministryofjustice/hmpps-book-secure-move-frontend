@@ -1,3 +1,4 @@
+const { date } = require('./formatters')
 
 module.exports = {
   // personal details
@@ -38,6 +39,7 @@ module.exports = {
     autocomplete: 'off',
   },
   date_of_birth: {
+    formatter: [date],
     component: 'govukInput',
     label: {
       text: 'Date of birth',
