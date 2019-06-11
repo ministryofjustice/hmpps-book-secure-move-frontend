@@ -1,12 +1,12 @@
 const nock = require('nock')
 
-const apiClient = require('./api-client')
+const moveService = require('./move')
 const { API } = require('../../config')
 
 const movesGetDeserialized = require('../../test/fixtures/api-client/moves.get.deserialized.json')
 const movesGetSerialized = require('../../test/fixtures/api-client/moves.get.serialized.json')
 
-describe('API Client', function () {
+describe('Move Service', function () {
   describe('#getMovesByDate()', function () {
     context('when request returns 200', function () {
       const mockDate = '2017-08-10'
@@ -25,7 +25,7 @@ describe('API Client', function () {
           })
           .reply(200, movesGetSerialized)
 
-        moves = await apiClient.getMovesByDate(mockDate)
+        moves = await moveService.getMovesByDate(mockDate)
       })
 
       afterEach(function () {
