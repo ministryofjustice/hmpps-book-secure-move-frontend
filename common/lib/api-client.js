@@ -67,16 +67,4 @@ function defineModels (jsonApi) {
 
 defineModels(jsonApi)
 
-// Move filter helpers
-jsonApi.getMovesByDate = (moveDate) => {
-  return jsonApi.findAll('move', {
-    'filter[date_from]': moveDate,
-    'filter[date_to]': moveDate,
-  })
-}
-
-jsonApi.getMoveById = (id) => {
-  return jsonApi.find('move', id)
-}
-
 module.exports = jsonApi

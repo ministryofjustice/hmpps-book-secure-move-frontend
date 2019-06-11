@@ -1,4 +1,4 @@
-const api = require('../../common/lib/api-client')
+const moveService = require('../../common/services/move')
 
 module.exports = {
   setMove: async (req, res, next, moveId) => {
@@ -7,7 +7,7 @@ module.exports = {
     }
 
     try {
-      const move = await api.getMoveById(moveId)
+      const move = await moveService.getMoveById(moveId)
 
       res.locals.move = move.data
 

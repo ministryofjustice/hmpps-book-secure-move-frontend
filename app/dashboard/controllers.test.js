@@ -1,5 +1,5 @@
 const presenters = require('../../common/presenters')
-const apiClient = require('../../common/lib/api-client')
+const moveService = require('../../common/services/move')
 
 const controllers = require('./controllers')
 
@@ -22,7 +22,7 @@ describe('Dashboard app', function () {
       let req, res
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
+        sinon.stub(moveService, 'getMovesByDate').resolves(movesStub)
         this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
         req = { query: {} }
@@ -70,7 +70,7 @@ describe('Dashboard app', function () {
       let req, res
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'getMovesByDate').resolves(movesStub)
+        sinon.stub(moveService, 'getMovesByDate').resolves(movesStub)
 
         req = {
           query: {
@@ -116,7 +116,7 @@ describe('Dashboard app', function () {
       let req, res, nextSpy
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'getMovesByDate').throws(errorStub)
+        sinon.stub(moveService, 'getMovesByDate').throws(errorStub)
 
         req = {
           query: {},
