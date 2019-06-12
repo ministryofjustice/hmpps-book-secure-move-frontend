@@ -2,6 +2,7 @@ const nock = require('nock')
 
 const {
   getGenders,
+  getEthnicities,
   getAssessmentQuestions,
 } = require('./reference-data')
 const { API } = require('../../config')
@@ -43,10 +44,10 @@ describe('Reference Service', function () {
 
       beforeEach(async function () {
         nock(API.BASE_URL)
-          .get('/reference/genders')
+          .get('/reference/ethnicities')
           .reply(200, ethnicitiesSerialized)
 
-        response = await getGenders()
+        response = await getEthnicities()
       })
 
       it('should call API', function () {
