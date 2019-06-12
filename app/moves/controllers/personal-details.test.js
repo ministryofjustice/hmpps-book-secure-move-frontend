@@ -1,6 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./personal-details')
+const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
 
 const controller = new Controller({ route: '/' })
@@ -24,6 +25,11 @@ const ethnicityMock = [
     title: 'Bar',
   },
 ]
+const personMock = {
+  id: '3333',
+  first_names: 'Foo',
+  last_name: 'Bar',
+}
 
 describe('Moves controllers', function () {
   describe('Personal Details', function () {
@@ -102,6 +108,58 @@ describe('Moves controllers', function () {
 
         it('should not mutate request object', function () {
           expect(req).to.deep.equal({})
+        })
+      })
+    })
+
+    describe('#saveValues()', function () {
+      let req, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        req = {
+          form: {
+            values: {},
+          },
+        }
+      })
+
+      context('when save is successful', function () {
+        beforeEach(async function () {
+          sinon.spy(FormController.prototype, 'configure')
+          sinon.stub(personService, 'create').resolves(personMock)
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should set person response on form values', function () {
+          expect(req.form.values).to.have.property('person')
+          expect(req.form.values.person).to.deep.equal(personMock)
+        })
+
+        it('should not throw an error', function () {
+          expect(nextSpy).to.be.calledOnce
+          expect(nextSpy).to.be.calledWith()
+        })
+      })
+
+      context('when save fails', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function () {
+          sinon.stub(personService, 'create').throws(errorMock)
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledWith(errorMock)
+        })
+
+        it('should call next once', function () {
+          expect(nextSpy).to.be.calledOnce
+        })
+
+        it('should not set person response on form values', function () {
+          expect(req.form.values).not.to.have.property('person')
         })
       })
     })
