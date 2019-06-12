@@ -1,3 +1,5 @@
+const { PersonalDetails } = require('./controllers')
+
 module.exports = {
   '/': {
     entryPoint: true,
@@ -6,6 +8,7 @@ module.exports = {
     next: 'personal-details',
   },
   '/personal-details': {
+    controller: PersonalDetails,
     backLink: null,
     heading: 'Personal details',
     next: 'move-details',

@@ -59,20 +59,10 @@ module.exports = {
       },
     },
     name: 'gender',
-    items: [
-      {
-        text: 'Male',
-      },
-      {
-        text: 'Female',
-      },
-      {
-        text: 'Trans',
-      },
-    ],
+    items: [],
   },
   ethnicity: {
-    component: 'govukInput',
+    component: 'govukSelect',
     label: {
       text: 'Ethnicity',
       classes: 'govuk-label--s',
@@ -80,7 +70,7 @@ module.exports = {
     id: 'ethnicity',
     name: 'ethnicity',
     classes: 'govuk-input--width-20',
-    autocomplete: 'off',
+    items: [],
   },
   // move details
   from_location: {
