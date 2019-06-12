@@ -1,0 +1,99 @@
+const nock = require('nock')
+
+const personService = require('./person')
+const { API } = require('../../config')
+
+const personPostSerialized = require('../../test/fixtures/api-client/person.post.serialized.json')
+const personPostDeserialized = require('../../test/fixtures/api-client/person.post.deserialized.json')
+
+const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
+const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
+
+describe('Person Service', function () {
+  describe('#format()', function () {
+    context('when relationship field is string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          gender: genderMockId,
+          ethnicity: ethnicityMockId,
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.gender).to.deep.equal({
+          id: genderMockId,
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.ethnicity).to.deep.equal({
+          id: ethnicityMockId,
+        })
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
+
+    context('when relationship field is not a string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          gender: {
+            id: genderMockId,
+          },
+          ethnicity: {
+            id: ethnicityMockId,
+          },
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.gender).to.deep.equal({
+          id: genderMockId,
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.ethnicity).to.deep.equal({
+          id: ethnicityMockId,
+        })
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
+  })
+
+  describe('#create()', function () {
+    context('when request returns 200', function () {
+      let response
+
+      beforeEach(async function () {
+        nock(API.BASE_URL)
+          .post('/people')
+          .reply(200, personPostSerialized)
+
+        response = await personService.create({
+          first_names: 'Foo',
+          last_names: 'Bar',
+        })
+      })
+
+      it('should get move from API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain move with correct data', function () {
+        expect(response).to.deep.equal(personPostDeserialized.data)
+      })
+    })
+  })
+})

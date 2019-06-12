@@ -1,0 +1,29 @@
+{
+  "data": {
+    "id": "b695d0f0-af8e-4b97-891e-92020d6820b9",
+    "type": "people",
+    "attributes": {
+      "first_names": "Bob",
+      "last_name": "Roberts",
+      "date_of_birth": "1965-10-24",
+      "risk_alerts": [],
+      "health_alerts": [],
+      "court_information": [],
+      "identifiers": []
+    },
+    "relationships": {
+      "ethnicity": {
+        "data": {
+          "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
+          "type": "ethnicities"
+        }
+      },
+      "gender": {
+        "data": {
+          "id": "d335715f-c9d1-415c-a7c8-06e830158214",
+          "type": "genders"
+        }
+      }
+    }
+  }
+}
