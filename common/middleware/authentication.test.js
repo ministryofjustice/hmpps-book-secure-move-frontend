@@ -142,5 +142,64 @@ describe('Authentication middleware', function () {
         expect(nextSpy.calledOnce).to.be.true
       })
     })
+
+    context('session regeneration throws an error', function () {
+      let reqMock, errorMock
+
+      beforeEach(async function () {
+        errorMock = new Error('Session Error')
+
+        reqMock = {
+          session: {
+            grant: {
+              response: {},
+            },
+            regenerate (func) {
+              func(errorMock)
+            },
+          },
+        }
+
+        // Stub the Okta userinfo endpoint
+        nock(`https://${AUTH.OKTA_SUBDOMAIN}.okta.com`)
+          .get('/oauth2/v1/userinfo')
+          .reply(200, {})
+
+        await authentication.processAuthResponse(reqMock, {}, nextSpy)
+      })
+
+      it('should call next with error', async function () {
+        expect(nextSpy).to.be.calledOnce
+        expect(nextSpy).to.be.calledWith(errorMock)
+      })
+    })
+
+    context('when async response throws an error', function () {
+      let reqMock, errorMock
+
+      beforeEach(async function () {
+        errorMock = 'Mock Error'
+
+        reqMock = {
+          session: {
+            grant: {
+              response: {},
+            },
+          },
+        }
+
+        // Stub the Okta userinfo endpoint
+        nock(`https://${AUTH.OKTA_SUBDOMAIN}.okta.com`)
+          .get('/oauth2/v1/userinfo')
+          .replyWithError(errorMock)
+
+        await authentication.processAuthResponse(reqMock, res, nextSpy)
+      })
+
+      it('should call next with error', async function () {
+        expect(nextSpy).to.be.calledOnce
+        expect(nextSpy.args[0][0].message).to.equal(errorMock)
+      })
+    })
   })
 })
