@@ -1,4 +1,6 @@
 /* eslint no-process-env: "off" */
+require('dotenv').config()
+
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
