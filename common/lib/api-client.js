@@ -62,6 +62,16 @@ function defineModels (jsonApi) {
     collectionPath: 'reference/ethnicities',
   })
 
+  jsonApi.define('profile_attribute_type', {
+    category: '',
+    user_type: '',
+    description: '',
+    alert_type: '',
+    alert_code: '',
+  }, {
+    collectionPath: 'reference/profile_attribute_types',
+  })
+
   jsonApi.define('location', {
     description: '',
     location_type: '',

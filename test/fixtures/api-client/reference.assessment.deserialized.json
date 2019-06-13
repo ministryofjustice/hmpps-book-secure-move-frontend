@@ -1,0 +1,20 @@
+{
+  "data": [{
+    "id": "f6e1f57c-7d07-41d2-afee-1662f5103e2d",
+    "type": "profile_attribute_types",
+    "category": "risk",
+    "user_type": "police",
+    "description": "Violent",
+    "alert_type": null,
+    "alert_code": null
+  },
+  {
+    "id": "0c76cf75-95f4-4dee-9854-a35782304647",
+    "type": "profile_attribute_types",
+    "category": "risk",
+    "user_type": "police",
+    "description": "Escape",
+    "alert_type": null,
+    "alert_code": null
+  }]
+}

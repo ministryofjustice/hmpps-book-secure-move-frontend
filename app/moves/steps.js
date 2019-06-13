@@ -1,4 +1,7 @@
-const { PersonalDetails } = require('./controllers')
+const {
+  PersonalDetails,
+  Assessment,
+} = require('./controllers')
 
 module.exports = {
   '/': {
@@ -34,13 +37,15 @@ module.exports = {
     ],
   },
   '/court-information': {
+    controller: Assessment,
     heading: 'Is there information for the court?',
     next: 'risk-information',
     fields: [
-      'court',
+      'court_information',
     ],
   },
   '/risk-information': {
+    controller: Assessment,
     heading: 'Are there risks with moving this person?',
     next: 'health-information',
     fields: [
@@ -48,6 +53,7 @@ module.exports = {
     ],
   },
   '/health-information': {
+    controller: Assessment,
     heading: 'Does this person’s health affect transport?',
     fields: [
       'health',

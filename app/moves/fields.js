@@ -119,6 +119,8 @@ module.exports = {
   // risk information
   risk: {
     component: 'govukCheckboxes',
+    name: 'risk',
+    multiple: true,
     fieldset: {
       legend: {
         text: 'Add risks',
@@ -128,43 +130,13 @@ module.exports = {
     hint: {
       text: 'Select all that apply',
     },
-    name: 'risk',
-    items: [
-      {
-        text: 'Violence',
-        hint: {
-          text: 'For example, past behaviour or current charges',
-        },
-      },
-      {
-        text: 'Escape',
-      },
-      {
-        text: 'Must be held separately',
-        hint: {
-          text: 'For example, vulnerable or threatening to others',
-        },
-      },
-      {
-        text: 'Self harm',
-        hint: {
-          text: 'For example, suicidal or a history of self-harm',
-        },
-      },
-      {
-        text: 'Concealed items',
-      },
-      {
-        text: 'Any other risks',
-        hint: {
-          text: 'Do not include health risks, you will be asked about these next',
-        },
-      },
-    ],
+    items: [],
   },
   // health information
   health: {
     component: 'govukCheckboxes',
+    name: 'health',
+    multiple: true,
     fieldset: {
       legend: {
         text: 'Add health information',
@@ -174,37 +146,13 @@ module.exports = {
     hint: {
       text: 'Select all that apply',
     },
-    name: 'health',
-    items: [
-      {
-        text: 'Special diet or allergy',
-      },
-      {
-        text: 'Health issue',
-      },
-      {
-        text: 'Medication',
-      },
-      {
-        text: 'Wheelchair user',
-      },
-      {
-        text: 'Pregnant',
-      },
-      {
-        text: 'Issues with speech',
-      },
-      {
-        text: 'Any other health information',
-        hint: {
-          text: 'For example, broken bones, claustrophobia',
-        },
-      },
-    ],
+    items: [],
   },
   // court information
-  court: {
+  court_information: {
     component: 'govukCheckboxes',
+    name: 'court_information',
+    multiple: true,
     fieldset: {
       legend: {
         text: 'Add court information',
@@ -214,17 +162,6 @@ module.exports = {
     hint: {
       text: 'Select all that apply',
     },
-    name: 'court',
-    items: [
-      {
-        text: 'Solicitor or other legal representation',
-      },
-      {
-        text: 'Sign or other language interpreter',
-      },
-      {
-        text: 'Any other information',
-      },
-    ],
+    items: [],
   },
 }
