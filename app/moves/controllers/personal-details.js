@@ -1,4 +1,5 @@
 const FormController = require('./form')
+const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
 
 function _referenceToItem (item) {
@@ -24,6 +25,15 @@ class PersonalDetailsController extends FormController {
       req.form.options.fields.ethnicity.items = [_intialOption('ethnicity'), ...ethnicities.map(_referenceToItem)]
 
       super.configure(req, res, next)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async saveValues (req, res, next) {
+    try {
+      req.form.values.person = await personService.create(req.form.values)
+      super.saveValues(req, res, next)
     } catch (error) {
       next(error)
     }

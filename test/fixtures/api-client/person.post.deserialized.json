@@ -1,0 +1,15 @@
+{
+  "data": {
+    "id": "b695d0f0-af8e-4b97-891e-92020d6820b9",
+    "type": "people",
+    "first_names": "Bob",
+    "last_name": "Roberts",
+    "date_of_birth": "1965-10-24",
+    "risk_alerts": [],
+    "health_alerts": [],
+    "court_information": [],
+    "identifiers": [],
+    "ethnicity": null,
+    "gender": null
+  }
+}
