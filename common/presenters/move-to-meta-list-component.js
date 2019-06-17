@@ -22,7 +22,7 @@ module.exports = function moveToMetaListComponent ({ date, time_due, from_locati
         text: 'From',
       },
       value: {
-        text: from_location.description,
+        text: from_location.title,
       },
     },
     {
@@ -30,7 +30,7 @@ module.exports = function moveToMetaListComponent ({ date, time_due, from_locati
         text: 'To',
       },
       value: {
-        text: to_location.description,
+        text: to_location.title,
       },
     },
     {

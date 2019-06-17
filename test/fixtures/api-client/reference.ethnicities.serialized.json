@@ -3,7 +3,7 @@
     "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
     "type": "ethnicities",
     "attributes": {
-      "code": "A1",
+      "key": "A1",
       "title": "Asian or Asian British (Indian)",
       "description": "A1 - Asian or Asian British (Indian)"
     }
@@ -12,7 +12,7 @@
     "id": "35660b02-243f-4df2-9337-e3ec49b6d70d",
     "type": "ethnicities",
     "attributes": {
-      "code": "B1",
+      "key": "B1",
       "title": "Black (Caribbean)",
       "description": "B1 - Black (Caribbean)"
     }
@@ -21,7 +21,7 @@
     "id": "238bf804-7fc9-4f1f-b834-1d1086b2645d",
     "type": "ethnicities",
     "attributes": {
-      "code": "O1",
+      "key": "O1",
       "title": "Chinese",
       "description": "O1 - Chinese"
     }
@@ -30,7 +30,7 @@
     "id": "c1f81573-8f9f-4a2a-a947-9a8288272c65",
     "type": "ethnicities",
     "attributes": {
-      "code": "W1",
+      "key": "W1",
       "title": "White (British)",
       "description": "W1 - White (British)"
     }

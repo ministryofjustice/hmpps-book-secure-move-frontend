@@ -3,6 +3,7 @@
     "id": "f6e1f57c-7d07-41d2-afee-1662f5103e2d",
     "type": "assessment_questions",
     "category": "risk",
+    "key": "violent",
     "title": "Violent",
     "nomis_alert_type": null,
     "nomis_alert_code": null
@@ -11,6 +12,7 @@
     "id": "0c76cf75-95f4-4dee-9854-a35782304647",
     "type": "assessment_questions",
     "category": "risk",
+    "key": "escape",
     "title": "Escape",
     "nomis_alert_type": null,
     "nomis_alert_code": null

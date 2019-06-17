@@ -30,7 +30,7 @@ describe('Presenters', function () {
 
           expect(item).to.deep.equal({
             key: { text: 'From' },
-            value: { text: mockMove.from_location.description },
+            value: { text: mockMove.from_location.title },
           })
         })
 
@@ -39,7 +39,7 @@ describe('Presenters', function () {
 
           expect(item).to.deep.equal({
             key: { text: 'To' },
-            value: { text: mockMove.to_location.description },
+            value: { text: mockMove.to_location.title },
           })
         })
 

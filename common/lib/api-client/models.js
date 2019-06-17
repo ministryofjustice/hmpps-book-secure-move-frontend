@@ -36,6 +36,7 @@ function defineModels (jsonApi) {
   })
 
   jsonApi.define('gender', {
+    key: '',
     title: '',
     description: '',
   }, {
@@ -43,7 +44,7 @@ function defineModels (jsonApi) {
   })
 
   jsonApi.define('ethnicity', {
-    code: '',
+    key: '',
     title: '',
     description: '',
   }, {
@@ -51,9 +52,9 @@ function defineModels (jsonApi) {
   })
 
   jsonApi.define('assessment_question', {
+    key: '',
     title: '',
     category: '',
-    comments: '',
     nomis_alert_type: '',
     nomis_alert_code: '',
   }, {
@@ -61,7 +62,8 @@ function defineModels (jsonApi) {
   })
 
   jsonApi.define('location', {
-    description: '',
+    key: '',
+    title: '',
     location_type: '',
     location_code: '',
   })
