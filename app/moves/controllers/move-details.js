@@ -17,6 +17,16 @@ class MoveDetailsController extends FormController {
       next(error)
     }
   }
+
+  process (req, res, next) {
+    // process move date
+    const { date_type: dateType } = req.form.values
+    if (dateType !== 'custom') {
+      req.form.values.date = dateType
+    }
+
+    next()
+  }
 }
 
 module.exports = MoveDetailsController

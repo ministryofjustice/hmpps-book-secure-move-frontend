@@ -39,6 +39,7 @@ module.exports = {
       'to_location_type',
       'to_location_court',
       'to_location_prison',
+      'date_type',
       'date',
     ],
   },

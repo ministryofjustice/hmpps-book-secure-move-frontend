@@ -102,5 +102,63 @@ describe('Moves controllers', function () {
         })
       })
     })
+
+    describe('#process()', function () {
+      let req, nextSpy
+
+      context('when date type is custom', function () {
+        beforeEach(function () {
+          nextSpy = sinon.spy()
+          req = {
+            form: {
+              values: {
+                date: '2019-10-17',
+                date_type: 'custom',
+              },
+            },
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should not change the value of date field', function () {
+          expect(req.form.values).to.deep.equal({
+            date: '2019-10-17',
+            date_type: 'custom',
+          })
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when date type is not custom', function () {
+        beforeEach(function () {
+          nextSpy = sinon.spy()
+          req = {
+            form: {
+              values: {
+                date: '',
+                date_type: '2019-10-19',
+              },
+            },
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set value of date to date type', function () {
+          expect(req.form.values).to.deep.equal({
+            date: '2019-10-19',
+            date_type: '2019-10-19',
+          })
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
   })
 })

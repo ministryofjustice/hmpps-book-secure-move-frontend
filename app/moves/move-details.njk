@@ -32,5 +32,30 @@
     ]
   }) }}
 
-  {{ govukRadios(options.fields.date) }}
+  {{ govukRadios({
+    name: "date_type",
+    fieldset: {
+      legend: {
+        text: "Date",
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    items: [
+      {
+        value: TODAY,
+        text: "Today (" + TODAY | formatDateWithDay + ")"
+      },
+      {
+        value: TOMORROW,
+        text: "Tomorrow (" + TOMORROW | formatDateWithDay + ")"
+      },
+      {
+        value: "custom",
+        text: "Another date",
+        conditional: {
+          html: govukInput(options.fields.date)
+        }
+      }
+    ]
+  }) }}
 {% endblock %}

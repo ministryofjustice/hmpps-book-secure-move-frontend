@@ -116,26 +116,20 @@ module.exports = {
     },
     items: [],
   },
+  date_type: {
+  },
   date: {
-    component: 'govukRadios',
-    fieldset: {
-      legend: {
-        text: 'Date',
-        classes: 'govuk-fieldset__legend--m',
-      },
-    },
+    id: 'date',
     name: 'date',
-    items: [
-      {
-        text: 'Today',
-      },
-      {
-        text: 'Tomorrow',
-      },
-      {
-        text: 'Another date',
-      },
-    ],
+    label: {
+      text: 'Date of travel',
+      classes: 'govuk-label--s',
+    },
+    hint: {
+      text: 'For example 28/10/2019 or 28 October 2019',
+    },
+    classes: 'govuk-input--width-10',
+    autocomplete: 'off',
   },
   // risk information
   risk: {
