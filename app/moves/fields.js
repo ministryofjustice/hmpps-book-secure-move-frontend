@@ -75,7 +75,7 @@ module.exports = {
   // move details
   from_location: {
   },
-  to_location: {
+  to_location_type: {
     component: 'govukRadios',
     fieldset: {
       legend: {
@@ -83,7 +83,7 @@ module.exports = {
         classes: 'govuk-fieldset__legend--m',
       },
     },
-    name: 'to_location',
+    name: 'to_location_type',
     items: [
       {
         value: 'court',
@@ -94,6 +94,27 @@ module.exports = {
         text: 'Prison',
       },
     ],
+  },
+  to_location: {},
+  to_location_prison: {
+    id: 'to_location_prison',
+    name: 'to_location_prison',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'Name of prison (optional)',
+      classes: 'govuk-label--s',
+    },
+    items: [],
+  },
+  to_location_court: {
+    id: 'to_location_court',
+    name: 'to_location_court',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'Name of court',
+      classes: 'govuk-label--s',
+    },
+    items: [],
   },
   date: {
     component: 'govukRadios',
