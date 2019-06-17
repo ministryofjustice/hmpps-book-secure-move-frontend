@@ -2,6 +2,8 @@ const {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
+  mapToOption,
+  insertInitialOption,
 } = require('./reference-data')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/auth')
@@ -84,6 +86,70 @@ describe('Reference Service', function () {
       it('should return list of assessment questions', function () {
         expect(response.length).to.deep.equal(assessmentDeserialized.data.length)
         expect(response).to.deep.equal(assessmentDeserialized.data)
+      })
+    })
+  })
+
+  describe('#mapToOption()', function () {
+    it('should return correctly formatted option', function () {
+      const option = mapToOption({
+        id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+        title: 'Foo',
+      })
+
+      expect(option).to.deep.equal({
+        value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+        text: 'Foo',
+      })
+    })
+  })
+
+  describe('#insertInitialOption()', function () {
+    const mockItems = [{
+      value: 'foo',
+      text: 'Foo',
+    }, {
+      value: 'bar',
+      text: 'Bar',
+    }]
+
+    context('with default label', function () {
+      it('should insert default option at the front', function () {
+        const items = insertInitialOption(mockItems)
+
+        expect(items).to.deep.equal([
+          {
+            text: '--- Choose option ---',
+          },
+          {
+            value: 'foo',
+            text: 'Foo',
+          },
+          {
+            value: 'bar',
+            text: 'Bar',
+          },
+        ])
+      })
+    })
+
+    context('with custom label', function () {
+      it('should insert custom option at the front', function () {
+        const items = insertInitialOption(mockItems, 'gender')
+
+        expect(items).to.deep.equal([
+          {
+            text: '--- Choose gender ---',
+          },
+          {
+            value: 'foo',
+            text: 'Foo',
+          },
+          {
+            value: 'bar',
+            text: 'Bar',
+          },
+        ])
       })
     })
   })

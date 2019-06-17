@@ -20,8 +20,25 @@ function getAssessmentQuestions (category) {
     .then(response => response.data)
 }
 
+function mapToOption ({ id, title }) {
+  return {
+    value: id,
+    text: title,
+  }
+}
+
+function insertInitialOption (items, label = 'option') {
+  const initialOption = {
+    text: `--- Choose ${label} ---`,
+  }
+
+  return [initialOption, ...items]
+}
+
 module.exports = {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
+  mapToOption,
+  insertInitialOption,
 }
