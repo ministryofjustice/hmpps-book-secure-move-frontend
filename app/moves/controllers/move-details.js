@@ -19,11 +19,22 @@ class MoveDetailsController extends FormController {
   }
 
   process (req, res, next) {
+    const {
+      date_type: dateType,
+      to_location_type: locationType,
+    } = req.form.values
+
     // process move date
-    const { date_type: dateType } = req.form.values
     if (dateType !== 'custom') {
       req.form.values.date = dateType
     }
+
+    // process to location
+    req.form.values.to_location = req.form.values[`to_location_${locationType}`]
+
+    // TODO: Until we can get the location based on the user's location
+    // we need to mock it
+    req.form.values.from_location = req.form.values[`to_location_${locationType}`]
 
     next()
   }

@@ -122,10 +122,8 @@ describe('Moves controllers', function () {
         })
 
         it('should not change the value of date field', function () {
-          expect(req.form.values).to.deep.equal({
-            date: '2019-10-17',
-            date_type: 'custom',
-          })
+          expect(req.form.values.date).to.equal('2019-10-17')
+          expect(req.form.values.date_type).to.equal('custom')
         })
 
         it('should call next without error', function () {
@@ -149,10 +147,58 @@ describe('Moves controllers', function () {
         })
 
         it('should set value of date to date type', function () {
-          expect(req.form.values).to.deep.equal({
-            date: '2019-10-19',
-            date_type: '2019-10-19',
-          })
+          expect(req.form.values.date).to.equal('2019-10-19')
+          expect(req.form.values.date_type).to.equal('2019-10-19')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when location type is court', function () {
+        beforeEach(function () {
+          nextSpy = sinon.spy()
+          req = {
+            form: {
+              values: {
+                to_location: '',
+                to_location_court: '12345',
+                to_location_type: 'court',
+              },
+            },
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function () {
+          expect(req.form.values.to_location).to.equal('12345')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when location type is prison', function () {
+        beforeEach(function () {
+          nextSpy = sinon.spy()
+          req = {
+            form: {
+              values: {
+                to_location: '',
+                to_location_prison: '67890',
+                to_location_type: 'prison',
+              },
+            },
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function () {
+          expect(req.form.values.to_location).to.equal('67890')
         })
 
         it('should call next without error', function () {
