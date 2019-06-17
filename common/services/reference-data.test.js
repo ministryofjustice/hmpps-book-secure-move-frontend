@@ -1,5 +1,3 @@
-const nock = require('nock')
-
 const {
   getGenders,
   getEthnicities,

@@ -1,5 +1,3 @@
-const nock = require('nock')
-
 const personService = require('./person')
 const { API } = require('../../config')
 

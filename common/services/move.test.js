@@ -1,5 +1,3 @@
-const nock = require('nock')
-
 const moveService = require('./move')
 const { API } = require('../../config')
 

@@ -1,5 +1,4 @@
 const authentication = require('./authentication')
-const nock = require('nock')
 const { AUTH } = require('../../config')
 
 describe('Authentication middleware', function () {

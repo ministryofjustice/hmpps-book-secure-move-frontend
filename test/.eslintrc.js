@@ -4,5 +4,6 @@ module.exports = {
   },
   globals: {
     sinon: 'readonly',
+    nock: 'readonly',
   },
 }
