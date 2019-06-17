@@ -5,9 +5,7 @@
     "first_names": "Bob",
     "last_name": "Roberts",
     "date_of_birth": "1965-10-24",
-    "risk_alerts": [],
-    "health_alerts": [],
-    "court_information": [],
+    "assessment_answers": [],
     "identifiers": [],
     "ethnicity": null,
     "gender": null

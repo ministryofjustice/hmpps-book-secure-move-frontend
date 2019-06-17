@@ -17,12 +17,12 @@ describe('Presenters', function () {
 
       it('should correctly order locations', function () {
         expect(transformedResponse[0].location.description).to.equal('Axminster County Court')
-        expect(transformedResponse[0].items.length).to.equal(5)
+        expect(transformedResponse[0].items.length).to.equal(13)
       })
 
       it('should correctly order locations', function () {
-        expect(transformedResponse[1].location.description).to.equal('Barnstaple Magistrates Court')
-        expect(transformedResponse[1].items.length).to.equal(5)
+        expect(transformedResponse[1].location.description).to.equal('Barnstaple County Court')
+        expect(transformedResponse[1].items.length).to.equal(7)
       })
     })
   })

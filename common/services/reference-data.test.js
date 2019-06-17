@@ -67,7 +67,7 @@ describe('Reference Service', function () {
 
       beforeEach(async function () {
         nock(API.BASE_URL)
-          .get('/reference/profile_attribute_types')
+          .get('/reference/assessment_questions')
           .reply(200, assessmentSerialized)
 
         response = await getAssessmentQuestions()
