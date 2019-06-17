@@ -45,13 +45,14 @@
       "ethnicity": {
         "id": "bef01963-acc1-4f11-89d4-f8843c57c5c5",
         "type": "ethnicities",
-        "code": "M1",
+        "key": "M1",
         "title": "Mixed (White and Black Caribbean)",
         "description": "M1 - Mixed (White and Black Caribbean)"
       },
       "gender": {
         "id": "86c2f34a-987c-4b3a-80ad-0f3af66b1190",
         "type": "genders",
+        "key": "transexual",
         "title": "Transexual",
         "description": null
       }
@@ -59,14 +60,14 @@
     "from_location": {
       "id": "9fad227d-9d0d-41f8-b1bd-685c73629450",
       "type": "locations",
-      "description": "HMP Leeds",
+      "title": "HMP Leeds",
       "location_type": "prison",
       "location_code": null
     },
     "to_location": {
       "id": "c4814e3f-ee9f-4f08-a515-94fc0afe6eb2",
       "type": "locations",
-      "description": "Barrow in Furness County Court",
+      "title": "Barrow in Furness County Court",
       "location_type": "court",
       "location_code": null
     }

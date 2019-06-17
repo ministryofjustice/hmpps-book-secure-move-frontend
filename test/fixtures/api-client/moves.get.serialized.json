@@ -685,7 +685,7 @@
           "id": "c12f0004-cf08-4537-8f48-11da8a33fedb",
           "type": "locations",
           "attributes": {
-              "description": "HMP Brixton",
+              "title": "HMP Brixton",
               "location_type": "prison",
               "location_code": null
           }
@@ -694,7 +694,7 @@
           "id": "871dd64d-6362-45da-ab91-69c45f1fed53",
           "type": "locations",
           "attributes": {
-              "description": "Axminster County Court",
+              "title": "Axminster County Court",
               "location_type": "court",
               "location_code": null
           }
@@ -762,7 +762,7 @@
           "id": "c848919e-2b7c-4473-8827-4a10bb100ea5",
           "type": "locations",
           "attributes": {
-              "description": "HMP Stocken",
+              "title": "HMP Stocken",
               "location_type": "prison",
               "location_code": null
           }
@@ -830,7 +830,7 @@
           "id": "0757d7a0-8169-4cc8-a91a-1c1a30252859",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Norwich",
+              "title": "HMP/YOI Norwich",
               "location_type": "prison",
               "location_code": null
           }
@@ -898,7 +898,7 @@
           "id": "92ce5572-b90b-41fb-8b92-fdd28f4eaa20",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Kirklevington Grange",
+              "title": "HMP/YOI Kirklevington Grange",
               "location_type": "prison",
               "location_code": null
           }
@@ -966,7 +966,7 @@
           "id": "fe67849f-3e6a-49b0-92a5-a24af17ff3e1",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Elmley",
+              "title": "HMP/YOI Elmley",
               "location_type": "prison",
               "location_code": null
           }
@@ -1034,7 +1034,7 @@
           "id": "345a98fa-f97a-445d-a7f2-45cd4837b4ea",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Nottingham",
+              "title": "HMP/YOI Nottingham",
               "location_type": "prison",
               "location_code": null
           }
@@ -1102,7 +1102,7 @@
           "id": "6987e324-cc06-4dc4-9b07-80f3075bafd5",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Chelmsford",
+              "title": "HMP/YOI Chelmsford",
               "location_type": "prison",
               "location_code": null
           }
@@ -1170,7 +1170,7 @@
           "id": "5d809ffe-740a-437f-ae0c-64889e4bf021",
           "type": "locations",
           "attributes": {
-              "description": "HMP Parkhurst",
+              "title": "HMP Parkhurst",
               "location_type": "prison",
               "location_code": null
           }
@@ -1238,7 +1238,7 @@
           "id": "e3987ab3-b9d9-49de-bba6-482296f60f82",
           "type": "locations",
           "attributes": {
-              "description": "HMIRC Dover",
+              "title": "HMIRC Dover",
               "location_type": "prison",
               "location_code": null
           }
@@ -1306,7 +1306,7 @@
           "id": "0fa599ae-800b-43b3-b65e-1ef03cd9b424",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI East Sutton Park",
+              "title": "HMP/YOI East Sutton Park",
               "location_type": "prison",
               "location_code": null
           }
@@ -1433,7 +1433,7 @@
           "id": "92f128af-d870-4fa9-8280-712c12b81521",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Durham",
+              "title": "HMP/YOI Durham",
               "location_type": "prison",
               "location_code": null
           }
@@ -1501,7 +1501,7 @@
           "id": "15dece12-83bb-4ed8-83e6-aeee06baa53d",
           "type": "locations",
           "attributes": {
-              "description": "HMP Northumberland",
+              "title": "HMP Northumberland",
               "location_type": "prison",
               "location_code": null
           }
@@ -1510,7 +1510,7 @@
           "id": "2fdee806-ba75-4b66-b797-c3c620f0585c",
           "type": "locations",
           "attributes": {
-              "description": "Barnstaple County Court",
+              "title": "Barnstaple County Court",
               "location_type": "court",
               "location_code": null
           }
@@ -1578,7 +1578,7 @@
           "id": "6f47baf8-5d53-42a7-a993-cbfca6e4f3d6",
           "type": "locations",
           "attributes": {
-              "description": "HMP Reading",
+              "title": "HMP Reading",
               "location_type": "prison",
               "location_code": null
           }
@@ -1646,7 +1646,7 @@
           "id": "217be9b2-1052-45a0-b882-804df2c1e3b9",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Rochester",
+              "title": "HMP/YOI Rochester",
               "location_type": "prison",
               "location_code": null
           }
@@ -1714,7 +1714,7 @@
           "id": "892f101c-7343-4faa-92a1-374e8249052c",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Preston",
+              "title": "HMP/YOI Preston",
               "location_type": "prison",
               "location_code": null
           }
@@ -1782,7 +1782,7 @@
           "id": "22cc58ac-e58a-428b-b712-b269ed4700d4",
           "type": "locations",
           "attributes": {
-              "description": "HMP Garth",
+              "title": "HMP Garth",
               "location_type": "prison",
               "location_code": null
           }
@@ -1850,7 +1850,7 @@
           "id": "1d742635-0964-46fd-9c46-b5cc9b6c0134",
           "type": "locations",
           "attributes": {
-              "description": "HMP Kirkham",
+              "title": "HMP Kirkham",
               "location_type": "prison",
               "location_code": null
           }
@@ -1859,7 +1859,7 @@
           "id": "d99e1874-f8d5-4fba-a785-e8da694ff685",
           "type": "locations",
           "attributes": {
-              "description": "HMP/YOI Belmarsh",
+              "title": "HMP/YOI Belmarsh",
               "location_type": "prison",
               "location_code": null
           }

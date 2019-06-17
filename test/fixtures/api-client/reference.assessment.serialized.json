@@ -4,6 +4,7 @@
     "type": "assessment_questions",
     "attributes": {
       "category": "risk",
+      "key": "violent",
       "title": "Violent",
       "nomis_alert_type": null,
       "nomis_alert_code": null
@@ -14,6 +15,7 @@
     "type": "assessment_questions",
     "attributes": {
       "category": "risk",
+      "key": "escape",
       "title": "Escape",
       "nomis_alert_type": null,
       "nomis_alert_code": null
