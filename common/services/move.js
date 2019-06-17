@@ -11,7 +11,12 @@ function getMoveById (id) {
   return apiClient.find('move', id)
 }
 
+function createMove (data) {
+  return apiClient.create('move', data)
+}
+
 module.exports = {
   getMovesByDate,
   getMoveById,
+  createMove,
 }

@@ -2,6 +2,7 @@ const {
   PersonalDetails,
   Assessment,
 } = require('./controllers')
+const SaveController = require('./controllers/save-move')
 
 module.exports = {
   '/': {
@@ -54,9 +55,14 @@ module.exports = {
   },
   '/health-information': {
     controller: Assessment,
+    next: 'save',
     heading: 'Does this person’s health affect transport?',
     fields: [
       'health',
     ],
+  },
+  '/save': {
+    skip: true,
+    controller: SaveController,
   },
 }
