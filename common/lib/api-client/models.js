@@ -1,12 +1,3 @@
-const JsonApi = require('devour-client')
-
-const { API, IS_DEV } = require('../../config')
-
-const jsonApi = new JsonApi({
-  apiUrl: API.BASE_URL,
-  logger: IS_DEV,
-})
-
 function defineModels (jsonApi) {
   jsonApi.define('move', {
     reference: '',
@@ -76,6 +67,4 @@ function defineModels (jsonApi) {
   })
 }
 
-defineModels(jsonApi)
-
-module.exports = jsonApi
+module.exports = defineModels

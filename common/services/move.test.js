@@ -1,4 +1,5 @@
 const moveService = require('./move')
+const auth = require('../lib/api-client/auth')
 const { API } = require('../../config')
 
 const movesGetDeserialized = require('../../test/fixtures/api-client/moves.get.deserialized.json')
@@ -7,6 +8,11 @@ const moveGetDeserialized = require('../../test/fixtures/api-client/move.get.des
 const moveGetSerialized = require('../../test/fixtures/api-client/move.get.serialized.json')
 
 describe('Move Service', function () {
+  beforeEach(function () {
+    sinon.stub(auth, 'getAccessToken').returns('test')
+    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+  })
+
   describe('#getMovesByDate()', function () {
     context('when request returns 200', function () {
       const mockDate = '2017-08-10'

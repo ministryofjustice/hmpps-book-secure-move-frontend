@@ -13,6 +13,9 @@ module.exports = {
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   API: {
     BASE_URL: process.env.API_BASE_URL || 'http://localhost:5000/api/v1',
+    AUTH_URL: process.env.API_AUTH_URL,
+    KEY: process.env.API_KEY,
+    SECRET: process.env.API_SECRET,
   },
   DATE_FORMATS: {
     SHORT: 'D M YYYY',
