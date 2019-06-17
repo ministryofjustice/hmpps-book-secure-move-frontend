@@ -1,11 +1,10 @@
-const nock = require('nock')
-
 const {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
 } = require('./reference-data')
 const { API } = require('../../config')
+const auth = require('../lib/api-client/auth')
 
 const gendersDeserialized = require('../../test/fixtures/api-client/reference.genders.deserialized.json')
 const gendersSerialized = require('../../test/fixtures/api-client/reference.genders.serialized.json')
@@ -15,6 +14,11 @@ const assessmentDeserialized = require('../../test/fixtures/api-client/reference
 const assessmentSerialized = require('../../test/fixtures/api-client/reference.assessment.serialized.json')
 
 describe('Reference Service', function () {
+  beforeEach(function () {
+    sinon.stub(auth, 'getAccessToken').returns('test')
+    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+  })
+
   describe('#getGenders()', function () {
     context('when request returns 200', function () {
       let response

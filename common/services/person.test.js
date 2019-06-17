@@ -1,7 +1,6 @@
-const nock = require('nock')
-
 const personService = require('./person')
 const { API } = require('../../config')
+const auth = require('../lib/api-client/auth')
 
 const personPostSerialized = require('../../test/fixtures/api-client/person.post.serialized.json')
 const personPostDeserialized = require('../../test/fixtures/api-client/person.post.deserialized.json')
@@ -10,6 +9,11 @@ const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
 
 describe('Person Service', function () {
+  beforeEach(function () {
+    sinon.stub(auth, 'getAccessToken').returns('test')
+    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+  })
+
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted

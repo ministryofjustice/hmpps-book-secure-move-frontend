@@ -34,6 +34,7 @@ module.exports = {
       globals: {
         expect: 'readonly',
         sinon: 'readonly',
+        nock: 'readonly',
       },
       rules: {
         'no-unused-expressions': 'off',

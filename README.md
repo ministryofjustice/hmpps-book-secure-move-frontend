@@ -111,7 +111,10 @@ npm run lint
 
 | Name | Description |
 |:-----|:------------|
-| API_BASE_URL | The base url for the backend API server for this service |
+| API_BASE_URL | The base URL for the backend API server for this service |
+| API_AUTH_URL | The URL to which OAuth2 access token requests should be sent via a POST request |
+| API_KEY | The client key used to authenticate with the backend API |
+| API_SECRET | The client secret used to authenticate with the backend API |
 | SERVER_HOST | The (accessible) hostname (and port) of the listening web server, e.g. `localhost:3000`. Used by Grant to construct re-direct URLs after OAuth authentication |
 | SESSION_SECRET | A complex string unique to the environment, used to encrypt cookies |
 | AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication |
