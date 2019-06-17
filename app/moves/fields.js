@@ -149,9 +149,9 @@ module.exports = {
     items: [],
   },
   // court information
-  court_information: {
+  court: {
     component: 'govukCheckboxes',
-    name: 'court_information',
+    name: 'court',
     multiple: true,
     fieldset: {
       legend: {

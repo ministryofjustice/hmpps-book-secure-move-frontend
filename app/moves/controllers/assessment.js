@@ -4,7 +4,7 @@ const referenceDataService = require('../../../common/services/reference-data')
 function _referenceToItem (item) {
   return {
     value: item.id,
-    text: item.description,
+    text: item.title,
   }
 }
 

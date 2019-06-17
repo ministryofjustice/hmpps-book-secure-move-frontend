@@ -41,7 +41,7 @@ module.exports = {
     heading: 'Is there information for the court?',
     next: 'risk-information',
     fields: [
-      'court_information',
+      'court',
     ],
   },
   '/risk-information': {

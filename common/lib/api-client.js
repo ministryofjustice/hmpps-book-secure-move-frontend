@@ -10,7 +10,6 @@ const jsonApi = new JsonApi({
 function defineModels (jsonApi) {
   jsonApi.define('move', {
     reference: '',
-    type: '',
     status: '',
     updated_at: '',
     time_due: '',
@@ -34,9 +33,7 @@ function defineModels (jsonApi) {
     last_name: '',
     date_of_birth: '',
     identifiers: '',
-    risk_alerts: '',
-    health_alerts: '',
-    court_information: '',
+    assessment_answers: '',
     gender: {
       jsonApi: 'hasOne',
       type: 'genders',
@@ -62,14 +59,14 @@ function defineModels (jsonApi) {
     collectionPath: 'reference/ethnicities',
   })
 
-  jsonApi.define('profile_attribute_type', {
+  jsonApi.define('assessment_question', {
+    title: '',
     category: '',
-    user_type: '',
-    description: '',
-    alert_type: '',
-    alert_code: '',
+    comments: '',
+    nomis_alert_type: '',
+    nomis_alert_code: '',
   }, {
-    collectionPath: 'reference/profile_attribute_types',
+    collectionPath: 'reference/assessment_questions',
   })
 
   jsonApi.define('location', {

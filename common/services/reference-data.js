@@ -14,7 +14,7 @@ function getEthnicities () {
 
 function getAssessmentQuestions (category) {
   return apiClient
-    .findAll('profile_attribute_type', {
+    .findAll('assessment_question', {
       'filter[category]': category,
     })
     .then(response => response.data)
