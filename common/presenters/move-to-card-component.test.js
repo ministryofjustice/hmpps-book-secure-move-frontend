@@ -1,4 +1,5 @@
 const moveToCardComponent = require('./move-to-card-component')
+
 const filters = require('../../config/nunjucks/filters')
 
 const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
@@ -76,11 +77,6 @@ describe('Presenters', function () {
               text: 'Health issue',
               classes: '',
               sortOrder: 2,
-            }, {
-              href: `/moves/${moveId}#legal_representation`,
-              text: 'Solicitor or other legal representation',
-              classes: 'app-tag--inactive',
-              sortOrder: 3,
             }],
           })
         })
@@ -180,6 +176,14 @@ describe('Presenters', function () {
                 assessment_question_id: 'f191fe25-11c8-4195-bbcc-99bf508f293d',
                 category: 'court',
               }, {
+                key: 'invalid_answer',
+                title: 'Invalid answer',
+                comments: '',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: 'f1f1fe15-11c8-4195-bbcc-99bf508f293d',
+                category: 'invalid',
+              }, {
                 key: 'escape',
                 title: 'Escape',
                 comments: 'Large poster in cell',
@@ -202,12 +206,12 @@ describe('Presenters', function () {
           transformedResponse = moveToCardComponent(mockMove)
         })
 
-        it('should contain correct number of tags', function () {
+        it('should correctly filter', function () {
           expect(transformedResponse).to.have.property('tags')
-          expect(transformedResponse.tags.items.length).to.equal(6)
+          expect(transformedResponse.tags.items.length).to.equal(5)
         })
 
-        it('should correctly map and order tags', function () {
+        it('should correctly map and sort', function () {
           expect(transformedResponse.tags.items).to.deep.equal([
             {
               href: `/moves/${mockMove.id}#concealed_items`,
@@ -234,11 +238,6 @@ describe('Presenters', function () {
               text: 'Special diet or allergy',
               classes: '',
               sortOrder: 2,
-            },
-            { href: `/moves/${mockMove.id}#legal_representation`,
-              text: 'Solicitor or other legal representation',
-              classes: 'app-tag--inactive',
-              sortOrder: 3,
             },
           ])
         })
