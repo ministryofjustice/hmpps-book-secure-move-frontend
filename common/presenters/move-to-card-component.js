@@ -1,3 +1,5 @@
+const { sortBy } = require('lodash')
+
 const filters = require('../../config/nunjucks/filters')
 
 function _removeEmpty (items, keys) {
@@ -12,6 +14,30 @@ function _removeEmpty (items, keys) {
 
     return include
   })
+}
+
+function _getTagClass (category) {
+  switch (category) {
+    case 'risk':
+      return 'app-tag--destructive'
+    case 'court':
+      return 'app-tag--inactive'
+    default:
+      return ''
+  }
+}
+
+function _getTagSortOrder (category) {
+  switch (category) {
+    case 'risk':
+      return 1
+    case 'health':
+      return 2
+    case 'court':
+      return 3
+    default:
+      return 4
+  }
 }
 
 module.exports = function moveToCardComponent ({ id, reference, person }) {
@@ -32,6 +58,14 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
       text: person.ethnicity ? person.ethnicity.title : '',
     },
   ]
+  const tags = person.assessment_answers.map((answer) => {
+    return {
+      href: `/moves/${id}#${answer.key}`,
+      text: answer.title,
+      classes: _getTagClass(answer.category),
+      sortOrder: _getTagSortOrder(answer.category),
+    }
+  })
 
   return {
     href: `/moves/${id}`,
@@ -43,6 +77,9 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
     },
     meta: {
       items: _removeEmpty(meta, ['text', 'html']),
+    },
+    tags: {
+      items: sortBy(tags, 'sortOrder'),
     },
   }
 }
