@@ -13,6 +13,68 @@ describe('Move Service', function () {
     sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
   })
 
+  describe('#format()', function () {
+    context('when relationship field is string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await moveService.format({
+          date: '2010-10-10',
+          to_location: moveGetDeserialized.data.to_location.id,
+          from_location: moveGetDeserialized.data.from_location.id,
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.to_location).to.deep.equal({
+          id: moveGetDeserialized.data.to_location.id,
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.from_location).to.deep.equal({
+          id: moveGetDeserialized.data.from_location.id,
+        })
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.date).to.equal('2010-10-10')
+      })
+    })
+
+    context('when relationship field is not a string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await moveService.format({
+          date: '2010-10-10',
+          to_location: {
+            id: moveGetDeserialized.data.to_location.id,
+          },
+          from_location: {
+            id: moveGetDeserialized.data.from_location.id,
+          },
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.to_location).to.deep.equal({
+          id: moveGetDeserialized.data.to_location.id,
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.from_location).to.deep.equal({
+          id: moveGetDeserialized.data.from_location.id,
+        })
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.date).to.equal('2010-10-10')
+      })
+    })
+  })
+
   describe('#getMovesByDate()', function () {
     context('when request returns 200', function () {
       const mockDate = '2017-08-10'
@@ -66,6 +128,33 @@ describe('Move Service', function () {
 
       it('should contain move with correct data', function () {
         expect(move.data).to.deep.equal(moveGetDeserialized.data)
+      })
+    })
+  })
+
+  describe('#create()', function () {
+    context('when request returns 200', function () {
+      let response
+
+      beforeEach(async function () {
+        nock(API.BASE_URL)
+          .post('/moves')
+          .reply(200, moveGetSerialized)
+
+        response = await moveService.create({
+          date: '2019-10-10',
+          to_location: {
+            id: moveGetDeserialized.data.to_location.id,
+          },
+        })
+      })
+
+      it('should get move from API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain move with correct data', function () {
+        expect(response).to.deep.equal(moveGetDeserialized.data)
       })
     })
   })
