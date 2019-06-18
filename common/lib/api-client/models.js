@@ -66,6 +66,8 @@ function defineModels (jsonApi) {
     title: '',
     location_type: '',
     location_code: '',
+  }, {
+    collectionPath: 'reference/locations',
   })
 }
 

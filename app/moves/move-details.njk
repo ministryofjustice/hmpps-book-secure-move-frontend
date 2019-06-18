@@ -1,0 +1,61 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeFields %}
+  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">Move from</h3>
+  <p class="govuk-!-margin-bottom-6">{ CURRENT LOCATION }</p>
+{% endblock %}
+
+{% block fields %}
+  {{ govukRadios({
+    name: "to_location_type",
+    fieldset: {
+      legend: {
+        text: "Move to",
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    items: [
+      {
+        value: "court",
+        text: "Court",
+        conditional: {
+          html: govukSelect(options.fields.to_location_court)
+        }
+      },
+      {
+        value: "prison",
+        text: "Prison",
+        conditional: {
+          html: govukSelect(options.fields.to_location_prison)
+        }
+      }
+    ]
+  }) }}
+
+  {{ govukRadios({
+    name: "date_type",
+    fieldset: {
+      legend: {
+        text: "Date",
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    items: [
+      {
+        value: TODAY,
+        text: "Today (" + TODAY | formatDateWithDay + ")"
+      },
+      {
+        value: TOMORROW,
+        text: "Tomorrow (" + TOMORROW | formatDateWithDay + ")"
+      },
+      {
+        value: "custom",
+        text: "Another date",
+        conditional: {
+          html: govukInput(options.fields.date)
+        }
+      }
+    ]
+  }) }}
+{% endblock %}

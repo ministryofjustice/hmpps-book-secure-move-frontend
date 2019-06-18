@@ -75,7 +75,7 @@ module.exports = {
   // move details
   from_location: {
   },
-  to_location: {
+  to_location_type: {
     component: 'govukRadios',
     fieldset: {
       legend: {
@@ -83,7 +83,7 @@ module.exports = {
         classes: 'govuk-fieldset__legend--m',
       },
     },
-    name: 'to_location',
+    name: 'to_location_type',
     items: [
       {
         value: 'court',
@@ -95,26 +95,41 @@ module.exports = {
       },
     ],
   },
-  date: {
-    component: 'govukRadios',
-    fieldset: {
-      legend: {
-        text: 'Date',
-        classes: 'govuk-fieldset__legend--m',
-      },
+  to_location: {},
+  to_location_prison: {
+    id: 'to_location_prison',
+    name: 'to_location_prison',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'Name of prison (optional)',
+      classes: 'govuk-label--s',
     },
+    items: [],
+  },
+  to_location_court: {
+    id: 'to_location_court',
+    name: 'to_location_court',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'Name of court',
+      classes: 'govuk-label--s',
+    },
+    items: [],
+  },
+  date_type: {
+  },
+  date: {
+    id: 'date',
     name: 'date',
-    items: [
-      {
-        text: 'Today',
-      },
-      {
-        text: 'Tomorrow',
-      },
-      {
-        text: 'Another date',
-      },
-    ],
+    label: {
+      text: 'Date of travel',
+      classes: 'govuk-label--s',
+    },
+    hint: {
+      text: 'For example 28/10/2019 or 28 October 2019',
+    },
+    classes: 'govuk-input--width-10',
+    autocomplete: 'off',
   },
   // risk information
   risk: {

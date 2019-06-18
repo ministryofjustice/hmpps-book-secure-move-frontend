@@ -1,6 +1,7 @@
 const {
   PersonalDetails,
   Assessment,
+  MoveDetails,
 } = require('./controllers')
 
 module.exports = {
@@ -25,14 +26,20 @@ module.exports = {
     ],
   },
   '/move-details': {
+    controller: MoveDetails,
+    template: 'moves/move-details',
     heading: 'Where is this person moving?',
     next: [
-      { field: 'to_location', value: 'court', next: 'court-information' },
+      { field: 'to_location_type', value: 'court', next: 'court-information' },
       'risk-information',
     ],
     fields: [
       'from_location',
       'to_location',
+      'to_location_type',
+      'to_location_court',
+      'to_location_prison',
+      'date_type',
       'date',
     ],
   },

@@ -30,11 +30,15 @@
   <form method="post">
     <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
 
-    {% for key, fieldsOptions in options.fields %}
-      {% if fieldsOptions.component %}
-        {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
-      {% endif %}
-    {% endfor %}
+    {% block beforeFields %}{% endblock %}
+
+    {% block fields %}
+      {% for key, fieldsOptions in options.fields %}
+        {% if fieldsOptions.component %}
+          {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
+        {% endif %}
+      {% endfor %}
+    {% endblock %}
 
     {{ govukButton({
       text: "Continue"

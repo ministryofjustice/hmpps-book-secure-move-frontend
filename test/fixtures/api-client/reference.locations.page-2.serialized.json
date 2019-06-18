@@ -1,0 +1,63 @@
+{
+  "data": [
+      {
+          "id": "88fc43ba-50f7-4489-a906-ff78dde3ebcb",
+          "type": "locations",
+          "attributes": {
+              "key": "norwich_magistrates_court",
+              "title": "Norwich Magistrates Court",
+              "location_type": "court",
+              "location_code": null
+          }
+      },
+      {
+          "id": "64983bdd-26e0-4574-9014-8471d66f8437",
+          "type": "locations",
+          "attributes": {
+              "key": "oxford_magistrates_court",
+              "title": "Oxford Magistrates Court",
+              "location_type": "court",
+              "location_code": null
+          }
+      },
+      {
+          "id": "df6d742d-63b3-445f-b748-2653380f28d7",
+          "type": "locations",
+          "attributes": {
+              "key": "wantage_county_court",
+              "title": "Wantage County Court",
+              "location_type": "court",
+              "location_code": null
+          }
+      },
+      {
+          "id": "272a0f54-61f6-4c39-8cd2-7f3937707d85",
+          "type": "locations",
+          "attributes": {
+              "key": "guildford_county_court",
+              "title": "Guildford County Court",
+              "location_type": "court",
+              "location_code": null
+          }
+      }
+  ],
+  "links": {
+      "self": "http://localhost:5000/api/v1/reference/locations?filter%5Blocation_type%5D=court&page%5Bnumber%5D=2&page%5Bsize%5D=50&per_page=50",
+      "first": "http://localhost:5000/api/v1/reference/locations?filter%5Blocation_type%5D=court&page%5Bnumber%5D=1&page%5Bsize%5D=50&per_page=50",
+      "prev": "http://localhost:5000/api/v1/reference/locations?filter%5Blocation_type%5D=court&page%5Bnumber%5D=1&page%5Bsize%5D=50&per_page=50",
+      "next": null,
+      "last": "http://localhost:5000/api/v1/reference/locations?filter%5Blocation_type%5D=court&page%5Bnumber%5D=2&page%5Bsize%5D=50&per_page=50"
+  },
+  "meta": {
+      "pagination": {
+          "per_page": 50,
+          "total_pages": 2,
+          "total_objects": 54,
+          "links": {
+              "first": "/api/v1/reference/locations?filter%5Blocation_type%5D=court&page=1&per_page=50",
+              "last": "/api/v1/reference/locations?filter%5Blocation_type%5D=court&page=2&per_page=50",
+              "prev": "/api/v1/reference/locations?filter%5Blocation_type%5D=court&page=1&per_page=50"
+          }
+      }
+  }
+}
