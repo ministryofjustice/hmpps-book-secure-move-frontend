@@ -1,0 +1,17 @@
+{% set messages = getMessages() %}
+
+{% if messages | length %}
+  {% for type, items in messages %}
+    {% for item in items %}
+      {{ appMessage({
+        classes: "app-message--" + type,
+        title: {
+          text: item.title or item
+        },
+        content: {
+          html: item.content
+        }
+      }) }}
+    {% endfor %}
+  {% endfor %}
+{% endif %}

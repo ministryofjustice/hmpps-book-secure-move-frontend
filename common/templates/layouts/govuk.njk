@@ -17,6 +17,7 @@
 {% from "card/macro.njk"              import appCard %}
 {% from "data/macro.njk"              import appData %}
 {% from "internal-header/macro.njk"   import appInternalHeader %}
+{% from "message/macro.njk"           import appMessage %}
 {% from "meta-list/macro.njk"         import appMetaList %}
 {% from "pagination/macro.njk"        import appPagination %}
 {% from "time/macro.njk"              import appTime %}
@@ -37,6 +38,10 @@
     productName: SERVICE_NAME,
     containerClasses: "govuk-width-container"
   }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {% include "includes/messages.njk" %}
 {% endblock %}
 
 {% block bodyEnd %}

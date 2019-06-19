@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ super() }}
-
   {{ govukBackLink({
     text: "Back to dashboard",
     href: "/"
   }) }}
+
+  {{ super() }}
 {% endblock %}
 
 {% block content %}

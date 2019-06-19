@@ -8,6 +8,7 @@ module.exports = function setLocals (req, res, next) {
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
     getLocal: key => res.locals[key],
+    getMessages: () => req.flash(),
   }
 
   res.locals = Object.assign({}, res.locals, locals)

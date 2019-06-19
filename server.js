@@ -8,6 +8,7 @@ const express = require('express')
 const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
+const flash = require('connect-flash')
 const RedisStore = require('connect-redis')(session)
 
 // Local dependencies
@@ -24,9 +25,6 @@ const app = express()
 // view engine setup
 app.set('view engine', 'njk')
 nunjucks(app, config, configPaths)
-
-// Locals
-app.use(locals)
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -49,7 +47,8 @@ app.use(session({
     httpOnly: true,
   },
 }))
-
+app.use(flash())
+app.use(locals)
 app.use(grant({
   defaults: {
     protocol: 'http',

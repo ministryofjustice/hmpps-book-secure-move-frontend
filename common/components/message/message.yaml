@@ -1,0 +1,63 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element.
+- name: title
+  type: object
+  required: true
+  description: Heading content to use for the message.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the component. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
+- name: content
+  type: object
+  required: false
+  description: Content to use below the heading.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the component. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
+
+examples:
+  - name: default
+    data:
+      classes: app-message--info
+      title:
+        text: Notification message
+  - name: success
+    data:
+      classes: app-message--success
+      title:
+        text: Success message
+  - name: warning
+    data:
+      classes: app-message--warning
+      title:
+        text: Warning message
+  - name: error
+    data:
+      classes: app-message--error
+      title:
+        text: Error message
+  - name: with html
+    data:
+      title:
+        html: A message with <a href="#">a link</a>
+  - name: with content
+    data:
+      title:
+        html: A message heading
+      content:
+        html: Containing some <strong>extra content</strong>.
