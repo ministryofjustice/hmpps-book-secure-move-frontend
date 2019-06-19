@@ -9,6 +9,7 @@ module.exports = function setLocals (req, res, next) {
     TOMORROW: startOfTomorrow(),
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
+    translate: key => req.translate(key),
   }
 
   res.locals = Object.assign({}, res.locals, locals)
