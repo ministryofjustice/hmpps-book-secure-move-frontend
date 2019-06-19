@@ -36,4 +36,14 @@ module.exports = {
     PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
     OKTA_SUBDOMAIN: process.env.OKTA_SUBDOMAIN,
   },
+  TAG_CATEGORY_WHITELIST: {
+    risk: {
+      tagClass: 'app-tag--destructive',
+      sortOrder: 1,
+    },
+    health: {
+      tagClass: '',
+      sortOrder: 2,
+    },
+  },
 }

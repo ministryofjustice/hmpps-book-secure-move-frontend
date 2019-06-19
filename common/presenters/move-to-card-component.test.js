@@ -1,4 +1,5 @@
 const moveToCardComponent = require('./move-to-card-component')
+
 const filters = require('../../config/nunjucks/filters')
 
 const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
@@ -56,6 +57,29 @@ describe('Presenters', function () {
             }],
           })
         })
+
+        it('should contain correct tags', function () {
+          const moveId = mockMove.id
+          expect(transformedResponse).to.have.property('tags')
+          expect(transformedResponse.tags).to.deep.equal({
+            items: [{
+              href: `/moves/${moveId}#concealed_items`,
+              text: 'Concealed items',
+              classes: 'app-tag--destructive',
+              sortOrder: 1,
+            }, {
+              href: `/moves/${moveId}#other_risks`,
+              text: 'Any other risks',
+              classes: 'app-tag--destructive',
+              sortOrder: 1,
+            }, {
+              href: `/moves/${moveId}#health_issue`,
+              text: 'Health issue',
+              classes: '',
+              sortOrder: 2,
+            }],
+          })
+        })
       })
 
       context('when meta contains all falsey values', function () {
@@ -69,6 +93,7 @@ describe('Presenters', function () {
               date_of_birth: '',
               gender: false,
               ethnicity: undefined,
+              assessment_answers: [],
             },
           })
         })
@@ -90,6 +115,7 @@ describe('Presenters', function () {
               date_of_birth: '',
               gender: mockMove.person.gender,
               ethnicity: undefined,
+              assessment_answers: [],
             },
           })
         })
@@ -104,6 +130,116 @@ describe('Presenters', function () {
               text: mockMove.person.gender.title,
             }],
           })
+        })
+      })
+
+      context('with assessment answers', function () {
+        let transformedResponse, mockMove
+
+        beforeEach(function () {
+          mockMove = {
+            id: 'a81974e4-e1a7-4cee-81e9-b4ea2ab6d158',
+            person: {
+              last_name: 'Jones',
+              first_names: 'Steve',
+              date_of_birth: '',
+              assessment_answers: [{
+                key: 'concealed_items',
+                title: 'Concealed items',
+                comments: 'Penknife found in trouser pockets',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: '942a634a-2e38-49be-bfe6-ac03979620b3',
+                category: 'risk',
+              }, {
+                key: 'health_issue',
+                title: 'Health issue',
+                comments: 'Keeps complaining of headaches',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: '5bb4f1a2-b5e3-49af-a2ef-01b0ae33429d',
+                category: 'health',
+              }, {
+                key: 'other_risks',
+                title: 'Any other risks',
+                comments: '',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: '94cf7afd-d2c7-489f-b6c2-a6fb68cc9f15',
+                category: 'risk',
+              }, {
+                key: 'legal_representation',
+                title: 'Solicitor or other legal representation',
+                comments: '',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: 'f191fe25-11c8-4195-bbcc-99bf508f293d',
+                category: 'court',
+              }, {
+                key: 'invalid_answer',
+                title: 'Invalid answer',
+                comments: '',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: 'f1f1fe15-11c8-4195-bbcc-99bf508f293d',
+                category: 'invalid',
+              }, {
+                key: 'escape',
+                title: 'Escape',
+                comments: 'Large poster in cell',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: 'f199c4fe-0134-490c-afa9-a11f3c52c32b',
+                category: 'risk',
+              }, {
+                key: 'diet_allergy',
+                title: 'Special diet or allergy',
+                comments: 'Vegan',
+                date: null,
+                expiry_date: null,
+                assessment_question_id: '394d3f05-4d25-43ef-8e7e-6d3a0e742888',
+                category: 'health',
+              }],
+            },
+          }
+
+          transformedResponse = moveToCardComponent(mockMove)
+        })
+
+        it('should correctly filter', function () {
+          expect(transformedResponse).to.have.property('tags')
+          expect(transformedResponse.tags.items.length).to.equal(5)
+        })
+
+        it('should correctly map and sort', function () {
+          expect(transformedResponse.tags.items).to.deep.equal([
+            {
+              href: `/moves/${mockMove.id}#concealed_items`,
+              text: 'Concealed items',
+              classes: 'app-tag--destructive',
+              sortOrder: 1,
+            },
+            { href: `/moves/${mockMove.id}#other_risks`,
+              text: 'Any other risks',
+              classes: 'app-tag--destructive',
+              sortOrder: 1,
+            },
+            { href: `/moves/${mockMove.id}#escape`,
+              text: 'Escape',
+              classes: 'app-tag--destructive',
+              sortOrder: 1,
+            },
+            { href: `/moves/${mockMove.id}#health_issue`,
+              text: 'Health issue',
+              classes: '',
+              sortOrder: 2,
+            },
+            { href: `/moves/${mockMove.id}#diet_allergy`,
+              text: 'Special diet or allergy',
+              classes: '',
+              sortOrder: 2,
+            },
+          ])
         })
       })
     })

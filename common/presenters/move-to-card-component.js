@@ -1,3 +1,4 @@
+const assessmentToTagList = require('./assessment-to-tag-list')
 const filters = require('../../config/nunjucks/filters')
 
 function _removeEmpty (items, keys) {
@@ -43,6 +44,9 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
     },
     meta: {
       items: _removeEmpty(meta, ['text', 'html']),
+    },
+    tags: {
+      items: assessmentToTagList(person.assessment_answers, `/moves/${id}`),
     },
   }
 }
