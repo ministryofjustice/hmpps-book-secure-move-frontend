@@ -9,7 +9,9 @@ describe('Moves controllers', function () {
     let req, res
 
     beforeEach(function () {
+      sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
+      sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
 
       req = {}
       res = {
@@ -32,10 +34,22 @@ describe('Moves controllers', function () {
       expect(params.fullname).to.equal(`${mockMove.person.last_name}, ${mockMove.person.first_names}`)
     })
 
+    it('should contain a move summary param', function () {
+      const params = res.render.args[0][1]
+      expect(params).to.have.property('moveSummary')
+      expect(params.moveSummary).to.equal(mockMove)
+    })
+
     it('should contain personal details summary param', function () {
       const params = res.render.args[0][1]
       expect(params).to.have.property('personalDetailsSummary')
       expect(params.personalDetailsSummary).to.equal(mockMove.person)
+    })
+
+    it('should contain tag list param', function () {
+      const params = res.render.args[0][1]
+      expect(params).to.have.property('tagList')
+      expect(params.tagList).to.equal(mockMove.person.assessment_answers)
     })
   })
 })

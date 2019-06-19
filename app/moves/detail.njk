@@ -16,13 +16,22 @@
 {% endblock %}
 
 {% block content %}
-  <header>
+  <header class="govuk-!-margin-bottom-8">
     <span class="govuk-caption-xl">
       {{ move.reference }}
     </span>
-    <h1 class="govuk-heading-xl">
+
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">
       {{ fullname | upper }}
     </h1>
+
+    {% if tagList | length %}
+      <div class="govuk-!-margin-top-2">
+        {% for tag in tagList %}
+          {{ appTag(tag) }}
+        {% endfor %}
+      <div>
+    {% endif %}
   </header>
 
   <div class="govuk-grid-row">

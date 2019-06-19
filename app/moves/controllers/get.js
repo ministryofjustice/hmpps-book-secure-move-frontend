@@ -7,6 +7,7 @@ module.exports = function get (req, res) {
     fullname: `${person.last_name}, ${person.first_names}`,
     moveSummary: presenters.moveToMetaListComponent(move),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
+    tagList: presenters.assessmentToTagList(person.assessment_answers),
   }
 
   res.render('moves/detail', locals)
