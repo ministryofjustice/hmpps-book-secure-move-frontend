@@ -10,6 +10,7 @@ const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
 const RedisStore = require('connect-redis')(session)
+const i18n = require('i18n-future').middleware()
 
 // Local dependencies
 const config = require('./config')
@@ -48,6 +49,7 @@ app.use(session({
   },
 }))
 app.use(flash())
+app.use(i18n)
 app.use(locals)
 app.use(grant({
   defaults: {

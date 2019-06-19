@@ -55,6 +55,7 @@
     "govuk-frontend": "^2.10.0",
     "grant-express": "^4.5.2",
     "hmpo-form-wizard": "^11.0.1",
+    "i18n-future": "^1.1.0",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "npm-run-all": "^4.1.5",
