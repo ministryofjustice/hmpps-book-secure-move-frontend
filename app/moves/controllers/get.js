@@ -10,5 +10,5 @@ module.exports = function get (req, res) {
     tagList: presenters.assessmentToTagList(person.assessment_answers),
   }
 
-  res.render('moves/detail', locals)
+  res.render('moves/views/detail', locals)
 }
