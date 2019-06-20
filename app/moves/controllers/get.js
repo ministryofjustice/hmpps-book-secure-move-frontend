@@ -8,6 +8,8 @@ module.exports = function get (req, res) {
     moveSummary: presenters.moveToMetaListComponent(move),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(person.assessment_answers),
+    assessment: presenters.assessmentByCategory(person.assessment_answers),
+    courtSummary: presenters.assessmentToSummaryListComponent(person.assessment_answers, 'court'),
   }
 
   res.render('moves/views/detail', locals)
