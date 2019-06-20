@@ -1,10 +1,17 @@
+const { pick } = require('lodash')
+
 function ensureAuthenticated (req, res, next) {
   if (!isAuthExpired(req)) {
     return next()
   }
 
   req.session.postAuthRedirect = req.originalUrl
-  res.redirect('/connect/okta')
+  res.redirect('/connect/hmpps')
+}
+
+function decodeAccessToken (token) {
+  const payload = token.split('.')[1]
+  return JSON.parse(Buffer.from(payload, 'base64').toString('utf8'))
 }
 
 async function processAuthResponse (req, res, next) {
@@ -14,7 +21,6 @@ async function processAuthResponse (req, res, next) {
     }
 
     const authResponse = req.session.grant.response
-    const userInfoResponse = await getUserInfo(authResponse.access_token)
     const redirectUrl = req.session.postAuthRedirect
 
     req.session.regenerate((error) => {
@@ -22,8 +28,10 @@ async function processAuthResponse (req, res, next) {
         throw error
       }
 
-      req.session.authExpiry = authResponse.id_token.payload.exp
-      req.session.userInfo = userInfoResponse.body
+      const accessToken = decodeAccessToken(authResponse.access_token)
+
+      req.session.authExpiry = accessToken.exp
+      req.session.userInfo = pick(accessToken, ['user_name', 'authorities'])
       req.session.postAuthRedirect = redirectUrl
 
       return next()
@@ -39,19 +47,6 @@ function isAuthExpired (req) {
   }
 
   return req.session.authExpiry < Math.floor(new Date() / 1000)
-}
-
-function getUserInfo (accessToken) {
-  const got = require('got')
-  const { AUTH } = require('../../config')
-
-  return got(
-    `https://${AUTH.OKTA_SUBDOMAIN}.okta.com/oauth2/v1/userinfo`,
-    {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-      json: true,
-    }
-  )
 }
 
 module.exports = {

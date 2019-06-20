@@ -58,13 +58,16 @@ app.use(grant({
     transport: 'session',
     state: true,
   },
-  okta: {
+  hmpps: {
+    authorize_url: new URL('/auth/oauth/authorize', config.AUTH.AUTH_PROVIDER_URL).href,
+    access_url: new URL('/auth/oauth/token', config.AUTH.AUTH_PROVIDER_URL).href,
+    oauth: 2,
     key: config.AUTH.PROVIDER_KEY,
     secret: config.AUTH.PROVIDER_SECRET,
-    scope: ['openid', 'groups', 'profile'],
-    nonce: true,
-    subdomain: config.AUTH.OKTA_SUBDOMAIN,
+    scope: ['read'],
     callback: '/auth',
+    token_endpoint_auth_method: 'client_secret_basic',
+    response: ['tokens', 'jwt'],
   },
 }))
 

@@ -1,5 +1,4 @@
 const authentication = require('./authentication')
-const { AUTH } = require('../../config')
 
 describe('Authentication middleware', function () {
   describe('#ensureAuthenticated()', function () {
@@ -23,8 +22,8 @@ describe('Authentication middleware', function () {
         authentication.ensureAuthenticated(req, res, nextSpy)
       })
 
-      it('redirects to the Okta authentication URL', function () {
-        expect(res.redirect).to.be.calledWith('/connect/okta')
+      it('redirects to the authentication URL', function () {
+        expect(res.redirect).to.be.calledWith('/connect/hmpps')
       })
 
       it('sets the redirect URL in the session', function () {
@@ -38,8 +37,8 @@ describe('Authentication middleware', function () {
         authentication.ensureAuthenticated(req, res, nextSpy)
       })
 
-      it('redirects to the Okta authentication URL', function () {
-        expect(res.redirect).to.be.calledWith('/connect/okta')
+      it('redirects to the authentication URL', function () {
+        expect(res.redirect).to.be.calledWith('/connect/hmpps')
       })
 
       it('sets the redirect URL in the session', function () {
@@ -84,23 +83,23 @@ describe('Authentication middleware', function () {
     })
 
     context('when there is a grant response', function () {
-      let accessToken, expiryTime, userInfo
+      let payload, expiryTime
 
       beforeEach(async function () {
-        accessToken = 'test'
         expiryTime = 1000
-        userInfo = {
+        payload = {
+          user_name: 'test',
           test: 'test',
+          authorities: ['test'],
+          exp: expiryTime,
         }
+
+        const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64')
+        const accessToken = `test.${encodedPayload}.test`
 
         req.session.grant = {
           response: {
             access_token: accessToken,
-            id_token: {
-              payload: {
-                exp: expiryTime,
-              },
-            },
           },
         }
 
@@ -112,11 +111,6 @@ describe('Authentication middleware', function () {
 
           func()
         }
-
-        // Stub the Okta userinfo endpoint
-        nock(`https://${AUTH.OKTA_SUBDOMAIN}.okta.com`)
-          .get('/oauth2/v1/userinfo')
-          .reply(200, userInfo)
 
         await authentication.processAuthResponse(req, res, nextSpy)
       })
@@ -130,7 +124,10 @@ describe('Authentication middleware', function () {
       })
 
       it('sets the user info on the session', function () {
-        expect(req.session.userInfo.test).to.equal(userInfo.test)
+        expect(req.session.userInfo).to.eql({
+          user_name: payload.user_name,
+          authorities: payload.authorities,
+        })
       })
 
       it('sets the redirect URL in the session', function () {
@@ -159,45 +156,12 @@ describe('Authentication middleware', function () {
           },
         }
 
-        // Stub the Okta userinfo endpoint
-        nock(`https://${AUTH.OKTA_SUBDOMAIN}.okta.com`)
-          .get('/oauth2/v1/userinfo')
-          .reply(200, {})
-
         await authentication.processAuthResponse(reqMock, {}, nextSpy)
       })
 
       it('should call next with error', async function () {
         expect(nextSpy).to.be.calledOnce
         expect(nextSpy).to.be.calledWith(errorMock)
-      })
-    })
-
-    context('when async response throws an error', function () {
-      let reqMock, errorMock
-
-      beforeEach(async function () {
-        errorMock = 'Mock Error'
-
-        reqMock = {
-          session: {
-            grant: {
-              response: {},
-            },
-          },
-        }
-
-        // Stub the Okta userinfo endpoint
-        nock(`https://${AUTH.OKTA_SUBDOMAIN}.okta.com`)
-          .get('/oauth2/v1/userinfo')
-          .replyWithError(errorMock)
-
-        await authentication.processAuthResponse(reqMock, res, nextSpy)
-      })
-
-      it('should call next with error', async function () {
-        expect(nextSpy).to.be.calledOnce
-        expect(nextSpy.args[0][0].message).to.equal(errorMock)
       })
     })
   })

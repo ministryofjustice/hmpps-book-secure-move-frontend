@@ -34,7 +34,7 @@ module.exports = {
   AUTH: {
     PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
     PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
-    OKTA_SUBDOMAIN: process.env.OKTA_SUBDOMAIN,
+    AUTH_PROVIDER_URL: process.env.AUTH_PROVIDER_URL,
   },
   TAG_CATEGORY_WHITELIST: {
     risk: {
