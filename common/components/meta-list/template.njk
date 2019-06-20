@@ -2,9 +2,12 @@
   {% for item in params.items %}
     {% if item.value.text or item.value.html %}
       <div class="app-meta-list__item">
-        <dt class="app-meta-list__key">
-          {{ item.key.html | safe if item.key.html else item.key.text }}
-        </dt>
+        {% if item.key.html or item.key.text %}
+          <dt class="app-meta-list__key">
+            {{ item.key.html | safe if item.key.html else item.key.text }}
+          </dt>
+        {% endif %}
+
         <dd class="app-meta-list__value">
           {{ item.value.html | safe if item.value.html else item.value.text }}
         </dd>
