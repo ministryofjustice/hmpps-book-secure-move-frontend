@@ -14,6 +14,19 @@ describe('Person Service', function () {
     sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
   })
 
+  describe('#getFullname()', function () {
+    it('should format full name', function () {
+      const firstNames = 'Firstnames middlename'
+      const lastName = 'Lastname'
+      const fullname = personService.getFullname({
+        first_names: firstNames,
+        last_name: lastName,
+      })
+
+      expect(fullname).to.equal(`${lastName}, ${firstNames}`)
+    })
+  })
+
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted

@@ -2,6 +2,13 @@ const { mapValues } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
+function getFullname ({
+  first_names: firstNames,
+  last_name: lastName,
+}) {
+  return `${lastName}, ${firstNames}`
+}
+
 function format (data) {
   const relationships = ['gender', 'ethnicity']
 
@@ -20,6 +27,7 @@ function create (data) {
 }
 
 module.exports = {
+  getFullname,
   format,
   create,
 }
