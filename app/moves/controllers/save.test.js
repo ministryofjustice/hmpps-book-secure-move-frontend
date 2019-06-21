@@ -2,11 +2,13 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./save')
 const moveService = require('../../../common/services/move')
+const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
 const { data: moveMock } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const fullname = `${moveMock.person.last_name}, ${moveMock.person.first_names}`
 const valuesMock = {
   'csrf-secret': 'secret',
   errors: null,
@@ -108,6 +110,7 @@ describe('Moves controllers', function () {
           redirect: sinon.stub(),
         }
 
+        sinon.stub(personService, 'getFullname').returns(fullname)
         sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         controller.successHandler(req, res)
       })
@@ -115,7 +118,7 @@ describe('Moves controllers', function () {
       it('should set a success message', function () {
         expect(req.flash).to.have.been.calledOnceWith('success', {
           title: 'Move scheduled',
-          content: `Move for <strong>${moveMock.person.first_names} ${moveMock.person.last_name}</strong> to <strong>${moveMock.to_location.title}</strong> on <strong>${moveMock.date}</strong> has been scheduled.`,
+          content: `Move for <strong>${fullname}</strong> to <strong>${moveMock.to_location.title}</strong> on <strong>${moveMock.date}</strong> has been scheduled.`,
         })
       })
 

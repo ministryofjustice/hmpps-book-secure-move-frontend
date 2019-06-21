@@ -1,14 +1,17 @@
 const moveToCardComponent = require('./move-to-card-component')
 
 const filters = require('../../config/nunjucks/filters')
+const personService = require('../services/person')
 
 const { data: mockMove } = require('../../test/fixtures/api-client/move.get.deserialized.json')
+const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
 describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
     beforeEach(function () {
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
+      sinon.stub(personService, 'getFullname').returns(fullname)
     })
 
     context('when provided with a mock move object', function () {
@@ -25,10 +28,9 @@ describe('Presenters', function () {
         })
 
         it('should contain a title', function () {
-          const person = mockMove.person
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
-            text: `${person.last_name.toUpperCase()}, ${person.first_names.toUpperCase()}`,
+            text: fullname.toUpperCase(),
           })
         })
 

@@ -1,14 +1,17 @@
+const personService = require('../../../common/services/person')
 const presenters = require('../../../common/presenters')
 
 const controllers = require('./')
 
 const { data: mockMove } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
 describe('Moves controllers', function () {
   describe('#get()', function () {
     let req, res
 
     beforeEach(function () {
+      sinon.stub(personService, 'getFullname').returns(fullname)
       sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
@@ -33,7 +36,7 @@ describe('Moves controllers', function () {
     it('should contain fullname param', function () {
       const params = res.render.args[0][1]
       expect(params).to.have.property('fullname')
-      expect(params.fullname).to.equal(`${mockMove.person.last_name}, ${mockMove.person.first_names}`)
+      expect(params.fullname).to.equal(fullname)
     })
 
     it('should call moveToMetaListComponent presenter with correct args', function () {

@@ -1,4 +1,5 @@
 const assessmentToTagList = require('./assessment-to-tag-list')
+const personService = require('../services/person')
 const filters = require('../../config/nunjucks/filters')
 
 function _removeEmpty (items, keys) {
@@ -37,7 +38,7 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
   return {
     href: `/moves/${id}`,
     title: {
-      text: `${person.last_name.toUpperCase()}, ${person.first_names.toUpperCase()}`,
+      text: personService.getFullname(person).toUpperCase(),
     },
     caption: {
       text: reference,
