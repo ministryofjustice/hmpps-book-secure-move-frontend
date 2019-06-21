@@ -106,4 +106,56 @@ describe('Meta list component', function () {
       expect($value.html().trim()).to.equal('<em>Work</em>')
     })
   })
+
+  context('items with no key', function () {
+    let $, $items
+
+    beforeEach(function () {
+      $ = render('meta-list', {
+        items: [
+          {
+            value: {
+              text: 'Value',
+            },
+          },
+        ],
+      })
+      $items = $('.app-meta-list').find('.app-meta-list__item')
+    })
+
+    it('should not render the key', function () {
+      const $item1 = $($items[0])
+      const $key = $item1.find('.app-meta-list__key')
+
+      expect($key.length).to.equal(0)
+    })
+
+    it('should render the value', function () {
+      const $item1 = $($items[0])
+      const $value = $item1.find('.app-meta-list__value')
+
+      expect($value.html().trim()).to.equal('Value')
+    })
+  })
+
+  context('items with no value', function () {
+    let $, $items
+
+    beforeEach(function () {
+      $ = render('meta-list', {
+        items: [
+          {
+            key: {
+              text: 'Key',
+            },
+          },
+        ],
+      })
+      $items = $('.app-meta-list').find('.app-meta-list__item')
+    })
+
+    it('should not render item', function () {
+      expect($items.length).to.equal(0)
+    })
+  })
 })

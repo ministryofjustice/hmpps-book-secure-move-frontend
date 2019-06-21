@@ -1,1 +1,18 @@
-{}
+{
+  "assessment": {
+    "categories": {
+      "risk": {
+        "heading": "Risk information",
+        "empty": "No risk information"
+      },
+      "health": {
+        "heading": "Health affecting transport",
+        "empty": "No health affecting transport"
+      },
+      "court": {
+        "heading": "Information for the court",
+        "empty": "No information for the court"
+      }
+    }
+  }
+}

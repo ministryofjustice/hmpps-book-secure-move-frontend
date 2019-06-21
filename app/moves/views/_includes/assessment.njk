@@ -1,0 +1,51 @@
+{% for section in assessment %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+    {{ translate("assessment.categories." + section.category + ".heading") }}
+  </h2>
+
+  {% for item in section.items %}
+    {% call appPanel({
+      attributes: {
+        id: item.key
+      },
+      tag: {
+        text: item.title,
+        classes: section.tagClass
+      }
+    }) %}
+      {% set itemHtml %}
+        {{ item.comments if item.comments else '' }}
+
+        {% if item.date %}
+          <div class="govuk-!-font-size-16">
+            {{ item.date | formatDateWithDay }}
+          </div>
+        {% endif %}
+      {% endset %}
+
+      {{ appMetaList({
+        items: [{
+          value: {
+            html: itemHtml
+          }
+        }]
+      }) }}
+    {% endcall %}
+  {% else %}
+    <p>
+      {{ translate("assessment.categories." + section.category + ".empty") }}
+    </p>
+  {% endfor %}
+{% endfor %}
+
+<h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+  {{ translate("assessment.categories.court.heading") }}
+</h2>
+
+{% if courtSummary.rows | length %}
+  {{ govukSummaryList(courtSummary) }}
+{% else %}
+  <p>
+    {{ translate("assessment.categories.court.empty") }}
+  </p>
+{% endif %}

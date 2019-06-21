@@ -5,9 +5,85 @@
     "first_names": "Bob",
     "last_name": "Roberts",
     "date_of_birth": "1965-10-24",
-    "assessment_answers": [],
+    "assessment_answers": [{
+      "title": "Violent",
+      "comments": "Karate black belt",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "7448fb0c-d10e-4cab-9354-1732a4d17a30",
+      "category": "risk",
+      "key": "violent"
+    }, {
+      "title": "Escape",
+      "comments": "Large poster in cell",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "d61c0068-cdb0-43de-88e5-c0a09adbf726",
+      "category": "risk",
+      "key": "escape"
+    }, {
+      "title": "Must be held separately",
+      "comments": "Incitement to riot",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "745a50e8-ea8d-4667-8ba0-c09c62ee3fc5",
+      "category": "risk",
+      "key": "hold_separately"
+    }, {
+      "title": "Special diet or allergy",
+      "comments": "Vegan",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "ff77c212-1244-4b2b-a441-81922d5c2ed8",
+      "category": "health",
+      "key": "special_diet_or_allergy"
+    }, {
+      "title": "Health issue",
+      "comments": "Claustophobic",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "c1c8e0c1-4376-4f80-8515-dfb7d454a95c",
+      "category": "health",
+      "key": "health_issue"
+    }, {
+      "title": "Medication",
+      "comments": "Heart medication needed twice daily",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "044cca13-b632-4f65-8111-8902e4913cfe",
+      "category": "health",
+      "key": "medication"
+    }, {
+      "title": "Solicitor or other legal representation",
+      "comments": "Johns & Sons",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "a453daf5-cf1d-4a21-9dae-2846c465785d",
+      "category": "court",
+      "key": "solicitor"
+    }, {
+      "title": "Any other information",
+      "comments": "Former prison officer",
+      "date": null,
+      "expiry_date": null,
+      "assessment_question_id": "ffe852c4-9154-493b-9afb-18dde544f2cf",
+      "category": "court",
+      "key": "other_information"
+    }],
     "identifiers": [],
-    "ethnicity": null,
-    "gender": null
+    "ethnicity": {
+      "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
+      "type": "ethnicities",
+      "key": "A1",
+      "title": "Asian or Asian British (Indian)",
+      "description": "A1 - Asian or Asian British (Indian)"
+    },
+    "gender": {
+      "id": "d335715f-c9d1-415c-a7c8-06e830158214",
+      "type": "genders",
+      "key": "male",
+      "title": "Male",
+      "description": null
+    }
   }
 }
