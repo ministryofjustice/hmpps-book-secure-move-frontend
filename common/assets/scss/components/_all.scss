@@ -1,6 +1,7 @@
 @import "stack-trace";
 
 // Load components from the shared components folder
+@import "_panel/panel";
 @import "_tag/tag";
 @import "card/card";
 @import "data/data";

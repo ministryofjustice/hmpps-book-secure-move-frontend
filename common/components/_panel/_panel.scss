@@ -1,0 +1,23 @@
+$_border-width: 2px;
+
+.app-panel {
+  background-color: govuk-colour("grey-4");
+  border: $_border-width solid govuk-colour("grey-2");
+  padding: govuk-spacing(3);
+  position: relative;
+
+  & + & {
+    margin-top: govuk-spacing(2);
+  }
+}
+
+// If panel contains a tag component, style based on this parent
+.app-panel .app-tag {
+  position: absolute;
+  left: -($_border-width);
+  top: -($_border-width);
+
+  & + * {
+    margin-top: govuk-spacing(3);
+  }
+}

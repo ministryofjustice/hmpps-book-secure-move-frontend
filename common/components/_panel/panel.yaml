@@ -1,0 +1,31 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element.
+- name: attributes
+  type: object
+  required: false
+  description: HTML attributes (for example data attributes) to add to the component.
+- name: text
+  type: string
+  required: true
+  description: If `html` is set, this is not required. Text to use within the panel content. If `html` is provided, the `text` argument will be ignored.
+- name: html
+  type: string
+  required: true
+  description: If `text` is set, this is not required. HTML to use within the panel content. If `html` is provided, the `text` argument will be ignored.
+- name: tag
+  type: object
+  required: false
+  description: Params to pass to the tag component.
+
+examples:
+  - name: default
+    data:
+      text: Panel contents
+  - name: with tag
+    data:
+      text: Panel contents
+      tag:
+        text: An example tag
