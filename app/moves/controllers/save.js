@@ -15,6 +15,8 @@ class SaveController extends FormController {
       ])
 
       const move = await moveService.create(data)
+      await personService.update(data.person)
+
       req.sessionModel.set('move', move)
 
       next()

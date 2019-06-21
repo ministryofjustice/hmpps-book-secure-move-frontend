@@ -9,6 +9,9 @@ const controller = new Controller({ route: '/' })
 
 const { data: moveMock } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${moveMock.person.last_name}, ${moveMock.person.first_names}`
+const mockPerson = {
+  id: '3333',
+}
 const valuesMock = {
   'csrf-secret': 'secret',
   errors: null,
@@ -20,6 +23,10 @@ const valuesMock = {
   reference: '',
   to_location: 'Court',
   from_location: 'Prison',
+  person: {
+    first_names: 'Steve',
+    last_name: 'Smith',
+  },
 }
 
 describe('Moves controllers', function () {
@@ -40,10 +47,11 @@ describe('Moves controllers', function () {
         }
       })
 
-      context('when save is successful', function () {
+      context('when move save is successful', function () {
         beforeEach(async function () {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(moveService, 'create').resolves(moveMock)
+          sinon.stub(personService, 'update').resolves(mockPerson)
           await controller.saveValues(req, {}, nextSpy)
         })
 
@@ -52,7 +60,15 @@ describe('Moves controllers', function () {
             reference: '',
             to_location: 'Court',
             from_location: 'Prison',
+            person: {
+              first_names: 'Steve',
+              last_name: 'Smith',
+            },
           })
+        })
+
+        it('should call person update', function () {
+          expect(personService.update).to.be.calledWith(valuesMock.person)
         })
 
         it('should set response to session model', function () {
