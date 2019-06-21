@@ -104,7 +104,58 @@ describe('Person Service', function () {
         })
       })
 
-      it('should get move from API', function () {
+      it('should call API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain move with correct data', function () {
+        expect(response).to.deep.equal(personPostDeserialized.data)
+      })
+    })
+  })
+
+  describe('#update()', function () {
+    let mockId
+
+    beforeEach(async function () {
+      mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+
+      nock(API.BASE_URL)
+        .patch(`/people/${mockId}`)
+        .reply(200, personPostSerialized)
+    })
+
+    context('when no ID is supplied in the data object', function () {
+      let response
+
+      beforeEach(async function () {
+        response = await personService.update({
+          first_names: 'Foo',
+          last_names: 'Bar',
+        })
+      })
+
+      it('should not call API', function () {
+        expect(nock.isDone()).to.be.false
+      })
+
+      it('should return', function () {
+        expect(response).to.equal()
+      })
+    })
+
+    context('when request returns 200', function () {
+      let response
+
+      beforeEach(async function () {
+        response = await personService.update({
+          id: mockId,
+          first_names: 'Foo',
+          last_names: 'Bar',
+        })
+      })
+
+      it('should call API', function () {
         expect(nock.isDone()).to.be.true
       })
 

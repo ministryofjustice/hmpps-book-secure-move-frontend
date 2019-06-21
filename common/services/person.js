@@ -26,8 +26,19 @@ function create (data) {
     .then(response => response.data)
 }
 
+function update (data) {
+  if (!data.id) {
+    return
+  }
+
+  return apiClient
+    .update('person', format(data))
+    .then(response => response.data)
+}
+
 module.exports = {
   getFullname,
   format,
   create,
+  update,
 }
