@@ -1,6 +1,9 @@
-# Prisoner Escort and Custody Service (PECS) Frontend
+# Book a secure move frontend
 
-This is the rendering application for the PECS service.
+This is the rendering application for the Book a secure move service.
+
+Book a secure move is part of the HMPPS Prisoner Escort and Custody
+Service (PECS) programme.
 
 ## Dependencies
 
@@ -13,7 +16,7 @@ This is the rendering application for the PECS service.
 1. Clone repository and change directory:
 
    ```
-   git clone https://github.com/ministryofjustice/pecs-frontend && cd pecs-frontend
+   git clone https://github.com/ministryofjustice/hmpps-book-secure-move-frontend && cd hmpps-book-secure-move-frontend
    ```
 
 1. Install node dependencies:
@@ -36,7 +39,7 @@ Create a copy of the example environment variable file and add values for the ke
    cp .env.example .env
    ```
 
-Set the environment variables accordingly.
+Set the [environment variables](#environment-variables) accordingly.
 
 ## Running the application
 
@@ -96,20 +99,24 @@ npm run lint
 
 ## Environment variables
 
-| Name | Description |
-|:-----|:------------|
-| API_BASE_URL | The base URL for the backend API server for this service |
-| API_AUTH_URL | The URL to which OAuth2 access token requests should be sent via a POST request |
-| API_KEY | The client key used to authenticate with the backend API |
-| API_SECRET | The client secret used to authenticate with the backend API |
-| SERVER_HOST | The (accessible) hostname (and port) of the listening web server, e.g. `localhost:3000`. Used by Grant to construct re-direct URLs after OAuth authentication |
-| SESSION_SECRET | A complex string unique to the environment, used to encrypt cookies |
-| AUTH_PROVIDER_KEY | The client key provided by the OAuth2 provider for user authentication |
-| AUTH_PROVIDER_SECRET | The client secret provided by the OAuth2 provider for user authentication |
-| AUTH_PROVIDER_URL | The base URL for the HMPPS SSO server |
-| REDIS_HOST | The hostname or IP address the Redis server is listening on |
-| REDIS_PORT | The port number the Redis server is listening on (e.g. 6379) |
-| REDIS_SESSION_DB | The Redis database index in which to store session data (e.g. 0) |
+| Name | Description | Default |
+|:-----|:------------|:--------|
+| PORT | Port the web server listens on | `3000` |
+| LOG_LEVEL | Level of logs to output | production: `error`, development: `debug` |
+| ASSETS_HOST | Host for assets CDN | |
+| SESSION_SECRET **(required)** | A complex string unique to the environment, used to encrypt cookies | |
+| SESSION_NAME | Name of the session ID cookie to set in the response (and read from in the request) | `book-secure-move.sid` |
+| SESSION_TTL | How long the user session should last (in milliseconds) | `1800000` (30 minutes) |
+| SESSION_DB_INDEX | Redis database index in which to store session data | `0` (Redis' default)|
+| REDIS_URL **(required)** | Redis server URL, including port | |
+| API_BASE_URL **(required)** | Base URL for the backend API server for this service | |
+| API_AUTH_URL **(required)** | URL to which OAuth2 access token requests should be sent | |
+| API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |
+| API_SECRET **(required)** | Client secret used to authenticate with the backend API | |
+| AUTH_PROVIDER_KEY **(required)** | Client key provided by the OAuth2 provider for user authentication | |
+| AUTH_PROVIDER_SECRET **(required)** | Client secret provided by the OAuth2 provider for user authentication | |
+| AUTH_PROVIDER_URL **(required)** | Base URL for the auth provider server | |
+| SERVER_HOST **(required)** | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000` | |
 
 ## Components
 

@@ -29,7 +29,7 @@ async function refreshAccessToken () {
       grant_type: 'client_credentials',
     },
     auth: {
-      username: API.KEY,
+      username: API.CLIENT_ID,
       password: API.SECRET,
     },
   })

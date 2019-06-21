@@ -3,18 +3,25 @@ require('dotenv').config()
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const SESSION = {
+  NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
+  SECRET: process.env.SESSION_SECRET,
+  TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
+  DB: process.env.SESSION_DB_INDEX || 0,
+}
 
 module.exports = {
   IS_DEV,
   IS_PRODUCTION,
+  SESSION,
   PORT: process.env.PORT || 3000,
   SERVER_HOST: process.env.SERVER_HOST,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   API: {
-    BASE_URL: process.env.API_BASE_URL || 'http://localhost:5000/api/v1',
+    BASE_URL: process.env.API_BASE_URL || 'http://localhost:4000/api/v1',
     AUTH_URL: process.env.API_AUTH_URL,
-    KEY: process.env.API_KEY,
+    CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
   },
   DATE_FORMATS: {
@@ -23,18 +30,17 @@ module.exports = {
     WITH_DAY: 'dddd D MMM YYYY',
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
-  SESSION: {
-    SECRET: process.env.SESSION_SECRET,
-    REDIS_STORE_DATABASE: process.env.REDIS_SESSION_DB,
-  },
   REDIS: {
-    HOST: process.env.REDIS_HOST,
-    PORT: process.env.REDIS_PORT,
+    SESSION: {
+      url: process.env.REDIS_URL,
+      db: SESSION.DB,
+      ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
+    },
   },
   AUTH: {
     PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
     PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
-    AUTH_PROVIDER_URL: process.env.AUTH_PROVIDER_URL,
+    PROVIDER_URL: process.env.AUTH_PROVIDER_URL,
   },
   TAG_CATEGORY_WHITELIST: {
     risk: {

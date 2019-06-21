@@ -33,18 +33,14 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(session({
-  store: new RedisStore({
-    host: config.REDIS.HOST,
-    port: config.REDIS.PORT,
-    db: config.SESSION.REDIS_STORE_DATABASE,
-  }),
-  name: 'pecs-id',
+  store: new RedisStore(config.REDIS.SESSION),
   secret: config.SESSION.SECRET,
-  resave: false,
+  name: config.SESSION.NAME,
   saveUninitialized: false,
+  resave: false,
   cookie: {
     secure: config.IS_PRODUCTION,
-    maxAge: 1800000, // 30 mins
+    maxAge: config.SESSION.TTL,
     httpOnly: true,
   },
 }))
@@ -59,8 +55,8 @@ app.use(grant({
     state: true,
   },
   hmpps: {
-    authorize_url: new URL('/auth/oauth/authorize', config.AUTH.AUTH_PROVIDER_URL).href,
-    access_url: new URL('/auth/oauth/token', config.AUTH.AUTH_PROVIDER_URL).href,
+    authorize_url: new URL('/auth/oauth/authorize', config.AUTH.PROVIDER_URL).href,
+    access_url: new URL('/auth/oauth/token', config.AUTH.PROVIDER_URL).href,
     oauth: 2,
     key: config.AUTH.PROVIDER_KEY,
     secret: config.AUTH.PROVIDER_SECRET,
