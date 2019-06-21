@@ -2,12 +2,11 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./save')
 const moveService = require('../../../common/services/move')
+const filters = require('../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
-const moveMock = {
-  id: '3333',
-}
+const { data: moveMock } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const valuesMock = {
   'csrf-secret': 'secret',
   errors: null,
@@ -33,6 +32,7 @@ describe('Moves controllers', function () {
             values: {},
           },
           sessionModel: {
+            set: sinon.stub(),
             toJSON: () => valuesMock,
           },
         }
@@ -51,6 +51,10 @@ describe('Moves controllers', function () {
             to_location: 'Court',
             from_location: 'Prison',
           })
+        })
+
+        it('should set response to session model', function () {
+          expect(req.sessionModel.set).to.be.calledWith('move', moveMock)
         })
 
         it('should not throw an error', function () {
@@ -90,6 +94,7 @@ describe('Moves controllers', function () {
             values: {},
           },
           sessionModel: {
+            get: sinon.stub().withArgs('move').returns(moveMock),
             reset: sinon.stub(),
             destroy: sinon.stub(),
           },
@@ -97,12 +102,21 @@ describe('Moves controllers', function () {
             reset: sinon.stub(),
             destroy: sinon.stub(),
           },
+          flash: sinon.stub(),
         }
         res = {
           redirect: sinon.stub(),
         }
 
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         controller.successHandler(req, res)
+      })
+
+      it('should set a success message', function () {
+        expect(req.flash).to.have.been.calledOnceWith('success', {
+          title: 'Move scheduled',
+          content: `Move for <strong>${moveMock.person.first_names} ${moveMock.person.last_name}</strong> to <strong>${moveMock.to_location.title}</strong> on <strong>${moveMock.date}</strong> has been scheduled.`,
+        })
       })
 
       it('should reset the journey', function () {
