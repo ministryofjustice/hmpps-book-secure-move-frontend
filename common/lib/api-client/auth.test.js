@@ -1,5 +1,16 @@
-const auth = require('./auth')
-const { API } = require('../../../config')
+const proxyquire = require('proxyquire')
+
+const mockConfig = {
+  BASE_URL: 'http://baseurl.com',
+  AUTH_URL: 'http://baseurl.com/oauth/token',
+  CLIENT_ID: 'clientid',
+  SECRET: 'secret',
+}
+const auth = proxyquire('./auth', {
+  '../../../config': {
+    API: mockConfig,
+  },
+})
 
 describe('Back-end authentication', function () {
   describe('#devourAuthMiddleware', function () {
@@ -7,7 +18,7 @@ describe('Back-end authentication', function () {
       let authUrl, authServiceMock, accessToken, accessTokenExpiry, tokenInfo, result, payload
 
       beforeEach(function () {
-        authUrl = new URL(API.AUTH_URL)
+        authUrl = new URL(mockConfig.AUTH_URL)
         accessToken = 'test'
         accessTokenExpiry = 7200
 
