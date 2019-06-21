@@ -1,6 +1,9 @@
-# Prisoner Escort and Custody Service (PECS) Frontend
+# Book a secure move frontend
 
-This is the rendering application for the PECS service.
+This is the rendering application for the Book a secure move service.
+
+Book a secure move is part of the HMPPS Prisoner Escort and Custody
+Service (PECS) programme.
 
 ## Dependencies
 
@@ -13,7 +16,7 @@ This is the rendering application for the PECS service.
 1. Clone repository and change directory:
 
    ```
-   git clone https://github.com/ministryofjustice/pecs-frontend && cd pecs-frontend
+   git clone https://github.com/ministryofjustice/hmpps-book-secure-move-frontend && cd hmpps-book-secure-move-frontend
    ```
 
 1. Install node dependencies:
