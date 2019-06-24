@@ -2,6 +2,7 @@ const {
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
+  setFieldValue,
   insertInitialOption,
 } = require('./field')
 
@@ -258,6 +259,148 @@ describe('Form helpers', function () {
               html: '<strong>HTML</strong> content',
             },
           }])
+        })
+      })
+    })
+  })
+
+  describe('#setFieldValue()', function () {
+    context('when field doesn\'t contain items', function () {
+      context('when value doesn\'t exists', function () {
+        it('should set empty value property', function () {
+          const field = [
+            'court',
+            { name: 'court' },
+          ]
+          const response = setFieldValue({})(field)
+
+          expect(response).to.deep.equal([
+            'court',
+            {
+              name: 'court',
+              value: undefined,
+            },
+          ])
+        })
+      })
+
+      context('when value exists', function () {
+        it('should set value property', function () {
+          const values = {
+            court: 'court val',
+          }
+          const field = [
+            'court',
+            { name: 'court' },
+          ]
+          const response = setFieldValue(values)(field)
+
+          expect(response).to.deep.equal([
+            'court',
+            {
+              name: 'court',
+              value: 'court val',
+            },
+          ])
+        })
+      })
+    })
+
+    context('when field contains items', function () {
+      context('when value doesn\'t exists', function () {
+        it('should set return original items', function () {
+          const field = [
+            'court',
+            {
+              name: 'court',
+              items: [{
+                value: 'one',
+                text: 'Item one',
+              }, {
+                value: 'two',
+                text: 'Item two',
+              }],
+            },
+          ]
+          const response = setFieldValue({})(field)
+
+          expect(response).to.deep.equal(field)
+        })
+      })
+
+      context('when value exists', function () {
+        context('when item value is in array', function () {
+          it('should correctly set selected/checked', function () {
+            const values = {
+              court: ['one', 'three'],
+            }
+            const field = [
+              'court',
+              {
+                name: 'court',
+                items: [{
+                  value: 'one',
+                  text: 'Item one',
+                }, {
+                  value: 'two',
+                  text: 'Item two',
+                }],
+              },
+            ]
+            const response = setFieldValue(values)(field)
+
+            expect(response[1].items).to.deep.equal([
+              {
+                value: 'one',
+                text: 'Item one',
+                selected: true,
+                checked: true,
+              },
+              {
+                value: 'two',
+                text: 'Item two',
+                selected: false,
+                checked: false,
+              },
+            ])
+          })
+        })
+
+        context('when item value is not in array', function () {
+          it('should correctly set selected/checked', function () {
+            const values = {
+              court: 'two',
+            }
+            const field = [
+              'court',
+              {
+                name: 'court',
+                items: [{
+                  value: 'one',
+                  text: 'Item one',
+                }, {
+                  value: 'two',
+                  text: 'Item two',
+                }],
+              },
+            ]
+            const response = setFieldValue(values)(field)
+
+            expect(response[1].items).to.deep.equal([
+              {
+                value: 'one',
+                text: 'Item one',
+                selected: false,
+                checked: false,
+              },
+              {
+                value: 'two',
+                text: 'Item two',
+                selected: true,
+                checked: true,
+              },
+            ])
+          })
         })
       })
     })

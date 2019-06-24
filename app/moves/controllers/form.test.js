@@ -146,58 +146,73 @@ describe('Moves controllers', function () {
     })
 
     describe('#render()', function () {
-      context('', function () {
-        let reqMock, nextSpy
+      let reqMock, nextSpy
 
-        before(function () {
-          nextSpy = sinon.spy()
-          sinon
-            .stub(fieldHelpers, 'renderConditionalFields')
-            .callsFake(([key, field]) => {
-              return [ key, { ...field, renderConditionalFields: true } ]
-            })
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        sinon.spy(FormController.prototype, 'render')
+        sinon
+          .stub(fieldHelpers, 'setFieldValue')
+          .callsFake(() => ([key, field]) => {
+            return [ key, { ...field, setFieldValue: true } ]
+          })
+        sinon
+          .stub(fieldHelpers, 'renderConditionalFields')
+          .callsFake(([key, field]) => {
+            return [ key, { ...field, renderConditionalFields: true } ]
+          })
 
-          reqMock = {
-            form: {
-              options: {
-                fields: {
-                  field_1: {
-                    name: 'Field 1',
-                  },
-                  field_2: {
-                    name: 'Field 2',
-                  },
-                  field_3: {
-                    name: 'Field 3',
-                  },
+        reqMock = {
+          form: {
+            options: {
+              fields: {
+                field_1: {
+                  name: 'Field 1',
+                },
+                field_2: {
+                  name: 'Field 2',
+                },
+                field_3: {
+                  name: 'Field 3',
                 },
               },
             },
-          }
+          },
+        }
 
-          controller.render(reqMock, {}, nextSpy)
-        })
+        controller.render(reqMock, {}, nextSpy)
+      })
 
-        it('should call renderConditionalFields on each field', function () {
-          expect(fieldHelpers.renderConditionalFields).to.be.calledThrice
-        })
+      it('should call renderConditionalFields on each field', function () {
+        expect(fieldHelpers.renderConditionalFields).to.be.calledThrice
+      })
 
-        it('should mutate fields object', function () {
-          expect(reqMock.form.options.fields).to.deep.equal({
-            field_1: {
-              renderConditionalFields: true,
-              name: 'Field 1',
-            },
-            field_2: {
-              renderConditionalFields: true,
-              name: 'Field 2',
-            },
-            field_3: {
-              renderConditionalFields: true,
-              name: 'Field 3',
-            },
-          })
+      it('should call setFieldValue', function () {
+        expect(fieldHelpers.setFieldValue).to.be.calledOnce
+      })
+
+      it('should mutate fields object', function () {
+        expect(reqMock.form.options.fields).to.deep.equal({
+          field_1: {
+            renderConditionalFields: true,
+            setFieldValue: true,
+            name: 'Field 1',
+          },
+          field_2: {
+            renderConditionalFields: true,
+            setFieldValue: true,
+            name: 'Field 2',
+          },
+          field_3: {
+            renderConditionalFields: true,
+            setFieldValue: true,
+            name: 'Field 3',
+          },
         })
+      })
+
+      it('should call parent render method', function () {
+        expect(FormController.prototype.render).to.be.calledOnceWithExactly(reqMock, {}, nextSpy)
       })
     })
   })
