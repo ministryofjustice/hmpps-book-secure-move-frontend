@@ -22,11 +22,21 @@ function getAssessmentQuestions (category) {
     .then(response => response.data)
 }
 
-function mapToOption ({ id, title }) {
-  return {
+function mapToOption ({ id, title, key, conditional }) {
+  const option = {
     value: id,
     text: title,
   }
+
+  if (key) {
+    option.key = key
+  }
+
+  if (conditional) {
+    option.conditional = conditional
+  }
+
+  return option
 }
 
 function insertInitialOption (items, label = 'option') {

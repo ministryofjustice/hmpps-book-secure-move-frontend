@@ -124,15 +124,49 @@ describe('Reference Service', function () {
   })
 
   describe('#mapToOption()', function () {
-    it('should return correctly formatted option', function () {
-      const option = mapToOption({
-        id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-        title: 'Foo',
-      })
+    context('be default', function () {
+      it('should return correctly formatted option', function () {
+        const option = mapToOption({
+          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          title: 'Foo',
+        })
 
-      expect(option).to.deep.equal({
-        value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-        text: 'Foo',
+        expect(option).to.deep.equal({
+          value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          text: 'Foo',
+        })
+      })
+    })
+
+    context('with conditional property', function () {
+      it('should return correctly formatted option', function () {
+        const option = mapToOption({
+          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          title: 'Foo',
+          conditional: 'Some conditional content',
+        })
+
+        expect(option).to.deep.equal({
+          value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          text: 'Foo',
+          conditional: 'Some conditional content',
+        })
+      })
+    })
+
+    context('with key property', function () {
+      it('should return correctly formatted option', function () {
+        const option = mapToOption({
+          key: 'unique_key',
+          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          title: 'Foo',
+        })
+
+        expect(option).to.deep.equal({
+          key: 'unique_key',
+          value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          text: 'Foo',
+        })
       })
     })
   })
