@@ -36,14 +36,20 @@ class AssessmentController extends FormController {
     const assessment = req.sessionModel.get('assessment') || {}
     const { fields } = req.form.options
 
-    Object.keys(fields).forEach((field) => {
-      const answers = req.form.values[field]
+    Object.keys(fields).forEach((key) => {
+      const field = fields[key]
 
-      assessment[field] = answers
-        .filter(Boolean) // filter out any empty values
-        .map((questionId) => {
+      if (!field.multiple) {
+        return
+      }
+      const answers = req.form.values[key]
+
+      assessment[key] = field.items
+        .filter((item) => answers.includes(item.value))
+        .map((item) => {
           return {
-            assessment_question_id: questionId,
+            comments: req.form.values[`${key}__${item.key}`],
+            assessment_question_id: item.value,
           }
         })
     })
