@@ -1,3 +1,5 @@
+const dateFns = require('date-fns')
+
 const FormController = require('./form')
 const referenceDataService = require('../../../common/services/reference-data')
 
@@ -25,8 +27,11 @@ class MoveDetailsController extends FormController {
     } = req.form.values
 
     // process move date
-    if (dateType !== 'custom') {
-      req.form.values.date = dateType
+    if (dateType === 'custom') {
+      req.form.values.date = req.form.values.date_custom
+    } else {
+      req.form.values.date_custom = ''
+      req.form.values.date = dateType === 'today' ? dateFns.startOfToday() : dateFns.startOfTomorrow()
     }
 
     // process to location

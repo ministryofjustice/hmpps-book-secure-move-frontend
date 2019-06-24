@@ -1,4 +1,5 @@
 const FormController = require('hmpo-form-wizard').Controller
+const dateFns = require('date-fns')
 
 const Controller = require('./move-details')
 const referenceDataService = require('../../../common/services/reference-data')
@@ -112,8 +113,9 @@ describe('Moves controllers', function () {
           req = {
             form: {
               values: {
-                date: '2019-10-17',
+                date: '',
                 date_type: 'custom',
+                date_custom: '2019-10-17',
               },
             },
           }
@@ -121,8 +123,15 @@ describe('Moves controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        it('should not change the value of date field', function () {
+        it('should set the value of date field to the custom date', function () {
           expect(req.form.values.date).to.equal('2019-10-17')
+        })
+
+        it('should store the value of custom date', function () {
+          expect(req.form.values.date_custom).to.equal('2019-10-17')
+        })
+
+        it('should set date type to custom', function () {
           expect(req.form.values.date_type).to.equal('custom')
         })
 
@@ -131,24 +140,57 @@ describe('Moves controllers', function () {
         })
       })
 
-      context('when date type is not custom', function () {
+      context('when date type is today', function () {
         beforeEach(function () {
           nextSpy = sinon.spy()
           req = {
             form: {
               values: {
                 date: '',
-                date_type: '2019-10-19',
+                date_type: 'today',
               },
             },
           }
 
+          sinon.stub(dateFns, 'startOfToday').returns('2019-10-19')
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set value of date to date type', function () {
+        it('should set value of date to today', function () {
           expect(req.form.values.date).to.equal('2019-10-19')
-          expect(req.form.values.date_type).to.equal('2019-10-19')
+        })
+
+        it('should set date type to today', function () {
+          expect(req.form.values.date_type).to.equal('today')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when date type is tomorrow', function () {
+        beforeEach(function () {
+          nextSpy = sinon.spy()
+          req = {
+            form: {
+              values: {
+                date: '',
+                date_type: 'tomorrow',
+              },
+            },
+          }
+
+          sinon.stub(dateFns, 'startOfTomorrow').returns('2019-10-20')
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set value of date to tomorrow', function () {
+          expect(req.form.values.date).to.equal('2019-10-20')
+        })
+
+        it('should set date type to tomorrow', function () {
+          expect(req.form.values.date_type).to.equal('tomorrow')
         })
 
         it('should call next without error', function () {

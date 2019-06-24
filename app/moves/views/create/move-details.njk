@@ -42,18 +42,18 @@
     },
     items: [
       {
-        value: TODAY,
-        text: "Today (" + TODAY | formatDateWithDay + ")"
+        value: "today",
+        text: "Today (" + TODAY | formatDateWithDay + ")",
       },
       {
-        value: TOMORROW,
-        text: "Tomorrow (" + TOMORROW | formatDateWithDay + ")"
+        value: "tomorrow",
+        text: "Tomorrow (" + TOMORROW | formatDateWithDay + ")",
       },
       {
         value: "custom",
         text: "Another date",
         conditional: {
-          html: govukInput(options.fields.date)
+          html: govukInput(options.fields.date_custom)
         }
       }
     ]
