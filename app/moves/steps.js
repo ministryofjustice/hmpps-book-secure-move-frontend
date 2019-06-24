@@ -50,6 +50,9 @@ module.exports = {
     next: 'risk-information',
     fields: [
       'court',
+      'court__solicitor',
+      'court__interpreter',
+      'court__other_information',
     ],
   },
   '/risk-information': {
@@ -58,6 +61,12 @@ module.exports = {
     next: 'health-information',
     fields: [
       'risk',
+      'risk__violent',
+      'risk__escape',
+      'risk__hold_separately',
+      'risk__self_harm',
+      'risk__concealed_items',
+      'risk__other_risks',
     ],
   },
   '/health-information': {
@@ -66,6 +75,12 @@ module.exports = {
     heading: 'Does this person’s health affect transport?',
     fields: [
       'health',
+      'health__special_diet_or_allergy',
+      'health__health_issue',
+      'health__medication',
+      'health__wheelchair',
+      'health__pregnant',
+      'health__other_requirements',
     ],
   },
   '/save': {

@@ -1,5 +1,20 @@
 const { date } = require('./formatters')
 
+function assessmentQuestionComments ({ required = false } = {}) {
+  const optionalLabel = required ? '' : ' (optional)'
+
+  return {
+    isConditional: true,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    rows: 3,
+    label: {
+      text: `Give details${optionalLabel}`,
+      classes: 'govuk-label--s',
+    },
+  }
+}
+
 module.exports = {
   // personal details
   reference: {
@@ -147,6 +162,14 @@ module.exports = {
     },
     items: [],
   },
+  risk__violent: assessmentQuestionComments(),
+  risk__escape: assessmentQuestionComments(),
+  risk__hold_separately: assessmentQuestionComments(),
+  risk__self_harm: assessmentQuestionComments(),
+  risk__concealed_items: assessmentQuestionComments(),
+  risk__other_risks: assessmentQuestionComments({
+    required: true,
+  }),
   // health information
   health: {
     component: 'govukCheckboxes',
@@ -163,6 +186,14 @@ module.exports = {
     },
     items: [],
   },
+  health__special_diet_or_allergy: assessmentQuestionComments(),
+  health__health_issue: assessmentQuestionComments(),
+  health__medication: assessmentQuestionComments(),
+  health__wheelchair: assessmentQuestionComments(),
+  health__pregnant: assessmentQuestionComments(),
+  health__other_requirements: assessmentQuestionComments({
+    required: true,
+  }),
   // court information
   court: {
     component: 'govukCheckboxes',
@@ -179,4 +210,9 @@ module.exports = {
     },
     items: [],
   },
+  court__solicitor: assessmentQuestionComments(),
+  court__interpreter: assessmentQuestionComments(),
+  court__other_information: assessmentQuestionComments({
+    required: true,
+  }),
 }
