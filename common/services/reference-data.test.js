@@ -3,11 +3,13 @@ const {
   getEthnicities,
   getAssessmentQuestions,
   getLocations,
+  mapAssessmentConditionalFields,
   mapToOption,
   insertInitialOption,
 } = require('./reference-data')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/auth')
+const componentService = require('./component')
 
 const gendersDeserialized = require('../../test/fixtures/api-client/reference.genders.deserialized.json')
 const gendersSerialized = require('../../test/fixtures/api-client/reference.genders.serialized.json')
@@ -119,6 +121,68 @@ describe('Reference Service', function () {
       it('should return a full list of locations', function () {
         expect(response.length).to.deep.equal(locationsDeserialized.data.length)
         expect(response).to.deep.equal(locationsDeserialized.data)
+      })
+    })
+  })
+
+  describe('#mapAssessmentConditionalFields()', function () {
+    beforeEach(function () {
+      sinon.stub(componentService, 'getComponent').returnsArg(0)
+    })
+
+    context('when no field exists in the step', function () {
+      it('should return the original item', function () {
+        const item = {
+          category: 'risk',
+          key: 'violent',
+        }
+        const response = mapAssessmentConditionalFields({})(item)
+
+        expect(response).to.deep.equal(item)
+      })
+    })
+
+    context('when field exists in step', function () {
+      const fields = {
+        'risk__violent': {
+          component: 'govukInput',
+          classes: 'input-classes',
+        },
+      }
+      const item = {
+        category: 'risk',
+        key: 'violent',
+      }
+      let response
+
+      beforeEach(function () {
+        response = mapAssessmentConditionalFields(fields)(item)
+      })
+
+      it('should return extra conditional content', function () {
+        expect(componentService.getComponent).to.be.calledOnceWithExactly('govukInput', {
+          component: 'govukInput',
+          classes: 'input-classes',
+          id: 'risk__violent',
+          name: 'risk__violent',
+        })
+      })
+
+      it('should return extra conditional content', function () {
+        expect(response).to.deep.equal({
+          category: 'risk',
+          key: 'violent',
+          conditional: {
+            html: 'govukInput',
+          },
+        })
+      })
+
+      it('should not mutate original item', function () {
+        expect(item).to.deep.equal({
+          category: 'risk',
+          key: 'violent',
+        })
       })
     })
   })

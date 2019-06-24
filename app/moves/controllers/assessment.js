@@ -3,13 +3,6 @@ const { flatten, values } = require('lodash')
 const FormController = require('./form')
 const referenceDataService = require('../../../common/services/reference-data')
 
-function _referenceToItem (item) {
-  return {
-    value: item.id,
-    text: item.title,
-  }
-}
-
 class AssessmentController extends FormController {
   async configure (req, res, next) {
     try {
@@ -26,7 +19,9 @@ class AssessmentController extends FormController {
           return referenceDataService
             .getAssessmentQuestions(key)
             .then((response) => {
-              field.items = response.map(_referenceToItem)
+              field.items = response
+                .map(referenceDataService.mapAssessmentConditionalFields(fields))
+                .map(referenceDataService.mapToOption)
             })
         }))
 

@@ -1,6 +1,7 @@
 const { flattenDeep, sortBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
+const componentService = require('./component')
 
 function getGenders () {
   return apiClient
@@ -64,11 +65,28 @@ function getLocations (type, combinedData, page = 1) {
   })
 }
 
+function mapAssessmentConditionalFields (fields) {
+  return function (item) {
+    const fieldName = `${item.category}__${item.key}`
+    const field = fields[fieldName]
+
+    if (!field) {
+      return item
+    }
+
+    const params = { ...field, id: fieldName, name: fieldName }
+    const html = componentService.getComponent(params.component, params)
+
+    return { ...item, conditional: { html } }
+  }
+}
+
 module.exports = {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
   getLocations,
+  mapAssessmentConditionalFields,
   mapToOption,
   insertInitialOption,
 }
