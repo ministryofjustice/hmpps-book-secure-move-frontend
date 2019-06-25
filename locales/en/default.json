@@ -87,5 +87,12 @@
     "health_information": {
       "heading": "Does this person’s health affect transport?"
     }
+  },
+  "actions": {
+    "create_move": "Create a move",
+    "previous_day": "Previous day",
+    "next_day": "Next day",
+    "back": "Back",
+    "continue": "Continue"
   }
 }

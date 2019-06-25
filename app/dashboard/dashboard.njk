@@ -20,16 +20,16 @@
         classes: "app-pagination--inline",
         previous: {
           href: pagination.prevUrl,
-          text: "Previous day"
+          text: translate("actions.previous_day")
         },
         next: {
           href: pagination.nextUrl,
-          text: "Next day"
+          text: translate("actions.next_day")
         }
       }) }}
 
       {{ govukButton({
-        text: "Create a move",
+        text: translate("actions.create_move"),
         href: "/moves/new",
         classes: "govuk-button--start govuk-!-margin-top-2"
       }) }}
