@@ -70,5 +70,22 @@
       "required": "Give details",
       "optional": "Give details (optional)"
     }
+  },
+  "steps": {
+    "personal_details": {
+      "heading": "Personal details"
+    },
+    "move_details": {
+      "heading": "Where is this person moving?"
+    },
+    "court_information": {
+      "heading": "Is there information for the court?"
+    },
+    "risk_information": {
+      "heading": "Are there risks with moving this person?"
+    },
+    "health_information": {
+      "heading": "Does this person’s health affect transport?"
+    }
   }
 }
