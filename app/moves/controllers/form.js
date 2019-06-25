@@ -8,9 +8,12 @@ class FormController extends Controller {
     const errors = super.getErrors(req, res)
 
     errors.errorList = map(errors, (error) => {
+      const label = req.translate(`fields.${error.key}.label`)
+      const message = req.translate(`validation.${error.type}`)
+
       return {
-        text: `${error.key} ${error.type}`,
-        href: `#${error.key}-error`,
+        text: `${label} ${message}`,
+        href: `#${error.key}`,
       }
     })
 
@@ -34,6 +37,7 @@ class FormController extends Controller {
   render (req, res, next) {
     const fields = Object.entries(req.form.options.fields)
       .map(fieldHelpers.setFieldValue(req.form.values))
+      .map(fieldHelpers.setFieldError(req.form.errors, req.translate))
       .map(fieldHelpers.translateField(req.translate))
       .map(fieldHelpers.renderConditionalFields)
 

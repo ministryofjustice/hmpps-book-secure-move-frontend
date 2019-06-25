@@ -39,7 +39,10 @@ describe('Moves controllers', function () {
               url: '/step-url',
             },
           })
-          errors = controller.getErrors({}, {})
+          const reqMock = {
+            translate: sinon.stub().returnsArg(0),
+          }
+          errors = controller.getErrors(reqMock, {})
         })
 
         it('should contain correct number of errors', function () {
@@ -60,12 +63,12 @@ describe('Moves controllers', function () {
             },
             errorList: [
               {
-                href: '#fieldOne-error',
-                text: 'fieldOne required',
+                href: '#fieldOne',
+                text: 'fields.fieldOne.label validation.required',
               },
               {
-                href: '#fieldTwo-error',
-                text: 'fieldTwo required',
+                href: '#fieldTwo',
+                text: 'fields.fieldTwo.label validation.required',
               },
             ],
           })
@@ -157,6 +160,11 @@ describe('Moves controllers', function () {
             return [ key, { ...field, setFieldValue: true } ]
           })
         sinon
+          .stub(fieldHelpers, 'setFieldError')
+          .callsFake(() => ([key, field]) => {
+            return [ key, { ...field, setFieldError: true } ]
+          })
+        sinon
           .stub(fieldHelpers, 'translateField')
           .callsFake(() => ([key, field]) => {
             return [ key, { ...field, translateField: true } ]
@@ -196,6 +204,10 @@ describe('Moves controllers', function () {
         expect(fieldHelpers.setFieldValue).to.be.calledOnce
       })
 
+      it('should call setFieldError', function () {
+        expect(fieldHelpers.setFieldError).to.be.calledOnce
+      })
+
       it('should call translateField', function () {
         expect(fieldHelpers.setFieldValue).to.be.calledOnce
       })
@@ -205,18 +217,21 @@ describe('Moves controllers', function () {
           field_1: {
             renderConditionalFields: true,
             setFieldValue: true,
+            setFieldError: true,
             translateField: true,
             name: 'Field 1',
           },
           field_2: {
             renderConditionalFields: true,
             setFieldValue: true,
+            setFieldError: true,
             translateField: true,
             name: 'Field 2',
           },
           field_3: {
             renderConditionalFields: true,
             setFieldValue: true,
+            setFieldError: true,
             translateField: true,
             name: 'Field 3',
           },
