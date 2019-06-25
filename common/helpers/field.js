@@ -1,4 +1,4 @@
-const { fromPairs } = require('lodash')
+const { cloneDeep, fromPairs, get, set } = require('lodash')
 
 const componentService = require('../services/component')
 
@@ -91,6 +91,33 @@ function setFieldValue (values) {
   }
 }
 
+function translateField (translate) {
+  return ([key, field]) => {
+    const translated = cloneDeep(field)
+    const translationPaths = [
+      'label.text',
+      'label.html',
+      'hint.text',
+      'hint.html',
+      'fieldset.legend.text',
+      'fieldset.legend.html',
+    ]
+
+    translationPaths.forEach((path) => {
+      const key = get(translated, path)
+
+      if (key) {
+        set(translated, path, translate(key))
+      }
+    })
+
+    return [
+      key,
+      translated,
+    ]
+  }
+}
+
 function insertInitialOption (items, label = 'option') {
   const initialOption = {
     text: `--- Choose ${label} ---`,
@@ -104,5 +131,6 @@ module.exports = {
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
   setFieldValue,
+  translateField,
   insertInitialOption,
 }
