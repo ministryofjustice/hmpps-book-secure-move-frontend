@@ -17,7 +17,7 @@ module.exports = {
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const locals = {
         moveDate,
-        pageTitle: 'Upcoming moves',
+        pageTitle: 'dashboard.upcoming_moves',
         destinations: presenters.movesByToLocation(response.data),
         pagination: {
           nextUrl: getQueryString(req.query, {

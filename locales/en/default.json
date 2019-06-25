@@ -94,5 +94,9 @@
     "next_day": "Next day",
     "back": "Back",
     "continue": "Continue"
+  },
+  "dashboard": {
+    "upcoming_moves": "Upcoming moves for",
+    "move_to": "Move to"
   }
 }
