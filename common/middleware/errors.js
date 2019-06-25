@@ -2,18 +2,18 @@ const logger = require('../../config/logger')
 
 function getStatusMessage (error) {
   if (error.code === 'EBADCSRFTOKEN') {
-    return 'This form has been tampered with'
+    return 'errors.tampered_with.heading'
   }
 
   if (error.statusCode === 404) {
-    return 'Page not found'
+    return 'errors.not_found.heading'
   }
 
   if (error.statusCode === 403 || error.statusCode === 401) {
-    return 'You don’t have permission to view this page'
+    return 'errors.unauthorized.heading'
   }
 
-  return 'Page unavailable'
+  return 'errors.default.heading'
 }
 
 function notFound (req, res, next) {
