@@ -1,3 +1,5 @@
+const { fromPairs } = require('lodash')
+
 const componentService = require('../services/component')
 
 function mapReferenceDataToOption ({ id, title, key, conditional }) {
@@ -17,19 +19,39 @@ function mapReferenceDataToOption ({ id, title, key, conditional }) {
   return option
 }
 
-function mapAssessmentConditionalFields (fields) {
-  return function (item) {
-    const fieldName = `${item.category}__${item.key}`
-    const field = fields[fieldName]
+function mapAssessmentQuestionToConditionalField (item) {
+  return {
+    ...item,
+    conditional: `${item.category}__${item.key}`,
+  }
+}
 
-    if (!field) {
-      return item
+function renderConditionalFields ([key, field], index, obj) {
+  if (!field.items) {
+    return {
+      [key]: field,
     }
+  }
 
-    const params = { ...field, id: fieldName, name: fieldName }
-    const html = componentService.getComponent(params.component, params)
+  const fields = fromPairs(obj)
 
-    return { ...item, conditional: { html } }
+  return {
+    [key]: {
+      ...field,
+      items: field.items.map((item) => {
+        const fieldName = item.conditional
+        const field = fields[fieldName]
+
+        if (!field) {
+          return item
+        }
+
+        const params = { ...field, id: fieldName, name: fieldName }
+        const html = componentService.getComponent(params.component, params)
+
+        return { ...item, conditional: { html } }
+      }),
+    },
   }
 }
 
@@ -43,6 +65,7 @@ function insertInitialOption (items, label = 'option') {
 
 module.exports = {
   mapReferenceDataToOption,
-  mapAssessmentConditionalFields,
+  mapAssessmentQuestionToConditionalField,
+  renderConditionalFields,
   insertInitialOption,
 }

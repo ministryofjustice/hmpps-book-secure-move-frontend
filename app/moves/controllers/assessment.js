@@ -21,7 +21,7 @@ class AssessmentController extends FormController {
             .getAssessmentQuestions(key)
             .then((response) => {
               field.items = response
-                .map(fieldHelpers.mapAssessmentConditionalFields(fields))
+                .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
                 .map(fieldHelpers.mapReferenceDataToOption)
             })
         }))

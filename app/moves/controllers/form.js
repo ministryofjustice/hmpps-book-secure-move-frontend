@@ -1,6 +1,8 @@
 const { map } = require('lodash')
 const { Controller } = require('hmpo-form-wizard')
 
+const fieldHelpers = require('../../../common/helpers/field')
+
 class FormController extends Controller {
   getErrors (req, res) {
     const errors = super.getErrors(req, res)
@@ -27,6 +29,15 @@ class FormController extends Controller {
     }
 
     super.errorHandler(err, req, res, next)
+  }
+
+  render (req, res, next) {
+    const fields = Object.entries(req.form.options.fields)
+      .map(fieldHelpers.renderConditionalFields)
+
+    req.form.options.fields = Object.assign(...fields)
+
+    super.render(req, res, next)
   }
 }
 

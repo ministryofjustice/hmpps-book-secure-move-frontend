@@ -1,6 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./form')
+const fieldHelpers = require('../../../common/helpers/field')
 
 const controller = new Controller({ route: '/' })
 
@@ -140,6 +141,62 @@ describe('Moves controllers', function () {
           controller.errorHandler(errorMock, {}, {}, nextSpy)
 
           expect(FormController.prototype.errorHandler).to.be.calledWith(errorMock, {}, {}, nextSpy)
+        })
+      })
+    })
+
+    describe('#render()', function () {
+      context('', function () {
+        let reqMock, nextSpy
+
+        before(function () {
+          nextSpy = sinon.spy()
+          sinon
+            .stub(fieldHelpers, 'renderConditionalFields')
+            .callsFake(([key, field]) => {
+              return { [key]: { ...field, renderConditionalFields: true } }
+            })
+
+          reqMock = {
+            form: {
+              options: {
+                fields: {
+                  field_1: {
+                    name: 'Field 1',
+                  },
+                  field_2: {
+                    name: 'Field 2',
+                  },
+                  field_3: {
+                    name: 'Field 3',
+                  },
+                },
+              },
+            },
+          }
+
+          controller.render(reqMock, {}, nextSpy)
+        })
+
+        it('should call renderConditionalFields on each field', function () {
+          expect(fieldHelpers.renderConditionalFields).to.be.calledThrice
+        })
+
+        it('should mutate fields object', function () {
+          expect(reqMock.form.options.fields).to.deep.equal({
+            field_1: {
+              renderConditionalFields: true,
+              name: 'Field 1',
+            },
+            field_2: {
+              renderConditionalFields: true,
+              name: 'Field 2',
+            },
+            field_3: {
+              renderConditionalFields: true,
+              name: 'Field 3',
+            },
+          })
         })
       })
     })
