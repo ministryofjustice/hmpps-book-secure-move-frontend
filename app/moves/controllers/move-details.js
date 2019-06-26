@@ -28,12 +28,16 @@ class MoveDetailsController extends FormController {
     } = req.form.values
 
     // process move date
+    let moveDate
+
     if (dateType === 'custom') {
-      req.form.values.date = req.form.values.date_custom
+      moveDate = req.form.values.date_custom
     } else {
       req.form.values.date_custom = ''
-      req.form.values.date = dateType === 'today' ? dateFns.startOfToday() : dateFns.startOfTomorrow()
+      moveDate = dateType === 'today' ? dateFns.startOfToday() : dateFns.startOfTomorrow()
     }
+
+    req.form.values.date = dateFns.format(moveDate, 'YYYY-MM-DD')
 
     // process to location
     req.form.values.to_location = req.form.values[`to_location_${locationType}`]
