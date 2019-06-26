@@ -1,6 +1,7 @@
 const { flatten, values } = require('lodash')
 
 const FormController = require('./form')
+const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
 
 class AssessmentController extends FormController {
@@ -21,7 +22,7 @@ class AssessmentController extends FormController {
             .then((response) => {
               field.items = response
                 .map(referenceDataService.mapAssessmentConditionalFields(fields))
-                .map(referenceDataService.mapToOption)
+                .map(fieldHelpers.mapReferenceDataToOption)
             })
         }))
 

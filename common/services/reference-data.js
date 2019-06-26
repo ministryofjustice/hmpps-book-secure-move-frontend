@@ -23,31 +23,6 @@ function getAssessmentQuestions (category) {
     .then(response => response.data)
 }
 
-function mapToOption ({ id, title, key, conditional }) {
-  const option = {
-    value: id,
-    text: title,
-  }
-
-  if (key) {
-    option.key = key
-  }
-
-  if (conditional) {
-    option.conditional = conditional
-  }
-
-  return option
-}
-
-function insertInitialOption (items, label = 'option') {
-  const initialOption = {
-    text: `--- Choose ${label} ---`,
-  }
-
-  return [initialOption, ...items]
-}
-
 function getLocations (type, combinedData, page = 1) {
   return apiClient.findAll('location', {
     page,
@@ -87,6 +62,4 @@ module.exports = {
   getAssessmentQuestions,
   getLocations,
   mapAssessmentConditionalFields,
-  mapToOption,
-  insertInitialOption,
 }
