@@ -10,6 +10,7 @@ const questionsMock = [
     id: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
     type: 'profile_attribute_types',
     category: 'risk',
+    key: 'violent',
     title: 'Violent',
     nomis_alert_type: null,
     nomis_alert_code: null,
@@ -18,6 +19,7 @@ const questionsMock = [
     id: '9b978b79-d19b-4a15-b3fe-9e45570cac70',
     type: 'profile_attribute_types',
     category: 'risk',
+    key: 'escape',
     title: 'Escape',
     nomis_alert_type: null,
     nomis_alert_code: null,
@@ -64,8 +66,18 @@ describe('Moves controllers', function () {
           expect(req.form.options.fields.risk).to.deep.equal({
             name: 'risk',
             items: [
-              { value: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1', text: 'Violent' },
-              { value: '9b978b79-d19b-4a15-b3fe-9e45570cac70', text: 'Escape' },
+              {
+                value: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
+                key: 'violent',
+                text: 'Violent',
+                conditional: 'risk__violent',
+              },
+              {
+                value: '9b978b79-d19b-4a15-b3fe-9e45570cac70',
+                key: 'escape',
+                text: 'Escape',
+                conditional: 'risk__escape',
+              },
             ],
           })
         })
