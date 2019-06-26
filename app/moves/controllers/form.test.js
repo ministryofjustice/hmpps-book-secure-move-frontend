@@ -154,7 +154,7 @@ describe('Moves controllers', function () {
           sinon
             .stub(fieldHelpers, 'renderConditionalFields')
             .callsFake(([key, field]) => {
-              return { [key]: { ...field, renderConditionalFields: true } }
+              return [ key, { ...field, renderConditionalFields: true } ]
             })
 
           reqMock = {
