@@ -1,5 +1,4 @@
 const FormController = require('hmpo-form-wizard').Controller
-const dateFns = require('date-fns')
 
 const Controller = require('./move-details')
 const referenceDataService = require('../../../common/services/reference-data')
@@ -141,7 +140,11 @@ describe('Moves controllers', function () {
       })
 
       context('when date type is today', function () {
+        // Specifically using a DST date to ensure correct date is returned
+        const mockDate = '2017-08-10'
+
         beforeEach(function () {
+          this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
           nextSpy = sinon.spy()
           req = {
             form: {
@@ -152,12 +155,15 @@ describe('Moves controllers', function () {
             },
           }
 
-          sinon.stub(dateFns, 'startOfToday').returns('2019-10-19')
           controller.process(req, {}, nextSpy)
         })
 
+        afterEach(function () {
+          this.clock.restore()
+        })
+
         it('should set value of date to today', function () {
-          expect(req.form.values.date).to.equal('2019-10-19')
+          expect(req.form.values.date).to.equal(mockDate)
         })
 
         it('should set date type to today', function () {
@@ -170,7 +176,11 @@ describe('Moves controllers', function () {
       })
 
       context('when date type is tomorrow', function () {
+        // Specifically using a DST date to ensure correct date is returned
+        const mockDate = '2017-08-10'
+
         beforeEach(function () {
+          this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
           nextSpy = sinon.spy()
           req = {
             form: {
@@ -181,12 +191,11 @@ describe('Moves controllers', function () {
             },
           }
 
-          sinon.stub(dateFns, 'startOfTomorrow').returns('2019-10-20')
           controller.process(req, {}, nextSpy)
         })
 
         it('should set value of date to tomorrow', function () {
-          expect(req.form.values.date).to.equal('2019-10-20')
+          expect(req.form.values.date).to.equal('2017-08-11')
         })
 
         it('should set date type to tomorrow', function () {
