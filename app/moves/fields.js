@@ -131,11 +131,13 @@ module.exports = {
     },
     items: [],
   },
+  date: {},
   date_type: {
   },
-  date: {
-    id: 'date',
-    name: 'date',
+  date_custom: {
+    formatter: [date],
+    id: 'date_custom',
+    name: 'date_custom',
     label: {
       text: 'Date of travel',
       classes: 'govuk-label--s',
