@@ -1,3 +1,5 @@
+const componentService = require('../services/component')
+
 function mapReferenceDataToOption ({ id, title, key, conditional }) {
   const option = {
     value: id,
@@ -15,6 +17,22 @@ function mapReferenceDataToOption ({ id, title, key, conditional }) {
   return option
 }
 
+function mapAssessmentConditionalFields (fields) {
+  return function (item) {
+    const fieldName = `${item.category}__${item.key}`
+    const field = fields[fieldName]
+
+    if (!field) {
+      return item
+    }
+
+    const params = { ...field, id: fieldName, name: fieldName }
+    const html = componentService.getComponent(params.component, params)
+
+    return { ...item, conditional: { html } }
+  }
+}
+
 function insertInitialOption (items, label = 'option') {
   const initialOption = {
     text: `--- Choose ${label} ---`,
@@ -25,5 +43,6 @@ function insertInitialOption (items, label = 'option') {
 
 module.exports = {
   mapReferenceDataToOption,
+  mapAssessmentConditionalFields,
   insertInitialOption,
 }
