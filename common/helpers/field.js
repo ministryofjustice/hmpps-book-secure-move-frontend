@@ -28,15 +28,17 @@ function mapAssessmentQuestionToConditionalField (item) {
 
 function renderConditionalFields ([key, field], index, obj) {
   if (!field.items) {
-    return {
-      [key]: field,
-    }
+    return [
+      key,
+      field,
+    ]
   }
 
   const fields = fromPairs(obj)
 
-  return {
-    [key]: {
+  return [
+    key,
+    {
       ...field,
       items: field.items.map((item) => {
         const fieldName = item.conditional
@@ -52,7 +54,7 @@ function renderConditionalFields ([key, field], index, obj) {
         return { ...item, conditional: { html } }
       }),
     },
-  }
+  ]
 }
 
 function insertInitialOption (items, label = 'option') {

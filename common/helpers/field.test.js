@@ -107,9 +107,10 @@ describe('Form helpers', function () {
         ]
         const response = renderConditionalFields(field)
 
-        expect(response).to.deep.equal({
-          court: { name: 'court' },
-        })
+        expect(response).to.deep.equal([
+          'court',
+          { name: 'court' },
+        ])
       })
     })
 
@@ -177,7 +178,7 @@ describe('Form helpers', function () {
           })
 
           it('should render conditional content', function () {
-            expect(response.field.items).to.deep.equal([{
+            expect(response[1].items).to.deep.equal([{
               value: '31b90233-7043-4633-8055-f24854545ead',
               text: 'Item one',
               conditional: {
@@ -216,7 +217,7 @@ describe('Form helpers', function () {
           })
 
           it('should render original item', function () {
-            expect(response.field.items).to.deep.equal([{
+            expect(response[1].items).to.deep.equal([{
               value: '31b90233-7043-4633-8055-f24854545ead',
               text: 'Item one',
               conditional: 'doesnotexist',
@@ -250,7 +251,7 @@ describe('Form helpers', function () {
         })
 
         it('should render conditional content', function () {
-          expect(response.field.items).to.deep.equal([{
+          expect(response[1].items).to.deep.equal([{
             value: '31b90233-7043-4633-8055-f24854545ead',
             text: 'Item one',
             conditional: {
