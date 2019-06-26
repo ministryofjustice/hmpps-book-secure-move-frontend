@@ -57,6 +57,40 @@ function renderConditionalFields ([key, field], index, obj) {
   ]
 }
 
+function setFieldValue (values) {
+  return ([key, field]) => {
+    if (!field.items) {
+      return [
+        key,
+        { ...field, value: values[key] },
+      ]
+    }
+
+    return [
+      key,
+      {
+        ...field,
+        items: field.items.map((item) => {
+          const value = values[key]
+          let selected = false
+
+          if (!value) {
+            return item
+          }
+
+          if (Array.isArray(value)) {
+            selected = value.includes(item.value)
+          } else {
+            selected = item.value === value
+          }
+
+          return { ...item, selected, checked: selected }
+        }),
+      },
+    ]
+  }
+}
+
 function insertInitialOption (items, label = 'option') {
   const initialOption = {
     text: `--- Choose ${label} ---`,
@@ -69,5 +103,6 @@ module.exports = {
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
+  setFieldValue,
   insertInitialOption,
 }
