@@ -1,7 +1,6 @@
 const { flattenDeep, sortBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
-const componentService = require('./component')
 
 function getGenders () {
   return apiClient
@@ -23,31 +22,6 @@ function getAssessmentQuestions (category) {
     .then(response => response.data)
 }
 
-function mapToOption ({ id, title, key, conditional }) {
-  const option = {
-    value: id,
-    text: title,
-  }
-
-  if (key) {
-    option.key = key
-  }
-
-  if (conditional) {
-    option.conditional = conditional
-  }
-
-  return option
-}
-
-function insertInitialOption (items, label = 'option') {
-  const initialOption = {
-    text: `--- Choose ${label} ---`,
-  }
-
-  return [initialOption, ...items]
-}
-
 function getLocations (type, combinedData, page = 1) {
   return apiClient.findAll('location', {
     page,
@@ -65,28 +39,9 @@ function getLocations (type, combinedData, page = 1) {
   })
 }
 
-function mapAssessmentConditionalFields (fields) {
-  return function (item) {
-    const fieldName = `${item.category}__${item.key}`
-    const field = fields[fieldName]
-
-    if (!field) {
-      return item
-    }
-
-    const params = { ...field, id: fieldName, name: fieldName }
-    const html = componentService.getComponent(params.component, params)
-
-    return { ...item, conditional: { html } }
-  }
-}
-
 module.exports = {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
   getLocations,
-  mapAssessmentConditionalFields,
-  mapToOption,
-  insertInitialOption,
 }

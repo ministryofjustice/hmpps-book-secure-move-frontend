@@ -1,6 +1,7 @@
 const dateFns = require('date-fns')
 
 const FormController = require('./form')
+const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
 
 class MoveDetailsController extends FormController {
@@ -8,11 +9,11 @@ class MoveDetailsController extends FormController {
     try {
       const courts = await referenceDataService.getLocations('court')
       const prisons = await referenceDataService.getLocations('prison')
-      const courtOptions = courts.map(referenceDataService.mapToOption)
-      const prisonOptions = prisons.map(referenceDataService.mapToOption)
+      const courtOptions = courts.map(fieldHelpers.mapReferenceDataToOption)
+      const prisonOptions = prisons.map(fieldHelpers.mapReferenceDataToOption)
 
-      req.form.options.fields.to_location_court.items = referenceDataService.insertInitialOption(courtOptions, 'court')
-      req.form.options.fields.to_location_prison.items = referenceDataService.insertInitialOption(prisonOptions, 'prison')
+      req.form.options.fields.to_location_court.items = fieldHelpers.insertInitialOption(courtOptions, 'court')
+      req.form.options.fields.to_location_prison.items = fieldHelpers.insertInitialOption(prisonOptions, 'prison')
 
       super.configure(req, res, next)
     } catch (error) {
