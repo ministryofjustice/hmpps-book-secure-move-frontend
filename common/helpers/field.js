@@ -91,6 +91,32 @@ function setFieldValue (values) {
   }
 }
 
+function setFieldError (errors, translate) {
+  return ([key, field]) => {
+    const fieldError = errors[key]
+
+    if (!fieldError) {
+      return [
+        key,
+        field,
+      ]
+    }
+
+    const label = translate(`fields.${fieldError.key}.label`)
+    const message = translate(`validation.${fieldError.type}`)
+
+    return [
+      key,
+      {
+        ...field,
+        errorMessage: {
+          text: `${label} ${message}`,
+        },
+      },
+    ]
+  }
+}
+
 function translateField (translate) {
   return ([key, field]) => {
     const translated = cloneDeep(field)
@@ -131,6 +157,7 @@ module.exports = {
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
   setFieldValue,
+  setFieldError,
   translateField,
   insertInitialOption,
 }
