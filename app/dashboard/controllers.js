@@ -12,7 +12,7 @@ module.exports = {
   get: async (req, res, next) => {
     try {
       const moveDate = req.query['move-date'] || format(new Date(), 'YYYY-MM-DD')
-      const response = await moveService.getMovesByDate(moveDate)
+      const response = await moveService.getRequestedMovesByDate(moveDate)
       const yesterday = format(subDays(moveDate, 1), 'YYYY-MM-DD')
       const tomorrow = format(addDays(moveDate, 1), 'YYYY-MM-DD')
       const locals = {

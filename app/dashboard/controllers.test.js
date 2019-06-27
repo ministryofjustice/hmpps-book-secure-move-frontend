@@ -22,7 +22,7 @@ describe('Dashboard app', function () {
       let req, res
 
       beforeEach(async function () {
-        sinon.stub(moveService, 'getMovesByDate').resolves(movesStub)
+        sinon.stub(moveService, 'getRequestedMovesByDate').resolves(movesStub)
         this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
         req = { query: {} }
@@ -70,7 +70,7 @@ describe('Dashboard app', function () {
       let req, res
 
       beforeEach(async function () {
-        sinon.stub(moveService, 'getMovesByDate').resolves(movesStub)
+        sinon.stub(moveService, 'getRequestedMovesByDate').resolves(movesStub)
 
         req = {
           query: {
@@ -116,7 +116,7 @@ describe('Dashboard app', function () {
       let req, res, nextSpy
 
       beforeEach(async function () {
-        sinon.stub(moveService, 'getMovesByDate').throws(errorStub)
+        sinon.stub(moveService, 'getRequestedMovesByDate').throws(errorStub)
 
         req = {
           query: {},
