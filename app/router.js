@@ -17,4 +17,7 @@ const appRouters = subApps.map(subAppDir => {
   return (req, res, next) => next()
 })
 
+// Redirect route to moves dashboard
+router.get('/', (req, res) => res.redirect('/moves'))
+
 module.exports = appRouters

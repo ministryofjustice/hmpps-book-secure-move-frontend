@@ -1,7 +1,7 @@
-const presenters = require('../../common/presenters')
-const moveService = require('../../common/services/move')
+const presenters = require('../../../common/presenters')
+const moveService = require('../../../common/services/move')
 
-const controllers = require('./controllers')
+const controllers = require('./')
 
 const movesStub = {
   data: [
@@ -11,8 +11,8 @@ const movesStub = {
 }
 const errorStub = new Error('Problem')
 
-describe('Dashboard app', function () {
-  describe('#getController()', function () {
+describe('Moves controllers', function () {
+  describe('#list()', function () {
     beforeEach(function () {
       sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
     })
@@ -28,7 +28,7 @@ describe('Dashboard app', function () {
         req = { query: {} }
         res = { render: sinon.spy() }
 
-        await controllers.get(req, res)
+        await controllers.list(req, res)
       })
 
       afterEach(function () {
@@ -79,7 +79,7 @@ describe('Dashboard app', function () {
         }
         res = { render: sinon.spy() }
 
-        await controllers.get(req, res)
+        await controllers.list(req, res)
       })
 
       it('should render a template', function () {
@@ -124,7 +124,7 @@ describe('Dashboard app', function () {
         res = { render: sinon.spy() }
         nextSpy = sinon.spy()
 
-        await controllers.get(req, res, nextSpy)
+        await controllers.list(req, res, nextSpy)
       })
 
       it('should not render a template', function () {
