@@ -13,8 +13,9 @@ function format (data) {
   })
 }
 
-function getMovesByDate (moveDate) {
+function getRequestedMovesByDate (moveDate) {
   return apiClient.findAll('move', {
+    'filter[status]': 'requested',
     'filter[date_from]': moveDate,
     'filter[date_to]': moveDate,
   })
@@ -32,7 +33,7 @@ function create (data) {
 
 module.exports = {
   format,
-  getMovesByDate,
+  getRequestedMovesByDate,
   getMoveById,
   create,
 }
