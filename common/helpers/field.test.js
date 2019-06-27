@@ -1,8 +1,11 @@
+const { cloneDeep, set } = require('lodash')
+
 const {
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
   setFieldValue,
+  translateField,
   insertInitialOption,
 } = require('./field')
 
@@ -402,6 +405,179 @@ describe('Form helpers', function () {
             ])
           })
         })
+      })
+    })
+  })
+
+  describe('#translateField()', function () {
+    let translateStub
+
+    beforeEach(function () {
+      translateStub = sinon.stub().returns('__translated__')
+    })
+
+    context('when no translation properties exist', function () {
+      let response
+      const field = [
+        'field',
+        { name: 'field' },
+      ]
+
+      beforeEach(function () {
+        response = translateField(translateStub)(field)
+      })
+
+      it('should not call translation method', function () {
+        expect(translateStub).not.to.be.called
+      })
+
+      it('should return original field', function () {
+        expect(response).to.deep.equal(field)
+      })
+    })
+
+    context('when single translation property exists', function () {
+      const defaultProperties = { name: 'field' }
+      const scenarios = {
+        'label.text': {
+          label: {
+            text: 'label.text',
+          },
+        },
+        'label.html': {
+          label: {
+            html: 'label.html',
+          },
+        },
+        'hint.text': {
+          hint: {
+            text: 'hint.text',
+          },
+        },
+        'hint.html': {
+          hint: {
+            html: 'hint.html',
+          },
+        },
+        'fieldset.legend.text': {
+          fieldset: {
+            legend: {
+              text: 'fieldset.legend.text',
+            },
+          },
+        },
+        'fieldset.legend.html': {
+          fieldset: {
+            legend: {
+              html: 'fieldset.legend.html',
+            },
+          },
+        },
+      }
+
+      Object.entries(scenarios).forEach(function ([path, properties]) {
+        describe(path, function () {
+          let field, response
+
+          beforeEach(function () {
+            field = [
+              'field',
+              { ...defaultProperties, ...cloneDeep(properties) },
+            ]
+
+            response = translateField(translateStub)(field)
+          })
+
+          it('should call translation with correct value', function () {
+            expect(translateStub).to.be.calledOnceWithExactly(path)
+          })
+
+          it('should return translated field', function () {
+            const translated = cloneDeep(properties)
+            set(translated, path, '__translated__')
+
+            expect(response).to.deep.equal([
+              'field',
+              { ...defaultProperties, ...translated },
+            ])
+          })
+
+          it('should not mutate original field', function () {
+            expect(field).to.deep.equal([
+              'field',
+              { ...defaultProperties, ...cloneDeep(properties) },
+            ])
+          })
+        })
+      })
+    })
+
+    context('when multiple translation properties exist', function () {
+      const field = [
+        'field',
+        {
+          name: 'field',
+          label: {
+            text: 'label.text',
+          },
+          hint: {
+            html: 'hint.html',
+          },
+          fieldset: {
+            legend: {
+              text: 'fieldset.legend.text',
+            },
+          },
+        },
+      ]
+      let response
+
+      beforeEach(function () {
+        response = translateField(translateStub)(field)
+      })
+
+      it('should call translation correct amount of times', function () {
+        expect(translateStub).to.be.calledThrice
+      })
+
+      it('should return translated field', function () {
+        expect(response).to.deep.equal([
+          'field',
+          {
+            name: 'field',
+            label: {
+              text: '__translated__',
+            },
+            hint: {
+              html: '__translated__',
+            },
+            fieldset: {
+              legend: {
+                text: '__translated__',
+              },
+            },
+          },
+        ])
+      })
+
+      it('should not mutate original field', function () {
+        expect(field).to.deep.equal([
+          'field',
+          {
+            name: 'field',
+            label: {
+              text: 'label.text',
+            },
+            hint: {
+              html: 'hint.html',
+            },
+            fieldset: {
+              legend: {
+                text: 'fieldset.legend.text',
+              },
+            },
+          },
+        ])
       })
     })
   })

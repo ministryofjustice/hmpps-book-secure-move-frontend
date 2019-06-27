@@ -15,7 +15,7 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     backLink: null,
-    heading: 'Personal details',
+    heading: 'steps.personal_details.heading',
     next: 'move-details',
     fields: [
       'reference',
@@ -29,7 +29,7 @@ module.exports = {
   '/move-details': {
     controller: MoveDetails,
     template: 'moves/views/create/move-details',
-    heading: 'Where is this person moving?',
+    heading: 'steps.move_details.heading',
     next: [
       { field: 'to_location_type', value: 'court', next: 'court-information' },
       'risk-information',
@@ -47,7 +47,7 @@ module.exports = {
   },
   '/court-information': {
     controller: Assessment,
-    heading: 'Is there information for the court?',
+    heading: 'steps.court_information.heading',
     next: 'risk-information',
     fields: [
       'court',
@@ -58,7 +58,7 @@ module.exports = {
   },
   '/risk-information': {
     controller: Assessment,
-    heading: 'Are there risks with moving this person?',
+    heading: 'steps.risk_information.heading',
     next: 'health-information',
     fields: [
       'risk',
@@ -73,7 +73,7 @@ module.exports = {
   '/health-information': {
     controller: Assessment,
     next: 'save',
-    heading: 'Does this person’s health affect transport?',
+    heading: 'steps.health_information.heading',
     fields: [
       'health',
       'health__special_diet_or_allergy',

@@ -157,6 +157,11 @@ describe('Moves controllers', function () {
             return [ key, { ...field, setFieldValue: true } ]
           })
         sinon
+          .stub(fieldHelpers, 'translateField')
+          .callsFake(() => ([key, field]) => {
+            return [ key, { ...field, translateField: true } ]
+          })
+        sinon
           .stub(fieldHelpers, 'renderConditionalFields')
           .callsFake(([key, field]) => {
             return [ key, { ...field, renderConditionalFields: true } ]
@@ -191,21 +196,28 @@ describe('Moves controllers', function () {
         expect(fieldHelpers.setFieldValue).to.be.calledOnce
       })
 
+      it('should call translateField', function () {
+        expect(fieldHelpers.setFieldValue).to.be.calledOnce
+      })
+
       it('should mutate fields object', function () {
         expect(reqMock.form.options.fields).to.deep.equal({
           field_1: {
             renderConditionalFields: true,
             setFieldValue: true,
+            translateField: true,
             name: 'Field 1',
           },
           field_2: {
             renderConditionalFields: true,
             setFieldValue: true,
+            translateField: true,
             name: 'Field 2',
           },
           field_3: {
             renderConditionalFields: true,
             setFieldValue: true,
+            translateField: true,
             name: 'Field 3',
           },
         })

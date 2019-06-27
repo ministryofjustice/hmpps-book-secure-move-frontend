@@ -1,14 +1,14 @@
 {% extends "layouts/govuk.njk" %}
 
 {% block pageTitle %}
-  {{ pageTitle }} for {{ moveDate | formatDateAsRelativeDay }}
+  {{ translate(pageTitle) }} {{ moveDate | formatDateAsRelativeDay }}
 {% endblock %}
 
 {% block content %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-xl">{{ pageTitle }} for</span>
+      <span class="govuk-caption-xl">{{ translate(pageTitle) }}</span>
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
         {{ appTime({
           datetime: moveDate,
@@ -20,16 +20,16 @@
         classes: "app-pagination--inline",
         previous: {
           href: pagination.prevUrl,
-          text: "Previous day"
+          text: translate("actions.previous_day")
         },
         next: {
           href: pagination.nextUrl,
-          text: "Next day"
+          text: translate("actions.next_day")
         }
       }) }}
 
       {{ govukButton({
-        text: "Create a move",
+        text: translate("actions.create_move"),
         href: "/moves/new",
         classes: "govuk-button--start govuk-!-margin-top-2"
       }) }}
@@ -46,7 +46,7 @@
         {{ appData({
           inverted: true,
           classes: "app-data--s",
-          label: "Move to",
+          label: translate("dashboard.move_to"),
           value: destination.location.title
         }) }}
       </div>

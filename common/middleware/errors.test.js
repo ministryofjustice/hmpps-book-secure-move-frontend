@@ -125,7 +125,7 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode404,
           showStackTrace: false,
-          statusMessage: 'Page not found',
+          statusMessage: 'errors.not_found.heading',
         })
       })
 
@@ -164,7 +164,7 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
-          statusMessage: 'You don’t have permission to view this page',
+          statusMessage: 'errors.unauthorized.heading',
         })
       })
 
@@ -204,7 +204,7 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
-          statusMessage: 'This form has been tampered with',
+          statusMessage: 'errors.tampered_with.heading',
         })
       })
 
@@ -243,7 +243,7 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode500,
           showStackTrace: false,
-          statusMessage: 'Page unavailable',
+          statusMessage: 'errors.default.heading',
         })
       })
 
@@ -281,7 +281,7 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode500,
           showStackTrace: false,
-          statusMessage: 'Page unavailable',
+          statusMessage: 'errors.default.heading',
         })
       })
 

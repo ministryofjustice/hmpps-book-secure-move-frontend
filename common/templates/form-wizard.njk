@@ -3,7 +3,7 @@
 {% block beforeContent %}
   {% if backLink %}
     {{ govukBackLink({
-      text: "Back",
+      text: translate("actions.back"),
       href: backLink
     }) }}
   {% endif %}
@@ -22,7 +22,7 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        {{ options.heading }}
+        {{ translate(options.heading) }}
       </h1>
     </div>
   </header>
@@ -41,7 +41,7 @@
     {% endblock %}
 
     {{ govukButton({
-      text: "Continue"
+      text: translate("actions.continue")
     }) }}
   </form>
 {% endblock %}

@@ -14,5 +14,111 @@
         "empty": "No information for the court"
       }
     }
+  },
+  "fields": {
+    "reference": {
+      "label": "Reference number",
+      "hint": "Your reference for the person"
+    },
+    "first_names": {
+      "label": "First name(s)"
+    },
+    "last_name": {
+      "label": "Last name"
+    },
+    "date_of_birth": {
+      "label": "Date of birth"
+    },
+    "gender": {
+      "label": "Gender"
+    },
+    "ethnicity": {
+      "label": "Ethnicity"
+    },
+    "from_location": {
+      "label": "Move from"
+    },
+    "to_location_type": {
+      "label": "Move to"
+    },
+    "to_location_prison": {
+      "label": "Name of prison (optional)"
+    },
+    "to_location_court": {
+      "label": "Name of court"
+    },
+    "date_type": {
+      "label": "Date"
+    },
+    "date_custom": {
+      "label": "Date of travel",
+      "hint": "For example 28/10/2019 or 28 October 2019"
+    },
+    "risk": {
+      "label": "Add risk information",
+      "hint": "Select all that apply"
+    },
+    "health": {
+      "label": "Add health information",
+      "hint": "Select all that apply"
+    },
+    "court": {
+      "label": "Add court information",
+      "hint": "Select all that apply"
+    },
+    "assessment_comment": {
+      "required": "Give details",
+      "optional": "Give details (optional)"
+    }
+  },
+  "steps": {
+    "personal_details": {
+      "heading": "Personal details"
+    },
+    "move_details": {
+      "heading": "Where is this person moving?"
+    },
+    "court_information": {
+      "heading": "Is there information for the court?"
+    },
+    "risk_information": {
+      "heading": "Are there risks with moving this person?"
+    },
+    "health_information": {
+      "heading": "Does this person’s health affect transport?"
+    }
+  },
+  "actions": {
+    "create_move": "Create a move",
+    "previous_day": "Previous day",
+    "next_day": "Next day",
+    "back": "Back",
+    "continue": "Continue",
+    "restart": "Restart"
+  },
+  "dashboard": {
+    "upcoming_moves": "Upcoming moves for",
+    "move_to": "Move to"
+  },
+  "errors": {
+    "default": {
+      "heading": "Page unavailable",
+      "content": "We are experiencing technical problems and the error has been reported. Try again in a few moments."
+    },
+    "timeout": {
+      "heading": "Session timeout",
+      "content": "Your session has timed out due to a long period of inactivity."
+    },
+    "not_found": {
+      "heading": "Page not found",
+      "content": "If you entered a web address check it was correct."
+    },
+    "tampered_with": {
+      "heading": "This form has been tampered with",
+      "content": "Try to submit the form again in a few moments."
+    },
+    "unauthorized": {
+      "heading": "You don’t have permission to view this page"
+    }
   }
 }
