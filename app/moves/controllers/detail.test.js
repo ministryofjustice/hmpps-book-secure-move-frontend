@@ -1,7 +1,7 @@
 const personService = require('../../../common/services/person')
 const presenters = require('../../../common/presenters')
 
-const controllers = require('./')
+const controllers = require('.')
 
 const { data: mockMove } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
@@ -26,7 +26,7 @@ describe('Moves controllers', function () {
         },
       }
 
-      controllers.get(req, res)
+      controllers.detail(req, res)
     })
 
     it('should render a template', function () {

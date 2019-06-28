@@ -1,7 +1,7 @@
 const personService = require('../../../common/services/person')
 const presenters = require('../../../common/presenters')
 
-module.exports = function get (req, res) {
+module.exports = function detail (req, res) {
   const { move } = res.locals
   const { person } = move
   const locals = {
