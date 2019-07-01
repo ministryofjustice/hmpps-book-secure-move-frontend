@@ -1,0 +1,21 @@
+{
+  "default": {
+    "heading": "Page unavailable",
+    "content": "We are experiencing technical problems and the error has been reported. Try again in a few moments."
+  },
+  "timeout": {
+    "heading": "Session timeout",
+    "content": "Your session has timed out due to a long period of inactivity."
+  },
+  "not_found": {
+    "heading": "Page not found",
+    "content": "If you entered a web address check it was correct."
+  },
+  "tampered_with": {
+    "heading": "This form has been tampered with",
+    "content": "Try to submit the form again in a few moments."
+  },
+  "unauthorized": {
+    "heading": "You don’t have permission to view this page"
+  }
+}

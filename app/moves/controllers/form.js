@@ -8,8 +8,8 @@ class FormController extends Controller {
     const errors = super.getErrors(req, res)
 
     errors.errorList = map(errors, (error) => {
-      const label = req.t(`fields.${error.key}.label`)
-      const message = req.t(`validation.${error.type}`)
+      const label = req.t(`fields:${error.key}.label`)
+      const message = req.t(`validation:${error.type}`)
 
       return {
         text: `${label} ${message}`,

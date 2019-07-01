@@ -26,7 +26,14 @@ i18next.use(Backend).init({
   lng: 'en',
   fallbackLng: 'en',
   preload: ['en'],
-  ns: ['default'],
+  ns: [
+    'default',
+    'actions',
+    'errors',
+    'fields',
+    'moves',
+    'validation',
+  ],
   defaultNS: 'default',
   backend: {
     loadPath: './locales/{{lng}}/{{ns}}.json',

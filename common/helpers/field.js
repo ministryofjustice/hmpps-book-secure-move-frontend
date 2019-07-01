@@ -102,8 +102,8 @@ function setFieldError (errors, translate) {
       ]
     }
 
-    const label = translate(`fields.${fieldError.key}.label`)
-    const message = translate(`validation.${fieldError.type}`)
+    const label = translate(`fields:${fieldError.key}.label`)
+    const message = translate(`validation:${fieldError.type}`)
 
     return [
       key,

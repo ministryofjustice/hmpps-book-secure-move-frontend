@@ -4,11 +4,11 @@
   <h1 class="govuk-heading-xl">{{ t(statusMessage) }}</h1>
 
   {% if statusCode == '404' %}
-    <p>{{ t("errors.not_found.content") }}</p>
+    <p>{{ t("errors:not_found.content") }}</p>
   {% elseif statusCode == '403' and error.code === 'EBADCSRFTOKEN' %}
-    <p>{{ t("errors.tampered_with.content") }}</p>
+    <p>{{ t("errors:tampered_with.content") }}</p>
   {% else %}
-    <p>{{ t("errors.default.content") }}</p>
+    <p>{{ t("errors:default.content") }}</p>
   {% endif %}
 
   {% if showStackTrace %}

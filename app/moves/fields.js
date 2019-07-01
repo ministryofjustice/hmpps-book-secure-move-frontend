@@ -9,7 +9,7 @@ function assessmentQuestionComments ({ required = false } = {}) {
     classes: 'govuk-input--width-20',
     rows: 3,
     label: {
-      text: `fields.assessment_comment.${labelPath}`,
+      text: `fields:assessment_comment.${labelPath}`,
       classes: 'govuk-label--s',
     },
   }
@@ -20,11 +20,11 @@ module.exports = {
   reference: {
     component: 'govukInput',
     label: {
-      text: 'fields.reference.label',
+      text: 'fields:reference.label',
       classes: 'govuk-label--s',
     },
     hint: {
-      text: 'fields.reference.hint',
+      text: 'fields:reference.hint',
     },
     id: 'reference',
     name: 'reference',
@@ -34,7 +34,7 @@ module.exports = {
   first_names: {
     component: 'govukInput',
     label: {
-      text: 'fields.first_names.label',
+      text: 'fields:first_names.label',
       classes: 'govuk-label--s',
     },
     id: 'first_names',
@@ -45,7 +45,7 @@ module.exports = {
   last_name: {
     component: 'govukInput',
     label: {
-      text: 'fields.last_name.label',
+      text: 'fields:last_name.label',
       classes: 'govuk-label--s',
     },
     id: 'last_name',
@@ -57,7 +57,7 @@ module.exports = {
     formatter: [date],
     component: 'govukInput',
     label: {
-      text: 'fields.date_of_birth.label',
+      text: 'fields:date_of_birth.label',
       classes: 'govuk-label--s',
     },
     id: 'date_of_birth',
@@ -69,7 +69,7 @@ module.exports = {
     component: 'govukRadios',
     fieldset: {
       legend: {
-        text: 'fields.gender.label',
+        text: 'fields:gender.label',
         classes: 'govuk-fieldset__legend--s',
       },
     },
@@ -79,7 +79,7 @@ module.exports = {
   ethnicity: {
     component: 'govukSelect',
     label: {
-      text: 'fields.ethnicity.label',
+      text: 'fields:ethnicity.label',
       classes: 'govuk-label--s',
     },
     id: 'ethnicity',
@@ -96,7 +96,7 @@ module.exports = {
     name: 'to_location_prison',
     classes: 'govuk-input--width-20',
     label: {
-      text: 'fields.to_location_prison.label',
+      text: 'fields:to_location_prison.label',
       classes: 'govuk-label--s',
     },
     items: [],
@@ -106,7 +106,7 @@ module.exports = {
     name: 'to_location_court',
     classes: 'govuk-input--width-20',
     label: {
-      text: 'fields.to_location_court.label',
+      text: 'fields:to_location_court.label',
       classes: 'govuk-label--s',
     },
     items: [],
@@ -118,11 +118,11 @@ module.exports = {
     id: 'date_custom',
     name: 'date_custom',
     label: {
-      text: 'fields.date_custom.label',
+      text: 'fields:date_custom.label',
       classes: 'govuk-label--s',
     },
     hint: {
-      text: 'fields.date_custom.hint',
+      text: 'fields:date_custom.hint',
     },
     classes: 'govuk-input--width-10',
     autocomplete: 'off',
@@ -134,12 +134,12 @@ module.exports = {
     multiple: true,
     fieldset: {
       legend: {
-        text: 'fields.risk.label',
+        text: 'fields:risk.label',
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     hint: {
-      text: 'fields.risk.hint',
+      text: 'fields:risk.hint',
     },
     items: [],
   },
@@ -158,12 +158,12 @@ module.exports = {
     multiple: true,
     fieldset: {
       legend: {
-        text: 'fields.health.label',
+        text: 'fields:health.label',
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     hint: {
-      text: 'fields.health.hint',
+      text: 'fields:health.hint',
     },
     items: [],
   },
@@ -182,12 +182,12 @@ module.exports = {
     multiple: true,
     fieldset: {
       legend: {
-        text: 'fields.court.label',
+        text: 'fields:court.label',
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     hint: {
-      text: 'fields.court.hint',
+      text: 'fields:court.hint',
     },
     items: [],
   },

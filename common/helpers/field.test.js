@@ -460,8 +460,8 @@ describe('Form helpers', function () {
       })
 
       it('should call translation with correct values', function () {
-        expect(translateStub.firstCall).to.be.calledWithExactly('fields.error_field.label')
-        expect(translateStub.secondCall).to.be.calledWithExactly('validation.required')
+        expect(translateStub.firstCall).to.be.calledWithExactly('fields:error_field.label')
+        expect(translateStub.secondCall).to.be.calledWithExactly('validation:required')
       })
 
       it('should return field with error message', function () {
@@ -470,7 +470,7 @@ describe('Form helpers', function () {
           {
             name: 'error_field',
             errorMessage: {
-              text: 'fields.error_field.label validation.required',
+              text: 'fields:error_field.label validation:required',
             },
           },
         ])

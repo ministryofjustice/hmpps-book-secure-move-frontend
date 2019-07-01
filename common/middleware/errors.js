@@ -2,18 +2,18 @@ const logger = require('../../config/logger')
 
 function getStatusMessage (error) {
   if (error.code === 'EBADCSRFTOKEN') {
-    return 'errors.tampered_with.heading'
+    return 'errors:tampered_with.heading'
   }
 
   if (error.statusCode === 404) {
-    return 'errors.not_found.heading'
+    return 'errors:not_found.heading'
   }
 
   if (error.statusCode === 403 || error.statusCode === 401) {
-    return 'errors.unauthorized.heading'
+    return 'errors:unauthorized.heading'
   }
 
-  return 'errors.default.heading'
+  return 'errors:default.heading'
 }
 
 function notFound (req, res, next) {

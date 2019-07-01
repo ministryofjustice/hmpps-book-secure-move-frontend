@@ -3,7 +3,7 @@
 {% block beforeContent %}
   {% if backLink %}
     {{ govukBackLink({
-      text: t("actions.back"),
+      text: t("actions:back"),
       href: backLink
     }) }}
   {% endif %}
@@ -41,7 +41,7 @@
     {% endblock %}
 
     {{ govukButton({
-      text: t("actions.continue")
+      text: t("actions:continue")
     }) }}
   </form>
 {% endblock %}
