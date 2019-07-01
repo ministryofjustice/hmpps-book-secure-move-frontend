@@ -43,6 +43,12 @@
       {{ govukSummaryList(personalDetailsSummary) }}
 
       {% include "moves/views/_includes/assessment.njk" %}
+
+      <p class="app-border-top-1 govuk-!-padding-top-6 govuk-!-margin-top-8">
+        <a href="/moves/{{ move.id }}/cancel" class="app-link--destructive">
+          {{ t("actions:cancel_move") }}
+        </a>
+      </p>
     </div>
 
     <div class="govuk-grid-column-one-third">

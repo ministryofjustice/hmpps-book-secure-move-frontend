@@ -7,5 +7,6 @@
   "back_to_move": "$t(actions:back) to move",
   "continue": "Continue",
   "restart": "Restart",
+  "cancel_move": "Cancel this move",
   "cancel_move_confirmation": "Cancel move"
 }

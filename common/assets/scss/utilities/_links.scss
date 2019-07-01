@@ -1,0 +1,12 @@
+.app-link--destructive {
+  &:link,
+  &:active,
+  &:focus,
+  &:visited {
+    color: govuk-colour("red");
+  }
+
+  &:hover {
+    color: lighten(govuk-colour("red"), 10%);
+  }
+}
