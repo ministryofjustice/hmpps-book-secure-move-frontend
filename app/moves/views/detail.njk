@@ -1,7 +1,5 @@
 {% extends "layouts/govuk.njk" %}
 
-{% set relativeMoveDate = move.date | formatDateAsRelativeDay(false) %}
-
 {% block pageTitle %}
   {{ t("moves:detail.page_title", {
     name: fullname | upper

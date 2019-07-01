@@ -4,6 +4,8 @@
   "next_day": "Next day",
   "back": "Back",
   "back_to_dashboard": "$t(actions:back) to dashboard",
+  "back_to_move": "$t(actions:back) to move",
   "continue": "Continue",
-  "restart": "Restart"
+  "restart": "Restart",
+  "cancel_move_confirmation": "Cancel move"
 }
