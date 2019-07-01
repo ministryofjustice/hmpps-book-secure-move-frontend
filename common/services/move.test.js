@@ -106,7 +106,7 @@ describe('Move Service', function () {
       })
 
       it('should contain moves with correct data', function () {
-        expect(moves.data).to.deep.equal(movesGetDeserialized.data)
+        expect(moves).to.deep.equal(movesGetDeserialized.data)
       })
     })
   })
