@@ -1,8 +1,13 @@
 {% extends "form-wizard.njk" %}
 
 {% block beforeFields %}
-  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("fields:from_location.label") }}</h3>
-  <p class="govuk-!-margin-bottom-6">{ CURRENT LOCATION }</p>
+  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">
+    {{ t("fields:from_location.label") }}
+  </h3>
+
+  <p class="govuk-!-margin-bottom-6">
+    { CURRENT LOCATION }
+  </p>
 {% endblock %}
 
 {% block fields %}
@@ -17,7 +22,7 @@
     items: [
       {
         value: "court",
-        text: "Court",
+        text: t("fields:to_location_type.items.court.label"),
         checked: values.to_location_type === "court",
         conditional: {
           html: govukSelect(options.fields.to_location_court)
@@ -25,7 +30,7 @@
       },
       {
         value: "prison",
-        text: "Prison",
+        text: t("fields:to_location_type.items.prison.label"),
         checked: values.to_location_type === "prison",
         conditional: {
           html: govukSelect(options.fields.to_location_prison)
@@ -45,17 +50,21 @@
     items: [
       {
         value: "today",
-        text: "Today (" + TODAY | formatDateWithDay + ")",
+        text: t("fields:date_type.items.today.label", {
+          date: TODAY | formatDateWithDay
+        }),
         checked: values.date_type === "today"
       },
       {
         value: "tomorrow",
-        text: "Tomorrow (" + TOMORROW | formatDateWithDay + ")",
+        text: t("fields:date_type.items.tomorrow.label", {
+          date: TOMORROW | formatDateWithDay
+        }),
         checked: values.date_type === "tomorrow"
       },
       {
         value: "custom",
-        text: "Another date",
+        text: t("fields:date_type.items.another.label"),
         checked: values.date_type === "custom",
         conditional: {
           html: govukInput(options.fields.date_custom)

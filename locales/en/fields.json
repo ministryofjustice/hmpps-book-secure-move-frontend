@@ -22,7 +22,15 @@
     "label": "Move from"
   },
   "to_location_type": {
-    "label": "Move to"
+    "label": "Move to",
+    "items": {
+      "prison": {
+        "label": "Prison"
+      },
+      "court": {
+        "label": "Court"
+      }
+    }
   },
   "to_location_prison": {
     "label": "Name of prison (optional)"
@@ -31,7 +39,18 @@
     "label": "Name of court"
   },
   "date_type": {
-    "label": "Date"
+    "label": "Date",
+    "items": {
+      "today": {
+        "label": "Today ({{date}})"
+      },
+      "tomorrow": {
+        "label": "Tomorrow ({{date}})"
+      },
+      "another": {
+        "label": "Another date"
+      }
+    }
   },
   "date_custom": {
     "label": "Date of travel",

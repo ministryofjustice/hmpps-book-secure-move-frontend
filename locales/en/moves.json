@@ -33,7 +33,10 @@
     }
   },
   "dashboard": {
-    "upcoming_moves": "Upcoming moves for",
+    "upcoming_moves": "Upcoming moves for {{date}}",
     "move_to": "Move to"
+  },
+  "detail": {
+    "page_title": "Move details for {{name}}"
   }
 }

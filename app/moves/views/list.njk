@@ -1,7 +1,9 @@
 {% extends "layouts/govuk.njk" %}
 
 {% block pageTitle %}
-  {{ t(pageTitle) }} {{ moveDate | formatDateAsRelativeDay }}
+  {{ t(pageTitle, {
+    date: moveDate | formatDateAsRelativeDay
+  }) }}
 {% endblock %}
 
 {% block content %}

@@ -31,7 +31,6 @@ class SaveController extends FormController {
       person,
       to_location: toLocation,
     } = req.sessionModel.get('move')
-    const messageContent = `Move for <strong>${personService.getFullname(person)}</strong> to <strong>${toLocation.title}</strong> on <strong>${filters.formatDateWithDay(date)}</strong> has been scheduled.`
 
     req.journeyModel.reset()
     req.journeyModel.destroy()
@@ -39,8 +38,12 @@ class SaveController extends FormController {
     req.sessionModel.destroy()
 
     req.flash('success', {
-      title: 'Move scheduled',
-      content: messageContent,
+      title: req.t('messages:create_move.success.title'),
+      content: req.t('messages:create_move.success.content', {
+        name: personService.getFullname(person),
+        location: toLocation.title,
+        date: filters.formatDateWithDay(date),
+      }),
     })
 
     res.redirect('/')
