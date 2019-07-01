@@ -14,11 +14,13 @@ function format (data) {
 }
 
 function getRequestedMovesByDate (moveDate) {
-  return apiClient.findAll('move', {
-    'filter[status]': 'requested',
-    'filter[date_from]': moveDate,
-    'filter[date_to]': moveDate,
-  })
+  return apiClient
+    .findAll('move', {
+      'filter[status]': 'requested',
+      'filter[date_from]': moveDate,
+      'filter[date_to]': moveDate,
+    })
+    .then(response => response.data)
 }
 
 function getMoveById (id) {
