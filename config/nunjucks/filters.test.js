@@ -179,6 +179,33 @@ describe('Nunjucks filters', function () {
       })
     })
 
+    context('when given falsey values', function () {
+      it('should return input value', function () {
+        const age = filters.formatTime(undefined)
+        expect(age).to.equal(undefined)
+      })
+
+      it('should return input value', function () {
+        const age = filters.formatTime(null)
+        expect(age).to.equal(null)
+      })
+
+      it('should return input value', function () {
+        const age = filters.formatTime(false)
+        expect(age).to.equal(false)
+      })
+
+      it('should return input value', function () {
+        const age = filters.formatTime(0)
+        expect(age).to.equal(0)
+      })
+
+      it('should return input value', function () {
+        const age = filters.formatTime('')
+        expect(age).to.equal('')
+      })
+    })
+
     context('when given a valid datetime', function () {
       context('when the time is 12am', function () {
         it('should midnight as a string', function () {
