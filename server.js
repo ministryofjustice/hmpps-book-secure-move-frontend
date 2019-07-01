@@ -10,7 +10,9 @@ const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
 const RedisStore = require('connect-redis')(session)
-const i18n = require('i18n-future').middleware()
+const i18next = require('i18next')
+const Backend = require('i18next-node-fs-backend')
+const i18nMiddleware = require('i18next-express-middleware')
 
 // Local dependencies
 const config = require('./config')
@@ -19,6 +21,17 @@ const nunjucks = require('./config/nunjucks')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 const locals = require('./common/middleware/locals')
+
+i18next.use(Backend).init({
+  lng: 'en',
+  fallbackLng: 'en',
+  preload: ['en'],
+  ns: ['default'],
+  defaultNS: 'default',
+  backend: {
+    loadPath: './locales/{{lng}}/{{ns}}.json',
+  },
+})
 
 // Global constants
 const app = express()
@@ -45,7 +58,7 @@ app.use(session({
   },
 }))
 app.use(flash())
-app.use(i18n)
+app.use(i18nMiddleware.handle(i18next))
 app.use(locals)
 app.use(grant({
   defaults: {

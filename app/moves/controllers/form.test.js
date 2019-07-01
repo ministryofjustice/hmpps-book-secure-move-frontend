@@ -40,7 +40,7 @@ describe('Moves controllers', function () {
             },
           })
           const reqMock = {
-            translate: sinon.stub().returnsArg(0),
+            t: sinon.stub().returnsArg(0),
           }
           errors = controller.getErrors(reqMock, {})
         })

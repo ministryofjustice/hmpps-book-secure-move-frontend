@@ -1,7 +1,7 @@
 {% extends "form-wizard.njk" %}
 
 {% block beforeFields %}
-  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">{{ translate("fields.from_location.label") }}</h3>
+  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("fields.from_location.label") }}</h3>
   <p class="govuk-!-margin-bottom-6">{ CURRENT LOCATION }</p>
 {% endblock %}
 
@@ -10,7 +10,7 @@
     name: "to_location_type",
     fieldset: {
       legend: {
-        text: translate('fields.to_location_type.label'),
+        text: t('fields.to_location_type.label'),
         classes: "govuk-fieldset__legend--m"
       }
     },
@@ -38,7 +38,7 @@
     name: "date_type",
     fieldset: {
       legend: {
-        text: translate('fields.date_type.label'),
+        text: t('fields.date_type.label'),
         classes: "govuk-fieldset__legend--m"
       }
     },
