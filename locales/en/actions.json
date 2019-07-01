@@ -8,5 +8,6 @@
   "continue": "Continue",
   "restart": "Restart",
   "cancel_move": "Cancel this move",
-  "cancel_move_confirmation": "Cancel move"
+  "cancel_move_confirmation": "Cancel move",
+  "download_csv": "Download moves (.csv)"
 }

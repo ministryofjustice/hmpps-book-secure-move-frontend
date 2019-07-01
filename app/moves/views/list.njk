@@ -36,6 +36,12 @@
         classes: "govuk-button--start govuk-!-margin-top-2"
       }) }}
     </div>
+
+    <div class="govuk-grid-column-one-third">
+      <a href="/moves/download.csv?move-date={{ moveDate }}" class="app-!-float-right">
+        {{ t("actions:download_csv") }}
+      </a>
+    </div>
   </div>
 
   {% for destination in destinations %}
