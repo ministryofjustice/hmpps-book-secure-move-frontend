@@ -27,6 +27,22 @@
   &:focus {
     background-color: govuk-colour("blue");
   }
+
+  @include govuk-media-query($media-type: print) {
+    background: govuk-colour("white") !important;
+    border: 2px solid govuk-colour("blue");
+    color: govuk-colour("black") !important;
+    padding: 2px 5px;
+    text-decoration: none;
+
+    &[href^="/"],
+    &[href^="http://"],
+    &[href^="https://"] {
+      &::after {
+        content: "";
+      }
+    }
+  }
 }
 
 // Set hover state only if link tag
@@ -43,6 +59,10 @@ a.app-tag {
   &:focus {
     background-color: govuk-colour("grey-1");
   }
+
+  @include govuk-media-query($media-type: print) {
+    border-color: govuk-colour("black");
+  }
 }
 
 .app-tag--destructive {
@@ -50,5 +70,9 @@ a.app-tag {
 
   &:focus {
     background-color: govuk-colour("red");
+  }
+
+  @include govuk-media-query($media-type: print) {
+    border-color: govuk-colour("red");
   }
 }
