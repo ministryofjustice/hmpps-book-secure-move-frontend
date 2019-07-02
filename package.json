@@ -54,6 +54,7 @@
     "express-session": "^1.16.1",
     "govuk-frontend": "^2.10.0",
     "grant-express": "^4.5.2",
+    "helmet": "^3.18.0",
     "hmpo-form-wizard": "^11.0.1",
     "i18next": "^17.0.4",
     "i18next-express-middleware": "^1.8.0",

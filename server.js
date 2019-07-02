@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const express = require('express')
+const helmet = require('helmet')
 const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
@@ -100,6 +101,7 @@ app.use(ensureAuthenticated({
   whitelist: config.AUTH_WHITELIST_URLS,
   bypass: config.AUTH_BYPASS_SSO,
 }))
+app.use(helmet())
 
 // Routing
 app.use(router)
