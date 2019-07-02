@@ -26,6 +26,10 @@
   & + & {
     margin-top: govuk-spacing(2);
   }
+
+  * + & {
+    margin-top: govuk-spacing(4);
+  }
 }
 
 .app-message__heading {

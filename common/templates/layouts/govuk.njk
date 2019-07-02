@@ -6,6 +6,7 @@
 {% from "checkboxes/macro.njk"        import govukCheckboxes %}
 {% from "error-summary/macro.njk"     import govukErrorSummary %}
 {% from "input/macro.njk"             import govukInput %}
+{% from "phase-banner/macro.njk"      import govukPhaseBanner %}
 {% from "radios/macro.njk"            import govukRadios %}
 {% from "select/macro.njk"            import govukSelect %}
 {% from "summary-list/macro.njk"      import govukSummaryList %}
@@ -43,6 +44,16 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: t("phase_banner", {
+      context: "with_feedback" if FEEDBACK_URL,
+      url: FEEDBACK_URL
+    })
+  }) }}
+
   {% include "includes/messages.njk" %}
 {% endblock %}
 

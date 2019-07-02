@@ -18,6 +18,7 @@ module.exports = {
   SERVER_HOST: process.env.SERVER_HOST,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
+  FEEDBACK_URL: process.env.FEEDBACK_URL,
   API: {
     BASE_URL: process.env.API_BASE_URL || 'http://localhost:4000/api/v1',
     AUTH_URL: process.env.API_AUTH_URL,

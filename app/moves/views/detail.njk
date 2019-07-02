@@ -9,12 +9,12 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {{ super() }}
+
   {{ govukBackLink({
     text: t("actions:back_to_dashboard"),
     href: "/moves"
   }) }}
-
-  {{ super() }}
 {% endblock %}
 
 {% block content %}
