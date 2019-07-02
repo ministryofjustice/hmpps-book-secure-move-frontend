@@ -1,6 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./move-details')
+const filters = require('../../../config/nunjucks/filters')
 const referenceDataService = require('../../../common/services/reference-data')
 
 const controller = new Controller({ route: '/' })
@@ -39,27 +40,52 @@ describe('Moves controllers', function () {
       })
 
       context('when getReferenceData returns 200', function () {
-        let req
+        let req, res
 
         beforeEach(async function () {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(referenceDataService, 'getLocations').resolves(courtsMock)
+          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
           referenceDataService.getLocations.withArgs('court').resolves(courtsMock)
           referenceDataService.getLocations.withArgs('prison').resolves(prisonsMock)
 
           req = {
+            t: sinon.stub().returns('__translated__'),
             form: {
               options: {
                 fields: {
                   to_location_court: {},
                   to_location_prison: {},
+                  date_type: {
+                    items: [
+                      {
+                        text: 'fields:date_type.today',
+                        value: 'today',
+                      },
+                      {
+                        text: 'fields:date_type.tomorrow',
+                        value: 'tomorrow',
+                      },
+                      {
+                        text: 'fields:date_type.custom',
+                        value: 'custom',
+                      },
+                    ],
+                  },
                 },
               },
             },
           }
 
-          await controller.configure(req, {}, nextSpy)
+          res = {
+            locals: {
+              TODAY: 'today',
+              TOMORROW: 'tomorrow',
+            },
+          }
+
+          await controller.configure(req, res, nextSpy)
         })
 
         it('should set list of courts dynamically', function () {
@@ -78,8 +104,35 @@ describe('Moves controllers', function () {
           ])
         })
 
+        it('should translate today', function () {
+          expect(req.t.firstCall).to.be.calledWith('fields:date_type.today', {
+            date: 'today',
+          })
+        })
+
+        it('should translate tomorrow', function () {
+          expect(req.t.secondCall).to.be.calledWith(
+            'fields:date_type.tomorrow',
+            {
+              date: 'tomorrow',
+            }
+          )
+        })
+
+        it('should update today/tomorrow label', function () {
+          expect(req.form.options.fields.date_type.items).to.deep.equal([
+            { text: '__translated__', value: 'today' },
+            { text: '__translated__', value: 'tomorrow' },
+            { text: 'fields:date_type.custom', value: 'custom' },
+          ])
+        })
+
         it('should call parent configure method', function () {
-          expect(FormController.prototype.configure).to.be.calledOnceWith(req, {}, nextSpy)
+          expect(FormController.prototype.configure).to.be.calledOnceWith(
+            req,
+            res,
+            nextSpy
+          )
         })
 
         it('should not throw an error', function () {

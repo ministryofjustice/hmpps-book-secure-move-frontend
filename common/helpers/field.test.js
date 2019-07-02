@@ -656,6 +656,72 @@ describe('Form helpers', function () {
         ])
       })
     })
+
+    context('when field contains items', function () {
+      const field = [
+        'field',
+        {
+          name: 'field',
+          items: [
+            {
+              text: 'items.text',
+              value: 'Text item',
+            },
+            {
+              html: 'items.html',
+              value: 'HTML item',
+            },
+          ],
+        },
+      ]
+      let response
+
+      beforeEach(function () {
+        response = translateField(translateStub)(field)
+      })
+
+      it('should call translation correct amount of times', function () {
+        expect(translateStub).to.be.calledTwice
+      })
+
+      it('should return translated field with items', function () {
+        expect(response).to.deep.equal([
+          'field',
+          {
+            name: 'field',
+            items: [
+              {
+                text: '__translated__',
+                value: 'Text item',
+              },
+              {
+                html: '__translated__',
+                value: 'HTML item',
+              },
+            ],
+          },
+        ])
+      })
+
+      it('should not mutate original field', function () {
+        expect(field).to.deep.equal([
+          'field',
+          {
+            name: 'field',
+            items: [
+              {
+                text: 'items.text',
+                value: 'Text item',
+              },
+              {
+                html: 'items.html',
+                value: 'HTML item',
+              },
+            ],
+          },
+        ])
+      })
+    })
   })
 
   describe('#insertInitialOption()', function () {
