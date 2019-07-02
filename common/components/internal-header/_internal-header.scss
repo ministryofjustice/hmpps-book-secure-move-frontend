@@ -10,7 +10,6 @@ $govuk-header-nav-item-border-color: #2e3133;
 .app-header {
   @include govuk-font($size: 16);
 
-  border-bottom: govuk-spacing(2) solid govuk-colour("white");
   color: $govuk-header-text;
   background: $govuk-header-background;
 }

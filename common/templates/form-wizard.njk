@@ -1,14 +1,14 @@
 {% extends "layouts/govuk.njk" %}
 
 {% block beforeContent %}
+  {{ super() }}
+
   {% if backLink %}
     {{ govukBackLink({
       text: t("actions:back"),
       href: backLink
     }) }}
   {% endif %}
-
-  {{ super() }}
 {% endblock %}
 
 {% block content %}
