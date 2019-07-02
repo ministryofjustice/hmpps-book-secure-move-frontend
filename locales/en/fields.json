@@ -1,0 +1,75 @@
+{
+  "reference": {
+    "label": "Reference number",
+    "hint": "Your reference for the person"
+  },
+  "first_names": {
+    "label": "First name(s)"
+  },
+  "last_name": {
+    "label": "Last name"
+  },
+  "date_of_birth": {
+    "label": "Date of birth"
+  },
+  "gender": {
+    "label": "Gender"
+  },
+  "ethnicity": {
+    "label": "Ethnicity"
+  },
+  "from_location": {
+    "label": "Move from"
+  },
+  "to_location_type": {
+    "label": "Move to",
+    "items": {
+      "prison": {
+        "label": "Prison"
+      },
+      "court": {
+        "label": "Court"
+      }
+    }
+  },
+  "to_location_prison": {
+    "label": "Name of prison (optional)"
+  },
+  "to_location_court": {
+    "label": "Name of court"
+  },
+  "date_type": {
+    "label": "Date",
+    "items": {
+      "today": {
+        "label": "Today ({{date}})"
+      },
+      "tomorrow": {
+        "label": "Tomorrow ({{date}})"
+      },
+      "another": {
+        "label": "Another date"
+      }
+    }
+  },
+  "date_custom": {
+    "label": "Date of travel",
+    "hint": "For example 28/10/2019 or 28 October 2019"
+  },
+  "risk": {
+    "label": "Add risk information",
+    "hint": "Select all that apply"
+  },
+  "health": {
+    "label": "Add health information",
+    "hint": "Select all that apply"
+  },
+  "court": {
+    "label": "Add court information",
+    "hint": "Select all that apply"
+  },
+  "assessment_comment": {
+    "required": "Give details",
+    "optional": "Give details (optional)"
+  }
+}

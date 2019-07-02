@@ -3,12 +3,14 @@
 {% set relativeMoveDate = move.date | formatDateAsRelativeDay(false) %}
 
 {% block pageTitle %}
-  Move details for {{ fullname | upper }}
+  {{ t("moves:detail.page_title", {
+    name: fullname | upper
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: "Back to dashboard",
+    text: t("actions:back_to_dashboard"),
     href: "/moves"
   }) }}
 
@@ -37,7 +39,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-m">
-        Personal details
+        {{ t("moves:steps.personal_details.heading") }}
       </h2>
 
       {{ govukSummaryList(personalDetailsSummary) }}

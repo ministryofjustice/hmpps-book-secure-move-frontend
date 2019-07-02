@@ -1,0 +1,8 @@
+{
+  "create_move": {
+    "success": {
+      "title": "Move scheduled",
+      "content": "Move for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled."
+    }
+  }
+}

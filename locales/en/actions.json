@@ -1,0 +1,9 @@
+{
+  "create_move": "Create a move",
+  "previous_day": "Previous day",
+  "next_day": "Next day",
+  "back": "Back",
+  "back_to_dashboard": "$t(actions:back) to dashboard",
+  "continue": "Continue",
+  "restart": "Restart"
+}

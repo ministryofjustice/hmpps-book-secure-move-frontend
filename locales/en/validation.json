@@ -1,0 +1,8 @@
+{
+  "required": "cannot be blank",
+  "numeric": "can only contain numbers",
+  "date": "must be a valid date",
+  "after": "must be in the future",
+  "before": "must be in the past",
+  "default": "is required"
+}

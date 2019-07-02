@@ -1,0 +1,42 @@
+{
+  "assessment": {
+    "categories": {
+      "risk": {
+        "heading": "Risk information",
+        "empty": "No risk information"
+      },
+      "health": {
+        "heading": "Health affecting transport",
+        "empty": "No health affecting transport"
+      },
+      "court": {
+        "heading": "Information for the court",
+        "empty": "No information for the court"
+      }
+    }
+  },
+  "steps": {
+    "personal_details": {
+      "heading": "Personal details"
+    },
+    "move_details": {
+      "heading": "Where is this person moving?"
+    },
+    "court_information": {
+      "heading": "Is there information for the court?"
+    },
+    "risk_information": {
+      "heading": "Are there risks with moving this person?"
+    },
+    "health_information": {
+      "heading": "Does this person’s health affect transport?"
+    }
+  },
+  "dashboard": {
+    "upcoming_moves": "Upcoming moves for {{date}}",
+    "move_to": "Move to"
+  },
+  "detail": {
+    "page_title": "Move details for {{name}}"
+  }
+}
