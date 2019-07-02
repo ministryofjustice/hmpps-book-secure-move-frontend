@@ -3,6 +3,7 @@ const path = require('path')
 
 // NPM dependencies
 const bodyParser = require('body-parser')
+const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const express = require('express')
 const morgan = require('morgan')
@@ -60,6 +61,7 @@ app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-fron
 // ensure i18n is loaded early as needed for error template
 app.use(i18nMiddleware.handle(i18next))
 app.use(morgan('dev'))
+app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -67,7 +69,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(session({
   store: redisStore({
     ...config.REDIS.SESSION,
-    logErrors: (error) => logger.error(error),
+    logErrors: error => logger.error(error),
   }),
   secret: config.SESSION.SECRET,
   name: config.SESSION.NAME,
