@@ -94,7 +94,7 @@ function calculateAge (value) {
 function formatTime (value) {
   const parsedDate = parseDate(value)
 
-  if (!isValidDate(parsedDate)) {
+  if (!value || !isValidDate(parsedDate)) {
     return value
   }
 
