@@ -1,0 +1,5 @@
+.app-print--hide {
+  @include govuk-media-query($media-type: print) {
+    display: none;
+  }
+}
