@@ -39,9 +39,16 @@ function getLocations (type, combinedData, page = 1) {
   })
 }
 
+function getLocationById (id) {
+  return apiClient
+    .find('location', id)
+    .then(response => response.data)
+}
+
 module.exports = {
   getGenders,
   getEthnicities,
   getAssessmentQuestions,
   getLocations,
+  getLocationById,
 }
