@@ -1,3 +1,4 @@
+const { get } = require('lodash')
 const { format } = require('date-fns')
 
 const moveService = require('../../common/services/move')
@@ -23,7 +24,7 @@ module.exports = {
 
     next()
   },
-  setMovesByDate: async (req, res, next) => {
+  setMovesByDateAndLocation: async (req, res, next) => {
     const { moveDate } = res.locals
 
     if (!moveDate) {
@@ -31,7 +32,7 @@ module.exports = {
     }
 
     try {
-      res.locals.movesByDate = await moveService.getRequestedMovesByDate(moveDate)
+      res.locals.movesByDate = await moveService.getRequestedMovesByDateAndLocation(moveDate, get(req.session, 'currentLocation.id'))
 
       next()
     } catch (error) {

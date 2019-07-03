@@ -75,7 +75,7 @@ describe('Move Service', function () {
     })
   })
 
-  describe('#getRequestedMovesByDate()', function () {
+  describe('#getRequestedMovesByDateAndLocation()', function () {
     context('when request returns 200', function () {
       const mockDate = '2017-08-10'
       let moves
@@ -94,7 +94,7 @@ describe('Move Service', function () {
           })
           .reply(200, movesGetSerialized)
 
-        moves = await moveService.getRequestedMovesByDate(mockDate)
+        moves = await moveService.getRequestedMovesByDateAndLocation(mockDate)
       })
 
       afterEach(function () {
