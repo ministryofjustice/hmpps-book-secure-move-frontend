@@ -19,7 +19,7 @@
       </h1>
 
       {{ appPagination({
-        classes: "app-pagination--inline",
+        classes: "app-pagination--inline app-print--hide",
         previous: {
           href: pagination.prevUrl,
           text: t("actions:previous_day")
@@ -33,14 +33,24 @@
       {{ govukButton({
         text: t("actions:create_move"),
         href: "/moves/new",
-        classes: "govuk-button--start govuk-!-margin-top-2"
+        classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
       }) }}
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <a href="/moves/download.csv?move-date={{ moveDate }}" class="app-!-float-right">
-        {{ t("actions:download_csv") }}
-      </a>
+      <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
+        <li>
+          <a href="/moves/download.csv?move-date={{ moveDate }}">
+            {{ t("actions:download_csv") }}
+          </a>
+        </li>
+
+        <li>
+          <a href="javascript:window.print()">
+            {{ t("actions:print_move_list") }}
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
