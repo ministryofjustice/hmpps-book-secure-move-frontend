@@ -9,7 +9,6 @@ const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
-const RedisStore = require('connect-redis')(session)
 const i18next = require('i18next')
 const Backend = require('i18next-node-fs-backend')
 const i18nMiddleware = require('i18next-express-middleware')
@@ -17,7 +16,9 @@ const i18nMiddleware = require('i18next-express-middleware')
 // Local dependencies
 const config = require('./config')
 const configPaths = require('./config/paths')
+const logger = require('./config/logger')
 const nunjucks = require('./config/nunjucks')
+const redisStore = require('./config/redis-store')
 const currentLocation = require('./common/middleware/current-location')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
@@ -62,7 +63,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(session({
-  store: new RedisStore(config.REDIS.SESSION),
+  store: redisStore({
+    ...config.REDIS.SESSION,
+    logErrors: (error) => logger.error(error),
+  }),
   secret: config.SESSION.SECRET,
   name: config.SESSION.NAME,
   saveUninitialized: false,
