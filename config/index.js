@@ -1,6 +1,5 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
-const { buildRedisUrl } = require('./redis-helpers')
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
@@ -9,6 +8,14 @@ const SESSION = {
   SECRET: process.env.SESSION_SECRET,
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
+}
+
+const buildRedisUrl = () => {
+  if (process.env.REDIS_AUTH_TOKEN) {
+    return `redis://:${process.env.REDIS_AUTH_TOKEN}@${process.env.REDIS_URL}:6379/0`
+  } else {
+    return process.env.REDIS_URL
+  }
 }
 
 module.exports = {
@@ -54,4 +61,5 @@ module.exports = {
       sortOrder: 2,
     },
   },
+  buildRedisUrl,
 }

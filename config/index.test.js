@@ -1,6 +1,6 @@
 /* eslint no-process-env: "off" */
 
-const { buildRedisUrl } = require('./redis-helpers')
+const { buildRedisUrl } = require('.')
 
 describe('Redis helpers', function () {
   describe('#buildRedisUrl()', function () {
@@ -10,7 +10,7 @@ describe('Redis helpers', function () {
       process.env = env
     })
 
-    context('in production', function () {
+    context('on Cloud Platform', function () {
       before(function () {
         process.env.REDIS_URL = 'redis-r-us.com'
         process.env.REDIS_AUTH_TOKEN = 'secret'
@@ -22,10 +22,10 @@ describe('Redis helpers', function () {
       })
     })
 
-    context('in development', function () {
+    context('outside Cloud Platform', function () {
       before(function () {
         process.env.REDIS_URL = 'redis://redis-r-us.com:6379'
-        process.env.REDIS_AUTH_TOKEN = null
+        delete process.env.REDIS_AUTH_TOKEN
         process.env.NODE_ENV = 'development'
       })
 
