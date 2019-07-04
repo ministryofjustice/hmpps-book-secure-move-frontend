@@ -86,7 +86,7 @@ app.use(grant({
   defaults: {
     protocol: 'http',
     host: config.SERVER_HOST,
-    callback: '/auth',
+    callback: '/auth/callback',
     transport: 'session',
     state: true,
   },
