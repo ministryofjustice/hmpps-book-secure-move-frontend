@@ -54,6 +54,7 @@ module.exports = {
       secret: process.env.AUTH_PROVIDER_SECRET,
     },
   },
+  DEFAULT_AUTH_PROVIDER: 'hmpps',
   TAG_CATEGORY_WHITELIST: {
     risk: {
       tagClass: 'app-tag--destructive',

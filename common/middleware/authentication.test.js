@@ -1,5 +1,7 @@
 const authentication = require('./authentication')
 
+const provider = 'sso_provider'
+
 describe('Authentication middleware', function () {
   describe('#ensureAuthenticated()', function () {
     let req, res, nextSpy
@@ -19,14 +21,18 @@ describe('Authentication middleware', function () {
 
     context('when there is no access token', function () {
       beforeEach(function () {
-        authentication.ensureAuthenticated(req, res, nextSpy)
+        authentication.ensureAuthenticated(provider)(req, res, nextSpy)
       })
 
-      it('redirects to the authentication URL', function () {
-        expect(res.redirect).to.be.calledWith('/connect/hmpps')
+      it('should not call next', function () {
+        expect(nextSpy).not.to.be.called
       })
 
-      it('sets the redirect URL in the session', function () {
+      it('should redirect to the authentication URL', function () {
+        expect(res.redirect).to.be.calledOnceWithExactly(`/connect/${provider}`)
+      })
+
+      it('should set the redirect URL in the session', function () {
         expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
@@ -34,14 +40,18 @@ describe('Authentication middleware', function () {
     context('when the access token has expired', function () {
       beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) - 1000
-        authentication.ensureAuthenticated(req, res, nextSpy)
+        authentication.ensureAuthenticated(provider)(req, res, nextSpy)
       })
 
-      it('redirects to the authentication URL', function () {
-        expect(res.redirect).to.be.calledWith('/connect/hmpps')
+      it('should not call next', function () {
+        expect(nextSpy).not.to.be.called
       })
 
-      it('sets the redirect URL in the session', function () {
+      it('should redirect to the authentication URL', function () {
+        expect(res.redirect).to.be.calledWith(`/connect/${provider}`)
+      })
+
+      it('should set the redirect URL in the session', function () {
         expect(req.session.postAuthRedirect).to.equal('/test')
       })
     })
@@ -49,11 +59,15 @@ describe('Authentication middleware', function () {
     context('when the access token has not expired', function () {
       beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) + 1000
-        authentication.ensureAuthenticated(req, res, nextSpy)
+        authentication.ensureAuthenticated()(req, res, nextSpy)
       })
 
-      it('calls the next action', function () {
-        expect(nextSpy.calledOnce).to.be.true
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('shoould not redirect', function () {
+        expect(res.redirect).not.to.be.called
       })
     })
   })
