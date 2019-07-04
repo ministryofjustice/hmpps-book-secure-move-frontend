@@ -96,6 +96,7 @@ app.use(grant({
 app.use(ensureAuthenticated({
   provider: config.DEFAULT_AUTH_PROVIDER,
   whitelist: config.AUTH_WHITELIST_URLS,
+  bypass: config.AUTH_BYPASS_SSO,
 }))
 
 // Routing

@@ -87,5 +87,19 @@ describe('Authentication middleware', function () {
         expect(res.redirect).not.to.be.called
       })
     })
+
+    context('when bypass config is set', function () {
+      beforeEach(function () {
+        ensureAuthenticated({ provider, bypass: true })(req, res, nextSpy)
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).not.to.be.called
+      })
+    })
   })
 })

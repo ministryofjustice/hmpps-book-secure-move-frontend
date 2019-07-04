@@ -119,6 +119,7 @@ npm run lint
 | SERVER_HOST **(required)** | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000` | |
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | CURRENT_LOCATION_UUID **(TEMPORARY)** | UUID of the current location to list and create moves for | |
+| BYPASS_SSO | Can be set to bypass SSO authentication. **Note:** Will only work if environment is also development | |
 
 ## Components
 
