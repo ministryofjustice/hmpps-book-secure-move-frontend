@@ -1,5 +1,6 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
+const { buildRedisUrl } = require('./redis-helpers')
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
@@ -33,7 +34,7 @@ module.exports = {
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   REDIS: {
     SESSION: {
-      url: process.env.REDIS_URL,
+      url: buildRedisUrl(),
       db: SESSION.DB,
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
