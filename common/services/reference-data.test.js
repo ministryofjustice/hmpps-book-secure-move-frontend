@@ -85,8 +85,11 @@ describe('Reference Service', function () {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should return list of assessment questions', function () {
+      it('should return correct number of questions', function () {
         expect(response.length).to.deep.equal(assessmentDeserialized.data.length)
+      })
+
+      it('should deserialize assessment questions', function () {
         expect(response).to.deep.equal(assessmentDeserialized.data)
       })
     })

@@ -6,6 +6,7 @@ const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const movesByToLocation = require('./moves-by-to-location')
+const movesToCSV = require('./moves-to-csv')
 
 module.exports = {
   assessmentAnswerToTag,
@@ -16,4 +17,5 @@ module.exports = {
   moveToMetaListComponent,
   personToSummaryListComponent,
   movesByToLocation,
+  movesToCSV,
 }

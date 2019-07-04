@@ -159,4 +159,48 @@ describe('Move Service', function () {
       })
     })
   })
+
+  describe('#cancel()', function () {
+    let mockId
+
+    beforeEach(async function () {
+      mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+
+      nock(API.BASE_URL)
+        .patch(`/moves/${mockId}`)
+        .reply(200, moveGetSerialized)
+    })
+
+    context('when no ID is supplied in the data object', function () {
+      let response
+
+      beforeEach(async function () {
+        response = await moveService.cancel()
+      })
+
+      it('should not call API', function () {
+        expect(nock.isDone()).to.be.false
+      })
+
+      it('should return', function () {
+        expect(response).to.equal()
+      })
+    })
+
+    context('when request returns 200', function () {
+      let response
+
+      beforeEach(async function () {
+        response = await moveService.cancel(mockId)
+      })
+
+      it('should call API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain move with correct data', function () {
+        expect(response).to.deep.equal(moveGetDeserialized.data)
+      })
+    })
+  })
 })
