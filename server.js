@@ -53,6 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
 
+// ensure i18n is loaded early as needed for error template
+app.use(i18nMiddleware.handle(i18next))
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -71,7 +73,6 @@ app.use(session({
   },
 }))
 app.use(flash())
-app.use(i18nMiddleware.handle(i18next))
 app.use(locals)
 app.use(grant({
   defaults: {
