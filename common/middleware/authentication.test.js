@@ -1,4 +1,4 @@
-const authentication = require('./authentication')
+const ensureAuthenticated = require('./authentication')
 
 const provider = 'sso_provider'
 
@@ -21,7 +21,7 @@ describe('Authentication middleware', function () {
 
     context('when there is no access token', function () {
       beforeEach(function () {
-        authentication.ensureAuthenticated(provider)(req, res, nextSpy)
+        ensureAuthenticated(provider)(req, res, nextSpy)
       })
 
       it('should not call next', function () {
@@ -40,7 +40,7 @@ describe('Authentication middleware', function () {
     context('when the access token has expired', function () {
       beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) - 1000
-        authentication.ensureAuthenticated(provider)(req, res, nextSpy)
+        ensureAuthenticated(provider)(req, res, nextSpy)
       })
 
       it('should not call next', function () {
@@ -59,7 +59,7 @@ describe('Authentication middleware', function () {
     context('when the access token has not expired', function () {
       beforeEach(function () {
         req.session.authExpiry = Math.floor(new Date() / 1000) + 1000
-        authentication.ensureAuthenticated()(req, res, nextSpy)
+        ensureAuthenticated()(req, res, nextSpy)
       })
 
       it('should call next', function () {

@@ -22,6 +22,7 @@ const redisStore = require('./config/redis-store')
 const currentLocation = require('./common/middleware/current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
+const ensureAuthenticated = require('./common/middleware/authentication')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 
@@ -92,6 +93,7 @@ app.use(grant({
   },
   ...config.AUTH_PROVIDERS,
 }))
+app.use(ensureAuthenticated(config.DEFAULT_AUTH_PROVIDER))
 
 // Routing
 app.use(router)

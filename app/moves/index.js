@@ -3,12 +3,10 @@ const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
 
 // Local dependencies
-const { DEFAULT_AUTH_PROVIDER } = require('./steps')
 const steps = require('./steps')
 const fields = require('./fields')
 const { cancelMove, detail, download, list, Form } = require('./controllers')
 const { setMove, setMoveDate, setMovesByDateAndLocation } = require('./middleware')
-const { ensureAuthenticated } = require('../../common/middleware/authentication')
 
 const wizardConfig = {
   controller: Form,
@@ -19,9 +17,6 @@ const wizardConfig = {
 
 // Define param middleware
 router.param('moveId', setMove)
-
-// Load router middleware
-router.use(ensureAuthenticated(DEFAULT_AUTH_PROVIDER))
 
 // Define routes
 router.get('/', setMoveDate, setMovesByDateAndLocation, list)
