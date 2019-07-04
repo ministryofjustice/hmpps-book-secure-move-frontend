@@ -33,9 +33,23 @@ function create (data) {
     .then(response => response.data)
 }
 
+function cancel (id) {
+  if (!id) {
+    return
+  }
+
+  return apiClient
+    .update('move', {
+      id,
+      status: 'cancelled',
+    })
+    .then(response => response.data)
+}
+
 module.exports = {
   format,
   getRequestedMovesByDate,
   getMoveById,
   create,
+  cancel,
 }

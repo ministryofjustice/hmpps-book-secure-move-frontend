@@ -5,7 +5,7 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const steps = require('./steps')
 const fields = require('./fields')
-const { detail, list, Form } = require('./controllers')
+const { cancelMove, detail, download, list, Form } = require('./controllers')
 const { setMove, setMoveDate, setMovesByDate } = require('./middleware')
 const { ensureAuthenticated } = require('../../common/middleware/authentication')
 
@@ -24,8 +24,12 @@ router.use(ensureAuthenticated)
 
 // Define routes
 router.get('/', setMoveDate, setMovesByDate, list)
+router.use('/download.:extension(csv|json)', setMoveDate, setMovesByDate, download)
 router.use('/new', wizard(steps, fields, wizardConfig))
 router.get('/:moveId', detail)
+router.route('/:moveId/cancel')
+  .get(cancelMove.get)
+  .post(cancelMove.post)
 
 // Export
 module.exports = {

@@ -1,4 +1,5 @@
 {
+  "download_filename": "Moves on {{date}} (Downloaded {{timestamp}})",
   "assessment": {
     "categories": {
       "risk": {
@@ -38,5 +39,12 @@
   },
   "detail": {
     "page_title": "Move details for {{name}}"
+  },
+  "cancel": {
+    "page_title": "Cancel move for ‘{{name}}’",
+    "content": {
+      "confirmation": "Are you sure you want to cancel the move for <strong>{{name}}</strong> to <strong>{{location}}</strong>?",
+      "warning": "This will delete this move request."
+    }
   }
 }
