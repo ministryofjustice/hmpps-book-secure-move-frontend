@@ -3,6 +3,7 @@ require('dotenv').config()
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
@@ -41,10 +42,17 @@ module.exports = {
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
   },
-  AUTH: {
-    PROVIDER_KEY: process.env.AUTH_PROVIDER_KEY,
-    PROVIDER_SECRET: process.env.AUTH_PROVIDER_SECRET,
-    PROVIDER_URL: process.env.AUTH_PROVIDER_URL,
+  AUTH_PROVIDERS: {
+    hmpps: {
+      oauth: 2,
+      scope: ['read'],
+      response: ['tokens', 'jwt'],
+      token_endpoint_auth_method: 'client_secret_basic',
+      authorize_url: AUTH_BASE_URL ? new URL('/auth/oauth/authorize', AUTH_BASE_URL).href : '',
+      access_url: AUTH_BASE_URL ? new URL('/auth/oauth/token', AUTH_BASE_URL).href : '',
+      key: process.env.AUTH_PROVIDER_KEY,
+      secret: process.env.AUTH_PROVIDER_SECRET,
+    },
   },
   TAG_CATEGORY_WHITELIST: {
     risk: {

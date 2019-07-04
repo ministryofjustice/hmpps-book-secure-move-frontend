@@ -86,20 +86,11 @@ app.use(grant({
   defaults: {
     protocol: 'http',
     host: config.SERVER_HOST,
+    callback: '/auth',
     transport: 'session',
     state: true,
   },
-  hmpps: {
-    authorize_url: new URL('/auth/oauth/authorize', config.AUTH.PROVIDER_URL).href,
-    access_url: new URL('/auth/oauth/token', config.AUTH.PROVIDER_URL).href,
-    oauth: 2,
-    key: config.AUTH.PROVIDER_KEY,
-    secret: config.AUTH.PROVIDER_SECRET,
-    scope: ['read'],
-    callback: '/auth',
-    token_endpoint_auth_method: 'client_secret_basic',
-    response: ['tokens', 'jwt'],
-  },
+  ...config.AUTH_PROVIDERS,
 }))
 
 // Routing
