@@ -87,6 +87,137 @@ describe('Person Service', function () {
         expect(formatted.first_names).to.equal('Foo')
       })
     })
+
+    context('when identifiers field is string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          police_national_computer: 'PNC number',
+          athena_reference: 'Athena reference',
+          criminal_records_office: 'CRO number',
+          prison_number: 'Prison number',
+          niche_reference: 'Niche reference',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.police_national_computer).to.deep.equal({
+          value: 'PNC number',
+          identifier_type: 'police_national_computer',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.athena_reference).to.deep.equal({
+          value: 'Athena reference',
+          identifier_type: 'athena_reference',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.criminal_records_office).to.deep.equal({
+          value: 'CRO number',
+          identifier_type: 'criminal_records_office',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.prison_number).to.deep.equal({
+          value: 'Prison number',
+          identifier_type: 'prison_number',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.niche_reference).to.deep.equal({
+          value: 'Niche reference',
+          identifier_type: 'niche_reference',
+        })
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+
+      it('should include identifiers property', function () {
+        expect(formatted.identifiers).to.deep.equal([
+          {
+            identifier_type: 'police_national_computer',
+            value: 'PNC number',
+          },
+          {
+            identifier_type: 'criminal_records_office',
+            value: 'CRO number',
+          },
+          {
+            identifier_type: 'prison_number',
+            value: 'Prison number',
+          },
+          {
+            identifier_type: 'niche_reference',
+            value: 'Niche reference',
+          },
+          {
+            identifier_type: 'athena_reference',
+            value: 'Athena reference',
+          },
+        ])
+      })
+    })
+
+    context('when identifiers field is not a string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          police_national_computer: {
+            value: 'PNC number',
+            identifier_type: 'police_national_computer',
+          },
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.police_national_computer).to.deep.equal({
+          value: 'PNC number',
+          identifier_type: 'police_national_computer',
+        })
+      })
+
+      it('should include identifiers property', function () {
+        expect(formatted.identifiers).to.deep.equal([
+          {
+            identifier_type: 'police_national_computer',
+            value: 'PNC number',
+          },
+        ])
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
+
+    context('when no identifiers present', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+        })
+      })
+
+      it('should include empty identifiers property', function () {
+        expect(formatted.identifiers).to.deep.equal([])
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
   })
 
   describe('#create()', function () {
