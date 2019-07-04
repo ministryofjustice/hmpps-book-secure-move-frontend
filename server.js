@@ -93,7 +93,10 @@ app.use(grant({
   },
   ...config.AUTH_PROVIDERS,
 }))
-app.use(ensureAuthenticated(config.DEFAULT_AUTH_PROVIDER))
+app.use(ensureAuthenticated({
+  provider: config.DEFAULT_AUTH_PROVIDER,
+  whitelist: config.AUTH_WHITELIST_URLS,
+}))
 
 // Routing
 app.use(router)

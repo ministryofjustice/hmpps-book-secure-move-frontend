@@ -6,8 +6,12 @@ function _isExpired (authExpiry) {
   return authExpiry < Math.floor(new Date() / 1000)
 }
 
-module.exports = function ensureAuthenticated (provider) {
+module.exports = function ensureAuthenticated ({ provider, whitelist = [] } = {}) {
   return (req, res, next) => {
+    if (whitelist.includes(req.url)) {
+      return next()
+    }
+
     if (!_isExpired(req.session.authExpiry)) {
       return next()
     }

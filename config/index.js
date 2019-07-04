@@ -42,6 +42,10 @@ module.exports = {
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
   },
+  AUTH_WHITELIST_URLS: [
+    '/auth',
+    '/auth/callback',
+  ],
   AUTH_PROVIDERS: {
     hmpps: {
       oauth: 2,
