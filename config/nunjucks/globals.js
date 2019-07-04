@@ -1,7 +1,17 @@
 const { isFunction } = require('lodash')
 
-const { FEEDBACK_URL } = require('../')
+const { ASSETS_HOST, FEEDBACK_URL } = require('../')
+const { manifest: manifestPath } = require('../paths')
 const logger = require('../logger')
+
+let webpackManifest = {}
+
+try {
+  webpackManifest = require(manifestPath)
+} catch (error) {
+  logger.error(new Error('Manifest file is not found. Ensure assets are built.'))
+  logger.error(error)
+}
 
 module.exports = {
   FEEDBACK_URL,
@@ -15,5 +25,14 @@ module.exports = {
     }
 
     return macro
+  },
+  getAssetPath (asset) {
+    const webpackAssetPath = webpackManifest[asset]
+
+    if (webpackAssetPath) {
+      return `${ASSETS_HOST}/${webpackAssetPath}`
+    }
+
+    return `${ASSETS_HOST}/${asset}`
   },
 }
