@@ -1,4 +1,4 @@
-{% set messages = getMessages() %}
+{% set messages = getMessages() if getMessages %}
 
 {% if messages | length %}
   {% for type, items in messages %}
