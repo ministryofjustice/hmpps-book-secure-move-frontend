@@ -10,11 +10,11 @@ const SESSION = {
   DB: process.env.SESSION_DB_INDEX || 0,
 }
 
-const buildRedisUrl = () => {
-  if (process.env.REDIS_AUTH_TOKEN) {
-    return `redis://:${process.env.REDIS_AUTH_TOKEN}@${process.env.REDIS_URL}:6379/0`
+const buildRedisUrl = (redisUrl, redisAuthToken) => {
+  if (redisAuthToken) {
+    return `redis://:${redisAuthToken}@${redisUrl}:6379/0`
   } else {
-    return process.env.REDIS_URL
+    return redisUrl
   }
 }
 
@@ -41,7 +41,7 @@ module.exports = {
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   REDIS: {
     SESSION: {
-      url: buildRedisUrl(),
+      url: buildRedisUrl(process.env.REDIS_URL, process.env.REDIS_AUTH_TOKEN),
       db: SESSION.DB,
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
