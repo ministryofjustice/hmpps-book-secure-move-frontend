@@ -21,8 +21,9 @@ const nunjucks = require('./config/nunjucks')
 const redisStore = require('./config/redis-store')
 const currentLocation = require('./common/middleware/current-location')
 const errorHandlers = require('./common/middleware/errors')
-const router = require('./app/router')
+const checkSession = require('./common/middleware/check-session')
 const locals = require('./common/middleware/locals')
+const router = require('./app/router')
 
 i18next.use(Backend).init({
   lng: 'en',
@@ -77,6 +78,7 @@ app.use(session({
     httpOnly: true,
   },
 }))
+app.use(checkSession)
 app.use(currentLocation(config.CURRENT_LOCATION_UUID))
 app.use(flash())
 app.use(locals)
