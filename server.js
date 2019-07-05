@@ -18,6 +18,7 @@ const i18nMiddleware = require('i18next-express-middleware')
 const config = require('./config')
 const configPaths = require('./config/paths')
 const nunjucks = require('./config/nunjucks')
+const currentLocation = require('./common/middleware/current-location')
 const errorHandlers = require('./common/middleware/errors')
 const router = require('./app/router')
 const locals = require('./common/middleware/locals')
@@ -72,6 +73,7 @@ app.use(session({
     httpOnly: true,
   },
 }))
+app.use(currentLocation(config.CURRENT_LOCATION_UUID))
 app.use(flash())
 app.use(locals)
 app.use(grant({

@@ -39,12 +39,10 @@ class MoveDetailsController extends FormController {
 
     req.form.values.date = dateFns.format(moveDate, 'YYYY-MM-DD')
 
-    // process to location
+    // process locations
     req.form.values.to_location = req.form.values[`to_location_${locationType}`]
-
-    // TODO: Until we can get the location based on the user's location
-    // we need to mock it
-    req.form.values.from_location = req.form.values[`to_location_${locationType}`]
+    // if req.session.currentLocation doesn't exist the parent controller will error
+    req.form.values.from_location = req.session.currentLocation.id
 
     next()
   }

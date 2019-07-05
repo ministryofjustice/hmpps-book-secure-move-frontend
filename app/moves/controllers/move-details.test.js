@@ -24,6 +24,10 @@ const prisonsMock = [
     title: 'Prison 4444',
   },
 ]
+const mockCurrentLocation = {
+  id: '5555',
+  title: 'Prison 5555',
+}
 
 describe('Moves controllers', function () {
   describe('Move Details', function () {
@@ -106,17 +110,29 @@ describe('Moves controllers', function () {
     describe('#process()', function () {
       let req, nextSpy
 
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        req = {
+          form: {
+            values: {},
+          },
+          session: {
+            currentLocation: mockCurrentLocation,
+          },
+        }
+      })
+
+      it('should set from location to current location from session', function () {
+        controller.process(req, {}, nextSpy)
+        expect(req.form.values.from_location).to.equal('5555')
+      })
+
       context('when date type is custom', function () {
         beforeEach(function () {
-          nextSpy = sinon.spy()
-          req = {
-            form: {
-              values: {
-                date: '',
-                date_type: 'custom',
-                date_custom: '2019-10-17',
-              },
-            },
+          req.form.values = {
+            date: '',
+            date_type: 'custom',
+            date_custom: '2019-10-17',
           }
 
           controller.process(req, {}, nextSpy)
@@ -145,14 +161,9 @@ describe('Moves controllers', function () {
 
         beforeEach(function () {
           this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-          nextSpy = sinon.spy()
-          req = {
-            form: {
-              values: {
-                date: '',
-                date_type: 'today',
-              },
-            },
+          req.form.values = {
+            date: '',
+            date_type: 'today',
           }
 
           controller.process(req, {}, nextSpy)
@@ -181,14 +192,9 @@ describe('Moves controllers', function () {
 
         beforeEach(function () {
           this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-          nextSpy = sinon.spy()
-          req = {
-            form: {
-              values: {
-                date: '',
-                date_type: 'tomorrow',
-              },
-            },
+          req.form.values = {
+            date: '',
+            date_type: 'tomorrow',
           }
 
           controller.process(req, {}, nextSpy)
@@ -209,15 +215,10 @@ describe('Moves controllers', function () {
 
       context('when location type is court', function () {
         beforeEach(function () {
-          nextSpy = sinon.spy()
-          req = {
-            form: {
-              values: {
-                to_location: '',
-                to_location_court: '12345',
-                to_location_type: 'court',
-              },
-            },
+          req.form.values = {
+            to_location: '',
+            to_location_court: '12345',
+            to_location_type: 'court',
           }
 
           controller.process(req, {}, nextSpy)
@@ -234,15 +235,10 @@ describe('Moves controllers', function () {
 
       context('when location type is prison', function () {
         beforeEach(function () {
-          nextSpy = sinon.spy()
-          req = {
-            form: {
-              values: {
-                to_location: '',
-                to_location_prison: '67890',
-                to_location_type: 'prison',
-              },
-            },
+          req.form.values = {
+            to_location: '',
+            to_location_prison: '67890',
+            to_location_type: 'prison',
           }
 
           controller.process(req, {}, nextSpy)

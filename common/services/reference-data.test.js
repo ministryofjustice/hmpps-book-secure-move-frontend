@@ -3,6 +3,7 @@ const {
   getEthnicities,
   getAssessmentQuestions,
   getLocations,
+  getLocationById,
 } = require('./reference-data')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/auth')
@@ -16,6 +17,8 @@ const assessmentSerialized = require('../../test/fixtures/api-client/reference.a
 const locationsDeserialized = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
 const locationsPage1Serialized = require('../../test/fixtures/api-client/reference.locations.page-1.serialized.json')
 const locationsPage2Serialized = require('../../test/fixtures/api-client/reference.locations.page-2.serialized.json')
+const locationDeserialized = require('../../test/fixtures/api-client/reference.location.deserialized.json')
+const locationSerialized = require('../../test/fixtures/api-client/reference.location.serialized.json')
 
 describe('Reference Service', function () {
   beforeEach(function () {
@@ -120,6 +123,28 @@ describe('Reference Service', function () {
       it('should return a full list of locations', function () {
         expect(response.length).to.deep.equal(locationsDeserialized.data.length)
         expect(response).to.deep.equal(locationsDeserialized.data)
+      })
+    })
+  })
+
+  describe('#getLocationById()', function () {
+    context('when request returns 200', function () {
+      let location
+
+      beforeEach(async function () {
+        nock(API.BASE_URL)
+          .get(`/reference/locations/${locationDeserialized.data.id}`)
+          .reply(200, locationSerialized)
+
+        location = await getLocationById(locationDeserialized.data.id)
+      })
+
+      it('should get location from API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain location with correct data', function () {
+        expect(location).to.deep.equal(locationDeserialized.data)
       })
     })
   })

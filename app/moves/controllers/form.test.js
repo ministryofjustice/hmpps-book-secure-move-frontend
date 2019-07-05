@@ -7,6 +7,59 @@ const controller = new Controller({ route: '/' })
 
 describe('Moves controllers', function () {
   describe('Form', function () {
+    describe('#middlewareChecks()', function () {
+      beforeEach(function () {
+        sinon.stub(FormController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function () {
+        expect(FormController.prototype.middlewareChecks).to.have.been.calledOnce
+      })
+
+      it('should call check current location method', function () {
+        expect(controller.use).to.have.been.calledWith(controller.checkCurrentLocation)
+      })
+    })
+
+    describe('#checkCurrentLocation()', function () {
+      let req, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        req = {
+          session: {},
+        }
+      })
+
+      context('when current location exists', function () {
+        beforeEach(function () {
+          req.session = {
+            currentLocation: {},
+          }
+          controller.checkCurrentLocation(req, {}, nextSpy)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when no current location exists', function () {
+        beforeEach(function () {
+          controller.checkCurrentLocation(req, {}, nextSpy)
+        })
+
+        it('should call next with error', function () {
+          expect(nextSpy).to.be.calledOnce
+          expect(nextSpy.args[0][0] instanceof Error).to.be.true
+          expect(nextSpy.args[0][0].message).to.equal('Current location is not set. Check environment variable is correctly set.')
+        })
+      })
+    })
+
     describe('#getErrors()', function () {
       let errors
 

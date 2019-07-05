@@ -4,6 +4,20 @@ const { Controller } = require('hmpo-form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 
 class FormController extends Controller {
+  middlewareChecks () {
+    super.middlewareChecks()
+    this.use(this.checkCurrentLocation)
+  }
+
+  checkCurrentLocation (req, res, next) {
+    if (!req.session.currentLocation) {
+      const error = new Error('Current location is not set. Check environment variable is correctly set.')
+      return next(error)
+    }
+
+    next()
+  }
+
   getErrors (req, res) {
     const errors = super.getErrors(req, res)
 
