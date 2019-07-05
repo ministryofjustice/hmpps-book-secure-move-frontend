@@ -17,17 +17,17 @@ function assessmentQuestionComments ({ required = false } = {}) {
 
 module.exports = {
   // personal details
-  reference: {
+  'athena_reference': {
     component: 'govukInput',
     label: {
-      text: 'fields:reference.label',
+      text: 'fields:athena_reference.label',
       classes: 'govuk-label--s',
     },
     hint: {
-      text: 'fields:reference.hint',
+      text: 'fields:athena_reference.hint',
     },
-    id: 'reference',
-    name: 'reference',
+    id: 'athena_reference',
+    name: 'athena_reference',
     classes: 'govuk-input--width-20',
     autocomplete: 'off',
   },
