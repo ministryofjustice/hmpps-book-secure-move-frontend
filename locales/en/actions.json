@@ -12,5 +12,6 @@
   "cancel_move_confirmation": "Cancel move",
   "download_csv": "Download moves (.csv)",
   "print_move_list": "Print moves",
-  "print_move_detail": "Print move"
+  "print_move_detail": "Print move",
+  "sign_out": "Sign out"
 }

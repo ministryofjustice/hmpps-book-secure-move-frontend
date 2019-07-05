@@ -39,7 +39,13 @@
     homepageUrl: "/",
     siteName: "HMPPS",
     productName: SERVICE_NAME,
-    containerClasses: "govuk-width-container"
+    containerClasses: "govuk-width-container",
+    navigation: [
+      {
+        href: "/sign-out",
+        text: t("actions:sign_out")
+      }
+    ]
   }) }}
 {% endblock %}
 
