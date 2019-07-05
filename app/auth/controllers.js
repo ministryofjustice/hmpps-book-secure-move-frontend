@@ -1,7 +1,9 @@
 module.exports = {
-  get: (req, res) => {
-    const redirectUrl = req.session.postAuthRedirect
+  redirect: (req, res) => {
+    const url = req.session.postAuthRedirect || '/'
+
     req.session.postAuthRedirect = null
-    res.redirect(redirectUrl)
+
+    res.redirect(url)
   },
 }

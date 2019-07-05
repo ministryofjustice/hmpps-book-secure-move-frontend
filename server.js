@@ -22,6 +22,7 @@ const redisStore = require('./config/redis-store')
 const currentLocation = require('./common/middleware/current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
+const ensureAuthenticated = require('./common/middleware/authentication')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 
@@ -86,20 +87,16 @@ app.use(grant({
   defaults: {
     protocol: 'http',
     host: config.SERVER_HOST,
+    callback: '/auth/callback',
     transport: 'session',
     state: true,
   },
-  hmpps: {
-    authorize_url: new URL('/auth/oauth/authorize', config.AUTH.PROVIDER_URL).href,
-    access_url: new URL('/auth/oauth/token', config.AUTH.PROVIDER_URL).href,
-    oauth: 2,
-    key: config.AUTH.PROVIDER_KEY,
-    secret: config.AUTH.PROVIDER_SECRET,
-    scope: ['read'],
-    callback: '/auth',
-    token_endpoint_auth_method: 'client_secret_basic',
-    response: ['tokens', 'jwt'],
-  },
+  ...config.AUTH_PROVIDERS,
+}))
+app.use(ensureAuthenticated({
+  provider: config.DEFAULT_AUTH_PROVIDER,
+  whitelist: config.AUTH_WHITELIST_URLS,
+  bypass: config.AUTH_BYPASS_SSO,
 }))
 
 // Routing

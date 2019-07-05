@@ -2,14 +2,12 @@
 const router = require('express').Router()
 
 // Local dependencies
-const { get } = require('./controllers')
-const { processAuthResponse } = require('../../common/middleware/authentication')
-
-// Load router middleware
-router.use(processAuthResponse)
+const { redirect } = require('./controllers')
+const { processAuthResponse } = require('./middleware')
 
 // Define routes
-router.get('/', get)
+router.get('/', redirect)
+router.get('/callback', processAuthResponse, redirect)
 
 // Export
 module.exports = {
