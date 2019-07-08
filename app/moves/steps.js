@@ -74,6 +74,7 @@ module.exports = {
     controller: Assessment,
     next: 'save',
     heading: 'moves:steps.health_information.heading',
+    buttonText: 'actions:schedule_move',
     fields: [
       'health',
       'health__special_diet_or_allergy',
