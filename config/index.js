@@ -22,7 +22,7 @@ module.exports = {
   FEEDBACK_URL: process.env.FEEDBACK_URL,
   CURRENT_LOCATION_UUID: process.env.CURRENT_LOCATION_UUID,
   API: {
-    BASE_URL: process.env.API_BASE_URL || 'http://localhost:4000/api/v1',
+    BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000/api/v1',
     AUTH_URL: process.env.API_AUTH_URL,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
@@ -42,23 +42,26 @@ module.exports = {
       url: process.env.REDIS_URL,
       auth_pass: process.env.REDIS_AUTH_TOKEN,
       db: SESSION.DB,
-      tls: process.env.REDIS_AUTH_TOKEN ? { checkServerIdentity: () => undefined } : null,
+      tls: process.env.REDIS_AUTH_TOKEN
+        ? { checkServerIdentity: () => undefined }
+        : null,
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
   },
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
-  AUTH_WHITELIST_URLS: [
-    '/auth',
-    '/auth/callback',
-  ],
+  AUTH_WHITELIST_URLS: ['/auth', '/auth/callback'],
   AUTH_PROVIDERS: {
     hmpps: {
       oauth: 2,
       scope: ['read'],
       response: ['tokens', 'jwt'],
       token_endpoint_auth_method: 'client_secret_basic',
-      authorize_url: AUTH_BASE_URL ? new URL('/auth/oauth/authorize', AUTH_BASE_URL).href : '',
-      access_url: AUTH_BASE_URL ? new URL('/auth/oauth/token', AUTH_BASE_URL).href : '',
+      authorize_url: AUTH_BASE_URL
+        ? new URL('/auth/oauth/authorize', AUTH_BASE_URL).href
+        : '',
+      access_url: AUTH_BASE_URL
+        ? new URL('/auth/oauth/token', AUTH_BASE_URL).href
+        : '',
       key: process.env.AUTH_PROVIDER_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
     },

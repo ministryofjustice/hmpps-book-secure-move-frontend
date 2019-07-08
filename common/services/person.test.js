@@ -11,7 +11,9 @@ const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
 describe('Person Service', function () {
   beforeEach(function () {
     sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+    sinon
+      .stub(auth, 'getAccessTokenExpiry')
+      .returns(Math.floor(new Date() / 1000) + 100)
   })
 
   describe('#getFullname()', function () {

@@ -23,7 +23,9 @@ const locationSerialized = require('../../test/fixtures/api-client/reference.loc
 describe('Reference Service', function () {
   beforeEach(function () {
     sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+    sinon
+      .stub(auth, 'getAccessTokenExpiry')
+      .returns(Math.floor(new Date() / 1000) + 100)
   })
 
   describe('#getGenders()', function () {
@@ -66,7 +68,9 @@ describe('Reference Service', function () {
       })
 
       it('should return list of ethnicities', function () {
-        expect(response.length).to.deep.equal(ethnicitiesDeserialized.data.length)
+        expect(response.length).to.deep.equal(
+          ethnicitiesDeserialized.data.length
+        )
         expect(response).to.deep.equal(ethnicitiesDeserialized.data)
       })
     })
@@ -89,7 +93,9 @@ describe('Reference Service', function () {
       })
 
       it('should return correct number of questions', function () {
-        expect(response.length).to.deep.equal(assessmentDeserialized.data.length)
+        expect(response.length).to.deep.equal(
+          assessmentDeserialized.data.length
+        )
       })
 
       it('should deserialize assessment questions', function () {
@@ -105,12 +111,12 @@ describe('Reference Service', function () {
       beforeEach(async function () {
         nock(API.BASE_URL)
           .get('/reference/locations')
-          .query({ 'page': '1', 'per_page': '100' })
+          .query({ page: '1', per_page: '100' })
           .reply(200, locationsPage1Serialized)
 
         nock(API.BASE_URL)
           .get('/reference/locations')
-          .query({ 'page': '2', 'per_page': '100' })
+          .query({ page: '2', per_page: '100' })
           .reply(200, locationsPage2Serialized)
 
         response = await getLocations()
