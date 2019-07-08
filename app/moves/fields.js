@@ -172,7 +172,7 @@ module.exports = {
   health__medication: assessmentQuestionComments(),
   health__wheelchair: assessmentQuestionComments(),
   health__pregnant: assessmentQuestionComments(),
-  health__other_requirements: assessmentQuestionComments({
+  health__other_health: assessmentQuestionComments({
     required: true,
   }),
   // court information
@@ -193,7 +193,7 @@ module.exports = {
   },
   court__solicitor: assessmentQuestionComments(),
   court__interpreter: assessmentQuestionComments(),
-  court__other_information: assessmentQuestionComments({
+  court__other_court: assessmentQuestionComments({
     required: true,
   }),
 }

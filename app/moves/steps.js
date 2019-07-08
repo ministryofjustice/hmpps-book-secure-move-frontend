@@ -53,7 +53,7 @@ module.exports = {
       'court',
       'court__solicitor',
       'court__interpreter',
-      'court__other_information',
+      'court__other_court',
     ],
   },
   '/risk-information': {
@@ -81,7 +81,7 @@ module.exports = {
       'health__medication',
       'health__wheelchair',
       'health__pregnant',
-      'health__other_requirements',
+      'health__other_health',
     ],
   },
   '/save': {
