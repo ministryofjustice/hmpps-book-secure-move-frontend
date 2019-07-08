@@ -28,6 +28,7 @@ const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/authentication')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
+const healthcheckApp = require('./app/healthcheck')
 
 if (config.SENTRY.KEY && config.SENTRY.PROJECT) {
   Sentry.init({
@@ -56,6 +57,11 @@ i18next.use(Backend).init({
 
 // Global constants
 const app = express()
+
+// Load the healthcheck app manually before anything
+// else to ensure it will return some kind of response
+// regardless of the app failing elsewhere
+app.use(healthcheckApp.mountpath, healthcheckApp.router)
 
 // view engine setup
 app.set('view engine', 'njk')

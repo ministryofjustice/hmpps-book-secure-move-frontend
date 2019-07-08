@@ -20,9 +20,13 @@ module.exports = {
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
+  BUILD_DATE: process.env.APP_BUILD_DATE,
+  BUILD_BRANCH: process.env.APP_BUILD_TAG,
+  GIT_SHA: process.env.APP_GIT_COMMIT,
   CURRENT_LOCATION_UUID: process.env.CURRENT_LOCATION_UUID,
   API: {
     BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000/api/v1',
+    HEALTHCHECK_URL: process.env.API_HEALTHCHECK_URL,
     AUTH_URL: process.env.API_AUTH_URL,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
@@ -49,7 +53,12 @@ module.exports = {
     },
   },
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
-  AUTH_WHITELIST_URLS: ['/auth', '/auth/callback'],
+  AUTH_WHITELIST_URLS: [
+    '/auth',
+    '/auth/callback',
+    '/healthcheck',
+    '/healthcheck/ping',
+  ],
   AUTH_PROVIDERS: {
     hmpps: {
       oauth: 2,
@@ -61,6 +70,9 @@ module.exports = {
         : '',
       access_url: AUTH_BASE_URL
         ? new URL('/auth/oauth/token', AUTH_BASE_URL).href
+        : '',
+      healthcheck_url: AUTH_BASE_URL
+        ? new URL('/auth/ping', AUTH_BASE_URL).href
         : '',
       key: process.env.AUTH_PROVIDER_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
