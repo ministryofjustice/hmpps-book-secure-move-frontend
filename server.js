@@ -3,8 +3,10 @@ const path = require('path')
 
 // NPM dependencies
 const bodyParser = require('body-parser')
+const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const express = require('express')
+const helmet = require('helmet')
 const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
@@ -60,6 +62,7 @@ app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-fron
 // ensure i18n is loaded early as needed for error template
 app.use(i18nMiddleware.handle(i18next))
 app.use(morgan('dev'))
+app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -67,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(session({
   store: redisStore({
     ...config.REDIS.SESSION,
-    logErrors: (error) => logger.error(error),
+    logErrors: error => logger.error(error),
   }),
   secret: config.SESSION.SECRET,
   name: config.SESSION.NAME,
@@ -98,6 +101,7 @@ app.use(ensureAuthenticated({
   whitelist: config.AUTH_WHITELIST_URLS,
   bypass: config.AUTH_BYPASS_SSO,
 }))
+app.use(helmet())
 
 // Routing
 app.use(router)
