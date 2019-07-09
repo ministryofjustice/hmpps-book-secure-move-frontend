@@ -121,6 +121,8 @@ function translateField (translate) {
   return ([key, field]) => {
     const translated = cloneDeep(field)
     const translationPaths = [
+      'text',
+      'html',
       'label.text',
       'label.html',
       'hint.text',
@@ -129,7 +131,7 @@ function translateField (translate) {
       'fieldset.legend.html',
     ]
 
-    translationPaths.forEach((path) => {
+    translationPaths.forEach(path => {
       const key = get(translated, path)
 
       if (key) {
@@ -137,10 +139,13 @@ function translateField (translate) {
       }
     })
 
-    return [
-      key,
-      translated,
-    ]
+    if (field.items) {
+      translated.items = Object.entries(field.items)
+        .map(translateField(translate))
+        .map(item => item[1])
+    }
+
+    return [key, translated]
   }
 }
 

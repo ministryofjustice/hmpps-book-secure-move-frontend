@@ -89,9 +89,32 @@ module.exports = {
   },
   // move details
   from_location: {},
-  to_location_type: {},
   to_location: {},
+  to_location_type: {
+    component: 'govukRadios',
+    name: 'to_location_type',
+    fieldset: {
+      legend: {
+        text: 'fields:to_location_type.label',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'court',
+        text: 'fields:to_location_type.items.court.label',
+        conditional: 'to_location_court',
+      },
+      {
+        value: 'prison',
+        text: 'fields:to_location_type.items.prison.label',
+        conditional: 'to_location_prison',
+      },
+    ],
+  },
   to_location_prison: {
+    isConditional: true,
+    component: 'govukSelect',
     id: 'to_location_prison',
     name: 'to_location_prison',
     classes: 'govuk-input--width-20',
@@ -102,6 +125,8 @@ module.exports = {
     items: [],
   },
   to_location_court: {
+    isConditional: true,
+    component: 'govukSelect',
     id: 'to_location_court',
     name: 'to_location_court',
     classes: 'govuk-input--width-20',
@@ -112,9 +137,35 @@ module.exports = {
     items: [],
   },
   date: {},
-  date_type: {},
+  date_type: {
+    component: 'govukRadios',
+    name: 'date_type',
+    fieldset: {
+      legend: {
+        text: 'fields:date_type.label',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'today',
+        text: 'fields:date_type.items.today.label',
+      },
+      {
+        value: 'tomorrow',
+        text: 'fields:date_type.items.tomorrow.label',
+      },
+      {
+        value: 'custom',
+        text: 'fields:date_type.items.another.label',
+        conditional: 'date_custom',
+      },
+    ],
+  },
   date_custom: {
+    isConditional: true,
     formatter: [date],
+    component: 'govukInput',
     id: 'date_custom',
     name: 'date_custom',
     label: {

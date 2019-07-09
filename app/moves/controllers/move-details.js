@@ -1,6 +1,7 @@
 const dateFns = require('date-fns')
 
 const FormController = require('./form')
+const filters = require('../../../config/nunjucks/filters')
 const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
 
@@ -9,11 +10,29 @@ class MoveDetailsController extends FormController {
     try {
       const courts = await referenceDataService.getLocations('court')
       const prisons = await referenceDataService.getLocations('prison')
-      const courtOptions = courts.map(fieldHelpers.mapReferenceDataToOption)
-      const prisonOptions = prisons.map(fieldHelpers.mapReferenceDataToOption)
+      const {
+        to_location_court: toLocationCourt,
+        to_location_prison: toLocationPrison,
+        date_type: dateType,
+      } = req.form.options.fields
 
-      req.form.options.fields.to_location_court.items = fieldHelpers.insertInitialOption(courtOptions, 'court')
-      req.form.options.fields.to_location_prison.items = fieldHelpers.insertInitialOption(prisonOptions, 'prison')
+      toLocationCourt.items = fieldHelpers.insertInitialOption(
+        courts.map(fieldHelpers.mapReferenceDataToOption),
+        'court'
+      )
+      toLocationPrison.items = fieldHelpers.insertInitialOption(
+        prisons.map(fieldHelpers.mapReferenceDataToOption),
+        'prison'
+      )
+
+      // translate date type options early to cater for date injection
+      const { items } = dateType
+      items[0].text = req.t(items[0].text, {
+        date: filters.formatDateWithDay(res.locals.TODAY),
+      })
+      items[1].text = req.t(items[1].text, {
+        date: filters.formatDateWithDay(res.locals.TOMORROW),
+      })
 
       super.configure(req, res, next)
     } catch (error) {
