@@ -41,7 +41,7 @@
     {% endblock %}
 
     {{ govukButton({
-      text: t("actions:continue")
+      text: t(options.buttonText or "actions:continue")
     }) }}
   </form>
 {% endblock %}
