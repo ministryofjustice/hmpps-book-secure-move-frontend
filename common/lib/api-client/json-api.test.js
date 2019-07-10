@@ -1,25 +1,37 @@
-const jsonApi = require('./json-api')
+const proxyquire = require('proxyquire').noCallThru()
+
+const configMock = {
+  API: {
+    BASE_URL: 'http://api.com/v1',
+  },
+}
+const jsonApi = proxyquire('./json-api', {
+  '../../../config': configMock,
+})
 const auth = require('./auth')
-const { API } = require('../../../config')
 
 describe('Back-end API client', function () {
   describe('#find', function () {
     let apiMock
 
     beforeEach(async function () {
-      const accessToken = 'poo'
+      const accessToken = 'foo'
       const path = 'tests'
       const id = 123
 
       sinon.stub(auth, 'getAccessToken').returns(accessToken)
-      sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+      sinon
+        .stub(auth, 'getAccessTokenExpiry')
+        .returns(Math.floor(new Date() / 1000) + 100)
 
-      const baseUrl = new URL(API.BASE_URL)
-      apiMock = nock(baseUrl.origin, {
+      const { API } = configMock
+      apiMock = nock(API.BASE_URL, {
         reqheaders: {
           authorization: `Bearer ${accessToken}`,
         },
-      }).get(`${baseUrl.pathname}/${path}/${id}`).reply(200, 'test')
+      })
+        .get(`/${path}/${id}`)
+        .reply(200)
 
       await jsonApi.find(path, id)
     })

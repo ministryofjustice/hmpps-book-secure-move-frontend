@@ -109,7 +109,8 @@ npm run lint
 | SESSION_TTL | How long the user session should last (in milliseconds) | `1800000` (30 minutes) |
 | SESSION_DB_INDEX | Redis database index in which to store session data | `0` (Redis' default)|
 | REDIS_URL **(required)** | Redis server URL, including port | |
-| API_BASE_URL **(required)** | Base URL for the backend API server for this service | |
+| API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000/api/v1` |
+| API_HEALTHCHECK_URL **(required)** | URL to which healthcheck pings are sent | |
 | API_AUTH_URL **(required)** | URL to which OAuth2 access token requests should be sent | |
 | API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |
 | API_SECRET **(required)** | Client secret used to authenticate with the backend API | |

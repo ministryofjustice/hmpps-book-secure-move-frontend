@@ -10,7 +10,9 @@ const moveGetSerialized = require('../../test/fixtures/api-client/move.get.seria
 describe('Move Service', function () {
   beforeEach(function () {
     sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon.stub(auth, 'getAccessTokenExpiry').returns(Math.floor(new Date() / 1000) + 100)
+    sinon
+      .stub(auth, 'getAccessTokenExpiry')
+      .returns(Math.floor(new Date() / 1000) + 100)
   })
 
   describe('#format()', function () {
