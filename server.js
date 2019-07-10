@@ -57,7 +57,10 @@ nunjucks(app, config, configPaths)
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
-app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets')))
+app.use(
+  '/assets',
+  express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets'))
+)
 
 // ensure i18n is loaded early as needed for error template
 app.use(i18nMiddleware.handle(i18next))
@@ -67,40 +70,46 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
-app.use(session({
-  store: redisStore({
-    ...config.REDIS.SESSION,
-    logErrors: error => logger.error(error),
-  }),
-  secret: config.SESSION.SECRET,
-  name: config.SESSION.NAME,
-  saveUninitialized: false,
-  resave: false,
-  cookie: {
-    secure: config.IS_PRODUCTION,
-    maxAge: config.SESSION.TTL,
-    httpOnly: true,
-  },
-}))
+app.use(
+  session({
+    store: redisStore({
+      ...config.REDIS.SESSION,
+      logErrors: error => logger.error(error),
+    }),
+    secret: config.SESSION.SECRET,
+    name: config.SESSION.NAME,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      secure: config.IS_PRODUCTION,
+      maxAge: config.SESSION.TTL,
+      httpOnly: true,
+    },
+  })
+)
 app.use(checkSession)
 app.use(currentLocation(config.CURRENT_LOCATION_UUID))
 app.use(flash())
 app.use(locals)
-app.use(grant({
-  defaults: {
-    protocol: 'http',
-    host: config.SERVER_HOST,
-    callback: '/auth/callback',
-    transport: 'session',
-    state: true,
-  },
-  ...config.AUTH_PROVIDERS,
-}))
-app.use(ensureAuthenticated({
-  provider: config.DEFAULT_AUTH_PROVIDER,
-  whitelist: config.AUTH_WHITELIST_URLS,
-  bypass: config.AUTH_BYPASS_SSO,
-}))
+app.use(
+  grant({
+    defaults: {
+      protocol: 'http',
+      host: config.SERVER_HOST,
+      callback: '/auth/callback',
+      transport: 'session',
+      state: true,
+    },
+    ...config.AUTH_PROVIDERS,
+  })
+)
+app.use(
+  ensureAuthenticated({
+    provider: config.DEFAULT_AUTH_PROVIDER,
+    whitelist: config.AUTH_WHITELIST_URLS,
+    bypass: config.AUTH_BYPASS_SSO,
+  })
+)
 app.use(helmet())
 
 // Routing
