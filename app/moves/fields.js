@@ -4,7 +4,7 @@ function assessmentQuestionComments ({ required = false } = {}) {
   const labelPath = required ? 'required' : 'optional'
 
   return {
-    isConditional: true,
+    skip: true,
     component: 'govukTextarea',
     classes: 'govuk-input--width-20',
     rows: 3,
@@ -17,7 +17,7 @@ function assessmentQuestionComments ({ required = false } = {}) {
 
 module.exports = {
   // personal details
-  'athena_reference': {
+  athena_reference: {
     component: 'govukInput',
     label: {
       text: 'fields:athena_reference.label',
@@ -113,7 +113,7 @@ module.exports = {
     ],
   },
   to_location_prison: {
-    isConditional: true,
+    skip: true,
     component: 'govukSelect',
     id: 'to_location_prison',
     name: 'to_location_prison',
@@ -125,7 +125,7 @@ module.exports = {
     items: [],
   },
   to_location_court: {
-    isConditional: true,
+    skip: true,
     component: 'govukSelect',
     id: 'to_location_court',
     name: 'to_location_court',
@@ -163,7 +163,7 @@ module.exports = {
     ],
   },
   date_custom: {
-    isConditional: true,
+    skip: true,
     formatter: [date],
     component: 'govukInput',
     id: 'date_custom',

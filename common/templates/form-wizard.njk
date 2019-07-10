@@ -34,7 +34,7 @@
 
     {% block fields %}
       {% for key, fieldsOptions in options.fields %}
-        {% if fieldsOptions.component and not fieldsOptions.isConditional %}
+        {% if fieldsOptions.component and not fieldsOptions.skip %}
           {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
         {% endif %}
       {% endfor %}
