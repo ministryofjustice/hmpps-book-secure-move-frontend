@@ -120,6 +120,8 @@ npm run lint
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | CURRENT_LOCATION_UUID **(TEMPORARY)** | UUID of the current location to list and create moves for | |
 | BYPASS_SSO | Can be set to bypass SSO authentication. **Note:** Will only work if environment is also development | |
+| SENTRY_KEY | Sentry key | |
+| SENTRY_PROJECT | Sentry project ID | |
 
 ## Components
 

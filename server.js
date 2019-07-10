@@ -14,6 +14,7 @@ const flash = require('connect-flash')
 const i18next = require('i18next')
 const Backend = require('i18next-node-fs-backend')
 const i18nMiddleware = require('i18next-express-middleware')
+const Sentry = require('@sentry/node')
 
 // Local dependencies
 const config = require('./config')
@@ -27,6 +28,12 @@ const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/authentication')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
+
+if (config.SENTRY.KEY && config.SENTRY.PROJECT) {
+  Sentry.init({
+    dsn: `https://${config.SENTRY.KEY}@sentry.io/${config.SENTRY.PROJECT}`,
+  })
+}
 
 i18next.use(Backend).init({
   lng: 'en',
