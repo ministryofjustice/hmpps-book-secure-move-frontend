@@ -33,6 +33,10 @@ module.exports = {
     WITH_DAY: 'dddd D MMM YYYY',
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
+  SENTRY: {
+    KEY: process.env.SENTRY_KEY,
+    PROJECT: process.env.SENTRY_PROJECT,
+  },
   REDIS: {
     SESSION: {
       url: process.env.REDIS_URL,
