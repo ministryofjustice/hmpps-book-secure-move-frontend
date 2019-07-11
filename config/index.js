@@ -44,6 +44,7 @@ module.exports = {
   REDIS: {
     SESSION: {
       url: process.env.REDIS_URL,
+      host: process.env.REDIS_HOST,
       auth_pass: process.env.REDIS_AUTH_TOKEN,
       db: SESSION.DB,
       tls: process.env.REDIS_AUTH_TOKEN
