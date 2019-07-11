@@ -108,7 +108,9 @@ npm run lint
 | SESSION_NAME | Name of the session ID cookie to set in the response (and read from in the request) | `book-secure-move.sid` |
 | SESSION_TTL | How long the user session should last (in milliseconds) | `1800000` (30 minutes) |
 | SESSION_DB_INDEX | Redis database index in which to store session data | `0` (Redis' default)|
-| REDIS_URL **(required)** | Redis server URL, including port | |
+| REDIS_URL **(required)** | Redis server URL, including port and protocol | |
+| REDIS_HOST **(required)** | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
+| REDIS_AUTH_TOKEN | Optional auth token for the Redis instance | |
 | API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000/api/v1` |
 | API_HEALTHCHECK_URL **(required)** | URL to which healthcheck pings are sent | |
 | API_AUTH_URL **(required)** | URL to which OAuth2 access token requests should be sent | |
