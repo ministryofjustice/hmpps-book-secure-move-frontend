@@ -107,7 +107,7 @@ app.use(locals)
 app.use(
   grant({
     defaults: {
-      protocol: 'http',
+      protocol: config.IS_PRODUCTION ? 'https' : 'http',
       host: config.SERVER_HOST,
       callback: '/auth/callback',
       transport: 'session',
