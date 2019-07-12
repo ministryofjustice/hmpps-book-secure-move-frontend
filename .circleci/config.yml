@@ -35,7 +35,7 @@ jobs:
       - *restore_cache
       - *install_dependencies
       - *save_cache
-      - run: npm run build
+      - run: NODE_ENV=production npm run build
   lint:
     docker:
       - image: *node_version
