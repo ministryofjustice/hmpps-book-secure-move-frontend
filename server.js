@@ -94,7 +94,8 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      secure: config.IS_PRODUCTION,
+      secure: false,
+      // secure: config.IS_PRODUCTION,
       maxAge: config.SESSION.TTL,
       httpOnly: true,
     },

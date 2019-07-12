@@ -146,9 +146,6 @@ workflows:
             - build
             - lint
             - unit_test
-          filters:
-            branches:
-              only: master
       - deploy_staging:
           requires:
             - build_staging
