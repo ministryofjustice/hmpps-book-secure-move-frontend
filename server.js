@@ -58,6 +58,10 @@ i18next.use(Backend).init({
 // Global constants
 const app = express()
 
+if (config.IS_PRODUCTION) {
+  app.enable('trust proxy')
+}
+
 // Load the healthcheck app manually before anything
 // else to ensure it will return some kind of response
 // regardless of the app failing elsewhere
@@ -94,8 +98,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      secure: false,
-      // secure: config.IS_PRODUCTION,
+      secure: config.IS_PRODUCTION,
       maxAge: config.SESSION.TTL,
       httpOnly: true,
     },
