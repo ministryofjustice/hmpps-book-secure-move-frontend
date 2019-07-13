@@ -9,7 +9,7 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-RUN npm run build
+RUN NODE_ENV=production npm run build
 
 ARG APP_BUILD_DATE
 ENV APP_BUILD_DATE ${APP_BUILD_DATE}
