@@ -33,7 +33,7 @@
     }
   },
   "to_location_prison": {
-    "label": "Name of prison (optional)"
+    "label": "Name of prison"
   },
   "to_location_court": {
     "label": "Name of court"
