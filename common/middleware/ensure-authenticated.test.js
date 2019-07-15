@@ -1,4 +1,4 @@
-const ensureAuthenticated = require('./authentication')
+const ensureAuthenticated = require('./ensure-authenticated')
 
 const provider = 'sso_provider'
 

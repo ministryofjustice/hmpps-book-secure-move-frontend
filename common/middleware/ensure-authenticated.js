@@ -6,7 +6,11 @@ function _isExpired (authExpiry) {
   return authExpiry < Math.floor(new Date() / 1000)
 }
 
-module.exports = function ensureAuthenticated ({ provider, whitelist = [], bypass } = {}) {
+module.exports = function ensureAuthenticated ({
+  provider,
+  whitelist = [],
+  bypass,
+} = {}) {
   return (req, res, next) => {
     if (
       bypass ||
