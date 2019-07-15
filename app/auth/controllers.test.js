@@ -1,4 +1,18 @@
-const controllers = require('./controllers')
+const proxyquire = require('proxyquire').noCallThru()
+
+const logOutUrl = 'http://test/test'
+const mockConfig = {
+  AUTH_PROVIDERS: {
+    test: {
+      logout_url: logOutUrl,
+    },
+  },
+  DEFAULT_AUTH_PROVIDER: 'test',
+}
+
+const controllers = proxyquire('./controllers', {
+  '../../config': mockConfig,
+})
 
 const url = '/test'
 
@@ -40,6 +54,32 @@ describe('Authentication app', function () {
       it('unsets session.postAuthRedirect', function () {
         expect(req.session.postAuthRedirect).to.equal(null)
       })
+    })
+  })
+
+  describe('#signOut()', function () {
+    let req, res
+
+    beforeEach(function () {
+      req = {
+        query: {},
+        session: {
+          destroy: sinon.spy(),
+        },
+      }
+      res = {
+        redirect: sinon.spy(),
+      }
+
+      controllers.signOut(req, res)
+    })
+
+    it('destroys the session', function () {
+      expect(req.session.destroy).to.be.called
+    })
+
+    it('redirects to the auth provider logout URL', function () {
+      expect(res.redirect).to.be.calledWith(logOutUrl)
     })
   })
 })

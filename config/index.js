@@ -1,6 +1,8 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
 
+const { buildUrl } = require('../common/helpers/url')
+
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
@@ -74,6 +76,9 @@ module.exports = {
         : '',
       healthcheck_url: AUTH_BASE_URL
         ? new URL('/auth/ping', AUTH_BASE_URL).href
+        : '',
+      logout_url: AUTH_BASE_URL
+        ? new URL(`/auth/logout?client_id=${process.env.AUTH_PROVIDER_KEY}&redirect_uri=${buildUrl()}`, AUTH_BASE_URL).href
         : '',
       key: process.env.AUTH_PROVIDER_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
