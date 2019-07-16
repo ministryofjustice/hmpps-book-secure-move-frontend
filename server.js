@@ -30,9 +30,11 @@ const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
 
-if (config.SENTRY.KEY && config.SENTRY.PROJECT) {
+if (config.SENTRY.DSN) {
   Sentry.init({
-    dsn: `https://${config.SENTRY.KEY}@sentry.io/${config.SENTRY.PROJECT}`,
+    dsn: config.SENTRY.DSN,
+    environment: config.SENTRY.ENVIRONMENT,
+    release: config.GIT_SHA,
   })
 }
 
@@ -61,6 +63,8 @@ const app = express()
 if (config.IS_PRODUCTION) {
   app.enable('trust proxy')
 }
+
+app.use(Sentry.Handlers.requestHandler())
 
 // Load the healthcheck app manually before anything
 // else to ensure it will return some kind of response
@@ -133,6 +137,7 @@ app.use(helmet())
 app.use(router)
 
 // error handling
+app.use(Sentry.Handlers.errorHandler())
 app.use(errorHandlers.notFound)
 app.use(errorHandlers.catchAll(config.IS_DEV))
 
