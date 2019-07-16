@@ -1,4 +1,5 @@
 const FormController = require('hmpo-form-wizard').Controller
+const Sentry = require('@sentry/node')
 
 const Controller = require('./form')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -16,11 +17,14 @@ describe('Moves controllers', function () {
       })
 
       it('should call parent method', function () {
-        expect(FormController.prototype.middlewareChecks).to.have.been.calledOnce
+        expect(FormController.prototype.middlewareChecks).to.have.been
+          .calledOnce
       })
 
       it('should call check current location method', function () {
-        expect(controller.use).to.have.been.calledWith(controller.checkCurrentLocation)
+        expect(controller.use).to.have.been.calledWith(
+          controller.checkCurrentLocation
+        )
       })
     })
 
@@ -55,7 +59,9 @@ describe('Moves controllers', function () {
         it('should call next with error', function () {
           expect(nextSpy).to.be.calledOnce
           expect(nextSpy.args[0][0] instanceof Error).to.be.true
-          expect(nextSpy.args[0][0].message).to.equal('Current location is not set. Check environment variable is correctly set.')
+          expect(nextSpy.args[0][0].message).to.equal(
+            'Current location is not set. Check environment variable is correctly set.'
+          )
         })
       })
     })
@@ -185,6 +191,37 @@ describe('Moves controllers', function () {
         })
       })
 
+      context('when it returns validation error', function () {
+        let nextSpy
+
+        beforeEach(function () {
+          errorMock.statusCode = 422
+
+          nextSpy = sinon.spy()
+          sinon.spy(Sentry, 'withScope')
+          sinon.stub(Sentry, 'captureException')
+
+          controller.errorHandler(errorMock, {}, {}, nextSpy)
+        })
+
+        it('should call sentry with scope', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+        })
+
+        it('should send error to sentry', function () {
+          expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should call parent error handler', function () {
+          expect(FormController.prototype.errorHandler).to.be.calledWith(
+            errorMock,
+            {},
+            {},
+            nextSpy
+          )
+        })
+      })
+
       context('when any other errors are triggered', function () {
         let nextSpy
 
@@ -196,7 +233,12 @@ describe('Moves controllers', function () {
         it('should call parent error handler', function () {
           controller.errorHandler(errorMock, {}, {}, nextSpy)
 
-          expect(FormController.prototype.errorHandler).to.be.calledWith(errorMock, {}, {}, nextSpy)
+          expect(FormController.prototype.errorHandler).to.be.calledWith(
+            errorMock,
+            {},
+            {},
+            nextSpy
+          )
         })
       })
     })
@@ -210,22 +252,22 @@ describe('Moves controllers', function () {
         sinon
           .stub(fieldHelpers, 'setFieldValue')
           .callsFake(() => ([key, field]) => {
-            return [ key, { ...field, setFieldValue: true } ]
+            return [key, { ...field, setFieldValue: true }]
           })
         sinon
           .stub(fieldHelpers, 'setFieldError')
           .callsFake(() => ([key, field]) => {
-            return [ key, { ...field, setFieldError: true } ]
+            return [key, { ...field, setFieldError: true }]
           })
         sinon
           .stub(fieldHelpers, 'translateField')
           .callsFake(() => ([key, field]) => {
-            return [ key, { ...field, translateField: true } ]
+            return [key, { ...field, translateField: true }]
           })
         sinon
           .stub(fieldHelpers, 'renderConditionalFields')
           .callsFake(([key, field]) => {
-            return [ key, { ...field, renderConditionalFields: true } ]
+            return [key, { ...field, renderConditionalFields: true }]
           })
 
         reqMock = {
@@ -292,7 +334,11 @@ describe('Moves controllers', function () {
       })
 
       it('should call parent render method', function () {
-        expect(FormController.prototype.render).to.be.calledOnceWithExactly(reqMock, {}, nextSpy)
+        expect(FormController.prototype.render).to.be.calledOnceWithExactly(
+          reqMock,
+          {},
+          nextSpy
+        )
       })
     })
   })
