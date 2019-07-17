@@ -1,23 +1,20 @@
 const { date } = require('./formatters')
 
-function assessmentQuestionComments ({ required = false } = {}) {
-  const labelPath = required ? 'required' : 'optional'
-
-  return {
-    skip: true,
-    component: 'govukTextarea',
-    classes: 'govuk-input--width-20',
-    rows: 3,
-    label: {
-      text: `fields:assessment_comment.${labelPath}`,
-      classes: 'govuk-label--s',
-    },
-  }
+const assessmentQuestionComments = {
+  skip: true,
+  rows: 3,
+  component: 'govukTextarea',
+  classes: 'govuk-input--width-20',
+  label: {
+    text: `fields:assessment_comment.optional`,
+    classes: 'govuk-label--s',
+  },
 }
 
 module.exports = {
   // personal details
   athena_reference: {
+    validate: 'required',
     component: 'govukInput',
     label: {
       text: 'fields:athena_reference.label',
@@ -32,6 +29,7 @@ module.exports = {
     autocomplete: 'off',
   },
   first_names: {
+    validate: 'required',
     component: 'govukInput',
     label: {
       text: 'fields:first_names.label',
@@ -43,6 +41,7 @@ module.exports = {
     autocomplete: 'off',
   },
   last_name: {
+    validate: 'required',
     component: 'govukInput',
     label: {
       text: 'fields:last_name.label',
@@ -54,6 +53,7 @@ module.exports = {
     autocomplete: 'off',
   },
   date_of_birth: {
+    validate: ['required', 'date', 'before'],
     formatter: [date],
     component: 'govukInput',
     label: {
@@ -66,6 +66,7 @@ module.exports = {
     autocomplete: 'off',
   },
   gender: {
+    validate: 'required',
     component: 'govukRadios',
     fieldset: {
       legend: {
@@ -77,6 +78,7 @@ module.exports = {
     items: [],
   },
   ethnicity: {
+    validate: 'required',
     component: 'govukSelect',
     label: {
       text: 'fields:ethnicity.label',
@@ -91,6 +93,7 @@ module.exports = {
   from_location: {},
   to_location: {},
   to_location_type: {
+    validate: 'required',
     component: 'govukRadios',
     name: 'to_location_type',
     fieldset: {
@@ -101,6 +104,7 @@ module.exports = {
     },
     items: [
       {
+        id: 'to_location_type',
         value: 'court',
         text: 'fields:to_location_type.items.court.label',
         conditional: 'to_location_court',
@@ -114,6 +118,11 @@ module.exports = {
   },
   to_location_prison: {
     skip: true,
+    validate: 'required',
+    dependent: {
+      field: 'to_location_type',
+      value: 'prison',
+    },
     component: 'govukSelect',
     id: 'to_location_prison',
     name: 'to_location_prison',
@@ -126,6 +135,11 @@ module.exports = {
   },
   to_location_court: {
     skip: true,
+    validate: 'required',
+    dependent: {
+      field: 'to_location_type',
+      value: 'court',
+    },
     component: 'govukSelect',
     id: 'to_location_court',
     name: 'to_location_court',
@@ -138,6 +152,7 @@ module.exports = {
   },
   date: {},
   date_type: {
+    validate: 'required',
     component: 'govukRadios',
     name: 'date_type',
     fieldset: {
@@ -148,6 +163,7 @@ module.exports = {
     },
     items: [
       {
+        id: 'date_type',
         value: 'today',
         text: 'fields:date_type.items.today.label',
       },
@@ -164,6 +180,11 @@ module.exports = {
   },
   date_custom: {
     skip: true,
+    validate: ['required', 'date', 'after'],
+    dependent: {
+      field: 'date_type',
+      value: 'custom',
+    },
     formatter: [date],
     component: 'govukInput',
     id: 'date_custom',
@@ -194,14 +215,12 @@ module.exports = {
     },
     items: [],
   },
-  risk__violent: assessmentQuestionComments(),
-  risk__escape: assessmentQuestionComments(),
-  risk__hold_separately: assessmentQuestionComments(),
-  risk__self_harm: assessmentQuestionComments(),
-  risk__concealed_items: assessmentQuestionComments(),
-  risk__other_risks: assessmentQuestionComments({
-    required: true,
-  }),
+  risk__violent: assessmentQuestionComments,
+  risk__escape: assessmentQuestionComments,
+  risk__hold_separately: assessmentQuestionComments,
+  risk__self_harm: assessmentQuestionComments,
+  risk__concealed_items: assessmentQuestionComments,
+  risk__other_risks: assessmentQuestionComments,
   // health information
   health: {
     component: 'govukCheckboxes',
@@ -218,14 +237,12 @@ module.exports = {
     },
     items: [],
   },
-  health__special_diet_or_allergy: assessmentQuestionComments(),
-  health__health_issue: assessmentQuestionComments(),
-  health__medication: assessmentQuestionComments(),
-  health__wheelchair: assessmentQuestionComments(),
-  health__pregnant: assessmentQuestionComments(),
-  health__other_health: assessmentQuestionComments({
-    required: true,
-  }),
+  health__special_diet_or_allergy: assessmentQuestionComments,
+  health__health_issue: assessmentQuestionComments,
+  health__medication: assessmentQuestionComments,
+  health__wheelchair: assessmentQuestionComments,
+  health__pregnant: assessmentQuestionComments,
+  health__other_health: assessmentQuestionComments,
   // court information
   court: {
     component: 'govukCheckboxes',
@@ -242,9 +259,7 @@ module.exports = {
     },
     items: [],
   },
-  court__solicitor: assessmentQuestionComments(),
-  court__interpreter: assessmentQuestionComments(),
-  court__other_court: assessmentQuestionComments({
-    required: true,
-  }),
+  court__solicitor: assessmentQuestionComments,
+  court__interpreter: assessmentQuestionComments,
+  court__other_court: assessmentQuestionComments,
 }
