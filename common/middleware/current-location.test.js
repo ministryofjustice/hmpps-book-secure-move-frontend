@@ -18,6 +18,23 @@ describe('Current location middleware', function () {
     req = { session: {} }
   })
 
+  context('when current user has supplier role', function () {
+    beforeEach(function () {
+      req.session.userInfo = {
+        authorities: ['ROLE_PECS_SUPPLIER'],
+      }
+      currentLocation(mockId)(req, {}, nextSpy)
+    })
+
+    it('should call next without error', function () {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+
+    it('should not call reference service', function () {
+      expect(referenceDataService.getLocationById).not.to.be.called
+    })
+  })
+
   context('when location already exists in session', function () {
     beforeEach(function () {
       req.session.currentLocation = 'location-value'
@@ -37,7 +54,7 @@ describe('Current location middleware', function () {
     })
   })
 
-  context('when location doesn\'t exist in session', function () {
+  context("when location doesn't exist in session", function () {
     context('when location service returns a location', function () {
       beforeEach(async function () {
         referenceDataService.getLocationById.resolves(mockLocation)
@@ -45,7 +62,9 @@ describe('Current location middleware', function () {
       })
 
       it('should call location service with location ID', function () {
-        expect(referenceDataService.getLocationById).to.be.calledOnceWithExactly(mockId)
+        expect(
+          referenceDataService.getLocationById
+        ).to.be.calledOnceWithExactly(mockId)
       })
 
       it('should add a current location property to the session', function () {
@@ -61,14 +80,16 @@ describe('Current location middleware', function () {
       })
     })
 
-    context('when location service doesn\'t return a location', function () {
+    context("when location service doesn't return a location", function () {
       beforeEach(async function () {
         referenceDataService.getLocationById.resolves(undefined)
         await currentLocation(mockId)(req, {}, nextSpy)
       })
 
       it('should call location service with location ID', function () {
-        expect(referenceDataService.getLocationById).to.be.calledOnceWithExactly(mockId)
+        expect(
+          referenceDataService.getLocationById
+        ).to.be.calledOnceWithExactly(mockId)
       })
 
       it('should add a current location property to the session', function () {
@@ -93,7 +114,9 @@ describe('Current location middleware', function () {
       })
 
       it('should call location service with location ID', function () {
-        expect(referenceDataService.getLocationById).to.be.calledOnceWithExactly(mockId)
+        expect(
+          referenceDataService.getLocationById
+        ).to.be.calledOnceWithExactly(mockId)
       })
 
       it('should not add a current location property to the session', function () {

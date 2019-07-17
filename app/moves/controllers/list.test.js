@@ -1,11 +1,8 @@
 const presenters = require('../../../common/presenters')
 
-const controllers = require('./')
+const controller = require('./list')
 
-const mockMovesByDate = [
-  { foo: 'bar' },
-  { fizz: 'buzz' },
-]
+const mockMovesByDate = [{ foo: 'bar' }, { fizz: 'buzz' }]
 
 describe('Moves controllers', function () {
   describe('#list()', function () {
@@ -23,7 +20,7 @@ describe('Moves controllers', function () {
         render: sinon.spy(),
       }
 
-      controllers.list(req, res)
+      controller(req, res)
     })
 
     it('should render a template', function () {
@@ -43,7 +40,9 @@ describe('Moves controllers', function () {
       })
 
       it('should call movesByToLocation presenter', function () {
-        expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(mockMovesByDate)
+        expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
+          mockMovesByDate
+        )
       })
 
       it('should contain destinations property', function () {

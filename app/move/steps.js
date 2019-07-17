@@ -28,7 +28,7 @@ module.exports = {
   },
   '/move-details': {
     controller: MoveDetails,
-    template: 'moves/views/create/move-details',
+    template: 'move/views/new/move-details',
     heading: 'moves:steps.move_details.heading',
     next: [
       { field: 'to_location_type', value: 'court', next: 'court-information' },

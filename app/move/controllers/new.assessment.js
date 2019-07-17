@@ -1,6 +1,6 @@
 const { flatten, values } = require('lodash')
 
-const FormController = require('./form')
+const FormController = require('./new.form')
 const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
 
@@ -9,8 +9,8 @@ class AssessmentController extends FormController {
     try {
       const { fields } = req.form.options
 
-      await Promise
-        .all(Object.keys(fields).map((key) => {
+      await Promise.all(
+        Object.keys(fields).map(key => {
           const field = fields[key]
 
           if (!field.hasOwnProperty('items')) {
@@ -19,12 +19,13 @@ class AssessmentController extends FormController {
 
           return referenceDataService
             .getAssessmentQuestions(key)
-            .then((response) => {
+            .then(response => {
               field.items = response
                 .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
                 .map(fieldHelpers.mapReferenceDataToOption)
             })
-        }))
+        })
+      )
 
       super.configure(req, res, next)
     } catch (error) {
@@ -37,7 +38,7 @@ class AssessmentController extends FormController {
     const assessment = req.sessionModel.get('assessment') || {}
     const { fields } = req.form.options
 
-    Object.keys(fields).forEach((key) => {
+    Object.keys(fields).forEach(key => {
       const field = fields[key]
 
       if (!field.multiple) {
@@ -46,8 +47,8 @@ class AssessmentController extends FormController {
       const answers = req.form.values[key]
 
       assessment[key] = field.items
-        .filter((item) => answers.includes(item.value))
-        .map((item) => {
+        .filter(item => answers.includes(item.value))
+        .map(item => {
           return {
             comments: req.form.values[`${key}__${item.key}`],
             assessment_question_id: item.value,

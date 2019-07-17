@@ -1,4 +1,4 @@
-const FormController = require('./form')
+const FormController = require('./new.form')
 const fieldHelpers = require('../../../common/helpers/field')
 const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
@@ -9,10 +9,15 @@ class PersonalDetailsController extends FormController {
       const genders = await referenceDataService.getGenders()
       const ethnicities = await referenceDataService.getEthnicities()
       const genderOptions = genders.map(fieldHelpers.mapReferenceDataToOption)
-      const ethnicityOptions = ethnicities.map(fieldHelpers.mapReferenceDataToOption)
+      const ethnicityOptions = ethnicities.map(
+        fieldHelpers.mapReferenceDataToOption
+      )
 
       req.form.options.fields.gender.items = genderOptions
-      req.form.options.fields.ethnicity.items = fieldHelpers.insertInitialOption(ethnicityOptions, 'ethnicity')
+      req.form.options.fields.ethnicity.items = fieldHelpers.insertInitialOption(
+        ethnicityOptions,
+        'ethnicity'
+      )
 
       super.configure(req, res, next)
     } catch (error) {
