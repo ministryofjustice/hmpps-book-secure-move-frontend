@@ -1,6 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./assessment')
+const Controller = require('./new.assessment')
 const referenceDataService = require('../../../common/services/reference-data')
 
 const controller = new Controller({ route: '/' })
@@ -26,7 +26,7 @@ const questionsMock = [
   },
 ]
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('Assessment controller', function () {
     describe('#configure()', function () {
       let nextSpy
@@ -40,7 +40,9 @@ describe('Moves controllers', function () {
         let req
 
         beforeEach(async function () {
-          sinon.stub(referenceDataService, 'getAssessmentQuestions').resolves(questionsMock)
+          sinon
+            .stub(referenceDataService, 'getAssessmentQuestions')
+            .resolves(questionsMock)
           nextSpy = sinon.spy()
 
           req = {
@@ -89,7 +91,9 @@ describe('Moves controllers', function () {
         })
 
         it('should call parent configure method', function () {
-          expect(FormController.prototype.configure).to.be.calledOnceWithExactly(req, {}, nextSpy)
+          expect(
+            FormController.prototype.configure
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
         it('should not throw an error', function () {
@@ -113,7 +117,9 @@ describe('Moves controllers', function () {
         }
 
         beforeEach(async function () {
-          sinon.stub(referenceDataService, 'getAssessmentQuestions').rejects(errorMock)
+          sinon
+            .stub(referenceDataService, 'getAssessmentQuestions')
+            .rejects(errorMock)
 
           await controller.configure(req, {}, nextSpy)
         })
@@ -141,19 +147,23 @@ describe('Moves controllers', function () {
       const mockFields = {
         risk: {
           multiple: true,
-          items: [{
-            key: 'violent',
-            text: 'Violent',
-            value: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-          }, {
-            key: 'escape',
-            text: 'Escape',
-            value: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-          }, {
-            key: 'self',
-            text: 'Self',
-            value: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
-          }],
+          items: [
+            {
+              key: 'violent',
+              text: 'Violent',
+              value: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
+            },
+            {
+              key: 'escape',
+              text: 'Escape',
+              value: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
+            },
+            {
+              key: 'self',
+              text: 'Self',
+              value: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
+            },
+          ],
         },
       }
 
@@ -188,10 +198,12 @@ describe('Moves controllers', function () {
 
         it('should save values on assessment property', function () {
           expect(req.form.values.assessment).to.deep.equal({
-            risk: [{
-              comments: 'Additional comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            }],
+            risk: [
+              {
+                comments: 'Additional comments',
+                assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
+              },
+            ],
           })
         })
 
@@ -205,7 +217,9 @@ describe('Moves controllers', function () {
         })
 
         it('should call parent configure method', function () {
-          expect(FormController.prototype.saveValues).to.be.calledOnceWithExactly(req, {}, nextSpy)
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
         it('should not throw an error', function () {
@@ -240,31 +254,39 @@ describe('Moves controllers', function () {
             last_name: 'Smith',
           })
           sessionGetStub.withArgs('assessment').returns({
-            risk: [{
-              comments: '',
-              assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
-            }],
-            health: [{
-              comments: '',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            }],
+            risk: [
+              {
+                comments: '',
+                assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
+              },
+            ],
+            health: [
+              {
+                comments: '',
+                assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
+              },
+            ],
           })
 
           controller.saveValues(req, {}, nextSpy)
         })
 
         it('should overwrite values for current field', function () {
-          expect(req.form.values.assessment.risk).to.deep.equal([{
-            comments: 'Additional comments',
-            assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-          }])
+          expect(req.form.values.assessment.risk).to.deep.equal([
+            {
+              comments: 'Additional comments',
+              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
+            },
+          ])
         })
 
         it('should not mutate other assessment fields', function () {
-          expect(req.form.values.assessment.health).to.deep.equal([{
-            comments: '',
-            assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-          }])
+          expect(req.form.values.assessment.health).to.deep.equal([
+            {
+              comments: '',
+              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
+            },
+          ])
         })
 
         it('should flatten values on assessment_answers property', function () {
@@ -281,7 +303,9 @@ describe('Moves controllers', function () {
         })
 
         it('should call parent configure method', function () {
-          expect(FormController.prototype.saveValues).to.be.calledOnceWithExactly(req, {}, nextSpy)
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
         it('should not throw an error', function () {
@@ -315,10 +339,12 @@ describe('Moves controllers', function () {
 
         it('should remove empty values', function () {
           expect(req.form.values.assessment).to.deep.equal({
-            risk: [{
-              comments: '',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            }],
+            risk: [
+              {
+                comments: '',
+                assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
+              },
+            ],
           })
         })
 
@@ -364,16 +390,20 @@ describe('Moves controllers', function () {
 
         it('should include all values', function () {
           expect(req.form.values.assessment).to.deep.equal({
-            risk: [{
-              comments: 'Violent comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            }, {
-              comments: 'Escape comments',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            }, {
-              comments: 'Self comments',
-              assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
-            }],
+            risk: [
+              {
+                comments: 'Violent comments',
+                assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
+              },
+              {
+                comments: 'Escape comments',
+                assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
+              },
+              {
+                comments: 'Self comments',
+                assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
+              },
+            ],
           })
         })
 

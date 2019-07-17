@@ -1,6 +1,6 @@
 const dateFns = require('date-fns')
 
-const FormController = require('./form')
+const FormController = require('./new.form')
 const filters = require('../../../config/nunjucks/filters')
 const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
@@ -53,7 +53,10 @@ class MoveDetailsController extends FormController {
       moveDate = req.form.values.date_custom
     } else {
       req.form.values.date_custom = ''
-      moveDate = dateType === 'today' ? dateFns.startOfToday() : dateFns.startOfTomorrow()
+      moveDate =
+        dateType === 'today'
+          ? dateFns.startOfToday()
+          : dateFns.startOfTomorrow()
     }
 
     req.form.values.date = dateFns.format(moveDate, 'YYYY-MM-DD')

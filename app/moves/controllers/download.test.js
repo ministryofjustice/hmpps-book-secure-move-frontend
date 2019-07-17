@@ -1,13 +1,10 @@
 const presenters = require('../../../common/presenters')
 
-const controllers = require('./')
+const controller = require('./download')
 
 const mockMoveDate = '2018-10-10'
 const mockDownloadDate = new Date(Date.UTC(2019, 10, 10, 15, 30, 15))
-const movesStub = [
-  { foo: 'bar' },
-  { fizz: 'buzz' },
-]
+const movesStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
 const csvStub = `
 "Col 1","Col 2"
 "Foo","Bar"
@@ -42,7 +39,7 @@ describe('Moves controllers', function () {
 
     context('when params contains no extension', function () {
       beforeEach(function () {
-        controllers.download(req, res, nextSpy)
+        controller(req, res, nextSpy)
       })
 
       it('should not call response json or send methods', function () {
@@ -59,7 +56,7 @@ describe('Moves controllers', function () {
       beforeEach(function () {
         req.params.extension = 'unknown'
 
-        controllers.download(req, res, nextSpy)
+        controller(req, res, nextSpy)
       })
 
       it('should not call response json or send methods', function () {
@@ -76,7 +73,7 @@ describe('Moves controllers', function () {
       beforeEach(function () {
         req.params.extension = 'json'
 
-        controllers.download(req, res, nextSpy)
+        controller(req, res, nextSpy)
       })
 
       it('should translate filename', function () {
@@ -87,7 +84,10 @@ describe('Moves controllers', function () {
       })
 
       it('should set content disposition header', function () {
-        expect(res.setHeader).to.be.calledOnceWithExactly('Content-disposition', 'attachment; filename=moves:download_filename.json')
+        expect(res.setHeader).to.be.calledOnceWithExactly(
+          'Content-disposition',
+          'attachment; filename=moves:download_filename.json'
+        )
       })
 
       it('should render moves as JSON', function () {
@@ -105,7 +105,7 @@ describe('Moves controllers', function () {
           req.params.extension = 'csv'
           presenters.movesToCSV.resolves(csvStub)
 
-          await controllers.download(req, res, nextSpy)
+          await controller(req, res, nextSpy)
         })
 
         it('should translate filename', function () {
@@ -116,11 +116,17 @@ describe('Moves controllers', function () {
         })
 
         it('should set content disposition header', function () {
-          expect(res.setHeader.firstCall).to.be.calledWithExactly('Content-disposition', 'attachment; filename=moves:download_filename.csv')
+          expect(res.setHeader.firstCall).to.be.calledWithExactly(
+            'Content-disposition',
+            'attachment; filename=moves:download_filename.csv'
+          )
         })
 
         it('should set content type', function () {
-          expect(res.setHeader.secondCall).to.be.calledWithExactly('Content-Type', 'text/csv')
+          expect(res.setHeader.secondCall).to.be.calledWithExactly(
+            'Content-Type',
+            'text/csv'
+          )
         })
 
         it('should call CSV presenter with moves stub', function () {
@@ -143,7 +149,7 @@ describe('Moves controllers', function () {
           req.params.extension = 'csv'
           presenters.movesToCSV.rejects(errorStub)
 
-          await controllers.download(req, res, nextSpy)
+          await controller(req, res, nextSpy)
         })
 
         it('should not set content type', function () {

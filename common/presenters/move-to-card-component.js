@@ -3,10 +3,10 @@ const personService = require('../services/person')
 const filters = require('../../config/nunjucks/filters')
 
 function _removeEmpty (items, keys) {
-  return items.filter((item) => {
+  return items.filter(item => {
     let include = false
 
-    keys.forEach((k) => {
+    keys.forEach(k => {
       if (item[k]) {
         include = true
       }
@@ -21,7 +21,11 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
     {
       label: 'Date of birth',
       hideLabel: true,
-      html: person.date_of_birth ? `${filters.formatDate(person.date_of_birth)} (Age ${filters.calculateAge(person.date_of_birth)})` : '',
+      html: person.date_of_birth
+        ? `${filters.formatDate(
+          person.date_of_birth
+        )} (Age ${filters.calculateAge(person.date_of_birth)})`
+        : '',
     },
     {
       label: 'Gender',
@@ -36,7 +40,7 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
   ]
 
   return {
-    href: `/moves/${id}`,
+    href: `/move/${id}`,
     title: {
       text: personService.getFullname(person).toUpperCase(),
     },
@@ -47,7 +51,7 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
       items: _removeEmpty(meta, ['text', 'html']),
     },
     tags: {
-      items: assessmentToTagList(person.assessment_answers, `/moves/${id}`),
+      items: assessmentToTagList(person.assessment_answers, `/move/${id}`),
     },
   }
 }

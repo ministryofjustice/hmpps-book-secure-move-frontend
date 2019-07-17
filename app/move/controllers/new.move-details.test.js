@@ -1,6 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./move-details')
+const Controller = require('./new.move-details')
 const filters = require('../../../config/nunjucks/filters')
 const referenceDataService = require('../../../common/services/reference-data')
 
@@ -30,7 +30,7 @@ const mockCurrentLocation = {
   title: 'Prison 5555',
 }
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('Move Details', function () {
     describe('#configure()', function () {
       let nextSpy
@@ -47,8 +47,12 @@ describe('Moves controllers', function () {
           sinon.stub(referenceDataService, 'getLocations').resolves(courtsMock)
           sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
-          referenceDataService.getLocations.withArgs('court').resolves(courtsMock)
-          referenceDataService.getLocations.withArgs('prison').resolves(prisonsMock)
+          referenceDataService.getLocations
+            .withArgs('court')
+            .resolves(courtsMock)
+          referenceDataService.getLocations
+            .withArgs('prison')
+            .resolves(prisonsMock)
 
           req = {
             t: sinon.stub().returns('__translated__'),
@@ -89,15 +93,19 @@ describe('Moves controllers', function () {
         })
 
         it('should set list of courts dynamically', function () {
-          expect(req.form.options.fields.to_location_court.items).to.deep.equal([
-            { text: '--- Choose court ---' },
-            { value: '8888', text: 'Court 8888' },
-            { value: '9999', text: 'Court 9999' },
-          ])
+          expect(req.form.options.fields.to_location_court.items).to.deep.equal(
+            [
+              { text: '--- Choose court ---' },
+              { value: '8888', text: 'Court 8888' },
+              { value: '9999', text: 'Court 9999' },
+            ]
+          )
         })
 
         it('should set list of prison dynamically', function () {
-          expect(req.form.options.fields.to_location_prison.items).to.deep.equal([
+          expect(
+            req.form.options.fields.to_location_prison.items
+          ).to.deep.equal([
             { text: '--- Choose prison ---' },
             { value: '3333', text: 'Prison 3333' },
             { value: '4444', text: 'Prison 4444' },

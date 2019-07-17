@@ -27,6 +27,6 @@ module.exports = {
       fullname: personService.getFullname(move.person),
     }
 
-    res.render('moves/views/cancel', locals)
+    res.render('move/views/cancel', locals)
   },
 }

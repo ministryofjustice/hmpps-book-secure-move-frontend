@@ -1,12 +1,14 @@
 const personService = require('../../../common/services/person')
 const moveService = require('../../../common/services/move')
 
-const { cancelMove } = require('./')
+const controller = require('./cancel')
 
-const { data: mockMove } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const {
+  data: mockMove,
+} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('#cancel.post()', function () {
     let req, res, nextSpy
 
@@ -27,7 +29,7 @@ describe('Moves controllers', function () {
     context('when move cancel is successful', function () {
       beforeEach(async function () {
         sinon.stub(moveService, 'cancel').resolves(mockMove)
-        await cancelMove.post(req, res, nextSpy)
+        await controller.post(req, res, nextSpy)
       })
 
       it('should set a success message', function () {
@@ -38,14 +40,19 @@ describe('Moves controllers', function () {
       })
 
       it('should pass correct values to success content translation', function () {
-        expect(req.t.secondCall).to.have.been.calledWithExactly('messages:cancel_move.success.content', {
-          name: fullname,
-          location: mockMove.to_location.title,
-        })
+        expect(req.t.secondCall).to.have.been.calledWithExactly(
+          'messages:cancel_move.success.content',
+          {
+            name: fullname,
+            location: mockMove.to_location.title,
+          }
+        )
       })
 
       it('should call move service cancel with move id', function () {
-        expect(moveService.cancel).to.be.calledOnceWithExactly(res.locals.move.id)
+        expect(moveService.cancel).to.be.calledOnceWithExactly(
+          res.locals.move.id
+        )
       })
 
       it('should redirect correctly', function () {
@@ -62,7 +69,7 @@ describe('Moves controllers', function () {
 
       beforeEach(async function () {
         sinon.stub(moveService, 'cancel').throws(errorMock)
-        await cancelMove.post(req, res, nextSpy)
+        await controller.post(req, res, nextSpy)
       })
 
       it('should call next with the error', function () {
@@ -95,7 +102,7 @@ describe('Moves controllers', function () {
           },
         },
       }
-      cancelMove.get({}, res)
+      controller.get({}, res)
     })
 
     it('should render a template', function () {

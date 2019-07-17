@@ -1,6 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./personal-details')
+const Controller = require('./new.personal-details')
 const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
 
@@ -31,7 +31,7 @@ const personMock = {
   last_name: 'Bar',
 }
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('Personal Details', function () {
     describe('#configure()', function () {
       let nextSpy
@@ -46,7 +46,9 @@ describe('Moves controllers', function () {
         beforeEach(async function () {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(referenceDataService, 'getGenders').resolves(genderMock)
-          sinon.stub(referenceDataService, 'getEthnicities').resolves(ethnicityMock)
+          sinon
+            .stub(referenceDataService, 'getEthnicities')
+            .resolves(ethnicityMock)
 
           req = {
             form: {
@@ -79,7 +81,11 @@ describe('Moves controllers', function () {
 
         it('should call parent configure method', function () {
           expect(FormController.prototype.configure).to.be.calledOnce
-          expect(FormController.prototype.configure).to.be.calledWith(req, {}, nextSpy)
+          expect(FormController.prototype.configure).to.be.calledWith(
+            req,
+            {},
+            nextSpy
+          )
         })
 
         it('should not throw an error', function () {

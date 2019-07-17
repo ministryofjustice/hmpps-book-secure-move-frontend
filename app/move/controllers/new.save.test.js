@@ -1,13 +1,15 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./save')
+const Controller = require('./new.save')
 const moveService = require('../../../common/services/move')
 const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
-const { data: moveMock } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const {
+  data: moveMock,
+} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${moveMock.person.last_name}, ${moveMock.person.first_names}`
 const mockPerson = {
   id: '3333',
@@ -29,7 +31,7 @@ const valuesMock = {
   },
 }
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('Save', function () {
     describe('#saveValues()', function () {
       let req, nextSpy
@@ -112,7 +114,10 @@ describe('Moves controllers', function () {
             values: {},
           },
           sessionModel: {
-            get: sinon.stub().withArgs('move').returns(moveMock),
+            get: sinon
+              .stub()
+              .withArgs('move')
+              .returns(moveMock),
             reset: sinon.stub(),
             destroy: sinon.stub(),
           },
@@ -140,11 +145,14 @@ describe('Moves controllers', function () {
       })
 
       it('should pass correct values to success content translation', function () {
-        expect(req.t.secondCall).to.have.been.calledWithExactly('messages:create_move.success.content', {
-          name: fullname,
-          location: moveMock.to_location.title,
-          date: moveMock.date,
-        })
+        expect(req.t.secondCall).to.have.been.calledWithExactly(
+          'messages:create_move.success.content',
+          {
+            name: fullname,
+            location: moveMock.to_location.title,
+            date: moveMock.date,
+          }
+        )
       })
 
       it('should reset the journey', function () {

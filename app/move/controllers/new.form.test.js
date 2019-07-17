@@ -1,12 +1,12 @@
 const FormController = require('hmpo-form-wizard').Controller
 const Sentry = require('@sentry/node')
 
-const Controller = require('./form')
+const Controller = require('./new.form')
 const fieldHelpers = require('../../../common/helpers/field')
 
 const controller = new Controller({ route: '/' })
 
-describe('Moves controllers', function () {
+describe('Move controllers', function () {
   describe('Form', function () {
     describe('#middlewareChecks()', function () {
       beforeEach(function () {

@@ -1,13 +1,15 @@
 const personService = require('../../../common/services/person')
 const presenters = require('../../../common/presenters')
 
-const controllers = require('.')
+const controller = require('./view')
 
-const { data: mockMove } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const {
+  data: mockMove,
+} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
-describe('Moves controllers', function () {
-  describe('#get()', function () {
+describe('Move controllers', function () {
+  describe('#view()', function () {
     let req, res
 
     beforeEach(function () {
@@ -26,7 +28,7 @@ describe('Moves controllers', function () {
         },
       }
 
-      controllers.detail(req, res)
+      controller(req, res)
     })
 
     it('should render a template', function () {
@@ -40,7 +42,9 @@ describe('Moves controllers', function () {
     })
 
     it('should call moveToMetaListComponent presenter with correct args', function () {
-      expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(mockMove)
+      expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
+        mockMove
+      )
     })
 
     it('should contain a move summary param', function () {
@@ -50,7 +54,9 @@ describe('Moves controllers', function () {
     })
 
     it('should call personToSummaryListComponent presenter with correct args', function () {
-      expect(presenters.personToSummaryListComponent).to.be.calledOnceWithExactly(mockMove.person)
+      expect(
+        presenters.personToSummaryListComponent
+      ).to.be.calledOnceWithExactly(mockMove.person)
     })
 
     it('should contain personal details summary param', function () {
@@ -60,7 +66,9 @@ describe('Moves controllers', function () {
     })
 
     it('should call assessmentToTagList presenter with correct args', function () {
-      expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(mockMove.person.assessment_answers)
+      expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(
+        mockMove.person.assessment_answers
+      )
     })
 
     it('should contain tag list param', function () {
@@ -70,7 +78,9 @@ describe('Moves controllers', function () {
     })
 
     it('should call assessmentByCategory presenter with correct args', function () {
-      expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(mockMove.person.assessment_answers)
+      expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
+        mockMove.person.assessment_answers
+      )
     })
 
     it('should contain assessment param', function () {
@@ -80,7 +90,9 @@ describe('Moves controllers', function () {
     })
 
     it('should call assessmentToSummaryListComponent presenter with correct args', function () {
-      expect(presenters.assessmentToSummaryListComponent).to.be.calledOnceWithExactly(mockMove.person.assessment_answers, 'court')
+      expect(
+        presenters.assessmentToSummaryListComponent
+      ).to.be.calledOnceWithExactly(mockMove.person.assessment_answers, 'court')
     })
 
     it('should contain court summary param', function () {

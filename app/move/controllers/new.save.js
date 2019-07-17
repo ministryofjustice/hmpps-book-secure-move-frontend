@@ -1,6 +1,6 @@
 const { omit } = require('lodash')
 
-const FormController = require('./form')
+const FormController = require('./new.form')
 const moveService = require('../../../common/services/move')
 const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')
@@ -26,11 +26,9 @@ class SaveController extends FormController {
   }
 
   successHandler (req, res) {
-    const {
-      date,
-      person,
-      to_location: toLocation,
-    } = req.sessionModel.get('move')
+    const { date, person, to_location: toLocation } = req.sessionModel.get(
+      'move'
+    )
 
     req.journeyModel.reset()
     req.journeyModel.destroy()
