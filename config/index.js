@@ -1,10 +1,10 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
 
-const { buildUrl } = require('../common/helpers/url')
-
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const SERVER_HOST = process.env.SERVER_HOST
+const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
@@ -17,8 +17,8 @@ module.exports = {
   IS_DEV,
   IS_PRODUCTION,
   SESSION,
+  SERVER_HOST,
   PORT: process.env.PORT || 3000,
-  SERVER_HOST: process.env.SERVER_HOST,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
@@ -79,9 +79,7 @@ module.exports = {
         : '',
       logout_url: AUTH_BASE_URL
         ? new URL(
-          `/auth/logout?client_id=${
-            process.env.AUTH_PROVIDER_KEY
-          }&redirect_uri=${buildUrl()}`,
+          `/auth/logout?client_id=${process.env.AUTH_PROVIDER_KEY}&redirect_uri=${BASE_URL}`,
           AUTH_BASE_URL
         ).href
         : '',
