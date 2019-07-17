@@ -40,8 +40,8 @@ module.exports = {
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   SENTRY: {
-    KEY: process.env.SENTRY_KEY,
-    PROJECT: process.env.SENTRY_PROJECT,
+    DSN: process.env.SENTRY_DSN,
+    ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
   },
   REDIS: {
     SESSION: {
@@ -78,7 +78,12 @@ module.exports = {
         ? new URL('/auth/ping', AUTH_BASE_URL).href
         : '',
       logout_url: AUTH_BASE_URL
-        ? new URL(`/auth/logout?client_id=${process.env.AUTH_PROVIDER_KEY}&redirect_uri=${buildUrl()}`, AUTH_BASE_URL).href
+        ? new URL(
+          `/auth/logout?client_id=${
+            process.env.AUTH_PROVIDER_KEY
+          }&redirect_uri=${buildUrl()}`,
+          AUTH_BASE_URL
+        ).href
         : '',
       key: process.env.AUTH_PROVIDER_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,

@@ -1,5 +1,6 @@
 const { map, fromPairs } = require('lodash')
 const { Controller } = require('hmpo-form-wizard')
+const Sentry = require('@sentry/node')
 
 const fieldHelpers = require('../../../common/helpers/field')
 
@@ -11,7 +12,9 @@ class FormController extends Controller {
 
   checkCurrentLocation (req, res, next) {
     if (!req.session.currentLocation) {
-      const error = new Error('Current location is not set. Check environment variable is correctly set.')
+      const error = new Error(
+        'Current location is not set. Check environment variable is correctly set.'
+      )
       return next(error)
     }
 
@@ -21,7 +24,7 @@ class FormController extends Controller {
   getErrors (req, res) {
     const errors = super.getErrors(req, res)
 
-    errors.errorList = map(errors, (error) => {
+    errors.errorList = map(errors, error => {
       const label = req.t(`fields:${error.key}.label`)
       const message = req.t(`validation:${error.type}`)
 
@@ -42,6 +45,13 @@ class FormController extends Controller {
     if (err.code === 'SESSION_TIMEOUT') {
       return res.render('form-wizard-timeout', {
         journeyBaseUrl: req.baseUrl,
+      })
+    }
+
+    if (err.statusCode === 422) {
+      Sentry.withScope(scope => {
+        scope.setExtra('errors', err.errors)
+        Sentry.captureException(err)
       })
     }
 
