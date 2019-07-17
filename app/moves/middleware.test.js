@@ -3,10 +3,6 @@ const moveService = require('../../common/services/move')
 const middleware = require('./middleware')
 
 const movesStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
-const mockCurrentLocation = {
-  id: '5555',
-  title: 'Prison 5555',
-}
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function () {
@@ -65,8 +61,34 @@ describe('Moves middleware', function () {
     })
   })
 
-  describe('#setMovesByDateAndLocation()', function () {
+  describe('#setFromLocation()', function () {
     let req, res, nextSpy
+    const locationId = '7ebc8717-ff5b-4be0-8515-3e308e92700f'
+
+    beforeEach(function () {
+      res = { locals: {} }
+      nextSpy = sinon.spy()
+    })
+
+    beforeEach(function () {
+      req = { query: {} }
+
+      middleware.setFromLocation(req, res, nextSpy, locationId)
+    })
+
+    it('should set from location to locals', function () {
+      expect(res.locals).to.have.property('fromLocationId')
+      expect(res.locals.fromLocationId).to.equal(locationId)
+    })
+
+    it('should call next', function () {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+  })
+
+  describe('#setMovesByDate()', function () {
+    let res, nextSpy
+    const mockCurrentLocation = '5555'
 
     beforeEach(async function () {
       sinon.stub(moveService, 'getRequestedMovesByDateAndLocation')
@@ -76,7 +98,7 @@ describe('Moves middleware', function () {
 
     context('when no move date exists', function () {
       beforeEach(async function () {
-        await middleware.setMovesByDateAndLocation({}, res, nextSpy)
+        await middleware.setMovesByDate({}, res, nextSpy)
       })
 
       it('should call next with no argument', function () {
@@ -97,11 +119,7 @@ describe('Moves middleware', function () {
         res = {
           locals: {
             moveDate: '2010-10-10',
-          },
-        }
-        req = {
-          session: {
-            currentLocation: mockCurrentLocation,
+            fromLocationId: mockCurrentLocation,
           },
         }
       })
@@ -109,7 +127,7 @@ describe('Moves middleware', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
           moveService.getRequestedMovesByDateAndLocation.resolves(movesStub)
-          await middleware.setMovesByDateAndLocation(req, res, nextSpy)
+          await middleware.setMovesByDate({}, res, nextSpy)
         })
 
         it('should call API with move date and location ID', function () {
@@ -117,7 +135,7 @@ describe('Moves middleware', function () {
             moveService.getRequestedMovesByDateAndLocation
           ).to.be.calledOnceWithExactly(
             res.locals.moveDate,
-            req.session.currentLocation.id
+            res.locals.fromLocationId
           )
         })
 
@@ -134,7 +152,7 @@ describe('Moves middleware', function () {
       context('when API call returns an error', function () {
         beforeEach(async function () {
           moveService.getRequestedMovesByDateAndLocation.throws(errorStub)
-          await middleware.setMovesByDateAndLocation({}, res, nextSpy)
+          await middleware.setMovesByDate({}, res, nextSpy)
         })
 
         it('should not set a value on the locals object', function () {
