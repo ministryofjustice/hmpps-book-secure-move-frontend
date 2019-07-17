@@ -1,8 +1,4 @@
-const {
-  format,
-  addDays,
-  subDays,
-} = require('date-fns')
+const { format, addDays, subDays } = require('date-fns')
 
 const { getQueryString } = require('../../../common/lib/request')
 const presenters = require('../../../common/presenters')

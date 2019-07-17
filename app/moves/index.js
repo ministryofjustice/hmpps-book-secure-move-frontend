@@ -3,16 +3,23 @@ const router = require('express').Router()
 
 // Local dependencies
 const { download, list } = require('./controllers')
-const { setMoveDate, setMovesByDateAndLocation } = require('./middleware')
+const { setMoveDate, setFromLocation, setMovesByDate } = require('./middleware')
+
+const uuidRegex =
+  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 // Define param middleware
+router.param('locationId', setFromLocation)
 
 // Define routes
-router.get('/', setMoveDate, setMovesByDateAndLocation, list)
-router.use(
-  '/download.:extension(csv|json)',
-  setMoveDate,
-  setMovesByDateAndLocation,
+router.use(setMoveDate)
+router.get(['/', `/:locationId(${uuidRegex})`], setMovesByDate, list)
+router.get(
+  [
+    '/download.:extension(csv|json)',
+    `/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  ],
+  setMovesByDate,
   download
 )
 
