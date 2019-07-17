@@ -18,6 +18,6 @@ $_border-width: 2px;
   top: -($_border-width);
 
   & + * {
-    margin-top: govuk-spacing(3);
+    margin-top: govuk-spacing(4);
   }
 }

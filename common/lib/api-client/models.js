@@ -52,6 +52,8 @@ function defineModels (jsonApi) {
   })
 
   jsonApi.define('assessment_question', {
+    created_at: '',
+    expires_at: '',
     key: '',
     title: '',
     category: '',
