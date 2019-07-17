@@ -11,6 +11,7 @@ const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
+const slashify = require('slashify')
 const i18next = require('i18next')
 const Backend = require('i18next-node-fs-backend')
 const i18nMiddleware = require('i18next-express-middleware')
@@ -65,6 +66,8 @@ if (config.IS_PRODUCTION) {
 }
 
 app.use(Sentry.Handlers.requestHandler())
+
+app.use(slashify())
 
 // Load the healthcheck app manually before anything
 // else to ensure it will return some kind of response
