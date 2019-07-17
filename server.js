@@ -127,11 +127,16 @@ app.use(
     ...config.AUTH_PROVIDERS,
   })
 )
+// Development environment helpers
+if (config.IS_DEV) {
+  const development = require('./common/middleware/development')
+  app.use(development.bypassAuth(config.AUTH_BYPASS_SSO))
+  app.use(development.setUserPermissions(config.USER_PERMISSIONS))
+}
 app.use(
   ensureAuthenticated({
     provider: config.DEFAULT_AUTH_PROVIDER,
     whitelist: config.AUTH_WHITELIST_URLS,
-    bypass: config.AUTH_BYPASS_SSO,
   })
 )
 app.use(helmet())

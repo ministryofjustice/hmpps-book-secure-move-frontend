@@ -55,6 +55,7 @@ module.exports = {
       ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
     },
   },
+  USER_PERMISSIONS: process.env.USER_PERMISSIONS,
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
   AUTH_WHITELIST_URLS: [
     '/auth',

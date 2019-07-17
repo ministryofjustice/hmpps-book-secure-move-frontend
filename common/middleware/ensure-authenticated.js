@@ -9,14 +9,9 @@ function _isExpired (authExpiry) {
 module.exports = function ensureAuthenticated ({
   provider,
   whitelist = [],
-  bypass,
 } = {}) {
   return (req, res, next) => {
-    if (
-      bypass ||
-      whitelist.includes(req.url) ||
-      !_isExpired(req.session.authExpiry)
-    ) {
+    if (whitelist.includes(req.url) || !_isExpired(req.session.authExpiry)) {
       return next()
     }
 
