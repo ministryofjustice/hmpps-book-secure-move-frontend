@@ -16,9 +16,9 @@
       {% set itemHtml %}
         {{ item.comments if item.comments else '' }}
 
-        {% if item.date %}
-          <div class="govuk-!-font-size-16">
-            {{ item.date | formatDateWithDay }}
+        {% if item.created_at %}
+          <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
+            {{ item.created_at | formatDateWithDay }}
           </div>
         {% endif %}
       {% endset %}
