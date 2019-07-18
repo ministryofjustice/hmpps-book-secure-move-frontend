@@ -1,0 +1,43 @@
+{% extends "layouts/govuk.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle, {
+    date: moveDate | formatDateAsRelativeDay
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  {% block pageHeader %}
+    <header class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-xl">{{ t(pageTitle) }}</span>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+          {{ appTime({
+            datetime: moveDate,
+            text: moveDate | formatDateAsRelativeDay
+          }) }}
+        </h1>
+
+        {{ appPagination({
+          classes: "app-pagination--inline app-print--hide",
+          previous: {
+            href: pagination.prevUrl,
+            text: t("actions:previous_day")
+          },
+          next: {
+            href: pagination.nextUrl,
+            text: t("actions:next_day")
+          }
+        }) }}
+
+        {% block headerActions %}{% endblock %}
+      </div>
+
+      {% block headerNav %}{% endblock %}
+    </header>
+  {% endblock %}
+
+  {% block pageContent %}{% endblock %}
+
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "layouts/govuk.njk" %}
+{% extends "./_layout.njk" %}
 
 {% block pageTitle %}
   {{ t(pageTitle, {
@@ -6,58 +6,37 @@
   }) }}
 {% endblock %}
 
-{% block content %}
+{% block headerActions %}
+  {% if canAccess('move:create') %}
+    {{ govukButton({
+      text: t("actions:create_move"),
+      href: "/move/new",
+      classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
+    }) }}
+  {% endif %}
+{% endblock %}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-xl">{{ t(pageTitle) }}</span>
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-        {{ appTime({
-          datetime: moveDate,
-          text: moveDate | formatDateAsRelativeDay
-        }) }}
-      </h1>
-
-      {{ appPagination({
-        classes: "app-pagination--inline app-print--hide",
-        previous: {
-          href: pagination.prevUrl,
-          text: t("actions:previous_day")
-        },
-        next: {
-          href: pagination.nextUrl,
-          text: t("actions:next_day")
-        }
-      }) }}
-
-      {% if canAccess('move:create') %}
-        {{ govukButton({
-          text: t("actions:create_move"),
-          href: "/move/new",
-          classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
-        }) }}
-      {% endif %}
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-      <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
-        {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
-          <li>
-            <a href="{{ ORIGINAL_PATH }}/download.csv?move-date={{ moveDate }}">
-              {{ t("actions:download_csv") }}
-            </a>
-          </li>
-        {% endif %}
-
+{% block headerNav %}
+  <div class="govuk-grid-column-one-third">
+    <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
+      {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
         <li>
-          <a href="javascript:window.print()">
-            {{ t("actions:print_move_list") }}
+          <a href="{{ ORIGINAL_PATH }}/download.csv?move-date={{ moveDate }}">
+            {{ t("actions:download_csv") }}
           </a>
         </li>
-      </ul>
-    </div>
-  </div>
+      {% endif %}
 
+      <li>
+        <a href="javascript:window.print()">
+          {{ t("actions:print_move_list") }}
+        </a>
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+{% block pageContent %}
   {% for destination in destinations %}
     <div class="
       govuk-!-margin-top-7
@@ -78,5 +57,4 @@
       {% endfor %}
     </div>
   {% endfor %}
-
 {% endblock %}

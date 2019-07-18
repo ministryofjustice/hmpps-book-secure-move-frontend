@@ -10,6 +10,7 @@
   "restart": "Restart",
   "cancel_move": "Cancel this move",
   "cancel_move_confirmation": "Cancel move",
+  "download": "Download moves",
   "download_csv": "Download moves (.csv)",
   "print_move_list": "Print moves",
   "print_move_detail": "Print move",
