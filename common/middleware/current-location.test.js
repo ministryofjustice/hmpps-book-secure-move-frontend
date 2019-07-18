@@ -18,23 +18,6 @@ describe('Current location middleware', function () {
     req = { session: {} }
   })
 
-  context('when current user has supplier role', function () {
-    beforeEach(function () {
-      req.session.userInfo = {
-        authorities: ['ROLE_PECS_SUPPLIER'],
-      }
-      currentLocation(mockId)(req, {}, nextSpy)
-    })
-
-    it('should call next without error', function () {
-      expect(nextSpy).to.be.calledOnceWithExactly()
-    })
-
-    it('should not call reference service', function () {
-      expect(referenceDataService.getLocationById).not.to.be.called
-    })
-  })
-
   context('when location already exists in session', function () {
     beforeEach(function () {
       req.session.currentLocation = 'location-value'
