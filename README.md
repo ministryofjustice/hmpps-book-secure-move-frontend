@@ -122,9 +122,17 @@ npm run lint
 | SERVER_HOST **(required)** | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000` | |
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | CURRENT_LOCATION_UUID **(TEMPORARY)** | UUID of the current location to list and create moves for | |
-| BYPASS_SSO | Can be set to bypass SSO authentication. **Note:** Will only work if environment is also development | |
 | SENTRY_KEY | Sentry key | |
 | SENTRY_PROJECT | Sentry project ID | |
+
+### Development specific
+
+The following environment variables can be set to help development.
+
+| Name | Description | Default |
+|:-----|:------------|:--------|
+| BYPASS_SSO | Set to `true` to bypass authentication | |
+| USER_PERMISSIONS | Comma delimited string of available permissions (required if bypassing auth) | |
 
 ## Components
 
