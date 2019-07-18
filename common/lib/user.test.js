@@ -1,6 +1,26 @@
 const User = require('./user')
 
 describe('User class', function () {
+  context('when user has no authorities', function () {
+    let user
+
+    beforeEach(function () {
+      user = new User({
+        user_name: 'Testuser',
+      })
+    })
+
+    it('should contain a username', function () {
+      expect(user).to.have.property('userName')
+      expect(user.userName).to.equal('Testuser')
+    })
+
+    it('should contain empty permissions', function () {
+      expect(user).to.have.property('permissions')
+      expect(user.permissions).to.deep.equal([])
+    })
+  })
+
   context('when user has ROLE_PECS_POLICE', function () {
     let user
 

@@ -1,7 +1,8 @@
 function User (token) {
   const permissions = []
+  const authorities = token.authorities || []
 
-  if (token.authorities.includes('ROLE_PECS_POLICE')) {
+  if (authorities.includes('ROLE_PECS_POLICE')) {
     permissions.push(
       ...[
         'moves:view:by_location',
@@ -13,7 +14,7 @@ function User (token) {
     )
   }
 
-  if (token.authorities.includes('ROLE_PECS_SUPPLIER')) {
+  if (authorities.includes('ROLE_PECS_SUPPLIER')) {
     permissions.push(...['moves:view:all', 'moves:download:all'])
   }
 
