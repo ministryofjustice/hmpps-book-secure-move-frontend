@@ -1,4 +1,12 @@
-const authentication = require('./middleware')
+const proxyquire = require('proxyquire')
+
+function UserStub (token) {
+  this.user_name = token.user_name
+}
+
+const authentication = proxyquire('./middleware', {
+  '../../common/lib/user': UserStub,
+})
 
 const expiryTime = 1000
 const payload = {
@@ -33,7 +41,7 @@ describe('Authentication middleware', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
 
-      it('doesn\'t regenerate the session', function () {
+      it("doesn't regenerate the session", function () {
         expect(req.session.regenerate).not.to.be.called
       })
     })
@@ -51,7 +59,7 @@ describe('Authentication middleware', function () {
         const errorMock = new Error('Session Error')
 
         beforeEach(function () {
-          req.session.regenerate = (callback) => callback(errorMock)
+          req.session.regenerate = callback => callback(errorMock)
           authentication.processAuthResponse(req, {}, nextSpy)
         })
 
@@ -63,7 +71,7 @@ describe('Authentication middleware', function () {
       context('when session regenerates successfully', function () {
         beforeEach(function () {
           // Stub the express-session #regenerate function which takes a callback
-          req.session.regenerate = (callback) => {
+          req.session.regenerate = callback => {
             req.session = {
               id: '456',
             }
@@ -82,9 +90,8 @@ describe('Authentication middleware', function () {
         })
 
         it('sets the user info on the session', function () {
-          expect(req.session.userInfo).to.deep.equal({
+          expect(req.session.user).to.deep.equal({
             user_name: payload.user_name,
-            authorities: payload.authorities,
           })
         })
 

@@ -1,4 +1,7 @@
+const { get } = require('lodash')
 const { startOfTomorrow } = require('date-fns')
+
+const { check } = require('./permissions')
 
 module.exports = function setLocals (req, res, next) {
   const locals = {
@@ -8,6 +11,10 @@ module.exports = function setLocals (req, res, next) {
     CURRENT_LOCATION: req.session.currentLocation,
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
+    canAccess: permission => {
+      const userPermissions = get(req.session, 'user.permissions')
+      return check(permission, userPermissions)
+    },
   }
 
   res.locals = {

@@ -49,11 +49,13 @@
 
       {% include "move/views/_includes/assessment.njk" %}
 
-      <p class="app-border-top-1 govuk-!-padding-top-6 govuk-!-margin-top-8">
-        <a href="{{ move.id }}/cancel" class="app-link--destructive">
-          {{ t("actions:cancel_move") }}
-        </a>
-      </p>
+      {% if canAccess('move:cancel') %}
+        <p class="app-border-top-1 govuk-!-padding-top-6 govuk-!-margin-top-8">
+          <a href="{{ move.id }}/cancel" class="app-link--destructive">
+            {{ t("actions:cancel_move") }}
+          </a>
+        </p>
+      {% endif %}
     </div>
 
     <div class="govuk-grid-column-one-third">

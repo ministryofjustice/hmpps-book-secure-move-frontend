@@ -1,4 +1,4 @@
-const { pick } = require('lodash')
+const User = require('../../common/lib/user')
 
 function _decodeAccessToken (token) {
   const payload = token.split('.')[1]
@@ -6,16 +6,13 @@ function _decodeAccessToken (token) {
 }
 
 function processAuthResponse (req, res, next) {
-  const {
-    grant,
-    postAuthRedirect,
-  } = req.session
+  const { grant, postAuthRedirect } = req.session
 
   if (!grant) {
     return next()
   }
 
-  req.session.regenerate((error) => {
+  req.session.regenerate(error => {
     if (error) {
       return next(error)
     }
@@ -24,7 +21,7 @@ function processAuthResponse (req, res, next) {
 
     req.session.authExpiry = accessToken.exp
     req.session.postAuthRedirect = postAuthRedirect
-    req.session.userInfo = pick(accessToken, ['user_name', 'authorities'])
+    req.session.user = new User(accessToken)
 
     next()
   })

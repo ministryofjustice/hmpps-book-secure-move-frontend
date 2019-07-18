@@ -2,6 +2,7 @@
 const router = require('express').Router()
 
 // Local dependencies
+const { protectRoute } = require('../../common/middleware/permissions')
 const { download, list } = require('./controllers')
 const { setMoveDate, setFromLocation, setMovesByDate } = require('./middleware')
 
@@ -13,12 +14,22 @@ router.param('locationId', setFromLocation)
 
 // Define routes
 router.use(setMoveDate)
-router.get(['/', `/:locationId(${uuidRegex})`], setMovesByDate, list)
+router.get('/', protectRoute('moves:view:all'), setMovesByDate, list)
 router.get(
-  [
-    '/download.:extension(csv|json)',
-    `/:locationId(${uuidRegex})/download.:extension(csv|json)`,
-  ],
+  `/:locationId(${uuidRegex})`,
+  protectRoute('moves:view:by_location'),
+  setMovesByDate,
+  list
+)
+router.get(
+  '/download.:extension(csv|json)',
+  protectRoute('moves:download:all'),
+  setMovesByDate,
+  download
+)
+router.get(
+  `/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  protectRoute('moves:download:by_location'),
   setMovesByDate,
   download
 )
