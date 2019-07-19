@@ -16,6 +16,7 @@
     "content": "Try to submit the form again in a few moments."
   },
   "unauthorized": {
-    "heading": "You don’t have permission to view this page"
+    "heading": "You don’t have permission to view this page",
+    "content": "If you think you should have access please contact the support team."
   }
 }
