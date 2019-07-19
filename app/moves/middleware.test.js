@@ -1,4 +1,5 @@
 const moveService = require('../../common/services/move')
+const permissions = require('../../common/middleware/permissions')
 
 const middleware = require('./middleware')
 
@@ -6,6 +7,102 @@ const movesStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function () {
+  describe('#redirectUsers()', function () {
+    let req, res, nextSpy
+
+    beforeEach(function () {
+      sinon.stub(permissions, 'check')
+      nextSpy = sinon.spy()
+      req = {}
+      res = {
+        redirect: sinon.stub(),
+      }
+    })
+
+    context('when user has view all moves permission', function () {
+      beforeEach(function () {
+        req.session = {
+          user: {
+            permissions: ['moves:view:all'],
+          },
+        }
+
+        permissions.check
+          .withArgs('moves:view:all', ['moves:view:all'])
+          .returns(true)
+
+        middleware.redirectUsers(req, res, nextSpy)
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.have.been.calledOnceWithExactly()
+      })
+    })
+
+    context('when user has view by location permission', function () {
+      beforeEach(function () {
+        req.session = {
+          user: {
+            permissions: ['moves:view:by_location'],
+          },
+        }
+
+        permissions.check
+          .withArgs('moves:view:by_location', ['moves:view:by_location'])
+          .returns(true)
+      })
+
+      context('when current location exists', function () {
+        const mockLocationId = 'c249ed09-0cd5-4f52-8aee-0506e2dc7579'
+
+        beforeEach(function () {
+          req.session.currentLocation = {
+            id: mockLocationId,
+          }
+          middleware.redirectUsers(req, res, nextSpy)
+        })
+
+        it('should redirect to moves by location', function () {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/moves/${mockLocationId}`
+          )
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.have.been.called
+        })
+      })
+
+      context('when current location is missing', function () {
+        beforeEach(function () {
+          middleware.redirectUsers(req, res, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(res.redirect).not.to.have.been.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.have.been.calledOnceWithExactly()
+        })
+      })
+    })
+
+    context('when user has no matching permissions', function () {
+      beforeEach(function () {
+        middleware.redirectUsers(req, res, nextSpy)
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).not.to.have.been.called
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.have.been.calledOnceWithExactly()
+      })
+    })
+  })
+
   describe('#setMoveDate()', function () {
     let req, res, nextSpy
 

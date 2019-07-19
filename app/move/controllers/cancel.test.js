@@ -56,7 +56,7 @@ describe('Move controllers', function () {
       })
 
       it('should redirect correctly', function () {
-        expect(res.redirect).to.be.calledOnceWithExactly('/')
+        expect(res.redirect).to.be.calledOnceWithExactly('/moves')
       })
 
       it('should not call next', function () {
