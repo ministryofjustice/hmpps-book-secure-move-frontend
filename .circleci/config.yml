@@ -65,6 +65,17 @@ jobs:
       - *save_cache
       - run: mkdir reports
       - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: notify code climate
+          command: |
+            ./cc-test-reporter before-build
+          when: always
+      - run:
           name: npm test
           command: |
             npm run circle:coverage
@@ -73,6 +84,11 @@ jobs:
           name: upload coverage to coveralls
           command: |
             npm run circle:coveralls
+          when: always
+      - run:
+          name: upload coverage to code climate
+          command: |
+            ./cc-test-reporter after-build
           when: always
       - store_test_results:
           path: reports
