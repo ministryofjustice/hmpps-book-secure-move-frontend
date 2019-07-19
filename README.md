@@ -1,5 +1,8 @@
 # Book a secure move frontend
 
+[![CircleCI](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend.svg?style=svg)](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend)
+[![Coverage Status](https://coveralls.io/repos/github/ministryofjustice/hmpps-book-secure-move-frontend/badge.svg)](https://coveralls.io/github/ministryofjustice/hmpps-book-secure-move-frontend)
+
 This is the rendering application for the Book a secure move service.
 
 Book a secure move is part of the HMPPS Prisoner Escort and Custody

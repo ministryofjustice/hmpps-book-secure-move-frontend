@@ -26,6 +26,7 @@
     "watch:js:client": "webpack --watch --progress",
     "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
     "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"
   },
   "pre-commit": [
@@ -79,6 +80,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "cheerio": "^1.0.0-rc.3",
+    "coveralls": "^3.0.5",
     "css-loader": "^2.1.1",
     "del-cli": "^1.1.0",
     "eslint": "^5.16.0",

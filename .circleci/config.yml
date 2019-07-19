@@ -69,6 +69,11 @@ jobs:
           command: |
             npm run circle:coverage
           when: always
+      - run:
+          name: upload coverage to coveralls
+          command: |
+            npm run circle:coveralls
+          when: always
       - store_test_results:
           path: reports
       - store_artifacts:
