@@ -16,7 +16,7 @@ module.exports = {
         }),
       })
 
-      res.redirect('/')
+      res.redirect('/moves')
     } catch (error) {
       next(error)
     }

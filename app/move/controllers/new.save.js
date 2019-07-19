@@ -44,7 +44,7 @@ class SaveController extends FormController {
       }),
     })
 
-    res.redirect('/')
+    res.redirect('/moves')
   }
 }
 

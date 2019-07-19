@@ -167,7 +167,7 @@ describe('Move controllers', function () {
 
       it('should redirect correctly', function () {
         expect(res.redirect).to.have.been.calledOnce
-        expect(res.redirect).to.have.been.calledWith('/')
+        expect(res.redirect).to.have.been.calledWith('/moves')
       })
     })
   })
