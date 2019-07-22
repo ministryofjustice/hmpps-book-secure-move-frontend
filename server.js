@@ -23,7 +23,7 @@ const configPaths = require('./config/paths')
 const logger = require('./config/logger')
 const nunjucks = require('./config/nunjucks')
 const redisStore = require('./config/redis-store')
-const currentLocation = require('./common/middleware/current-location')
+const setCurrentLocation = require('./common/middleware/set-current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
@@ -112,7 +112,6 @@ app.use(
   })
 )
 app.use(checkSession)
-app.use(currentLocation(config.CURRENT_LOCATION_UUID))
 app.use(flash())
 app.use(locals)
 app.use(
@@ -139,6 +138,7 @@ app.use(
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
+app.use(setCurrentLocation)
 app.use(helmet())
 
 // Routing
