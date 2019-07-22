@@ -22,8 +22,8 @@ module.exports = {
       'last_name',
       'first_names',
       'date_of_birth',
-      'gender',
       'ethnicity',
+      'gender',
     ],
   },
   '/move-details': {
