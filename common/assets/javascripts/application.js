@@ -8,6 +8,7 @@ import '../images/hmpps-apple-touch-icon-180x180.png'
 
 import { nodeListForEach } from './utils'
 import { initAll } from 'govuk-frontend'
+import accessibleAutocomplete from 'accessible-autocomplete'
 import Message from '../../components/message/message'
 
 initAll()
@@ -15,4 +16,15 @@ initAll()
 var $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function ($message) {
   new Message($message).init()
+})
+
+var $autocompletes = document.querySelectorAll(
+  '[data-module="app-autocomplete"]'
+)
+nodeListForEach($autocompletes, function ($autocomplete) {
+  accessibleAutocomplete.enhanceSelectElement({
+    selectElement: $autocomplete,
+    showAllValues: true,
+    defaultValue: '',
+  })
 })
