@@ -11,6 +11,44 @@ const assessmentQuestionComments = {
   },
 }
 
+function assessmentCategory (category) {
+  return {
+    component: 'govukCheckboxes',
+    multiple: true,
+    items: [],
+    name: category,
+    fieldset: {
+      legend: {
+        text: `fields:${category}.label`,
+        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+      },
+    },
+    hint: {
+      text: `fields:${category}.hint`,
+    },
+  }
+}
+
+function toLocationType (type) {
+  return {
+    skip: true,
+    validate: 'required',
+    dependent: {
+      field: 'to_location_type',
+      value: type,
+    },
+    component: 'govukSelect',
+    id: `to_location_${type}`,
+    name: `to_location_${type}`,
+    classes: 'govuk-input--width-20',
+    label: {
+      text: `fields:to_location_${type}.label`,
+      classes: 'govuk-label--s',
+    },
+    items: [],
+  }
+}
+
 module.exports = {
   // personal details
   athena_reference: {
@@ -116,40 +154,8 @@ module.exports = {
       },
     ],
   },
-  to_location_prison: {
-    skip: true,
-    validate: 'required',
-    dependent: {
-      field: 'to_location_type',
-      value: 'prison',
-    },
-    component: 'govukSelect',
-    id: 'to_location_prison',
-    name: 'to_location_prison',
-    classes: 'govuk-input--width-20',
-    label: {
-      text: 'fields:to_location_prison.label',
-      classes: 'govuk-label--s',
-    },
-    items: [],
-  },
-  to_location_court: {
-    skip: true,
-    validate: 'required',
-    dependent: {
-      field: 'to_location_type',
-      value: 'court',
-    },
-    component: 'govukSelect',
-    id: 'to_location_court',
-    name: 'to_location_court',
-    classes: 'govuk-input--width-20',
-    label: {
-      text: 'fields:to_location_court.label',
-      classes: 'govuk-label--s',
-    },
-    items: [],
-  },
+  to_location_prison: toLocationType('prison'),
+  to_location_court: toLocationType('court'),
   date: {},
   date_type: {
     validate: 'required',
@@ -200,21 +206,7 @@ module.exports = {
     autocomplete: 'off',
   },
   // risk information
-  risk: {
-    component: 'govukCheckboxes',
-    name: 'risk',
-    multiple: true,
-    fieldset: {
-      legend: {
-        text: 'fields:risk.label',
-        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
-      },
-    },
-    hint: {
-      text: 'fields:risk.hint',
-    },
-    items: [],
-  },
+  risk: assessmentCategory('risk'),
   risk__violent: assessmentQuestionComments,
   risk__escape: assessmentQuestionComments,
   risk__hold_separately: assessmentQuestionComments,
@@ -222,21 +214,7 @@ module.exports = {
   risk__concealed_items: assessmentQuestionComments,
   risk__other_risks: assessmentQuestionComments,
   // health information
-  health: {
-    component: 'govukCheckboxes',
-    name: 'health',
-    multiple: true,
-    fieldset: {
-      legend: {
-        text: 'fields:health.label',
-        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
-      },
-    },
-    hint: {
-      text: 'fields:health.hint',
-    },
-    items: [],
-  },
+  health: assessmentCategory('health'),
   health__special_diet_or_allergy: assessmentQuestionComments,
   health__health_issue: assessmentQuestionComments,
   health__medication: assessmentQuestionComments,
@@ -244,21 +222,7 @@ module.exports = {
   health__pregnant: assessmentQuestionComments,
   health__other_health: assessmentQuestionComments,
   // court information
-  court: {
-    component: 'govukCheckboxes',
-    name: 'court',
-    multiple: true,
-    fieldset: {
-      legend: {
-        text: 'fields:court.label',
-        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
-      },
-    },
-    hint: {
-      text: 'fields:court.hint',
-    },
-    items: [],
-  },
+  court: assessmentCategory('court'),
   court__solicitor: assessmentQuestionComments,
   court__interpreter: assessmentQuestionComments,
   court__other_court: assessmentQuestionComments,
