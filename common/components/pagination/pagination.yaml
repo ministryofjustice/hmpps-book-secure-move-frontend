@@ -68,3 +68,16 @@ examples:
         href: "/previous-page"
       next:
         href: "/next-page"
+  - name: with items
+    data:
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+      items:
+      - href: "/page-1"
+        text: "one"
+      - href: "/page-2"
+        text: "two"
+      - href: "/page-3"
+        text: "three"

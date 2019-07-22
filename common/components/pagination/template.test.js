@@ -129,4 +129,56 @@ describe('Pagination component', function () {
       expect($itemLink.attr('href')).to.equal('/next-day')
     })
   })
+
+  context('with items', function () {
+    let $, $component, items
+
+    beforeEach(function () {
+      $ = render('pagination', examples['with items'])
+      $component = $('.app-pagination')
+      items = $component.find('.app-pagination__list-item')
+    })
+
+    it('should render correct number of items', function () {
+      const $items = $component.find('.app-pagination__list-item')
+      expect($items.length).to.equal(5)
+    })
+
+    it('should render previous label', function () {
+      const $item = $component.find('.app-pagination__list-item--prev')
+      expect($item.length).to.equal(1)
+    })
+
+    it('should render next label', function () {
+      const $item = $component.find('.app-pagination__list-item--next')
+      expect($item.length).to.equal(1)
+    })
+
+    it('should render first item', function () {
+      const $item = $(items[1])
+      const $itemText = $item.find('.app-pagination__link-text')
+      const $itemLink = $item.find('a')
+
+      expect($itemText.text().trim()).to.equal('one')
+      expect($itemLink.attr('href')).to.equal('/page-1')
+    })
+
+    it('should render second item', function () {
+      const $item = $(items[2])
+      const $itemText = $item.find('.app-pagination__link-text')
+      const $itemLink = $item.find('a')
+
+      expect($itemText.text().trim()).to.equal('two')
+      expect($itemLink.attr('href')).to.equal('/page-2')
+    })
+
+    it('should render third item', function () {
+      const $item = $(items[3])
+      const $itemText = $item.find('.app-pagination__link-text')
+      const $itemLink = $item.find('a')
+
+      expect($itemText.text().trim()).to.equal('three')
+      expect($itemLink.attr('href')).to.equal('/page-3')
+    })
+  })
 })
