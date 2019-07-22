@@ -4,6 +4,7 @@ const {
   getAssessmentQuestions,
   getLocations,
   getLocationById,
+  getLocationsById,
 } = require('./reference-data')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/auth')
@@ -151,6 +152,82 @@ describe('Reference Service', function () {
 
       it('should contain location with correct data', function () {
         expect(location).to.deep.equal(locationDeserialized.data)
+      })
+    })
+  })
+
+  describe('#getLocationsById()', function () {
+    context('when request returns 200', function () {
+      let locations
+
+      beforeEach(async function () {
+        nock(API.BASE_URL)
+          .get(`/reference/locations/1`)
+          .reply(200, locationSerialized)
+        nock(API.BASE_URL)
+          .get(`/reference/locations/2`)
+          .reply(200, locationSerialized)
+        nock(API.BASE_URL)
+          .get(`/reference/locations/3`)
+          .reply(200, locationSerialized)
+
+        locations = await getLocationsById(['1', '2', '3'])
+      })
+
+      it('should get location from API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain location with correct data', function () {
+        expect(locations).to.deep.equal([
+          locationDeserialized.data,
+          locationDeserialized.data,
+          locationDeserialized.data,
+        ])
+      })
+    })
+
+    context('when locations are not found', function () {
+      let locations
+
+      beforeEach(async function () {
+        nock(API.BASE_URL)
+          .get(`/reference/locations/1`)
+          .reply(200, locationSerialized)
+        nock(API.BASE_URL)
+          .get(`/reference/locations/2`)
+          .reply(404, {})
+        nock(API.BASE_URL)
+          .get(`/reference/locations/3`)
+          .reply(200, locationSerialized)
+        nock(API.BASE_URL)
+          .get(`/reference/locations/4`)
+          .reply(404, {})
+
+        locations = await getLocationsById(['1', '2', '3', '4'])
+      })
+
+      it('should get location from API', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should filter out locations', function () {
+        expect(locations).to.deep.equal([
+          locationDeserialized.data,
+          locationDeserialized.data,
+        ])
+      })
+    })
+
+    context('when called with empty locations', function () {
+      let locations
+
+      beforeEach(async function () {
+        locations = await getLocationsById()
+      })
+
+      it('should return empty array', function () {
+        expect(locations).to.deep.equal([])
       })
     })
   })
