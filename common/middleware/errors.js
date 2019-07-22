@@ -1,19 +1,31 @@
 const logger = require('../../config/logger')
 
-function getStatusMessage (error) {
+function _getMessage (error) {
   if (error.code === 'EBADCSRFTOKEN') {
-    return 'errors:tampered_with.heading'
+    return {
+      heading: 'errors:tampered_with.heading',
+      content: 'errors:tampered_with.content',
+    }
   }
 
   if (error.statusCode === 404) {
-    return 'errors:not_found.heading'
+    return {
+      heading: 'errors:not_found.heading',
+      content: 'errors:not_found.content',
+    }
   }
 
   if (error.statusCode === 403 || error.statusCode === 401) {
-    return 'errors:unauthorized.heading'
+    return {
+      heading: 'errors:unauthorized.heading',
+      content: 'errors:unauthorized.content',
+    }
   }
 
-  return 'errors:default.heading'
+  return {
+    heading: 'errors:default.heading',
+    content: 'errors:default.content',
+  }
 }
 
 function notFound (req, res, next) {
@@ -33,14 +45,12 @@ function catchAll (showStackTrace = false) {
 
     logger[statusCode === 404 ? 'info' : 'error'](error)
 
-    res
-      .status(statusCode)
-      .render('error', {
-        error,
-        statusCode,
-        showStackTrace,
-        statusMessage: getStatusMessage(error),
-      })
+    res.status(statusCode).render('error', {
+      error,
+      statusCode,
+      showStackTrace,
+      message: _getMessage(error),
+    })
   }
 }
 

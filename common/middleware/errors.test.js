@@ -125,7 +125,10 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode404,
           showStackTrace: false,
-          statusMessage: 'errors:not_found.heading',
+          message: {
+            heading: 'errors:not_found.heading',
+            content: 'errors:not_found.content',
+          },
         })
       })
 
@@ -164,7 +167,10 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
-          statusMessage: 'errors:unauthorized.heading',
+          message: {
+            heading: 'errors:unauthorized.heading',
+            content: 'errors:unauthorized.content',
+          },
         })
       })
 
@@ -204,7 +210,10 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
-          statusMessage: 'errors:tampered_with.heading',
+          message: {
+            heading: 'errors:tampered_with.heading',
+            content: 'errors:tampered_with.content',
+          },
         })
       })
 
@@ -243,7 +252,10 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode500,
           showStackTrace: false,
-          statusMessage: 'errors:default.heading',
+          message: {
+            heading: 'errors:default.heading',
+            content: 'errors:default.content',
+          },
         })
       })
 
@@ -281,7 +293,10 @@ describe('Error middleware', function () {
           error: mockError,
           statusCode: errorCode500,
           showStackTrace: false,
-          statusMessage: 'errors:default.heading',
+          message: {
+            heading: 'errors:default.heading',
+            content: 'errors:default.content',
+          },
         })
       })
 
