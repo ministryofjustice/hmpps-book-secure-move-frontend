@@ -41,6 +41,9 @@ function toLocationType (type) {
     id: `to_location_${type}`,
     name: `to_location_${type}`,
     classes: 'govuk-input--width-20',
+    attributes: {
+      'data-module': 'app-autocomplete',
+    },
     label: {
       text: `fields:to_location_${type}.label`,
       classes: 'govuk-label--s',
@@ -125,6 +128,9 @@ module.exports = {
     id: 'ethnicity',
     name: 'ethnicity',
     classes: 'govuk-input--width-20',
+    attributes: {
+      'data-module': 'app-autocomplete',
+    },
     items: [],
   },
   // move details
