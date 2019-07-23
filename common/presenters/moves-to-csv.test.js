@@ -11,8 +11,14 @@ const {
 const {
   data: mockQuestions,
 } = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
-const filename = path.resolve(__dirname, '../../test/fixtures/moves.csv')
-const csv = fs.readFileSync(filename, 'utf8')
+const csv = fs.readFileSync(
+  path.resolve(__dirname, '../../test/fixtures/moves.csv'),
+  'utf8'
+)
+const emptyCsv = fs.readFileSync(
+  path.resolve(__dirname, '../../test/fixtures/moves-empty.csv'),
+  'utf8'
+)
 
 describe('Presenters', function () {
   describe('movesToCSV', function () {
@@ -37,6 +43,23 @@ describe('Presenters', function () {
       it('should call CSV parse', function () {
         expect(json2csv.parse).to.be.calledOnce
         expect(json2csv.parse.args[0][0]).to.deep.equal(mockMoves)
+      })
+    })
+
+    context('with no moves', function () {
+      beforeEach(async function () {
+        referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
+
+        transformedResponse = await movesToCSV([])
+      })
+
+      it('should format correctly', function () {
+        expect(transformedResponse).to.equal(emptyCsv.trim())
+      })
+
+      it('should call CSV parse', function () {
+        expect(json2csv.parse).to.be.calledOnce
+        expect(json2csv.parse.args[0][0]).to.deep.equal([])
       })
     })
 
