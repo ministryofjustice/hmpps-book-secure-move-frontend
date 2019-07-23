@@ -23,6 +23,16 @@
       </li>
     {% endif %}
 
+    {% for item in params.items %}
+      <li class="app-pagination__list-item">
+        <a href="{{ item.href }}" class="app-pagination__link">
+          <span class="app-pagination__link-title">
+            <span class="app-pagination__link-text">{{ item.text }}</span>
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+
     {% if params.next %}
       <li class="app-pagination__list-item app-pagination__list-item--next">
         <a href="{{ params.next.href }}" class="app-pagination__link" rel="next">
