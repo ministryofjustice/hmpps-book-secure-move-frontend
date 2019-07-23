@@ -11,6 +11,7 @@ const morgan = require('morgan')
 const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
+const favicon = require('serve-favicon')
 const slashify = require('slashify')
 const i18next = require('i18next')
 const Backend = require('i18next-node-fs-backend')
@@ -79,6 +80,7 @@ app.set('view engine', 'njk')
 nunjucks(app, config, configPaths)
 
 // Static files
+app.use(favicon(path.join(configPaths.build, 'images', 'favicon.ico')))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use(

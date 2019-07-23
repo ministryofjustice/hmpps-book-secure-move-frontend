@@ -67,32 +67,33 @@ const commonConfig = {
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'fonts/',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
           },
-        }],
+        ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'images/',
+        test: /\.(png|svg|jpg|gif|ico)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'images/',
+            },
           },
-        }],
+        ],
       },
     ],
   },
 
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin(),
-      new OptimizeCSSAssetsPlugin({}),
-    ],
+    minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin({})],
     splitChunks: {
       cacheGroups: {
         vendors: {
@@ -108,9 +109,7 @@ const commonConfig = {
     },
   },
 
-  plugins: [
-    new WebpackAssetsManifest(),
-  ],
+  plugins: [new WebpackAssetsManifest()],
 }
 
 const webpackEnvironment = IS_PRODUCTION ? 'production' : 'develop'
