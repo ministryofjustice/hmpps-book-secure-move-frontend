@@ -3,6 +3,7 @@ const { flatten, values } = require('lodash')
 const FormController = require('./new.form')
 const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class AssessmentController extends FormController {
   async configure (req, res, next) {
@@ -21,6 +22,7 @@ class AssessmentController extends FormController {
             .getAssessmentQuestions(key)
             .then(response => {
               field.items = response
+                .filter(referenceDataHelpers.filterDisabled())
                 .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
                 .map(fieldHelpers.mapReferenceDataToOption)
             })

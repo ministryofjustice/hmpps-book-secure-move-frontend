@@ -2,6 +2,7 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const Controller = require('./new.assessment')
 const referenceDataService = require('../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 const controller = new Controller({ route: '/' })
 
@@ -40,6 +41,9 @@ describe('Move controllers', function () {
         let req
 
         beforeEach(async function () {
+          sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
+            return () => true
+          })
           sinon
             .stub(referenceDataService, 'getAssessmentQuestions')
             .resolves(questionsMock)

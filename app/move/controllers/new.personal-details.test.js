@@ -3,6 +3,7 @@ const FormController = require('hmpo-form-wizard').Controller
 const Controller = require('./new.personal-details')
 const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 const controller = new Controller({ route: '/' })
 const genderMock = [
@@ -45,6 +46,9 @@ describe('Move controllers', function () {
 
         beforeEach(async function () {
           sinon.spy(FormController.prototype, 'configure')
+          sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
+            return () => true
+          })
           sinon.stub(referenceDataService, 'getGenders').resolves(genderMock)
           sinon
             .stub(referenceDataService, 'getEthnicities')

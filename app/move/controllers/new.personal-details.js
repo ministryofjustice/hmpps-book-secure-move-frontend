@@ -2,16 +2,19 @@ const FormController = require('./new.form')
 const fieldHelpers = require('../../../common/helpers/field')
 const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class PersonalDetailsController extends FormController {
   async configure (req, res, next) {
     try {
       const genders = await referenceDataService.getGenders()
       const ethnicities = await referenceDataService.getEthnicities()
-      const genderOptions = genders.map(fieldHelpers.mapReferenceDataToOption)
-      const ethnicityOptions = ethnicities.map(
-        fieldHelpers.mapReferenceDataToOption
-      )
+      const genderOptions = genders
+        .filter(referenceDataHelpers.filterDisabled())
+        .map(fieldHelpers.mapReferenceDataToOption)
+      const ethnicityOptions = ethnicities
+        .filter(referenceDataHelpers.filterDisabled())
+        .map(fieldHelpers.mapReferenceDataToOption)
 
       req.form.options.fields.gender.items = genderOptions
       req.form.options.fields.ethnicity.items = fieldHelpers.insertInitialOption(
