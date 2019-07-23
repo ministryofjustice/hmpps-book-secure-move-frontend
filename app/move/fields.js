@@ -54,19 +54,16 @@ function toLocationType (type) {
 
 module.exports = {
   // personal details
-  athena_reference: {
+  police_national_computer: {
     validate: 'required',
     component: 'govukInput',
     label: {
-      text: 'fields:athena_reference.label',
+      text: 'fields:police_national_computer.label',
       classes: 'govuk-label--s',
     },
-    hint: {
-      text: 'fields:athena_reference.hint',
-    },
-    id: 'athena_reference',
-    name: 'athena_reference',
-    classes: 'govuk-input--width-20',
+    id: 'police_national_computer',
+    name: 'police_national_computer',
+    classes: 'govuk-input--width-10',
     autocomplete: 'off',
   },
   first_names: {
