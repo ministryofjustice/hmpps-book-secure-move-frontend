@@ -7,7 +7,8 @@
               "key": "norwich_magistrates_court",
               "title": "Norwich Magistrates Court",
               "location_type": "court",
-              "location_code": null
+              "nomis_agency_id": null,
+              "disabled_at": null
           }
       },
       {
@@ -17,7 +18,8 @@
               "key": "oxford_magistrates_court",
               "title": "Oxford Magistrates Court",
               "location_type": "court",
-              "location_code": null
+              "nomis_agency_id": null,
+              "disabled_at": null
           }
       },
       {
@@ -27,7 +29,8 @@
               "key": "wantage_county_court",
               "title": "Wantage County Court",
               "location_type": "court",
-              "location_code": null
+              "nomis_agency_id": null,
+              "disabled_at": null
           }
       },
       {
@@ -37,7 +40,8 @@
               "key": "guildford_county_court",
               "title": "Guildford County Court",
               "location_type": "court",
-              "location_code": null
+              "nomis_agency_id": null,
+              "disabled_at": null
           }
       }
   ],

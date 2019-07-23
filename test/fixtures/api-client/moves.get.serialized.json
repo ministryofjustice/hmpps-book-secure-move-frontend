@@ -705,7 +705,7 @@
         "key": "hmp_dartmoor",
         "title": "HMP Dartmoor",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -715,7 +715,7 @@
         "key": "axminster_crown_court",
         "title": "Axminster Crown Court",
         "location_type": "court",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -803,7 +803,7 @@
         "key": "hmp_yoi_bronzefield",
         "title": "HMP/YOI Bronzefield",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -873,7 +873,7 @@
         "key": "hmp_yoi_hewell",
         "title": "HMP/YOI Hewell",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -952,7 +952,7 @@
         "key": "hmp_yoi_portland",
         "title": "HMP/YOI Portland",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1022,7 +1022,7 @@
         "key": "hmirc_the_verne",
         "title": "HMIRC The Verne",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1092,7 +1092,7 @@
         "key": "hmp_lindholme",
         "title": "HMP Lindholme",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1171,7 +1171,7 @@
         "key": "hmp_yoi_warren_hill",
         "title": "HMP/YOI Warren Hill",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1241,7 +1241,7 @@
         "key": "hmp_yoi_sudbury",
         "title": "HMP/YOI Sudbury",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1320,7 +1320,7 @@
         "key": "hmp_yoi_altcourse",
         "title": "HMP/YOI Altcourse",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1399,7 +1399,7 @@
         "key": "hmp_long_lartin",
         "title": "HMP Long Lartin",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1478,7 +1478,7 @@
         "key": "hmp_coldingley",
         "title": "HMP Coldingley",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1488,7 +1488,7 @@
         "key": "barnstaple_magistrates_court",
         "title": "Barnstaple Magistrates Court",
         "location_type": "court",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1567,7 +1567,7 @@
         "key": "hmp_yoi_belmarsh",
         "title": "HMP/YOI Belmarsh",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1577,7 +1577,7 @@
         "key": "hmp_yoi_eastwood_park",
         "title": "HMP/YOI Eastwood Park",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1656,7 +1656,7 @@
         "key": "hmp_yoi_glen_parva",
         "title": "HMP/YOI Glen Parva",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1666,7 +1666,7 @@
         "key": "hmp_camp_hill",
         "title": "HMP Camp Hill",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1676,7 +1676,7 @@
         "key": "hmp_the_mount",
         "title": "HMP The Mount",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1686,7 +1686,7 @@
         "key": "barrow_in_furness_county_court",
         "title": "Barrow in Furness County Court",
         "location_type": "court",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1756,7 +1756,7 @@
         "key": "hmp_kirkham",
         "title": "HMP Kirkham",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1766,7 +1766,7 @@
         "key": "hmp_reading",
         "title": "HMP Reading",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     },
     {
@@ -1905,7 +1905,7 @@
         "key": "hmp_brockhill",
         "title": "HMP Brockhill",
         "location_type": "prison",
-        "location_code": null
+        "nomis_agency_id": null
       }
     }
   ],

@@ -3,6 +3,7 @@
     "id": "f6e1f57c-7d07-41d2-afee-1662f5103e2d",
     "type": "assessment_questions",
     "attributes": {
+      "disabled_at": null,
       "category": "risk",
       "key": "violent",
       "title": "Violent",
@@ -14,6 +15,7 @@
     "id": "0c76cf75-95f4-4dee-9854-a35782304647",
     "type": "assessment_questions",
     "attributes": {
+      "disabled_at": null,
       "category": "risk",
       "key": "escape",
       "title": "Escape",
@@ -25,44 +27,48 @@
     "id": "6b111c00-22f4-416c-a15e-e5f7c0af2518",
     "type": "assessment_questions",
     "attributes": {
-        "key": "self_harm",
-        "category": "risk",
-        "title": "Self harm",
-        "nomis_alert_type": null,
-        "nomis_alert_code": null
+      "disabled_at": null,
+      "key": "self_harm",
+      "category": "risk",
+      "title": "Self harm",
+      "nomis_alert_type": null,
+      "nomis_alert_code": null
     }
   },
   {
     "id": "f4e803f2-08af-4e1c-9578-48be5dd88085",
     "type": "assessment_questions",
     "attributes": {
-        "key": "interpreter",
-        "category": "court",
-        "title": "Sign or other language interpreter",
-        "nomis_alert_type": null,
-        "nomis_alert_code": null
+      "disabled_at": null,
+      "key": "interpreter",
+      "category": "court",
+      "title": "Sign or other language interpreter",
+      "nomis_alert_type": null,
+      "nomis_alert_code": null
     }
   },
   {
     "id": "b441c760-8190-45ee-b377-e3cd6e17ac7f",
     "type": "assessment_questions",
     "attributes": {
-        "key": "medication",
-        "category": "health",
-        "title": "Medication",
-        "nomis_alert_type": null,
-        "nomis_alert_code": null
+      "disabled_at": null,
+      "key": "medication",
+      "category": "health",
+      "title": "Medication",
+      "nomis_alert_type": null,
+      "nomis_alert_code": null
     }
   },
   {
     "id": "7360ea7b-f4c2-4a09-88fd-5e3b57de1a47",
     "type": "assessment_questions",
     "attributes": {
-        "key": "health_issue",
-        "category": "health",
-        "title": "Health issue",
-        "nomis_alert_type": null,
-        "nomis_alert_code": null
+      "disabled_at": null,
+      "key": "health_issue",
+      "category": "health",
+      "title": "Health issue",
+      "nomis_alert_type": null,
+      "nomis_alert_code": null
     }
   }]
 }

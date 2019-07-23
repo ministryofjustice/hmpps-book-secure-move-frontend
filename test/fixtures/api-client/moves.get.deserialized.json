@@ -66,7 +66,7 @@
       "key": "hmp_dartmoor",
       "title": "HMP Dartmoor",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -74,7 +74,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "271c95bc-359d-4413-ac63-364c4521a67f",
@@ -143,7 +143,7 @@
       "key": "hmp_yoi_bronzefield",
       "title": "HMP/YOI Bronzefield",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -151,7 +151,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "2f1ab125-6d5a-4621-affe-c5f1e96e53d6",
@@ -220,7 +220,7 @@
       "key": "hmp_yoi_hewell",
       "title": "HMP/YOI Hewell",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -228,7 +228,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "17a7c1cf-e3dd-4d28-8162-d2f54ce477f5",
@@ -297,7 +297,7 @@
       "key": "hmp_yoi_portland",
       "title": "HMP/YOI Portland",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -305,7 +305,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "417449a3-8ef2-48e4-9379-7fbbf74ceed4",
@@ -374,7 +374,7 @@
       "key": "hmirc_the_verne",
       "title": "HMIRC The Verne",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -382,7 +382,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "20e2495b-e86c-40f1-a066-9fdb79d884e2",
@@ -451,7 +451,7 @@
       "key": "hmp_lindholme",
       "title": "HMP Lindholme",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -459,7 +459,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "8fe0a416-4aa9-4b82-ada5-810cec881e42",
@@ -528,7 +528,7 @@
       "key": "hmp_yoi_warren_hill",
       "title": "HMP/YOI Warren Hill",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -536,7 +536,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "81a4d40d-a007-4d3a-beb8-c5334ea42b36",
@@ -605,7 +605,7 @@
       "key": "hmp_yoi_sudbury",
       "title": "HMP/YOI Sudbury",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -613,7 +613,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "d02a534f-96e7-4fae-8818-3b71cb596f21",
@@ -682,7 +682,7 @@
       "key": "hmp_yoi_altcourse",
       "title": "HMP/YOI Altcourse",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -690,7 +690,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "eddc9f3a-4c2f-4853-88ea-b7fa0872fc16",
@@ -759,7 +759,7 @@
       "key": "hmp_long_lartin",
       "title": "HMP Long Lartin",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -767,7 +767,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "3959d016-451b-4acd-8698-e84fcbdd6acb",
@@ -836,7 +836,7 @@
       "key": "hmp_coldingley",
       "title": "HMP Coldingley",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "df72ff9e-e18f-4aff-af2c-91c2840c6083",
@@ -844,7 +844,7 @@
       "key": "barnstaple_magistrates_court",
       "title": "Barnstaple Magistrates Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "5a1d17af-5204-4d4b-8126-d4fd0b24b700",
@@ -913,7 +913,7 @@
       "key": "hmp_yoi_belmarsh",
       "title": "HMP/YOI Belmarsh",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "df72ff9e-e18f-4aff-af2c-91c2840c6083",
@@ -921,7 +921,7 @@
       "key": "barnstaple_magistrates_court",
       "title": "Barnstaple Magistrates Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "69eb41e9-3b62-48fb-bd54-e574c0385b25",
@@ -990,7 +990,7 @@
       "key": "hmp_yoi_eastwood_park",
       "title": "HMP/YOI Eastwood Park",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "df72ff9e-e18f-4aff-af2c-91c2840c6083",
@@ -998,7 +998,7 @@
       "key": "barnstaple_magistrates_court",
       "title": "Barnstaple Magistrates Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "f3347cd8-2819-4ed8-a53a-b4464146d35f",
@@ -1067,7 +1067,7 @@
       "key": "hmp_yoi_glen_parva",
       "title": "HMP/YOI Glen Parva",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "df72ff9e-e18f-4aff-af2c-91c2840c6083",
@@ -1075,7 +1075,7 @@
       "key": "barnstaple_magistrates_court",
       "title": "Barnstaple Magistrates Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "f6bc200d-b9a1-4190-a498-7723cff30f08",
@@ -1144,7 +1144,7 @@
       "key": "hmp_camp_hill",
       "title": "HMP Camp Hill",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "df72ff9e-e18f-4aff-af2c-91c2840c6083",
@@ -1152,7 +1152,7 @@
       "key": "barnstaple_magistrates_court",
       "title": "Barnstaple Magistrates Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "270d105e-c0ae-49be-987d-1eb4d74af201",
@@ -1221,7 +1221,7 @@
       "key": "hmp_the_mount",
       "title": "HMP The Mount",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee",
@@ -1229,7 +1229,7 @@
       "key": "barrow_in_furness_county_court",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "9558f9e3-0b5a-40ef-9c10-28c2dbd45b5a",
@@ -1298,7 +1298,7 @@
       "key": "hmp_kirkham",
       "title": "HMP Kirkham",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee",
@@ -1306,7 +1306,7 @@
       "key": "barrow_in_furness_county_court",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "c5e82247-f176-492b-a048-fb1c4c661887",
@@ -1375,7 +1375,7 @@
       "key": "hmp_reading",
       "title": "HMP Reading",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee",
@@ -1383,7 +1383,7 @@
       "key": "barrow_in_furness_county_court",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "fe9e4207-9938-4ba0-98cd-3a36854c45c7",
@@ -1452,7 +1452,7 @@
       "key": "hmp_long_lartin",
       "title": "HMP Long Lartin",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee",
@@ -1460,7 +1460,7 @@
       "key": "barrow_in_furness_county_court",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }, {
     "id": "7104c76c-78ba-4f9d-a9b1-1fd7736226dc",
@@ -1529,7 +1529,7 @@
       "key": "hmp_brockhill",
       "title": "HMP Brockhill",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee",
@@ -1537,7 +1537,7 @@
       "key": "barrow_in_furness_county_court",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }],
   "meta": {
