@@ -5,8 +5,12 @@ const json2csv = require('json2csv')
 const movesToCSV = require('./moves-to-csv')
 const referenceDataServce = require('../services/reference-data')
 
-const { data: mockMoves } = require('../../test/fixtures/api-client/moves.get.deserialized.json')
-const { data: mockQuestions } = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
+const {
+  data: mockMoves,
+} = require('../../test/fixtures/api-client/moves.get.deserialized.json')
+const {
+  data: mockQuestions,
+} = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
 const filename = path.resolve(__dirname, '../../test/fixtures/moves.csv')
 const csv = fs.readFileSync(filename, 'utf8')
 
@@ -21,8 +25,7 @@ describe('Presenters', function () {
 
     context('with mock move response', function () {
       beforeEach(async function () {
-        referenceDataServce.getAssessmentQuestions
-          .resolves(mockQuestions)
+        referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
 
         transformedResponse = await movesToCSV(mockMoves)
       })
@@ -41,13 +44,11 @@ describe('Presenters', function () {
       const errorStub = new Error('Error stub')
 
       beforeEach(function () {
-        referenceDataServce.getAssessmentQuestions
-          .rejects(errorStub)
+        referenceDataServce.getAssessmentQuestions.rejects(errorStub)
       })
 
       it('should return error', function () {
-        return expect(movesToCSV())
-          .to.eventually.be.rejectedWith(errorStub)
+        return expect(movesToCSV()).to.eventually.be.rejectedWith(errorStub)
       })
     })
   })
