@@ -1,17 +1,15 @@
-const { mapValues } = require('lodash')
+const { mapValues, uniqBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
-function getFullname ({
-  first_names: firstNames,
-  last_name: lastName,
-}) {
+function getFullname ({ first_names: firstNames, last_name: lastName }) {
   return `${lastName}, ${firstNames}`
 }
 
 function format (data) {
-  const relationships = ['gender', 'ethnicity']
-  const identifiers = [
+  const existingIdentifiers = data.identifiers || []
+  const relationshipKeys = ['gender', 'ethnicity']
+  const identifierKeys = [
     'police_national_computer',
     'criminal_records_office',
     'prison_number',
@@ -21,11 +19,11 @@ function format (data) {
 
   const formatted = mapValues(data, (value, key) => {
     if (typeof value === 'string') {
-      if (relationships.includes(key)) {
+      if (relationshipKeys.includes(key)) {
         return { id: value }
       }
 
-      if (identifiers.includes(key)) {
+      if (identifierKeys.includes(key)) {
         return { value, identifier_type: key }
       }
     }
@@ -33,9 +31,17 @@ function format (data) {
     return value
   })
 
+  const identifiers = uniqBy(
+    [
+      ...identifierKeys.map(key => formatted[key]).filter(Boolean),
+      ...existingIdentifiers,
+    ],
+    'identifier_type'
+  )
+
   return {
     ...formatted,
-    identifiers: identifiers.map(key => formatted[key]).filter(Boolean),
+    identifiers,
   }
 }
 
@@ -49,6 +55,8 @@ function update (data) {
   if (!data.id) {
     return
   }
+
+  console.log(format(data))
 
   return apiClient
     .update('person', format(data))
