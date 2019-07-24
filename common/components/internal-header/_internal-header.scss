@@ -91,9 +91,13 @@ $govuk-header-nav-item-border-color: #2e3133;
   // in Firefox
   @include govuk-font($size: false, $weight: bold);
 
-  display: inline-block;
+  display: inline;
   font-size: 30px; // We don't have a mixin that produces 30px font size
-  line-height: 30px;
+  line-height: 1;
+
+  @include mq ($from: desktop) {
+    display: inline-block;
+  }
 
   &:link,
   &:visited {
@@ -107,6 +111,12 @@ $govuk-header-nav-item-border-color: #2e3133;
     // Omitting colour will use default value of currentColor – if we
     // specified currentColor explicitly IE8 would ignore this rule.
     border-bottom: 1px solid;
+  }
+
+  // Remove any borders that show when focused and hovered.
+  &:focus {
+    margin-bottom: 0;
+    border-bottom: 0;
   }
 }
 
@@ -122,7 +132,8 @@ $govuk-header-nav-item-border-color: #2e3133;
 }
 
 .app-header__logo {
-  @include govuk-responsive-margin(2, "bottom");
+  padding-bottom: govuk-spacing(2);
+  padding-right: govuk-spacing(9);
 
   @include mq ($from: desktop) {
     width: 50%;
