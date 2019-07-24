@@ -220,6 +220,85 @@ describe('Person Service', function () {
         expect(formatted.first_names).to.equal('Foo')
       })
     })
+
+    context('when existing identifiers are present', function () {
+      let formatted
+
+      context('when new identifiers are present', function () {
+        beforeEach(async function () {
+          formatted = await personService.format({
+            first_names: 'Foo',
+            police_national_computer: '67890',
+            identifiers: [
+              {
+                value: '12345',
+                identifier_type: 'police_national_computer',
+              },
+              {
+                value: 'Athena number',
+                identifier_type: 'athena_reference',
+              },
+            ],
+          })
+        })
+
+        it('should remove duplicates', function () {
+          expect(formatted.identifiers.length).to.equal(2)
+        })
+
+        it('should return identifiers property', function () {
+          expect(formatted.identifiers).to.deep.equal([
+            {
+              value: '67890',
+              identifier_type: 'police_national_computer',
+            },
+            {
+              value: 'Athena number',
+              identifier_type: 'athena_reference',
+            },
+          ])
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.first_names).to.equal('Foo')
+        })
+      })
+
+      context('when no new identifiers are present', function () {
+        beforeEach(async function () {
+          formatted = await personService.format({
+            first_names: 'Foo',
+            identifiers: [
+              {
+                value: 'PNC number',
+                identifier_type: 'police_national_computer',
+              },
+              {
+                value: 'Athena number',
+                identifier_type: 'athena_reference',
+              },
+            ],
+          })
+        })
+
+        it('should return identifiers property', function () {
+          expect(formatted.identifiers).to.deep.equal([
+            {
+              value: 'PNC number',
+              identifier_type: 'police_national_computer',
+            },
+            {
+              value: 'Athena number',
+              identifier_type: 'athena_reference',
+            },
+          ])
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.first_names).to.equal('Foo')
+        })
+      })
+    })
   })
 
   describe('#create()', function () {
