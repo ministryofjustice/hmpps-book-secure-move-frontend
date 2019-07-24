@@ -35,6 +35,11 @@ const move = [
     label: 'Request reference',
     value: 'reference',
   },
+  // TODO: update to `created_at` when we have this in the API
+  {
+    label: 'Created at',
+    value: 'updated_at',
+  },
   {
     label: 'From location name',
     value: 'from_location.title',
