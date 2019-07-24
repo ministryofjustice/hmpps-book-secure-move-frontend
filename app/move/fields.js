@@ -101,6 +101,9 @@ module.exports = {
       text: 'fields:date_of_birth.label',
       classes: 'govuk-label--s',
     },
+    hint: {
+      text: 'fields:date_of_birth.hint',
+    },
     id: 'date_of_birth',
     name: 'date_of_birth',
     classes: 'govuk-input--width-10',
