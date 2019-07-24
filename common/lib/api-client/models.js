@@ -35,42 +35,64 @@ function defineModels (jsonApi) {
     },
   })
 
-  jsonApi.define('gender', {
-    key: '',
-    title: '',
-    description: '',
-  }, {
-    collectionPath: 'reference/genders',
-  })
+  jsonApi.define(
+    'gender',
+    {
+      key: '',
+      title: '',
+      description: '',
+      nomis_code: '',
+      disabled_at: '',
+    },
+    {
+      collectionPath: 'reference/genders',
+    }
+  )
 
-  jsonApi.define('ethnicity', {
-    key: '',
-    title: '',
-    description: '',
-  }, {
-    collectionPath: 'reference/ethnicities',
-  })
+  jsonApi.define(
+    'ethnicity',
+    {
+      key: '',
+      title: '',
+      description: '',
+      nomis_code: '',
+      disabled_at: '',
+    },
+    {
+      collectionPath: 'reference/ethnicities',
+    }
+  )
 
-  jsonApi.define('assessment_question', {
-    created_at: '',
-    expires_at: '',
-    key: '',
-    title: '',
-    category: '',
-    nomis_alert_type: '',
-    nomis_alert_code: '',
-  }, {
-    collectionPath: 'reference/assessment_questions',
-  })
+  jsonApi.define(
+    'assessment_question',
+    {
+      created_at: '',
+      expires_at: '',
+      disabled_at: '',
+      key: '',
+      title: '',
+      category: '',
+      nomis_alert_type: '',
+      nomis_alert_code: '',
+    },
+    {
+      collectionPath: 'reference/assessment_questions',
+    }
+  )
 
-  jsonApi.define('location', {
-    key: '',
-    title: '',
-    location_type: '',
-    location_code: '',
-  }, {
-    collectionPath: 'reference/locations',
-  })
+  jsonApi.define(
+    'location',
+    {
+      key: '',
+      title: '',
+      location_type: '',
+      nomis_agency_id: '',
+      disabled_at: '',
+    },
+    {
+      collectionPath: 'reference/locations',
+    }
+  )
 }
 
 module.exports = defineModels

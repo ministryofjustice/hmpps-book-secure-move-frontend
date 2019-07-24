@@ -73,14 +73,14 @@
       "type": "locations",
       "title": "HMP Leeds",
       "location_type": "prison",
-      "location_code": null
+      "nomis_agency_id": null
     },
     "to_location": {
       "id": "c4814e3f-ee9f-4f08-a515-94fc0afe6eb2",
       "type": "locations",
       "title": "Barrow in Furness County Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }
 }

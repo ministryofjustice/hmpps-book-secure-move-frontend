@@ -3,10 +3,11 @@
     "id": "2c952ca0-f750-4ac3-ac76-fb631445f974",
     "type": "locations",
     "attributes": {
+      "disabled_at": null,
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "location_code": null
+      "nomis_agency_id": null
     }
   }
 }

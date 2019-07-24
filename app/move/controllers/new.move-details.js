@@ -4,6 +4,7 @@ const FormController = require('./new.form')
 const filters = require('../../../config/nunjucks/filters')
 const fieldHelpers = require('../../../common/helpers/field')
 const referenceDataService = require('../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class MoveDetailsController extends FormController {
   async configure (req, res, next) {
@@ -17,11 +18,15 @@ class MoveDetailsController extends FormController {
       } = req.form.options.fields
 
       toLocationCourt.items = fieldHelpers.insertInitialOption(
-        courts.map(fieldHelpers.mapReferenceDataToOption),
+        courts
+          .filter(referenceDataHelpers.filterDisabled())
+          .map(fieldHelpers.mapReferenceDataToOption),
         'court'
       )
       toLocationPrison.items = fieldHelpers.insertInitialOption(
-        prisons.map(fieldHelpers.mapReferenceDataToOption),
+        prisons
+          .filter(referenceDataHelpers.filterDisabled())
+          .map(fieldHelpers.mapReferenceDataToOption),
         'prison'
       )
 
