@@ -123,11 +123,11 @@ describe('Move controllers', function () {
             errorList: [
               {
                 href: '#fieldOne',
-                text: 'fields:fieldOne.label validation:required',
+                text: 'fields::fieldOne.label validation::required',
               },
               {
                 href: '#fieldTwo',
-                text: 'fields:fieldTwo.label validation:required',
+                text: 'fields::fieldTwo.label validation::required',
               },
             ],
           })

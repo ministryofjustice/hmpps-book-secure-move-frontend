@@ -28,10 +28,7 @@ function mapAssessmentQuestionToConditionalField (item) {
 
 function renderConditionalFields ([key, field], index, obj) {
   if (!field.items) {
-    return [
-      key,
-      field,
-    ]
+    return [key, field]
   }
 
   const fields = fromPairs(obj)
@@ -40,7 +37,7 @@ function renderConditionalFields ([key, field], index, obj) {
     key,
     {
       ...field,
-      items: field.items.map((item) => {
+      items: field.items.map(item => {
         const fieldName = item.conditional
         const field = fields[fieldName]
 
@@ -60,17 +57,14 @@ function renderConditionalFields ([key, field], index, obj) {
 function setFieldValue (values) {
   return ([key, field]) => {
     if (!field.items) {
-      return [
-        key,
-        { ...field, value: values[key] },
-      ]
+      return [key, { ...field, value: values[key] }]
     }
 
     return [
       key,
       {
         ...field,
-        items: field.items.map((item) => {
+        items: field.items.map(item => {
           const value = values[key]
           let selected = false
 
@@ -96,14 +90,11 @@ function setFieldError (errors, translate) {
     const fieldError = errors[key]
 
     if (!fieldError) {
-      return [
-        key,
-        field,
-      ]
+      return [key, field]
     }
 
-    const label = translate(`fields:${fieldError.key}.label`)
-    const message = translate(`validation:${fieldError.type}`)
+    const label = translate(`fields::${fieldError.key}.label`)
+    const message = translate(`validation::${fieldError.type}`)
 
     return [
       key,
@@ -133,7 +124,6 @@ function translateField (translate) {
 
     translationPaths.forEach(path => {
       const key = get(translated, path)
-
       if (key) {
         set(translated, path, translate(key))
       }

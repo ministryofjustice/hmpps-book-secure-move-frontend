@@ -6,7 +6,7 @@ module.exports = function download (req, res, next) {
   const { extension } = req.params
   const { moveDate, movesByDate } = res.locals
   const currentTimestamp = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
-  const filename = req.t('moves:download_filename', {
+  const filename = req.t('moves::download_filename', {
     date: moveDate,
     timestamp: currentTimestamp,
   })
@@ -25,8 +25,9 @@ module.exports = function download (req, res, next) {
   }
 
   if (extension === 'csv') {
-    return presenters.movesToCSV(movesByDate)
-      .then((csv) => {
+    return presenters
+      .movesToCSV(movesByDate)
+      .then(csv => {
         res.setHeader('Content-Type', 'text/csv')
         res.send(csv)
       })

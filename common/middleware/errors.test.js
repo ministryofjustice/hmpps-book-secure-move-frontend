@@ -126,8 +126,8 @@ describe('Error middleware', function () {
           statusCode: errorCode404,
           showStackTrace: false,
           message: {
-            heading: 'errors:not_found.heading',
-            content: 'errors:not_found.content',
+            heading: 'errors::not_found.heading',
+            content: 'errors::not_found.content',
           },
         })
       })
@@ -168,8 +168,8 @@ describe('Error middleware', function () {
           statusCode: errorCode403,
           showStackTrace: false,
           message: {
-            heading: 'errors:unauthorized.heading',
-            content: 'errors:unauthorized.content',
+            heading: 'errors::unauthorized.heading',
+            content: 'errors::unauthorized.content',
           },
         })
       })
@@ -211,8 +211,8 @@ describe('Error middleware', function () {
           statusCode: errorCode403,
           showStackTrace: false,
           message: {
-            heading: 'errors:tampered_with.heading',
-            content: 'errors:tampered_with.content',
+            heading: 'errors::tampered_with.heading',
+            content: 'errors::tampered_with.content',
           },
         })
       })
@@ -253,8 +253,8 @@ describe('Error middleware', function () {
           statusCode: errorCode500,
           showStackTrace: false,
           message: {
-            heading: 'errors:default.heading',
-            content: 'errors:default.content',
+            heading: 'errors::default.heading',
+            content: 'errors::default.content',
           },
         })
       })
@@ -294,8 +294,8 @@ describe('Error middleware', function () {
           statusCode: errorCode500,
           showStackTrace: false,
           message: {
-            heading: 'errors:default.heading',
-            content: 'errors:default.content',
+            heading: 'errors::default.heading',
+            content: 'errors::default.content',
           },
         })
       })

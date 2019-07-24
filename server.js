@@ -44,6 +44,7 @@ i18next.use(Backend).init({
   lng: 'en',
   fallbackLng: 'en',
   preload: ['en'],
+  nsSeparator: '::',
   ns: [
     'default',
     'actions',

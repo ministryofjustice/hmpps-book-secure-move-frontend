@@ -9,7 +9,7 @@
 {% block headerActions %}
   {% if canAccess('move:create') %}
     {{ govukButton({
-      text: t("actions:create_move"),
+      text: t("actions::create_move"),
       href: "/move/new",
       classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
     }) }}
@@ -22,14 +22,14 @@
       {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
         <li>
           <a href="{{ ORIGINAL_PATH }}/download.csv?move-date={{ moveDate }}">
-            {{ t("actions:download_csv") }}
+            {{ t("actions::download_csv") }}
           </a>
         </li>
       {% endif %}
 
       <li>
         <a href="javascript:window.print()">
-          {{ t("actions:print_move_list") }}
+          {{ t("actions::print_move_list") }}
         </a>
       </li>
     </ul>
@@ -47,7 +47,7 @@
         {{ appData({
           inverted: true,
           classes: "app-data--s",
-          label: t("moves:dashboard.move_to"),
+          label: t("moves::dashboard.move_to"),
           value: destination.location.title
         }) }}
       </div>

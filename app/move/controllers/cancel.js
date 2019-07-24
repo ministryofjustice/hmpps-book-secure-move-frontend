@@ -9,8 +9,8 @@ module.exports = {
       await moveService.cancel(move.id)
 
       req.flash('success', {
-        title: req.t('messages:cancel_move.success.title'),
-        content: req.t('messages:cancel_move.success.content', {
+        title: req.t('messages::cancel_move.success.title'),
+        content: req.t('messages::cancel_move.success.content', {
           name: personService.getFullname(move.person),
           location: move.to_location.title,
         }),
