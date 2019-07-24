@@ -130,7 +130,7 @@
           "attributes": {
               "title": "HMP Leeds",
               "location_type": "prison",
-              "nomis_agency_id": null
+              "nomis_agency_id": "LDS"
           }
       },
       {
@@ -139,7 +139,7 @@
           "attributes": {
               "title": "Barrow in Furness County Court",
               "location_type": "court",
-              "nomis_agency_id": null
+              "nomis_agency_id": "BFCC"
           }
       }
   ]

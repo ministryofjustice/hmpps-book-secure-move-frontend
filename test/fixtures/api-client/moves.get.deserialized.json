@@ -69,7 +69,7 @@
       "key": "hmp_dartmoor",
       "title": "HMP Dartmoor",
       "location_type": "prison",
-      "nomis_agency_id": null
+      "nomis_agency_id": "DTM"
     },
     "to_location": {
       "id": "54714961-3b18-4a01-b65e-93c3991de37a",
@@ -77,7 +77,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "271c95bc-359d-4413-ac63-364c4521a67f",
@@ -154,7 +154,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "2f1ab125-6d5a-4621-affe-c5f1e96e53d6",
@@ -231,7 +231,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "17a7c1cf-e3dd-4d28-8162-d2f54ce477f5",
@@ -308,7 +308,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "417449a3-8ef2-48e4-9379-7fbbf74ceed4",
@@ -385,7 +385,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "20e2495b-e86c-40f1-a066-9fdb79d884e2",
@@ -462,7 +462,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "8fe0a416-4aa9-4b82-ada5-810cec881e42",
@@ -539,7 +539,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "81a4d40d-a007-4d3a-beb8-c5334ea42b36",
@@ -616,7 +616,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "d02a534f-96e7-4fae-8818-3b71cb596f21",
@@ -693,7 +693,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "eddc9f3a-4c2f-4853-88ea-b7fa0872fc16",
@@ -770,7 +770,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": "ACC"
     }
   }, {
     "id": "3959d016-451b-4acd-8698-e84fcbdd6acb",
