@@ -18,11 +18,11 @@ function _mapAnswer (question) {
   return [
     {
       label,
-      value: (row) => some(row.person.assessment_answers, { key }),
+      value: row => some(row.person.assessment_answers, { key }),
     },
     {
       label: `${label} details`,
-      value: (row) => {
+      value: row => {
         const answer = find(row.person.assessment_answers, { key })
         return answer ? answer.comments : null
       },
@@ -55,19 +55,11 @@ const move = [
     label: 'Move date',
     value: 'date',
   },
-  {
-    label: 'Time due',
-    value: 'time_due',
-  },
 ]
 const person = [
   {
     label: 'Athena custody number',
     value: _getIdentifier('athena_reference'),
-  },
-  {
-    label: 'Prison number',
-    value: _getIdentifier('prison_number'),
   },
   {
     label: 'Last name',
@@ -96,17 +88,12 @@ const person = [
 ]
 
 module.exports = function movesToCSV (moves) {
-  return referenceDataServce.getAssessmentQuestions()
-    .then((questions) => {
-      const assessmentAnswers = questions.map(_mapAnswer)
-      const fields = flatten([
-        ...move,
-        ...person,
-        ...assessmentAnswers,
-      ])
+  return referenceDataServce.getAssessmentQuestions().then(questions => {
+    const assessmentAnswers = questions.map(_mapAnswer)
+    const fields = flatten([...move, ...person, ...assessmentAnswers])
 
-      return json2csv.parse(moves, {
-        fields,
-      })
+    return json2csv.parse(moves, {
+      fields,
     })
+  })
 }
