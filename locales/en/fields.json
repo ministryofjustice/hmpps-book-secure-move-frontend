@@ -1,7 +1,6 @@
 {
-  "athena_reference": {
-    "label": "Reference number",
-    "hint": "Your reference for the person"
+  "police_national_computer": {
+    "label": "PNC number"
   },
   "first_names": {
     "label": "First name(s)"

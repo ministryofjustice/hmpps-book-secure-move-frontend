@@ -18,7 +18,7 @@ module.exports = {
     heading: 'moves:steps.personal_details.heading',
     next: 'move-details',
     fields: [
-      'athena_reference',
+      'police_national_computer',
       'last_name',
       'first_names',
       'date_of_birth',

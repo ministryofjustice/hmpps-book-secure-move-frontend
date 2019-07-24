@@ -58,8 +58,8 @@ const move = [
 ]
 const person = [
   {
-    label: 'Athena custody number',
-    value: _getIdentifier('athena_reference'),
+    label: 'PNC number',
+    value: _getIdentifier('police_national_computer'),
   },
   {
     label: 'Last name',

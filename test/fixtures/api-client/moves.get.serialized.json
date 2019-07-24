@@ -656,6 +656,9 @@
           }
         ],
         "identifiers": [{
+          "identifier_type": "police_national_computer",
+          "value": "11223344"
+        }, {
             "identifier_type": "prison_number",
             "value": "796507"
           },
