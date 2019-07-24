@@ -47,6 +47,9 @@
         "category": "court"
       }],
       "identifiers": [{
+        "identifier_type": "police_national_computer",
+        "value": "11009922"
+      }, {
         "identifier_type": "cro_number",
         "value": "538154"
       }, {

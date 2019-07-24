@@ -1,14 +1,35 @@
-/* eslint-disable camelcase */
+const { find } = require('lodash')
+
 const filters = require('../../config/nunjucks/filters')
 
-module.exports = function personToSummaryListComponent ({ date_of_birth, gender, ethnicity }) {
+module.exports = function personToSummaryListComponent ({
+  date_of_birth: dateOfBirth,
+  gender,
+  ethnicity,
+  identifiers,
+}) {
+  const pncNumber = find(identifiers, {
+    identifier_type: 'police_national_computer',
+  })
   const rows = [
+    {
+      key: {
+        text: 'PNC Number',
+      },
+      value: {
+        text: pncNumber ? pncNumber.value : '',
+      },
+    },
     {
       key: {
         text: 'Date of birth',
       },
       value: {
-        text: date_of_birth ? `${filters.formatDate(date_of_birth)} (Age ${filters.calculateAge(date_of_birth)})` : '',
+        text: dateOfBirth
+          ? `${filters.formatDate(dateOfBirth)} (Age ${filters.calculateAge(
+            dateOfBirth
+          )})`
+          : '',
       },
     },
     {
