@@ -41,7 +41,7 @@ const move = [
   },
   {
     label: 'From location code',
-    value: 'from_location.location_code',
+    value: 'from_location.nomis_agency_id',
   },
   {
     label: 'To location name',
@@ -49,7 +49,7 @@ const move = [
   },
   {
     label: 'To location code',
-    value: 'to_location.location_code',
+    value: 'to_location.nomis_agency_id',
   },
   {
     label: 'Move date',
