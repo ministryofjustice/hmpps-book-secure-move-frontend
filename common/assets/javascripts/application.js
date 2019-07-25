@@ -10,8 +10,12 @@ import { nodeListForEach } from './utils'
 import { initAll } from 'govuk-frontend'
 import accessibleAutocomplete from 'accessible-autocomplete'
 import Message from '../../components/message/message'
+import Header from '../../components/internal-header/internal-header'
 
 initAll()
+
+var $toggleButton = document.querySelector('[data-module="header"]')
+new Header($toggleButton).init()
 
 var $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function ($message) {
