@@ -3,28 +3,28 @@ const logger = require('../../config/logger')
 function _getMessage (error) {
   if (error.code === 'EBADCSRFTOKEN') {
     return {
-      heading: 'errors:tampered_with.heading',
-      content: 'errors:tampered_with.content',
+      heading: 'errors::tampered_with.heading',
+      content: 'errors::tampered_with.content',
     }
   }
 
   if (error.statusCode === 404) {
     return {
-      heading: 'errors:not_found.heading',
-      content: 'errors:not_found.content',
+      heading: 'errors::not_found.heading',
+      content: 'errors::not_found.content',
     }
   }
 
   if (error.statusCode === 403 || error.statusCode === 401) {
     return {
-      heading: 'errors:unauthorized.heading',
-      content: 'errors:unauthorized.content',
+      heading: 'errors::unauthorized.heading',
+      content: 'errors::unauthorized.content',
     }
   }
 
   return {
-    heading: 'errors:default.heading',
-    content: 'errors:default.content',
+    heading: 'errors::default.heading',
+    content: 'errors::default.content',
   }
 }
 

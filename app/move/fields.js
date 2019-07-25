@@ -6,7 +6,7 @@ const assessmentQuestionComments = {
   component: 'govukTextarea',
   classes: 'govuk-input--width-20',
   label: {
-    text: `fields:assessment_comment.optional`,
+    text: `fields::assessment_comment.optional`,
     classes: 'govuk-label--s',
   },
 }
@@ -19,12 +19,12 @@ function assessmentCategory (category) {
     name: category,
     fieldset: {
       legend: {
-        text: `fields:${category}.label`,
+        text: `fields::${category}.label`,
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     hint: {
-      text: `fields:${category}.hint`,
+      text: `fields::${category}.hint`,
     },
   }
 }
@@ -45,7 +45,7 @@ function toLocationType (type) {
       'data-module': 'app-autocomplete',
     },
     label: {
-      text: `fields:to_location_${type}.label`,
+      text: `fields::to_location_${type}.label`,
       classes: 'govuk-label--s',
     },
     items: [],
@@ -58,7 +58,7 @@ module.exports = {
     validate: 'required',
     component: 'govukInput',
     label: {
-      text: 'fields:police_national_computer.label',
+      text: 'fields::police_national_computer.label',
       classes: 'govuk-label--s',
     },
     id: 'police_national_computer',
@@ -70,7 +70,7 @@ module.exports = {
     validate: 'required',
     component: 'govukInput',
     label: {
-      text: 'fields:first_names.label',
+      text: 'fields::first_names.label',
       classes: 'govuk-label--s',
     },
     id: 'first_names',
@@ -82,7 +82,7 @@ module.exports = {
     validate: 'required',
     component: 'govukInput',
     label: {
-      text: 'fields:last_name.label',
+      text: 'fields::last_name.label',
       classes: 'govuk-label--s',
     },
     id: 'last_name',
@@ -95,11 +95,11 @@ module.exports = {
     formatter: [date],
     component: 'govukInput',
     label: {
-      text: 'fields:date_of_birth.label',
+      text: 'fields::date_of_birth.label',
       classes: 'govuk-label--s',
     },
     hint: {
-      text: 'fields:date_of_birth.hint',
+      text: 'fields::date_of_birth.hint',
     },
     id: 'date_of_birth',
     name: 'date_of_birth',
@@ -111,7 +111,7 @@ module.exports = {
     component: 'govukRadios',
     fieldset: {
       legend: {
-        text: 'fields:gender.label',
+        text: 'fields::gender.label',
         classes: 'govuk-fieldset__legend--s',
       },
     },
@@ -122,7 +122,7 @@ module.exports = {
     validate: 'required',
     component: 'govukSelect',
     label: {
-      text: 'fields:ethnicity.label',
+      text: 'fields::ethnicity.label',
       classes: 'govuk-label--s',
     },
     id: 'ethnicity',
@@ -142,7 +142,7 @@ module.exports = {
     name: 'to_location_type',
     fieldset: {
       legend: {
-        text: 'fields:to_location_type.label',
+        text: 'fields::to_location_type.label',
         classes: 'govuk-fieldset__legend--m',
       },
     },
@@ -150,12 +150,12 @@ module.exports = {
       {
         id: 'to_location_type',
         value: 'court',
-        text: 'fields:to_location_type.items.court.label',
+        text: 'fields::to_location_type.items.court.label',
         conditional: 'to_location_court',
       },
       {
         value: 'prison',
-        text: 'fields:to_location_type.items.prison.label',
+        text: 'fields::to_location_type.items.prison.label',
         conditional: 'to_location_prison',
       },
     ],
@@ -169,7 +169,7 @@ module.exports = {
     name: 'date_type',
     fieldset: {
       legend: {
-        text: 'fields:date_type.label',
+        text: 'fields::date_type.label',
         classes: 'govuk-fieldset__legend--m',
       },
     },
@@ -177,15 +177,15 @@ module.exports = {
       {
         id: 'date_type',
         value: 'today',
-        text: 'fields:date_type.items.today.label',
+        text: 'fields::date_type.items.today.label',
       },
       {
         value: 'tomorrow',
-        text: 'fields:date_type.items.tomorrow.label',
+        text: 'fields::date_type.items.tomorrow.label',
       },
       {
         value: 'custom',
-        text: 'fields:date_type.items.another.label',
+        text: 'fields::date_type.items.another.label',
         conditional: 'date_custom',
       },
     ],
@@ -202,11 +202,11 @@ module.exports = {
     id: 'date_custom',
     name: 'date_custom',
     label: {
-      text: 'fields:date_custom.label',
+      text: 'fields::date_custom.label',
       classes: 'govuk-label--s',
     },
     hint: {
-      text: 'fields:date_custom.hint',
+      text: 'fields::date_custom.hint',
     },
     classes: 'govuk-input--width-10',
     autocomplete: 'off',

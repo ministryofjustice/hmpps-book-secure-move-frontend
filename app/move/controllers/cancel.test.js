@@ -34,14 +34,14 @@ describe('Move controllers', function () {
 
       it('should set a success message', function () {
         expect(req.flash).to.have.been.calledOnceWith('success', {
-          title: 'messages:cancel_move.success.title',
-          content: 'messages:cancel_move.success.content',
+          title: 'messages::cancel_move.success.title',
+          content: 'messages::cancel_move.success.content',
         })
       })
 
       it('should pass correct values to success content translation', function () {
         expect(req.t.secondCall).to.have.been.calledWithExactly(
-          'messages:cancel_move.success.content',
+          'messages::cancel_move.success.content',
           {
             name: fullname,
             location: mockMove.to_location.title,

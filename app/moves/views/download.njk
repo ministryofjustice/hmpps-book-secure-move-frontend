@@ -3,7 +3,7 @@
 {% block pageContent %}
   {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
     {{ govukButton({
-      text: t("actions:download"),
+      text: t("actions::download"),
       href: ORIGINAL_PATH + "/download.csv?move-date=" + moveDate,
       classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
     }) }}

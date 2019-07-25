@@ -77,7 +77,7 @@ describe('Moves controllers', function () {
       })
 
       it('should translate filename', function () {
-        expect(req.t).to.be.calledOnceWithExactly('moves:download_filename', {
+        expect(req.t).to.be.calledOnceWithExactly('moves::download_filename', {
           date: mockMoveDate,
           timestamp: '2019-11-10 15:30:15',
         })
@@ -86,7 +86,7 @@ describe('Moves controllers', function () {
       it('should set content disposition header', function () {
         expect(res.setHeader).to.be.calledOnceWithExactly(
           'Content-disposition',
-          'attachment; filename=moves:download_filename.json'
+          'attachment; filename=moves::download_filename.json'
         )
       })
 
@@ -109,16 +109,19 @@ describe('Moves controllers', function () {
         })
 
         it('should translate filename', function () {
-          expect(req.t).to.be.calledOnceWithExactly('moves:download_filename', {
-            date: mockMoveDate,
-            timestamp: '2019-11-10 15:30:15',
-          })
+          expect(req.t).to.be.calledOnceWithExactly(
+            'moves::download_filename',
+            {
+              date: mockMoveDate,
+              timestamp: '2019-11-10 15:30:15',
+            }
+          )
         })
 
         it('should set content disposition header', function () {
           expect(res.setHeader.firstCall).to.be.calledWithExactly(
             'Content-disposition',
-            'attachment; filename=moves:download_filename.csv'
+            'attachment; filename=moves::download_filename.csv'
           )
         })
 

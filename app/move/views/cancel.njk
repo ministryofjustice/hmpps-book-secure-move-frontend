@@ -1,14 +1,14 @@
 {% extends "layouts/govuk.njk" %}
 
 {% block pageTitle %}
-  {{ t("moves:cancel.page_title", { name: fullname | upper }) }}
+  {{ t("moves::cancel.page_title", { name: fullname | upper }) }}
 {% endblock %}
 
 {% block beforeContent %}
   {{ super() }}
 
   {{ govukBackLink({
-    text: t("actions:back_to_move"),
+    text: t("actions::back_to_move"),
     href: "/move/" + move.id
   }) }}
 {% endblock %}
@@ -18,24 +18,24 @@
     <div class="govuk-grid-column-two-thirds">
       <header class="govuk-!-margin-bottom-8">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">
-          {{ t("moves:cancel.page_title", { name: fullname | upper }) }}
+          {{ t("moves::cancel.page_title", { name: fullname | upper }) }}
         </h1>
       </header>
 
       <form method="post">
         <p>
-          {{ t("moves:cancel.content.confirmation", {
+          {{ t("moves::cancel.content.confirmation", {
             name: fullname | upper,
             location: move.to_location.title
           }) | safe }}
         </p>
 
         <p>
-          {{ t("moves:cancel.content.warning") }}
+          {{ t("moves::cancel.content.warning") }}
         </p>
 
         {{ govukButton({
-          text: t("actions:cancel_move_confirmation"),
+          text: t("actions::cancel_move_confirmation"),
           classes: "govuk-button--warning"
         }) }}
       </form>

@@ -68,15 +68,15 @@ describe('Move controllers', function () {
                   date_type: {
                     items: [
                       {
-                        text: 'fields:date_type.today',
+                        text: 'fields::date_type.today',
                         value: 'today',
                       },
                       {
-                        text: 'fields:date_type.tomorrow',
+                        text: 'fields::date_type.tomorrow',
                         value: 'tomorrow',
                       },
                       {
-                        text: 'fields:date_type.custom',
+                        text: 'fields::date_type.custom',
                         value: 'custom',
                       },
                     ],
@@ -117,14 +117,14 @@ describe('Move controllers', function () {
         })
 
         it('should translate today', function () {
-          expect(req.t.firstCall).to.be.calledWith('fields:date_type.today', {
+          expect(req.t.firstCall).to.be.calledWith('fields::date_type.today', {
             date: 'today',
           })
         })
 
         it('should translate tomorrow', function () {
           expect(req.t.secondCall).to.be.calledWith(
-            'fields:date_type.tomorrow',
+            'fields::date_type.tomorrow',
             {
               date: 'tomorrow',
             }
@@ -135,7 +135,7 @@ describe('Move controllers', function () {
           expect(req.form.options.fields.date_type.items).to.deep.equal([
             { text: '__translated__', value: 'today' },
             { text: '__translated__', value: 'tomorrow' },
-            { text: 'fields:date_type.custom', value: 'custom' },
+            { text: 'fields::date_type.custom', value: 'custom' },
           ])
         })
 

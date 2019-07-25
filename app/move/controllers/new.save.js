@@ -36,8 +36,8 @@ class SaveController extends FormController {
     req.sessionModel.destroy()
 
     req.flash('success', {
-      title: req.t('messages:create_move.success.title'),
-      content: req.t('messages:create_move.success.content', {
+      title: req.t('messages::create_move.success.title'),
+      content: req.t('messages::create_move.success.content', {
         name: personService.getFullname(person),
         location: toLocation.title,
         date: filters.formatDateWithDay(date),

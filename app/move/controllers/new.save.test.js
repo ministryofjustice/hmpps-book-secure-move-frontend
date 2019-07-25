@@ -139,14 +139,14 @@ describe('Move controllers', function () {
 
       it('should set a success message', function () {
         expect(req.flash).to.have.been.calledOnceWith('success', {
-          title: 'messages:create_move.success.title',
-          content: 'messages:create_move.success.content',
+          title: 'messages::create_move.success.title',
+          content: 'messages::create_move.success.content',
         })
       })
 
       it('should pass correct values to success content translation', function () {
         expect(req.t.secondCall).to.have.been.calledWithExactly(
-          'messages:create_move.success.content',
+          'messages::create_move.success.content',
           {
             name: fullname,
             location: moveMock.to_location.title,
