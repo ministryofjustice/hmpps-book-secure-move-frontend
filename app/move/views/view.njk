@@ -22,13 +22,15 @@
 
 {% block content %}
   <header class="govuk-!-margin-bottom-8">
-    <span class="govuk-caption-xl">
-      {{ move.reference }}
-    </span>
-
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
       {{ fullname | upper }}
     </h1>
+
+    <span class="govuk-caption-xl">
+      {{ t("moves::move_reference", {
+        reference: move.reference
+      }) }}
+    </span>
 
     {% if tagList | length %}
       <div class="govuk-!-margin-top-2">

@@ -20,17 +20,13 @@
 }
 
 .app-card__caption {
-  @include govuk-font($size: 19);
+  @include govuk-font($size: 16);
+  color: govuk-colour("grey-1");
 }
 
 .app-card__title {
   @include govuk-font($size: 19, $weight: bold);
   margin: 0;
-
-  @include mq ($from: desktop) {
-    margin-right: govuk-spacing(2);
-    float: left;
-  }
 }
 
 .app-card__content {

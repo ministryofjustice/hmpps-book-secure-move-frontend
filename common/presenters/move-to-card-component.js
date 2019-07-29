@@ -21,7 +21,6 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
   const meta = [
     {
       label: i18n.t('fields::date_of_birth.label'),
-      hideLabel: true,
       html: person.date_of_birth
         ? `${filters.formatDate(person.date_of_birth)} (${i18n.t(
           'age'
@@ -30,13 +29,7 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
     },
     {
       label: i18n.t('fields::gender.label'),
-      hideLabel: true,
       text: person.gender ? person.gender.title : '',
-    },
-    {
-      label: i18n.t('fields::ethnicity.label'),
-      hideLabel: true,
-      text: person.ethnicity ? person.ethnicity.title : '',
     },
   ]
 
@@ -46,7 +39,9 @@ module.exports = function moveToCardComponent ({ id, reference, person }) {
       text: personService.getFullname(person).toUpperCase(),
     },
     caption: {
-      text: reference,
+      text: i18n.t('moves::move_reference', {
+        reference,
+      }),
     },
     meta: {
       items: _removeEmpty(meta, ['text', 'html']),
