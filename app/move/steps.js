@@ -15,7 +15,7 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     backLink: null,
-    heading: 'moves::steps.personal_details.heading',
+    pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',
     fields: [
       'police_national_computer',
@@ -29,7 +29,7 @@ module.exports = {
   '/move-details': {
     controller: MoveDetails,
     template: 'move/views/new/move-details',
-    heading: 'moves::steps.move_details.heading',
+    pageTitle: 'moves::steps.move_details.heading',
     next: [
       { field: 'to_location_type', value: 'court', next: 'court-information' },
       'risk-information',
@@ -47,7 +47,7 @@ module.exports = {
   },
   '/court-information': {
     controller: Assessment,
-    heading: 'moves::steps.court_information.heading',
+    pageTitle: 'moves::steps.court_information.heading',
     next: 'risk-information',
     fields: [
       'court',
@@ -58,7 +58,7 @@ module.exports = {
   },
   '/risk-information': {
     controller: Assessment,
-    heading: 'moves::steps.risk_information.heading',
+    pageTitle: 'moves::steps.risk_information.heading',
     next: 'health-information',
     fields: [
       'risk',
@@ -73,7 +73,7 @@ module.exports = {
   '/health-information': {
     controller: Assessment,
     next: 'save',
-    heading: 'moves::steps.health_information.heading',
+    pageTitle: 'moves::steps.health_information.heading',
     buttonText: 'actions::schedule_move',
     fields: [
       'health',
