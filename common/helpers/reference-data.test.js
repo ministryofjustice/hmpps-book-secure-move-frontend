@@ -13,7 +13,7 @@ describe('Reference data helpers', function () {
           {
             id: '1234',
             name: 'Freds',
-            disabled_on: lastMonth,
+            disabled_at: lastMonth,
           },
         ]
       })
@@ -65,7 +65,7 @@ describe('Reference data helpers', function () {
           {
             id: '1234',
             name: 'Freds',
-            disabled_on: nextMonth,
+            disabled_at: nextMonth,
           },
         ]
       })
@@ -117,7 +117,7 @@ describe('Reference data helpers', function () {
           {
             id: '1234',
             name: 'Freds',
-            disabled_on: null,
+            disabled_at: null,
           },
         ]
       })
