@@ -41,7 +41,7 @@ describe('Presenters', function () {
         it('should contain a caption', function () {
           expect(transformedResponse).to.have.property('caption')
           expect(transformedResponse.caption).to.deep.equal({
-            text: mockMove.reference,
+            text: `__translated__`,
           })
         })
 
@@ -50,19 +50,12 @@ describe('Presenters', function () {
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
-                hideLabel: true,
                 label: '__translated__',
                 html: '18 Jun 1960 (__translated__ 50)',
               },
               {
-                hideLabel: true,
                 label: '__translated__',
                 text: mockMove.person.gender.title,
-              },
-              {
-                hideLabel: true,
-                label: '__translated__',
-                text: mockMove.person.ethnicity.title,
               },
             ],
           })
@@ -113,9 +106,10 @@ describe('Presenters', function () {
           )
         })
 
-        it('should translate ethnicity label', function () {
+        it('should translate move reference', function () {
           expect(i18n.t.getCall(3)).to.be.calledWithExactly(
-            'fields::ethnicity.label'
+            'moves::move_reference',
+            { reference: mockMove.reference }
           )
         })
 
@@ -168,7 +162,6 @@ describe('Presenters', function () {
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
-                hideLabel: true,
                 label: '__translated__',
                 text: mockMove.person.gender.title,
               },

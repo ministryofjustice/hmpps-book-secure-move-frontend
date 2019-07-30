@@ -1,5 +1,6 @@
 {
   "download_filename": "Moves on {{date}} (Downloaded {{timestamp}})",
+  "move_reference": "Move reference: {{reference}}",
   "assessment": {
     "categories": {
       "risk": {
