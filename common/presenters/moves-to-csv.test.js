@@ -4,6 +4,7 @@ const json2csv = require('json2csv')
 
 const movesToCSV = require('./moves-to-csv')
 const referenceDataServce = require('../services/reference-data')
+const i18n = require('../../config/i18n')
 
 const {
   data: mockMoves,
@@ -26,6 +27,7 @@ describe('Presenters', function () {
 
     beforeEach(function () {
       sinon.spy(json2csv, 'parse')
+      sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(referenceDataServce, 'getAssessmentQuestions')
     })
 
@@ -43,6 +45,10 @@ describe('Presenters', function () {
       it('should call CSV parse', function () {
         expect(json2csv.parse).to.be.calledOnce
         expect(json2csv.parse.args[0][0]).to.deep.equal(mockMoves)
+      })
+
+      it('should call translations correct number of times', function () {
+        expect(i18n.t).to.be.callCount(20)
       })
     })
 
