@@ -1,6 +1,6 @@
 {
   "name": "pecs-frontend",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Frontend rendering app for the PECS service",
   "homepage": "https://github.com/ministryofjustice/pecs-frontend#readme",
