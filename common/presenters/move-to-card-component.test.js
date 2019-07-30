@@ -1,5 +1,6 @@
 const moveToCardComponent = require('./move-to-card-component')
 
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const personService = require('../services/person')
 
@@ -11,6 +12,7 @@ const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
     beforeEach(function () {
+      sinon.stub(i18n, 't').returns('__translated__')
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
       sinon.stub(personService, 'getFullname').returns(fullname)
@@ -49,17 +51,17 @@ describe('Presenters', function () {
             items: [
               {
                 hideLabel: true,
-                label: 'Date of birth',
-                html: '18 Jun 1960 (Age 50)',
+                label: '__translated__',
+                html: '18 Jun 1960 (__translated__ 50)',
               },
               {
                 hideLabel: true,
-                label: 'Gender',
+                label: '__translated__',
                 text: mockMove.person.gender.title,
               },
               {
                 hideLabel: true,
-                label: 'Ethnicity',
+                label: '__translated__',
                 text: mockMove.person.ethnicity.title,
               },
             ],
@@ -91,6 +93,34 @@ describe('Presenters', function () {
               },
             ],
           })
+        })
+      })
+
+      describe('translations', function () {
+        it('should translate date of birth label', function () {
+          expect(i18n.t.firstCall).to.be.calledWithExactly(
+            'fields::date_of_birth.label'
+          )
+        })
+
+        it('should translate age label', function () {
+          expect(i18n.t.secondCall).to.be.calledWithExactly('age')
+        })
+
+        it('should translate gender label', function () {
+          expect(i18n.t.thirdCall).to.be.calledWithExactly(
+            'fields::gender.label'
+          )
+        })
+
+        it('should translate ethnicity label', function () {
+          expect(i18n.t.getCall(3)).to.be.calledWithExactly(
+            'fields::ethnicity.label'
+          )
+        })
+
+        it('should translate correct number of times', function () {
+          expect(i18n.t).to.be.callCount(4)
         })
       })
 
@@ -139,7 +169,7 @@ describe('Presenters', function () {
             items: [
               {
                 hideLabel: true,
-                label: 'Gender',
+                label: '__translated__',
                 text: mockMove.person.gender.title,
               },
             ],

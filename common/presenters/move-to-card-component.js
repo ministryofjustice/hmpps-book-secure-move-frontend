@@ -1,5 +1,6 @@
 const assessmentToTagList = require('./assessment-to-tag-list')
 const personService = require('../services/person')
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 function _removeEmpty (items, keys) {
@@ -19,21 +20,21 @@ function _removeEmpty (items, keys) {
 module.exports = function moveToCardComponent ({ id, reference, person }) {
   const meta = [
     {
-      label: 'Date of birth',
+      label: i18n.t('fields::date_of_birth.label'),
       hideLabel: true,
       html: person.date_of_birth
-        ? `${filters.formatDate(
-          person.date_of_birth
-        )} (Age ${filters.calculateAge(person.date_of_birth)})`
+        ? `${filters.formatDate(person.date_of_birth)} (${i18n.t(
+          'age'
+        )} ${filters.calculateAge(person.date_of_birth)})`
         : '',
     },
     {
-      label: 'Gender',
+      label: i18n.t('fields::gender.label'),
       hideLabel: true,
       text: person.gender ? person.gender.title : '',
     },
     {
-      label: 'Ethnicity',
+      label: i18n.t('fields::ethnicity.label'),
       hideLabel: true,
       text: person.ethnicity ? person.ethnicity.title : '',
     },
