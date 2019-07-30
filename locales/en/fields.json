@@ -19,10 +19,12 @@
     "label": "Ethnicity"
   },
   "from_location": {
-    "label": "Move from"
+    "label": "Move from",
+    "short_label": "From"
   },
   "to_location_type": {
     "label": "Move to",
+    "short_label": "To",
     "items": {
       "prison": {
         "label": "Prison"
@@ -55,6 +57,9 @@
   "date_custom": {
     "label": "Date of travel",
     "hint": "For example 28/10/2019 or 28 October 2019"
+  },
+  "time_due": {
+    "label": "Time due"
   },
   "risk": {
     "label": "Add risk information",

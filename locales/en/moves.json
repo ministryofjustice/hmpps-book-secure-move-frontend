@@ -33,6 +33,32 @@
       "heading": "Does this person’s health affect transport?"
     }
   },
+  "download": {
+    "reference": {
+      "label": "Reference"
+    },
+    "created_at": {
+      "label": "Created at"
+    },
+    "from_location": {
+      "label": "From location name"
+    },
+    "from_location_code": {
+      "label": "From location code"
+    },
+    "to_location": {
+      "label": "To location name"
+    },
+    "to_location_code": {
+      "label": "To location code"
+    },
+    "ethnicity_code": {
+      "label": "Ethnicity code"
+    },
+    "assessment_answer": {
+      "label": "{{question}} details"
+    }
+  },
   "dashboard": {
     "upcoming_moves": "Upcoming moves for {{date}}",
     "move_to": "Move to"

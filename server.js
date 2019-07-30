@@ -13,8 +13,6 @@ const grant = require('grant-express')
 const flash = require('connect-flash')
 const favicon = require('serve-favicon')
 const slashify = require('slashify')
-const i18next = require('i18next')
-const Backend = require('i18next-node-fs-backend')
 const i18nMiddleware = require('i18next-express-middleware')
 const Sentry = require('@sentry/node')
 
@@ -22,6 +20,7 @@ const Sentry = require('@sentry/node')
 const config = require('./config')
 const configPaths = require('./config/paths')
 const logger = require('./config/logger')
+const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
 const redisStore = require('./config/redis-store')
 const setCurrentLocation = require('./common/middleware/set-current-location')
@@ -39,26 +38,6 @@ if (config.SENTRY.DSN) {
     release: config.GIT_SHA,
   })
 }
-
-i18next.use(Backend).init({
-  lng: 'en',
-  fallbackLng: 'en',
-  preload: ['en'],
-  nsSeparator: '::',
-  ns: [
-    'default',
-    'actions',
-    'errors',
-    'fields',
-    'messages',
-    'moves',
-    'validation',
-  ],
-  defaultNS: 'default',
-  backend: {
-    loadPath: './locales/{{lng}}/{{ns}}.json',
-  },
-})
 
 // Global constants
 const app = express()
@@ -90,7 +69,7 @@ app.use(
 )
 
 // ensure i18n is loaded early as needed for error template
-app.use(i18nMiddleware.handle(i18next))
+app.use(i18nMiddleware.handle(i18n))
 app.use(morgan('dev'))
 app.use(compression())
 app.use(express.json())

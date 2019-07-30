@@ -1,10 +1,7 @@
 /* eslint-disable camelcase */
-const {
-  isToday,
-  isTomorrow,
-  isYesterday,
-} = require('date-fns')
+const { isToday, isTomorrow, isYesterday } = require('date-fns')
 
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 function _isRelativeDate (date) {
@@ -15,11 +12,16 @@ function _isRelativeDate (date) {
   return false
 }
 
-module.exports = function moveToMetaListComponent ({ date, time_due, from_location, to_location }) {
+module.exports = function moveToMetaListComponent ({
+  date,
+  time_due,
+  from_location,
+  to_location,
+}) {
   const items = [
     {
       key: {
-        text: 'From',
+        text: i18n.t('fields::from_location.short_label'),
       },
       value: {
         text: from_location.title,
@@ -27,7 +29,7 @@ module.exports = function moveToMetaListComponent ({ date, time_due, from_locati
     },
     {
       key: {
-        text: 'To',
+        text: i18n.t('fields::to_location_type.short_label'),
       },
       value: {
         text: to_location.title,
@@ -35,15 +37,19 @@ module.exports = function moveToMetaListComponent ({ date, time_due, from_locati
     },
     {
       key: {
-        text: 'Date',
+        text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: _isRelativeDate(date) ? `${filters.formatDateWithDay(date)} (${filters.formatDateAsRelativeDay(date)})` : filters.formatDateWithDay(date),
+        text: _isRelativeDate(date)
+          ? `${filters.formatDateWithDay(
+            date
+          )} (${filters.formatDateAsRelativeDay(date)})`
+          : filters.formatDateWithDay(date),
       },
     },
     {
       key: {
-        text: 'Time due',
+        text: i18n.t('fields::time_due.label'),
       },
       value: {
         text: filters.formatTime(time_due),

@@ -1,5 +1,6 @@
 const { find } = require('lodash')
 
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 module.exports = function personToSummaryListComponent ({
@@ -14,7 +15,7 @@ module.exports = function personToSummaryListComponent ({
   const rows = [
     {
       key: {
-        text: 'PNC Number',
+        text: i18n.t('fields::police_national_computer.label'),
       },
       value: {
         text: pncNumber ? pncNumber.value : '',
@@ -22,19 +23,19 @@ module.exports = function personToSummaryListComponent ({
     },
     {
       key: {
-        text: 'Date of birth',
+        text: i18n.t('fields::date_of_birth.label'),
       },
       value: {
         text: dateOfBirth
-          ? `${filters.formatDate(dateOfBirth)} (Age ${filters.calculateAge(
-            dateOfBirth
-          )})`
+          ? `${filters.formatDate(dateOfBirth)} (${i18n.t(
+            'age'
+          )} ${filters.calculateAge(dateOfBirth)})`
           : '',
       },
     },
     {
       key: {
-        text: 'Gender',
+        text: i18n.t('fields::gender.label'),
       },
       value: {
         text: gender ? gender.title : '',
@@ -42,7 +43,7 @@ module.exports = function personToSummaryListComponent ({
     },
     {
       key: {
-        text: 'Ethnicity',
+        text: i18n.t('fields::ethnicity.label'),
       },
       value: {
         text: ethnicity ? ethnicity.title : '',
