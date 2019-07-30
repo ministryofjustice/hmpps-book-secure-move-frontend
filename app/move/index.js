@@ -13,6 +13,7 @@ const wizardConfig = {
   controller: Form,
   name: 'new-move',
   journeyName: 'new-move',
+  journeyPageTitle: 'actions::create_move',
   template: 'form-wizard',
 }
 
