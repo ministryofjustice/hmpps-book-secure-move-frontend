@@ -9,43 +9,43 @@ const {
 } = require('../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
-describe('Presenters', function () {
-  describe('#moveToCardComponent()', function () {
-    beforeEach(function () {
+describe('Presenters', function() {
+  describe('#moveToCardComponent()', function() {
+    beforeEach(function() {
       sinon.stub(i18n, 't').returns('__translated__')
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
       sinon.stub(personService, 'getFullname').returns(fullname)
     })
 
-    context('when provided with a mock move object', function () {
+    context('when provided with a mock move object', function() {
       let transformedResponse
 
-      beforeEach(function () {
+      beforeEach(function() {
         transformedResponse = moveToCardComponent(mockMove)
       })
 
-      describe('response', function () {
-        it('should contain a href', function () {
+      describe('response', function() {
+        it('should contain a href', function() {
           expect(transformedResponse).to.have.property('href')
           expect(transformedResponse.href).to.equal(`/move/${mockMove.id}`)
         })
 
-        it('should contain a title', function () {
+        it('should contain a title', function() {
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
             text: fullname.toUpperCase(),
           })
         })
 
-        it('should contain a caption', function () {
+        it('should contain a caption', function() {
           expect(transformedResponse).to.have.property('caption')
           expect(transformedResponse.caption).to.deep.equal({
             text: `__translated__`,
           })
         })
 
-        it('should contain correct meta data', function () {
+        it('should contain correct meta data', function() {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta).to.deep.equal({
             items: [
@@ -61,7 +61,7 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain correct tags', function () {
+        it('should contain correct tags', function() {
           const moveId = mockMove.id
           expect(transformedResponse).to.have.property('tags')
           expect(transformedResponse.tags).to.deep.equal({
@@ -89,39 +89,39 @@ describe('Presenters', function () {
         })
       })
 
-      describe('translations', function () {
-        it('should translate date of birth label', function () {
-          expect(i18n.t.firstCall).to.be.calledWithExactly(
+      describe('translations', function() {
+        it('should translate age label', function() {
+          expect(i18n.t.firstCall).to.be.calledWithExactly('age')
+        })
+
+        it('should translate date of birth label', function() {
+          expect(i18n.t.secondCall).to.be.calledWithExactly(
             'fields::date_of_birth.label'
           )
         })
 
-        it('should translate age label', function () {
-          expect(i18n.t.secondCall).to.be.calledWithExactly('age')
-        })
-
-        it('should translate gender label', function () {
+        it('should translate gender label', function() {
           expect(i18n.t.thirdCall).to.be.calledWithExactly(
             'fields::gender.label'
           )
         })
 
-        it('should translate move reference', function () {
+        it('should translate move reference', function() {
           expect(i18n.t.getCall(3)).to.be.calledWithExactly(
             'moves::move_reference',
             { reference: mockMove.reference }
           )
         })
 
-        it('should translate correct number of times', function () {
+        it('should translate correct number of times', function() {
           expect(i18n.t).to.be.callCount(4)
         })
       })
 
-      context('when meta contains all falsey values', function () {
+      context('when meta contains all falsey values', function() {
         let transformedResponse
 
-        beforeEach(function () {
+        beforeEach(function() {
           transformedResponse = moveToCardComponent({
             person: {
               last_name: 'Jones',
@@ -134,16 +134,16 @@ describe('Presenters', function () {
           })
         })
 
-        it('should correctly remove false items', function () {
+        it('should correctly remove false items', function() {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta.items.length).to.equal(0)
         })
       })
 
-      context('when meta contains some falsey values', function () {
+      context('when meta contains some falsey values', function() {
         let transformedResponse
 
-        beforeEach(function () {
+        beforeEach(function() {
           transformedResponse = moveToCardComponent({
             person: {
               last_name: 'Jones',
@@ -156,7 +156,7 @@ describe('Presenters', function () {
           })
         })
 
-        it('should correctly remove false items', function () {
+        it('should correctly remove false items', function() {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta.items.length).to.equal(1)
           expect(transformedResponse.meta).to.deep.equal({
@@ -170,10 +170,10 @@ describe('Presenters', function () {
         })
       })
 
-      context('with assessment answers', function () {
+      context('with assessment answers', function() {
         let transformedResponse, mockMove
 
-        beforeEach(function () {
+        beforeEach(function() {
           mockMove = {
             id: 'a81974e4-e1a7-4cee-81e9-b4ea2ab6d158',
             person: {
@@ -258,12 +258,12 @@ describe('Presenters', function () {
           transformedResponse = moveToCardComponent(mockMove)
         })
 
-        it('should correctly filter', function () {
+        it('should correctly filter', function() {
           expect(transformedResponse).to.have.property('tags')
           expect(transformedResponse.tags.items.length).to.equal(5)
         })
 
-        it('should correctly map and sort', function () {
+        it('should correctly map and sort', function() {
           expect(transformedResponse.tags.items).to.deep.equal([
             {
               href: `/move/${mockMove.id}#concealed_items`,

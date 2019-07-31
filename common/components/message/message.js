@@ -1,21 +1,21 @@
-function Message ($module) {
+function Message($module) {
   this.cacheEls($module)
 }
 
 Message.prototype = {
-  init: function () {
+  init: function() {
     this.render()
   },
 
-  cacheEls: function ($module) {
+  cacheEls: function($module) {
     this.$module = $module
   },
 
-  render: function () {
+  render: function() {
     this.appendClose(this.$module)
   },
 
-  appendClose: function ($element) {
+  appendClose: function($element) {
     if ($element.className.indexOf('error') !== -1) {
       return
     }
@@ -25,7 +25,7 @@ Message.prototype = {
     link.innerHTML = 'Dismiss'
     link.className = 'app-message__close'
     link.href = '#'
-    link.onclick = (e) => {
+    link.onclick = e => {
       e.preventDefault()
       this.removeElement($element)
     }
@@ -33,7 +33,7 @@ Message.prototype = {
     $element.appendChild(link)
   },
 
-  removeElement: function (element) {
+  removeElement: function(element) {
     const parent = element.parentNode
 
     parent.removeChild(element)

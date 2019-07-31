@@ -1,6 +1,6 @@
 const { addDays, getTime } = require('date-fns')
 
-function bypassAuth (bypass) {
+function bypassAuth(bypass) {
   return (req, res, next) => {
     if (bypass) {
       const future = getTime(addDays(new Date(), 30))
@@ -10,7 +10,7 @@ function bypassAuth (bypass) {
   }
 }
 
-function setUserPermissions (permissions) {
+function setUserPermissions(permissions) {
   return (req, res, next) => {
     if (permissions) {
       req.session.user = req.session.user || {}

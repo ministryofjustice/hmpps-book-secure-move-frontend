@@ -1,6 +1,6 @@
 const dependencies = require('./dependencies')
 
-function _healthcheck (dependencies) {
+function _healthcheck(dependencies) {
   const promiseArray = dependencies.map(dependency => {
     return dependency
       .healthcheck()
@@ -19,7 +19,7 @@ function _healthcheck (dependencies) {
   return Promise.all(promiseArray)
 }
 
-async function checkDependencies (req, res, next) {
+async function checkDependencies(req, res, next) {
   try {
     res.dependencies = await _healthcheck(dependencies)
     next()

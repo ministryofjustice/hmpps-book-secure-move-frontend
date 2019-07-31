@@ -11,10 +11,7 @@ const logger = createLogger({
   ),
   transports: [
     new transports.Console({
-      format: format.combine(
-        format.colorize(),
-        format.simple()
-      ),
+      format: format.combine(format.colorize(), format.simple()),
     }),
   ],
 })
@@ -27,15 +24,19 @@ if (!IS_DEV) {
       format: 'YYYY-MM-DD HH:mm:ss',
     })
   )
-  logger.add(new transports.File({
-    format: prodFormat,
-    filename: 'quick-start-combined.log',
-  }))
-  logger.add(new transports.File({
-    format: prodFormat,
-    filename: 'quick-start-error.log',
-    level: 'error',
-  }))
+  logger.add(
+    new transports.File({
+      format: prodFormat,
+      filename: 'quick-start-combined.log',
+    })
+  )
+  logger.add(
+    new transports.File({
+      format: prodFormat,
+      filename: 'quick-start-error.log',
+      level: 'error',
+    })
+  )
 }
 
 module.exports = logger

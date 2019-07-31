@@ -27,20 +27,20 @@ const questionsMock = [
   },
 ]
 
-describe('Move controllers', function () {
-  describe('Assessment controller', function () {
-    describe('#configure()', function () {
+describe('Move controllers', function() {
+  describe('Assessment controller', function() {
+    describe('#configure()', function() {
       let nextSpy
 
-      beforeEach(function () {
+      beforeEach(function() {
         sinon.spy(FormController.prototype, 'configure')
         nextSpy = sinon.spy()
       })
 
-      context('when reference resolves', function () {
+      context('when reference resolves', function() {
         let req
 
-        beforeEach(async function () {
+        beforeEach(async function() {
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
           })
@@ -68,7 +68,7 @@ describe('Move controllers', function () {
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('should update risk field items', function () {
+        it('should update risk field items', function() {
           expect(req.form.options.fields.risk).to.deep.equal({
             name: 'risk',
             items: [
@@ -88,24 +88,24 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should not update name field', function () {
+        it('should not update name field', function() {
           expect(req.form.options.fields.first_names).to.deep.equal({
             name: 'first_names',
           })
         })
 
-        it('should call parent configure method', function () {
+        it('should call parent configure method', function() {
           expect(
             FormController.prototype.configure
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
-        it('should not throw an error', function () {
+        it('should not throw an error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when getReferenceData returns an error', function () {
+      context('when getReferenceData returns an error', function() {
         const errorMock = new Error('Problem')
         const req = {
           form: {
@@ -120,7 +120,7 @@ describe('Move controllers', function () {
           },
         }
 
-        beforeEach(async function () {
+        beforeEach(async function() {
           sinon
             .stub(referenceDataService, 'getAssessmentQuestions')
             .rejects(errorMock)
@@ -128,25 +128,25 @@ describe('Move controllers', function () {
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function () {
+        it('should call next with the error', function() {
           expect(nextSpy).to.be.calledWith(errorMock)
         })
 
-        it('should call next once', function () {
+        it('should call next once', function() {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not mutate request object', function () {
+        it('should not mutate request object', function() {
           expect(req).to.deep.equal(req)
         })
 
-        it('should not call parent configure method', function () {
+        it('should not call parent configure method', function() {
           expect(FormController.prototype.configure).not.to.be.called
         })
       })
     })
 
-    describe('#saveValues()', function () {
+    describe('#saveValues()', function() {
       let nextSpy
       const mockFields = {
         risk: {
@@ -171,15 +171,15 @@ describe('Move controllers', function () {
         },
       }
 
-      beforeEach(function () {
+      beforeEach(function() {
         sinon.spy(FormController.prototype, 'saveValues')
         nextSpy = sinon.spy()
       })
 
-      context('with no previous session values', function () {
+      context('with no previous session values', function() {
         let req
 
-        beforeEach(function () {
+        beforeEach(function() {
           req = {
             form: {
               options: {
@@ -200,7 +200,7 @@ describe('Move controllers', function () {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should save values on assessment property', function () {
+        it('should save values on assessment property', function() {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {
@@ -211,7 +211,7 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should flatten values on assessment_answers property', function () {
+        it('should flatten values on assessment_answers property', function() {
           expect(req.form.values.person.assessment_answers).to.deep.equal([
             {
               comments: 'Additional comments',
@@ -220,21 +220,21 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should call parent configure method', function () {
+        it('should call parent configure method', function() {
           expect(
             FormController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
-        it('should not throw an error', function () {
+        it('should not throw an error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with previous session values', function () {
+      context('with previous session values', function() {
         let req, sessionGetStub
 
-        beforeEach(function () {
+        beforeEach(function() {
           sessionGetStub = sinon.stub()
           req = {
             form: {
@@ -275,7 +275,7 @@ describe('Move controllers', function () {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should overwrite values for current field', function () {
+        it('should overwrite values for current field', function() {
           expect(req.form.values.assessment.risk).to.deep.equal([
             {
               comments: 'Additional comments',
@@ -284,7 +284,7 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should not mutate other assessment fields', function () {
+        it('should not mutate other assessment fields', function() {
           expect(req.form.values.assessment.health).to.deep.equal([
             {
               comments: '',
@@ -293,7 +293,7 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should flatten values on assessment_answers property', function () {
+        it('should flatten values on assessment_answers property', function() {
           expect(req.form.values.person.assessment_answers).to.deep.equal([
             {
               comments: 'Additional comments',
@@ -306,21 +306,21 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should call parent configure method', function () {
+        it('should call parent configure method', function() {
           expect(
             FormController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
 
-        it('should not throw an error', function () {
+        it('should not throw an error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with empty values in form', function () {
+      context('with empty values in form', function() {
         let req
 
-        beforeEach(function () {
+        beforeEach(function() {
           req = {
             form: {
               options: {
@@ -341,7 +341,7 @@ describe('Move controllers', function () {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should remove empty values', function () {
+        it('should remove empty values', function() {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {
@@ -352,7 +352,7 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should flatten values on assessment_answers property', function () {
+        it('should flatten values on assessment_answers property', function() {
           expect(req.form.values.person.assessment_answers).to.deep.equal([
             {
               comments: '',
@@ -362,10 +362,10 @@ describe('Move controllers', function () {
         })
       })
 
-      context('with multiple values in form', function () {
+      context('with multiple values in form', function() {
         let req
 
-        beforeEach(function () {
+        beforeEach(function() {
           req = {
             form: {
               options: {
@@ -392,7 +392,7 @@ describe('Move controllers', function () {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should include all values', function () {
+        it('should include all values', function() {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {
@@ -411,7 +411,7 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should includes all flatten values on assessment_answers property', function () {
+        it('should includes all flatten values on assessment_answers property', function() {
           expect(req.form.values.person.assessment_answers.length).to.equal(3)
           expect(req.form.values.person.assessment_answers).to.deep.equal([
             {

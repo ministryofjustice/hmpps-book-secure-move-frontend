@@ -3,7 +3,7 @@ const { startOfTomorrow } = require('date-fns')
 
 const { check } = require('./permissions')
 
-module.exports = function setLocals (req, res, next) {
+module.exports = function setLocals(req, res, next) {
   const locals = {
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),

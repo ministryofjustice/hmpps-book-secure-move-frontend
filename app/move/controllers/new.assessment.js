@@ -6,7 +6,7 @@ const referenceDataService = require('../../../common/services/reference-data')
 const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class AssessmentController extends FormController {
-  async configure (req, res, next) {
+  async configure(req, res, next) {
     try {
       const { fields } = req.form.options
 
@@ -35,7 +35,7 @@ class AssessmentController extends FormController {
     }
   }
 
-  saveValues (req, res, next) {
+  saveValues(req, res, next) {
     const person = req.sessionModel.get('person') || {}
     const assessment = req.sessionModel.get('assessment') || {}
     const { fields } = req.form.options

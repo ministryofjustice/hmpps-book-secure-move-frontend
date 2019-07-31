@@ -2,7 +2,7 @@ const { cloneDeep, fromPairs, get, set } = require('lodash')
 
 const componentService = require('../services/component')
 
-function mapReferenceDataToOption ({ id, title, key, conditional }) {
+function mapReferenceDataToOption({ id, title, key, conditional }) {
   const option = {
     value: id,
     text: title,
@@ -19,14 +19,14 @@ function mapReferenceDataToOption ({ id, title, key, conditional }) {
   return option
 }
 
-function mapAssessmentQuestionToConditionalField (item) {
+function mapAssessmentQuestionToConditionalField(item) {
   return {
     ...item,
     conditional: `${item.category}__${item.key}`,
   }
 }
 
-function renderConditionalFields ([key, field], index, obj) {
+function renderConditionalFields([key, field], index, obj) {
   if (!field.items) {
     return [key, field]
   }
@@ -54,7 +54,7 @@ function renderConditionalFields ([key, field], index, obj) {
   ]
 }
 
-function setFieldValue (values) {
+function setFieldValue(values) {
   return ([key, field]) => {
     if (!field.items) {
       return [key, { ...field, value: values[key] }]
@@ -85,7 +85,7 @@ function setFieldValue (values) {
   }
 }
 
-function setFieldError (errors, translate) {
+function setFieldError(errors, translate) {
   return ([key, field]) => {
     const fieldError = errors[key]
 
@@ -108,7 +108,7 @@ function setFieldError (errors, translate) {
   }
 }
 
-function translateField (translate) {
+function translateField(translate) {
   return ([key, field]) => {
     const translated = cloneDeep(field)
     const translationPaths = [
@@ -139,7 +139,7 @@ function translateField (translate) {
   }
 }
 
-function insertInitialOption (items, label = 'option') {
+function insertInitialOption(items, label = 'option') {
   const initialOption = {
     text: `--- Choose ${label} ---`,
   }

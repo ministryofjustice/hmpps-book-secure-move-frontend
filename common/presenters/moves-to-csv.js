@@ -4,8 +4,8 @@ const { find, flatten, some } = require('lodash')
 const referenceDataServce = require('../services/reference-data')
 const i18n = require('../../config/i18n')
 
-function _getIdentifier (identifier) {
-  return function (row) {
+function _getIdentifier(identifier) {
+  return function(row) {
     const item = find(row.person.identifiers, {
       identifier_type: identifier,
     })
@@ -13,7 +13,7 @@ function _getIdentifier (identifier) {
   }
 }
 
-function _mapAnswer (question) {
+function _mapAnswer(question) {
   const label = question.title
   const key = question.key
   return [
@@ -36,7 +36,7 @@ function _mapAnswer (question) {
   ]
 }
 
-function _translateField (field) {
+function _translateField(field) {
   const label = Array.isArray(field.label)
     ? i18n.t(...field.label)
     : i18n.t(field.label)
@@ -110,7 +110,7 @@ const person = [
   },
 ]
 
-module.exports = function movesToCSV (moves) {
+module.exports = function movesToCSV(moves) {
   return referenceDataServce.getAssessmentQuestions().then(questions => {
     const assessmentAnswers = questions.map(_mapAnswer)
     const fields = flatten([...move, ...person, ...assessmentAnswers]).map(

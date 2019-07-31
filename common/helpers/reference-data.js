@@ -1,7 +1,7 @@
-function filterDisabled ({ currentValue = null, createdOn } = {}) {
+function filterDisabled({ currentValue = null, createdOn } = {}) {
   const createdOnTime = Date.parse(createdOn) || Date.now()
 
-  return function (item) {
+  return function(item) {
     if (!item.disabled_at) {
       return true
     }

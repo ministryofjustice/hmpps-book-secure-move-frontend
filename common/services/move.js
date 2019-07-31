@@ -2,7 +2,7 @@ const { mapValues } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
-function format (data) {
+function format(data) {
   const relationships = ['to_location', 'from_location']
 
   return mapValues(data, (value, key) => {
@@ -13,7 +13,7 @@ function format (data) {
   })
 }
 
-function getRequestedMovesByDateAndLocation (moveDate, locationId) {
+function getRequestedMovesByDateAndLocation(moveDate, locationId) {
   return apiClient
     .findAll('move', {
       'filter[status]': 'requested',
@@ -24,17 +24,15 @@ function getRequestedMovesByDateAndLocation (moveDate, locationId) {
     .then(response => response.data)
 }
 
-function getMoveById (id) {
+function getMoveById(id) {
   return apiClient.find('move', id)
 }
 
-function create (data) {
-  return apiClient
-    .create('move', format(data))
-    .then(response => response.data)
+function create(data) {
+  return apiClient.create('move', format(data)).then(response => response.data)
 }
 
-function cancel (id) {
+function cancel(id) {
   if (!id) {
     return
   }

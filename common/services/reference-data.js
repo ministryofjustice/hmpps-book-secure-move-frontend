@@ -2,15 +2,15 @@ const { flattenDeep, sortBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
-function getGenders () {
+function getGenders() {
   return apiClient.findAll('gender').then(response => response.data)
 }
 
-function getEthnicities () {
+function getEthnicities() {
   return apiClient.findAll('ethnicity').then(response => response.data)
 }
 
-function getAssessmentQuestions (category) {
+function getAssessmentQuestions(category) {
   return apiClient
     .findAll('assessment_question', {
       'filter[category]': category,
@@ -18,7 +18,7 @@ function getAssessmentQuestions (category) {
     .then(response => response.data)
 }
 
-function getLocations (type, combinedData, page = 1) {
+function getLocations(type, combinedData, page = 1) {
   return apiClient
     .findAll('location', {
       page,
@@ -39,11 +39,11 @@ function getLocations (type, combinedData, page = 1) {
     })
 }
 
-function getLocationById (id) {
+function getLocationById(id) {
   return apiClient.find('location', id).then(response => response.data)
 }
 
-function getLocationsById (locations = []) {
+function getLocationsById(locations = []) {
   const locationPromises = locations.map(locationId => {
     return getLocationById(locationId).catch(() => false)
   })

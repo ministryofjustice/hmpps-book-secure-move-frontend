@@ -1,4 +1,4 @@
-function _mapAnswer ({ title, comments }) {
+function _mapAnswer({ title, comments }) {
   return {
     key: {
       text: title,
@@ -9,8 +9,8 @@ function _mapAnswer ({ title, comments }) {
   }
 }
 
-function _filterAnswer (category) {
-  return function (answer) {
+function _filterAnswer(category) {
+  return function(answer) {
     if (!category) {
       return true
     }
@@ -18,10 +18,11 @@ function _filterAnswer (category) {
   }
 }
 
-module.exports = function assessmentToSummaryListComponent (answers, filterCategory) {
-  const rows = answers
-    .filter(_filterAnswer(filterCategory))
-    .map(_mapAnswer)
+module.exports = function assessmentToSummaryListComponent(
+  answers,
+  filterCategory
+) {
+  const rows = answers.filter(_filterAnswer(filterCategory)).map(_mapAnswer)
 
   return {
     rows,

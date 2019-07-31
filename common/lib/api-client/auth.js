@@ -5,34 +5,38 @@ const { API } = require('../../../config')
 let accessToken = null
 let accessTokenExpiry = null
 
-function getCurrentTime () {
+function getCurrentTime() {
   return Math.floor(new Date() / 1000)
 }
 
-function isAuthExpired () {
+function isAuthExpired() {
   const expiry = module.exports.getAccessTokenExpiry()
   const token = module.exports.getAccessToken()
-  return (!token || !expiry || (expiry <= getCurrentTime()))
+  return !token || !expiry || expiry <= getCurrentTime()
 }
 
-function getAccessToken () {
+function getAccessToken() {
   return accessToken
 }
 
-function getAccessTokenExpiry () {
+function getAccessTokenExpiry() {
   return accessTokenExpiry
 }
 
-async function refreshAccessToken () {
-  const response = await axios.post(API.AUTH_URL, {}, {
-    params: {
-      grant_type: 'client_credentials',
-    },
-    auth: {
-      username: API.CLIENT_ID,
-      password: API.SECRET,
-    },
-  })
+async function refreshAccessToken() {
+  const response = await axios.post(
+    API.AUTH_URL,
+    {},
+    {
+      params: {
+        grant_type: 'client_credentials',
+      },
+      auth: {
+        username: API.CLIENT_ID,
+        password: API.SECRET,
+      },
+    }
+  )
 
   accessToken = response.data.access_token
   accessTokenExpiry = response.data.expires_in + getCurrentTime()
@@ -42,7 +46,7 @@ async function refreshAccessToken () {
 
 const devourAuthMiddleware = {
   name: 'oauth-client-credentials',
-  req: async function (payload) {
+  req: async function(payload) {
     if (isAuthExpired()) {
       await refreshAccessToken()
     }

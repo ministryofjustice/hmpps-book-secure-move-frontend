@@ -2,31 +2,31 @@ const { render, getExamples } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('time')
 
-describe('Time component', function () {
-  context('by default', function () {
+describe('Time component', function() {
+  context('by default', function() {
     let $component
 
-    beforeEach(function () {
+    beforeEach(function() {
       const $ = render('time', examples.default)
       $component = $('time')
     })
 
-    it('should render', function () {
+    it('should render', function() {
       expect($component.length).to.equal(1)
     })
 
-    it('should contain a datetime attribute', function () {
+    it('should contain a datetime attribute', function() {
       const $datetimeAttr = $component.attr('datetime')
       expect($datetimeAttr).to.equal('2019-01-10')
     })
 
-    it('should use the datetime as element text', function () {
+    it('should use the datetime as element text', function() {
       expect($component.text().trim()).to.equal('2019-01-10')
     })
   })
 
-  context('with classes', function () {
-    it('should render classes', function () {
+  context('with classes', function() {
+    it('should render classes', function() {
       const $ = render('time', {
         classes: 'custom-class',
       })
@@ -36,10 +36,10 @@ describe('Time component', function () {
     })
   })
 
-  context('with custom text', function () {
+  context('with custom text', function() {
     let $component
 
-    beforeEach(function () {
+    beforeEach(function() {
       const $ = render('time', {
         datetime: '2019-01-10',
         text: 'Today',
@@ -48,12 +48,12 @@ describe('Time component', function () {
       $component = $('time')
     })
 
-    it('should contain a datetime attribute', function () {
+    it('should contain a datetime attribute', function() {
       const $datetimeAttr = $component.attr('datetime')
       expect($datetimeAttr).to.equal('2019-01-10')
     })
 
-    it('should contain custom text', function () {
+    it('should contain custom text', function() {
       expect($component.text().trim()).to.equal('Today')
     })
   })

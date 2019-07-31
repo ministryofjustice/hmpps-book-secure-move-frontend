@@ -18,14 +18,14 @@ var $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()
 
 var $messages = document.querySelectorAll('[data-module="app-message"]')
-nodeListForEach($messages, function ($message) {
+nodeListForEach($messages, function($message) {
   new Message($message).init()
 })
 
 var $autocompletes = document.querySelectorAll(
   '[data-module="app-autocomplete"]'
 )
-nodeListForEach($autocompletes, function ($autocomplete) {
+nodeListForEach($autocompletes, function($autocomplete) {
   accessibleAutocomplete.enhanceSelectElement({
     selectElement: $autocomplete,
     showAllValues: true,

@@ -1,7 +1,7 @@
 const { TAG_CATEGORY_WHITELIST } = require('../../config')
 
-module.exports = function assessmentAnswerToTag (hrefPrefix = '') {
-  return function map ({ key, title, category }) {
+module.exports = function assessmentAnswerToTag(hrefPrefix = '') {
+  return function map({ key, title, category }) {
     const whitelisted = TAG_CATEGORY_WHITELIST[category]
 
     return {

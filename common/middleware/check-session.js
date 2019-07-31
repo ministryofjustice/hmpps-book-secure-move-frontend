@@ -1,4 +1,4 @@
-module.exports = function checkSession (req, res, next) {
+module.exports = function checkSession(req, res, next) {
   if (req.session) {
     return next()
   }

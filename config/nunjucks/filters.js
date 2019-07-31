@@ -8,9 +8,7 @@ const {
   isValid: isValidDate,
 } = require('date-fns')
 
-const {
-  DATE_FORMATS,
-} = require('../index')
+const { DATE_FORMATS } = require('../index')
 
 /**
  * Formats a date into the desired string format
@@ -22,13 +20,15 @@ const {
  * @example {{ "2019-02-21" | formatDate }}
  * @example {{ "2019-02-21" | formatDate("DD/MM/YY") }}
  */
-function formatDate (value, formattedDateStr = DATE_FORMATS.LONG) {
+function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   if (!value) {
     return value
   }
   const parsedDate = parseDate(value)
 
-  if (!isValidDate(parsedDate)) { return value }
+  if (!isValidDate(parsedDate)) {
+    return value
+  }
   return format(parsedDate, formattedDateStr)
 }
 
@@ -40,7 +40,7 @@ function formatDate (value, formattedDateStr = DATE_FORMATS.LONG) {
  *
  * @example {{ "2019-02-21" | formatDateWithDay }}
  */
-function formatDateWithDay (value) {
+function formatDateWithDay(value) {
   return formatDate(value, DATE_FORMATS.WITH_DAY)
 }
 
@@ -55,7 +55,10 @@ function formatDateWithDay (value) {
  * @example {{ "2019-02-21" | formatDateAsRelativeDay }}
  * @example {{ "2019-02-21" | formatDateAsRelativeDay("DD/MM/YYYY") }}
  */
-function formatDateAsRelativeDay (value, formattedDateStr = DATE_FORMATS.WITH_DAY) {
+function formatDateAsRelativeDay(
+  value,
+  formattedDateStr = DATE_FORMATS.WITH_DAY
+) {
   if (isToday(value)) {
     return 'Today'
   }
@@ -77,10 +80,12 @@ function formatDateAsRelativeDay (value, formattedDateStr = DATE_FORMATS.WITH_DA
  * @return {String} an age as a string
  * @example {{ "2000-02-21" | calculateAge }}
  */
-function calculateAge (value) {
+function calculateAge(value) {
   const parsedDate = parseDate(value)
 
-  if (!isValidDate(parsedDate)) { return value }
+  if (!isValidDate(parsedDate)) {
+    return value
+  }
   return differenceInYears(new Date(), parsedDate)
 }
 
@@ -91,7 +96,7 @@ function calculateAge (value) {
  * @return {String} a formatted time as string
  * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
  */
-function formatTime (value) {
+function formatTime(value) {
   const parsedDate = parseDate(value)
 
   if (!value || !isValidDate(parsedDate)) {

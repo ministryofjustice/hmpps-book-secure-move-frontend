@@ -5,7 +5,7 @@ const referenceDataService = require('../../../common/services/reference-data')
 const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class PersonalDetailsController extends FormController {
-  async configure (req, res, next) {
+  async configure(req, res, next) {
     try {
       const genders = await referenceDataService.getGenders()
       const ethnicities = await referenceDataService.getEthnicities()
@@ -28,7 +28,7 @@ class PersonalDetailsController extends FormController {
     }
   }
 
-  async saveValues (req, res, next) {
+  async saveValues(req, res, next) {
     try {
       req.form.values.person = await personService.create(req.form.values)
       super.saveValues(req, res, next)

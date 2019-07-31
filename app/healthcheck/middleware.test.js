@@ -17,17 +17,17 @@ const unsuccessfulDependency = {
   },
 }
 
-describe('Healthcheck middleware', function () {
-  describe('#checkDependencies()', function () {
+describe('Healthcheck middleware', function() {
+  describe('#checkDependencies()', function() {
     let resMock, nextSpy
 
-    beforeEach(function () {
+    beforeEach(function() {
       resMock = {}
       nextSpy = sinon.spy()
     })
 
-    context('when check is successful', function () {
-      beforeEach(async function () {
+    context('when check is successful', function() {
+      beforeEach(async function() {
         const middleware = proxyquire('./middleware', {
           './dependencies': [successfulDependency],
         })
@@ -35,7 +35,7 @@ describe('Healthcheck middleware', function () {
         await middleware.checkDependencies({}, resMock, nextSpy)
       })
 
-      it('should set dependencies property', function () {
+      it('should set dependencies property', function() {
         expect(resMock).to.contain.property('dependencies')
         expect(resMock.dependencies).to.deep.equal([
           {
@@ -45,13 +45,13 @@ describe('Healthcheck middleware', function () {
         ])
       })
 
-      it('should call next', function () {
+      it('should call next', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when check fails', function () {
-      beforeEach(async function () {
+    context('when check fails', function() {
+      beforeEach(async function() {
         const middleware = proxyquire('./middleware', {
           './dependencies': [unsuccessfulDependency],
         })
@@ -59,7 +59,7 @@ describe('Healthcheck middleware', function () {
         await middleware.checkDependencies({}, resMock, nextSpy)
       })
 
-      it('should set dependencies property', function () {
+      it('should set dependencies property', function() {
         expect(resMock).to.contain.property('dependencies')
         expect(resMock.dependencies).to.deep.equal([
           {
@@ -70,13 +70,13 @@ describe('Healthcheck middleware', function () {
         ])
       })
 
-      it('should call next', function () {
+      it('should call next', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when something errors', function () {
-      beforeEach(async function () {
+    context('when something errors', function() {
+      beforeEach(async function() {
         const middleware = proxyquire('./middleware', {
           './dependencies': {},
         })
@@ -84,11 +84,11 @@ describe('Healthcheck middleware', function () {
         await middleware.checkDependencies({}, resMock, nextSpy)
       })
 
-      it('should not set dependencies property', function () {
+      it('should not set dependencies property', function() {
         expect(resMock).not.to.contain.property('dependencies')
       })
 
-      it('should call next', function () {
+      it('should call next', function() {
         expect(nextSpy).to.be.calledOnce
         expect(nextSpy.args[0][0]).to.be.an.instanceOf(Error)
         expect(nextSpy.args[0][0].message).to.equal(

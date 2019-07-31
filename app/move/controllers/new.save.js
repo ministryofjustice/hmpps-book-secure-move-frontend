@@ -6,7 +6,7 @@ const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')
 
 class SaveController extends FormController {
-  async saveValues (req, res, next) {
+  async saveValues(req, res, next) {
     try {
       const data = omit(req.sessionModel.toJSON(), [
         'csrf-secret',
@@ -25,7 +25,7 @@ class SaveController extends FormController {
     }
   }
 
-  successHandler (req, res) {
+  successHandler(req, res) {
     const { date, person, to_location: toLocation } = req.sessionModel.get(
       'move'
     )

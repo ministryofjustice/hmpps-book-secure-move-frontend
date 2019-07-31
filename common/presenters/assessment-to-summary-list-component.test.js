@@ -1,23 +1,27 @@
 const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
 
-const { data: mockPerson } = require('../../test/fixtures/api-client/person.post.deserialized.json')
+const {
+  data: mockPerson,
+} = require('../../test/fixtures/api-client/person.post.deserialized.json')
 
-describe('Presenters', function () {
-  describe('#assessmentToSummaryListComponent()', function () {
-    context('when provided with a mock person object', function () {
+describe('Presenters', function() {
+  describe('#assessmentToSummaryListComponent()', function() {
+    context('when provided with a mock person object', function() {
       let transformedResponse
 
-      beforeEach(function () {
-        transformedResponse = assessmentToSummaryListComponent(mockPerson.assessment_answers)
+      beforeEach(function() {
+        transformedResponse = assessmentToSummaryListComponent(
+          mockPerson.assessment_answers
+        )
       })
 
-      describe('response', function () {
-        it('should contain rows property', function () {
+      describe('response', function() {
+        it('should contain rows property', function() {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(8)
         })
 
-        it('should format rows correctly', function () {
+        it('should format rows correctly', function() {
           expect(transformedResponse.rows).to.deep.equal([
             {
               key: { text: 'Violent' },
@@ -56,21 +60,24 @@ describe('Presenters', function () {
       })
     })
 
-    context('when filter category is specific', function () {
+    context('when filter category is specific', function() {
       let transformedResponse
 
-      beforeEach(function () {
-        transformedResponse = assessmentToSummaryListComponent(mockPerson.assessment_answers, 'court')
+      beforeEach(function() {
+        transformedResponse = assessmentToSummaryListComponent(
+          mockPerson.assessment_answers,
+          'court'
+        )
       })
 
-      describe('response', function () {
-        describe('response', function () {
-          it('should only return filtered categories', function () {
+      describe('response', function() {
+        describe('response', function() {
+          it('should only return filtered categories', function() {
             expect(transformedResponse).to.have.property('rows')
             expect(transformedResponse.rows.length).to.equal(2)
           })
 
-          it('should format filtered rows correctly', function () {
+          it('should format filtered rows correctly', function() {
             expect(transformedResponse.rows).to.deep.equal([
               {
                 key: { text: 'Solicitor or other legal representation' },

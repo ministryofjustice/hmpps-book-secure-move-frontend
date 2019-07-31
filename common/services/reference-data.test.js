@@ -21,19 +21,19 @@ const locationsPage2Serialized = require('../../test/fixtures/api-client/referen
 const locationDeserialized = require('../../test/fixtures/api-client/reference.location.deserialized.json')
 const locationSerialized = require('../../test/fixtures/api-client/reference.location.serialized.json')
 
-describe('Reference Service', function () {
-  beforeEach(function () {
+describe('Reference Service', function() {
+  beforeEach(function() {
     sinon.stub(auth, 'getAccessToken').returns('test')
     sinon
       .stub(auth, 'getAccessTokenExpiry')
       .returns(Math.floor(new Date() / 1000) + 100)
   })
 
-  describe('#getGenders()', function () {
-    context('when request returns 200', function () {
+  describe('#getGenders()', function() {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get('/reference/genders')
           .reply(200, gendersSerialized)
@@ -41,22 +41,22 @@ describe('Reference Service', function () {
         response = await getGenders()
       })
 
-      it('should call API', function () {
+      it('should call API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should return list of genders', function () {
+      it('should return list of genders', function() {
         expect(response.length).to.deep.equal(gendersDeserialized.data.length)
         expect(response).to.deep.equal(gendersDeserialized.data)
       })
     })
   })
 
-  describe('#getEthnicities()', function () {
-    context('when request returns 200', function () {
+  describe('#getEthnicities()', function() {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get('/reference/ethnicities')
           .reply(200, ethnicitiesSerialized)
@@ -64,11 +64,11 @@ describe('Reference Service', function () {
         response = await getEthnicities()
       })
 
-      it('should call API', function () {
+      it('should call API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should return list of ethnicities', function () {
+      it('should return list of ethnicities', function() {
         expect(response.length).to.deep.equal(
           ethnicitiesDeserialized.data.length
         )
@@ -77,11 +77,11 @@ describe('Reference Service', function () {
     })
   })
 
-  describe('#getAssessmentQuestions()', function () {
-    context('when request returns 200', function () {
+  describe('#getAssessmentQuestions()', function() {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get('/reference/assessment_questions')
           .reply(200, assessmentSerialized)
@@ -89,27 +89,27 @@ describe('Reference Service', function () {
         response = await getAssessmentQuestions()
       })
 
-      it('should call API', function () {
+      it('should call API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should return correct number of questions', function () {
+      it('should return correct number of questions', function() {
         expect(response.length).to.deep.equal(
           assessmentDeserialized.data.length
         )
       })
 
-      it('should deserialize assessment questions', function () {
+      it('should deserialize assessment questions', function() {
         expect(response).to.deep.equal(assessmentDeserialized.data)
       })
     })
   })
 
-  describe('#getLocations()', function () {
-    context('when request returns 200', function () {
+  describe('#getLocations()', function() {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get('/reference/locations')
           .query({ page: '1', per_page: '100' })
@@ -123,22 +123,22 @@ describe('Reference Service', function () {
         response = await getLocations()
       })
 
-      it('should call API', function () {
+      it('should call API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should return a full list of locations', function () {
+      it('should return a full list of locations', function() {
         expect(response.length).to.deep.equal(locationsDeserialized.data.length)
         expect(response).to.deep.equal(locationsDeserialized.data)
       })
     })
   })
 
-  describe('#getLocationById()', function () {
-    context('when request returns 200', function () {
+  describe('#getLocationById()', function() {
+    context('when request returns 200', function() {
       let location
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get(`/reference/locations/${locationDeserialized.data.id}`)
           .reply(200, locationSerialized)
@@ -146,21 +146,21 @@ describe('Reference Service', function () {
         location = await getLocationById(locationDeserialized.data.id)
       })
 
-      it('should get location from API', function () {
+      it('should get location from API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain location with correct data', function () {
+      it('should contain location with correct data', function() {
         expect(location).to.deep.equal(locationDeserialized.data)
       })
     })
   })
 
-  describe('#getLocationsById()', function () {
-    context('when request returns 200', function () {
+  describe('#getLocationsById()', function() {
+    context('when request returns 200', function() {
       let locations
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get(`/reference/locations/1`)
           .reply(200, locationSerialized)
@@ -174,11 +174,11 @@ describe('Reference Service', function () {
         locations = await getLocationsById(['1', '2', '3'])
       })
 
-      it('should get location from API', function () {
+      it('should get location from API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain location with correct data', function () {
+      it('should contain location with correct data', function() {
         expect(locations).to.deep.equal([
           locationDeserialized.data,
           locationDeserialized.data,
@@ -187,10 +187,10 @@ describe('Reference Service', function () {
       })
     })
 
-    context('when locations are not found', function () {
+    context('when locations are not found', function() {
       let locations
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get(`/reference/locations/1`)
           .reply(200, locationSerialized)
@@ -207,11 +207,11 @@ describe('Reference Service', function () {
         locations = await getLocationsById(['1', '2', '3', '4'])
       })
 
-      it('should get location from API', function () {
+      it('should get location from API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should filter out locations', function () {
+      it('should filter out locations', function() {
         expect(locations).to.deep.equal([
           locationDeserialized.data,
           locationDeserialized.data,
@@ -219,14 +219,14 @@ describe('Reference Service', function () {
       })
     })
 
-    context('when called with empty locations', function () {
+    context('when called with empty locations', function() {
       let locations
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         locations = await getLocationsById()
       })
 
-      it('should return empty array', function () {
+      it('should return empty array', function() {
         expect(locations).to.deep.equal([])
       })
     })

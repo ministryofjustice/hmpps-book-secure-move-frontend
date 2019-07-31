@@ -6,57 +6,57 @@ const fieldHelpers = require('../../../common/helpers/field')
 
 const controller = new Controller({ route: '/' })
 
-describe('Move controllers', function () {
-  describe('Form', function () {
-    describe('#middlewareChecks()', function () {
-      beforeEach(function () {
+describe('Move controllers', function() {
+  describe('Form', function() {
+    describe('#middlewareChecks()', function() {
+      beforeEach(function() {
         sinon.stub(FormController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
 
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function () {
+      it('should call parent method', function() {
         expect(FormController.prototype.middlewareChecks).to.have.been
           .calledOnce
       })
 
-      it('should call check current location method', function () {
+      it('should call check current location method', function() {
         expect(controller.use).to.have.been.calledWith(
           controller.checkCurrentLocation
         )
       })
     })
 
-    describe('#checkCurrentLocation()', function () {
+    describe('#checkCurrentLocation()', function() {
       let req, nextSpy
 
-      beforeEach(function () {
+      beforeEach(function() {
         nextSpy = sinon.spy()
         req = {
           session: {},
         }
       })
 
-      context('when current location exists', function () {
-        beforeEach(function () {
+      context('when current location exists', function() {
+        beforeEach(function() {
           req.session = {
             currentLocation: {},
           }
           controller.checkCurrentLocation(req, {}, nextSpy)
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when no current location exists', function () {
-        beforeEach(function () {
+      context('when no current location exists', function() {
+        beforeEach(function() {
           controller.checkCurrentLocation(req, {}, nextSpy)
         })
 
-        it('should call next with error', function () {
+        it('should call next with error', function() {
           expect(nextSpy).to.be.calledOnce
           expect(nextSpy.args[0][0] instanceof Error).to.be.true
           expect(nextSpy.args[0][0].message).to.equal(
@@ -66,26 +66,26 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('#getErrors()', function () {
+    describe('#getErrors()', function() {
       let errors
 
-      beforeEach(function () {
+      beforeEach(function() {
         sinon.stub(FormController.prototype, 'getErrors')
       })
 
-      context('when parent returns empty errors object', function () {
-        beforeEach(function () {
+      context('when parent returns empty errors object', function() {
+        beforeEach(function() {
           FormController.prototype.getErrors.returns({})
           errors = controller.getErrors({}, {})
         })
 
-        it('should set an empty error list property', function () {
+        it('should set an empty error list property', function() {
           expect(errors.errorList.length).to.equal(0)
         })
       })
 
-      context('when parent returns an errors object', function () {
-        beforeEach(function () {
+      context('when parent returns an errors object', function() {
+        beforeEach(function() {
           FormController.prototype.getErrors.returns({
             fieldOne: {
               key: 'fieldOne',
@@ -104,11 +104,11 @@ describe('Move controllers', function () {
           errors = controller.getErrors(reqMock, {})
         })
 
-        it('should contain correct number of errors', function () {
+        it('should contain correct number of errors', function() {
           expect(errors.errorList.length).to.equal(2)
         })
 
-        it('should transform and append messages property', function () {
+        it('should transform and append messages property', function() {
           expect(errors).to.deep.equal({
             fieldOne: {
               key: 'fieldOne',
@@ -135,10 +135,10 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('#errorHandler()', function () {
+    describe('#errorHandler()', function() {
       let errorMock, resMock
 
-      beforeEach(function () {
+      beforeEach(function() {
         errorMock = new Error()
         resMock = {
           redirect: sinon.spy(),
@@ -147,27 +147,27 @@ describe('Move controllers', function () {
         sinon.spy(FormController.prototype, 'errorHandler')
       })
 
-      context('when a redirect property is set', function () {
-        beforeEach(function () {
+      context('when a redirect property is set', function() {
+        beforeEach(function() {
           errorMock.code = 'MISSING_PREREQ'
           errorMock.redirect = '/error-redirect-path/'
 
           controller.errorHandler(errorMock, {}, resMock)
         })
 
-        it('redirect to specificed value', function () {
+        it('redirect to specificed value', function() {
           expect(resMock.redirect).to.be.calledWith(errorMock.redirect)
         })
 
-        it('should not call parent error handler', function () {
+        it('should not call parent error handler', function() {
           expect(FormController.prototype.errorHandler).not.to.be.called
         })
       })
 
-      context('when it returns session timeout error', function () {
+      context('when it returns session timeout error', function() {
         let reqMock
 
-        beforeEach(function () {
+        beforeEach(function() {
           errorMock.code = 'SESSION_TIMEOUT'
           reqMock = {
             baseUrl: '/journey-base-url',
@@ -176,25 +176,25 @@ describe('Move controllers', function () {
           controller.errorHandler(errorMock, reqMock, resMock)
         })
 
-        it('should render the timeout template', function () {
+        it('should render the timeout template', function() {
           expect(resMock.render.args[0][0]).to.equal('form-wizard-timeout')
         })
 
-        it('should pass the correct data to the view', function () {
+        it('should pass the correct data to the view', function() {
           expect(resMock.render.args[0][1]).to.deep.equal({
             journeyBaseUrl: reqMock.baseUrl,
           })
         })
 
-        it('should not call parent error handler', function () {
+        it('should not call parent error handler', function() {
           expect(FormController.prototype.errorHandler).not.to.be.called
         })
       })
 
-      context('when it returns validation error', function () {
+      context('when it returns validation error', function() {
         let nextSpy
 
-        beforeEach(function () {
+        beforeEach(function() {
           errorMock.statusCode = 422
 
           nextSpy = sinon.spy()
@@ -204,15 +204,15 @@ describe('Move controllers', function () {
           controller.errorHandler(errorMock, {}, {}, nextSpy)
         })
 
-        it('should call sentry with scope', function () {
+        it('should call sentry with scope', function() {
           expect(Sentry.withScope).to.be.calledOnce
         })
 
-        it('should send error to sentry', function () {
+        it('should send error to sentry', function() {
           expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
         })
 
-        it('should call parent error handler', function () {
+        it('should call parent error handler', function() {
           expect(FormController.prototype.errorHandler).to.be.calledWith(
             errorMock,
             {},
@@ -222,15 +222,15 @@ describe('Move controllers', function () {
         })
       })
 
-      context('when any other errors are triggered', function () {
+      context('when any other errors are triggered', function() {
         let nextSpy
 
-        beforeEach(function () {
+        beforeEach(function() {
           errorMock.code = 'OTHER_ERROR'
           nextSpy = sinon.spy()
         })
 
-        it('should call parent error handler', function () {
+        it('should call parent error handler', function() {
           controller.errorHandler(errorMock, {}, {}, nextSpy)
 
           expect(FormController.prototype.errorHandler).to.be.calledWith(
@@ -243,10 +243,10 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('#render()', function () {
+    describe('#render()', function() {
       let reqMock, nextSpy
 
-      beforeEach(function () {
+      beforeEach(function() {
         nextSpy = sinon.spy()
         sinon.spy(FormController.prototype, 'render')
         sinon
@@ -291,23 +291,23 @@ describe('Move controllers', function () {
         controller.render(reqMock, {}, nextSpy)
       })
 
-      it('should call renderConditionalFields on each field', function () {
+      it('should call renderConditionalFields on each field', function() {
         expect(fieldHelpers.renderConditionalFields).to.be.calledThrice
       })
 
-      it('should call setFieldValue', function () {
+      it('should call setFieldValue', function() {
         expect(fieldHelpers.setFieldValue).to.be.calledOnce
       })
 
-      it('should call setFieldError', function () {
+      it('should call setFieldError', function() {
         expect(fieldHelpers.setFieldError).to.be.calledOnce
       })
 
-      it('should call translateField', function () {
+      it('should call translateField', function() {
         expect(fieldHelpers.setFieldValue).to.be.calledOnce
       })
 
-      it('should mutate fields object', function () {
+      it('should mutate fields object', function() {
         expect(reqMock.form.options.fields).to.deep.equal({
           field_1: {
             renderConditionalFields: true,
@@ -333,7 +333,7 @@ describe('Move controllers', function () {
         })
       })
 
-      it('should call parent render method', function () {
+      it('should call parent render method', function() {
         expect(FormController.prototype.render).to.be.calledOnceWithExactly(
           reqMock,
           {},

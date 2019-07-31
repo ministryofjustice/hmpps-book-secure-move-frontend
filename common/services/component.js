@@ -9,11 +9,11 @@ const nunjucksConfig = require('../../config/nunjucks')
  * @param {string} macroName
  * @returns {string} returns naming convention based macro name
  */
-function _macroNameToFilename (macroName) {
+function _macroNameToFilename(macroName) {
   return kebabCase(macroName.replace(/^\b(app|govuk)/, ''))
 }
 
-function getComponent (macroName, params) {
+function getComponent(macroName, params) {
   const nunjucksEnv = nunjucksConfig(null, config, configPaths)
   const macroParams = JSON.stringify(params, null, 2)
   const filename = _macroNameToFilename(macroName)

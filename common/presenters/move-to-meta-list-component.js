@@ -4,7 +4,7 @@ const { isToday, isTomorrow, isYesterday } = require('date-fns')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-function _isRelativeDate (date) {
+function _isRelativeDate(date) {
   if (isToday(date) || isTomorrow(date) || isYesterday(date)) {
     return true
   }
@@ -12,12 +12,13 @@ function _isRelativeDate (date) {
   return false
 }
 
-module.exports = function moveToMetaListComponent ({
+module.exports = function moveToMetaListComponent({
   date,
   time_due,
   from_location,
   to_location,
 }) {
+  const dateWithDay = filters.formatDateWithDay(date)
   const items = [
     {
       key: {
@@ -41,10 +42,8 @@ module.exports = function moveToMetaListComponent ({
       },
       value: {
         text: _isRelativeDate(date)
-          ? `${filters.formatDateWithDay(
-            date
-          )} (${filters.formatDateAsRelativeDay(date)})`
-          : filters.formatDateWithDay(date),
+          ? `${dateWithDay} (${filters.formatDateAsRelativeDay(date)})`
+          : dateWithDay,
       },
     },
     {

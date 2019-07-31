@@ -10,11 +10,11 @@ const jsonApi = proxyquire('./json-api', {
 })
 const auth = require('./auth')
 
-describe('Back-end API client', function () {
-  describe('#find', function () {
+describe('Back-end API client', function() {
+  describe('#find', function() {
     let apiMock
 
-    beforeEach(async function () {
+    beforeEach(async function() {
       const accessToken = 'foo'
       const path = 'tests'
       const id = 123
@@ -36,7 +36,7 @@ describe('Back-end API client', function () {
       await jsonApi.find(path, id)
     })
 
-    it('adds the access token to the headers of the request', function () {
+    it('adds the access token to the headers of the request', function() {
       expect(apiMock.isDone()).to.be.true
     })
   })

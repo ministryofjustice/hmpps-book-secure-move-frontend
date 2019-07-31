@@ -1,6 +1,6 @@
 const logger = require('../../config/logger')
 
-function _getMessage (error) {
+function _getMessage(error) {
   if (error.code === 'EBADCSRFTOKEN') {
     return {
       heading: 'errors::tampered_with.heading',
@@ -28,15 +28,15 @@ function _getMessage (error) {
   }
 }
 
-function notFound (req, res, next) {
+function notFound(req, res, next) {
   const error = new Error('Not Found')
   error.statusCode = 404
 
   next(error)
 }
 
-function catchAll (showStackTrace = false) {
-  return function errors (error, req, res, next) {
+function catchAll(showStackTrace = false) {
+  return function errors(error, req, res, next) {
     const statusCode = error.statusCode || 500
 
     if (res.headersSent) {

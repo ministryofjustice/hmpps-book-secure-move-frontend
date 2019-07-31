@@ -1,10 +1,10 @@
 const { get } = require('lodash')
 
-function check (permission, userPermissions = []) {
+function check(permission, userPermissions = []) {
   return userPermissions.includes(permission)
 }
 
-function protectRoute (permission) {
+function protectRoute(permission) {
   return (req, res, next) => {
     const userPermissions = get(req.session, 'user.permissions')
 

@@ -12,10 +12,10 @@ const {
 
 const componentService = require('../services/component')
 
-describe('Form helpers', function () {
-  describe('#mapReferenceDataToOption()', function () {
-    context('by default', function () {
-      it('should return correctly formatted option', function () {
+describe('Form helpers', function() {
+  describe('#mapReferenceDataToOption()', function() {
+    context('by default', function() {
+      it('should return correctly formatted option', function() {
         const option = mapReferenceDataToOption({
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           title: 'Foo',
@@ -28,8 +28,8 @@ describe('Form helpers', function () {
       })
     })
 
-    context('with conditional property', function () {
-      it('should return correctly formatted option', function () {
+    context('with conditional property', function() {
+      it('should return correctly formatted option', function() {
         const option = mapReferenceDataToOption({
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           title: 'Foo',
@@ -44,8 +44,8 @@ describe('Form helpers', function () {
       })
     })
 
-    context('with key property', function () {
-      it('should return correctly formatted option', function () {
+    context('with key property', function() {
+      it('should return correctly formatted option', function() {
         const option = mapReferenceDataToOption({
           key: 'unique_key',
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
@@ -61,11 +61,11 @@ describe('Form helpers', function () {
     })
   })
 
-  describe('#mapAssessmentQuestionToConditionalField()', function () {
-    context('by default', function () {
+  describe('#mapAssessmentQuestionToConditionalField()', function() {
+    context('by default', function() {
       let item, response
 
-      beforeEach(function () {
+      beforeEach(function() {
         item = {
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           category: 'risk',
@@ -75,12 +75,12 @@ describe('Form helpers', function () {
         response = mapAssessmentQuestionToConditionalField(item)
       })
 
-      it('should add conditional property', function () {
+      it('should add conditional property', function() {
         expect(response).to.have.property('conditional')
         expect(response.conditional).to.equal('risk__violent')
       })
 
-      it('should keep original properties', function () {
+      it('should keep original properties', function() {
         expect(response).to.deep.equal({
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           category: 'risk',
@@ -89,7 +89,7 @@ describe('Form helpers', function () {
         })
       })
 
-      it('should not mutate original item', function () {
+      it('should not mutate original item', function() {
         expect(item).to.deep.equal({
           id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           category: 'risk',
@@ -99,13 +99,13 @@ describe('Form helpers', function () {
     })
   })
 
-  describe('#renderConditionalFields()', function () {
-    beforeEach(function () {
+  describe('#renderConditionalFields()', function() {
+    beforeEach(function() {
       sinon.stub(componentService, 'getComponent').returnsArg(0)
     })
 
-    context("when field doesn't contain items", function () {
-      it('should return the original field as object', function () {
+    context('when field doesn’t contain items', function() {
+      it('should return the original field as object', function() {
         const field = ['court', { name: 'court' }]
         const response = renderConditionalFields(field)
 
@@ -113,9 +113,9 @@ describe('Form helpers', function () {
       })
     })
 
-    context('when field contains items', function () {
-      context('when conditional is a string', function () {
-        context('when field exists', function () {
+    context('when field contains items', function() {
+      context('when conditional is a string', function() {
+        context('when field exists', function() {
           const field = [
             'field',
             {
@@ -153,15 +153,15 @@ describe('Form helpers', function () {
           ]
           let response
 
-          beforeEach(function () {
+          beforeEach(function() {
             response = renderConditionalFields(field, 0, fields)
           })
 
-          it('should call component service for each item', function () {
+          it('should call component service for each item', function() {
             expect(componentService.getComponent).to.be.calledTwice
           })
 
-          it('should call component service with correct args', function () {
+          it('should call component service with correct args', function() {
             expect(
               componentService.getComponent.firstCall
             ).to.be.calledWithExactly('govukInput', {
@@ -172,7 +172,7 @@ describe('Form helpers', function () {
             })
           })
 
-          it('should call component service with correct args', function () {
+          it('should call component service with correct args', function() {
             expect(
               componentService.getComponent.secondCall
             ).to.be.calledWithExactly('govukTextarea', {
@@ -183,7 +183,7 @@ describe('Form helpers', function () {
             })
           })
 
-          it('should render conditional content', function () {
+          it('should render conditional content', function() {
             expect(response[1].items).to.deep.equal([
               {
                 value: '31b90233-7043-4633-8055-f24854545ead',
@@ -203,7 +203,7 @@ describe('Form helpers', function () {
           })
         })
 
-        context("when field doesn't exist", function () {
+        context('when field doesn’t exist', function() {
           const field = [
             'field',
             {
@@ -219,15 +219,15 @@ describe('Form helpers', function () {
           ]
           let response
 
-          beforeEach(function () {
+          beforeEach(function() {
             response = renderConditionalFields(field)
           })
 
-          it('should not call component service for each item', function () {
+          it('should not call component service for each item', function() {
             expect(componentService.getComponent).not.to.be.called
           })
 
-          it('should render original item', function () {
+          it('should render original item', function() {
             expect(response[1].items).to.deep.equal([
               {
                 value: '31b90233-7043-4633-8055-f24854545ead',
@@ -239,7 +239,7 @@ describe('Form helpers', function () {
         })
       })
 
-      context('when conditional is not a string ', function () {
+      context('when conditional is not a string ', function() {
         const field = [
           'field',
           {
@@ -257,15 +257,15 @@ describe('Form helpers', function () {
         ]
         let response
 
-        beforeEach(function () {
+        beforeEach(function() {
           response = renderConditionalFields(field)
         })
 
-        it('should not call component service for each item', function () {
+        it('should not call component service for each item', function() {
           expect(componentService.getComponent).not.to.be.called
         })
 
-        it('should render conditional content', function () {
+        it('should render conditional content', function() {
           expect(response[1].items).to.deep.equal([
             {
               value: '31b90233-7043-4633-8055-f24854545ead',
@@ -280,10 +280,10 @@ describe('Form helpers', function () {
     })
   })
 
-  describe('#setFieldValue()', function () {
-    context("when field doesn't contain items", function () {
-      context("when value doesn't exists", function () {
-        it('should set empty value property', function () {
+  describe('#setFieldValue()', function() {
+    context('when field doesn’t contain items', function() {
+      context('when value doesn’t exists', function() {
+        it('should set empty value property', function() {
           const field = ['court', { name: 'court' }]
           const response = setFieldValue({})(field)
 
@@ -297,8 +297,8 @@ describe('Form helpers', function () {
         })
       })
 
-      context('when value exists', function () {
-        it('should set value property', function () {
+      context('when value exists', function() {
+        it('should set value property', function() {
           const values = {
             court: 'court val',
           }
@@ -316,9 +316,9 @@ describe('Form helpers', function () {
       })
     })
 
-    context('when field contains items', function () {
-      context("when value doesn't exists", function () {
-        it('should set return original items', function () {
+    context('when field contains items', function() {
+      context('when value doesn’t exists', function() {
+        it('should set return original items', function() {
           const field = [
             'court',
             {
@@ -341,9 +341,9 @@ describe('Form helpers', function () {
         })
       })
 
-      context('when value exists', function () {
-        context('when item value is in array', function () {
-          it('should correctly set selected/checked', function () {
+      context('when value exists', function() {
+        context('when item value is in array', function() {
+          it('should correctly set selected/checked', function() {
             const values = {
               court: ['one', 'three'],
             }
@@ -382,8 +382,8 @@ describe('Form helpers', function () {
           })
         })
 
-        context('when item value is not in array', function () {
-          it('should correctly set selected/checked', function () {
+        context('when item value is not in array', function() {
+          it('should correctly set selected/checked', function() {
             const values = {
               court: 'two',
             }
@@ -425,31 +425,31 @@ describe('Form helpers', function () {
     })
   })
 
-  describe('#setFieldError()', function () {
+  describe('#setFieldError()', function() {
     let translateStub
 
-    beforeEach(function () {
+    beforeEach(function() {
       translateStub = sinon.stub().returnsArg(0)
     })
 
-    context('when no error exists', function () {
+    context('when no error exists', function() {
       let response
       const field = ['field', { name: 'field' }]
 
-      beforeEach(function () {
+      beforeEach(function() {
         response = setFieldError({}, translateStub)(field)
       })
 
-      it('should not call translation method', function () {
+      it('should not call translation method', function() {
         expect(translateStub).not.to.be.called
       })
 
-      it('should return original field', function () {
+      it('should return original field', function() {
         expect(response).to.deep.equal(field)
       })
     })
 
-    context('when error exists', function () {
+    context('when error exists', function() {
       const errors = {
         error_field: {
           type: 'required',
@@ -458,17 +458,17 @@ describe('Form helpers', function () {
       }
       let field, response
 
-      beforeEach(function () {
+      beforeEach(function() {
         field = ['error_field', { name: 'error_field' }]
 
         response = setFieldError(errors, translateStub)(field)
       })
 
-      it('should call translation correct amount of times', function () {
+      it('should call translation correct amount of times', function() {
         expect(translateStub).to.be.calledTwice
       })
 
-      it('should call translation with correct values', function () {
+      it('should call translation with correct values', function() {
         expect(translateStub.firstCall).to.be.calledWithExactly(
           'fields::error_field.label'
         )
@@ -477,7 +477,7 @@ describe('Form helpers', function () {
         )
       })
 
-      it('should return field with error message', function () {
+      it('should return field with error message', function() {
         expect(response).to.deep.equal([
           'error_field',
           {
@@ -489,37 +489,37 @@ describe('Form helpers', function () {
         ])
       })
 
-      it('should not mutate original field', function () {
+      it('should not mutate original field', function() {
         expect(field).to.deep.equal(['error_field', { name: 'error_field' }])
       })
     })
   })
 
-  describe('#translateField()', function () {
+  describe('#translateField()', function() {
     let translateStub
 
-    beforeEach(function () {
+    beforeEach(function() {
       translateStub = sinon.stub().returns('__translated__')
     })
 
-    context('when no translation properties exist', function () {
+    context('when no translation properties exist', function() {
       let response
       const field = ['field', { name: 'field' }]
 
-      beforeEach(function () {
+      beforeEach(function() {
         response = translateField(translateStub)(field)
       })
 
-      it('should not call translation method', function () {
+      it('should not call translation method', function() {
         expect(translateStub).not.to.be.called
       })
 
-      it('should return original field', function () {
+      it('should return original field', function() {
         expect(response).to.deep.equal(field)
       })
     })
 
-    context('when single translation property exists', function () {
+    context('when single translation property exists', function() {
       const defaultProperties = { name: 'field' }
       const scenarios = {
         'label.text': {
@@ -558,11 +558,11 @@ describe('Form helpers', function () {
         },
       }
 
-      Object.entries(scenarios).forEach(function ([path, properties]) {
-        describe(path, function () {
+      Object.entries(scenarios).forEach(function([path, properties]) {
+        describe(path, function() {
           let field, response
 
-          beforeEach(function () {
+          beforeEach(function() {
             field = [
               'field',
               { ...defaultProperties, ...cloneDeep(properties) },
@@ -571,11 +571,11 @@ describe('Form helpers', function () {
             response = translateField(translateStub)(field)
           })
 
-          it('should call translation with correct value', function () {
+          it('should call translation with correct value', function() {
             expect(translateStub).to.be.calledOnceWithExactly(path)
           })
 
-          it('should return translated field', function () {
+          it('should return translated field', function() {
             const translated = cloneDeep(properties)
             set(translated, path, '__translated__')
 
@@ -585,7 +585,7 @@ describe('Form helpers', function () {
             ])
           })
 
-          it('should not mutate original field', function () {
+          it('should not mutate original field', function() {
             expect(field).to.deep.equal([
               'field',
               { ...defaultProperties, ...cloneDeep(properties) },
@@ -595,7 +595,7 @@ describe('Form helpers', function () {
       })
     })
 
-    context('when multiple translation properties exist', function () {
+    context('when multiple translation properties exist', function() {
       const field = [
         'field',
         {
@@ -615,15 +615,15 @@ describe('Form helpers', function () {
       ]
       let response
 
-      beforeEach(function () {
+      beforeEach(function() {
         response = translateField(translateStub)(field)
       })
 
-      it('should call translation correct amount of times', function () {
+      it('should call translation correct amount of times', function() {
         expect(translateStub).to.be.calledThrice
       })
 
-      it('should return translated field', function () {
+      it('should return translated field', function() {
         expect(response).to.deep.equal([
           'field',
           {
@@ -643,7 +643,7 @@ describe('Form helpers', function () {
         ])
       })
 
-      it('should not mutate original field', function () {
+      it('should not mutate original field', function() {
         expect(field).to.deep.equal([
           'field',
           {
@@ -664,7 +664,7 @@ describe('Form helpers', function () {
       })
     })
 
-    context('when field contains items', function () {
+    context('when field contains items', function() {
       const field = [
         'field',
         {
@@ -683,15 +683,15 @@ describe('Form helpers', function () {
       ]
       let response
 
-      beforeEach(function () {
+      beforeEach(function() {
         response = translateField(translateStub)(field)
       })
 
-      it('should call translation correct amount of times', function () {
+      it('should call translation correct amount of times', function() {
         expect(translateStub).to.be.calledTwice
       })
 
-      it('should return translated field with items', function () {
+      it('should return translated field with items', function() {
         expect(response).to.deep.equal([
           'field',
           {
@@ -710,7 +710,7 @@ describe('Form helpers', function () {
         ])
       })
 
-      it('should not mutate original field', function () {
+      it('should not mutate original field', function() {
         expect(field).to.deep.equal([
           'field',
           {
@@ -731,7 +731,7 @@ describe('Form helpers', function () {
     })
   })
 
-  describe('#insertInitialOption()', function () {
+  describe('#insertInitialOption()', function() {
     const mockItems = [
       {
         value: 'foo',
@@ -743,8 +743,8 @@ describe('Form helpers', function () {
       },
     ]
 
-    context('with default label', function () {
-      it('should insert default option at the front', function () {
+    context('with default label', function() {
+      it('should insert default option at the front', function() {
         const items = insertInitialOption(mockItems)
 
         expect(items).to.deep.equal([
@@ -763,8 +763,8 @@ describe('Form helpers', function () {
       })
     })
 
-    context('with custom label', function () {
-      it('should insert custom option at the front', function () {
+    context('with custom label', function() {
+      it('should insert custom option at the front', function() {
         const items = insertInitialOption(mockItems, 'gender')
 
         expect(items).to.deep.equal([
