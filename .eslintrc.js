@@ -4,7 +4,8 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: 'standard',
+  extends: ['prettier', 'standard'],
+  plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -21,6 +22,7 @@ module.exports = {
       functions: 'ignore',
     }],
     'curly': ['error', 'all'],
+    'prettier/prettier': 'error',
     'object-curly-spacing': ['error', 'always'],
     'dot-notation': 'error',
     'no-process-env': 'error',
