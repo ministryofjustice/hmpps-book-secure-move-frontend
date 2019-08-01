@@ -133,6 +133,7 @@ npm run lint
 | CURRENT_LOCATION_UUID **(TEMPORARY)** | UUID of the current location to list and create moves for | |
 | SENTRY_KEY | Sentry key | |
 | SENTRY_PROJECT | Sentry project ID | |
+| GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
 
 ### Development specific
 

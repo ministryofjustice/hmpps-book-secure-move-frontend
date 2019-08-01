@@ -85,6 +85,9 @@ module.exports = {
     },
   },
   DEFAULT_AUTH_PROVIDER: 'hmpps',
+  ANALYTICS: {
+    GA_ID: process.env.GOOGLE_ANALYTICS_ID,
+  },
   TAG_CATEGORY_WHITELIST: {
     risk: {
       tagClass: 'app-tag--destructive',
