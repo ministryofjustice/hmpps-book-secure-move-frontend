@@ -11,7 +11,7 @@ const assessmentQuestionComments = {
   },
 }
 
-function assessmentCategory (category) {
+function assessmentCategory(category) {
   return {
     component: 'govukCheckboxes',
     multiple: true,
@@ -29,7 +29,7 @@ function assessmentCategory (category) {
   }
 }
 
-function toLocationType (type) {
+function toLocationType(type) {
   return {
     skip: true,
     validate: 'required',

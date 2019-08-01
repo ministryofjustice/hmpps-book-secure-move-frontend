@@ -1,6 +1,8 @@
 const proxyquire = require('proxyquire')
 
-const { data: mockPerson } = require('../../test/fixtures/api-client/person.post.deserialized.json')
+const {
+  data: mockPerson,
+} = require('../../test/fixtures/api-client/person.post.deserialized.json')
 const assessmentByCategory = proxyquire('./assessment-by-category', {
   '../../config': {
     TAG_CATEGORY_WHITELIST: {
@@ -16,53 +18,55 @@ const assessmentByCategory = proxyquire('./assessment-by-category', {
   },
 })
 
-describe('Presenters', function () {
-  describe('#assessmentByCategory()', function () {
-    context('when provided with mock moves response', function () {
+describe('Presenters', function() {
+  describe('#assessmentByCategory()', function() {
+    context('when provided with mock moves response', function() {
       let transformedResponse
 
-      beforeEach(function () {
-        transformedResponse = assessmentByCategory(mockPerson.assessment_answers)
+      beforeEach(function() {
+        transformedResponse = assessmentByCategory(
+          mockPerson.assessment_answers
+        )
       })
 
-      it('should return the correct number of categories', function () {
+      it('should return the correct number of categories', function() {
         expect(transformedResponse.length).to.equal(2)
       })
 
-      it('should correctly order categories', function () {
+      it('should correctly order categories', function() {
         expect(transformedResponse[0].category).to.equal('risk')
       })
 
-      it('should correctly order categories', function () {
+      it('should correctly order categories', function() {
         expect(transformedResponse[1].category).to.equal('health')
       })
 
-      it('should contain correct number of items', function () {
+      it('should contain correct number of items', function() {
         expect(transformedResponse[0].items.length).to.equal(3)
         expect(transformedResponse[1].items.length).to.equal(3)
       })
     })
 
-    context('when no items exist for whitelisted category', function () {
+    context('when no items exist for whitelisted category', function() {
       let transformedResponse
 
-      beforeEach(function () {
+      beforeEach(function() {
         transformedResponse = assessmentByCategory([])
       })
 
-      it('should return the correct number of categories', function () {
+      it('should return the correct number of categories', function() {
         expect(transformedResponse.length).to.equal(2)
       })
 
-      it('should correctly order categories', function () {
+      it('should correctly order categories', function() {
         expect(transformedResponse[0].category).to.equal('risk')
       })
 
-      it('should correctly order categories', function () {
+      it('should correctly order categories', function() {
         expect(transformedResponse[1].category).to.equal('health')
       })
 
-      it('should contain correct number of items', function () {
+      it('should contain correct number of items', function() {
         expect(transformedResponse[0].items.length).to.equal(0)
         expect(transformedResponse[1].items.length).to.equal(0)
       })

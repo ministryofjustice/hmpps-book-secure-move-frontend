@@ -1,6 +1,6 @@
 const { get } = require('lodash')
 
-module.exports = function currentLocation (req, res, next) {
+module.exports = function currentLocation(req, res, next) {
   if (req.session.currentLocation) {
     return next()
   }

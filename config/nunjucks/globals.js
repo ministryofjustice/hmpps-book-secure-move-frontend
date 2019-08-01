@@ -9,14 +9,16 @@ let webpackManifest = {}
 try {
   webpackManifest = require(manifestPath)
 } catch (error) {
-  logger.error(new Error('Manifest file is not found. Ensure assets are built.'))
+  logger.error(
+    new Error('Manifest file is not found. Ensure assets are built.')
+  )
   logger.error(error)
 }
 
 module.exports = {
   FEEDBACK_URL,
   SERVICE_NAME: 'Book a secure move',
-  callAsMacro (name) {
+  callAsMacro(name) {
     const macro = this.ctx[name]
 
     if (!isFunction(macro)) {
@@ -26,7 +28,7 @@ module.exports = {
 
     return macro
   },
-  getAssetPath (asset) {
+  getAssetPath(asset) {
     const webpackAssetPath = webpackManifest[asset]
 
     if (webpackAssetPath) {

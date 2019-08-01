@@ -8,11 +8,11 @@ const {
 } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
-describe('Move controllers', function () {
-  describe('#cancel.post()', function () {
+describe('Move controllers', function() {
+  describe('#cancel.post()', function() {
     let req, res, nextSpy
 
-    beforeEach(function () {
+    beforeEach(function() {
       req = {
         flash: sinon.stub(),
         t: sinon.stub().returnsArg(0),
@@ -26,20 +26,20 @@ describe('Move controllers', function () {
       nextSpy = sinon.spy()
     })
 
-    context('when move cancel is successful', function () {
-      beforeEach(async function () {
+    context('when move cancel is successful', function() {
+      beforeEach(async function() {
         sinon.stub(moveService, 'cancel').resolves(mockMove)
         await controller.post(req, res, nextSpy)
       })
 
-      it('should set a success message', function () {
+      it('should set a success message', function() {
         expect(req.flash).to.have.been.calledOnceWith('success', {
           title: 'messages::cancel_move.success.title',
           content: 'messages::cancel_move.success.content',
         })
       })
 
-      it('should pass correct values to success content translation', function () {
+      it('should pass correct values to success content translation', function() {
         expect(req.t.secondCall).to.have.been.calledWithExactly(
           'messages::cancel_move.success.content',
           {
@@ -49,47 +49,47 @@ describe('Move controllers', function () {
         )
       })
 
-      it('should call move service cancel with move id', function () {
+      it('should call move service cancel with move id', function() {
         expect(moveService.cancel).to.be.calledOnceWithExactly(
           res.locals.move.id
         )
       })
 
-      it('should redirect correctly', function () {
+      it('should redirect correctly', function() {
         expect(res.redirect).to.be.calledOnceWithExactly('/moves')
       })
 
-      it('should not call next', function () {
+      it('should not call next', function() {
         expect(nextSpy).not.to.be.called
       })
     })
 
-    context('when update fails', function () {
+    context('when update fails', function() {
       const errorMock = new Error('Problem')
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         sinon.stub(moveService, 'cancel').throws(errorMock)
         await controller.post(req, res, nextSpy)
       })
 
-      it('should call next with the error', function () {
+      it('should call next with the error', function() {
         expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
       })
 
-      it('should not set flash message', function () {
+      it('should not set flash message', function() {
         expect(req.flash).not.to.called
       })
 
-      it('should not redirect', function () {
+      it('should not redirect', function() {
         expect(res.redirect).not.to.called
       })
     })
   })
 
-  describe('#cancel.get()', function () {
+  describe('#cancel.get()', function() {
     let res
 
-    beforeEach(function () {
+    beforeEach(function() {
       sinon.stub(personService, 'getFullname')
       res = {
         render: sinon.stub(),
@@ -105,12 +105,12 @@ describe('Move controllers', function () {
       controller.get({}, res)
     })
 
-    it('should render a template', function () {
+    it('should render a template', function() {
       expect(res.render.calledOnce).to.be.true
     })
 
-    describe('template params', function () {
-      it('should contain a fullname', function () {
+    describe('template params', function() {
+      it('should contain a fullname', function() {
         expect(personService.getFullname).to.be.calledOnceWithExactly({
           first_names: 'Steve',
           last_name: 'Jones',

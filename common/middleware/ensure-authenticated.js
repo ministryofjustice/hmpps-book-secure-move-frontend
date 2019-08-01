@@ -1,4 +1,4 @@
-function _isExpired (authExpiry) {
+function _isExpired(authExpiry) {
   if (!authExpiry) {
     return true
   }
@@ -6,7 +6,7 @@ function _isExpired (authExpiry) {
   return authExpiry < Math.floor(new Date() / 1000)
 }
 
-module.exports = function ensureAuthenticated ({
+module.exports = function ensureAuthenticated({
   provider,
   whitelist = [],
 } = {}) {

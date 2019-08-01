@@ -9,7 +9,8 @@ module.exports = {
     res.redirect(url)
   },
   signOut: (req, res) => {
-    const authProviderLogoutUrl = AUTH_PROVIDERS[DEFAULT_AUTH_PROVIDER].logout_url
+    const authProviderLogoutUrl =
+      AUTH_PROVIDERS[DEFAULT_AUTH_PROVIDER].logout_url
 
     req.session.destroy()
     res.redirect(authProviderLogoutUrl)

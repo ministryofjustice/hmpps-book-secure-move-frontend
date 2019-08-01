@@ -2,7 +2,7 @@ const { format } = require('date-fns')
 
 const presenters = require('../../../common/presenters')
 
-module.exports = function download (req, res, next) {
+module.exports = function download(req, res, next) {
   const { extension } = req.params
   const { moveDate, movesByDate } = res.locals
   const currentTimestamp = format(new Date(), 'YYYY-MM-DD HH:mm:ss')

@@ -1,4 +1,4 @@
-function home (req, res) {
+function home(req, res) {
   return res.redirect('/moves')
 }
 

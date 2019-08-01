@@ -3,7 +3,7 @@
  * This seems to fail in IE8, requires more investigation.
  * See: https://github.com/imagitama/nodelist-foreach-polyfill
  */
-export function nodeListForEach (nodes, callback) {
+export function nodeListForEach(nodes, callback) {
   if (window.NodeList.prototype.forEach) {
     return nodes.forEach(callback)
   }

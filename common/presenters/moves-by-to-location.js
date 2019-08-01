@@ -2,7 +2,7 @@ const { groupBy, sortBy } = require('lodash')
 
 const moveToCardComponent = require('./move-to-card-component')
 
-module.exports = function movesByToLocation (data) {
+module.exports = function movesByToLocation(data) {
   const locations = []
   const groupedByLocation = groupBy(data, 'to_location.id')
 

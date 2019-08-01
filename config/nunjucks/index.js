@@ -25,12 +25,12 @@ module.exports = (app, { IS_DEV, NO_CACHE }, paths) => {
   const nunjucksEnvironment = nunjucks.configure(views, nunjucksConfiguration)
 
   // Custom filters
-  Object.keys(filters).forEach((filter) => {
+  Object.keys(filters).forEach(filter => {
     nunjucksEnvironment.addFilter(filter, filters[filter])
   })
 
   // Global variables
-  Object.keys(templateGlobals).forEach((global) => {
+  Object.keys(templateGlobals).forEach(global => {
     nunjucksEnvironment.addGlobal(global, templateGlobals[global])
   })
 

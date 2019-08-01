@@ -31,19 +31,19 @@ const mockCurrentLocation = {
   title: 'Prison 5555',
 }
 
-describe('Move controllers', function () {
-  describe('Move Details', function () {
-    describe('#configure()', function () {
+describe('Move controllers', function() {
+  describe('Move Details', function() {
+    describe('#configure()', function() {
       let nextSpy
 
-      beforeEach(function () {
+      beforeEach(function() {
         nextSpy = sinon.spy()
       })
 
-      context('when getReferenceData returns 200', function () {
+      context('when getReferenceData returns 200', function() {
         let req, res
 
-        beforeEach(async function () {
+        beforeEach(async function() {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
@@ -96,7 +96,7 @@ describe('Move controllers', function () {
           await controller.configure(req, res, nextSpy)
         })
 
-        it('should set list of courts dynamically', function () {
+        it('should set list of courts dynamically', function() {
           expect(req.form.options.fields.to_location_court.items).to.deep.equal(
             [
               { text: '--- Choose court ---' },
@@ -106,7 +106,7 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should set list of prison dynamically', function () {
+        it('should set list of prison dynamically', function() {
           expect(
             req.form.options.fields.to_location_prison.items
           ).to.deep.equal([
@@ -116,13 +116,13 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should translate today', function () {
+        it('should translate today', function() {
           expect(req.t.firstCall).to.be.calledWith('fields::date_type.today', {
             date: 'today',
           })
         })
 
-        it('should translate tomorrow', function () {
+        it('should translate tomorrow', function() {
           expect(req.t.secondCall).to.be.calledWith(
             'fields::date_type.tomorrow',
             {
@@ -131,7 +131,7 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should update today/tomorrow label', function () {
+        it('should update today/tomorrow label', function() {
           expect(req.form.options.fields.date_type.items).to.deep.equal([
             { text: '__translated__', value: 'today' },
             { text: '__translated__', value: 'tomorrow' },
@@ -139,7 +139,7 @@ describe('Move controllers', function () {
           ])
         })
 
-        it('should call parent configure method', function () {
+        it('should call parent configure method', function() {
           expect(FormController.prototype.configure).to.be.calledOnceWith(
             req,
             res,
@@ -147,35 +147,35 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should not throw an error', function () {
+        it('should not throw an error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when getReferenceData returns an error', function () {
+      context('when getReferenceData returns an error', function() {
         const errorMock = new Error('Problem')
         const req = {}
 
-        beforeEach(async function () {
+        beforeEach(async function() {
           sinon.stub(referenceDataService, 'getLocations').throws(errorMock)
 
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function () {
+        it('should call next with the error', function() {
           expect(nextSpy).to.be.calledOnceWith(errorMock)
         })
 
-        it('should not mutate request object', function () {
+        it('should not mutate request object', function() {
           expect(req).to.deep.equal({})
         })
       })
     })
 
-    describe('#process()', function () {
+    describe('#process()', function() {
       let req, nextSpy
 
-      beforeEach(function () {
+      beforeEach(function() {
         nextSpy = sinon.spy()
         req = {
           form: {
@@ -187,13 +187,13 @@ describe('Move controllers', function () {
         }
       })
 
-      it('should set from location to current location from session', function () {
+      it('should set from location to current location from session', function() {
         controller.process(req, {}, nextSpy)
         expect(req.form.values.from_location).to.equal('5555')
       })
 
-      context('when date type is custom', function () {
-        beforeEach(function () {
+      context('when date type is custom', function() {
+        beforeEach(function() {
           req.form.values = {
             date: '',
             date_type: 'custom',
@@ -203,28 +203,28 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set the value of date field to the custom date', function () {
+        it('should set the value of date field to the custom date', function() {
           expect(req.form.values.date).to.equal('2019-10-17')
         })
 
-        it('should store the value of custom date', function () {
+        it('should store the value of custom date', function() {
           expect(req.form.values.date_custom).to.equal('2019-10-17')
         })
 
-        it('should set date type to custom', function () {
+        it('should set date type to custom', function() {
           expect(req.form.values.date_type).to.equal('custom')
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when date type is today', function () {
+      context('when date type is today', function() {
         // Specifically using a DST date to ensure correct date is returned
         const mockDate = '2017-08-10'
 
-        beforeEach(function () {
+        beforeEach(function() {
           this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
           req.form.values = {
             date: '',
@@ -234,28 +234,28 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        afterEach(function () {
+        afterEach(function() {
           this.clock.restore()
         })
 
-        it('should set value of date to today', function () {
+        it('should set value of date to today', function() {
           expect(req.form.values.date).to.equal(mockDate)
         })
 
-        it('should set date type to today', function () {
+        it('should set date type to today', function() {
           expect(req.form.values.date_type).to.equal('today')
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when date type is tomorrow', function () {
+      context('when date type is tomorrow', function() {
         // Specifically using a DST date to ensure correct date is returned
         const mockDate = '2017-08-10'
 
-        beforeEach(function () {
+        beforeEach(function() {
           this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
           req.form.values = {
             date: '',
@@ -265,21 +265,21 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set value of date to tomorrow', function () {
+        it('should set value of date to tomorrow', function() {
           expect(req.form.values.date).to.equal('2017-08-11')
         })
 
-        it('should set date type to tomorrow', function () {
+        it('should set date type to tomorrow', function() {
           expect(req.form.values.date_type).to.equal('tomorrow')
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when location type is court', function () {
-        beforeEach(function () {
+      context('when location type is court', function() {
+        beforeEach(function() {
           req.form.values = {
             to_location: '',
             to_location_court: '12345',
@@ -289,17 +289,17 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set to_location based on location type', function () {
+        it('should set to_location based on location type', function() {
           expect(req.form.values.to_location).to.equal('12345')
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when location type is prison', function () {
-        beforeEach(function () {
+      context('when location type is prison', function() {
+        beforeEach(function() {
           req.form.values = {
             to_location: '',
             to_location_prison: '67890',
@@ -309,11 +309,11 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set to_location based on location type', function () {
+        it('should set to_location based on location type', function() {
           expect(req.form.values.to_location).to.equal('67890')
         })
 
-        it('should call next without error', function () {
+        it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })

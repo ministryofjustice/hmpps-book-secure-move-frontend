@@ -3,12 +3,13 @@ const { find } = require('lodash')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-module.exports = function personToSummaryListComponent ({
+module.exports = function personToSummaryListComponent({
   date_of_birth: dateOfBirth,
   gender,
   ethnicity,
   identifiers,
 }) {
+  const age = `(${i18n.t('age')} ${filters.calculateAge(dateOfBirth)})`
   const pncNumber = find(identifiers, {
     identifier_type: 'police_national_computer',
   })
@@ -26,11 +27,7 @@ module.exports = function personToSummaryListComponent ({
         text: i18n.t('fields::date_of_birth.label'),
       },
       value: {
-        text: dateOfBirth
-          ? `${filters.formatDate(dateOfBirth)} (${i18n.t(
-            'age'
-          )} ${filters.calculateAge(dateOfBirth)})`
-          : '',
+        text: dateOfBirth ? `${filters.formatDate(dateOfBirth)} ${age}` : '',
       },
     },
     {

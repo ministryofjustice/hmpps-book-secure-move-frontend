@@ -7,19 +7,19 @@ const movesGetSerialized = require('../../test/fixtures/api-client/moves.get.ser
 const moveGetDeserialized = require('../../test/fixtures/api-client/move.get.deserialized.json')
 const moveGetSerialized = require('../../test/fixtures/api-client/move.get.serialized.json')
 
-describe('Move Service', function () {
-  beforeEach(function () {
+describe('Move Service', function() {
+  beforeEach(function() {
     sinon.stub(auth, 'getAccessToken').returns('test')
     sinon
       .stub(auth, 'getAccessTokenExpiry')
       .returns(Math.floor(new Date() / 1000) + 100)
   })
 
-  describe('#format()', function () {
-    context('when relationship field is string', function () {
+  describe('#format()', function() {
+    context('when relationship field is string', function() {
       let formatted
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
           to_location: moveGetDeserialized.data.to_location.id,
@@ -27,27 +27,27 @@ describe('Move Service', function () {
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format as relationship object', function() {
         expect(formatted.to_location).to.deep.equal({
           id: moveGetDeserialized.data.to_location.id,
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format as relationship object', function() {
         expect(formatted.from_location).to.deep.equal({
           id: moveGetDeserialized.data.from_location.id,
         })
       })
 
-      it('should not affect non relationship fields', function () {
+      it('should not affect non relationship fields', function() {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
 
-    context('when relationship field is not a string', function () {
+    context('when relationship field is not a string', function() {
       let formatted
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
           to_location: {
@@ -59,30 +59,30 @@ describe('Move Service', function () {
         })
       })
 
-      it('should return its original value', function () {
+      it('should return its original value', function() {
         expect(formatted.to_location).to.deep.equal({
           id: moveGetDeserialized.data.to_location.id,
         })
       })
 
-      it('should return its original value', function () {
+      it('should return its original value', function() {
         expect(formatted.from_location).to.deep.equal({
           id: moveGetDeserialized.data.from_location.id,
         })
       })
 
-      it('should not affect non relationship fields', function () {
+      it('should not affect non relationship fields', function() {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
   })
 
-  describe('#getRequestedMovesByDateAndLocation()', function () {
-    context('when request returns 200', function () {
+  describe('#getRequestedMovesByDateAndLocation()', function() {
+    context('when request returns 200', function() {
       const mockDate = '2017-08-10'
       let moves
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
 
         nock(API.BASE_URL)
@@ -99,25 +99,25 @@ describe('Move Service', function () {
         moves = await moveService.getRequestedMovesByDateAndLocation(mockDate)
       })
 
-      afterEach(function () {
+      afterEach(function() {
         this.clock.restore()
       })
 
-      it('should get moves from API with current date', function () {
+      it('should get moves from API with current date', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain moves with correct data', function () {
+      it('should contain moves with correct data', function() {
         expect(moves).to.deep.equal(movesGetDeserialized.data)
       })
     })
   })
 
-  describe('#getMoveById()', function () {
-    context('when request returns 200', function () {
+  describe('#getMoveById()', function() {
+    context('when request returns 200', function() {
       let move
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .get(`/moves/${moveGetSerialized.data.id}`)
           .reply(200, moveGetSerialized)
@@ -125,21 +125,21 @@ describe('Move Service', function () {
         move = await moveService.getMoveById(moveGetSerialized.data.id)
       })
 
-      it('should get move from API', function () {
+      it('should get move from API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain move with correct data', function () {
+      it('should contain move with correct data', function() {
         expect(move.data).to.deep.equal(moveGetDeserialized.data)
       })
     })
   })
 
-  describe('#create()', function () {
-    context('when request returns 200', function () {
+  describe('#create()', function() {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         nock(API.BASE_URL)
           .post('/moves')
           .reply(200, moveGetSerialized)
@@ -152,20 +152,20 @@ describe('Move Service', function () {
         })
       })
 
-      it('should get move from API', function () {
+      it('should get move from API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain move with correct data', function () {
+      it('should contain move with correct data', function() {
         expect(response).to.deep.equal(moveGetDeserialized.data)
       })
     })
   })
 
-  describe('#cancel()', function () {
+  describe('#cancel()', function() {
     let mockId
 
-    beforeEach(async function () {
+    beforeEach(async function() {
       mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
 
       nock(API.BASE_URL)
@@ -173,34 +173,34 @@ describe('Move Service', function () {
         .reply(200, moveGetSerialized)
     })
 
-    context('when no ID is supplied in the data object', function () {
+    context('when no ID is supplied in the data object', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         response = await moveService.cancel()
       })
 
-      it('should not call API', function () {
+      it('should not call API', function() {
         expect(nock.isDone()).to.be.false
       })
 
-      it('should return', function () {
+      it('should return', function() {
         expect(response).to.equal()
       })
     })
 
-    context('when request returns 200', function () {
+    context('when request returns 200', function() {
       let response
 
-      beforeEach(async function () {
+      beforeEach(async function() {
         response = await moveService.cancel(mockId)
       })
 
-      it('should call API', function () {
+      it('should call API', function() {
         expect(nock.isDone()).to.be.true
       })
 
-      it('should contain move with correct data', function () {
+      it('should contain move with correct data', function() {
         expect(response).to.deep.equal(moveGetDeserialized.data)
       })
     })

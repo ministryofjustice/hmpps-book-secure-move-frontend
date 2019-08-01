@@ -5,12 +5,12 @@ const Sentry = require('@sentry/node')
 const fieldHelpers = require('../../../common/helpers/field')
 
 class FormController extends Controller {
-  middlewareChecks () {
+  middlewareChecks() {
     super.middlewareChecks()
     this.use(this.checkCurrentLocation)
   }
 
-  checkCurrentLocation (req, res, next) {
+  checkCurrentLocation(req, res, next) {
     if (!req.session.currentLocation) {
       const error = new Error(
         'Current location is not set. Check environment variable is correctly set.'
@@ -21,7 +21,7 @@ class FormController extends Controller {
     next()
   }
 
-  getErrors (req, res) {
+  getErrors(req, res) {
     const errors = super.getErrors(req, res)
 
     errors.errorList = map(errors, error => {
@@ -37,7 +37,7 @@ class FormController extends Controller {
     return errors
   }
 
-  errorHandler (err, req, res, next) {
+  errorHandler(err, req, res, next) {
     if (err.redirect) {
       return res.redirect(err.redirect)
     }
@@ -58,7 +58,7 @@ class FormController extends Controller {
     super.errorHandler(err, req, res, next)
   }
 
-  render (req, res, next) {
+  render(req, res, next) {
     const fields = Object.entries(req.form.options.fields)
       .map(fieldHelpers.setFieldValue(req.form.values))
       .map(fieldHelpers.setFieldError(req.form.errors, req.t))

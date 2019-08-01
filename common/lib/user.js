@@ -1,11 +1,11 @@
-function User (token = {}) {
+function User(token = {}) {
   this.userName = token.user_name
   this.locations = token.locations || []
   this.permissions = this.getPermissions(token.authorities)
 }
 
 User.prototype = {
-  getPermissions (authorities = []) {
+  getPermissions(authorities = []) {
     const permissions = []
 
     if (authorities.includes('ROLE_PECS_POLICE')) {

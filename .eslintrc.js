@@ -4,7 +4,8 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: 'standard',
+  extends: ['prettier', 'standard'],
+  plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -13,21 +14,26 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    'comma-dangle': ['error', {
-      arrays: 'always-multiline',
-      objects: 'always-multiline',
-      imports: 'never',
-      exports: 'never',
-      functions: 'ignore',
-    }],
-    'curly': ['error', 'all'],
+    'prettier/prettier': 'error',
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'never',
+        exports: 'never',
+        functions: 'ignore',
+      },
+    ],
+    curly: ['error', 'all'],
+    'space-before-function-paren': ['off'],
     'object-curly-spacing': ['error', 'always'],
     'dot-notation': 'error',
     'no-process-env': 'error',
   },
   overrides: [
     {
-      files: ['*.test.js','*.spec.js'],
+      files: ['*.test.js', '*.spec.js'],
       env: {
         mocha: true,
       },
@@ -41,9 +47,7 @@ module.exports = {
         'mocha/no-exclusive-tests': 'error',
         'mocha/no-mocha-arrows': 'error',
       },
-      plugins: [
-        'mocha',
-      ],
+      plugins: ['mocha'],
     },
   ],
 }

@@ -7,7 +7,7 @@ const referenceDataService = require('../../../common/services/reference-data')
 const referenceDataHelpers = require('../../../common/helpers/reference-data')
 
 class MoveDetailsController extends FormController {
-  async configure (req, res, next) {
+  async configure(req, res, next) {
     try {
       const courts = await referenceDataService.getLocations('court')
       const prisons = await referenceDataService.getLocations('prison')
@@ -45,7 +45,7 @@ class MoveDetailsController extends FormController {
     }
   }
 
-  process (req, res, next) {
+  process(req, res, next) {
     const {
       date_type: dateType,
       to_location_type: locationType,

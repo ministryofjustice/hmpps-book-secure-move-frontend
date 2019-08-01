@@ -1,9 +1,9 @@
 const requestLib = require('./request')
 
-describe('Request library', function () {
-  describe('#getQueryString()', function () {
-    context('when existing query is empty', function () {
-      it('should return a merged object as a query string', function () {
+describe('Request library', function() {
+  describe('#getQueryString()', function() {
+    context('when existing query is empty', function() {
+      it('should return a merged object as a query string', function() {
         const requestQuery = {}
         const newQuery = {
           foo: 'bar',
@@ -15,9 +15,9 @@ describe('Request library', function () {
       })
     })
 
-    context('when existing query is not empty', function () {
-      context('when no properties clash', function () {
-        it('should return a merged object as a query string', function () {
+    context('when existing query is not empty', function() {
+      context('when no properties clash', function() {
+        it('should return a merged object as a query string', function() {
           const requestQuery = {
             hello: 'world',
           }
@@ -31,8 +31,8 @@ describe('Request library', function () {
         })
       })
 
-      context('when properties clash', function () {
-        it('should return a merged object as a query string', function () {
+      context('when properties clash', function() {
+        it('should return a merged object as a query string', function() {
           const target = {
             hello: 'world',
             foo: 'bar',

@@ -5,7 +5,7 @@ const { getQueryString } = require('../../../common/lib/request')
 const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
-module.exports = function list (req, res) {
+module.exports = function list(req, res) {
   const { moveDate, movesByDate } = res.locals
   const today = format(new Date(), 'YYYY-MM-DD')
   const previousDay = format(subDays(moveDate, 1), 'YYYY-MM-DD')

@@ -21,7 +21,7 @@ nunjucks.configure(configPaths.components, {
  * @param {string} componentName
  * @returns {string} returns naming convention based macro name
  */
-function _componentNameToMacroName (componentName) {
+function _componentNameToMacroName(componentName) {
   let macroName = componentName
     .toLowerCase()
     // replace any underscore prefixes used for clashes
@@ -42,9 +42,11 @@ function _componentNameToMacroName (componentName) {
  * @param {any} children any child components or text, pass the children to the macro
  * @returns {function} returns cheerio (jQuery) instance of the macro for easy DOM querying
  */
-function render (componentName, params, children = false) {
+function render(componentName, params, children = false) {
   if (typeof params === 'undefined') {
-    throw new Error('Parameters passed to `render` should be an object but are undefined')
+    throw new Error(
+      'Parameters passed to `render` should be an object but are undefined'
+    )
   }
 
   const macroName = _componentNameToMacroName(componentName)
@@ -69,10 +71,14 @@ function render (componentName, params, children = false) {
  * @param {string} componentName
  * @returns {object} returns object that includes all examples at once
  */
-function getExamples (componentPath) {
+function getExamples(componentPath) {
   // replace any underscore prefixes used for clashes with GOV.UK Design System
   const file = fs.readFileSync(
-    path.join(configPaths.components, componentPath, `${componentPath.replace(/^_/, '')}.yaml`),
+    path.join(
+      configPaths.components,
+      componentPath,
+      `${componentPath.replace(/^_/, '')}.yaml`
+    ),
     'utf8'
   )
 
@@ -93,9 +99,9 @@ function getExamples (componentPath) {
  * @param {object} options Options to pass to sass.render
  * @return {promise} Result of calling sass.render
  */
-function renderSass (options) {
+function renderSass(options) {
   return sassRender({
-    includePaths: [ configPaths.src ],
+    includePaths: [configPaths.src],
     ...options,
   })
 }
@@ -110,7 +116,7 @@ function renderSass (options) {
  * @param {string} className the top level class 'Block' in B.E.M terminology
  * @returns {string} returns HTML
  */
-function htmlWithClassName ($, className) {
+function htmlWithClassName($, className) {
   const $component = $(className)
   const classSelector = className.replace('.', '')
   // Remove all other elements that do not match this component
@@ -118,4 +124,9 @@ function htmlWithClassName ($, className) {
   return $.html($component)
 }
 
-module.exports = { render, getExamples, htmlWithClassName, renderSass }
+module.exports = {
+  render,
+  getExamples,
+  htmlWithClassName,
+  renderSass,
+}

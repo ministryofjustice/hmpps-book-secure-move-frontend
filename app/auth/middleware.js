@@ -1,13 +1,13 @@
 const User = require('../../common/lib/user')
 const referenceData = require('../../common/services/reference-data')
 
-function _decodeAccessToken (token) {
+function _decodeAccessToken(token) {
   const payload = token.split('.')[1]
   return JSON.parse(Buffer.from(payload, 'base64').toString('utf8'))
 }
 
-function processAuthResponse (defaultLocations = []) {
-  return async function middleware (req, res, next) {
+function processAuthResponse(defaultLocations = []) {
+  return async function middleware(req, res, next) {
     const { grant, postAuthRedirect } = req.session
 
     if (!grant) {

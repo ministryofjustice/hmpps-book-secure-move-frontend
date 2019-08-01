@@ -96,6 +96,10 @@ npm run coverage
 
 The config uses the [StandardJS](https://standardjs.com/) style as a base with [some custom tweaks](./.eslintrc.js).
 
+[Prettifier](https://prettier.io) is also used to extend eslint to add some extra rules
+around how files are formatted. It can be [integrated to many popular editors](https://prettier.io/docs/en/editors.html)
+to help with formatting on save.
+
 To check linting results run:
 
 ```

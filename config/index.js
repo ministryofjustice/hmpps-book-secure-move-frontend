@@ -6,11 +6,16 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const SERVER_HOST = process.env.SERVER_HOST
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
+const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
+}
+
+function _authUrl(path) {
+  return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
 }
 
 module.exports = {
@@ -69,22 +74,13 @@ module.exports = {
       scope: ['read'],
       response: ['tokens', 'jwt'],
       token_endpoint_auth_method: 'client_secret_basic',
-      authorize_url: AUTH_BASE_URL
-        ? new URL('/auth/oauth/authorize', AUTH_BASE_URL).href
-        : '',
-      access_url: AUTH_BASE_URL
-        ? new URL('/auth/oauth/token', AUTH_BASE_URL).href
-        : '',
-      healthcheck_url: AUTH_BASE_URL
-        ? new URL('/auth/ping', AUTH_BASE_URL).href
-        : '',
-      logout_url: AUTH_BASE_URL
-        ? new URL(
-          `/auth/logout?client_id=${process.env.AUTH_PROVIDER_KEY}&redirect_uri=${BASE_URL}`,
-          AUTH_BASE_URL
-        ).href
-        : '',
-      key: process.env.AUTH_PROVIDER_KEY,
+      authorize_url: _authUrl('/auth/oauth/authorize'),
+      access_url: _authUrl('/auth/oauth/token'),
+      healthcheck_url: _authUrl('/auth/ping'),
+      logout_url: _authUrl(
+        `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
+      ),
+      key: AUTH_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
     },
   },

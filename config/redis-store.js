@@ -3,7 +3,7 @@ const RedisStore = require('connect-redis')(session)
 
 let store
 
-module.exports = function redisStore (options) {
+module.exports = function redisStore(options) {
   if (store) {
     return store
   }

@@ -2,11 +2,11 @@ const { mapValues, uniqBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
-function getFullname ({ first_names: firstNames, last_name: lastName }) {
+function getFullname({ first_names: firstNames, last_name: lastName }) {
   return `${lastName}, ${firstNames}`
 }
 
-function format (data) {
+function format(data) {
   const existingIdentifiers = data.identifiers || []
   const relationshipKeys = ['gender', 'ethnicity']
   const identifierKeys = [
@@ -45,13 +45,13 @@ function format (data) {
   }
 }
 
-function create (data) {
+function create(data) {
   return apiClient
     .create('person', format(data))
     .then(response => response.data)
 }
 
-function update (data) {
+function update(data) {
   if (!data.id) {
     return
   }

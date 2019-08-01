@@ -21,62 +21,62 @@ const emptyCsv = fs.readFileSync(
   'utf8'
 )
 
-describe('Presenters', function () {
-  describe('movesToCSV', function () {
+describe('Presenters', function() {
+  describe('movesToCSV', function() {
     let transformedResponse
 
-    beforeEach(function () {
+    beforeEach(function() {
       sinon.spy(json2csv, 'parse')
       sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(referenceDataServce, 'getAssessmentQuestions')
     })
 
-    context('with mock move response', function () {
-      beforeEach(async function () {
+    context('with mock move response', function() {
+      beforeEach(async function() {
         referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
 
         transformedResponse = await movesToCSV(mockMoves)
       })
 
-      it('should format correctly', function () {
+      it('should format correctly', function() {
         expect(transformedResponse).to.equal(csv.trim())
       })
 
-      it('should call CSV parse', function () {
+      it('should call CSV parse', function() {
         expect(json2csv.parse).to.be.calledOnce
         expect(json2csv.parse.args[0][0]).to.deep.equal(mockMoves)
       })
 
-      it('should call translations correct number of times', function () {
+      it('should call translations correct number of times', function() {
         expect(i18n.t).to.be.callCount(26)
       })
     })
 
-    context('with no moves', function () {
-      beforeEach(async function () {
+    context('with no moves', function() {
+      beforeEach(async function() {
         referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
 
         transformedResponse = await movesToCSV([])
       })
 
-      it('should format correctly', function () {
+      it('should format correctly', function() {
         expect(transformedResponse).to.equal(emptyCsv.trim())
       })
 
-      it('should call CSV parse', function () {
+      it('should call CSV parse', function() {
         expect(json2csv.parse).to.be.calledOnce
         expect(json2csv.parse.args[0][0]).to.deep.equal([])
       })
     })
 
-    context('when reference data returns an error', function () {
+    context('when reference data returns an error', function() {
       const errorStub = new Error('Error stub')
 
-      beforeEach(function () {
+      beforeEach(function() {
         referenceDataServce.getAssessmentQuestions.rejects(errorStub)
       })
 
-      it('should return error', function () {
+      it('should return error', function() {
         return expect(movesToCSV()).to.eventually.be.rejectedWith(errorStub)
       })
     })

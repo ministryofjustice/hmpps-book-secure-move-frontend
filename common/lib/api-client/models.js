@@ -1,4 +1,4 @@
-function defineModels (jsonApi) {
+function defineModels(jsonApi) {
   jsonApi.define('move', {
     reference: '',
     status: '',
