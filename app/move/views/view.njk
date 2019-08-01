@@ -1,5 +1,9 @@
 {% extends "layouts/govuk.njk" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move details'});
+{% endblock %}
+
 {% block pageTitle %}
   {{ t("moves::detail.page_title", {
     name: fullname | upper

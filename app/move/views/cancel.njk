@@ -1,5 +1,9 @@
 {% extends "layouts/govuk.njk" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Cancel move'});
+{% endblock %}
+
 {% block pageTitle %}
   {{ t("moves::cancel.page_title", { name: fullname | upper }) }}
 {% endblock %}

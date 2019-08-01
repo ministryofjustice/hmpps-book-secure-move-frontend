@@ -21,7 +21,7 @@
     <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
       {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
         <li>
-          <a href="{{ ORIGINAL_PATH }}/download.csv?move-date={{ moveDate }}">
+          <a href="{{ REQUEST_PATH }}/download.csv?move-date={{ moveDate }}">
             {{ t("actions::download_csv") }}
           </a>
         </li>

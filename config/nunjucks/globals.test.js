@@ -64,6 +64,7 @@ describe('Nunjucks globals', function() {
         globals = proxyquire('./globals', {
           '../': {
             ASSETS_HOST: mockAssetHost,
+            ANALYTICS: {},
           },
           '../paths': {
             manifest: 'path/to/manifest.json',
