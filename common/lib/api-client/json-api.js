@@ -1,7 +1,7 @@
 const JsonApi = require('devour-client')
 
 const { API, IS_DEV } = require('../../../config')
-const { errors } = require('./middleware')
+const { errors, requestTimeout } = require('./middleware')
 const { devourAuthMiddleware } = require('./middleware/auth')
 const defineModels = require('./models')
 
@@ -11,6 +11,7 @@ const jsonApi = new JsonApi({
 })
 
 jsonApi.replaceMiddleware('errors', errors)
+jsonApi.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
 jsonApi.insertMiddlewareBefore('axios-request', devourAuthMiddleware)
 
 defineModels(jsonApi)

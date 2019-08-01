@@ -37,6 +37,7 @@ module.exports = {
     AUTH_URL: process.env.API_AUTH_URL,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
+    TIMEOUT: 30000, // in milliseconds
   },
   DATE_FORMATS: {
     SHORT: 'D M YYYY',
