@@ -13,7 +13,9 @@ describe('Moves middleware', function() {
     beforeEach(function() {
       sinon.stub(permissions, 'check')
       nextSpy = sinon.spy()
-      req = {}
+      req = {
+        baseUrl: '/moves',
+      }
       res = {
         redirect: sinon.stub(),
       }
@@ -59,17 +61,41 @@ describe('Moves middleware', function() {
           req.session.currentLocation = {
             id: mockLocationId,
           }
-          middleware.redirectUsers(req, res, nextSpy)
         })
 
-        it('should redirect to moves by location', function() {
-          expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/${mockLocationId}`
-          )
+        context('when current request contains search', function() {
+          beforeEach(function() {
+            req.query = {
+              'move-date': '2019-10-10',
+            }
+            middleware.redirectUsers(req, res, nextSpy)
+          })
+
+          it('should redirect to moves by location', function() {
+            expect(res.redirect).to.have.been.calledOnceWithExactly(
+              `/moves/${mockLocationId}?move-date=2019-10-10`
+            )
+          })
+
+          it('should not call next', function() {
+            expect(nextSpy).not.to.have.been.called
+          })
         })
 
-        it('should not call next', function() {
-          expect(nextSpy).not.to.have.been.called
+        context('when current request does not contain search', function() {
+          beforeEach(function() {
+            middleware.redirectUsers(req, res, nextSpy)
+          })
+
+          it('should redirect to moves by location', function() {
+            expect(res.redirect).to.have.been.calledOnceWithExactly(
+              `/moves/${mockLocationId}`
+            )
+          })
+
+          it('should not call next', function() {
+            expect(nextSpy).not.to.have.been.called
+          })
         })
       })
 

@@ -1,3 +1,4 @@
+const queryString = require('query-string')
 const { format } = require('date-fns')
 const { get } = require('lodash')
 
@@ -8,6 +9,7 @@ module.exports = {
   redirectUsers: (req, res, next) => {
     const userPermissions = get(req.session, 'user.permissions')
     const currentLocation = get(req.session, 'currentLocation.id')
+    const search = queryString.stringify(req.query)
 
     if (permissions.check('moves:view:all', userPermissions)) {
       return next()
@@ -17,7 +19,9 @@ module.exports = {
       permissions.check('moves:view:by_location', userPermissions) &&
       currentLocation
     ) {
-      return res.redirect(`/moves/${currentLocation}`)
+      return res.redirect(
+        `${req.baseUrl}/${currentLocation}${search ? `?${search}` : ''}`
+      )
     }
 
     next()
