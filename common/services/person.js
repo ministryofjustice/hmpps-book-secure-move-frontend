@@ -56,8 +56,6 @@ function update(data) {
     return
   }
 
-  console.log(format(data))
-
   return apiClient
     .update('person', format(data))
     .then(response => response.data)

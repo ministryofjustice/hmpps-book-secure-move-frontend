@@ -30,6 +30,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'dot-notation': 'error',
     'no-process-env': 'error',
+    'no-console': 'error',
   },
   overrides: [
     {
