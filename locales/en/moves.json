@@ -62,7 +62,8 @@
   },
   "dashboard": {
     "upcoming_moves": "Upcoming moves for {{date}}",
-    "move_to": "Move to"
+    "move_to": "Move to",
+    "no_results": "No moves scheduled"
   },
   "detail": {
     "page_title": "Move details for {{name}}"

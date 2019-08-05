@@ -56,5 +56,13 @@
         {{ appCard(move) }}
       {% endfor %}
     </div>
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted govuk-!-margin-top-7",
+      allowDismiss: false,
+      content: {
+        html: t("moves::dashboard.no_results")
+      }
+    }) }}
   {% endfor %}
 {% endblock %}
