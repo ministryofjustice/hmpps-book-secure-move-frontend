@@ -56,7 +56,7 @@
       {% include "move/views/_includes/assessment.njk" %}
 
       {% if canAccess('move:cancel') %}
-        <p class="app-border-top-1 govuk-!-padding-top-6 govuk-!-margin-top-8">
+        <p class="govuk-!-margin-top-9">
           <a href="{{ move.id }}/cancel" class="app-link--destructive">
             {{ t("actions::cancel_move") }}
           </a>
