@@ -22,6 +22,11 @@ module.exports = {
 
     next()
   },
+  storeQuery: (req, res, next) => {
+    req.session.movesQuery = req.query
+
+    next()
+  },
   setMoveDate: (req, res, next) => {
     res.locals.moveDate =
       req.query['move-date'] || format(new Date(), 'YYYY-MM-DD')
