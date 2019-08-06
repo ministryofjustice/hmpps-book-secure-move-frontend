@@ -6,6 +6,7 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const { download, list } = require('./controllers')
 const {
   redirectUsers,
+  storeQuery,
   setMoveDate,
   setFromLocation,
   setMovesByDate,
@@ -18,6 +19,7 @@ const uuidRegex =
 router.param('locationId', setFromLocation)
 
 // Define routes
+router.use(storeQuery)
 router.use(setMoveDate)
 router.get(
   '/',

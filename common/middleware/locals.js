@@ -1,3 +1,4 @@
+const queryString = require('query-string')
 const { get } = require('lodash')
 const { startOfTomorrow } = require('date-fns')
 
@@ -6,12 +7,14 @@ const { check } = require('./permissions')
 module.exports = function setLocals(req, res, next) {
   const protocol = req.encrypted ? 'https' : req.protocol
   const baseUrl = `${protocol}://${req.get('host')}`
+  const movesSearch = queryString.stringify(req.session.movesQuery)
   const locals = {
     CANONICAL_URL: baseUrl + req.path,
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
     REQUEST_PATH: req.path,
     CURRENT_LOCATION: req.session.currentLocation,
+    MOVES_URL: movesSearch ? `/moves?${movesSearch}` : '/moves',
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
     canAccess: permission => {
