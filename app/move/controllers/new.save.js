@@ -44,7 +44,7 @@ class SaveController extends FormController {
       }),
     })
 
-    res.redirect('/moves')
+    res.redirect(`/moves?move-date=${date}`)
   }
 }
 
