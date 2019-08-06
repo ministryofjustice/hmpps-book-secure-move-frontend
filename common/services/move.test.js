@@ -1,5 +1,5 @@
 const moveService = require('./move')
-const auth = require('../lib/api-client/auth')
+const auth = require('../lib/api-client/middleware/auth')
 const { API } = require('../../config')
 
 const movesGetDeserialized = require('../../test/fixtures/api-client/moves.get.deserialized.json')

@@ -7,7 +7,7 @@ const mockConfig = {
   SECRET: 'secret',
 }
 const auth = proxyquire('./auth', {
-  '../../../config': {
+  '../../../../config': {
     API: mockConfig,
   },
 })

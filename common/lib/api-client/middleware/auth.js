@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { API } = require('../../../config')
+const { API } = require('../../../../config')
 
 let accessToken = null
 let accessTokenExpiry = null

@@ -1,6 +1,6 @@
 const personService = require('./person')
 const { API } = require('../../config')
-const auth = require('../lib/api-client/auth')
+const auth = require('../lib/api-client/middleware/auth')
 
 const personPostSerialized = require('../../test/fixtures/api-client/person.post.serialized.json')
 const personPostDeserialized = require('../../test/fixtures/api-client/person.post.deserialized.json')

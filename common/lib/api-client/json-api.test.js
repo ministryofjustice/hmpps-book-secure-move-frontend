@@ -8,7 +8,7 @@ const configMock = {
 const jsonApi = proxyquire('./json-api', {
   '../../../config': configMock,
 })
-const auth = require('./auth')
+const auth = require('./middleware/auth')
 
 describe('Back-end API client', function() {
   describe('#find', function() {

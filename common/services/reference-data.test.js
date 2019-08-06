@@ -7,7 +7,7 @@ const {
   getLocationsById,
 } = require('./reference-data')
 const { API } = require('../../config')
-const auth = require('../lib/api-client/auth')
+const auth = require('../lib/api-client/middleware/auth')
 
 const gendersDeserialized = require('../../test/fixtures/api-client/reference.genders.deserialized.json')
 const gendersSerialized = require('../../test/fixtures/api-client/reference.genders.serialized.json')
