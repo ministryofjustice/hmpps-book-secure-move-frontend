@@ -2,10 +2,10 @@
 const router = require('express').Router()
 
 // Local dependencies
-const { home } = require('./controllers')
+const { mountpath: movesUrl } = require('../moves')
 
 // Define routes
-router.get('/', home)
+router.get('/', (req, res) => res.redirect(movesUrl))
 
 // Export
 module.exports = {

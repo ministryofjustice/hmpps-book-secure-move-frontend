@@ -1,6 +1,7 @@
 const { omit } = require('lodash')
 
 const FormController = require('./new.form')
+const { mountpath: movesUrl } = require('../../moves')
 const moveService = require('../../../common/services/move')
 const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')
@@ -44,7 +45,7 @@ class SaveController extends FormController {
       }),
     })
 
-    res.redirect(`/moves?move-date=${date}`)
+    res.redirect(`${movesUrl}?move-date=${date}`)
   }
 }
 

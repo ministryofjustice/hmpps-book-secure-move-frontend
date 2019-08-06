@@ -20,6 +20,7 @@ describe('Move controllers', function() {
       res = {
         redirect: sinon.stub(),
         locals: {
+          MOVES_URL: '/moves',
           move: mockMove,
         },
       }
