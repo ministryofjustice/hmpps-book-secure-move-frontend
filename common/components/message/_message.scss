@@ -81,3 +81,9 @@
 .app-message--error {
   border-color: $govuk-error-colour;
 }
+
+.app-message--muted {
+  border-color: govuk-colour("grey-1");
+  border-width: 0 0 0 5px;
+  background-color: govuk-colour("grey-4");
+}

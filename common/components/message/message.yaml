@@ -61,3 +61,10 @@ examples:
         html: A message heading
       content:
         html: Containing some <strong>extra content</strong>.
+  - name: without dismiss
+    data:
+      allowDismiss: false
+      title:
+        html: A message heading
+      content:
+        html: Containing some <strong>extra content</strong>.

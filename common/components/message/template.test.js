@@ -23,6 +23,10 @@ describe('Message component', function() {
           .trim()
       ).to.equal('Notification message')
     })
+
+    it('should render module data attribute', function() {
+      expect($component.attr('data-module')).to.equal('app-message')
+    })
   })
 
   context('with classes', function() {
@@ -144,6 +148,13 @@ describe('Message component', function() {
         expect($component.html()).to.contain(
           'A message with <strong>bold text</strong>'
         )
+      })
+    })
+
+    context('when dismiss is prevented', function() {
+      it('should render unescaped html', function() {
+        const $ = render('message', examples['without dismiss'])
+        expect($('.app-message').attr('data-module')).to.equal(undefined)
       })
     })
   })

@@ -32,9 +32,13 @@
       }) }}
     {% endcall %}
   {% else %}
-    <p>
-      {{ t("moves::assessment.categories." + section.category + ".empty") }}
-    </p>
+    {{ appMessage({
+      classes: "app-message--muted",
+      allowDismiss: false,
+      content: {
+        html: t("moves::assessment.categories." + section.category + ".empty")
+      }
+    }) }}
   {% endfor %}
 {% endfor %}
 
@@ -45,7 +49,11 @@
 {% if courtSummary.rows | length %}
   {{ govukSummaryList(courtSummary) }}
 {% else %}
-  <p>
-    {{ t("moves::assessment.categories.court.empty") }}
-  </p>
+  {{ appMessage({
+    classes: "app-message--muted",
+    allowDismiss: false,
+    content: {
+      html: t("moves::assessment.categories.court.empty")
+    }
+  }) }}
 {% endif %}
