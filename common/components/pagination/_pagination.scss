@@ -25,12 +25,8 @@
     color: $govuk-link-colour;
   }
 
-  &:focus {
-    background-color: transparent;
-  }
-
   &:hover {
-    background-color: govuk-colour("grey-4");
+    background-color: govuk-colour("light-grey");
   }
 }
 
