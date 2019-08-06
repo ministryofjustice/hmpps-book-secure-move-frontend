@@ -24,9 +24,6 @@ nunjucks.configure(configPaths.components, {
 function _componentNameToMacroName(componentName) {
   let macroName = componentName
     .toLowerCase()
-    // replace any underscore prefixes used for clashes
-    // with GOV.UK Design System
-    .replace(/^_/, '')
     .split('-')
     // capitalize each 'word'
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -72,13 +69,8 @@ function render(componentName, params, children = false) {
  * @returns {object} returns object that includes all examples at once
  */
 function getExamples(componentPath) {
-  // replace any underscore prefixes used for clashes with GOV.UK Design System
   const file = fs.readFileSync(
-    path.join(
-      configPaths.components,
-      componentPath,
-      `${componentPath.replace(/^_/, '')}.yaml`
-    ),
+    path.join(configPaths.components, componentPath, `${componentPath}.yaml`),
     'utf8'
   )
 

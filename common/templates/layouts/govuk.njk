@@ -12,10 +12,6 @@
 {% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
 {% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 
-{# Components that clash with GOV.UK Frontend namespace #}
-{% from "_panel/macro.njk"            import appPanel %}
-{% from "_tag/macro.njk"              import appTag %}
-
 {# App level components #}
 {% from "card/macro.njk"              import appCard %}
 {% from "data/macro.njk"              import appData %}
@@ -23,6 +19,8 @@
 {% from "message/macro.njk"           import appMessage %}
 {% from "meta-list/macro.njk"         import appMetaList %}
 {% from "pagination/macro.njk"        import appPagination %}
+{% from "panel/macro.njk"             import appPanel %}
+{% from "tag/macro.njk"               import appTag %}
 {% from "time/macro.njk"              import appTime %}
 
 {% block head %}
