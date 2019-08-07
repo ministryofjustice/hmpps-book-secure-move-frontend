@@ -13,6 +13,7 @@
       "first_names": "Buffy",
       "last_name": "Thompson",
       "date_of_birth": "1948-04-24",
+      "gender_additional_information": "Additional gender information",
       "assessment_answers": [{
         "key": "concealed_items",
         "title": "Concealed items",
