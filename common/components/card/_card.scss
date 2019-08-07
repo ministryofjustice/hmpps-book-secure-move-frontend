@@ -75,17 +75,9 @@
 }
 
 .app-card__tag-list-item {
-  display: block;
-
-  @include mq ($from: desktop) {
-    display: inline;
-  }
+  display: inline-block;
 
   & + & {
     margin-top: govuk-spacing(1);
-
-    @include mq ($from: desktop) {
-      margin-top: 0;
-    }
   }
 }
