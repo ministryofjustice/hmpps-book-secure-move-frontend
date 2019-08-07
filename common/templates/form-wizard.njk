@@ -31,21 +31,25 @@
     </div>
   </header>
 
-  <form method="post">
-    <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post">
+        <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
 
-    {% block beforeFields %}{% endblock %}
+        {% block beforeFields %}{% endblock %}
 
-    {% block fields %}
-      {% for key, fieldsOptions in options.fields %}
-        {% if fieldsOptions.component and not fieldsOptions.skip %}
-          {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
-        {% endif %}
-      {% endfor %}
-    {% endblock %}
+        {% block fields %}
+          {% for key, fieldsOptions in options.fields %}
+            {% if fieldsOptions.component and not fieldsOptions.skip %}
+              {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
+            {% endif %}
+          {% endfor %}
+        {% endblock %}
 
-    {{ govukButton({
-      text: t(options.buttonText or "actions::continue")
-    }) }}
-  </form>
+        {{ govukButton({
+          text: t(options.buttonText or "actions::continue")
+        }) }}
+      </form>
+    </div>
+  </div>
 {% endblock %}
