@@ -25,6 +25,7 @@ function defineModels(jsonApi) {
     date_of_birth: '',
     identifiers: '',
     assessment_answers: '',
+    gender_additional_information: '',
     gender: {
       jsonApi: 'hasOne',
       type: 'genders',
