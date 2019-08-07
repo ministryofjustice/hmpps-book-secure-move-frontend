@@ -18,12 +18,13 @@ function getAssessmentQuestions(category) {
     .then(response => response.data)
 }
 
-function getLocations(type, combinedData, page = 1) {
+function getLocations({ type, nomisAgencyId, combinedData, page = 1 } = {}) {
   return apiClient
     .findAll('location', {
       page,
       per_page: 100,
       'filter[location_type]': type,
+      'filter[nomis_agency_id]': nomisAgencyId,
     })
     .then(response => {
       const { data, links } = response
@@ -35,7 +36,12 @@ function getLocations(type, combinedData, page = 1) {
         return sortBy(locations, 'title')
       }
 
-      return getLocations(type, locations, page + 1)
+      return getLocations({
+        type,
+        nomisAgencyId,
+        combinedData: locations,
+        page: page + 1,
+      })
     })
 }
 

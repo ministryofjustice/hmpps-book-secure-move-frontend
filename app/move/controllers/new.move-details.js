@@ -9,8 +9,13 @@ const referenceDataHelpers = require('../../../common/helpers/reference-data')
 class MoveDetailsController extends FormController {
   async configure(req, res, next) {
     try {
-      const courts = await referenceDataService.getLocations('court')
-      const prisons = await referenceDataService.getLocations('prison')
+      const courts = await referenceDataService.getLocations({
+        type: 'court',
+      })
+      const prisons = await referenceDataService.getLocations({
+        type: 'prison',
+      })
+
       const {
         to_location_court: toLocationCourt,
         to_location_prison: toLocationPrison,
