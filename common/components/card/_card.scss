@@ -21,7 +21,7 @@
 
 .app-card__caption {
   @include govuk-font($size: 16);
-  color: govuk-colour("grey-1");
+  color: govuk-colour("dark-grey");
 }
 
 .app-card__title {

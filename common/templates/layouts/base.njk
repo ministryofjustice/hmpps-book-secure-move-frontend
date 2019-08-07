@@ -1,20 +1,16 @@
-{% extends "template.njk" %}
+{% extends "govuk/template.njk" %}
 
 {# GOV.UK Design System Components #}
-{% from "back-link/macro.njk"         import govukBackLink %}
-{% from "button/macro.njk"            import govukButton %}
-{% from "checkboxes/macro.njk"        import govukCheckboxes %}
-{% from "error-summary/macro.njk"     import govukErrorSummary %}
-{% from "input/macro.njk"             import govukInput %}
-{% from "phase-banner/macro.njk"      import govukPhaseBanner %}
-{% from "radios/macro.njk"            import govukRadios %}
-{% from "select/macro.njk"            import govukSelect %}
-{% from "summary-list/macro.njk"      import govukSummaryList %}
-{% from "textarea/macro.njk"          import govukTextarea %}
-
-{# Components that clash with GOV.UK Frontend namespace #}
-{% from "_panel/macro.njk"            import appPanel %}
-{% from "_tag/macro.njk"              import appTag %}
+{% from "govuk/components/back-link/macro.njk"         import govukBackLink %}
+{% from "govuk/components/button/macro.njk"            import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk"        import govukCheckboxes %}
+{% from "govuk/components/error-summary/macro.njk"     import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk"             import govukInput %}
+{% from "govuk/components/phase-banner/macro.njk"      import govukPhaseBanner %}
+{% from "govuk/components/radios/macro.njk"            import govukRadios %}
+{% from "govuk/components/select/macro.njk"            import govukSelect %}
+{% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
+{% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 
 {# App level components #}
 {% from "card/macro.njk"              import appCard %}
@@ -23,6 +19,8 @@
 {% from "message/macro.njk"           import appMessage %}
 {% from "meta-list/macro.njk"         import appMetaList %}
 {% from "pagination/macro.njk"        import appPagination %}
+{% from "panel/macro.njk"             import appPanel %}
+{% from "tag/macro.njk"               import appTag %}
 {% from "time/macro.njk"              import appTime %}
 
 {% block head %}

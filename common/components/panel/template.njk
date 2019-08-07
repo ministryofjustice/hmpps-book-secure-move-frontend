@@ -1,4 +1,4 @@
-{% from "_tag/macro.njk" import appTag %}
+{% from "tag/macro.njk" import appTag %}
 
 {% set element = params.element | default('div') %}
 {% set content = params.html | safe if params.html else params.text %}

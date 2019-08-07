@@ -65,7 +65,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use(
   '/assets',
-  express.static(path.join(__dirname, '/node_modules/govuk-frontend/assets'))
+  express.static(
+    path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets')
+  )
 )
 
 // ensure i18n is loaded early as needed for error template

@@ -57,8 +57,6 @@ $govuk-header-nav-item-border-color: #2e3133;
 }
 
 .app-header__link {
-  @include govuk-focusable-fill;
-
   text-decoration: none;
 
   &:link,
@@ -73,7 +71,7 @@ $govuk-header-nav-item-border-color: #2e3133;
   // When focussed, the text colour needs to be darker to ensure that colour
   // contrast is still acceptable
   &:focus {
-    color: $govuk-focus-text-colour;
+    @include govuk-focused-text;
   }
 
   // alphagov/govuk_template includes a specific a:link:focus selector
@@ -163,6 +161,13 @@ $govuk-header-nav-item-border-color: #2e3133;
   color: $govuk-header-link;
   background: none;
 
+  &:focus {
+    background-color: $govuk-focus-colour;
+    box-shadow: 0 -2px $govuk-focus-colour, 0 4px $govuk-focus-text-colour;
+    color: $govuk-focus-text-colour;
+    outline: 3px solid transparent;
+  }
+
   &:hover {
     text-decoration: underline;
   }
@@ -172,8 +177,6 @@ $govuk-header-nav-item-border-color: #2e3133;
     content: "";
     margin-left: govuk-spacing(1);
   }
-
-  @include govuk-focusable;
 
   @include mq ($from: tablet) {
     top: govuk-spacing(3);

@@ -9,9 +9,10 @@
 {% block headerActions %}
   {% if canAccess('move:create') %}
     {{ govukButton({
+      isStartButton: true,
       text: t("actions::create_move"),
       href: "/move/new",
-      classes: "govuk-button--start govuk-!-margin-top-2 app-print--hide"
+      classes: "govuk-!-margin-top-2 app-print--hide"
     }) }}
   {% endif %}
 {% endblock %}

@@ -1,13 +1,13 @@
 const { render, getExamples } = require('../../../test/unit/component-helpers')
 
-const examples = getExamples('_tag')
+const examples = getExamples('tag')
 
 describe('Tag component', function() {
   context('by default', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('_tag', examples.default)
+      const $ = render('tag', examples.default)
       $component = $('.app-tag')
     })
 
@@ -22,7 +22,7 @@ describe('Tag component', function() {
 
   context('with classes param', function() {
     it('should render classes', function() {
-      const $ = render('_tag', {
+      const $ = render('tag', {
         classes: 'app-tag--inactive',
         text: 'alpha',
       })
@@ -36,7 +36,7 @@ describe('Tag component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('_tag', {
+      const $ = render('tag', {
         text: 'alpha',
         href: '/a-link',
       })
@@ -54,7 +54,7 @@ describe('Tag component', function() {
 
   context('when html is passed to text', function() {
     it('should render escaped html', function() {
-      const $ = render('_tag', {
+      const $ = render('tag', {
         text: '<span>alpha</span>',
       })
 
@@ -65,7 +65,7 @@ describe('Tag component', function() {
 
   context('when html is passed to html', function() {
     it('should render unescaped html', function() {
-      const $ = render('_tag', {
+      const $ = render('tag', {
         html: '<span>alpha</span>',
       })
 
@@ -76,7 +76,7 @@ describe('Tag component', function() {
 
   context('when both html and text params are used', function() {
     it('should render unescaped html', function() {
-      const $ = render('_tag', {
+      const $ = render('tag', {
         html: '<span>alpha</span>',
         text: '<span>alpha</span>',
       })

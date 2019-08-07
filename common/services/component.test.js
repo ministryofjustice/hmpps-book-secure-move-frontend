@@ -24,7 +24,7 @@ describe('Component Service', function() {
       })
 
       it('should use correct filename', function() {
-        expect(component).to.contain('from "input/macro.njk"')
+        expect(component).to.contain('from "govuk/components/input/macro.njk"')
       })
 
       it('should use correct macro name', function() {
