@@ -8,6 +8,7 @@ const {
   setFieldError,
   translateField,
   insertInitialOption,
+  insertItemConditional,
 } = require('./field')
 
 const componentService = require('../services/component')
@@ -780,6 +781,69 @@ describe('Form helpers', function() {
             text: 'Bar',
           },
         ])
+      })
+    })
+  })
+
+  describe('#insertItemConditional()', function() {
+    const conditionalField = 'conditional_field'
+    let response
+
+    context('when key matches item', function() {
+      context('when conditional already exists', function() {
+        const field = {
+          name: 'match',
+          key: 'match',
+          conditional: 'original_conditional_field',
+        }
+        beforeEach(function() {
+          response = insertItemConditional({
+            key: 'match',
+            field: conditionalField,
+          })(field)
+        })
+
+        it('should overwrite conditional field', function() {
+          expect(response).to.deep.equal({
+            name: 'match',
+            key: 'match',
+            conditional: 'conditional_field',
+          })
+        })
+      })
+
+      context('when no conditional exists', function() {
+        const field = { name: 'match', key: 'match' }
+
+        beforeEach(function() {
+          response = insertItemConditional({
+            key: 'match',
+            field: conditionalField,
+          })(field)
+        })
+
+        it('should add conditional field', function() {
+          expect(response).to.deep.equal({
+            name: 'match',
+            key: 'match',
+            conditional: 'conditional_field',
+          })
+        })
+      })
+    })
+
+    context('when key does not match item', function() {
+      const field = { name: 'field', key: 'field' }
+
+      beforeEach(function() {
+        response = insertItemConditional({
+          key: 'no_match',
+          field: conditionalField,
+        })(field)
+      })
+
+      it('should return original item', function() {
+        expect(response).to.deep.equal({ name: 'field', key: 'field' })
       })
     })
   })

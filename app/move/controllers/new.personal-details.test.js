@@ -4,6 +4,7 @@ const Controller = require('./new.personal-details')
 const personService = require('../../../common/services/person')
 const referenceDataService = require('../../../common/services/reference-data')
 const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const fieldHelpers = require('../../../common/helpers/field')
 
 const controller = new Controller({ route: '/' })
 const genderMock = [
@@ -46,10 +47,13 @@ describe('Move controllers', function() {
 
         beforeEach(async function() {
           sinon.spy(FormController.prototype, 'configure')
+          sinon.stub(fieldHelpers, 'insertItemConditional').callsFake(() => {
+            return item => item
+          })
+          sinon.stub(referenceDataService, 'getGenders').resolves(genderMock)
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
           })
-          sinon.stub(referenceDataService, 'getGenders').resolves(genderMock)
           sinon
             .stub(referenceDataService, 'getEthnicities')
             .resolves(ethnicityMock)
@@ -73,6 +77,15 @@ describe('Move controllers', function() {
             { value: '8888', text: 'Male' },
             { value: '9999', text: 'Female' },
           ])
+        })
+
+        it('should insert trans conditional field', function() {
+          expect(
+            fieldHelpers.insertItemConditional
+          ).to.have.been.calledOnceWithExactly({
+            key: 'trans',
+            field: 'gender_additional_information',
+          })
         })
 
         it('should set list of ethnicities dynamically', function() {
