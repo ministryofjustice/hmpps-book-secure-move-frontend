@@ -1,6 +1,11 @@
+const proxyquire = require('proxyquire')
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./new.save')
+const Controller = proxyquire('./new.save', {
+  '../../moves': {
+    mountpath: '/moves',
+  },
+})
 const moveService = require('../../../common/services/move')
 const personService = require('../../../common/services/person')
 const filters = require('../../../config/nunjucks/filters')

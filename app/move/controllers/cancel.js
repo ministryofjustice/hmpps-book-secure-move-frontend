@@ -16,7 +16,7 @@ module.exports = {
         }),
       })
 
-      res.redirect('/moves')
+      res.redirect(res.locals.MOVES_URL)
     } catch (error) {
       next(error)
     }

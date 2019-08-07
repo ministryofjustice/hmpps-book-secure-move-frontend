@@ -2,6 +2,7 @@ const queryString = require('query-string')
 const { get } = require('lodash')
 const { startOfTomorrow } = require('date-fns')
 
+const movesApp = require('../../app/moves')
 const { check } = require('./permissions')
 
 module.exports = function setLocals(req, res, next) {
@@ -14,7 +15,9 @@ module.exports = function setLocals(req, res, next) {
     TOMORROW: startOfTomorrow(),
     REQUEST_PATH: req.path,
     CURRENT_LOCATION: req.session.currentLocation,
-    MOVES_URL: movesSearch ? `/moves?${movesSearch}` : '/moves',
+    MOVES_URL: movesSearch
+      ? `${movesApp.mountpath}?${movesSearch}`
+      : movesApp.mountpath,
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
     canAccess: permission => {
