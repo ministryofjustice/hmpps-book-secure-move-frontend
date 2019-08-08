@@ -17,6 +17,7 @@
 .app-pagination__link {
   display: block;
   padding: govuk-spacing(3);
+  text-decoration: none;
 
   &:link,
   &:visited,
@@ -37,7 +38,7 @@
 }
 
 .app-pagination__link-text {
-  display: inline-block;
+  display: inline;
   text-decoration: none;
 
   .app-pagination__list-item--prev &,
@@ -70,11 +71,11 @@
 // Modifiers
 .app-pagination--inline {
   .app-pagination__list-item {
-    display: inline;
+    display: inline-block;
   }
 
   .app-pagination__link {
-    display: inline-block;
+    display: block;
   }
 
   .app-pagination__link-text {
