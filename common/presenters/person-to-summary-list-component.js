@@ -6,10 +6,14 @@ const filters = require('../../config/nunjucks/filters')
 module.exports = function personToSummaryListComponent({
   date_of_birth: dateOfBirth,
   gender,
+  gender_additional_information: genderAdditionalInformation,
   ethnicity,
   identifiers,
 }) {
   const age = `(${i18n.t('age')} ${filters.calculateAge(dateOfBirth)})`
+  const genderExtra = genderAdditionalInformation
+    ? ` — ${genderAdditionalInformation}`
+    : ''
   const pncNumber = find(identifiers, {
     identifier_type: 'police_national_computer',
   })
@@ -35,7 +39,7 @@ module.exports = function personToSummaryListComponent({
         text: i18n.t('fields::gender.label'),
       },
       value: {
-        text: gender ? gender.title : '',
+        text: gender ? `${gender.title}${genderExtra}` : '',
       },
     },
     {

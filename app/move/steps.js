@@ -24,6 +24,7 @@ module.exports = {
       'date_of_birth',
       'ethnicity',
       'gender',
+      'gender_additional_information',
     ],
   },
   '/move-details': {

@@ -12,6 +12,12 @@ class PersonalDetailsController extends FormController {
       const genderOptions = genders
         .filter(referenceDataHelpers.filterDisabled())
         .map(fieldHelpers.mapReferenceDataToOption)
+        .map(
+          fieldHelpers.insertItemConditional({
+            key: 'trans',
+            field: 'gender_additional_information',
+          })
+        )
       const ethnicityOptions = ethnicities
         .filter(referenceDataHelpers.filterDisabled())
         .map(fieldHelpers.mapReferenceDataToOption)

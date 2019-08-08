@@ -51,7 +51,9 @@ describe('Presenters', function() {
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: mockMove.person.gender.title },
+            value: {
+              text: `${mockMove.person.gender.title} — ${mockMove.person.gender_additional_information}`,
+            },
           })
         })
 
@@ -141,6 +143,29 @@ describe('Presenters', function() {
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: '' },
+          })
+        })
+      })
+    })
+
+    context('when no additional gender information', function() {
+      let transformedResponse
+
+      beforeEach(function() {
+        transformedResponse = personToSummaryListComponent({
+          gender: {
+            title: 'Male',
+          },
+        })
+      })
+
+      describe('response', function() {
+        it('should return only gender name', function() {
+          const row = transformedResponse.rows[2]
+
+          expect(row).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: 'Male' },
           })
         })
       })

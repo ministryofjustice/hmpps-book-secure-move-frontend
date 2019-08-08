@@ -147,6 +147,19 @@ function insertInitialOption(items, label = 'option') {
   return [initialOption, ...items]
 }
 
+function insertItemConditional({ key, field }) {
+  return item => {
+    if (item.key !== key) {
+      return item
+    }
+
+    return {
+      ...item,
+      conditional: field,
+    }
+  }
+}
+
 module.exports = {
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
@@ -155,4 +168,5 @@ module.exports = {
   setFieldError,
   translateField,
   insertInitialOption,
+  insertItemConditional,
 }

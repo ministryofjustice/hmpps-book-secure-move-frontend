@@ -15,6 +15,10 @@
   "gender": {
     "label": "Gender"
   },
+  "gender_additional_information": {
+    "label": "More information",
+    "hint": "Give more information if this person’s gender identity may put them at risk from others, or pose a risk to others"
+  },
   "ethnicity": {
     "label": "Ethnicity"
   },
