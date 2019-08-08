@@ -28,6 +28,11 @@
     background-color: govuk-colour("blue");
   }
 
+  // create s
+  & + & {
+    margin-top: govuk-spacing(1);
+  }
+
   @include govuk-media-query($media-type: print) {
     background: govuk-colour("white") !important;
     border: 2px solid govuk-colour("blue");
