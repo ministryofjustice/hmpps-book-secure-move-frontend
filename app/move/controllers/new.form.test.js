@@ -28,6 +28,66 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#middlewareLocals()', function() {
+      beforeEach(function() {
+        sinon.stub(FormController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function() {
+        expect(FormController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set cancel url method', function() {
+        expect(controller.use).to.have.been.calledWith(controller.setCancelUrl)
+      })
+    })
+
+    describe('#setCancelUrl()', function() {
+      let res, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        res = {
+          locals: {},
+        }
+      })
+
+      context('with no moves url local', function() {
+        beforeEach(function() {
+          controller.setCancelUrl({}, res, nextSpy)
+        })
+
+        it('should set cancel url correctly', function() {
+          expect(res.locals).to.have.property('cancelUrl')
+          expect(res.locals.cancelUrl).to.equal(undefined)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with moves url local', function() {
+        beforeEach(function() {
+          res.locals.MOVES_URL = '/moves?move-date=2019-10-10'
+          controller.setCancelUrl({}, res, nextSpy)
+        })
+
+        it('should set cancel url moves url', function() {
+          expect(res.locals).to.have.property('cancelUrl')
+          expect(res.locals.cancelUrl).to.equal('/moves?move-date=2019-10-10')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
     describe('#checkCurrentLocation()', function() {
       let req, nextSpy
 

@@ -1,0 +1,28 @@
+.govuk-button--text {
+  background: none;
+  box-shadow: none;
+  color: $govuk-link-colour;
+  text-align: left;
+  text-decoration: underline;
+
+  &:link,
+  &:visited {
+    color: $govuk-link-colour;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: $govuk-link-active-colour;
+    top: 0;
+  }
+
+  &:hover {
+    color: $govuk-link-hover-colour;
+    text-decoration: underline;
+  }
+
+  &:hover,
+  &:focus {
+    background: none;
+  }
+}

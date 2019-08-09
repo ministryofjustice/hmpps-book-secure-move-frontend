@@ -49,6 +49,10 @@
         {{ govukButton({
           text: t(options.buttonText or "actions::continue")
         }) }}
+
+        {% if cancelUrl %}
+          <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">Cancel</a>
+        {% endif %}
       </form>
     </div>
   </div>

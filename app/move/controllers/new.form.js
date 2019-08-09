@@ -10,6 +10,16 @@ class FormController extends Controller {
     this.use(this.checkCurrentLocation)
   }
 
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setCancelUrl)
+  }
+
+  setCancelUrl(req, res, next) {
+    res.locals.cancelUrl = res.locals.MOVES_URL
+    next()
+  }
+
   checkCurrentLocation(req, res, next) {
     if (!req.session.currentLocation) {
       const error = new Error(
