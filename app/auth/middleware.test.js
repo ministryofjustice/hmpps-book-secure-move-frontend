@@ -1,14 +1,22 @@
 const proxyquire = require('proxyquire')
 
-const referenceDataService = require('../../common/services/reference-data')
-
-function UserStub(token) {
-  this.user_name = token.user_name
+const userLocationSuccessStub = {
+  getUserLocations: () => {
+    return Promise.resolve(['TEST'])
+  },
+}
+const userLocationFailureError = new Error('test')
+const userLocationFailureStub = {
+  getUserLocations: () => {
+    return Promise.reject(userLocationFailureError)
+  },
 }
 
-const authentication = proxyquire('./middleware', {
-  '../../common/lib/user': UserStub,
-})
+function UserStub({ name, roles = [], locations = [] } = {}) {
+  this.userName = name
+  this.permissions = []
+  this.locations = locations
+}
 
 const expiryTime = 1000
 const payload = {
@@ -18,17 +26,6 @@ const payload = {
   exp: expiryTime,
 }
 const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64')
-const mockLocations = [
-  {
-    id: '1111',
-  },
-  {
-    id: '2222',
-  },
-  {
-    id: '3333',
-  },
-]
 
 describe('Authentication middleware', function() {
   describe('#processAuthResponse', function() {
@@ -46,8 +43,13 @@ describe('Authentication middleware', function() {
     })
 
     context('when there is no grant response', function() {
-      beforeEach(function() {
-        authentication.processAuthResponse()(req, {}, nextSpy)
+      beforeEach(async function() {
+        const authentication = proxyquire('./middleware', {
+          '../../common/lib/user': UserStub,
+          '../../common/services/user-locations': userLocationSuccessStub,
+        })
+
+        await authentication.processAuthResponse()(req, {}, nextSpy)
       })
 
       it('returns next', function() {
@@ -61,7 +63,6 @@ describe('Authentication middleware', function() {
 
     context('when there is a grant response', function() {
       beforeEach(function() {
-        sinon.stub(referenceDataService, 'getLocationsById')
         req.session.grant = {
           response: {
             access_token: `test.${encodedPayload}.test`,
@@ -69,29 +70,29 @@ describe('Authentication middleware', function() {
         }
       })
 
-      context('when getLocationsById rejects', function() {
-        const errorMock = new Error('Session Error')
-
+      context('when the user locations lookup fails', function() {
         beforeEach(async function() {
-          referenceDataService.getLocationsById.rejects(errorMock)
+          const authentication = proxyquire('./middleware', {
+            '../../common/lib/user': UserStub,
+            '../../common/services/user-locations': userLocationFailureStub,
+          })
 
           await authentication.processAuthResponse()(req, {}, nextSpy)
         })
 
-        it('call next with error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy.args[0][0] instanceof Error).to.be.true
-          expect(nextSpy.args[0][0].message).to.equal('Session Error')
-        })
-
-        it('doesn’t regenerate the session', function() {
-          expect(req.session.regenerate).not.to.be.called
+        it('returns next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(userLocationFailureError)
         })
       })
 
-      context('when getLocationsById resolves', function() {
+      context('when the user locations lookup succeeds', function() {
+        let authentication
+
         beforeEach(function() {
-          referenceDataService.getLocationsById.resolves(mockLocations)
+          authentication = proxyquire('./middleware', {
+            '../../common/lib/user': UserStub,
+            '../../common/services/user-locations': userLocationSuccessStub,
+          })
         })
 
         context('when session regeneration throws an error', function() {
@@ -107,37 +108,7 @@ describe('Authentication middleware', function() {
           })
         })
 
-        context('when default locations are set', function() {
-          const locations = ['1', '2', '3']
-
-          beforeEach(async function() {
-            await authentication.processAuthResponse(
-              locations
-            )(req, {}, nextSpy)
-          })
-
-          it('should call reference data with locations', function() {
-            expect(
-              referenceDataService.getLocationsById
-            ).to.be.calledWithExactly(locations)
-          })
-        })
-
-        context('when no default locations are set', function() {
-          beforeEach(async function() {
-            await authentication.processAuthResponse()(req, {}, nextSpy)
-          })
-
-          it('should call reference with empty array', function() {
-            expect(
-              referenceDataService.getLocationsById
-            ).to.be.calledWithExactly([])
-          })
-        })
-
         context('when session regenerates successfully', function() {
-          let user
-
           beforeEach(async function() {
             // Stub the express-session #regenerate function which takes a callback
             req.session.regenerate = callback => {
@@ -146,10 +117,6 @@ describe('Authentication middleware', function() {
               }
               callback()
             }
-
-            user = new UserStub({
-              user_name: payload.user_name,
-            })
 
             await authentication.processAuthResponse()(req, {}, nextSpy)
           })
@@ -163,7 +130,9 @@ describe('Authentication middleware', function() {
           })
 
           it('sets the user info on the session', function() {
-            expect(req.session.user).to.deep.equal(user)
+            expect(req.session.user.userName).to.equal('test')
+            expect(Array.isArray(req.session.user.permissions)).to.be.true
+            expect(req.session.user.locations).to.deep.equal(['TEST'])
           })
 
           it('sets the redirect URL in the session', function() {

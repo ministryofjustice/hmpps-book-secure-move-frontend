@@ -5,6 +5,8 @@ const {
   getLocations,
   getLocationById,
   getLocationsById,
+  getLocationByNomisAgencyId,
+  getLocationsByNomisAgencyId,
 } = require('./reference-data')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/middleware/auth')
@@ -18,6 +20,7 @@ const assessmentSerialized = require('../../test/fixtures/api-client/reference.a
 const locationsDeserialized = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
 const locationsPage1Serialized = require('../../test/fixtures/api-client/reference.locations.page-1.serialized.json')
 const locationsPage2Serialized = require('../../test/fixtures/api-client/reference.locations.page-2.serialized.json')
+const locationsSerialized = require('../../test/fixtures/api-client/reference.locations.serialized.json')
 const locationDeserialized = require('../../test/fixtures/api-client/reference.location.deserialized.json')
 const locationSerialized = require('../../test/fixtures/api-client/reference.location.serialized.json')
 
@@ -228,6 +231,35 @@ describe('Reference Service', function() {
     })
   })
 
+  describe('#getLocationByNomisAgencyId()', function() {
+    context('when request returns 200', function() {
+      let nomisAgencyId, location
+
+      beforeEach(async function() {
+        nomisAgencyId = 'TEST'
+
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: nomisAgencyId },
+          })
+          .reply(200, locationsSerialized)
+
+        location = await getLocationByNomisAgencyId(nomisAgencyId)
+      })
+
+      it('should get location from API', function() {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should return only the first result', function() {
+        expect(location).to.deep.equal(locationDeserialized.data)
+      })
+    })
+  })
+
   describe('#getLocationsById()', function() {
     context('when request returns 200', function() {
       let locations
@@ -299,6 +331,113 @@ describe('Reference Service', function() {
       })
 
       it('should return empty array', function() {
+        expect(locations).to.deep.equal([])
+      })
+    })
+  })
+
+  describe('#getLocationsByNomisAgencyId()', function() {
+    context('when request returns 200', function() {
+      let locations
+
+      beforeEach(async function() {
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 1 },
+          })
+          .reply(200, locationsSerialized)
+
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 2 },
+          })
+          .reply(200, locationsSerialized)
+
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 3 },
+          })
+          .reply(200, locationsSerialized)
+
+        locations = await getLocationsByNomisAgencyId(['1', '2', '3'])
+      })
+
+      it('gets locations from the API', function() {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('returns the first location result for each agency ID', function() {
+        expect(locations).to.deep.equal([
+          locationDeserialized.data,
+          locationDeserialized.data,
+          locationDeserialized.data,
+        ])
+      })
+    })
+
+    context('when locations are not found', function() {
+      let locations
+
+      beforeEach(async function() {
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 1 },
+          })
+          .reply(200, locationsSerialized)
+
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 2 },
+          })
+          .reply(404, {})
+
+        nock(API.BASE_URL)
+          .get('/reference/locations')
+          .query({
+            page: '1',
+            per_page: '100',
+            filter: { nomis_agency_id: 3 },
+          })
+          .reply(200, locationsSerialized)
+
+        locations = await getLocationsByNomisAgencyId(['1', '2', '3'])
+      })
+
+      it('gets locations from the API', function() {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('filters out locations not found', function() {
+        expect(locations).to.deep.equal([
+          locationDeserialized.data,
+          locationDeserialized.data,
+        ])
+      })
+    })
+
+    context('when called with empty locations', function() {
+      let locations
+
+      beforeEach(async function() {
+        locations = await getLocationsByNomisAgencyId()
+      })
+
+      it('returns an empty Array', function() {
         expect(locations).to.deep.equal([])
       })
     })

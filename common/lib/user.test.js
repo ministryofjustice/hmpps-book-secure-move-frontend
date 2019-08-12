@@ -2,15 +2,14 @@ const User = require('./user')
 
 describe('User class', function() {
   describe('when instantiated', function() {
-    let user
+    let user, userName, roles, locations
 
     context('with username', function() {
       it('should set username', function() {
-        user = new User({
-          user_name: 'USERNAME',
-        })
+        userName = 'USERNAME'
+        user = new User({ name: userName })
 
-        expect(user.userName).to.equal('USERNAME')
+        expect(user.userName).to.equal(userName)
       })
     })
 
@@ -22,22 +21,20 @@ describe('User class', function() {
       })
     })
 
-    context('with authorities', function() {
+    context('with roles', function() {
       beforeEach(function() {
         sinon.stub(User.prototype, 'getPermissions').returnsArg(0)
+        roles = ['ROLE_PECS_SUPPLIER']
       })
 
       it('should set permissions', function() {
-        user = new User({
-          authorities: ['ROLE_SUPPLIER'],
-        })
-
-        expect(user.permissions).to.deep.equal(['ROLE_SUPPLIER'])
+        user = new User({ name: 'USERNAME', roles })
+        expect(Array.isArray(user.permissions)).to.be.true
       })
     })
 
-    context('without authorities', function() {
-      it('should not set permissions to empty array', function() {
+    context('without roles', function() {
+      it('should set permissions to empty array', function() {
         user = new User()
 
         expect(user.permissions).to.deep.equal([])
@@ -45,12 +42,13 @@ describe('User class', function() {
     })
 
     context('with locations', function() {
-      it('should set locations', function() {
-        user = new User({
-          locations: ['111', '222'],
-        })
+      beforeEach(function() {
+        locations = ['PECS_TEST']
+      })
 
-        expect(user.locations).to.deep.equal(['111', '222'])
+      it('should set locations', function() {
+        user = new User({ name: 'USERNAME', roles: [], locations })
+        expect(user.locations).to.deep.equal(locations)
       })
     })
 
@@ -70,7 +68,7 @@ describe('User class', function() {
       user = new User()
     })
 
-    context('when user has no authorities', function() {
+    context('when user has no roles', function() {
       beforeEach(function() {
         permissions = user.getPermissions()
       })

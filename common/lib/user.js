@@ -1,14 +1,14 @@
-function User(token = {}) {
-  this.userName = token.user_name
-  this.locations = token.locations || []
-  this.permissions = this.getPermissions(token.authorities)
+function User({ name, roles = [], locations = [] } = {}) {
+  this.userName = name
+  this.permissions = this.getPermissions(roles)
+  this.locations = locations
 }
 
 User.prototype = {
-  getPermissions(authorities = []) {
+  getPermissions(roles = []) {
     const permissions = []
 
-    if (authorities.includes('ROLE_PECS_POLICE')) {
+    if (roles.includes('ROLE_PECS_POLICE')) {
       permissions.push(
         ...[
           'moves:view:by_location',
@@ -20,7 +20,7 @@ User.prototype = {
       )
     }
 
-    if (authorities.includes('ROLE_PECS_SUPPLIER')) {
+    if (roles.includes('ROLE_PECS_SUPPLIER')) {
       permissions.push(...['moves:view:all', 'moves:download:all'])
     }
 
