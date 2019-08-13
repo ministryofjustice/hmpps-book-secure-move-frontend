@@ -106,30 +106,102 @@ describe('Reference Service', function() {
   })
 
   describe('#getLocations()', function() {
-    context('when request returns 200', function() {
-      let response
+    context('with no parameters', function() {
+      context('when request returns 200', function() {
+        let response
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({ page: '1', per_page: '100' })
-          .reply(200, locationsPage1Serialized)
+        beforeEach(async function() {
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({ page: '1', per_page: '100' })
+            .reply(200, locationsPage1Serialized)
 
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({ page: '2', per_page: '100' })
-          .reply(200, locationsPage2Serialized)
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({ page: '2', per_page: '100' })
+            .reply(200, locationsPage2Serialized)
 
-        response = await getLocations()
+          response = await getLocations()
+        })
+
+        it('should call API with no filter query parameters', function() {
+          expect(nock.isDone()).to.be.true
+        })
+
+        it('should return a full list of locations', function() {
+          expect(response.length).to.deep.equal(
+            locationsDeserialized.data.length
+          )
+          expect(response).to.deep.equal(locationsDeserialized.data)
+        })
       })
+    })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
+    context('with type parameter', function() {
+      context('when request returns 200', function() {
+        let type
+
+        beforeEach(async function() {
+          type = 'police'
+
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({
+              page: '1',
+              per_page: '100',
+              filter: { location_type: type },
+            })
+            .reply(200, locationsPage1Serialized)
+
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({
+              page: '2',
+              per_page: '100',
+              filter: { location_type: type },
+            })
+            .reply(200, locationsPage2Serialized)
+
+          await getLocations({ type: type })
+        })
+
+        it('should call API with the type filter query parameter', function() {
+          expect(nock.isDone()).to.be.true
+        })
       })
+    })
 
-      it('should return a full list of locations', function() {
-        expect(response.length).to.deep.equal(locationsDeserialized.data.length)
-        expect(response).to.deep.equal(locationsDeserialized.data)
+    context('with nomisAgencyId parameter', function() {
+      context('when request returns 200', function() {
+        let nomisAgencyId
+
+        beforeEach(async function() {
+          nomisAgencyId = 'TEST'
+
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({
+              page: '1',
+              per_page: '100',
+              filter: { nomis_agency_id: nomisAgencyId },
+            })
+            .reply(200, locationsPage1Serialized)
+
+          nock(API.BASE_URL)
+            .get('/reference/locations')
+            .query({
+              page: '2',
+              per_page: '100',
+              filter: { nomis_agency_id: nomisAgencyId },
+            })
+            .reply(200, locationsPage2Serialized)
+
+          await getLocations({ nomisAgencyId: nomisAgencyId })
+        })
+
+        it('should call API with the nomis_agency_id filter query parameter', function() {
+          expect(nock.isDone()).to.be.true
+        })
       })
     })
   })
