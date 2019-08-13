@@ -119,10 +119,7 @@ describe('Move controllers', function() {
             values: {},
           },
           sessionModel: {
-            get: sinon
-              .stub()
-              .withArgs('move')
-              .returns(moveMock),
+            get: sinon.stub(),
             reset: sinon.stub(),
             destroy: sinon.stub(),
           },
@@ -139,42 +136,82 @@ describe('Move controllers', function() {
 
         sinon.stub(personService, 'getFullname').returns(fullname)
         sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
-        controller.successHandler(req, res)
       })
 
-      it('should set a success message', function() {
-        expect(req.flash).to.have.been.calledOnceWith('success', {
-          title: 'messages::create_move.success.title',
-          content: 'messages::create_move.success.content',
+      context('by default', function() {
+        beforeEach(function() {
+          req.sessionModel.get.withArgs('move').returns(moveMock)
+          controller.successHandler(req, res)
+        })
+
+        it('should set a success message', function() {
+          expect(req.flash).to.have.been.calledOnceWith('success', {
+            title: 'messages::create_move.success.title',
+            content: 'messages::create_move.success.content',
+          })
+        })
+
+        it('should pass correct values to success content translation', function() {
+          expect(req.t.secondCall).to.have.been.calledWithExactly(
+            'messages::create_move.success.content',
+            {
+              name: fullname,
+              location: moveMock.to_location.title,
+              date: moveMock.date,
+            }
+          )
+        })
+
+        it('should reset the journey', function() {
+          expect(req.journeyModel.reset).to.have.been.calledOnce
+          expect(req.journeyModel.destroy).to.have.been.calledOnce
+        })
+
+        it('should reset the session', function() {
+          expect(req.sessionModel.reset).to.have.been.calledOnce
+          expect(req.sessionModel.destroy).to.have.been.calledOnce
+        })
+
+        it('should redirect correctly', function() {
+          expect(res.redirect).to.have.been.calledOnce
+          expect(res.redirect).to.have.been.calledWith(
+            `/moves?move-date=${moveMock.date}`
+          )
         })
       })
 
-      it('should pass correct values to success content translation', function() {
-        expect(req.t.secondCall).to.have.been.calledWithExactly(
-          'messages::create_move.success.content',
-          {
-            name: fullname,
-            location: moveMock.to_location.title,
-            date: moveMock.date,
-          }
-        )
-      })
+      context('with prison recall move type', function() {
+        beforeEach(function() {
+          req.sessionModel.get.withArgs('move').returns({
+            ...moveMock,
+            move_type: 'prison_recall',
+          })
+          controller.successHandler(req, res)
+        })
 
-      it('should reset the journey', function() {
-        expect(req.journeyModel.reset).to.have.been.calledOnce
-        expect(req.journeyModel.destroy).to.have.been.calledOnce
-      })
+        it('should set a success message', function() {
+          expect(req.flash).to.have.been.calledOnceWith('success', {
+            title: 'messages::create_move.success.title',
+            content: 'messages::create_move.success.content',
+          })
+        })
 
-      it('should reset the session', function() {
-        expect(req.sessionModel.reset).to.have.been.calledOnce
-        expect(req.sessionModel.destroy).to.have.been.calledOnce
-      })
+        it('should translate prison recall title', function() {
+          expect(req.t.secondCall).to.have.been.calledWithExactly(
+            'fields::move_type.items.prison_recall.label'
+          )
+        })
 
-      it('should redirect correctly', function() {
-        expect(res.redirect).to.have.been.calledOnce
-        expect(res.redirect).to.have.been.calledWith(
-          `/moves?move-date=${moveMock.date}`
-        )
+        it('should pass correct values to success content translation', function() {
+          expect(req.t.thirdCall).to.have.been.calledWithExactly(
+            'messages::create_move.success.content',
+            {
+              name: fullname,
+              location: 'fields::move_type.items.prison_recall.label',
+              date: moveMock.date,
+            }
+          )
+        })
       })
     })
   })
