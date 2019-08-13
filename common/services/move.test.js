@@ -75,6 +75,37 @@ describe('Move Service', function() {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
+
+    context('with falsey values', function() {
+      let formatted
+
+      beforeEach(async function() {
+        formatted = await moveService.format({
+          date: '2010-10-10',
+          to_location: {
+            id: moveGetDeserialized.data.to_location.id,
+          },
+          from_location: moveGetDeserialized.data.from_location.id,
+          empty_string: '',
+          false: false,
+          undefined: undefined,
+          empty_array: [],
+        })
+      })
+
+      it('should remove falsey values', function() {
+        expect(formatted).to.deep.equal({
+          date: '2010-10-10',
+          to_location: {
+            id: moveGetDeserialized.data.to_location.id,
+          },
+          from_location: {
+            id: moveGetDeserialized.data.from_location.id,
+          },
+          empty_array: [],
+        })
+      })
+    })
   })
 
   describe('#getRequestedMovesByDateAndLocation()', function() {
