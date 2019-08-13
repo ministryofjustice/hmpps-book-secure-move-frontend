@@ -63,8 +63,8 @@ describe('Move controllers', function() {
             form: {
               options: {
                 fields: {
-                  to_location_court: {},
-                  to_location_prison: {},
+                  to_location_court_appearance: {},
+                  to_location_prison_recall: {},
                   date_type: {
                     items: [
                       {
@@ -97,18 +97,18 @@ describe('Move controllers', function() {
         })
 
         it('should set list of courts dynamically', function() {
-          expect(req.form.options.fields.to_location_court.items).to.deep.equal(
-            [
-              { text: '--- Choose court ---' },
-              { value: '8888', text: 'Court 8888' },
-              { value: '9999', text: 'Court 9999' },
-            ]
-          )
+          expect(
+            req.form.options.fields.to_location_court_appearance.items
+          ).to.deep.equal([
+            { text: '--- Choose court ---' },
+            { value: '8888', text: 'Court 8888' },
+            { value: '9999', text: 'Court 9999' },
+          ])
         })
 
         it('should set list of prison dynamically', function() {
           expect(
-            req.form.options.fields.to_location_prison.items
+            req.form.options.fields.to_location_prison_recall.items
           ).to.deep.equal([
             { text: '--- Choose prison ---' },
             { value: '3333', text: 'Prison 3333' },
@@ -281,9 +281,9 @@ describe('Move controllers', function() {
       context('when location type is court', function() {
         beforeEach(function() {
           req.form.values = {
+            move_type: 'court_appearance',
             to_location: '',
-            to_location_court: '12345',
-            to_location_type: 'court',
+            to_location_court_appearance: '12345',
           }
 
           controller.process(req, {}, nextSpy)
@@ -301,9 +301,9 @@ describe('Move controllers', function() {
       context('when location type is prison', function() {
         beforeEach(function() {
           req.form.values = {
+            move_type: 'prison_recall',
             to_location: '',
-            to_location_prison: '67890',
-            to_location_type: 'prison',
+            to_location_prison_recall: '67890',
           }
 
           controller.process(req, {}, nextSpy)

@@ -32,15 +32,19 @@ module.exports = {
     template: 'move/views/new/move-details',
     pageTitle: 'moves::steps.move_details.heading',
     next: [
-      { field: 'to_location_type', value: 'court', next: 'court-information' },
+      {
+        field: 'move_type',
+        value: 'court_appearance',
+        next: 'court-information',
+      },
       'risk-information',
     ],
     fields: [
       'from_location',
       'to_location',
-      'to_location_type',
-      'to_location_court',
-      'to_location_prison',
+      'move_type',
+      'to_location_court_appearance',
+      'to_location_prison_recall',
       'date',
       'date_type',
       'date_custom',

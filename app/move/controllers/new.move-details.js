@@ -17,8 +17,8 @@ class MoveDetailsController extends FormController {
       })
 
       const {
-        to_location_court: toLocationCourt,
-        to_location_prison: toLocationPrison,
+        to_location_court_appearance: toLocationCourt,
+        to_location_prison_recall: toLocationPrison,
         date_type: dateType,
       } = req.form.options.fields
 
@@ -51,10 +51,7 @@ class MoveDetailsController extends FormController {
   }
 
   process(req, res, next) {
-    const {
-      date_type: dateType,
-      to_location_type: locationType,
-    } = req.form.values
+    const { date_type: dateType, move_type: moveType } = req.form.values
 
     // process move date
     let moveDate
@@ -72,7 +69,7 @@ class MoveDetailsController extends FormController {
     req.form.values.date = dateFns.format(moveDate, 'YYYY-MM-DD')
 
     // process locations
-    req.form.values.to_location = req.form.values[`to_location_${locationType}`]
+    req.form.values.to_location = req.form.values[`to_location_${moveType}`]
     // if req.session.currentLocation doesn't exist the parent controller will error
     req.form.values.from_location = req.session.currentLocation.id
 

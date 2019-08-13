@@ -26,22 +26,22 @@
     "label": "Move from",
     "short_label": "From"
   },
-  "to_location_type": {
+  "move_type": {
     "label": "Move to",
     "short_label": "To",
     "items": {
-      "prison": {
-        "label": "Prison"
+      "prison_recall": {
+        "label": "Prison recall"
       },
-      "court": {
+      "court_appearance": {
         "label": "Court"
       }
     }
   },
-  "to_location_prison": {
+  "to_location_prison_recall": {
     "label": "Name of prison"
   },
-  "to_location_court": {
+  "to_location_court_appearance": {
     "label": "Name of court"
   },
   "date_type": {
