@@ -2,6 +2,8 @@ function defineModels(jsonApi) {
   jsonApi.define('move', {
     reference: '',
     status: '',
+    move_type: '',
+    additional_information: '',
     updated_at: '',
     time_due: '',
     date: '',
