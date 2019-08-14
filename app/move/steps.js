@@ -45,6 +45,7 @@ module.exports = {
       'move_type',
       'to_location_court_appearance',
       'to_location_prison_recall',
+      'additional_information',
       'date',
       'date_type',
       'date_custom',

@@ -47,6 +47,9 @@
   "to_location_court_appearance": {
     "label": "Name of court"
   },
+  "additional_information": {
+    "label": "Additional information (optional)"
+  },
   "date_type": {
     "label": "Date",
     "items": {

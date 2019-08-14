@@ -171,7 +171,7 @@ module.exports = {
       {
         value: 'prison_recall',
         text: 'fields::move_type.items.prison_recall.label',
-        conditional: 'to_location_prison_recall',
+        conditional: 'additional_information',
       },
     ],
   },
@@ -179,6 +179,16 @@ module.exports = {
     validate: 'required',
   }),
   to_location_prison_recall: toLocationType('prison_recall'),
+  additional_information: {
+    skip: true,
+    rows: 3,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: `fields::additional_information.label`,
+      classes: 'govuk-label--s',
+    },
+  },
   date: {},
   date_type: {
     validate: 'required',
