@@ -35,6 +35,9 @@
       },
       "court_appearance": {
         "label": "Court"
+      },
+      "unknown": {
+        "label": "Unknown"
       }
     }
   },
