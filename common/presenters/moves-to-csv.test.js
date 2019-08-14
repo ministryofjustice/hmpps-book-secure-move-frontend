@@ -48,7 +48,7 @@ describe('Presenters', function() {
       })
 
       it('should call translations correct number of times', function() {
-        expect(i18n.t).to.be.callCount(26)
+        expect(i18n.t).to.be.callCount(28)
       })
     })
 
