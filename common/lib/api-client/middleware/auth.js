@@ -28,6 +28,7 @@ async function refreshAccessToken() {
     API.AUTH_URL,
     {},
     {
+      timeout: API.TIMEOUT,
       params: {
         grant_type: 'client_credentials',
       },

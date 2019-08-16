@@ -5,6 +5,7 @@ const mockConfig = {
   AUTH_URL: 'http://baseurl.com/oauth/token',
   CLIENT_ID: 'clientid',
   SECRET: 'secret',
+  TIMEOUT: 10000,
 }
 const auth = proxyquire('./auth', {
   '../../../../config': {
