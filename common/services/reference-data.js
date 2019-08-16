@@ -49,11 +49,22 @@ function getLocationById(id) {
   return apiClient.find('location', id).then(response => response.data)
 }
 
-function getLocationsById(locations = []) {
-  const locationPromises = locations.map(locationId => {
-    return getLocationById(locationId).catch(() => false)
-  })
+function getLocationByNomisAgencyId(nomisAgencyId) {
+  return getLocations({ nomisAgencyId }).then(results => results[0])
+}
 
+function getLocationsById(ids = []) {
+  return _mapLocationIdsToLocations(ids, getLocationById)
+}
+
+function getLocationsByNomisAgencyId(ids = []) {
+  return _mapLocationIdsToLocations(ids, getLocationByNomisAgencyId)
+}
+
+function _mapLocationIdsToLocations(ids, callback) {
+  const locationPromises = ids.map(id => {
+    return callback(id).catch(() => false)
+  })
   return Promise.all(locationPromises).then(locations =>
     locations.filter(Boolean)
   )
@@ -66,4 +77,6 @@ module.exports = {
   getLocations,
   getLocationById,
   getLocationsById,
+  getLocationByNomisAgencyId,
+  getLocationsByNomisAgencyId,
 }

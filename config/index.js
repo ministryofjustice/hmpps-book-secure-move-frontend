@@ -7,6 +7,7 @@ const SERVER_HOST = process.env.SERVER_HOST
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
+const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
 const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
@@ -30,7 +31,6 @@ module.exports = {
   BUILD_DATE: process.env.APP_BUILD_DATE,
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
-  CURRENT_LOCATION_UUID: process.env.CURRENT_LOCATION_UUID,
   API: {
     BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000/api/v1',
     HEALTHCHECK_URL: process.env.API_HEALTHCHECK_URL,
@@ -81,11 +81,18 @@ module.exports = {
       logout_url: _authUrl(
         `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
       ),
+      groups_url: userName => {
+        return _authUrl(`/auth/api/authuser/${userName}/groups`)
+      },
       key: AUTH_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
     },
   },
   DEFAULT_AUTH_PROVIDER: 'hmpps',
+  NOMIS_ELITE2_API: {
+    user_caseloads_url: `${NOMIS_ELITE2_API_BASE_URL}/api/users/me/caseLoads`,
+    healthcheck_url: `${NOMIS_ELITE2_API_BASE_URL}/ping`,
+  },
   ANALYTICS: {
     GA_ID: process.env.GOOGLE_ANALYTICS_ID,
   },

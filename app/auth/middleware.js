@@ -1,12 +1,8 @@
 const User = require('../../common/lib/user')
-const referenceData = require('../../common/services/reference-data')
+const userLocationService = require('../../common/services/user-locations')
+const { decodeAccessToken } = require('../../common/lib/access-token')
 
-function _decodeAccessToken(token) {
-  const payload = token.split('.')[1]
-  return JSON.parse(Buffer.from(payload, 'base64').toString('utf8'))
-}
-
-function processAuthResponse(defaultLocations = []) {
+function processAuthResponse() {
   return async function middleware(req, res, next) {
     const { grant, postAuthRedirect } = req.session
 
@@ -15,19 +11,23 @@ function processAuthResponse(defaultLocations = []) {
     }
 
     try {
-      const accessToken = _decodeAccessToken(grant.response.access_token)
-      const locations = await referenceData.getLocationsById(defaultLocations)
+      const userLocations = await userLocationService.getUserLocations(
+        grant.response.access_token
+      )
 
       req.session.regenerate(error => {
         if (error) {
           return next(error)
         }
 
+        const accessToken = decodeAccessToken(grant.response.access_token)
+
         req.session.authExpiry = accessToken.exp
         req.session.postAuthRedirect = postAuthRedirect
         req.session.user = new User({
-          ...accessToken,
-          locations,
+          name: accessToken.user_name,
+          roles: accessToken.authorities,
+          locations: userLocations,
         })
 
         next()
