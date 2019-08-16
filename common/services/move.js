@@ -1,11 +1,11 @@
-const { mapValues } = require('lodash')
+const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
 function format(data) {
   const relationships = ['to_location', 'from_location']
 
-  return mapValues(data, (value, key) => {
+  return mapValues(pickBy(data), (value, key) => {
     if (relationships.includes(key) && typeof value === 'string') {
       return { id: value }
     }

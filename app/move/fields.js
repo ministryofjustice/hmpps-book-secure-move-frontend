@@ -29,12 +29,11 @@ function assessmentCategory(category) {
   }
 }
 
-function toLocationType(type) {
+function toLocationType(type, props) {
   return {
     skip: true,
-    validate: 'required',
     dependent: {
-      field: 'to_location_type',
+      field: 'move_type',
       value: type,
     },
     component: 'govukSelect',
@@ -49,6 +48,7 @@ function toLocationType(type) {
       classes: 'govuk-label--s',
     },
     items: [],
+    ...props,
   }
 }
 
@@ -151,32 +151,44 @@ module.exports = {
   // move details
   from_location: {},
   to_location: {},
-  to_location_type: {
+  move_type: {
     validate: 'required',
     component: 'govukRadios',
-    name: 'to_location_type',
+    name: 'move_type',
     fieldset: {
       legend: {
-        text: 'fields::to_location_type.label',
+        text: 'fields::move_type.label',
         classes: 'govuk-fieldset__legend--m',
       },
     },
     items: [
       {
-        id: 'to_location_type',
-        value: 'court',
-        text: 'fields::to_location_type.items.court.label',
-        conditional: 'to_location_court',
+        id: 'move_type',
+        value: 'court_appearance',
+        text: 'fields::move_type.items.court_appearance.label',
+        conditional: 'to_location_court_appearance',
       },
       {
-        value: 'prison',
-        text: 'fields::to_location_type.items.prison.label',
-        conditional: 'to_location_prison',
+        value: 'prison_recall',
+        text: 'fields::move_type.items.prison_recall.label',
+        conditional: 'additional_information',
       },
     ],
   },
-  to_location_prison: toLocationType('prison'),
-  to_location_court: toLocationType('court'),
+  to_location_court_appearance: toLocationType('court_appearance', {
+    validate: 'required',
+  }),
+  to_location_prison_recall: toLocationType('prison_recall'),
+  additional_information: {
+    skip: true,
+    rows: 3,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: `fields::additional_information.label`,
+      classes: 'govuk-label--s',
+    },
+  },
   date: {},
   date_type: {
     validate: 'required',

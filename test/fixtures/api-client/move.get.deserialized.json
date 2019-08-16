@@ -3,6 +3,8 @@
     "id": "fcc6f60d-841b-4053-b5ac-3b32b2bdf8a4",
     "type": "moves",
     "reference": "1EK5A8H7",
+    "move_type": "court_appearance",
+    "additional_information": "Some additional information about this move",
     "status": "scheduled",
     "updated_at": "2019-06-11T12:23:34Z",
     "time_due": "2000-01-01T14:00:00Z",

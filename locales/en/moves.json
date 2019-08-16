@@ -38,6 +38,9 @@
     "reference": {
       "label": "Reference"
     },
+    "move_type": {
+      "label": "Move type"
+    },
     "created_at": {
       "label": "Created at"
     },
@@ -52,6 +55,9 @@
     },
     "to_location_code": {
       "label": "To location code"
+    },
+    "additional_information": {
+      "label": "Additional information"
     },
     "ethnicity_code": {
       "label": "Ethnicity code"

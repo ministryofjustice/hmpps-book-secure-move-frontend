@@ -52,6 +52,10 @@ const move = [
     label: 'moves::download.reference.label',
     value: 'reference',
   },
+  {
+    label: 'moves::download.move_type.label',
+    value: 'move_type',
+  },
   // TODO: update to `created_at` when we have this in the API
   {
     label: 'moves::download.created_at.label',
@@ -72,6 +76,10 @@ const move = [
   {
     label: 'moves::download.to_location_code.label',
     value: 'to_location.nomis_agency_id',
+  },
+  {
+    label: 'moves::download.additional_information.label',
+    value: 'additional_information',
   },
   {
     label: 'fields::date_custom.label',

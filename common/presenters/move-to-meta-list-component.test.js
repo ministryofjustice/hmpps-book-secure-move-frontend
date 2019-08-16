@@ -48,7 +48,9 @@ describe('Presenters', function() {
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: mockMove.to_location.title },
+            value: {
+              text: `${mockMove.to_location.title} — ${mockMove.additional_information}`,
+            },
           })
         })
 
@@ -80,7 +82,7 @@ describe('Presenters', function() {
 
         it('should translate to location label', function() {
           expect(i18n.t.secondCall).to.be.calledWithExactly(
-            'fields::to_location_type.short_label'
+            'fields::move_type.short_label'
           )
         })
 

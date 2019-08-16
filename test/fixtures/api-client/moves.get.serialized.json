@@ -4,6 +4,8 @@
       "type": "moves",
       "attributes": {
         "reference": "XRW6A5HP",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:25Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -35,6 +37,8 @@
       "type": "moves",
       "attributes": {
         "reference": "F5XUHAE2",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -66,6 +70,8 @@
       "type": "moves",
       "attributes": {
         "reference": "FA3RC7JT",
+        "move_type": "prison_recall",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:25Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -97,6 +103,8 @@
       "type": "moves",
       "attributes": {
         "reference": "CE68R53U",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -128,6 +136,8 @@
       "type": "moves",
       "attributes": {
         "reference": "8JH1NP2K",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T12:00:00Z",
@@ -159,6 +169,8 @@
       "type": "moves",
       "attributes": {
         "reference": "JTAE83RM",
+        "move_type": "prison_transfer",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -190,6 +202,8 @@
       "type": "moves",
       "attributes": {
         "reference": "M6XPC51T",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -221,6 +235,8 @@
       "type": "moves",
       "attributes": {
         "reference": "KN1CHMX7",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -252,6 +268,8 @@
       "type": "moves",
       "attributes": {
         "reference": "XJCAR28E",
+        "move_type": "prison_recall",
+        "additional_information": "Some additional information about this recall",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T12:00:00Z",
@@ -283,6 +301,8 @@
       "type": "moves",
       "attributes": {
         "reference": "58MF76N2",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -314,6 +334,8 @@
       "type": "moves",
       "attributes": {
         "reference": "M48TYU2R",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -345,6 +367,8 @@
       "type": "moves",
       "attributes": {
         "reference": "4CAFTK2R",
+        "move_type": "prison_recall",
+        "additional_information": "This person doesnt want to go back",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T12:00:00Z",
@@ -376,6 +400,8 @@
       "type": "moves",
       "attributes": {
         "reference": "KYRFHN8C",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:25Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -407,6 +433,8 @@
       "type": "moves",
       "attributes": {
         "reference": "P74X6VMW",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -438,6 +466,8 @@
       "type": "moves",
       "attributes": {
         "reference": "RCH6AJ4F",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -469,6 +499,8 @@
       "type": "moves",
       "attributes": {
         "reference": "3FPT1K8V",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:25Z",
         "time_due": "2000-01-01T12:00:00Z",
@@ -500,6 +532,8 @@
       "type": "moves",
       "attributes": {
         "reference": "69H1JA5X",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T09:00:00Z",
@@ -531,6 +565,8 @@
       "type": "moves",
       "attributes": {
         "reference": "3P5EAXMN",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:25Z",
         "time_due": "2000-01-01T14:00:00Z",
@@ -562,6 +598,8 @@
       "type": "moves",
       "attributes": {
         "reference": "TE1JHC7Y",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:23Z",
         "time_due": "2000-01-01T12:00:00Z",
@@ -593,6 +631,8 @@
       "type": "moves",
       "attributes": {
         "reference": "MFVX4RAK",
+        "move_type": "court_appearance",
+        "additional_information": "",
         "status": "requested",
         "updated_at": "2019-07-02T15:22:24Z",
         "time_due": "2000-01-01T12:00:00Z",

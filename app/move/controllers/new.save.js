@@ -27,9 +27,12 @@ class SaveController extends FormController {
   }
 
   successHandler(req, res) {
-    const { date, person, to_location: toLocation } = req.sessionModel.get(
-      'move'
-    )
+    const {
+      date,
+      person,
+      move_type: moveType,
+      to_location: toLocation,
+    } = req.sessionModel.get('move')
 
     req.journeyModel.reset()
     req.journeyModel.destroy()
@@ -40,7 +43,10 @@ class SaveController extends FormController {
       title: req.t('messages::create_move.success.title'),
       content: req.t('messages::create_move.success.content', {
         name: personService.getFullname(person),
-        location: toLocation.title,
+        location:
+          moveType === 'prison_recall'
+            ? req.t('fields::move_type.items.prison_recall.label')
+            : toLocation.title,
         date: filters.formatDateWithDay(date),
       }),
     })
