@@ -22,9 +22,7 @@ class FormController extends Controller {
 
   checkCurrentLocation(req, res, next) {
     if (!req.session.currentLocation) {
-      const error = new Error(
-        'Current location is not set. Check environment variable is correctly set.'
-      )
+      const error = new Error('Current location is not set.')
       return next(error)
     }
 

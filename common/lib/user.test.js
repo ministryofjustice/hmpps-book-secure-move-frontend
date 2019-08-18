@@ -27,6 +27,11 @@ describe('User class', function() {
         roles = ['ROLE_PECS_SUPPLIER']
       })
 
+      it('should set roles', function() {
+        user = new User({ name: 'USERNAME', roles })
+        expect(user.roles).to.deep.equal(roles)
+      })
+
       it('should set permissions', function() {
         user = new User({ name: 'USERNAME', roles })
         expect(Array.isArray(user.permissions)).to.be.true
@@ -38,6 +43,12 @@ describe('User class', function() {
         user = new User()
 
         expect(user.permissions).to.deep.equal([])
+      })
+
+      it('should set roles to empty array', function() {
+        user = new User()
+
+        expect(user.roles).to.deep.equal([])
       })
     })
 

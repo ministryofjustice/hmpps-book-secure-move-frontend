@@ -1,5 +1,6 @@
 function User({ name, roles = [], locations = [] } = {}) {
   this.userName = name
+  this.roles = roles
   this.permissions = this.getPermissions(roles)
   this.locations = locations
 }

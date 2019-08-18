@@ -120,7 +120,7 @@ describe('Move controllers', function() {
           expect(nextSpy).to.be.calledOnce
           expect(nextSpy.args[0][0] instanceof Error).to.be.true
           expect(nextSpy.args[0][0].message).to.equal(
-            'Current location is not set. Check environment variable is correctly set.'
+            'Current location is not set.'
           )
         })
       })
