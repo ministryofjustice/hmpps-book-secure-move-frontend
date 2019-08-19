@@ -1,74 +1,71 @@
-function defineModels(jsonApi) {
-  jsonApi.define('move', {
-    reference: '',
-    status: '',
-    move_type: '',
-    additional_information: '',
-    updated_at: '',
-    time_due: '',
-    date: '',
-    person: {
-      jsonApi: 'hasOne',
-      type: 'people',
+module.exports = {
+  move: {
+    attributes: {
+      reference: '',
+      status: '',
+      move_type: '',
+      additional_information: '',
+      updated_at: '',
+      time_due: '',
+      date: '',
+      person: {
+        jsonApi: 'hasOne',
+        type: 'people',
+      },
+      from_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
     },
-    from_location: {
-      jsonApi: 'hasOne',
-      type: 'locations',
+  },
+  person: {
+    attributes: {
+      first_names: '',
+      last_name: '',
+      date_of_birth: '',
+      identifiers: '',
+      assessment_answers: '',
+      gender_additional_information: '',
+      gender: {
+        jsonApi: 'hasOne',
+        type: 'genders',
+      },
+      ethnicity: {
+        jsonApi: 'hasOne',
+        type: 'ethnicities',
+      },
     },
-    to_location: {
-      jsonApi: 'hasOne',
-      type: 'locations',
-    },
-  })
-
-  jsonApi.define('person', {
-    first_names: '',
-    last_name: '',
-    date_of_birth: '',
-    identifiers: '',
-    assessment_answers: '',
-    gender_additional_information: '',
-    gender: {
-      jsonApi: 'hasOne',
-      type: 'genders',
-    },
-    ethnicity: {
-      jsonApi: 'hasOne',
-      type: 'ethnicities',
-    },
-  })
-
-  jsonApi.define(
-    'gender',
-    {
+  },
+  gender: {
+    attributes: {
       key: '',
       title: '',
       description: '',
       nomis_code: '',
       disabled_at: '',
     },
-    {
+    options: {
       collectionPath: 'reference/genders',
-    }
-  )
-
-  jsonApi.define(
-    'ethnicity',
-    {
+    },
+  },
+  ethnicity: {
+    attributes: {
       key: '',
       title: '',
       description: '',
       nomis_code: '',
       disabled_at: '',
     },
-    {
+    options: {
       collectionPath: 'reference/ethnicities',
-    }
-  )
-
-  jsonApi.define(
-    'assessment_question',
-    {
+    },
+  },
+  assessment_question: {
+    attributes: {
       created_at: '',
       expires_at: '',
       disabled_at: '',
@@ -78,24 +75,20 @@ function defineModels(jsonApi) {
       nomis_alert_type: '',
       nomis_alert_code: '',
     },
-    {
+    options: {
       collectionPath: 'reference/assessment_questions',
-    }
-  )
-
-  jsonApi.define(
-    'location',
-    {
+    },
+  },
+  location: {
+    attributes: {
       key: '',
       title: '',
       location_type: '',
       nomis_agency_id: '',
       disabled_at: '',
     },
-    {
+    options: {
       collectionPath: 'reference/locations',
-    }
-  )
+    },
+  },
 }
-
-module.exports = defineModels
