@@ -14,6 +14,7 @@ module.exports = function setLocals(req, res, next) {
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
     REQUEST_PATH: req.path,
+    USER: req.session.user,
     CURRENT_LOCATION: req.session.currentLocation,
     MOVES_URL: movesSearch
       ? `${movesApp.mountpath}?${movesSearch}`
