@@ -23,13 +23,14 @@ const logger = require('./config/logger')
 const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
 const redisStore = require('./config/redis-store')
-const setCurrentLocation = require('./common/middleware/set-current-location')
+const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
+const locationsApp = require('./app/locations')
 
 if (config.SENTRY.DSN) {
   Sentry.init({
@@ -125,7 +126,12 @@ app.use(
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
-app.use(setCurrentLocation)
+app.use(
+  ensureCurrentLocation({
+    locationsMountpath: locationsApp.mountpath,
+    whitelist: config.AUTH_WHITELIST_URLS,
+  })
+)
 app.use(helmet())
 
 // Routing
