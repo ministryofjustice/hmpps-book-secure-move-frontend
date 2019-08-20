@@ -29,6 +29,9 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/utilities/all";
 @import "govuk-frontend/govuk/overrides/all";
 
+// Import MoJ Frontend Components
+@import "@ministryofjustice/frontend/moj/components/organisation-switcher/_organisation-switcher.scss";
+
 // Import app settings/tools/helpers
 @import "helpers/all";
 

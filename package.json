@@ -40,6 +40,7 @@
     "pecs"
   ],
   "dependencies": {
+    "@ministryofjustice/frontend": "0.0.10-alpha",
     "@sentry/node": "^5.5.0",
     "accessible-autocomplete": "^1.6.2",
     "axios": "^0.19.0",

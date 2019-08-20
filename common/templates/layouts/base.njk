@@ -12,6 +12,8 @@
 {% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
 {% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 
+{% from "moj/components/organisation-switcher/macro.njk" import mojOrganisationSwitcher %}
+
 {# App level components #}
 {% from "card/macro.njk"              import appCard %}
 {% from "data/macro.njk"              import appData %}
@@ -80,6 +82,12 @@
       url: FEEDBACK_URL
     })
   }) }}
+
+  {% if CURRENT_LOCATION %}
+    {{ mojOrganisationSwitcher({
+      text: CURRENT_LOCATION.title
+    }) }}
+  {% endif %}
 
   {% include "includes/messages.njk" %}
 {% endblock %}
