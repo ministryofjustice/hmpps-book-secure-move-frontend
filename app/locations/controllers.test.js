@@ -92,4 +92,106 @@ describe('Locations controllers', function() {
       })
     })
   })
+
+  describe('#setLocation', function() {
+    let nextSpy
+
+    beforeEach(function() {
+      req = {
+        session: {},
+        params: {},
+      }
+      res = {
+        redirect: sinon.spy(),
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('when no user exists', function() {
+      beforeEach(function() {
+        controllers.setLocation(req, res, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not set currentLocation', function() {
+        expect(req.session).not.to.have.property('currentLocation')
+      })
+
+      it('should not redirect', function() {
+        expect(res.redirect).not.to.be.called
+      })
+    })
+
+    context('when no locationId parameter supplied', function() {
+      beforeEach(function() {
+        controllers.setLocation(req, res, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not set currentLocation', function() {
+        expect(req.session).not.to.have.property('currentLocation')
+      })
+
+      it('should not redirect', function() {
+        expect(res.redirect).not.to.be.called
+      })
+    })
+
+    context('when locationId is not found in user locations', function() {
+      beforeEach(function() {
+        req.params.locationId = 'not_authorised'
+        req.session.user = {
+          locations: userLocations,
+        }
+
+        controllers.setLocation(req, res, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not set currentLocation', function() {
+        expect(req.session).not.to.have.property('currentLocation')
+      })
+
+      it('should not redirect', function() {
+        expect(res.redirect).not.to.be.called
+      })
+    })
+
+    context('when locationId is found in user locations', function() {
+      beforeEach(function() {
+        req.params.locationId = 'test1'
+        req.session.user = {
+          locations: userLocations,
+        }
+
+        controllers.setLocation(req, res, nextSpy)
+      })
+
+      it('should set currentLocation', function() {
+        expect(req.session).to.have.property('currentLocation')
+        expect(req.session.currentLocation).to.deep.equal({
+          id: 'test1',
+          title: 'Test Police 1',
+          location_type: 'police',
+        })
+      })
+
+      it('should redirect to homepage', function() {
+        expect(res.redirect).to.be.calledOnceWithExactly('/')
+      })
+
+      it('should not call next', function() {
+        expect(nextSpy).not.to.be.called
+      })
+    })
+  })
 })
