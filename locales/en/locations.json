@@ -1,0 +1,7 @@
+{
+  "heading": "Choose location",
+  "no_locations": {
+    "heading": "No locations available",
+    "content": "You don’t have access to any locations. Contact support for access."
+  }
+}
