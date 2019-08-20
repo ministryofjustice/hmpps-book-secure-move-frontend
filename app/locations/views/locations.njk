@@ -1,0 +1,31 @@
+{% extends "layouts/base.njk" %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% block pageTitle %}
+  {{ t("actions::choose_location") }}
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      {{ t("actions::choose_location") }}
+    </h1>
+  </header>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if locations | length %}
+        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
+          {% for location in locations %}
+            <li>
+              <a href="/locations/{{ location.id }}">
+                {{ location.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

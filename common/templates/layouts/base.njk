@@ -83,11 +83,13 @@
     })
   }) }}
 
-  {% if CURRENT_LOCATION %}
-    {{ mojOrganisationSwitcher({
-      text: CURRENT_LOCATION.title
-    }) }}
-  {% endif %}
+  {% block organisationSwitcher %}
+    {% if CURRENT_LOCATION %}
+      {{ mojOrganisationSwitcher({
+        text: CURRENT_LOCATION.title
+      }) }}
+    {% endif %}
+  {% endblock %}
 
   {% include "includes/messages.njk" %}
 {% endblock %}
