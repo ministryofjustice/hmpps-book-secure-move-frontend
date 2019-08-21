@@ -16,6 +16,7 @@ function format(data) {
 function getRequestedMovesByDateAndLocation(moveDate, locationId) {
   return apiClient
     .findAll('move', {
+      per_page: 100,
       'filter[status]': 'requested',
       'filter[date_from]': moveDate,
       'filter[date_to]': moveDate,

@@ -119,6 +119,7 @@ describe('Move Service', function() {
         nock(API.BASE_URL)
           .get('/moves')
           .query({
+            per_page: 100,
             filter: {
               status: 'requested',
               date_from: mockDate,
