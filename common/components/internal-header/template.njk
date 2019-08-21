@@ -62,6 +62,10 @@
                 {{ item.text }}
               </a>
             </li>
+          {% elif item.text %}
+            <li class="app-header__navigation-item">
+              {{ item.text }}
+            </li>
           {% endif %}
         {% endfor %}
       </ul>

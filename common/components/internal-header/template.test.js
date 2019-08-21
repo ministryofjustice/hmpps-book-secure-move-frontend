@@ -106,6 +106,31 @@ describe('Internal header component', function() {
         'my-attribute-2'
       )
     })
+
+    it('renders navigation items with text only', function() {
+      const $ = render('internal-header', {
+        navigation: [
+          {
+            text: 'Item 1',
+          },
+          {
+            text: 'Item 2',
+          },
+        ],
+      })
+
+      const $component = $('.app-header')
+      const $list = $component.find('ul.app-header__navigation')
+      const $firstItem = $list.find('li.app-header__navigation-item').first()
+      const $lastItem = $list.find('li.app-header__navigation-item').last()
+
+      expect($firstItem.html().trim()).to.equal('Item 1')
+      expect($firstItem.find('a').length).to.equal(0)
+
+      expect($lastItem.html().trim()).to.equal('Item 2')
+      expect($lastItem.find('a').length).to.equal(0)
+    })
+
     describe('menu button', function() {
       it('has an explicit type="button" so it does not act as a submit button', function() {
         const $ = render('internal-header', examples['with navigation'])
