@@ -4,6 +4,8 @@ const { API } = require('../../config')
 
 const movesGetDeserialized = require('../../test/fixtures/api-client/moves.get.deserialized.json')
 const movesGetSerialized = require('../../test/fixtures/api-client/moves.get.serialized.json')
+const movesGetPage1Serialized = require('../../test/fixtures/api-client/moves.get.page-1.serialized.json')
+const movesGetPage2Serialized = require('../../test/fixtures/api-client/moves.get.page-2.serialized.json')
 const moveGetDeserialized = require('../../test/fixtures/api-client/move.get.deserialized.json')
 const moveGetSerialized = require('../../test/fixtures/api-client/move.get.serialized.json')
 
@@ -108,6 +110,40 @@ describe('Move Service', function() {
     })
   })
 
+  describe('#getLocations()', function() {
+    context('when request returns 200', function() {
+      let moves
+
+      beforeEach(async function() {
+        nock(API.BASE_URL)
+          .get('/moves')
+          .query({
+            page: 1,
+            per_page: 100,
+          })
+          .reply(200, movesGetPage1Serialized)
+
+        nock(API.BASE_URL)
+          .get('/moves')
+          .query({
+            page: 2,
+            per_page: 100,
+          })
+          .reply(200, movesGetPage2Serialized)
+
+        moves = await moveService.getMoves()
+      })
+
+      it('should get moves from API with current date', function() {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('should contain moves with correct data', function() {
+        expect(moves.length).to.equal(40)
+      })
+    })
+  })
+
   describe('#getRequestedMovesByDateAndLocation()', function() {
     context('when request returns 200', function() {
       const mockDate = '2017-08-10'
@@ -119,6 +155,7 @@ describe('Move Service', function() {
         nock(API.BASE_URL)
           .get('/moves')
           .query({
+            page: 1,
             per_page: 100,
             filter: {
               status: 'requested',

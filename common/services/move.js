@@ -13,16 +13,38 @@ function format(data) {
   })
 }
 
-function getRequestedMovesByDateAndLocation(moveDate, locationId) {
+function getMoves({ filter, combinedData = [], page = 1 } = {}) {
   return apiClient
     .findAll('move', {
+      ...filter,
+      page,
       per_page: 100,
+    })
+    .then(response => {
+      const { data, links } = response
+      const items = [...combinedData, ...data]
+
+      if (!links.next) {
+        return items
+      }
+
+      return getMoves({
+        filter,
+        combinedData: items,
+        page: page + 1,
+      })
+    })
+}
+
+function getRequestedMovesByDateAndLocation(moveDate, locationId) {
+  return getMoves({
+    filter: {
       'filter[status]': 'requested',
       'filter[date_from]': moveDate,
       'filter[date_to]': moveDate,
       'filter[from_location_id]': locationId,
-    })
-    .then(response => response.data)
+    },
+  })
 }
 
 function getMoveById(id) {
@@ -48,6 +70,7 @@ function cancel(id) {
 
 module.exports = {
   format,
+  getMoves,
   getRequestedMovesByDateAndLocation,
   getMoveById,
   create,

@@ -1956,17 +1956,18 @@
     "self": "http://localhost:5000/api/v1/moves?page%5Bnumber%5D=1&page%5Bsize%5D=100",
     "first": "http://localhost:5000/api/v1/moves?page%5Bnumber%5D=1&page%5Bsize%5D=100",
     "prev": null,
-    "next": null,
-    "last": "http://localhost:5000/api/v1/moves?page%5Bnumber%5D=1&page%5Bsize%5D=100"
+    "next": "http://localhost:5000/api/v1/moves?page%5Bnumber%5D=2&page%5Bsize%5D=100",
+    "last": "http://localhost:5000/api/v1/moves?page%5Bnumber%5D=2&page%5Bsize%5D=100"
   },
   "meta": {
     "pagination": {
       "per_page": 100,
-      "total_pages": 1,
-      "total_objects": 20,
+      "total_pages": 2,
+      "total_objects": 200,
       "links": {
         "first": "/api/v1/moves?page=1",
-        "last": "/api/v1/moves?page=1"
+        "last": "/api/v1/moves?page=1",
+        "next": "/api/v1/moves?page=2"
       }
     }
   }
