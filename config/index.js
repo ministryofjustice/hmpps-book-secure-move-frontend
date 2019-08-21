@@ -28,6 +28,7 @@ module.exports = {
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
+  SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   BUILD_DATE: process.env.APP_BUILD_DATE,
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,

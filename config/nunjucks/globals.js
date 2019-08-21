@@ -1,6 +1,6 @@
 const { isFunction } = require('lodash')
 
-const { ANALYTICS, ASSETS_HOST, FEEDBACK_URL } = require('../')
+const { ANALYTICS, ASSETS_HOST, FEEDBACK_URL, SUPPORT_EMAIL } = require('../')
 const { manifest: manifestPath } = require('../paths')
 const logger = require('../logger')
 
@@ -17,6 +17,7 @@ try {
 
 module.exports = {
   FEEDBACK_URL,
+  SUPPORT_EMAIL,
   SERVICE_NAME: 'Book a secure move',
   GA_ID: ANALYTICS.GA_ID,
   callAsMacro(name) {
