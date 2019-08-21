@@ -2,9 +2,7 @@ const moveService = require('../../common/services/move')
 
 const middleware = require('./middleware')
 
-const moveStub = {
-  data: [{ foo: 'bar' }, { fizz: 'buzz' }],
-}
+const moveStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
 const mockMoveId = '6904dea1-017f-48d8-a5ad-2723dee9d146'
 const errorStub = new Error('Problem')
 
@@ -54,7 +52,7 @@ describe('Move middleware', function() {
 
         it('should set response data to locals object', function() {
           expect(res.locals).to.have.property('move')
-          expect(res.locals.move).to.equal(moveStub.data)
+          expect(res.locals.move).to.equal(moveStub)
         })
 
         it('should call next with no argument', function() {
