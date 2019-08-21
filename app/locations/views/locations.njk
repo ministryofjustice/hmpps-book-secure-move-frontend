@@ -3,19 +3,19 @@
 {% block organisationSwitcher %}{% endblock %}
 
 {% block pageTitle %}
-  {{ t("actions::choose_location") }}
+  {{ t("locations::heading") }}
 {% endblock %}
 
 {% block content %}
   <header class="govuk-!-margin-bottom-8">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
-      {{ t("actions::choose_location") }}
+      {{ t("locations::heading") }}
     </h1>
   </header>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {% if locations | length %}
+  {% if locations | length %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
         <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
           {% for location in locations %}
             <li>
@@ -25,7 +25,21 @@
             </li>
           {% endfor %}
         </ul>
-      {% endif %}
+      </div>
     </div>
-  </div>
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--info",
+      allowDismiss: false,
+      title: {
+        text: t("locations::no_locations.heading")
+      },
+      content: {
+        html: t("locations::no_locations.content", {
+          context: "with_email" if SUPPORT_EMAIL,
+          email: SUPPORT_EMAIL
+        })
+      }
+    }) }}
+  {% endif %}
 {% endblock %}

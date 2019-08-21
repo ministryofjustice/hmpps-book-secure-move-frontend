@@ -12,6 +12,7 @@ i18next.use(Backend).init({
     'actions',
     'errors',
     'fields',
+    'locations',
     'messages',
     'moves',
     'validation',
