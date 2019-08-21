@@ -48,7 +48,7 @@ function getRequestedMovesByDateAndLocation(moveDate, locationId) {
 }
 
 function getMoveById(id) {
-  return apiClient.find('move', id)
+  return apiClient.find('move', id).then(response => response.data)
 }
 
 function create(data) {
