@@ -2,6 +2,7 @@
   "heading": "Choose location",
   "no_locations": {
     "heading": "No locations available",
-    "content": "You don’t have access to any locations. Contact support for access."
+    "content": "You don’t have access to any locations. Contact support for access.",
+    "content_with_email": "You don’t have access to any locations. <a href=\"mailto:{{email}}\">Contact support</a> for access."
   }
 }

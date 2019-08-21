@@ -35,7 +35,10 @@
         text: t("locations::no_locations.heading")
       },
       content: {
-        html: t("locations::no_locations.content")
+        html: t("locations::no_locations.content", {
+          context: "with_email" if SUPPORT_EMAIL,
+          email: SUPPORT_EMAIL
+        })
       }
     }) }}
   {% endif %}
