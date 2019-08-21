@@ -67,6 +67,7 @@ module.exports = {
   AUTH_WHITELIST_URLS: [
     '/auth',
     '/auth/callback',
+    '/auth/sign-out',
     '/healthcheck',
     '/healthcheck/ping',
   ],

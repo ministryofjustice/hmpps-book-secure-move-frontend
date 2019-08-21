@@ -1,95 +1,34 @@
+const { sortBy } = require('lodash')
+
 const controllers = require('./controllers')
+
+const {
+  data: userLocations,
+} = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
 
 describe('Locations controllers', function() {
   let req, res
-  const userLocations = [
-    {
-      id: 'test2',
-      title: 'Test Police 2',
-      location_type: 'police',
-    },
-    {
-      id: 'testcourt',
-      title: 'Test Court',
-      location_type: 'court',
-    },
-    {
-      id: 'test1',
-      title: 'Test Police 1',
-      location_type: 'police',
-    },
-    {
-      id: 'testprison',
-      title: 'Test Prison',
-      location_type: 'prison',
-    },
-  ]
 
   describe('#locations', function() {
     beforeEach(function() {
       req = {
         session: {},
+        userLocations: userLocations,
       }
       res = {
         render: sinon.spy(),
       }
+      controllers.locations(req, res)
     })
 
-    context('when no user exists on session', function() {
-      beforeEach(function() {
-        controllers.locations(req, res)
-      })
-
-      it('should render template', function() {
-        expect(res.render).to.be.calledOnce
-      })
-
-      it('should return empty list for locations', function() {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('locations')
-        expect(params.locations).to.deep.equal([])
-      })
+    it('should render template', function() {
+      expect(res.render).to.be.calledOnce
     })
 
-    context('when locations exists on user', function() {
-      beforeEach(function() {
-        req.session.user = {
-          locations: userLocations,
-        }
-
-        controllers.locations(req, res)
-      })
-
-      it('should render template', function() {
-        expect(res.render).to.be.calledOnce
-      })
-
-      it('should return locations sorted by title', function() {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('locations')
-        expect(params.locations).to.deep.equal([
-          {
-            id: 'testcourt',
-            title: 'Test Court',
-            location_type: 'court',
-          },
-          {
-            id: 'test1',
-            title: 'Test Police 1',
-            location_type: 'police',
-          },
-          {
-            id: 'test2',
-            title: 'Test Police 2',
-            location_type: 'police',
-          },
-          {
-            id: 'testprison',
-            title: 'Test Prison',
-            location_type: 'prison',
-          },
-        ])
-      })
+    it('should return locations sorted by title', function() {
+      const params = res.render.args[0][1]
+      expect(params).to.have.property('locations')
+      expect(params.locations).to.deep.equal(sortBy(userLocations, 'title'))
     })
   })
 
@@ -105,24 +44,6 @@ describe('Locations controllers', function() {
         redirect: sinon.spy(),
       }
       nextSpy = sinon.spy()
-    })
-
-    context('when no user exists', function() {
-      beforeEach(function() {
-        controllers.setLocation(req, res, nextSpy)
-      })
-
-      it('should call next without args', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-
-      it('should not set currentLocation', function() {
-        expect(req.session).not.to.have.property('currentLocation')
-      })
-
-      it('should not redirect', function() {
-        expect(res.redirect).not.to.be.called
-      })
     })
 
     context('when no locationId parameter supplied', function() {
@@ -146,9 +67,7 @@ describe('Locations controllers', function() {
     context('when locationId is not found in user locations', function() {
       beforeEach(function() {
         req.params.locationId = 'not_authorised'
-        req.session.user = {
-          locations: userLocations,
-        }
+        req.userLocations = userLocations
 
         controllers.setLocation(req, res, nextSpy)
       })
@@ -168,21 +87,15 @@ describe('Locations controllers', function() {
 
     context('when locationId is found in user locations', function() {
       beforeEach(function() {
-        req.params.locationId = 'test1'
-        req.session.user = {
-          locations: userLocations,
-        }
+        req.params.locationId = userLocations[0].id
+        req.userLocations = userLocations
 
         controllers.setLocation(req, res, nextSpy)
       })
 
       it('should set currentLocation', function() {
         expect(req.session).to.have.property('currentLocation')
-        expect(req.session.currentLocation).to.deep.equal({
-          id: 'test1',
-          title: 'Test Police 1',
-          location_type: 'police',
-        })
+        expect(req.session.currentLocation).to.deep.equal(userLocations[0])
       })
 
       it('should redirect to homepage', function() {

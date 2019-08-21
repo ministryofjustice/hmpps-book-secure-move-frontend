@@ -1,17 +1,16 @@
-const { find, get, sortBy } = require('lodash')
+const { find, sortBy } = require('lodash')
 
 function locations(req, res) {
-  const locations = get(req.session, 'user.locations', [])
+  const locations = sortBy(req.userLocations, 'title')
 
   res.render('locations/views/locations.njk', {
-    locations: sortBy(locations, 'title'),
+    locations,
   })
 }
 
 function setLocation(req, res, next) {
   const { locationId } = req.params
-  const locations = get(req.session, 'user.locations', [])
-  const location = find(locations, { id: locationId })
+  const location = find(req.userLocations, { id: locationId })
 
   if (!location) {
     return next()
