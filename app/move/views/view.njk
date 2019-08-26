@@ -45,7 +45,7 @@
     {% endif %}
   </header>
 
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row sticky-sidebar-container">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-m">
         {{ t("moves::steps.personal_details.heading") }}
@@ -65,10 +65,12 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <div class="app-border-top-2 app-border--blue govuk-!-padding-top-4">
-        <h3 class="govuk-heading-m">{{ fullname | upper }}</h3>
+      <div class="sticky-sidebar">
+        <div class="sticky-sidebar__inner">
+          <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">{{ fullname | upper }}</h3>
 
-        {{ appMetaList(moveSummary) }}
+          {{ appMetaList(moveSummary) }}
+        </div>
       </div>
     </div>
   </div>
