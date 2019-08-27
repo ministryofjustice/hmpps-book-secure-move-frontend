@@ -2,33 +2,9 @@ const { map, fromPairs } = require('lodash')
 const { Controller } = require('hmpo-form-wizard')
 const Sentry = require('@sentry/node')
 
-const fieldHelpers = require('../../../../common/helpers/field')
+const fieldHelpers = require('../helpers/field')
 
 class FormController extends Controller {
-  middlewareChecks() {
-    super.middlewareChecks()
-    this.use(this.checkCurrentLocation)
-  }
-
-  middlewareLocals() {
-    super.middlewareLocals()
-    this.use(this.setCancelUrl)
-  }
-
-  setCancelUrl(req, res, next) {
-    res.locals.cancelUrl = res.locals.MOVES_URL
-    next()
-  }
-
-  checkCurrentLocation(req, res, next) {
-    if (!req.session.currentLocation) {
-      const error = new Error('Current location is not set in session.')
-      return next(error)
-    }
-
-    next()
-  }
-
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
 

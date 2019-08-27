@@ -3,14 +3,15 @@ const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
 
 // Local dependencies
+const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { create: createSteps } = require('./steps')
 const { create: createFields } = require('./fields')
-const { cancel, create, view } = require('./controllers')
+const { cancel, view } = require('./controllers')
 const { setMove } = require('./middleware')
 
 const createWizardConfig = {
-  controller: create.Form,
+  controller: FormWizardController,
   name: 'create-move',
   journeyName: 'create-move',
   journeyPageTitle: 'actions::create_move',
