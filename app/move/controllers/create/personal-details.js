@@ -1,8 +1,8 @@
-const FormController = require('./new.form')
-const fieldHelpers = require('../../../common/helpers/field')
-const personService = require('../../../common/services/person')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const FormController = require('./form')
+const fieldHelpers = require('../../../../common/helpers/field')
+const personService = require('../../../../common/services/person')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 class PersonalDetailsController extends FormController {
   async configure(req, res, next) {

@@ -1,20 +1,20 @@
 const proxyquire = require('proxyquire')
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = proxyquire('./new.save', {
-  '../../moves': {
+const Controller = proxyquire('./save', {
+  '../../../moves': {
     mountpath: '/moves',
   },
 })
-const moveService = require('../../../common/services/move')
-const personService = require('../../../common/services/person')
-const filters = require('../../../config/nunjucks/filters')
+const moveService = require('../../../../common/services/move')
+const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
 const {
   data: moveMock,
-} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+} = require('../../../../test/fixtures/api-client/move.get.deserialized.json')
 const fullname = `${moveMock.person.last_name}, ${moveMock.person.first_names}`
 const mockPerson = {
   id: '3333',

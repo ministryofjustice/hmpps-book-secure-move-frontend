@@ -1,4 +1,4 @@
-const { date } = require('./formatters')
+const { date } = require('../formatters')
 
 const assessmentQuestionComments = {
   skip: true,

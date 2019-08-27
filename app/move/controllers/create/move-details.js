@@ -1,10 +1,10 @@
 const dateFns = require('date-fns')
 
-const FormController = require('./new.form')
-const filters = require('../../../config/nunjucks/filters')
-const fieldHelpers = require('../../../common/helpers/field')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const FormController = require('./form')
+const filters = require('../../../../config/nunjucks/filters')
+const fieldHelpers = require('../../../../common/helpers/field')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 class MoveDetailsController extends FormController {
   async configure(req, res, next) {

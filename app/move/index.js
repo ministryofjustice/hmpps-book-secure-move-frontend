@@ -4,15 +4,15 @@ const wizard = require('hmpo-form-wizard')
 
 // Local dependencies
 const { protectRoute } = require('../../common/middleware/permissions')
-const steps = require('./steps')
-const fields = require('./fields')
-const { cancel, view, Form } = require('./controllers')
+const { create: createSteps } = require('./steps')
+const { create: createFields } = require('./fields')
+const { cancel, create, view } = require('./controllers')
 const { setMove } = require('./middleware')
 
-const wizardConfig = {
-  controller: Form,
-  name: 'new-move',
-  journeyName: 'new-move',
+const createWizardConfig = {
+  controller: create.Form,
+  name: 'create-move',
+  journeyName: 'create-move',
   journeyPageTitle: 'actions::create_move',
   template: 'form-wizard',
 }
@@ -24,7 +24,7 @@ router.param('moveId', setMove)
 router.use(
   '/new',
   protectRoute('move:create'),
-  wizard(steps, fields, wizardConfig)
+  wizard(createSteps, createFields, createWizardConfig)
 )
 router.get('/:moveId', protectRoute('move:view'), view)
 router

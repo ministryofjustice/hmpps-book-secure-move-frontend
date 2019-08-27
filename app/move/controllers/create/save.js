@@ -1,10 +1,10 @@
 const { omit } = require('lodash')
 
-const FormController = require('./new.form')
-const { mountpath: movesUrl } = require('../../moves')
-const moveService = require('../../../common/services/move')
-const personService = require('../../../common/services/person')
-const filters = require('../../../config/nunjucks/filters')
+const FormController = require('./form')
+const { mountpath: movesUrl } = require('../../../moves')
+const moveService = require('../../../../common/services/move')
+const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 
 class SaveController extends FormController {
   async saveValues(req, res, next) {

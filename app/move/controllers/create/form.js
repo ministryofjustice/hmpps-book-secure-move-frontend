@@ -2,7 +2,7 @@ const { map, fromPairs } = require('lodash')
 const { Controller } = require('hmpo-form-wizard')
 const Sentry = require('@sentry/node')
 
-const fieldHelpers = require('../../../common/helpers/field')
+const fieldHelpers = require('../../../../common/helpers/field')
 
 class FormController extends Controller {
   middlewareChecks() {
