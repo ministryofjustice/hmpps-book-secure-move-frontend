@@ -9,6 +9,7 @@
   "schedule_move": "Schedule move",
   "continue": "Continue",
   "restart": "Restart",
+  "cancel": "Cancel",
   "cancel_move": "Cancel this move",
   "cancel_move_confirmation": "Cancel move",
   "download": "Download moves",
