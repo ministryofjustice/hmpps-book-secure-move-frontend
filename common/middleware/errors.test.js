@@ -26,7 +26,7 @@ describe('Error middleware', function() {
 
     it('should call next with an error', function() {
       expect(nextSpy.calledOnce).to.be.true
-      expect(nextSpy.args[0][0] instanceof Error).to.be.true
+      expect(nextSpy.args[0][0]).to.be.an('error')
       expect(nextSpy.args[0][0].message).to.equal('Not Found')
     })
   })
