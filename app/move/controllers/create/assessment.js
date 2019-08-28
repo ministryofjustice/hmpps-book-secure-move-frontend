@@ -1,11 +1,11 @@
 const { flatten, values } = require('lodash')
 
-const FormController = require('./new.form')
-const fieldHelpers = require('../../../common/helpers/field')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const CreateBaseController = require('./base')
+const fieldHelpers = require('../../../../common/helpers/field')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
-class AssessmentController extends FormController {
+class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const { fields } = req.form.options

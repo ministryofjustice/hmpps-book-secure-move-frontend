@@ -1,8 +1,8 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./new.assessment')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const Controller = require('./assessment')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 const controller = new Controller({ route: '/' })
 

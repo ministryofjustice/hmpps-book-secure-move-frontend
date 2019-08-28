@@ -1,10 +1,10 @@
-const FormController = require('./new.form')
-const fieldHelpers = require('../../../common/helpers/field')
-const personService = require('../../../common/services/person')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const CreateBaseController = require('./base')
+const fieldHelpers = require('../../../../common/helpers/field')
+const personService = require('../../../../common/services/person')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
-class PersonalDetailsController extends FormController {
+class PersonalDetailsController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const genders = await referenceDataService.getGenders()

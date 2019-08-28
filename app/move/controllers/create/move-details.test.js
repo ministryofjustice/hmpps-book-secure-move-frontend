@@ -1,9 +1,9 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./new.move-details')
-const filters = require('../../../config/nunjucks/filters')
-const referenceDataService = require('../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../common/helpers/reference-data')
+const Controller = require('./move-details')
+const filters = require('../../../../config/nunjucks/filters')
+const referenceDataService = require('../../../../common/services/reference-data')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 const controller = new Controller({ route: '/' })
 const courtsMock = [

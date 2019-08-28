@@ -3,7 +3,7 @@ const {
   Assessment,
   MoveDetails,
   Save,
-} = require('./controllers')
+} = require('../controllers/create')
 
 module.exports = {
   '/': {
@@ -29,7 +29,7 @@ module.exports = {
   },
   '/move-details': {
     controller: MoveDetails,
-    template: 'move/views/new/move-details',
+    template: 'move/views/create/move-details',
     pageTitle: 'moves::steps.move_details.heading',
     next: [
       {
