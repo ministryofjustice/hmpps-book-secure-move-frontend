@@ -82,7 +82,7 @@ describe('API Client', function() {
             const error = errorMiddleware.error({ response })
 
             expect(error).to.be.an.instanceOf(Error)
-            expect(error.errors).to.equal(undefined)
+            expect(error.errors).to.be.undefined
           })
         })
 

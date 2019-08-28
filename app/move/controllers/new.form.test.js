@@ -63,7 +63,7 @@ describe('Move controllers', function() {
 
         it('should set cancel url correctly', function() {
           expect(res.locals).to.have.property('cancelUrl')
-          expect(res.locals.cancelUrl).to.equal(undefined)
+          expect(res.locals.cancelUrl).to.be.undefined
         })
 
         it('should call next', function() {
@@ -118,7 +118,7 @@ describe('Move controllers', function() {
 
         it('should call next with error', function() {
           expect(nextSpy).to.be.calledOnce
-          expect(nextSpy.args[0][0] instanceof Error).to.be.true
+          expect(nextSpy.args[0][0]).to.be.an('error')
           expect(nextSpy.args[0][0].message).to.equal(
             'Current location is not set in session.'
           )

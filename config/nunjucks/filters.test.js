@@ -185,7 +185,7 @@ describe('Nunjucks filters', function() {
     context('when given falsey values', function() {
       it('should return input value', function() {
         const age = filters.formatTime(undefined)
-        expect(age).to.equal(undefined)
+        expect(age).to.be.undefined
       })
 
       it('should return input value', function() {

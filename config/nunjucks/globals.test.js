@@ -111,14 +111,14 @@ describe('Nunjucks globals', function() {
       })
 
       it('should log friendly message', function() {
-        expect(logger.error.args[0][0] instanceof Error).to.be.true
+        expect(logger.error.args[0][0]).to.be.an('error')
         expect(logger.error.args[0][0].message).to.equal(
           'Manifest file is not found. Ensure assets are built.'
         )
       })
 
       it('should log full error', function() {
-        expect(logger.error.args[1][0] instanceof Error).to.be.true
+        expect(logger.error.args[1][0]).to.be.an('error')
         expect(logger.error.args[1][0].message).to.equal(
           "Cannot find module 'path/to/missing/manifest.json'"
         )

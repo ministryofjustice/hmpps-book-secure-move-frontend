@@ -154,7 +154,7 @@ describe('Message component', function() {
     context('when dismiss is prevented', function() {
       it('should render unescaped html', function() {
         const $ = render('message', examples['without dismiss'])
-        expect($('.app-message').attr('data-module')).to.equal(undefined)
+        expect($('.app-message').attr('data-module')).to.be.undefined
       })
     })
   })
