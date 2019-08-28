@@ -18,7 +18,7 @@
 {% block content %}
   {% if errors.errorList.length %}
     {{ govukErrorSummary({
-      titleText: "There is a problem with this page",
+      titleText: t("validation::summary.heading"),
       errorList: errors.errorList
     }) }}
   {% endif %}
@@ -51,7 +51,9 @@
         }) }}
 
         {% if cancelUrl %}
-          <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">Cancel</a>
+          <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+            {{ t("actions::cancel") }}
+          </a>
         {% endif %}
       </form>
     </div>

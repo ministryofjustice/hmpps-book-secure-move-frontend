@@ -1,4 +1,7 @@
 {
+  "summary": {
+    "heading": "There is a problem with this page"
+  },
   "required": "cannot be blank",
   "numeric": "can only contain numbers",
   "date": "must be a valid date",
