@@ -1,15 +1,15 @@
 {
-  "name": "pecs-frontend",
+  "name": "hmpps-book-secure-move-frontend",
   "version": "1.1.0",
   "license": "MIT",
-  "description": "Frontend rendering app for the PECS service",
-  "homepage": "https://github.com/ministryofjustice/pecs-frontend#readme",
+  "description": "Frontend rendering app for the Book a secure move service",
+  "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
   "bugs": {
-    "url": "https://github.com/ministryofjustice/pecs-frontend/issues"
+    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ministryofjustice/pecs-frontend.git"
+    "url": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frontend.git"
   },
   "engines": {
     "node": "11"
@@ -33,11 +33,14 @@
     "lint"
   ],
   "contributors": [
-    "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)"
+    "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)",
+    "Steven Lorek <steve@stevelorek.com> (http://github.com/slorek)",
+    "Ben Chidgey <ben@feedmypixel.com> (http://github.com/feedmypixel)"
   ],
   "keywords": [
     "ministryofjustice",
-    "pecs"
+    "book-a-secure-move",
+    "hmpps"
   ],
   "dependencies": {
     "@ministryofjustice/frontend": "0.0.10-alpha",
