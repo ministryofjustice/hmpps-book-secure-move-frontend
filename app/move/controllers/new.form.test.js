@@ -63,7 +63,7 @@ describe('Move controllers', function() {
 
         it('should set cancel url correctly', function() {
           expect(res.locals).to.have.property('cancelUrl')
-          expect(res.locals.cancelUrl).to.equal(undefined)
+          expect(res.locals.cancelUrl).to.be.undefined
         })
 
         it('should call next', function() {

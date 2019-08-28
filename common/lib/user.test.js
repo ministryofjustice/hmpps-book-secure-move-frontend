@@ -17,7 +17,7 @@ describe('User class', function() {
       it('should not set username', function() {
         user = new User()
 
-        expect(user.userName).to.equal(undefined)
+        expect(user.userName).to.be.undefined
       })
     })
 
