@@ -18,37 +18,63 @@ describe('Person Service', function() {
       .returns(Math.floor(new Date() / 1000) + 100)
   })
 
-  describe('#getFullname()', function() {
-    it('should format full name', function() {
-      const firstNames = 'Firstnames middlename'
-      const lastName = 'Lastname'
-      const fullname = personService.getFullname({
-        first_names: firstNames,
-        last_name: lastName,
-      })
-
-      expect(fullname).to.equal(`${lastName}, ${firstNames}`)
-    })
-  })
-
   describe('#transform()', function() {
     let transformed
 
-    beforeEach(async function() {
-      transformed = await personService.transform(personPostDeserialized.data)
+    context('with first name and last name', function() {
+      beforeEach(async function() {
+        transformed = await personService.transform(personPostDeserialized.data)
+      })
+
+      it('should set full name', function() {
+        expect(transformed).to.contain.property('fullname')
+        expect(transformed.fullname).to.equal(
+          `${personPostDeserialized.data.last_name}, ${personPostDeserialized.data.first_names}`
+        )
+      })
+
+      it('should contain original properties', function() {
+        forEach(personPostDeserialized.data, (value, key) => {
+          expect(transformed).to.contain.property(key)
+          expect(transformed[key]).to.equal(value)
+        })
+      })
     })
 
-    it('should set full name', function() {
-      expect(transformed).to.contain.property('fullname')
-      expect(transformed.fullname).to.equal(
-        `${personPostDeserialized.data.last_name}, ${personPostDeserialized.data.first_names}`
-      )
+    context('with no first name', function() {
+      beforeEach(async function() {
+        transformed = await personService.transform({
+          last_name: 'Last',
+        })
+      })
+
+      it('should return only last name for full name', function() {
+        expect(transformed).to.contain.property('fullname')
+        expect(transformed.fullname).to.equal('Last')
+      })
     })
 
-    it('should contain original properties', function() {
-      forEach(personPostDeserialized.data, (value, key) => {
-        expect(transformed).to.contain.property(key)
-        expect(transformed[key]).to.equal(value)
+    context('with no last name', function() {
+      beforeEach(async function() {
+        transformed = await personService.transform({
+          first_names: 'Firstname',
+        })
+      })
+
+      it('should return only last name for full name', function() {
+        expect(transformed).to.contain.property('fullname')
+        expect(transformed.fullname).to.equal('Firstname')
+      })
+    })
+
+    context('with no first name or last name', function() {
+      beforeEach(async function() {
+        transformed = await personService.transform()
+      })
+
+      it('should return only last name for full name', function() {
+        expect(transformed).to.contain.property('fullname')
+        expect(transformed.fullname).to.equal('')
       })
     })
   })

@@ -2,14 +2,10 @@ const { mapValues, uniqBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
 
-function getFullname({ first_names: firstNames, last_name: lastName }) {
-  return `${lastName}, ${firstNames}`
-}
-
-function transform(person) {
+function transform(person = {}) {
   return {
     ...person,
-    fullname: getFullname(person),
+    fullname: [person.last_name, person.first_names].filter(Boolean).join(', '),
   }
 }
 
@@ -69,7 +65,6 @@ function update(data) {
 }
 
 module.exports = {
-  getFullname,
   transform,
   format,
   create,
