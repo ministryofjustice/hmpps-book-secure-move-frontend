@@ -1,4 +1,4 @@
-const requestLib = require('./request')
+const { getQueryString } = require('./request')
 
 describe('Request library', function() {
   describe('#getQueryString()', function() {
@@ -9,7 +9,7 @@ describe('Request library', function() {
           foo: 'bar',
         }
 
-        const querystring = requestLib.getQueryString(requestQuery, newQuery)
+        const querystring = getQueryString(requestQuery, newQuery)
 
         expect(querystring).to.equal('?foo=bar')
       })
@@ -25,7 +25,7 @@ describe('Request library', function() {
             foo: 'bar',
           }
 
-          const querystring = requestLib.getQueryString(requestQuery, newQuery)
+          const querystring = getQueryString(requestQuery, newQuery)
 
           expect(querystring).to.equal('?foo=bar&hello=world')
         })
@@ -41,7 +41,7 @@ describe('Request library', function() {
             foo: 'world',
           }
 
-          const querystring = requestLib.getQueryString(target, source)
+          const querystring = getQueryString(target, source)
 
           expect(querystring).to.equal('?foo=world&hello=world')
         })
