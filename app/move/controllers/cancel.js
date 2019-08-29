@@ -1,4 +1,3 @@
-const personService = require('../../../common/services/person')
 const moveService = require('../../../common/services/move')
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
       req.flash('success', {
         title: req.t('messages::cancel_move.success.title'),
         content: req.t('messages::cancel_move.success.content', {
-          name: personService.getFullname(move.person),
+          name: move.person.fullname,
           location: move.to_location.title,
         }),
       })
@@ -21,12 +20,5 @@ module.exports = {
       next(error)
     }
   },
-  get: (req, res) => {
-    const { move } = res.locals
-    const locals = {
-      fullname: personService.getFullname(move.person),
-    }
-
-    res.render('move/views/cancel', locals)
-  },
+  get: (req, res) => res.render('move/views/cancel'),
 }

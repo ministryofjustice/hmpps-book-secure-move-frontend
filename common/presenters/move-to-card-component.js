@@ -1,5 +1,4 @@
 const assessmentToTagList = require('./assessment-to-tag-list')
-const personService = require('../services/person')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -35,7 +34,7 @@ module.exports = function moveToCardComponent({ id, reference, person }) {
   return {
     href: `/move/${id}`,
     title: {
-      text: personService.getFullname(person).toUpperCase(),
+      text: person.fullname ? person.fullname.toUpperCase() : '',
     },
     caption: {
       text: i18n.t('moves::move_reference', {

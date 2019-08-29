@@ -1,4 +1,3 @@
-const personService = require('../../../common/services/person')
 const presenters = require('../../../common/presenters')
 
 const controller = require('./view')
@@ -6,14 +5,12 @@ const controller = require('./view')
 const {
   data: mockMove,
 } = require('../../../test/fixtures/api-client/move.get.deserialized.json')
-const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
 
 describe('Move controllers', function() {
   describe('#view()', function() {
     let req, res
 
     beforeEach(function() {
-      sinon.stub(personService, 'getFullname').returns(fullname)
       sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
@@ -33,12 +30,6 @@ describe('Move controllers', function() {
 
     it('should render a template', function() {
       expect(res.render.calledOnce).to.be.true
-    })
-
-    it('should contain fullname param', function() {
-      const params = res.render.args[0][1]
-      expect(params).to.have.property('fullname')
-      expect(params.fullname).to.equal(fullname)
     })
 
     it('should call moveToMetaListComponent presenter with correct args', function() {
