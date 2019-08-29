@@ -74,6 +74,7 @@
     "query-string": "6.7.0",
     "serve-favicon": "2.5.0",
     "slashify": "1.0.0",
+    "sticky-sidebar": "3.3.1",
     "winston": "3.2.1"
   },
   "devDependencies": {

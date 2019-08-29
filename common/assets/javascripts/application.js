@@ -9,6 +9,7 @@ import '../images/hmpps-apple-touch-icon-180x180.png'
 import { nodeListForEach } from './utils'
 import { initAll } from 'govuk-frontend'
 import accessibleAutocomplete from 'accessible-autocomplete'
+import StickySidebar from 'sticky-sidebar/dist/sticky-sidebar'
 import Message from '../../components/message/message'
 import Header from '../../components/internal-header/internal-header'
 
@@ -32,3 +33,14 @@ nodeListForEach($autocompletes, function($autocomplete) {
     defaultValue: '',
   })
 })
+
+var $stickySidebars = document.querySelectorAll('.sticky-sidebar')
+if ($stickySidebars.length) {
+  // eslint-disable-next-line no-new
+  new StickySidebar('.sticky-sidebar', {
+    topSpacing: 20,
+    bottomSpacing: 20,
+    containerSelector: '.sticky-sidebar-container',
+    innerWrapperSelector: '.sticky-sidebar__inner',
+  })
+}
