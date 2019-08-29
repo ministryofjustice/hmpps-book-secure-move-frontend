@@ -1,4 +1,5 @@
 const moveService = require('./move')
+const personService = require('./person')
 const auth = require('../lib/api-client/middleware/auth')
 const { API } = require('../../config')
 
@@ -11,6 +12,7 @@ const moveGetSerialized = require('../../test/fixtures/api-client/move.get.seria
 
 describe('Move Service', function() {
   beforeEach(function() {
+    sinon.stub(personService, 'transform').returnsArg(0)
     sinon.stub(auth, 'getAccessToken').returns('test')
     sinon
       .stub(auth, 'getAccessTokenExpiry')

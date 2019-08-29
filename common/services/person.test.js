@@ -1,3 +1,5 @@
+const { forEach } = require('lodash')
+
 const personService = require('./person')
 const { API } = require('../../config')
 const auth = require('../lib/api-client/middleware/auth')
@@ -26,6 +28,28 @@ describe('Person Service', function() {
       })
 
       expect(fullname).to.equal(`${lastName}, ${firstNames}`)
+    })
+  })
+
+  describe('#transform()', function() {
+    let transformed
+
+    beforeEach(async function() {
+      transformed = await personService.transform(personPostDeserialized.data)
+    })
+
+    it('should set full name', function() {
+      expect(transformed).to.contain.property('fullname')
+      expect(transformed.fullname).to.equal(
+        `${personPostDeserialized.data.last_name}, ${personPostDeserialized.data.first_names}`
+      )
+    })
+
+    it('should contain original properties', function() {
+      forEach(personPostDeserialized.data, (value, key) => {
+        expect(transformed).to.contain.property(key)
+        expect(transformed[key]).to.equal(value)
+      })
     })
   })
 

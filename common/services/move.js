@@ -1,6 +1,7 @@
 const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')
+const personService = require('../services/person')
 
 function format(data) {
   const relationships = ['to_location', 'from_location']
@@ -22,15 +23,18 @@ function getMoves({ filter, combinedData = [], page = 1 } = {}) {
     })
     .then(response => {
       const { data, links } = response
-      const items = [...combinedData, ...data]
+      const moves = [...combinedData, ...data]
 
       if (!links.next) {
-        return items
+        return moves.map(move => ({
+          ...move,
+          person: personService.transform(move.person),
+        }))
       }
 
       return getMoves({
         filter,
-        combinedData: items,
+        combinedData: moves,
         page: page + 1,
       })
     })
@@ -48,11 +52,23 @@ function getRequestedMovesByDateAndLocation(moveDate, locationId) {
 }
 
 function getMoveById(id) {
-  return apiClient.find('move', id).then(response => response.data)
+  return apiClient
+    .find('move', id)
+    .then(response => response.data)
+    .then(move => ({
+      ...move,
+      person: personService.transform(move.person),
+    }))
 }
 
 function create(data) {
-  return apiClient.create('move', format(data)).then(response => response.data)
+  return apiClient
+    .create('move', format(data))
+    .then(response => response.data)
+    .then(move => ({
+      ...move,
+      person: personService.transform(move.person),
+    }))
 }
 
 function cancel(id) {

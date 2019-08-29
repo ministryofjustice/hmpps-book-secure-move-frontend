@@ -6,6 +6,13 @@ function getFullname({ first_names: firstNames, last_name: lastName }) {
   return `${lastName}, ${firstNames}`
 }
 
+function transform(person) {
+  return {
+    ...person,
+    fullname: getFullname(person),
+  }
+}
+
 function format(data) {
   const existingIdentifiers = data.identifiers || []
   const relationshipKeys = ['gender', 'ethnicity']
@@ -63,6 +70,7 @@ function update(data) {
 
 module.exports = {
   getFullname,
+  transform,
   format,
   create,
   update,
