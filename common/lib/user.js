@@ -1,5 +1,5 @@
-function User({ name, roles = [], locations = [] } = {}) {
-  this.userName = name
+function User({ fullname, roles = [], locations = [] } = {}) {
+  this.fullname = fullname
   this.permissions = this.getPermissions(roles)
   this.locations = locations
 }
