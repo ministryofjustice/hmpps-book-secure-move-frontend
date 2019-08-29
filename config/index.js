@@ -86,6 +86,7 @@ module.exports = {
       groups_url: userName => {
         return _authUrl(`/auth/api/authuser/${userName}/groups`)
       },
+      user_url: _authUrl('/auth/api/user/me'),
       key: AUTH_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
     },
