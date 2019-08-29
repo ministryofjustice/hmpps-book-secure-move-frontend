@@ -1,12 +1,15 @@
-const personService = require('../../../common/services/person')
 const moveService = require('../../../common/services/move')
 
 const controller = require('./cancel')
 
-const {
-  data: mockMove,
-} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
-const fullname = `${mockMove.person.last_name}, ${mockMove.person.first_names}`
+const mockMove = {
+  to_location: {
+    title: 'To location',
+  },
+  person: {
+    fullname: 'Full name',
+  },
+}
 
 describe('Move controllers', function() {
   describe('#cancel.post()', function() {
@@ -44,7 +47,7 @@ describe('Move controllers', function() {
         expect(req.t.secondCall).to.have.been.calledWithExactly(
           'messages::cancel_move.success.content',
           {
-            name: fullname,
+            name: mockMove.person.fullname,
             location: mockMove.to_location.title,
           }
         )
@@ -91,33 +94,14 @@ describe('Move controllers', function() {
     let res
 
     beforeEach(function() {
-      sinon.stub(personService, 'getFullname')
       res = {
         render: sinon.stub(),
-        locals: {
-          move: {
-            person: {
-              first_names: 'Steve',
-              last_name: 'Jones',
-            },
-          },
-        },
       }
       controller.get({}, res)
     })
 
     it('should render a template', function() {
       expect(res.render.calledOnce).to.be.true
-    })
-
-    describe('template params', function() {
-      it('should contain a fullname', function() {
-        expect(personService.getFullname).to.be.calledOnceWithExactly({
-          first_names: 'Steve',
-          last_name: 'Jones',
-        })
-        expect(res.render.args[0][1]).to.have.property('fullname')
-      })
     })
   })
 })

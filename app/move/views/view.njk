@@ -6,7 +6,7 @@
 
 {% block pageTitle %}
   {{ t("moves::detail.page_title", {
-    name: fullname | upper
+    name: move.person.fullname | upper
   }) }}
 {% endblock %}
 
@@ -27,7 +27,7 @@
 {% block content %}
   <header class="govuk-!-margin-bottom-8">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
-      {{ fullname | upper }}
+      {{ move.person.fullname | upper }}
     </h1>
 
     <span class="govuk-caption-xl">
@@ -67,7 +67,9 @@
     <div class="govuk-grid-column-one-third">
       <div class="sticky-sidebar">
         <div class="sticky-sidebar__inner">
-          <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">{{ fullname | upper }}</h3>
+          <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">
+            {{ move.person.fullname | upper }}
+          </h3>
 
           {{ appMetaList(moveSummary) }}
         </div>
