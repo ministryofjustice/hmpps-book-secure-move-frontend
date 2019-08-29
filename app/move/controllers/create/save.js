@@ -42,7 +42,7 @@ class SaveController extends CreateBaseController {
     req.flash('success', {
       title: req.t('messages::create_move.success.title'),
       content: req.t('messages::create_move.success.content', {
-        name: personService.getFullname(person),
+        name: person.fullname,
         location:
           moveType === 'prison_recall'
             ? req.t('fields::move_type.items.prison_recall.label')

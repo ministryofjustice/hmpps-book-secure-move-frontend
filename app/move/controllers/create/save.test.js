@@ -12,12 +12,17 @@ const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
-const {
-  data: moveMock,
-} = require('../../../../test/fixtures/api-client/move.get.deserialized.json')
-const fullname = `${moveMock.person.last_name}, ${moveMock.person.first_names}`
 const mockPerson = {
   id: '3333',
+  fullname: 'Full name',
+}
+const mockMove = {
+  id: '4444',
+  date: '2019-10-10',
+  to_location: {
+    title: 'To location',
+  },
+  person: mockPerson,
 }
 const valuesMock = {
   'csrf-secret': 'secret',
@@ -57,7 +62,7 @@ describe('Move controllers', function() {
       context('when move save is successful', function() {
         beforeEach(async function() {
           sinon.spy(FormController.prototype, 'configure')
-          sinon.stub(moveService, 'create').resolves(moveMock)
+          sinon.stub(moveService, 'create').resolves(mockMove)
           sinon.stub(personService, 'update').resolves(mockPerson)
           await controller.saveValues(req, {}, nextSpy)
         })
@@ -79,7 +84,7 @@ describe('Move controllers', function() {
         })
 
         it('should set response to session model', function() {
-          expect(req.sessionModel.set).to.be.calledWith('move', moveMock)
+          expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
         })
 
         it('should not throw an error', function() {
@@ -134,13 +139,12 @@ describe('Move controllers', function() {
           redirect: sinon.stub(),
         }
 
-        sinon.stub(personService, 'getFullname').returns(fullname)
         sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
       })
 
       context('by default', function() {
         beforeEach(function() {
-          req.sessionModel.get.withArgs('move').returns(moveMock)
+          req.sessionModel.get.withArgs('move').returns(mockMove)
           controller.successHandler(req, res)
         })
 
@@ -155,9 +159,9 @@ describe('Move controllers', function() {
           expect(req.t.secondCall).to.have.been.calledWithExactly(
             'messages::create_move.success.content',
             {
-              name: fullname,
-              location: moveMock.to_location.title,
-              date: moveMock.date,
+              name: mockMove.person.fullname,
+              location: mockMove.to_location.title,
+              date: mockMove.date,
             }
           )
         })
@@ -175,7 +179,7 @@ describe('Move controllers', function() {
         it('should redirect correctly', function() {
           expect(res.redirect).to.have.been.calledOnce
           expect(res.redirect).to.have.been.calledWith(
-            `/moves?move-date=${moveMock.date}`
+            `/moves?move-date=${mockMove.date}`
           )
         })
       })
@@ -183,7 +187,7 @@ describe('Move controllers', function() {
       context('with prison recall move type', function() {
         beforeEach(function() {
           req.sessionModel.get.withArgs('move').returns({
-            ...moveMock,
+            ...mockMove,
             move_type: 'prison_recall',
           })
           controller.successHandler(req, res)
@@ -206,9 +210,9 @@ describe('Move controllers', function() {
           expect(req.t.thirdCall).to.have.been.calledWithExactly(
             'messages::create_move.success.content',
             {
-              name: fullname,
+              name: mockMove.person.fullname,
               location: 'fields::move_type.items.prison_recall.label',
-              date: moveMock.date,
+              date: mockMove.date,
             }
           )
         })
