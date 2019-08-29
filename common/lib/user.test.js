@@ -2,22 +2,25 @@ const User = require('./user')
 
 describe('User class', function() {
   describe('when instantiated', function() {
-    let user, userName, roles, locations
+    let user
+    let roles
+    let locations
+    let fullname
 
-    context('with username', function() {
-      it('should set username', function() {
-        userName = 'USERNAME'
-        user = new User({ name: userName })
+    context('with fullname', function() {
+      it('should set fullname', function() {
+        fullname = 'Mr Benn'
+        user = new User({ fullname })
 
-        expect(user.userName).to.equal(userName)
+        expect(user.fullname).to.equal(fullname)
       })
     })
 
-    context('without username', function() {
-      it('should not set username', function() {
+    context('without fullname', function() {
+      it('should not set fullname', function() {
         user = new User()
 
-        expect(user.userName).to.be.undefined
+        expect(user.fullname).to.be.undefined
       })
     })
 

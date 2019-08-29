@@ -1,19 +1,21 @@
 const proxyquire = require('proxyquire')
 
-const userLocationSuccessStub = {
-  getUserLocations: () => {
-    return Promise.resolve(['TEST'])
-  },
+const userFailureError = new Error('test')
+const userSuccessStub = {
+  getLocations: () => Promise.resolve(['TEST']),
+  getFullname: () => Promise.resolve('Mr Benn'),
 }
-const userLocationFailureError = new Error('test')
-const userLocationFailureStub = {
-  getUserLocations: () => {
-    return Promise.reject(userLocationFailureError)
-  },
+const userLocationsFailureStub = {
+  getLocations: () => Promise.reject(userFailureError),
+  getFullname: () => Promise.resolve('Mr Benn'),
+}
+const userFullNameFailureStub = {
+  getLocations: () => Promise.resolve(['TEST']),
+  getFullname: () => Promise.reject(userFailureError),
 }
 
-function UserStub({ name, roles = [], locations = [] } = {}) {
-  this.userName = name
+function UserStub({ fullname, roles = [], locations = [] } = {}) {
+  this.fullname = fullname
   this.permissions = []
   this.locations = locations
 }
@@ -46,7 +48,7 @@ describe('Authentication middleware', function() {
       beforeEach(async function() {
         const authentication = proxyquire('./middleware', {
           '../../common/lib/user': UserStub,
-          '../../common/services/user-locations': userLocationSuccessStub,
+          '../../common/services/user': userSuccessStub,
         })
 
         await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -73,15 +75,33 @@ describe('Authentication middleware', function() {
       context('when the user locations lookup fails', function() {
         beforeEach(async function() {
           const authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
-            '../../common/services/user-locations': userLocationFailureStub,
+            '../../common/services/user': userLocationsFailureStub,
           })
 
           await authentication.processAuthResponse()(req, {}, nextSpy)
         })
 
         it('returns next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly(userLocationFailureError)
+          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
+        })
+      })
+
+      context('when the user fullname lookup fails', function() {
+        beforeEach(async function() {
+          const authentication = proxyquire('./middleware', {
+            '../../common/lib/user': UserStub,
+            '../../common/services/user': userFullNameFailureStub,
+          })
+
+          await authentication.processAuthResponse()(req, {}, nextSpy)
+        })
+
+        it('calls with with error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
+        })
+
+        it('doesn’t regenerate the session', function() {
+          expect(req.session.regenerate).not.to.be.called
         })
       })
 
@@ -91,7 +111,7 @@ describe('Authentication middleware', function() {
         beforeEach(function() {
           authentication = proxyquire('./middleware', {
             '../../common/lib/user': UserStub,
-            '../../common/services/user-locations': userLocationSuccessStub,
+            '../../common/services/user': userSuccessStub,
           })
         })
 
@@ -130,9 +150,9 @@ describe('Authentication middleware', function() {
           })
 
           it('sets the user info on the session', function() {
-            expect(req.session.user.userName).to.equal('test')
             expect(Array.isArray(req.session.user.permissions)).to.be.true
             expect(req.session.user.locations).to.deep.equal(['TEST'])
+            expect(req.session.user.fullname).to.equal('Mr Benn')
           })
 
           it('sets the redirect URL in the session', function() {
