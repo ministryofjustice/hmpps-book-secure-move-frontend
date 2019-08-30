@@ -6,6 +6,8 @@
       "attributes": {
         "reference": "KVU1456M",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-09-06T14:00:00+01:00",
         "date": "2019-09-06",
@@ -39,6 +41,8 @@
       "attributes": {
         "reference": "YWP9684U",
         "status": "requested",
+        "cancellation_reason": "other",
+        "cancellation_reason_comment": "A different reason",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-09-07T09:00:00+01:00",
         "date": "2019-09-07",
@@ -72,6 +76,8 @@
       "attributes": {
         "reference": "NJK3748P",
         "status": "requested",
+        "cancellation_reason": "supplier_cannot_move",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-09-14T09:00:00+01:00",
         "date": "2019-09-14",
@@ -105,6 +111,8 @@
       "attributes": {
         "reference": "NHY8941P",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:42+01:00",
         "time_due": "2019-09-12T14:00:00+01:00",
         "date": "2019-09-12",
@@ -138,6 +146,8 @@
       "attributes": {
         "reference": "UVP2359J",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-30T09:00:00+01:00",
         "date": "2019-08-30",
@@ -171,6 +181,8 @@
       "attributes": {
         "reference": "CRW6738U",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-08-27T14:00:00+01:00",
         "date": "2019-08-27",
@@ -204,6 +216,8 @@
       "attributes": {
         "reference": "UTF2634R",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-18T14:00:00+01:00",
         "date": "2019-08-18",
@@ -237,6 +251,8 @@
       "attributes": {
         "reference": "JXH4965W",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-17T12:00:00+01:00",
         "date": "2019-08-17",
@@ -270,6 +286,8 @@
       "attributes": {
         "reference": "MNF1954P",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:42+01:00",
         "time_due": "2019-09-13T09:00:00+01:00",
         "date": "2019-09-13",
@@ -303,6 +321,8 @@
       "attributes": {
         "reference": "WNU7982N",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-08-19T14:00:00+01:00",
         "date": "2019-08-19",
@@ -336,6 +356,8 @@
       "attributes": {
         "reference": "RWP6381H",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:42+01:00",
         "time_due": "2019-09-13T12:00:00+01:00",
         "date": "2019-09-13",
@@ -369,6 +391,8 @@
       "attributes": {
         "reference": "CWA4568V",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-09-05T12:00:00+01:00",
         "date": "2019-09-05",
@@ -402,6 +426,8 @@
       "attributes": {
         "reference": "RWU3289A",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-19T09:00:00+01:00",
         "date": "2019-08-19",
@@ -435,6 +461,8 @@
       "attributes": {
         "reference": "YXT7896K",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-08-18T12:00:00+01:00",
         "date": "2019-08-18",
@@ -468,6 +496,8 @@
       "attributes": {
         "reference": "RXJ2913R",
         "status": "requested",
+        "cancellation_reason": "supplier_cannot_move",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-09-14T09:00:00+01:00",
         "date": "2019-09-14",
@@ -501,6 +531,8 @@
       "attributes": {
         "reference": "VPR3175W",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-23T14:00:00+01:00",
         "date": "2019-08-23",
@@ -534,6 +566,8 @@
       "attributes": {
         "reference": "WMJ8413V",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-09-04T14:00:00+01:00",
         "date": "2019-09-04",
@@ -567,6 +601,8 @@
       "attributes": {
         "reference": "RKM4587R",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:42+01:00",
         "time_due": "2019-08-29T14:00:00+01:00",
         "date": "2019-08-29",
@@ -600,6 +636,8 @@
       "attributes": {
         "reference": "KXU2359Y",
         "status": "requested",
+        "cancellation_reason": "error",
+        "cancellation_reason_comment": "",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-25T14:00:00+01:00",
         "date": "2019-08-25",
@@ -633,6 +671,8 @@
       "attributes": {
         "reference": "ETJ9765F",
         "status": "requested",
+        "cancellation_reason": "other",
+        "cancellation_reason_comment": "The person didn't want to move",
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-09-04T09:00:00+01:00",
         "date": "2019-09-04",

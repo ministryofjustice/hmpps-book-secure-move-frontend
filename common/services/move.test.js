@@ -456,19 +456,47 @@ describe('Move Service', function() {
 
       beforeEach(async function() {
         sinon.stub(apiClient, 'update').resolves(mockResponse)
-
-        move = await moveService.cancel(mockId)
       })
 
-      it('should call update method with data', function() {
-        expect(apiClient.update).to.be.calledOnceWithExactly('move', {
-          id: mockId,
-          status: 'cancelled',
+      context('without data args', function() {
+        beforeEach(async function() {
+          move = await moveService.cancel(mockId)
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            status: 'cancelled',
+            cancellation_reason: undefined,
+            cancellation_reason_comment: undefined,
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
         })
       })
 
-      it('should return move', function() {
-        expect(move).to.deep.equal(mockResponse.data)
+      context('with data args', function() {
+        beforeEach(async function() {
+          move = await moveService.cancel(mockId, {
+            reason: 'other',
+            comment: 'Reason for cancelling',
+          })
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            status: 'cancelled',
+            cancellation_reason: 'other',
+            cancellation_reason_comment: 'Reason for cancelling',
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
+        })
       })
     })
   })
