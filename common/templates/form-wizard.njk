@@ -46,15 +46,18 @@
           {% endfor %}
         {% endblock %}
 
-        {{ govukButton({
-          text: t(options.buttonText or "actions::continue")
-        }) }}
+        {% block formActions %}
+          {{ govukButton({
+            text: t(options.buttonText or "actions::continue"),
+            classes: options.buttonClasses
+          }) }}
 
-        {% if cancelUrl %}
-          <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
-            {{ t("actions::cancel") }}
-          </a>
-        {% endif %}
+          {% if cancelUrl %}
+            <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+              {{ t("actions::cancel") }}
+            </a>
+          {% endif %}
+        {% endblock %}
       </form>
     </div>
   </div>
