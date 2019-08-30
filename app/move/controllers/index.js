@@ -1,10 +1,10 @@
-const cancel = require('./cancel')
+const Cancel = require('./cancel')
 const create = require('./create')
 const view = require('./view')
 const confirmation = require('./confirmation')
 
 module.exports = {
-  cancel,
+  Cancel,
   create,
   view,
   confirmation,

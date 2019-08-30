@@ -5,17 +5,25 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
-const { create: createSteps } = require('./steps')
-const { create: createFields } = require('./fields')
-const { cancel, view, confirmation } = require('./controllers')
+const { cancel: cancelSteps, create: createSteps } = require('./steps')
+const { cancel: cancelFields, create: createFields } = require('./fields')
+const { confirmation, view } = require('./controllers')
 const { setMove } = require('./middleware')
 
-const createWizardConfig = {
+const wizardConfig = {
   controller: FormWizardController,
+  template: 'form-wizard',
+}
+const createConfig = {
+  ...wizardConfig,
   name: 'create-move',
   journeyName: 'create-move',
   journeyPageTitle: 'actions::create_move',
-  template: 'form-wizard',
+}
+const cancelConfig = {
+  ...wizardConfig,
+  name: 'cancel-move',
+  journeyName: 'cancel-move',
 }
 
 // Define param middleware
@@ -25,14 +33,15 @@ router.param('moveId', setMove)
 router.use(
   '/new',
   protectRoute('move:create'),
-  wizard(createSteps, createFields, createWizardConfig)
+  wizard(createSteps, createFields, createConfig)
 )
 router.get('/:moveId', protectRoute('move:view'), view)
-router
-  .route('/:moveId/cancel')
-  .get(protectRoute('move:cancel'), cancel.get)
-  .post(protectRoute('move:cancel'), cancel.post)
 router.get('/:moveId/confirmation', protectRoute('move:create'), confirmation)
+router.use(
+  '/:moveId/cancel',
+  protectRoute('move:cancel'),
+  wizard(cancelSteps, cancelFields, cancelConfig)
+)
 
 // Export
 module.exports = {

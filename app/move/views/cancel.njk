@@ -1,4 +1,4 @@
-{% extends "layouts/base.njk" %}
+{% extends "form-wizard.njk" %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Cancel move'});
@@ -17,32 +17,13 @@
   }) }}
 {% endblock %}
 
-{% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <header class="govuk-!-margin-bottom-8">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">
-          {{ t("moves::cancel.page_title", { name: move.person.fullname | upper }) }}
-        </h1>
-      </header>
+{% block formActions %}
+  {{ govukWarningText({
+    text: t("moves::cancel.warning", {
+      name: move.person.fullname | upper
+    }),
+    iconFallbackText: "Warning"
+  }) }}
 
-      <form method="post">
-        <p>
-          {{ t("moves::cancel.content.confirmation", {
-            name: move.person.fullname | upper,
-            location: move.to_location.title
-          }) | safe }}
-        </p>
-
-        <p>
-          {{ t("moves::cancel.content.warning") }}
-        </p>
-
-        {{ govukButton({
-          text: t("actions::cancel_move_confirmation"),
-          classes: "govuk-button--warning"
-        }) }}
-      </form>
-    </div>
-  </div>
+  {{ super() }}
 {% endblock %}
