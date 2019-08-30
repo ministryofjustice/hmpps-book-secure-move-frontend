@@ -66,8 +66,6 @@ module.exports = {
   },
   assessment_question: {
     attributes: {
-      created_at: '',
-      expires_at: '',
       disabled_at: '',
       key: '',
       title: '',
