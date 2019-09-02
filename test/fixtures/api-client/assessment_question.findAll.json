@@ -1,0 +1,184 @@
+{
+  "data": [
+    {
+      "id": "76bb7065-3c69-4b7c-a17b-ac5881d7837e",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "violent",
+        "category": "risk",
+        "title": "Violent",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "escape",
+        "category": "risk",
+        "title": "Escape",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "bca4f1c1-cea1-417d-b1b4-bdf22951ce5b",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "hold_separately",
+        "category": "risk",
+        "title": "Must be held separately",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "9c7b199e-9496-4be0-8e4a-6e18e67eb820",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "self_harm",
+        "category": "risk",
+        "title": "Self harm",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "1bda8556-d96f-44c0-9ea8-537998b0e676",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "concealed_items",
+        "category": "risk",
+        "title": "Concealed items",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "227c6348-4f15-4bf1-a2ed-4b89819254d1",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "other_risks",
+        "category": "risk",
+        "title": "Any other risks",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "7828f100-a1f0-430e-b9d0-c17d2d095071",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "special_diet_or_allergy",
+        "category": "health",
+        "title": "Special diet or allergy",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "73f9a475-0237-49ad-adf9-a4a43bf91906",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "health_issue",
+        "category": "health",
+        "title": "Health issue",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "13fec141-65f6-40b3-93fa-542ac927dc19",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "medication",
+        "category": "health",
+        "title": "Medication",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "83c528a5-f971-42fa-9a45-d8e44e425160",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "wheelchair",
+        "category": "health",
+        "title": "Wheelchair user",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "031e8b93-33dc-4653-bb03-99b49412b750",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "pregnant",
+        "category": "health",
+        "title": "Pregnant",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "944a2293-3a87-467b-8de9-75e6579c3508",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "other_health",
+        "category": "health",
+        "title": "Any other requirements",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "15398318-6ba2-4635-ab45-fe61949396fa",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "solicitor",
+        "category": "court",
+        "title": "Solicitor or other legal representation",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "f71ed532-88aa-48c4-83fe-d82ac4e015ac",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "interpreter",
+        "category": "court",
+        "title": "Sign or other language interpreter",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "ba1440ea-ee53-48d4-90fc-6aeec78ace8a",
+      "type": "assessment_questions",
+      "attributes": {
+        "key": "other_court",
+        "category": "court",
+        "title": "Any other information",
+        "nomis_alert_type": null,
+        "nomis_alert_code": null,
+        "disabled_at": null
+      }
+    }
+  ]
+}

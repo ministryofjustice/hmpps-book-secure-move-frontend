@@ -1,6 +1,6 @@
 const { flattenDeep, sortBy } = require('lodash')
 
-const apiClient = require('../lib/api-client')
+const apiClient = require('../lib/api-client')()
 
 function getGenders() {
   return apiClient.findAll('gender').then(response => response.data)

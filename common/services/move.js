@@ -1,6 +1,6 @@
 const { mapValues, pickBy } = require('lodash')
 
-const apiClient = require('../lib/api-client')
+const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 
 function format(data) {
