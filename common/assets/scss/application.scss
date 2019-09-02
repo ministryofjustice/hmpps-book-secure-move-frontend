@@ -19,13 +19,14 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/components/footer/footer.scss";
 @import "govuk-frontend/govuk/components/header/header.scss";
 @import "govuk-frontend/govuk/components/input/input.scss";
+@import "govuk-frontend/govuk/components/panel/panel.scss";
 @import "govuk-frontend/govuk/components/phase-banner/phase-banner.scss";
 @import "govuk-frontend/govuk/components/radios/radios.scss";
 @import "govuk-frontend/govuk/components/select/select.scss";
 @import "govuk-frontend/govuk/components/skip-link/skip-link.scss";
 @import "govuk-frontend/govuk/components/summary-list/summary-list.scss";
 @import "govuk-frontend/govuk/components/textarea/textarea.scss";
-@import "govuk-frontend/govuk/components/panel/panel.scss";
+@import "govuk-frontend/govuk/components/warning-text/warning-text.scss";
 
 @import "govuk-frontend/govuk/utilities/all";
 @import "govuk-frontend/govuk/overrides/all";
