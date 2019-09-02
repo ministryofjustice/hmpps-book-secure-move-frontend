@@ -12,7 +12,8 @@ module.exports = {
     const authProviderLogoutUrl =
       AUTH_PROVIDERS[DEFAULT_AUTH_PROVIDER].logout_url
 
-    req.session.destroy()
-    res.redirect(authProviderLogoutUrl)
+    req.session.destroy(() => {
+      res.redirect(authProviderLogoutUrl)
+    })
   },
 }

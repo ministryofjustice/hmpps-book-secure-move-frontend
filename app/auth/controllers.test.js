@@ -64,12 +64,13 @@ describe('Authentication app', function() {
       req = {
         query: {},
         session: {
-          destroy: sinon.spy(),
+          destroy: callback => callback(),
         },
       }
       res = {
         redirect: sinon.spy(),
       }
+      sinon.spy(req.session, 'destroy')
 
       controllers.signOut(req, res)
     })
