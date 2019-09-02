@@ -4,6 +4,7 @@
     "app/",
     "common/",
     "config/",
+    "locales/",
     "server.js",
     "start.js"
   ],
