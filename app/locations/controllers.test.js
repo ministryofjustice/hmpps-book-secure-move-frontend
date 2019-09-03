@@ -2,9 +2,24 @@ const { sortBy } = require('lodash')
 
 const controllers = require('./controllers')
 
-const {
-  data: userLocations,
-} = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
+const mockUserLocations = [
+  {
+    id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
+    title: 'D location',
+  },
+  {
+    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
+    title: 'B location',
+  },
+  {
+    id: 'd8e9cf86-55cd-4412-83b7-3562b7d1f8b6',
+    title: 'A location',
+  },
+  {
+    id: '10923762-bc17-4ea1-bae3-68ea709ee23e',
+    title: 'C location',
+  },
+]
 
 describe('Locations controllers', function() {
   let req, res
@@ -13,7 +28,7 @@ describe('Locations controllers', function() {
     beforeEach(function() {
       req = {
         session: {},
-        userLocations: userLocations,
+        userLocations: mockUserLocations,
       }
       res = {
         render: sinon.spy(),
@@ -28,7 +43,7 @@ describe('Locations controllers', function() {
     it('should return locations sorted by title', function() {
       const params = res.render.args[0][1]
       expect(params).to.have.property('locations')
-      expect(params.locations).to.deep.equal(sortBy(userLocations, 'title'))
+      expect(params.locations).to.deep.equal(sortBy(mockUserLocations, 'title'))
     })
   })
 
@@ -67,7 +82,7 @@ describe('Locations controllers', function() {
     context('when locationId is not found in user locations', function() {
       beforeEach(function() {
         req.params.locationId = 'not_authorised'
-        req.userLocations = userLocations
+        req.userLocations = mockUserLocations
 
         controllers.setLocation(req, res, nextSpy)
       })
@@ -87,15 +102,15 @@ describe('Locations controllers', function() {
 
     context('when locationId is found in user locations', function() {
       beforeEach(function() {
-        req.params.locationId = userLocations[0].id
-        req.userLocations = userLocations
+        req.params.locationId = mockUserLocations[0].id
+        req.userLocations = mockUserLocations
 
         controllers.setLocation(req, res, nextSpy)
       })
 
       it('should set currentLocation', function() {
         expect(req.session).to.have.property('currentLocation')
-        expect(req.session.currentLocation).to.deep.equal(userLocations[0])
+        expect(req.session.currentLocation).to.deep.equal(mockUserLocations[0])
       })
 
       it('should redirect to homepage', function() {
