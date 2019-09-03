@@ -6,9 +6,6 @@ const movesToCSV = require('./moves-to-csv')
 const referenceDataServce = require('../services/reference-data')
 const i18n = require('../../config/i18n')
 const mockMoves = require('../../test/fixtures/moves.json')
-const {
-  data: mockQuestions,
-} = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
 
 const csv = fs.readFileSync(
   path.resolve(__dirname, '../../test/fixtures/moves.csv'),
@@ -18,6 +15,33 @@ const emptyCsv = fs.readFileSync(
   path.resolve(__dirname, '../../test/fixtures/moves-empty.csv'),
   'utf8'
 )
+
+const mockQuestions = [
+  {
+    key: 'violent',
+    title: 'Violent',
+  },
+  {
+    key: 'escape',
+    title: 'Escape',
+  },
+  {
+    key: 'self_harm',
+    title: 'Self harm',
+  },
+  {
+    key: 'interpreter',
+    title: 'Sign or other language interpreter',
+  },
+  {
+    key: 'medication',
+    title: 'Medication',
+  },
+  {
+    key: 'health_issue',
+    title: 'Health issue',
+  },
+]
 
 describe('Presenters', function() {
   describe('movesToCSV', function() {

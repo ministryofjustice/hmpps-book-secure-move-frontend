@@ -13,19 +13,17 @@ function _getIdentifier(identifier) {
   }
 }
 
-function _mapAnswer(question) {
-  const label = question.title
-  const key = question.key
+function _mapAnswer({ title, key } = {}) {
   return [
     {
-      label,
+      label: title,
       value: row => some(row.person.assessment_answers, { key }),
     },
     {
       label: [
         'moves::download.assessment_answer.label',
         {
-          question: label,
+          question: title,
         },
       ],
       value: row => {
