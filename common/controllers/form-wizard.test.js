@@ -97,7 +97,7 @@ describe('Move controllers', function() {
           controller.errorHandler(errorMock, {}, resMock)
         })
 
-        it('redirect to specificed value', function() {
+        it('redirect to specified value', function() {
           expect(resMock.redirect).to.be.calledWith(errorMock.redirect)
         })
 
@@ -113,18 +113,59 @@ describe('Move controllers', function() {
           errorMock.code = 'SESSION_TIMEOUT'
           reqMock = {
             baseUrl: '/journey-base-url',
+            form: {
+              options: {
+                journeyName: 'mock-journey',
+              },
+            },
           }
 
           controller.errorHandler(errorMock, reqMock, resMock)
         })
 
         it('should render the timeout template', function() {
-          expect(resMock.render.args[0][0]).to.equal('form-wizard-timeout')
+          expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
         })
 
         it('should pass the correct data to the view', function() {
           expect(resMock.render.args[0][1]).to.deep.equal({
             journeyBaseUrl: reqMock.baseUrl,
+            errorKey: errorMock.code.toLowerCase(),
+            journeyName: 'mock_journey',
+          })
+        })
+
+        it('should not call parent error handler', function() {
+          expect(FormController.prototype.errorHandler).not.to.be.called
+        })
+      })
+
+      context('when it returns missing prereq error', function() {
+        let reqMock
+
+        beforeEach(function() {
+          errorMock.code = 'MISSING_PREREQ'
+          reqMock = {
+            baseUrl: '/journey-base-url-other',
+            form: {
+              options: {
+                journeyName: 'mock-journey',
+              },
+            },
+          }
+
+          controller.errorHandler(errorMock, reqMock, resMock)
+        })
+
+        it('should render the timeout template', function() {
+          expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+        })
+
+        it('should pass the correct data to the view', function() {
+          expect(resMock.render.args[0][1]).to.deep.equal({
+            journeyBaseUrl: reqMock.baseUrl,
+            errorKey: errorMock.code.toLowerCase(),
+            journeyName: 'mock_journey',
           })
         })
 

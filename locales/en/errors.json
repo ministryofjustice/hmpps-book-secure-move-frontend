@@ -3,13 +3,19 @@
     "heading": "Page unavailable",
     "content": "We are experiencing technical problems and the error has been reported. Try again in a few moments."
   },
-  "timeout": {
+  "session_timeout": {
     "heading": "Session timeout",
     "content": "Your session has timed out due to a long period of inactivity."
   },
   "not_found": {
     "heading": "Page not found",
     "content": "If you entered a web address check it was correct."
+  },
+  "missing_prereq": {
+    "heading": "Journey expired",
+    "heading_create_move": "This move has been scheduled",
+    "content": "Your journey has been completed.",
+    "content_create_move": "You can view upcoming moves or create a new move from the dashboard."
   },
   "tampered_with": {
     "heading": "This form has been tampered with",

@@ -26,9 +26,11 @@ class FormController extends Controller {
       return res.redirect(err.redirect)
     }
 
-    if (err.code === 'SESSION_TIMEOUT') {
-      return res.render('form-wizard-timeout', {
+    if (err.code === 'SESSION_TIMEOUT' || err.code === 'MISSING_PREREQ') {
+      return res.render('form-wizard-error', {
+        journeyName: req.form.options.journeyName.replace('-', '_'),
         journeyBaseUrl: req.baseUrl,
+        errorKey: err.code.toLowerCase(),
       })
     }
 

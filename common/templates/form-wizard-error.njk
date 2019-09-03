@@ -4,18 +4,23 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        {{ t("errors::timeout.heading") }}
+        {{ t("errors::" + errorKey + ".heading", { context: journeyName }) }}
       </h1>
     </div>
   </header>
-
   <p>
-    {{ t("errors::timeout.content") }}
+    {{ t("errors::" + errorKey + ".content", { context: journeyName }) }}
   </p>
 
   <p>
+  {% if errorKey == "missing_prereq" %}
+    <a href="/moves">
+      {{ t("actions::back_to_dashboard") }}
+    </a>
+  {% else %}
     <a href="{{ journeyBaseUrl }}" class="govuk-button">
       {{ t("actions::restart") }}
     </a>
+  {% endif %}
   </p>
 {% endblock %}
