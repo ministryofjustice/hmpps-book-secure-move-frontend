@@ -1,45 +1,62 @@
 const moveService = require('./move')
 const personService = require('./person')
-const auth = require('../lib/api-client/middleware/auth')
-const { API } = require('../../config')
+const apiClient = require('../lib/api-client')()
 
-const movesGetDeserialized = require('../../test/fixtures/api-client/moves.get.deserialized.json')
-const movesGetSerialized = require('../../test/fixtures/api-client/moves.get.serialized.json')
-const movesGetPage1Serialized = require('../../test/fixtures/api-client/moves.get.page-1.serialized.json')
-const movesGetPage2Serialized = require('../../test/fixtures/api-client/moves.get.page-2.serialized.json')
-const moveGetDeserialized = require('../../test/fixtures/api-client/move.get.deserialized.json')
-const moveGetSerialized = require('../../test/fixtures/api-client/move.get.serialized.json')
+const mockMove = {
+  id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
+  status: 'requested',
+  person: {
+    id: 'f6e1f57c-7d07-41d2-afee-1662f5103e2d',
+    first_names: 'Steve Jones',
+    last_name: 'Bloggs',
+  },
+}
+const mockMoves = [
+  {
+    id: '12345',
+    status: 'requested',
+    person: {
+      name: 'Tom Jones',
+    },
+  },
+  {
+    id: '67890',
+    status: 'cancelled',
+    person: {
+      name: 'Steve Bloggs',
+    },
+  },
+]
 
 describe('Move Service', function() {
   beforeEach(function() {
     sinon.stub(personService, 'transform').returnsArg(0)
-    sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon
-      .stub(auth, 'getAccessTokenExpiry')
-      .returns(Math.floor(new Date() / 1000) + 100)
   })
 
   describe('#format()', function() {
+    const mockToLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockFromLocationId = 'f6e1f57c-7d07-41d2-afee-1662f5103e2d'
+
     context('when relationship field is string', function() {
       let formatted
 
       beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
-          to_location: moveGetDeserialized.data.to_location.id,
-          from_location: moveGetDeserialized.data.from_location.id,
+          to_location: mockToLocationId,
+          from_location: mockFromLocationId,
         })
       })
 
       it('should format as relationship object', function() {
         expect(formatted.to_location).to.deep.equal({
-          id: moveGetDeserialized.data.to_location.id,
+          id: mockToLocationId,
         })
       })
 
       it('should format as relationship object', function() {
         expect(formatted.from_location).to.deep.equal({
-          id: moveGetDeserialized.data.from_location.id,
+          id: mockFromLocationId,
         })
       })
 
@@ -55,23 +72,23 @@ describe('Move Service', function() {
         formatted = await moveService.format({
           date: '2010-10-10',
           to_location: {
-            id: moveGetDeserialized.data.to_location.id,
+            id: mockToLocationId,
           },
           from_location: {
-            id: moveGetDeserialized.data.from_location.id,
+            id: mockFromLocationId,
           },
         })
       })
 
       it('should return its original value', function() {
         expect(formatted.to_location).to.deep.equal({
-          id: moveGetDeserialized.data.to_location.id,
+          id: mockToLocationId,
         })
       })
 
       it('should return its original value', function() {
         expect(formatted.from_location).to.deep.equal({
-          id: moveGetDeserialized.data.from_location.id,
+          id: mockFromLocationId,
         })
       })
 
@@ -87,9 +104,9 @@ describe('Move Service', function() {
         formatted = await moveService.format({
           date: '2010-10-10',
           to_location: {
-            id: moveGetDeserialized.data.to_location.id,
+            id: mockToLocationId,
           },
-          from_location: moveGetDeserialized.data.from_location.id,
+          from_location: mockFromLocationId,
           empty_string: '',
           false: false,
           undefined: undefined,
@@ -101,10 +118,10 @@ describe('Move Service', function() {
         expect(formatted).to.deep.equal({
           date: '2010-10-10',
           to_location: {
-            id: moveGetDeserialized.data.to_location.id,
+            id: mockToLocationId,
           },
           from_location: {
-            id: moveGetDeserialized.data.from_location.id,
+            id: mockFromLocationId,
           },
           empty_array: [],
         })
@@ -113,166 +130,345 @@ describe('Move Service', function() {
   })
 
   describe('#getLocations()', function() {
-    context('when request returns 200', function() {
-      let moves
+    const mockResponse = {
+      data: mockMoves,
+      links: {},
+    }
+    const mockMultiPageResponse = {
+      data: mockMoves,
+      links: {
+        next: 'http://next-page.com',
+      },
+    }
+    const mockFilter = {
+      filterOne: 'foo',
+    }
+    let moves
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/moves')
-          .query({
+    beforeEach(function() {
+      sinon.stub(apiClient, 'findAll')
+    })
+
+    context('with only one page', function() {
+      beforeEach(function() {
+        apiClient.findAll.resolves(mockResponse)
+      })
+
+      context('by default', function() {
+        beforeEach(async function() {
+          moves = await moveService.getMoves()
+        })
+
+        it('should call the API client once', function() {
+          expect(apiClient.findAll).to.be.calledOnce
+        })
+
+        it('should call the API client with default options', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
             page: 1,
             per_page: 100,
           })
-          .reply(200, movesGetPage1Serialized)
+        })
 
-        nock(API.BASE_URL)
-          .get('/moves')
-          .query({
+        it('should transform each person object', function() {
+          expect(personService.transform.callCount).to.equal(mockMoves.length)
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with filter', function() {
+        beforeEach(async function() {
+          moves = await moveService.getMoves({
+            filter: mockFilter,
+          })
+        })
+
+        it('should call the API client with filter', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
+            ...mockFilter,
+            page: 1,
+            per_page: 100,
+          })
+        })
+      })
+    })
+
+    context('with multiple pages', function() {
+      beforeEach(function() {
+        apiClient.findAll
+          .onFirstCall()
+          .resolves(mockMultiPageResponse)
+          .onSecondCall()
+          .resolves(mockResponse)
+      })
+
+      context('by default', function() {
+        beforeEach(async function() {
+          moves = await moveService.getMoves()
+        })
+
+        it('should call the API client twice', function() {
+          expect(apiClient.findAll).to.be.calledTwice
+        })
+
+        it('should call API client with default options on first call', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
+            page: 1,
+            per_page: 100,
+          })
+        })
+
+        it('should call API client with second page on second call', function() {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly('move', {
             page: 2,
             per_page: 100,
           })
-          .reply(200, movesGetPage2Serialized)
+        })
 
-        moves = await moveService.getMoves()
+        it('should transform each person object', function() {
+          expect(personService.transform.callCount).to.equal(4)
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal([...mockMoves, ...mockMoves])
+        })
       })
 
-      it('should get moves from API with current date', function() {
-        expect(nock.isDone()).to.be.true
-      })
+      context('with filter', function() {
+        beforeEach(async function() {
+          moves = await moveService.getMoves({
+            filter: mockFilter,
+          })
+        })
 
-      it('should contain moves with correct data', function() {
-        expect(moves.length).to.equal(40)
+        it('should call API client with filter on first call', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
+            ...mockFilter,
+            page: 1,
+            per_page: 100,
+          })
+        })
+
+        it('should call API client with filter on second call', function() {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly('move', {
+            ...mockFilter,
+            page: 2,
+            per_page: 100,
+          })
+        })
       })
     })
   })
 
   describe('#getRequestedMovesByDateAndLocation()', function() {
-    context('when request returns 200', function() {
-      const mockDate = '2017-08-10'
-      let moves
+    const mockResponse = []
+    let moves
+
+    beforeEach(async function() {
+      sinon.stub(moveService, 'getMoves').resolves(mockResponse)
+    })
+
+    context('without arguments', function() {
+      beforeEach(async function() {
+        moves = await moveService.getRequestedMovesByDateAndLocation()
+      })
+
+      it('should call getMoves methods', function() {
+        expect(moveService.getMoves).to.be.calledOnce
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockResponse)
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = moveService.getMoves.args[0][0].filter
+        })
+
+        it('should set status filter to "requested"', function() {
+          expect(filters).to.contain.property('filter[status]')
+          expect(filters['filter[status]']).to.equal('requested')
+        })
+
+        it('should set date_from filter to undefined', function() {
+          expect(filters).to.contain.property('filter[date_from]')
+          expect(filters['filter[date_from]']).to.equal(undefined)
+        })
+
+        it('should set date_to filter to undefined', function() {
+          expect(filters).to.contain.property('filter[date_to]')
+          expect(filters['filter[date_to]']).to.equal(undefined)
+        })
+
+        it('should set from_location_id filter to undefined', function() {
+          expect(filters).to.contain.property('filter[from_location_id]')
+          expect(filters['filter[from_location_id]']).to.equal(undefined)
+        })
+      })
+    })
+
+    context('with arguments', function() {
+      const mockMoveDate = '2019-10-10'
+      const mockLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
-        this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-
-        nock(API.BASE_URL)
-          .get('/moves')
-          .query({
-            page: 1,
-            per_page: 100,
-            filter: {
-              status: 'requested',
-              date_from: mockDate,
-              date_to: mockDate,
-            },
-          })
-          .reply(200, movesGetSerialized)
-
-        moves = await moveService.getRequestedMovesByDateAndLocation(mockDate)
+        moves = await moveService.getRequestedMovesByDateAndLocation(
+          mockMoveDate,
+          mockLocationId
+        )
       })
 
-      afterEach(function() {
-        this.clock.restore()
+      it('should call getMoves methods', function() {
+        expect(moveService.getMoves).to.be.calledOnce
       })
 
-      it('should get moves from API with current date', function() {
-        expect(nock.isDone()).to.be.true
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockResponse)
       })
 
-      it('should contain moves with correct data', function() {
-        expect(moves).to.deep.equal(movesGetDeserialized.data)
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = moveService.getMoves.args[0][0].filter
+        })
+
+        it('should set status filter to "requested"', function() {
+          expect(filters).to.contain.property('filter[status]')
+          expect(filters['filter[status]']).to.equal('requested')
+        })
+
+        it('should set date_from filter to move date', function() {
+          expect(filters).to.contain.property('filter[date_from]')
+          expect(filters['filter[date_from]']).to.equal(mockMoveDate)
+        })
+
+        it('should set date_to filter to move date', function() {
+          expect(filters).to.contain.property('filter[date_to]')
+          expect(filters['filter[date_to]']).to.equal(mockMoveDate)
+        })
+
+        it('should set from_location_id filter to location ID', function() {
+          expect(filters).to.contain.property('filter[from_location_id]')
+          expect(filters['filter[from_location_id]']).to.equal(mockLocationId)
+        })
       })
     })
   })
 
   describe('#getMoveById()', function() {
-    context('when request returns 200', function() {
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(moveService.getMoveById()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: mockMove,
+      }
       let move
 
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get(`/moves/${moveGetSerialized.data.id}`)
-          .reply(200, moveGetSerialized)
+        sinon.stub(apiClient, 'find').resolves(mockResponse)
 
-        move = await moveService.getMoveById(moveGetSerialized.data.id)
+        move = await moveService.getMoveById(mockId)
       })
 
-      it('should get move from API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call update method with data', function() {
+        expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId)
       })
 
-      it('should contain move with correct data', function() {
-        expect(move).to.deep.equal(moveGetDeserialized.data)
+      it('should call person transformer with response data', function() {
+        expect(personService.transform).to.be.calledOnceWithExactly(
+          mockResponse.data.person
+        )
+      })
+
+      it('should return move', function() {
+        expect(move).to.deep.equal(mockResponse.data)
       })
     })
   })
 
   describe('#create()', function() {
-    context('when request returns 200', function() {
-      let response
+    const mockData = {
+      name: 'Steve Bloggs',
+    }
+    const mockResponse = {
+      data: mockMove,
+    }
+    let move
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .post('/moves')
-          .reply(200, moveGetSerialized)
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'create').resolves(mockResponse)
+      sinon.stub(moveService, 'format').returnsArg(0)
 
-        response = await moveService.create({
-          date: '2019-10-10',
-          to_location: {
-            id: moveGetDeserialized.data.to_location.id,
-          },
-        })
-      })
+      move = await moveService.create(mockData)
+    })
 
-      it('should get move from API', function() {
-        expect(nock.isDone()).to.be.true
-      })
+    it('should call create method with data', function() {
+      expect(apiClient.create).to.be.calledOnceWithExactly('move', mockData)
+    })
 
-      it('should contain move with correct data', function() {
-        expect(response).to.deep.equal(moveGetDeserialized.data)
-      })
+    it('should format data', function() {
+      expect(moveService.format).to.be.calledOnceWithExactly(mockData)
+    })
+
+    it('should call person transformer with response data', function() {
+      expect(personService.transform).to.be.calledOnceWithExactly(
+        mockResponse.data.person
+      )
+    })
+
+    it('should return move', function() {
+      expect(move).to.deep.equal(mockResponse.data)
     })
   })
 
   describe('#cancel()', function() {
-    let mockId
-
-    beforeEach(async function() {
-      mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
-
-      nock(API.BASE_URL)
-        .patch(`/moves/${mockId}`)
-        .reply(200, moveGetSerialized)
-    })
-
-    context('when no ID is supplied in the data object', function() {
-      let response
-
-      beforeEach(async function() {
-        response = await moveService.cancel()
-      })
-
-      it('should not call API', function() {
-        expect(nock.isDone()).to.be.false
-      })
-
-      it('should return', function() {
-        expect(response).to.equal()
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(moveService.cancel()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
       })
     })
 
-    context('when request returns 200', function() {
-      let response
+    context('with move ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: {
+          ...mockMove,
+          status: 'cancelled',
+        },
+      }
+      let move
 
       beforeEach(async function() {
-        response = await moveService.cancel(mockId)
+        sinon.stub(apiClient, 'update').resolves(mockResponse)
+
+        move = await moveService.cancel(mockId)
       })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call update method with data', function() {
+        expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+          id: mockId,
+          status: 'cancelled',
+        })
       })
 
-      it('should contain move with correct data', function() {
-        expect(response).to.deep.equal(moveGetDeserialized.data)
+      it('should return move', function() {
+        expect(move).to.deep.equal(mockResponse.data)
       })
     })
   })
