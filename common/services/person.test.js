@@ -1,40 +1,34 @@
 const { forEach } = require('lodash')
 
 const personService = require('./person')
-const { API } = require('../../config')
-const auth = require('../lib/api-client/middleware/auth')
-
-const personPostSerialized = require('../../test/fixtures/api-client/person.post.serialized.json')
-const personPostDeserialized = require('../../test/fixtures/api-client/person.post.deserialized.json')
+const apiClient = require('../lib/api-client')()
 
 const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
+const mockPerson = {
+  id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
+  first_names: 'Steve Jones',
+  last_name: 'Bloggs',
+}
 
 describe('Person Service', function() {
-  beforeEach(function() {
-    sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon
-      .stub(auth, 'getAccessTokenExpiry')
-      .returns(Math.floor(new Date() / 1000) + 100)
-  })
-
   describe('#transform()', function() {
     let transformed
 
     context('with first name and last name', function() {
       beforeEach(async function() {
-        transformed = await personService.transform(personPostDeserialized.data)
+        transformed = await personService.transform(mockPerson)
       })
 
       it('should set full name', function() {
         expect(transformed).to.contain.property('fullname')
         expect(transformed.fullname).to.equal(
-          `${personPostDeserialized.data.last_name}, ${personPostDeserialized.data.first_names}`
+          `${mockPerson.last_name}, ${mockPerson.first_names}`
         )
       })
 
       it('should contain original properties', function() {
-        forEach(personPostDeserialized.data, (value, key) => {
+        forEach(mockPerson, (value, key) => {
           expect(transformed).to.contain.property(key)
           expect(transformed[key]).to.equal(value)
         })
@@ -352,77 +346,78 @@ describe('Person Service', function() {
   })
 
   describe('#create()', function() {
-    context('when request returns 200', function() {
-      let response
+    const mockData = {
+      name: 'Steve Bloggs',
+    }
+    const mockResponse = {
+      data: mockPerson,
+    }
+    let person
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .post('/people')
-          .reply(200, personPostSerialized)
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'create').resolves(mockResponse)
+      sinon.stub(personService, 'format').returnsArg(0)
 
-        response = await personService.create({
-          first_names: 'Foo',
-          last_names: 'Bar',
-        })
-      })
+      person = await personService.create(mockData)
+    })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
-      })
+    it('should call create method with data', function() {
+      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData)
+    })
 
-      it('should contain move with correct data', function() {
-        expect(response).to.deep.equal(personPostDeserialized.data)
-      })
+    it('should format data', function() {
+      expect(personService.format).to.be.calledOnceWithExactly(mockData)
+    })
+
+    it('should return data property', function() {
+      expect(person).to.deep.equal(mockResponse.data)
     })
   })
 
   describe('#update()', function() {
-    let mockId
+    const mockData = {
+      id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
+      name: 'Steve Bloggs',
+    }
+    const mockResponse = {
+      data: mockPerson,
+    }
+    let person
 
     beforeEach(async function() {
-      mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
-
-      nock(API.BASE_URL)
-        .patch(`/people/${mockId}`)
-        .reply(200, personPostSerialized)
+      sinon.stub(apiClient, 'update').resolves(mockResponse)
+      sinon.stub(personService, 'format').returnsArg(0)
     })
 
-    context('when no ID is supplied in the data object', function() {
-      let response
-
+    context('without ID', function() {
       beforeEach(async function() {
-        response = await personService.update({
-          first_names: 'Foo',
-          last_names: 'Bar',
-        })
+        person = await personService.update({})
       })
 
       it('should not call API', function() {
-        expect(nock.isDone()).to.be.false
+        expect(apiClient.update).not.to.be.called
       })
 
-      it('should return', function() {
-        expect(response).to.equal()
+      it('should not format data', function() {
+        expect(personService.format).not.to.be.called
       })
     })
 
-    context('when request returns 200', function() {
-      let response
-
+    context('with ID', function() {
       beforeEach(async function() {
-        response = await personService.update({
-          id: mockId,
-          first_names: 'Foo',
-          last_names: 'Bar',
-        })
+        person = await personService.update(mockData)
       })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call update method with data', function() {
+        expect(apiClient.update).to.be.calledOnceWithExactly('person', mockData)
       })
 
-      it('should contain move with correct data', function() {
-        expect(response).to.deep.equal(personPostDeserialized.data)
+      it('should format data', function() {
+        expect(personService.format).to.be.calledOnceWithExactly(mockData)
+      })
+
+      it('should return data property', function() {
+        expect(person).to.deep.equal(mockResponse.data)
       })
     })
   })
