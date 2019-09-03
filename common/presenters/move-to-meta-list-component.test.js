@@ -3,9 +3,18 @@ const { subDays, addDays } = require('date-fns')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const i18n = require('../../config/i18n')
 
-const {
-  data: mockMove,
-} = require('../../test/fixtures/api-client/move.get.deserialized.json')
+const mockMove = {
+  date: '2019-06-09',
+  time_due: '2000-01-01T14:00:00Z',
+  move_type: 'court_appearance',
+  additional_information: 'Some additional information about this move',
+  from_location: {
+    title: 'HMP Leeds',
+  },
+  to_location: {
+    title: 'Barrow in Furness County Court',
+  },
+}
 
 describe('Presenters', function() {
   describe('#moveToMetaListComponent()', function() {

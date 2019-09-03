@@ -2,15 +2,38 @@ const moveToCardComponent = require('./move-to-card-component')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
-const {
-  data,
-} = require('../../test/fixtures/api-client/move.get.deserialized.json')
 
 const mockMove = {
-  ...data,
+  id: '12345',
+  reference: 'AB12FS45',
   person: {
-    ...data.person,
-    fullname: `${data.person.last_name}, ${data.person.first_names}`,
+    fullname: 'Name, Full',
+    date_of_birth: '2000-10-10',
+    gender: {
+      title: 'Male',
+    },
+    assessment_answers: [
+      {
+        key: 'concealed_items',
+        title: 'Concealed items',
+        category: 'risk',
+      },
+      {
+        key: 'health_issue',
+        title: 'Health issue',
+        category: 'health',
+      },
+      {
+        key: 'other_risks',
+        title: 'Any other risks',
+        category: 'risk',
+      },
+      {
+        key: 'legal_representation',
+        title: 'Solicitor or other legal representation',
+        category: 'court',
+      },
+    ],
   },
 }
 
@@ -32,7 +55,7 @@ describe('Presenters', function() {
       describe('response', function() {
         it('should contain a href', function() {
           expect(transformedResponse).to.have.property('href')
-          expect(transformedResponse.href).to.equal(`/move/${mockMove.id}`)
+          expect(transformedResponse.href).to.equal('/move/12345')
         })
 
         it('should contain a title', function() {
@@ -66,24 +89,23 @@ describe('Presenters', function() {
         })
 
         it('should contain correct tags', function() {
-          const moveId = mockMove.id
           expect(transformedResponse).to.have.property('tags')
           expect(transformedResponse.tags).to.deep.equal({
             items: [
               {
-                href: `/move/${moveId}#concealed_items`,
+                href: '/move/12345#concealed_items',
                 text: 'Concealed items',
                 classes: 'app-tag--destructive',
                 sortOrder: 1,
               },
               {
-                href: `/move/${moveId}#other_risks`,
+                href: '/move/12345#other_risks',
                 text: 'Any other risks',
                 classes: 'app-tag--destructive',
                 sortOrder: 1,
               },
               {
-                href: `/move/${moveId}#health_issue`,
+                href: '/move/12345#health_issue',
                 text: 'Health issue',
                 classes: '',
                 sortOrder: 2,
@@ -113,7 +135,7 @@ describe('Presenters', function() {
         it('should translate move reference', function() {
           expect(i18n.t.getCall(3)).to.be.calledWithExactly(
             'moves::move_reference',
-            { reference: mockMove.reference }
+            { reference: 'AB12FS45' }
           )
         })
 

@@ -3,9 +3,22 @@ const personToSummaryListComponent = require('./person-to-summary-list-component
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const {
-  data: mockMove,
-} = require('../../test/fixtures/api-client/move.get.deserialized.json')
+const mockPerson = {
+  date_of_birth: '1948-04-24',
+  gender_additional_information: 'Additional gender information',
+  identifiers: [
+    {
+      identifier_type: 'police_national_computer',
+      value: '11009922',
+    },
+  ],
+  ethnicity: {
+    title: 'Mixed (White and Black Caribbean)',
+  },
+  gender: {
+    title: 'Transexual',
+  },
+}
 
 describe('Presenters', function() {
   describe('#personToSummaryListComponent()', function() {
@@ -19,7 +32,7 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        transformedResponse = personToSummaryListComponent(mockMove.person)
+        transformedResponse = personToSummaryListComponent(mockPerson)
       })
 
       describe('response', function() {
@@ -33,7 +46,7 @@ describe('Presenters', function() {
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: mockMove.person.identifiers[0].value },
+            value: { text: mockPerson.identifiers[0].value },
           })
         })
 
@@ -52,7 +65,7 @@ describe('Presenters', function() {
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
             value: {
-              text: `${mockMove.person.gender.title} — ${mockMove.person.gender_additional_information}`,
+              text: `${mockPerson.gender.title} — ${mockPerson.gender_additional_information}`,
             },
           })
         })
@@ -62,7 +75,7 @@ describe('Presenters', function() {
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: mockMove.person.ethnicity.title },
+            value: { text: mockPerson.ethnicity.title },
           })
         })
       })
