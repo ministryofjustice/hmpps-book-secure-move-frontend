@@ -126,14 +126,10 @@ describe('Move controllers', function() {
           sessionModel: {
             get: sinon.stub(),
             reset: sinon.stub(),
-            destroy: sinon.stub(),
           },
           journeyModel: {
             reset: sinon.stub(),
-            destroy: sinon.stub(),
           },
-          flash: sinon.stub(),
-          t: sinon.stub().returnsArg(0),
         }
         res = {
           redirect: sinon.stub(),
@@ -148,72 +144,18 @@ describe('Move controllers', function() {
           controller.successHandler(req, res)
         })
 
-        it('should set a success message', function() {
-          expect(req.flash).to.have.been.calledOnceWith('success', {
-            title: 'messages::create_move.success.title',
-            content: 'messages::create_move.success.content',
-          })
-        })
-
-        it('should pass correct values to success content translation', function() {
-          expect(req.t.secondCall).to.have.been.calledWithExactly(
-            'messages::create_move.success.content',
-            {
-              name: mockMove.person.fullname,
-              location: mockMove.to_location.title,
-              date: mockMove.date,
-            }
-          )
-        })
-
         it('should reset the journey', function() {
           expect(req.journeyModel.reset).to.have.been.calledOnce
-          expect(req.journeyModel.destroy).to.have.been.calledOnce
         })
 
         it('should reset the session', function() {
           expect(req.sessionModel.reset).to.have.been.calledOnce
-          expect(req.sessionModel.destroy).to.have.been.calledOnce
         })
 
         it('should redirect correctly', function() {
           expect(res.redirect).to.have.been.calledOnce
           expect(res.redirect).to.have.been.calledWith(
-            `/moves?move-date=${mockMove.date}`
-          )
-        })
-      })
-
-      context('with prison recall move type', function() {
-        beforeEach(function() {
-          req.sessionModel.get.withArgs('move').returns({
-            ...mockMove,
-            move_type: 'prison_recall',
-          })
-          controller.successHandler(req, res)
-        })
-
-        it('should set a success message', function() {
-          expect(req.flash).to.have.been.calledOnceWith('success', {
-            title: 'messages::create_move.success.title',
-            content: 'messages::create_move.success.content',
-          })
-        })
-
-        it('should translate prison recall title', function() {
-          expect(req.t.secondCall).to.have.been.calledWithExactly(
-            'fields::move_type.items.prison_recall.label'
-          )
-        })
-
-        it('should pass correct values to success content translation', function() {
-          expect(req.t.thirdCall).to.have.been.calledWithExactly(
-            'messages::create_move.success.content',
-            {
-              name: mockMove.person.fullname,
-              location: 'fields::move_type.items.prison_recall.label',
-              date: mockMove.date,
-            }
+            `/move/${mockMove.id}/confirmation`
           )
         })
       })
