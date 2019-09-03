@@ -33,7 +33,7 @@ module.exports = {
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
-    BASE_URL: process.env.API_BASE_URL || 'http://localhost:3000/api/v1',
+    BASE_URL: process.env.API_BASE_URL,
     HEALTHCHECK_URL: process.env.API_HEALTHCHECK_URL,
     AUTH_URL: process.env.API_AUTH_URL,
     CLIENT_ID: process.env.API_CLIENT_ID,
