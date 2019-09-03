@@ -1,444 +1,487 @@
-const {
-  getGenders,
-  getEthnicities,
-  getAssessmentQuestions,
-  getLocations,
-  getLocationById,
-  getLocationsById,
-  getLocationByNomisAgencyId,
-  getLocationsByNomisAgencyId,
-} = require('./reference-data')
-const { API } = require('../../config')
-const auth = require('../lib/api-client/middleware/auth')
+const { sortBy } = require('lodash')
 
-const gendersDeserialized = require('../../test/fixtures/api-client/reference.genders.deserialized.json')
-const gendersSerialized = require('../../test/fixtures/api-client/reference.genders.serialized.json')
-const ethnicitiesDeserialized = require('../../test/fixtures/api-client/reference.ethnicities.deserialized.json')
-const ethnicitiesSerialized = require('../../test/fixtures/api-client/reference.ethnicities.serialized.json')
-const assessmentDeserialized = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
-const assessmentSerialized = require('../../test/fixtures/api-client/reference.assessment.serialized.json')
-const locationsDeserialized = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
-const locationsPage1Serialized = require('../../test/fixtures/api-client/reference.locations.page-1.serialized.json')
-const locationsPage2Serialized = require('../../test/fixtures/api-client/reference.locations.page-2.serialized.json')
-const locationsSerialized = require('../../test/fixtures/api-client/reference.locations.serialized.json')
-const locationDeserialized = require('../../test/fixtures/api-client/reference.location.deserialized.json')
-const locationSerialized = require('../../test/fixtures/api-client/reference.location.serialized.json')
+const referenceDataService = require('./reference-data')
+const apiClient = require('../lib/api-client')()
 
-describe('Reference Service', function() {
-  beforeEach(function() {
-    sinon.stub(auth, 'getAccessToken').returns('test')
-    sinon
-      .stub(auth, 'getAccessTokenExpiry')
-      .returns(Math.floor(new Date() / 1000) + 100)
-  })
+const mockGenders = [
+  {
+    id: 'd335715f-c9d1-415c-a7c8-06e830158214',
+    title: 'Female',
+  },
+  {
+    id: '4d9e344e-1f89-4ca8-a95f-ac14df3f1a24',
+    title: 'Male',
+  },
+]
+const mockEthnicities = [
+  {
+    id: 'b95bfb7c-18cd-419d-8119-2dee1506726f',
+    title: 'Asian or Asian British (Indian)',
+  },
+  {
+    id: '35660b02-243f-4df2-9337-e3ec49b6d70d',
+    title: 'Black (Caribbean)',
+  },
+]
+const mockAssessmentQuestions = [
+  {
+    id: '76bb7065-3c69-4b7c-a17b-ac5881d7837e',
+    title: 'Violent',
+  },
+  {
+    id: '76e00bf9-55f6-4ea5-b018-2c47d060caf5',
+    title: 'Escape',
+  },
+]
+const mockLocations = [
+  {
+    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
+    title: 'Barnstaple Crown Court',
+  },
+  {
+    id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
+    title: 'Axminster Crown Court',
+  },
+]
 
+describe('Reference Data Service', function() {
   describe('#getGenders()', function() {
-    context('when request returns 200', function() {
-      let response
+    const mockResponse = {
+      data: mockGenders,
+    }
+    let response
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/genders')
-          .reply(200, gendersSerialized)
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll.withArgs('gender').resolves(mockResponse)
 
-        response = await getGenders()
-      })
+      response = await referenceDataService.getGenders()
+    })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
-      })
+    it('should call API client', function() {
+      expect(apiClient.findAll).to.be.calledOnceWithExactly('gender')
+    })
 
-      it('should return list of genders', function() {
-        expect(response.length).to.deep.equal(gendersDeserialized.data.length)
-        expect(response).to.deep.equal(gendersDeserialized.data)
-      })
+    it('should correct number of results', function() {
+      expect(response.length).to.deep.equal(mockGenders.length)
+    })
+
+    it('should return response data', function() {
+      expect(response).to.equal(mockGenders)
     })
   })
 
   describe('#getEthnicities()', function() {
-    context('when request returns 200', function() {
-      let response
+    const mockResponse = {
+      data: mockEthnicities,
+    }
+    let response
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/ethnicities')
-          .reply(200, ethnicitiesSerialized)
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll.withArgs('ethnicity').resolves(mockResponse)
 
-        response = await getEthnicities()
-      })
+      response = await referenceDataService.getEthnicities()
+    })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
-      })
+    it('should call API client', function() {
+      expect(apiClient.findAll).to.be.calledOnceWithExactly('ethnicity')
+    })
 
-      it('should return list of ethnicities', function() {
-        expect(response.length).to.deep.equal(
-          ethnicitiesDeserialized.data.length
-        )
-        expect(response).to.deep.equal(ethnicitiesDeserialized.data)
-      })
+    it('should correct number of results', function() {
+      expect(response.length).to.deep.equal(mockEthnicities.length)
+    })
+
+    it('should return response data', function() {
+      expect(response).to.equal(mockEthnicities)
     })
   })
 
   describe('#getAssessmentQuestions()', function() {
-    context('when request returns 200', function() {
-      let response
+    const mockResponse = {
+      data: mockAssessmentQuestions,
+    }
+    let response
 
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll')
+    })
+
+    context('with no category', function() {
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/assessment_questions')
-          .reply(200, assessmentSerialized)
+        apiClient.findAll
+          .withArgs('assessment_question', {
+            'filter[category]': undefined,
+          })
+          .resolves(mockResponse)
 
-        response = await getAssessmentQuestions()
+        response = await referenceDataService.getAssessmentQuestions()
       })
 
-      it('should call API', function() {
-        expect(nock.isDone()).to.be.true
-      })
-
-      it('should return correct number of questions', function() {
-        expect(response.length).to.deep.equal(
-          assessmentDeserialized.data.length
+      it('should call API client with undefined category', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly(
+          'assessment_question',
+          {
+            'filter[category]': undefined,
+          }
         )
       })
 
-      it('should deserialize assessment questions', function() {
-        expect(response).to.deep.equal(assessmentDeserialized.data)
+      it('should correct number of results', function() {
+        expect(response.length).to.deep.equal(mockAssessmentQuestions.length)
+      })
+
+      it('should return response data', function() {
+        expect(response).to.equal(mockAssessmentQuestions)
+      })
+    })
+
+    context('with category', function() {
+      const mockCategory = 'risk'
+
+      beforeEach(async function() {
+        apiClient.findAll
+          .withArgs('assessment_question', {
+            'filter[category]': mockCategory,
+          })
+          .resolves(mockResponse)
+
+        response = await referenceDataService.getAssessmentQuestions(
+          mockCategory
+        )
+      })
+
+      it('should call API client with category', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly(
+          'assessment_question',
+          {
+            'filter[category]': mockCategory,
+          }
+        )
+      })
+
+      it('should correct number of results', function() {
+        expect(response.length).to.deep.equal(mockAssessmentQuestions.length)
+      })
+
+      it('should return response data', function() {
+        expect(response).to.equal(mockAssessmentQuestions)
       })
     })
   })
 
   describe('#getLocations()', function() {
-    context('with no parameters', function() {
-      context('when request returns 200', function() {
-        let response
+    const mockResponse = {
+      data: mockLocations,
+      links: {},
+    }
+    const mockMultiPageResponse = {
+      data: mockLocations,
+      links: {
+        next: 'http://next-page.com',
+      },
+    }
+    const mockFilter = {
+      filterOne: 'foo',
+    }
+    let locations
 
+    beforeEach(function() {
+      sinon.stub(apiClient, 'findAll')
+    })
+
+    context('with only one page', function() {
+      beforeEach(function() {
+        apiClient.findAll.resolves(mockResponse)
+      })
+
+      context('by default', function() {
         beforeEach(async function() {
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({ page: '1', per_page: '100' })
-            .reply(200, locationsPage1Serialized)
-
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({ page: '2', per_page: '100' })
-            .reply(200, locationsPage2Serialized)
-
-          response = await getLocations()
+          locations = await referenceDataService.getLocations()
         })
 
-        it('should call API with no filter query parameters', function() {
-          expect(nock.isDone()).to.be.true
+        it('should call the API client once', function() {
+          expect(apiClient.findAll).to.be.calledOnce
         })
 
-        it('should return a full list of locations', function() {
-          expect(response.length).to.deep.equal(
-            locationsDeserialized.data.length
+        it('should call the API client with default options', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'location',
+            {
+              page: 1,
+              per_page: 100,
+            }
           )
-          expect(response).to.deep.equal(locationsDeserialized.data)
+        })
+
+        it('should return locations sorted by title', function() {
+          expect(locations).to.deep.equal(sortBy(mockLocations, 'title'))
+        })
+      })
+
+      context('with filter', function() {
+        beforeEach(async function() {
+          locations = await referenceDataService.getLocations({
+            filter: mockFilter,
+          })
+        })
+
+        it('should call the API client with filter', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'location',
+            {
+              ...mockFilter,
+              page: 1,
+              per_page: 100,
+            }
+          )
         })
       })
     })
 
-    context('with type parameter', function() {
-      context('when request returns 200', function() {
-        let type
+    context('with multiple pages', function() {
+      beforeEach(function() {
+        apiClient.findAll
+          .onFirstCall()
+          .resolves(mockMultiPageResponse)
+          .onSecondCall()
+          .resolves(mockResponse)
+      })
 
+      context('by default', function() {
         beforeEach(async function() {
-          type = 'police'
-
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({
-              page: '1',
-              per_page: '100',
-              filter: { location_type: type },
-            })
-            .reply(200, locationsPage1Serialized)
-
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({
-              page: '2',
-              per_page: '100',
-              filter: { location_type: type },
-            })
-            .reply(200, locationsPage2Serialized)
-
-          await getLocations({ type: type })
+          locations = await referenceDataService.getLocations()
         })
 
-        it('should call API with the type filter query parameter', function() {
-          expect(nock.isDone()).to.be.true
+        it('should call the API client twice', function() {
+          expect(apiClient.findAll).to.be.calledTwice
+        })
+
+        it('should call API client with default options on first call', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'location',
+            {
+              page: 1,
+              per_page: 100,
+            }
+          )
+        })
+
+        it('should call API client with second page on second call', function() {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly(
+            'location',
+            {
+              page: 2,
+              per_page: 100,
+            }
+          )
+        })
+
+        it('should return locations sorted by title', function() {
+          expect(locations).to.deep.equal(
+            sortBy([...mockLocations, ...mockLocations], 'title')
+          )
         })
       })
-    })
 
-    context('with nomisAgencyId parameter', function() {
-      context('when request returns 200', function() {
-        let nomisAgencyId
-
+      context('with filter', function() {
         beforeEach(async function() {
-          nomisAgencyId = 'TEST'
-
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({
-              page: '1',
-              per_page: '100',
-              filter: { nomis_agency_id: nomisAgencyId },
-            })
-            .reply(200, locationsPage1Serialized)
-
-          nock(API.BASE_URL)
-            .get('/reference/locations')
-            .query({
-              page: '2',
-              per_page: '100',
-              filter: { nomis_agency_id: nomisAgencyId },
-            })
-            .reply(200, locationsPage2Serialized)
-
-          await getLocations({ nomisAgencyId: nomisAgencyId })
+          locations = await referenceDataService.getLocations({
+            filter: mockFilter,
+          })
         })
 
-        it('should call API with the nomis_agency_id filter query parameter', function() {
-          expect(nock.isDone()).to.be.true
+        it('should call API client with filter on first call', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'location',
+            {
+              ...mockFilter,
+              page: 1,
+              per_page: 100,
+            }
+          )
+        })
+
+        it('should call API client with filter on second call', function() {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly(
+            'location',
+            {
+              ...mockFilter,
+              page: 2,
+              per_page: 100,
+            }
+          )
         })
       })
     })
   })
 
   describe('#getLocationById()', function() {
-    context('when request returns 200', function() {
+    context('without location ID', function() {
+      it('should reject with error', function() {
+        return expect(
+          referenceDataService.getLocationById()
+        ).to.be.rejectedWith('No location ID supplied')
+      })
+    })
+
+    context('with location ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: mockLocations[0],
+      }
       let location
 
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get(`/reference/locations/${locationDeserialized.data.id}`)
-          .reply(200, locationSerialized)
+        sinon.stub(apiClient, 'find').resolves(mockResponse)
 
-        location = await getLocationById(locationDeserialized.data.id)
+        location = await referenceDataService.getLocationById(mockId)
       })
 
-      it('should get location from API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call update method with data', function() {
+        expect(apiClient.find).to.be.calledOnceWithExactly('location', mockId)
       })
 
-      it('should contain location with correct data', function() {
-        expect(location).to.deep.equal(locationDeserialized.data)
+      it('should return location', function() {
+        expect(location).to.deep.equal(mockResponse.data)
       })
     })
   })
 
   describe('#getLocationByNomisAgencyId()', function() {
-    context('when request returns 200', function() {
-      let nomisAgencyId, location
+    const mockResponse = mockLocations
+    let locations
 
-      beforeEach(async function() {
-        nomisAgencyId = 'TEST'
-
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: nomisAgencyId },
-          })
-          .reply(200, locationsSerialized)
-
-        location = await getLocationByNomisAgencyId(nomisAgencyId)
-      })
-
-      it('should get location from API', function() {
-        expect(nock.isDone()).to.be.true
-      })
-
-      it('should return only the first result', function() {
-        expect(location).to.deep.equal(locationDeserialized.data)
-      })
+    beforeEach(async function() {
+      sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
     })
-  })
 
-  describe('#getLocationsById()', function() {
-    context('when request returns 200', function() {
-      let locations
-
+    context('without arguments', function() {
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get(`/reference/locations/1`)
-          .reply(200, locationSerialized)
-        nock(API.BASE_URL)
-          .get(`/reference/locations/2`)
-          .reply(200, locationSerialized)
-        nock(API.BASE_URL)
-          .get(`/reference/locations/3`)
-          .reply(200, locationSerialized)
-
-        locations = await getLocationsById(['1', '2', '3'])
+        locations = await referenceDataService.getLocationByNomisAgencyId()
       })
 
-      it('should get location from API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
       })
 
-      it('should contain location with correct data', function() {
-        expect(locations).to.deep.equal([
-          locationDeserialized.data,
-          locationDeserialized.data,
-          locationDeserialized.data,
-        ])
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse[0])
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set nomis_agency_id filter to undefined', function() {
+          expect(filters).to.contain.property('filter[nomis_agency_id]')
+          expect(filters['filter[nomis_agency_id]']).to.equal(undefined)
+        })
       })
     })
 
-    context('when locations are not found', function() {
-      let locations
+    context('with arguments', function() {
+      const mockAgencyId = 'PNT'
 
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get(`/reference/locations/1`)
-          .reply(200, locationSerialized)
-        nock(API.BASE_URL)
-          .get(`/reference/locations/2`)
-          .reply(404, {})
-        nock(API.BASE_URL)
-          .get(`/reference/locations/3`)
-          .reply(200, locationSerialized)
-        nock(API.BASE_URL)
-          .get(`/reference/locations/4`)
-          .reply(404, {})
-
-        locations = await getLocationsById(['1', '2', '3', '4'])
+        locations = await referenceDataService.getLocationByNomisAgencyId(
+          mockAgencyId
+        )
       })
 
-      it('should get location from API', function() {
-        expect(nock.isDone()).to.be.true
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
       })
 
-      it('should filter out locations', function() {
-        expect(locations).to.deep.equal([
-          locationDeserialized.data,
-          locationDeserialized.data,
-        ])
-      })
-    })
-
-    context('when called with empty locations', function() {
-      let locations
-
-      beforeEach(async function() {
-        locations = await getLocationsById()
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse[0])
       })
 
-      it('should return empty array', function() {
-        expect(locations).to.deep.equal([])
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set nomis_agency_id filter to agency ID', function() {
+          expect(filters).to.contain.property('filter[nomis_agency_id]')
+          expect(filters['filter[nomis_agency_id]']).to.equal(mockAgencyId)
+        })
       })
     })
   })
 
   describe('#getLocationsByNomisAgencyId()', function() {
-    context('when request returns 200', function() {
-      let locations
+    const mockAgencyIds = ['GCS', 'PNT', 'AFR']
+    let locations
 
-      beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 1 },
-          })
-          .reply(200, locationsSerialized)
+    beforeEach(function() {
+      sinon.spy(referenceDataService, 'mapLocationIdsToLocations')
+    })
 
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 2 },
-          })
-          .reply(200, locationsSerialized)
+    context('with list of IDs', function() {
+      context('when locations are found', function() {
+        beforeEach(async function() {
+          sinon
+            .stub(referenceDataService, 'getLocationByNomisAgencyId')
+            .resolvesArg(0)
 
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 3 },
-          })
-          .reply(200, locationsSerialized)
+          locations = await referenceDataService.getLocationsByNomisAgencyId(
+            mockAgencyIds
+          )
+        })
 
-        locations = await getLocationsByNomisAgencyId(['1', '2', '3'])
+        it('should attempt to map each location', function() {
+          expect(
+            referenceDataService.mapLocationIdsToLocations
+          ).to.be.calledOnce
+          expect(
+            referenceDataService.getLocationByNomisAgencyId.callCount
+          ).to.equal(mockAgencyIds.length)
+        })
+
+        it('should return an list of locations', function() {
+          expect(locations).to.deep.equal(mockAgencyIds)
+        })
       })
 
-      it('gets locations from the API', function() {
-        expect(nock.isDone()).to.be.true
-      })
+      context('when locations are not found', function() {
+        beforeEach(async function() {
+          sinon
+            .stub(referenceDataService, 'getLocationByNomisAgencyId')
+            .rejects()
 
-      it('returns the first location result for each agency ID', function() {
-        expect(locations).to.deep.equal([
-          locationDeserialized.data,
-          locationDeserialized.data,
-          locationDeserialized.data,
-        ])
+          locations = await referenceDataService.getLocationsByNomisAgencyId(
+            mockAgencyIds
+          )
+        })
+
+        it('should attempt to map each location', function() {
+          expect(
+            referenceDataService.mapLocationIdsToLocations
+          ).to.be.calledOnce
+          expect(
+            referenceDataService.getLocationByNomisAgencyId.callCount
+          ).to.equal(mockAgencyIds.length)
+        })
+
+        it('should return an empty array', function() {
+          expect(locations).to.be.an('array').that.is.empty
+        })
       })
     })
 
-    context('when locations are not found', function() {
-      let locations
-
+    context('with empty list of IDs', function() {
       beforeEach(async function() {
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 1 },
-          })
-          .reply(200, locationsSerialized)
-
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 2 },
-          })
-          .reply(404, {})
-
-        nock(API.BASE_URL)
-          .get('/reference/locations')
-          .query({
-            page: '1',
-            per_page: '100',
-            filter: { nomis_agency_id: 3 },
-          })
-          .reply(200, locationsSerialized)
-
-        locations = await getLocationsByNomisAgencyId(['1', '2', '3'])
+        locations = await referenceDataService.getLocationsByNomisAgencyId()
       })
 
-      it('gets locations from the API', function() {
-        expect(nock.isDone()).to.be.true
-      })
-
-      it('filters out locations not found', function() {
-        expect(locations).to.deep.equal([
-          locationDeserialized.data,
-          locationDeserialized.data,
-        ])
-      })
-    })
-
-    context('when called with empty locations', function() {
-      let locations
-
-      beforeEach(async function() {
-        locations = await getLocationsByNomisAgencyId()
-      })
-
-      it('returns an empty Array', function() {
-        expect(locations).to.deep.equal([])
+      it('should return an empty array', function() {
+        expect(locations).to.be.an('array').that.is.empty
       })
     })
   })
