@@ -7,7 +7,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { create: createSteps } = require('./steps')
 const { create: createFields } = require('./fields')
-const { cancel, view } = require('./controllers')
+const { cancel, view, confirmation } = require('./controllers')
 const { setMove } = require('./middleware')
 
 const createWizardConfig = {
@@ -32,6 +32,7 @@ router
   .route('/:moveId/cancel')
   .get(protectRoute('move:cancel'), cancel.get)
   .post(protectRoute('move:cancel'), cancel.post)
+router.get('/:moveId/confirmation', protectRoute('move:create'), confirmation)
 
 // Export
 module.exports = {
