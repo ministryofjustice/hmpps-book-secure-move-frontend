@@ -5,13 +5,11 @@ const json2csv = require('json2csv')
 const movesToCSV = require('./moves-to-csv')
 const referenceDataServce = require('../services/reference-data')
 const i18n = require('../../config/i18n')
-
-const {
-  data: mockMoves,
-} = require('../../test/fixtures/api-client/moves.get.deserialized.json')
+const mockMoves = require('../../test/fixtures/moves.json')
 const {
   data: mockQuestions,
 } = require('../../test/fixtures/api-client/reference.assessment.deserialized.json')
+
 const csv = fs.readFileSync(
   path.resolve(__dirname, '../../test/fixtures/moves.csv'),
   'utf8'
