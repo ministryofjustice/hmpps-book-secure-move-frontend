@@ -2,7 +2,7 @@ const assessmentToSummaryListComponent = require('./assessment-to-summary-list-c
 
 const {
   data: mockPerson,
-} = require('../../test/fixtures/api-client/person.post.deserialized.json')
+} = require('../../test/fixtures/api-client/person.create.json')
 
 describe('Presenters', function() {
   describe('#assessmentToSummaryListComponent()', function() {
@@ -11,7 +11,7 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         transformedResponse = assessmentToSummaryListComponent(
-          mockPerson.assessment_answers
+          mockPerson.attributes.assessment_answers
         )
       })
 
@@ -65,7 +65,7 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         transformedResponse = assessmentToSummaryListComponent(
-          mockPerson.assessment_answers,
+          mockPerson.attributes.assessment_answers,
           'court'
         )
       })
