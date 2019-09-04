@@ -4,6 +4,8 @@ module.exports = {
       reference: '',
       status: '',
       move_type: '',
+      cancellation_reason: '',
+      cancellation_reason_comment: '',
       additional_information: '',
       updated_at: '',
       time_due: '',

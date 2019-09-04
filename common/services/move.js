@@ -76,7 +76,7 @@ const moveService = {
       }))
   },
 
-  cancel(id) {
+  cancel(id, { reason, comment } = {}) {
     if (!id) {
       return Promise.reject(new Error('No move ID supplied'))
     }
@@ -85,6 +85,8 @@ const moveService = {
       .update('move', {
         id,
         status: 'cancelled',
+        cancellation_reason: reason,
+        cancellation_reason_comment: comment,
       })
       .then(response => response.data)
   },

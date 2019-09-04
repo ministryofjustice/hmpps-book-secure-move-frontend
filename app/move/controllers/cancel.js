@@ -1,24 +1,37 @@
+const { pick } = require('lodash')
+
+const FormWizardController = require('../../../common/controllers/form-wizard')
 const moveService = require('../../../common/services/move')
 
-module.exports = {
-  post: async (req, res, next) => {
-    try {
-      const { move } = res.locals
+class CancelController extends FormWizardController {
+  async successHandler(req, res, next) {
+    const { id: moveId, person } = res.locals.move
 
-      await moveService.cancel(move.id)
+    try {
+      const data = pick(
+        req.sessionModel.toJSON(),
+        Object.keys(req.form.options.allFields)
+      )
+
+      await moveService.cancel(moveId, {
+        reason: data.cancellation_reason,
+        comment: data.cancellation_reason_comment,
+      })
+
+      req.journeyModel.reset()
+      req.sessionModel.reset()
 
       req.flash('success', {
-        title: req.t('messages::cancel_move.success.title'),
-        content: req.t('messages::cancel_move.success.content', {
-          name: move.person.fullname,
-          location: move.to_location.title,
+        title: req.t('messages::cancel_move.success.title', {
+          name: person.fullname.toUpperCase(),
         }),
       })
 
-      res.redirect(res.locals.MOVES_URL)
+      res.redirect(`/move/${moveId}`)
     } catch (error) {
       next(error)
     }
-  },
-  get: (req, res) => res.render('move/views/cancel'),
+  }
 }
+
+module.exports = CancelController

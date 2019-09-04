@@ -7,8 +7,7 @@
   },
   "cancel_move": {
     "success": {
-      "title": "Move cancelled",
-      "content": "Move for <strong>{{name}}</strong> to <strong>{{location}}</strong> has been cancelled."
+      "title": "Move request cancelled for {{name}}"
     }
   }
 }

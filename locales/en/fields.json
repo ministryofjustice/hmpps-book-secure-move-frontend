@@ -86,5 +86,24 @@
   "assessment_comment": {
     "required": "Give details",
     "optional": "Give details (optional)"
+  },
+  "cancellation_reason": {
+    "label": "Why are you cancelling this move request?",
+    "items": {
+      "made_in_error": {
+        "label": "Made in error",
+        "hint": "For example, there’s a mistake or the person no longer needs to move"
+      },
+      "supplier_declined_to_move": {
+        "label": "Supplier declined to move this person",
+        "hint": "For example, the request was made late"
+      },
+      "other": {
+        "label": "Another reason"
+      }
+    }
+  },
+  "cancellation_reason_comment": {
+    "label": "Give details"
   }
 }

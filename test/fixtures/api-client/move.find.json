@@ -5,6 +5,8 @@
     "attributes": {
       "reference": "KVU1456M",
       "status": "requested",
+      "cancellation_reason": "error",
+      "cancellation_reason_comment": "",
       "updated_at": "2019-08-26T19:31:43+01:00",
       "time_due": "2019-09-06T14:00:00+01:00",
       "date": "2019-09-06",
