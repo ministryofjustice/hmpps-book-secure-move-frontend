@@ -2,9 +2,11 @@ const presenters = require('../../../common/presenters')
 
 const controller = require('./view')
 
-const {
-  data: mockMove,
-} = require('../../../test/fixtures/api-client/move.get.deserialized.json')
+const mockMove = {
+  person: {
+    assessment_answers: [],
+  },
+}
 
 describe('Move controllers', function() {
   describe('#view()', function() {

@@ -1,8 +1,23 @@
 const middleware = require('./middleware')
 
-const {
-  data: userLocations,
-} = require('../../test/fixtures/api-client/reference.locations.deserialized.json')
+const mockUserLocations = [
+  {
+    id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
+    title: 'D location',
+  },
+  {
+    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
+    title: 'B location',
+  },
+  {
+    id: 'd8e9cf86-55cd-4412-83b7-3562b7d1f8b6',
+    title: 'A location',
+  },
+  {
+    id: '10923762-bc17-4ea1-bae3-68ea709ee23e',
+    title: 'C location',
+  },
+]
 
 describe('Locations middleware', function() {
   let req, res, nextSpy
@@ -36,7 +51,7 @@ describe('Locations middleware', function() {
     context('when locations exists on user', function() {
       beforeEach(function() {
         req.session.user = {
-          locations: userLocations,
+          locations: mockUserLocations,
         }
 
         middleware.setUserLocations(req, res, nextSpy)
@@ -44,7 +59,7 @@ describe('Locations middleware', function() {
 
       it('should set locations on request', function() {
         expect(req).to.have.property('userLocations')
-        expect(req.userLocations).to.deep.equal(userLocations)
+        expect(req.userLocations).to.deep.equal(mockUserLocations)
       })
 
       it('should call next', function() {
@@ -68,7 +83,7 @@ describe('Locations middleware', function() {
 
     context('when user only has one location', function() {
       beforeEach(function() {
-        req.userLocations = userLocations.slice(0, 1)
+        req.userLocations = mockUserLocations.slice(0, 1)
         middleware.checkLocationsLength(req, res, nextSpy)
       })
 
@@ -85,7 +100,7 @@ describe('Locations middleware', function() {
 
     context('when user has multiple locations', function() {
       beforeEach(function() {
-        req.userLocations = userLocations
+        req.userLocations = mockUserLocations
         middleware.checkLocationsLength(req, res, nextSpy)
       })
 

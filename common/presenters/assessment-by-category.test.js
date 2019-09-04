@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 
 const {
   data: mockPerson,
-} = require('../../test/fixtures/api-client/person.post.deserialized.json')
+} = require('../../test/fixtures/api-client/person.create.json')
 const assessmentByCategory = proxyquire('./assessment-by-category', {
   '../../config': {
     TAG_CATEGORY_WHITELIST: {
@@ -25,7 +25,7 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         transformedResponse = assessmentByCategory(
-          mockPerson.assessment_answers
+          mockPerson.attributes.assessment_answers
         )
       })
 

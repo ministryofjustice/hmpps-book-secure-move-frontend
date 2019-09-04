@@ -4,10 +4,7 @@ const i18n = require('../../config/i18n')
 const movesByToLocation = proxyquire('./moves-by-to-location', {
   './move-to-card-component': sinon.stub().returnsArg(0),
 })
-
-const {
-  data,
-} = require('../../test/fixtures/api-client/moves.get.deserialized.json')
+const mockMoves = require('../../test/fixtures/moves.json')
 
 describe('Presenters', function() {
   describe('#movesByToLocation()', function() {
@@ -19,7 +16,7 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        transformedResponse = movesByToLocation(data)
+        transformedResponse = movesByToLocation(mockMoves)
       })
 
       it('should contain correct number of locations', function() {
