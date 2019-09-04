@@ -1,42 +1,47 @@
-const { createLogger, format, transports } = require('winston')
+const winston = require('winston')
 
-const { IS_DEV, LOG_LEVEL } = require('./')
+const { IS_DEV, LOG_LEVEL: level } = require('./')
 
-const logger = createLogger({
-  level: LOG_LEVEL,
-  format: format.combine(
-    format.errors({ stack: true }),
-    format.splat(),
-    format.json()
-  ),
-  transports: [
-    new transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
-    }),
-  ],
-})
+const transports = [
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    ),
+  }),
+]
 
 if (!IS_DEV) {
   // - Write to all logs with level `info` and below to `combined.log`
   // - Write all logs error (and below) to `error.log`.
-  const prodFormat = format.combine(
-    format.timestamp({
+  const prodFormat = winston.format.combine(
+    winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     })
   )
-  logger.add(
-    new transports.File({
+  transports.push(
+    new winston.transports.File({
       format: prodFormat,
       filename: 'quick-start-combined.log',
     })
   )
-  logger.add(
-    new transports.File({
+  transports.push(
+    new winston.transports.File({
       format: prodFormat,
       filename: 'quick-start-error.log',
       level: 'error',
     })
   )
 }
+
+const logger = winston.createLogger({
+  level,
+  transports,
+  format: winston.format.combine(
+    winston.format.errors({ stack: true }),
+    winston.format.splat(),
+    winston.format.json()
+  ),
+})
 
 module.exports = logger

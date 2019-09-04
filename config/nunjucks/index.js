@@ -3,7 +3,7 @@ const nunjucks = require('nunjucks')
 const templateGlobals = require('./globals')
 const filters = require('./filters')
 
-module.exports = (app, { IS_DEV, NO_CACHE }, paths) => {
+module.exports = (app, { IS_DEV = false }, paths) => {
   const views = [
     `${paths.root}/node_modules/govuk-frontend`,
     `${paths.root}/node_modules/@ministryofjustice/frontend`,
