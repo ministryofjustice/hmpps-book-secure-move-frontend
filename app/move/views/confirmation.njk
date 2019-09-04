@@ -1,0 +1,40 @@
+{% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move scheduled'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("moves::confirmation.page_title", { name: move.person.fullname | upper }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        classes: "govuk-!-margin-bottom-7",
+        titleText: t("moves::confirmation.panel.heading"),
+        html: t("moves::confirmation.panel.content", {
+          moveReference: move.reference
+        })
+      }) }}
+
+      <p>{{ t("moves::confirmation.detail", {
+          href: "/move/" + move.id,
+          name: move.person.fullname | upper,
+          location: location,
+          date: move.date | formatDateWithDay
+          }) | safe }}
+      </p>
+
+      <a href="{{ MOVES_URL }}">
+        {{ t("actions::back_to_dashboard") }}
+      </a>
+    </div>
+  </div>
+{% endblock %}

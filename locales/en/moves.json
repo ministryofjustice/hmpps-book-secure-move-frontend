@@ -80,5 +80,13 @@
       "confirmation": "Are you sure you want to cancel the move for <strong>{{name}}</strong> to <strong>{{location}}</strong>?",
       "warning": "This will delete this move request."
     }
+  },
+  "confirmation": {
+    "page_title": "Move scheduled for {{name}}",
+    "panel": {
+      "heading": "Move scheduled",
+      "content": "Reference number<br><strong>{{moveReference}}</strong>"
+    },
+    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled"
   }
 }
