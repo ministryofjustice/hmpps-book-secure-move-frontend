@@ -4,10 +4,5 @@
       "title": "Move scheduled",
       "content": "Move for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled."
     }
-  },
-  "cancel_move": {
-    "success": {
-      "title": "Move request cancelled for {{name}}"
-    }
   }
 }

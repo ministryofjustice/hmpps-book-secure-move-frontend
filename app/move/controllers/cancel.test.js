@@ -36,8 +36,6 @@ describe('Move controllers', function() {
           journeyModel: {
             reset: sinon.stub(),
           },
-          flash: sinon.stub(),
-          t: sinon.stub().returnsArg(0),
         }
         res = {
           redirect: sinon.stub(),
@@ -66,21 +64,6 @@ describe('Move controllers', function() {
 
         it('should reset the session', function() {
           expect(req.sessionModel.reset).to.have.been.calledOnce
-        })
-
-        it('should set a success message', function() {
-          expect(req.flash).to.have.been.calledOnceWith('success', {
-            title: 'messages::cancel_move.success.title',
-          })
-        })
-
-        it('should uppercase name in success message', function() {
-          expect(req.t.firstCall).to.have.been.calledWithExactly(
-            'messages::cancel_move.success.title',
-            {
-              name: res.locals.move.person.fullname.toUpperCase(),
-            }
-          )
         })
 
         it('should redirect correctly', function() {
