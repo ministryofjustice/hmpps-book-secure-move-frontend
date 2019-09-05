@@ -89,6 +89,6 @@
       "heading": "Move scheduled",
       "content": "Reference number<br><strong>{{moveReference}}</strong>"
     },
-    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled"
+    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled."
   }
 }
