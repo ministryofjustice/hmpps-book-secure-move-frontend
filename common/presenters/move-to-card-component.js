@@ -1,51 +1,59 @@
+const { filter } = require('lodash')
+
 const assessmentToTagList = require('./assessment-to-tag-list')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-function _removeEmpty(items, keys) {
-  return items.filter(item => {
-    let include = false
+function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
+  return function item({ id, reference, person = {} }) {
+    let meta = {}
+    let tags = {}
+    const href = `/move/${id}`
+    const {
+      gender = {},
+      fullname = '',
+      date_of_birth: dateOfBirth,
+      assessment_answers: assessment,
+    } = person
 
-    keys.forEach(k => {
-      if (item[k]) {
-        include = true
-      }
-    })
+    if (showMeta) {
+      const dateOfBirthLabel = i18n.t('age', {
+        context: 'with_date_of_birth',
+        age: filters.calculateAge(dateOfBirth),
+        date_of_birth: filters.formatDate(dateOfBirth),
+      })
+      const metaItems = [
+        {
+          label: i18n.t('fields::date_of_birth.label'),
+          text: dateOfBirth ? dateOfBirthLabel : '',
+        },
+        {
+          label: i18n.t('fields::gender.label'),
+          text: gender.title,
+        },
+      ]
 
-    return include
-  })
-}
+      meta.items = filter(metaItems, 'text')
+    }
 
-module.exports = function moveToCardComponent({ id, reference, person }) {
-  const age = `(${i18n.t('age')} ${filters.calculateAge(person.date_of_birth)})`
-  const meta = [
-    {
-      label: i18n.t('fields::date_of_birth.label'),
-      html: person.date_of_birth
-        ? `${filters.formatDate(person.date_of_birth)} ${age}`
-        : '',
-    },
-    {
-      label: i18n.t('fields::gender.label'),
-      text: person.gender ? person.gender.title : '',
-    },
-  ]
+    if (showTags) {
+      tags.items = assessmentToTagList(assessment, href)
+    }
 
-  return {
-    href: `/move/${id}`,
-    title: {
-      text: person.fullname ? person.fullname.toUpperCase() : '',
-    },
-    caption: {
-      text: i18n.t('moves::move_reference', {
-        reference,
-      }),
-    },
-    meta: {
-      items: _removeEmpty(meta, ['text', 'html']),
-    },
-    tags: {
-      items: assessmentToTagList(person.assessment_answers, `/move/${id}`),
-    },
+    return {
+      href,
+      meta,
+      tags,
+      title: {
+        text: fullname.toUpperCase(),
+      },
+      caption: {
+        text: i18n.t('moves::move_reference', {
+          reference,
+        }),
+      },
+    }
   }
 }
+
+module.exports = moveToCardComponent
