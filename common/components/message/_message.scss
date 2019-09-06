@@ -1,7 +1,10 @@
+$_message-padding: govuk-spacing(3);
+$_message-border-width: 5px;
+
 .app-message {
   background-color: govuk-colour("white");
-  border: 5px solid $govuk-brand-colour;
-  padding: govuk-spacing(3);
+  border: $_message-border-width solid $govuk-brand-colour;
+  padding: $_message-padding;
   position: relative;
 
   @include mq ($from: tablet) {
@@ -34,6 +37,10 @@
 
 .app-message__heading {
   @include govuk-font($size: 24, $weight: bold);
+
+  + * {
+    margin-top: govuk-spacing(2);
+  }
 }
 
 .app-message__content {
@@ -86,4 +93,23 @@
   border-color: govuk-colour("dark-grey");
   border-width: 0 0 0 5px;
   background-color: govuk-colour("light-grey");
+}
+
+.app-message--temporary {
+  background-color: govuk-colour("blue");
+  border-width: 0;
+  color: govuk-colour("white");
+  padding: $_message-padding + $_message-border-width;
+
+  .app-message__heading {
+    @include govuk-font($size: 36, $weight: bold);
+
+    + * {
+      margin-top: govuk-spacing(4);
+    }
+  }
+
+  * {
+    color: govuk-colour("white");
+  }
 }

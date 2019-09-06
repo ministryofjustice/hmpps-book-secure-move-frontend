@@ -5,7 +5,7 @@ const moveService = require('../../../common/services/move')
 
 class CancelController extends FormWizardController {
   async successHandler(req, res, next) {
-    const { id: moveId, person } = res.locals.move
+    const { id: moveId } = res.locals.move
 
     try {
       const data = pick(
@@ -20,12 +20,6 @@ class CancelController extends FormWizardController {
 
       req.journeyModel.reset()
       req.sessionModel.reset()
-
-      req.flash('success', {
-        title: req.t('messages::cancel_move.success.title', {
-          name: person.fullname.toUpperCase(),
-        }),
-      })
 
       res.redirect(`/move/${moveId}`)
     } catch (error) {

@@ -22,6 +22,21 @@
   <a href="javascript:window.print()" class="app-!-float-right app-print--hide govuk-!-margin-top-3">
     {{ t("actions::print_move_detail") }}
   </a>
+
+  {% if move.status == "cancelled" %}
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--temporary",
+      title: {
+        text: t("moves::cancel.panel.heading")
+      },
+      content: {
+        text: t("moves::cancel.panel.content", {
+          reason: cancellationReason
+        }) if cancellationReason
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -55,8 +70,8 @@
 
       {% include "move/views/_includes/assessment.njk" %}
 
-      {% if canAccess('move:cancel') %}
-        <p class="govuk-!-margin-top-9">
+      {% if canAccess("move:cancel") and move.status == "requested" %}
+        <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
           <a href="{{ move.id }}/cancel" class="app-link--destructive">
             {{ t("actions::cancel_move") }}
           </a>
