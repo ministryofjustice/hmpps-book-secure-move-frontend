@@ -264,7 +264,7 @@ describe('Moves middleware', function() {
     const mockCurrentLocation = '5555'
 
     beforeEach(async function() {
-      sinon.stub(moveService, 'getRequestedMovesByDateAndLocation')
+      sinon.stub(moveService, 'getRequestedByDateAndLocation')
       nextSpy = sinon.spy()
       res = { locals: {} }
     })
@@ -279,7 +279,7 @@ describe('Moves middleware', function() {
       })
 
       it('should not call API with move date', function() {
-        expect(moveService.getRequestedMovesByDateAndLocation).not.to.be.called
+        expect(moveService.getRequestedByDateAndLocation).not.to.be.called
       })
 
       it('should not set response data to locals object', function() {
@@ -299,13 +299,13 @@ describe('Moves middleware', function() {
 
       context('when API call returns succesfully', function() {
         beforeEach(async function() {
-          moveService.getRequestedMovesByDateAndLocation.resolves(movesStub)
+          moveService.getRequestedByDateAndLocation.resolves(movesStub)
           await middleware.setMovesByDate({}, res, nextSpy)
         })
 
         it('should call API with move date and location ID', function() {
           expect(
-            moveService.getRequestedMovesByDateAndLocation
+            moveService.getRequestedByDateAndLocation
           ).to.be.calledOnceWithExactly(
             res.locals.moveDate,
             res.locals.fromLocationId
@@ -324,7 +324,7 @@ describe('Moves middleware', function() {
 
       context('when API call returns an error', function() {
         beforeEach(async function() {
-          moveService.getRequestedMovesByDateAndLocation.throws(errorStub)
+          moveService.getRequestedByDateAndLocation.throws(errorStub)
           await middleware.setMovesByDate({}, res, nextSpy)
         })
 

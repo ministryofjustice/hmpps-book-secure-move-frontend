@@ -12,7 +12,7 @@ describe('Move middleware', function() {
       let res, nextSpy
 
       beforeEach(async function() {
-        sinon.stub(moveService, 'getMoveById').resolves(moveStub)
+        sinon.stub(moveService, 'getById').resolves(moveStub)
 
         res = { locals: {} }
         nextSpy = sinon.spy()
@@ -25,7 +25,7 @@ describe('Move middleware', function() {
       })
 
       it('should not call API with move ID', function() {
-        expect(moveService.getMoveById).not.to.be.called
+        expect(moveService.getById).not.to.be.called
       })
 
       it('should not set response data to locals object', function() {
@@ -38,7 +38,7 @@ describe('Move middleware', function() {
         let res, nextSpy
 
         beforeEach(async function() {
-          sinon.stub(moveService, 'getMoveById').resolves(moveStub)
+          sinon.stub(moveService, 'getById').resolves(moveStub)
 
           res = { locals: {} }
           nextSpy = sinon.spy()
@@ -47,7 +47,7 @@ describe('Move middleware', function() {
         })
 
         it('should call API with move ID', function() {
-          expect(moveService.getMoveById).to.be.calledWith(mockMoveId)
+          expect(moveService.getById).to.be.calledWith(mockMoveId)
         })
 
         it('should set response data to locals object', function() {
@@ -64,7 +64,7 @@ describe('Move middleware', function() {
         let res, nextSpy
 
         beforeEach(async function() {
-          sinon.stub(moveService, 'getMoveById').throws(errorStub)
+          sinon.stub(moveService, 'getById').throws(errorStub)
 
           res = { locals: {} }
           nextSpy = sinon.spy()

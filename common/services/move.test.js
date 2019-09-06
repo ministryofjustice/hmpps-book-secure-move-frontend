@@ -129,7 +129,7 @@ describe('Move Service', function() {
     })
   })
 
-  describe('#getLocations()', function() {
+  describe('#getAll()', function() {
     const mockResponse = {
       data: mockMoves,
       links: {},
@@ -156,7 +156,7 @@ describe('Move Service', function() {
 
       context('by default', function() {
         beforeEach(async function() {
-          moves = await moveService.getMoves()
+          moves = await moveService.getAll()
         })
 
         it('should call the API client once', function() {
@@ -181,7 +181,7 @@ describe('Move Service', function() {
 
       context('with filter', function() {
         beforeEach(async function() {
-          moves = await moveService.getMoves({
+          moves = await moveService.getAll({
             filter: mockFilter,
           })
         })
@@ -207,7 +207,7 @@ describe('Move Service', function() {
 
       context('by default', function() {
         beforeEach(async function() {
-          moves = await moveService.getMoves()
+          moves = await moveService.getAll()
         })
 
         it('should call the API client twice', function() {
@@ -239,7 +239,7 @@ describe('Move Service', function() {
 
       context('with filter', function() {
         beforeEach(async function() {
-          moves = await moveService.getMoves({
+          moves = await moveService.getAll({
             filter: mockFilter,
           })
         })
@@ -263,21 +263,21 @@ describe('Move Service', function() {
     })
   })
 
-  describe('#getRequestedMovesByDateAndLocation()', function() {
+  describe('#getRequestedByDateAndLocation()', function() {
     const mockResponse = []
     let moves
 
     beforeEach(async function() {
-      sinon.stub(moveService, 'getMoves').resolves(mockResponse)
+      sinon.stub(moveService, 'getAll').resolves(mockResponse)
     })
 
     context('without arguments', function() {
       beforeEach(async function() {
-        moves = await moveService.getRequestedMovesByDateAndLocation()
+        moves = await moveService.getRequestedByDateAndLocation()
       })
 
-      it('should call getMoves methods', function() {
-        expect(moveService.getMoves).to.be.calledOnce
+      it('should call getAll methods', function() {
+        expect(moveService.getAll).to.be.calledOnce
       })
 
       it('should return moves', function() {
@@ -288,7 +288,7 @@ describe('Move Service', function() {
         let filters
 
         beforeEach(function() {
-          filters = moveService.getMoves.args[0][0].filter
+          filters = moveService.getAll.args[0][0].filter
         })
 
         it('should set status filter to "requested"', function() {
@@ -318,14 +318,14 @@ describe('Move Service', function() {
       const mockLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
-        moves = await moveService.getRequestedMovesByDateAndLocation(
+        moves = await moveService.getRequestedByDateAndLocation(
           mockMoveDate,
           mockLocationId
         )
       })
 
-      it('should call getMoves methods', function() {
-        expect(moveService.getMoves).to.be.calledOnce
+      it('should call getAll methods', function() {
+        expect(moveService.getAll).to.be.calledOnce
       })
 
       it('should return moves', function() {
@@ -336,7 +336,7 @@ describe('Move Service', function() {
         let filters
 
         beforeEach(function() {
-          filters = moveService.getMoves.args[0][0].filter
+          filters = moveService.getAll.args[0][0].filter
         })
 
         it('should set status filter to "requested"', function() {
@@ -362,10 +362,10 @@ describe('Move Service', function() {
     })
   })
 
-  describe('#getMoveById()', function() {
+  describe('#getById()', function() {
     context('without move ID', function() {
       it('should reject with error', function() {
-        return expect(moveService.getMoveById()).to.be.rejectedWith(
+        return expect(moveService.getById()).to.be.rejectedWith(
           'No move ID supplied'
         )
       })
@@ -381,7 +381,7 @@ describe('Move Service', function() {
       beforeEach(async function() {
         sinon.stub(apiClient, 'find').resolves(mockResponse)
 
-        move = await moveService.getMoveById(mockId)
+        move = await moveService.getById(mockId)
       })
 
       it('should call update method with data', function() {

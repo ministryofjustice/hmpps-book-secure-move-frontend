@@ -49,7 +49,7 @@ module.exports = {
     }
 
     try {
-      res.locals.movesByDate = await moveService.getRequestedMovesByDateAndLocation(
+      res.locals.movesByDate = await moveService.getRequestedByDateAndLocation(
         moveDate,
         res.locals.fromLocationId
       )

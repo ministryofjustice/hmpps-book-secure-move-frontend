@@ -7,7 +7,7 @@ module.exports = {
     }
 
     try {
-      res.locals.move = await moveService.getMoveById(moveId)
+      res.locals.move = await moveService.getById(moveId)
       next()
     } catch (error) {
       next(error)

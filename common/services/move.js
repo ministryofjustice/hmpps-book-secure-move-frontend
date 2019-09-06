@@ -15,7 +15,7 @@ const moveService = {
     })
   },
 
-  getMoves({ filter, combinedData = [], page = 1 } = {}) {
+  getAll({ filter, combinedData = [], page = 1 } = {}) {
     return apiClient
       .findAll('move', {
         ...filter,
@@ -33,7 +33,7 @@ const moveService = {
           }))
         }
 
-        return moveService.getMoves({
+        return moveService.getAll({
           filter,
           combinedData: moves,
           page: page + 1,
@@ -41,8 +41,8 @@ const moveService = {
       })
   },
 
-  getRequestedMovesByDateAndLocation(moveDate, locationId) {
-    return moveService.getMoves({
+  getRequestedByDateAndLocation(moveDate, locationId) {
+    return moveService.getAll({
       filter: {
         'filter[status]': 'requested',
         'filter[date_from]': moveDate,
@@ -52,7 +52,7 @@ const moveService = {
     })
   },
 
-  getMoveById(id) {
+  getById(id) {
     if (!id) {
       return Promise.reject(new Error('No move ID supplied'))
     }
