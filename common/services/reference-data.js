@@ -69,6 +69,14 @@ const referenceDataService = {
     )
   },
 
+  getLocationsByType(type) {
+    return referenceDataService.getLocations({
+      filter: {
+        'filter[location_type]': type,
+      },
+    })
+  },
+
   mapLocationIdsToLocations(ids, callback) {
     const locationPromises = ids.map(id => {
       return callback(id).catch(() => false)

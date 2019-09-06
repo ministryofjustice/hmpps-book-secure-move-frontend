@@ -16,16 +16,6 @@ const courtsMock = [
     title: 'Court 9999',
   },
 ]
-const prisonsMock = [
-  {
-    id: '3333',
-    title: 'Prison 3333',
-  },
-  {
-    id: '4444',
-    title: 'Prison 4444',
-  },
-]
 const mockCurrentLocation = {
   id: '5555',
   title: 'Prison 5555',
@@ -48,15 +38,11 @@ describe('Move controllers', function() {
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
           })
-          sinon.stub(referenceDataService, 'getLocations').resolves(courtsMock)
-          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
-
-          referenceDataService.getLocations
-            .withArgs({ type: 'court' })
+          sinon
+            .stub(referenceDataService, 'getLocationsByType')
+            .withArgs('court')
             .resolves(courtsMock)
-          referenceDataService.getLocations
-            .withArgs({ type: 'prison' })
-            .resolves(prisonsMock)
+          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
           req = {
             t: sinon.stub().returns('__translated__'),
@@ -103,16 +89,6 @@ describe('Move controllers', function() {
             { text: '--- Choose court ---' },
             { value: '8888', text: 'Court 8888' },
             { value: '9999', text: 'Court 9999' },
-          ])
-        })
-
-        it('should set list of prison dynamically', function() {
-          expect(
-            req.form.options.fields.to_location_prison_recall.items
-          ).to.deep.equal([
-            { text: '--- Choose prison ---' },
-            { value: '3333', text: 'Prison 3333' },
-            { value: '4444', text: 'Prison 4444' },
           ])
         })
 
