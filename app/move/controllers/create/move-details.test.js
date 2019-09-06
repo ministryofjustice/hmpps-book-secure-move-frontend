@@ -292,5 +292,96 @@ describe('Move controllers', function() {
         })
       })
     })
+
+    describe('#successHandler()', function() {
+      const toLocationId = '123456-7'
+      const mockLocationDetail = {
+        title: 'mock to location',
+      }
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          sessionModel: {
+            toJSON: sinon.stub(),
+            set: sinon.spy(),
+          },
+        }
+        res = {
+          locals: {},
+        }
+
+        sinon.spy(FormController.prototype, 'successHandler')
+      })
+
+      context('with location_id', function() {
+        beforeEach(async function() {
+          req.sessionModel.toJSON.returns({ to_location: toLocationId })
+          sinon
+            .stub(referenceDataService, 'getLocationById')
+            .resolves(mockLocationDetail)
+
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should set to_location in session as expected', function() {
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+            'to_location',
+            mockLocationDetail
+          )
+        })
+
+        it('should call parent successHandler', function() {
+          expect(FormController.prototype.successHandler).to.be.calledOnceWith(
+            req,
+            res,
+            nextSpy
+          )
+        })
+      })
+
+      context('without location_id', function() {
+        beforeEach(async function() {
+          req.sessionModel.toJSON.returns({ to_location: '' })
+          sinon
+            .stub(referenceDataService, 'getLocationById')
+            .resolves(mockLocationDetail)
+
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should not set to_location in session', function() {
+          expect(req.sessionModel.set).not.to.be.called
+        })
+
+        it('should call parent successHandler', function() {
+          expect(FormController.prototype.successHandler).to.be.calledOnceWith(
+            req,
+            res,
+            nextSpy
+          )
+        })
+      })
+
+      context('when getLocationById throws and error', function() {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function() {
+          req.sessionModel.toJSON.returns({ to_location: toLocationId })
+          sinon.stub(referenceDataService, 'getLocationById').throws(errorMock)
+
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should call next with error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should not call parent successHandler', function() {
+          expect(FormController.prototype.successHandler).not.to.be.called
+        })
+      })
+    })
   })
 })

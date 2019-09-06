@@ -1,4 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
 class CreateBaseController extends FormWizardController {
   middlewareChecks() {
@@ -9,6 +10,7 @@ class CreateBaseController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setCancelUrl)
+    this.use(this.setMoveSummary)
   }
 
   setCancelUrl(req, res, next) {
@@ -21,6 +23,20 @@ class CreateBaseController extends FormWizardController {
       const error = new Error('Current location is not set in session.')
       return next(error)
     }
+
+    next()
+  }
+
+  setMoveSummary(req, res, next) {
+    const currentLocation = req.session.currentLocation
+    const sessionModel = req.sessionModel.toJSON()
+    const moveSummary = presenters.moveToMetaListComponent({
+      ...sessionModel,
+      from_location: currentLocation,
+    })
+
+    res.locals.person = sessionModel.person
+    res.locals.moveSummary = sessionModel.move_type ? moveSummary : {}
 
     next()
   }

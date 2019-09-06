@@ -68,6 +68,24 @@ class MoveDetailsController extends CreateBaseController {
 
     next()
   }
+
+  async successHandler(req, res, next) {
+    try {
+      const { to_location: toLocationId } = req.sessionModel.toJSON()
+
+      if (toLocationId) {
+        const locationDetail = await referenceDataService.getLocationById(
+          toLocationId
+        )
+
+        req.sessionModel.set('to_location', locationDetail)
+      }
+
+      super.successHandler(req, res, next)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = MoveDetailsController
