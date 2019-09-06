@@ -10,11 +10,9 @@ const referenceDataHelpers = require('../../../../common/helpers/reference-data'
 class MoveDetailsController extends CreateBaseController {
   async configure(req, res, next) {
     try {
-      const courtLocations = await referenceDataService.getLocations({
-        filter: {
-          'filter[location_type]': 'court',
-        },
-      })
+      const courtLocations = await referenceDataService.getLocationsByType(
+        'court'
+      )
 
       const { date_type: dateType } = req.form.options.fields
       const courtItems = fieldHelpers.insertInitialOption(

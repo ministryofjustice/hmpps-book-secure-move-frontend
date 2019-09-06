@@ -485,4 +485,69 @@ describe('Reference Data Service', function() {
       })
     })
   })
+
+  describe('#getLocationsByType()', function() {
+    const mockResponse = mockLocations
+    let locations
+
+    beforeEach(async function() {
+      sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
+    })
+
+    context('without type', function() {
+      beforeEach(async function() {
+        locations = await referenceDataService.getLocationsByType()
+      })
+
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
+      })
+
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse)
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set location_type filter to undefined', function() {
+          expect(filters).to.contain.property('filter[location_type]')
+          expect(filters['filter[location_type]']).to.equal(undefined)
+        })
+      })
+    })
+
+    context('with type', function() {
+      const mockType = 'court'
+
+      beforeEach(async function() {
+        locations = await referenceDataService.getLocationsByType(mockType)
+      })
+
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
+      })
+
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse)
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set location_type filter to agency ID', function() {
+          expect(filters).to.contain.property('filter[location_type]')
+          expect(filters['filter[location_type]']).to.equal(mockType)
+        })
+      })
+    })
+  })
 })

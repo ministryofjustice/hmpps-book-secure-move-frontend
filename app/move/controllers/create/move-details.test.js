@@ -38,16 +38,11 @@ describe('Move controllers', function() {
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
           })
-          sinon.stub(referenceDataService, 'getLocations').resolves(courtsMock)
-          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
-
-          referenceDataService.getLocations
-            .withArgs({
-              filter: {
-                'filter[location_type]': 'court',
-              },
-            })
+          sinon
+            .stub(referenceDataService, 'getLocationsByType')
+            .withArgs('court')
             .resolves(courtsMock)
+          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
           req = {
             t: sinon.stub().returns('__translated__'),
