@@ -9,8 +9,10 @@ const referenceDataHelpers = require('../../../../common/helpers/reference-data'
 class MoveDetailsController extends CreateBaseController {
   async configure(req, res, next) {
     try {
-      const courts = await referenceDataService.getLocations({
-        type: 'court',
+      const courtLocations = await referenceDataService.getLocations({
+        filter: {
+          'filter[location_type]': 'court',
+        },
       })
       const prisons = await referenceDataService.getLocations({
         type: 'prison',

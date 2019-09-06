@@ -52,7 +52,11 @@ describe('Move controllers', function() {
           sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
           referenceDataService.getLocations
-            .withArgs({ type: 'court' })
+            .withArgs({
+              filter: {
+                'filter[location_type]': 'court',
+              },
+            })
             .resolves(courtsMock)
           referenceDataService.getLocations
             .withArgs({ type: 'prison' })
