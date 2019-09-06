@@ -15,14 +15,6 @@ class MoveDetailsController extends CreateBaseController {
           'filter[location_type]': 'court',
         },
       })
-      const prisons = await referenceDataService.getLocations({
-        type: 'prison',
-      })
-
-      const {
-        to_location_prison_recall: toLocationPrison,
-        date_type: dateType,
-      } = req.form.options.fields
 
       const { date_type: dateType } = req.form.options.fields
       const courtItems = fieldHelpers.insertInitialOption(
@@ -31,11 +23,6 @@ class MoveDetailsController extends CreateBaseController {
           .map(fieldHelpers.mapReferenceDataToOption),
         'court'
       )
-      toLocationPrison.items = fieldHelpers.insertInitialOption(
-        prisons
-          .filter(referenceDataHelpers.filterDisabled())
-          .map(fieldHelpers.mapReferenceDataToOption),
-        'prison'
 
       set(
         req,
