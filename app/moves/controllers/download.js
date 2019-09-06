@@ -4,7 +4,7 @@ const presenters = require('../../../common/presenters')
 
 module.exports = function download(req, res, next) {
   const { extension } = req.params
-  const { moveDate, movesByDate } = res.locals
+  const { moveDate, requestedMovesByDate } = res.locals
   const currentTimestamp = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
   const filename = req.t('moves::download_filename', {
     date: moveDate,
@@ -21,12 +21,12 @@ module.exports = function download(req, res, next) {
   )
 
   if (extension === 'json') {
-    return res.json(movesByDate)
+    return res.json(requestedMovesByDate)
   }
 
   if (extension === 'csv') {
     return presenters
-      .movesToCSV(movesByDate)
+      .movesToCSV(requestedMovesByDate)
       .then(csv => {
         res.setHeader('Content-Type', 'text/csv')
         res.send(csv)

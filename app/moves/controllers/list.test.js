@@ -3,7 +3,10 @@ const permissions = require('../../../common/middleware/permissions')
 
 const controller = require('./list')
 
-const mockMovesByDate = [{ foo: 'bar' }, { fizz: 'buzz' }]
+const mockRequestedMovesByDate = [
+  { foo: 'bar', status: 'requested' },
+  { fizz: 'buzz', status: 'requested' },
+]
 
 describe('Moves controllers', function() {
   describe('#list()', function() {
@@ -17,7 +20,7 @@ describe('Moves controllers', function() {
       res = {
         locals: {
           moveDate: mockMoveDate,
-          movesByDate: mockMovesByDate,
+          requestedMovesByDate: mockRequestedMovesByDate,
         },
         render: sinon.spy(),
       }
@@ -46,14 +49,14 @@ describe('Moves controllers', function() {
 
       it('should call movesByToLocation presenter', function() {
         expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
-          mockMovesByDate
+          mockRequestedMovesByDate
         )
       })
 
       it('should contain destinations property', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('destinations')
-        expect(params.destinations).to.deep.equal(mockMovesByDate)
+        expect(params.destinations).to.deep.equal(mockRequestedMovesByDate)
       })
     })
 

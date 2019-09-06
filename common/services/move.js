@@ -41,13 +41,26 @@ const moveService = {
       })
   },
 
-  getRequestedByDateAndLocation(moveDate, locationId) {
+  getRequested({ moveDate, fromLocationId, toLocationId } = {}) {
     return moveService.getAll({
       filter: {
         'filter[status]': 'requested',
         'filter[date_from]': moveDate,
         'filter[date_to]': moveDate,
-        'filter[from_location_id]': locationId,
+        'filter[from_location_id]': fromLocationId,
+        'filter[to_location_id]': toLocationId,
+      },
+    })
+  },
+
+  getCancelled({ moveDate, fromLocationId, toLocationId } = {}) {
+    return moveService.getAll({
+      filter: {
+        'filter[status]': 'cancelled',
+        'filter[date_from]': moveDate,
+        'filter[date_to]': moveDate,
+        'filter[from_location_id]': fromLocationId,
+        'filter[to_location_id]': toLocationId,
       },
     })
   },

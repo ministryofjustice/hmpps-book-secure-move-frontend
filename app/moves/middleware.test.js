@@ -3,7 +3,14 @@ const permissions = require('../../common/middleware/permissions')
 
 const middleware = require('./middleware')
 
-const movesStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
+const mockRequestedMoves = [
+  { foo: 'bar', status: 'requested' },
+  { fizz: 'buzz', status: 'requested' },
+]
+const mockCancelledMoves = [
+  { foo: 'bar', status: 'cancelled' },
+  { fizz: 'buzz', status: 'cancelled' },
+]
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function() {
@@ -264,7 +271,8 @@ describe('Moves middleware', function() {
     const mockCurrentLocation = '5555'
 
     beforeEach(async function() {
-      sinon.stub(moveService, 'getRequestedByDateAndLocation')
+      sinon.stub(moveService, 'getRequested')
+      sinon.stub(moveService, 'getCancelled')
       nextSpy = sinon.spy()
       res = { locals: {} }
     })
@@ -279,7 +287,7 @@ describe('Moves middleware', function() {
       })
 
       it('should not call API with move date', function() {
-        expect(moveService.getRequestedByDateAndLocation).not.to.be.called
+        expect(moveService.getRequested).not.to.be.called
       })
 
       it('should not set response data to locals object', function() {
@@ -299,22 +307,30 @@ describe('Moves middleware', function() {
 
       context('when API call returns succesfully', function() {
         beforeEach(async function() {
-          moveService.getRequestedByDateAndLocation.resolves(movesStub)
+          moveService.getRequested.resolves(mockRequestedMoves)
+          moveService.getCancelled.resolves(mockCancelledMoves)
           await middleware.setMovesByDate({}, res, nextSpy)
         })
 
         it('should call API with move date and location ID', function() {
-          expect(
-            moveService.getRequestedByDateAndLocation
-          ).to.be.calledOnceWithExactly(
-            res.locals.moveDate,
-            res.locals.fromLocationId
-          )
+          expect(moveService.getRequested).to.be.calledOnceWithExactly({
+            moveDate: res.locals.moveDate,
+            fromLocationId: res.locals.fromLocationId,
+          })
+          expect(moveService.getCancelled).to.be.calledOnceWithExactly({
+            moveDate: res.locals.moveDate,
+            fromLocationId: res.locals.fromLocationId,
+          })
         })
 
-        it('should set response to locals object', function() {
-          expect(res.locals).to.have.property('movesByDate')
-          expect(res.locals.movesByDate).to.equal(movesStub)
+        it('should set requested moves on locals', function() {
+          expect(res.locals).to.have.property('requestedMovesByDate')
+          expect(res.locals.requestedMovesByDate).to.equal(mockRequestedMoves)
+        })
+
+        it('should set cancelled moves on locals', function() {
+          expect(res.locals).to.have.property('cancelledMovesByDate')
+          expect(res.locals.cancelledMovesByDate).to.equal(mockCancelledMoves)
         })
 
         it('should call next with no argument', function() {
@@ -324,12 +340,13 @@ describe('Moves middleware', function() {
 
       context('when API call returns an error', function() {
         beforeEach(async function() {
-          moveService.getRequestedByDateAndLocation.throws(errorStub)
+          moveService.getRequested.throws(errorStub)
           await middleware.setMovesByDate({}, res, nextSpy)
         })
 
-        it('should not set a value on the locals object', function() {
-          expect(res.locals).not.to.have.property('movesByDate')
+        it('should not set locals properties', function() {
+          expect(res.locals).not.to.have.property('requestedMovesByDate')
+          expect(res.locals).not.to.have.property('cancelledMovesByDate')
         })
 
         it('should send error to next function', function() {

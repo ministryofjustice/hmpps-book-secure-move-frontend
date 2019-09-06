@@ -263,7 +263,7 @@ describe('Move Service', function() {
     })
   })
 
-  describe('#getRequestedByDateAndLocation()', function() {
+  describe('#getRequested()', function() {
     const mockResponse = []
     let moves
 
@@ -273,91 +273,114 @@ describe('Move Service', function() {
 
     context('without arguments', function() {
       beforeEach(async function() {
-        moves = await moveService.getRequestedByDateAndLocation()
+        moves = await moveService.getRequested()
       })
 
       it('should call getAll methods', function() {
-        expect(moveService.getAll).to.be.calledOnce
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'requested',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
+            'filter[to_location_id]': undefined,
+          },
+        })
       })
 
       it('should return moves', function() {
         expect(moves).to.deep.equal(mockResponse)
-      })
-
-      describe('filters', function() {
-        let filters
-
-        beforeEach(function() {
-          filters = moveService.getAll.args[0][0].filter
-        })
-
-        it('should set status filter to "requested"', function() {
-          expect(filters).to.contain.property('filter[status]')
-          expect(filters['filter[status]']).to.equal('requested')
-        })
-
-        it('should set date_from filter to undefined', function() {
-          expect(filters).to.contain.property('filter[date_from]')
-          expect(filters['filter[date_from]']).to.equal(undefined)
-        })
-
-        it('should set date_to filter to undefined', function() {
-          expect(filters).to.contain.property('filter[date_to]')
-          expect(filters['filter[date_to]']).to.equal(undefined)
-        })
-
-        it('should set from_location_id filter to undefined', function() {
-          expect(filters).to.contain.property('filter[from_location_id]')
-          expect(filters['filter[from_location_id]']).to.equal(undefined)
-        })
       })
     })
 
     context('with arguments', function() {
       const mockMoveDate = '2019-10-10'
-      const mockLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
-        moves = await moveService.getRequestedByDateAndLocation(
-          mockMoveDate,
-          mockLocationId
-        )
+        moves = await moveService.getRequested({
+          moveDate: mockMoveDate,
+          fromLocationId: mockFromLocationId,
+          toLocationId: mockToLocationId,
+        })
       })
 
-      it('should call getAll methods', function() {
-        expect(moveService.getAll).to.be.calledOnce
+      it('should call getAll with correct filter', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'requested',
+            'filter[date_from]': mockMoveDate,
+            'filter[date_to]': mockMoveDate,
+            'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
+        })
       })
 
       it('should return moves', function() {
         expect(moves).to.deep.equal(mockResponse)
       })
+    })
+  })
 
-      describe('filters', function() {
-        let filters
+  describe('#getCancelled()', function() {
+    const mockResponse = []
+    let moves
 
-        beforeEach(function() {
-          filters = moveService.getAll.args[0][0].filter
+    beforeEach(async function() {
+      sinon.stub(moveService, 'getAll').resolves(mockResponse)
+    })
+
+    context('without arguments', function() {
+      beforeEach(async function() {
+        moves = await moveService.getCancelled()
+      })
+
+      it('should call getAll methods', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'cancelled',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
+            'filter[to_location_id]': undefined,
+          },
         })
+      })
 
-        it('should set status filter to "requested"', function() {
-          expect(filters).to.contain.property('filter[status]')
-          expect(filters['filter[status]']).to.equal('requested')
-        })
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockResponse)
+      })
+    })
 
-        it('should set date_from filter to move date', function() {
-          expect(filters).to.contain.property('filter[date_from]')
-          expect(filters['filter[date_from]']).to.equal(mockMoveDate)
-        })
+    context('with arguments', function() {
+      const mockMoveDate = '2019-10-10'
+      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockToLocationId = 'c195d0f0-df8e-4b97-891e-92020d6820b9'
 
-        it('should set date_to filter to move date', function() {
-          expect(filters).to.contain.property('filter[date_to]')
-          expect(filters['filter[date_to]']).to.equal(mockMoveDate)
+      beforeEach(async function() {
+        moves = await moveService.getCancelled({
+          moveDate: mockMoveDate,
+          fromLocationId: mockFromLocationId,
+          toLocationId: mockToLocationId,
         })
+      })
 
-        it('should set from_location_id filter to location ID', function() {
-          expect(filters).to.contain.property('filter[from_location_id]')
-          expect(filters['filter[from_location_id]']).to.equal(mockLocationId)
+      it('should call getAll methods', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'cancelled',
+            'filter[date_from]': mockMoveDate,
+            'filter[date_to]': mockMoveDate,
+            'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
         })
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockResponse)
       })
     })
   })
