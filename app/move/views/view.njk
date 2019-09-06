@@ -1,4 +1,6 @@
-{% extends "layouts/base.njk" %}
+{% extends "layouts/two-column.njk" %}
+
+{% set additionalContainerClass = "sticky-sidebar-container" %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
@@ -39,7 +41,7 @@
   {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block contentHeader %}
   <header class="govuk-!-margin-bottom-8">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
       {{ move.person.fullname | upper }}
@@ -59,36 +61,36 @@
       <div>
     {% endif %}
   </header>
+{% endblock %}
 
-  <div class="govuk-grid-row sticky-sidebar-container">
-    <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-m">
-        {{ t("moves::steps.personal_details.heading") }}
-      </h2>
+{% block contentMain %}
+  <h2 class="govuk-heading-m">
+    {{ t("moves::steps.personal_details.heading") }}
+  </h2>
 
-      {{ govukSummaryList(personalDetailsSummary) }}
+  {{ govukSummaryList(personalDetailsSummary) }}
 
-      {% include "move/views/_includes/assessment.njk" %}
+  {% include "move/views/_includes/assessment.njk" %}
 
-      {% if canAccess("move:cancel") and move.status == "requested" %}
-        <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
-          <a href="{{ move.id }}/cancel" class="app-link--destructive">
-            {{ t("actions::cancel_move") }}
-          </a>
-        </p>
-      {% endif %}
-    </div>
+  {% if canAccess("move:cancel") and move.status == "requested" %}
+    <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
+      <a href="{{ move.id }}/cancel" class="app-link--destructive">
+        {{ t("actions::cancel_move") }}
+      </a>
+    </p>
+  {% endif %}
+{% endblock %}
 
-    <div class="govuk-grid-column-one-third">
-      <div class="sticky-sidebar">
-        <div class="sticky-sidebar__inner">
-          <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">
-            {{ move.person.fullname | upper }}
-          </h3>
+{% block contentSidebar %}
+  {% if moveSummary %}
+    <div class="sticky-sidebar">
+      <div class="sticky-sidebar__inner">
+        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">
+          {{ move.person.fullname | upper }}
+        </h3>
 
-          {{ appMetaList(moveSummary) }}
-        </div>
+        {{ appMetaList(moveSummary) }}
       </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}
