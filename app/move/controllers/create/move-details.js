@@ -1,3 +1,4 @@
+const { set } = require('lodash')
 const dateFns = require('date-fns')
 
 const CreateBaseController = require('./base')
@@ -19,13 +20,13 @@ class MoveDetailsController extends CreateBaseController {
       })
 
       const {
-        to_location_court_appearance: toLocationCourt,
         to_location_prison_recall: toLocationPrison,
         date_type: dateType,
       } = req.form.options.fields
 
-      toLocationCourt.items = fieldHelpers.insertInitialOption(
-        courts
+      const { date_type: dateType } = req.form.options.fields
+      const courtItems = fieldHelpers.insertInitialOption(
+        courtLocations
           .filter(referenceDataHelpers.filterDisabled())
           .map(fieldHelpers.mapReferenceDataToOption),
         'court'
@@ -35,6 +36,11 @@ class MoveDetailsController extends CreateBaseController {
           .filter(referenceDataHelpers.filterDisabled())
           .map(fieldHelpers.mapReferenceDataToOption),
         'prison'
+
+      set(
+        req,
+        'form.options.fields.to_location_court_appearance.items',
+        courtItems
       )
 
       // translate date type options early to cater for date injection
