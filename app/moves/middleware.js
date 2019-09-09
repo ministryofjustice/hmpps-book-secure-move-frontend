@@ -42,17 +42,20 @@ module.exports = {
     next()
   },
   setMovesByDate: async (req, res, next) => {
-    const { moveDate } = res.locals
+    const { moveDate, fromLocationId } = res.locals
 
     if (!moveDate) {
       return next()
     }
 
     try {
-      res.locals.movesByDate = await moveService.getRequestedMovesByDateAndLocation(
-        moveDate,
-        res.locals.fromLocationId
-      )
+      const [requestedMoves, cancelledMoves] = await Promise.all([
+        moveService.getRequested({ moveDate, fromLocationId }),
+        moveService.getCancelled({ moveDate, fromLocationId }),
+      ])
+
+      res.locals.requestedMovesByDate = requestedMoves
+      res.locals.cancelledMovesByDate = cancelledMoves
 
       next()
     } catch (error) {

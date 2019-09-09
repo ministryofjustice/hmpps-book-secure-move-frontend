@@ -29,7 +29,7 @@ module.exports = function movesByToLocation(data) {
 
   Object.entries(groupedByLocation).forEach(([locationId, moves]) => {
     locations.push({
-      items: moves.map(moveToCardComponent),
+      items: moves.map(moveToCardComponent()),
       location: get(moves[0], 'to_location.title'),
     })
   })

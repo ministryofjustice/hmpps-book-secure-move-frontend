@@ -1,5 +1,6 @@
 {
   "phase_banner": "This is a new service",
   "phase_banner_with_feedback": "This is a new service – your <a class=\"govuk-link\" href=\"{{url}}\">feedback</a> will help us to improve it.",
-  "age": "Age"
+  "age": "Age",
+  "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})"
 }

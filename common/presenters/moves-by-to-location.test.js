@@ -2,7 +2,9 @@ const proxyquire = require('proxyquire')
 
 const i18n = require('../../config/i18n')
 const movesByToLocation = proxyquire('./moves-by-to-location', {
-  './move-to-card-component': sinon.stub().returnsArg(0),
+  './move-to-card-component': sinon
+    .stub()
+    .callsFake(() => sinon.stub().returnsArg(0)),
 })
 const mockMoves = require('../../test/fixtures/moves.json')
 

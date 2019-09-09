@@ -361,7 +361,7 @@ describe('Reference Data Service', function() {
         locations = await referenceDataService.getLocationByNomisAgencyId()
       })
 
-      it('should call getMoves methods', function() {
+      it('should call getLocations methods', function() {
         expect(referenceDataService.getLocations).to.be.calledOnce
       })
 
@@ -392,7 +392,7 @@ describe('Reference Data Service', function() {
         )
       })
 
-      it('should call getMoves methods', function() {
+      it('should call getLocations methods', function() {
         expect(referenceDataService.getLocations).to.be.calledOnce
       })
 

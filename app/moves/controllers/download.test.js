@@ -25,7 +25,7 @@ describe('Moves controllers', function() {
         setHeader: sinon.stub(),
         locals: {
           moveDate: mockMoveDate,
-          movesByDate: movesStub,
+          requestedMovesByDate: movesStub,
         },
       }
       nextSpy = sinon.spy()

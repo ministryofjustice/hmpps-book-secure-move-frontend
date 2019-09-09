@@ -3,21 +3,33 @@ const permissions = require('../../../common/middleware/permissions')
 
 const controller = require('./list')
 
-const mockMovesByDate = [{ foo: 'bar' }, { fizz: 'buzz' }]
+const mockRequestedMovesByDate = [
+  { foo: 'bar', status: 'requested' },
+  { fizz: 'buzz', status: 'requested' },
+]
+const mockCancelledMovesByDate = [
+  { foo: 'bar', status: 'cancelled' },
+  { fizz: 'buzz', status: 'cancelled' },
+]
 
 describe('Moves controllers', function() {
   describe('#list()', function() {
     const mockMoveDate = '2019-10-10'
-    let req, res
+    let req, res, moveToCardComponentMapStub
 
     beforeEach(function() {
+      moveToCardComponentMapStub = sinon.stub().returnsArg(0)
       this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
+      sinon
+        .stub(presenters, 'moveToCardComponent')
+        .callsFake(() => moveToCardComponentMapStub)
       req = { query: {} }
       res = {
         locals: {
           moveDate: mockMoveDate,
-          movesByDate: mockMovesByDate,
+          requestedMovesByDate: mockRequestedMovesByDate,
+          cancelledMovesByDate: mockCancelledMovesByDate,
         },
         render: sinon.spy(),
       }
@@ -46,14 +58,22 @@ describe('Moves controllers', function() {
 
       it('should call movesByToLocation presenter', function() {
         expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
-          mockMovesByDate
+          mockRequestedMovesByDate
         )
+      })
+
+      it('should call moveToCardComponent presenter', function() {
+        expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
+          showMeta: false,
+          showTags: false,
+        })
+        expect(moveToCardComponentMapStub).to.be.calledTwice
       })
 
       it('should contain destinations property', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('destinations')
-        expect(params.destinations).to.deep.equal(mockMovesByDate)
+        expect(params.destinations).to.deep.equal(mockRequestedMovesByDate)
       })
     })
 

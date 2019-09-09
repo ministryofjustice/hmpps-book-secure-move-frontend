@@ -39,108 +39,114 @@ const mockMove = {
 
 describe('Presenters', function() {
   describe('#moveToCardComponent()', function() {
+    let transformedResponse
+
     beforeEach(function() {
       sinon.stub(i18n, 't').returns('__translated__')
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
     })
 
-    context('when provided with a mock move object', function() {
-      let transformedResponse
-
-      beforeEach(function() {
-        transformedResponse = moveToCardComponent(mockMove)
-      })
-
-      describe('response', function() {
-        it('should contain a href', function() {
-          expect(transformedResponse).to.have.property('href')
-          expect(transformedResponse.href).to.equal('/move/12345')
+    context('with default options', function() {
+      context('with mock move', function() {
+        beforeEach(function() {
+          transformedResponse = moveToCardComponent()(mockMove)
         })
 
-        it('should contain a title', function() {
-          expect(transformedResponse).to.have.property('title')
-          expect(transformedResponse.title).to.deep.equal({
-            text: mockMove.person.fullname.toUpperCase(),
+        describe('response', function() {
+          it('should contain a href', function() {
+            expect(transformedResponse).to.have.property('href')
+            expect(transformedResponse.href).to.equal('/move/12345')
+          })
+
+          it('should contain a title', function() {
+            expect(transformedResponse).to.have.property('title')
+            expect(transformedResponse.title).to.deep.equal({
+              text: mockMove.person.fullname.toUpperCase(),
+            })
+          })
+
+          it('should contain a caption', function() {
+            expect(transformedResponse).to.have.property('caption')
+            expect(transformedResponse.caption).to.deep.equal({
+              text: `__translated__`,
+            })
+          })
+
+          it('should contain correct meta data', function() {
+            expect(transformedResponse).to.have.property('meta')
+            expect(transformedResponse.meta).to.deep.equal({
+              items: [
+                {
+                  label: '__translated__',
+                  text: '__translated__',
+                },
+                {
+                  label: '__translated__',
+                  text: mockMove.person.gender.title,
+                },
+              ],
+            })
+          })
+
+          it('should contain correct tags', function() {
+            expect(transformedResponse).to.have.property('tags')
+            expect(transformedResponse.tags).to.deep.equal({
+              items: [
+                {
+                  href: '/move/12345#concealed_items',
+                  text: 'Concealed items',
+                  classes: 'app-tag--destructive',
+                  sortOrder: 1,
+                },
+                {
+                  href: '/move/12345#other_risks',
+                  text: 'Any other risks',
+                  classes: 'app-tag--destructive',
+                  sortOrder: 1,
+                },
+                {
+                  href: '/move/12345#health_issue',
+                  text: 'Health issue',
+                  classes: '',
+                  sortOrder: 2,
+                },
+              ],
+            })
           })
         })
 
-        it('should contain a caption', function() {
-          expect(transformedResponse).to.have.property('caption')
-          expect(transformedResponse.caption).to.deep.equal({
-            text: `__translated__`,
+        describe('translations', function() {
+          it('should translate age label', function() {
+            expect(i18n.t.getCall(0)).to.be.calledWithExactly('age', {
+              context: 'with_date_of_birth',
+              age: 50,
+              date_of_birth: '18 Jun 1960',
+            })
           })
-        })
 
-        it('should contain correct meta data', function() {
-          expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta).to.deep.equal({
-            items: [
-              {
-                label: '__translated__',
-                html: '18 Jun 1960 (__translated__ 50)',
-              },
-              {
-                label: '__translated__',
-                text: mockMove.person.gender.title,
-              },
-            ],
+          it('should translate date of birth label', function() {
+            expect(i18n.t.getCall(1)).to.be.calledWithExactly(
+              'fields::date_of_birth.label'
+            )
           })
-        })
 
-        it('should contain correct tags', function() {
-          expect(transformedResponse).to.have.property('tags')
-          expect(transformedResponse.tags).to.deep.equal({
-            items: [
-              {
-                href: '/move/12345#concealed_items',
-                text: 'Concealed items',
-                classes: 'app-tag--destructive',
-                sortOrder: 1,
-              },
-              {
-                href: '/move/12345#other_risks',
-                text: 'Any other risks',
-                classes: 'app-tag--destructive',
-                sortOrder: 1,
-              },
-              {
-                href: '/move/12345#health_issue',
-                text: 'Health issue',
-                classes: '',
-                sortOrder: 2,
-              },
-            ],
+          it('should translate gender label', function() {
+            expect(i18n.t.getCall(2)).to.be.calledWithExactly(
+              'fields::gender.label'
+            )
           })
-        })
-      })
 
-      describe('translations', function() {
-        it('should translate age label', function() {
-          expect(i18n.t.firstCall).to.be.calledWithExactly('age')
-        })
+          it('should translate move reference', function() {
+            expect(i18n.t.getCall(3)).to.be.calledWithExactly(
+              'moves::move_reference',
+              { reference: 'AB12FS45' }
+            )
+          })
 
-        it('should translate date of birth label', function() {
-          expect(i18n.t.secondCall).to.be.calledWithExactly(
-            'fields::date_of_birth.label'
-          )
-        })
-
-        it('should translate gender label', function() {
-          expect(i18n.t.thirdCall).to.be.calledWithExactly(
-            'fields::gender.label'
-          )
-        })
-
-        it('should translate move reference', function() {
-          expect(i18n.t.getCall(3)).to.be.calledWithExactly(
-            'moves::move_reference',
-            { reference: 'AB12FS45' }
-          )
-        })
-
-        it('should translate correct number of times', function() {
-          expect(i18n.t).to.be.callCount(4)
+          it('should translate correct number of times', function() {
+            expect(i18n.t).to.be.callCount(4)
+          })
         })
       })
 
@@ -148,7 +154,7 @@ describe('Presenters', function() {
         let transformedResponse
 
         beforeEach(function() {
-          transformedResponse = moveToCardComponent({
+          transformedResponse = moveToCardComponent()({
             person: {
               last_name: 'Jones',
               first_names: 'Steve',
@@ -170,7 +176,7 @@ describe('Presenters', function() {
         let transformedResponse
 
         beforeEach(function() {
-          transformedResponse = moveToCardComponent({
+          transformedResponse = moveToCardComponent()({
             person: {
               last_name: 'Jones',
               first_names: 'Steve',
@@ -281,7 +287,7 @@ describe('Presenters', function() {
             },
           }
 
-          transformedResponse = moveToCardComponent(mockMove)
+          transformedResponse = moveToCardComponent()(mockMove)
         })
 
         it('should correctly filter', function() {
@@ -323,6 +329,66 @@ describe('Presenters', function() {
             },
           ])
         })
+      })
+    })
+
+    context('with meta disabled', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          showMeta: false,
+        })(mockMove)
+      })
+
+      it('should not contain meta items', function() {
+        expect(transformedResponse).to.have.property('meta')
+        expect(transformedResponse.meta.items).to.be.undefined
+      })
+
+      it('should contain href', function() {
+        expect(transformedResponse).to.have.property('href')
+      })
+
+      it('should contain title', function() {
+        expect(transformedResponse).to.have.property('title')
+      })
+
+      it('should contain caption', function() {
+        expect(transformedResponse).to.have.property('caption')
+      })
+
+      it('should contain tags', function() {
+        expect(transformedResponse).to.have.property('tags')
+        expect(transformedResponse.tags.items.length).to.equal(3)
+      })
+    })
+
+    context('with tag disabled', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          showTags: false,
+        })(mockMove)
+      })
+
+      it('should not contain tags items', function() {
+        expect(transformedResponse).to.have.property('tags')
+        expect(transformedResponse.tags.items).to.be.undefined
+      })
+
+      it('should contain href', function() {
+        expect(transformedResponse).to.have.property('href')
+      })
+
+      it('should contain title', function() {
+        expect(transformedResponse).to.have.property('title')
+      })
+
+      it('should contain caption', function() {
+        expect(transformedResponse).to.have.property('caption')
+      })
+
+      it('should contain meta', function() {
+        expect(transformedResponse).to.have.property('meta')
+        expect(transformedResponse.meta.items.length).to.equal(2)
       })
     })
   })
