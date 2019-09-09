@@ -55,6 +55,7 @@ const personService = {
     return apiClient
       .create('person', personService.format(data))
       .then(response => response.data)
+      .then(person => personService.transform(person))
   },
 
   update(data) {
@@ -65,6 +66,7 @@ const personService = {
     return apiClient
       .update('person', personService.format(data))
       .then(response => response.data)
+      .then(person => personService.transform(person))
   },
 }
 
