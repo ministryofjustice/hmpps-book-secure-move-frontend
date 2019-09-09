@@ -356,6 +356,7 @@ describe('Person Service', function() {
 
     beforeEach(async function() {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
+      sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
 
       person = await personService.create(mockData)
@@ -367,6 +368,12 @@ describe('Person Service', function() {
 
     it('should format data', function() {
       expect(personService.format).to.be.calledOnceWithExactly(mockData)
+    })
+
+    it('should transform response data', function() {
+      expect(personService.transform).to.be.calledOnceWithExactly(
+        mockResponse.data
+      )
     })
 
     it('should return data property', function() {
@@ -386,6 +393,7 @@ describe('Person Service', function() {
 
     beforeEach(async function() {
       sinon.stub(apiClient, 'update').resolves(mockResponse)
+      sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
     })
 
@@ -414,6 +422,12 @@ describe('Person Service', function() {
 
       it('should format data', function() {
         expect(personService.format).to.be.calledOnceWithExactly(mockData)
+      })
+
+      it('should transform response data', function() {
+        expect(personService.transform).to.be.calledOnceWithExactly(
+          mockResponse.data
+        )
       })
 
       it('should return data property', function() {
