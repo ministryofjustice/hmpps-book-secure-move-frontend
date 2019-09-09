@@ -41,9 +41,6 @@
       }
     }
   },
-  "to_location_prison_recall": {
-    "label": "Name of prison"
-  },
   "to_location_court_appearance": {
     "label": "Name of court"
   },

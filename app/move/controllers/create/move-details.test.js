@@ -50,7 +50,6 @@ describe('Move controllers', function() {
               options: {
                 fields: {
                   to_location_court_appearance: {},
-                  to_location_prison_recall: {},
                   date_type: {
                     items: [
                       {
@@ -279,14 +278,13 @@ describe('Move controllers', function() {
           req.form.values = {
             move_type: 'prison_recall',
             to_location: '',
-            to_location_prison_recall: '67890',
           }
 
           controller.process(req, {}, nextSpy)
         })
 
         it('should set to_location based on location type', function() {
-          expect(req.form.values.to_location).to.equal('67890')
+          expect(req.form.values.to_location).to.be.undefined
         })
 
         it('should call next without error', function() {
