@@ -1,4 +1,6 @@
-{% extends "layouts/base.njk" %}
+{% extends "layouts/two-column.njk" %}
+
+{% set additionalContainerClass = "sticky-sidebar-container" %}
 
 {% block pageTitle %}
   {{ t(options.pageTitle) }} - {{ t(options.journeyPageTitle) }}
@@ -15,7 +17,7 @@
   {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block contentHeader %}
   {% if errors.errorList.length %}
     {{ govukErrorSummary({
       titleText: t("validation::summary.heading"),
@@ -30,35 +32,47 @@
       </h1>
     </div>
   </header>
+{% endblock %}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form method="post">
-        <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+{% block contentMain %}
+  <form method="post">
+    <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
 
-        {% block beforeFields %}{% endblock %}
+    {% block beforeFields %}{% endblock %}
 
-        {% block fields %}
-          {% for key, fieldsOptions in options.fields %}
-            {% if fieldsOptions.component and not fieldsOptions.skip %}
-              {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
-            {% endif %}
-          {% endfor %}
-        {% endblock %}
+    {% block fields %}
+      {% for key, fieldsOptions in options.fields %}
+        {% if fieldsOptions.component and not fieldsOptions.skip %}
+          {{ callAsMacro(fieldsOptions.component)(fieldsOptions) }}
+        {% endif %}
+      {% endfor %}
+    {% endblock %}
 
-        {% block formActions %}
-          {{ govukButton({
-            text: t(options.buttonText or "actions::continue"),
-            classes: options.buttonClasses
-          }) }}
+    {% block formActions %}
+      {{ govukButton({
+        text: t(options.buttonText or "actions::continue"),
+        classes: options.buttonClasses
+      }) }}
 
-          {% if cancelUrl %}
-            <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
-              {{ t("actions::cancel") }}
-            </a>
-          {% endif %}
-        {% endblock %}
-      </form>
+      {% if cancelUrl %}
+        <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+          {{ t("actions::cancel") }}
+        </a>
+      {% endif %}
+    {% endblock %}
+  </form>
+{% endblock %}
+
+{% block contentSidebar %}
+  {% if person %}
+    <div class="sticky-sidebar">
+      <div class="sticky-sidebar__inner">
+        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">
+          {{ person.fullname | upper }}
+        </h3>
+
+        {{ appMetaList(moveSummary) }}
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}

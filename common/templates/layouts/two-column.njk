@@ -1,0 +1,24 @@
+{% extends "./base.njk" %}
+
+{% set containerClass = ["govuk-grid-row"].concat(additionalContainerClass) | join(" ") %}
+
+{% block content %}
+
+  {% block contentHeader %}{% endblock %}
+
+  <div class="{{ containerClass }}">
+
+    <div class="govuk-grid-column-two-thirds">
+
+      {% block contentMain %}{% endblock %}
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+
+      {% block contentSidebar %}{% endblock %}
+
+    </div>
+
+  </div>
+{% endblock %}

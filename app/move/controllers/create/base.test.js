@@ -123,5 +123,99 @@ describe('Move controllers', function() {
         })
       })
     })
+
+    describe('#setMoveSummary()', function() {
+      let req, res, nextSpy
+
+      const mockPerson = {
+        first_names: 'Mr',
+        fullname: 'Benn, Mr',
+        last_name: 'Benn',
+      }
+      const mockSessionModel = overrides => {
+        const sessionModel = {
+          date: '2019-06-09',
+          time_due: '2000-01-01T14:00:00Z',
+          move_type: 'court_appearance',
+          to_location: {
+            title: 'Mock to location',
+          },
+          additional_information: 'Additional information',
+          person: mockPerson,
+          ...overrides,
+        }
+
+        return {
+          ...sessionModel,
+          toJSON: () => sessionModel,
+          get: () => sessionModel.person,
+        }
+      }
+      const expectedMoveSummary = {
+        items: [
+          { key: { text: 'From' }, value: { text: 'Mock location' } },
+          {
+            key: { text: 'To' },
+            value: { text: 'Mock to location — Additional information' },
+          },
+          { key: { text: 'Date' }, value: { text: 'Sunday 9 Jun 2019' } },
+          { key: { text: 'Time due' }, value: { text: '2pm' } },
+        ],
+      }
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          session: {
+            currentLocation: {
+              title: 'Mock location',
+            },
+          },
+        }
+        res = {
+          locals: {},
+        }
+      })
+
+      context('when current location exists', function() {
+        beforeEach(async function() {
+          req.sessionModel = mockSessionModel()
+
+          await controller.setMoveSummary(req, res, nextSpy)
+        })
+
+        it('should set locals as expected', function() {
+          expect(res.locals).to.deep.equal({
+            person: mockPerson,
+            moveSummary: expectedMoveSummary,
+          })
+        })
+
+        it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('without move_type', function() {
+        beforeEach(async function() {
+          req.sessionModel = mockSessionModel({
+            move_type: '',
+          })
+
+          await controller.setMoveSummary(req, res, nextSpy)
+        })
+
+        it('should set locals as expected', function() {
+          expect(res.locals).to.deep.equal({
+            person: mockPerson,
+            moveSummary: {},
+          })
+        })
+
+        it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
   })
 })
