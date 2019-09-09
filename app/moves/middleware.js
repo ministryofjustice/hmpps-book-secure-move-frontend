@@ -1,6 +1,6 @@
 const queryString = require('query-string')
 const { format, addDays, subDays } = require('date-fns')
-const { get } = require('lodash')
+const { find, get } = require('lodash')
 
 const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
@@ -41,6 +41,16 @@ module.exports = {
     next()
   },
   setFromLocation: (req, res, next, locationId) => {
+    const userLocations = get(req.session, 'user.locations')
+    const location = find(userLocations, { id: locationId })
+
+    if (!location) {
+      const error = new Error('Location not found')
+      error.statusCode = 404
+
+      return next(error)
+    }
+
     res.locals.fromLocationId = locationId
     next()
   },
