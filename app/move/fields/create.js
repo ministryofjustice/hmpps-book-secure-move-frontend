@@ -178,7 +178,6 @@ module.exports = {
   to_location_court_appearance: toLocationType('court_appearance', {
     validate: 'required',
   }),
-  to_location_prison_recall: toLocationType('prison_recall'),
   additional_information: {
     skip: true,
     rows: 3,
