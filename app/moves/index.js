@@ -9,6 +9,7 @@ const {
   storeQuery,
   setMoveDate,
   setFromLocation,
+  setPagination,
   setMovesByDate,
 } = require('./middleware')
 
@@ -26,12 +27,14 @@ router.get(
   redirectUsers,
   protectRoute('moves:view:all'),
   setMovesByDate,
+  setPagination,
   list
 )
 router.get(
   `/:locationId(${uuidRegex})`,
   protectRoute('moves:view:by_location'),
   setMovesByDate,
+  setPagination,
   list
 )
 router.get(
