@@ -24,41 +24,61 @@ describe('Moves controllers', function() {
         .callsFake(() => moveToCardComponentMapStub)
       req = {}
       res = {
-        locals: {
-          requestedMovesByDate: mockRequestedMovesByDate,
-          cancelledMovesByDate: mockCancelledMovesByDate,
-        },
+        locals: {},
         render: sinon.spy(),
       }
     })
 
     describe('template params', function() {
-      beforeEach(function() {
-        controller(req, res)
-      })
+      context('with moves', function() {
+        beforeEach(function() {
+          res.locals.requestedMovesByDate = mockRequestedMovesByDate
+          res.locals.cancelledMovesByDate = mockCancelledMovesByDate
 
-      it('should contain a page title', function() {
-        expect(res.render.args[0][1]).to.have.property('pageTitle')
-      })
-
-      it('should call movesByToLocation presenter', function() {
-        expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
-          mockRequestedMovesByDate
-        )
-      })
-
-      it('should call moveToCardComponent presenter', function() {
-        expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
-          showMeta: false,
-          showTags: false,
+          controller(req, res)
         })
-        expect(moveToCardComponentMapStub).to.be.calledTwice
+
+        it('should contain a page title', function() {
+          expect(res.render.args[0][1]).to.have.property('pageTitle')
+        })
+
+        it('should call movesByToLocation presenter', function() {
+          expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
+            mockRequestedMovesByDate
+          )
+        })
+
+        it('should call moveToCardComponent presenter', function() {
+          expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
+            showMeta: false,
+            showTags: false,
+          })
+          expect(moveToCardComponentMapStub).to.be.calledTwice
+        })
+
+        it('should contain destinations property', function() {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('destinations')
+          expect(params.destinations).to.deep.equal(mockRequestedMovesByDate)
+        })
       })
 
-      it('should contain destinations property', function() {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('destinations')
-        expect(params.destinations).to.deep.equal(mockRequestedMovesByDate)
+      context('without moves', function() {
+        beforeEach(function() {
+          controller(req, res)
+        })
+
+        it('should call movesByToLocation presenter', function() {
+          expect(presenters.movesByToLocation).to.be.calledOnceWithExactly([])
+        })
+
+        it('should call moveToCardComponent presenter', function() {
+          expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
+            showMeta: false,
+            showTags: false,
+          })
+          expect(moveToCardComponentMapStub).not.to.be.called
+        })
       })
     })
 
