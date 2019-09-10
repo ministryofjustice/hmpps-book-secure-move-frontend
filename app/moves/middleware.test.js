@@ -247,22 +247,127 @@ describe('Moves middleware', function() {
 
     beforeEach(function() {
       res = { locals: {} }
+      req = {
+        query: {},
+        session: {},
+      }
       nextSpy = sinon.spy()
     })
 
+    context('when location exists in users locations', function() {
+      beforeEach(function() {
+        req.session.user = {
+          locations: [
+            {
+              id: locationId,
+            },
+          ],
+        }
+
+        middleware.setFromLocation(req, res, nextSpy, locationId)
+      })
+
+      it('should set from location to locals', function() {
+        expect(res.locals).to.have.property('fromLocationId')
+        expect(res.locals.fromLocationId).to.equal(locationId)
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when location does not exist in users locations', function() {
+      beforeEach(function() {
+        middleware.setFromLocation(req, res, nextSpy, locationId)
+      })
+
+      it('should not set from location to locals', function() {
+        expect(res.locals).not.to.have.property('fromLocationId')
+      })
+
+      it('should call next with 404 error', function() {
+        const error = nextSpy.args[0][0]
+
+        expect(nextSpy).to.be.calledOnce
+
+        expect(error).to.be.an('error')
+        expect(error.message).to.equal('Location not found')
+        expect(error.statusCode).to.equal(404)
+      })
+    })
+  })
+
+  describe('#setPagination()', function() {
+    const mockMoveDate = '2019-10-10'
+    let req, res, nextSpy
+
     beforeEach(function() {
-      req = { query: {} }
-
-      middleware.setFromLocation(req, res, nextSpy, locationId)
+      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
+      res = {
+        locals: {
+          moveDate: mockMoveDate,
+        },
+      }
+      req = {
+        query: {},
+      }
+      nextSpy = sinon.spy()
     })
 
-    it('should set from location to locals', function() {
-      expect(res.locals).to.have.property('fromLocationId')
-      expect(res.locals.fromLocationId).to.equal(locationId)
+    afterEach(function() {
+      this.clock.restore()
     })
 
-    it('should call next', function() {
-      expect(nextSpy).to.be.calledOnceWithExactly()
+    context('with empty query', function() {
+      beforeEach(function() {
+        middleware.setPagination(req, res, nextSpy)
+      })
+
+      it('should contain pagination on locals', function() {
+        expect(res.locals).to.have.property('pagination')
+      })
+
+      it('should contain correct pagination links', function() {
+        const pagination = res.locals.pagination
+        expect(pagination.todayUrl).to.equal('?move-date=2019-10-10')
+        expect(pagination.nextUrl).to.equal('?move-date=2019-10-11')
+        expect(pagination.prevUrl).to.equal('?move-date=2019-10-09')
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with existing query', function() {
+      beforeEach(function() {
+        req.query = {
+          location: '12345',
+        }
+        middleware.setPagination(req, res, nextSpy)
+      })
+
+      it('should contain pagination on locals', function() {
+        expect(res.locals).to.have.property('pagination')
+      })
+
+      it('should contain correct pagination links', function() {
+        const pagination = res.locals.pagination
+        expect(pagination.todayUrl).to.equal(
+          '?location=12345&move-date=2019-10-10'
+        )
+        expect(pagination.nextUrl).to.equal(
+          '?location=12345&move-date=2019-10-11'
+        )
+        expect(pagination.prevUrl).to.equal(
+          '?location=12345&move-date=2019-10-09'
+        )
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
     })
   })
 

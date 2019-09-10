@@ -14,29 +14,22 @@ const mockCancelledMovesByDate = [
 
 describe('Moves controllers', function() {
   describe('#list()', function() {
-    const mockMoveDate = '2019-10-10'
     let req, res, moveToCardComponentMapStub
 
     beforeEach(function() {
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
-      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
       sinon
         .stub(presenters, 'moveToCardComponent')
         .callsFake(() => moveToCardComponentMapStub)
-      req = { query: {} }
+      req = {}
       res = {
         locals: {
-          moveDate: mockMoveDate,
           requestedMovesByDate: mockRequestedMovesByDate,
           cancelledMovesByDate: mockCancelledMovesByDate,
         },
         render: sinon.spy(),
       }
-    })
-
-    afterEach(function() {
-      this.clock.restore()
     })
 
     describe('template params', function() {
@@ -46,14 +39,6 @@ describe('Moves controllers', function() {
 
       it('should contain a page title', function() {
         expect(res.render.args[0][1]).to.have.property('pageTitle')
-      })
-
-      it('should contain pagination with correct links', function() {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('pagination')
-        expect(params.pagination.todayUrl).to.equal('?move-date=2019-10-10')
-        expect(params.pagination.nextUrl).to.equal('?move-date=2019-10-11')
-        expect(params.pagination.prevUrl).to.equal('?move-date=2019-10-09')
       })
 
       it('should call movesByToLocation presenter', function() {
