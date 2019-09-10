@@ -97,6 +97,20 @@ describe('User class', function() {
       })
     })
 
+    context('when user has ROLE_PECS_PRISON', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_PRISON'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'move:view',
+        ])
+      })
+    })
+
     context('when user has ROLE_PECS_SUPPLIER role', function() {
       beforeEach(function() {
         permissions = user.getPermissions(['ROLE_PECS_SUPPLIER'])
@@ -110,28 +124,26 @@ describe('User class', function() {
       })
     })
 
-    context(
-      'when user has both ROLE_PECS_POLICE and ROLE_PECS_SUPPLIER roles',
-      function() {
-        beforeEach(function() {
-          permissions = user.getPermissions([
-            'ROLE_PECS_POLICE',
-            'ROLE_PECS_SUPPLIER',
-          ])
-        })
+    context('when user has all roles', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions([
+          'ROLE_PECS_POLICE',
+          'ROLE_PECS_PRISON',
+          'ROLE_PECS_SUPPLIER',
+        ])
+      })
 
-        it('should contain correct permission', function() {
-          expect(permissions).to.deep.equal([
-            'moves:view:by_location',
-            'moves:download:by_location',
-            'move:view',
-            'move:create',
-            'move:cancel',
-            'moves:view:all',
-            'moves:download:all',
-          ])
-        })
-      }
-    )
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'move:view',
+          'move:create',
+          'move:cancel',
+          'moves:view:all',
+          'moves:download:all',
+        ])
+      })
+    })
   })
 })
