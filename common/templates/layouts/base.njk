@@ -59,6 +59,17 @@
   <link rel="apple-touch-icon" href="{{ getAssetPath('images/hmpps-apple-touch-icon.png') }}">
 {% endblock %}
 
+{% block bodyStart %}
+  {% if GA_ID %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id={{ GA_ID }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+{% endblock %}
+
 {% block header %}
   {{ appInternalHeader({
     homepageUrl: "/",
