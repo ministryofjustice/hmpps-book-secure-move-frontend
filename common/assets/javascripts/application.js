@@ -12,8 +12,11 @@ import accessibleAutocomplete from 'accessible-autocomplete'
 import StickySidebar from 'sticky-sidebar/dist/sticky-sidebar'
 import Message from '../../components/message/message'
 import Header from '../../components/internal-header/internal-header'
+import Analytics from './analytics'
 
 initAll()
+
+new Analytics().init()
 
 var $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()
