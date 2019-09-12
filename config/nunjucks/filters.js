@@ -7,6 +7,7 @@ const {
   parse: parseDate,
   isValid: isValidDate,
 } = require('date-fns')
+const { kebabCase } = require('lodash')
 
 const { DATE_FORMATS } = require('../index')
 
@@ -126,4 +127,5 @@ module.exports = {
   formatDateAsRelativeDay,
   calculateAge,
   formatTime,
+  kebabcase: kebabCase,
 }

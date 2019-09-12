@@ -1,34 +1,43 @@
-{% for section in assessment %}
+{% for assessmentCategory in assessment %}
   <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-    {{ t("moves::assessment.categories." + section.category + ".heading") }}
+    {{ t("moves::assessment.categories." + assessmentCategory.key + ".heading") }}
   </h2>
 
-  {% for item in section.items %}
+  {% for title, answers in assessmentCategory.answersByTitle %}
     {% call appPanel({
       attributes: {
-        id: item.title
+        id: title | kebabcase
       },
       tag: {
-        text: item.title,
-        classes: section.tagClass
+        text: title,
+        classes: assessmentCategory.tagClass
       }
     }) %}
-      {% set itemHtml %}
-        {{ item.comments if item.comments else '' }}
 
-        {% if item.created_at %}
-          <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
-            {{ item.created_at | formatDateWithDay }}
-          </div>
-        {% endif %}
-      {% endset %}
+      {% set items = [] %}
+      {% for answer in answers %}
+        {% set answerHtml %}
+          {% if answer.nomis_alert_description %}
+            <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
+              {{ answer.nomis_alert_description }}
+            </h4>
+          {% endif %}
+
+          {{ answer.comments if answer.comments }}
+
+          {% if answer.created_at %}
+            <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
+              {{ answer.created_at | formatDateWithDay }}
+            </div>
+          {% endif %}
+        {% endset %}
+
+        {% set items = (items.push({ value: { html: answerHtml } }), items) %}
+      {% endfor %}
 
       {{ appMetaList({
-        items: [{
-          value: {
-            html: itemHtml
-          }
-        }]
+        classes: "app-meta-list--divider",
+        items: items
       }) }}
     {% endcall %}
   {% else %}
@@ -36,7 +45,7 @@
       classes: "app-message--muted",
       allowDismiss: false,
       content: {
-        html: t("moves::assessment.categories." + section.category + ".empty")
+        html: t("moves::assessment.categories." + assessmentCategory.key + ".empty")
       }
     }) }}
   {% endfor %}
