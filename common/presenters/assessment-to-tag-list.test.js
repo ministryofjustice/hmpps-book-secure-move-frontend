@@ -54,6 +54,51 @@ describe('Presenters', function() {
 
         expect(response).to.deep.equal(mockAnswers)
       })
+
+      it('should remove duplicate titles', function() {
+        const mockAnswers = [
+          {
+            key: 'escape',
+            title: 'Escape risk',
+            assessment_question_id: '195d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted_other',
+          },
+          {
+            key: 'escape',
+            title: 'Escape risk',
+            assessment_question_id: '195d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted_other',
+          },
+          {
+            key: 'health_issue',
+            title: 'Health issue',
+            assessment_question_id: '394d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted',
+          },
+          {
+            key: 'escape',
+            title: 'Escape risk',
+            assessment_question_id: '195d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted_other',
+          },
+        ]
+        const response = assessmentToTagList(mockAnswers)
+
+        expect(response).to.deep.equal([
+          {
+            key: 'escape',
+            title: 'Escape risk',
+            assessment_question_id: '195d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted_other',
+          },
+          {
+            key: 'health_issue',
+            title: 'Health issue',
+            assessment_question_id: '394d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted',
+          },
+        ])
+      })
     })
 
     context('when category is not whitelist', function() {
