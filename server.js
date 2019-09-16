@@ -22,7 +22,10 @@ const configPaths = require('./config/paths')
 const logger = require('./config/logger')
 const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
-const redisStore = require('./config/redis-store')
+const redisStore = require('./config/redis-store')({
+  ...config.REDIS.SESSION,
+  logErrors: error => logger.error(error),
+})
 const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
@@ -84,10 +87,7 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(
   session({
-    store: redisStore({
-      ...config.REDIS.SESSION,
-      logErrors: error => logger.error(error),
-    }),
+    store: redisStore,
     secret: config.SESSION.SECRET,
     name: config.SESSION.NAME,
     saveUninitialized: false,
