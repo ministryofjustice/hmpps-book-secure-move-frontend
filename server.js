@@ -12,6 +12,7 @@ const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
 const favicon = require('serve-favicon')
+const responseTime = require('response-time')
 const slashify = require('slashify')
 const i18nMiddleware = require('i18next-express-middleware')
 const Sentry = require('@sentry/node')
@@ -85,6 +86,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(responseTime())
 app.use(
   session({
     store: redisStore,

@@ -76,6 +76,7 @@
     "pluralize": "8.0.0",
     "query-string": "6.8.3",
     "redis": "2.8.0",
+    "response-time": "2.3.2",
     "serve-favicon": "2.5.0",
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
