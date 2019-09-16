@@ -1,3 +1,4 @@
+const bluebird = require('bluebird')
 const proxyquire = require('proxyquire')
 
 function MockRedisStore(opts = {}) {
@@ -31,6 +32,7 @@ describe('Redis store', function() {
 
     beforeEach(function() {
       sinon.spy(MockRedisStore.prototype, 'init')
+      sinon.stub(bluebird, 'promisifyAll')
     })
 
     context('with first call', function() {
@@ -56,6 +58,9 @@ describe('Redis store', function() {
         it('should create a new store', function() {
           expect(mockRedisClient.createClient).to.be.calledOnceWithExactly(
             mockOptions
+          )
+          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(
+            'mockClient'
           )
           expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
             mockStoreOptions
