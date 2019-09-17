@@ -1,6 +1,6 @@
 const { addMonths, subMonths } = require('date-fns')
 
-const { filterDisabled } = require('./reference-data')
+const { filterDisabled, filterExpired } = require('./reference-data')
 
 const nextMonth = addMonths(new Date(), 1)
 const lastMonth = subMonths(new Date(), 1)
@@ -159,6 +159,50 @@ describe('Reference data helpers', function() {
 
         it('should include the option', function() {
           expect(this.filteredOptions).to.have.length(1)
+        })
+      })
+    })
+  })
+
+  context('#filterExpired', function() {
+    context('without expired property', function() {
+      it('should return true', function() {
+        expect(filterExpired({})).to.be.true
+      })
+    })
+
+    context('with expired property', function() {
+      context('with falsy values', function() {
+        const falsyValues = [undefined, null, false, '', NaN, 0]
+
+        falsyValues.forEach(function(value) {
+          it('should return true', function() {
+            expect(
+              filterExpired({
+                expires_at: value,
+              })
+            ).to.be.true
+          })
+        })
+      })
+
+      context('when not expired', function() {
+        it('should return true', function() {
+          expect(
+            filterExpired({
+              expires_at: nextMonth,
+            })
+          ).to.be.true
+        })
+      })
+
+      context('when is expired', function() {
+        it('should return false', function() {
+          expect(
+            filterExpired({
+              expires_at: lastMonth,
+            })
+          ).to.be.false
         })
       })
     })

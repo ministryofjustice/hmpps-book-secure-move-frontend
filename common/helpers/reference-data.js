@@ -13,6 +13,15 @@ function filterDisabled({ currentValue = null, createdOn } = {}) {
   }
 }
 
+function filterExpired({ expires_at: expiresAt }) {
+  if (!expiresAt) {
+    return true
+  }
+
+  return Date.parse(expiresAt) > Date.now()
+}
+
 module.exports = {
   filterDisabled,
+  filterExpired,
 }
