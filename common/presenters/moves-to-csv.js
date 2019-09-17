@@ -1,7 +1,8 @@
 const json2csv = require('json2csv')
 const { find, flatten, some } = require('lodash')
 
-const referenceDataServce = require('../services/reference-data')
+const referenceDataService = require('../services/reference-data')
+const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
 
 function _getIdentifier(identifier) {
@@ -27,7 +28,12 @@ function _mapAnswer({ title, key } = {}) {
         },
       ],
       value: row => {
-        const answer = find(row.person.assessment_answers, { key })
+        const answer = find(
+          row.person.assessment_answers.filter(
+            referenceDataHelpers.filterExpired
+          ),
+          { key }
+        )
         return answer ? answer.comments : null
       },
     },
@@ -117,7 +123,7 @@ const person = [
 ]
 
 module.exports = function movesToCSV(moves) {
-  return referenceDataServce.getAssessmentQuestions().then(questions => {
+  return referenceDataService.getAssessmentQuestions().then(questions => {
     const assessmentAnswers = questions.map(_mapAnswer)
     const fields = flatten([...move, ...person, ...assessmentAnswers]).map(
       _translateField
