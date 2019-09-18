@@ -94,19 +94,19 @@ describe('Presenters', function() {
             expect(transformedResponse.tags).to.deep.equal({
               items: [
                 {
-                  href: '/move/12345#concealed_items',
+                  href: '/move/12345#concealed-items',
                   text: 'Concealed items',
                   classes: 'app-tag--destructive',
                   sortOrder: 1,
                 },
                 {
-                  href: '/move/12345#other_risks',
+                  href: '/move/12345#any-other-risks',
                   text: 'Any other risks',
                   classes: 'app-tag--destructive',
                   sortOrder: 1,
                 },
                 {
-                  href: '/move/12345#health_issue',
+                  href: '/move/12345#health-issue',
                   text: 'Health issue',
                   classes: '',
                   sortOrder: 2,
@@ -298,13 +298,13 @@ describe('Presenters', function() {
         it('should correctly map and sort', function() {
           expect(transformedResponse.tags.items).to.deep.equal([
             {
-              href: `/move/${mockMove.id}#concealed_items`,
+              href: `/move/${mockMove.id}#concealed-items`,
               text: 'Concealed items',
               classes: 'app-tag--destructive',
               sortOrder: 1,
             },
             {
-              href: `/move/${mockMove.id}#other_risks`,
+              href: `/move/${mockMove.id}#any-other-risks`,
               text: 'Any other risks',
               classes: 'app-tag--destructive',
               sortOrder: 1,
@@ -316,13 +316,13 @@ describe('Presenters', function() {
               sortOrder: 1,
             },
             {
-              href: `/move/${mockMove.id}#health_issue`,
+              href: `/move/${mockMove.id}#health-issue`,
               text: 'Health issue',
               classes: '',
               sortOrder: 2,
             },
             {
-              href: `/move/${mockMove.id}#diet_allergy`,
+              href: `/move/${mockMove.id}#special-diet-or-allergy`,
               text: 'Special diet or allergy',
               classes: '',
               sortOrder: 2,

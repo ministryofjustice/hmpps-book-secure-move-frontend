@@ -1,4 +1,5 @@
 const proxyquire = require('proxyquire')
+const { kebabCase } = require('lodash')
 
 const assessmentAnswerToTag = proxyquire('./assessment-answer-to-tag', {
   '../../config': {
@@ -20,14 +21,13 @@ describe('Presenters', function() {
     context('when category is in whitelist', function() {
       it('should return correct properties', function() {
         const mockAnswer = {
-          key: 'concealed_items',
           title: 'Concealed items',
           category: 'risk',
         }
         const transformedResponse = assessmentAnswerToTag()(mockAnswer)
 
         expect(transformedResponse).to.deep.equal({
-          href: `#${mockAnswer.key}`,
+          href: `#${kebabCase(mockAnswer.title)}`,
           text: mockAnswer.title,
           classes: 'app-tag--destructive',
           sortOrder: 1,
@@ -36,14 +36,13 @@ describe('Presenters', function() {
 
       it('should return correct properties', function() {
         const mockAnswer = {
-          key: 'health_issue',
           title: 'Health issue',
           category: 'health',
         }
         const transformedResponse = assessmentAnswerToTag()(mockAnswer)
 
         expect(transformedResponse).to.deep.equal({
-          href: `#${mockAnswer.key}`,
+          href: `#${kebabCase(mockAnswer.title)}`,
           text: mockAnswer.title,
           classes: '',
           sortOrder: 2,
@@ -56,7 +55,6 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         mockAnswer = {
-          key: 'food_allergy',
           title: 'Food allergy',
           category: 'invalid',
         }
@@ -66,7 +64,7 @@ describe('Presenters', function() {
 
       it('should return property defaults', function() {
         expect(transformedResponse).to.deep.equal({
-          href: `#${mockAnswer.key}`,
+          href: `#${kebabCase(mockAnswer.title)}`,
           text: mockAnswer.title,
           classes: 'app-tag--inactive',
           sortOrder: null,
@@ -79,7 +77,6 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         mockAnswer = {
-          key: 'food_allergy',
           title: 'Food allergy',
           category: 'invalid',
         }
@@ -88,7 +85,9 @@ describe('Presenters', function() {
       })
 
       it('should not return a href prefix', function() {
-        expect(transformedResponse.href).to.equal(`#${mockAnswer.key}`)
+        expect(transformedResponse.href).to.equal(
+          `#${kebabCase(mockAnswer.title)}`
+        )
       })
     })
 
@@ -98,7 +97,6 @@ describe('Presenters', function() {
       beforeEach(function() {
         mockPrefix = '/move/123456789'
         mockAnswer = {
-          key: 'food_allergy',
           title: 'Food allergy',
           category: 'invalid',
         }
@@ -108,7 +106,7 @@ describe('Presenters', function() {
 
       it('should return a href prefix', function() {
         expect(transformedResponse.href).to.equal(
-          `${mockPrefix}#${mockAnswer.key}`
+          `${mockPrefix}#${kebabCase(mockAnswer.title)}`
         )
       })
     })
