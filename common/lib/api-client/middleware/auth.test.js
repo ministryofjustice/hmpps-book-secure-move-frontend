@@ -1,195 +1,61 @@
 const proxyquire = require('proxyquire')
 
 const mockConfig = {
-  BASE_URL: 'http://baseurl.com',
   AUTH_URL: 'http://baseurl.com/oauth/token',
   CLIENT_ID: 'clientid',
   SECRET: 'secret',
   TIMEOUT: 10000,
 }
+function MockAuth() {}
+MockAuth.prototype.getAccessToken = sinon.stub()
+
 const auth = proxyquire('./auth', {
   '../../../../config': {
     API: mockConfig,
   },
+  '../auth': MockAuth,
 })
 
-describe('Back-end authentication', function() {
-  describe('#devourAuthMiddleware', function() {
-    describe('#req', function() {
-      let authUrl,
-        authServiceMock,
-        accessToken,
-        accessTokenExpiry,
-        tokenInfo,
-        result,
-        payload
+describe('API Client', function() {
+  describe('Auth middleware', function() {
+    let payload
 
-      beforeEach(function() {
-        authUrl = new URL(mockConfig.AUTH_URL)
-        accessToken = 'test'
-        accessTokenExpiry = 7200
+    beforeEach(function() {
+      payload = {
+        req: {
+          headers: {},
+        },
+      }
+    })
 
-        tokenInfo = JSON.stringify({
-          access_token: accessToken,
-          expires_in: accessTokenExpiry,
-        })
+    context('when access token resolves', function() {
+      const token = '1234567890'
 
-        payload = {
-          req: {
-            headers: {},
-          },
-        }
+      beforeEach(async function() {
+        MockAuth.prototype.getAccessToken.resolves(token)
+        await auth.req(payload)
       })
 
-      context('when there is no access token', function() {
-        beforeEach(function() {
-          sinon
-            .stub(auth, 'getAccessToken')
-            .onFirstCall()
-            .returns(null)
-            .callThrough()
-        })
-
-        context('when the token request is unsuccessful', function() {
-          beforeEach(function() {
-            authServiceMock = nock(authUrl.origin)
-              .post(authUrl.pathname)
-              .query({
-                grant_type: 'client_credentials',
-              })
-              .reply(401, '')
-          })
-
-          it('throws an Error', async function() {
-            await expect(
-              auth.devourAuthMiddleware.req(payload)
-            ).to.be.rejectedWith(Error)
-          })
-        })
-
-        context('when the token request is successful', function() {
-          beforeEach(async function() {
-            authServiceMock = nock(authUrl.origin)
-              .post(authUrl.pathname)
-              .query({
-                grant_type: 'client_credentials',
-              })
-              .reply(200, tokenInfo)
-            result = await auth.devourAuthMiddleware.req(payload)
-          })
-
-          it('requests a new access token from the back-end API', function() {
-            expect(authServiceMock.isDone()).to.be.true
-          })
-
-          it('modifies the payload', function() {
-            expect(result.req.headers.authorization).to.equal(
-              `Bearer ${accessToken}`
-            )
-          })
-
-          it('saves the new access token', function() {
-            expect(auth.getAccessToken()).to.eq(accessToken)
-          })
-
-          it('saves the new access token expiry time', function() {
-            expect(auth.getAccessTokenExpiry()).to.be.a('number')
-          })
-        })
+      it('should call auth library', function() {
+        expect(MockAuth.prototype.getAccessToken).to.be.calledOnce
       })
 
-      context('when the access token has expired', function() {
-        let oldExpiry
-
-        beforeEach(function() {
-          oldExpiry = Math.floor(new Date() / 1000) - 100
-
-          sinon
-            .stub(auth, 'getAccessToken')
-            .onFirstCall()
-            .returns('test-old')
-            .callThrough()
-          sinon
-            .stub(auth, 'getAccessTokenExpiry')
-            .onFirstCall()
-            .returns(oldExpiry)
-            .callThrough()
-        })
-
-        context('when the token request is unsuccessful', function() {
-          beforeEach(function() {
-            authServiceMock = nock(authUrl.origin)
-              .post(authUrl.pathname)
-              .query({
-                grant_type: 'client_credentials',
-              })
-              .reply(401, '')
-          })
-
-          it('throws an Error', async function() {
-            await expect(
-              auth.devourAuthMiddleware.req(payload)
-            ).to.be.rejectedWith(Error)
-          })
-        })
-
-        context('when the token request is successful', function() {
-          beforeEach(async function() {
-            authServiceMock = nock(authUrl.origin)
-              .post(authUrl.pathname)
-              .query({
-                grant_type: 'client_credentials',
-              })
-              .reply(200, tokenInfo)
-            result = await auth.devourAuthMiddleware.req(payload)
-          })
-
-          it('requests a new access token from the back-end API', function() {
-            expect(authServiceMock.isDone()).to.be.true
-          })
-
-          it('modifies the payload', function() {
-            expect(result.req.headers.authorization).to.equal(
-              `Bearer ${accessToken}`
-            )
-          })
-
-          it('saves the new access token', function() {
-            expect(auth.getAccessToken()).to.eq(accessToken)
-          })
-
-          it('saves the new access token expiry time', function() {
-            expect(auth.getAccessTokenExpiry()).to.not.equal(oldExpiry)
-          })
-        })
+      it('should contain authorization header', function() {
+        expect(payload.req.headers).to.contain.property('authorization')
       })
 
-      context('when the access token is valid', function() {
-        beforeEach(async function() {
-          accessToken = 'test-new'
-          sinon.stub(auth, 'getAccessToken').returns(accessToken)
-          sinon
-            .stub(auth, 'getAccessTokenExpiry')
-            .returns(new Date() / 1000 + 1000)
+      it('should set authorization header', function() {
+        expect(payload.req.headers.authorization).to.equal(`Bearer ${token}`)
+      })
+    })
 
-          authServiceMock = nock(authUrl.origin)
-            .post(authUrl.pathname)
-            .query({
-              grant_type: 'client_credentials',
-            })
-            .reply(200, tokenInfo)
-          result = await auth.devourAuthMiddleware.req(payload)
-        })
+    context('when access token rejects', function() {
+      beforeEach(async function() {
+        MockAuth.prototype.getAccessToken.rejects(new Error())
+      })
 
-        it('does not request a new access token', function() {
-          expect(authServiceMock.isDone()).to.be.false
-        })
-
-        it('modifies the payload', function() {
-          expect(result.req.headers.authorization).to.equal(
-            `Bearer ${accessToken}`
-          )
-        })
+      it('should reject with error', function() {
+        return expect(auth.req(payload)).to.be.eventually.rejectedWith(Error)
       })
     })
   })

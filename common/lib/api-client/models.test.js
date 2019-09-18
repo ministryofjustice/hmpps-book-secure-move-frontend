@@ -1,4 +1,4 @@
-const proxyquire = require('proxyquire').noCallThru()
+const proxyquire = require('proxyquire')
 const pluralize = require('pluralize')
 const { forEach, flatten, get, startCase } = require('lodash')
 
@@ -72,8 +72,8 @@ const testCases = {
 
 const client = proxyquire('./', {
   '../../../config': mockConfig,
-  './middleware/auth': {
-    devourAuthMiddleware: sinon.stub(),
+  './middleware': {
+    auth: sinon.stub(),
   },
 })()
 

@@ -163,37 +163,4 @@ describe('Back-end API client', function() {
       })
     })
   })
-
-  describe('#find', function() {
-    let apiMock
-
-    beforeEach(async function() {
-      const client = proxyquire('./', {
-        '../../../config': mockConfig,
-      })()
-
-      const accessToken = 'foo'
-      const path = 'tests'
-      const id = 123
-
-      sinon.stub(auth, 'getAccessToken').returns(accessToken)
-      sinon
-        .stub(auth, 'getAccessTokenExpiry')
-        .returns(Math.floor(new Date() / 1000) + 100)
-
-      apiMock = nock(mockConfig.API.BASE_URL, {
-        reqheaders: {
-          authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .get(`/${path}/${id}`)
-        .reply(200)
-
-      await client.find(path, id)
-    })
-
-    it('adds the access token to the headers of the request', function() {
-      expect(apiMock.isDone()).to.be.true
-    })
-  })
 })
