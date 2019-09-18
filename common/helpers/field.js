@@ -1,11 +1,16 @@
 const { cloneDeep, fromPairs, get, set } = require('lodash')
 
 const componentService = require('../services/component')
+const i18n = require('../../config/i18n')
 
-function mapReferenceDataToOption({ id, title, key, conditional }) {
+function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
     value: id,
     text: title,
+  }
+
+  if (hint) {
+    option.hint = { text: hint }
   }
 
   if (key) {
@@ -17,6 +22,18 @@ function mapReferenceDataToOption({ id, title, key, conditional }) {
   }
 
   return option
+}
+
+function mapAssessmentQuestionToTranslation(item) {
+  const { category, key, title } = item
+  const hintKey = `fields::${category}.items.${key}.hint`
+  const labelKey = `fields::${category}.items.${key}.label`
+
+  return {
+    ...item,
+    hint: i18n.exists(hintKey) ? hintKey : undefined,
+    title: i18n.exists(labelKey) ? labelKey : title,
+  }
 }
 
 function mapAssessmentQuestionToConditionalField(item) {
@@ -161,6 +178,7 @@ function insertItemConditional({ key, field }) {
 }
 
 module.exports = {
+  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,

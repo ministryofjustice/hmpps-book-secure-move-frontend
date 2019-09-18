@@ -24,6 +24,7 @@ class AssessmentController extends CreateBaseController {
               field.items = response
                 .filter(referenceDataHelpers.filterDisabled())
                 .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
+                .map(fieldHelpers.mapAssessmentQuestionToTranslation)
                 .map(fieldHelpers.mapReferenceDataToOption)
             })
         })
