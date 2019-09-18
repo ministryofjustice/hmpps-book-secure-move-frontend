@@ -18,24 +18,24 @@
       "assessment_answers": [{
         "title": "Medication",
         "comments": "Anti-biotics taken three-times daily",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2014-11-20",
+        "expires_at": null,
         "assessment_question_id": "ea8e4432-de89-49c7-8027-cf22e6cab161",
         "category": "health",
         "key": "medication"
       }, {
         "title": "Concealed items",
         "comments": "Rock hammer found in cell",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2014-10-28",
+        "expires_at": "2019-07-13",
         "assessment_question_id": "12ba96c6-b50c-4c13-902b-0ec324f92af4",
         "category": "risk",
         "key": "concealed_items"
       }, {
         "title": "Health issue",
         "comments": "Broken arm",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-07-20",
+        "expires_at": "2018-07-31",
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
@@ -100,24 +100,24 @@
       "assessment_answers": [{
         "title": "Any other risks",
         "comments": "Train spotter",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "228aa58e-f405-42a9-a45e-8f556618beb4",
         "category": "risk",
         "key": "other_risks"
       }, {
         "title": "Escape",
         "comments": "Climber",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-01-24",
+        "expires_at": "2018-01-24",
         "assessment_question_id": "4b870699-315d-4361-88b5-12e6d620716a",
         "category": "risk",
         "key": "escape"
       }, {
         "title": "Solicitor or other legal representation",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2017-01-09",
+        "expires_at": null,
         "assessment_question_id": "fa28d201-2e46-4104-86f1-3b3d38cb889e",
         "category": "court",
         "key": "solicitor"
@@ -179,24 +179,24 @@
       "assessment_answers": [{
         "title": "Any other information",
         "comments": "Former prison officer",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-03-01",
+        "expires_at": null,
         "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
         "category": "court",
         "key": "other_court"
       }, {
         "title": "Solicitor or other legal representation",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-04-27",
+        "expires_at": null,
         "assessment_question_id": "fa28d201-2e46-4104-86f1-3b3d38cb889e",
         "category": "court",
         "key": "solicitor"
       }, {
         "title": "Health issue",
         "comments": "Keeps complaining of headaches",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-04-15",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
@@ -258,24 +258,24 @@
       "assessment_answers": [{
         "title": "Solicitor or other legal representation",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "fa28d201-2e46-4104-86f1-3b3d38cb889e",
         "category": "court",
         "key": "solicitor"
       }, {
         "title": "Medication",
         "comments": "Anti-biotics taken three-times daily",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-10-19",
+        "expires_at": null,
         "assessment_question_id": "ea8e4432-de89-49c7-8027-cf22e6cab161",
         "category": "health",
         "key": "medication"
       }, {
         "title": "Must be held separately",
         "comments": "Threat to other prisoners",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-10-19",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
@@ -337,24 +337,24 @@
       "assessment_answers": [{
         "title": "Any other risks",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-04-10",
+        "expires_at": null,
         "assessment_question_id": "228aa58e-f405-42a9-a45e-8f556618beb4",
         "category": "risk",
         "key": "other_risks"
       }, {
         "title": "Any other information",
         "comments": "Former prison officer",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
         "category": "court",
         "key": "other_court"
       }, {
         "title": "Special diet or allergy",
         "comments": "Gluten allergy",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "6e24de93-efdf-4789-9595-8995f4ea34b9",
         "category": "health",
         "key": "special_diet_or_allergy"
@@ -416,24 +416,24 @@
       "assessment_answers": [{
         "title": "Escape",
         "comments": "Climber",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-07",
+        "expires_at": null,
         "assessment_question_id": "4b870699-315d-4361-88b5-12e6d620716a",
         "category": "risk",
         "key": "escape"
       }, {
         "title": "Concealed items",
         "comments": "Rock hammer found in cell",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-06",
+        "expires_at": null,
         "assessment_question_id": "12ba96c6-b50c-4c13-902b-0ec324f92af4",
         "category": "risk",
         "key": "concealed_items"
       }, {
         "title": "Health issue",
         "comments": "Broken arm",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-28",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
@@ -495,24 +495,24 @@
       "assessment_answers": [{
         "title": "Self harm",
         "comments": "Attempted suicide",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-28",
+        "expires_at": null,
         "assessment_question_id": "3e3e20ce-4b41-4c52-a10c-23be5971b00b",
         "category": "risk",
         "key": "self_harm"
       }, {
         "title": "Pregnant",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-28",
+        "expires_at": null,
         "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
         "category": "health",
         "key": "pregnant"
       }, {
         "title": "Must be held separately",
         "comments": "Threat to other prisoners",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-06",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
@@ -574,24 +574,24 @@
       "assessment_answers": [{
         "title": "Sign or other language interpreter",
         "comments": "Only speaks Welsh",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2013-08-20",
+        "expires_at": null,
         "assessment_question_id": "06d6584a-91bd-4b24-9c32-64fe880bfdba",
         "category": "court",
         "key": "interpreter"
       }, {
         "title": "Pregnant",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": "2020-09-18",
         "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
         "category": "health",
         "key": "pregnant"
       }, {
         "title": "Any other requirements",
         "comments": "Agrophobic",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": null,
         "assessment_question_id": "225bdd39-d336-4c07-bfb4-9ac92748389e",
         "category": "health",
         "key": "other_health"
@@ -653,24 +653,24 @@
       "assessment_answers": [{
         "title": "Pregnant",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": null,
         "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
         "category": "health",
         "key": "pregnant"
       }, {
         "title": "Wheelchair user",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": null,
         "assessment_question_id": "8ab102a9-b108-4741-9cc6-3b5d1997c964",
         "category": "health",
         "key": "wheelchair"
       }, {
         "title": "Must be held separately",
         "comments": "Infectious skin disorder",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-04-10",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
@@ -732,24 +732,24 @@
       "assessment_answers": [{
         "title": "Concealed items",
         "comments": "Penknife found in trouser pockets",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-04-10",
+        "expires_at": null,
         "assessment_question_id": "12ba96c6-b50c-4c13-902b-0ec324f92af4",
         "category": "risk",
         "key": "concealed_items"
       }, {
         "title": "Any other information",
         "comments": "Former prison officer",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-28",
+        "expires_at": null,
         "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
         "category": "court",
         "key": "other_court"
       }, {
         "title": "Must be held separately",
         "comments": "Infectious skin disorder",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-04-10",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
@@ -811,24 +811,24 @@
       "assessment_answers": [{
         "title": "Escape",
         "comments": "Former miner",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-04-15",
+        "expires_at": null,
         "assessment_question_id": "4b870699-315d-4361-88b5-12e6d620716a",
         "category": "risk",
         "key": "escape"
       }, {
         "title": "Special diet or allergy",
         "comments": "Vegan",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-03-01",
+        "expires_at": null,
         "assessment_question_id": "6e24de93-efdf-4789-9595-8995f4ea34b9",
         "category": "health",
         "key": "special_diet_or_allergy"
       }, {
         "title": "Health issue",
         "comments": "Heart condition",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
@@ -890,24 +890,24 @@
       "assessment_answers": [{
         "title": "Must be held separately",
         "comments": "Incitement to riot",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-04-27",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
       }, {
         "title": "Sign or other language interpreter",
         "comments": "Only speaks Welsh",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "06d6584a-91bd-4b24-9c32-64fe880bfdba",
         "category": "court",
         "key": "interpreter"
       }, {
         "title": "Health issue",
         "comments": "Heart condition",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-04-10",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
@@ -969,24 +969,24 @@
       "assessment_answers": [{
         "title": "Self harm",
         "comments": "Attempted suicide",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-06",
+        "expires_at": null,
         "assessment_question_id": "3e3e20ce-4b41-4c52-a10c-23be5971b00b",
         "category": "risk",
         "key": "self_harm"
       }, {
         "title": "Pregnant",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
         "category": "health",
         "key": "pregnant"
       }, {
         "title": "Must be held separately",
         "comments": "Threat to other prisoners",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-01-24",
+        "expires_at": null,
         "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
         "category": "risk",
         "key": "hold_separately"
@@ -1048,24 +1048,24 @@
       "assessment_answers": [{
         "title": "Health issue",
         "comments": "Broken arm",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-06",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
       }, {
         "title": "Violent",
         "comments": "Karate black belt",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2017-01-09",
+        "expires_at": null,
         "assessment_question_id": "16218f43-2635-4a2b-b36b-4873096701e4",
         "category": "risk",
         "key": "violent"
       }, {
         "title": "Wheelchair user",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-04-15",
+        "expires_at": "2019-10-15",
         "assessment_question_id": "8ab102a9-b108-4741-9cc6-3b5d1997c964",
         "category": "health",
         "key": "wheelchair"
@@ -1127,24 +1127,24 @@
       "assessment_answers": [{
         "title": "Health issue",
         "comments": "Broken arm",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
         "category": "health",
         "key": "health_issue"
       }, {
         "title": "Violent",
         "comments": "Karate black belt",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-01-24",
+        "expires_at": null,
         "assessment_question_id": "16218f43-2635-4a2b-b36b-4873096701e4",
         "category": "risk",
         "key": "violent"
       }, {
         "title": "Wheelchair user",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": null,
         "assessment_question_id": "8ab102a9-b108-4741-9cc6-3b5d1997c964",
         "category": "health",
         "key": "wheelchair"
@@ -1206,24 +1206,24 @@
       "assessment_answers": [{
         "title": "Any other risks",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "228aa58e-f405-42a9-a45e-8f556618beb4",
         "category": "risk",
         "key": "other_risks"
       }, {
         "title": "Any other information",
         "comments": "Former prison officer",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-04-15",
+        "expires_at": null,
         "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
         "category": "court",
         "key": "other_court"
       }, {
         "title": "Special diet or allergy",
         "comments": "Gluten allergy",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-07",
+        "expires_at": null,
         "assessment_question_id": "6e24de93-efdf-4789-9595-8995f4ea34b9",
         "category": "health",
         "key": "special_diet_or_allergy"
@@ -1285,24 +1285,24 @@
       "assessment_answers": [{
         "title": "Medication",
         "comments": "Heart medication needed twice daily",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "ea8e4432-de89-49c7-8027-cf22e6cab161",
         "category": "health",
         "key": "medication"
       }, {
         "title": "Any other requirements",
         "comments": "Claustophobic",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2013-08-20",
+        "expires_at": null,
         "assessment_question_id": "225bdd39-d336-4c07-bfb4-9ac92748389e",
         "category": "health",
         "key": "other_health"
       }, {
         "title": "Pregnant",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-01-24",
+        "expires_at": null,
         "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
         "category": "health",
         "key": "pregnant"
@@ -1364,24 +1364,24 @@
       "assessment_answers": [{
         "title": "Any other risks",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "228aa58e-f405-42a9-a45e-8f556618beb4",
         "category": "risk",
         "key": "other_risks"
       }, {
         "title": "Any other information",
         "comments": "Former prison officer",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2013-08-20",
+        "expires_at": null,
         "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
         "category": "court",
         "key": "other_court"
       }, {
         "title": "Special diet or allergy",
         "comments": "Gluten allergy",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-09-18",
+        "expires_at": null,
         "assessment_question_id": "6e24de93-efdf-4789-9595-8995f4ea34b9",
         "category": "health",
         "key": "special_diet_or_allergy"
@@ -1443,24 +1443,24 @@
       "assessment_answers": [{
         "title": "Any other requirements",
         "comments": "Agrophobic",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-01-24",
+        "expires_at": null,
         "assessment_question_id": "225bdd39-d336-4c07-bfb4-9ac92748389e",
         "category": "health",
         "key": "other_health"
       }, {
         "title": "Concealed items",
         "comments": "Rock hammer found in cell",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2019-06-28",
+        "expires_at": null,
         "assessment_question_id": "12ba96c6-b50c-4c13-902b-0ec324f92af4",
         "category": "risk",
         "key": "concealed_items"
       }, {
         "title": "Sign or other language interpreter",
         "comments": "Only speaks Welsh",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-03-06",
+        "expires_at": null,
         "assessment_question_id": "06d6584a-91bd-4b24-9c32-64fe880bfdba",
         "category": "court",
         "key": "interpreter"
@@ -1522,24 +1522,24 @@
       "assessment_answers": [{
         "title": "Concealed items",
         "comments": "Rock hammer found in cell",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2015-05-28",
+        "expires_at": null,
         "assessment_question_id": "12ba96c6-b50c-4c13-902b-0ec324f92af4",
         "category": "risk",
         "key": "concealed_items"
       }, {
         "title": "Solicitor or other legal representation",
         "comments": "",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2018-07-31",
+        "expires_at": null,
         "assessment_question_id": "fa28d201-2e46-4104-86f1-3b3d38cb889e",
         "category": "court",
         "key": "solicitor"
       }, {
         "title": "Any other requirements",
         "comments": "Claustophobic",
-        "date": null,
-        "expiry_date": null,
+        "created_at": "2016-07-20",
+        "expires_at": null,
         "assessment_question_id": "225bdd39-d336-4c07-bfb4-9ac92748389e",
         "category": "health",
         "key": "other_health"

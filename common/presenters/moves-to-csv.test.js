@@ -3,7 +3,8 @@ const path = require('path')
 const json2csv = require('json2csv')
 
 const movesToCSV = require('./moves-to-csv')
-const referenceDataServce = require('../services/reference-data')
+const referenceDataService = require('../services/reference-data')
+const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
 const mockMoves = require('../../test/fixtures/moves.json')
 
@@ -50,12 +51,15 @@ describe('Presenters', function() {
     beforeEach(function() {
       sinon.spy(json2csv, 'parse')
       sinon.stub(i18n, 't').returnsArg(0)
-      sinon.stub(referenceDataServce, 'getAssessmentQuestions')
+      sinon.stub(referenceDataService, 'getAssessmentQuestions')
+      sinon.stub(referenceDataHelpers, 'filterExpired').callsFake(item => {
+        return true
+      })
     })
 
     context('with mock move response', function() {
       beforeEach(async function() {
-        referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
+        referenceDataService.getAssessmentQuestions.resolves(mockQuestions)
 
         transformedResponse = await movesToCSV(mockMoves)
       })
@@ -70,13 +74,17 @@ describe('Presenters', function() {
       })
 
       it('should call translations correct number of times', function() {
-        expect(i18n.t).to.be.callCount(28)
+        expect(i18n.t.callCount).to.equal(28)
+      })
+
+      it('should check alert is expired on each question', function() {
+        expect(referenceDataHelpers.filterExpired.callCount).to.equal(360)
       })
     })
 
     context('with no moves', function() {
       beforeEach(async function() {
-        referenceDataServce.getAssessmentQuestions.resolves(mockQuestions)
+        referenceDataService.getAssessmentQuestions.resolves(mockQuestions)
 
         transformedResponse = await movesToCSV([])
       })
@@ -95,7 +103,7 @@ describe('Presenters', function() {
       const errorStub = new Error('Error stub')
 
       beforeEach(function() {
-        referenceDataServce.getAssessmentQuestions.rejects(errorStub)
+        referenceDataService.getAssessmentQuestions.rejects(errorStub)
       })
 
       it('should return error', function() {

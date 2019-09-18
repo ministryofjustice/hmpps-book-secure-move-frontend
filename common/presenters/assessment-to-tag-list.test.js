@@ -13,14 +13,18 @@ const mockWhitelist = {
 
 describe('Presenters', function() {
   describe('#assessmentToTagList()', function() {
-    let assessmentToTagList, answerToTagStub, mapStub
+    let assessmentToTagList, answerToTagStub, filterExpiredStub, mapStub
 
     beforeEach(function() {
       answerToTagStub = sinon.stub()
+      filterExpiredStub = sinon.stub()
       mapStub = sinon.stub().returnsArg(0)
       assessmentToTagList = proxyquire('./assessment-to-tag-list', {
         '../../config': {
           TAG_CATEGORY_WHITELIST: mockWhitelist,
+        },
+        '../../common/helpers/reference-data': {
+          filterExpired: filterExpiredStub.returnsArg(0),
         },
         './assessment-answer-to-tag': answerToTagStub.returns(mapStub),
       })
@@ -98,6 +102,20 @@ describe('Presenters', function() {
             category: 'whitelisted',
           },
         ])
+      })
+
+      it('should call expired filter', function() {
+        const mockAnswers = [
+          {
+            key: 'escape',
+            title: 'Escape risk',
+            assessment_question_id: '195d3f05-4d25-43ef-8e7e-6d3a0e742888',
+            category: 'whitelisted_other',
+          },
+        ]
+        assessmentToTagList(mockAnswers)
+
+        expect(filterExpiredStub).to.be.calledOnce
       })
     })
 

@@ -16,6 +16,9 @@ const assessmentByCategory = proxyquire('./assessment-by-category', {
       },
     },
   },
+  '../../common/helpers/reference-data': {
+    filterExpired: sinon.stub().returnsArg(0),
+  },
 })
 
 describe('Presenters', function() {
