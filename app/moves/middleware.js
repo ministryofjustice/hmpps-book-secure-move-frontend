@@ -1,5 +1,11 @@
 const queryString = require('query-string')
-const { format, addDays, subDays } = require('date-fns')
+const {
+  format,
+  addDays,
+  subDays,
+  isValid: isValidDate,
+  parse: parseDate,
+} = require('date-fns')
 const { find, get } = require('lodash')
 
 const { getQueryString } = require('../../common/lib/request')
@@ -35,8 +41,14 @@ module.exports = {
     next()
   },
   setMoveDate: (req, res, next) => {
-    res.locals.moveDate =
-      req.query['move-date'] || format(new Date(), moveDateFormat)
+    const date = parseDate(req.query['move-date'] || new Date())
+    const validDate = isValidDate(date)
+
+    if (!validDate) {
+      return res.redirect(req.baseUrl)
+    }
+
+    res.locals.moveDate = format(date, moveDateFormat)
 
     next()
   },

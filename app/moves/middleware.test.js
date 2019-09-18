@@ -190,7 +190,10 @@ describe('Moves middleware', function() {
     let req, res, nextSpy
 
     beforeEach(function() {
-      res = { locals: {} }
+      res = {
+        locals: {},
+        redirect: sinon.stub(),
+      }
       nextSpy = sinon.spy()
     })
 
@@ -220,23 +223,50 @@ describe('Moves middleware', function() {
     })
 
     context('when move date exists in query', function() {
-      beforeEach(function() {
-        req = {
-          query: {
-            'move-date': '2019-10-10',
-          },
-        }
+      context('with valid move date', function() {
+        beforeEach(function() {
+          req = {
+            query: {
+              'move-date': '2019-10-10',
+            },
+          }
 
-        middleware.setMoveDate(req, res, nextSpy)
+          middleware.setMoveDate(req, res, nextSpy)
+        })
+
+        it('should set move date to query value', function() {
+          expect(res.locals).to.have.property('moveDate')
+          expect(res.locals.moveDate).to.equal('2019-10-10')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should set move date to query value', function() {
-        expect(res.locals).to.have.property('moveDate')
-        expect(res.locals.moveDate).to.equal('2019-10-10')
-      })
+      context('with invalid move date', function() {
+        beforeEach(function() {
+          req = {
+            baseUrl: '/req-base',
+            query: {
+              'move-date': 'Invalid date',
+            },
+          }
 
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+          middleware.setMoveDate(req, res, nextSpy)
+        })
+
+        it('should redirect to base url', function() {
+          expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
+        })
+
+        it('should not set move date', function() {
+          expect(res.locals).not.to.have.property('moveDate')
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.be.called
+        })
       })
     })
   })
