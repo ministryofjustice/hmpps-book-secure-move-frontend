@@ -38,7 +38,6 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
     <script>
-      var canonical = document.querySelector('link[rel=canonical]');
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -58,6 +57,17 @@
   <link rel="apple-touch-icon" sizes="167x167" href="{{ getAssetPath('images/hmpps-apple-touch-icon-167x167.png') }}">
   <link rel="apple-touch-icon" sizes="152x152" href="{{ getAssetPath('images/hmpps-apple-touch-icon-152x152.png') }}">
   <link rel="apple-touch-icon" href="{{ getAssetPath('images/hmpps-apple-touch-icon.png') }}">
+{% endblock %}
+
+{% block bodyStart %}
+  {% if GA_ID %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id={{ GA_ID }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
 {% endblock %}
 
 {% block header %}
