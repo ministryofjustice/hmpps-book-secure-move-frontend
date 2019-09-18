@@ -1,6 +1,7 @@
 const { cloneDeep, set } = require('lodash')
 
 const {
+  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
@@ -12,6 +13,7 @@ const {
 } = require('./field')
 
 const componentService = require('../services/component')
+const i18n = require('../../config/i18n')
 
 describe('Form helpers', function() {
   describe('#mapReferenceDataToOption()', function() {
@@ -57,6 +59,69 @@ describe('Form helpers', function() {
           key: 'unique_key',
           value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           text: 'Foo',
+        })
+      })
+    })
+
+    context('with hint property', function() {
+      it('should return correctly formatted option', function() {
+        const option = mapReferenceDataToOption({
+          key: 'unique_key',
+          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          title: 'Foo',
+          hint: 'eat more vegetables',
+        })
+
+        expect(option).to.deep.equal({
+          key: 'unique_key',
+          value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
+          text: 'Foo',
+          hint: {
+            text: 'eat more vegetables',
+          },
+        })
+      })
+    })
+  })
+
+  describe('#mapAssessmentQuestionToTranslation()', function() {
+    const mockItem = {
+      title: 'example title',
+      category: 'mock-category',
+      key: 'mock-key',
+      hint: 'mock hint',
+    }
+
+    context('without available translations', function() {
+      beforeEach(function() {
+        sinon.stub(i18n, 'exists').returns(false)
+      })
+
+      it('should return unchanged item', function() {
+        const option = mapAssessmentQuestionToTranslation(mockItem)
+
+        expect(option).to.deep.equal({
+          title: 'example title',
+          category: 'mock-category',
+          hint: undefined,
+          key: 'mock-key',
+        })
+      })
+    })
+
+    context('with available translations', function() {
+      beforeEach(function() {
+        sinon.stub(i18n, 'exists').returns(true)
+      })
+
+      it('should return item with translation strings', function() {
+        const option = mapAssessmentQuestionToTranslation(mockItem)
+
+        expect(option).to.deep.equal({
+          title: 'fields::mock-category.items.mock-key.label',
+          category: 'mock-category',
+          hint: 'fields::mock-category.items.mock-key.hint',
+          key: 'mock-key',
         })
       })
     })
