@@ -6,8 +6,8 @@ const filters = require('../../config/nunjucks/filters')
 
 function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
   return function item({ id, reference, person = {} }) {
-    let meta = {}
-    let tags = {}
+    const meta = {}
+    const tags = {}
     const href = `/move/${id}`
     const {
       gender = {},

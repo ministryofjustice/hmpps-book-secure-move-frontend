@@ -49,7 +49,7 @@ describe('Permissions middleware', function() {
         expect(nextSpy).to.be.calledOnce
         expect(error).to.be.an.instanceOf(Error)
         expect(error.message).to.equal(
-          `Forbidden. Missing permission: 'required_permission'`
+          "Forbidden. Missing permission: 'required_permission'"
         )
         expect(error.statusCode).to.equal(403)
       })
@@ -68,7 +68,7 @@ describe('Permissions middleware', function() {
         expect(nextSpy).to.be.calledOnce
         expect(error).to.be.an.instanceOf(Error)
         expect(error.message).to.equal(
-          `Forbidden. Missing permission: 'required_permission'`
+          "Forbidden. Missing permission: 'required_permission'"
         )
         expect(error.statusCode).to.equal(403)
       })
