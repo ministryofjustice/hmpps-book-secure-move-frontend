@@ -8,7 +8,12 @@ MockRedisStore.prototype.init = opts => {
   return this
 }
 
+const mockRedisClient = {
+  createClient: sinon.stub().returns('mockClient'),
+}
+
 const redisStore = proxyquire('./redis-store', {
+  redis: mockRedisClient,
   'connect-redis': function() {
     return MockRedisStore
   },
@@ -16,6 +21,7 @@ const redisStore = proxyquire('./redis-store', {
 
 const mockOptions = {
   url: 'redis://user:password@host.com/0',
+  client: 'mockClient',
 }
 
 describe('Redis store', function() {

@@ -1,6 +1,8 @@
+const redis = require('redis')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 
+const client = redis.createClient()
 let store
 
 module.exports = function redisStore(options) {
@@ -12,7 +14,10 @@ module.exports = function redisStore(options) {
     return
   }
 
-  store = new RedisStore(options)
+  store = new RedisStore({
+    ...options,
+    client,
+  })
 
   return store
 }
