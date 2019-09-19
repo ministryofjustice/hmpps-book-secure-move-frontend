@@ -57,10 +57,12 @@ const commonConfig = {
           {
             loader: 'sass-loader',
             options: {
-              includePaths: [
-                path.resolve(__dirname, 'node_modules'),
-                configPaths.components,
-              ],
+              sassOptions: {
+                includePaths: [
+                  path.resolve(__dirname, 'node_modules'),
+                  configPaths.components,
+                ],
+              },
             },
           },
         ],
