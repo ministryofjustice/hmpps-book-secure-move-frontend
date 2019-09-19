@@ -20,7 +20,7 @@ Message.prototype = {
       return
     }
 
-    let link = document.createElement('a')
+    const link = document.createElement('a')
 
     link.innerHTML = 'Dismiss'
     link.className = 'app-message__close'

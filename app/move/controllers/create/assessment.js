@@ -14,7 +14,7 @@ class AssessmentController extends CreateBaseController {
         Object.keys(fields).map(key => {
           const field = fields[key]
 
-          if (!field.hasOwnProperty('items')) {
+          if (!Object.prototype.hasOwnProperty.call(field, 'items')) {
             return
           }
 
