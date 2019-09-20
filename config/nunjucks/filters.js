@@ -4,7 +4,7 @@ const {
   isTomorrow,
   isYesterday,
   differenceInYears,
-  parse: parseDate,
+  parseISO,
   isValid: isValidDate,
 } = require('date-fns')
 const { kebabCase } = require('lodash')
@@ -25,7 +25,7 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   if (!value) {
     return value
   }
-  const parsedDate = parseDate(value)
+  const parsedDate = parseISO(value)
 
   if (!isValidDate(parsedDate)) {
     return value
@@ -60,15 +60,15 @@ function formatDateAsRelativeDay(
   value,
   formattedDateStr = DATE_FORMATS.WITH_DAY
 ) {
-  if (isToday(value)) {
+  if (isToday(parseISO(value))) {
     return 'Today'
   }
 
-  if (isTomorrow(value)) {
+  if (isTomorrow(parseISO(value))) {
     return 'Tomorrow'
   }
 
-  if (isYesterday(value)) {
+  if (isYesterday(parseISO(value))) {
     return 'Yesterday'
   }
 
@@ -82,7 +82,7 @@ function formatDateAsRelativeDay(
  * @example {{ "2000-02-21" | calculateAge }}
  */
 function calculateAge(value) {
-  const parsedDate = parseDate(value)
+  const parsedDate = parseISO(value)
 
   if (!isValidDate(parsedDate)) {
     return value
@@ -98,7 +98,7 @@ function calculateAge(value) {
  * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
  */
 function formatTime(value) {
-  const parsedDate = parseDate(value)
+  const parsedDate = parseISO(value)
 
   if (!value || !isValidDate(parsedDate)) {
     return value
@@ -107,7 +107,7 @@ function formatTime(value) {
   const hours = format(parsedDate, 'h')
   const parsedMins = format(parsedDate, 'mm')
   const minutes = parsedMins !== '00' ? `:${parsedMins}` : ''
-  const suffix = format(parsedDate, 'a')
+  const suffix = format(parsedDate, 'a').toLowerCase()
   const timeStr = `${hours}${minutes}${suffix}`
 
   if (timeStr === '12am') {

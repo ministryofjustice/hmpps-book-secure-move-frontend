@@ -1,11 +1,17 @@
-const { isToday, isTomorrow, isYesterday } = require('date-fns')
+const { isToday, isTomorrow, isYesterday, parseISO } = require('date-fns')
 const { get } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 function isRelativeDate(date) {
-  if (isToday(date) || isTomorrow(date) || isYesterday(date)) {
+  const parsedDate = parseISO(date)
+
+  if (
+    isToday(parsedDate) ||
+    isTomorrow(parsedDate) ||
+    isYesterday(parsedDate)
+  ) {
     return true
   }
 

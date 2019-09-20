@@ -41,9 +41,9 @@ module.exports = {
     TIMEOUT: 30000, // in milliseconds
   },
   DATE_FORMATS: {
-    SHORT: 'D M YYYY',
-    LONG: 'D MMM YYYY',
-    WITH_DAY: 'dddd D MMM YYYY',
+    SHORT: 'd M yyyy',
+    LONG: 'd MMM yyyy',
+    WITH_DAY: 'EEEE d MMM yyyy',
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   SENTRY: {

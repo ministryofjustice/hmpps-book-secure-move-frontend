@@ -1,5 +1,5 @@
 const { set } = require('lodash')
-const dateFns = require('date-fns')
+const { format, startOfToday, startOfTomorrow, parseISO } = require('date-fns')
 
 const CreateBaseController = require('./base')
 const filters = require('../../../../config/nunjucks/filters')
@@ -50,16 +50,13 @@ class MoveDetailsController extends CreateBaseController {
     let moveDate
 
     if (dateType === 'custom') {
-      moveDate = req.form.values.date_custom
+      moveDate = parseISO(req.form.values.date_custom)
     } else {
       req.form.values.date_custom = ''
-      moveDate =
-        dateType === 'today'
-          ? dateFns.startOfToday()
-          : dateFns.startOfTomorrow()
+      moveDate = dateType === 'today' ? startOfToday() : startOfTomorrow()
     }
 
-    req.form.values.date = dateFns.format(moveDate, 'YYYY-MM-DD')
+    req.form.values.date = format(moveDate, 'yyyy-MM-dd')
 
     // process locations
     req.form.values.to_location = req.form.values[`to_location_${moveType}`]

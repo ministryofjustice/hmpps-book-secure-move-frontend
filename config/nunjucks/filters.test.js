@@ -4,8 +4,8 @@ const timezoneMock = require('timezone-mock')
 const filters = proxyquire('./filters', {
   '../index': {
     DATE_FORMATS: {
-      LONG: 'D MMM YYYY',
-      WITH_DAY: 'dddd D MMM YYYY',
+      LONG: 'd MMM yyyy',
+      WITH_DAY: 'EEEE d MMM yyyy',
     },
   },
 })
@@ -39,7 +39,7 @@ describe('Nunjucks filters', function() {
 
       context('when a format is specified', function() {
         it('should return date in that format', function() {
-          const formattedDate = filters.formatDate('2010-05-01', 'DD/MM/YY')
+          const formattedDate = filters.formatDate('2010-05-01', 'dd/MM/yy')
 
           expect(formattedDate).to.equal('01/05/10')
         })
@@ -98,7 +98,7 @@ describe('Nunjucks filters', function() {
         it('should return date in custom formatt', function() {
           const formattedDate = filters.formatDateAsRelativeDay(
             '2017-08-01',
-            'DD/MM/YY'
+            'dd/MM/yy'
           )
           expect(formattedDate).to.equal('01/08/17')
         })
