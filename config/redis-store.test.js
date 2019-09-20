@@ -4,11 +4,14 @@ function MockRedisStore(opts = {}) {
   this.isStore = true
   this.init(opts)
 }
-MockRedisStore.prototype.init = opts => {
-  return this
+MockRedisStore.prototype.init = opts => this
+
+const mockRedisClient = {
+  createClient: sinon.stub().returns('mockClient'),
 }
 
 const redisStore = proxyquire('./redis-store', {
+  redis: mockRedisClient,
   'connect-redis': function() {
     return MockRedisStore
   },
@@ -16,6 +19,10 @@ const redisStore = proxyquire('./redis-store', {
 
 const mockOptions = {
   url: 'redis://user:password@host.com/0',
+}
+
+const mockStoreOptions = {
+  client: 'mockClient',
 }
 
 describe('Redis store', function() {
@@ -46,13 +53,16 @@ describe('Redis store', function() {
           store = redisStore(mockOptions)
         })
 
-        it('should create a new client', function() {
-          expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
+        it('should create a new store', function() {
+          expect(mockRedisClient.createClient).to.be.calledOnceWithExactly(
             mockOptions
+          )
+          expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
+            mockStoreOptions
           )
         })
 
-        it('should return a new client', function() {
+        it('should return a new store', function() {
           expect(store).to.be.a('object')
           expect(store).to.deep.equal(new MockRedisStore())
         })
