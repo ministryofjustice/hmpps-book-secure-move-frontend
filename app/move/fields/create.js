@@ -6,7 +6,7 @@ const assessmentQuestionComments = {
   component: 'govukTextarea',
   classes: 'govuk-input--width-20',
   label: {
-    text: `fields::assessment_comment.optional`,
+    text: 'fields::assessment_comment.optional',
     classes: 'govuk-label--s',
   },
 }
@@ -125,11 +125,11 @@ module.exports = {
     classes: 'govuk-input--width-20',
     rows: 3,
     label: {
-      text: `fields::gender_additional_information.label`,
+      text: 'fields::gender_additional_information.label',
       classes: 'govuk-label--s govuk-input--width-20',
     },
     hint: {
-      text: `fields::gender_additional_information.hint`,
+      text: 'fields::gender_additional_information.hint',
       classes: 'govuk-input--width-20',
     },
   },
@@ -184,7 +184,7 @@ module.exports = {
     component: 'govukTextarea',
     classes: 'govuk-input--width-20',
     label: {
-      text: `fields::additional_information.label`,
+      text: 'fields::additional_information.label',
       classes: 'govuk-label--s',
     },
   },

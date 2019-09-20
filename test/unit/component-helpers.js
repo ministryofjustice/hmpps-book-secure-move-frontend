@@ -22,7 +22,7 @@ nunjucks.configure(configPaths.components, {
  * @returns {string} returns naming convention based macro name
  */
 function _componentNameToMacroName(componentName) {
-  let macroName = componentName
+  const macroName = componentName
     .toLowerCase()
     .split('-')
     // capitalize each 'word'
@@ -78,7 +78,7 @@ function getExamples(componentPath) {
 
   const examples = {}
 
-  for (let example of docs.examples) {
+  for (const example of docs.examples) {
     examples[example.name] = example.data
   }
 

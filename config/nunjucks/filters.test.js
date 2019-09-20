@@ -120,7 +120,7 @@ describe('Nunjucks filters', function() {
     })
 
     context('when given a valid date', function() {
-      let dateOfBirth = '1979-01-10'
+      const dateOfBirth = '1979-01-10'
 
       context('the day before a birthday', function() {
         beforeEach(function() {
