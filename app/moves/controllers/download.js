@@ -5,7 +5,7 @@ const presenters = require('../../../common/presenters')
 module.exports = function download(req, res, next) {
   const { extension } = req.params
   const { moveDate, requestedMovesByDate } = res.locals
-  const currentTimestamp = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+  const currentTimestamp = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
   const filename = req.t('moves::download_filename', {
     date: moveDate,
     timestamp: currentTimestamp,

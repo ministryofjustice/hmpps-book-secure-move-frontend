@@ -31,7 +31,7 @@ describe('Formatters', function() {
 
       context('with custom date format', function() {
         it('should return custom date format', function() {
-          const date = formatters.date('2010-10-10', 'DD/MM/YYYY')
+          const date = formatters.date('2010-10-10', 'dd/MM/yyyy')
           expect(date).to.equal('10/10/2010')
         })
       })

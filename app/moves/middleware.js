@@ -3,16 +3,16 @@ const {
   format,
   addDays,
   subDays,
+  parseISO,
   isValid: isValidDate,
-  parse: parseDate,
 } = require('date-fns')
-const { find, get } = require('lodash')
+const { find, get, isUndefined } = require('lodash')
 
 const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
 const permissions = require('../../common/middleware/permissions')
 
-const moveDateFormat = 'YYYY-MM-DD'
+const moveDateFormat = 'yyyy-MM-dd'
 
 module.exports = {
   redirectUsers: (req, res, next) => {
@@ -41,7 +41,8 @@ module.exports = {
     next()
   },
   setMoveDate: (req, res, next) => {
-    const date = parseDate(req.query['move-date'] || new Date())
+    const moveDate = req.query['move-date']
+    const date = isUndefined(moveDate) ? new Date() : parseISO(moveDate)
     const validDate = isValidDate(date)
 
     if (!validDate) {
@@ -69,8 +70,8 @@ module.exports = {
   setPagination: (req, res, next) => {
     const { moveDate } = res.locals
     const today = format(new Date(), moveDateFormat)
-    const previousDay = format(subDays(moveDate, 1), moveDateFormat)
-    const nextDay = format(addDays(moveDate, 1), moveDateFormat)
+    const previousDay = format(subDays(parseISO(moveDate), 1), moveDateFormat)
+    const nextDay = format(addDays(parseISO(moveDate), 1), moveDateFormat)
 
     res.locals.pagination = {
       todayUrl: getQueryString(req.query, { 'move-date': today }),
