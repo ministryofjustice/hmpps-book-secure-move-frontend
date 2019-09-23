@@ -1,31 +1,31 @@
-const { find } = require('lodash')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
+function mapIdentifier({ value, identifier_type: type }) {
+  return {
+    key: {
+      text: i18n.t(`fields::${type}.label`),
+    },
+    value: {
+      text: value,
+    },
+  }
+}
+
 module.exports = function personToSummaryListComponent({
-  date_of_birth: dateOfBirth,
   gender,
-  gender_additional_information: genderAdditionalInformation,
   ethnicity,
-  identifiers,
+  identifiers = [],
+  date_of_birth: dateOfBirth,
+  gender_additional_information: genderAdditionalInformation,
 }) {
   const age = `(${i18n.t('age')} ${filters.calculateAge(dateOfBirth)})`
   const genderExtra = genderAdditionalInformation
     ? ` — ${genderAdditionalInformation}`
     : ''
-  const pncNumber = find(identifiers, {
-    identifier_type: 'police_national_computer',
-  })
+
   const rows = [
-    {
-      key: {
-        text: i18n.t('fields::police_national_computer.label'),
-      },
-      value: {
-        text: pncNumber ? pncNumber.value : '',
-      },
-    },
+    ...identifiers.map(mapIdentifier),
     {
       key: {
         text: i18n.t('fields::date_of_birth.label'),

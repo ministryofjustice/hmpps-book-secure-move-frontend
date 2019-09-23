@@ -2,6 +2,12 @@
   "police_national_computer": {
     "label": "PNC number"
   },
+  "prison_number": {
+    "label": "Prison number"
+  },
+  "criminal_records_office": {
+    "label": "CRO  number"
+  },
   "first_names": {
     "label": "First name(s)"
   },

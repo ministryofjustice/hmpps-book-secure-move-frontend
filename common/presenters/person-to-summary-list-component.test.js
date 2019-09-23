@@ -11,6 +11,14 @@ const mockPerson = {
       identifier_type: 'police_national_computer',
       value: '11009922',
     },
+    {
+      identifier_type: 'prison_number',
+      value: 'AA/183716',
+    },
+    {
+      identifier_type: 'criminal_records_office',
+      value: 'JS901873',
+    },
   ],
   ethnicity: {
     title: 'Mixed (White and Black Caribbean)',
@@ -38,20 +46,30 @@ describe('Presenters', function() {
       describe('response', function() {
         it('should contain rows property', function() {
           expect(transformedResponse).to.have.property('rows')
-          expect(transformedResponse.rows.length).to.equal(4)
+          expect(transformedResponse.rows.length).to.equal(6)
         })
 
-        it('should contain PNC as first row', function() {
-          const row = transformedResponse.rows[0]
+        it('should contain identifiers first', function() {
+          const row1 = transformedResponse.rows[0]
+          const row2 = transformedResponse.rows[1]
+          const row3 = transformedResponse.rows[2]
 
-          expect(row).to.deep.equal({
+          expect(row1).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: mockPerson.identifiers[0].value },
           })
+          expect(row2).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: mockPerson.identifiers[1].value },
+          })
+          expect(row3).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: mockPerson.identifiers[2].value },
+          })
         })
 
-        it('should contain date of birth as second row', function() {
-          const row = transformedResponse.rows[1]
+        it('should contain date of birth', function() {
+          const row = transformedResponse.rows[3]
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
@@ -59,8 +77,8 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain gender as third row', function() {
-          const row = transformedResponse.rows[2]
+        it('should contain gender', function() {
+          const row = transformedResponse.rows[4]
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
@@ -70,8 +88,8 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain ethnicity as fourth row', function() {
-          const row = transformedResponse.rows[3]
+        it('should contain ethnicity', function() {
+          const row = transformedResponse.rows[5]
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
@@ -85,32 +103,38 @@ describe('Presenters', function() {
           expect(i18n.t.firstCall).to.be.calledWithExactly('age')
         })
 
-        it('should translate PNC number label', function() {
-          expect(i18n.t.secondCall).to.be.calledWithExactly(
+        it('should translate identifiers', function() {
+          expect(i18n.t.getCall(1)).to.be.calledWithExactly(
             'fields::police_national_computer.label'
+          )
+          expect(i18n.t.getCall(2)).to.be.calledWithExactly(
+            'fields::prison_number.label'
+          )
+          expect(i18n.t.getCall(3)).to.be.calledWithExactly(
+            'fields::criminal_records_office.label'
           )
         })
 
         it('should translate date of birth label', function() {
-          expect(i18n.t.thirdCall).to.be.calledWithExactly(
+          expect(i18n.t.getCall(4)).to.be.calledWithExactly(
             'fields::date_of_birth.label'
           )
         })
 
         it('should translate gender label', function() {
-          expect(i18n.t.getCall(3)).to.be.calledWithExactly(
+          expect(i18n.t.getCall(5)).to.be.calledWithExactly(
             'fields::gender.label'
           )
         })
 
         it('should translate ethnicity label', function() {
-          expect(i18n.t.getCall(4)).to.be.calledWithExactly(
+          expect(i18n.t.getCall(6)).to.be.calledWithExactly(
             'fields::ethnicity.label'
           )
         })
 
         it('should translate correct number of times', function() {
-          expect(i18n.t).to.be.callCount(5)
+          expect(i18n.t).to.be.callCount(7)
         })
       })
     })
@@ -123,7 +147,7 @@ describe('Presenters', function() {
       })
 
       describe('response', function() {
-        it('should return an empty string for police national computer', function() {
+        it('should return an empty string for date of birth', function() {
           const row = transformedResponse.rows[0]
 
           expect(row).to.deep.equal({
@@ -132,7 +156,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should return an empty string for date of birth', function() {
+        it('should return an empty string for gender', function() {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
@@ -141,17 +165,8 @@ describe('Presenters', function() {
           })
         })
 
-        it('should return an empty string for gender', function() {
-          const row = transformedResponse.rows[2]
-
-          expect(row).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: '' },
-          })
-        })
-
         it('should return an empty string for ethnicity', function() {
-          const row = transformedResponse.rows[3]
+          const row = transformedResponse.rows[2]
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
@@ -174,7 +189,7 @@ describe('Presenters', function() {
 
       describe('response', function() {
         it('should return only gender name', function() {
-          const row = transformedResponse.rows[2]
+          const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
             key: { text: '__translated__' },
