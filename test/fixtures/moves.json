@@ -114,6 +114,30 @@
         "category": "risk",
         "key": "escape"
       }, {
+        "title": "Violent",
+        "comments": "Can hurt members of the public",
+        "created_at": "2018-01-24",
+        "expires_at": "2018-01-24",
+        "assessment_question_id": "816c9e3c-1205-4c08-a500-5adb8303a665",
+        "category": "risk",
+        "key": "violent",
+        "nomis_alert_type": "R",
+        "nomis_alert_code": "RPB",
+        "nomis_alert_type_description": "Risk",
+        "nomis_alert_description": "Risk to Public - Community"
+      }, {
+        "title": "Violent",
+        "comments": "Hurts others",
+        "created_at": "2018-01-24",
+        "expires_at": "2018-01-24",
+        "assessment_question_id": "6cd39742-b5a2-4bbf-b5dc-3d444fd4ba39",
+        "category": "risk",
+        "key": "violent",
+        "nomis_alert_type": "X",
+        "nomis_alert_code": "XVL",
+        "nomis_alert_type_description": "Security",
+        "nomis_alert_description": "Violent"
+      }, {
         "title": "Solicitor or other legal representation",
         "comments": "",
         "created_at": "2017-01-09",
