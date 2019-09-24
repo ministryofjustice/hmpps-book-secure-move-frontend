@@ -6,6 +6,7 @@ const {
   differenceInYears,
   parseISO,
   isValid: isValidDate,
+  isDate,
 } = require('date-fns')
 const { kebabCase } = require('lodash')
 
@@ -25,12 +26,12 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   if (!value) {
     return value
   }
-  const parsedDate = parseISO(value)
+  const date = isDate(value) ? value : parseISO(value)
 
-  if (!isValidDate(parsedDate)) {
+  if (!isValidDate(date)) {
     return value
   }
-  return format(parsedDate, formattedDateStr)
+  return format(date, formattedDateStr)
 }
 
 /**

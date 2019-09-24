@@ -45,6 +45,26 @@ describe('Nunjucks filters', function() {
         })
       })
     })
+
+    context('when given a valid date object', function() {
+      const mockDate = new Date('2010-05-15')
+
+      context('when no format is specified', function() {
+        it('should return date in default format', function() {
+          const formattedDate = filters.formatDate(mockDate)
+
+          expect(formattedDate).to.equal('15 May 2010')
+        })
+      })
+
+      context('when a format is specified', function() {
+        it('should return date in that format', function() {
+          const formattedDate = filters.formatDate(mockDate, 'dd/MM/yy')
+
+          expect(formattedDate).to.equal('15/05/10')
+        })
+      })
+    })
   })
 
   describe('#formatDateWithDay()', function() {
