@@ -26,6 +26,7 @@
     "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
     "watch:js:client": "webpack --watch --progress",
     "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
+    "watch:test": "npm test -- --reporter=min --watch",
     "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"

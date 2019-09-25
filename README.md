@@ -74,10 +74,16 @@ Unit tests are run using the [Mocha](https://mochajs.org/) test framework and th
 
 It also includes the [Sinon](https://sinonjs.org/) library for test spies, stubs and mocks.
 
-To check unit tests results run:
+To check unit tests results:
 
 ```
-npm run test
+npm test
+```
+
+To watch unit tests whilst developing:
+
+```
+npm run watch:test
 ```
 
 ### Code coverage
