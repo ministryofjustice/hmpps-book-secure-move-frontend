@@ -135,6 +135,46 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#savePerson()', function() {
+      const mockId = '1234567'
+
+      beforeEach(function() {
+        sinon.stub(personService, 'create').resolves()
+        sinon.stub(personService, 'update').resolves()
+      })
+
+      context('without id', function() {
+        beforeEach(function() {
+          controller.savePerson(undefined, personMock)
+        })
+
+        it('should create a person via the personService', function() {
+          expect(personService.create).to.be.calledOnceWithExactly(personMock)
+        })
+
+        it('should not update a person via the personService', function() {
+          expect(personService.update).to.not.be.called
+        })
+      })
+
+      context('with id', function() {
+        beforeEach(function() {
+          controller.savePerson(mockId, personMock)
+        })
+
+        it('should update a person via the personService', function() {
+          expect(personService.update).to.be.calledOnceWithExactly({
+            id: mockId,
+            ...personMock,
+          })
+        })
+
+        it('should not create a person via the personService', function() {
+          expect(personService.create).to.not.be.called
+        })
+      })
+    })
+
     describe('#saveValues()', function() {
       let req, nextSpy
 
@@ -144,24 +184,63 @@ describe('Move controllers', function() {
           form: {
             values: {},
           },
+          sessionModel: {
+            get: sinon.stub(),
+          },
         }
       })
 
       context('when save is successful', function() {
-        beforeEach(async function() {
-          sinon.spy(FormController.prototype, 'configure')
-          sinon.stub(personService, 'create').resolves(personMock)
-          await controller.saveValues(req, {}, nextSpy)
+        context('with a new person', function() {
+          beforeEach(async function() {
+            sinon.stub(controller, 'savePerson').resolves(personMock)
+            req.sessionModel.get.withArgs('person').returns(personMock)
+
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should save the persons data', function() {
+            expect(controller.savePerson).to.be.calledOnceWithExactly(
+              personMock.id,
+              req.form.values
+            )
+          })
+
+          it('should set person response on form values', function() {
+            expect(req.form.values).to.have.property('person')
+            expect(req.form.values.person).to.deep.equal(personMock)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
+          })
         })
 
-        it('should set person response on form values', function() {
-          expect(req.form.values).to.have.property('person')
-          expect(req.form.values.person).to.deep.equal(personMock)
-        })
+        context('with a pre-existing person', function() {
+          beforeEach(async function() {
+            sinon.stub(controller, 'savePerson').resolves(personMock)
+            req.sessionModel.get.withArgs('person').returns(undefined)
 
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy).to.be.calledWith()
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should save the persons data', function() {
+            expect(controller.savePerson).to.be.calledOnceWithExactly(
+              undefined,
+              req.form.values
+            )
+          })
+
+          it('should set person response on form values', function() {
+            expect(req.form.values).to.have.property('person')
+            expect(req.form.values.person).to.deep.equal(personMock)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
+          })
         })
       })
 

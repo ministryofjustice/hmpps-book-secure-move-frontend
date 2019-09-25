@@ -1,3 +1,5 @@
+const { get } = require('lodash')
+
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
 const personService = require('../../../../common/services/person')
@@ -34,9 +36,22 @@ class PersonalDetailsController extends CreateBaseController {
     }
   }
 
+  savePerson(id, data) {
+    if (id) {
+      return personService.update({
+        id,
+        ...data,
+      })
+    }
+
+    return personService.create(data)
+  }
+
   async saveValues(req, res, next) {
     try {
-      req.form.values.person = await personService.create(req.form.values)
+      const id = get(req.sessionModel.get('person'), 'id')
+
+      req.form.values.person = await this.savePerson(id, req.form.values)
       super.saveValues(req, res, next)
     } catch (error) {
       next(error)
