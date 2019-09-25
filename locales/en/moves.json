@@ -35,6 +35,9 @@
     }
   },
   "download": {
+    "status": {
+      "label": "Status"
+    },
     "reference": {
       "label": "Reference"
     },
