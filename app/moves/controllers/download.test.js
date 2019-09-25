@@ -4,7 +4,14 @@ const controller = require('./download')
 
 const mockMoveDate = '2018-10-10'
 const mockDownloadDate = new Date(Date.UTC(2019, 10, 10, 15, 30, 15))
-const movesStub = [{ foo: 'bar' }, { fizz: 'buzz' }]
+const requestedMovesStub = [
+  { foo: 'bar', status: 'requested' },
+  { fizz: 'buzz', status: 'requested' },
+]
+const cancelledMovesStub = [
+  { foo: 'bar', status: 'cancelled' },
+  { fizz: 'buzz', status: 'cancelled' },
+]
 const csvStub = `
 "Col 1","Col 2"
 "Foo","Bar"
@@ -25,7 +32,8 @@ describe('Moves controllers', function() {
         setHeader: sinon.stub(),
         locals: {
           moveDate: mockMoveDate,
-          requestedMovesByDate: movesStub,
+          requestedMovesByDate: requestedMovesStub,
+          cancelledMovesByDate: cancelledMovesStub,
         },
       }
       nextSpy = sinon.spy()
@@ -91,7 +99,10 @@ describe('Moves controllers', function() {
       })
 
       it('should render moves as JSON', function() {
-        expect(res.json).to.be.calledOnceWithExactly(movesStub)
+        expect(res.json).to.be.calledOnceWithExactly([
+          ...requestedMovesStub,
+          ...cancelledMovesStub,
+        ])
       })
 
       it('should not call next', function() {
@@ -132,8 +143,11 @@ describe('Moves controllers', function() {
           )
         })
 
-        it('should call CSV presenter with moves stub', function() {
-          expect(presenters.movesToCSV).to.be.calledOnceWithExactly(movesStub)
+        it('should call CSV presenter with combined moves', function() {
+          expect(presenters.movesToCSV).to.be.calledOnceWithExactly([
+            ...requestedMovesStub,
+            ...cancelledMovesStub,
+          ])
         })
 
         it('should send moves as CSV', function() {
