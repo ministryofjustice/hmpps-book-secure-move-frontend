@@ -1,7 +1,7 @@
 const JsonApi = require('devour-client')
 
 const { API, IS_DEV } = require('../../../config')
-const { auth, errors, requestTimeout } = require('./middleware')
+const { auth, errors, request, requestTimeout } = require('./middleware')
 const models = require('./models')
 
 let instance
@@ -17,6 +17,7 @@ module.exports = function() {
   })
 
   instance.replaceMiddleware('errors', errors)
+  instance.replaceMiddleware('axios-request', request(API.CACHE_EXPIRY))
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
   instance.insertMiddlewareBefore('axios-request', auth)
 

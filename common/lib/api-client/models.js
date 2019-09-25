@@ -51,6 +51,7 @@ module.exports = {
       disabled_at: '',
     },
     options: {
+      cache: true,
       collectionPath: 'reference/genders',
     },
   },
@@ -63,6 +64,7 @@ module.exports = {
       disabled_at: '',
     },
     options: {
+      cache: true,
       collectionPath: 'reference/ethnicities',
     },
   },
@@ -76,6 +78,7 @@ module.exports = {
       nomis_alert_code: '',
     },
     options: {
+      cache: true,
       collectionPath: 'reference/assessment_questions',
     },
   },
@@ -88,6 +91,7 @@ module.exports = {
       disabled_at: '',
     },
     options: {
+      cache: true,
       collectionPath: 'reference/locations',
     },
   },

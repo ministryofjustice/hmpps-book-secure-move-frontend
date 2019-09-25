@@ -12,6 +12,7 @@ const session = require('express-session')
 const grant = require('grant-express')
 const flash = require('connect-flash')
 const favicon = require('serve-favicon')
+const responseTime = require('response-time')
 const slashify = require('slashify')
 const i18nMiddleware = require('i18next-express-middleware')
 const Sentry = require('@sentry/node')
@@ -22,7 +23,10 @@ const configPaths = require('./config/paths')
 const logger = require('./config/logger')
 const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
-const redisStore = require('./config/redis-store')
+const redisStore = require('./config/redis-store')({
+  ...config.REDIS.SESSION,
+  logErrors: error => logger.error(error),
+})
 const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
@@ -82,12 +86,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(responseTime())
 app.use(
   session({
-    store: redisStore({
-      ...config.REDIS.SESSION,
-      logErrors: error => logger.error(error),
-    }),
+    store: redisStore,
     secret: config.SESSION.SECRET,
     name: config.SESSION.NAME,
     saveUninitialized: false,

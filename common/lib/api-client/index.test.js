@@ -7,6 +7,7 @@ const mockConfig = {
   API: {
     BASE_URL: 'http://api.com/v1',
     TIMEOUT: 1000,
+    CACHE_EXPIRY: 5000,
   },
 }
 const mockModels = {
@@ -32,10 +33,12 @@ describe('Back-end API client', function() {
   context('Singleton', function() {
     let jsonApi
     let errorsStub
+    let requestStub
     let requestTimeoutStub
 
     beforeEach(function() {
       errorsStub = sinon.stub()
+      requestStub = sinon.stub()
       requestTimeoutStub = sinon.stub()
       JsonApiStub.prototype.init = sinon.stub()
       JsonApiStub.prototype.replaceMiddleware = sinon.stub()
@@ -48,6 +51,7 @@ describe('Back-end API client', function() {
         './models': mockModels,
         './middleware': {
           errors: errorsStub,
+          request: requestStub,
           requestTimeout: requestTimeoutStub,
         },
       })
@@ -75,16 +79,25 @@ describe('Back-end API client', function() {
       describe('middleware', function() {
         it('should replace error middleware', function() {
           expect(
-            JsonApiStub.prototype.replaceMiddleware
-          ).to.be.calledOnceWithExactly('errors', errorsStub)
+            JsonApiStub.prototype.replaceMiddleware.firstCall
+          ).to.be.calledWithExactly('errors', errorsStub)
+        })
+
+        it('should insert request cache', function() {
+          expect(
+            JsonApiStub.prototype.replaceMiddleware.secondCall
+          ).to.be.calledWithExactly(
+            'axios-request',
+            requestStub(mockConfig.API.CACHE_EXPIRY)
+          )
         })
 
         it('should insert request timeout', function() {
           expect(
             JsonApiStub.prototype.insertMiddlewareBefore.firstCall
-          ).to.be.calledWith('axios-request')
-          expect(requestTimeoutStub).to.be.calledOnceWithExactly(
-            mockConfig.API.TIMEOUT
+          ).to.be.calledWithExactly(
+            'axios-request',
+            requestTimeoutStub(mockConfig.API.TIMEOUT)
           )
         })
 
