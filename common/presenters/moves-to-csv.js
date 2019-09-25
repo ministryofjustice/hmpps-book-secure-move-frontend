@@ -58,6 +58,10 @@ function _translateField(field) {
 
 const move = [
   {
+    label: 'moves::download.status.label',
+    value: 'status',
+  },
+  {
     label: 'moves::download.reference.label',
     value: 'reference',
   },
