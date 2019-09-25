@@ -78,7 +78,7 @@ describe('Presenters', function() {
       })
 
       it('should check alert is expired on each question', function() {
-        expect(referenceDataHelpers.filterExpired.callCount).to.equal(360)
+        expect(referenceDataHelpers.filterExpired.callCount).to.equal(372)
       })
     })
 

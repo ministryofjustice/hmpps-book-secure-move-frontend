@@ -28,13 +28,18 @@ function _mapAnswer({ title, key } = {}) {
         },
       ],
       value: row => {
-        const answer = find(
-          row.person.assessment_answers.filter(
-            referenceDataHelpers.filterExpired
-          ),
-          { key }
-        )
-        return answer ? answer.comments : null
+        const personAnswers = row.person.assessment_answers
+          .filter(referenceDataHelpers.filterExpired)
+          .filter(item => item.key === key)
+          .map(item => {
+            if (item.nomis_alert_description) {
+              return `${item.nomis_alert_description}: ${item.comments}`
+            }
+
+            return item.comments
+          })
+
+        return personAnswers.length ? personAnswers.join('\n\n') : null
       },
     },
   ]
