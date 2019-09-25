@@ -5,6 +5,7 @@ const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const SERVER_HOST = process.env.SERVER_HOST
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
+const API_BASE_URL = process.env.API_BASE_URL
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
@@ -18,6 +19,18 @@ const SESSION = {
 function _authUrl(path) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
 }
+
+// TODO: Remove once environments have been updated to support new format
+const useLegacyApiConfig = process.env.API_USE_LEGACY !== 'false'
+const apiBaseUrl = useLegacyApiConfig
+  ? API_BASE_URL
+  : API_BASE_URL + process.env.API_PATH
+const apiHealthcheckUrl = useLegacyApiConfig
+  ? process.env.API_HEALTHCHECK_URL
+  : API_BASE_URL + process.env.API_HEALTHCHECK_PATH
+const apiAuthUrl = useLegacyApiConfig
+  ? process.env.API_AUTH_URL
+  : API_BASE_URL + process.env.API_AUTH_PATH
 
 module.exports = {
   IS_DEV,
@@ -33,9 +46,9 @@ module.exports = {
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
-    BASE_URL: process.env.API_BASE_URL,
-    HEALTHCHECK_URL: process.env.API_HEALTHCHECK_URL,
-    AUTH_URL: process.env.API_AUTH_URL,
+    BASE_URL: apiBaseUrl,
+    AUTH_URL: apiAuthUrl,
+    HEALTHCHECK_URL: apiHealthcheckUrl,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
