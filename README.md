@@ -120,9 +120,10 @@ npm run lint
 | REDIS_URL **(required)** | Redis server URL, including port and protocol | |
 | REDIS_HOST **(required)** | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
 | REDIS_AUTH_TOKEN | Optional auth token for the Redis instance | |
-| API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000/api/v1` |
-| API_HEALTHCHECK_URL **(required)** | URL to which healthcheck pings are sent | |
-| API_AUTH_URL **(required)** | URL to which OAuth2 access token requests should be sent | |
+| API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000` |
+| API_PATH **(required)** | Base base for the API | `/api/v1` |
+| API_HEALTHCHECK_PATH **(required)** | Path to which healthcheck pings are sent | |
+| API_AUTH_PATH **(required)** | Path to which OAuth2 access token requests should be sent | |
 | API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |
 | API_SECRET **(required)** | Client secret used to authenticate with the backend API | |
 | AUTH_PROVIDER_KEY **(required)** | Client key provided by the OAuth2 provider for user authentication | |
