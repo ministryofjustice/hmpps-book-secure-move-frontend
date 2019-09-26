@@ -2,7 +2,6 @@
 const path = require('path')
 
 // NPM dependencies
-const bodyParser = require('body-parser')
 const compression = require('compression')
 const cookieParser = require('cookie-parser')
 const express = require('express')
@@ -83,9 +82,8 @@ app.use(i18nMiddleware.handle(i18n))
 app.use(morgan('dev'))
 app.use(compression())
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true, limit: '1mb' }))
 app.use(cookieParser())
-app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(responseTime())
 app.use(
   session({
