@@ -1,0 +1,27 @@
+$_icon-width: 20px;
+$_icon-height: 20px;
+
+.app-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: $_icon-width $_icon-height;
+  padding-left: $_icon-width + govuk-spacing(2);
+  height: $_icon-height;
+}
+
+.app-icon--print {
+  background-image: url("/images/print-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("/images/print-icon@2x.png");
+  }
+}
+
+.app-icon--download {
+  background-image: url("/images/download-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("/images/download-icon@2x.png");
+  }
+}
