@@ -65,7 +65,6 @@ nunjucks(app, config, configPaths)
 
 // Static files
 app.use(favicon(path.join(configPaths.build, 'images', 'favicon.ico')))
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(configPaths.build))
 app.use(
   '/assets',
