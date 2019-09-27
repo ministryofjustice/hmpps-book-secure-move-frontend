@@ -34,6 +34,7 @@ const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
 const locationsApp = require('./app/locations')
+const { getAssetPath } = require('./config/nunjucks/globals')
 
 const { omit } = require('lodash')
 
@@ -69,7 +70,9 @@ app.set('view engine', 'njk')
 nunjucks(app, config, configPaths)
 
 // Static files
-app.use(favicon(path.join(configPaths.build, 'images', 'favicon.ico')))
+app.use(
+  favicon(path.join(configPaths.build, getAssetPath('images/favicon.ico')))
+)
 app.use(express.static(configPaths.build))
 app.use(
   '/assets',
