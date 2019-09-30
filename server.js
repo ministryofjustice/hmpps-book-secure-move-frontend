@@ -35,8 +35,13 @@ const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
 const locationsApp = require('./app/locations')
 
+const { omit } = require('lodash')
+
 if (config.SENTRY.DSN) {
   Sentry.init({
+    beforeSend(event) {
+      return omit(event, 'request.data')
+    },
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.GIT_SHA,
