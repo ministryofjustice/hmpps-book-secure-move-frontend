@@ -6,7 +6,7 @@ const {
   parseISO,
   isValid: isValidDate,
 } = require('date-fns')
-const { find, get, isUndefined } = require('lodash')
+const { find, get } = require('lodash')
 
 const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
@@ -40,17 +40,15 @@ module.exports = {
 
     next()
   },
-  setMoveDate: (req, res, next) => {
-    const moveDate = req.query['move-date']
-    const date = isUndefined(moveDate) ? new Date() : parseISO(moveDate)
-    const validDate = isValidDate(date)
+  setMoveDate: (req, res, next, date) => {
+    const parsedDate = parseISO(date)
+    const validDate = isValidDate(parsedDate)
 
     if (!validDate) {
       return res.redirect(req.baseUrl)
     }
 
-    res.locals.moveDate = format(date, moveDateFormat)
-
+    res.locals.moveDate = format(parsedDate, moveDateFormat)
     next()
   },
   setFromLocation: (req, res, next, locationId) => {

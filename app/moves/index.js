@@ -18,33 +18,33 @@ const uuidRegex =
 
 // Define param middleware
 router.param('locationId', setFromLocation)
+router.param('date', setMoveDate)
 
 // Define routes
 router.use(storeQuery)
-router.use(setMoveDate)
 router.get(
-  '/',
   redirectUsers,
+  '/:date',
   protectRoute('moves:view:all'),
   setMovesByDate,
   setPagination,
   list
 )
 router.get(
-  `/:locationId(${uuidRegex})`,
+  `/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:by_location'),
   setMovesByDate,
   setPagination,
   list
 )
 router.get(
-  '/download.:extension(csv|json)',
+  '/:date/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
   setMovesByDate,
   download
 )
 router.get(
-  `/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  `/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
   protectRoute('moves:download:by_location'),
   setMovesByDate,
   download

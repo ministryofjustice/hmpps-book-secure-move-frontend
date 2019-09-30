@@ -190,6 +190,7 @@ describe('Moves middleware', function() {
     let req, res, nextSpy
 
     beforeEach(function() {
+      req = {}
       res = {
         locals: {},
         redirect: sinon.stub(),
@@ -197,24 +198,14 @@ describe('Moves middleware', function() {
       nextSpy = sinon.spy()
     })
 
-    context('when no move date exists in query', function() {
-      const mockDate = '2019-08-10'
-
+    context('with valid move date', function() {
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-
-        req = { query: {} }
-
-        middleware.setMoveDate(req, res, nextSpy)
+        middleware.setMoveDate(req, res, nextSpy, '2019-10-10')
       })
 
-      afterEach(function() {
-        this.clock.restore()
-      })
-
-      it('should set move date to current date', function() {
+      it('should set move date to query value', function() {
         expect(res.locals).to.have.property('moveDate')
-        expect(res.locals.moveDate).to.equal('2019-08-10')
+        expect(res.locals.moveDate).to.equal('2019-10-10')
       })
 
       it('should call next', function() {
@@ -222,51 +213,23 @@ describe('Moves middleware', function() {
       })
     })
 
-    context('when move date exists in query', function() {
-      context('with valid move date', function() {
-        beforeEach(function() {
-          req = {
-            query: {
-              'move-date': '2019-10-10',
-            },
-          }
+    context('with invalid move date', function() {
+      beforeEach(function() {
+        req.baseUrl = '/req-base'
 
-          middleware.setMoveDate(req, res, nextSpy)
-        })
-
-        it('should set move date to query value', function() {
-          expect(res.locals).to.have.property('moveDate')
-          expect(res.locals.moveDate).to.equal('2019-10-10')
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+        middleware.setMoveDate(req, res, nextSpy, 'Invalid date')
       })
 
-      context('with invalid move date', function() {
-        beforeEach(function() {
-          req = {
-            baseUrl: '/req-base',
-            query: {
-              'move-date': 'Invalid date',
-            },
-          }
+      it('should redirect to base url', function() {
+        expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
+      })
 
-          middleware.setMoveDate(req, res, nextSpy)
-        })
+      it('should not set move date', function() {
+        expect(res.locals).not.to.have.property('moveDate')
+      })
 
-        it('should redirect to base url', function() {
-          expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
-        })
-
-        it('should not set move date', function() {
-          expect(res.locals).not.to.have.property('moveDate')
-        })
-
-        it('should not call next', function() {
-          expect(nextSpy).not.to.be.called
-        })
+      it('should not call next', function() {
+        expect(nextSpy).not.to.be.called
       })
     })
   })
