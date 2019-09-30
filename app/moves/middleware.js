@@ -10,30 +10,19 @@ const { find, get } = require('lodash')
 
 const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
-const permissions = require('../../common/middleware/permissions')
 
 const moveDateFormat = 'yyyy-MM-dd'
 
 module.exports = {
-  redirectUsers: (req, res, next) => {
-    const userPermissions = get(req.session, 'user.permissions')
+  redirectBaseUrl: (req, res) => {
+    const today = format(new Date(), moveDateFormat)
     const currentLocation = get(req.session, 'currentLocation.id')
-    const search = queryString.stringify(req.query)
 
-    if (permissions.check('moves:view:all', userPermissions)) {
-      return next()
+    if (currentLocation) {
+      return res.redirect(`${req.baseUrl}/${today}/${currentLocation}`)
     }
 
-    if (
-      permissions.check('moves:view:by_location', userPermissions) &&
-      currentLocation
-    ) {
-      return res.redirect(
-        `${req.baseUrl}/${currentLocation}${search ? `?${search}` : ''}`
-      )
-    }
-
-    next()
+    return res.redirect(`${req.baseUrl}/${today}`)
   },
   storeQuery: (req, res, next) => {
     req.session.movesQuery = req.query

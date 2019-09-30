@@ -5,8 +5,8 @@ const router = require('express').Router()
 const { protectRoute } = require('../../common/middleware/permissions')
 const { download, list } = require('./controllers')
 const {
-  redirectUsers,
   storeQuery,
+  redirectBaseUrl,
   setMoveDate,
   setFromLocation,
   setPagination,
@@ -22,8 +22,8 @@ router.param('date', setMoveDate)
 
 // Define routes
 router.use(storeQuery)
+router.get('/', redirectBaseUrl)
 router.get(
-  redirectUsers,
   '/:date',
   protectRoute('moves:view:all'),
   setMovesByDate,
