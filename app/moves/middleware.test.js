@@ -63,53 +63,25 @@ describe('Moves middleware', function() {
     })
   })
 
-  describe('#storeQuery()', function() {
+  describe('#saveUrl()', function() {
     let req, nextSpy
+    beforeEach(function() {
+      req = {
+        originalUrl: '/moves/original/url',
+        session: {},
+      }
+      nextSpy = sinon.spy()
 
-    context('with empty request query', function() {
-      beforeEach(function() {
-        req = {
-          query: {},
-          session: {},
-        }
-        nextSpy = sinon.spy()
-
-        middleware.storeQuery(req, {}, nextSpy)
-      })
-
-      it('should update session correctly', function() {
-        expect(req.session).to.have.property('movesQuery')
-        expect(req.session.movesQuery).to.deep.equal({})
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
+      middleware.saveUrl(req, {}, nextSpy)
     })
 
-    context('with non empty request query', function() {
-      beforeEach(function() {
-        req = {
-          query: {
-            'move-date': '2019-10-10',
-          },
-          session: {},
-        }
-        nextSpy = sinon.spy()
+    it('should save url to session', function() {
+      expect(req.session).to.have.property('movesUrl')
+      expect(req.session.movesUrl).to.equal(req.originalUrl)
+    })
 
-        middleware.storeQuery(req, {}, nextSpy)
-      })
-
-      it('should update session correctly', function() {
-        expect(req.session).to.have.property('movesQuery')
-        expect(req.session.movesQuery).to.deep.equal({
-          'move-date': '2019-10-10',
-        })
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
+    it('should call next', function() {
+      expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 

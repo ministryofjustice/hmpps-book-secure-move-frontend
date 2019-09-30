@@ -5,8 +5,8 @@ const router = require('express').Router()
 const { protectRoute } = require('../../common/middleware/permissions')
 const { download, list } = require('./controllers')
 const {
-  storeQuery,
   redirectBaseUrl,
+  saveUrl,
   setMoveDate,
   setFromLocation,
   setPagination,
@@ -20,8 +20,10 @@ const uuidRegex =
 router.param('locationId', setFromLocation)
 router.param('date', setMoveDate)
 
+// Define shared middleware
+router.use(saveUrl)
+
 // Define routes
-router.use(storeQuery)
 router.get('/', redirectBaseUrl)
 router.get(
   '/:date',

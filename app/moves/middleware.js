@@ -24,9 +24,8 @@ module.exports = {
 
     return res.redirect(`${req.baseUrl}/${today}`)
   },
-  storeQuery: (req, res, next) => {
-    req.session.movesQuery = req.query
-
+  saveUrl: (req, res, next) => {
+    req.session.movesUrl = req.originalUrl
     next()
   },
   setMoveDate: (req, res, next, date) => {
