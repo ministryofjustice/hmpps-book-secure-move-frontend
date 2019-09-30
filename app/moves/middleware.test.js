@@ -202,7 +202,8 @@ describe('Moves middleware', function() {
         },
       }
       req = {
-        query: {},
+        baseUrl: '/moves',
+        params: {},
       }
       nextSpy = sinon.spy()
     })
@@ -211,7 +212,7 @@ describe('Moves middleware', function() {
       this.clock.restore()
     })
 
-    context('with empty query', function() {
+    context('without location ID', function() {
       beforeEach(function() {
         middleware.setPagination(req, res, nextSpy)
       })
@@ -220,11 +221,16 @@ describe('Moves middleware', function() {
         expect(res.locals).to.have.property('pagination')
       })
 
-      it('should contain correct pagination links', function() {
-        const pagination = res.locals.pagination
-        expect(pagination.todayUrl).to.equal('?move-date=2019-10-10')
-        expect(pagination.nextUrl).to.equal('?move-date=2019-10-11')
-        expect(pagination.prevUrl).to.equal('?move-date=2019-10-09')
+      it('should set correct today link', function() {
+        expect(res.locals.pagination.todayUrl).to.equal('/moves/2019-10-10/')
+      })
+
+      it('should set correct next link', function() {
+        expect(res.locals.pagination.nextUrl).to.equal('/moves/2019-10-11/')
+      })
+
+      it('should set correct previous link', function() {
+        expect(res.locals.pagination.prevUrl).to.equal('/moves/2019-10-09/')
       })
 
       it('should call next', function() {
@@ -232,11 +238,9 @@ describe('Moves middleware', function() {
       })
     })
 
-    context('with existing query', function() {
+    context('with location ID', function() {
       beforeEach(function() {
-        req.query = {
-          location: '12345',
-        }
+        req.params.locationId = '12345'
         middleware.setPagination(req, res, nextSpy)
       })
 
@@ -244,16 +248,21 @@ describe('Moves middleware', function() {
         expect(res.locals).to.have.property('pagination')
       })
 
-      it('should contain correct pagination links', function() {
-        const pagination = res.locals.pagination
-        expect(pagination.todayUrl).to.equal(
-          '?location=12345&move-date=2019-10-10'
+      it('should set correct today link', function() {
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/2019-10-10/12345'
         )
-        expect(pagination.nextUrl).to.equal(
-          '?location=12345&move-date=2019-10-11'
+      })
+
+      it('should set correct next link', function() {
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/2019-10-11/12345'
         )
-        expect(pagination.prevUrl).to.equal(
-          '?location=12345&move-date=2019-10-09'
+      })
+
+      it('should set correct previous link', function() {
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/2019-10-09/12345'
         )
       })
 

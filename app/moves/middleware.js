@@ -1,4 +1,3 @@
-const queryString = require('query-string')
 const {
   format,
   addDays,
@@ -8,7 +7,6 @@ const {
 } = require('date-fns')
 const { find, get } = require('lodash')
 
-const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
 
 const moveDateFormat = 'yyyy-MM-dd'
@@ -55,14 +53,15 @@ module.exports = {
   },
   setPagination: (req, res, next) => {
     const { moveDate } = res.locals
+    const { locationId = '' } = req.params
     const today = format(new Date(), moveDateFormat)
     const previousDay = format(subDays(parseISO(moveDate), 1), moveDateFormat)
     const nextDay = format(addDays(parseISO(moveDate), 1), moveDateFormat)
 
     res.locals.pagination = {
-      todayUrl: getQueryString(req.query, { 'move-date': today }),
-      nextUrl: getQueryString(req.query, { 'move-date': nextDay }),
-      prevUrl: getQueryString(req.query, { 'move-date': previousDay }),
+      todayUrl: `${req.baseUrl}/${today}/${locationId}`,
+      nextUrl: `${req.baseUrl}/${nextDay}/${locationId}`,
+      prevUrl: `${req.baseUrl}/${previousDay}/${locationId}`,
     }
 
     next()
