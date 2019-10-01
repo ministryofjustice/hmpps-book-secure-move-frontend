@@ -1,4 +1,3 @@
-const queryString = require('query-string')
 const {
   format,
   addDays,
@@ -6,51 +5,36 @@ const {
   parseISO,
   isValid: isValidDate,
 } = require('date-fns')
-const { find, get, isUndefined } = require('lodash')
+const { find, get } = require('lodash')
 
-const { getQueryString } = require('../../common/lib/request')
 const moveService = require('../../common/services/move')
-const permissions = require('../../common/middleware/permissions')
 
 const moveDateFormat = 'yyyy-MM-dd'
 
 module.exports = {
-  redirectUsers: (req, res, next) => {
-    const userPermissions = get(req.session, 'user.permissions')
+  redirectBaseUrl: (req, res) => {
+    const today = format(new Date(), moveDateFormat)
     const currentLocation = get(req.session, 'currentLocation.id')
-    const search = queryString.stringify(req.query)
 
-    if (permissions.check('moves:view:all', userPermissions)) {
-      return next()
+    if (currentLocation) {
+      return res.redirect(`${req.baseUrl}/${today}/${currentLocation}`)
     }
 
-    if (
-      permissions.check('moves:view:by_location', userPermissions) &&
-      currentLocation
-    ) {
-      return res.redirect(
-        `${req.baseUrl}/${currentLocation}${search ? `?${search}` : ''}`
-      )
-    }
-
+    return res.redirect(`${req.baseUrl}/${today}`)
+  },
+  saveUrl: (req, res, next) => {
+    req.session.movesUrl = req.originalUrl
     next()
   },
-  storeQuery: (req, res, next) => {
-    req.session.movesQuery = req.query
-
-    next()
-  },
-  setMoveDate: (req, res, next) => {
-    const moveDate = req.query['move-date']
-    const date = isUndefined(moveDate) ? new Date() : parseISO(moveDate)
-    const validDate = isValidDate(date)
+  setMoveDate: (req, res, next, date) => {
+    const parsedDate = parseISO(date)
+    const validDate = isValidDate(parsedDate)
 
     if (!validDate) {
       return res.redirect(req.baseUrl)
     }
 
-    res.locals.moveDate = format(date, moveDateFormat)
-
+    res.locals.moveDate = format(parsedDate, moveDateFormat)
     next()
   },
   setFromLocation: (req, res, next, locationId) => {
@@ -69,14 +53,15 @@ module.exports = {
   },
   setPagination: (req, res, next) => {
     const { moveDate } = res.locals
+    const { locationId = '' } = req.params
     const today = format(new Date(), moveDateFormat)
     const previousDay = format(subDays(parseISO(moveDate), 1), moveDateFormat)
     const nextDay = format(addDays(parseISO(moveDate), 1), moveDateFormat)
 
     res.locals.pagination = {
-      todayUrl: getQueryString(req.query, { 'move-date': today }),
-      nextUrl: getQueryString(req.query, { 'move-date': nextDay }),
-      prevUrl: getQueryString(req.query, { 'move-date': previousDay }),
+      todayUrl: `${req.baseUrl}/${today}/${locationId}`,
+      nextUrl: `${req.baseUrl}/${nextDay}/${locationId}`,
+      prevUrl: `${req.baseUrl}/${previousDay}/${locationId}`,
     }
 
     next()

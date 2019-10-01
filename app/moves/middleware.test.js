@@ -1,5 +1,4 @@
 const moveService = require('../../common/services/move')
-const permissions = require('../../common/middleware/permissions')
 
 const middleware = require('./middleware')
 
@@ -14,175 +13,75 @@ const mockCancelledMoves = [
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function() {
-  describe('#redirectUsers()', function() {
-    let req, res, nextSpy
+  describe('#redirectBaseUrl', function() {
+    const mockMoveDate = '2019-10-10'
+    let req, res
 
     beforeEach(function() {
-      sinon.stub(permissions, 'check')
-      nextSpy = sinon.spy()
+      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       req = {
         baseUrl: '/moves',
+        session: {},
       }
       res = {
         redirect: sinon.stub(),
       }
     })
 
-    context('when user has view all moves permission', function() {
+    afterEach(function() {
+      this.clock.restore()
+    })
+
+    context('with current location', function() {
+      const mockLocationId = 'c249ed09-0cd5-4f52-8aee-0506e2dc7579'
+
       beforeEach(function() {
-        req.session = {
-          user: {
-            permissions: ['moves:view:all'],
-          },
+        req.session.currentLocation = {
+          id: mockLocationId,
         }
 
-        permissions.check
-          .withArgs('moves:view:all', ['moves:view:all'])
-          .returns(true)
-
-        middleware.redirectUsers(req, res, nextSpy)
+        middleware.redirectBaseUrl(req, res)
       })
 
-      it('should call next', function() {
-        expect(nextSpy).to.have.been.calledOnceWithExactly()
+      it('should redirect to moves by location', function() {
+        expect(res.redirect).to.have.been.calledOnceWithExactly(
+          `/moves/${mockMoveDate}/${mockLocationId}`
+        )
       })
     })
 
-    context('when user has view by location permission', function() {
+    context('without current location', function() {
       beforeEach(function() {
-        req.session = {
-          user: {
-            permissions: ['moves:view:by_location'],
-          },
-        }
-
-        permissions.check
-          .withArgs('moves:view:by_location', ['moves:view:by_location'])
-          .returns(true)
+        middleware.redirectBaseUrl(req, res)
       })
 
-      context('when current location exists', function() {
-        const mockLocationId = 'c249ed09-0cd5-4f52-8aee-0506e2dc7579'
-
-        beforeEach(function() {
-          req.session.currentLocation = {
-            id: mockLocationId,
-          }
-        })
-
-        context('when current request contains search', function() {
-          beforeEach(function() {
-            req.query = {
-              'move-date': '2019-10-10',
-            }
-            middleware.redirectUsers(req, res, nextSpy)
-          })
-
-          it('should redirect to moves by location', function() {
-            expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/${mockLocationId}?move-date=2019-10-10`
-            )
-          })
-
-          it('should not call next', function() {
-            expect(nextSpy).not.to.have.been.called
-          })
-        })
-
-        context('when current request does not contain search', function() {
-          beforeEach(function() {
-            middleware.redirectUsers(req, res, nextSpy)
-          })
-
-          it('should redirect to moves by location', function() {
-            expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/${mockLocationId}`
-            )
-          })
-
-          it('should not call next', function() {
-            expect(nextSpy).not.to.have.been.called
-          })
-        })
-      })
-
-      context('when current location is missing', function() {
-        beforeEach(function() {
-          middleware.redirectUsers(req, res, nextSpy)
-        })
-
-        it('should not redirect', function() {
-          expect(res.redirect).not.to.have.been.called
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.have.been.calledOnceWithExactly()
-        })
-      })
-    })
-
-    context('when user has no matching permissions', function() {
-      beforeEach(function() {
-        middleware.redirectUsers(req, res, nextSpy)
-      })
-
-      it('should not redirect', function() {
-        expect(res.redirect).not.to.have.been.called
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.have.been.calledOnceWithExactly()
+      it('should redirect to moves without location', function() {
+        expect(res.redirect).to.have.been.calledOnceWithExactly(
+          `/moves/${mockMoveDate}`
+        )
       })
     })
   })
 
-  describe('#storeQuery()', function() {
+  describe('#saveUrl()', function() {
     let req, nextSpy
+    beforeEach(function() {
+      req = {
+        originalUrl: '/moves/original/url',
+        session: {},
+      }
+      nextSpy = sinon.spy()
 
-    context('with empty request query', function() {
-      beforeEach(function() {
-        req = {
-          query: {},
-          session: {},
-        }
-        nextSpy = sinon.spy()
-
-        middleware.storeQuery(req, {}, nextSpy)
-      })
-
-      it('should update session correctly', function() {
-        expect(req.session).to.have.property('movesQuery')
-        expect(req.session.movesQuery).to.deep.equal({})
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
+      middleware.saveUrl(req, {}, nextSpy)
     })
 
-    context('with non empty request query', function() {
-      beforeEach(function() {
-        req = {
-          query: {
-            'move-date': '2019-10-10',
-          },
-          session: {},
-        }
-        nextSpy = sinon.spy()
+    it('should save url to session', function() {
+      expect(req.session).to.have.property('movesUrl')
+      expect(req.session.movesUrl).to.equal(req.originalUrl)
+    })
 
-        middleware.storeQuery(req, {}, nextSpy)
-      })
-
-      it('should update session correctly', function() {
-        expect(req.session).to.have.property('movesQuery')
-        expect(req.session.movesQuery).to.deep.equal({
-          'move-date': '2019-10-10',
-        })
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
+    it('should call next', function() {
+      expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 
@@ -190,6 +89,7 @@ describe('Moves middleware', function() {
     let req, res, nextSpy
 
     beforeEach(function() {
+      req = {}
       res = {
         locals: {},
         redirect: sinon.stub(),
@@ -197,24 +97,14 @@ describe('Moves middleware', function() {
       nextSpy = sinon.spy()
     })
 
-    context('when no move date exists in query', function() {
-      const mockDate = '2019-08-10'
-
+    context('with valid move date', function() {
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-
-        req = { query: {} }
-
-        middleware.setMoveDate(req, res, nextSpy)
+        middleware.setMoveDate(req, res, nextSpy, '2019-10-10')
       })
 
-      afterEach(function() {
-        this.clock.restore()
-      })
-
-      it('should set move date to current date', function() {
+      it('should set move date to query value', function() {
         expect(res.locals).to.have.property('moveDate')
-        expect(res.locals.moveDate).to.equal('2019-08-10')
+        expect(res.locals.moveDate).to.equal('2019-10-10')
       })
 
       it('should call next', function() {
@@ -222,51 +112,23 @@ describe('Moves middleware', function() {
       })
     })
 
-    context('when move date exists in query', function() {
-      context('with valid move date', function() {
-        beforeEach(function() {
-          req = {
-            query: {
-              'move-date': '2019-10-10',
-            },
-          }
+    context('with invalid move date', function() {
+      beforeEach(function() {
+        req.baseUrl = '/req-base'
 
-          middleware.setMoveDate(req, res, nextSpy)
-        })
-
-        it('should set move date to query value', function() {
-          expect(res.locals).to.have.property('moveDate')
-          expect(res.locals.moveDate).to.equal('2019-10-10')
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+        middleware.setMoveDate(req, res, nextSpy, 'Invalid date')
       })
 
-      context('with invalid move date', function() {
-        beforeEach(function() {
-          req = {
-            baseUrl: '/req-base',
-            query: {
-              'move-date': 'Invalid date',
-            },
-          }
+      it('should redirect to base url', function() {
+        expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
+      })
 
-          middleware.setMoveDate(req, res, nextSpy)
-        })
+      it('should not set move date', function() {
+        expect(res.locals).not.to.have.property('moveDate')
+      })
 
-        it('should redirect to base url', function() {
-          expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
-        })
-
-        it('should not set move date', function() {
-          expect(res.locals).not.to.have.property('moveDate')
-        })
-
-        it('should not call next', function() {
-          expect(nextSpy).not.to.be.called
-        })
+      it('should not call next', function() {
+        expect(nextSpy).not.to.be.called
       })
     })
   })
@@ -340,7 +202,8 @@ describe('Moves middleware', function() {
         },
       }
       req = {
-        query: {},
+        baseUrl: '/moves',
+        params: {},
       }
       nextSpy = sinon.spy()
     })
@@ -349,7 +212,7 @@ describe('Moves middleware', function() {
       this.clock.restore()
     })
 
-    context('with empty query', function() {
+    context('without location ID', function() {
       beforeEach(function() {
         middleware.setPagination(req, res, nextSpy)
       })
@@ -358,11 +221,16 @@ describe('Moves middleware', function() {
         expect(res.locals).to.have.property('pagination')
       })
 
-      it('should contain correct pagination links', function() {
-        const pagination = res.locals.pagination
-        expect(pagination.todayUrl).to.equal('?move-date=2019-10-10')
-        expect(pagination.nextUrl).to.equal('?move-date=2019-10-11')
-        expect(pagination.prevUrl).to.equal('?move-date=2019-10-09')
+      it('should set correct today link', function() {
+        expect(res.locals.pagination.todayUrl).to.equal('/moves/2019-10-10/')
+      })
+
+      it('should set correct next link', function() {
+        expect(res.locals.pagination.nextUrl).to.equal('/moves/2019-10-11/')
+      })
+
+      it('should set correct previous link', function() {
+        expect(res.locals.pagination.prevUrl).to.equal('/moves/2019-10-09/')
       })
 
       it('should call next', function() {
@@ -370,11 +238,9 @@ describe('Moves middleware', function() {
       })
     })
 
-    context('with existing query', function() {
+    context('with location ID', function() {
       beforeEach(function() {
-        req.query = {
-          location: '12345',
-        }
+        req.params.locationId = '12345'
         middleware.setPagination(req, res, nextSpy)
       })
 
@@ -382,16 +248,21 @@ describe('Moves middleware', function() {
         expect(res.locals).to.have.property('pagination')
       })
 
-      it('should contain correct pagination links', function() {
-        const pagination = res.locals.pagination
-        expect(pagination.todayUrl).to.equal(
-          '?location=12345&move-date=2019-10-10'
+      it('should set correct today link', function() {
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/2019-10-10/12345'
         )
-        expect(pagination.nextUrl).to.equal(
-          '?location=12345&move-date=2019-10-11'
+      })
+
+      it('should set correct next link', function() {
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/2019-10-11/12345'
         )
-        expect(pagination.prevUrl).to.equal(
-          '?location=12345&move-date=2019-10-09'
+      })
+
+      it('should set correct previous link', function() {
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/2019-10-09/12345'
         )
       })
 
