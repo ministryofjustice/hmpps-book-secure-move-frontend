@@ -2,6 +2,8 @@ const { cloneDeep, fromPairs, get, set } = require('lodash')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
+const referenceDataService = require('../../common/services/reference-data')
+const referenceDataHelpers = require('../../common/helpers/reference-data')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
@@ -177,14 +179,50 @@ function insertItemConditional({ key, field }) {
   }
 }
 
+function setDependentValidation(key, field, fieldWithItems) {
+  if (!field.validate) {
+    return
+  }
+
+  const fieldItem = fieldWithItems.items.find(item => key.includes(item.key))
+
+  field.dependent = {
+    field: fieldWithItems.name,
+    value: fieldItem.value,
+  }
+}
+
+async function setupAssessmentQuestions(fields) {
+  const fieldWithItems = Object.values(fields).find(field => {
+    if (Object.prototype.hasOwnProperty.call(field, 'items')) {
+      return true
+    }
+  })
+
+  if (fieldWithItems) {
+    const assessmentQuestions = await referenceDataService.getAssessmentQuestions(
+      fieldWithItems.name
+    )
+
+    fieldWithItems.items = assessmentQuestions
+      .filter(referenceDataHelpers.filterDisabled())
+      .map(mapAssessmentQuestionToConditionalField)
+      .map(mapAssessmentQuestionToTranslation)
+      .map(mapReferenceDataToOption)
+
+    Object.entries(fields).forEach(([key, field]) =>
+      setDependentValidation(key, field, fieldWithItems)
+    )
+  }
+}
+
 module.exports = {
-  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
-  mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
   setFieldValue,
   setFieldError,
   translateField,
   insertInitialOption,
   insertItemConditional,
+  setupAssessmentQuestions,
 }
