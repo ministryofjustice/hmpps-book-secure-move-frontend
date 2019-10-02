@@ -108,5 +108,14 @@
   },
   "cancellation_reason_comment": {
     "label": "Give details"
+  },
+  "court__other_court": {
+    "label": "Any other information details"
+  },
+  "risk__other_risks": {
+    "label": "Any other risks details"
+  },
+  "health__other_health": {
+    "label": "Any other requirements details"
   }
 }
