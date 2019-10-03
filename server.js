@@ -97,6 +97,7 @@ app.use(
     name: config.SESSION.NAME,
     saveUninitialized: false,
     resave: false,
+    rolling: true,
     cookie: {
       secure: config.IS_PRODUCTION,
       maxAge: config.SESSION.TTL,
