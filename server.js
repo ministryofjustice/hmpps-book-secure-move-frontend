@@ -3,7 +3,6 @@ const path = require('path')
 
 // NPM dependencies
 const compression = require('compression')
-const cookieParser = require('cookie-parser')
 const express = require('express')
 const helmet = require('helmet')
 const morgan = require('morgan')
@@ -90,7 +89,6 @@ app.use(morgan('dev'))
 app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: '1mb' }))
-app.use(cookieParser())
 app.use(responseTime())
 app.use(
   session({
