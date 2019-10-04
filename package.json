@@ -54,6 +54,7 @@
     "compression": "1.7.4",
     "connect-flash": "0.1.1",
     "connect-redis": "4.0.2",
+    "cookie-parser": "1.4.4",
     "date-fns": "2.3.0",
     "debug": "4.1.1",
     "devour-client": "2.1.0",
