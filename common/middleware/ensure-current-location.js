@@ -1,14 +1,11 @@
+const { isUndefined } = require('lodash')
+
 function ensureCurrentLocation({ locationsMountpath, whitelist = [] } = {}) {
   return (req, res, next) => {
-    const { permissions = [], locations = [] } = req.session.user || {}
-    const canViewAllMovesWithoutLocations =
-      permissions.includes('moves:view:all') && !locations.length
-
     if (
-      req.session.currentLocation ||
+      !isUndefined(req.session.currentLocation) ||
       whitelist.includes(req.url) ||
-      req.url.includes(locationsMountpath) ||
-      canViewAllMovesWithoutLocations
+      req.url.includes(locationsMountpath)
     ) {
       return next()
     }
