@@ -11,6 +11,15 @@ const assessmentQuestionComments = {
   },
 }
 
+const requiredAssessmentQuestionComments = {
+  ...assessmentQuestionComments,
+  label: {
+    text: 'fields::assessment_comment.required',
+    classes: 'govuk-label--s',
+  },
+  validate: 'required',
+}
+
 function assessmentCategory(category) {
   return {
     component: 'govukCheckboxes',
@@ -244,7 +253,7 @@ module.exports = {
   risk__hold_separately: assessmentQuestionComments,
   risk__self_harm: assessmentQuestionComments,
   risk__concealed_items: assessmentQuestionComments,
-  risk__other_risks: assessmentQuestionComments,
+  risk__other_risks: requiredAssessmentQuestionComments,
   // health information
   health: assessmentCategory('health'),
   health__special_diet_or_allergy: assessmentQuestionComments,
@@ -252,10 +261,10 @@ module.exports = {
   health__medication: assessmentQuestionComments,
   health__wheelchair: assessmentQuestionComments,
   health__pregnant: assessmentQuestionComments,
-  health__other_health: assessmentQuestionComments,
+  health__other_health: requiredAssessmentQuestionComments,
   // court information
   court: assessmentCategory('court'),
   court__solicitor: assessmentQuestionComments,
   court__interpreter: assessmentQuestionComments,
-  court__other_court: assessmentQuestionComments,
+  court__other_court: requiredAssessmentQuestionComments,
 }

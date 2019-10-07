@@ -1,19 +1,30 @@
 const { cloneDeep, set } = require('lodash')
+const referenceDataService = require('../../common/services/reference-data')
+const referenceDataHelpers = require('../../common/helpers/reference-data')
+const componentService = require('../services/component')
+const i18n = require('../../config/i18n')
 
 const {
-  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
-  mapAssessmentQuestionToConditionalField,
   renderConditionalFields,
   setFieldValue,
   setFieldError,
   translateField,
   insertInitialOption,
   insertItemConditional,
+  populateAssessmentQuestions,
 } = require('./field')
 
-const componentService = require('../services/component')
-const i18n = require('../../config/i18n')
+const questionsMock = [
+  {
+    id: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
+    type: 'profile_attribute_types',
+    category: 'risk',
+    key: 'violent',
+    title: 'Violent',
+    hint: 'mock hint',
+  },
+]
 
 describe('Form helpers', function() {
   describe('#mapReferenceDataToOption()', function() {
@@ -62,105 +73,104 @@ describe('Form helpers', function() {
         })
       })
     })
-
-    context('with hint property', function() {
-      it('should return correctly formatted option', function() {
-        const option = mapReferenceDataToOption({
-          key: 'unique_key',
-          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-          title: 'Foo',
-          hint: 'eat more vegetables',
-        })
-
-        expect(option).to.deep.equal({
-          key: 'unique_key',
-          value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-          text: 'Foo',
-          hint: {
-            text: 'eat more vegetables',
-          },
-        })
-      })
-    })
   })
 
-  describe('#mapAssessmentQuestionToTranslation()', function() {
-    const mockItem = {
-      title: 'example title',
-      category: 'mock-category',
-      key: 'mock-key',
-      hint: 'mock hint',
-    }
+  describe('#populateAssessmentQuestions()', function() {
+    let fields
+    let response
 
-    context('without available translations', function() {
-      beforeEach(function() {
-        sinon.stub(i18n, 'exists').returns(false)
+    beforeEach(function() {
+      sinon
+        .stub(referenceDataHelpers, 'filterDisabled')
+        .callsFake(() => () => true)
+      sinon
+        .stub(referenceDataService, 'getAssessmentQuestions')
+        .resolves(questionsMock)
+
+      fields = {
+        risk: {
+          name: 'risk',
+          items: [],
+        },
+        risk__violent: {
+          skip: true,
+          rows: 3,
+          component: 'govukTextarea',
+          classes: 'govuk-input--width-20',
+          label: {
+            text: 'fields::assessment_comment.required',
+            classes: 'govuk-label--s',
+          },
+          validate: 'required',
+        },
+      }
+    })
+
+    context('by default', function() {
+      beforeEach(async function() {
+        response = await populateAssessmentQuestions(fields)
       })
 
-      it('should return unchanged item', function() {
-        const option = mapAssessmentQuestionToTranslation(mockItem)
+      it('should add conditional property', function() {
+        expect(response.risk.items[0]).to.have.property('conditional')
+        expect(response.risk.items[0].conditional).to.equal('risk__violent')
+      })
+    })
 
-        expect(option).to.deep.equal({
-          title: 'example title',
-          category: 'mock-category',
-          hint: undefined,
-          key: 'mock-key',
-        })
+    context('without available translations', function() {
+      beforeEach(async function() {
+        sinon.stub(i18n, 'exists').returns(false)
+        response = await populateAssessmentQuestions(fields)
+      })
+
+      it('should return correctly formatted option', function() {
+        expect(response.risk.items[0].text).to.equal('Violent')
+        expect(response.risk.items[0].hint).to.be.undefined
       })
     })
 
     context('with available translations', function() {
-      beforeEach(function() {
+      beforeEach(async function() {
         sinon.stub(i18n, 'exists').returns(true)
+        response = await populateAssessmentQuestions(fields)
       })
 
-      it('should return item with translation strings', function() {
-        const option = mapAssessmentQuestionToTranslation(mockItem)
-
-        expect(option).to.deep.equal({
-          title: 'fields::mock-category.items.mock-key.label',
-          category: 'mock-category',
-          hint: 'fields::mock-category.items.mock-key.hint',
-          key: 'mock-key',
+      it('should return with translation strings', function() {
+        expect(response.risk.items[0].text).to.equal(
+          'fields::risk.items.violent.label'
+        )
+        expect(response.risk.items[0].hint).to.deep.equal({
+          text: 'fields::risk.items.violent.hint',
         })
       })
     })
-  })
 
-  describe('#mapAssessmentQuestionToConditionalField()', function() {
-    context('by default', function() {
-      let item, response
-
-      beforeEach(function() {
-        item = {
-          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-          category: 'risk',
-          key: 'violent',
-        }
-
-        response = mapAssessmentQuestionToConditionalField(item)
+    context('with validation', function() {
+      beforeEach(async function() {
+        response = await populateAssessmentQuestions(fields)
       })
 
-      it('should add conditional property', function() {
-        expect(response).to.have.property('conditional')
-        expect(response.conditional).to.equal('risk__violent')
-      })
-
-      it('should keep original properties', function() {
-        expect(response).to.deep.equal({
-          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-          category: 'risk',
-          key: 'violent',
-          conditional: 'risk__violent',
+      it('should return with dependent details', function() {
+        expect(response.risk__violent.dependent).to.deep.equal({
+          field: 'risk',
+          value: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
         })
+      })
+    })
+
+    context('without parent field', function() {
+      let expectedFields
+      beforeEach(async function() {
+        fields = {
+          risk: {},
+          risk__violent: {},
+        }
+        expectedFields = { ...fields }
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should not mutate original item', function() {
-        expect(item).to.deep.equal({
-          id: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
-          category: 'risk',
-          key: 'violent',
-        })
+        expect(response).to.deep.equal(expectedFields)
       })
     })
   })

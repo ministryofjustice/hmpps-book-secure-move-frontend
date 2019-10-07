@@ -2,34 +2,14 @@ const { flatten, values } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataService = require('../../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const { fields } = req.form.options
-
-      await Promise.all(
-        Object.keys(fields).map(key => {
-          const field = fields[key]
-
-          if (!Object.prototype.hasOwnProperty.call(field, 'items')) {
-            return
-          }
-
-          return referenceDataService
-            .getAssessmentQuestions(key)
-            .then(response => {
-              field.items = response
-                .filter(referenceDataHelpers.filterDisabled())
-                .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
-                .map(fieldHelpers.mapAssessmentQuestionToTranslation)
-                .map(fieldHelpers.mapReferenceDataToOption)
-            })
-        })
+      req.form.options.fields = await fieldHelpers.populateAssessmentQuestions(
+        fields
       )
-
       super.configure(req, res, next)
     } catch (error) {
       next(error)
