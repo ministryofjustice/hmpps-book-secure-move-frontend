@@ -100,9 +100,9 @@
   }) }}
 
   {% block organisationSwitcher %}
-    {% if CURRENT_LOCATION %}
+    {% if CURRENT_LOCATION or canAccess("moves:view:all") %}
       {{ mojOrganisationSwitcher({
-        text: CURRENT_LOCATION.title,
+        text: CURRENT_LOCATION.title or t("locations::all_locations"),
         link: {
           text: t("actions::switch_location"),
           href: '/locations'

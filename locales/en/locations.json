@@ -1,5 +1,6 @@
 {
   "heading": "Choose location",
+  "all_locations": "All locations",
   "view_all_locations": "View all locations",
   "no_locations": {
     "heading": "You do not have locations set up",
