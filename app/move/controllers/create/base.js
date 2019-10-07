@@ -20,7 +20,8 @@ class CreateBaseController extends FormWizardController {
 
   checkCurrentLocation(req, res, next) {
     if (!req.session.currentLocation) {
-      const error = new Error('Current location is not set in session.')
+      const error = new Error('Current location is not set in session')
+      error.code = 'MISSING_LOCATION'
       return next(error)
     }
 

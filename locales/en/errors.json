@@ -7,6 +7,10 @@
     "heading": "Session timeout",
     "content": "Your session has timed out due to a long period of inactivity."
   },
+  "missing_location": {
+    "heading": "Location not chosen",
+    "content": "You must <a href=\"/locations\">choose a location</a> to create a new move."
+  },
   "not_found": {
     "heading": "Page not found",
     "content": "If you entered a web address check it was correct."
