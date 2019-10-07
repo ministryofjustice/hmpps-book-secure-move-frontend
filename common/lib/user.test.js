@@ -120,6 +120,8 @@ describe('User class', function() {
         expect(permissions).to.deep.equal([
           'moves:view:all',
           'moves:download:all',
+          'moves:view:by_location',
+          'moves:download:by_location',
         ])
       })
     })

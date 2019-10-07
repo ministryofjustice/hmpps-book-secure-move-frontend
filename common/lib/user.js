@@ -29,7 +29,12 @@ User.prototype = {
     }
 
     if (roles.includes('ROLE_PECS_SUPPLIER')) {
-      permissions.push('moves:view:all', 'moves:download:all')
+      permissions.push(
+        'moves:view:all',
+        'moves:download:all',
+        'moves:view:by_location',
+        'moves:download:by_location'
+      )
     }
 
     return uniq(permissions)
