@@ -7,9 +7,9 @@ class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const { fields } = req.form.options
-
-      await fieldHelpers.setupAssessmentQuestions(fields)
-
+      req.form.options.fields = await fieldHelpers.populateAssessmentQuestions(
+        fields
+      )
       super.configure(req, res, next)
     } catch (error) {
       next(error)
