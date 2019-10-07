@@ -122,4 +122,59 @@ describe('Locations controllers', function() {
       })
     })
   })
+
+  describe('#setAllLocations', function() {
+    let nextSpy
+
+    beforeEach(function() {
+      req = {
+        session: {},
+      }
+      res = {
+        redirect: sinon.spy(),
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('when user does not have permission', function() {
+      beforeEach(function() {
+        controllers.setAllLocations(req, res, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not set currentLocation', function() {
+        expect(req.session).not.to.have.property('currentLocation')
+      })
+
+      it('should not redirect', function() {
+        expect(res.redirect).not.to.be.called
+      })
+    })
+
+    context('when locationId is found in user locations', function() {
+      beforeEach(function() {
+        req.session.user = {
+          permissions: ['moves:view:all'],
+        }
+
+        controllers.setAllLocations(req, res, nextSpy)
+      })
+
+      it('should set currentLocation', function() {
+        expect(req.session).to.have.property('currentLocation')
+        expect(req.session.currentLocation).to.equal(null)
+      })
+
+      it('should redirect to homepage', function() {
+        expect(res.redirect).to.be.calledOnceWithExactly('/')
+      })
+
+      it('should not call next', function() {
+        expect(nextSpy).not.to.be.called
+      })
+    })
+  })
 })

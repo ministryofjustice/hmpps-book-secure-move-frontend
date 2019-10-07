@@ -1,5 +1,6 @@
 {
   "heading": "Choose location",
+  "view_all_locations": "View all locations",
   "no_locations": {
     "heading": "You do not have locations set up",
     "content": "Contact support to add your location. This is usually where you work.",
