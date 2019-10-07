@@ -12,7 +12,7 @@ const {
   translateField,
   insertInitialOption,
   insertItemConditional,
-  setupAssessmentQuestions,
+  populateAssessmentQuestions,
 } = require('./field')
 
 const questionsMock = [
@@ -75,8 +75,9 @@ describe('Form helpers', function() {
     })
   })
 
-  describe('#setupAssessmentQuestions()', function() {
+  describe('#populateAssessmentQuestions()', function() {
     let fields
+    let response
 
     beforeEach(function() {
       sinon
@@ -107,38 +108,38 @@ describe('Form helpers', function() {
 
     context('by default', function() {
       beforeEach(async function() {
-        await setupAssessmentQuestions(fields)
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should add conditional property', function() {
-        expect(fields.risk.items[0]).to.have.property('conditional')
-        expect(fields.risk.items[0].conditional).to.equal('risk__violent')
+        expect(response.risk.items[0]).to.have.property('conditional')
+        expect(response.risk.items[0].conditional).to.equal('risk__violent')
       })
     })
 
     context('without available translations', function() {
       beforeEach(async function() {
         sinon.stub(i18n, 'exists').returns(false)
-        await setupAssessmentQuestions(fields)
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should return correctly formatted option', function() {
-        expect(fields.risk.items[0].text).to.equal('Violent')
-        expect(fields.risk.items[0].hint).to.be.undefined
+        expect(response.risk.items[0].text).to.equal('Violent')
+        expect(response.risk.items[0].hint).to.be.undefined
       })
     })
 
     context('with available translations', function() {
       beforeEach(async function() {
         sinon.stub(i18n, 'exists').returns(true)
-        await setupAssessmentQuestions(fields)
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should return with translation strings', function() {
-        expect(fields.risk.items[0].text).to.equal(
+        expect(response.risk.items[0].text).to.equal(
           'fields::risk.items.violent.label'
         )
-        expect(fields.risk.items[0].hint).to.deep.equal({
+        expect(response.risk.items[0].hint).to.deep.equal({
           text: 'fields::risk.items.violent.hint',
         })
       })
@@ -146,11 +147,11 @@ describe('Form helpers', function() {
 
     context('with validation', function() {
       beforeEach(async function() {
-        await setupAssessmentQuestions(fields)
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should return with dependent details', function() {
-        expect(fields.risk__violent.dependent).to.deep.equal({
+        expect(response.risk__violent.dependent).to.deep.equal({
           field: 'risk',
           value: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
         })
@@ -165,11 +166,11 @@ describe('Form helpers', function() {
           risk__violent: {},
         }
         expectedFields = { ...fields }
-        await setupAssessmentQuestions(fields)
+        response = await populateAssessmentQuestions(fields)
       })
 
       it('should not mutate original item', function() {
-        expect(fields).to.deep.equal(expectedFields)
+        expect(response).to.deep.equal(expectedFields)
       })
     })
   })

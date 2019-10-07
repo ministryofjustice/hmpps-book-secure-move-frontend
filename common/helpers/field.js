@@ -192,8 +192,9 @@ function setDependentValidation(key, field, fieldWithItems) {
   }
 }
 
-async function setupAssessmentQuestions(fields) {
-  const fieldWithItems = Object.values(fields).find(field => {
+async function populateAssessmentQuestions(fields) {
+  const fieldsClone = { ...fields }
+  const fieldWithItems = Object.values(fieldsClone).find(field => {
     if (Object.prototype.hasOwnProperty.call(field, 'items')) {
       return true
     }
@@ -210,10 +211,12 @@ async function setupAssessmentQuestions(fields) {
       .map(mapAssessmentQuestionToTranslation)
       .map(mapReferenceDataToOption)
 
-    Object.entries(fields).forEach(([key, field]) =>
+    Object.entries(fieldsClone).forEach(([key, field]) =>
       setDependentValidation(key, field, fieldWithItems)
     )
   }
+
+  return fieldsClone
 }
 
 module.exports = {
@@ -224,5 +227,5 @@ module.exports = {
   translateField,
   insertInitialOption,
   insertItemConditional,
-  setupAssessmentQuestions,
+  populateAssessmentQuestions,
 }
