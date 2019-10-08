@@ -1,6 +1,6 @@
 {
   "police_national_computer": {
-    "label": "PNC number"
+    "label": "<abbr title=\"Police National Computer\">PNC</abbr> number"
   },
   "prison_number": {
     "label": "Prison number"
