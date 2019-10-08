@@ -45,10 +45,20 @@ function _mapAnswer({ title, key } = {}) {
   ]
 }
 
-function _translateField(field) {
+function translateField(field) {
   const label = Array.isArray(field.label)
     ? i18n.t(...field.label)
     : i18n.t(field.label)
+
+  return {
+    ...field,
+    label,
+  }
+}
+
+function stripTags(field) {
+  const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>|<!--[\s\S]*?-->/gi
+  const label = field.label.replace(tags, '').replace(/\s+/gi, ' ')
 
   return {
     ...field,
@@ -133,10 +143,10 @@ const person = [
 
 module.exports = function movesToCSV(moves) {
   return referenceDataService.getAssessmentQuestions().then(questions => {
-    const assessmentAnswers = questions.map(_mapAnswer)
-    const fields = flatten([...move, ...person, ...assessmentAnswers]).map(
-      _translateField
-    )
+    const assessmentAnswers = questions.map(mapAnswer)
+    const fields = flatten([...move, ...person, ...assessmentAnswers])
+      .map(translateField)
+      .map(stripTags)
 
     return json2csv.parse(moves, {
       fields,
