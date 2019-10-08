@@ -9,7 +9,7 @@
     </div>
   </header>
   <p>
-    {{ t("errors::" + errorKey + ".content", { context: journeyName }) }}
+    {{ t("errors::" + errorKey + ".content", { context: journeyName }) | safe }}
   </p>
 
   <p>
@@ -17,7 +17,7 @@
     <a href="/moves">
       {{ t("actions::back_to_dashboard") }}
     </a>
-  {% else %}
+  {% elif errorKey == "session_timeout" %}
     <a href="{{ journeyBaseUrl }}" class="govuk-button">
       {{ t("actions::restart") }}
     </a>

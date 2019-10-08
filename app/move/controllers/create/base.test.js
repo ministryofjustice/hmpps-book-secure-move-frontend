@@ -118,8 +118,9 @@ describe('Move controllers', function() {
           expect(nextSpy).to.be.calledOnce
           expect(nextSpy.args[0][0]).to.be.an('error')
           expect(nextSpy.args[0][0].message).to.equal(
-            'Current location is not set in session.'
+            'Current location is not set in session'
           )
+          expect(nextSpy.args[0][0].code).to.equal('MISSING_LOCATION')
         })
       })
     })
