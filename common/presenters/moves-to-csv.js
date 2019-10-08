@@ -5,7 +5,7 @@ const referenceDataService = require('../services/reference-data')
 const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
 
-function _getIdentifier(identifier) {
+function getIdentifier(identifier) {
   return function(row) {
     const item = find(row.person.identifiers, {
       identifier_type: identifier,
@@ -14,7 +14,7 @@ function _getIdentifier(identifier) {
   }
 }
 
-function _mapAnswer({ title, key } = {}) {
+function mapAnswer({ title, key } = {}) {
   return [
     {
       label: title,
@@ -113,7 +113,7 @@ const move = [
 const person = [
   {
     label: 'fields::police_national_computer.label',
-    value: _getIdentifier('police_national_computer'),
+    value: getIdentifier('police_national_computer'),
   },
   {
     label: 'fields::last_name.label',
