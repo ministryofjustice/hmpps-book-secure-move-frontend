@@ -67,7 +67,7 @@ module.exports = {
     validate: 'required',
     component: 'govukInput',
     label: {
-      text: 'fields::police_national_computer.label',
+      html: 'fields::police_national_computer.label',
       classes: 'govuk-label--s',
     },
     id: 'police_national_computer',

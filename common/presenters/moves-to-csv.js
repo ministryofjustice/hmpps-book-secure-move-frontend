@@ -5,7 +5,7 @@ const referenceDataService = require('../services/reference-data')
 const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
 
-function _getIdentifier(identifier) {
+function getIdentifier(identifier) {
   return function(row) {
     const item = find(row.person.identifiers, {
       identifier_type: identifier,
@@ -14,7 +14,7 @@ function _getIdentifier(identifier) {
   }
 }
 
-function _mapAnswer({ title, key } = {}) {
+function mapAnswer({ title, key } = {}) {
   return [
     {
       label: title,
@@ -45,10 +45,20 @@ function _mapAnswer({ title, key } = {}) {
   ]
 }
 
-function _translateField(field) {
+function translateField(field) {
   const label = Array.isArray(field.label)
     ? i18n.t(...field.label)
     : i18n.t(field.label)
+
+  return {
+    ...field,
+    label,
+  }
+}
+
+function stripTags(field) {
+  const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>|<!--[\s\S]*?-->/gi
+  const label = field.label.replace(tags, '').replace(/\s+/gi, ' ')
 
   return {
     ...field,
@@ -103,7 +113,7 @@ const move = [
 const person = [
   {
     label: 'fields::police_national_computer.label',
-    value: _getIdentifier('police_national_computer'),
+    value: getIdentifier('police_national_computer'),
   },
   {
     label: 'fields::last_name.label',
@@ -133,10 +143,10 @@ const person = [
 
 module.exports = function movesToCSV(moves) {
   return referenceDataService.getAssessmentQuestions().then(questions => {
-    const assessmentAnswers = questions.map(_mapAnswer)
-    const fields = flatten([...move, ...person, ...assessmentAnswers]).map(
-      _translateField
-    )
+    const assessmentAnswers = questions.map(mapAnswer)
+    const fields = flatten([...move, ...person, ...assessmentAnswers])
+      .map(translateField)
+      .map(stripTags)
 
     return json2csv.parse(moves, {
       fields,
