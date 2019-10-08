@@ -4,7 +4,7 @@ const filters = require('../../config/nunjucks/filters')
 function mapIdentifier({ value, identifier_type: type }) {
   return {
     key: {
-      text: i18n.t(`fields::${type}.label`),
+      html: i18n.t(`fields::${type}.label`),
     },
     value: {
       text: value,

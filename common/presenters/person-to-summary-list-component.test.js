@@ -55,15 +55,15 @@ describe('Presenters', function() {
           const row3 = transformedResponse.rows[2]
 
           expect(row1).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { html: '__translated__' },
             value: { text: mockPerson.identifiers[0].value },
           })
           expect(row2).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { html: '__translated__' },
             value: { text: mockPerson.identifiers[1].value },
           })
           expect(row3).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { html: '__translated__' },
             value: { text: mockPerson.identifiers[2].value },
           })
         })
