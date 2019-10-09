@@ -68,6 +68,18 @@ const testCases = {
       args: '1',
     },
   ],
+  supplier: [
+    {
+      method: 'findAll',
+      httpMock: 'get',
+    },
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+    },
+  ],
 }
 
 const client = proxyquire('./', {

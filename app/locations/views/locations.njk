@@ -13,15 +13,15 @@
     </h1>
   </header>
 
-  {% if canAccess("moves:view:all") %}
-    <p class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
-      <a href="/locations/all">{{ t("locations::view_all_locations") }}</a>
-    </p>
-
-    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-  {% endif %}
-
   {% if locations | length %}
+    {% if canAccess("moves:view:all") %}
+      <p class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
+        <a href="/locations/all">{{ t("locations::view_all_locations") }}</a>
+      </p>
+
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    {% endif %}
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">

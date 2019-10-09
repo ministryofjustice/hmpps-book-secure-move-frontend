@@ -3,6 +3,7 @@ const axios = require('axios')
 const {
   getLocationsBySupplierId,
   getLocationsByNomisAgencyId,
+  getSupplierByKey,
 } = require('./reference-data')
 const { decodeAccessToken } = require('../lib/access-token')
 const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
@@ -43,9 +44,23 @@ function getAuthGroups(token) {
 function getAuthLocations(token) {
   const { authorities = [] } = decodeAccessToken(token)
 
-  return getAuthGroups(token).then(groups => {
+  return getAuthGroups(token).then(async groups => {
     if (authorities.includes('ROLE_PECS_SUPPLIER')) {
-      return getLocationsBySupplierId(groups[0])
+      if (!groups.length) {
+        return Promise.resolve([])
+      }
+
+      try {
+        const supplierKey = groups[0].toLowerCase()
+        const supplier = await getSupplierByKey(supplierKey)
+
+        return getLocationsBySupplierId(supplier.id)
+      } catch (error) {
+        if (error.statusCode === 404) {
+          return Promise.resolve([])
+        }
+        return Promise.reject(error)
+      }
     }
     return getLocationsByNomisAgencyId(groups)
   })
