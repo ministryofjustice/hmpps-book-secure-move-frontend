@@ -89,6 +89,10 @@ module.exports = {
       location_type: '',
       nomis_agency_id: '',
       disabled_at: '',
+      suppliers: {
+        jsonApi: 'hasMany',
+        type: 'suppliers',
+      },
     },
     options: {
       cache: true,
