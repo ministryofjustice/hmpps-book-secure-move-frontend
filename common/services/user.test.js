@@ -15,15 +15,19 @@ const configStub = {
   },
 }
 
+const locationsStub = [{ id: 'test' }]
 const referenceDataStub = {
-  getLocationsByNomisAgencyId: sinon.spy(args => {
-    return Promise.resolve([{ id: 'test' }])
-  }),
+  getLocationsByNomisAgencyId: sinon.stub().resolves(locationsStub),
+  getLocationsBySupplierId: sinon.stub().resolves(locationsStub),
 }
 
 const mockFullNameResponse = { name: 'mr benn' }
 
 const authGroups = [
+  {
+    groupCode: 'SUPPLIER',
+    groupName: 'Supplier Group',
+  },
   {
     groupCode: 'PECS_TEST',
     groupName: 'Test Group',
@@ -77,27 +81,50 @@ describe('User service', function() {
 
     context('with valid bearer token', function() {
       context('User authenticated from HMPPS SSO', function() {
-        beforeEach(async function() {
+        beforeEach(function() {
           tokenData = {
             user_name: 'test',
             auth_source: 'auth',
           }
 
-          token = encodeToken(tokenData)
-
           nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
             .get('/')
             .reply(200, JSON.stringify(authGroups))
-
-          result = await getLocations(token)
         })
 
-        it('requests the user’s groups from HMPPS SSO', function() {
-          expect(nock.isDone()).to.be.true
+        context('with supplier role', function() {
+          beforeEach(async function() {
+            tokenData.authorities = ['ROLE_PECS_SUPPLIER']
+            result = await getLocations(encodeToken(tokenData))
+          })
+
+          it('requests the user’s groups from HMPPS SSO', function() {
+            expect(nock.isDone()).to.be.true
+          })
+
+          it('calls reference with supplier key', function() {
+            expect(
+              referenceDataStub.getLocationsBySupplierId
+            ).to.be.calledWithExactly('SUPPLIER')
+          })
+
+          it('returns an Array of location objects', function() {
+            expect(result).to.deep.equal([{ id: 'test' }])
+          })
         })
 
-        it('returns an Array of location objects', function() {
-          expect(result).to.deep.equal([{ id: 'test' }])
+        context('with other role', function() {
+          beforeEach(async function() {
+            result = await getLocations(encodeToken(tokenData))
+          })
+
+          it('requests the user’s groups from HMPPS SSO', function() {
+            expect(nock.isDone()).to.be.true
+          })
+
+          it('returns an Array of location objects', function() {
+            expect(result).to.deep.equal([{ id: 'test' }])
+          })
         })
       })
 

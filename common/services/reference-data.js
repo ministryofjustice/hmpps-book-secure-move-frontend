@@ -77,6 +77,14 @@ const referenceDataService = {
     })
   },
 
+  getLocationsBySupplierId(supplierId) {
+    return referenceDataService.getLocations({
+      filter: {
+        'filter[supplier_ids]': supplierId,
+      },
+    })
+  },
+
   mapLocationIdsToLocations(ids, callback) {
     const locationPromises = ids.map(id => {
       return callback(id).catch(() => false)

@@ -550,4 +550,69 @@ describe('Reference Data Service', function() {
       })
     })
   })
+
+  describe('#getLocationsBySupplierId()', function() {
+    const mockResponse = mockLocations
+    let locations
+
+    beforeEach(async function() {
+      sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
+    })
+
+    context('without id', function() {
+      beforeEach(async function() {
+        locations = await referenceDataService.getLocationsBySupplierId()
+      })
+
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
+      })
+
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse)
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set location_type filter to undefined', function() {
+          expect(filters).to.contain.property('filter[supplier_ids]')
+          expect(filters['filter[supplier_ids]']).to.equal(undefined)
+        })
+      })
+    })
+
+    context('with id', function() {
+      const mockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
+
+      beforeEach(async function() {
+        locations = await referenceDataService.getLocationsBySupplierId(mockId)
+      })
+
+      it('should call getMoves methods', function() {
+        expect(referenceDataService.getLocations).to.be.calledOnce
+      })
+
+      it('should return first result', function() {
+        expect(locations).to.deep.equal(mockResponse)
+      })
+
+      describe('filters', function() {
+        let filters
+
+        beforeEach(function() {
+          filters = referenceDataService.getLocations.args[0][0].filter
+        })
+
+        it('should set location_type filter to agency ID', function() {
+          expect(filters).to.contain.property('filter[supplier_ids]')
+          expect(filters['filter[supplier_ids]']).to.equal(mockId)
+        })
+      })
+    })
+  })
 })
