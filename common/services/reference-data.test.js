@@ -593,6 +593,11 @@ describe('Reference Data Service', function() {
           expect(filters).to.contain.property('filter[supplier_id]')
           expect(filters['filter[supplier_id]']).to.equal(undefined)
         })
+
+        it('should set cache to false', function() {
+          expect(filters).to.contain.property('cache')
+          expect(filters.cache).to.equal(false)
+        })
       })
     })
 
@@ -621,6 +626,11 @@ describe('Reference Data Service', function() {
         it('should set location_type filter to agency ID', function() {
           expect(filters).to.contain.property('filter[supplier_id]')
           expect(filters['filter[supplier_id]']).to.equal(mockId)
+        })
+
+        it('should set cache to false', function() {
+          expect(filters).to.contain.property('cache')
+          expect(filters.cache).to.equal(false)
         })
       })
     })
