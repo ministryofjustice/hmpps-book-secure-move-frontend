@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": "bccf4d77-984d-560c-9ffd-9badbb9157ca",
+      "type": "suppliers",
+      "attributes": {
+        "name": "GEOAmey",
+        "key": "geoamey"
+      }
+    },
+    {
+      "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+      "type": "suppliers",
+      "attributes": {
+        "name": "Serco",
+        "key": "serco"
+      }
+    }
+  ]
+}

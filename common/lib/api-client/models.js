@@ -95,4 +95,14 @@ module.exports = {
       collectionPath: 'reference/locations',
     },
   },
+  supplier: {
+    attributes: {
+      key: '',
+      name: '',
+    },
+    options: {
+      cache: true,
+      collectionPath: 'reference/suppliers',
+    },
+  },
 }

@@ -23,6 +23,16 @@ const mockEthnicities = [
     title: 'Black (Caribbean)',
   },
 ]
+const mockSuppliers = [
+  {
+    id: 'b95bfb7c-18cd-419d-8119-2dee1506726f',
+    name: 'GEOAmey',
+  },
+  {
+    id: '35660b02-243f-4df2-9337-e3ec49b6d70d',
+    name: 'Serco',
+  },
+]
 const mockAssessmentQuestions = [
   {
     id: '76bb7065-3c69-4b7c-a17b-ac5881d7837e',
@@ -612,6 +622,64 @@ describe('Reference Data Service', function() {
           expect(filters).to.contain.property('filter[supplier_ids]')
           expect(filters['filter[supplier_ids]']).to.equal(mockId)
         })
+      })
+    })
+  })
+
+  describe('#getSuppliers()', function() {
+    const mockResponse = {
+      data: mockSuppliers,
+    }
+    let response
+
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll.withArgs('supplier').resolves(mockResponse)
+
+      response = await referenceDataService.getSuppliers()
+    })
+
+    it('should call API client', function() {
+      expect(apiClient.findAll).to.be.calledOnceWithExactly('supplier')
+    })
+
+    it('should correct number of results', function() {
+      expect(response.length).to.deep.equal(mockSuppliers.length)
+    })
+
+    it('should return response data', function() {
+      expect(response).to.equal(mockSuppliers)
+    })
+  })
+
+  describe('#getSupplierByKey()', function() {
+    context('without supplier key', function() {
+      it('should reject with error', function() {
+        return expect(
+          referenceDataService.getSupplierByKey()
+        ).to.be.rejectedWith('No supplier key provided')
+      })
+    })
+
+    context('with location key', function() {
+      const mockKey = 'serco'
+      const mockResponse = {
+        data: mockSuppliers[0],
+      }
+      let response
+
+      beforeEach(async function() {
+        sinon.stub(apiClient, 'find').resolves(mockResponse)
+
+        response = await referenceDataService.getSupplierByKey(mockKey)
+      })
+
+      it('should call update method with data', function() {
+        expect(apiClient.find).to.be.calledOnceWithExactly('supplier', mockKey)
+      })
+
+      it('should return supplier', function() {
+        expect(response).to.deep.equal(mockResponse.data)
       })
     })
   })

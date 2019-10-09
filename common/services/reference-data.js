@@ -93,6 +93,18 @@ const referenceDataService = {
       locations.filter(Boolean)
     )
   },
+
+  getSuppliers() {
+    return apiClient.findAll('supplier').then(response => response.data)
+  },
+
+  getSupplierByKey(key) {
+    if (!key) {
+      return Promise.reject(new Error('No supplier key provided'))
+    }
+
+    return apiClient.find('supplier', key).then(response => response.data)
+  },
 }
 
 module.exports = referenceDataService
