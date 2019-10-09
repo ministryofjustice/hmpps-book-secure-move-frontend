@@ -80,7 +80,8 @@ const referenceDataService = {
   getLocationsBySupplierId(supplierId) {
     return referenceDataService.getLocations({
       filter: {
-        'filter[supplier_ids]': supplierId,
+        cache: false,
+        'filter[supplier_id]': supplierId,
       },
     })
   },

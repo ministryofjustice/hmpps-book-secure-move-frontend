@@ -26,7 +26,7 @@ function requestMiddleware(expiry = 60) {
       }`
       const cacheModel = get(models, `${req.model}.options.cache`)
 
-      if (!cacheModel) {
+      if (!cacheModel || req.params.cache === false) {
         return jsonApi.axios(req)
       }
 

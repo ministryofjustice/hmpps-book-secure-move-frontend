@@ -77,6 +77,26 @@ describe('API Client', function() {
         payload.req.model = 'cachedModel'
       })
 
+      context('when request should not be cached', function() {
+        beforeEach(async function() {
+          payload.req.params.cache = false
+          response = await requestMiddleware().req(payload)
+        })
+
+        it('should make request using axios library with payload', function() {
+          expect(payload.jsonApi.axios).to.be.calledOnceWithExactly(payload.req)
+        })
+
+        it('should not call redis client', function() {
+          expect(getAsyncStub).not.to.be.called
+          expect(setexAsyncStub).not.to.be.called
+        })
+
+        it('should return a request', function() {
+          expect(response).to.deep.equal(mockResponse)
+        })
+      })
+
       context('when result exists in Redis', function() {
         const mockRedisResponse = JSON.stringify(mockResponse.data)
 
