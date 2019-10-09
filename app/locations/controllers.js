@@ -21,7 +21,20 @@ function setLocation(req, res, next) {
   res.redirect('/')
 }
 
+function setAllLocations(req, res, next) {
+  const { permissions = [] } = req.session.user || {}
+
+  if (!permissions.includes('moves:view:all')) {
+    return next()
+  }
+
+  req.session.currentLocation = null
+
+  res.redirect('/')
+}
+
 module.exports = {
   locations,
   setLocation,
+  setAllLocations,
 }

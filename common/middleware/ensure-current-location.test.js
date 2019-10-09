@@ -16,9 +16,27 @@ describe('Ensure current location middleware', function() {
     }
   })
 
-  context('when current location exists on session', function() {
+  context('when current is a string', function() {
     beforeEach(function() {
       req.session.currentLocation = 'current-location'
+
+      ensureCurrentLocation({
+        locationsMountpath,
+      })(req, res, nextSpy)
+    })
+
+    it('should call next', function() {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+
+    it('should not redirect', function() {
+      expect(res.redirect).not.to.be.called
+    })
+  })
+
+  context('when current location is null', function() {
+    beforeEach(function() {
+      req.session.currentLocation = null
 
       ensureCurrentLocation({
         locationsMountpath,
@@ -84,71 +102,6 @@ describe('Ensure current location middleware', function() {
 
     it('should redirect to locations mountpath', function() {
       expect(res.redirect).to.be.calledOnceWithExactly(locationsMountpath)
-    })
-  })
-
-  context('when user has view all moves permission', function() {
-    beforeEach(function() {
-      req.session.user = {
-        permissions: ['moves:view:all'],
-      }
-    })
-
-    context('when user locations contains items', function() {
-      beforeEach(function() {
-        req.session.user.locations = [
-          {
-            id: '1',
-            name: 'Location one',
-          },
-        ]
-
-        ensureCurrentLocation({
-          locationsMountpath,
-        })(req, res, nextSpy)
-      })
-
-      it('should not call next', function() {
-        expect(nextSpy).not.to.be.called
-      })
-
-      it('should redirect to locations mountpath', function() {
-        expect(res.redirect).to.be.calledOnceWithExactly(locationsMountpath)
-      })
-    })
-
-    context('when user locations is empty list', function() {
-      beforeEach(function() {
-        req.session.user.locations = []
-
-        ensureCurrentLocation({
-          locationsMountpath,
-        })(req, res, nextSpy)
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-
-      it('should not redirect', function() {
-        expect(res.redirect).not.to.be.called
-      })
-    })
-
-    context('when user locations does not exist', function() {
-      beforeEach(function() {
-        ensureCurrentLocation({
-          locationsMountpath,
-        })(req, res, nextSpy)
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-
-      it('should not redirect', function() {
-        expect(res.redirect).not.to.be.called
-      })
     })
   })
 })
