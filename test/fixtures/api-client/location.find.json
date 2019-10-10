@@ -7,7 +7,16 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
-      "nomis_agency_id": null
+      "nomis_agency_id": null,
+      "suppliers": [
+        {
+          "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+          "name": "Serco",
+          "key": "serco",
+          "created_at": "2019-10-09T11:10:53+01:00",
+          "updated_at": "2019-10-09T11:10:53+01:00"
+        }
+      ]
     }
   }
 }

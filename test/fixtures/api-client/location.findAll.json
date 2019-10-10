@@ -8,7 +8,16 @@
               "title": "Bedford County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": [
+                {
+                  "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+                  "name": "Serco",
+                  "key": "serco",
+                  "created_at": "2019-10-09T11:10:53+01:00",
+                  "updated_at": "2019-10-09T11:10:53+01:00"
+                }
+              ]
           }
       },
       {
@@ -19,7 +28,8 @@
               "title": "Luton Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -30,7 +40,8 @@
               "title": "Maidenhead Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -41,7 +52,8 @@
               "title": "Newbury County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -52,7 +64,8 @@
               "title": "Reading County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -63,7 +76,8 @@
               "title": "Windsor County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -74,7 +88,8 @@
               "title": "Bristol Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -85,7 +100,16 @@
               "title": "Cambridge Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": [
+                {
+                  "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+                  "name": "Serco",
+                  "key": "serco",
+                  "created_at": "2019-10-09T11:10:53+01:00",
+                  "updated_at": "2019-10-09T11:10:53+01:00"
+                }
+              ]
           }
       },
       {
@@ -96,7 +120,8 @@
               "title": "Peterborough Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -107,7 +132,8 @@
               "title": "Macclesfield Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -118,7 +144,8 @@
               "title": "Warrington County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -129,7 +156,8 @@
               "title": "Bodmin Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -140,7 +168,8 @@
               "title": "Bude County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -151,7 +180,8 @@
               "title": "Newquay Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -162,7 +192,8 @@
               "title": "Penzance County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -173,7 +204,16 @@
               "title": "Darlington Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": [
+                {
+                  "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+                  "name": "Serco",
+                  "key": "serco",
+                  "created_at": "2019-10-09T11:10:53+01:00",
+                  "updated_at": "2019-10-09T11:10:53+01:00"
+                }
+              ]
           }
       },
       {
@@ -184,7 +224,8 @@
               "title": "Durham Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -195,7 +236,8 @@
               "title": "Barrow in Furness Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -206,7 +248,8 @@
               "title": "Carlisle County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -217,7 +260,8 @@
               "title": "Chesterfield Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -228,7 +272,8 @@
               "title": "Derby County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -239,7 +284,8 @@
               "title": "Axminster Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -250,7 +296,8 @@
               "title": "Barnstaple Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -261,7 +308,8 @@
               "title": "Exeter Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -272,7 +320,8 @@
               "title": "Plymouth County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -283,7 +332,8 @@
               "title": "Torquay County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -294,7 +344,8 @@
               "title": "Weymouth Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -305,7 +356,8 @@
               "title": "Brighton County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -316,7 +368,8 @@
               "title": "Colchester County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -327,7 +380,8 @@
               "title": "Harlow Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -338,7 +392,8 @@
               "title": "Romford Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -349,7 +404,8 @@
               "title": "Cheltenham Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -360,7 +416,8 @@
               "title": "Croydon Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -371,7 +428,8 @@
               "title": "Kingston upon Thames County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -382,7 +440,8 @@
               "title": "Richmond Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -393,7 +452,8 @@
               "title": "Southall Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -404,7 +464,8 @@
               "title": "Wimbledon Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -415,7 +476,8 @@
               "title": "Manchester County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -426,7 +488,8 @@
               "title": "Oldham Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -437,7 +500,8 @@
               "title": "Basingstoke County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -448,7 +512,8 @@
               "title": "Southampton County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -459,7 +524,8 @@
               "title": "Watford Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -470,7 +536,8 @@
               "title": "Dover Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -481,7 +548,8 @@
               "title": "Maidstone Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -492,7 +560,8 @@
               "title": "Blackburn County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -503,7 +572,8 @@
               "title": "Burnley County Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -514,7 +584,8 @@
               "title": "Preston Crown Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -525,7 +596,8 @@
               "title": "Grantham Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -536,7 +608,8 @@
               "title": "Grimsby Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       },
       {
@@ -547,7 +620,8 @@
               "title": "Liverpool Magistrates Court",
               "location_type": "court",
               "nomis_agency_id": null,
-              "disabled_at": null
+              "disabled_at": null,
+              "suppliers": []
           }
       }
   ],
