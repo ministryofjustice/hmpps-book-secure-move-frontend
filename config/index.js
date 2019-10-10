@@ -20,18 +20,6 @@ function _authUrl(path) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
 }
 
-// TODO: Remove once environments have been updated to support new format
-const useLegacyApiConfig = process.env.API_USE_LEGACY !== 'false'
-const apiBaseUrl = useLegacyApiConfig
-  ? API_BASE_URL
-  : API_BASE_URL + process.env.API_PATH
-const apiHealthcheckUrl = useLegacyApiConfig
-  ? process.env.API_HEALTHCHECK_URL
-  : API_BASE_URL + process.env.API_HEALTHCHECK_PATH
-const apiAuthUrl = useLegacyApiConfig
-  ? process.env.API_AUTH_URL
-  : API_BASE_URL + process.env.API_AUTH_PATH
-
 module.exports = {
   IS_DEV,
   IS_PRODUCTION,
@@ -46,9 +34,9 @@ module.exports = {
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
-    BASE_URL: apiBaseUrl,
-    AUTH_URL: apiAuthUrl,
-    HEALTHCHECK_URL: apiHealthcheckUrl,
+    BASE_URL: API_BASE_URL + process.env.API_PATH,
+    AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
+    HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
