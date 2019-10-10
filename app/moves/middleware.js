@@ -74,9 +74,12 @@ module.exports = {
     }
 
     try {
+      const userLocations = get(req.session, 'user.locations', [])
+      const locationIds =
+        fromLocationId || userLocations.map(location => location.id).join(',')
       const [requestedMoves, cancelledMoves] = await Promise.all([
-        moveService.getRequested({ moveDate, fromLocationId }),
-        moveService.getCancelled({ moveDate, fromLocationId }),
+        moveService.getRequested({ moveDate, fromLocationId: locationIds }),
+        moveService.getCancelled({ moveDate, fromLocationId: locationIds }),
       ])
 
       res.locals.requestedMovesByDate = requestedMoves
