@@ -1,7 +1,7 @@
 version: 2.1
 
 aliases:
-  - &node_version               circleci/node:11
+  - &node_version circleci/node:11
 
   # Common steps
   - &install_dependencies
@@ -28,7 +28,7 @@ references:
 
 commands:
   build_for_k8s:
-    description: "Builds a Docker image for staging/production and pushes to ECR"
+    description: 'Builds a Docker image for staging/production and pushes to ECR'
     parameters:
       env:
         type: string
@@ -66,7 +66,7 @@ commands:
             docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:<< parameters.env >>.latest"
 
   deploy_to_k8s:
-    description: "Deploys a previously built Docker image to staging/production k8s environment"
+    description: 'Deploys a previously built Docker image to staging/production k8s environment'
     parameters:
       env:
         type: string
@@ -94,7 +94,7 @@ commands:
                     kubernetes.io/change-cause="${BUILD_DATE} set image ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} via CircleCI"
 
 jobs:
-  build:
+  build_and_test:
     docker:
       - image: *node_version
     steps:
@@ -102,65 +102,37 @@ jobs:
       - *restore_cache
       - *install_dependencies
       - *save_cache
-      - run: NODE_ENV=production npm run build
-  lint:
-    docker:
-      - image: *node_version
-    steps:
-      - checkout
-      - *restore_cache
-      - *install_dependencies
-      - *save_cache
-      - run: mkdir reports
       - run:
-          name: npm run lint
-          command: |
-            npm run circle:lint
+          name: Lint the code
+          command: npm run circle:lint
           when: always
-      - store_test_results:
-          path: reports
-      - store_artifacts:
-          path: ./reports/eslint/eslint.xml
-  unit_test:
-    docker:
-      - image: *node_version
-    steps:
-      - checkout
-      - *restore_cache
-      - *install_dependencies
-      - run: npm install mocha-junit-reporter # just for CircleCI
-      - *save_cache
-      - run: mkdir reports
       - run:
           name: Setup Code Climate test-reporter
+          # download test reporter as a static binary
           command: |
-            # download test reporter as a static binary
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
       - run:
-          name: notify code climate
+          name: Notify CodeClimate before build
           command: |
             ./cc-test-reporter before-build
           when: always
       - run:
-          name: npm test
+          name: Run unit tests
           command: |
             npm run circle:coverage
-          when: always
-      # - run:
-      #     name: upload coverage to coveralls
-      #     command: |
-      #       npm run circle:coveralls
-      #     when: always
       - run:
-          name: upload coverage to code climate
+          name: Upload coverage to CodeClimate
           command: |
             ./cc-test-reporter after-build
           when: always
+      - run:
+          name: Build the app
+          command: NODE_ENV=production npm run build
       - store_test_results:
           path: reports
       - store_artifacts:
-          path: ./reports/mocha/test-results.xml
+          path: reports
       - store_artifacts:
           path: coverage
 
@@ -168,37 +140,33 @@ jobs:
     <<: *cloud_container
     steps:
       - build_for_k8s:
-         env: "staging"
+          env: 'staging'
 
   deploy_staging:
     <<: *cloud_container
     steps:
       - deploy_to_k8s:
-         env: "staging"
+          env: 'staging'
 
   build_production:
     <<: *cloud_container
     steps:
       - build_for_k8s:
-         env: "production"
+          env: 'production'
 
   deploy_production:
     <<: *cloud_container
     steps:
       - deploy_to_k8s:
-         env: "production"
+          env: 'production'
 
 workflows:
   pecs-frontend:
     jobs:
-      - build
-      - lint
-      - unit_test
+      - build_and_test
       - build_staging:
           requires:
-            - build
-            - lint
-            - unit_test
+            - build_and_test
           filters:
             branches:
               only: master
@@ -208,9 +176,7 @@ workflows:
       - hold_production:
           type: approval
           requires:
-            - build
-            - lint
-            - unit_test
+            - build_and_test
           filters:
             branches:
               only: master
