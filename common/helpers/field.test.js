@@ -559,7 +559,7 @@ describe('Form helpers', function() {
           {
             name: 'error_field',
             errorMessage: {
-              text: 'fields::error_field.label validation::required',
+              html: 'fields::error_field.label validation::required',
             },
           },
         ])
