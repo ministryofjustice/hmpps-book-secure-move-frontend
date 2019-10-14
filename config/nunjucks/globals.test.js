@@ -119,9 +119,9 @@ describe('Nunjucks globals', function() {
 
       it('should log full error', function() {
         expect(logger.error.args[1][0]).to.be.an('error')
-        expect(logger.error.args[1][0].message).to.equal(
-          "Cannot find module 'path/to/missing/manifest.json'"
-        )
+        expect(logger.error.args[1][0].message)
+          .to.be.a('string')
+          .and.match(/^Cannot find module 'path\/to\/missing\/manifest.json'/)
       })
     })
   })
