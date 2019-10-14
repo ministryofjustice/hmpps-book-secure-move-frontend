@@ -12,7 +12,7 @@ Service (PECS) programme.
 
 ## Dependencies
 
-- [Node.js](https://nodejs.org/en/) (>= 11.14.0)
+- [Node.js](https://nodejs.org/en/) (>= 12)
 - [NPM](https://www.npmjs.com/) (>= 6.7.0)
 - [Redis](https://redis.io/) (>= 5.0.5)
 
