@@ -21,7 +21,8 @@
     "start": "node start.js",
     "develop": "run-p watch:js:*",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
-    "lint": "eslint ./",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged",
     "coverage": "nyc --reporter=html --reporter=lcov npm test",
     "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
     "watch:js:client": "webpack --watch --progress",
@@ -31,9 +32,10 @@
     "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"
   },
-  "pre-commit": [
-    "lint"
-  ],
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.js": "eslint"
+  },
   "contributors": [
     "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)",
     "Steven Lorek <steve@stevelorek.com> (http://github.com/slorek)",
@@ -107,6 +109,7 @@
     "file-loader": "4.2.0",
     "imagemin-webpack-plugin": "2.4.2",
     "js-yaml": "3.13.1",
+    "lint-staged": "9.4.2",
     "mini-css-extract-plugin": "0.8.0",
     "mocha": "6.2.0",
     "nock": "11.3.5",
