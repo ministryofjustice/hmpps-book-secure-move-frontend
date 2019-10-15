@@ -136,6 +136,18 @@ jobs:
       - store_artifacts:
           path: coverage
 
+  e2e_test:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - *restore_cache
+      - *install_dependencies
+      - *save_cache
+      - run:
+          name: Run E2E tests
+          command: npm run test-e2e
+
   build_staging:
     <<: *cloud_container
     steps:
@@ -164,6 +176,9 @@ workflows:
   pecs-frontend:
     jobs:
       - build_and_test
+      - e2e_test:
+          requires:
+            - deploy_staging
       - build_staging:
           requires:
             - build_and_test
