@@ -64,11 +64,11 @@ describe('Form wizard', function() {
           errorList: [
             {
               href: '#fieldOne',
-              text: 'fields::fieldOne.label validation::required',
+              html: 'fields::fieldOne.label validation::required',
             },
             {
               href: '#fieldTwo',
-              text: 'fields::fieldTwo.label validation::required',
+              html: 'fields::fieldTwo.label validation::required',
             },
           ],
         })

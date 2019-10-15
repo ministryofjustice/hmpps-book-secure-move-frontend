@@ -13,7 +13,7 @@ class FormController extends Controller {
       const message = req.t(`validation::${error.type}`)
 
       return {
-        text: `${label} ${message}`,
+        html: `${label} ${message}`,
         href: `#${error.key}`,
       }
     })

@@ -120,7 +120,7 @@ function setFieldError(errors, translate) {
       {
         ...field,
         errorMessage: {
-          text: `${label} ${message}`,
+          html: `${label} ${message}`,
         },
       },
     ]
