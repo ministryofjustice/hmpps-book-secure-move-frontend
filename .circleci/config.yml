@@ -105,7 +105,6 @@ jobs:
       - run:
           name: Lint the code
           command: npm run circle:lint
-          when: always
       - run:
           name: Setup Code Climate test-reporter
           # download test reporter as a static binary
