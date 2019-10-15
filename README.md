@@ -142,6 +142,9 @@ npm run lint
 | SENTRY_KEY | Sentry key | |
 | SENTRY_PROJECT | Sentry project ID | |
 | GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
+| E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
+| E2E_USERNAME | Username used for acceptance testing | |
+| E2E_PASSWORD | Password used for acceptance testing | |
 
 ### Development specific
 
