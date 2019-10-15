@@ -1,7 +1,7 @@
 version: 2.1
 
 aliases:
-  - &node_version circleci/node:11
+  - &node_version circleci/node:12
 
   # Common steps
   - &install_dependencies
