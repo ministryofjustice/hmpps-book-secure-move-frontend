@@ -129,7 +129,7 @@
     "sinon": "7.5.0",
     "sinon-chai": "3.3.0",
     "style-loader": "1.0.0",
-    "testcafe": "1.5.0",
+    "testcafe": "1.6.0",
     "timezone-mock": "1.0.8",
     "uglifyjs-webpack-plugin": "2.2.0",
     "webpack": "4.41.0",
