@@ -1,23 +1,43 @@
 import dotenv from 'dotenv'
-import { Selector, t } from 'testcafe'
+import { Selector } from 'testcafe'
 
 dotenv.config()
 
+const baseUrl = process.env.E2E_BASE_URL || `http://${process.env.SERVER_HOST}`
+
 export default class Page {
   constructor() {
-    this.location = {
-      home: process.env.E2E_BASE_URL || `http://${process.env.SERVER_HOST}`,
+    this.locations = {
+      home: baseUrl,
+      signout: `${baseUrl}/auth/sign-out`,
+      locationsAll: `${baseUrl}/locations/all`,
     }
-  }
 
-  get productName() {
-    return Selector('.app-header__product-name').innerText
-  }
-
-  async logIn() {
-    await t
-      .typeText('#username', process.env.E2E_USERNAME)
-      .typeText('#password', process.env.E2E_PASSWORD)
-      .pressKey('enter')
+    this.nodes = {
+      appHeader: Selector('.app-header__logo').withExactText(
+        'HMPPS Book a secure move'
+      ),
+      signInHeader: Selector('.govuk-header__logo').withExactText(
+        'HMPPS Digital Services'
+      ),
+      pageHeading: Selector('.govuk-heading-xl'),
+      policeUserName: Selector('.app-header__navigation-item').withExactText(
+        'Police User'
+      ),
+      supplierUserName: Selector('.app-header__navigation-item').withExactText(
+        'GEOAmey Supplier'
+      ),
+      createMoveButton: Selector('.govuk-button').withExactText(
+        'Create a move'
+      ),
+      downloadMovesButton: Selector('.govuk-button').withExactText(
+        'Download moves'
+      ),
+      paginationPrev: Selector('.app-pagination__list-item--prev a'),
+      paginationNext: Selector('.app-pagination__list-item--next a'),
+      paginationToday: Selector('.app-pagination__list-item a').withText(
+        'Today'
+      ),
+    }
   }
 }
