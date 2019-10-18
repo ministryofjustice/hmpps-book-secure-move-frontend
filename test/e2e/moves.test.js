@@ -1,5 +1,12 @@
+/* eslint-disable no-console */
+import faker from 'faker'
 import { policeUser } from './roles'
 import Page from './page-model'
+import {
+  selectFieldsetOption,
+  selectAutocompleteOption,
+  getInnerText,
+} from './helpers'
 
 const page = new Page()
 
@@ -11,24 +18,38 @@ test('Court move', async t => {
     .navigateTo(page.locations.home)
     .click(page.nodes.createMoveButton)
 
-  // Personal details
-  // eslint-disable-next-line
-  const personalDetailsInputs = await page.fillInPersonalDetails()
+  const personalDetails = {
+    text: {
+      police_national_computer: faker.random.number().toString(),
+      last_name: faker.name.lastName(),
+      first_names: faker.name.firstName(),
+      date_of_birth: faker.date
+        .between('01/01/1940', '01/01/1990')
+        .toLocaleDateString(),
+    },
+    options: {
+      ethnicity: await selectAutocompleteOption('Ethnicity').then(getInnerText),
+      gender: await selectFieldsetOption(
+        'Gender',
+        faker.random.arrayElement(['Male', 'Female'])
+      ).then(getInnerText),
+    },
+  }
 
+  // Personal details
+  await page.fillInForm(personalDetails)
   await t.click(page.nodes.continueButton)
 
   // Where is this person moving?
-  await page.selectRadio('Move to', 'Court')
+  await selectFieldsetOption('Move to', 'Court')
 
-  const selectedCourt = await page.selectRandomOptionFromAutocomplete(
-    'Name of court'
-  )
-  const selectedDate = await page.selectRadio('Date', 'Today')
-
-  // eslint-disable-next-line
-  const moveDetailsInputs = {
-    court: await selectedCourt.innerText,
-    date: await selectedDate.innerText,
+  const moveDetails = {
+    options: {
+      to_location_court_appearance: await selectAutocompleteOption(
+        'Name of court'
+      ).then(getInnerText),
+      date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
+    },
   }
 
   await t.click(page.nodes.continueButton)
@@ -44,6 +65,9 @@ test('Court move', async t => {
 
   // Confirmation page
   await t.expect(page.nodes.confirmationTitle.exists).ok()
+
+  console.log('Personal details:', personalDetails)
+  console.log('Move details:', moveDetails)
 })
 
 test('Prison recall', async t => {})

@@ -22,7 +22,7 @@
     "develop": "run-p watch:js:*",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
     "test-e2e": "testcafe test/e2e/*.test.js --color",
-    "test-e2e-local": "E2E_BASE_URL='' testcafe chrome test/e2e/*.test.js --debug-on-fail",
+    "test-e2e-local": "E2E_BASE_URL='' testcafe firefox test/e2e/*.test.js --debug-on-fail",
     "lint": "eslint .",
     "lint-staged": "lint-staged",
     "coverage": "nyc --reporter=html --reporter=lcov npm test",
