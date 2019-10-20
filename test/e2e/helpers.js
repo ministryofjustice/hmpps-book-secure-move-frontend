@@ -1,12 +1,12 @@
 import { ClientFunction, Selector, t } from 'testcafe'
 
 /**
- * get inner text of resolved selector
+ * Get inner text of TestCafe selector
  *
- * @param promise
- * @returns {string | Promise<string>}
+ * @param {Selector} selector - TestCafe selector
+ * @returns {Promise<string>} - element inner text
  */
-export const getInnerText = promise => promise.innerText
+export const getInnerText = selector => selector.innerText
 
 /**
  * Select option from selector
@@ -88,3 +88,39 @@ export async function selectFieldsetOption(
 
   return selectOption(optionSelector, optionTextOrIndex, optionCssSelector)
 }
+
+/**
+ * Fill in form details on page
+ *
+ * @param {FormDetails} details - text fields and select options objects with field IDs as properties
+ * @returns {Promise<FormDetails>} - details used to fill the form
+ */
+export async function fillInForm(details = {}) {
+  const textFields = details.text || {}
+
+  for (const [id, value] of Object.entries(textFields)) {
+    await t.typeText(`#${id}`, value)
+  }
+
+  return details
+}
+
+/**
+ * Form details object
+ *
+ * @typedef {object} FormDetails
+ * @property {TextFields} [text] - text fields values with field IDs as keys
+ * @property {SelectFields} [options] - option field values with field IDs as keys
+ */
+
+/**
+ * Form details text fields
+ *
+ * @typedef {Object.<string, string>} TextFields
+ */
+
+/**
+ * Form details select fields
+ *
+ * @typedef {Object.<string, string>} SelectFields
+ */

@@ -1,12 +1,7 @@
 /* eslint-disable no-console */
-import faker from 'faker'
 import { policeUser } from './roles'
 import Page from './page-model'
-import {
-  selectFieldsetOption,
-  selectAutocompleteOption,
-  getInnerText,
-} from './helpers'
+import { selectFieldsetOption } from './helpers'
 
 const page = new Page()
 
@@ -18,62 +13,164 @@ test('Court move', async t => {
     .navigateTo(page.locations.home)
     .click(page.nodes.createMoveButton)
 
-  const personalDetails = {
-    text: {
-      police_national_computer: faker.random.number().toString(),
-      last_name: faker.name.lastName(),
-      first_names: faker.name.firstName(),
-      date_of_birth: faker.date
-        .between('01/01/1940', '01/01/1990')
-        .toLocaleDateString(),
-    },
-    options: {
-      ethnicity: await selectAutocompleteOption('Ethnicity').then(getInnerText),
-      gender: await selectFieldsetOption(
-        'Gender',
-        faker.random.arrayElement(['Male', 'Female'])
-      ).then(getInnerText),
-    },
-  }
-
-  // Personal details
-  await page.fillInForm(personalDetails)
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
 
-  // Where is this person moving?
-  await selectFieldsetOption('Move to', 'Court')
-
-  const moveDetails = {
-    options: {
-      to_location_court_appearance: await selectAutocompleteOption(
-        'Name of court'
-      ).then(getInnerText),
-      date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
-    },
-  }
-
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Where is this person moving?')
+  await page.fillInMoveDetails('Court')
   await t.click(page.nodes.continueButton)
 
-  // Is there information for the court?
-  await t.click(page.nodes.continueButton)
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Is there information for the court?')
+    .click(page.nodes.continueButton)
 
-  // Are there risks with moving this person?
-  await t.click(page.nodes.continueButton)
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there risks with moving this person?')
+    .click(page.nodes.continueButton)
 
-  // Does this person’s health affect transport?
-  await t.click(page.nodes.scheduleMoveButton)
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Does this person’s health affect transport?')
+    .click(page.nodes.scheduleMoveButton)
 
-  // Confirmation page
-  await t.expect(page.nodes.confirmationTitle.exists).ok()
+  const referenceNumber = await page.getMoveConfirmationReferenceNumber()
 
-  console.log('Personal details:', personalDetails)
-  console.log('Move details:', moveDetails)
+  await t.navigateTo(page.locations.home)
+
+  const scheduledListItem = await page.getMoveListItemByReference(
+    'Court',
+    referenceNumber
+  )
+
+  await t
+    .expect(scheduledListItem.find('.app-card__title').innerText)
+    .eql(
+      `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
+    )
+
+  await t.click(scheduledListItem.find('.app-card__link'))
+
+  await t
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'PNC number'
+      )
+    )
+    .eql(personalDetails.text.police_national_computer)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Gender'
+      )
+    )
+    .eql(personalDetails.options.gender)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Ethnicity'
+      )
+    )
+    .eql(personalDetails.options.ethnicity)
 })
 
-test('Prison recall', async t => {})
+test('Prison recall', async t => {
+  await t
+    .useRole(policeUser)
+    .navigateTo(page.locations.home)
+    .click(page.nodes.createMoveButton)
 
-test('Check conditional content', async t => {})
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  const personalDetails = await page.fillInPersonalDetails()
+  await t.click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Where is this person moving?')
+  await page.fillInMoveDetails('Prison recall')
+  await t.click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there risks with moving this person?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Does this person’s health affect transport?')
+    .click(page.nodes.scheduleMoveButton)
+
+  const referenceNumber = await page.getMoveConfirmationReferenceNumber()
+
+  await t.navigateTo(page.locations.home)
+
+  const scheduledListItem = await page.getMoveListItemByReference(
+    'Prison recall',
+    referenceNumber
+  )
+  await t
+    .expect(scheduledListItem.find('.app-card__title').innerText)
+    .eql(
+      `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
+    )
+
+  await t.click(scheduledListItem.find('.app-card__link'))
+
+  await t
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'PNC number'
+      )
+    )
+    .eql(personalDetails.text.police_national_computer)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Gender'
+      )
+    )
+    .eql(personalDetails.options.gender)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Ethnicity'
+      )
+    )
+    .eql(personalDetails.options.ethnicity)
+})
 
 fixture`Cancel move`
 
-test('Cancel existing move', async t => {})
+test('Cancel existing move', async t => {
+  await t
+    .useRole(policeUser)
+    .navigateTo(page.locations.home)
+    .click('.app-card__link')
+
+  const referenceNumber = await page.getMoveSummaryReferenceNumber()
+
+  await t.click(page.nodes.cancelLink)
+  await selectFieldsetOption(
+    'Why are you cancelling this move request?',
+    'Made in error'
+  )
+  await t
+    .click(page.nodes.cancelMoveButton)
+    .expect(page.nodes.messageHeading.innerText)
+    .eql('Move cancelled')
+
+  await t
+    .navigateTo(page.locations.home)
+    .expect(
+      page.nodes.details
+        .find('.app-card__caption')
+        .withText(`Move reference: ${referenceNumber}`)
+    )
+    .ok()
+})
