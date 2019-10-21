@@ -1,4 +1,4 @@
 {
-  "browsers": ["chrome", "firefox"],
+  "browsers": ["chrome"],
   "pageLoadTimeout": 10000
 }
