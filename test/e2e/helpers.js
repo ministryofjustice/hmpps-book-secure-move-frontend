@@ -8,6 +8,10 @@ import { ClientFunction, Selector, t } from 'testcafe'
  */
 export const getInnerText = selector => selector.innerText
 
+export const scrollToTop = ClientFunction(() => {
+  window.scrollTo(0, 0)
+})
+
 /**
  * Select option from selector
  *
@@ -75,7 +79,7 @@ export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
  */
 export async function selectFieldsetOption(
   legendText,
-  optionTextOrIndex = 'random'
+  optionLabelTextOrIndex = 'random'
 ) {
   const optionsFieldset = await Selector('.govuk-fieldset__legend')
     .withText(legendText)
@@ -84,9 +88,9 @@ export async function selectFieldsetOption(
   const optionCssSelector = '.govuk-label'
   const optionSelector = Selector(optionsFieldset)
     .find(optionCssSelector)
-    .withText(optionTextOrIndex)
+    .withText(optionLabelTextOrIndex)
 
-  return selectOption(optionSelector, optionTextOrIndex, optionCssSelector)
+  return selectOption(optionSelector, optionLabelTextOrIndex, optionCssSelector)
 }
 
 /**

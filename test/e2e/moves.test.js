@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { policeUser } from './roles'
 import Page from './page-model'
-import { selectFieldsetOption } from './helpers'
+import { selectFieldsetOption, scrollToTop } from './helpers'
 
 const page = new Page()
 
@@ -173,4 +173,55 @@ test('Cancel existing move', async t => {
         .withText(`Move reference: ${referenceNumber}`)
     )
     .ok()
+})
+
+fixture`Move details`
+
+test('Navigate tags in detailed move', async t => {
+  async function checkNavigationByTags(tags = []) {
+    for (const tag of tags) {
+      const blockBefore = await page.getElementScrollOffset(tag.id)
+      await t.click(await page.getTagByLabel(tag.label))
+      const blockAfter = await page.getElementScrollOffset(tag.id)
+
+      await t.expect(blockAfter.top).lt(blockBefore.top)
+
+      await scrollToTop()
+    }
+  }
+
+  await t
+    .useRole(policeUser)
+    .navigateTo(page.locations.home)
+    .click(page.nodes.createMoveButton)
+
+  const personalDetails = await page.fillInPersonalDetails()
+  await t.click(page.nodes.continueButton)
+
+  await page.fillInMoveDetails('Prison recall')
+  await t.click(page.nodes.continueButton)
+
+  // Are there risks with moving this person?
+  await selectFieldsetOption('Add risk information', 'Violent')
+  await selectFieldsetOption('Add risk information', 'Escape')
+
+  await t.click(page.nodes.continueButton)
+
+  // Does this person’s health affect transport?
+  await selectFieldsetOption('Add health information', 'Medication')
+
+  await t
+    .click(page.nodes.scheduleMoveButton)
+    .click(
+      await page.getPersonLink(
+        personalDetails.text.first_names,
+        personalDetails.text.last_name
+      )
+    )
+
+  await checkNavigationByTags([
+    { label: 'VIOLENT', id: '#violent' },
+    { label: 'ESCAPE', id: '#escape' },
+    { label: 'MEDICATION', id: '#medication' },
+  ])
 })

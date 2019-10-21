@@ -155,4 +155,16 @@ export default class Page {
       .withText(key)
       .sibling('dd').innerText
   }
+
+  async getPersonLink(firstName, lastName) {
+    return Selector('a').withText(`${lastName}, ${firstName}`.toUpperCase())
+  }
+
+  async getTagByLabel(label) {
+    return Selector('.app-tag').withText(label)
+  }
+
+  async getElementScrollOffset(csselector) {
+    return Selector(csselector).boundingClientRect
+  }
 }
