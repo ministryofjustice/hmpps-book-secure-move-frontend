@@ -13,6 +13,7 @@ module.exports = {
       rules: {
         'mocha/no-mocha-arrows': 'off',
         'no-process-env': 'off',
+        'comma-dangle': 'off',
       },
     },
   ],
