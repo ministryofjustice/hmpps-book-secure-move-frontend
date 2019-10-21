@@ -86,6 +86,28 @@ To watch unit tests whilst developing:
 npm run watch:test
 ```
 
+### Acceptance tests
+
+Acceptance (end-to-end) tests run using [TestCafe](https://devexpress.github.io/testcafe/) framework
+and configured in CircleCI to run against `$E2E_BASE_URL` variable (staging) when the app is merged to
+`master` and deployed to staging.
+
+To run the CI tests locally run:
+
+```
+test-e2e:ci
+```
+
+To debug tests on local server run:
+
+```
+test-e2e:local
+```
+
+And to run test in specific browser run: `test-e2e:chrome` or `test-e2e:firefox`.
+
+The video recording of each test is stored in artifacts/video directory and is stored on CI under artifacts for review.
+
 ### Code coverage
 
 Code coverage is provided by Istanbul's command line tool, [nyc](https://www.npmjs.com/package/nyc).
