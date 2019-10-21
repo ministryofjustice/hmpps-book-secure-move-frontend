@@ -146,6 +146,8 @@ jobs:
       - run:
           name: Run E2E tests
           command: npm run test-e2e
+      - store_test_results:
+          path: reports/testcafe
 
   build_staging:
     <<: *cloud_container
