@@ -1,4 +1,8 @@
+import { format } from 'date-fns'
+import { join } from 'path'
+import { homedir } from 'os'
 import { ClientFunction, Selector, t } from 'testcafe'
+import glob from 'glob'
 
 /**
  * Get inner text of TestCafe selector
@@ -7,6 +11,10 @@ import { ClientFunction, Selector, t } from 'testcafe'
  * @returns {Promise<string>} - element inner text
  */
 export const getInnerText = selector => selector.innerText
+
+export const scrollToTop = ClientFunction(() => {
+  window.scrollTo(0, 0)
+})
 
 /**
  * Select option from selector
@@ -70,12 +78,12 @@ export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
  * Select option (radio or checkbox)
  *
  * @param {string} legendText - legend text for the fieldset
- * @param {string|number} [optionTextOrIndex] - option text or 0-based index or 'random'.
+ * @param {string|number} [optionLabelTextOrIndex] - option text or 0-based index or 'random'.
  * @returns {Selector}
  */
 export async function selectFieldsetOption(
   legendText,
-  optionTextOrIndex = 'random'
+  optionLabelTextOrIndex = 'random'
 ) {
   const optionsFieldset = await Selector('.govuk-fieldset__legend')
     .withText(legendText)
@@ -84,9 +92,9 @@ export async function selectFieldsetOption(
   const optionCssSelector = '.govuk-label'
   const optionSelector = Selector(optionsFieldset)
     .find(optionCssSelector)
-    .withText(optionTextOrIndex)
+    .withText(optionLabelTextOrIndex)
 
-  return selectOption(optionSelector, optionTextOrIndex, optionCssSelector)
+  return selectOption(optionSelector, optionLabelTextOrIndex, optionCssSelector)
 }
 
 /**
@@ -103,6 +111,32 @@ export async function fillInForm(details = {}) {
   }
 
   return details
+}
+
+/**
+ * Get CSV files downloaded from the app today (glob pattern matched)
+ *
+ * @returns {string[]}
+ */
+export function getCsvDownloadsFilePaths() {
+  const dateStamp = format(new Date(), 'yyyy-MM-dd')
+  const globPattern = `${join(
+    homedir(),
+    'Downloads'
+  )}/Moves on*(Downloaded ${dateStamp}*.csv`
+  return glob.sync(globPattern)
+}
+
+/**
+ * Click selector if it exists on page
+ *
+ * @param selector
+ * @returns {Promise<void>}
+ */
+export async function clickSelectorIfExists(selector) {
+  if (await selector.exists) {
+    await t.click(selector)
+  }
 }
 
 /**

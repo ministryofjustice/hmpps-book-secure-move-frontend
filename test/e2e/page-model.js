@@ -29,10 +29,10 @@ export default class Page {
       ),
       pageHeading: Selector('.govuk-heading-xl'),
       policeUserName: Selector('.app-header__navigation-item').withExactText(
-        'Police User'
+        'End-to-End Test Police'
       ),
       supplierUserName: Selector('.app-header__navigation-item').withExactText(
-        'GEOAmey Supplier'
+        'End-to-End Test Supplier'
       ),
       createMoveButton: Selector('.govuk-button').withExactText(
         'Create a move'
@@ -48,12 +48,16 @@ export default class Page {
       continueButton: Selector('.govuk-button').withText('Continue'),
       scheduleMoveButton: Selector('.govuk-button').withText('Schedule move'),
       cancelMoveButton: Selector('.govuk-button').withText('Cancel move'),
+      downloadMovesLink: Selector('a').withText('Download moves'),
       personalDetailsSummary: Selector('.govuk-summary-list'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
       messageHeading: Selector('.app-message__heading'),
       details: Selector('.govuk-details'),
+      custodySuitLocationLink: Selector('a').withText(
+        'Guildford Custody Suite'
+      ),
     }
   }
 
@@ -127,17 +131,11 @@ export default class Page {
   /**
    * Get an item in dashboard move list by its reference number
    *
-   * @param {'Court'|'Prison recall'} moveType - move to list heading
    * @param {string} referenceNumber - move reference number
    * @returns {Promise<Selector>} - item card
    */
-  async getMoveListItemByReference(moveType, referenceNumber) {
-    return Selector('.app-data__label')
-      .withText('Move to')
-      .sibling('.app-data__value')
-      .withText('Prison recall')
-      .parent('#main-content')
-      .find('.app-card__caption')
+  async getMoveListItemByReference(referenceNumber) {
+    return Selector('.app-card__caption')
       .withText(`Move reference: ${referenceNumber}`)
       .parent('.app-card')
   }
@@ -154,5 +152,17 @@ export default class Page {
       .find('dt')
       .withText(key)
       .sibling('dd').innerText
+  }
+
+  async getPersonLink(firstName, lastName) {
+    return Selector('a').withText(`${lastName}, ${firstName}`.toUpperCase())
+  }
+
+  async getTagByLabel(label) {
+    return Selector('.app-tag').withText(label)
+  }
+
+  async getElementScrollOffset(csselector) {
+    return Selector(csselector).boundingClientRect
   }
 }

@@ -1,19 +1,27 @@
-/* eslint-disable no-console */
-import { policeUser } from './roles'
+import { unlinkSync, readFileSync } from 'fs'
+import { policeUser, supplierUser } from './roles'
 import Page from './page-model'
-import { selectFieldsetOption } from './helpers'
+import {
+  selectFieldsetOption,
+  scrollToTop,
+  getCsvDownloadsFilePaths,
+  clickSelectorIfExists,
+} from './helpers'
 
 const page = new Page()
 
 fixture`Create a new move`
 
 test('Court move', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.createMoveButton)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
 
-  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Personal details')
+
   const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
 
@@ -43,7 +51,6 @@ test('Court move', async t => {
   await t.navigateTo(page.locations.home)
 
   const scheduledListItem = await page.getMoveListItemByReference(
-    'Court',
     referenceNumber
   )
 
@@ -80,12 +87,14 @@ test('Court move', async t => {
 })
 
 test('Prison recall', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.createMoveButton)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
 
-  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Personal details')
   const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
 
@@ -110,7 +119,6 @@ test('Prison recall', async t => {
   await t.navigateTo(page.locations.home)
 
   const scheduledListItem = await page.getMoveListItemByReference(
-    'Prison recall',
     referenceNumber
   )
   await t
@@ -148,10 +156,11 @@ test('Prison recall', async t => {
 fixture`Cancel move`
 
 test('Cancel existing move', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click('.app-card__link')
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click('.app-card__link')
 
   const referenceNumber = await page.getMoveSummaryReferenceNumber()
 
@@ -173,4 +182,109 @@ test('Cancel existing move', async t => {
         .withText(`Move reference: ${referenceNumber}`)
     )
     .ok()
+})
+
+fixture`Move details`
+
+test('Navigate tags in detailed move', async t => {
+  async function checkNavigationByTags(tags = []) {
+    for (const tag of tags) {
+      const blockBefore = await page.getElementScrollOffset(tag.id)
+      await t.click(await page.getTagByLabel(tag.label))
+      const blockAfter = await page.getElementScrollOffset(tag.id)
+
+      await t.expect(blockAfter.top).lt(blockBefore.top)
+
+      await scrollToTop()
+    }
+  }
+
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.createMoveButton)
+
+  const personalDetails = await page.fillInPersonalDetails()
+  await t.click(page.nodes.continueButton)
+
+  await page.fillInMoveDetails('Prison recall')
+  await t.click(page.nodes.continueButton)
+
+  // Are there risks with moving this person?
+  await selectFieldsetOption('Add risk information', 'Violent')
+  await selectFieldsetOption('Add risk information', 'Escape')
+
+  await t.click(page.nodes.continueButton)
+
+  // Does this person’s health affect transport?
+  await selectFieldsetOption('Add health information', 'Medication')
+
+  await t
+    .click(page.nodes.scheduleMoveButton)
+    .click(
+      await page.getPersonLink(
+        personalDetails.text.first_names,
+        personalDetails.text.last_name
+      )
+    )
+
+  await checkNavigationByTags([
+    { label: 'VIOLENT', id: '#violent' },
+    { label: 'ESCAPE', id: '#escape' },
+    { label: 'MEDICATION', id: '#medication' },
+  ])
+})
+
+function deleteDownloads() {
+  const csvDownloads = getCsvDownloadsFilePaths()
+  for (const file of csvDownloads) {
+    try {
+      unlinkSync(file)
+    } catch (err) {
+      throw new Error(`failed to delete CSV download file: ${err.message}`)
+    }
+  }
+}
+
+fixture`Download moves`.beforeEach(deleteDownloads).after(deleteDownloads)
+
+test('Download moves as police user', async t => {
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.downloadMovesLink)
+
+  const csvDownloads = getCsvDownloadsFilePaths()
+  try {
+    const csvContents = readFileSync(csvDownloads[0], 'utf8')
+    const contentsLines = csvContents.split('\n')
+    const csvHeader = contentsLines[0].split(',')
+    const csvFirstLine = contentsLines[1].split(',')
+
+    await t.expect(csvHeader.length).eql(csvFirstLine.length)
+  } catch (err) {
+    throw new Error('Failed to read CSV download file')
+  }
+})
+
+test('Download moves as supplier user', async t => {
+  await t.useRole(supplierUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.downloadMovesLink)
+
+  const csvDownloads = getCsvDownloadsFilePaths()
+  try {
+    const csvContents = readFileSync(csvDownloads[0], 'utf8')
+    const contentsLines = csvContents.split('\n')
+    const csvHeader = contentsLines[0].split(',')
+    const csvFirstLine = contentsLines[1].split(',')
+
+    await t.expect(csvHeader.length).eql(csvFirstLine.length)
+  } catch (err) {
+    throw new Error('Failed to read CSV download file')
+  }
 })
