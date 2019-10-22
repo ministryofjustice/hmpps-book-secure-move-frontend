@@ -18,7 +18,7 @@ module.exports = function download(req, res, next) {
 
   res.setHeader(
     'Content-disposition',
-    `attachment; filename=${filename}.${extension}`
+    `attachment; filename="${filename}.${extension}"`
   )
 
   if (extension === 'json') {

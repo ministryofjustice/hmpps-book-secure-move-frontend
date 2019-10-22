@@ -94,7 +94,7 @@ describe('Moves controllers', function() {
       it('should set content disposition header', function() {
         expect(res.setHeader).to.be.calledOnceWithExactly(
           'Content-disposition',
-          'attachment; filename=moves::download_filename.json'
+          'attachment; filename="moves::download_filename.json"'
         )
       })
 
@@ -132,7 +132,7 @@ describe('Moves controllers', function() {
         it('should set content disposition header', function() {
           expect(res.setHeader.firstCall).to.be.calledWithExactly(
             'Content-disposition',
-            'attachment; filename=moves::download_filename.csv'
+            'attachment; filename="moves::download_filename.csv"'
           )
         })
 
