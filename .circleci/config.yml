@@ -148,6 +148,9 @@ jobs:
           command: npm run test-e2e:ci
       - store_test_results:
           path: reports/testcafe
+      - store_artifacts:
+          path: artifacts
+
 
   build_staging:
     <<: *cloud_container
