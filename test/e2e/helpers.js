@@ -1,4 +1,8 @@
+import { format } from 'date-fns'
+import { join } from 'path'
+import { homedir } from 'os'
 import { ClientFunction, Selector, t } from 'testcafe'
+import glob from 'glob'
 
 /**
  * Get inner text of TestCafe selector
@@ -107,6 +111,20 @@ export async function fillInForm(details = {}) {
   }
 
   return details
+}
+
+/**
+ * Get CSV files downloaded from the app today (glob pattern matched)
+ *
+ * @returns {string[]}
+ */
+export function getCsvDownloadsFilePaths() {
+  const dateStamp = format(new Date(), 'yyyy-MM-dd')
+  const globPattern = `${join(
+    homedir(),
+    'Downloads'
+  )}/Moves on*(Downloaded ${dateStamp}*.csv`
+  return glob.sync(globPattern)
 }
 
 /**

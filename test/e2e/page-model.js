@@ -29,10 +29,10 @@ export default class Page {
       ),
       pageHeading: Selector('.govuk-heading-xl'),
       policeUserName: Selector('.app-header__navigation-item').withExactText(
-        'Police User'
+        'End-to-End Test Police'
       ),
       supplierUserName: Selector('.app-header__navigation-item').withExactText(
-        'GEOAmey Supplier'
+        'End-to-End Test Supplier'
       ),
       createMoveButton: Selector('.govuk-button').withExactText(
         'Create a move'
@@ -48,6 +48,7 @@ export default class Page {
       continueButton: Selector('.govuk-button').withText('Continue'),
       scheduleMoveButton: Selector('.govuk-button').withText('Schedule move'),
       cancelMoveButton: Selector('.govuk-button').withText('Cancel move'),
+      downloadMovesLink: Selector('a').withText('Download moves'),
       personalDetailsSummary: Selector('.govuk-summary-list'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'

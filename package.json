@@ -113,6 +113,7 @@
     "eslint-plugin-testcafe": "0.2.1",
     "faker": "4.1.0",
     "file-loader": "4.2.0",
+    "glob": "7.1.5",
     "imagemin-webpack-plugin": "2.4.2",
     "js-yaml": "3.13.1",
     "lint-staged": "9.4.2",
