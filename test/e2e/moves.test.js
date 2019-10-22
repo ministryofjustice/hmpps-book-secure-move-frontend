@@ -43,7 +43,6 @@ test('Court move', async t => {
   await t.navigateTo(page.locations.home)
 
   const scheduledListItem = await page.getMoveListItemByReference(
-    'Court',
     referenceNumber
   )
 
@@ -110,7 +109,6 @@ test('Prison recall', async t => {
   await t.navigateTo(page.locations.home)
 
   const scheduledListItem = await page.getMoveListItemByReference(
-    'Prison recall',
     referenceNumber
   )
   await t

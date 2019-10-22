@@ -127,17 +127,11 @@ export default class Page {
   /**
    * Get an item in dashboard move list by its reference number
    *
-   * @param {'Court'|'Prison recall'} moveType - move to list heading
    * @param {string} referenceNumber - move reference number
    * @returns {Promise<Selector>} - item card
    */
-  async getMoveListItemByReference(moveType, referenceNumber) {
-    return Selector('.app-data__label')
-      .withText('Move to')
-      .sibling('.app-data__value')
-      .withText('Prison recall')
-      .parent('#main-content')
-      .find('.app-card__caption')
+  async getMoveListItemByReference(referenceNumber) {
+    return Selector('.app-card__caption')
       .withText(`Move reference: ${referenceNumber}`)
       .parent('.app-card')
   }
