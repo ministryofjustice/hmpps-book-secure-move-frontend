@@ -5,6 +5,7 @@ import {
   selectFieldsetOption,
   scrollToTop,
   getCsvDownloadsFilePaths,
+  clickSelectorIfExists,
 } from './helpers'
 
 const page = new Page()
@@ -12,12 +13,15 @@ const page = new Page()
 fixture`Create a new move`
 
 test('Court move', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.createMoveButton)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
 
-  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Personal details')
+
   const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
 
@@ -83,12 +87,14 @@ test('Court move', async t => {
 })
 
 test('Prison recall', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.createMoveButton)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
 
-  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Personal details')
   const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
 
@@ -150,10 +156,11 @@ test('Prison recall', async t => {
 fixture`Cancel move`
 
 test('Cancel existing move', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click('.app-card__link')
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click('.app-card__link')
 
   const referenceNumber = await page.getMoveSummaryReferenceNumber()
 
@@ -192,10 +199,11 @@ test('Navigate tags in detailed move', async t => {
     }
   }
 
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.createMoveButton)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.createMoveButton)
 
   const personalDetails = await page.fillInPersonalDetails()
   await t.click(page.nodes.continueButton)
@@ -242,10 +250,11 @@ function deleteDownloads() {
 fixture`Download moves`.beforeEach(deleteDownloads).after(deleteDownloads)
 
 test('Download moves as police user', async t => {
-  await t
-    .useRole(policeUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.downloadMovesLink)
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.downloadMovesLink)
 
   const csvDownloads = getCsvDownloadsFilePaths()
   try {
@@ -261,10 +270,11 @@ test('Download moves as police user', async t => {
 })
 
 test('Download moves as supplier user', async t => {
-  await t
-    .useRole(supplierUser)
-    .navigateTo(page.locations.home)
-    .click(page.nodes.downloadMovesLink)
+  await t.useRole(supplierUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t.click(page.nodes.downloadMovesLink)
 
   const csvDownloads = getCsvDownloadsFilePaths()
   try {

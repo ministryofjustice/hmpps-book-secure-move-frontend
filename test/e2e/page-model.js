@@ -55,6 +55,9 @@ export default class Page {
       ),
       messageHeading: Selector('.app-message__heading'),
       details: Selector('.govuk-details'),
+      custodySuitLocationLink: Selector('a').withText(
+        'Guildford Custody Suite'
+      ),
     }
   }
 

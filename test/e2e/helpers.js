@@ -78,7 +78,7 @@ export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
  * Select option (radio or checkbox)
  *
  * @param {string} legendText - legend text for the fieldset
- * @param {string|number} [optionTextOrIndex] - option text or 0-based index or 'random'.
+ * @param {string|number} [optionLabelTextOrIndex] - option text or 0-based index or 'random'.
  * @returns {Selector}
  */
 export async function selectFieldsetOption(
@@ -125,6 +125,18 @@ export function getCsvDownloadsFilePaths() {
     'Downloads'
   )}/Moves on*(Downloaded ${dateStamp}*.csv`
   return glob.sync(globPattern)
+}
+
+/**
+ * Click selector if it exists on page
+ *
+ * @param selector
+ * @returns {Promise<void>}
+ */
+export async function clickSelectorIfExists(selector) {
+  if (await selector.exists) {
+    await t.click(selector)
+  }
 }
 
 /**
