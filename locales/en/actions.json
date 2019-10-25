@@ -1,5 +1,6 @@
 {
   "create_move": "Create a move",
+  "create_move_different_person": "Create a move for a different person",
   "previous_day": "Previous day",
   "next_day": "Next day",
   "current_day": "Today",
