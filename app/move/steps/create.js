@@ -1,8 +1,10 @@
 const {
+  Base,
   PersonalDetails,
   Assessment,
   MoveDetails,
   Save,
+  PncSearchResults,
 } = require('../controllers/create')
 
 module.exports = {
@@ -11,11 +13,33 @@ module.exports = {
     reset: true,
     resetJourney: true,
     skip: true,
+    checkJourney: false,
+    next: 'pnc-search',
+  },
+  '/pnc-search': {
+    checkJourney: false,
+    controller: Base,
+    method: 'get',
+    action: '/move/new/pnc-search-results',
+    template: 'move/views/create/pnc-search',
+    backLink: null,
+    pageTitle: 'moves::steps.police_national_computer_search_term.heading',
+    buttonText: 'actions::continue',
+    next: 'pnc-search-results',
+    fields: ['police_national_computer_search_term'],
+  },
+  '/pnc-search-results': {
+    checkJourney: false,
+    controller: PncSearchResults,
+    template: 'move/views/create/pnc-search-results',
+    pageTitle:
+      'moves::steps.police_national_computer_search_term_result.heading',
     next: 'personal-details',
+    fields: ['police_national_computer_search_term_result'],
   },
   '/personal-details': {
+    entryPoint: true,
     controller: PersonalDetails,
-    backLink: null,
     pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',
     fields: [
