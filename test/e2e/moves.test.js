@@ -1,3 +1,4 @@
+import faker from 'faker'
 import { unlinkSync, readFileSync } from 'fs'
 import { policeUser, supplierUser } from './roles'
 import Page from './page-model'
@@ -11,6 +12,8 @@ import {
 
 const page = new Page()
 
+faker.seed(Date.now())
+
 fixture`Create a new move`
 
 test('Court move', async t => {
@@ -21,9 +24,17 @@ test('Court move', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Personal details')
+    .eql('Create a move')
 
-  const personalDetails = await page.fillInPersonalDetails()
+  const pncNumber = faker.random.number().toString()
+  await t
+    .typeText('#police-national-computer-search-term', pncNumber)
+    .click(page.nodes.continueButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
+
+  const personalDetails = await page.fillInPersonalDetails({ pncNumber })
   await t.click(page.nodes.continueButton)
 
   await t
@@ -95,8 +106,17 @@ test('Prison recall', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Personal details')
-  const personalDetails = await page.fillInPersonalDetails()
+    .eql('Create a move')
+
+  const pncNumber = faker.random.number().toString()
+  await t
+    .typeText('#police-national-computer-search-term', pncNumber)
+    .click(page.nodes.continueButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
+
+  const personalDetails = await page.fillInPersonalDetails({ pncNumber })
   await t.click(page.nodes.continueButton)
 
   await t
@@ -204,9 +224,20 @@ test('Navigate tags in detailed move', async t => {
 
   await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
 
-  await t.click(page.nodes.createMoveButton)
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Create a move')
 
-  const personalDetails = await page.fillInPersonalDetails()
+  const pncNumber = faker.random.number().toString()
+  await t
+    .typeText('#police-national-computer-search-term', pncNumber)
+    .click(page.nodes.continueButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
+
+  const personalDetails = await page.fillInPersonalDetails({ pncNumber })
   await t.click(page.nodes.continueButton)
 
   await page.fillInMoveDetails('Prison recall')
