@@ -32,6 +32,7 @@ const personMock = {
   first_names: 'Foo',
   last_name: 'Bar',
 }
+const pncSearchTerm = '7654321'
 
 describe('Move controllers', function() {
   describe('Personal Details', function() {
@@ -45,7 +46,7 @@ describe('Move controllers', function() {
       context('when getReferenceData returns 200', function() {
         let req
 
-        beforeEach(async function() {
+        beforeEach(function() {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(fieldHelpers, 'insertItemConditional').callsFake(() => {
             return item => item
@@ -59,55 +60,74 @@ describe('Move controllers', function() {
             .resolves(ethnicityMock)
 
           req = {
+            query: {},
             form: {
               options: {
                 fields: {
                   gender: {},
                   ethnicity: {},
+                  police_national_computer: {},
                 },
               },
             },
           }
-
-          await controller.configure(req, {}, nextSpy)
         })
 
-        it('should set list of genders dynamically', function() {
-          expect(req.form.options.fields.gender.items).to.deep.equal([
-            { value: '8888', text: 'Male' },
-            { value: '9999', text: 'Female' },
-          ])
-        })
+        context('without searchTerm', function() {
+          beforeEach(async function() {
+            await controller.configure(req, {}, nextSpy)
+          })
 
-        it('should insert trans conditional field', function() {
-          expect(
-            fieldHelpers.insertItemConditional
-          ).to.have.been.calledOnceWithExactly({
-            key: 'trans',
-            field: 'gender_additional_information',
+          it('should set list of genders dynamically', function() {
+            expect(req.form.options.fields.gender.items).to.deep.equal([
+              { value: '8888', text: 'Male' },
+              { value: '9999', text: 'Female' },
+            ])
+          })
+
+          it('should insert trans conditional field', function() {
+            expect(
+              fieldHelpers.insertItemConditional
+            ).to.have.been.calledOnceWithExactly({
+              key: 'trans',
+              field: 'gender_additional_information',
+            })
+          })
+
+          it('should set list of ethnicities dynamically', function() {
+            expect(req.form.options.fields.ethnicity.items).to.deep.equal([
+              { text: '--- Choose ethnicity ---' },
+              { value: '3333', text: 'Foo' },
+              { value: '4444', text: 'Bar' },
+            ])
+          })
+
+          it('should call parent configure method', function() {
+            expect(FormController.prototype.configure).to.be.calledOnce
+            expect(FormController.prototype.configure).to.be.calledWith(
+              req,
+              {},
+              nextSpy
+            )
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
           })
         })
 
-        it('should set list of ethnicities dynamically', function() {
-          expect(req.form.options.fields.ethnicity.items).to.deep.equal([
-            { text: '--- Choose ethnicity ---' },
-            { value: '3333', text: 'Foo' },
-            { value: '4444', text: 'Bar' },
-          ])
-        })
+        context('with searchTerm', function() {
+          beforeEach(async function() {
+            req.query.police_national_computer_search_term = pncSearchTerm
+            await controller.configure(req, {}, nextSpy)
+          })
 
-        it('should call parent configure method', function() {
-          expect(FormController.prototype.configure).to.be.calledOnce
-          expect(FormController.prototype.configure).to.be.calledWith(
-            req,
-            {},
-            nextSpy
-          )
-        })
-
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy).to.be.calledWith()
+          it('should set PNC form value default', function() {
+            expect(
+              req.form.options.fields.police_national_computer.default
+            ).to.equal(pncSearchTerm)
+          })
         })
       })
 
