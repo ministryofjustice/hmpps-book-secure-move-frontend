@@ -435,4 +435,50 @@ describe('Person Service', function() {
       })
     })
   })
+
+  describe('#findAll()', function() {
+    const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockResponse = {
+      data: [mockPerson],
+    }
+    let person
+
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll').resolves(mockResponse)
+      sinon.stub(personService, 'transform').returnsArg(0)
+    })
+
+    context('without PNC ID', function() {
+      it('should reject with error', function() {
+        return expect(personService.findAll()).to.be.rejectedWith(
+          'No PNC supplied'
+        )
+      })
+    })
+
+    context('with ID', function() {
+      beforeEach(async function() {
+        person = await personService.findAll(mockId)
+      })
+
+      it('should call findAll method with data', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
+          cache: false,
+          'filter[police_national_computer]': mockId,
+        })
+      })
+
+      it('should format data', function() {
+        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
+      })
+
+      it('should transform response data', function() {
+        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
+      })
+
+      it('should return data property', function() {
+        expect(person).to.deep.equal(mockResponse.data)
+      })
+    })
+  })
 })
