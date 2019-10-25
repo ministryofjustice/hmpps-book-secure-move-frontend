@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
@@ -136,6 +137,24 @@ export function getCsvDownloadsFilePaths() {
 export async function clickSelectorIfExists(selector) {
   if (await selector.exists) {
     await t.click(selector)
+  }
+}
+
+/**
+ * Wait for file to exist
+ *
+ * @param t
+ * @param delay
+ * @param fileNameAndPath
+ * @returns {Promise<void>}
+ */
+export async function checkFileExists(t, delay, filepath) {
+  for (let i = 0; i < delay; i++) {
+    await t.wait(1)
+
+    if (fs.existsSync(filepath)) {
+      return
+    }
   }
 }
 

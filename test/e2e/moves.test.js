@@ -6,6 +6,7 @@ import {
   scrollToTop,
   getCsvDownloadsFilePaths,
   clickSelectorIfExists,
+  checkFileExists,
 } from './helpers'
 
 const page = new Page()
@@ -257,6 +258,9 @@ test('Download moves as police user', async t => {
   await t.click(page.nodes.downloadMovesLink)
 
   const csvDownloads = getCsvDownloadsFilePaths()
+
+  await checkFileExists(t, 10, csvDownloads[0])
+
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
     const contentsLines = csvContents.split('\n')
@@ -277,6 +281,9 @@ test('Download moves as supplier user', async t => {
   await t.click(page.nodes.downloadMovesLink)
 
   const csvDownloads = getCsvDownloadsFilePaths()
+
+  await checkFileExists(t, 10, csvDownloads[0])
+
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
     const contentsLines = csvContents.split('\n')
