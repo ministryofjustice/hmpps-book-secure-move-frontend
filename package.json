@@ -1,6 +1,6 @@
 {
   "name": "hmpps-book-secure-move-frontend",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "license": "MIT",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
