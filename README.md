@@ -95,13 +95,13 @@ and configured in CircleCI to run against `$E2E_BASE_URL` variable (staging) whe
 To run the CI tests locally run:
 
 ```
-test-e2e:ci
+npm run test-e2e:ci
 ```
 
 To debug tests on local server run:
 
 ```
-test-e2e:local
+npm run test-e2e:local
 ```
 
 And to run test in specific browser run: `test-e2e:chrome` or `test-e2e:firefox`.
