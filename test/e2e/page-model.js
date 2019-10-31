@@ -60,6 +60,13 @@ export default class Page {
         'Guildford Custody Suite'
       ),
       pncNumberInput: Selector('#police_national_computer'),
+      lastNameInput: Selector('#last_name'),
+      firstNamesInput: Selector('#first_names'),
+      dateOfBirthInput: Selector('#date_of_birth'),
+      ethnicityInput: Selector('#ethnicity'),
+      pncSearchResultsHeader: Selector('.govuk-heading-m').withText(
+        'Matches for'
+      ),
     }
   }
 
@@ -107,6 +114,10 @@ export default class Page {
           : moveType,
       date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
     })
+  }
+
+  async fillInPncSearchResults(userFullname) {
+    await selectFieldsetOption('Select the person you are moving', userFullname)
   }
 
   /**

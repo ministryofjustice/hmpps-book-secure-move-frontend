@@ -8,6 +8,7 @@ import {
   getCsvDownloadsFilePaths,
   clickSelectorIfExists,
   checkFileExists,
+  getSelectedFieldsetOption,
 } from './helpers'
 
 const page = new Page()
@@ -15,6 +16,9 @@ const page = new Page()
 faker.seed(Date.now())
 
 fixture`Create a new move`
+
+const courtMovePncNumber = faker.random.number().toString()
+let courtMovePersonalDetails
 
 test('Court move', async t => {
   await t.useRole(policeUser).navigateTo(page.locations.home)
@@ -26,15 +30,16 @@ test('Court move', async t => {
     .expect(page.nodes.pageHeading.innerText)
     .eql('Create a move')
 
-  const pncNumber = faker.random.number().toString()
   await t
-    .typeText('#police-national-computer-search-term', pncNumber)
+    .typeText('#police-national-computer-search-term', courtMovePncNumber)
     .click(page.nodes.continueButton)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
-  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
+  await t.expect(page.nodes.pncNumberInput.value).eql(courtMovePncNumber)
 
-  const personalDetails = await page.fillInPersonalDetails({ pncNumber })
+  courtMovePersonalDetails = await page.fillInPersonalDetails({
+    pncNumber: courtMovePncNumber,
+  })
   await t.click(page.nodes.continueButton)
 
   await t
@@ -69,7 +74,7 @@ test('Court move', async t => {
   await t
     .expect(scheduledListItem.find('.app-card__title').innerText)
     .eql(
-      `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
+      `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`.toUpperCase()
     )
 
   await t.click(scheduledListItem.find('.app-card__link'))
@@ -81,21 +86,129 @@ test('Court move', async t => {
         'PNC number'
       )
     )
-    .eql(personalDetails.text.police_national_computer)
+    .eql(courtMovePersonalDetails.text.police_national_computer)
     .expect(
       await page.getDlDefinitionByKey(
         page.nodes.personalDetailsSummary,
         'Gender'
       )
     )
-    .eql(personalDetails.options.gender)
+    .eql(courtMovePersonalDetails.options.gender)
     .expect(
       await page.getDlDefinitionByKey(
         page.nodes.personalDetailsSummary,
         'Ethnicity'
       )
     )
-    .eql(personalDetails.options.ethnicity)
+    .eql(courtMovePersonalDetails.options.ethnicity)
+})
+
+test('Court move with existing PNC', async t => {
+  await t.useRole(policeUser).navigateTo(page.locations.home)
+
+  await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
+
+  await t
+    .click(page.nodes.createMoveButton)
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Create a move')
+
+  await t
+    .typeText('#police-national-computer-search-term', courtMovePncNumber)
+    .click(page.nodes.continueButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Create a move')
+  await t
+    .expect(page.nodes.pncSearchResultsHeader.innerText)
+    .eql(`Matches for ${courtMovePncNumber}`)
+
+  await page.fillInPncSearchResults(
+    `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`
+  )
+  await t.click(page.nodes.continueButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
+  await t.expect(page.nodes.pncNumberInput.value).eql(courtMovePncNumber)
+  await t
+    .expect(page.nodes.lastNameInput.value)
+    .eql(courtMovePersonalDetails.text.last_name)
+  await t
+    .expect(page.nodes.firstNamesInput.value)
+    .eql(courtMovePersonalDetails.text.first_names)
+  await t
+    .expect(page.nodes.dateOfBirthInput.value)
+    .eql(courtMovePersonalDetails.text.date_of_birth)
+  await t
+    .expect(page.nodes.ethnicityInput.value)
+    .eql(courtMovePersonalDetails.options.ethnicity)
+
+  const selectedFieldsetOption = await getSelectedFieldsetOption('Gender')
+
+  await t
+    .expect(selectedFieldsetOption.sibling('label').innerText)
+    .eql(courtMovePersonalDetails.options.gender)
+
+  await t.click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Where is this person moving?')
+  await page.fillInMoveDetails('Court')
+  await t.click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Is there information for the court?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there risks with moving this person?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Does this person’s health affect transport?')
+    .click(page.nodes.scheduleMoveButton)
+
+  const referenceNumber = await page.getMoveConfirmationReferenceNumber()
+
+  await t.navigateTo(page.locations.home)
+
+  const scheduledListItem = await page.getMoveListItemByReference(
+    referenceNumber
+  )
+
+  await t
+    .expect(scheduledListItem.find('.app-card__title').innerText)
+    .eql(
+      `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`.toUpperCase()
+    )
+
+  await t.click(scheduledListItem.find('.app-card__link'))
+
+  await t
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'PNC number'
+      )
+    )
+    .eql(courtMovePersonalDetails.text.police_national_computer)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Gender'
+      )
+    )
+    .eql(courtMovePersonalDetails.options.gender)
+    .expect(
+      await page.getDlDefinitionByKey(
+        page.nodes.personalDetailsSummary,
+        'Ethnicity'
+      )
+    )
+    .eql(courtMovePersonalDetails.options.ethnicity)
 })
 
 test('Prison recall', async t => {
