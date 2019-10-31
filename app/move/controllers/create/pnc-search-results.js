@@ -9,14 +9,17 @@ class PncResultsController extends CreateBaseController {
   async configure(req, res, next) {
     const pncSearchTerm = req.query.police_national_computer_search_term
     const {
-      police_national_computer_search_term_result: pncSearchResultsField,
+      police_national_computer_search_term_result: searchResultsField,
     } = req.form.options.fields
 
     if (pncSearchTerm) {
       try {
         const people = await personService.findAll(pncSearchTerm)
+        searchResultsField.items = people.map(fieldHelpers.mapPersonToOption)
 
-        pncSearchResultsField.items = people.map(fieldHelpers.mapPersonToOption)
+        if (searchResultsField.items.length) {
+          searchResultsField.validate = 'required'
+        }
 
         res.locals.people = people
         res.locals.pncSearchTerm = pncSearchTerm
@@ -25,13 +28,13 @@ class PncResultsController extends CreateBaseController {
       }
     }
 
-    if (pncSearchResultsField.items.length) {
-      pncSearchResultsField.validate = 'required'
-    } else {
-      delete req.form.options.fields.police_national_computer_search_term_result
+    if (!searchResultsField.items.length) {
       const queryString = pncSearchTerm
         ? '?police_national_computer_search_term=' + pncSearchTerm
         : ''
+
+      delete req.form.options.fields.police_national_computer_search_term_result
+
       return res.redirect(`/move/new/personal-details${queryString}`)
     }
 
