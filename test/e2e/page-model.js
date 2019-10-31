@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import { format } from 'date-fns'
 import { Selector } from 'testcafe'
 import faker from 'faker'
 import {
@@ -73,9 +74,10 @@ export default class Page {
         police_national_computer: pncNumber || faker.random.number().toString(),
         last_name: faker.name.lastName(),
         first_names: faker.name.firstName(),
-        date_of_birth: faker.date
-          .between('01/01/1940', '01/01/1990')
-          .toLocaleDateString(),
+        date_of_birth: format(
+          faker.date.between('01-01-1940', '01-01-1990'),
+          'yyyy-MM-dd'
+        ),
       },
       options: {
         ethnicity: await selectAutocompleteOption('Ethnicity').then(
