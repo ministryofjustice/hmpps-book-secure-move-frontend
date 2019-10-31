@@ -108,7 +108,11 @@ export async function fillInForm(details = {}) {
   const textFields = details.text || {}
 
   for (const [id, value] of Object.entries(textFields)) {
-    await t.typeText(`#${id}`, value)
+    const textInputSelector = `#${id}`
+    await t
+      .selectText(textInputSelector)
+      .pressKey('delete')
+      .typeText(textInputSelector, value)
   }
 
   return details

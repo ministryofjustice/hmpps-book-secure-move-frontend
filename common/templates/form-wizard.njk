@@ -40,8 +40,14 @@
 {% endblock %}
 
 {% block contentMain %}
-  <form method="post">
-    <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+  {% set formMethod = options.method | default('post') %}
+  {% set formAction = options.action | default('') %}
+
+  <form method="{{ formMethod }}" action="{{ formAction }}">
+
+    {% if formMethod == 'post' %}
+      <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+    {% endif %}
 
     {% block beforeFields %}{% endblock %}
 

@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, set } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -23,11 +23,17 @@ class PersonalDetailsController extends CreateBaseController {
       const ethnicityOptions = ethnicities
         .filter(referenceDataHelpers.filterDisabled())
         .map(fieldHelpers.mapReferenceDataToOption)
+      const pncSearchTerm = req.query.police_national_computer_search_term || ''
 
       req.form.options.fields.gender.items = genderOptions
       req.form.options.fields.ethnicity.items = fieldHelpers.insertInitialOption(
         ethnicityOptions,
         'ethnicity'
+      )
+      set(
+        req,
+        'form.options.fields.police_national_computer.default',
+        pncSearchTerm
       )
 
       super.configure(req, res, next)

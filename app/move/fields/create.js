@@ -62,6 +62,33 @@ function toLocationType(type, props) {
 }
 
 module.exports = {
+  // pnc search
+  police_national_computer_search_term: {
+    component: 'govukInput',
+    label: {
+      html: 'fields::police_national_computer_search_term.label',
+      classes: 'govuk-label--s',
+    },
+    hint: {
+      text: 'fields::police_national_computer_search_term.hint',
+    },
+    id: 'police-national-computer-search-term',
+    name: 'police_national_computer_search_term',
+    classes: 'govuk-input--width-20',
+    autocomplete: 'off',
+  },
+  police_national_computer_search_term_result: {
+    component: 'govukRadios',
+    multiple: true,
+    items: [],
+    name: 'police_national_computer_search_term_result',
+    fieldset: {
+      legend: {
+        text: 'fields::police_national_computer_search_term_result.label',
+        classes: 'govuk-fieldset__legend--s',
+      },
+    },
+  },
   // personal details
   police_national_computer: {
     validate: 'required',

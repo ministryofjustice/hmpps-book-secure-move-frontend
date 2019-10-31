@@ -1,4 +1,5 @@
 const { cloneDeep, fromPairs, get, set } = require('lodash')
+const { format, parseISO } = require('date-fns')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
@@ -219,6 +220,30 @@ async function populateAssessmentQuestions(fields) {
   return fieldsClone
 }
 
+function mapPersonToOption(person) {
+  return {
+    text: person.fullname,
+    label: {
+      classes: 'govuk-label--s',
+    },
+    value: person.id,
+    hint: {
+      html: componentService.getComponent('appResults', {
+        items: [
+          {
+            label: 'Date of Birth',
+            text: format(parseISO(person.date_of_birth), 'd MMM yyyy'),
+          },
+          {
+            label: 'Gender',
+            text: person.gender.title,
+          },
+        ],
+      }),
+    },
+  }
+}
+
 module.exports = {
   mapReferenceDataToOption,
   renderConditionalFields,
@@ -228,4 +253,5 @@ module.exports = {
   insertInitialOption,
   insertItemConditional,
   populateAssessmentQuestions,
+  mapPersonToOption,
 }

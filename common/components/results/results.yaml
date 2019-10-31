@@ -1,0 +1,42 @@
+params:
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the parent element.
+  - name: items
+    type: object
+    required: false
+    description: Options for items.
+    params:
+      - name: items
+        type: array
+        required: true
+        description: Array of item objects.
+        params:
+          - name: label
+            type: string
+            required: true
+            description: Label to use for meta item.
+          - name: hideLabel
+            type: boolean
+            required: false
+            description: If true, label will be visually hidden.
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+
+examples:
+  - name: default
+    data:
+      items:
+        - label: Date of birth
+          text: 10/10/1970
+        - label: HTML
+          html: <em>Foo</em>
+        - label: Escaped HTML
+          text: <em>Bar</em>

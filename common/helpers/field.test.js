@@ -13,6 +13,7 @@ const {
   insertInitialOption,
   insertItemConditional,
   populateAssessmentQuestions,
+  mapPersonToOption,
 } = require('./field')
 
 const questionsMock = [
@@ -25,6 +26,27 @@ const questionsMock = [
     hint: 'mock hint',
   },
 ]
+const personMock = {
+  id: '7777',
+  first_names: 'Baz',
+  last_name: 'Boo',
+  fullname: 'Baz, Boo',
+  date_of_birth: '1948-04-24',
+  gender: {
+    id: '9999',
+    title: 'Trans',
+  },
+  ethnicity: {
+    id: '8888',
+    title: 'Foo',
+  },
+  identifiers: [
+    {
+      identifier_type: 'police_national_computer',
+      value: '2222',
+    },
+  ],
+}
 
 describe('Form helpers', function() {
   describe('#mapReferenceDataToOption()', function() {
@@ -919,6 +941,28 @@ describe('Form helpers', function() {
 
       it('should return original item', function() {
         expect(response).to.deep.equal({ name: 'field', key: 'field' })
+      })
+    })
+  })
+
+  describe('#mapPersonToOption()', function() {
+    let response
+
+    beforeEach(function() {
+      sinon.stub(componentService, 'getComponent').returnsArg(0)
+      response = mapPersonToOption(personMock)
+    })
+
+    it('should not call translation method', function() {
+      expect(response).to.deep.equal({
+        text: 'Baz, Boo',
+        label: {
+          classes: 'govuk-label--s',
+        },
+        value: '7777',
+        hint: {
+          html: 'appResults',
+        },
       })
     })
   })

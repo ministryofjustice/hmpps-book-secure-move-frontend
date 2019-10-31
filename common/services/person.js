@@ -68,6 +68,20 @@ const personService = {
       .then(response => response.data)
       .then(person => personService.transform(person))
   },
+
+  findAll(pnc) {
+    if (!pnc) {
+      return Promise.reject(new Error('No PNC supplied'))
+    }
+
+    return apiClient
+      .findAll('person', {
+        cache: false,
+        'filter[police_national_computer]': pnc,
+      })
+      .then(response => response.data)
+      .then(data => data.map(person => personService.transform(person)))
+  },
 }
 
 module.exports = personService

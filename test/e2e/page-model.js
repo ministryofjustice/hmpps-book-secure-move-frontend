@@ -58,6 +58,7 @@ export default class Page {
       custodySuitLocationLink: Selector('a').withText(
         'Guildford Custody Suite'
       ),
+      pncNumberInput: Selector('#police_national_computer'),
     }
   }
 
@@ -66,10 +67,10 @@ export default class Page {
    *
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails() {
+  async fillInPersonalDetails({ pncNumber }) {
     return fillInForm({
       text: {
-        police_national_computer: faker.random.number().toString(),
+        police_national_computer: pncNumber || faker.random.number().toString(),
         last_name: faker.name.lastName(),
         first_names: faker.name.firstName(),
         date_of_birth: faker.date

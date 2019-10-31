@@ -1,4 +1,11 @@
 {
+  "police_national_computer_search_term": {
+    "label": "PNC number (optional)",
+    "hint": "This is the police national computer reference"
+  },
+  "police_national_computer_search_term_result": {
+    "label": "Select the person you are moving"
+  },
   "police_national_computer": {
     "label": "<abbr title=\"Police National Computer\">PNC</abbr> number"
   },
