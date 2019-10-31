@@ -107,7 +107,7 @@ describe('Move controllers', function() {
                 label: {
                   classes: 'govuk-label--s',
                 },
-                text: 'Foo, Bar',
+                text: 'FOO, BAR',
                 value: '3333',
               },
               {
@@ -117,7 +117,7 @@ describe('Move controllers', function() {
                 label: {
                   classes: 'govuk-label--s',
                 },
-                text: 'Baz, Boo',
+                text: 'BAZ, BOO',
                 value: '4444',
               },
             ])

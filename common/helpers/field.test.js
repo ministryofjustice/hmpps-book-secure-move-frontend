@@ -955,7 +955,7 @@ describe('Form helpers', function() {
 
     it('should not call translation method', function() {
       expect(response).to.deep.equal({
-        text: 'Baz, Boo',
+        text: 'BAZ, BOO',
         label: {
           classes: 'govuk-label--s',
         },
