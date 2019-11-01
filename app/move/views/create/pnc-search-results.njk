@@ -38,7 +38,7 @@
 
 {% block formActions %}
   <p class="govuk-body">
-    <a href="/move/new/personal-details">{{ t("actions::create_move_different_person") }}</a>
+    <a href="/move/new/personal-details{{ "?police_national_computer_search_term=" + pncSearchTerm }}">{{ t("actions::create_move_different_person") }}</a>
   </p>
   {{ super() }}
 {% endblock %}

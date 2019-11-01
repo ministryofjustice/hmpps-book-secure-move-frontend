@@ -222,7 +222,7 @@ async function populateAssessmentQuestions(fields) {
 
 function mapPersonToOption(person) {
   return {
-    text: person.fullname,
+    text: person.fullname.toUpperCase(),
     label: {
       classes: 'govuk-label--s',
     },

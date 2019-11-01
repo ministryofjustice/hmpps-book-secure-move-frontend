@@ -123,7 +123,7 @@ test('Court move with existing PNC', async t => {
     .eql(`Matches for ${courtMovePncNumber}`)
 
   await page.fillInPncSearchResults(
-    `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`
+    `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`.toUpperCase()
   )
   await t.click(page.nodes.continueButton)
 

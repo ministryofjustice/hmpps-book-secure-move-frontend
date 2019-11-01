@@ -22,7 +22,6 @@ module.exports = {
     method: 'get',
     action: '/move/new/pnc-search-results',
     template: 'move/views/create/pnc-search',
-    backLink: null,
     pageTitle: 'moves::steps.police_national_computer_search_term.heading',
     buttonText: 'actions::continue',
     next: 'pnc-search-results',
@@ -30,6 +29,7 @@ module.exports = {
   },
   '/pnc-search-results': {
     checkJourney: false,
+    backLink: 'pnc-search',
     controller: PncSearchResults,
     template: 'move/views/create/pnc-search-results',
     pageTitle:
