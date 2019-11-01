@@ -76,6 +76,22 @@ export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
 }
 
 /**
+ * Get a checked option input element
+ *
+ * @param legendText
+ * @returns {Promise<*>}
+ */
+export async function getSelectedFieldsetOption(legendText) {
+  const optionsFieldset = await Selector('.govuk-fieldset__legend')
+    .withText(legendText)
+    .parent('.govuk-fieldset')
+
+  return Selector(optionsFieldset)
+    .find('.govuk-radios__input')
+    .withAttribute('checked')
+}
+
+/**
  * Select option (radio or checkbox)
  *
  * @param {string} legendText - legend text for the fieldset
