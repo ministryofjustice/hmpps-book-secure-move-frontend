@@ -23,7 +23,7 @@
     },
     "police_national_computer_search_term_result": {
       "heading": "Create a move",
-      "secondary_heading": "Matches for {{searchTerm}}"
+      "secondary_heading": "Matches for {{- searchTerm}}"
     },
     "personal_details": {
       "heading": "Personal details"
