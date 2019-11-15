@@ -4,6 +4,8 @@ const CreateBaseController = require('./base')
 
 const controller = new CreateBaseController({ route: '/' })
 
+const mockHrTime = [11111, 22222]
+
 describe('Move controllers', function() {
   describe('Create base controller', function() {
     describe('#middlewareChecks()', function() {
@@ -214,6 +216,55 @@ describe('Move controllers', function() {
         })
 
         it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setJourneyTimer()', function() {
+      let req, nextSpy
+
+      beforeEach(function() {
+        sinon.stub(process, 'hrtime').returns(mockHrTime)
+        nextSpy = sinon.spy()
+      })
+
+      context('with no time in the session', function() {
+        beforeEach(function() {
+          req = {
+            session: {
+              createMoveJourneyTime: undefined,
+            },
+          }
+
+          controller.setJourneyTimer(req, {}, nextSpy)
+        })
+
+        it('should set time', function() {
+          expect(req.session.createMoveJourneyTime).to.equal(mockHrTime)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with time in the session', function() {
+        beforeEach(function() {
+          req = {
+            session: {
+              createMoveJourneyTime: mockHrTime,
+            },
+          }
+          controller.setJourneyTimer(req, {}, nextSpy)
+        })
+
+        it('should not set time', function() {
+          expect(process.hrtime).to.not.be.called
+          expect(req.session.createMoveJourneyTime).to.equal(mockHrTime)
+        })
+
+        it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })

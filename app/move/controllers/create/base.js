@@ -1,3 +1,4 @@
+const { get, set } = require('lodash')
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
 
@@ -11,10 +12,19 @@ class CreateBaseController extends FormWizardController {
     super.middlewareLocals()
     this.use(this.setCancelUrl)
     this.use(this.setMoveSummary)
+    this.use(this.setJourneyTimer)
   }
 
   setCancelUrl(req, res, next) {
     res.locals.cancelUrl = res.locals.MOVES_URL
+    next()
+  }
+
+  setJourneyTimer(req, res, next) {
+    if (!get(req, 'session.createMoveJourneyTime')) {
+      set(req, 'session.createMoveJourneyTime', process.hrtime())
+    }
+
     next()
   }
 
