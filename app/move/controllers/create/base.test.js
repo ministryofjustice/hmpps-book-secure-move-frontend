@@ -4,8 +4,6 @@ const CreateBaseController = require('./base')
 
 const controller = new CreateBaseController({ route: '/' })
 
-const mockHrTime = [11111, 22222]
-
 describe('Move controllers', function() {
   describe('Create base controller', function() {
     describe('#middlewareChecks()', function() {
@@ -225,23 +223,22 @@ describe('Move controllers', function() {
       let req, nextSpy
 
       beforeEach(function() {
-        sinon.stub(process, 'hrtime').returns(mockHrTime)
+        this.clock = sinon.useFakeTimers(new Date('2017-08-10').getTime())
         nextSpy = sinon.spy()
       })
 
-      context('with no time in the session', function() {
+      context('with no timestamp in the session', function() {
         beforeEach(function() {
           req = {
             session: {
-              createMoveJourneyTime: undefined,
+              createMoveJourneyTimestamp: undefined,
             },
           }
-
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
-        it('should set time', function() {
-          expect(req.session.createMoveJourneyTime).to.equal(mockHrTime)
+        it('should set timestamp', function() {
+          expect(req.session.createMoveJourneyTimestamp).to.equal(1502323200000)
         })
 
         it('should call next', function() {
@@ -249,19 +246,20 @@ describe('Move controllers', function() {
         })
       })
 
-      context('with time in the session', function() {
+      context('with timestamp in the session', function() {
+        const mockTimestamp = 11212121212
+
         beforeEach(function() {
           req = {
             session: {
-              createMoveJourneyTime: mockHrTime,
+              createMoveJourneyTimestamp: mockTimestamp,
             },
           }
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
-        it('should not set time', function() {
-          expect(process.hrtime).to.not.be.called
-          expect(req.session.createMoveJourneyTime).to.equal(mockHrTime)
+        it('should not set timestamp', function() {
+          expect(req.session.createMoveJourneyTimestamp).to.equal(mockTimestamp)
         })
 
         it('should call next', function() {

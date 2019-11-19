@@ -8,7 +8,7 @@ const mockMove = {
     title: 'Axminster Crown Court',
   },
 }
-const mockTimestampKey = 'createMoveJourneyTime'
+const mockTimestampKey = 'createMoveJourneyTimestamp'
 
 describe('Move controllers', function() {
   describe('#confirmation()', function() {

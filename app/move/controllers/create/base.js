@@ -21,8 +21,8 @@ class CreateBaseController extends FormWizardController {
   }
 
   setJourneyTimer(req, res, next) {
-    if (!get(req, 'session.createMoveJourneyTime')) {
-      set(req, 'session.createMoveJourneyTime', process.hrtime())
+    if (!get(req, 'session.createMoveJourneyTimestamp')) {
+      set(req, 'session.createMoveJourneyTimestamp', new Date().getTime())
     }
 
     next()
