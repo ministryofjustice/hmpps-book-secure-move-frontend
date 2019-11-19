@@ -1,5 +1,4 @@
 const proxyquire = require('proxyquire')
-const mockHrTime = [44444, 55555]
 
 describe('Analytics', function() {
   describe('#sendJourneyTime()', function() {
@@ -34,12 +33,12 @@ describe('Analytics', function() {
             user: {
               role: 'robocop',
             },
-            createMoveJourneyTime: mockHrTime,
+            createMoveJourneyTimestamp: 12233535,
             save: sinon.stub().callsFake(() => Promise.resolve('GA hit sent')),
           },
         }
 
-        sinon.stub(process, 'hrtime').returns(mockHrTime)
+        this.clock = sinon.useFakeTimers(new Date('2017-08-10').getTime())
 
         analytics = proxyquire('./analytics', {
           'uuid/v4': () => mockUUID,
@@ -52,13 +51,13 @@ describe('Analytics', function() {
 
         nock('https://www.google-analytics.com')
           .post(
-            `/collect?v=1&t=timing&utl=Journey+duration&utt=44444000&utc=robocop&cid=${mockUUID}&tid=${mockGaID}`
+            `/collect?v=1&t=timing&utl=Journey+duration&utt=1502310966465&utc=robocop&cid=${mockUUID}&tid=${mockGaID}`
           )
           .reply(200, {})
 
         result = await analytics.sendJourneyTime(
           req,
-          'createMoveJourneyTime',
+          'createMoveJourneyTimestamp',
           {}
         )
       })
@@ -72,7 +71,7 @@ describe('Analytics', function() {
       })
 
       it('should reset the journey timer', function() {
-        expect(req.session.createMoveJourneyTime).to.be.undefined
+        expect(req.session.createMoveJourneyTimestamp).to.be.undefined
       })
     })
   })

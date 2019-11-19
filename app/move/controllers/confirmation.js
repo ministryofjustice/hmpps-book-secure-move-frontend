@@ -4,7 +4,7 @@ async function confirmation(req, res, next) {
   const { move_type: moveType, to_location: toLocation } = res.locals.move
 
   try {
-    await sendJourneyTime(req, 'createMoveJourneyTime', {
+    await sendJourneyTime(req, 'createMoveJourneyTimestamp', {
       utv: 'Create a move',
     })
   } catch (err) {
