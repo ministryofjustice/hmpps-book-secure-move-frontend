@@ -38,13 +38,9 @@ function sendJourneyTime(req, timestampKey, params = {}) {
     return Promise.resolve('No GA ID!')
   }
 
+  const timestamp = get(req, `session.${timestampKey}`)
   const user = get(req, 'session.user')
-  const [seconds, nanoseconds] = process.hrtime(
-    get(req, `session.${timestampKey}`)
-  )
-  const journeyDuration = Math.round(
-    (seconds * 1000000000 + nanoseconds) / 1000000
-  )
+  const journeyDuration = Math.round(new Date().getTime() - timestamp)
 
   return sendHit({
     v: 1,
