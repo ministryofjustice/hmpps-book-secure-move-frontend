@@ -8,7 +8,7 @@ const {
   isValid: isValidDate,
   isDate,
 } = require('date-fns')
-const { kebabCase } = require('lodash')
+const { kebabCase, startCase } = require('lodash')
 
 const { DATE_FORMATS } = require('../index')
 
@@ -129,4 +129,5 @@ module.exports = {
   calculateAge,
   formatTime,
   kebabcase: kebabCase,
+  startCase,
 }
