@@ -1,3 +1,5 @@
+import 'core-js/es/promise'
+
 import '../images/app-logotype-crest.png'
 import '../images/app-logotype-crest@2x.png'
 import '../images/favicon.ico'
