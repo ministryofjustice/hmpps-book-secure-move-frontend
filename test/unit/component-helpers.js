@@ -10,8 +10,9 @@ const sass = require('node-sass')
 const sassRender = util.promisify(sass.render)
 
 const configPaths = require('../../config/paths')
+const views = [configPaths.components, configPaths.govukFrontend]
 
-nunjucks.configure(configPaths.components, {
+nunjucks.configure(views, {
   trimBlocks: true,
   lstripBlocks: true,
 })
