@@ -61,6 +61,11 @@ test('Court move', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there any documents to upload?')
     .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
@@ -169,6 +174,11 @@ test('Court move with existing PNC', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there any documents to upload?')
     .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
@@ -246,6 +256,11 @@ test('Prison recall', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
+    .click(page.nodes.continueButton)
+
+  await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there any documents to upload?')
     .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
@@ -365,8 +380,16 @@ test('Navigate tags in detailed move', async t => {
   // Does this person’s health affect transport?
   await selectFieldsetOption('Add health information', 'Medication')
 
+  await t.click(page.nodes.continueButton)
+
   await t
+    .expect(page.nodes.pageHeading.innerText)
+    .eql('Are there any documents to upload?')
     .click(page.nodes.scheduleMoveButton)
+
+  await t
+    .expect(page.nodes.panelHeading.innerText)
+    .eql('Move scheduled')
     .click(
       await page.getPersonLink(
         personalDetails.text.first_names,
