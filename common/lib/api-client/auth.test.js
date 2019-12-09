@@ -1,10 +1,9 @@
 const axios = require('axios')
 
-const Auth = require('./auth')
-
 describe('API Client', function() {
   describe('Auth library', function() {
-    let auth
+    let authInstance
+    let secondAuthInstance
     const mockOptions = {
       timeout: 1000,
       authUrl: 'http://auth-url.com/token',
@@ -19,21 +18,30 @@ describe('API Client', function() {
     describe('when instantiated', function() {
       context('with options', function() {
         beforeEach(function() {
-          auth = new Auth(mockOptions)
+          authInstance = requireUncached(`${__dirname}/auth`)(mockOptions)
+          secondAuthInstance = require('./auth')()
         })
 
         it('should set options as config', function() {
-          expect(auth.config).to.deep.equal(mockOptions)
+          expect(authInstance.config).to.deep.equal(mockOptions)
+        })
+
+        it('second instance should match first', function() {
+          expect(authInstance).to.deep.equal(secondAuthInstance)
+        })
+
+        it('second instance config should match first instance config', function() {
+          expect(secondAuthInstance.config).to.deep.equal(mockOptions)
         })
       })
 
       context('without options', function() {
         beforeEach(function() {
-          auth = new Auth()
+          authInstance = requireUncached(`${__dirname}/auth`)({})
         })
 
         it('should set default config', function() {
-          expect(auth.config).to.deep.equal({
+          expect(authInstance.config).to.deep.equal({
             timeout: 10000,
             authUrl: undefined,
             username: undefined,
@@ -47,26 +55,26 @@ describe('API Client', function() {
       let accessToken
 
       beforeEach(function() {
-        auth = new Auth()
-        auth.accessToken = 'mockToken'
-        auth.isExpired = sinon.stub()
-        auth.refreshAccessToken = sinon.stub()
+        authInstance = requireUncached(`${__dirname}/auth`)({})
+        authInstance.accessToken = 'mockToken'
+        authInstance.isExpired = sinon.stub()
+        authInstance.refreshAccessToken = sinon.stub()
       })
 
       context('when expired', function() {
         beforeEach(async function() {
-          auth.refreshAccessToken.resolves(mockTokenResponse)
-          auth.isExpired.returns(true)
+          authInstance.refreshAccessToken.resolves(mockTokenResponse)
+          authInstance.isExpired.returns(true)
 
-          accessToken = await auth.getAccessToken()
+          accessToken = await authInstance.getAccessToken()
         })
 
         it('should refresh the token', function() {
-          expect(auth.refreshAccessToken).to.be.calledOnce
+          expect(authInstance.refreshAccessToken).to.be.calledOnce
         })
 
         it('should set the access token', function() {
-          expect(auth.accessToken).to.be.equal('newMockToken')
+          expect(authInstance.accessToken).to.be.equal('newMockToken')
         })
 
         it('should return access token', function() {
@@ -76,12 +84,12 @@ describe('API Client', function() {
 
       context('when not expired', function() {
         beforeEach(async function() {
-          auth.isExpired.returns(false)
-          accessToken = await auth.getAccessToken()
+          authInstance.isExpired.returns(false)
+          accessToken = await authInstance.getAccessToken()
         })
 
         it('should not refresh access token', function() {
-          expect(auth.refreshAccessToken).not.to.be.called
+          expect(authInstance.refreshAccessToken).not.to.be.called
         })
 
         it('should return access token', function() {
@@ -99,8 +107,8 @@ describe('API Client', function() {
       beforeEach(async function() {
         sinon.stub(axios, 'post').resolves(mockResponse)
 
-        auth = new Auth(mockOptions)
-        refreshedToken = await auth.refreshAccessToken()
+        authInstance = requireUncached(`${__dirname}/auth`)(mockOptions)
+        refreshedToken = await authInstance.refreshAccessToken()
       })
 
       it('should correctly post to auth token endpoint', function() {
@@ -126,25 +134,25 @@ describe('API Client', function() {
 
     describe('#isExpired()', function() {
       beforeEach(function() {
-        auth = new Auth()
+        authInstance = requireUncached(`${__dirname}/auth`)({})
       })
 
       context('when no access token is set', function() {
         it('should return true', function() {
-          expect(auth.isExpired()).to.be.true
+          expect(authInstance.isExpired()).to.be.true
         })
       })
 
       context('when no token expiry is set', function() {
         it('should return true', function() {
-          expect(auth.isExpired()).to.be.true
+          expect(authInstance.isExpired()).to.be.true
         })
       })
 
       context('when token expiry is set', function() {
         beforeEach(function() {
-          auth.accessToken = 'token'
-          auth.tokenExpiresAt = new Date('2017-08-09').getTime() / 1000
+          authInstance.accessToken = 'token'
+          authInstance.tokenExpiresAt = new Date('2017-08-09').getTime() / 1000
         })
 
         context('when token is out of date', function() {
@@ -157,7 +165,7 @@ describe('API Client', function() {
           })
 
           it('should return true', function() {
-            expect(auth.isExpired()).to.be.true
+            expect(authInstance.isExpired()).to.be.true
           })
         })
 
@@ -171,7 +179,7 @@ describe('API Client', function() {
           })
 
           it('should return false', function() {
-            expect(auth.isExpired()).to.be.false
+            expect(authInstance.isExpired()).to.be.false
           })
         })
       })
