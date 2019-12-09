@@ -1,5 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
+const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
 
 const controller = new CreateBaseController({ route: '/' })
@@ -66,6 +67,143 @@ describe('Move controllers', function() {
 
         it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with moves url local', function() {
+        beforeEach(function() {
+          res.locals.MOVES_URL = '/moves?move-date=2019-10-10'
+          controller.setCancelUrl({}, res, nextSpy)
+        })
+
+        it('should set cancel url moves url', function() {
+          expect(res.locals).to.have.property('cancelUrl')
+          expect(res.locals.cancelUrl).to.equal('/moves?move-date=2019-10-10')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#post()', function() {
+      let res, req, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          body: {},
+          sessionModel: {
+            get: sinon.stub(),
+          },
+        }
+        res = {
+          locals: {},
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('with no cancelMove field', function() {
+        beforeEach(function() {
+          sinon.stub(FormController.prototype, 'post')
+          controller.post(req, res, nextSpy)
+        })
+
+        it('should call parent post method', function() {
+          expect(FormController.prototype.post).to.have.been.calledOnce
+          expect(FormController.prototype.post).to.have.been.calledWith(
+            req,
+            res,
+            nextSpy
+          )
+        })
+      })
+
+      context('with cancelMove field', function() {
+        const mockMoveId = '1234567'
+        const mockMovesUrl = '/moves?move-date=2019-10-10'
+
+        beforeEach(function() {
+          req.body.cancel_move = 'cancel'
+          res.locals.MOVES_URL = mockMovesUrl
+
+          sinon.stub(FormController.prototype, 'post')
+        })
+
+        context('without move id', function() {
+          beforeEach(function() {
+            req.sessionModel.get.withArgs('move').returns()
+            sinon.spy(moveService, 'destroy')
+
+            controller.post(req, res, nextSpy)
+          })
+
+          it('should not call moveService destroy', function() {
+            expect(moveService.destroy).to.not.have.been.called
+          })
+
+          it('should not call parent post method', function() {
+            expect(FormController.prototype.post).to.not.have.been.called
+          })
+
+          it('should redirect', function() {
+            expect(res.redirect).to.be.calledWithExactly(mockMovesUrl)
+          })
+        })
+
+        context('with move id', function() {
+          beforeEach(async function() {
+            req.sessionModel.get.withArgs('move').returns({ id: mockMoveId })
+            sinon.stub(moveService, 'destroy').resolves('ben')
+
+            await controller.post(req, res, nextSpy)
+          })
+
+          it('should call moveService destroy', function() {
+            expect(moveService.destroy).to.have.been.calledOnce
+            expect(moveService.destroy).to.have.been.calledWithExactly(
+              mockMoveId
+            )
+          })
+
+          it('should not call parent post method', function() {
+            expect(FormController.prototype.post).to.not.have.been.called
+          })
+
+          it('should redirect', function() {
+            expect(res.redirect).to.be.calledWithExactly(mockMovesUrl)
+          })
+        })
+
+        context('with moveService throwing an error', function() {
+          const errorStub = new Error('Error stub')
+
+          beforeEach(async function() {
+            req.sessionModel.get.withArgs('move').returns({ id: mockMoveId })
+            sinon.stub(moveService, 'destroy').rejects(errorStub)
+
+            await controller.post(req, res, nextSpy)
+          })
+
+          it('should call moveService destroy', function() {
+            expect(moveService.destroy).to.have.been.calledOnce
+            expect(moveService.destroy).to.have.been.calledWithExactly(
+              mockMoveId
+            )
+          })
+
+          it('should not call parent post method', function() {
+            expect(FormController.prototype.post).to.not.have.been.called
+          })
+
+          it('should not redirect', function() {
+            expect(res.redirect).to.not.be.called
+          })
+
+          it('should call next with error', function() {
+            expect(nextSpy).to.be.calledWithExactly(errorStub)
+          })
         })
       })
 
