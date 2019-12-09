@@ -11,28 +11,31 @@ import '../images/print-icon.png'
 import '../images/print-icon@2x.png'
 import '../images/download-icon.png'
 import '../images/download-icon@2x.png'
+import '../images/tick-icon.png'
+import '../images/tick-icon@2x.png'
 
-import { nodeListForEach } from './utils'
-import { initAll } from 'govuk-frontend'
-import accessibleAutocomplete from 'accessible-autocomplete'
-import StickySidebar from 'sticky-sidebar/dist/sticky-sidebar'
-import Message from '../../components/message/message'
-import Header from '../../components/internal-header/internal-header'
-import Analytics from './analytics'
+const { nodeListForEach } = require('./utils')
+const { initAll } = require('govuk-frontend')
+const accessibleAutocomplete = require('accessible-autocomplete')
+const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
+const Message = require('../../components/message/message')
+const Header = require('../../components/internal-header/internal-header')
+const MultiFileUpload = require('../../components/multi-file-upload/multi-file-upload')
+const Analytics = require('./analytics')
 
 initAll()
 
 new Analytics().init()
 
-var $toggleButton = document.querySelector('[data-module="header"]')
+const $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()
 
-var $messages = document.querySelectorAll('[data-module="app-message"]')
+const $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function($message) {
   new Message($message).init()
 })
 
-var $autocompletes = document.querySelectorAll(
+const $autocompletes = document.querySelectorAll(
   '[data-module="app-autocomplete"]'
 )
 nodeListForEach($autocompletes, function($autocomplete) {
@@ -43,7 +46,7 @@ nodeListForEach($autocompletes, function($autocomplete) {
   })
 })
 
-var $stickySidebars = document.querySelectorAll('.sticky-sidebar')
+const $stickySidebars = document.querySelectorAll('.sticky-sidebar')
 if ($stickySidebars.length) {
   // eslint-disable-next-line no-new
   new StickySidebar('.sticky-sidebar', {
@@ -52,4 +55,14 @@ if ($stickySidebars.length) {
     containerSelector: '.sticky-sidebar-container',
     innerWrapperSelector: '.sticky-sidebar__inner',
   })
+}
+
+const $multiFileUpload = document.querySelector(
+  '[data-module="app-multi-file-upload"]'
+)
+
+if ($multiFileUpload) {
+  new MultiFileUpload({
+    container: $multiFileUpload,
+  }).init()
 }
