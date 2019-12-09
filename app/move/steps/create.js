@@ -20,6 +20,7 @@ module.exports = {
   },
   '/pnc-search': {
     checkJourney: false,
+    backLink: false,
     controller: Base,
     method: 'get',
     action: '/move/new/pnc-search-results',
@@ -42,6 +43,7 @@ module.exports = {
   '/personal-details': {
     entryPoint: true,
     controller: PersonalDetails,
+    backLink: 'pnc-search',
     pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',
     fields: [
