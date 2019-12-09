@@ -29,6 +29,7 @@ export default class Page {
         'HMPPS Digital Services'
       ),
       pageHeading: Selector('.govuk-heading-xl'),
+      panelHeading: Selector('.govuk-panel__title'),
       policeUserName: Selector('.app-header__navigation-item').withExactText(
         'End-to-End Test Police'
       ),
