@@ -5,6 +5,17 @@ const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 
 class SaveController extends CreateBaseController {
+  saveMove(id, data) {
+    if (id) {
+      return moveService.update({
+        id,
+        ...data,
+      })
+    }
+
+    return moveService.create(data)
+  }
+
   async saveValues(req, res, next) {
     try {
       const data = omit(req.sessionModel.toJSON(), [
@@ -12,7 +23,8 @@ class SaveController extends CreateBaseController {
         'errors',
         'errorValues',
       ])
-      const move = await moveService.create(data)
+      const { id } = req.sessionModel.get('move') || {}
+      const move = await this.saveMove(id, data)
       await personService.update(data.person)
 
       req.sessionModel.set('move', move)
@@ -21,15 +33,6 @@ class SaveController extends CreateBaseController {
     } catch (error) {
       next(error)
     }
-  }
-
-  successHandler(req, res) {
-    const { id } = req.sessionModel.get('move')
-
-    req.journeyModel.reset()
-    req.sessionModel.reset()
-
-    res.redirect(`/move/${id}/confirmation`)
   }
 }
 
