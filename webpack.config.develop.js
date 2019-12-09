@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { PORT } = require('./config')
 
 module.exports = {
+  devtool: 'source-map',
+
   plugins: [
     new BrowserSyncPlugin({
       proxy: `http://localhost:${PORT}`,
