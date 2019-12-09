@@ -117,6 +117,7 @@ describe('User class', function() {
           'move:view',
           'move:create',
           'move:cancel',
+          'move:delete',
         ])
       })
     })
@@ -166,6 +167,7 @@ describe('User class', function() {
           'move:view',
           'move:create',
           'move:cancel',
+          'move:delete',
           'moves:view:all',
           'moves:download:all',
         ])
