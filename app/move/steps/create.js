@@ -5,6 +5,8 @@ const {
   MoveDetails,
   Save,
   PncSearchResults,
+  Document,
+  Final,
 } = require('../controllers/create')
 
 module.exports = {
@@ -104,7 +106,7 @@ module.exports = {
     controller: Assessment,
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
-    buttonText: 'actions::schedule_move',
+    buttonText: 'actions::continue',
     fields: [
       'health',
       'health__special_diet_or_allergy',
@@ -118,5 +120,18 @@ module.exports = {
   '/save': {
     skip: true,
     controller: Save,
+    next: 'document',
+  },
+  '/document': {
+    enctype: 'multipart/form-data',
+    controller: Document,
+    next: 'final',
+    pageTitle: 'moves::steps.document.heading',
+    buttonText: 'actions::schedule_move',
+    fields: ['document_upload'],
+  },
+  '/final': {
+    skip: true,
+    controller: Final,
   },
 }
