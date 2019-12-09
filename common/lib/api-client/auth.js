@@ -1,5 +1,8 @@
 const axios = require('axios')
 
+const { API } = require('../../../config')
+let authInstance = null
+
 function getTimestamp() {
   return Math.floor(new Date() / 1000)
 }
@@ -55,4 +58,19 @@ Auth.prototype = {
   },
 }
 
-module.exports = Auth
+function getAuthInstance(
+  options = {
+    timeout: API.TIMEOUT,
+    authUrl: API.AUTH_URL,
+    username: API.CLIENT_ID,
+    password: API.SECRET,
+  }
+) {
+  if (!authInstance) {
+    authInstance = new Auth(options)
+  }
+
+  return authInstance
+}
+
+module.exports = getAuthInstance
