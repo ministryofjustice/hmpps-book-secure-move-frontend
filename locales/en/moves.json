@@ -39,6 +39,9 @@
     },
     "health_information": {
       "heading": "Does this person’s health affect transport?"
+    },
+    "document": {
+      "heading": "Are there any documents to upload?"
     }
   },
   "download": {
