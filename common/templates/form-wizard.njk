@@ -43,8 +43,13 @@
 {% block contentMain %}
   {% set formMethod = options.method | default('post') %}
   {% set formAction = options.action | default('') %}
+  {% set formEnctype = options.enctype | default('') %}
 
-  <form method="{{ formMethod }}" action="{{ formAction }}">
+  <form method="{{ formMethod }}" action="{{ formAction }}"
+  {% if formEnctype %}
+    enctype="{{ formEnctype }}"
+  {% endif %}
+  >
 
     {% if formMethod == 'post' %}
       <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
