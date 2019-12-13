@@ -294,4 +294,15 @@ module.exports = {
   court__solicitor: assessmentQuestionComments,
   court__interpreter: assessmentQuestionComments,
   court__other_court: requiredAssessmentQuestionComments,
+  document_upload: {
+    component: 'appMultiFileUpload',
+    heading: {
+      text: 'Only include documents that will help plan the move.',
+    },
+    label: {
+      text: 'fields::first_names.label',
+      classes: 'govuk-label--s',
+    },
+    id: 'multi-file-upload',
+  },
 }

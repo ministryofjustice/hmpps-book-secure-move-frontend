@@ -1,19 +1,10 @@
 const proxyquire = require('proxyquire')
 
-const mockConfig = {
-  AUTH_URL: 'http://baseurl.com/oauth/token',
-  CLIENT_ID: 'clientid',
-  SECRET: 'secret',
-  TIMEOUT: 10000,
-}
 function MockAuth() {}
 MockAuth.prototype.getAccessToken = sinon.stub()
 
-const auth = proxyquire('./auth', {
-  '../../../../config': {
-    API: mockConfig,
-  },
-  '../auth': MockAuth,
+const authMiddleware = proxyquire('./auth', {
+  '../auth': () => new MockAuth(),
 })
 
 describe('API Client', function() {
@@ -33,7 +24,7 @@ describe('API Client', function() {
 
       beforeEach(async function() {
         MockAuth.prototype.getAccessToken.resolves(token)
-        await auth.req(payload)
+        await authMiddleware.req(payload)
       })
 
       it('should call auth library', function() {
@@ -55,7 +46,9 @@ describe('API Client', function() {
       })
 
       it('should reject with error', function() {
-        return expect(auth.req(payload)).to.be.eventually.rejectedWith(Error)
+        return expect(
+          authMiddleware.req(payload)
+        ).to.be.eventually.rejectedWith(Error)
       })
     })
   })

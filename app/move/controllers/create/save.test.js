@@ -8,7 +8,6 @@ const Controller = proxyquire('./save', {
 })
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 
@@ -53,43 +52,87 @@ describe('Move controllers', function() {
             values: {},
           },
           sessionModel: {
+            get: sinon.stub(),
             set: sinon.stub(),
             toJSON: () => valuesMock,
           },
         }
       })
 
-      context('when move save is successful', function() {
-        beforeEach(async function() {
-          sinon.spy(FormController.prototype, 'configure')
-          sinon.stub(moveService, 'create').resolves(mockMove)
-          sinon.stub(personService, 'update').resolves(mockPerson)
-          await controller.saveValues(req, {}, nextSpy)
-        })
+      context('without pre-existing move', function() {
+        context('when move save is successful', function() {
+          beforeEach(async function() {
+            sinon.spy(FormController.prototype, 'configure')
+            sinon.stub(moveService, 'create').resolves(mockMove)
+            sinon.stub(personService, 'update').resolves(mockPerson)
+            req.sessionModel.get.withArgs('move').returns()
 
-        it('should filter out correct properties', function() {
-          expect(moveService.create).to.be.calledWith({
-            reference: '',
-            to_location: 'Court',
-            from_location: 'Prison',
-            person: {
-              first_names: 'Steve',
-              last_name: 'Smith',
-            },
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should filter out correct properties', function() {
+            expect(moveService.create).to.be.calledWith({
+              reference: '',
+              to_location: 'Court',
+              from_location: 'Prison',
+              person: {
+                first_names: 'Steve',
+                last_name: 'Smith',
+              },
+            })
+          })
+
+          it('should call person create', function() {
+            expect(personService.update).to.be.calledWith(valuesMock.person)
+          })
+
+          it('should set response to session model', function() {
+            expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
           })
         })
+      })
 
-        it('should call person update', function() {
-          expect(personService.update).to.be.calledWith(valuesMock.person)
-        })
+      context('with pre-existing move', function() {
+        context('when move save is successful', function() {
+          beforeEach(async function() {
+            sinon.spy(FormController.prototype, 'configure')
+            sinon.stub(moveService, 'update').resolves(mockMove)
+            sinon.stub(personService, 'update').resolves(mockPerson)
+            req.sessionModel.get.withArgs('move').returns(mockMove)
 
-        it('should set response to session model', function() {
-          expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
-        })
+            await controller.saveValues(req, {}, nextSpy)
+          })
 
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy).to.be.calledWith()
+          it('should filter out correct properties', function() {
+            expect(moveService.update).to.be.calledWith({
+              id: mockMove.id,
+              from_location: 'Prison',
+              person: {
+                first_names: 'Steve',
+                last_name: 'Smith',
+              },
+              reference: '',
+              to_location: 'Court',
+            })
+          })
+
+          it('should call person update', function() {
+            expect(personService.update).to.be.calledWith(valuesMock.person)
+          })
+
+          it('should set response to session model', function() {
+            expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
+          })
         })
       })
 
@@ -97,6 +140,7 @@ describe('Move controllers', function() {
         const errorMock = new Error('Problem')
 
         beforeEach(async function() {
+          req.sessionModel.get.withArgs('move').returns()
           sinon.stub(moveService, 'create').throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
@@ -111,52 +155,6 @@ describe('Move controllers', function() {
 
         it('should not set person response on form values', function() {
           expect(req.form.values).not.to.have.property('person')
-        })
-      })
-    })
-
-    describe('#successHandler()', function() {
-      let req, res
-
-      beforeEach(function() {
-        req = {
-          form: {
-            values: {},
-          },
-          sessionModel: {
-            get: sinon.stub(),
-            reset: sinon.stub(),
-          },
-          journeyModel: {
-            reset: sinon.stub(),
-          },
-        }
-        res = {
-          redirect: sinon.stub(),
-        }
-
-        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
-      })
-
-      context('by default', function() {
-        beforeEach(function() {
-          req.sessionModel.get.withArgs('move').returns(mockMove)
-          controller.successHandler(req, res)
-        })
-
-        it('should reset the journey', function() {
-          expect(req.journeyModel.reset).to.have.been.calledOnce
-        })
-
-        it('should reset the session', function() {
-          expect(req.sessionModel.reset).to.have.been.calledOnce
-        })
-
-        it('should redirect correctly', function() {
-          expect(res.redirect).to.have.been.calledOnce
-          expect(res.redirect).to.have.been.calledWith(
-            `/move/${mockMove.id}/confirmation`
-          )
         })
       })
     })

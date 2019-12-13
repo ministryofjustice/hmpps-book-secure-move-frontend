@@ -31,6 +31,22 @@
           "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
           "type": "locations"
         }
+      },
+      "documents": {
+        "data": [
+          {
+            "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+            "type": "documents",
+            "filesize": "1 MB",
+            "url": "http://example-document/url-other"
+          },
+          {
+            "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+            "type": "documents",
+            "filesize": "290 KB",
+            "url": "http://example-document/url"
+          }
+        ]
       }
     }
   },
@@ -140,6 +156,26 @@
         "location_type": "court",
         "nomis_agency_id": null,
         "disabled_at": null
+      }
+    },
+    {
+      "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+      "type": "documents",
+      "attributes": {
+        "filename": "Screenshot 2019-11-27 at 15.45.59.png",
+        "content_type": "image/png",
+        "filesize": "290 KB",
+        "url": "http://example-document/url"
+      }
+    },
+    {
+      "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+      "type": "documents",
+      "attributes": {
+        "filename": "Screenshot 2019-11-27 at 15.45.59.png",
+        "content_type": "image/png",
+        "filesize": "290 KB",
+        "url": "http://example-document/url"
       }
     }
   ]

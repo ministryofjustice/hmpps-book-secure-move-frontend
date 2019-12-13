@@ -27,15 +27,19 @@ const commonConfig = {
     rules: [
       {
         test: /\.js$/,
+        exclude: /@babel(?:\/|\\{1,2})runtime|core-js|css-loader/, // IE 10 issues with core-js 3 details here: https://github.com/zloirock/core-js/issues/514#issuecomment-523524472
         loader: 'babel-loader',
         options: {
           plugins: ['syntax-dynamic-import'],
-
+          compact: false,
+          cacheDirectory: true,
           presets: [
             [
               '@babel/preset-env',
               {
                 modules: false,
+                useBuiltIns: 'entry',
+                corejs: 3,
               },
             ],
           ],

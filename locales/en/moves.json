@@ -14,6 +14,10 @@
       "court": {
         "heading": "Information for the court",
         "empty": "No information for the court"
+      },
+      "document": {
+        "heading": "Uploaded documents",
+        "empty": "No uploaded documents"
       }
     }
   },
@@ -39,6 +43,9 @@
     },
     "health_information": {
       "heading": "Does this person’s health affect transport?"
+    },
+    "document": {
+      "heading": "Are there any documents to upload?"
     }
   },
   "download": {

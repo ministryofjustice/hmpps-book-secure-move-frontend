@@ -3,6 +3,7 @@ const { mapValues, pickBy } = require('lodash')
 const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 
+const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   format(data) {
     const relationships = ['to_location', 'from_location']
@@ -67,7 +68,7 @@ const moveService = {
 
   getById(id) {
     if (!id) {
-      return Promise.reject(new Error('No move ID supplied'))
+      return Promise.reject(new Error(noMoveIdMessage))
     }
 
     return apiClient
@@ -89,9 +90,23 @@ const moveService = {
       }))
   },
 
+  update(data) {
+    if (!data.id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    return apiClient
+      .update('move', moveService.format(data))
+      .then(response => response.data)
+      .then(move => ({
+        ...move,
+        person: personService.transform(move.person),
+      }))
+  },
+
   cancel(id, { reason, comment } = {}) {
     if (!id) {
-      return Promise.reject(new Error('No move ID supplied'))
+      return Promise.reject(new Error(noMoveIdMessage))
     }
 
     return apiClient
@@ -102,6 +117,14 @@ const moveService = {
         cancellation_reason_comment: comment,
       })
       .then(response => response.data)
+  },
+
+  destroy(id) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    return apiClient.destroy('move', id).then(response => response.data)
   },
 }
 
