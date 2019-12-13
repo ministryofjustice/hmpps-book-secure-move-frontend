@@ -11,27 +11,14 @@ const sassRender = util.promisify(sass.render)
 
 const configPaths = require('../../config/paths')
 const views = [configPaths.components, configPaths.govukFrontend]
+const {
+  componentNameToMacroName,
+} = require('../../common/lib/component/helpers')
 
 nunjucks.configure(views, {
   trimBlocks: true,
   lstripBlocks: true,
 })
-
-/**
- * Return a macro name for a component
- * @param {string} componentName
- * @returns {string} returns naming convention based macro name
- */
-function _componentNameToMacroName(componentName) {
-  const macroName = componentName
-    .toLowerCase()
-    .split('-')
-    // capitalize each 'word'
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('')
-
-  return `app${macroName}`
-}
 
 /**
  * Render a component's macro for testing
@@ -47,7 +34,7 @@ function render(componentName, params, children = false) {
     )
   }
 
-  const macroName = _componentNameToMacroName(componentName)
+  const macroName = componentNameToMacroName(componentName)
   const macroParams = JSON.stringify(params, null, 2)
 
   let macroString = `{%- from "${componentName}/macro.njk" import ${macroName} -%}`
