@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('panel')
 
@@ -7,7 +10,7 @@ describe('Panel component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('panel', examples.default)
+      const $ = renderComponentHtmlToCheerio('panel', examples.default)
       $component = $('.app-panel')
     })
 
@@ -26,7 +29,7 @@ describe('Panel component', function() {
 
   context('with classes param', function() {
     it('should render classes', function() {
-      const $ = render('panel', {
+      const $ = renderComponentHtmlToCheerio('panel', {
         classes: 'app-panel--inactive',
       })
 
@@ -37,7 +40,7 @@ describe('Panel component', function() {
 
   context('with attributes param', function() {
     it('should render attributes', function() {
-      const $ = render('panel', {
+      const $ = renderComponentHtmlToCheerio('panel', {
         attributes: {
           'data-attribute': 'my data value',
         },
@@ -50,7 +53,7 @@ describe('Panel component', function() {
 
   context('when html is passed to text', function() {
     it('should render escaped html', function() {
-      const $ = render('panel', {
+      const $ = renderComponentHtmlToCheerio('panel', {
         text: 'Content with <strong>bold text</strong>',
       })
 
@@ -63,7 +66,7 @@ describe('Panel component', function() {
 
   context('when html is passed to html', function() {
     it('should render unescaped html', function() {
-      const $ = render('panel', {
+      const $ = renderComponentHtmlToCheerio('panel', {
         html: 'Content with <strong>bold text</strong>',
       })
 
@@ -76,7 +79,7 @@ describe('Panel component', function() {
 
   context('when both html and text params are used', function() {
     it('should render unescaped html', function() {
-      const $ = render('panel', {
+      const $ = renderComponentHtmlToCheerio('panel', {
         html: 'Content with <strong>bold text</strong>',
         text: 'Content with <strong>bold text</strong>',
       })
@@ -91,7 +94,7 @@ describe('Panel component', function() {
   context('when tag component is added', function() {
     let $, $component
     beforeEach(function() {
-      $ = render('panel', examples['with tag'])
+      $ = renderComponentHtmlToCheerio('panel', examples['with tag'])
       $component = $('.app-panel')
     })
 

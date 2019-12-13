@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('results')
 
@@ -7,7 +10,7 @@ describe('Results component', function() {
     let $component, $items, $
 
     beforeEach(function() {
-      $ = render('results', examples.default)
+      $ = renderComponentHtmlToCheerio('results', examples.default)
       $component = $('.app-results')
 
       const $itemsList = $('.app-results__list')
@@ -40,7 +43,7 @@ describe('Results component', function() {
 
   context('with empty items array', function() {
     it('should not render items', function() {
-      const $ = render('results', {
+      const $ = renderComponentHtmlToCheerio('results', {
         items: [],
       })
       const $itemsList = $('.app-results__list')
