@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('link')
 
@@ -7,7 +10,7 @@ describe('Link component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('link', examples.default)
+      const $ = renderComponentHtmlToCheerio('link', examples.default)
       $component = $('.app-link')
     })
 
@@ -37,7 +40,7 @@ describe('Link component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('link', examples['with hint'])
+      const $ = renderComponentHtmlToCheerio('link', examples['with hint'])
       $component = $('.app-link')
     })
 
@@ -73,7 +76,10 @@ describe('Link component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('link', examples['with hint and meta data'])
+      const $ = renderComponentHtmlToCheerio(
+        'link',
+        examples['with hint and meta data']
+      )
       $component = $('.app-link')
     })
 
@@ -109,7 +115,7 @@ describe('Link component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render(
+      const $ = renderComponentHtmlToCheerio(
         'link',
         examples['with hint and meta data and hint text']
       )

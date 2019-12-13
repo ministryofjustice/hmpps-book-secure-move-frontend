@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('time')
 
@@ -7,7 +10,7 @@ describe('Time component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('time', examples.default)
+      const $ = renderComponentHtmlToCheerio('time', examples.default)
       $component = $('time')
     })
 
@@ -27,7 +30,7 @@ describe('Time component', function() {
 
   context('with classes', function() {
     it('should render classes', function() {
-      const $ = render('time', {
+      const $ = renderComponentHtmlToCheerio('time', {
         classes: 'custom-class',
       })
 
@@ -40,7 +43,7 @@ describe('Time component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('time', {
+      const $ = renderComponentHtmlToCheerio('time', {
         datetime: '2019-01-10',
         text: 'Today',
       })
