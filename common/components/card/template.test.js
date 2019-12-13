@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('card')
 
@@ -7,7 +10,7 @@ describe('Card component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('card', examples.default)
+      const $ = renderComponentHtmlToCheerio('card', examples.default)
       $component = $('.app-card')
     })
 
@@ -48,7 +51,7 @@ describe('Card component', function() {
 
   context('with image', function() {
     it('should render image', function() {
-      const $ = render('card', examples['with image'])
+      const $ = renderComponentHtmlToCheerio('card', examples['with image'])
       const $image = $('.app-card__image')
 
       expect($image.length).to.equal(1)
@@ -60,7 +63,7 @@ describe('Card component', function() {
 
   context('with classes param', function() {
     it('should render classes', function() {
-      const $ = render('card', {
+      const $ = renderComponentHtmlToCheerio('card', {
         title: { text: 'Title' },
         classes: 'app-card--compact',
       })
@@ -73,7 +76,7 @@ describe('Card component', function() {
   context('with caption', function() {
     context('when html is passed to text', function() {
       it('should render escaped html', function() {
-        const $ = render('card', {
+        const $ = renderComponentHtmlToCheerio('card', {
           title: { text: 'Title' },
           caption: {
             text: '<span>Reference</span>',
@@ -90,7 +93,7 @@ describe('Card component', function() {
     context('when html is passed to html', function() {
       it('should render unescaped html', function() {
         it('should render escaped html', function() {
-          const $ = render('card', {
+          const $ = renderComponentHtmlToCheerio('card', {
             title: { text: 'Title' },
             caption: {
               html: '<span>Reference</span>',
@@ -105,7 +108,7 @@ describe('Card component', function() {
 
     context('when both html and text params are used', function() {
       it('should render unescaped html', function() {
-        const $ = render('card', {
+        const $ = renderComponentHtmlToCheerio('card', {
           title: { text: 'Title' },
           caption: {
             text: '<span>Reference</span>',
@@ -121,7 +124,7 @@ describe('Card component', function() {
 
   context('with link', function() {
     it('should render link', function() {
-      const $ = render('card', examples['with link'])
+      const $ = renderComponentHtmlToCheerio('card', examples['with link'])
       const $link = $('.app-card__link')
 
       expect($link.length).to.equal(1)
@@ -132,7 +135,7 @@ describe('Card component', function() {
   context('with meta data', function() {
     context('with empty items array', function() {
       it('should not render meta', function() {
-        const $ = render('card', {
+        const $ = renderComponentHtmlToCheerio('card', {
           title: { text: 'Title' },
           meta: { items: [] },
         })
@@ -146,7 +149,7 @@ describe('Card component', function() {
       let $, $items
 
       beforeEach(function() {
-        $ = render('card', examples['with meta items'])
+        $ = renderComponentHtmlToCheerio('card', examples['with meta items'])
         const $meta = $('.app-card__meta-list')
         $items = $meta.find('.app-card__meta-list-item')
       })
@@ -175,7 +178,7 @@ describe('Card component', function() {
   context('with tags', function() {
     context('with empty items array', function() {
       it('should not render tags', function() {
-        const $ = render('card', {
+        const $ = renderComponentHtmlToCheerio('card', {
           title: { text: 'Title' },
           tags: { items: [] },
         })
@@ -187,7 +190,7 @@ describe('Card component', function() {
 
     context('with items', function() {
       it('should render correct number of items', function() {
-        const $ = render('card', examples['with tags'])
+        const $ = renderComponentHtmlToCheerio('card', examples['with tags'])
         const $meta = $('.app-card__tag-list')
         const $items = $meta.find('.app-card__tag-list-item')
 

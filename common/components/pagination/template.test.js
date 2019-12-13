@@ -1,11 +1,14 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('pagination')
 
 describe('Pagination component', function() {
   context('default', function() {
     it('should render previous link', function() {
-      const $ = render('pagination', examples.default)
+      const $ = renderComponentHtmlToCheerio('pagination', examples.default)
 
       const $component = $('.app-pagination')
       const $item = $component.find('.app-pagination__list-item--prev')
@@ -17,7 +20,7 @@ describe('Pagination component', function() {
     })
 
     it('should render next link', function() {
-      const $ = render('pagination', examples.default)
+      const $ = renderComponentHtmlToCheerio('pagination', examples.default)
 
       const $component = $('.app-pagination')
       const $item = $component.find('.app-pagination__list-item--next')
@@ -31,7 +34,7 @@ describe('Pagination component', function() {
 
   context('without next or previous', function() {
     it('should not render previous link', function() {
-      const $ = render('pagination', {})
+      const $ = renderComponentHtmlToCheerio('pagination', {})
 
       const $component = $('.app-pagination')
       const $item = $component.find('.app-pagination__list-item--prev')
@@ -39,7 +42,7 @@ describe('Pagination component', function() {
     })
 
     it('should not render next link', function() {
-      const $ = render('pagination', {})
+      const $ = renderComponentHtmlToCheerio('pagination', {})
 
       const $component = $('.app-pagination')
       const $item = $component.find('.app-pagination__list-item--next')
@@ -49,7 +52,7 @@ describe('Pagination component', function() {
 
   context('with classes', function() {
     it('should render classes', function() {
-      const $ = render('pagination', {
+      const $ = renderComponentHtmlToCheerio('pagination', {
         classes: 'app-pagination--custom-class',
       })
 
@@ -60,7 +63,7 @@ describe('Pagination component', function() {
 
   context('with labels', function() {
     it('should render previous label', function() {
-      const $ = render('pagination', {
+      const $ = renderComponentHtmlToCheerio('pagination', {
         previous: {
           href: '/page-1',
           label: '1 of 300',
@@ -77,7 +80,7 @@ describe('Pagination component', function() {
     })
 
     it('should render next label', function() {
-      const $ = render('pagination', {
+      const $ = renderComponentHtmlToCheerio('pagination', {
         next: {
           href: '/page-3',
           label: '3 of 300',
@@ -96,7 +99,7 @@ describe('Pagination component', function() {
 
   context('with custom text', function() {
     it('should render previous text', function() {
-      const $ = render('pagination', {
+      const $ = renderComponentHtmlToCheerio('pagination', {
         previous: {
           href: '/previous-day',
           text: 'Previous day',
@@ -113,7 +116,7 @@ describe('Pagination component', function() {
     })
 
     it('should render next label', function() {
-      const $ = render('pagination', {
+      const $ = renderComponentHtmlToCheerio('pagination', {
         next: {
           href: '/next-day',
           text: 'Next day',
@@ -134,7 +137,7 @@ describe('Pagination component', function() {
     let $, $component, items
 
     beforeEach(function() {
-      $ = render('pagination', examples['with items'])
+      $ = renderComponentHtmlToCheerio('pagination', examples['with items'])
       $component = $('.app-pagination')
       items = $component.find('.app-pagination__list-item')
     })

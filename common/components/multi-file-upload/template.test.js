@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('multi-file-upload')
 
@@ -7,7 +10,10 @@ describe('Multi file upload component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('multi-file-upload', examples.default)
+      const $ = renderComponentHtmlToCheerio(
+        'multi-file-upload',
+        examples.default
+      )
       $component = $('[data-module="app-multi-file-upload"]')
     })
 
@@ -64,7 +70,7 @@ describe('Multi file upload component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('multi-file-upload', mockData)
+      const $ = renderComponentHtmlToCheerio('multi-file-upload', mockData)
       $component = $('[data-module="app-multi-file-upload"]')
     })
 
