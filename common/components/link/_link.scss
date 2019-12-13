@@ -1,0 +1,16 @@
+.app-link {
+  display: inline-block;
+}
+
+.app-link__anchor {
+  display: inline-block;
+}
+
+.app-link__meta {
+  @include govuk-font($size: 16);
+}
+
+.app-link__hint {
+  @include govuk-font($size: 16);
+  margin-bottom: govuk-spacing(2);
+}

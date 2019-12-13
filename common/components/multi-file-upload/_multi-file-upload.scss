@@ -1,0 +1,91 @@
+.app-multi-file-upload {
+  margin-bottom: govuk-spacing(1);
+}
+
+.app-multi-file-upload__progress-bar {
+  max-width: 100px;
+  width: 0px;
+  height: 8px;
+  background-color: $govuk-brand-colour;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.app-multi-file-upload__dropzone {
+  outline: 3px dashed govuk-colour('black');
+  display: flex;
+  text-align: center;
+  vertical-align: middle;
+  padding: govuk-spacing(9) govuk-spacing(3);
+  transition: outline-offset .1s ease-in-out, background-color .1s linear;
+}
+
+.app-multi-file-upload__dropzone--dragover {
+  background: govuk-colour("mid-grey");
+  outline-color: govuk-colour("dark-grey");
+}
+
+.app-multi-file-upload__dropzone-label {
+  margin-left: govuk-spacing(2);
+  display: inline-block;
+  width: auto;
+}
+
+.app-multi-file-upload__dropzone-hint {
+  margin: 0 auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.app-multi-file-upload__dropzone-file {
+  position: absolute;
+  left: -9999em;
+  z-index: -10000;
+}
+
+.app-multi-file-upload-message {
+  @include govuk-font($size: 19, $weight: bold);
+}
+
+.app-multi-file-upload-message__error {
+  color: govuk-colour('red');
+}
+
+.app-multi-file-upload-message__success {
+  color: govuk-colour('green');
+}
+
+.app-row {
+  padding-bottom: govuk-spacing(1);
+}
+
+.app-row__key {
+  vertical-align: middle;
+  width: 100% !important;
+  border-bottom: none !important;
+
+  @include govuk-media-query($from: tablet) {
+    width: 55% !important;
+  }
+}
+
+.app-row__value {
+  vertical-align: middle;
+  width: 100% !important;
+  border-bottom: none !important;
+
+  @include govuk-media-query($from: tablet) {
+    text-align: right;
+    width: 30% !important;
+  }
+}
+
+.app-row__actions {
+  vertical-align: middle;
+  width: 100% !important;
+  border-bottom: none !important;
+
+  @include govuk-media-query($from: tablet) {
+    width: 15% !important;
+  }
+}

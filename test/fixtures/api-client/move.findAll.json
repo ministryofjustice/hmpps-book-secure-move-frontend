@@ -32,6 +32,22 @@
             "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -67,6 +83,16 @@
             "id": "3374c092-8080-4dd3-82c6-3621cbcecc33",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -102,6 +128,9 @@
             "id": "16b57931-550a-42ed-95c3-fe966fb9c124",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -137,6 +166,22 @@
             "id": "e1e89057-ede1-4cfb-b45c-c134bb3a6dcf",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -172,6 +217,9 @@
             "id": "3374c092-8080-4dd3-82c6-3621cbcecc33",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -207,6 +255,22 @@
             "id": "16b57931-550a-42ed-95c3-fe966fb9c124",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -242,6 +306,16 @@
             "id": "580f17ec-bd21-40f1-9e90-f3fde63a89f9",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -277,6 +351,9 @@
             "id": "9ae51665-1f15-4c28-8c93-765e27248344",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -312,6 +389,22 @@
             "id": "ba6d7dc1-8e8d-4663-91ee-06ac0fd7b109",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -347,6 +440,16 @@
             "id": "b287ed50-1b24-4cbb-a849-22326204fdf5",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -382,6 +485,22 @@
             "id": "4f545803-af97-4caa-b0f8-e3cbf03a7029",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -417,6 +536,9 @@
             "id": "8ee015df-1ee2-4c2e-9cb7-389b3f9bd675",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -452,6 +574,16 @@
             "id": "524aac6f-4fe1-49ca-a79f-63a3f67d87f9",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -487,6 +619,9 @@
             "id": "3ceab015-36ef-4843-a0ec-8893b36dc198",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -522,6 +657,16 @@
             "id": "655d3fe6-0228-4a02-a7da-3679246cdb4a",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -557,6 +702,22 @@
             "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -592,6 +753,22 @@
             "id": "9999d410-104d-443b-9c10-aded145dd519",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -627,6 +804,9 @@
             "id": "ba6d7dc1-8e8d-4663-91ee-06ac0fd7b109",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": []
         }
       }
     },
@@ -662,6 +842,22 @@
             "id": "daabb284-e54d-43a5-beb2-91a1d814cc80",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     },
@@ -697,6 +893,22 @@
             "id": "b2faece3-ebbd-408a-a41f-ce6921c3093b",
             "type": "locations"
           }
+        },
+        "documents": {
+          "data": [
+            {
+              "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            },
+            {
+              "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
+            }
+          ]
         }
       }
     }
@@ -2436,6 +2648,26 @@
         "location_type": "court",
         "nomis_agency_id": null,
         "disabled_at": null
+      }
+    },
+    {
+      "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
+      "type": "documents",
+      "attributes": {
+        "filename": "Screenshot 2019-11-27 at 15.45.59.png",
+        "content_type": "image/png",
+        "filesize": "29 KB",
+        "url": "http://example-document/url"
+      }
+    },
+    {
+      "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
+      "type": "documents",
+      "attributes": {
+        "filename": "Screenshot 2019-11-27 at 15.45.59.png",
+        "content_type": "image/png",
+        "filesize": "290 KB",
+        "url": "http://example-document/url-another"
       }
     }
   ],

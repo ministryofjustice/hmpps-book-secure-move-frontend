@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('meta-list')
 
@@ -7,7 +10,7 @@ describe('Meta list component', function() {
     let $, $component, $items
 
     beforeEach(function() {
-      $ = render('meta-list', examples.default)
+      $ = renderComponentHtmlToCheerio('meta-list', examples.default)
       $component = $('.app-meta-list')
       $items = $component.find('.app-meta-list__item')
     })
@@ -23,7 +26,7 @@ describe('Meta list component', function() {
 
   context('with classes', function() {
     it('should render classes', function() {
-      const $ = render('meta-list', {
+      const $ = renderComponentHtmlToCheerio('meta-list', {
         classes: 'app-meta-list--custom-class',
       })
 
@@ -36,7 +39,7 @@ describe('Meta list component', function() {
     let $, $items
 
     beforeEach(function() {
-      $ = render('meta-list', {
+      $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
             key: {
@@ -82,7 +85,7 @@ describe('Meta list component', function() {
     let $, $items
 
     beforeEach(function() {
-      $ = render('meta-list', {
+      $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
             key: {
@@ -111,7 +114,7 @@ describe('Meta list component', function() {
     let $, $items
 
     beforeEach(function() {
-      $ = render('meta-list', {
+      $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
             value: {
@@ -142,7 +145,7 @@ describe('Meta list component', function() {
     let $, $items
 
     beforeEach(function() {
-      $ = render('meta-list', {
+      $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
             key: {

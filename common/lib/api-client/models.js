@@ -22,6 +22,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'locations',
       },
+      documents: {
+        jsonApi: 'hasMany',
+        type: 'document',
+      },
     },
   },
   person: {
@@ -107,6 +111,15 @@ module.exports = {
     options: {
       cache: true,
       collectionPath: 'reference/suppliers',
+    },
+  },
+  document: {
+    attributes: {
+      id: '',
+      filename: '',
+      content_type: '',
+      url: '',
+      filesize: '',
     },
   },
 }

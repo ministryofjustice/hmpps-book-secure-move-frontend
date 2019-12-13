@@ -42,6 +42,8 @@ module.exports = {
         expect: 'readonly',
         sinon: 'readonly',
         nock: 'readonly',
+        mockFs: 'readonly',
+        requireUncached: 'readonly',
       },
       rules: {
         'no-unused-expressions': 'off',

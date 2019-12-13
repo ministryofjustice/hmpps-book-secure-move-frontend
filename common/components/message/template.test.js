@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('message')
 
@@ -7,7 +10,7 @@ describe('Message component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('message', examples.default)
+      const $ = renderComponentHtmlToCheerio('message', examples.default)
       $component = $('.app-message')
     })
 
@@ -31,7 +34,7 @@ describe('Message component', function() {
 
   context('with classes', function() {
     it('should render classes', function() {
-      const $ = render('message', examples.success)
+      const $ = renderComponentHtmlToCheerio('message', examples.success)
       const $component = $('.app-message')
 
       expect($component.hasClass('app-message--success')).to.be.true
@@ -41,7 +44,7 @@ describe('Message component', function() {
   context('with a title', function() {
     context('when no content is passed', function() {
       it('should not render element', function() {
-        const $ = render('message', {})
+        const $ = renderComponentHtmlToCheerio('message', {})
 
         const $component = $('.app-message')
         expect($component.find('.app-message__heading').length).to.equal(0)
@@ -50,7 +53,7 @@ describe('Message component', function() {
 
     context('when html is passed to text', function() {
       it('should render escaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           title: {
             text: 'A title with <strong>bold text</strong>',
           },
@@ -65,7 +68,7 @@ describe('Message component', function() {
 
     context('when html is passed to html', function() {
       it('should render unescaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           title: {
             html: 'A title with <strong>bold text</strong>',
           },
@@ -80,7 +83,7 @@ describe('Message component', function() {
 
     context('when both html and text params are used', function() {
       it('should render unescaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           title: {
             html: 'A title with <strong>bold text</strong>',
             text: 'A title with <strong>bold text</strong>',
@@ -98,7 +101,7 @@ describe('Message component', function() {
   context('with content', function() {
     context('when no content is passed', function() {
       it('should not render element', function() {
-        const $ = render('message', {})
+        const $ = renderComponentHtmlToCheerio('message', {})
 
         const $component = $('.app-message')
         expect($component.find('.app-message__content').length).to.equal(0)
@@ -107,7 +110,7 @@ describe('Message component', function() {
 
     context('when html is passed to text', function() {
       it('should render escaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           content: {
             text: 'A message with <strong>bold text</strong>',
           },
@@ -122,7 +125,7 @@ describe('Message component', function() {
 
     context('when html is passed to html', function() {
       it('should render unescaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           content: {
             html: 'A message with <strong>bold text</strong>',
           },
@@ -137,7 +140,7 @@ describe('Message component', function() {
 
     context('when both html and text params are used', function() {
       it('should render unescaped html', function() {
-        const $ = render('message', {
+        const $ = renderComponentHtmlToCheerio('message', {
           content: {
             html: 'A message with <strong>bold text</strong>',
             text: 'A message with <strong>bold text</strong>',
@@ -153,7 +156,10 @@ describe('Message component', function() {
 
     context('when dismiss is prevented', function() {
       it('should render unescaped html', function() {
-        const $ = render('message', examples['without dismiss'])
+        const $ = renderComponentHtmlToCheerio(
+          'message',
+          examples['without dismiss']
+        )
         expect($('.app-message').attr('data-module')).to.be.undefined
       })
     })

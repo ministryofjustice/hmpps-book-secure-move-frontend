@@ -1,17 +1,20 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('internal-header')
 
 describe('Internal header component', function() {
   it('has a role of `banner`', function() {
-    const $ = render('internal-header', {})
+    const $ = renderComponentHtmlToCheerio('internal-header', {})
 
     const $component = $('.app-header')
     expect($component.attr('role')).to.equal('banner')
   })
 
   it('renders attributes correctly', function() {
-    const $ = render('internal-header', {
+    const $ = renderComponentHtmlToCheerio('internal-header', {
       attributes: {
         'data-test-attribute': 'value',
         'data-test-attribute-2': 'value-2',
@@ -24,7 +27,7 @@ describe('Internal header component', function() {
   })
 
   it('renders classes', function() {
-    const $ = render('internal-header', {
+    const $ = renderComponentHtmlToCheerio('internal-header', {
       classes: 'app-header--custom-modifier',
     })
 
@@ -33,7 +36,7 @@ describe('Internal header component', function() {
   })
 
   it('renders custom container classes', function() {
-    const $ = render('internal-header', {
+    const $ = renderComponentHtmlToCheerio('internal-header', {
       containerClasses: 'app-width-container',
     })
 
@@ -44,7 +47,7 @@ describe('Internal header component', function() {
   })
 
   it('renders home page URL', function() {
-    const $ = render('internal-header', {
+    const $ = renderComponentHtmlToCheerio('internal-header', {
       homepageUrl: '/',
     })
 
@@ -55,7 +58,10 @@ describe('Internal header component', function() {
 
   describe('with product name', function() {
     it('renders product name', function() {
-      const $ = render('internal-header', examples['full width'])
+      const $ = renderComponentHtmlToCheerio(
+        'internal-header',
+        examples['full width']
+      )
 
       const $component = $('.app-header')
       const $productName = $component.find('.app-header__product-name')
@@ -65,7 +71,10 @@ describe('Internal header component', function() {
 
   describe('with service name', function() {
     it('renders service name', function() {
-      const $ = render('internal-header', examples['with service name'])
+      const $ = renderComponentHtmlToCheerio(
+        'internal-header',
+        examples['with service name']
+      )
 
       const $component = $('.app-header')
       const $serviceName = $component.find('.app-header__link--service-name')
@@ -75,7 +84,10 @@ describe('Internal header component', function() {
 
   describe('with navigation', function() {
     it('renders navigation', function() {
-      const $ = render('internal-header', examples['with navigation'])
+      const $ = renderComponentHtmlToCheerio(
+        'internal-header',
+        examples['with navigation']
+      )
 
       const $component = $('.app-header')
       const $list = $component.find('ul.app-header__navigation')
@@ -87,7 +99,7 @@ describe('Internal header component', function() {
     })
 
     it('renders navigation item anchor with attributes', function() {
-      const $ = render('internal-header', {
+      const $ = renderComponentHtmlToCheerio('internal-header', {
         navigation: [
           {
             text: 'Item',
@@ -108,7 +120,7 @@ describe('Internal header component', function() {
     })
 
     it('renders navigation items with text only', function() {
-      const $ = render('internal-header', {
+      const $ = renderComponentHtmlToCheerio('internal-header', {
         navigation: [
           {
             text: 'Item 1',
@@ -133,7 +145,10 @@ describe('Internal header component', function() {
 
     describe('menu button', function() {
       it('has an explicit type="button" so it does not act as a submit button', function() {
-        const $ = render('internal-header', examples['with navigation'])
+        const $ = renderComponentHtmlToCheerio(
+          'internal-header',
+          examples['with navigation']
+        )
 
         const $button = $('.app-header__menu-button')
 
@@ -143,7 +158,7 @@ describe('Internal header component', function() {
   })
 
   describe('SVG logo', function() {
-    const $ = render('internal-header', {})
+    const $ = renderComponentHtmlToCheerio('internal-header', {})
     const $svg = $('.app-header__logotype-crest')
 
     it('sets focusable="false" so that IE does not treat it as an interactive element', function() {
