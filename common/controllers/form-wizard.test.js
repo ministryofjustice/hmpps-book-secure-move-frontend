@@ -259,7 +259,7 @@ describe('Form wizard', function() {
     })
   })
 
-  describe('#render()', function() {
+  describe('#renderComponentHtmlToCheerio()', function() {
     let reqMock, nextSpy
 
     beforeEach(function() {

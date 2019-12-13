@@ -23,7 +23,7 @@ nunjucks.configure(views, {
  * @param {any} children any child components or text, pass the children to the macro
  * @returns {function} returns cheerio (jQuery) instance of the macro for easy DOM querying
  */
-function render(componentName, params, children = false) {
+function renderComponentHtmlToCheerio(componentName, params, children = false) {
   if (typeof params === 'undefined') {
     throw new Error(
       'Parameters passed to `render` should be an object but are undefined'
@@ -70,6 +70,6 @@ function getExamples(componentPath) {
 }
 
 module.exports = {
-  render,
+  renderComponentHtmlToCheerio,
   getExamples,
 }
