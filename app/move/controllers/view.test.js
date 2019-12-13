@@ -6,6 +6,7 @@ const mockMove = {
   person: {
     assessment_answers: [],
   },
+  documents: [],
 }
 
 describe('Move controllers', function() {
