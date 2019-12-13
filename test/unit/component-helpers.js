@@ -1,13 +1,9 @@
 const fs = require('fs')
 const path = require('path')
-const util = require('util')
 
 const cheerio = require('cheerio')
 const nunjucks = require('nunjucks')
 const yaml = require('js-yaml')
-
-const sass = require('node-sass')
-const sassRender = util.promisify(sass.render)
 
 const configPaths = require('../../config/paths')
 const views = [configPaths.components, configPaths.govukFrontend]
@@ -73,40 +69,7 @@ function getExamples(componentPath) {
   return examples
 }
 
-/**
- * Render Sass
- *
- * @param {object} options Options to pass to sass.render
- * @return {promise} Result of calling sass.render
- */
-function renderSass(options) {
-  return sassRender({
-    includePaths: [configPaths.src],
-    ...options,
-  })
-}
-
-/**
- * Get the raw HTML representation of a component, and remove any other
- * child elements that do not match the component.
- * Relies on B.E.M naming ensuring that child components relating to a component
- * are namespaced.
- * @param {function} $ requires an instance of cheerio (jQuery) that includes the
- * rendered component.
- * @param {string} className the top level class 'Block' in B.E.M terminology
- * @returns {string} returns HTML
- */
-function htmlWithClassName($, className) {
-  const $component = $(className)
-  const classSelector = className.replace('.', '')
-  // Remove all other elements that do not match this component
-  $component.find(`[class]:not([class^=${classSelector}])`).remove()
-  return $.html($component)
-}
-
 module.exports = {
   render,
   getExamples,
-  htmlWithClassName,
-  renderSass,
 }
