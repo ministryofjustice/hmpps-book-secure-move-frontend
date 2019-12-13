@@ -119,6 +119,7 @@ module.exports = {
       filename: '',
       content_type: '',
       url: '',
+      filesize: '',
     },
   },
 }
