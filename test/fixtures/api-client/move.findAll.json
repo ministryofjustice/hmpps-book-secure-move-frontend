@@ -37,11 +37,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -84,7 +88,9 @@
           "data": [
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -165,11 +171,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -250,11 +260,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -297,7 +311,9 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -378,11 +394,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -425,7 +445,9 @@
           "data": [
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -468,11 +490,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -553,7 +579,9 @@
           "data": [
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -634,7 +662,9 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -677,11 +707,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -724,11 +758,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -809,11 +847,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -856,11 +898,15 @@
           "data": [
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             },
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
-              "type": "documents"
+              "type": "documents",
+              "filesize": "290 KB",
+              "url": "http://example-document/url"
             }
           ]
         }
@@ -2609,7 +2655,9 @@
       "type": "documents",
       "attributes": {
         "filename": "Screenshot 2019-11-27 at 15.45.59.png",
-        "content_type": "image/png"
+        "content_type": "image/png",
+        "filesize": "29 KB",
+        "url": "http://example-document/url"
       }
     },
     {
@@ -2617,7 +2665,9 @@
       "type": "documents",
       "attributes": {
         "filename": "Screenshot 2019-11-27 at 15.45.59.png",
-        "content_type": "image/png"
+        "content_type": "image/png",
+        "filesize": "290 KB",
+        "url": "http://example-document/url-another"
       }
     }
   ],

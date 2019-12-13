@@ -1,0 +1,18 @@
+{% set hintText = params.hintText | default('(Opens in a new window)') %}
+
+<span class="app-link">
+  <a href="{{ params.url}}"
+     class="govuk-link app-link__anchor"
+     {% if params.hintId %} aria-labelledby="{{ params.hintId }}" {% endif %}
+     {% if params.target %} target="{{ params.target }}" {% endif %}>
+    {{ params.text }}
+  </a>
+  {% if params.meta %}
+    <span class="app-link__meta">({{ params.meta }})</span>
+  {% endif %}
+  {% if params.hintId %}
+    <span class="govuk-hint app-link__hint" id="{{ params.hintId }}">
+      {{ hintText }}
+    </span>
+  {% endif %}
+</span>
