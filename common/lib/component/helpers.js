@@ -22,4 +22,5 @@ function renderComponentToHtml(componentName, params) {
 
 module.exports = {
   renderComponentToHtml,
+  componentNameToMacroName,
 }
