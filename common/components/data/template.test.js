@@ -1,4 +1,7 @@
-const { render, getExamples } = require('../../../test/unit/component-helpers')
+const {
+  renderComponentHtmlToCheerio,
+  getExamples,
+} = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('data')
 
@@ -7,7 +10,7 @@ describe('Data component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('data', examples.default)
+      const $ = renderComponentHtmlToCheerio('data', examples.default)
       $component = $('.app-data')
     })
 
@@ -56,7 +59,7 @@ describe('Data component', function() {
     let $component
 
     beforeEach(function() {
-      const $ = render('data', examples.inverted)
+      const $ = renderComponentHtmlToCheerio('data', examples.inverted)
       $component = $('.app-data')
     })
 
@@ -81,7 +84,10 @@ describe('Data component', function() {
 
   context('with classes', function() {
     it('should render classes', function() {
-      const $ = render('data', examples['extra large variation'])
+      const $ = renderComponentHtmlToCheerio(
+        'data',
+        examples['extra large variation']
+      )
       const $component = $('.app-data')
 
       expect($component.hasClass('app-data--xl')).to.be.true
@@ -90,7 +96,10 @@ describe('Data component', function() {
 
   context('with custom element', function() {
     it('should render custom element', function() {
-      const $ = render('data', examples['with heading as element'])
+      const $ = renderComponentHtmlToCheerio(
+        'data',
+        examples['with heading as element']
+      )
       const $component = $('.app-data')
 
       expect($component.get(0).tagName).to.equal('h2')

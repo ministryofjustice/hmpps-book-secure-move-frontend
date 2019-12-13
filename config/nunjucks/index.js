@@ -5,8 +5,8 @@ const filters = require('./filters')
 
 module.exports = (app, { IS_DEV = false }, paths) => {
   const views = [
-    `${paths.root}/node_modules/govuk-frontend`,
-    `${paths.root}/node_modules/@ministryofjustice/frontend`,
+    paths.govukFrontend,
+    paths.mojFrontend,
     paths.templates,
     paths.components,
     paths.app,

@@ -1,0 +1,46 @@
+params:
+- name: xhrUrl
+  type: string
+  required: true
+  description: Url for xhr requests
+- name: heading
+  type: string
+  required: false
+  description: Heading for component.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: Text to use for the heading
+- name: documents
+  type: array
+  required: false
+  description: Array of document objects.
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Document id
+  - name: filename
+    type: string
+    required: true
+    description: Filename of the document
+
+examples:
+  - name: default
+    description: The multi upload component without uploaded documents
+    data:
+      heading:
+       text: example default heading
+      xhrUrl: '/example/text/xhr-endpoint'
+  - name: with document uploads
+    description: The multi upload component with uploaded documents
+    data:
+      heading:
+       text: example heading with documents
+      xhrUrl: '/example/text/xhr-endpoint'
+      documents:
+      - id: 'example-id-01'
+        filename: 'example-file-01-png'
+      - id: 'example-id-02'
+        filename: 'example-file-02-doc'

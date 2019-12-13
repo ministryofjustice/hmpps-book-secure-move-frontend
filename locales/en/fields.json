@@ -124,5 +124,8 @@
   },
   "health__other_health": {
     "label": "Any other requirements details"
+  },
+  "document_upload": {
+    "label": "Document upload"
   }
 }

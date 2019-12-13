@@ -5,6 +5,7 @@ module.exports = {
   globals: {
     sinon: 'readonly',
     nock: 'readonly',
+    mockFs: 'readonly',
   },
   overrides: [
     {
