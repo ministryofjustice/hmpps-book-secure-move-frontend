@@ -16,6 +16,7 @@ module.exports = function view(req, res) {
       person.assessment_answers,
       'court'
     ),
+    documentsList: presenters.documentsToMetaListComponent(move.documents),
   }
 
   if (cancellationReason) {
