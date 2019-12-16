@@ -304,13 +304,24 @@ MultiFileUpload.prototype = {
     }
     this.$fileFormGroup.classList.add('govuk-form-group--error')
 
-    errors.response.data.forEach(error => {
+    const errorData = (errors.response && errors.response.data) || []
+
+    if (errorData.length === 0) {
+      errorData.push({
+        text: 'Something went wrong',
+        href: '#document_upload',
+      })
+    }
+
+    errorData.forEach(error => {
       const $errorListItem = document.createElement('li')
+
       const $anchor = document.createElement('a')
 
       $anchor.href = error.href
       $anchor.textContent = error.text
       $errorListItem.appendChild($anchor)
+
       this.$errorSummaryList.appendChild($errorListItem)
 
       if (!document.getElementById('file-error')) {
