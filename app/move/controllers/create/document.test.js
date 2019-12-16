@@ -1,8 +1,8 @@
+const formidable = require('formidable')
 const FormController = require('hmpo-form-wizard').Controller
 const FormError = require('hmpo-form-wizard/lib/error')
 
 const documentService = require('../../../../common/services/document')
-const { parseMultipartForm } = require('../../../../common/middleware/upload')
 const moveService = require('../../../../common/services/move')
 const CreateDocumentController = require('./document')
 
@@ -57,6 +57,10 @@ const mockDocumentDeleteResponse = {
 const mockStatusCode = 400
 const errorMessage = 'something terrible has happened'
 const mockError = new Error(errorMessage)
+const filesizeErrorMessage = 'maxFileSize exceeded'
+const mockFileSizeError = new Error(filesizeErrorMessage)
+const mockFieldData = { mock_field: 'field' }
+const mockFileData = { file: { name: 'file.png', file_type: 'image/png' } }
 
 describe('Move controllers', function() {
   describe('Create document upload controller', function() {
@@ -74,7 +78,9 @@ describe('Move controllers', function() {
       })
 
       it('should call parseMultipartForm middleware', function() {
-        expect(controller.use).to.have.been.calledWith(parseMultipartForm)
+        expect(controller.use).to.have.been.calledWith(
+          controller.parseMultipartForm
+        )
       })
     })
 
@@ -95,6 +101,356 @@ describe('Move controllers', function() {
         expect(controller.use).to.have.been.calledWith(
           controller.populateDocumentUpload
         )
+      })
+    })
+
+    describe('#xhrErrorResponse()', function() {
+      let response, t
+
+      beforeEach(function() {
+        t = sinon.stub().returns('__translated__')
+      })
+
+      afterEach(function() {
+        t.reset()
+      })
+
+      context('without error type argument', function() {
+        beforeEach(function() {
+          response = controller.xhrErrorResponse(t, 'generic')
+        })
+
+        it('should call parent method', function() {
+          expect(response).to.deep.equal({
+            href: '#document_upload',
+            text: '__translated__ __translated__',
+          })
+        })
+
+        it('should translate document upload label', function() {
+          expect(t.firstCall).to.be.calledWith('fields::document_upload.label')
+        })
+
+        it('should translate validation generic error', function() {
+          expect(t.secondCall).to.be.calledWith('validation::generic')
+        })
+      })
+
+      context('with error type argument', function() {
+        const errorType = 'filesize'
+
+        beforeEach(function() {
+          response = controller.xhrErrorResponse(t, errorType)
+        })
+
+        it('should call parent method', function() {
+          expect(response).to.deep.equal({
+            href: '#document_upload',
+            text: '__translated__ __translated__',
+          })
+        })
+
+        it('should translate document upload label', function() {
+          expect(t.firstCall).to.be.calledWith('fields::document_upload.label')
+        })
+
+        it('should translate validation filesize error', function() {
+          expect(t.secondCall).to.be.calledWith(`validation::${errorType}`)
+        })
+      })
+    })
+
+    describe('#parseMultipartForm()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        res = {
+          status: sinon.stub().returnsThis(),
+          json: sinon.spy(),
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('when request is not a multipart/form-data POST', function() {
+        beforeEach(function() {
+          req = {
+            method: 'get',
+            get: sinon
+              .stub()
+              .withArgs('content-type')
+              .returns('application/json'),
+          }
+
+          sinon.spy(formidable, 'IncomingForm')
+          controller.parseMultipartForm(req, res, nextSpy)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnce
+          expect(nextSpy).to.be.calledWithExactly()
+        })
+
+        it('should not call IncomingForm', function() {
+          expect(formidable.IncomingForm).to.not.be.called
+        })
+      })
+
+      context('when request is a multipart/form-data POST', function() {
+        beforeEach(function() {
+          req = {
+            body: {},
+            headers: {
+              'content-type': 'multipart/form-data',
+            },
+            on: sinon.stub().returnsThis(),
+            method: 'post',
+            get: sinon
+              .stub()
+              .withArgs('content-type')
+              .returns('multipart/form-data'),
+          }
+
+          sinon.spy(formidable, 'IncomingForm')
+        })
+
+        context('when form parse is successful', function() {
+          beforeEach(function() {
+            sinon
+              .stub(formidable.IncomingForm.prototype, 'parse')
+              .callsArgWith(1, null, mockFieldData, mockFileData)
+
+            controller.parseMultipartForm(req, {}, nextSpy)
+          })
+
+          it('should call IncomingForm', function() {
+            expect(formidable.IncomingForm).to.be.calledOnce
+            expect(formidable.IncomingForm).to.be.calledWithExactly()
+          })
+
+          it('should call IncomingForm.parse', function() {
+            expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
+          })
+
+          it('should correctly add form data to req.body', function() {
+            expect(req.body).to.deep.equal({
+              files: [
+                {
+                  name: 'file.png',
+                  file_type: 'image/png',
+                },
+              ],
+              mock_field: 'field',
+            })
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWithExactly()
+          })
+        })
+
+        context('when form parse fails', function() {
+          context('when an xhr request', function() {
+            beforeEach(function() {
+              req.t = sinon.stub()
+              req.xhr = true
+
+              req.t.returns('__translated__')
+            })
+
+            context('with a generic error', function() {
+              beforeEach(function() {
+                sinon
+                  .stub(formidable.IncomingForm.prototype, 'parse')
+                  .callsArgWith(1, mockError, mockFieldData, mockFileData)
+
+                controller.parseMultipartForm(req, res, nextSpy)
+              })
+
+              it('should call IncomingForm', function() {
+                expect(formidable.IncomingForm).to.be.calledOnce
+                expect(formidable.IncomingForm).to.be.calledWithExactly()
+              })
+
+              it('should call IncomingForm.parse', function() {
+                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
+              })
+
+              it('should not add form data to req.body', function() {
+                expect(req.body).to.deep.equal({})
+              })
+
+              it('should call res with the correct status', function() {
+                expect(res.status).to.have.been.calledOnce
+                expect(res.status).to.have.been.calledWithExactly(500)
+              })
+
+              it('should translate document upload label', function() {
+                expect(req.t.firstCall).to.be.calledWith(
+                  'fields::document_upload.label'
+                )
+              })
+
+              it('should translate validation server error', function() {
+                expect(req.t.secondCall).to.be.calledWith('validation::generic')
+              })
+
+              it('should return expected json', function() {
+                expect(res.json).to.have.been.calledOnce
+                expect(res.json).to.have.been.calledWithExactly([
+                  {
+                    href: '#document_upload',
+                    text: '__translated__ __translated__',
+                  },
+                ])
+              })
+            })
+
+            context('with a filesize error', function() {
+              beforeEach(function() {
+                sinon
+                  .stub(formidable.IncomingForm.prototype, 'parse')
+                  .callsArgWith(
+                    1,
+                    mockFileSizeError,
+                    mockFieldData,
+                    mockFileData
+                  )
+
+                controller.parseMultipartForm(req, res, nextSpy)
+              })
+
+              it('should call IncomingForm', function() {
+                expect(formidable.IncomingForm).to.be.calledOnce
+                expect(formidable.IncomingForm).to.be.calledWithExactly()
+              })
+
+              it('should call IncomingForm.parse', function() {
+                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
+              })
+
+              it('should not add form data to req.body', function() {
+                expect(req.body).to.deep.equal({})
+              })
+
+              it('should call res with the correct status', function() {
+                expect(res.status).to.have.been.calledOnce
+                expect(res.status).to.have.been.calledWithExactly(500)
+              })
+
+              it('should translate document upload label', function() {
+                expect(req.t.firstCall).to.be.calledWith(
+                  'fields::document_upload.label'
+                )
+              })
+
+              it('should translate validation server error', function() {
+                expect(req.t.secondCall).to.be.calledWith(
+                  'validation::filesize'
+                )
+              })
+
+              it('should return expected json', function() {
+                expect(res.json).to.have.been.calledOnce
+                expect(res.json).to.have.been.calledWithExactly([
+                  {
+                    href: '#document_upload',
+                    text: '__translated__ __translated__',
+                  },
+                ])
+              })
+            })
+          })
+
+          context('when not an xhr request', function() {
+            beforeEach(function() {
+              req.xhr = false
+            })
+
+            context('with a generic error', function() {
+              beforeEach(function() {
+                sinon
+                  .stub(formidable.IncomingForm.prototype, 'parse')
+                  .callsArgWith(1, mockError, mockFieldData, mockFileData)
+
+                controller.parseMultipartForm(req, res, nextSpy)
+              })
+
+              it('should call IncomingForm', function() {
+                expect(formidable.IncomingForm).to.be.calledOnce
+                expect(formidable.IncomingForm).to.be.calledWithExactly()
+              })
+
+              it('should call IncomingForm.parse', function() {
+                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
+              })
+
+              it('should not add form data to req.body', function() {
+                expect(req.body).to.deep.equal({})
+              })
+
+              it('should call next with error', function() {
+                expect(nextSpy).to.be.calledOnce
+                expect(nextSpy.args[0][0].document_upload).to.be.an.instanceOf(
+                  FormError
+                )
+                expect(nextSpy.args[0][0].document_upload.errorGroup).to.equal(
+                  'document_upload'
+                )
+                expect(nextSpy.args[0][0].document_upload.key).to.equal(
+                  'document_upload'
+                )
+                expect(nextSpy.args[0][0].document_upload.type).to.equal(
+                  'generic'
+                )
+              })
+            })
+
+            context('with a filesize error', function() {
+              beforeEach(function() {
+                sinon
+                  .stub(formidable.IncomingForm.prototype, 'parse')
+                  .callsArgWith(
+                    1,
+                    mockFileSizeError,
+                    mockFieldData,
+                    mockFileData
+                  )
+
+                controller.parseMultipartForm(req, res, nextSpy)
+              })
+
+              it('should call IncomingForm', function() {
+                expect(formidable.IncomingForm).to.be.calledOnce
+                expect(formidable.IncomingForm).to.be.calledWithExactly()
+              })
+
+              it('should call IncomingForm.parse', function() {
+                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
+              })
+
+              it('should not add form data to req.body', function() {
+                expect(req.body).to.deep.equal({})
+              })
+
+              it('should call next with error', function() {
+                expect(nextSpy).to.be.calledOnce
+                expect(nextSpy.args[0][0].document_upload).to.be.an.instanceOf(
+                  FormError
+                )
+                expect(nextSpy.args[0][0].document_upload.errorGroup).to.equal(
+                  'document_upload'
+                )
+                expect(nextSpy.args[0][0].document_upload.key).to.equal(
+                  'document_upload'
+                )
+                expect(nextSpy.args[0][0].document_upload.type).to.equal(
+                  'filesize'
+                )
+              })
+            })
+          })
+        })
       })
     })
 
@@ -326,9 +682,7 @@ describe('Move controllers', function() {
             })
 
             it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith(
-                'validation::server_error'
-              )
+              expect(req.t.secondCall).to.be.calledWith('validation::generic')
             })
 
             it('should not call parent post method', function() {
@@ -372,9 +726,7 @@ describe('Move controllers', function() {
             })
 
             it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith(
-                'validation::server_error'
-              )
+              expect(req.t.secondCall).to.be.calledWith('validation::generic')
             })
 
             it('should not call parent post method', function() {
@@ -669,9 +1021,7 @@ describe('Move controllers', function() {
             })
 
             it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith(
-                'validation::server_error'
-              )
+              expect(req.t.secondCall).to.be.calledWith('validation::generic')
             })
           })
 
@@ -712,9 +1062,7 @@ describe('Move controllers', function() {
             })
 
             it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith(
-                'validation::server_error'
-              )
+              expect(req.t.secondCall).to.be.calledWith('validation::generic')
             })
           })
         })
@@ -823,14 +1171,14 @@ describe('Move controllers', function() {
           expect(serverError).to.be.an.instanceOf(FormError)
           expect(serverError).to.deep.equal({
             args: {
-              server_error: undefined,
+              generic: undefined,
             },
             errorGroup: 'document_upload',
             headerMessage: undefined,
             key: 'document_upload',
             message: undefined,
             redirect: undefined,
-            type: 'server_error',
+            type: 'generic',
             url: undefined,
           })
         })

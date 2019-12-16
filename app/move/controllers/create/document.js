@@ -1,19 +1,75 @@
+const formidable = require('formidable')
 const { get } = require('lodash')
 
 const documentService = require('../../../../common/services/document')
 const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
-const { parseMultipartForm } = require('../../../../common/middleware/upload')
+
+const maxFileSize = 50 * 1024 * 1024 // 50 mega bytes
 
 class DocumentUploadController extends CreateBaseController {
   middlewareChecks() {
-    this.use(parseMultipartForm)
+    this.use(this.parseMultipartForm)
     super.middlewareChecks()
   }
 
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.populateDocumentUpload)
+  }
+
+  xhrErrorResponse(t, errorType) {
+    return {
+      href: '#document_upload',
+      text: `${t('fields::document_upload.label')} ${t(
+        `validation::${errorType}`
+      )}`,
+    }
+  }
+
+  parseMultipartForm(req, res, next) {
+    if (
+      req.method.toLowerCase() !== 'post' &&
+      req.get('content-type') !== 'multipart/form-data'
+    ) {
+      return next()
+    }
+
+    const isXhr = req.xhr
+    const form = new formidable.IncomingForm()
+    form.multiples = true
+    form.maxFileSize = maxFileSize
+
+    form.parse(req, (error, fields, files) => {
+      if (error) {
+        const errorMessage = error.message
+        const isFileSizeError = errorMessage.includes('maxFileSize exceeded')
+        const errorType = isFileSizeError ? 'filesize' : 'generic'
+
+        if (isXhr) {
+          return res.status(500).json([this.xhrErrorResponse(req.t, errorType)])
+        }
+
+        if (!isXhr) {
+          return next({
+            document_upload: this.serverError(
+              req,
+              res,
+              'document_upload',
+              errorType
+            ),
+          })
+        }
+      }
+
+      req.body = {
+        ...req.body,
+        ...fields,
+        files: [files.file].flat(),
+      }
+
+      return next()
+    })
   }
 
   async populateDocumentUpload(req, res, next) {
@@ -54,14 +110,7 @@ class DocumentUploadController extends CreateBaseController {
         .then(response => res.status(200).json(response))
     } catch (error) {
       const status = get(error, 'response.status', 500)
-      return res.status(status).json([
-        {
-          href: '#document_upload',
-          text: `${req.t('fields::document_upload.label')} ${req.t(
-            'validation::server_error'
-          )}`,
-        },
-      ])
+      return res.status(status).json([this.xhrErrorResponse(req.t, 'generic')])
     }
   }
 
@@ -79,11 +128,11 @@ class DocumentUploadController extends CreateBaseController {
     return Promise.all(promises)
   }
 
-  serverError(req, res, field) {
+  serverError(req, res, field, errorType = 'generic') {
     return new this.Error(
       field,
       {
-        type: 'server_error',
+        type: errorType,
         errorGroup: field,
       },
       req,
@@ -103,14 +152,9 @@ class DocumentUploadController extends CreateBaseController {
       } catch (error) {
         const status = get(error, 'response.status', 500)
 
-        return res.status(status).json([
-          {
-            href: '#document_upload',
-            text: `${req.t('fields::document_upload.label')} ${req.t(
-              'validation::server_error'
-            )}`,
-          },
-        ])
+        return res
+          .status(status)
+          .json([this.xhrErrorResponse(req.t, 'generic')])
       }
     }
 
