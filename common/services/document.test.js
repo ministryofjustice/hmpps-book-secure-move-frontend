@@ -57,7 +57,7 @@ describe('document Service', function() {
       },
     },
   }
-  let authorisedRequest
+  let response
 
   describe('#upload', function() {
     beforeEach(function() {
@@ -79,14 +79,11 @@ describe('document Service', function() {
           .post(mockUploadRequestPath)
           .reply(200, JSON.stringify(mockResponseMessage))
 
-        authorisedRequest = await documentService.upload(
-          mockImageFile,
-          mockMoveId
-        )
+        response = await documentService.upload(mockImageFile, mockMoveId)
       })
 
       it('response should be as expected', function() {
-        expect(authorisedRequest).to.deep.equal(mockResponseMessage.data)
+        expect(response).to.deep.equal(mockResponseMessage.data)
       })
 
       it('should complete uploading an image', function() {
@@ -126,14 +123,11 @@ describe('document Service', function() {
           .delete(mockDeleteRequestPath)
           .reply(200, JSON.stringify(mockResponseMessage))
 
-        authorisedRequest = await documentService.delete(
-          mockMoveId,
-          mockDocumentId
-        )
+        response = await documentService.delete(mockMoveId, mockDocumentId)
       })
 
       it('response should be as expected', function() {
-        expect(authorisedRequest).to.deep.equal(mockResponseMessage.data)
+        expect(response).to.deep.equal(mockResponseMessage.data)
       })
 
       it('should complete uploading an image', function() {
