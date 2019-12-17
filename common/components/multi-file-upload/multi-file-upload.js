@@ -268,9 +268,11 @@ MultiFileUpload.prototype = {
               (event.loaded / event.total) * 100,
               10
             )
+            const percentCssValue = `${percentComplete}%`
 
-            $progressBarElem.style.width = `${percentComplete}px`
-            $progressNumberElem.innerText = ` ${percentComplete}%`
+            $progressBarElem.style.width = percentCssValue
+            $progressNumberElem.style.left = percentCssValue
+            $progressNumberElem.innerText = percentCssValue
           }
         },
       })
