@@ -199,7 +199,7 @@ MultiFileUpload.prototype = {
         </dt>
         <dd class="govuk-summary-list__value app-row__value js-upload-message">
           <span class="app-multi-file-upload__progress-bar js-upload-progress-bar"></span>
-          <span class="js-upload-progress-number">0%</span>
+          <span class="app-multi-file-upload__progress-number js-upload-progress-number">0%</span>
         </dd>      
         <dd class="govuk-summary-list__actions app-row__actions js-upload-actions"></dd>
       </div>`.trim()
@@ -268,9 +268,11 @@ MultiFileUpload.prototype = {
               (event.loaded / event.total) * 100,
               10
             )
+            const percentCssValue = `${percentComplete}%`
 
-            $progressBarElem.style.width = `${percentComplete}px`
-            $progressNumberElem.innerText = ` ${percentComplete}%`
+            $progressBarElem.style.width = percentCssValue
+            $progressNumberElem.style.left = percentCssValue
+            $progressNumberElem.innerText = percentCssValue
           }
         },
       })
