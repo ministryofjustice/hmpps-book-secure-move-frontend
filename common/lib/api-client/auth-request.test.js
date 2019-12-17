@@ -12,9 +12,6 @@ const authRequest = proxyquire('./auth-request', {
     API: mockAPI,
   },
 })
-const mockHeaders = {
-  'Content-type': 'application/json',
-}
 
 function MockAuth() {}
 MockAuth.prototype.getAccessToken = sinon.stub()
@@ -25,7 +22,7 @@ describe('Auth Request', function() {
       sinon.spy(axios, 'create')
       MockAuth.prototype.getAccessToken.resolves(mockToken)
 
-      await authRequest(mockHeaders)
+      await authRequest()
     })
 
     it('should call auth library', function() {
@@ -38,7 +35,6 @@ describe('Auth Request', function() {
         baseURL: mockAPI.BASE_URL,
         headers: {
           Authorization: `Bearer ${mockToken}`,
-          'Content-type': 'application/json',
         },
         timeout: mockAPI.TIMEOUT,
       })
@@ -59,7 +55,7 @@ describe('Auth Request', function() {
         .reply(200, JSON.stringify(mockResponseMessage))
 
       MockAuth.prototype.getAccessToken.resolves(mockToken)
-      authorisedRequest = await authRequest(mockHeaders)
+      authorisedRequest = await authRequest()
     })
 
     it('should call get as expected', async function() {

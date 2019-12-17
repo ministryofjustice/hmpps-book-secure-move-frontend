@@ -3,7 +3,7 @@ const axios = require('axios')
 const auth = require('./auth')()
 const { API } = require('../../../config')
 
-async function authRequest(headers) {
+async function authRequest() {
   const token = await auth.getAccessToken()
 
   return axios.create({
@@ -11,7 +11,6 @@ async function authRequest(headers) {
     timeout: API.TIMEOUT,
     headers: {
       Authorization: `Bearer ${token}`,
-      ...headers,
     },
   })
 }
