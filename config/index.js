@@ -41,6 +41,7 @@ module.exports = {
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
     CACHE_EXPIRY: 60 * 60 * 24 * 7, // in seconds (7 days)
+    MAX_FILE_UPLOAD_SIZE: 50 * 1024 * 1024, // 50 mega bytes
   },
   DATE_FORMATS: {
     SHORT: 'd M yyyy',
