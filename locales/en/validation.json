@@ -9,5 +9,6 @@
   "after": "must be in the future",
   "before": "must be in the past",
   "default": "is required",
-  "server_error": "something went wrong"
+  "generic": "something went wrong",
+  "filesize": "must be smaller than 50 MB"
 }

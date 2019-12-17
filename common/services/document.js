@@ -26,6 +26,8 @@ const documentService = {
 
     return authorisedRequest
       .post(`/moves/${moveId}/documents`, formData, {
+        maxContentLength: API.MAX_FILE_UPLOAD_SIZE,
+        maxBodyLength: API.MAX_FILE_UPLOAD_SIZE,
         headers: {
           ...formData.getHeaders(),
           'Content-Length': formData.getLengthSync(),

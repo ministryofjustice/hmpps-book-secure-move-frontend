@@ -36,6 +36,7 @@ MultiFileUpload.prototype = {
     this.$fileFormGroup = this.params.container.querySelector(
       '.js-file-form-group'
     )
+    this.$htmlTitle = document.querySelector('title')
 
     this.buildDropZone()
     this.setupFileInput()
@@ -293,6 +294,8 @@ MultiFileUpload.prototype = {
   },
 
   renderErrors(errors, $fileUploadRow = null) {
+    this.$htmlTitle.textContent = `Error: ${this.$htmlTitle.textContent}`
+
     this.$errorSummary.classList.remove('app-hidden')
     this.$errorSummaryList.innerHTML = ''
 
@@ -301,13 +304,24 @@ MultiFileUpload.prototype = {
     }
     this.$fileFormGroup.classList.add('govuk-form-group--error')
 
-    errors.response.data.forEach(error => {
+    const errorData = (errors.response && errors.response.data) || []
+
+    if (errorData.length === 0) {
+      errorData.push({
+        text: 'Something went wrong',
+        href: '#document_upload',
+      })
+    }
+
+    errorData.forEach(error => {
       const $errorListItem = document.createElement('li')
+
       const $anchor = document.createElement('a')
 
       $anchor.href = error.href
       $anchor.textContent = error.text
       $errorListItem.appendChild($anchor)
+
       this.$errorSummaryList.appendChild($errorListItem)
 
       if (!document.getElementById('file-error')) {
@@ -325,6 +339,10 @@ MultiFileUpload.prototype = {
   },
 
   resetErrors() {
+    this.$htmlTitle.textContent = this.$htmlTitle.textContent.replace(
+      /^Error:\s+/,
+      ''
+    )
     this.$errorSummary.classList.add('app-hidden')
     this.$errorSummaryList.innerHTML = ''
     this.$fileFormGroup.classList.remove('govuk-form-group--error')

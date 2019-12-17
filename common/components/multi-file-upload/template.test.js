@@ -56,7 +56,7 @@ describe('Multi file upload component', function() {
           .text()
           .trim()
       ).to.equal(
-        'You can upload Word, Excel, PDF and JPEG documents up to 20MB.'
+        'You can upload Word, Excel, PDF and JPEG documents up to 50MB.'
       )
     })
 
