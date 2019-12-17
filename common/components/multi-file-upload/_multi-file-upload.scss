@@ -3,12 +3,16 @@
 }
 
 .app-multi-file-upload__progress-bar {
-  max-width: 100px;
   width: 0px;
-  height: 8px;
+  height: govuk-spacing(2);
   background-color: $govuk-brand-colour;
+  margin: auto;
   display: inline-block;
   vertical-align: middle;
+  text-align: left;
+  position: absolute;
+  left: 0;
+}
 
 .app-multi-file-upload__progress-number {
   position: absolute;
@@ -76,6 +80,7 @@
 }
 
 .app-row__value {
+  position: relative;
   vertical-align: middle;
   width: 100% !important;
   border-bottom: none !important;
