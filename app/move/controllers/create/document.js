@@ -4,8 +4,7 @@ const { get } = require('lodash')
 const documentService = require('../../../../common/services/document')
 const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
-
-const maxFileSize = 50 * 1024 * 1024 // 50 mega bytes
+const { API } = require('../../../../config')
 
 class DocumentUploadController extends CreateBaseController {
   middlewareChecks() {
@@ -38,7 +37,7 @@ class DocumentUploadController extends CreateBaseController {
     const isXhr = req.xhr
     const form = new formidable.IncomingForm()
     form.multiples = true
-    form.maxFileSize = maxFileSize
+    form.maxFileSize = API.MAX_FILE_UPLOAD_SIZE
 
     form.parse(req, (error, fields, files) => {
       if (error) {
