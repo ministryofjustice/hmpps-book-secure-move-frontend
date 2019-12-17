@@ -9,6 +9,12 @@
   background-color: $govuk-brand-colour;
   display: inline-block;
   vertical-align: middle;
+
+.app-multi-file-upload__progress-number {
+  position: absolute;
+  top: govuk-spacing(3);
+  left: 0;
+  margin-left: govuk-spacing(1);
 }
 
 .app-multi-file-upload__dropzone {
