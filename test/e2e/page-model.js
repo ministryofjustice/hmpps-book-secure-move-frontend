@@ -76,7 +76,7 @@ export default class Page {
    *
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails({ pncNumber }) {
+  async fillInPersonalDetails({ pncNumber } = {}) {
     return fillInForm({
       text: {
         police_national_computer: pncNumber || faker.random.number().toString(),
