@@ -564,7 +564,7 @@ test('Download moves as police user', async t => {
 
   await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
 
-  await t.click(page.nodes.downloadMovesLink)
+  await t.click(page.nodes.downloadMovesLink).wait(5000)
 
   const csvDownloads = getCsvDownloadsFilePaths()
 
