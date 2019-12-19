@@ -158,6 +158,10 @@ MultiFileUpload.prototype = {
     this.uploadFiles(event.dataTransfer.files)
   },
 
+  resetFileInput() {
+    this.$fileInput.value = ''
+  },
+
   setupFileInput: function() {
     this.$fileInput.addEventListener(
       'change',
@@ -165,14 +169,14 @@ MultiFileUpload.prototype = {
       false
     )
 
-    this.$fileInput.value = ''
+    this.resetFileInput()
   },
 
   onFileChange: function(event) {
     this.$status.innerText = this.params.uploadStatusText
     this.uploadFiles(event.currentTarget.files)
 
-    this.$fileInput.focus()
+    this.resetFileInput()
   },
 
   setupDeleteButtonEvent() {

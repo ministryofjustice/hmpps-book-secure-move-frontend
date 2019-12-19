@@ -76,7 +76,7 @@ export default class Page {
    *
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails({ pncNumber }) {
+  async fillInPersonalDetails({ pncNumber } = {}) {
     return fillInForm({
       text: {
         police_national_computer: pncNumber || faker.random.number().toString(),
@@ -171,6 +171,14 @@ export default class Page {
 
   async getPersonLink(firstName, lastName) {
     return Selector('a').withText(`${lastName}, ${firstName}`.toUpperCase())
+  }
+
+  async getDocumentLink(documentFilename) {
+    return Selector('a.app-link__anchor').withText(documentFilename).innerText
+  }
+
+  async getSuccessfulUpload(documentFilename) {
+    return Selector('dt.app-row__key').withText(documentFilename).innerText
   }
 
   async getTagByLabel(label) {
