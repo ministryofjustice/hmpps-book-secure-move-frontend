@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
@@ -139,7 +138,7 @@ export async function fillInForm(details = {}) {
  *
  * @returns {string[]}
  */
-export function getCsvDownloadsFilePaths() {
+export function getCsvDownloadFilePaths() {
   const dateStamp = format(new Date(), 'yyyy-MM-dd')
   const globPattern = `${join(
     homedir(),
@@ -161,19 +160,19 @@ export async function clickSelectorIfExists(selector) {
 }
 
 /**
- * Wait for file to exist
- *
+ * Wait for the csvDownload path to exist. Handy when the files are downloading
  * @param t
  * @param delay
- * @param fileNameAndPath
- * @returns {Promise<void>}
+ * @returns {string[]}
  */
-export async function checkFileExists(t, delay, filepath) {
+export async function waitForCsvDownloadFilePaths(t, delay) {
   for (let i = 0; i < delay; i++) {
-    await t.wait(1)
+    await t.wait(200)
 
-    if (fs.existsSync(filepath)) {
-      return
+    const csvDownloadFilePaths = getCsvDownloadFilePaths()
+
+    if (csvDownloadFilePaths.length) {
+      return csvDownloadFilePaths
     }
   }
 }
