@@ -5,9 +5,9 @@ import Page from './page-model'
 import {
   selectFieldsetOption,
   scrollToTop,
-  getCsvDownloadsFilePaths,
+  getCsvDownloadFilePaths,
+  waitForCsvDownloadFilePaths,
   clickSelectorIfExists,
-  checkFileExists,
   getSelectedFieldsetOption,
 } from './helpers'
 
@@ -373,7 +373,7 @@ test('Prison recall', async t => {
 
 fixture`Document uploads`
 
-test('Documents upload and view', async t => {
+test('Upload documents', async t => {
   await t.useRole(policeUser).navigateTo(page.locations.home)
 
   await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
@@ -547,7 +547,7 @@ test('Navigate tags in detailed move', async t => {
 })
 
 function deleteDownloads() {
-  const csvDownloads = getCsvDownloadsFilePaths()
+  const csvDownloads = getCsvDownloadFilePaths()
   for (const file of csvDownloads) {
     try {
       unlinkSync(file)
@@ -564,11 +564,9 @@ test('Download moves as police user', async t => {
 
   await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
 
-  await t.click(page.nodes.downloadMovesLink).wait(5000)
+  await t.click(page.nodes.downloadMovesLink)
 
-  const csvDownloads = getCsvDownloadsFilePaths()
-
-  await checkFileExists(t, 10, csvDownloads[0])
+  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
 
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
@@ -589,9 +587,7 @@ test('Download moves as supplier user', async t => {
 
   await t.click(page.nodes.downloadMovesLink)
 
-  const csvDownloads = getCsvDownloadsFilePaths()
-
-  await checkFileExists(t, 10, csvDownloads[0])
+  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
 
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
