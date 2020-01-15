@@ -42,7 +42,7 @@ const moveService = {
       })
   },
 
-  getRequested({ moveDate, fromLocationId, toLocationId } = {}) {
+  getRequested({ moveDate, fromLocationId, toLocationId, supplierId } = {}) {
     return moveService.getAll({
       filter: {
         'filter[status]': 'requested',
@@ -50,11 +50,12 @@ const moveService = {
         'filter[date_to]': moveDate,
         'filter[from_location_id]': fromLocationId,
         'filter[to_location_id]': toLocationId,
+        'filter[supplier_id]': supplierId,
       },
     })
   },
 
-  getCancelled({ moveDate, fromLocationId, toLocationId } = {}) {
+  getCancelled({ moveDate, fromLocationId, toLocationId, supplierId } = {}) {
     return moveService.getAll({
       filter: {
         'filter[status]': 'cancelled',
@@ -62,6 +63,7 @@ const moveService = {
         'filter[date_to]': moveDate,
         'filter[from_location_id]': fromLocationId,
         'filter[to_location_id]': toLocationId,
+        'filter[supplier_id]': supplierId,
       },
     })
   },

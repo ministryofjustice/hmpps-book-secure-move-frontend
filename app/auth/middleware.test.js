@@ -4,20 +4,28 @@ const userFailureError = new Error('test')
 const userSuccessStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.resolve('2ae52e8c-928d-4826-8b7e-56042b35de35'),
 }
 const userLocationsFailureStub = {
   getLocations: () => Promise.reject(userFailureError),
   getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.resolve('2ae52e8c-928d-4826-8b7e-56042b35de35'),
 }
 const userFullNameFailureStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.reject(userFailureError),
+  getSupplierId: () => Promise.resolve('2ae52e8c-928d-4826-8b7e-56042b35de35'),
 }
-
-function UserStub({ fullname, roles = [], locations = [] } = {}) {
+const supplierIdFailureStub = {
+  getLocations: () => Promise.resolve(['TEST']),
+  getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.reject(userFailureError),
+}
+function UserStub({ fullname, roles = [], locations = [], supplierId } = {}) {
   this.fullname = fullname
   this.permissions = []
   this.locations = locations
+  this.supplierId = supplierId
 }
 
 const expiryTime = 1000
@@ -102,6 +110,20 @@ describe('Authentication middleware', function() {
 
         it('doesn’t regenerate the session', function() {
           expect(req.session.regenerate).not.to.be.called
+        })
+      })
+
+      context('when the supplier id lookup fails', function() {
+        beforeEach(async function() {
+          const authentication = proxyquire('./middleware', {
+            '../../common/services/user': supplierIdFailureStub,
+          })
+
+          await authentication.processAuthResponse()(req, {}, nextSpy)
+        })
+
+        it('returns next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
         })
       })
 

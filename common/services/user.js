@@ -53,7 +53,6 @@ function getAuthLocations(token) {
       try {
         const supplierKey = groups[0].toLowerCase()
         const supplier = await getSupplierByKey(supplierKey)
-
         return getLocationsBySupplierId(supplier.id)
       } catch (error) {
         if (error.statusCode === 404) {
@@ -76,7 +75,32 @@ function getNomisLocations(token) {
     .then(agencies => getLocationsByNomisAgencyId(agencies))
 }
 
+function getSupplierId(token) {
+  const { authorities = [] } = decodeAccessToken(token)
+
+  return getAuthGroups(token).then(async groups => {
+    if (authorities.includes('ROLE_PECS_SUPPLIER')) {
+      if (!groups.length) {
+        return Promise.resolve(null)
+      }
+
+      try {
+        const supplierKey = groups[0].toLowerCase()
+        const supplier = await getSupplierByKey(supplierKey)
+        return supplier.id
+      } catch (error) {
+        if (error.statusCode === 404) {
+          return Promise.resolve(null)
+        }
+        return Promise.reject(error)
+      }
+    }
+    return null
+  })
+}
+
 module.exports = {
   getLocations,
   getFullname,
+  getSupplierId,
 }

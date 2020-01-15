@@ -1,10 +1,11 @@
 const { uniq } = require('lodash')
 
-function User({ fullname, roles = [], locations = [] } = {}) {
+function User({ fullname, roles = [], locations = [], supplierId } = {}) {
   this.fullname = fullname
   this.permissions = this.getPermissions(roles)
   this.locations = locations
   this.role = this.getRole(roles)
+  this.supplierId = supplierId
 }
 
 User.prototype = {

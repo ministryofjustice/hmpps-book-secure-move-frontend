@@ -1,5 +1,9 @@
 const User = require('../../common/lib/user')
-const { getFullname, getLocations } = require('../../common/services/user')
+const {
+  getFullname,
+  getLocations,
+  getSupplierId,
+} = require('../../common/services/user')
 const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
@@ -13,9 +17,10 @@ function processAuthResponse() {
     try {
       const accessToken = grant.response.access_token
       const decodedAccessToken = decodeAccessToken(grant.response.access_token)
-      const [locations, fullname] = await Promise.all([
+      const [locations, fullname, supplierId] = await Promise.all([
         getLocations(accessToken),
         getFullname(accessToken),
+        getSupplierId(accessToken),
       ])
 
       req.session.regenerate(error => {
@@ -29,6 +34,7 @@ function processAuthResponse() {
           fullname,
           locations,
           roles: decodedAccessToken.authorities,
+          supplierId,
         })
 
         next()

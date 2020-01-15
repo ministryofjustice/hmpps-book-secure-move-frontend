@@ -284,6 +284,7 @@ describe('Move Service', function() {
             'filter[date_to]': undefined,
             'filter[from_location_id]': undefined,
             'filter[to_location_id]': undefined,
+            'filter[supplier_id]': undefined,
           },
         })
       })
@@ -297,12 +298,14 @@ describe('Move Service', function() {
       const mockMoveDate = '2019-10-10'
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockSupplierId = '240d777a-0529-45c9-b58d-404778910ea0'
 
       beforeEach(async function() {
         moves = await moveService.getRequested({
           moveDate: mockMoveDate,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
+          supplierId: mockSupplierId,
         })
       })
 
@@ -314,6 +317,7 @@ describe('Move Service', function() {
             'filter[date_to]': mockMoveDate,
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
+            'filter[supplier_id]': mockSupplierId,
           },
         })
       })
@@ -345,6 +349,7 @@ describe('Move Service', function() {
             'filter[date_to]': undefined,
             'filter[from_location_id]': undefined,
             'filter[to_location_id]': undefined,
+            'filter[supplier_id]': undefined,
           },
         })
       })
@@ -358,12 +363,14 @@ describe('Move Service', function() {
       const mockMoveDate = '2019-10-10'
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'c195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockSupplierId = '240d777a-0529-45c9-b58d-404778910ea0'
 
       beforeEach(async function() {
         moves = await moveService.getCancelled({
           moveDate: mockMoveDate,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
+          supplierId: mockSupplierId,
         })
       })
 
@@ -375,6 +382,7 @@ describe('Move Service', function() {
             'filter[date_to]': mockMoveDate,
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
+            'filter[supplier_id]': mockSupplierId,
           },
         })
       })
