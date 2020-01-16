@@ -25,19 +25,15 @@
     {{ t("actions::print_move_detail") }}
   </a>
 
-  {% if move.status == "cancelled" %}
+  {% if move.status %}
     {{ appMessage({
       allowDismiss: false,
-      classes: "app-message--temporary",
+      classes: "app-message--info",
       title: {
-        text: t("moves::cancel.panel.heading")
+        text: messageTitle
       },
       content: {
-        text: t("moves::cancel.panel.content", {
-          reason: cancellationReason
-        }) if cancellationReason else t("statuses::" + move.status, {
-            context: "description"
-        })
+        text: messageContent
       }
     }) }}
   {% endif %}
@@ -48,7 +44,6 @@
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
       {{ move.person.fullname | upper }}
     </h1>
-
     <span class="govuk-caption-xl">
       {{ t("moves::move_reference", {
         reference: move.reference

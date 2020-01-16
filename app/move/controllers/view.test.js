@@ -3,6 +3,7 @@ const presenters = require('../../../common/presenters')
 const controller = require('./view')
 
 const mockMove = {
+  status: 'requested',
   person: {
     assessment_answers: [],
   },
@@ -21,7 +22,7 @@ describe('Move controllers', function() {
       sinon.stub(presenters, 'assessmentToSummaryListComponent').returnsArg(0)
 
       req = {
-        t: sinon.stub(),
+        t: sinon.stub().returnsArg(0),
       }
       res = {
         render: sinon.spy(),
@@ -103,18 +104,26 @@ describe('Move controllers', function() {
         expect(params.courtSummary).to.equal(mockMove.person.assessment_answers)
       })
 
-      it('should not contain cancellationReason param', function() {
+      it('should contain message title param', function() {
         const params = res.render.args[0][1]
-        expect(params).not.to.have.property('cancellationReason')
+        expect(params).to.have.property('messageTitle')
+        expect(params.messageTitle).to.equal('statuses::requested')
+      })
+
+      it('should contain message content param', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('messageContent')
+        expect(params.messageContent).to.equal('statuses::description')
       })
     })
 
-    context('when move includes cancellation reason', function() {
+    context('when move is cancelled', function() {
       let params
 
       beforeEach(function() {
         res.locals.move = {
           ...mockMove,
+          status: 'cancelled',
           cancellation_reason: 'made_in_error',
         }
       })
@@ -127,17 +136,22 @@ describe('Move controllers', function() {
           params = res.render.args[0][1]
         })
 
-        it('should contain a cancellationReason param', function() {
-          expect(params).to.have.property('cancellationReason')
+        it('should contain a message title param', function() {
+          expect(params).to.have.property('messageTitle')
         })
 
-        it('should set cancellationReason to translation', function() {
-          expect(params.cancellationReason).to.equal('__translated__')
+        it('should contain a message content param', function() {
+          expect(params).to.have.property('messageContent')
+          expect(params.messageContent).to.equal('statuses::description')
         })
 
         it('should call correct translation', function() {
-          expect(req.t).to.be.calledOnceWithExactly(
-            'fields::cancellation_reason.items.made_in_error.label'
+          expect(req.t.thirdCall).to.be.calledWithExactly(
+            'statuses::description',
+            {
+              context: 'cancelled',
+              reason: 'fields::cancellation_reason.items.made_in_error.label',
+            }
           )
         })
       })
@@ -146,6 +160,7 @@ describe('Move controllers', function() {
         beforeEach(function() {
           res.locals.move = {
             ...mockMove,
+            status: 'cancelled',
             cancellation_reason: 'other',
             cancellation_reason_comments: 'Another reason for cancelling',
           }
@@ -154,14 +169,13 @@ describe('Move controllers', function() {
           params = res.render.args[0][1]
         })
 
-        it('should contain a cancellationReason param', function() {
-          expect(params).to.have.property('cancellationReason')
+        it('should contain a message title param', function() {
+          expect(params).to.have.property('messageTitle')
         })
 
-        it('should set cancellationReason to reason comments', function() {
-          expect(params.cancellationReason).to.equal(
-            'Another reason for cancelling'
-          )
+        it('should contain a message content param', function() {
+          expect(params).to.have.property('messageContent')
+          expect(params.messageContent).to.equal('statuses::description')
         })
       })
     })
