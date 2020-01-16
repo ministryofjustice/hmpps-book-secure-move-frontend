@@ -76,27 +76,30 @@ function getNomisLocations(token) {
 }
 
 function getSupplierId(token) {
-  const { authorities = [] } = decodeAccessToken(token)
+  const { authorities = [], auth_source: authSource } = decodeAccessToken(token)
 
-  return getAuthGroups(token).then(async groups => {
-    if (authorities.includes('ROLE_PECS_SUPPLIER')) {
-      if (!groups.length) {
-        return Promise.resolve(null)
-      }
-
-      try {
-        const supplierKey = groups[0].toLowerCase()
-        const supplier = await getSupplierByKey(supplierKey)
-        return supplier.id
-      } catch (error) {
-        if (error.statusCode === 404) {
+  if (authSource !== 'auth') {
+    return Promise.resolve(null)
+  } else {
+    return getAuthGroups(token).then(async groups => {
+      if (authorities.includes('ROLE_PECS_SUPPLIER')) {
+        if (!groups.length) {
           return Promise.resolve(null)
         }
-        return Promise.reject(error)
+        try {
+          const supplierKey = groups[0].toLowerCase()
+          const supplier = await getSupplierByKey(supplierKey)
+          return supplier.id
+        } catch (error) {
+          if (error.statusCode === 404) {
+            return Promise.resolve(null)
+          }
+          return Promise.reject(error)
+        }
       }
-    }
-    return null
-  })
+      return null
+    })
+  }
 }
 
 module.exports = {
