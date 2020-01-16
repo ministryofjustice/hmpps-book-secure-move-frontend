@@ -5,7 +5,7 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
-  return function item({ id, reference, person = {} }) {
+  return function item({ id, reference, person = {}, status }) {
     const meta = {}
     const tags = {}
     const href = `/move/${id}`
@@ -44,6 +44,9 @@ function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
       href,
       meta,
       tags,
+      status: {
+        text: i18n.t(`statuses::${status}`),
+      },
       title: {
         text: fullname.toUpperCase(),
       },

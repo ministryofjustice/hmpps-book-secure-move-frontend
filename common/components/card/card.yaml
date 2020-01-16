@@ -78,6 +78,13 @@ examples:
     data:
       title:
         text: Card title
+  - name: with status
+    data:
+      title:
+        text: Card with status
+      status:
+        text: Requested
+        classes: app-tag--inactive
   - name: with image
     data:
       title:

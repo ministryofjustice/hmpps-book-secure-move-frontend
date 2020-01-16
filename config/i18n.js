@@ -15,6 +15,7 @@ i18next.use(Backend).init({
     'locations',
     'messages',
     'moves',
+    'statuses',
     'validation',
   ],
   defaultNS: 'default',

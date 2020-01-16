@@ -35,7 +35,9 @@
       content: {
         text: t("moves::cancel.panel.content", {
           reason: cancellationReason
-        }) if cancellationReason
+        }) if cancellationReason else t("statuses::" + move.status, {
+            context: "description"
+        })
       }
     }) }}
   {% endif %}

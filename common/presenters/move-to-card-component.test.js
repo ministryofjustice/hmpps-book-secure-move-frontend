@@ -6,6 +6,7 @@ const filters = require('../../config/nunjucks/filters')
 const mockMove = {
   id: '12345',
   reference: 'AB12FS45',
+  status: 'requested',
   person: {
     fullname: 'Name, Full',
     date_of_birth: '2000-10-10',
@@ -63,6 +64,13 @@ describe('Presenters', function() {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
               text: mockMove.person.fullname.toUpperCase(),
+            })
+          })
+
+          it('should contain a status', function() {
+            expect(transformedResponse).to.have.property('status')
+            expect(transformedResponse.status).to.deep.equal({
+              text: '__translated__',
             })
           })
 
@@ -137,15 +145,21 @@ describe('Presenters', function() {
             )
           })
 
-          it('should translate move reference', function() {
+          it('should translate status', function() {
             expect(i18n.t.getCall(3)).to.be.calledWithExactly(
+              `statuses::${mockMove.status}`
+            )
+          })
+
+          it('should translate move reference', function() {
+            expect(i18n.t.getCall(4)).to.be.calledWithExactly(
               'moves::move_reference',
               { reference: 'AB12FS45' }
             )
           })
 
           it('should translate correct number of times', function() {
-            expect(i18n.t).to.be.callCount(4)
+            expect(i18n.t).to.be.callCount(5)
           })
         })
       })
