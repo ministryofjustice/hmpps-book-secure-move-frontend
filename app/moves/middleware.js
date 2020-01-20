@@ -13,6 +13,11 @@ const moveDateFormat = 'yyyy-MM-dd'
 
 const batchSize = 50
 
+const makeMultipleRequests = (service, moveDate, locationIdBatches) =>
+  Promise.all(
+    locationIdBatches.map(chunk => service({ moveDate, fromLocationId: chunk }))
+  )
+
 module.exports = {
   redirectBaseUrl: (req, res) => {
     const today = format(new Date(), moveDateFormat)
@@ -86,14 +91,9 @@ module.exports = {
 
       const idChunks = chunk(locationIds, batchSize).map(id => id.join(','))
 
-      const makeRequest = service =>
-        Promise.all(
-          idChunks.map(chunk => service({ moveDate, fromLocationId: chunk }))
-        )
-
       const [requestedMoves, cancelledMoves] = (await Promise.all([
-        makeRequest(moveService.getRequested),
-        makeRequest(moveService.getCancelled),
+        makeMultipleRequests(moveService.getRequested, moveDate, idChunks),
+        makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
       ])).map(response => response.flat())
 
       res.locals.requestedMovesByDate = requestedMoves
