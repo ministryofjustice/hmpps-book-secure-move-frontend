@@ -76,36 +76,25 @@ module.exports = {
     }
 
     try {
-      const userLocations = get(req.session, 'user.locations', [])
-
       const locationIds = fromLocationId
         ? fromLocationId.split(',')
-        : userLocations.map(location => location.id)
+        : get(req.session, 'user.locations', []).map(loc => loc.id)
 
       if (locationIds.length === 0) {
         locationIds.push(null)
       }
 
-      const batchedIds = chunk(locationIds, batchSize).map(locations =>
-        locations.join(',')
-      )
+      const idChunks = chunk(locationIds, batchSize).map(id => id.join(','))
 
-      const promises = [
+      const makeRequest = service =>
         Promise.all(
-          batchedIds.map(locations =>
-            moveService.getRequested({ moveDate, fromLocationId: locations })
-          )
-        ),
-        Promise.all(
-          batchedIds.map(locations =>
-            moveService.getCancelled({ moveDate, fromLocationId: locations })
-          )
-        ),
-      ]
+          idChunks.map(chunk => service({ moveDate, fromLocationId: chunk }))
+        )
 
-      const [requestedMoves, cancelledMoves] = (await Promise.all(
-        promises
-      )).map(response => response.flat())
+      const [requestedMoves, cancelledMoves] = (await Promise.all([
+        makeRequest(moveService.getRequested),
+        makeRequest(moveService.getCancelled),
+      ])).map(response => response.flat())
 
       res.locals.requestedMovesByDate = requestedMoves
       res.locals.cancelledMovesByDate = cancelledMoves
