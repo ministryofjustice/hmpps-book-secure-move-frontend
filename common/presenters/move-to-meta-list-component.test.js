@@ -1,4 +1,5 @@
 const { subDays, addDays } = require('date-fns')
+const timezoneMock = require('timezone-mock')
 
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const i18n = require('../../config/i18n')
@@ -26,15 +27,12 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(
-          subDays(new Date(mockMove.date), 3).getTime()
-        )
-
+        timezoneMock.register('UTC')
         transformedResponse = moveToMetaListComponent(mockMove)
       })
 
       afterEach(function() {
-        this.clock.restore()
+        timezoneMock.unregister()
       })
 
       describe('response', function() {

@@ -1,4 +1,5 @@
 const FormController = require('hmpo-form-wizard').Controller
+const timezoneMock = require('timezone-mock')
 
 const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
@@ -303,6 +304,7 @@ describe('Move controllers', function() {
       }
 
       beforeEach(function() {
+        timezoneMock.register('UTC')
         nextSpy = sinon.spy()
         req = {
           session: {
@@ -314,6 +316,10 @@ describe('Move controllers', function() {
         res = {
           locals: {},
         }
+      })
+
+      afterEach(function() {
+        timezoneMock.unregister()
       })
 
       context('when current location exists', function() {

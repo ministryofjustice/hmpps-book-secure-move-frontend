@@ -1,9 +1,12 @@
+const { format } = require('date-fns')
+
 const presenters = require('../../../common/presenters')
 
 const controller = require('./download')
 
 const mockMoveDate = '2018-10-10'
-const mockDownloadDate = new Date(Date.UTC(2019, 10, 10, 15, 30, 15))
+const mockUTCDate = Date.UTC(2019, 10, 10, 15, 30, 15)
+const mockDownloadDate = new Date(mockUTCDate)
 const requestedMovesStub = [
   { foo: 'bar', status: 'requested' },
   { fizz: 'buzz', status: 'requested' },
@@ -87,7 +90,7 @@ describe('Moves controllers', function() {
       it('should translate filename', function() {
         expect(req.t).to.be.calledOnceWithExactly('moves::download_filename', {
           date: mockMoveDate,
-          timestamp: '2019-11-10 15:30:15',
+          timestamp: format(new Date(mockUTCDate), 'yyyy-MM-dd HH:mm:ss'),
         })
       })
 
@@ -124,7 +127,7 @@ describe('Moves controllers', function() {
             'moves::download_filename',
             {
               date: mockMoveDate,
-              timestamp: '2019-11-10 15:30:15',
+              timestamp: format(new Date(mockUTCDate), 'yyyy-MM-dd HH:mm:ss'),
             }
           )
         })
