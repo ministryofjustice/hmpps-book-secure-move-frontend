@@ -5,11 +5,13 @@ const {
   parseISO,
   isValid: isValidDate,
 } = require('date-fns')
-const { find, get } = require('lodash')
+const { find, get, chunk } = require('lodash')
 
 const moveService = require('../../common/services/move')
 
 const moveDateFormat = 'yyyy-MM-dd'
+
+const batchSize = 50
 
 module.exports = {
   redirectBaseUrl: (req, res) => {
@@ -75,12 +77,35 @@ module.exports = {
 
     try {
       const userLocations = get(req.session, 'user.locations', [])
-      const locationIds =
-        fromLocationId || userLocations.map(location => location.id).join(',')
-      const [requestedMoves, cancelledMoves] = await Promise.all([
-        moveService.getRequested({ moveDate, fromLocationId: locationIds }),
-        moveService.getCancelled({ moveDate, fromLocationId: locationIds }),
-      ])
+
+      const locationIds = fromLocationId
+        ? fromLocationId.split(',')
+        : userLocations.map(location => location.id)
+
+      if (locationIds.length === 0) {
+        locationIds.push(null)
+      }
+
+      const batchedIds = chunk(locationIds, batchSize).map(locations =>
+        locations.join(',')
+      )
+
+      const promises = [
+        Promise.all(
+          batchedIds.map(locations =>
+            moveService.getRequested({ moveDate, fromLocationId: locations })
+          )
+        ),
+        Promise.all(
+          batchedIds.map(locations =>
+            moveService.getCancelled({ moveDate, fromLocationId: locations })
+          )
+        ),
+      ]
+
+      const [requestedMoves, cancelledMoves] = (await Promise.all(
+        promises
+      )).map(response => response.flat())
 
       res.locals.requestedMovesByDate = requestedMoves
       res.locals.cancelledMovesByDate = cancelledMoves

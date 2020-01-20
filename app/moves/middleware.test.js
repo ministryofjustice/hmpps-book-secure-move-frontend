@@ -320,7 +320,7 @@ describe('Moves middleware', function() {
         }
       })
 
-      context('when API call returns succesfully', function() {
+      context('when API call returns successfully', function() {
         beforeEach(function() {
           moveService.getRequested.resolves(mockRequestedMoves)
           moveService.getCancelled.resolves(mockCancelledMoves)
@@ -371,6 +371,66 @@ describe('Moves middleware', function() {
               })
             })
           })
+          context('when locations exceeds 50', function() {
+            beforeEach(async function() {
+              req.session.user.locations = Array(75)
+                .fill()
+                .map((v, i) => {
+                  return { id: i, title: `Mock location ${i}` }
+                })
+
+              await middleware.setMovesByDate(req, res, nextSpy)
+            })
+            it('should call the API with batches of 50 locations', function() {
+              expect(req.session.user.locations).to.have.length(75)
+              expect(moveService.getRequested).to.have.callCount(2)
+              expect(moveService.getRequested).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(0, 50)
+                  .join(','),
+              })
+              expect(moveService.getRequested).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(50)
+                  .join(','),
+              })
+
+              expect(moveService.getCancelled).to.have.callCount(2)
+              expect(moveService.getCancelled).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(0, 50)
+                  .join(','),
+              })
+              expect(moveService.getCancelled).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(50)
+                  .join(','),
+              })
+            })
+            it('should set requested moves on locals', function() {
+              expect(res.locals).to.have.property('requestedMovesByDate')
+              expect(res.locals.requestedMovesByDate).to.deep.equal([
+                ...mockRequestedMoves,
+                ...mockRequestedMoves,
+              ])
+            })
+
+            it('should set cancelled moves on locals', function() {
+              expect(res.locals).to.have.property('cancelledMovesByDate')
+              expect(res.locals.cancelledMovesByDate).to.deep.equal([
+                ...mockCancelledMoves,
+                ...mockCancelledMoves,
+              ])
+            })
+          })
         })
 
         context('with location ID', function() {
@@ -392,12 +452,16 @@ describe('Moves middleware', function() {
 
           it('should set requested moves on locals', function() {
             expect(res.locals).to.have.property('requestedMovesByDate')
-            expect(res.locals.requestedMovesByDate).to.equal(mockRequestedMoves)
+            expect(res.locals.requestedMovesByDate).to.deep.equal(
+              mockRequestedMoves
+            )
           })
 
           it('should set cancelled moves on locals', function() {
             expect(res.locals).to.have.property('cancelledMovesByDate')
-            expect(res.locals.cancelledMovesByDate).to.equal(mockCancelledMoves)
+            expect(res.locals.cancelledMovesByDate).to.deep.equal(
+              mockCancelledMoves
+            )
           })
 
           it('should call next with no argument', function() {

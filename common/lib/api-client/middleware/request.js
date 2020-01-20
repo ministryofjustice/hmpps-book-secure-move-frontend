@@ -29,7 +29,6 @@ function requestMiddleware(expiry = 60) {
       if (!cacheModel || req.params.cache === false) {
         return jsonApi.axios(req)
       }
-
       return redisStore.client.getAsync(key).then(response => {
         if (!response) {
           return jsonApi.axios(req).then(cacheResponse(key, expiry))
