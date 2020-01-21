@@ -81,15 +81,36 @@ module.exports = {
     }
 
     try {
-      const locationIds = fromLocationId
-        ? fromLocationId.split(',')
-        : get(req.session, 'user.locations', []).map(loc => loc.id)
+      const [requestedMoves, cancelledMoves] = await Promise.all([
+        moveService.getRequested({ moveDate, fromLocationId }),
+        moveService.getCancelled({ moveDate, fromLocationId }),
+      ])
 
-      if (locationIds.length === 0) {
-        locationIds.push(null)
+      res.locals.requestedMovesByDate = requestedMoves
+      res.locals.cancelledMovesByDate = cancelledMoves
+
+      next()
+    } catch (error) {
+      next(error)
+    }
+  },
+  setMovesByDateAllLocations: async (req, res, next) => {
+    const { moveDate } = res.locals
+
+    if (!moveDate) {
+      return next()
+    }
+
+    try {
+      const userLocations = get(req.session, 'user.locations', []).map(
+        loc => loc.id
+      )
+
+      if (userLocations.length === 0) {
+        userLocations.push(null)
       }
 
-      const idChunks = chunk(locationIds, batchSize).map(id => id.join(','))
+      const idChunks = chunk(userLocations, batchSize).map(id => id.join(','))
 
       const [requestedMoves, cancelledMoves] = (await Promise.all([
         makeMultipleRequests(moveService.getRequested, moveDate, idChunks),
@@ -98,7 +119,6 @@ module.exports = {
 
       res.locals.requestedMovesByDate = requestedMoves
       res.locals.cancelledMovesByDate = cancelledMoves
-
       next()
     } catch (error) {
       next(error)

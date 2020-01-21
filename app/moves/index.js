@@ -11,6 +11,7 @@ const {
   setFromLocation,
   setPagination,
   setMovesByDate,
+  setMovesByDateAllLocations,
 } = require('./middleware')
 
 const uuidRegex =
@@ -28,7 +29,7 @@ router.get('/', redirectBaseUrl)
 router.get(
   '/:date',
   protectRoute('moves:view:all'),
-  setMovesByDate,
+  setMovesByDateAllLocations,
   setPagination,
   list
 )
