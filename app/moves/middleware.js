@@ -11,7 +11,7 @@ const moveService = require('../../common/services/move')
 
 const moveDateFormat = 'yyyy-MM-dd'
 
-const batchSize = 50
+const { MOVES_BATCH_SIZE } = require('../../config')
 
 const makeMultipleRequests = (service, moveDate, locationIdBatches) =>
   Promise.all(
@@ -73,7 +73,7 @@ module.exports = {
 
     next()
   },
-  setMovesByDate: async (req, res, next) => {
+  setMovesByDateAndLocation: async (req, res, next) => {
     const { moveDate, fromLocationId } = res.locals
 
     if (!moveDate) {
@@ -110,7 +110,9 @@ module.exports = {
         userLocations.push(null)
       }
 
-      const idChunks = chunk(userLocations, batchSize).map(id => id.join(','))
+      const idChunks = chunk(userLocations, MOVES_BATCH_SIZE).map(id =>
+        id.join(',')
+      )
 
       const [requestedMoves, cancelledMoves] = (await Promise.all([
         makeMultipleRequests(moveService.getRequested, moveDate, idChunks),

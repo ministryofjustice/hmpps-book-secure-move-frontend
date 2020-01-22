@@ -112,4 +112,5 @@ module.exports = {
       sortOrder: 2,
     },
   },
+  MOVES_BATCH_SIZE: process.env.MOVES_BATCH_SIZE || 40,
 }

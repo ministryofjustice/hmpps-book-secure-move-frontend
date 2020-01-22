@@ -10,7 +10,7 @@ const {
   setMoveDate,
   setFromLocation,
   setPagination,
-  setMovesByDate,
+  setMovesByDateAndLocation,
   setMovesByDateAllLocations,
 } = require('./middleware')
 
@@ -36,20 +36,20 @@ router.get(
 router.get(
   `/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:by_location'),
-  setMovesByDate,
+  setMovesByDateAndLocation,
   setPagination,
   list
 )
 router.get(
   '/:date/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
-  setMovesByDate,
+  setMovesByDateAndLocation,
   download
 )
 router.get(
   `/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
   protectRoute('moves:download:by_location'),
-  setMovesByDate,
+  setMovesByDateAndLocation,
   download
 )
 

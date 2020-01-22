@@ -272,7 +272,7 @@ describe('Moves middleware', function() {
     })
   })
 
-  describe('#setMovesByDate()', function() {
+  describe('#setMovesByDateAndLocation()', function() {
     let res, nextSpy
     const mockCurrentLocation = '5555'
 
@@ -285,7 +285,7 @@ describe('Moves middleware', function() {
 
     context('when no move date exists', function() {
       beforeEach(async function() {
-        await middleware.setMovesByDate({}, res, nextSpy)
+        await middleware.setMovesByDateAndLocation({}, res, nextSpy)
       })
 
       it('should call next with no argument', function() {
@@ -319,7 +319,7 @@ describe('Moves middleware', function() {
         context('with location ID', function() {
           beforeEach(async function() {
             res.locals.fromLocationId = mockCurrentLocation
-            await middleware.setMovesByDate({}, res, nextSpy)
+            await middleware.setMovesByDateAndLocation({}, res, nextSpy)
           })
 
           it('should call API with move date and location ID', function() {
@@ -356,7 +356,7 @@ describe('Moves middleware', function() {
       context('when API call returns an error', function() {
         beforeEach(async function() {
           moveService.getRequested.throws(errorStub)
-          await middleware.setMovesByDate({}, res, nextSpy)
+          await middleware.setMovesByDateAndLocation({}, res, nextSpy)
         })
 
         it('should not set locals properties', function() {
@@ -452,21 +452,21 @@ describe('Moves middleware', function() {
 
               await middleware.setMovesByDateAllLocations(req, res, nextSpy)
             })
-            it('should call the API with batches of 50 locations', function() {
+            it('should call the API with batches of 40 locations by default', function() {
               expect(req.session.user.locations).to.have.length(75)
               expect(moveService.getRequested).to.have.callCount(2)
               expect(moveService.getRequested).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
-                  .slice(0, 50)
+                  .slice(0, 40)
                   .join(','),
               })
               expect(moveService.getRequested).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
-                  .slice(50)
+                  .slice(40)
                   .join(','),
               })
 
@@ -475,14 +475,14 @@ describe('Moves middleware', function() {
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
-                  .slice(0, 50)
+                  .slice(0, 40)
                   .join(','),
               })
               expect(moveService.getCancelled).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
-                  .slice(50)
+                  .slice(40)
                   .join(','),
               })
             })
