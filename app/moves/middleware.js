@@ -12,10 +12,11 @@ const { LOCATIONS_BATCH_SIZE } = require('../../config')
 
 const moveDateFormat = 'yyyy-MM-dd'
 
-const makeMultipleRequests = (service, moveDate, locationIdBatches) =>
-  Promise.all(
+function makeMultipleRequests(service, moveDate, locationIdBatches) {
+  return Promise.all(
     locationIdBatches.map(chunk => service({ moveDate, fromLocationId: chunk }))
   )
+}
 
 module.exports = {
   redirectBaseUrl: (req, res) => {
