@@ -132,6 +132,16 @@ describe('Card component', function() {
     })
   })
 
+  context('with status', function() {
+    it('should render status', function() {
+      const $ = renderComponentHtmlToCheerio('card', examples['with status'])
+      const $status = $('.app-card__badge')
+
+      expect($status.length).to.equal(1)
+      expect($status.text()).to.contain('Requested')
+    })
+  })
+
   context('with meta data', function() {
     context('with empty items array', function() {
       it('should not render meta', function() {

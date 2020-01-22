@@ -1,0 +1,7 @@
+{
+  "requested": "Move requested",
+  "cancelled": "Move cancelled",
+  "description": "",
+  "description_requested": "Move requested with supplier",
+  "description_cancelled": "Reason — {{reason}}"
+}

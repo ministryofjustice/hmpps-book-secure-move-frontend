@@ -4,9 +4,14 @@ module.exports = function view(req, res) {
   const { move } = res.locals
   const {
     person,
+    status,
     cancellation_reason: cancellationReason,
-    cancellation_reason_comments: cancellationComments,
+    cancellation_reason_comment: cancellationComments,
   } = move
+  const reason =
+    cancellationReason === 'other'
+      ? cancellationComments
+      : req.t(`fields::cancellation_reason.items.${cancellationReason}.label`)
   const locals = {
     moveSummary: presenters.moveToMetaListComponent(move),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
@@ -17,15 +22,11 @@ module.exports = function view(req, res) {
       'court'
     ),
     documentsList: presenters.documentsToMetaListComponent(move.documents),
-  }
-
-  if (cancellationReason) {
-    const reasonLabel = req.t(
-      `fields::cancellation_reason.items.${cancellationReason}.label`
-    )
-
-    locals.cancellationReason =
-      cancellationReason !== 'other' ? reasonLabel : cancellationComments
+    messageTitle: req.t('statuses::' + status),
+    messageContent: req.t('statuses::description', {
+      context: status,
+      reason,
+    }),
   }
 
   res.render('move/views/view', locals)

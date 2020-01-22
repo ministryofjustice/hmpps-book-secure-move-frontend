@@ -101,7 +101,6 @@
     "page_title": "Cancel move for ‘{{name}}’",
     "warning": "You must also contact the supplier to cancel the move request for {{name}}",
     "panel": {
-      "heading": "Move cancelled",
       "content": "Reason — {{reason}}"
     }
   },

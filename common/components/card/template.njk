@@ -1,4 +1,5 @@
 {% from "tag/macro.njk" import appTag %}
+{% from "moj/components/badge/macro.njk" import mojBadge %}
 
 {% set headingLevel = params.headingLevel if params.headingLevel else 2 %}
 
@@ -11,6 +12,12 @@
 
   <div class="app-card__content">
     <header class="app-card__header">
+      {% if params.status %}
+        <span class="app-card__badge">
+          {{ mojBadge(params.status) }}
+        </span>
+      {% endif %}
+
       <h2 class="app-card__title">
         {% if params.href %}
           <a href="{{ params.href }}"  class="app-card__link">

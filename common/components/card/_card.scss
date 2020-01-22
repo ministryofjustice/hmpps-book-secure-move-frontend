@@ -15,11 +15,19 @@
   display: block;
 }
 
-.app-card__caption {
-  @include govuk-clearfix;
+.app-card__badge {
+  display: inline-block;
+  margin-bottom: govuk-spacing(2);
+
+  @include mq ($from: desktop) {
+    float: right;
+    margin-bottom: 0;
+    margin-left: govuk-spacing(3);
+  }
 }
 
 .app-card__caption {
+  @include govuk-clearfix;
   @include govuk-font($size: 16);
   color: govuk-colour("dark-grey");
 }

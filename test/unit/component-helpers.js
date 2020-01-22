@@ -6,7 +6,11 @@ const nunjucks = require('nunjucks')
 const yaml = require('js-yaml')
 
 const configPaths = require('../../config/paths')
-const views = [configPaths.components, configPaths.govukFrontend]
+const views = [
+  configPaths.components,
+  configPaths.govukFrontend,
+  configPaths.mojFrontend,
+]
 const {
   componentNameToMacroName,
 } = require('../../common/lib/component/helpers')
