@@ -8,10 +8,9 @@ const {
 const { find, get, chunk } = require('lodash')
 
 const moveService = require('../../common/services/move')
+const { LOCATIONS_BATCH_SIZE } = require('../../config')
 
 const moveDateFormat = 'yyyy-MM-dd'
-
-const { MOVES_BATCH_SIZE } = require('../../config')
 
 const makeMultipleRequests = (service, moveDate, locationIdBatches) =>
   Promise.all(
@@ -107,10 +106,10 @@ module.exports = {
       )
 
       if (userLocations.length === 0) {
-        userLocations.push(null)
+        return next()
       }
 
-      const idChunks = chunk(userLocations, MOVES_BATCH_SIZE).map(id =>
+      const idChunks = chunk(userLocations, LOCATIONS_BATCH_SIZE).map(id =>
         id.join(',')
       )
 

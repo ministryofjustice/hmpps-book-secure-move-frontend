@@ -425,23 +425,6 @@ describe('Moves middleware', function() {
             }
           })
 
-          context('without user locations', function() {
-            beforeEach(async function() {
-              await middleware.setMovesByDateAllLocations(req, res, nextSpy)
-            })
-
-            it('should call API with move date and empty locations', function() {
-              expect(moveService.getRequested).to.be.calledOnceWithExactly({
-                moveDate: res.locals.moveDate,
-                fromLocationId: '',
-              })
-              expect(moveService.getCancelled).to.be.calledOnceWithExactly({
-                moveDate: res.locals.moveDate,
-                fromLocationId: '',
-              })
-            })
-          })
-
           context('with user locations', function() {
             beforeEach(async function() {
               req.session.user.locations = Array(75)
@@ -507,8 +490,15 @@ describe('Moves middleware', function() {
 
       context('when API call returns an error', function() {
         beforeEach(async function() {
+          const req = {
+            session: {
+              user: {
+                locations: [{ id: 1, title: 'Test location' }],
+              },
+            },
+          }
           moveService.getRequested.throws(errorStub)
-          await middleware.setMovesByDateAllLocations({}, res, nextSpy)
+          await middleware.setMovesByDateAllLocations(req, res, nextSpy)
         })
 
         it('should not set locals properties', function() {
