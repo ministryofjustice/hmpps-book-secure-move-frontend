@@ -112,4 +112,5 @@ module.exports = {
       sortOrder: 2,
     },
   },
+  LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
 }

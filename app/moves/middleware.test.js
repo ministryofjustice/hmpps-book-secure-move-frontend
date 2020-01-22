@@ -10,16 +10,6 @@ const mockCancelledMoves = [
   { foo: 'bar', status: 'cancelled' },
   { fizz: 'buzz', status: 'cancelled' },
 ]
-const mockUserLocations = [
-  {
-    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
-    title: 'Barnstaple Crown Court',
-  },
-  {
-    id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
-    title: 'Axminster Crown Court',
-  },
-]
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function() {
@@ -282,7 +272,7 @@ describe('Moves middleware', function() {
     })
   })
 
-  describe('#setMovesByDate()', function() {
+  describe('#setMovesByDateAndLocation()', function() {
     let res, nextSpy
     const mockCurrentLocation = '5555'
 
@@ -295,7 +285,7 @@ describe('Moves middleware', function() {
 
     context('when no move date exists', function() {
       beforeEach(async function() {
-        await middleware.setMovesByDate({}, res, nextSpy)
+        await middleware.setMovesByDateAndLocation({}, res, nextSpy)
       })
 
       it('should call next with no argument', function() {
@@ -320,7 +310,105 @@ describe('Moves middleware', function() {
         }
       })
 
-      context('when API call returns succesfully', function() {
+      context('when API call returns successfully', function() {
+        beforeEach(function() {
+          moveService.getRequested.resolves(mockRequestedMoves)
+          moveService.getCancelled.resolves(mockCancelledMoves)
+        })
+
+        context('with location ID', function() {
+          beforeEach(async function() {
+            res.locals.fromLocationId = mockCurrentLocation
+            await middleware.setMovesByDateAndLocation({}, res, nextSpy)
+          })
+
+          it('should call API with move date and location ID', function() {
+            expect(moveService.getRequested).to.be.calledOnceWithExactly({
+              moveDate: res.locals.moveDate,
+              fromLocationId: res.locals.fromLocationId,
+            })
+            expect(moveService.getCancelled).to.be.calledOnceWithExactly({
+              moveDate: res.locals.moveDate,
+              fromLocationId: res.locals.fromLocationId,
+            })
+          })
+
+          it('should set requested moves on locals', function() {
+            expect(res.locals).to.have.property('requestedMovesByDate')
+            expect(res.locals.requestedMovesByDate).to.deep.equal(
+              mockRequestedMoves
+            )
+          })
+
+          it('should set cancelled moves on locals', function() {
+            expect(res.locals).to.have.property('cancelledMovesByDate')
+            expect(res.locals.cancelledMovesByDate).to.deep.equal(
+              mockCancelledMoves
+            )
+          })
+
+          it('should call next with no argument', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+
+      context('when API call returns an error', function() {
+        beforeEach(async function() {
+          moveService.getRequested.throws(errorStub)
+          await middleware.setMovesByDateAndLocation({}, res, nextSpy)
+        })
+
+        it('should not set locals properties', function() {
+          expect(res.locals).not.to.have.property('requestedMovesByDate')
+          expect(res.locals).not.to.have.property('cancelledMovesByDate')
+        })
+
+        it('should send error to next function', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
+        })
+      })
+    })
+  })
+
+  describe('#setMovesByDateAllLocations()', function() {
+    let res, nextSpy
+
+    beforeEach(async function() {
+      sinon.stub(moveService, 'getRequested')
+      sinon.stub(moveService, 'getCancelled')
+      nextSpy = sinon.spy()
+      res = { locals: {} }
+    })
+
+    context('when no move date exists', function() {
+      beforeEach(async function() {
+        await middleware.setMovesByDateAllLocations({}, res, nextSpy)
+      })
+
+      it('should call next with no argument', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not call API with move date', function() {
+        expect(moveService.getRequested).not.to.be.called
+      })
+
+      it('should not set response data to locals object', function() {
+        expect(res.locals).not.to.have.property('movesByDate')
+      })
+    })
+
+    context('when move date exists', function() {
+      beforeEach(function() {
+        res = {
+          locals: {
+            moveDate: '2010-10-10',
+          },
+        }
+      })
+
+      context('when API call returns successfully', function() {
         beforeEach(function() {
           moveService.getRequested.resolves(mockRequestedMoves)
           moveService.getCancelled.resolves(mockCancelledMoves)
@@ -337,79 +425,80 @@ describe('Moves middleware', function() {
             }
           })
 
-          context('without user locations', function() {
-            beforeEach(async function() {
-              await middleware.setMovesByDate(req, res, nextSpy)
-            })
-
-            it('should call API with move date and empty locations', function() {
-              expect(moveService.getRequested).to.be.calledOnceWithExactly({
-                moveDate: res.locals.moveDate,
-                fromLocationId: '',
-              })
-              expect(moveService.getCancelled).to.be.calledOnceWithExactly({
-                moveDate: res.locals.moveDate,
-                fromLocationId: '',
-              })
-            })
-          })
-
           context('with user locations', function() {
             beforeEach(async function() {
-              req.session.user.locations = mockUserLocations
-              await middleware.setMovesByDate(req, res, nextSpy)
-            })
+              req.session.user.locations = Array(75)
+                .fill()
+                .map((v, i) => {
+                  return { id: i, title: `Mock location ${i}` }
+                })
 
-            it("should call API with move date and list of user's locations", function() {
-              expect(moveService.getRequested).to.be.calledOnceWithExactly({
+              await middleware.setMovesByDateAllLocations(req, res, nextSpy)
+            })
+            it('should call the API with batches of 40 locations by default', function() {
+              expect(req.session.user.locations).to.have.length(75)
+              expect(moveService.getRequested).to.have.callCount(2)
+              expect(moveService.getRequested).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
-                fromLocationId: `${mockUserLocations[0].id},${mockUserLocations[1].id}`,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(0, 40)
+                  .join(','),
               })
-              expect(moveService.getCancelled).to.be.calledOnceWithExactly({
+              expect(moveService.getRequested).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
-                fromLocationId: `${mockUserLocations[0].id},${mockUserLocations[1].id}`,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(40)
+                  .join(','),
+              })
+
+              expect(moveService.getCancelled).to.have.callCount(2)
+              expect(moveService.getCancelled).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(0, 40)
+                  .join(','),
+              })
+              expect(moveService.getCancelled).to.be.calledWithExactly({
+                moveDate: res.locals.moveDate,
+                fromLocationId: req.session.user.locations
+                  .map(location => location.id)
+                  .slice(40)
+                  .join(','),
               })
             })
-          })
-        })
-
-        context('with location ID', function() {
-          beforeEach(async function() {
-            res.locals.fromLocationId = mockCurrentLocation
-            await middleware.setMovesByDate({}, res, nextSpy)
-          })
-
-          it('should call API with move date and location ID', function() {
-            expect(moveService.getRequested).to.be.calledOnceWithExactly({
-              moveDate: res.locals.moveDate,
-              fromLocationId: res.locals.fromLocationId,
+            it('should set requested moves on locals', function() {
+              expect(res.locals).to.have.property('requestedMovesByDate')
+              expect(res.locals.requestedMovesByDate).to.deep.equal([
+                ...mockRequestedMoves,
+                ...mockRequestedMoves,
+              ])
             })
-            expect(moveService.getCancelled).to.be.calledOnceWithExactly({
-              moveDate: res.locals.moveDate,
-              fromLocationId: res.locals.fromLocationId,
+
+            it('should set cancelled moves on locals', function() {
+              expect(res.locals).to.have.property('cancelledMovesByDate')
+              expect(res.locals.cancelledMovesByDate).to.deep.equal([
+                ...mockCancelledMoves,
+                ...mockCancelledMoves,
+              ])
             })
-          })
-
-          it('should set requested moves on locals', function() {
-            expect(res.locals).to.have.property('requestedMovesByDate')
-            expect(res.locals.requestedMovesByDate).to.equal(mockRequestedMoves)
-          })
-
-          it('should set cancelled moves on locals', function() {
-            expect(res.locals).to.have.property('cancelledMovesByDate')
-            expect(res.locals.cancelledMovesByDate).to.equal(mockCancelledMoves)
-          })
-
-          it('should call next with no argument', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
       })
 
       context('when API call returns an error', function() {
         beforeEach(async function() {
+          const req = {
+            session: {
+              user: {
+                locations: [{ id: 1, title: 'Test location' }],
+              },
+            },
+          }
           moveService.getRequested.throws(errorStub)
-          await middleware.setMovesByDate({}, res, nextSpy)
+          await middleware.setMovesByDateAllLocations(req, res, nextSpy)
         })
 
         it('should not set locals properties', function() {

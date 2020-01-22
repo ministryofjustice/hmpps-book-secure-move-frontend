@@ -5,11 +5,18 @@ const {
   parseISO,
   isValid: isValidDate,
 } = require('date-fns')
-const { find, get } = require('lodash')
+const { find, get, chunk } = require('lodash')
 
 const moveService = require('../../common/services/move')
+const { LOCATIONS_BATCH_SIZE } = require('../../config')
 
 const moveDateFormat = 'yyyy-MM-dd'
+
+function makeMultipleRequests(service, moveDate, locationIdBatches) {
+  return Promise.all(
+    locationIdBatches.map(chunk => service({ moveDate, fromLocationId: chunk }))
+  )
+}
 
 module.exports = {
   redirectBaseUrl: (req, res) => {
@@ -66,7 +73,7 @@ module.exports = {
 
     next()
   },
-  setMovesByDate: async (req, res, next) => {
+  setMovesByDateAndLocation: async (req, res, next) => {
     const { moveDate, fromLocationId } = res.locals
 
     if (!moveDate) {
@@ -74,17 +81,46 @@ module.exports = {
     }
 
     try {
-      const userLocations = get(req.session, 'user.locations', [])
-      const locationIds =
-        fromLocationId || userLocations.map(location => location.id).join(',')
       const [requestedMoves, cancelledMoves] = await Promise.all([
-        moveService.getRequested({ moveDate, fromLocationId: locationIds }),
-        moveService.getCancelled({ moveDate, fromLocationId: locationIds }),
+        moveService.getRequested({ moveDate, fromLocationId }),
+        moveService.getCancelled({ moveDate, fromLocationId }),
       ])
 
       res.locals.requestedMovesByDate = requestedMoves
       res.locals.cancelledMovesByDate = cancelledMoves
 
+      next()
+    } catch (error) {
+      next(error)
+    }
+  },
+  setMovesByDateAllLocations: async (req, res, next) => {
+    const { moveDate } = res.locals
+
+    if (!moveDate) {
+      return next()
+    }
+
+    try {
+      const userLocations = get(req.session, 'user.locations', []).map(
+        location => location.id
+      )
+
+      if (userLocations.length === 0) {
+        return next()
+      }
+
+      const idChunks = chunk(userLocations, LOCATIONS_BATCH_SIZE).map(id =>
+        id.join(',')
+      )
+
+      const [requestedMoves, cancelledMoves] = (await Promise.all([
+        makeMultipleRequests(moveService.getRequested, moveDate, idChunks),
+        makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
+      ])).map(response => response.flat())
+
+      res.locals.requestedMovesByDate = requestedMoves
+      res.locals.cancelledMovesByDate = cancelledMoves
       next()
     } catch (error) {
       next(error)
