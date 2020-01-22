@@ -103,7 +103,7 @@ module.exports = {
 
     try {
       const userLocations = get(req.session, 'user.locations', []).map(
-        loc => loc.id
+        location => location.id
       )
 
       if (userLocations.length === 0) {
