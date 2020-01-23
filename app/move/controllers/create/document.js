@@ -4,10 +4,11 @@ const { get } = require('lodash')
 const documentService = require('../../../../common/services/document')
 const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
-const { API } = require('../../../../config')
+const { API, FEATURE_FLAGS } = require('../../../../config')
 
 class DocumentUploadController extends CreateBaseController {
   middlewareChecks() {
+    this.use(this.checkFeatureEnabled(FEATURE_FLAGS.DOCUMENTS))
     this.use(this.parseMultipartForm)
     super.middlewareChecks()
   }
@@ -15,6 +16,16 @@ class DocumentUploadController extends CreateBaseController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.populateDocumentUpload)
+  }
+
+  checkFeatureEnabled(enabled) {
+    return (req, res, next) => {
+      if (!enabled) {
+        req.form.options.skip = true
+      }
+
+      next()
+    }
   }
 
   xhrErrorResponse(t, errorType) {

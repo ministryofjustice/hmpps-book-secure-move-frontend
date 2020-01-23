@@ -68,6 +68,7 @@ describe('Move controllers', function() {
       beforeEach(function() {
         sinon.stub(FormController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkFeatureEnabled')
 
         controller.middlewareChecks()
       })
@@ -78,8 +79,14 @@ describe('Move controllers', function() {
       })
 
       it('should call parseMultipartForm middleware', function() {
-        expect(controller.use).to.have.been.calledWith(
+        expect(controller.use.secondCall).to.have.been.calledWith(
           controller.parseMultipartForm
+        )
+      })
+
+      it('should call checkFeatureEnabled middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWithExactly(
+          controller.checkFeatureEnabled(true)
         )
       })
     })
@@ -101,6 +108,47 @@ describe('Move controllers', function() {
         expect(controller.use).to.have.been.calledWith(
           controller.populateDocumentUpload
         )
+      })
+    })
+
+    describe('#checkFeatureEnabled()', function() {
+      let req, nextSpy
+
+      beforeEach(function() {
+        req = {
+          form: {
+            options: {},
+          },
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('when feature is enabled', function() {
+        beforeEach(function() {
+          controller.checkFeatureEnabled(true)(req, {}, nextSpy)
+        })
+
+        it('should not set skip option', function() {
+          expect(req.form.options.skip).to.be.undefined
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when feature is not enabled', function() {
+        beforeEach(function() {
+          controller.checkFeatureEnabled(false)(req, {}, nextSpy)
+        })
+
+        it('should set skip option', function() {
+          expect(req.form.options.skip).to.equal(true)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

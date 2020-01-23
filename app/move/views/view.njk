@@ -69,23 +69,25 @@
 
   {% include "move/views/_includes/assessment.njk" %}
 
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-    {{ t("moves::assessment.categories.document.heading") }}
-  </h2>
+  {% if FEATURE_FLAGS.DOCUMENTS %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+      {{ t("moves::assessment.categories.document.heading") }}
+    </h2>
 
-  {% if documentsList | length %}
-    {{ appMetaList({
-      classes: "app-meta-list--divider",
-      items: documentsList
-    }) }}
-  {% else %}
-    {{ appMessage({
-      classes: "app-message--muted",
-      allowDismiss: false,
-      content: {
-        html: t("moves::assessment.categories.document.empty")
-      }
-    }) }}
+    {% if documentsList | length %}
+      {{ appMetaList({
+        classes: "app-meta-list--divider",
+        items: documentsList
+      }) }}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted",
+        allowDismiss: false,
+        content: {
+          html: t("moves::assessment.categories.document.empty")
+        }
+      }) }}
+    {% endif %}
   {% endif %}
 
   {% if canAccess("move:cancel") and move.status == "requested" %}
