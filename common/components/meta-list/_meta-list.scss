@@ -20,6 +20,9 @@
 .app-meta-list__key,
 .app-meta-list__value {
   display: block;
+  // Automatic wrapping for unbreakable text (e.g. URLs)
+  word-wrap: break-word; // Fallback for older browsers only
+  overflow-wrap: break-word;
 }
 
 .app-meta-list__key {
