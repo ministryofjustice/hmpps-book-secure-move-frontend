@@ -147,6 +147,7 @@ describe('User class', function() {
           'moves:download:all',
           'moves:view:by_location',
           'moves:download:by_location',
+          'move:view',
         ])
       })
     })
