@@ -1,3 +1,4 @@
+const { FEATURE_FLAGS } = require('../../../config')
 const {
   Base,
   PersonalDetails,
@@ -108,7 +109,9 @@ module.exports = {
     controller: Assessment,
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
-    buttonText: 'actions::continue',
+    buttonText: FEATURE_FLAGS.DOCUMENTS
+      ? 'actions::continue'
+      : 'actions::schedule_move', // TODO: move this logic to a more sensible place, like a controller
     fields: [
       'health',
       'health__special_diet_or_allergy',

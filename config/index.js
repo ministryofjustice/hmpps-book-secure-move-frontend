@@ -33,6 +33,9 @@ module.exports = {
   BUILD_DATE: process.env.APP_BUILD_DATE,
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
+  FEATURE_FLAGS: {
+    DOCUMENTS: process.env.FEATURE_FLAG_DOCUMENTS,
+  },
   API: {
     BASE_URL: API_BASE_URL + process.env.API_PATH,
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
