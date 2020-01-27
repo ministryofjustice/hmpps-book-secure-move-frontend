@@ -87,7 +87,33 @@ describe('Moves controllers', function() {
         sinon.stub(permissions, 'check')
       })
 
-      context('if user can view move', function() {
+      context(
+        'if user can view move and individual location requested',
+        function() {
+          beforeEach(function() {
+            req.session = {
+              user: {
+                permissions: ['move:view'],
+              },
+            }
+            res.locals = {
+              fromLocationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
+            }
+            permissions.check.withArgs('move:view', ['move:view']).returns(true)
+
+            controller(req, res)
+          })
+
+          it('should render list template', function() {
+            const template = res.render.args[0][0]
+
+            expect(res.render).to.be.calledOnce
+            expect(template).to.equal('moves/views/list')
+          })
+        }
+      )
+
+      context('if user can view move and all locations requested', function() {
         beforeEach(function() {
           req.session = {
             user: {
@@ -100,11 +126,11 @@ describe('Moves controllers', function() {
           controller(req, res)
         })
 
-        it('should render list template', function() {
+        it('should render download template', function() {
           const template = res.render.args[0][0]
 
-          expect(res.render.calledOnce).to.be.true
-          expect(template).to.equal('moves/views/list')
+          expect(res.render).to.be.calledOnce
+          expect(template).to.equal('moves/views/download')
         })
       })
 
@@ -117,7 +143,7 @@ describe('Moves controllers', function() {
         it('should render download template', function() {
           const template = res.render.args[0][0]
 
-          expect(res.render.calledOnce).to.be.true
+          expect(res.render).to.be.calledOnce
           expect(template).to.equal('moves/views/download')
         })
       })
