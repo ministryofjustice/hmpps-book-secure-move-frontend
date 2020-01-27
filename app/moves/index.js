@@ -22,7 +22,7 @@ router.param('locationId', setFromLocation)
 router.param('date', setMoveDate)
 
 // Define shared middleware
-router.use(saveUrl)
+router.use('^([^.]+)$', saveUrl)
 
 // Define routes
 router.get('/', redirectBaseUrl)
