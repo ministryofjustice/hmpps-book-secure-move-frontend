@@ -61,27 +61,7 @@ test('Court move', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
-    .click(page.nodes.continueButton)
-
-  await t
-    .expect(page.nodes.pageHeading.innerText)
-    .eql('Are there any documents to upload?')
-
-  await t.setFilesToUpload('#file', [
-    './fixtures/files/a-random-text-file.txt',
-    './fixtures/files/boy-the-cat.jpg',
-    './fixtures/files/leo-the-cat.png',
-  ])
-
-  await t
-    .expect(await page.getSuccessfulUpload('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getSuccessfulUpload('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getSuccessfulUpload('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
-
-  await t.click(page.nodes.scheduleMoveButton)
+    .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
 
@@ -121,14 +101,6 @@ test('Court move', async t => {
       )
     )
     .eql(courtMovePersonalDetails.options.ethnicity)
-
-  await t
-    .expect(await page.getDocumentLink('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getDocumentLink('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getDocumentLink('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
 })
 
 test('Court move with existing PNC', async t => {
@@ -197,27 +169,7 @@ test('Court move with existing PNC', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
-    .click(page.nodes.continueButton)
-
-  await t
-    .expect(page.nodes.pageHeading.innerText)
-    .eql('Are there any documents to upload?')
-
-  await t.setFilesToUpload('#file', [
-    './fixtures/files/a-random-text-file.txt',
-    './fixtures/files/boy-the-cat.jpg',
-    './fixtures/files/leo-the-cat.png',
-  ])
-
-  await t
-    .expect(await page.getSuccessfulUpload('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getSuccessfulUpload('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getSuccessfulUpload('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
-
-  await t.click(page.nodes.scheduleMoveButton)
+    .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
 
@@ -257,14 +209,6 @@ test('Court move with existing PNC', async t => {
       )
     )
     .eql(courtMovePersonalDetails.options.ethnicity)
-
-  await t
-    .expect(await page.getDocumentLink('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getDocumentLink('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getDocumentLink('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
 })
 
 test('Prison recall', async t => {
@@ -302,27 +246,7 @@ test('Prison recall', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
-    .click(page.nodes.continueButton)
-
-  await t
-    .expect(page.nodes.pageHeading.innerText)
-    .eql('Are there any documents to upload?')
-
-  await t.setFilesToUpload('#file', [
-    './fixtures/files/a-random-text-file.txt',
-    './fixtures/files/boy-the-cat.jpg',
-    './fixtures/files/leo-the-cat.png',
-  ])
-
-  await t
-    .expect(await page.getSuccessfulUpload('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getSuccessfulUpload('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getSuccessfulUpload('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
-
-  await t.click(page.nodes.scheduleMoveButton)
+    .click(page.nodes.scheduleMoveButton)
 
   const referenceNumber = await page.getMoveConfirmationReferenceNumber()
 
@@ -361,14 +285,6 @@ test('Prison recall', async t => {
       )
     )
     .eql(personalDetails.options.ethnicity)
-
-  await t
-    .expect(await page.getDocumentLink('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getDocumentLink('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getDocumentLink('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
 })
 
 fixture`Document uploads`
@@ -403,27 +319,7 @@ test('Upload documents', async t => {
   await t
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
-    .click(page.nodes.continueButton)
-
-  await t
-    .expect(page.nodes.pageHeading.innerText)
-    .eql('Are there any documents to upload?')
-
-  await t.setFilesToUpload('#file', [
-    './fixtures/files/a-random-text-file.txt',
-    './fixtures/files/boy-the-cat.jpg',
-    './fixtures/files/leo-the-cat.png',
-  ])
-
-  await t
-    .expect(await page.getSuccessfulUpload('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getSuccessfulUpload('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getSuccessfulUpload('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
-
-  await t.click(page.nodes.scheduleMoveButton)
+    .click(page.nodes.scheduleMoveButton)
 
   await t
     .expect(page.nodes.panelHeading.innerText)
@@ -434,14 +330,6 @@ test('Upload documents', async t => {
         personalDetails.text.last_name
       )
     )
-
-  await t
-    .expect(await page.getDocumentLink('a-random-text-file.txt'))
-    .eql('a-random-text-file.txt')
-    .expect(await page.getDocumentLink('boy-the-cat.jpg'))
-    .eql('boy-the-cat.jpg')
-    .expect(await page.getDocumentLink('leo-the-cat.png'))
-    .eql('leo-the-cat.png')
 })
 
 fixture`Cancel move`
@@ -522,12 +410,7 @@ test('Navigate tags in detailed move', async t => {
   // Does this person’s health affect transport?
   await selectFieldsetOption('Add health information', 'Medication')
 
-  await t.click(page.nodes.continueButton)
-
-  await t
-    .expect(page.nodes.pageHeading.innerText)
-    .eql('Are there any documents to upload?')
-    .click(page.nodes.scheduleMoveButton)
+  await t.click(page.nodes.scheduleMoveButton)
 
   await t
     .expect(page.nodes.panelHeading.innerText)
