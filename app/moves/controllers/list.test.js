@@ -107,7 +107,7 @@ describe('Moves controllers', function() {
           it('should render list template', function() {
             const template = res.render.args[0][0]
 
-            expect(res.render.calledOnce).to.be.true
+            expect(res.render).to.be.calledOnce
             expect(template).to.equal('moves/views/list')
           })
         }
@@ -129,7 +129,7 @@ describe('Moves controllers', function() {
         it('should render download template', function() {
           const template = res.render.args[0][0]
 
-          expect(res.render.calledOnce).to.be.true
+          expect(res.render).to.be.calledOnce
           expect(template).to.equal('moves/views/download')
         })
       })
@@ -143,7 +143,7 @@ describe('Moves controllers', function() {
         it('should render download template', function() {
           const template = res.render.args[0][0]
 
-          expect(res.render.calledOnce).to.be.true
+          expect(res.render).to.be.calledOnce
           expect(template).to.equal('moves/views/download')
         })
       })
