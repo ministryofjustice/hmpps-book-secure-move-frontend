@@ -324,6 +324,66 @@ describe('Move Service', function() {
     })
   })
 
+  describe('#getActive()', function() {
+    let moves
+
+    beforeEach(async function() {
+      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+    })
+
+    context('without arguments', function() {
+      beforeEach(async function() {
+        moves = await moveService.getActive()
+      })
+
+      it('should call getAll with active statuses', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'requested,accepted,completed',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
+            'filter[to_location_id]': undefined,
+          },
+        })
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+
+    context('with arguments', function() {
+      const mockMoveDate = '2019-10-10'
+      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+
+      beforeEach(async function() {
+        moves = await moveService.getActive({
+          moveDate: mockMoveDate,
+          fromLocationId: mockFromLocationId,
+          toLocationId: mockToLocationId,
+        })
+      })
+
+      it('should call getAll with active statuses', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'requested,accepted,completed',
+            'filter[date_from]': mockMoveDate,
+            'filter[date_to]': mockMoveDate,
+            'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
+        })
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+  })
+
   describe('#getCancelled()', function() {
     const mockResponse = []
     let moves

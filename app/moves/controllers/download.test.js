@@ -7,7 +7,7 @@ const controller = require('./download')
 const mockMoveDate = '2018-10-10'
 const mockUTCDate = Date.UTC(2019, 10, 10, 15, 30, 15)
 const mockDownloadDate = new Date(mockUTCDate)
-const requestedMovesStub = [
+const activeMovesStub = [
   { foo: 'bar', status: 'requested' },
   { fizz: 'buzz', status: 'requested' },
 ]
@@ -35,7 +35,7 @@ describe('Moves controllers', function() {
         setHeader: sinon.stub(),
         locals: {
           moveDate: mockMoveDate,
-          requestedMovesByDate: requestedMovesStub,
+          activeMovesByDate: activeMovesStub,
           cancelledMovesByDate: cancelledMovesStub,
         },
       }
@@ -103,7 +103,7 @@ describe('Moves controllers', function() {
 
       it('should render moves as JSON', function() {
         expect(res.json).to.be.calledOnceWithExactly([
-          ...requestedMovesStub,
+          ...activeMovesStub,
           ...cancelledMovesStub,
         ])
       })
@@ -148,7 +148,7 @@ describe('Moves controllers', function() {
 
         it('should call CSV presenter with combined moves', function() {
           expect(presenters.movesToCSV).to.be.calledOnceWithExactly([
-            ...requestedMovesStub,
+            ...activeMovesStub,
             ...cancelledMovesStub,
           ])
         })

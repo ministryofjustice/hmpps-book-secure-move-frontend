@@ -81,12 +81,12 @@ module.exports = {
     }
 
     try {
-      const [requestedMoves, cancelledMoves] = await Promise.all([
-        moveService.getRequested({ moveDate, fromLocationId }),
+      const [activeMoves, cancelledMoves] = await Promise.all([
+        moveService.getActive({ moveDate, fromLocationId }),
         moveService.getCancelled({ moveDate, fromLocationId }),
       ])
 
-      res.locals.requestedMovesByDate = requestedMoves
+      res.locals.activeMovesByDate = activeMoves
       res.locals.cancelledMovesByDate = cancelledMoves
 
       next()
@@ -114,12 +114,12 @@ module.exports = {
         id.join(',')
       )
 
-      const [requestedMoves, cancelledMoves] = (await Promise.all([
-        makeMultipleRequests(moveService.getRequested, moveDate, idChunks),
+      const [activeMoves, cancelledMoves] = (await Promise.all([
+        makeMultipleRequests(moveService.getActive, moveDate, idChunks),
         makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
       ])).map(response => response.flat())
 
-      res.locals.requestedMovesByDate = requestedMoves
+      res.locals.activeMovesByDate = activeMoves
       res.locals.cancelledMovesByDate = cancelledMoves
       next()
     } catch (error) {
