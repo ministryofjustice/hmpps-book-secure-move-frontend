@@ -15,7 +15,7 @@ const users = [
     name: 'Supplier user',
     role: supplierUser,
     username: page.nodes.supplierUserName,
-    homeButton: page.nodes.downloadMovesButton,
+    homeButton: page.nodes.downloadMovesLink,
   },
 ]
 
