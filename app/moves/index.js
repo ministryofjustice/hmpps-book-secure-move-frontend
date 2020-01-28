@@ -43,7 +43,7 @@ router.get(
 router.get(
   '/:date/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
-  setMovesByDateAndLocation,
+  setMovesByDateAllLocations,
   download
 )
 router.get(
