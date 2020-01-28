@@ -89,6 +89,7 @@
     "serve-favicon": "2.5.0",
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
+    "supertest": "4.0.2",
     "uuid": "3.3.3",
     "winston": "3.2.1"
   },
