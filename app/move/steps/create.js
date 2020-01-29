@@ -1,3 +1,5 @@
+const HealthDetails = require('../controllers/create/health-details')
+
 const { FEATURE_FLAGS } = require('../../../config')
 const {
   Base,
@@ -106,7 +108,7 @@ module.exports = {
     ],
   },
   '/health-information': {
-    controller: Assessment,
+    controller: HealthDetails,
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
     buttonText: FEATURE_FLAGS.DOCUMENTS
