@@ -303,6 +303,7 @@ module.exports = {
         id: 'health__special_vehicle_yes',
         value: 'yes',
         text: 'Yes',
+        conditional: 'type_of_special_vehicle',
       },
       {
         id: 'health__special_vehicle_no',
@@ -310,6 +311,16 @@ module.exports = {
         text: 'No',
       },
     ],
+  },
+  type_of_special_vehicle: {
+    skip: true,
+    rows: 3,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'Type of special vehicle',
+      classes: 'govuk-label--s',
+    },
   },
   // court information
   court: assessmentCategory('court'),
