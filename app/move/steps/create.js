@@ -123,6 +123,7 @@ module.exports = {
       'health__pregnant',
       'health__other_health',
       'health__special_vehicle',
+      'type_health__special_vehicle'
     ],
   },
   '/document': {
