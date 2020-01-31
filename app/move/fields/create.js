@@ -289,6 +289,28 @@ module.exports = {
   health__wheelchair: assessmentQuestionComments,
   health__pregnant: assessmentQuestionComments,
   health__other_health: requiredAssessmentQuestionComments,
+  health__special_vehicle: {
+    component: 'govukRadios',
+    name: 'special_vehicle',
+    fieldset: {
+      legend: {
+        text: 'Do they require a special vehicle?',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        id: 'special_vehicle_yes',
+        value: 'yes',
+        text: 'Yes',
+      },
+      {
+        id: 'special_vehicle_no',
+        value: 'no',
+        text: 'No',
+      },
+    ],
+  },
   // court information
   court: assessmentCategory('court'),
   court__solicitor: assessmentQuestionComments,
