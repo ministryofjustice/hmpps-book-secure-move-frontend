@@ -303,7 +303,7 @@ module.exports = {
         id: 'health__special_vehicle_yes',
         value: 'yes',
         text: 'Yes',
-        conditional: 'type_of_special_vehicle',
+        conditional: 'type_health__special_vehicle',
       },
       {
         id: 'health__special_vehicle_no',
@@ -312,7 +312,7 @@ module.exports = {
       },
     ],
   },
-  type_of_special_vehicle: {
+  type_health__special_vehicle: {
     skip: true,
     rows: 3,
     component: 'govukTextarea',
