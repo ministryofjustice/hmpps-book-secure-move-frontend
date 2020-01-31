@@ -122,6 +122,7 @@ module.exports = {
       'health__wheelchair',
       'health__pregnant',
       'health__other_health',
+      'health__special_vehicle',
     ],
   },
   '/document': {
