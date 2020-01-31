@@ -2,15 +2,13 @@ const AssessmentController = require('./assessment')
 const { get, set } = require('lodash')
 
 class HealthDetails extends AssessmentController {
-  async render(req, res, next) {
-/*    const questionToExtrapolate = get(
-      req,
-      'form.options.fields.health__special_vehicle'
-    )*/
-    // if (questionToExtrapolate) {
-     // set(req, 'form.options.fields.health__special_vehicle.extrapolated', true)
-    //}
-    super.render(req, res, next)
+  saveValues(req, res, next) {
+    if (get(req, 'form.values.health__special_vehicle') === 'yes') {
+      const health = get(req, 'form.values.health')
+      Array.isArray(health) && health.push('health__special_vehicle')
+      set(req, 'form.values.health', health)
+    }
+    return super.saveValues(req, res, next)
   }
 }
 module.exports = HealthDetails
