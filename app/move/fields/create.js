@@ -291,7 +291,7 @@ module.exports = {
   health__other_health: requiredAssessmentQuestionComments,
   health__special_vehicle: {
     component: 'govukRadios',
-    name: 'special_vehicle',
+    name: 'health__special_vehicle',
     fieldset: {
       legend: {
         text: 'Do they require a special vehicle?',
@@ -300,12 +300,12 @@ module.exports = {
     },
     items: [
       {
-        id: 'special_vehicle_yes',
+        id: 'health__special_vehicle_yes',
         value: 'yes',
         text: 'Yes',
       },
       {
-        id: 'special_vehicle_no',
+        id: 'health__special_vehicle_no',
         value: 'no',
         text: 'No',
       },
