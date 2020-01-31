@@ -7,7 +7,6 @@ const {
   Save,
   PncSearchResults,
   Document,
-  Final,
 } = require('../controllers/create')
 
 module.exports = {
@@ -122,21 +121,17 @@ module.exports = {
       'health__other_health',
     ],
   },
-  '/save': {
-    skip: true,
-    controller: Save,
-    next: 'document',
-  },
   '/document': {
     enctype: 'multipart/form-data',
     controller: Document,
-    next: 'final',
+    next: 'save',
     pageTitle: 'moves::steps.document.heading',
     buttonText: 'actions::schedule_move',
     fields: ['document_upload'],
   },
-  '/final': {
+  '/save': {
     skip: true,
-    controller: Final,
+    controller: Save,
+    next: 'document',
   },
 }
