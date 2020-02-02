@@ -5,7 +5,6 @@ const PersonalDetails = require('./personal-details')
 const Save = require('./save')
 const PncSearchResults = require('./pnc-search-results')
 const Document = require('./document')
-const Final = require('./final')
 
 module.exports = {
   Assessment,
@@ -15,5 +14,4 @@ module.exports = {
   Save,
   PncSearchResults,
   Document,
-  Final,
 }
