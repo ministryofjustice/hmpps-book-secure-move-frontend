@@ -27,16 +27,11 @@
   </dl>
 
   {{ govukFileUpload({
-    id: "file",
-    name: "file",
+    id: params.id,
+    name: params.name,
     classes: 'js-upload-file-input',
-    label: {
-      text: "Upload documents (optional)",
-      classes: 'govuk-label--m'
-    },
-    hint: {
-      text: "You can upload Word, Excel, PDF and JPEG documents up to 50MB."
-    },
+    label: params.label,
+    hint: params.hint,
     attributes: { multiple: "" },
     value: "",
     errorMessage: params.errorMessage,
@@ -47,7 +42,7 @@
 
   {{ govukButton({
     text: "Upload",
-    classes: "govuk-button govuk-button--secondary app-js-hidden",
+    classes: "govuk-button--secondary app-js-hidden",
     name: "upload",
     value: "upload"
   }) }}

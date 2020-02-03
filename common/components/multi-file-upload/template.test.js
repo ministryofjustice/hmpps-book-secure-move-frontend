@@ -52,7 +52,7 @@ describe('Multi file upload component', function() {
     it('should render upload hint', function() {
       expect(
         $component
-          .find('#file-hint')
+          .find('.govuk-hint')
           .text()
           .trim()
       ).to.equal(

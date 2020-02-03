@@ -125,7 +125,9 @@
   "health__other_health": {
     "label": "Any other requirements details"
   },
-  "document_upload": {
-    "label": "Document upload"
+  "documents": {
+    "heading": "Only include documents that will help plan the move.",
+    "label": "Document upload (optional)",
+    "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50MB."
   }
 }

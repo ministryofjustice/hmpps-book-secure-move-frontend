@@ -127,7 +127,7 @@ module.exports = {
     next: 'save',
     pageTitle: 'moves::steps.document.heading',
     buttonText: 'actions::schedule_move',
-    fields: ['document_upload'],
+    fields: ['documents'],
   },
   '/save': {
     skip: true,

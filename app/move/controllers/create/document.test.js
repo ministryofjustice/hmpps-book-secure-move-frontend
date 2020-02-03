@@ -170,13 +170,13 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(response).to.deep.equal({
-            href: '#document_upload',
+            href: '#documents',
             text: '__translated__ __translated__',
           })
         })
 
         it('should translate document upload label', function() {
-          expect(t.firstCall).to.be.calledWith('fields::document_upload.label')
+          expect(t.firstCall).to.be.calledWith('fields::documents.label')
         })
 
         it('should translate validation generic error', function() {
@@ -193,13 +193,13 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(response).to.deep.equal({
-            href: '#document_upload',
+            href: '#documents',
             text: '__translated__ __translated__',
           })
         })
 
         it('should translate document upload label', function() {
-          expect(t.firstCall).to.be.calledWith('fields::document_upload.label')
+          expect(t.firstCall).to.be.calledWith('fields::documents.label')
         })
 
         it('should translate validation filesize error', function() {
@@ -335,7 +335,7 @@ describe('Move controllers', function() {
 
               it('should translate document upload label', function() {
                 expect(req.t.firstCall).to.be.calledWith(
-                  'fields::document_upload.label'
+                  'fields::documents.label'
                 )
               })
 
@@ -347,7 +347,7 @@ describe('Move controllers', function() {
                 expect(res.json).to.have.been.calledOnce
                 expect(res.json).to.have.been.calledWithExactly([
                   {
-                    href: '#document_upload',
+                    href: '#documents',
                     text: '__translated__ __translated__',
                   },
                 ])
@@ -388,7 +388,7 @@ describe('Move controllers', function() {
 
               it('should translate document upload label', function() {
                 expect(req.t.firstCall).to.be.calledWith(
-                  'fields::document_upload.label'
+                  'fields::documents.label'
                 )
               })
 
@@ -402,7 +402,7 @@ describe('Move controllers', function() {
                 expect(res.json).to.have.been.calledOnce
                 expect(res.json).to.have.been.calledWithExactly([
                   {
-                    href: '#document_upload',
+                    href: '#documents',
                     text: '__translated__ __translated__',
                   },
                 ])
@@ -439,18 +439,14 @@ describe('Move controllers', function() {
 
               it('should call next with error', function() {
                 expect(nextSpy).to.be.calledOnce
-                expect(nextSpy.args[0][0].document_upload).to.be.an.instanceOf(
+                expect(nextSpy.args[0][0].documents).to.be.an.instanceOf(
                   FormError
                 )
-                expect(nextSpy.args[0][0].document_upload.errorGroup).to.equal(
-                  'document_upload'
+                expect(nextSpy.args[0][0].documents.errorGroup).to.equal(
+                  'documents'
                 )
-                expect(nextSpy.args[0][0].document_upload.key).to.equal(
-                  'document_upload'
-                )
-                expect(nextSpy.args[0][0].document_upload.type).to.equal(
-                  'generic'
-                )
+                expect(nextSpy.args[0][0].documents.key).to.equal('documents')
+                expect(nextSpy.args[0][0].documents.type).to.equal('generic')
               })
             })
 
@@ -483,18 +479,14 @@ describe('Move controllers', function() {
 
               it('should call next with error', function() {
                 expect(nextSpy).to.be.calledOnce
-                expect(nextSpy.args[0][0].document_upload).to.be.an.instanceOf(
+                expect(nextSpy.args[0][0].documents).to.be.an.instanceOf(
                   FormError
                 )
-                expect(nextSpy.args[0][0].document_upload.errorGroup).to.equal(
-                  'document_upload'
+                expect(nextSpy.args[0][0].documents.errorGroup).to.equal(
+                  'documents'
                 )
-                expect(nextSpy.args[0][0].document_upload.key).to.equal(
-                  'document_upload'
-                )
-                expect(nextSpy.args[0][0].document_upload.type).to.equal(
-                  'filesize'
-                )
+                expect(nextSpy.args[0][0].documents.key).to.equal('documents')
+                expect(nextSpy.args[0][0].documents.type).to.equal('filesize')
               })
             })
           })
@@ -515,7 +507,7 @@ describe('Move controllers', function() {
           form: {
             options: {
               fields: {
-                document_upload: {},
+                documents: {},
               },
             },
           },
@@ -544,14 +536,14 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should set documents on document_upload field', function() {
-            expect(
-              req.form.options.fields.document_upload.documents
-            ).to.deep.equal(mockMove.documents)
+          it('should set documents on documents field', function() {
+            expect(req.form.options.fields.documents.documents).to.deep.equal(
+              mockMove.documents
+            )
           })
 
-          it('should set xhrUrl on document_upload field', function() {
-            expect(req.form.options.fields.document_upload.xhrUrl).to.equal(
+          it('should set xhrUrl on documents field', function() {
+            expect(req.form.options.fields.documents.xhrUrl).to.equal(
               mockOriginalUrl
             )
           })
@@ -574,16 +566,12 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should not set documents on document_upload field', function() {
-            expect(
-              req.form.options.fields.document_upload.documents
-            ).to.be.undefined
+          it('should not set documents on documents field', function() {
+            expect(req.form.options.fields.documents.documents).to.be.undefined
           })
 
-          it('should not set xhrUrl on document_upload field', function() {
-            expect(
-              req.form.options.fields.document_upload.xhrUrl
-            ).to.be.undefined
+          it('should not set xhrUrl on documents field', function() {
+            expect(req.form.options.fields.documents.xhrUrl).to.be.undefined
           })
 
           it('should call next with error', function() {
@@ -606,14 +594,12 @@ describe('Move controllers', function() {
           expect(moveService.getById).to.not.have.been.called
         })
 
-        it('should not set documents on document_upload field', function() {
-          expect(
-            req.form.options.fields.document_upload.documents
-          ).to.be.undefined
+        it('should not set documents on documents field', function() {
+          expect(req.form.options.fields.documents.documents).to.be.undefined
         })
 
-        it('should set xhrUrl on document_upload field', function() {
-          expect(req.form.options.fields.document_upload.xhrUrl).to.equal(
+        it('should set xhrUrl on documents field', function() {
+          expect(req.form.options.fields.documents.xhrUrl).to.equal(
             mockOriginalUrl
           )
         })
@@ -717,7 +703,7 @@ describe('Move controllers', function() {
               expect(res.json).to.have.been.calledOnce
               expect(res.json).to.have.been.calledWithExactly([
                 {
-                  href: '#document_upload',
+                  href: '#documents',
                   text: '__translated__ __translated__',
                 },
               ])
@@ -725,7 +711,7 @@ describe('Move controllers', function() {
 
             it('should translate document upload label', function() {
               expect(req.t.firstCall).to.be.calledWith(
-                'fields::document_upload.label'
+                'fields::documents.label'
               )
             })
 
@@ -761,7 +747,7 @@ describe('Move controllers', function() {
               expect(res.json).to.have.been.calledOnce
               expect(res.json).to.have.been.calledWithExactly([
                 {
-                  href: '#document_upload',
+                  href: '#documents',
                   text: '__translated__ __translated__',
                 },
               ])
@@ -769,7 +755,7 @@ describe('Move controllers', function() {
 
             it('should translate document upload label', function() {
               expect(req.t.firstCall).to.be.calledWith(
-                'fields::document_upload.label'
+                'fields::documents.label'
               )
             })
 
@@ -833,11 +819,7 @@ describe('Move controllers', function() {
 
             it('should call next with error', function() {
               expect(nextSpy).to.be.calledWithExactly({
-                document_upload: controller.serverError(
-                  req,
-                  res,
-                  'document_upload'
-                ),
+                documents: controller.serverError(req, res, 'documents'),
               })
             })
 
@@ -889,11 +871,7 @@ describe('Move controllers', function() {
 
             it('should call next with error', function() {
               expect(nextSpy).to.be.calledWithExactly({
-                document_upload: controller.serverError(
-                  req,
-                  res,
-                  'document_upload'
-                ),
+                documents: controller.serverError(req, res, 'documents'),
               })
             })
 
@@ -1056,7 +1034,7 @@ describe('Move controllers', function() {
               expect(res.json).to.have.been.calledOnce
               expect(res.json).to.have.been.calledWithExactly([
                 {
-                  href: '#document_upload',
+                  href: '#documents',
                   text: '__translated__ __translated__',
                 },
               ])
@@ -1064,7 +1042,7 @@ describe('Move controllers', function() {
 
             it('should translate document upload label', function() {
               expect(req.t.firstCall).to.be.calledWith(
-                'fields::document_upload.label'
+                'fields::documents.label'
               )
             })
 
@@ -1097,7 +1075,7 @@ describe('Move controllers', function() {
               expect(res.json).to.have.been.calledOnce
               expect(res.json).to.have.been.calledWithExactly([
                 {
-                  href: '#document_upload',
+                  href: '#documents',
                   text: '__translated__ __translated__',
                 },
               ])
@@ -1105,7 +1083,7 @@ describe('Move controllers', function() {
 
             it('should translate document upload label', function() {
               expect(req.t.firstCall).to.be.calledWith(
-                'fields::document_upload.label'
+                'fields::documents.label'
               )
             })
 
@@ -1209,7 +1187,7 @@ describe('Move controllers', function() {
       })
 
       context('default call', function() {
-        const mockFieldName = 'document_upload'
+        const mockFieldName = 'documents'
 
         beforeEach(function() {
           serverError = controller.serverError(req, res, mockFieldName)
@@ -1221,9 +1199,9 @@ describe('Move controllers', function() {
             args: {
               generic: undefined,
             },
-            errorGroup: 'document_upload',
+            errorGroup: 'documents',
             headerMessage: undefined,
-            key: 'document_upload',
+            key: 'documents',
             message: undefined,
             redirect: undefined,
             type: 'generic',
