@@ -67,5 +67,8 @@ typings/
 # App build folder
 .build/
 
+# App temp uploads folder
+.tmp/uploads
+
 # Test cafe reports
 report*.json

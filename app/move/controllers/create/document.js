@@ -1,24 +1,43 @@
-const formidable = require('formidable')
-const { get } = require('lodash')
+const multer = require('multer')
+const { reject } = require('lodash')
 
-const documentService = require('../../../../common/services/document')
-const moveService = require('../../../../common/services/move')
 const CreateBaseController = require('./base')
-const { API, FEATURE_FLAGS } = require('../../../../config')
+const documentService = require('../../../../common/services/document')
+const { FILE_UPLOADS, FEATURE_FLAGS } = require('../../../../config')
+
+const upload = multer({
+  dest: FILE_UPLOADS.UPLOAD_DIR,
+  limits: {
+    fileSize: FILE_UPLOADS.MAX_FILE_SIZE,
+  },
+})
 
 class DocumentUploadController extends CreateBaseController {
+  configure(req, res, next) {
+    req.form.options.fields.documents.xhrUrl = req.originalUrl
+    super.configure(req, res, next)
+  }
+
+  middlewareSetup() {
+    super.middlewareSetup()
+    this.use(upload.array('documents'))
+    // must be called after multer to correctly parse the form body
+    this.use(this.setNextStep)
+  }
+
   middlewareChecks() {
-    this.use(this.checkFeatureEnabled(FEATURE_FLAGS.DOCUMENTS))
-    this.use(this.parseMultipartForm)
+    this.use(this.isEnabled(FEATURE_FLAGS.DOCUMENTS))
     super.middlewareChecks()
   }
 
-  middlewareLocals() {
-    super.middlewareLocals()
-    this.use(this.populateDocumentUpload)
+  setNextStep(req, res, next) {
+    if (req.body.upload || req.body.delete) {
+      req.form.options.next = req.originalUrl
+    }
+    next()
   }
 
-  checkFeatureEnabled(enabled) {
+  isEnabled(enabled) {
     return (req, res, next) => {
       if (!enabled) {
         req.form.options.skip = true
@@ -28,167 +47,64 @@ class DocumentUploadController extends CreateBaseController {
     }
   }
 
-  xhrErrorResponse(t, errorType) {
-    return {
-      href: '#documents',
-      text: `${t('fields::documents.label')} ${t(`validation::${errorType}`)}`,
-    }
-  }
-
-  parseMultipartForm(req, res, next) {
-    if (
-      req.method.toLowerCase() !== 'post' &&
-      req.get('content-type') !== 'multipart/form-data'
-    ) {
-      return next()
-    }
-
-    const isXhr = req.xhr
-    const form = new formidable.IncomingForm()
-    form.multiples = true
-    form.maxFileSize = API.MAX_FILE_UPLOAD_SIZE
-
-    form.parse(req, (error, fields, files) => {
-      if (error) {
-        const errorMessage = error.message
-        const isFileSizeError = errorMessage.includes('maxFileSize exceeded')
-        const errorType = isFileSizeError ? 'filesize' : 'generic'
-
-        if (isXhr) {
-          return res.status(500).json([this.xhrErrorResponse(req.t, errorType)])
-        }
-
-        if (!isXhr) {
-          return next({
-            documents: this.serverError(req, res, 'documents', errorType),
-          })
-        }
-      }
-
-      req.body = {
-        ...req.body,
-        ...fields,
-        files: [files.file].flat(),
-      }
-
-      return next()
-    })
-  }
-
-  async populateDocumentUpload(req, res, next) {
-    const { id } = req.sessionModel.get('move') || {}
-    const { documents: documentUpload } = req.form.options.fields
+  async saveValues(req, res, next) {
+    const sessionDocuments = req.sessionModel.get('documents') || []
+    const { delete: deletedId } = req.body
+    let documents = []
 
     try {
-      if (id) {
-        res.locals.move = await moveService.getById(id)
-        documentUpload.documents = res.locals.move.documents
+      if (req.files) {
+        const uploaded = await Promise.all(
+          req.files.map(file => documentService.create(file))
+        )
+        documents = [...sessionDocuments, ...uploaded]
       }
-    } catch (error) {
-      return next(error)
-    }
 
-    documentUpload.xhrUrl = req.originalUrl
-
-    next()
-  }
-
-  /**
-   * Xhr implementation of delete document
-   * @param req
-   * @param res
-   * @returns {Promise<any>}
-   */
-  async delete(req, res, next) {
-    const { document_id: documentId } = req.query
-    const { id: moveId } = res.locals.move
-
-    if (!documentId) {
-      return next(new Error('No document Id supplied'))
-    }
-
-    try {
-      await documentService
-        .delete(moveId, documentId)
-        .then(response => res.status(200).json(response))
-    } catch (error) {
-      const status = get(error, 'response.status', 500)
-      return res.status(status).json([this.xhrErrorResponse(req.t, 'generic')])
-    }
-  }
-
-  processDocumentUpload(req, res) {
-    const promises = []
-    const { files } = req.body
-    const { id: moveId } = res.locals.move
-
-    files.forEach(file => {
-      if (file.size) {
-        promises.push(documentService.upload(file, moveId))
+      if (deletedId) {
+        await documentService.destroy(deletedId)
+        documents = reject(sessionDocuments, { id: deletedId })
       }
-    })
 
-    return Promise.all(promises)
+      req.form.values.documents = documents
+
+      super.saveValues(req, res, next)
+    } catch (error) {
+      next(error)
+    }
   }
 
-  serverError(req, res, field, errorType = 'generic') {
-    return new this.Error(
-      field,
-      {
-        type: errorType,
-        errorGroup: field,
-      },
-      req,
-      res
-    )
-  }
-
-  async post(req, res, next) {
-    const { document_id: documentId, files } = req.body
-    const { id: moveId } = res.locals.move
+  errorHandler(err, req, res, next) {
     const isXhr = req.xhr
+    let uploadError
 
-    if (files && isXhr) {
-      try {
-        const response = await this.processDocumentUpload(req, res)
-        return res.status(200).json(response)
-      } catch (error) {
-        const status = get(error, 'response.status', 500)
+    if (err instanceof multer.MulterError) {
+      const key = err.field
 
-        return res
-          .status(status)
-          .json([this.xhrErrorResponse(req.t, 'generic')])
+      uploadError = {
+        [key]: new this.Error(key, { type: err.code }, req, res),
+      }
+
+      if (isXhr) {
+        return res.status(500).json([
+          {
+            href: `#${key}`,
+            text: `${req.t('fields::documents.label')} ${req.t(
+              `validation::${err.code}`
+            )}`,
+          },
+        ])
       }
     }
 
-    if (files && !isXhr) {
-      try {
-        await this.processDocumentUpload(req, res)
-      } catch (error) {
-        return next({
-          documents: this.serverError(req, res, 'documents'),
-        })
-      }
-    }
-
-    if (documentId && !isXhr) {
-      try {
-        await documentService.delete(moveId, documentId)
-      } catch (error) {
-        return next({
-          documents: this.serverError(req, res, 'documents'),
-        })
-      }
-    }
-
-    super.post(req, res, next)
+    super.errorHandler(uploadError || err, req, res, next)
   }
 
   successHandler(req, res, next) {
-    const { document_id: documentId, upload } = req.body
+    const isXhr = req.xhr
 
-    if (upload === 'upload' || documentId) {
-      return res.redirect(req.originalUrl)
+    if (isXhr) {
+      const documents = req.sessionModel.get('documents') || []
+      return res.status(200).json(documents)
     }
 
     super.successHandler(req, res, next)

@@ -44,12 +44,15 @@ module.exports = {
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
     CACHE_EXPIRY: 60 * 60 * 24 * 7, // in seconds (7 days)
-    MAX_FILE_UPLOAD_SIZE: 50 * 1024 * 1024, // 50 mega bytes
   },
   DATE_FORMATS: {
     SHORT: 'd M yyyy',
     LONG: 'd MMM yyyy',
     WITH_DAY: 'EEEE d MMM yyyy',
+  },
+  FILE_UPLOADS: {
+    UPLOAD_DIR: '.tmp/uploads/',
+    MAX_FILE_SIZE: 50 * 1024 * 1024, // 50mb
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   SENTRY: {
