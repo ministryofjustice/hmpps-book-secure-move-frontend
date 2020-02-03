@@ -293,10 +293,7 @@ MultiFileUpload.prototype = {
         )
 
         $uploadActions.appendChild(
-          this.buildDeleteButton(
-            documentDetail.id,
-            documentDetail.attributes.filename
-          )
+          this.buildDeleteButton(documentDetail.id, documentDetail.filename)
         )
       })
       .catch(errors => this.renderErrors(errors, $fileUploadRow))

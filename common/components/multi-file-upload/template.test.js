@@ -66,7 +66,7 @@ describe('Multi file upload component', function() {
   })
 
   context('with uploaded documents', function() {
-    const mockData = examples['with document uploads']
+    const mockData = examples['with files']
     let $component
 
     beforeEach(function() {
@@ -80,12 +80,12 @@ describe('Multi file upload component', function() {
 
     it('should render documents', function() {
       expect($component.find('.js-upload-row').length).to.equal(
-        mockData.documents.length
+        mockData.value.length
       )
     })
 
     it('should render first document', function() {
-      const documentMockData = mockData.documents[0]
+      const documentMockData = mockData.value[0]
       const $document = $component.find(
         `[data-document-id="${documentMockData.id}"]`
       )
@@ -99,7 +99,7 @@ describe('Multi file upload component', function() {
     })
 
     it('should render second document', function() {
-      const documentMockData = mockData.documents[1]
+      const documentMockData = mockData.value[1]
       const $document = $component.find(
         `[data-document-id="${documentMockData.id}"]`
       )
