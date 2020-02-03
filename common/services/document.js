@@ -14,6 +14,17 @@ const logErrorMessage = error => {
 }
 
 const documentService = {
+  create(data) {
+    return Promise.resolve({
+      filename: data.originalname,
+      id: data.filename,
+    })
+  },
+
+  destroy(id) {
+    return Promise.resolve(id)
+  },
+
   async upload(file, moveId) {
     const formData = new FormData()
     const stream = fs.createReadStream(file.path)
