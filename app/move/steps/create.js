@@ -110,7 +110,6 @@ module.exports = {
     controller: HealthDetails,
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
-    template: 'move/views/create/health-details',
     buttonText: FEATURE_FLAGS.DOCUMENTS
       ? 'actions::continue'
       : 'actions::schedule_move', // TODO: move this logic to a more sensible place, like a controller
@@ -123,7 +122,7 @@ module.exports = {
       'health__pregnant',
       'health__other_health',
       'health__special_vehicle',
-      'type_health__special_vehicle'
+      'type_health__special_vehicle',
     ],
   },
   '/document': {

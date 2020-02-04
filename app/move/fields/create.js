@@ -292,6 +292,7 @@ module.exports = {
   health__special_vehicle: {
     component: 'govukRadios',
     name: 'health__special_vehicle',
+    validate: 'required',
     fieldset: {
       legend: {
         text: 'Do they require a special vehicle?',
@@ -315,6 +316,7 @@ module.exports = {
   type_health__special_vehicle: {
     skip: true,
     rows: 3,
+    validate: 'required',
     component: 'govukTextarea',
     classes: 'govuk-input--width-20',
     label: {
