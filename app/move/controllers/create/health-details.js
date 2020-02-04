@@ -1,8 +1,14 @@
-const AssessmentController = require('./assessment')
+/**/const AssessmentController = require('./assessment')
 const { get, set, find, findIndex } = require('lodash')
 
 class HealthDetails extends AssessmentController {
-  render(req, res, next) {
+
+  middlewareSetup() {
+    this.use(this.removeSpecialVehicle)
+    super.middlewareSetup()
+  }
+
+  removeSpecialVehicle (req, res, next) {
     const fields = get(req, 'form.options.fields.health.items')
     if (Array.isArray(fields)) {
       const fieldWithVehicleIndex = findIndex(fields, [
@@ -12,7 +18,7 @@ class HealthDetails extends AssessmentController {
       fields.splice(fieldWithVehicleIndex, 1)
       set(req, 'form.options.fields.health.items', fields)
     }
-    super.render(req, res, next)
+    return next()
   }
 
   saveValues(req, res, next) {
