@@ -313,17 +313,7 @@ module.exports = {
       },
     ],
   },
-  type_health__special_vehicle: {
-    skip: true,
-    rows: 3,
-    validate: 'required',
-    component: 'govukTextarea',
-    classes: 'govuk-input--width-20',
-    label: {
-      text: 'Type of special vehicle',
-      classes: 'govuk-label--s',
-    },
-  },
+  type_health__special_vehicle: requiredAssessmentQuestionComments,
   // court information
   court: assessmentCategory('court'),
   court__solicitor: assessmentQuestionComments,
