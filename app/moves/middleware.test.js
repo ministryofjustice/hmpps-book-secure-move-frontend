@@ -2,13 +2,15 @@ const moveService = require('../../common/services/move')
 
 const middleware = require('./middleware')
 
-const mockRequestedMoves = [
-  { foo: 'bar', status: 'requested' },
-  { fizz: 'buzz', status: 'requested' },
+const mockActiveMoves = [
+  { id: '1', foo: 'bar', status: 'requested' },
+  { id: '2', fizz: 'buzz', status: 'requested' },
+  { id: '3', foo: 'bar', status: 'completed' },
+  { id: '4', fizz: 'buzz', status: 'completed' },
 ]
 const mockCancelledMoves = [
-  { foo: 'bar', status: 'cancelled' },
-  { fizz: 'buzz', status: 'cancelled' },
+  { id: '5', foo: 'bar', status: 'cancelled' },
+  { id: '6', fizz: 'buzz', status: 'cancelled' },
 ]
 const errorStub = new Error('Problem')
 
@@ -277,7 +279,7 @@ describe('Moves middleware', function() {
     const mockCurrentLocation = '5555'
 
     beforeEach(async function() {
-      sinon.stub(moveService, 'getRequested')
+      sinon.stub(moveService, 'getActive')
       sinon.stub(moveService, 'getCancelled')
       nextSpy = sinon.spy()
       res = { locals: {} }
@@ -293,7 +295,8 @@ describe('Moves middleware', function() {
       })
 
       it('should not call API with move date', function() {
-        expect(moveService.getRequested).not.to.be.called
+        expect(moveService.getActive).not.to.be.called
+        expect(moveService.getCancelled).not.to.be.called
       })
 
       it('should not set response data to locals object', function() {
@@ -312,7 +315,7 @@ describe('Moves middleware', function() {
 
       context('when API call returns successfully', function() {
         beforeEach(function() {
-          moveService.getRequested.resolves(mockRequestedMoves)
+          moveService.getActive.resolves(mockActiveMoves)
           moveService.getCancelled.resolves(mockCancelledMoves)
         })
 
@@ -323,7 +326,7 @@ describe('Moves middleware', function() {
           })
 
           it('should call API with move date and location ID', function() {
-            expect(moveService.getRequested).to.be.calledOnceWithExactly({
+            expect(moveService.getActive).to.be.calledOnceWithExactly({
               moveDate: res.locals.moveDate,
               fromLocationId: res.locals.fromLocationId,
             })
@@ -334,10 +337,8 @@ describe('Moves middleware', function() {
           })
 
           it('should set requested moves on locals', function() {
-            expect(res.locals).to.have.property('requestedMovesByDate')
-            expect(res.locals.requestedMovesByDate).to.deep.equal(
-              mockRequestedMoves
-            )
+            expect(res.locals).to.have.property('activeMovesByDate')
+            expect(res.locals.activeMovesByDate).to.deep.equal(mockActiveMoves)
           })
 
           it('should set cancelled moves on locals', function() {
@@ -355,12 +356,12 @@ describe('Moves middleware', function() {
 
       context('when API call returns an error', function() {
         beforeEach(async function() {
-          moveService.getRequested.throws(errorStub)
+          moveService.getActive.throws(errorStub)
           await middleware.setMovesByDateAndLocation({}, res, nextSpy)
         })
 
         it('should not set locals properties', function() {
-          expect(res.locals).not.to.have.property('requestedMovesByDate')
+          expect(res.locals).not.to.have.property('activeMovesByDate')
           expect(res.locals).not.to.have.property('cancelledMovesByDate')
         })
 
@@ -375,7 +376,7 @@ describe('Moves middleware', function() {
     let res, nextSpy
 
     beforeEach(async function() {
-      sinon.stub(moveService, 'getRequested')
+      sinon.stub(moveService, 'getActive')
       sinon.stub(moveService, 'getCancelled')
       nextSpy = sinon.spy()
       res = { locals: {} }
@@ -391,7 +392,7 @@ describe('Moves middleware', function() {
       })
 
       it('should not call API with move date', function() {
-        expect(moveService.getRequested).not.to.be.called
+        expect(moveService.getActive).not.to.be.called
       })
 
       it('should not set response data to locals object', function() {
@@ -410,7 +411,7 @@ describe('Moves middleware', function() {
 
       context('when API call returns successfully', function() {
         beforeEach(function() {
-          moveService.getRequested.resolves(mockRequestedMoves)
+          moveService.getActive.resolves(mockActiveMoves)
           moveService.getCancelled.resolves(mockCancelledMoves)
         })
 
@@ -437,15 +438,15 @@ describe('Moves middleware', function() {
             })
             it('should call the API with batches of 40 locations by default', function() {
               expect(req.session.user.locations).to.have.length(75)
-              expect(moveService.getRequested).to.have.callCount(2)
-              expect(moveService.getRequested).to.be.calledWithExactly({
+              expect(moveService.getActive).to.have.callCount(2)
+              expect(moveService.getActive).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
                   .slice(0, 40)
                   .join(','),
               })
-              expect(moveService.getRequested).to.be.calledWithExactly({
+              expect(moveService.getActive).to.be.calledWithExactly({
                 moveDate: res.locals.moveDate,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
@@ -469,11 +470,12 @@ describe('Moves middleware', function() {
                   .join(','),
               })
             })
-            it('should set requested moves on locals', function() {
-              expect(res.locals).to.have.property('requestedMovesByDate')
-              expect(res.locals.requestedMovesByDate).to.deep.equal([
-                ...mockRequestedMoves,
-                ...mockRequestedMoves,
+
+            it('should set active moves on locals', function() {
+              expect(res.locals).to.have.property('activeMovesByDate')
+              expect(res.locals.activeMovesByDate).to.deep.equal([
+                ...mockActiveMoves,
+                ...mockActiveMoves,
               ])
             })
 
@@ -497,12 +499,12 @@ describe('Moves middleware', function() {
               },
             },
           }
-          moveService.getRequested.throws(errorStub)
+          moveService.getActive.throws(errorStub)
           await middleware.setMovesByDateAllLocations(req, res, nextSpy)
         })
 
         it('should not set locals properties', function() {
-          expect(res.locals).not.to.have.property('requestedMovesByDate')
+          expect(res.locals).not.to.have.property('activeMovesByDate')
           expect(res.locals).not.to.have.property('cancelledMovesByDate')
         })
 

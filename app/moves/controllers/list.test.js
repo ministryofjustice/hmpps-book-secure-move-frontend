@@ -3,7 +3,7 @@ const permissions = require('../../../common/middleware/permissions')
 
 const controller = require('./list')
 
-const mockRequestedMovesByDate = [
+const mockActiveMovesByDate = [
   { foo: 'bar', status: 'requested' },
   { fizz: 'buzz', status: 'requested' },
 ]
@@ -32,7 +32,7 @@ describe('Moves controllers', function() {
     describe('template params', function() {
       context('with moves', function() {
         beforeEach(function() {
-          res.locals.requestedMovesByDate = mockRequestedMovesByDate
+          res.locals.activeMovesByDate = mockActiveMovesByDate
           res.locals.cancelledMovesByDate = mockCancelledMovesByDate
 
           controller(req, res)
@@ -44,7 +44,7 @@ describe('Moves controllers', function() {
 
         it('should call movesByToLocation presenter', function() {
           expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
-            mockRequestedMovesByDate
+            mockActiveMovesByDate
           )
         })
 
@@ -59,7 +59,7 @@ describe('Moves controllers', function() {
         it('should contain destinations property', function() {
           const params = res.render.args[0][1]
           expect(params).to.have.property('destinations')
-          expect(params.destinations).to.deep.equal(mockRequestedMovesByDate)
+          expect(params.destinations).to.deep.equal(mockActiveMovesByDate)
         })
       })
 

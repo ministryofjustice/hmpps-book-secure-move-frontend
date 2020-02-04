@@ -6,7 +6,7 @@ const presenters = require('../../../common/presenters')
 module.exports = function list(req, res) {
   const {
     cancelledMovesByDate = [],
-    requestedMovesByDate = [],
+    activeMovesByDate = [],
     fromLocationId,
   } = res.locals
   const userPermissions = get(req.session, 'user.permissions')
@@ -15,7 +15,7 @@ module.exports = function list(req, res) {
     canViewMove && fromLocationId ? 'moves/views/list' : 'moves/views/download'
   const locals = {
     pageTitle: 'moves::dashboard.upcoming_moves',
-    destinations: presenters.movesByToLocation(requestedMovesByDate),
+    destinations: presenters.movesByToLocation(activeMovesByDate),
     cancelledMoves: cancelledMovesByDate.map(
       presenters.moveToCardComponent({
         showMeta: false,

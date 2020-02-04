@@ -54,6 +54,18 @@ const moveService = {
     })
   },
 
+  getActive({ moveDate, fromLocationId, toLocationId } = {}) {
+    return moveService.getAll({
+      filter: {
+        'filter[status]': 'requested,accepted,completed',
+        'filter[date_from]': moveDate,
+        'filter[date_to]': moveDate,
+        'filter[from_location_id]': fromLocationId,
+        'filter[to_location_id]': toLocationId,
+      },
+    })
+  },
+
   getCancelled({ moveDate, fromLocationId, toLocationId } = {}) {
     return moveService.getAll({
       filter: {
