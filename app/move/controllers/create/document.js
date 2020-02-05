@@ -30,10 +30,8 @@ class DocumentUploadController extends CreateBaseController {
 
   xhrErrorResponse(t, errorType) {
     return {
-      href: '#document_upload',
-      text: `${t('fields::document_upload.label')} ${t(
-        `validation::${errorType}`
-      )}`,
+      href: '#documents',
+      text: `${t('fields::documents.label')} ${t(`validation::${errorType}`)}`,
     }
   }
 
@@ -62,12 +60,7 @@ class DocumentUploadController extends CreateBaseController {
 
         if (!isXhr) {
           return next({
-            document_upload: this.serverError(
-              req,
-              res,
-              'document_upload',
-              errorType
-            ),
+            documents: this.serverError(req, res, 'documents', errorType),
           })
         }
       }
@@ -84,7 +77,7 @@ class DocumentUploadController extends CreateBaseController {
 
   async populateDocumentUpload(req, res, next) {
     const { id } = req.sessionModel.get('move') || {}
-    const { document_upload: documentUpload } = req.form.options.fields
+    const { documents: documentUpload } = req.form.options.fields
 
     try {
       if (id) {
@@ -173,7 +166,7 @@ class DocumentUploadController extends CreateBaseController {
         await this.processDocumentUpload(req, res)
       } catch (error) {
         return next({
-          document_upload: this.serverError(req, res, 'document_upload'),
+          documents: this.serverError(req, res, 'documents'),
         })
       }
     }
@@ -183,7 +176,7 @@ class DocumentUploadController extends CreateBaseController {
         await documentService.delete(moveId, documentId)
       } catch (error) {
         return next({
-          document_upload: this.serverError(req, res, 'document_upload'),
+          documents: this.serverError(req, res, 'documents'),
         })
       }
     }

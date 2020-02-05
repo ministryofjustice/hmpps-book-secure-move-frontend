@@ -4,10 +4,10 @@
 <div class="app-multi-file-upload" data-module="app-multi-file-upload" data-xhr-url="{{ params.xhrUrl }}">
   <h2 class="govuk-body-l">{{ params.heading.text }}</h2>
   <dl class="app-multi-file-upload__list govuk-summary-list js-upload-list">
-    {% for document in params.documents %}
-    <div class="govuk-summary-list__row app-row js-upload-row" data-document-id="{{ document.id }}">
+    {% for file in params.value %}
+    <div class="govuk-summary-list__row app-row js-upload-row" data-document-id="{{ file.id }}">
       <dt class="govuk-summary-list__key app-row__key">
-        {{ document.filename }}
+        {{ file.filename }}
       </dt>
       <dd class="govuk-summary-list__value app-row__value js-upload-message">
         <span class="app-multi-file-upload-message app-multi-file-upload-message__success">
@@ -15,28 +15,27 @@
         </span>
       </dd>
       <dd class="govuk-summary-list__actions app-row__actions js-upload-actions">
-        <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 js-upload-delete"
-                value="{{ document.id }}"
-                name="document_id">
-          Delete
-          <span class="govuk-visually-hidden">{{ document.filename }}</span>
-        </button>
+        {% set deleteLabel %}
+          Delete <span class="govuk-visually-hidden">{{ file.filename }}</span>
+        {% endset %}
+
+        {{ govukButton({
+          html: deleteLabel,
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-upload-delete",
+          name: "delete",
+          value: file.id
+        }) }}
       </dd>
     </div>
     {% endfor %}
   </dl>
 
   {{ govukFileUpload({
-    id: "file",
-    name: "file",
+    id: params.id,
+    name: params.name,
     classes: 'js-upload-file-input',
-    label: {
-      text: "Upload documents (optional)",
-      classes: 'govuk-label--m'
-    },
-    hint: {
-      text: "You can upload Word, Excel, PDF and JPEG documents up to 50MB."
-    },
+    label: params.label,
+    hint: params.hint,
     attributes: { multiple: "" },
     value: "",
     errorMessage: params.errorMessage,
@@ -47,7 +46,7 @@
 
   {{ govukButton({
     text: "Upload",
-    classes: "govuk-button govuk-button--secondary app-js-hidden",
+    classes: "govuk-button--secondary app-js-hidden",
     name: "upload",
     value: "upload"
   }) }}

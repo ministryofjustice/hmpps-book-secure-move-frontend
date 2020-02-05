@@ -28,18 +28,20 @@ params:
 
 examples:
   - name: default
-    description: The multi upload component without uploaded documents
+    description: The multi upload component without uploaded files
     data:
       heading:
-       text: example default heading
+        text: example default heading
+      hint:
+        text: You can upload Word, Excel, PDF and JPEG documents up to 50MB.
       xhrUrl: '/example/text/xhr-endpoint'
-  - name: with document uploads
-    description: The multi upload component with uploaded documents
+  - name: with files
+    description: The multi upload component with uploaded files
     data:
       heading:
-       text: example heading with documents
+        text: example heading with documents
       xhrUrl: '/example/text/xhr-endpoint'
-      documents:
+      value:
       - id: 'example-id-01'
         filename: 'example-file-01-png'
       - id: 'example-id-02'

@@ -37,6 +37,9 @@ MultiFileUpload.prototype = {
       '.js-file-form-group'
     )
     this.$htmlTitle = document.querySelector('title')
+    this.$fileInput = this.params.container.querySelector(
+      '.js-upload-file-input'
+    )
 
     this.buildDropZone()
     this.setupFileInput()
@@ -204,7 +207,7 @@ MultiFileUpload.prototype = {
         <dd class="govuk-summary-list__value app-row__value js-upload-message">
           <span class="app-multi-file-upload__progress-bar js-upload-progress-bar"></span>
           <span class="app-multi-file-upload__progress-number js-upload-progress-number">0%</span>
-        </dd>      
+        </dd>
         <dd class="govuk-summary-list__actions app-row__actions js-upload-actions"></dd>
       </div>`.trim()
   },
@@ -240,7 +243,7 @@ MultiFileUpload.prototype = {
 
     this.resetErrors()
 
-    formData.append('file', file)
+    formData.append(this.$fileInput.name, file)
     formData.append('x-csrf-token', xsrfToken.value)
 
     const $tmpDiv = document.createElement('div')
@@ -290,10 +293,7 @@ MultiFileUpload.prototype = {
         )
 
         $uploadActions.appendChild(
-          this.buildDeleteButton(
-            documentDetail.id,
-            documentDetail.attributes.filename
-          )
+          this.buildDeleteButton(documentDetail.id, documentDetail.filename)
         )
       })
       .catch(errors => this.renderErrors(errors, $fileUploadRow))
@@ -315,7 +315,7 @@ MultiFileUpload.prototype = {
     if (errorData.length === 0) {
       errorData.push({
         text: 'Something went wrong',
-        href: '#document_upload',
+        href: `#${this.$fileInput.id}`,
       })
     }
 

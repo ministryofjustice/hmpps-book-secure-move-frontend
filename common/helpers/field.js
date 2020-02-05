@@ -140,6 +140,8 @@ function translateField(translate) {
       'hint.html',
       'fieldset.legend.text',
       'fieldset.legend.html',
+      'heading.text',
+      'heading.html',
     ]
 
     translationPaths.forEach(path => {

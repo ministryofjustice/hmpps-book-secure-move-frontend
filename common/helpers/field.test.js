@@ -654,6 +654,16 @@ describe('Form helpers', function() {
             },
           },
         },
+        'heading.text': {
+          heading: {
+            text: 'heading.text',
+          },
+        },
+        'heading.html': {
+          heading: {
+            html: 'heading.html',
+          },
+        },
       }
 
       Object.entries(scenarios).forEach(function([path, properties]) {
