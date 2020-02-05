@@ -1,4 +1,4 @@
-const { find, sortBy } = require('lodash')
+const { sortBy } = require('lodash')
 
 function locations(req, res) {
   const locations = sortBy(req.userLocations, 'title')
@@ -8,33 +8,15 @@ function locations(req, res) {
   })
 }
 
-function setLocation(req, res, next) {
-  const { locationId } = req.params
-  const location = find(req.userLocations, { id: locationId })
+function redirect(req, res) {
+  const redirectUrl = req.session.originalRequestUrl || '/'
 
-  if (!location) {
-    return next()
-  }
+  req.session.originalRequestUrl = null
 
-  req.session.currentLocation = location
-
-  res.redirect('/')
-}
-
-function setAllLocations(req, res, next) {
-  const { permissions = [] } = req.session.user || {}
-
-  if (!permissions.includes('moves:view:all')) {
-    return next()
-  }
-
-  req.session.currentLocation = null
-
-  res.redirect('/')
+  res.redirect(redirectUrl)
 }
 
 module.exports = {
   locations,
-  setLocation,
-  setAllLocations,
+  redirect,
 }
