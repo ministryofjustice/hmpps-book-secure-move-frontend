@@ -130,14 +130,6 @@ const moveService = {
       })
       .then(response => response.data)
   },
-
-  destroy(id) {
-    if (!id) {
-      return Promise.reject(new Error(noMoveIdMessage))
-    }
-
-    return apiClient.destroy('move', id).then(response => response.data)
-  },
 }
 
 module.exports = moveService

@@ -31,8 +31,7 @@ User.prototype = {
         'moves:download:by_location',
         'move:view',
         'move:create',
-        'move:cancel',
-        'move:delete'
+        'move:cancel'
       )
     }
 

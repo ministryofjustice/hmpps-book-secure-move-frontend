@@ -71,23 +71,13 @@
         classes: options.buttonClasses
       }) }}
 
-      {% if cancelUrl and canAccess("move:delete") %}
-        {% if formMethod == 'get' %}
-            <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
-              {{ t("actions::cancel") }}
-            </a>
-          {% else %}
-            {{ govukButton({
-              text: t("actions::cancel"),
-              classes: "govuk-button govuk-button--text",
-              name: "cancel_move",
-              value: "cancel"
-            }) }}
-        {% endif %}
+      {% if cancelUrl %}
+        <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+          {{ t("actions::cancel") }}
+        </a>
       {% endif %}
     {% endblock %}
   </form>
-
 {% endblock %}
 
 {% block contentSidebar %}

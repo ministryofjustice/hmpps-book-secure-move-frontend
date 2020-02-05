@@ -625,41 +625,4 @@ describe('Move Service', function() {
       })
     })
   })
-
-  describe('#destroy()', function() {
-    const mockDocumentId = '122132323'
-    const mockResponse = {
-      data: {
-        id: mockDocumentId,
-      },
-    }
-    let response
-
-    context('without move ID', function() {
-      it('should reject with error', function() {
-        return expect(moveService.destroy()).to.be.rejectedWith(
-          'No move ID supplied'
-        )
-      })
-    })
-
-    context('with move ID', function() {
-      beforeEach(async function() {
-        sinon.stub(apiClient, 'destroy').resolves(mockResponse)
-
-        response = await moveService.destroy(mockDocumentId)
-      })
-
-      it('should call destroy method with data', function() {
-        expect(apiClient.destroy).to.be.calledOnceWithExactly(
-          'move',
-          mockDocumentId
-        )
-      })
-
-      it('should return data', function() {
-        expect(response).to.deep.equal(mockResponse.data)
-      })
-    })
-  })
 })
