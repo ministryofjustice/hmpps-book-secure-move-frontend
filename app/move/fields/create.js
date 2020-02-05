@@ -1,4 +1,5 @@
 const { date } = require('../formatters')
+const SUFFIX_YESNO = '__yesno'
 
 const assessmentQuestionComments = {
   skip: true,
@@ -24,6 +25,7 @@ function assessmentCategory(category) {
   return {
     component: 'govukCheckboxes',
     multiple: true,
+    implicitGroup: true,
     items: [],
     name: category,
     fieldset: {
@@ -35,6 +37,32 @@ function assessmentCategory(category) {
     hint: {
       text: `fields::${category}.hint`,
     },
+  }
+}
+
+function explicitYesNo(category, key) {
+  return {
+    validate: 'required',
+    component: 'govukRadios',
+    name: `${key}${SUFFIX_YESNO}`,
+    fieldset: {
+      legend: {
+        text: 'Yes/no',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        id: `${key}${SUFFIX_YESNO}`,
+        value: 'yes',
+        text: 'Yes',
+        conditional: `${category}__${key}`
+      },
+      {
+        value: 'no',
+        text: 'No',
+      },
+    ],
   }
 }
 
@@ -282,13 +310,16 @@ module.exports = {
   risk__concealed_items: assessmentQuestionComments,
   risk__other_risks: requiredAssessmentQuestionComments,
   // health information
-  health: assessmentCategory('health'),
   health__special_diet_or_allergy: assessmentQuestionComments,
   health__health_issue: assessmentQuestionComments,
   health__medication: assessmentQuestionComments,
   health__wheelchair: assessmentQuestionComments,
   health__pregnant: assessmentQuestionComments,
   health__other_health: requiredAssessmentQuestionComments,
+  health__special_vehicle: {
+    ...requiredAssessmentQuestionComments,
+    explicit: true,
+  },
   // court information
   court: assessmentCategory('court'),
   court__solicitor: assessmentQuestionComments,
@@ -309,4 +340,6 @@ module.exports = {
       text: 'fields::documents.hint',
     },
   },
+  assessmentCategory,
+  explicitYesNo,
 }

@@ -39,6 +39,11 @@ const assessmentQuestionFieldsMock = {
 
 describe('Move controllers', function() {
   describe('Assessment controller', function() {
+    describe('#configure() 2', function() {
+      it('produces the correct result', function() {
+
+      })
+    })
     describe('#configure()', function() {
       let nextSpy
 
@@ -59,6 +64,7 @@ describe('Move controllers', function() {
           req = {
             form: {
               options: {
+                assessmentCategory: 'risk',
                 fields: {
                   risk: {
                     name: 'risk',

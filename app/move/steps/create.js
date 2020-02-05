@@ -82,9 +82,9 @@ module.exports = {
   '/court-information': {
     controller: Assessment,
     pageTitle: 'moves::steps.court_information.heading',
+    assessmentCategory: 'court',
     next: 'risk-information',
     fields: [
-      'court',
       'court__solicitor',
       'court__interpreter',
       'court__other_court',
@@ -92,10 +92,10 @@ module.exports = {
   },
   '/risk-information': {
     controller: Assessment,
+    assessmentCategory: 'risk',
     pageTitle: 'moves::steps.risk_information.heading',
     next: 'health-information',
     fields: [
-      'risk',
       'risk__violent',
       'risk__escape',
       'risk__hold_separately',
@@ -106,19 +106,20 @@ module.exports = {
   },
   '/health-information': {
     controller: Assessment,
+    assessmentCategory: 'health',
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
     buttonText: FEATURE_FLAGS.DOCUMENTS
       ? 'actions::continue'
       : 'actions::schedule_move', // TODO: move this logic to a more sensible place, like a controller
     fields: [
-      'health',
       'health__special_diet_or_allergy',
       'health__health_issue',
       'health__medication',
       'health__wheelchair',
       'health__pregnant',
       'health__other_health',
+      'health__special_vehicle',
     ],
   },
   '/document': {

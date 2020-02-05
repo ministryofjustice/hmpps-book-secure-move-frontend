@@ -6,6 +6,8 @@ const i18n = require('../../config/i18n')
 const referenceDataService = require('../../common/services/reference-data')
 const referenceDataHelpers = require('../../common/helpers/reference-data')
 
+const SUFFIX_YESNO = '__yesno'
+
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
     value: id,
@@ -246,7 +248,23 @@ function mapPersonToOption(person) {
   }
 }
 
+function appendDependent(field, category, question) {
+  if (field.explicit) {
+    field.dependent = {
+      field: `${question.key}${SUFFIX_YESNO}`,
+      value: 'yes',
+    }
+  } else {
+    field.dependent = {
+      field: category,
+      value: question.id,
+    }
+  }
+}
+
 module.exports = {
+  mapAssessmentQuestionToConditionalField,
+  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   renderConditionalFields,
   setFieldValue,
@@ -256,4 +274,5 @@ module.exports = {
   insertItemConditional,
   populateAssessmentQuestions,
   mapPersonToOption,
+  appendDependent,
 }
