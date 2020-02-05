@@ -15,7 +15,7 @@ module.exports = function ensureAuthenticated({
       return next()
     }
 
-    req.session.postAuthRedirect = req.originalUrl
+    req.session.originalRequestUrl = req.originalUrl
     res.redirect(`/connect/${provider}`)
   }
 }

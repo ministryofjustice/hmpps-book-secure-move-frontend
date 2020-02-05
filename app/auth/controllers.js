@@ -2,9 +2,9 @@ const { AUTH_PROVIDERS, DEFAULT_AUTH_PROVIDER } = require('../../config')
 
 module.exports = {
   redirect: (req, res) => {
-    const url = req.session.postAuthRedirect || '/'
+    const url = req.session.originalRequestUrl || '/'
 
-    req.session.postAuthRedirect = null
+    req.session.originalRequestUrl = null
 
     res.redirect(url)
   },
