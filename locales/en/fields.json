@@ -116,14 +116,17 @@
   "cancellation_reason_comment": {
     "label": "Give details"
   },
-  "court__other_court": {
+  "other_court": {
     "label": "Any other information details"
   },
-  "risk__other_risks": {
+  "other_risks": {
     "label": "Any other risks details"
   },
-  "health__other_health": {
+  "other_health": {
     "label": "Any other requirements details"
+  },
+  "special_vehicle": {
+    "label": "Special vehicle details"
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
