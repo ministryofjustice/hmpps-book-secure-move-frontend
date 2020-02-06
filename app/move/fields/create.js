@@ -1,5 +1,5 @@
 const { date } = require('../formatters')
-const SUFFIX_YESNO = '__yesno'
+const { find } = require('lodash')
 
 const assessmentQuestionComments = {
   skip: true,
@@ -62,6 +62,32 @@ function explicitYesNo(name) {
       },
     ],
   }
+}
+
+function appendDependent(questions, assessmentCategory, field, key) {
+  const question = find(questions, { key })
+  let dependent = {}
+
+  if (question) {
+    if (field.explicit) {
+      dependent = {
+        field: `${question.key}__yesno`,
+        value: 'yes',
+      }
+    } else {
+      dependent = {
+        field: assessmentCategory,
+        value: question.id,
+      }
+    }
+
+    return {
+      ...field,
+      dependent,
+    }
+  }
+
+  return field
 }
 
 function toLocationType(type, props) {
@@ -340,4 +366,5 @@ module.exports = {
   },
   assessmentCategory,
   explicitYesNo,
+  appendDependent,
 }

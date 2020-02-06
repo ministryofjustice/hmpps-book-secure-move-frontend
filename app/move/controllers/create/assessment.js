@@ -1,4 +1,12 @@
-const { cloneDeep, find, filter, forEach, flatten, values, mapValues } = require('lodash')
+const {
+  cloneDeep,
+  find,
+  filter,
+  forEach,
+  flatten,
+  values,
+  mapValues,
+} = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -13,44 +21,26 @@ class AssessmentController extends CreateBaseController {
         assessmentCategory
       )
 
-      req.form.options.fields = mapValues(req.form.options.fields, (field, key) => {
-        const question = find(questions, { key })
-        let dependent = {}
+      req.form.options.fields = mapValues(
+        req.form.options.fields,
+        createFields.appendDependent.bind(null, questions, assessmentCategory)
+      )
 
-        if (question) {
-          if (field.explicit) {
-            dependent = {
-              field: `${question.key}__yesno`,
-              value: 'yes',
-            }
-          } else {
-            dependent = {
-              field: assessmentCategory,
-              value: question.id,
-            }
-          }
+      req.form.options.fields = forEach(
+        req.form.options.fields,
+        (field, key) => {
+          const question = find(questions, { key })
 
-          return {
-            ...field,
-            dependent,
+          if (question) {
+            if (field.explicit) {
+              const explicitKey = `${key}__yesno`
+              const explicitField = createFields.explicitYesNo(explicitKey)
+              explicitField.items[0].conditional = key
+              req.form.options.fields[explicitKey] = explicitField
+            }
           }
         }
-
-        return field
-      })
-
-      req.form.options.fields = forEach(req.form.options.fields, (field, key) => {
-        const question = find(questions, { key })
-
-        if (question) {
-          if (field.explicit) {
-            const explicitKey = `${key}__yesno`
-            const explicitField = createFields.explicitYesNo(explicitKey)
-            explicitField.items[0].conditional = key
-            req.form.options.fields[explicitKey] = explicitField
-          }
-        }
-      })
+      )
 
       const implicitField = createFields.assessmentCategory(assessmentCategory)
       implicitField.items = questions
