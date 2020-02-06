@@ -1,4 +1,5 @@
 const FormController = require('hmpo-form-wizard').Controller
+const referenceDataService = require('../../../../common/services/reference-data')
 
 const Controller = require('./assessment')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -40,8 +41,149 @@ const assessmentQuestionFieldsMock = {
 describe('Move controllers', function() {
   describe('Assessment controller', function() {
     describe.only('#configure() 2', function() {
-      it('produces the correct result', function() {
 
+      beforeEach(async function() {
+
+        sinon
+          .stub(referenceDataService, 'getAssessmentQuestions')
+          .resolves([
+            {
+              "id": "e6faaf20-3072-4a65-91f7-93d52b16260f",
+              "type": "assessment_questions",
+              "key": "special_diet_or_allergy",
+              "category": "health",
+              "title": "Special diet or allergy",
+              "disabled_at": null
+            },
+            {
+              "id": "1a73d31a-8dd4-47b6-90a0-15ce4e332539",
+              "type": "assessment_questions",
+              "key": "special_vehicle",
+              "category": "health",
+              "title": "Special vehicle",
+              "disabled_at": null
+            }
+          ])
+
+        sinon
+          .stub(FormController.prototype, 'configure')
+
+        nextSpy = sinon.spy()
+
+      })
+
+      it('produces the correct result', async function() {
+        let req = {
+          form: {
+            options: {
+              assessmentCategory: 'health',
+              fields: {
+                health__special_diet_or_allergy: {
+                  skip: true,
+                  rows: 3,
+                  component: 'govukTextarea',
+                  classes: 'govuk-input--width-20',
+                  label: {
+                    text: 'fields::assessment_comment.optional',
+                    classes: 'govuk-label--s',
+                  },
+                },
+                health__special_vehicle: {
+                  skip: true,
+                  rows: 3,
+                  component: 'govukTextarea',
+                  classes: 'govuk-input--width-20',
+                  label: {
+                    text: 'fields::assessment_comment.required',
+                    classes: 'govuk-label--s',
+                  },
+                  validate: 'required',
+                  explicit: true,
+                },
+              },
+            },
+          }
+        }
+        await controller.configure(req, {}, nextSpy)
+        expect(req.form.options.fields).to.deep.equal(
+          {
+            "health__special_diet_or_allergy": {
+              "skip": true,
+              "rows": 3,
+              "component": "govukTextarea",
+              "classes": "govuk-input--width-20",
+              "label": {
+                "text": "fields::assessment_comment.optional",
+                "classes": "govuk-label--s"
+              },
+              "dependent": {
+                "field": "health",
+                "value": "e6faaf20-3072-4a65-91f7-93d52b16260f"
+              }
+            },
+            "health__special_vehicle": {
+              "skip": true,
+              "rows": 3,
+              "component": "govukTextarea",
+              "classes": "govuk-input--width-20",
+              "label": {
+                "text": "fields::assessment_comment.required",
+                "classes": "govuk-label--s"
+              },
+              "validate": "required",
+              "explicit": true,
+              "dependent": {
+                "field": "health__special_vehicle__yesno",
+                "value": "yes"
+              }
+            },
+            "health__special_vehicle__yesno": {
+              "validate": "required",
+              "component": "govukRadios",
+              "name": "health__special_vehicle__yesno",
+              "fieldset": {
+                "legend": {
+                  "text": "Yes/no",
+                  "classes": "govuk-fieldset__legend--m"
+                }
+              },
+              "items": [
+                {
+                  "value": "yes",
+                  "text": "Yes",
+                  "conditional": "health__special_vehicle"
+                },
+                {
+                  "value": "no",
+                  "text": "No"
+                }
+              ]
+            },
+            "health": {
+              "component": "govukCheckboxes",
+              "multiple": true,
+              "implicitGroup": true,
+              "items": [
+                {
+                  "value": "e6faaf20-3072-4a65-91f7-93d52b16260f",
+                  "text": "Special diet or allergy",
+                  "key": "special_diet_or_allergy",
+                  "conditional": "health__special_diet_or_allergy"
+                }
+              ],
+              "name": "health",
+              "fieldset": {
+                "legend": {
+                  "text": "fields::health.label",
+                  "classes": "govuk-visually-hidden govuk-fieldset__legend--m"
+                }
+              },
+              "hint": {
+                "text": "fields::health.hint"
+              }
+            }
+          }
+        )
       })
     })
     describe('#configure()', function() {
