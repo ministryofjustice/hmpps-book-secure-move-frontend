@@ -128,4 +128,126 @@ describe('Locations middleware', function() {
       })
     })
   })
+
+  describe('#setLocation', function() {
+    let nextSpy
+
+    beforeEach(function() {
+      req = {
+        session: {},
+        params: {},
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('when no locationId parameter supplied', function() {
+      beforeEach(function() {
+        middleware.setLocation(req, {}, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should set currentLocation to undefined', function() {
+        expect(req.session.currentLocation).to.be.undefined
+      })
+    })
+
+    context('when locationId is not found in user locations', function() {
+      beforeEach(function() {
+        req.params.locationId = 'not_authorised'
+        req.userLocations = mockUserLocations
+
+        middleware.setLocation(req, {}, nextSpy)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should set currentLocation to undefined', function() {
+        expect(req.session.currentLocation).to.be.undefined
+      })
+    })
+
+    context('when locationId is found in user locations', function() {
+      beforeEach(function() {
+        req.params.locationId = mockUserLocations[0].id
+        req.userLocations = mockUserLocations
+
+        middleware.setLocation(req, {}, nextSpy)
+      })
+
+      it('should set currentLocation', function() {
+        expect(req.session).to.have.property('currentLocation')
+        expect(req.session.currentLocation).to.deep.equal(mockUserLocations[0])
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
+  describe('#setAllLocations', function() {
+    let nextSpy
+
+    beforeEach(function() {
+      req = {
+        session: {},
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('when user does not have permission', function() {
+      context('if current location does not exist', function() {
+        beforeEach(function() {
+          middleware.setAllLocations(req, {}, nextSpy)
+        })
+
+        it('should call next without args', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+
+        it('should not set currentLocation', function() {
+          expect(req.session).not.to.have.property('currentLocation')
+        })
+      })
+
+      context('if current location already exists', function() {
+        beforeEach(function() {
+          req.session.currentLocation = '1234567890'
+          middleware.setAllLocations(req, {}, nextSpy)
+        })
+
+        it('should call next without args', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+
+        it('should not change currentLocation', function() {
+          expect(req.session.currentLocation).to.equal('1234567890')
+        })
+      })
+    })
+
+    context('when locationId is found in user locations', function() {
+      beforeEach(function() {
+        req.session.user = {
+          permissions: ['moves:view:all'],
+        }
+
+        middleware.setAllLocations(req, {}, nextSpy)
+      })
+
+      it('should set currentLocation', function() {
+        expect(req.session).to.have.property('currentLocation')
+        expect(req.session.currentLocation).to.equal(null)
+      })
+
+      it('should call next without args', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
 })

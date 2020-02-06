@@ -4,7 +4,7 @@ const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
-    const { grant, postAuthRedirect, currentLocation } = req.session
+    const { grant, originalRequestUrl, currentLocation } = req.session
 
     if (!grant) {
       return next()
@@ -25,7 +25,7 @@ function processAuthResponse() {
 
         req.session.authExpiry = decodedAccessToken.exp
         req.session.currentLocation = currentLocation
-        req.session.postAuthRedirect = postAuthRedirect
+        req.session.originalRequestUrl = originalRequestUrl
         req.session.user = new User({
           fullname,
           locations,

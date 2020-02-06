@@ -29,7 +29,7 @@ describe('Authentication app', function() {
 
     context('when redirect URL exists in session', function() {
       beforeEach(function() {
-        req.session.postAuthRedirect = url
+        req.session.originalRequestUrl = url
         controllers.redirect(req, res)
       })
 
@@ -37,8 +37,8 @@ describe('Authentication app', function() {
         expect(res.redirect).to.be.calledWith(url)
       })
 
-      it('unsets session.postAuthRedirect', function() {
-        expect(req.session.postAuthRedirect).to.equal(null)
+      it('unsets session.originalRequestUrl', function() {
+        expect(req.session.originalRequestUrl).to.equal(null)
       })
     })
 
@@ -51,8 +51,8 @@ describe('Authentication app', function() {
         expect(res.redirect).to.be.calledWith('/')
       })
 
-      it('unsets session.postAuthRedirect', function() {
-        expect(req.session.postAuthRedirect).to.equal(null)
+      it('unsets session.originalRequestUrl', function() {
+        expect(req.session.originalRequestUrl).to.equal(null)
       })
     })
   })

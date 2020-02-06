@@ -50,7 +50,7 @@ describe('Authentication middleware', function() {
       })
 
       it('should set the redirect URL in the session', function() {
-        expect(req.session.postAuthRedirect).to.equal('/test')
+        expect(req.session.originalRequestUrl).to.equal('/test')
       })
     })
 
@@ -69,7 +69,7 @@ describe('Authentication middleware', function() {
       })
 
       it('should set the redirect URL in the session', function() {
-        expect(req.session.postAuthRedirect).to.equal('/test')
+        expect(req.session.originalRequestUrl).to.equal('/test')
       })
     })
 

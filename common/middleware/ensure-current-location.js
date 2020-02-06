@@ -10,6 +10,7 @@ function ensureCurrentLocation({ locationsMountpath, whitelist = [] } = {}) {
       return next()
     }
 
+    req.session.originalRequestUrl = req.originalUrl
     res.redirect(locationsMountpath)
   }
 }
