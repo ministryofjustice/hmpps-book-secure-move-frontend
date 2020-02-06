@@ -47,7 +47,7 @@ function explicitYesNo(name) {
     name: name,
     fieldset: {
       legend: {
-        text: 'Yes/no',
+        text: `fields::${name}.label`,
         classes: 'govuk-fieldset__legend--m',
       },
     },

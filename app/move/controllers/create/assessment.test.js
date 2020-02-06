@@ -143,7 +143,7 @@ describe('Move controllers', function() {
               "name": "special_vehicle__yesno",
               "fieldset": {
                 "legend": {
-                  "text": "Yes/no",
+                  "text": "fields::special_vehicle__yesno.label",
                   "classes": "govuk-fieldset__legend--m"
                 }
               },
