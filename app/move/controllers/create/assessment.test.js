@@ -78,7 +78,7 @@ describe('Move controllers', function() {
             options: {
               assessmentCategory: 'health',
               fields: {
-                health__special_diet_or_allergy: {
+                special_diet_or_allergy: {
                   skip: true,
                   rows: 3,
                   component: 'govukTextarea',
@@ -88,7 +88,7 @@ describe('Move controllers', function() {
                     classes: 'govuk-label--s',
                   },
                 },
-                health__special_vehicle: {
+                special_vehicle: {
                   skip: true,
                   rows: 3,
                   component: 'govukTextarea',
@@ -107,7 +107,7 @@ describe('Move controllers', function() {
         await controller.configure(req, {}, nextSpy)
         expect(req.form.options.fields).to.deep.equal(
           {
-            "health__special_diet_or_allergy": {
+            "special_diet_or_allergy": {
               "skip": true,
               "rows": 3,
               "component": "govukTextarea",
@@ -121,7 +121,7 @@ describe('Move controllers', function() {
                 "value": "e6faaf20-3072-4a65-91f7-93d52b16260f"
               }
             },
-            "health__special_vehicle": {
+            "special_vehicle": {
               "skip": true,
               "rows": 3,
               "component": "govukTextarea",
@@ -133,14 +133,14 @@ describe('Move controllers', function() {
               "validate": "required",
               "explicit": true,
               "dependent": {
-                "field": "health__special_vehicle__yesno",
+                "field": "special_vehicle__yesno",
                 "value": "yes"
               }
             },
-            "health__special_vehicle__yesno": {
+            "special_vehicle__yesno": {
               "validate": "required",
               "component": "govukRadios",
-              "name": "health__special_vehicle__yesno",
+              "name": "special_vehicle__yesno",
               "fieldset": {
                 "legend": {
                   "text": "Yes/no",
@@ -151,7 +151,7 @@ describe('Move controllers', function() {
                 {
                   "value": "yes",
                   "text": "Yes",
-                  "conditional": "health__special_vehicle"
+                  "conditional": "special_vehicle"
                 },
                 {
                   "value": "no",
@@ -168,7 +168,7 @@ describe('Move controllers', function() {
                   "value": "e6faaf20-3072-4a65-91f7-93d52b16260f",
                   "text": "Special diet or allergy",
                   "key": "special_diet_or_allergy",
-                  "conditional": "health__special_diet_or_allergy"
+                  "conditional": "special_diet_or_allergy"
                 }
               ],
               "name": "health",

@@ -14,13 +14,13 @@ class AssessmentController extends CreateBaseController {
       )
 
       req.form.options.fields = mapValues(req.form.options.fields, (field, key) => {
-        const question = find(questions, { key: key.replace(`${assessmentCategory}__`, '') })
+        const question = find(questions, { key })
         let dependent = {}
 
         if (question) {
           if (field.explicit) {
             dependent = {
-              field: `${assessmentCategory}__${question.key}__yesno`,
+              field: `${question.key}__yesno`,
               value: 'yes',
             }
           } else {
@@ -40,7 +40,7 @@ class AssessmentController extends CreateBaseController {
       })
 
       req.form.options.fields = forEach(req.form.options.fields, (field, key) => {
-        const question = find(questions, { key: key.replace(`${assessmentCategory}__`, '') })
+        const question = find(questions, { key })
 
         if (question) {
           if (field.explicit) {
@@ -56,9 +56,9 @@ class AssessmentController extends CreateBaseController {
       implicitField.items = questions
         .filter(question => {
           const key = question.key
-          const field = fields[`${assessmentCategory}__${key}`]
+          const field = fields[key]
 
-          return fields[`${assessmentCategory}__${key}`] && !field.explicit
+          return fields[key] && !field.explicit
         })
         .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
         .map(fieldHelpers.mapAssessmentQuestionToTranslation)
@@ -89,7 +89,7 @@ class AssessmentController extends CreateBaseController {
       .map(question => {
         return {
           assessment_question_id: question.id,
-          comments: req.form.values[`${assessmentCategory}__${question.key}`],
+          comments: req.form.values[`${question.key}`],
         }
       })
 

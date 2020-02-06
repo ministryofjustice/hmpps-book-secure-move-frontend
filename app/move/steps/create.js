@@ -85,9 +85,9 @@ module.exports = {
     assessmentCategory: 'court',
     next: 'risk-information',
     fields: [
-      'court__solicitor',
-      'court__interpreter',
-      'court__other_court',
+      'solicitor',
+      'interpreter',
+      'other_court',
     ],
   },
   '/risk-information': {
@@ -96,12 +96,12 @@ module.exports = {
     pageTitle: 'moves::steps.risk_information.heading',
     next: 'health-information',
     fields: [
-      'risk__violent',
-      'risk__escape',
-      'risk__hold_separately',
-      'risk__self_harm',
-      'risk__concealed_items',
-      'risk__other_risks',
+      'violent',
+      'escape',
+      'hold_separately',
+      'self_harm',
+      'concealed_items',
+      'other_risks',
     ],
   },
   '/health-information': {
@@ -113,13 +113,13 @@ module.exports = {
       ? 'actions::continue'
       : 'actions::schedule_move', // TODO: move this logic to a more sensible place, like a controller
     fields: [
-      'health__special_diet_or_allergy',
-      'health__health_issue',
-      'health__medication',
-      'health__wheelchair',
-      'health__pregnant',
-      'health__other_health',
-      'health__special_vehicle',
+      'special_diet_or_allergy',
+      'health_issue',
+      'medication',
+      'wheelchair',
+      'pregnant',
+      'other_health',
+      'special_vehicle',
     ],
   },
   '/document': {

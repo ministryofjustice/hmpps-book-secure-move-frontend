@@ -44,7 +44,7 @@ function mapAssessmentQuestionToTranslation(item) {
 function mapAssessmentQuestionToConditionalField(item) {
   return {
     ...item,
-    conditional: `${item.category}__${item.key}`,
+    conditional: item.key,
   }
 }
 
