@@ -368,17 +368,15 @@ MultiFileUpload.prototype = {
     const $button = event.target
     const $fileUploadRow = $button.closest('.js-upload-row')
     const xhrUrl = this.params.container.getAttribute('data-xhr-url')
-    const xhrDeleteUrl = `${xhrUrl}?document_id=${$button.value}`
-    const xsrfToken = document.querySelector('input[name="x-csrf-token"]').value
+    const xsrfToken = document.querySelector('input[name="x-csrf-token"]')
+
+    const formData = new FormData()
+
+    formData.append($button.name, $button.value)
+    formData.append('x-csrf-token', xsrfToken.value)
 
     axios
-      .delete(xhrDeleteUrl, {
-        headers: {
-          Accept: 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          'x-csrf-token': xsrfToken,
-        },
-      })
+      .post(xhrUrl, formData)
       .then(() => this.$uploadList.removeChild($fileUploadRow))
       .catch(errors => this.renderErrors(errors))
   },

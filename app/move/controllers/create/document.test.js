@@ -1,74 +1,95 @@
-const formidable = require('formidable')
+const proxyquire = require('proxyquire').noCallThru()
+const multer = require('multer')
 const FormController = require('hmpo-form-wizard').Controller
 const FormError = require('hmpo-form-wizard/lib/error')
 
+function MulterStub() {}
+MulterStub.prototype.array = sinon.stub()
+
+function multerStub() {
+  return new MulterStub()
+}
+multerStub.MulterError = multer.MulterError
+
+const Controller = proxyquire('./document', {
+  multer: multerStub,
+})
 const documentService = require('../../../../common/services/document')
-const moveService = require('../../../../common/services/move')
-const CreateDocumentController = require('./document')
 
-const controller = new CreateDocumentController({ route: '/' })
-
-const mockMoveId = '1234567'
-const mockDocumentId = 'b3da96e8-ffbd-4b09-9de1-b09130980aaf'
-const mockDocument = {
-  id: mockDocumentId,
-  type: 'documents',
-  filename: 'Screenshot 2019-11-27 at 15.45.59.png',
-  content_type: 'image/png',
-}
-const mockPerson = {
-  id: '3333',
-  fullname: 'Full name',
-}
-const mockMove = {
-  id: mockMoveId,
-  date: '2019-10-10',
-  to_location: {
-    title: 'To location',
-  },
-  person: mockPerson,
-  documents: [mockDocument],
-}
-const mockOriginalUrl = 'new/move/upload-documents'
-const mockFile = {
-  id: '122334',
-  attributes: {
-    filename: 'robocop-jumping.png',
-    type: 'img/png',
-  },
-  size: 100000,
-}
-const mockDocumentUploadResponse = {
-  data: {
-    id: '12345667',
-    attributes: {
-      filename: 'robocop-jumping.png',
-    },
-  },
-}
-const mockDocumentDeleteResponse = {
-  data: {
-    id: '12345667',
-    attributes: {
-      filename: 'robocop-jumping.png',
-    },
-  },
-}
-const mockStatusCode = 400
-const errorMessage = 'something terrible has happened'
-const mockError = new Error(errorMessage)
-const filesizeErrorMessage = 'maxFileSize exceeded'
-const mockFileSizeError = new Error(filesizeErrorMessage)
-const mockFieldData = { mock_field: 'field' }
-const mockFileData = { file: { name: 'file.png', file_type: 'image/png' } }
+const controller = new Controller({ route: '/' })
 
 describe('Move controllers', function() {
   describe('Create document upload controller', function() {
+    describe('#configure()', function() {
+      let req, nextSpy
+
+      beforeEach(async function() {
+        sinon.spy(FormController.prototype, 'configure')
+        nextSpy = sinon.spy()
+        req = {
+          originalUrl: '/xhr-url',
+          form: {
+            options: {
+              fields: {
+                documents: {},
+              },
+            },
+          },
+        }
+
+        await controller.configure(req, {}, nextSpy)
+      })
+
+      it('should set xhrUrl', function() {
+        expect(req.form.options.fields.documents.xhrUrl).to.equal('/xhr-url')
+      })
+
+      it('should call parent configure method', function() {
+        expect(FormController.prototype.configure).to.be.calledOnceWithExactly(
+          req,
+          {},
+          nextSpy
+        )
+      })
+
+      it('should not throw an error', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#middlewareSetup()', function() {
+      beforeEach(function() {
+        sinon.stub(FormController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setNextStep')
+
+        controller.middlewareSetup()
+      })
+
+      it('should call parent method', function() {
+        expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
+      })
+
+      it('should setup multer middleware', function() {
+        expect(MulterStub.prototype.array).to.have.been.calledWith('documents')
+      })
+
+      it('should call setNextStep middleware', function() {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setNextStep
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
     describe('#middlewareChecks()', function() {
       beforeEach(function() {
         sinon.stub(FormController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
-        sinon.stub(controller, 'checkFeatureEnabled')
+        sinon.stub(controller, 'isEnabled')
 
         controller.middlewareChecks()
       })
@@ -78,40 +99,78 @@ describe('Move controllers', function() {
           .calledOnce
       })
 
-      it('should call parseMultipartForm middleware', function() {
-        expect(controller.use.secondCall).to.have.been.calledWith(
-          controller.parseMultipartForm
-        )
-      })
-
-      it('should call checkFeatureEnabled middleware', function() {
+      it('should call isEnabled middleware', function() {
         expect(controller.use.firstCall).to.have.been.calledWithExactly(
-          controller.checkFeatureEnabled(true)
+          controller.isEnabled(true)
         )
       })
     })
 
-    describe('#middlewareLocals()', function() {
+    describe('#setNextStep()', function() {
+      let req, nextSpy
+
       beforeEach(function() {
-        sinon.stub(FormController.prototype, 'middlewareLocals')
-        sinon.stub(controller, 'use')
-
-        controller.middlewareLocals()
+        nextSpy = sinon.spy()
+        req = {
+          originalUrl: '/original-url',
+          body: {},
+          form: {
+            options: {
+              next: '/next-url',
+            },
+          },
+        }
       })
 
-      it('should call parent method', function() {
-        expect(FormController.prototype.middlewareLocals).to.have.been
-          .calledOnce
+      context('when request body is empty', function() {
+        beforeEach(function() {
+          controller.setNextStep(req, {}, nextSpy)
+        })
+        it('should keep original next value', function() {
+          expect(req.form.options.next).to.equal('/next-url')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call set cancel url method', function() {
-        expect(controller.use).to.have.been.calledWith(
-          controller.populateDocumentUpload
-        )
+      context('when request body contains upload field', function() {
+        beforeEach(function() {
+          req.body = {
+            upload: 'true',
+          }
+          controller.setNextStep(req, {}, nextSpy)
+        })
+
+        it('should keep original next value', function() {
+          expect(req.form.options.next).to.equal('/original-url')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when request body contains delete field', function() {
+        beforeEach(function() {
+          req.body = {
+            delete: 'true',
+          }
+          controller.setNextStep(req, {}, nextSpy)
+        })
+
+        it('should keep original next value', function() {
+          expect(req.form.options.next).to.equal('/original-url')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
-    describe('#checkFeatureEnabled()', function() {
+    describe('#isEnabled()', function() {
       let req, nextSpy
 
       beforeEach(function() {
@@ -125,7 +184,7 @@ describe('Move controllers', function() {
 
       context('when feature is enabled', function() {
         beforeEach(function() {
-          controller.checkFeatureEnabled(true)(req, {}, nextSpy)
+          controller.isEnabled(true)(req, {}, nextSpy)
         })
 
         it('should not set skip option', function() {
@@ -139,7 +198,7 @@ describe('Move controllers', function() {
 
       context('when feature is not enabled', function() {
         beforeEach(function() {
-          controller.checkFeatureEnabled(false)(req, {}, nextSpy)
+          controller.isEnabled(false)(req, {}, nextSpy)
         })
 
         it('should set skip option', function() {
@@ -152,1060 +211,284 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#xhrErrorResponse()', function() {
-      let response, t
-
-      beforeEach(function() {
-        t = sinon.stub().returns('__translated__')
-      })
-
-      afterEach(function() {
-        t.reset()
-      })
-
-      context('without error type argument', function() {
-        beforeEach(function() {
-          response = controller.xhrErrorResponse(t, 'generic')
-        })
-
-        it('should call parent method', function() {
-          expect(response).to.deep.equal({
-            href: '#documents',
-            text: '__translated__ __translated__',
-          })
-        })
-
-        it('should translate document upload label', function() {
-          expect(t.firstCall).to.be.calledWith('fields::documents.label')
-        })
-
-        it('should translate validation generic error', function() {
-          expect(t.secondCall).to.be.calledWith('validation::generic')
-        })
-      })
-
-      context('with error type argument', function() {
-        const errorType = 'filesize'
-
-        beforeEach(function() {
-          response = controller.xhrErrorResponse(t, errorType)
-        })
-
-        it('should call parent method', function() {
-          expect(response).to.deep.equal({
-            href: '#documents',
-            text: '__translated__ __translated__',
-          })
-        })
-
-        it('should translate document upload label', function() {
-          expect(t.firstCall).to.be.calledWith('fields::documents.label')
-        })
-
-        it('should translate validation filesize error', function() {
-          expect(t.secondCall).to.be.calledWith(`validation::${errorType}`)
-        })
-      })
-    })
-
-    describe('#parseMultipartForm()', function() {
+    describe('#saveValues()', function() {
       let req, res, nextSpy
+      const mockDocuments = [
+        { id: '12345' },
+        { id: '67890' },
+        { id: '112233' },
+        { id: '445566' },
+      ]
 
       beforeEach(function() {
-        res = {
-          status: sinon.stub().returnsThis(),
-          json: sinon.spy(),
-        }
-        nextSpy = sinon.spy()
-      })
-
-      context('when request is not a multipart/form-data POST', function() {
-        beforeEach(function() {
-          req = {
-            method: 'get',
-            get: sinon
-              .stub()
-              .withArgs('content-type')
-              .returns('application/json'),
-          }
-
-          sinon.spy(formidable, 'IncomingForm')
-          controller.parseMultipartForm(req, res, nextSpy)
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy).to.be.calledWithExactly()
-        })
-
-        it('should not call IncomingForm', function() {
-          expect(formidable.IncomingForm).to.not.be.called
-        })
-      })
-
-      context('when request is a multipart/form-data POST', function() {
-        beforeEach(function() {
-          req = {
-            body: {},
-            headers: {
-              'content-type': 'multipart/form-data',
-            },
-            on: sinon.stub().returnsThis(),
-            method: 'post',
-            get: sinon
-              .stub()
-              .withArgs('content-type')
-              .returns('multipart/form-data'),
-          }
-
-          sinon.spy(formidable, 'IncomingForm')
-        })
-
-        context('when form parse is successful', function() {
-          beforeEach(function() {
-            sinon
-              .stub(formidable.IncomingForm.prototype, 'parse')
-              .callsArgWith(1, null, mockFieldData, mockFileData)
-
-            controller.parseMultipartForm(req, {}, nextSpy)
-          })
-
-          it('should call IncomingForm', function() {
-            expect(formidable.IncomingForm).to.be.calledOnce
-            expect(formidable.IncomingForm).to.be.calledWithExactly()
-          })
-
-          it('should call IncomingForm.parse', function() {
-            expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
-          })
-
-          it('should correctly add form data to req.body', function() {
-            expect(req.body).to.deep.equal({
-              files: [
-                {
-                  name: 'file.png',
-                  file_type: 'image/png',
-                },
-              ],
-              mock_field: 'field',
-            })
-          })
-
-          it('should call next', function() {
-            expect(nextSpy).to.be.calledOnce
-            expect(nextSpy).to.be.calledWithExactly()
-          })
-        })
-
-        context('when form parse fails', function() {
-          context('when an xhr request', function() {
-            beforeEach(function() {
-              req.t = sinon.stub()
-              req.xhr = true
-
-              req.t.returns('__translated__')
-            })
-
-            context('with a generic error', function() {
-              beforeEach(function() {
-                sinon
-                  .stub(formidable.IncomingForm.prototype, 'parse')
-                  .callsArgWith(1, mockError, mockFieldData, mockFileData)
-
-                controller.parseMultipartForm(req, res, nextSpy)
-              })
-
-              it('should call IncomingForm', function() {
-                expect(formidable.IncomingForm).to.be.calledOnce
-                expect(formidable.IncomingForm).to.be.calledWithExactly()
-              })
-
-              it('should call IncomingForm.parse', function() {
-                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
-              })
-
-              it('should not add form data to req.body', function() {
-                expect(req.body).to.deep.equal({})
-              })
-
-              it('should call res with the correct status', function() {
-                expect(res.status).to.have.been.calledOnce
-                expect(res.status).to.have.been.calledWithExactly(500)
-              })
-
-              it('should translate document upload label', function() {
-                expect(req.t.firstCall).to.be.calledWith(
-                  'fields::documents.label'
-                )
-              })
-
-              it('should translate validation server error', function() {
-                expect(req.t.secondCall).to.be.calledWith('validation::generic')
-              })
-
-              it('should return expected json', function() {
-                expect(res.json).to.have.been.calledOnce
-                expect(res.json).to.have.been.calledWithExactly([
-                  {
-                    href: '#documents',
-                    text: '__translated__ __translated__',
-                  },
-                ])
-              })
-            })
-
-            context('with a filesize error', function() {
-              beforeEach(function() {
-                sinon
-                  .stub(formidable.IncomingForm.prototype, 'parse')
-                  .callsArgWith(
-                    1,
-                    mockFileSizeError,
-                    mockFieldData,
-                    mockFileData
-                  )
-
-                controller.parseMultipartForm(req, res, nextSpy)
-              })
-
-              it('should call IncomingForm', function() {
-                expect(formidable.IncomingForm).to.be.calledOnce
-                expect(formidable.IncomingForm).to.be.calledWithExactly()
-              })
-
-              it('should call IncomingForm.parse', function() {
-                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
-              })
-
-              it('should not add form data to req.body', function() {
-                expect(req.body).to.deep.equal({})
-              })
-
-              it('should call res with the correct status', function() {
-                expect(res.status).to.have.been.calledOnce
-                expect(res.status).to.have.been.calledWithExactly(500)
-              })
-
-              it('should translate document upload label', function() {
-                expect(req.t.firstCall).to.be.calledWith(
-                  'fields::documents.label'
-                )
-              })
-
-              it('should translate validation server error', function() {
-                expect(req.t.secondCall).to.be.calledWith(
-                  'validation::filesize'
-                )
-              })
-
-              it('should return expected json', function() {
-                expect(res.json).to.have.been.calledOnce
-                expect(res.json).to.have.been.calledWithExactly([
-                  {
-                    href: '#documents',
-                    text: '__translated__ __translated__',
-                  },
-                ])
-              })
-            })
-          })
-
-          context('when not an xhr request', function() {
-            beforeEach(function() {
-              req.xhr = false
-            })
-
-            context('with a generic error', function() {
-              beforeEach(function() {
-                sinon
-                  .stub(formidable.IncomingForm.prototype, 'parse')
-                  .callsArgWith(1, mockError, mockFieldData, mockFileData)
-
-                controller.parseMultipartForm(req, res, nextSpy)
-              })
-
-              it('should call IncomingForm', function() {
-                expect(formidable.IncomingForm).to.be.calledOnce
-                expect(formidable.IncomingForm).to.be.calledWithExactly()
-              })
-
-              it('should call IncomingForm.parse', function() {
-                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
-              })
-
-              it('should not add form data to req.body', function() {
-                expect(req.body).to.deep.equal({})
-              })
-
-              it('should call next with error', function() {
-                expect(nextSpy).to.be.calledOnce
-                expect(nextSpy.args[0][0].documents).to.be.an.instanceOf(
-                  FormError
-                )
-                expect(nextSpy.args[0][0].documents.errorGroup).to.equal(
-                  'documents'
-                )
-                expect(nextSpy.args[0][0].documents.key).to.equal('documents')
-                expect(nextSpy.args[0][0].documents.type).to.equal('generic')
-              })
-            })
-
-            context('with a filesize error', function() {
-              beforeEach(function() {
-                sinon
-                  .stub(formidable.IncomingForm.prototype, 'parse')
-                  .callsArgWith(
-                    1,
-                    mockFileSizeError,
-                    mockFieldData,
-                    mockFileData
-                  )
-
-                controller.parseMultipartForm(req, res, nextSpy)
-              })
-
-              it('should call IncomingForm', function() {
-                expect(formidable.IncomingForm).to.be.calledOnce
-                expect(formidable.IncomingForm).to.be.calledWithExactly()
-              })
-
-              it('should call IncomingForm.parse', function() {
-                expect(formidable.IncomingForm.prototype.parse).to.be.calledOnce
-              })
-
-              it('should not add form data to req.body', function() {
-                expect(req.body).to.deep.equal({})
-              })
-
-              it('should call next with error', function() {
-                expect(nextSpy).to.be.calledOnce
-                expect(nextSpy.args[0][0].documents).to.be.an.instanceOf(
-                  FormError
-                )
-                expect(nextSpy.args[0][0].documents.errorGroup).to.equal(
-                  'documents'
-                )
-                expect(nextSpy.args[0][0].documents.key).to.equal('documents')
-                expect(nextSpy.args[0][0].documents.type).to.equal('filesize')
-              })
-            })
-          })
-        })
-      })
-    })
-
-    describe('#populateDocumentUpload()', function() {
-      let res, req, nextSpy
-
-      beforeEach(function() {
-        nextSpy = sinon.spy()
         req = {
-          body: {},
           sessionModel: {
             get: sinon.stub(),
           },
           form: {
-            options: {
-              fields: {
-                documents: {},
-              },
-            },
+            values: {},
           },
-          originalUrl: mockOriginalUrl,
+          body: {},
         }
-        res = {
-          locals: {},
-        }
+        res = {}
+        nextSpy = sinon.spy()
+        sinon.stub(FormController.prototype, 'saveValues')
       })
 
-      context('with move in the session', function() {
-        beforeEach(function() {
-          req.sessionModel.get.withArgs('move').returns({ id: mockMoveId })
+      context('with uploaded files', function() {
+        beforeEach(async function() {
+          req.files = [
+            { id: 'uploaded-file-id-1' },
+            { id: 'uploaded-file-id-2' },
+          ]
+          req.sessionModel.get.returns(mockDocuments)
+          sinon.stub(documentService, 'create').resolvesArg(0)
+
+          await controller.saveValues(req, res, nextSpy)
         })
 
-        context('with a successful upload', function() {
+        it('should delete document', function() {
+          expect(req.form.values.documents).to.deep.equal([
+            { id: '12345' },
+            { id: '67890' },
+            { id: '112233' },
+            { id: '445566' },
+            { id: 'uploaded-file-id-1' },
+            { id: 'uploaded-file-id-2' },
+          ])
+        })
+
+        it('should call parent method', function() {
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+      })
+
+      context('with deleted file', function() {
+        context('when promise resolves', function() {
           beforeEach(async function() {
-            sinon.stub(moveService, 'getById').resolves(mockMove)
+            req.body.delete = '12345'
+            req.sessionModel.get.returns(mockDocuments)
+            sinon.stub(documentService, 'destroy').resolvesArg(0)
 
-            controller.populateDocumentUpload(req, res, nextSpy)
+            await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should call moveService getById', function() {
-            expect(moveService.getById).to.have.been.calledWithExactly(
-              mockMoveId
-            )
+          it('should delete document', function() {
+            expect(req.form.values.documents).to.deep.equal([
+              { id: '67890' },
+              { id: '112233' },
+              { id: '445566' },
+            ])
           })
 
-          it('should set documents on documents field', function() {
-            expect(req.form.options.fields.documents.documents).to.deep.equal(
-              mockMove.documents
-            )
-          })
-
-          it('should set xhrUrl on documents field', function() {
-            expect(req.form.options.fields.documents.xhrUrl).to.equal(
-              mockOriginalUrl
-            )
-          })
-
-          it('should call next', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly()
+          it('should call parent method', function() {
+            expect(
+              FormController.prototype.saveValues
+            ).to.be.calledOnceWithExactly(req, res, nextSpy)
           })
         })
 
-        context('with a failed upload', function() {
+        context('when promise rejects', function() {
+          const err = new Error('Promise error')
+
           beforeEach(async function() {
-            sinon.stub(moveService, 'getById').rejects(mockError)
+            req.body.delete = '12345'
+            req.sessionModel.get.returns(mockDocuments)
+            sinon.stub(documentService, 'destroy').rejects(err)
 
-            controller.populateDocumentUpload(req, res, nextSpy)
-          })
-
-          it('should call moveService getById', function() {
-            expect(moveService.getById).to.have.been.calledWithExactly(
-              mockMoveId
-            )
-          })
-
-          it('should not set documents on documents field', function() {
-            expect(req.form.options.fields.documents.documents).to.be.undefined
-          })
-
-          it('should not set xhrUrl on documents field', function() {
-            expect(req.form.options.fields.documents.xhrUrl).to.be.undefined
+            await controller.saveValues(req, res, nextSpy)
           })
 
           it('should call next with error', function() {
-            expect(nextSpy).to.be.calledOnce
-            expect(nextSpy.args[0][0]).to.be.an.instanceOf(Error)
-            expect(nextSpy.args[0][0].message).to.equal(errorMessage)
+            expect(nextSpy).to.be.calledOnceWithExactly(err)
+          })
+
+          it('should not call parent method', function() {
+            expect(FormController.prototype.saveValues).not.to.be.called
           })
         })
       })
 
-      context('without move in the session', function() {
+      context('by default', function() {
         beforeEach(async function() {
-          req.sessionModel.get.withArgs('move').returns()
-          sinon.spy(moveService, 'getById')
-
-          controller.populateDocumentUpload(req, res, nextSpy)
+          await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should not call moveService getById', function() {
-          expect(moveService.getById).to.not.have.been.called
+        it('should set documents', function() {
+          expect(req.form.values.documents).to.deep.equal([])
         })
 
-        it('should not set documents on documents field', function() {
-          expect(req.form.options.fields.documents.documents).to.be.undefined
-        })
-
-        it('should set xhrUrl on documents field', function() {
-          expect(req.form.options.fields.documents.xhrUrl).to.equal(
-            mockOriginalUrl
-          )
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+        it('should call parent method', function() {
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
     })
 
-    describe('#post()', function() {
-      let res, req, nextSpy
+    describe('#errorHandler()', function() {
+      let req, res, nextSpy
 
       beforeEach(function() {
-        nextSpy = sinon.spy()
         req = {
-          body: {},
-          t: sinon.stub(),
+          t: sinon.stub().returnsArg(0),
         }
         res = {
-          locals: {
-            move: mockMove,
-          },
           status: sinon.stub().returnsThis(),
-          json: sinon.spy(),
+          json: sinon.stub(),
         }
+        nextSpy = sinon.spy()
+        sinon.stub(FormController.prototype, 'errorHandler')
       })
 
-      context('with xhr', function() {
+      context('with standard error', function() {
+        const err = new Error('Standard error')
+
+        beforeEach(function() {
+          controller.errorHandler(err, req, res, nextSpy)
+        })
+
+        it('should not send XHR response', function() {
+          expect(res.json).not.to.have.been.called
+        })
+
+        it('should call parent error handler', function() {
+          expect(
+            FormController.prototype.errorHandler
+          ).to.be.calledOnceWithExactly(err, req, res, nextSpy)
+        })
+      })
+
+      context('with upload error', function() {
+        const err = new multer.MulterError('UPLOAD_ERROR')
+        err.field = 'documents'
+        const uploadErr = {
+          [err.field]: new FormError(err.field, { type: err.code }, req, res),
+        }
+
+        context('with normal request', function() {
+          beforeEach(function() {
+            controller.errorHandler(err, req, res, nextSpy)
+          })
+
+          it('should not send XHR response', function() {
+            expect(res.json).not.to.have.been.called
+          })
+
+          it('should call parent error handler', function() {
+            expect(
+              FormController.prototype.errorHandler
+            ).to.be.calledOnceWithExactly(uploadErr, req, res, nextSpy)
+          })
+        })
+
+        context('with XHR request ', function() {
+          beforeEach(function() {
+            req.xhr = true
+            controller.errorHandler(err, req, res, nextSpy)
+          })
+
+          it('should set XHR status', function() {
+            expect(res.status).to.be.calledOnceWithExactly(500)
+          })
+
+          it('should send error JSON response', function() {
+            expect(res.json).to.be.calledOnceWithExactly([
+              {
+                href: `#${err.field}`,
+                text: `fields::documents.label validation::${err.code}`,
+              },
+            ])
+          })
+
+          it('should not call parent error handler', function() {
+            expect(
+              FormController.prototype.errorHandler
+            ).not.to.have.been.called
+          })
+        })
+      })
+    })
+
+    describe('#successHandler', function() {
+      let req, res, nextSpy
+      const mockDocs = [{ id: 1 }, { id: 2 }]
+
+      beforeEach(function() {
+        req = {
+          sessionModel: {
+            get: sinon.stub(),
+          },
+        }
+        res = {
+          status: sinon.stub().returnsThis(),
+          json: sinon.stub(),
+        }
+        nextSpy = sinon.spy()
+        sinon.stub(FormController.prototype, 'successHandler')
+      })
+
+      context('when request is not XHR', function() {
+        beforeEach(function() {
+          controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should not send XHR response', function() {
+          expect(res.json).not.to.have.been.called
+        })
+
+        it('should call parent success handler', function() {
+          expect(
+            FormController.prototype.successHandler
+          ).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+      })
+
+      context('when request is XHR', function() {
         beforeEach(function() {
           req.xhr = true
-
-          sinon.stub(FormController.prototype, 'post')
         })
 
-        context('with files', function() {
-          context('when document upload is successful', function() {
-            beforeEach(async function() {
-              req.body.files = [mockFile]
-
-              sinon
-                .stub(controller, 'processDocumentUpload')
-                .resolves(mockDocumentUploadResponse)
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call processDocumentUpload', function() {
-              expect(controller.processDocumentUpload).to.have.been.calledOnce
-              expect(
-                controller.processDocumentUpload
-              ).to.have.been.calledWithExactly(req, res)
-            })
-
-            it('should call res with the correct status', function() {
-              expect(res.status).to.have.been.calledOnce
-              expect(res.status).to.have.been.calledWithExactly(200)
-            })
-
-            it('should return expected json', function() {
-              expect(res.json).to.have.been.calledOnce
-              expect(res.json).to.have.been.calledWithExactly(
-                mockDocumentUploadResponse
-              )
-            })
-
-            it('should not call parent post method', function() {
-              expect(FormController.prototype.post).to.not.have.been.called
-            })
-          })
-        })
-
-        context('when document upload fails', function() {
+        context('when session has no documents', function() {
           beforeEach(function() {
-            req.body.files = [mockFile]
-            req.t.returns('__translated__')
+            controller.successHandler(req, res, nextSpy)
           })
 
-          context('with error response code from API', function() {
-            beforeEach(async function() {
-              sinon.stub(controller, 'processDocumentUpload').rejects({
-                response: { status: mockStatusCode },
-              })
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call processDocumentUpload', function() {
-              expect(controller.processDocumentUpload).to.have.been.calledOnce
-              expect(
-                controller.processDocumentUpload
-              ).to.have.been.calledWithExactly(req, res)
-            })
-
-            it('should call res with the correct status', function() {
-              expect(res.status).to.have.been.calledOnce
-              expect(res.status).to.have.been.calledWithExactly(mockStatusCode)
-            })
-
-            it('should return expected json', function() {
-              expect(res.json).to.have.been.calledOnce
-              expect(res.json).to.have.been.calledWithExactly([
-                {
-                  href: '#documents',
-                  text: '__translated__ __translated__',
-                },
-              ])
-            })
-
-            it('should translate document upload label', function() {
-              expect(req.t.firstCall).to.be.calledWith(
-                'fields::documents.label'
-              )
-            })
-
-            it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith('validation::generic')
-            })
-
-            it('should not call parent post method', function() {
-              expect(FormController.prototype.post).to.not.have.been.called
-            })
+          it('should set XHR status', function() {
+            expect(res.status).to.be.calledOnceWithExactly(200)
           })
 
-          context('without error response code from API', function() {
-            beforeEach(async function() {
-              sinon.stub(controller, 'processDocumentUpload').rejects()
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call processDocumentUpload', function() {
-              expect(controller.processDocumentUpload).to.have.been.calledOnce
-              expect(
-                controller.processDocumentUpload
-              ).to.have.been.calledWithExactly(req, res)
-            })
-
-            it('should call res with the correct status', function() {
-              expect(res.status).to.have.been.calledOnce
-              expect(res.status).to.have.been.calledWithExactly(500)
-            })
-
-            it('should return expected json', function() {
-              expect(res.json).to.have.been.calledOnce
-              expect(res.json).to.have.been.calledWithExactly([
-                {
-                  href: '#documents',
-                  text: '__translated__ __translated__',
-                },
-              ])
-            })
-
-            it('should translate document upload label', function() {
-              expect(req.t.firstCall).to.be.calledWith(
-                'fields::documents.label'
-              )
-            })
-
-            it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith('validation::generic')
-            })
-
-            it('should not call parent post method', function() {
-              expect(FormController.prototype.post).to.not.have.been.called
-            })
-          })
-        })
-      })
-
-      context('without xhr', function() {
-        beforeEach(function() {
-          req.xhr = false
-
-          sinon.stub(FormController.prototype, 'post')
-        })
-
-        context('with files', function() {
-          context('when document upload is successful', function() {
-            beforeEach(async function() {
-              req.body.files = [mockFile]
-
-              sinon.stub(controller, 'processDocumentUpload').resolves()
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call processDocumentUpload', function() {
-              expect(controller.processDocumentUpload).to.have.been.calledOnce
-              expect(
-                controller.processDocumentUpload
-              ).to.have.been.calledWithExactly(req, res)
-            })
-
-            it('should call parent post method', function() {
-              expect(FormController.prototype.post).to.have.been.calledOnce
-              expect(
-                FormController.prototype.post
-              ).to.have.been.calledWithExactly(req, res, nextSpy)
-            })
+          it('should send empty array as JSON response', function() {
+            expect(res.json).to.be.calledOnceWithExactly([])
           })
 
-          context('when document upload fails', function() {
-            beforeEach(async function() {
-              req.body.files = [mockFile]
-              sinon.stub(controller, 'processDocumentUpload').rejects()
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call processDocumentUpload', function() {
-              expect(controller.processDocumentUpload).to.have.been.calledOnce
-              expect(
-                controller.processDocumentUpload
-              ).to.have.been.calledWithExactly(req, res)
-            })
-
-            it('should call next with error', function() {
-              expect(nextSpy).to.be.calledWithExactly({
-                documents: controller.serverError(req, res, 'documents'),
-              })
-            })
-
-            it('should not call parent post method', function() {
-              expect(FormController.prototype.post).to.not.have.been.called
-            })
+          it('should not call parent success handler', function() {
+            expect(
+              FormController.prototype.successHandler
+            ).not.to.have.been.called
           })
         })
 
-        context('with documentId', function() {
-          context('when document delete is successful', function() {
-            beforeEach(async function() {
-              req.body.document_id = mockDocumentId
-              sinon.stub(documentService, 'delete').resolves()
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call documentService delete', function() {
-              expect(documentService.delete).to.have.been.calledOnce
-              expect(documentService.delete).to.have.been.calledWithExactly(
-                mockMoveId,
-                mockDocumentId
-              )
-            })
-
-            it('should call parent post method', function() {
-              expect(FormController.prototype.post).to.have.been.calledOnce
-              expect(
-                FormController.prototype.post
-              ).to.have.been.calledWithExactly(req, res, nextSpy)
-            })
-          })
-          context('when document delete fails', function() {
-            beforeEach(async function() {
-              req.body.document_id = mockDocumentId
-              sinon.stub(documentService, 'delete').rejects()
-
-              await controller.post(req, res, nextSpy)
-            })
-
-            it('should call documentService delete', function() {
-              expect(documentService.delete).to.have.been.calledOnce
-              expect(documentService.delete).to.have.been.calledWithExactly(
-                mockMoveId,
-                mockDocumentId
-              )
-            })
-
-            it('should call next with error', function() {
-              expect(nextSpy).to.be.calledWithExactly({
-                documents: controller.serverError(req, res, 'documents'),
-              })
-            })
-
-            it('should not call parent post method', function() {
-              expect(FormController.prototype.post).to.not.have.been.called
-            })
-          })
-        })
-      })
-    })
-
-    describe('#processDocumentUpload()', function() {
-      let res, req, response
-
-      beforeEach(function() {
-        req = {
-          body: {
-            files: [],
-          },
-        }
-        res = {
-          locals: {
-            move: mockMove,
-          },
-        }
-
-        sinon.stub(documentService, 'upload').resolves('file uploaded')
-      })
-
-      context('with files', function() {
-        beforeEach(async function() {
-          req.body.files.push(mockFile)
-
-          response = await controller.processDocumentUpload(req, res)
-        })
-
-        it('should call documentService upload', function() {
-          expect(documentService.upload).to.have.been.calledOnce
-          expect(documentService.upload).to.have.been.calledWithExactly(
-            mockFile,
-            mockMoveId
-          )
-        })
-
-        it('should call documentService upload', function() {
-          expect(response).to.deep.equal(['file uploaded'])
-        })
-      })
-
-      context('without files', function() {
-        beforeEach(async function() {
-          req.body.files = []
-
-          response = await controller.processDocumentUpload(req, res)
-        })
-
-        it('should call documentService upload', function() {
-          expect(documentService.upload).to.not.be.called
-        })
-
-        it('should not call documentService upload', function() {
-          expect(response).to.deep.equal([])
-        })
-      })
-    })
-
-    describe('#delete()', function() {
-      let res, req, nextSpy
-
-      beforeEach(function() {
-        nextSpy = sinon.spy()
-        req = {
-          query: {},
-          body: {},
-          t: sinon.stub(),
-        }
-        res = {
-          locals: {
-            move: mockMove,
-          },
-          status: sinon.stub().returnsThis(),
-          json: sinon.spy(),
-        }
-      })
-
-      context('without documentId', function() {
-        beforeEach(async function() {
-          await controller.delete(req, res, nextSpy)
-        })
-
-        it('should call next with error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy.args[0][0]).to.be.an.instanceOf(Error)
-          expect(nextSpy.args[0][0].message).to.equal('No document Id supplied')
-        })
-      })
-
-      context('with documentId', function() {
-        beforeEach(function() {
-          req.query.document_id = mockDocumentId
-        })
-        context('when document delete is successful', function() {
-          beforeEach(async function() {
-            sinon
-              .stub(documentService, 'delete')
-              .resolves(mockDocumentDeleteResponse)
-
-            await controller.delete(req, res, nextSpy)
-          })
-
-          it('should call documentService delete', function() {
-            expect(documentService.delete).to.have.been.calledOnce
-            expect(documentService.delete).to.have.been.calledWithExactly(
-              mockMoveId,
-              mockDocumentId
-            )
-          })
-
-          it('should call res with the correct status', function() {
-            expect(res.status).to.have.been.calledOnce
-            expect(res.status).to.have.been.calledWithExactly(200)
-          })
-
-          it('should return expected json', function() {
-            expect(res.json).to.have.been.calledOnce
-            expect(res.json).to.have.been.calledWithExactly(
-              mockDocumentDeleteResponse
-            )
-          })
-        })
-
-        context('when document delete fails', function() {
+        context('when session has documents', function() {
           beforeEach(function() {
-            req.t.returns('__translated__')
+            req.sessionModel.get.returns(mockDocs)
+            controller.successHandler(req, res, nextSpy)
           })
 
-          context('with error response code from API', function() {
-            beforeEach(async function() {
-              sinon.stub(documentService, 'delete').rejects({
-                response: { status: mockStatusCode },
-              })
-
-              await controller.delete(req, res, nextSpy)
-            })
-
-            it('should call documentService delete', function() {
-              expect(documentService.delete).to.have.been.calledOnce
-              expect(documentService.delete).to.have.been.calledWithExactly(
-                mockMoveId,
-                mockDocumentId
-              )
-            })
-
-            it('should call res with the correct status', function() {
-              expect(res.status).to.have.been.calledOnce
-              expect(res.status).to.have.been.calledWithExactly(mockStatusCode)
-            })
-
-            it('should return expected json', function() {
-              expect(res.json).to.have.been.calledOnce
-              expect(res.json).to.have.been.calledWithExactly([
-                {
-                  href: '#documents',
-                  text: '__translated__ __translated__',
-                },
-              ])
-            })
-
-            it('should translate document upload label', function() {
-              expect(req.t.firstCall).to.be.calledWith(
-                'fields::documents.label'
-              )
-            })
-
-            it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith('validation::generic')
-            })
+          it('should set XHR status', function() {
+            expect(res.status).to.be.calledOnceWithExactly(200)
           })
 
-          context('without error response code from API', function() {
-            beforeEach(async function() {
-              sinon.stub(documentService, 'delete').rejects()
-
-              await controller.delete(req, res, nextSpy)
-            })
-
-            it('should call documentService delete', function() {
-              expect(documentService.delete).to.have.been.calledOnce
-              expect(documentService.delete).to.have.been.calledWithExactly(
-                mockMoveId,
-                mockDocumentId
-              )
-            })
-
-            it('should call res with the correct status', function() {
-              expect(res.status).to.have.been.calledOnce
-              expect(res.status).to.have.been.calledWithExactly(500)
-            })
-
-            it('should return expected json', function() {
-              expect(res.json).to.have.been.calledOnce
-              expect(res.json).to.have.been.calledWithExactly([
-                {
-                  href: '#documents',
-                  text: '__translated__ __translated__',
-                },
-              ])
-            })
-
-            it('should translate document upload label', function() {
-              expect(req.t.firstCall).to.be.calledWith(
-                'fields::documents.label'
-              )
-            })
-
-            it('should translate validation server error', function() {
-              expect(req.t.secondCall).to.be.calledWith('validation::generic')
-            })
+          it('should send documents as JSON response', function() {
+            expect(res.json).to.be.calledOnceWithExactly(mockDocs)
           })
-        })
-      })
-    })
 
-    describe('#successHandler()', function() {
-      let res, req, nextSpy
-
-      beforeEach(function() {
-        nextSpy = sinon.spy()
-        req = {
-          body: {},
-          originalUrl: mockOriginalUrl,
-        }
-        res = {
-          redirect: sinon.spy(),
-        }
-      })
-
-      context('without documentId or upload', function() {
-        beforeEach(function() {
-          sinon.stub(FormController.prototype, 'successHandler')
-
-          controller.successHandler(req, res, nextSpy)
-        })
-
-        it('should call parent successHandler method', function() {
-          expect(
-            FormController.prototype.successHandler
-          ).to.have.been.calledOnce
-          expect(
-            FormController.prototype.successHandler
-          ).to.have.been.calledWithExactly(req, res, nextSpy)
-        })
-
-        it('should not call redirect', function() {
-          expect(res.redirect).to.not.have.been.called
-        })
-      })
-
-      context('with documentId', function() {
-        beforeEach(function() {
-          req.body.document_id = mockDocumentId
-          sinon.stub(FormController.prototype, 'successHandler')
-
-          controller.successHandler(req, res, nextSpy)
-        })
-
-        it('should call redirect', function() {
-          expect(res.redirect).to.have.been.calledOnce
-          expect(res.redirect).to.have.been.calledWithExactly(req.originalUrl)
-        })
-
-        it('should not call parent successHandler method', function() {
-          expect(
-            FormController.prototype.successHandler
-          ).to.not.have.been.called
-        })
-      })
-
-      context('with upload', function() {
-        beforeEach(function() {
-          req.body.upload = 'upload'
-          sinon.stub(FormController.prototype, 'successHandler')
-
-          controller.successHandler(req, res, nextSpy)
-        })
-
-        it('should call redirect', function() {
-          expect(res.redirect).to.have.been.calledOnce
-          expect(res.redirect).to.have.been.calledWithExactly(req.originalUrl)
-        })
-
-        it('should not call parent successHandler method', function() {
-          expect(
-            FormController.prototype.successHandler
-          ).to.not.have.been.called
-        })
-      })
-    })
-
-    describe('#serverError()', function() {
-      let res, req, serverError
-
-      beforeEach(function() {
-        req = {
-          query: {},
-          body: {},
-        }
-        res = {
-          locals: {
-            move: mockMove,
-          },
-        }
-      })
-
-      context('default call', function() {
-        const mockFieldName = 'documents'
-
-        beforeEach(function() {
-          serverError = controller.serverError(req, res, mockFieldName)
-        })
-
-        it('should return expected error', function() {
-          expect(serverError).to.be.an.instanceOf(FormError)
-          expect(serverError).to.deep.equal({
-            args: {
-              generic: undefined,
-            },
-            errorGroup: 'documents',
-            headerMessage: undefined,
-            key: 'documents',
-            message: undefined,
-            redirect: undefined,
-            type: 'generic',
-            url: undefined,
+          it('should not call parent success handler', function() {
+            expect(
+              FormController.prototype.successHandler
+            ).not.to.have.been.called
           })
         })
       })
