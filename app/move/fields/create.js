@@ -90,6 +90,19 @@ function appendDependent(questions, assessmentCategory, field, key) {
   return field
 }
 
+function decorateWithExplicitFields(questions, collection, field, key) {
+  const question = find(questions, { key })
+
+  if (question) {
+    if (field.explicit) {
+      const explicitKey = `${key}__yesno`
+      const explicitField = explicitYesNo(explicitKey)
+      explicitField.items[0].conditional = key
+      collection[explicitKey] = explicitField
+    }
+  }
+}
+
 function toLocationType(type, props) {
   return {
     skip: true,
@@ -367,4 +380,5 @@ module.exports = {
   assessmentCategory,
   explicitYesNo,
   appendDependent,
+  decorateWithExplicitFields,
 }

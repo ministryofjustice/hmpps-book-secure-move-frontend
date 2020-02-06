@@ -274,5 +274,5 @@ module.exports = {
   insertItemConditional,
   populateAssessmentQuestions,
   mapPersonToOption,
-  appendDependent,
+  appendDependent
 }

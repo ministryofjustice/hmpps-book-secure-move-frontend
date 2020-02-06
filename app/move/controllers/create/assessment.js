@@ -14,6 +14,7 @@ const createFields = require('../../fields/create')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 class AssessmentController extends CreateBaseController {
+
   async configure(req, res, next) {
     try {
       const { fields, assessmentCategory } = req.form.options
@@ -28,18 +29,11 @@ class AssessmentController extends CreateBaseController {
 
       req.form.options.fields = forEach(
         req.form.options.fields,
-        (field, key) => {
-          const question = find(questions, { key })
-
-          if (question) {
-            if (field.explicit) {
-              const explicitKey = `${key}__yesno`
-              const explicitField = createFields.explicitYesNo(explicitKey)
-              explicitField.items[0].conditional = key
-              req.form.options.fields[explicitKey] = explicitField
-            }
-          }
-        }
+        createFields.decorateWithExplicitFields.bind(
+          null,
+          questions,
+          req.form.options.fields
+        )
       )
 
       const implicitField = createFields.assessmentCategory(assessmentCategory)
