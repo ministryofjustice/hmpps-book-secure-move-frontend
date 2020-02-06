@@ -40,11 +40,11 @@ function assessmentCategory(category) {
   }
 }
 
-function explicitYesNo(category, key) {
+function explicitYesNo(name) {
   return {
     validate: 'required',
     component: 'govukRadios',
-    name: `${key}${SUFFIX_YESNO}`,
+    name: name,
     fieldset: {
       legend: {
         text: 'Yes/no',
@@ -53,10 +53,8 @@ function explicitYesNo(category, key) {
     },
     items: [
       {
-        id: `${key}${SUFFIX_YESNO}`,
         value: 'yes',
         text: 'Yes',
-        conditional: `${category}__${key}`
       },
       {
         value: 'no',

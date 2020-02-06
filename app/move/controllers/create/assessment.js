@@ -1,4 +1,4 @@
-const { cloneDeep, find, filter, flatten, values, mapValues } = require('lodash')
+const { cloneDeep, find, filter, forEach, flatten, values, mapValues } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -13,31 +13,6 @@ class AssessmentController extends CreateBaseController {
         assessmentCategory
       )
 
-      const implicitFields = questions.filter(question => {
-        const key = question.key
-        const field = fields[`${assessmentCategory}__${key}`]
-
-        return fields[`${assessmentCategory}__${key}`] && !field.explicit
-      })
-
-      questions.forEach(question => {
-        const key = question.key
-
-        if (fields[`${assessmentCategory}__${key}`]) {
-          const field = cloneDeep(fields[`${assessmentCategory}__${key}`])
-
-          if (field.explicit) {
-            const explicitField = createFields.explicitYesNo(key)
-            explicitField.items[0].conditional = `${assessmentCategory}__${key}`
-
-            fields[`${key}__yesno`] = explicitField
-
-            // fieldHelpers.appendDependent(field, assessmentCategory, question)
-            fields[`${assessmentCategory}__${key}`] = field
-          }
-        }
-      })
-
       req.form.options.fields = mapValues(req.form.options.fields, (field, key) => {
         const question = find(questions, { key: key.replace(`${assessmentCategory}__`, '') })
         let dependent = {}
@@ -45,7 +20,7 @@ class AssessmentController extends CreateBaseController {
         if (question) {
           if (field.explicit) {
             dependent = {
-              field: `${question.key}__yesno`,
+              field: `${assessmentCategory}__${question.key}__yesno`,
               value: 'yes',
             }
           } else {
@@ -54,16 +29,37 @@ class AssessmentController extends CreateBaseController {
               value: question.id,
             }
           }
+
+          return {
+            ...field,
+            dependent,
+          }
         }
 
-        return {
-          ...field,
-          dependent,
+        return field
+      })
+
+      req.form.options.fields = forEach(req.form.options.fields, (field, key) => {
+        const question = find(questions, { key: key.replace(`${assessmentCategory}__`, '') })
+
+        if (question) {
+          if (field.explicit) {
+            const explicitKey = `${key}__yesno`
+            const explicitField = createFields.explicitYesNo(explicitKey)
+            explicitField.items[0].conditional = key
+            req.form.options.fields[explicitKey] = explicitField
+          }
         }
       })
 
       const implicitField = createFields.assessmentCategory(assessmentCategory)
-      implicitField.items = implicitFields
+      implicitField.items = questions
+        .filter(question => {
+          const key = question.key
+          const field = fields[`${assessmentCategory}__${key}`]
+
+          return fields[`${assessmentCategory}__${key}`] && !field.explicit
+        })
         .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
         .map(fieldHelpers.mapAssessmentQuestionToTranslation)
         .map(fieldHelpers.mapReferenceDataToOption)
