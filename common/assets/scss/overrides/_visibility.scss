@@ -5,3 +5,11 @@
 .app-hidden {
   display: none;
 }
+
+.app-js-visible {
+  display: none;
+
+  .js-enabled & {
+    display: block;
+  }
+}
