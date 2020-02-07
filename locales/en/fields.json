@@ -127,7 +127,7 @@
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
-    "label": "Document upload (optional)",
-    "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50MB."
+    "label": "Upload a file (optional)",
+    "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
   }
 }
