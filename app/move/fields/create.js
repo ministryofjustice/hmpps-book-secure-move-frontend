@@ -1,5 +1,4 @@
 const { date } = require('../formatters')
-const { find } = require('lodash')
 
 const assessmentQuestionComments = {
   skip: true,
@@ -37,69 +36,6 @@ function assessmentCategory(category) {
     hint: {
       text: `fields::${category}.hint`,
     },
-  }
-}
-
-function explicitYesNo(name) {
-  return {
-    validate: 'required',
-    component: 'govukRadios',
-    name: name,
-    fieldset: {
-      legend: {
-        text: `fields::${name}.label`,
-        classes: 'govuk-fieldset__legend--m',
-      },
-    },
-    items: [
-      {
-        value: 'yes',
-        text: 'Yes',
-      },
-      {
-        value: 'no',
-        text: 'No',
-      },
-    ],
-  }
-}
-
-function appendDependent(questions, assessmentCategory, field, key) {
-  const question = find(questions, { key })
-  let dependent = {}
-
-  if (question) {
-    if (field.explicit) {
-      dependent = {
-        field: `${question.key}__yesno`,
-        value: 'yes',
-      }
-    } else {
-      dependent = {
-        field: assessmentCategory,
-        value: question.id,
-      }
-    }
-
-    return {
-      ...field,
-      dependent,
-    }
-  }
-
-  return field
-}
-
-function decorateWithExplicitFields(questions, collection, field, key) {
-  const question = find(questions, { key })
-
-  if (question) {
-    if (field.explicit) {
-      const explicitKey = `${key}__yesno`
-      const explicitField = explicitYesNo(explicitKey)
-      explicitField.items[0].conditional = key
-      collection[explicitKey] = explicitField
-    }
   }
 }
 
@@ -378,7 +314,4 @@ module.exports = {
     },
   },
   assessmentCategory,
-  explicitYesNo,
-  appendDependent,
-  decorateWithExplicitFields,
 }

@@ -1,12 +1,4 @@
-const {
-  cloneDeep,
-  find,
-  filter,
-  forEach,
-  flatten,
-  values,
-  mapValues,
-} = require('lodash')
+const { forEach, flatten, values, mapValues } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -14,7 +6,6 @@ const createFields = require('../../fields/create')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 class AssessmentController extends CreateBaseController {
-
   async configure(req, res, next) {
     try {
       const { fields, assessmentCategory } = req.form.options
@@ -22,33 +13,28 @@ class AssessmentController extends CreateBaseController {
         assessmentCategory
       )
 
-      req.form.options.fields = mapValues(
-        req.form.options.fields,
-        createFields.appendDependent.bind(null, questions, assessmentCategory)
-      )
-
-      req.form.options.fields = forEach(
-        req.form.options.fields,
-        createFields.decorateWithExplicitFields.bind(
-          null,
-          questions,
-          req.form.options.fields
-        )
-      )
-
       const implicitField = createFields.assessmentCategory(assessmentCategory)
       implicitField.items = questions
-        .filter(question => {
-          const key = question.key
-          const field = fields[key]
-
-          return fields[key] && !field.explicit
-        })
+        .filter(fieldHelpers.extractItemsForImplicitFields.bind(null, fields))
         .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
         .map(fieldHelpers.mapAssessmentQuestionToTranslation)
         .map(fieldHelpers.mapReferenceDataToOption)
 
       req.form.options.fields[assessmentCategory] = implicitField
+
+      req.form.options.fields = mapValues(
+        req.form.options.fields,
+        fieldHelpers.appendDependent.bind(null, questions, assessmentCategory)
+      )
+
+      req.form.options.fields = forEach(
+        req.form.options.fields,
+        fieldHelpers.decorateWithExplicitFields.bind(
+          null,
+          questions,
+          req.form.options.fields
+        )
+      )
 
       req.questions = questions
       super.configure(req, res, next)
@@ -64,11 +50,11 @@ class AssessmentController extends CreateBaseController {
     const implicitAnswers = req.form.values[assessmentCategory]
 
     assessment[assessmentCategory] = req.questions
-      .filter(question => {
-        if (implicitAnswers.includes(question.id)) {
-          return true
-        }
-        return req.form.values[`${question.key}__yesno`] === 'yes'
+      .filter(({ id, key }) => {
+        return (
+          implicitAnswers.includes(id) ||
+          req.form.values[`${key}__yesno`] === 'yes'
+        )
       })
       .map(question => {
         return {

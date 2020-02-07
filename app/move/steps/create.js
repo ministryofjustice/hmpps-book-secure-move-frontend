@@ -84,11 +84,7 @@ module.exports = {
     pageTitle: 'moves::steps.court_information.heading',
     assessmentCategory: 'court',
     next: 'risk-information',
-    fields: [
-      'solicitor',
-      'interpreter',
-      'other_court',
-    ],
+    fields: ['solicitor', 'interpreter', 'other_court'],
   },
   '/risk-information': {
     controller: Assessment,

@@ -1,8 +1,5 @@
 const { cloneDeep, set } = require('lodash')
-const referenceDataService = require('../../common/services/reference-data')
-const referenceDataHelpers = require('../../common/helpers/reference-data')
 const componentService = require('../services/component')
-const i18n = require('../../config/i18n')
 
 const {
   mapReferenceDataToOption,
@@ -12,20 +9,12 @@ const {
   translateField,
   insertInitialOption,
   insertItemConditional,
-  populateAssessmentQuestions,
   mapPersonToOption,
+  appendDependent,
+  explicitYesNo,
+  decorateWithExplicitFields,
 } = require('./field')
 
-const questionsMock = [
-  {
-    id: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
-    type: 'profile_attribute_types',
-    category: 'risk',
-    key: 'violent',
-    title: 'Violent',
-    hint: 'mock hint',
-  },
-]
 const personMock = {
   id: '7777',
   first_names: 'Baz',
@@ -93,106 +82,6 @@ describe('Form helpers', function() {
           value: '416badc8-e3ac-47d7-b116-ae3f5b2e4697',
           text: 'Foo',
         })
-      })
-    })
-  })
-
-  describe('#populateAssessmentQuestions()', function() {
-    let fields
-    let response
-
-    beforeEach(function() {
-      sinon
-        .stub(referenceDataHelpers, 'filterDisabled')
-        .callsFake(() => () => true)
-      sinon
-        .stub(referenceDataService, 'getAssessmentQuestions')
-        .resolves(questionsMock)
-
-      fields = {
-        risk: {
-          name: 'risk',
-          items: [],
-        },
-        risk__violent: {
-          skip: true,
-          rows: 3,
-          component: 'govukTextarea',
-          classes: 'govuk-input--width-20',
-          label: {
-            text: 'fields::assessment_comment.required',
-            classes: 'govuk-label--s',
-          },
-          validate: 'required',
-        },
-      }
-    })
-
-    context('by default', function() {
-      beforeEach(async function() {
-        response = await populateAssessmentQuestions(fields)
-      })
-
-      it('should add conditional property', function() {
-        expect(response.risk.items[0]).to.have.property('conditional')
-        expect(response.risk.items[0].conditional).to.equal('risk__violent')
-      })
-    })
-
-    context('without available translations', function() {
-      beforeEach(async function() {
-        sinon.stub(i18n, 'exists').returns(false)
-        response = await populateAssessmentQuestions(fields)
-      })
-
-      it('should return correctly formatted option', function() {
-        expect(response.risk.items[0].text).to.equal('Violent')
-        expect(response.risk.items[0].hint).to.be.undefined
-      })
-    })
-
-    context('with available translations', function() {
-      beforeEach(async function() {
-        sinon.stub(i18n, 'exists').returns(true)
-        response = await populateAssessmentQuestions(fields)
-      })
-
-      it('should return with translation strings', function() {
-        expect(response.risk.items[0].text).to.equal(
-          'fields::risk.items.violent.label'
-        )
-        expect(response.risk.items[0].hint).to.deep.equal({
-          text: 'fields::risk.items.violent.hint',
-        })
-      })
-    })
-
-    context('with validation', function() {
-      beforeEach(async function() {
-        response = await populateAssessmentQuestions(fields)
-      })
-
-      it('should return with dependent details', function() {
-        expect(response.risk__violent.dependent).to.deep.equal({
-          field: 'risk',
-          value: 'd3a50d7a-6cf4-4eeb-a013-1ff8c5c47cc1',
-        })
-      })
-    })
-
-    context('without parent field', function() {
-      let expectedFields
-      beforeEach(async function() {
-        fields = {
-          risk: {},
-          risk__violent: {},
-        }
-        expectedFields = { ...fields }
-        response = await populateAssessmentQuestions(fields)
-      })
-
-      it('should not mutate original item', function() {
-        expect(response).to.deep.equal(expectedFields)
       })
     })
   })
@@ -972,6 +861,118 @@ describe('Form helpers', function() {
         value: '7777',
         hint: {
           html: 'appResults',
+        },
+      })
+    })
+  })
+
+  describe('appendDependent', function() {
+    const questions = [
+      {
+        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+        type: 'assessment_questions',
+        key: 'special_diet_or_allergy',
+        category: 'health',
+        title: 'Special diet or allergy',
+        disabled_at: null,
+      },
+      {
+        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+        type: 'assessment_questions',
+        key: 'special_vehicle',
+        category: 'health',
+        title: 'Special vehicle',
+        disabled_at: null,
+      },
+    ]
+    const assessmentCategory = 'health'
+    const field = {
+      explicit: true,
+    }
+    const key = 'special_vehicle'
+    it('for explicit fields', function() {
+      const output = appendDependent(questions, assessmentCategory, field, key)
+      expect(output).to.deep.equal({
+        explicit: true,
+        dependent: {
+          field: 'special_vehicle__yesno',
+          value: 'yes',
+        },
+      })
+    })
+    it('for implicit (normal) fields', function() {
+      const output = appendDependent(questions, assessmentCategory, {}, key)
+      expect(output).to.deep.equal({
+        dependent: {
+          field: 'health',
+          value: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+        },
+      })
+    })
+  })
+  describe('explicitYesNo', function() {
+    it('returns a radio component with 2 items', function() {
+      const { items, component } = explicitYesNo('field1')
+      expect(items.length).to.equal(2)
+      expect(component).to.equal('govukRadios')
+    })
+  })
+
+  describe('decorateWithExplicitFields', function() {
+    const questions = [
+      {
+        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+        type: 'assessment_questions',
+        key: 'special_diet_or_allergy',
+        category: 'health',
+        title: 'Special diet or allergy',
+        disabled_at: null,
+      },
+      {
+        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+        type: 'assessment_questions',
+        key: 'special_vehicle',
+        category: 'health',
+        title: 'Special vehicle',
+        disabled_at: null,
+      },
+    ]
+    const field = {
+      explicit: true,
+    }
+    const key = 'special_vehicle'
+    let fieldsCollection
+    beforeEach(function() {
+      fieldsCollection = {}
+    })
+    it('fields remain untouched for implicit (normal) fields', function() {
+      decorateWithExplicitFields(questions, fieldsCollection, {}, key)
+      expect(fieldsCollection).to.deep.equal({})
+    })
+    it('creates an additional field for explicit fields', function() {
+      decorateWithExplicitFields(questions, fieldsCollection, field, key)
+      expect(fieldsCollection).to.deep.equal({
+        special_vehicle__yesno: {
+          validate: 'required',
+          component: 'govukRadios',
+          name: 'special_vehicle__yesno',
+          fieldset: {
+            legend: {
+              text: 'fields::special_vehicle__yesno.label',
+              classes: 'govuk-fieldset__legend--m',
+            },
+          },
+          items: [
+            {
+              value: 'yes',
+              text: 'Yes',
+              conditional: 'special_vehicle',
+            },
+            {
+              value: 'no',
+              text: 'No',
+            },
+          ],
         },
       })
     })
