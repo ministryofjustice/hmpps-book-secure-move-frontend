@@ -21,51 +21,41 @@ describe('Multi file upload component', function() {
       expect($component.get(0).tagName).to.equal('div')
     })
 
-    it('should render a heading', function() {
+    it('should not render a heading', function() {
       expect(
-        $component
-          .find('h2')
-          .text()
-          .trim()
-      ).to.equal('example default heading')
+        $component.find('.app-multi-file-upload__heading').length
+      ).to.equal(0)
     })
 
     it('should render module data attribute', function() {
       expect($component.attr('data-module')).to.equal('app-multi-file-upload')
     })
 
-    it('should render module xhrUrl data attribute', function() {
-      expect($component.attr('data-xhr-url')).to.equal(
-        '/example/text/xhr-endpoint'
-      )
+    it('should render module URL data attribute', function() {
+      expect($component.attr('data-url')).to.equal('/example/text/xhr-endpoint')
     })
 
     it('should render upload button', function() {
-      expect(
-        $component
-          .find('button[name="upload"]')
-          .text()
-          .trim()
-      ).to.equal('Upload')
+      expect($component.find('button[name="upload"]').length).to.equal(1)
     })
 
-    it('should render upload hint', function() {
+    it('should not render any files', function() {
       expect(
-        $component
-          .find('.govuk-hint')
-          .text()
-          .trim()
-      ).to.equal(
-        'You can upload Word, Excel, PDF and JPEG documents up to 50MB.'
-      )
+        $component.find('.app-multi-file-upload__list').children().length
+      ).to.equal(0)
     })
 
-    it('should not render any documents', function() {
-      expect($component.find('.js-upload-row').length).to.equal(0)
+    it('should hide preview container', function() {
+      expect(
+        $component
+          .find('.app-multi-file-upload__list')
+          .parent()
+          .attr('class')
+      ).to.equal('app-hidden')
     })
   })
 
-  context('with uploaded documents', function() {
+  context('with uploaded files', function() {
     const mockData = examples['with files']
     let $component
 
@@ -78,38 +68,41 @@ describe('Multi file upload component', function() {
       expect($component.get(0).tagName).to.equal('div')
     })
 
-    it('should render documents', function() {
-      expect($component.find('.js-upload-row').length).to.equal(
-        mockData.value.length
-      )
+    it('should render files', function() {
+      expect(
+        $component.find('.app-multi-file-upload__list').children().length
+      ).to.equal(mockData.value.length)
     })
 
-    it('should render first document', function() {
-      const documentMockData = mockData.value[0]
-      const $document = $component.find(
-        `[data-document-id="${documentMockData.id}"]`
-      )
-
+    it('should render first file', function() {
       expect(
-        $document
-          .find('.app-row__key')
+        $component
+          .find('.app-multi-file-upload__list')
+          .children()
+          .first()
           .text()
           .trim()
-      ).to.equal(documentMockData.filename)
+      ).to.contain(mockData.value[0].filename)
     })
 
-    it('should render second document', function() {
-      const documentMockData = mockData.value[1]
-      const $document = $component.find(
-        `[data-document-id="${documentMockData.id}"]`
-      )
-
+    it('should render second file', function() {
       expect(
-        $document
-          .find('.app-row__key')
+        $component
+          .find('.app-multi-file-upload__list')
+          .children()
+          .last()
           .text()
           .trim()
-      ).to.equal(documentMockData.filename)
+      ).to.contain(mockData.value[1].filename)
+    })
+
+    it('should show preview container', function() {
+      expect(
+        $component
+          .find('.app-multi-file-upload__list')
+          .parent()
+          .attr('class')
+      ).to.equal('')
     })
   })
 })

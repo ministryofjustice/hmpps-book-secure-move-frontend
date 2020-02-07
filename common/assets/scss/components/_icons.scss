@@ -33,3 +33,11 @@ $_icon-height: 20px;
     background-image: url("../images/tick-icon@2x.png");
   }
 }
+
+.app-icon--warning {
+  background-image: url("../images/warning-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/warning-icon@2x.png");
+  }
+}

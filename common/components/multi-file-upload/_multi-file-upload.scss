@@ -1,102 +1,72 @@
-.app-multi-file-upload {
-  margin-bottom: govuk-spacing(1);
-}
-
-.app-multi-file-upload__progress-bar {
-  width: 0px;
-  height: govuk-spacing(2);
-  background-color: $govuk-brand-colour;
-  margin: auto;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: left;
-  position: absolute;
-  left: 0;
-}
-
-.app-multi-file-upload__progress-number {
-  position: absolute;
-  top: govuk-spacing(3);
-  left: 0;
-  margin-left: govuk-spacing(1);
-}
-
 .app-multi-file-upload__dropzone {
   outline: 3px dashed govuk-colour('black');
-  display: flex;
-  text-align: center;
-  vertical-align: middle;
+  cursor: pointer;
   padding: govuk-spacing(9) govuk-spacing(3);
+  margin-top: -(govuk-spacing(1));
+  margin-bottom: govuk-spacing(6);
   transition: outline-offset .1s ease-in-out, background-color .1s linear;
-}
 
-.app-multi-file-upload__dropzone--dragover {
-  background: govuk-colour("mid-grey");
-  outline-color: govuk-colour("dark-grey");
-}
+  @include mq ($from: tablet) {
+    margin-top: -(govuk-spacing(3));
+  }
 
-.app-multi-file-upload__dropzone-label {
-  margin-left: govuk-spacing(2);
-  display: inline-block;
-  width: auto;
-}
+  &.dz-drag-hover {
+    background: govuk-colour("mid-grey");
+    outline-color: govuk-colour("dark-grey");
+  }
 
-.app-multi-file-upload__dropzone-hint {
-  margin: 0 auto;
-  display: inline-flex;
-  align-items: center;
-}
+  .govuk-button {
+    margin-top: govuk-spacing(2);
 
-.app-multi-file-upload__dropzone-file {
-  position: absolute;
-  left: -9999em;
-  z-index: -10000;
-}
-
-.app-multi-file-upload-message {
-  @include govuk-font($size: 19, $weight: bold);
-}
-
-.app-multi-file-upload-message__error {
-  color: govuk-colour('red');
-}
-
-.app-multi-file-upload-message__success {
-  color: govuk-colour('green');
-}
-
-.app-row {
-  padding-bottom: govuk-spacing(1);
-}
-
-.app-row__key {
-  vertical-align: middle;
-  width: 100% !important;
-  border-bottom: none !important;
-
-  @include govuk-media-query($from: tablet) {
-    width: 55% !important;
+    @include mq ($from: tablet) {
+      margin: -8px 0 0 govuk-spacing(1);
+    }
   }
 }
 
-.app-row__value {
-  position: relative;
+.app-multi-file-upload__message {
+  width: 80%;
   vertical-align: middle;
-  width: 100% !important;
-  border-bottom: none !important;
 
-  @include govuk-media-query($from: tablet) {
-    text-align: right;
-    width: 30% !important;
+  .app-multi-file-upload__success,
+  .app-multi-file-upload__failure {
+    display: none;
   }
-}
 
-.app-row__actions {
-  vertical-align: middle;
-  width: 100% !important;
-  border-bottom: none !important;
+  .app-multi-file-upload__in-progress {
+    position: relative;
+  }
 
-  @include govuk-media-query($from: tablet) {
-    width: 15% !important;
+  .dz-processing & {
+    .app-multi-file-upload__in-progress {
+      display: block;
+    }
+  }
+
+  .dz-complete & {
+    .app-multi-file-upload__in-progress {
+      display: none;
+    }
+  }
+
+  .dz-success & {
+    color: govuk-colour("green");
+    font-weight: bold;
+
+    .app-multi-file-upload__success {
+      display: block;
+    }
+    .app-multi-file-upload__success {
+      display: block;
+    }
+  }
+
+  .dz-error & {
+    color: govuk-colour("red");
+    font-weight: bold;
+
+    .app-multi-file-upload__failure {
+      display: inline-block;
+    }
   }
 }

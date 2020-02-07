@@ -2,44 +2,48 @@ params:
 - name: xhrUrl
   type: string
   required: true
-  description: Url for xhr requests
+  description: URL for XHR requests
 - name: heading
-  type: string
+  type: object
   required: false
-  description: Heading for component.
+  description: Heading content for the component
   params:
   - name: text
     type: string
     required: true
-    description: Text to use for the heading
-- name: documents
+    description: If `html` is set, this is not required. Text to use within the component. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
+- name: value
   type: array
   required: false
-  description: Array of document objects.
+  description: Array of file objects.
   params:
   - name: id
     type: string
     required: true
-    description: Document id
+    description: UUID of the file
   - name: filename
     type: string
     required: true
-    description: Filename of the document
+    description: Filename of the file to display
 
 examples:
   - name: default
-    description: The multi upload component without uploaded files
+    description: The multi upload component in its default state
+    data:
+      xhrUrl: '/example/text/xhr-endpoint'
+  - name: with heading
+    description: The multi upload component with a heading
     data:
       heading:
-        text: example default heading
-      hint:
-        text: You can upload Word, Excel, PDF and JPEG documents up to 50MB.
+        text: With heading
       xhrUrl: '/example/text/xhr-endpoint'
   - name: with files
     description: The multi upload component with uploaded files
     data:
-      heading:
-        text: example heading with documents
       xhrUrl: '/example/text/xhr-endpoint'
       value:
       - id: 'example-id-01'
