@@ -7,7 +7,7 @@ $_icon-height: 20px;
   background-repeat: no-repeat;
   background-size: $_icon-width $_icon-height;
   padding-left: $_icon-width + govuk-spacing(2);
-  height: $_icon-height;
+  min-height: $_icon-height;
 }
 
 .app-icon--print {
