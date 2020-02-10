@@ -102,13 +102,13 @@ module.exports = {
     controller: Assessment,
     pageTitle: 'Time of hearing',
     next: 'release-status',
-    fields: ['court__hearing_time'],
+    fields: ['hearing', 'hearing__hearing_time'],
   },
   '/release-status': {
     controller: Assessment,
     pageTitle: 'Release status',
     next: 'save',
-    fields: ['risk', 'risk__hold_in_custody'],
+    fields: ['release_status', 'release_status__hold_in_custody'],
   },
   '/court-information': {
     controller: Assessment,

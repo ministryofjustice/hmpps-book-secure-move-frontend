@@ -329,7 +329,6 @@ module.exports = {
   self_harm: assessmentQuestionComments,
   concealed_items: assessmentQuestionComments,
   other_risks: requiredAssessmentQuestionComments,
-  hold_in_custody: assessmentQuestionComments,
   // health information
   special_diet_or_allergy: assessmentQuestionComments,
   health_issue: assessmentQuestionComments,
@@ -346,7 +345,12 @@ module.exports = {
   solicitor: assessmentQuestionComments,
   interpreter: assessmentQuestionComments,
   other_court: requiredAssessmentQuestionComments,
+  // hearing information
+  hearing: assessmentCategory('hearing'),
   hearing_time: assessmentQuestionComments,
+  // release status information
+  release_status: assessmentCategory('release_status'),
+  hold_in_custody: assessmentQuestionComments,
   documents: {
     id: 'documents',
     name: 'documents',

@@ -96,6 +96,12 @@
     "label": "Add court information",
     "hint": "Select all that apply"
   },
+  "hearing": {
+    "hint": "Time of hearing"
+  },
+  "release_status": {
+    "hint": "Is there a reason this person should not be released? For example, they may be wanted by immigration or recalled to custody."
+  },
   "assessment_comment": {
     "required": "Give details",
     "optional": "Give details (optional)"
