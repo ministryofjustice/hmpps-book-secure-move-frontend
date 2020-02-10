@@ -116,7 +116,7 @@ module.exports = {
   },
   document: {
     attributes: {
-      id: '',
+      file: '',
       filename: '',
       content_type: '',
       url: '',
