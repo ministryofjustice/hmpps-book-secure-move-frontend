@@ -1,5 +1,4 @@
 const {
-  Base,
   PersonalDetails,
   Assessment,
   MoveDetails,
@@ -15,31 +14,47 @@ module.exports = {
     resetJourney: true,
     skip: true,
     checkJourney: false,
-    next: 'pnc-search',
+    next: [
+      {
+        fn: req => {
+          return req.session.currentLocation.location_type === 'prison'
+        },
+        next: 'nomis-search',
+      },
+      'pnc-search',
+    ],
+  },
+  '/nomis-search': {
+    entryPoint: true,
+    template: 'move/views/create/nomis-search',
+    pageTitle: 'moves::steps.nomis_offender_no_search_term.heading',
+    buttonText: 'actions::continue',
+    next: 'person-search-results',
+    fields: ['nomis_offender_no_search_term'],
   },
   '/pnc-search': {
-    checkJourney: false,
-    backLink: false,
-    controller: Base,
-    method: 'get',
-    action: '/move/new/pnc-search-results',
+    entryPoint: true,
     template: 'move/views/create/pnc-search',
     pageTitle: 'moves::steps.police_national_computer_search_term.heading',
-    next: 'pnc-search-results',
+    next: 'person-search-results',
     fields: ['police_national_computer_search_term'],
   },
-  '/pnc-search-results': {
-    checkJourney: false,
-    backLink: 'pnc-search',
+  '/person-search-results': {
     controller: PncSearchResults,
-    template: 'move/views/create/pnc-search-results',
-    pageTitle:
-      'moves::steps.police_national_computer_search_term_result.heading',
-    next: 'personal-details',
-    fields: ['police_national_computer_search_term_result'],
+    template: 'move/views/create/search-results',
+    pageTitle: 'moves::steps.person_search_term_result.heading',
+    next: [
+      {
+        fn: req => {
+          return req.session.currentLocation.location_type === 'prison'
+        },
+        next: 'move-details',
+      },
+      'personal-details',
+    ],
+    fields: ['person_search_term_result'],
   },
   '/personal-details': {
-    entryPoint: true,
     controller: PersonalDetails,
     backLink: 'pnc-search',
     pageTitle: 'moves::steps.personal_details.heading',
@@ -60,6 +75,12 @@ module.exports = {
     pageTitle: 'moves::steps.move_details.heading',
     next: [
       {
+        fn: req => {
+          return req.session.currentLocation.location_type === 'prison'
+        },
+        next: 'court-hearing',
+      },
+      {
         field: 'move_type',
         value: 'court_appearance',
         next: 'court-information',
@@ -76,6 +97,18 @@ module.exports = {
       'date_type',
       'date_custom',
     ],
+  },
+  '/court-hearing': {
+    controller: Assessment,
+    pageTitle: 'Time of hearing',
+    next: 'release-status',
+    fields: ['court__hearing_time'],
+  },
+  '/release-status': {
+    controller: Assessment,
+    pageTitle: 'Release status',
+    next: 'save',
+    fields: ['risk', 'risk__hold_in_custody'],
   },
   '/court-information': {
     controller: Assessment,

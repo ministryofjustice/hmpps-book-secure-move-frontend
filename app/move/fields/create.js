@@ -101,14 +101,38 @@ module.exports = {
     classes: 'govuk-input--width-20',
     autocomplete: 'off',
   },
-  police_national_computer_search_term_result: {
+  person_search_term_result: {
     component: 'govukRadios',
     multiple: true,
     items: [],
-    name: 'police_national_computer_search_term_result',
+    name: 'person_search_term_result',
     fieldset: {
       legend: {
-        text: 'fields::police_national_computer_search_term_result.label',
+        text: 'fields::person_search_term_result.label',
+        classes: 'govuk-fieldset__legend--s',
+      },
+    },
+  },
+  nomis_offender_no_search_term: {
+    component: 'govukInput',
+    validate: 'required',
+    label: {
+      html: 'fields::nomis_offender_no_search_term.label',
+      classes: 'govuk-label--s',
+    },
+    id: 'nomis-offender-no-search-term',
+    name: 'nomis_offender_no_search_term',
+    classes: 'govuk-input--width-20',
+    autocomplete: 'off',
+  },
+  nomis_term_result: {
+    component: 'govukRadios',
+    multiple: true,
+    items: [],
+    name: 'nomis_term_result',
+    fieldset: {
+      legend: {
+        text: 'fields::nomis_term_result.label',
         classes: 'govuk-fieldset__legend--s',
       },
     },
@@ -305,6 +329,7 @@ module.exports = {
   self_harm: assessmentQuestionComments,
   concealed_items: assessmentQuestionComments,
   other_risks: requiredAssessmentQuestionComments,
+  hold_in_custody: assessmentQuestionComments,
   // health information
   special_diet_or_allergy: assessmentQuestionComments,
   health_issue: assessmentQuestionComments,
@@ -321,6 +346,7 @@ module.exports = {
   solicitor: assessmentQuestionComments,
   interpreter: assessmentQuestionComments,
   other_court: requiredAssessmentQuestionComments,
+  hearing_time: assessmentQuestionComments,
   documents: {
     id: 'documents',
     name: 'documents',

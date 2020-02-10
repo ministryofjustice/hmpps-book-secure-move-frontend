@@ -7,34 +7,46 @@ const personService = require('../../../../common/services/person')
 
 class PncResultsController extends CreateBaseController {
   async configure(req, res, next) {
-    const pncSearchTerm = req.query.police_national_computer_search_term
+    const searchType = req.session['hmpo-wizard-create-move']
+      .nomis_offender_no_search_term
+      ? 'nomis'
+      : 'pnc'
+
+    const searchTerm =
+      searchType === 'nomis'
+        ? req.session['hmpo-wizard-create-move'].nomis_offender_no_search_term
+        : req.session['hmpo-wizard-create-move'].police_national_computer_search_term
+
     const {
-      police_national_computer_search_term_result: searchResultsField,
+      person_search_term_result: searchResultsField,
     } = req.form.options.fields
 
-    if (pncSearchTerm) {
+    if (searchTerm) {
       try {
-        const people = await personService.findAll(pncSearchTerm)
+        const people = await personService.findAll(searchTerm, searchType)
         searchResultsField.items = people.map(fieldHelpers.mapPersonToOption)
 
         if (searchResultsField.items.length) {
           searchResultsField.validate = 'required'
+        } else {
+          searchResultsField.skip = true
+          res.locals.hideContinueButton = true
         }
 
         res.locals.people = people
-        res.locals.pncSearchTerm = pncSearchTerm
+        res.locals.searchTerm = searchTerm
+        res.locals.searchType = searchType
       } catch (error) {
         next(error)
       }
     }
 
-    if (!searchResultsField.items.length) {
-      const queryString = pncSearchTerm
-        ? '?police_national_computer_search_term=' + pncSearchTerm
+    if (!searchResultsField.items.length && searchType === 'pnc') {
+      const queryString = searchTerm
+        ? `?police_national_computer_search_term=${searchTerm}`
         : ''
 
-      delete req.form.options.fields.police_national_computer_search_term_result
-
+      delete req.form.options.fields.person_search_term_result
       return res.redirect(`/move/new/personal-details${queryString}`)
     }
 
@@ -42,12 +54,16 @@ class PncResultsController extends CreateBaseController {
   }
 
   async saveValues(req, res, next) {
-    const personId = req.body.police_national_computer_search_term_result
+    const personId = req.body.person_search_term_result
 
     if (personId) {
       const person = find(res.locals.people, { id: personId })
       const pnc = find(person.identifiers, {
         identifier_type: 'police_national_computer',
+      })
+
+      const nomisOffenderNo = find(person.identifiers, {
+        identifier_type: 'nomis_offender_no',
       })
 
       req.form.values = {
@@ -57,6 +73,7 @@ class PncResultsController extends CreateBaseController {
         ethnicity: person.ethnicity.id,
         gender: person.gender.id,
         police_national_computer: pnc ? pnc.value : '',
+        nomis_offender_no: nomisOffenderNo ? nomisOffenderNo.value : '',
       }
     }
 

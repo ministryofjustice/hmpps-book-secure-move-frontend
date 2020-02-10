@@ -39,7 +39,9 @@ User.prototype = {
       permissions.push(
         'moves:view:by_location',
         'moves:download:by_location',
-        'move:view'
+        'move:view',
+        'move:create',
+        'move:delete'
       )
     }
 

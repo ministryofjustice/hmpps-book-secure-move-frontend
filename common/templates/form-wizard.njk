@@ -31,7 +31,7 @@
   {% endif %}
 
   <header class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-xl">
         {{ t(options.pageTitle) }}
       </h1>
@@ -65,10 +65,12 @@
     {% endblock %}
 
     {% block formActions %}
-      {{ govukButton({
-        text: t(options.buttonText or "actions::continue"),
-        classes: options.buttonClasses
-      }) }}
+      {% if not hideContinueButton %}
+        {{ govukButton({
+          text: t(options.buttonText or "actions::continue"),
+          classes: options.buttonClasses
+        }) }}
+      {% endif %}
 
       {% if cancelUrl %}
         <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">

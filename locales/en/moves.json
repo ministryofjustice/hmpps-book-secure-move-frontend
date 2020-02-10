@@ -25,9 +25,12 @@
     "police_national_computer_search_term": {
       "heading": "Create a move"
     },
-    "police_national_computer_search_term_result": {
-      "heading": "Create a move",
-      "secondary_heading": "Matches for {{- searchTerm}}"
+    "person_search_term_result": {
+      "heading": "Matches for {{- searchTerm}}",
+      "no_matches": "There are no matches for {{- searchTerm}}"
+    },
+    "nomis_offender_no_search_term": {
+      "heading": "Search for a person to move"
     },
     "personal_details": {
       "heading": "Personal details"

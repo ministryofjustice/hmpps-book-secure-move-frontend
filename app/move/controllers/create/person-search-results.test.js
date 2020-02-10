@@ -1,6 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./pnc-search-results')
+const Controller = require('./person-search-results')
 const personService = require('../../../../common/services/person')
 const componentService = require('../../../../common/services/component')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -49,10 +49,10 @@ const personMockOne = {
     },
   ],
 }
-const pncSearchTerm = '1234567'
+const searchTerm = '1234567'
 
 describe('Move controllers', function() {
-  describe('Pnc Search Results', function() {
+  describe('Person Search Results', function() {
     describe('#configure()', function() {
       let req, res, nextSpy
 
@@ -63,10 +63,11 @@ describe('Move controllers', function() {
 
         req = {
           query: {},
+          session: {},
           form: {
             options: {
               fields: {
-                police_national_computer_search_term_result: {
+                person_search_term_result: {
                   items: [],
                 },
               },
@@ -83,7 +84,13 @@ describe('Move controllers', function() {
 
       context('with a search term', function() {
         beforeEach(function() {
-          req.query.police_national_computer_search_term = pncSearchTerm
+          req.query.police_national_computer_search_term = searchTerm
+
+          req.session = {
+            'hmpo-wizard-create-move': {
+              police_national_computer_search_term: searchTerm,
+            },
+          }
         })
 
         context('with results', function() {
@@ -97,8 +104,7 @@ describe('Move controllers', function() {
 
           it('should populate search_results field items', function() {
             expect(
-              req.form.options.fields
-                .police_national_computer_search_term_result.items
+              req.form.options.fields.person_search_term_result.items
             ).to.deep.equal([
               {
                 hint: {
@@ -127,18 +133,16 @@ describe('Move controllers', function() {
             expect(res.locals.people).to.deep.equal([personMock, personMockOne])
           })
 
-          it('should populate pncSearchTerm locals as expected', function() {
-            expect(res.locals.pncSearchTerm).to.equal(pncSearchTerm)
+          it('should populate searchTerm locals as expected', function() {
+            expect(res.locals.searchTerm).to.equal(searchTerm)
           })
 
-          it('should set police_national_computer_search_term_result validate property', function() {
+          it('should set person_search_term_result validate property', function() {
             expect(
-              req.form.options.fields
-                .police_national_computer_search_term_result
+              req.form.options.fields.person_search_term_result
             ).to.have.property('validate')
             expect(
-              req.form.options.fields
-                .police_national_computer_search_term_result.validate
+              req.form.options.fields.person_search_term_result.validate
             ).to.equal('required')
           })
 
@@ -168,21 +172,20 @@ describe('Move controllers', function() {
             expect(res.locals.people).to.deep.equal([])
           })
 
-          it('should populate pncSearchTerm locals as expected', function() {
-            expect(res.locals.pncSearchTerm).to.equal(pncSearchTerm)
+          it('should populate searchTerm locals as expected', function() {
+            expect(res.locals.searchTerm).to.equal(searchTerm)
           })
 
-          it('should remove police_national_computer_search_term_result field', function() {
+          it('should remove person_search_term_result field', function() {
             expect(
-              req.form.options.fields
-                .police_national_computer_search_term_result
+              req.form.options.fields.person_search_term_result
             ).to.be.undefined
           })
 
           it('should call redirect as expected', function() {
             expect(res.redirect).to.be.calledOnce
             expect(res.redirect).to.be.calledWithExactly(
-              `/move/new/personal-details?police_national_computer_search_term=${pncSearchTerm}`
+              `/move/new/personal-details?police_national_computer_search_term=${searchTerm}`
             )
           })
 
@@ -216,8 +219,8 @@ describe('Move controllers', function() {
             expect(res.locals.people).to.be.undefined
           })
 
-          it('should not populate pncSearchTerm locals', function() {
-            expect(res.locals.pncSearchTerm).to.be.undefined
+          it('should not populate searchTerm locals', function() {
+            expect(res.locals.searchTerm).to.be.undefined
           })
         })
       })
@@ -233,13 +236,13 @@ describe('Move controllers', function() {
           expect(res.locals.people).to.be.undefined
         })
 
-        it('should not populate pncSearchTerm locals', function() {
-          expect(res.locals.pncSearchTerm).to.be.undefined
+        it('should not populate searchTerm locals', function() {
+          expect(res.locals.searchTerm).to.be.undefined
         })
 
-        it('should remove police_national_computer_search_term_result field', function() {
+        it('should remove person_search_term_result field', function() {
           expect(
-            req.form.options.fields.police_national_computer_search_term_result
+            req.form.options.fields.person_search_term_result
           ).to.be.undefined
         })
 

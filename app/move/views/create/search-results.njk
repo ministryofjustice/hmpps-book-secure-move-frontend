@@ -5,7 +5,7 @@
     {{ t("validation::page_title_prefix") }}:
   {%- endif %}
   {% block innerPageTitle %}
-    {{ t(options.pageTitle, { searchTerm: pncSearchTerm }) }} - {{ t(options.journeyPageTitle) }}
+    {{ t(options.pageTitle, { searchTerm: searchTerm }) }} - {{ t(options.journeyPageTitle) }}
   {% endblock %}
 {% endblock %}
 
@@ -20,7 +20,7 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        {{ t(options.pageTitle, { searchTerm: pncSearchTerm }) }}
+        {{ t(options.pageTitle, { searchTerm: searchTerm }) }}
       </h1>
     </div>
   </header>
@@ -30,7 +30,9 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-m">
-        {{ t("moves::steps::police_national_computer_search_term_result::secondary_heading", { searchTerm: pncSearchTerm }) }}
+        {%- if not people.length -%}
+          {{ t("moves::steps::person_search_term_result::no_matches", { searchTerm : searchTerm }) }}
+        {%- endif -%}
       </h2>
     </div>
   </header>
@@ -38,7 +40,13 @@
 
 {% block formActions %}
   <p class="govuk-body">
-    <a href="/move/new/personal-details{{ "?police_national_computer_search_term=" + pncSearchTerm }}">{{ t("actions::create_move_different_person") }}</a>
+    {%- if searchType == 'pnc'-%}
+      <a href="/move/new/personal-details{{ "?police_national_computer_search_term=" + pncSearchTerm }}">{{ t("actions::create_move_different_person") }}</a>
+    {%- endif -%}
+
+    {%- if searchType == 'nomis' and not people.length -%}
+      <a href="/move/new">{{ t("actions::try_different_search") }}</a>
+    {%- endif -%}
   </p>
   {{ super() }}
 {% endblock %}
