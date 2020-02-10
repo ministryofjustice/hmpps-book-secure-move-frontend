@@ -3,10 +3,11 @@ const { reject } = require('lodash')
 
 const CreateBaseController = require('./base')
 const documentService = require('../../../../common/services/document')
+const APIDocumentStorage = require('../../../../common/lib/multer.api-document.storage')
 const { FILE_UPLOADS } = require('../../../../config')
 
 const upload = multer({
-  dest: FILE_UPLOADS.UPLOAD_DIR,
+  storage: APIDocumentStorage(),
   limits: {
     fileSize: FILE_UPLOADS.MAX_FILE_SIZE,
   },
@@ -39,10 +40,7 @@ class DocumentUploadController extends CreateBaseController {
 
     try {
       if (req.files) {
-        req.uploaded = await Promise.all(
-          req.files.map(file => documentService.create(file))
-        )
-        documents = [...sessionDocuments, ...req.uploaded]
+        documents = [...sessionDocuments, ...req.files]
       }
 
       if (deletedId) {
@@ -82,9 +80,7 @@ class DocumentUploadController extends CreateBaseController {
 
     if (isXhr) {
       const response =
-        req.uploaded && req.uploaded.length === 1
-          ? req.uploaded[0]
-          : req.uploaded
+        req.files && req.files.length === 1 ? req.files[0] : req.files
 
       return res.status(200).json(response || [])
     }
