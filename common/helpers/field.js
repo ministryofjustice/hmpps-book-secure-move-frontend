@@ -1,8 +1,17 @@
-const { cloneDeep, find, fromPairs, get, set } = require('lodash')
+const {
+  cloneDeep,
+  find,
+  fromPairs,
+  forEach,
+  get,
+  mapValues,
+  set,
+} = require('lodash')
 const { format, parseISO } = require('date-fns')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
+const { explicitYesNo } = require('../../app/move/fields/create')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
@@ -246,28 +255,18 @@ function decorateWithExplicitFields(questions, collection, field, key) {
     collection[explicitKey] = explicitField
   }
 }
-function explicitYesNo(name) {
-  return {
-    validate: 'required',
-    component: 'govukRadios',
-    name: name,
-    fieldset: {
-      legend: {
-        text: `fields::${name}.label`,
-        classes: 'govuk-fieldset__legend--m',
-      },
-    },
-    items: [
-      {
-        value: 'yes',
-        text: 'Yes',
-      },
-      {
-        value: 'no',
-        text: 'No',
-      },
-    ],
-  }
+
+function mapDependentFields(originalFields, questions, assessmentCategory) {
+  let fields = cloneDeep(originalFields)
+  fields = mapValues(
+    fields,
+    appendDependent.bind(null, questions, assessmentCategory)
+  )
+  fields = forEach(
+    fields,
+    decorateWithExplicitFields.bind(null, questions, fields)
+  )
+  return fields
 }
 
 module.exports = {
@@ -285,4 +284,5 @@ module.exports = {
   extractItemsForImplicitFields,
   explicitYesNo,
   decorateWithExplicitFields,
+  mapDependentFields,
 }

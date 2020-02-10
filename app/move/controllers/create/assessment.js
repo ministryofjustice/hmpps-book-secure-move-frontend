@@ -1,4 +1,4 @@
-const { forEach, flatten, values, mapValues } = require('lodash')
+const { flatten, values } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -22,18 +22,10 @@ class AssessmentController extends CreateBaseController {
 
       req.form.options.fields[assessmentCategory] = implicitField
 
-      req.form.options.fields = mapValues(
+      req.form.options.fields = fieldHelpers.mapDependentFields(
         req.form.options.fields,
-        fieldHelpers.appendDependent.bind(null, questions, assessmentCategory)
-      )
-
-      req.form.options.fields = forEach(
-        req.form.options.fields,
-        fieldHelpers.decorateWithExplicitFields.bind(
-          null,
-          questions,
-          req.form.options.fields
-        )
+        questions,
+        assessmentCategory
       )
 
       req.questions = questions

@@ -62,6 +62,30 @@ function toLocationType(type, props) {
   }
 }
 
+function explicitYesNo(name) {
+  return {
+    validate: 'required',
+    component: 'govukRadios',
+    name: name,
+    fieldset: {
+      legend: {
+        text: `fields::${name}.label`,
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'yes',
+        text: 'Yes',
+      },
+      {
+        value: 'no',
+        text: 'No',
+      },
+    ],
+  }
+}
+
 module.exports = {
   // pnc search
   police_national_computer_search_term: {
@@ -314,4 +338,5 @@ module.exports = {
     },
   },
   assessmentCategory,
+  explicitYesNo,
 }

@@ -11,8 +11,8 @@ const {
   insertItemConditional,
   mapPersonToOption,
   appendDependent,
-  explicitYesNo,
   decorateWithExplicitFields,
+  mapDependentFields,
 } = require('./field')
 
 const personMock = {
@@ -910,14 +910,6 @@ describe('Form helpers', function() {
       })
     })
   })
-  describe('explicitYesNo', function() {
-    it('returns a radio component with 2 items', function() {
-      const { items, component } = explicitYesNo('field1')
-      expect(items.length).to.equal(2)
-      expect(component).to.equal('govukRadios')
-    })
-  })
-
   describe('decorateWithExplicitFields', function() {
     const questions = [
       {
@@ -956,6 +948,106 @@ describe('Form helpers', function() {
           validate: 'required',
           component: 'govukRadios',
           name: 'special_vehicle__yesno',
+          fieldset: {
+            legend: {
+              text: 'fields::special_vehicle__yesno.label',
+              classes: 'govuk-fieldset__legend--m',
+            },
+          },
+          items: [
+            {
+              value: 'yes',
+              text: 'Yes',
+              conditional: 'special_vehicle',
+            },
+            {
+              value: 'no',
+              text: 'No',
+            },
+          ],
+        },
+      })
+    })
+  })
+
+  describe('mapDependentFields', function() {
+    const fields = {
+      special_diet_or_allergy: {
+        skip: true,
+      },
+      special_vehicle: {
+        skip: true,
+        validate: 'required',
+        explicit: true,
+      },
+      health: {
+        multiple: true,
+        implicitGroup: true,
+        items: [
+          {
+            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+            text: 'Special diet or allergy',
+            key: 'special_diet_or_allergy',
+            conditional: 'special_diet_or_allergy',
+          },
+        ],
+        name: 'health',
+      },
+    }
+    const questions = [
+      {
+        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+        type: 'assessment_questions',
+        key: 'special_diet_or_allergy',
+        category: 'health',
+      },
+      {
+        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+        type: 'assessment_questions',
+        key: 'special_vehicle',
+        category: 'health',
+      },
+    ]
+
+    it('returns an object', function() {
+      expect(mapDependentFields(fields, questions, 'health')).to.be.an('object')
+    })
+
+    it('appends the explicit fields and their dependents', async function() {
+      expect(mapDependentFields(fields, questions, 'health')).to.deep.equal({
+        special_diet_or_allergy: {
+          skip: true,
+          dependent: {
+            field: 'health',
+            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+          },
+        },
+        special_vehicle: {
+          skip: true,
+          validate: 'required',
+          explicit: true,
+          dependent: {
+            field: 'special_vehicle__yesno',
+            value: 'yes',
+          },
+        },
+        health: {
+          multiple: true,
+          implicitGroup: true,
+          items: [
+            {
+              value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+              text: 'Special diet or allergy',
+              key: 'special_diet_or_allergy',
+              conditional: 'special_diet_or_allergy',
+            },
+          ],
+          name: 'health',
+        },
+        special_vehicle__yesno: {
+          validate: 'required',
+          name: 'special_vehicle__yesno',
+          component: 'govukRadios',
           fieldset: {
             legend: {
               text: 'fields::special_vehicle__yesno.label',

@@ -166,29 +166,11 @@ describe('Move controllers', function() {
           )
           createFields.assessmentCategory.restore()
         })
-        it('invokes appendDependent per each dependent field', async function() {
-          sinon.stub(fieldHelpers, 'appendDependent')
+        it('invokes mapDependentFields once', async function() {
+          sinon.stub(fieldHelpers, 'mapDependentFields')
           await controller.configure(req, {}, nextSpy)
-          expect(fieldHelpers.appendDependent.callCount).to.equal(3)
-          const [, category, , field] = fieldHelpers.appendDependent.getCall(
-            0
-          ).args
-          expect(category).to.equal('health')
-          expect(field).to.equal('special_diet_or_allergy')
-          fieldHelpers.appendDependent.restore()
-        })
-        it('invokes decorateWithExplicitFields per each field', async function() {
-          sinon.stub(fieldHelpers, 'decorateWithExplicitFields')
-          await controller.configure(req, {}, nextSpy)
-          expect(fieldHelpers.decorateWithExplicitFields.callCount).to.equal(3)
-          let key
-          key = fieldHelpers.decorateWithExplicitFields.getCall(0).args[3]
-          expect(key).to.equal('special_diet_or_allergy')
-          key = fieldHelpers.decorateWithExplicitFields.getCall(1).args[3]
-          expect(key).to.equal('special_vehicle')
-          key = fieldHelpers.decorateWithExplicitFields.getCall(2).args[3]
-          expect(key).to.equal('health')
-          fieldHelpers.decorateWithExplicitFields.restore()
+          expect(fieldHelpers.mapDependentFields).to.be.calledOnce
+          fieldHelpers.mapDependentFields.restore()
         })
       })
       context('without explicit fields', function() {
