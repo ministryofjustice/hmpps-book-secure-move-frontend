@@ -23,13 +23,12 @@
 {% endblock %}
 
 {% block contentHeader %}
-  {% set govukErrorSummaryClasses = ["js-error-summary"].concat("app-hidden" if errors.errorList.length == 0) | join(" ") %}
-
-  {{ govukErrorSummary({
-    titleText: t("validation::summary.heading"),
-    errorList: errors.errorList,
-    classes: govukErrorSummaryClasses
-  }) }}
+  {% if errors.errorList.length %}
+    {{ govukErrorSummary({
+      titleText: t("validation::summary.heading"),
+      errorList: errors.errorList
+    }) }}
+  {% endif %}
 
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
