@@ -40,8 +40,105 @@ describe('Move controllers', function() {
           .calledOnce
       })
 
+      it('should call set button text method', function() {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setButtonText
+        )
+      })
+
       it('should call set cancel url method', function() {
-        expect(controller.use).to.have.been.calledWith(controller.setCancelUrl)
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+          controller.setCancelUrl
+        )
+      })
+
+      it('should call set move summary method', function() {
+        expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
+          controller.setMoveSummary
+        )
+      })
+
+      it('should call set journey timer method', function() {
+        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
+          controller.setJourneyTimer
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use).to.be.callCount(4)
+      })
+    })
+
+    describe('#setButtonText()', function() {
+      let req, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          form: {
+            options: {
+              steps: {
+                '/': {},
+                '/step-one': {},
+                '/last-step': {},
+              },
+            },
+          },
+        }
+        sinon.stub(FormController.prototype, 'getNextStep')
+      })
+
+      context('with buttonText option', function() {
+        beforeEach(function() {
+          req.form.options.buttonText = 'Override button text'
+          FormController.prototype.getNextStep.returns('/')
+
+          controller.setButtonText(req, {}, nextSpy)
+        })
+
+        it('should set cancel url correctly', function() {
+          expect(req.form.options.buttonText).to.equal('Override button text')
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with no buttonText option', function() {
+        context('when step is not penultimate step', function() {
+          beforeEach(function() {
+            FormController.prototype.getNextStep.returns('/step-one')
+
+            controller.setButtonText(req, {}, nextSpy)
+          })
+
+          it('should set cancel url correctly', function() {
+            expect(req.form.options.buttonText).to.equal('actions::continue')
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when step is penultimate step', function() {
+          beforeEach(function() {
+            FormController.prototype.getNextStep.returns('/last-step')
+
+            controller.setButtonText(req, {}, nextSpy)
+          })
+
+          it('should set cancel url correctly', function() {
+            expect(req.form.options.buttonText).to.equal(
+              'actions::schedule_move'
+            )
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
       })
     })
 
