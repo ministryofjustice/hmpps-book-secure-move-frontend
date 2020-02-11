@@ -7,7 +7,7 @@ $_icon-height: 20px;
   background-repeat: no-repeat;
   background-size: $_icon-width $_icon-height;
   padding-left: $_icon-width + govuk-spacing(2);
-  height: $_icon-height;
+  min-height: $_icon-height;
 }
 
 .app-icon--print {
@@ -31,5 +31,13 @@ $_icon-height: 20px;
 
   @include govuk-device-pixel-ratio {
     background-image: url("../images/tick-icon@2x.png");
+  }
+}
+
+.app-icon--warning {
+  background-image: url("../images/warning-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/warning-icon@2x.png");
   }
 }

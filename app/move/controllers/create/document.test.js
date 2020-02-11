@@ -337,7 +337,7 @@ describe('Move controllers', function() {
         }
         res = {
           status: sinon.stub().returnsThis(),
-          json: sinon.stub(),
+          send: sinon.stub(),
         }
         nextSpy = sinon.spy()
         sinon.stub(FormController.prototype, 'errorHandler')
@@ -351,7 +351,7 @@ describe('Move controllers', function() {
         })
 
         it('should not send XHR response', function() {
-          expect(res.json).not.to.have.been.called
+          expect(res.send).not.to.have.been.called
         })
 
         it('should call parent error handler', function() {
@@ -374,7 +374,7 @@ describe('Move controllers', function() {
           })
 
           it('should not send XHR response', function() {
-            expect(res.json).not.to.have.been.called
+            expect(res.send).not.to.have.been.called
           })
 
           it('should call parent error handler', function() {
@@ -395,12 +395,9 @@ describe('Move controllers', function() {
           })
 
           it('should send error JSON response', function() {
-            expect(res.json).to.be.calledOnceWithExactly([
-              {
-                href: `#${err.field}`,
-                text: `fields::documents.label validation::${err.code}`,
-              },
-            ])
+            expect(res.send).to.be.calledOnceWithExactly(
+              `validation::${err.code}`
+            )
           })
 
           it('should not call parent error handler', function() {
@@ -451,7 +448,7 @@ describe('Move controllers', function() {
           req.xhr = true
         })
 
-        context('when session has no documents', function() {
+        context('with no uploaded documents', function() {
           beforeEach(function() {
             controller.successHandler(req, res, nextSpy)
           })
@@ -471,24 +468,47 @@ describe('Move controllers', function() {
           })
         })
 
-        context('when session has documents', function() {
-          beforeEach(function() {
-            req.sessionModel.get.returns(mockDocs)
-            controller.successHandler(req, res, nextSpy)
+        context('with uploaded documents', function() {
+          context('with one documents', function() {
+            beforeEach(function() {
+              req.uploaded = mockDocs[0]
+              controller.successHandler(req, res, nextSpy)
+            })
+
+            it('should set XHR status', function() {
+              expect(res.status).to.be.calledOnceWithExactly(200)
+            })
+
+            it('should send documents as JSON response', function() {
+              expect(res.json).to.be.calledOnceWithExactly(mockDocs[0])
+            })
+
+            it('should not call parent success handler', function() {
+              expect(
+                FormController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
 
-          it('should set XHR status', function() {
-            expect(res.status).to.be.calledOnceWithExactly(200)
-          })
+          context('with multiple documents', function() {
+            beforeEach(function() {
+              req.uploaded = mockDocs
+              controller.successHandler(req, res, nextSpy)
+            })
 
-          it('should send documents as JSON response', function() {
-            expect(res.json).to.be.calledOnceWithExactly(mockDocs)
-          })
+            it('should set XHR status', function() {
+              expect(res.status).to.be.calledOnceWithExactly(200)
+            })
 
-          it('should not call parent success handler', function() {
-            expect(
-              FormController.prototype.successHandler
-            ).not.to.have.been.called
+            it('should send documents as JSON response', function() {
+              expect(res.json).to.be.calledOnceWithExactly(mockDocs)
+            })
+
+            it('should not call parent success handler', function() {
+              expect(
+                FormController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
         })
       })

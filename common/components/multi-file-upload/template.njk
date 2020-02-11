@@ -1,47 +1,69 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-<div class="app-multi-file-upload" data-module="app-multi-file-upload" data-xhr-url="{{ params.xhrUrl }}">
-  <h2 class="govuk-body-l">{{ params.heading.text }}</h2>
-  <dl class="app-multi-file-upload__list govuk-summary-list js-upload-list">
-    {% for file in params.value %}
-    <div class="govuk-summary-list__row app-row js-upload-row" data-document-id="{{ file.id }}">
-      <dt class="govuk-summary-list__key app-row__key">
-        {{ file.filename }}
-      </dt>
-      <dd class="govuk-summary-list__value app-row__value js-upload-message">
-        <span class="app-multi-file-upload-message app-multi-file-upload-message__success">
-          <span class="app-icon app-icon--tick"></span>File Uploaded!
-        </span>
-      </dd>
-      <dd class="govuk-summary-list__actions app-row__actions js-upload-actions">
-        {% set deleteLabel %}
-          Delete <span class="govuk-visually-hidden">{{ file.filename }}</span>
-        {% endset %}
+{% macro _previewItem(params) %}
+  <div
+    class="govuk-summary-list__row {{ params.classes }} {{ 'dz-complete dz-success' if params.id }}"
+    {% for attribute, value in params.attributes %} {{attribute}}="{{value}}"{% endfor %}
+  >
+    <dt class="govuk-summary-list__value app-multi-file-upload__message">
+      <span class="app-multi-file-upload__in-progress">
+        <span data-dz-name>{{ params.filename }}</span> uploading
+        <span data-dz-uploadprogress></span>%
+      </span>
 
-        {{ govukButton({
-          html: deleteLabel,
-          classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-upload-delete",
-          name: "delete",
-          value: file.id
-        }) }}
-      </dd>
-    </div>
-    {% endfor %}
-  </dl>
+      <span class="app-multi-file-upload__success app-icon app-icon--tick">
+        <span data-dz-name>{{ params.filename }}</span> has been uploaded
+      </span>
+
+      <span class="app-multi-file-upload__failure app-icon app-icon--warning">
+        <span data-dz-name>{{ params.filename }}</span>
+        <span data-dz-errormessage></span>
+      </span>
+    </dt>
+
+    <dd class="govuk-summary-list__actions">
+      {% set deleteLabel %}
+        Delete <span class="govuk-visually-hidden">{{ params.filename }}</span>
+      {% endset %}
+
+      {{ govukButton({
+        html: deleteLabel,
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-upload-delete",
+        name: "delete",
+        attributes: { "data-dz-remove": "" },
+        value: params.id
+      }) }}
+    </dd>
+  </div>
+{% endmacro %}
+
+<div data-module="app-multi-file-upload" data-url="{{ params.xhrUrl }}">
+  {% if params.heading.html or params.heading.text %}
+    <h2 class="govuk-body-l app-multi-file-upload__heading">
+      {{ params.heading.html | safe if params.heading.html else params.heading.text }}
+    </h2>
+  {% endif %}
+
+  <div class="{{ 'app-hidden' if not params.value|length }}">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Files added</h2>
+
+    <dl class="app-multi-file-upload__list govuk-summary-list" data-dz-previews-container>
+      {% for file in params.value %}
+        {{ _previewItem(file) }}
+      {% endfor %}
+    </dl>
+  </div>
 
   {{ govukFileUpload({
     id: params.id,
     name: params.name,
-    classes: 'js-upload-file-input',
     label: params.label,
     hint: params.hint,
+    classes: "app-js-hidden",
     attributes: { multiple: "" },
-    value: "",
     errorMessage: params.errorMessage,
-    formGroup: {
-      classes: "js-file-form-group"
-    }
+    value: ""
   }) }}
 
   {{ govukButton({
@@ -51,4 +73,15 @@
     value: "upload"
   }) }}
 
+  <p class="app-multi-file-upload__dropzone app-js-visible" data-dz-clickable data-dz-dropzone>
+    Drag and drop files here or
+    <label class="govuk-button govuk-button--secondary" data-dz-clickable>
+      Choose files
+    </label>
+  </p>
+
+  {{ _previewItem({
+    classes: "app-hidden",
+    attributes: { "data-dz-preview-template": "" }
+  }) }}
 </div>

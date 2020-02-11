@@ -54,10 +54,10 @@ class DocumentUploadController extends CreateBaseController {
 
     try {
       if (req.files) {
-        const uploaded = await Promise.all(
+        req.uploaded = await Promise.all(
           req.files.map(file => documentService.create(file))
         )
-        documents = [...sessionDocuments, ...uploaded]
+        documents = [...sessionDocuments, ...req.uploaded]
       }
 
       if (deletedId) {
@@ -85,14 +85,7 @@ class DocumentUploadController extends CreateBaseController {
       }
 
       if (isXhr) {
-        return res.status(500).json([
-          {
-            href: `#${key}`,
-            text: `${req.t('fields::documents.label')} ${req.t(
-              `validation::${err.code}`
-            )}`,
-          },
-        ])
+        return res.status(500).send(req.t(`validation::${err.code}`))
       }
     }
 
@@ -103,8 +96,12 @@ class DocumentUploadController extends CreateBaseController {
     const isXhr = req.xhr
 
     if (isXhr) {
-      const documents = req.sessionModel.get('documents') || []
-      return res.status(200).json(documents)
+      const response =
+        req.uploaded && req.uploaded.length === 1
+          ? req.uploaded[0]
+          : req.uploaded
+
+      return res.status(200).json(response || [])
     }
 
     super.successHandler(req, res, next)

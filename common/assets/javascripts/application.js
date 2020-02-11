@@ -1,4 +1,5 @@
 import 'core-js/es/promise'
+import 'dropzone'
 
 import '../images/app-logotype-crest.png'
 import '../images/app-logotype-crest@2x.png'
@@ -57,12 +58,9 @@ if ($stickySidebars.length) {
   })
 }
 
-const $multiFileUpload = document.querySelector(
+const $multiFileUploads = document.querySelectorAll(
   '[data-module="app-multi-file-upload"]'
 )
-
-if ($multiFileUpload) {
-  new MultiFileUpload({
-    container: $multiFileUpload,
-  }).init()
-}
+nodeListForEach($multiFileUploads, function($multiFileUpload) {
+  new MultiFileUpload($multiFileUpload).init()
+})
