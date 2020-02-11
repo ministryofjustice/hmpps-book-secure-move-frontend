@@ -62,6 +62,8 @@ class MoveDetailsController extends CreateBaseController {
     req.form.values.to_location = req.form.values[`to_location_${moveType}`]
     // if req.session.currentLocation doesn't exist the parent controller will error
     req.form.values.from_location = req.session.currentLocation.id
+    req.form.values.can_upload_documents =
+      req.session.currentLocation.can_upload_documents
 
     next()
   }
