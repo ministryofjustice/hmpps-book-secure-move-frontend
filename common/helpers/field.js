@@ -1,10 +1,17 @@
-const { cloneDeep, fromPairs, get, set } = require('lodash')
+const {
+  cloneDeep,
+  find,
+  fromPairs,
+  forEach,
+  get,
+  mapValues,
+  set,
+} = require('lodash')
 const { format, parseISO } = require('date-fns')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
-const referenceDataService = require('../../common/services/reference-data')
-const referenceDataHelpers = require('../../common/helpers/reference-data')
+const { explicitYesNo } = require('../../app/move/fields/create')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
@@ -42,7 +49,7 @@ function mapAssessmentQuestionToTranslation(item) {
 function mapAssessmentQuestionToConditionalField(item) {
   return {
     ...item,
-    conditional: `${item.category}__${item.key}`,
+    conditional: item.key,
   }
 }
 
@@ -182,46 +189,6 @@ function insertItemConditional({ key, field }) {
   }
 }
 
-function setDependentValidation(key, field, fieldWithItems) {
-  if (!field.validate) {
-    return
-  }
-
-  const fieldItem = fieldWithItems.items.find(item => key.includes(item.key))
-
-  field.dependent = {
-    field: fieldWithItems.name,
-    value: fieldItem.value,
-  }
-}
-
-async function populateAssessmentQuestions(fields) {
-  const fieldsClone = { ...fields }
-  const fieldWithItems = Object.values(fieldsClone).find(field => {
-    if (Object.prototype.hasOwnProperty.call(field, 'items')) {
-      return true
-    }
-  })
-
-  if (fieldWithItems) {
-    const assessmentQuestions = await referenceDataService.getAssessmentQuestions(
-      fieldWithItems.name
-    )
-
-    fieldWithItems.items = assessmentQuestions
-      .filter(referenceDataHelpers.filterDisabled())
-      .map(mapAssessmentQuestionToConditionalField)
-      .map(mapAssessmentQuestionToTranslation)
-      .map(mapReferenceDataToOption)
-
-    Object.entries(fieldsClone).forEach(([key, field]) =>
-      setDependentValidation(key, field, fieldWithItems)
-    )
-  }
-
-  return fieldsClone
-}
-
 function mapPersonToOption(person) {
   return {
     text: person.fullname.toUpperCase(),
@@ -246,7 +213,65 @@ function mapPersonToOption(person) {
   }
 }
 
+function appendDependent(questions, assessmentCategory, field, key) {
+  const question = find(questions, { key })
+  let dependent = {}
+
+  if (question) {
+    if (field.explicit) {
+      dependent = {
+        field: `${question.key}__yesno`,
+        value: 'yes',
+      }
+    } else {
+      dependent = {
+        field: assessmentCategory,
+        value: question.id,
+      }
+    }
+
+    return {
+      ...field,
+      dependent,
+    }
+  }
+
+  return field
+}
+
+function extractItemsForImplicitFields(fields, question) {
+  const key = question.key
+  const field = fields[key]
+  return fields[key] && !field.explicit
+}
+
+function decorateWithExplicitFields(questions, collection, field, key) {
+  const question = find(questions, { key })
+
+  if (question && field.explicit) {
+    const explicitKey = `${key}__yesno`
+    const explicitField = explicitYesNo(explicitKey)
+    explicitField.items[0].conditional = key
+    collection[explicitKey] = explicitField
+  }
+}
+
+function mapDependentFields(originalFields, questions, assessmentCategory) {
+  let fields = cloneDeep(originalFields)
+  fields = mapValues(
+    fields,
+    appendDependent.bind(null, questions, assessmentCategory)
+  )
+  fields = forEach(
+    fields,
+    decorateWithExplicitFields.bind(null, questions, fields)
+  )
+  return fields
+}
+
 module.exports = {
+  mapAssessmentQuestionToConditionalField,
+  mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   renderConditionalFields,
   setFieldValue,
@@ -254,6 +279,10 @@ module.exports = {
   translateField,
   insertInitialOption,
   insertItemConditional,
-  populateAssessmentQuestions,
   mapPersonToOption,
+  appendDependent,
+  extractItemsForImplicitFields,
+  explicitYesNo,
+  decorateWithExplicitFields,
+  mapDependentFields,
 }

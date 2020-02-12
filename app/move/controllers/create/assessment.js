@@ -2,14 +2,33 @@ const { flatten, values } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
+const createFields = require('../../fields/create')
+const referenceDataService = require('../../../../common/services/reference-data')
 
 class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
-      const { fields } = req.form.options
-      req.form.options.fields = await fieldHelpers.populateAssessmentQuestions(
-        fields
+      const { fields, assessmentCategory } = req.form.options
+      const questions = await referenceDataService.getAssessmentQuestions(
+        assessmentCategory
       )
+
+      const implicitField = createFields.assessmentCategory(assessmentCategory)
+      implicitField.items = questions
+        .filter(fieldHelpers.extractItemsForImplicitFields.bind(null, fields))
+        .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
+        .map(fieldHelpers.mapAssessmentQuestionToTranslation)
+        .map(fieldHelpers.mapReferenceDataToOption)
+
+      req.form.options.fields[assessmentCategory] = implicitField
+
+      req.form.options.fields = fieldHelpers.mapDependentFields(
+        req.form.options.fields,
+        questions,
+        assessmentCategory
+      )
+
+      req.questions = questions
       super.configure(req, res, next)
     } catch (error) {
       next(error)
@@ -19,25 +38,22 @@ class AssessmentController extends CreateBaseController {
   saveValues(req, res, next) {
     const person = req.sessionModel.get('person') || {}
     const assessment = req.sessionModel.get('assessment') || {}
-    const { fields } = req.form.options
+    const { assessmentCategory } = req.form.options
+    const implicitAnswers = req.form.values[assessmentCategory]
 
-    Object.keys(fields).forEach(key => {
-      const field = fields[key]
-
-      if (!field.multiple) {
-        return
-      }
-      const answers = req.form.values[key]
-
-      assessment[key] = field.items
-        .filter(item => answers.includes(item.value))
-        .map(item => {
-          return {
-            comments: req.form.values[`${key}__${item.key}`],
-            assessment_question_id: item.value,
-          }
-        })
-    })
+    assessment[assessmentCategory] = req.questions
+      .filter(({ id, key }) => {
+        return (
+          implicitAnswers.includes(id) ||
+          req.form.values[`${key}__yesno`] === 'yes'
+        )
+      })
+      .map(question => {
+        return {
+          assessment_question_id: question.id,
+          comments: req.form.values[`${question.key}`],
+        }
+      })
 
     req.form.values.assessment = assessment
     req.form.values.person = Object.assign({}, person, {

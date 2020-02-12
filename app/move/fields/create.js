@@ -61,6 +61,30 @@ function toLocationType(type, props) {
   }
 }
 
+function explicitYesNo(name) {
+  return {
+    validate: 'required',
+    component: 'govukRadios',
+    name: name,
+    fieldset: {
+      legend: {
+        text: `fields::${name}.label`,
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'yes',
+        text: 'Yes',
+      },
+      {
+        value: 'no',
+        text: 'No',
+      },
+    ],
+  }
+}
+
 module.exports = {
   // pnc search
   police_national_computer_search_term: {
@@ -275,25 +299,28 @@ module.exports = {
   },
   // risk information
   risk: assessmentCategory('risk'),
-  risk__violent: assessmentQuestionComments,
-  risk__escape: assessmentQuestionComments,
-  risk__hold_separately: assessmentQuestionComments,
-  risk__self_harm: assessmentQuestionComments,
-  risk__concealed_items: assessmentQuestionComments,
-  risk__other_risks: requiredAssessmentQuestionComments,
+  violent: assessmentQuestionComments,
+  escape: assessmentQuestionComments,
+  hold_separately: assessmentQuestionComments,
+  self_harm: assessmentQuestionComments,
+  concealed_items: assessmentQuestionComments,
+  other_risks: requiredAssessmentQuestionComments,
   // health information
-  health: assessmentCategory('health'),
-  health__special_diet_or_allergy: assessmentQuestionComments,
-  health__health_issue: assessmentQuestionComments,
-  health__medication: assessmentQuestionComments,
-  health__wheelchair: assessmentQuestionComments,
-  health__pregnant: assessmentQuestionComments,
-  health__other_health: requiredAssessmentQuestionComments,
+  special_diet_or_allergy: assessmentQuestionComments,
+  health_issue: assessmentQuestionComments,
+  medication: assessmentQuestionComments,
+  wheelchair: assessmentQuestionComments,
+  pregnant: assessmentQuestionComments,
+  other_health: requiredAssessmentQuestionComments,
+  special_vehicle: {
+    ...requiredAssessmentQuestionComments,
+    explicit: true,
+  },
   // court information
   court: assessmentCategory('court'),
-  court__solicitor: assessmentQuestionComments,
-  court__interpreter: assessmentQuestionComments,
-  court__other_court: requiredAssessmentQuestionComments,
+  solicitor: assessmentQuestionComments,
+  interpreter: assessmentQuestionComments,
+  other_court: requiredAssessmentQuestionComments,
   documents: {
     id: 'documents',
     name: 'documents',
@@ -309,4 +336,6 @@ module.exports = {
       text: 'fields::documents.hint',
     },
   },
+  assessmentCategory,
+  explicitYesNo,
 }
