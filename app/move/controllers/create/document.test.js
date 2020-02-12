@@ -409,7 +409,7 @@ describe('Move controllers', function() {
         context('with uploaded documents', function() {
           context('with one documents', function() {
             beforeEach(function() {
-              req.uploaded = mockDocs[0]
+              req.files = mockDocs[0]
               controller.successHandler(req, res, nextSpy)
             })
 
@@ -430,7 +430,7 @@ describe('Move controllers', function() {
 
           context('with multiple documents', function() {
             beforeEach(function() {
-              req.uploaded = mockDocs
+              req.files = mockDocs
               controller.successHandler(req, res, nextSpy)
             })
 

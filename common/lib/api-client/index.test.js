@@ -32,11 +32,13 @@ function JsonApiStub(opts = {}) {
 describe('Back-end API client', function() {
   context('Singleton', function() {
     let jsonApi
+    let postStub
     let errorsStub
     let requestStub
     let requestTimeoutStub
 
     beforeEach(function() {
+      postStub = sinon.stub()
       errorsStub = sinon.stub()
       requestStub = sinon.stub()
       requestTimeoutStub = sinon.stub()
@@ -50,6 +52,7 @@ describe('Back-end API client', function() {
         '../../../config': mockConfig,
         './models': mockModels,
         './middleware': {
+          post: postStub,
           errors: errorsStub,
           request: requestStub,
           requestTimeout: requestTimeoutStub,
@@ -83,9 +86,15 @@ describe('Back-end API client', function() {
           ).to.be.calledWithExactly('errors', errorsStub)
         })
 
-        it('should insert request cache', function() {
+        it('should replace post middleware', function() {
           expect(
             JsonApiStub.prototype.replaceMiddleware.secondCall
+          ).to.be.calledWithExactly('POST', postStub)
+        })
+
+        it('should insert request cache', function() {
+          expect(
+            JsonApiStub.prototype.replaceMiddleware.thirdCall
           ).to.be.calledWithExactly(
             'axios-request',
             requestStub(mockConfig.API.CACHE_EXPIRY)

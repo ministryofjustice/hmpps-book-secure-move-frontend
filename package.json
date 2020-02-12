@@ -58,6 +58,7 @@
     "bluebird": "3.7.2",
     "chrono-node": "1.4.3",
     "compression": "1.7.4",
+    "concat-stream": "2.0.0",
     "connect-flash": "0.1.1",
     "connect-redis": "4.0.4",
     "cookie-parser": "1.4.4",
@@ -90,6 +91,7 @@
     "serve-favicon": "2.5.0",
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
+    "stream-mock": "2.0.5",
     "uuid": "3.4.0",
     "winston": "3.2.1"
   },
