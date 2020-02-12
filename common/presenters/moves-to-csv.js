@@ -141,10 +141,25 @@ const person = [
   },
 ]
 
+const documents = [
+  {
+    label: 'moves::download.documents.label',
+    value: row => {
+      const documents = row.documents || []
+      return documents.length
+    },
+  },
+]
+
 module.exports = function movesToCSV(moves) {
   return referenceDataService.getAssessmentQuestions().then(questions => {
     const assessmentAnswers = questions.map(mapAnswer)
-    const fields = flatten([...move, ...person, ...assessmentAnswers])
+    const fields = flatten([
+      ...move,
+      ...person,
+      ...assessmentAnswers,
+      ...documents,
+    ])
       .map(translateField)
       .map(stripTags)
 

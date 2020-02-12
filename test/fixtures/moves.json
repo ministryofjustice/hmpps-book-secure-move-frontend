@@ -9,6 +9,13 @@
     "updated_at": "2019-07-02T15:22:25Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-13",
+    "documents": [{
+      "id": "23fcde1b-feec-43d3-9e83-4e118dfa66d2"
+    }, {
+      "id": "3ab440cd-6cc6-4b02-ad99-cf180973e7f0"
+    }, {
+      "id": "816ed614-5d84-45dd-b6f5-1bbf7a9d551f"
+    }],
     "person": {
       "id": "e38ce41e-16f3-4957-be20-26a7f35e9f52",
       "type": "people",
@@ -91,6 +98,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-04",
+    "documents": [],
     "person": {
       "id": "3ab440cd-6cc6-4b02-ad99-cf180973e7f0",
       "type": "people",
@@ -194,6 +202,11 @@
     "updated_at": "2019-07-02T15:22:25Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-04",
+    "documents": [{
+      "id": "f1020eb2-b7d6-4d81-9bd3-3cf6740e5c0b"
+    }, {
+      "id": "031818f0-3b69-4e7a-8b3f-9d51cc964dee"
+    }],
     "person": {
       "id": "0cb6b3d1-dd62-4dae-a039-6512006a585f",
       "type": "people",
@@ -273,6 +286,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-22",
+    "documents": [],
     "person": {
       "id": "d3d0593e-e9d0-45f8-9889-e10376bae20e",
       "type": "people",
@@ -352,6 +366,15 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-06-29",
+    "documents": [{
+      "id": "2451f534-5718-4588-91a8-a0acb292e6fc"
+    }, {
+      "id": "6917ff58-a8f2-46c9-87bd-55359c3433fb"
+    }, {
+      "id": "f6bc200d-b9a1-4190-a498-7723cff30f08"
+    }, {
+      "id": "f3347cd8-2819-4ed8-a53a-b4464146d35f"
+    }],
     "person": {
       "id": "061a7430-f46d-4031-a123-4a19d37f11aa",
       "type": "people",
@@ -431,6 +454,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-16",
+    "documents": [],
     "person": {
       "id": "55470598-55ab-4cdb-8439-e50a615fd806",
       "type": "people",
@@ -510,6 +534,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-20",
+    "documents": [],
     "person": {
       "id": "c22acfcb-471d-4481-905c-f5d470e80f59",
       "type": "people",
@@ -589,6 +614,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-10",
+    "documents": [],
     "person": {
       "id": "56f0c986-6a01-46cd-ac78-939bb94ac8a5",
       "type": "people",
@@ -668,6 +694,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-07-12",
+    "documents": [],
     "person": {
       "id": "280e5a4b-0c14-45ea-b428-f5b2d4a35cb4",
       "type": "people",
@@ -747,6 +774,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-07",
+    "documents": [],
     "person": {
       "id": "163a5c09-e5e8-40cf-accc-7dc6182a8399",
       "type": "people",
@@ -826,6 +854,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-17",
+    "documents": [],
     "person": {
       "id": "c315d1d0-188a-4a9b-840a-bc2fa89f28d9",
       "type": "people",
@@ -905,6 +934,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-07-17",
+    "documents": [],
     "person": {
       "id": "e42ca653-3d4b-4e6e-ac9c-322b0399cb18",
       "type": "people",
@@ -984,6 +1014,7 @@
     "updated_at": "2019-07-02T15:22:25Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-12",
+    "documents": [],
     "person": {
       "id": "c22acfcb-471d-4481-905c-f5d470e80f59",
       "type": "people",
@@ -1063,6 +1094,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-02",
+    "documents": [],
     "person": {
       "id": "2797686e-dfe1-4a03-b27e-946ab7a09e87",
       "type": "people",
@@ -1142,6 +1174,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-18",
+    "documents": [],
     "person": {
       "id": "2797686e-dfe1-4a03-b27e-946ab7a09e87",
       "type": "people",
@@ -1221,6 +1254,7 @@
     "updated_at": "2019-07-02T15:22:25Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-06-30",
+    "documents": [],
     "person": {
       "id": "061a7430-f46d-4031-a123-4a19d37f11aa",
       "type": "people",
@@ -1300,6 +1334,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T09:00:00Z",
     "date": "2019-07-04",
+    "documents": [],
     "person": {
       "id": "31f7c6ff-fb88-4356-96f2-67b90d54610b",
       "type": "people",
@@ -1379,6 +1414,7 @@
     "updated_at": "2019-07-02T15:22:25Z",
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-20",
+    "documents": [],
     "person": {
       "id": "061a7430-f46d-4031-a123-4a19d37f11aa",
       "type": "people",
@@ -1458,6 +1494,7 @@
     "updated_at": "2019-07-02T15:22:23Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-07-01",
+    "documents": [],
     "person": {
       "id": "6e0458c2-3aa3-422e-a37d-46dbc4813469",
       "type": "people",
@@ -1537,6 +1574,7 @@
     "updated_at": "2019-07-02T15:22:24Z",
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-07-13",
+    "documents": [],
     "person": {
       "id": "563e35d4-ef83-4c78-aebc-afe23a93cdf9",
       "type": "people",

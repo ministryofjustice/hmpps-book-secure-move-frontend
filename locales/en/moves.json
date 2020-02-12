@@ -81,6 +81,9 @@
     },
     "assessment_answer": {
       "label": "{{question}} details"
+    },
+    "documents": {
+      "label": "Uploaded documents"
     }
   },
   "dashboard": {
