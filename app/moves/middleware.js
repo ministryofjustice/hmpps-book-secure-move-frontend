@@ -114,10 +114,12 @@ module.exports = {
         id.join(',')
       )
 
-      const [activeMoves, cancelledMoves] = (await Promise.all([
-        makeMultipleRequests(moveService.getActive, moveDate, idChunks),
-        makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
-      ])).map(response => response.flat())
+      const [activeMoves, cancelledMoves] = (
+        await Promise.all([
+          makeMultipleRequests(moveService.getActive, moveDate, idChunks),
+          makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
+        ])
+      ).map(response => response.flat())
 
       res.locals.activeMovesByDate = activeMoves
       res.locals.cancelledMovesByDate = cancelledMoves
