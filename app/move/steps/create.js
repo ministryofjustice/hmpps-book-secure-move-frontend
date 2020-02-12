@@ -1,4 +1,3 @@
-const { FEATURE_FLAGS } = require('../../../config')
 const {
   Base,
   PersonalDetails,
@@ -26,7 +25,6 @@ module.exports = {
     action: '/move/new/pnc-search-results',
     template: 'move/views/create/pnc-search',
     pageTitle: 'moves::steps.police_national_computer_search_term.heading',
-    buttonText: 'actions::continue',
     next: 'pnc-search-results',
     fields: ['police_national_computer_search_term'],
   },
@@ -105,9 +103,6 @@ module.exports = {
     assessmentCategory: 'health',
     next: 'save',
     pageTitle: 'moves::steps.health_information.heading',
-    buttonText: FEATURE_FLAGS.DOCUMENTS
-      ? 'actions::continue'
-      : 'actions::schedule_move', // TODO: move this logic to a more sensible place, like a controller
     fields: [
       'special_diet_or_allergy',
       'health_issue',
@@ -123,12 +118,10 @@ module.exports = {
     controller: Document,
     next: 'save',
     pageTitle: 'moves::steps.document.heading',
-    buttonText: 'actions::schedule_move',
     fields: ['documents'],
   },
   '/save': {
     skip: true,
     controller: Save,
-    next: 'document',
   },
 }
