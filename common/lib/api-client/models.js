@@ -92,6 +92,7 @@ module.exports = {
       title: '',
       location_type: '',
       nomis_agency_id: '',
+      can_upload_documents: '',
       disabled_at: '',
       suppliers: {
         jsonApi: 'hasMany',
