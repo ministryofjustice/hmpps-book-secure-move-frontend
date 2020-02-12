@@ -154,7 +154,9 @@ describe('Presenters', function() {
           it('should translate move reference', function() {
             expect(i18n.t.getCall(4)).to.be.calledWithExactly(
               'moves::move_reference',
-              { reference: 'AB12FS45' }
+              {
+                reference: 'AB12FS45',
+              }
             )
           })
 
