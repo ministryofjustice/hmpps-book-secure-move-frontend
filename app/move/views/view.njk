@@ -69,7 +69,7 @@
 
   {% include "move/views/_includes/assessment.njk" %}
 
-  {% if FEATURE_FLAGS.DOCUMENTS %}
+  {% if move.from_location.can_upload_documents %}
     <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
       {{ t("moves::assessment.categories.document.heading") }}
     </h2>

@@ -19,6 +19,7 @@ const courtsMock = [
 const mockCurrentLocation = {
   id: '5555',
   title: 'Prison 5555',
+  can_upload_documents: true,
 }
 
 describe('Move controllers', function() {
@@ -165,6 +166,11 @@ describe('Move controllers', function() {
       it('should set from location to current location from session', function() {
         controller.process(req, {}, nextSpy)
         expect(req.form.values.from_location).to.equal('5555')
+      })
+
+      it('should set from can upload documents based on current session', function() {
+        controller.process(req, {}, nextSpy)
+        expect(req.form.values.can_upload_documents).to.equal(true)
       })
 
       context('when date type is custom', function() {

@@ -101,7 +101,14 @@ module.exports = {
   '/health-information': {
     controller: Assessment,
     assessmentCategory: 'health',
-    next: 'save',
+    next: [
+      {
+        field: 'can_upload_documents',
+        value: true,
+        next: 'document',
+      },
+      'save',
+    ],
     pageTitle: 'moves::steps.health_information.heading',
     fields: [
       'special_diet_or_allergy',

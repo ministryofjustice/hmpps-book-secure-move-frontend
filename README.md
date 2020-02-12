@@ -170,7 +170,6 @@ npm run lint
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
 | E2E_SUPPLIER_PASSWORD | Supplier user password used for acceptance testing | |
 | LOCATIONS_BATCH_SIZE | Maximum number of location IDs to send in one request when requesting moves for all locations | 40 |
-| FEATURE_FLAG_DOCUMENTS | Set to `true` to enable the document upload feature | |
 
 ### Development specific
 
