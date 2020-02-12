@@ -24,7 +24,6 @@ function assessmentCategory(category) {
   return {
     component: 'govukCheckboxes',
     multiple: true,
-    implicitGroup: true,
     items: [],
     name: category,
     fieldset: {

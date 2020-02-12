@@ -132,7 +132,6 @@ describe('Move controllers', function() {
             health: {
               component: 'govukCheckboxes',
               multiple: true,
-              implicitGroup: true,
               items: [
                 {
                   value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
