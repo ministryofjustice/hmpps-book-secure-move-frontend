@@ -14,10 +14,6 @@ const documentService = {
       .create('document', formData)
       .then(response => response.data)
   },
-
-  destroy(id) {
-    return Promise.resolve(id)
-  },
 }
 
 module.exports = documentService
