@@ -85,27 +85,6 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#middlewareChecks()', function() {
-      beforeEach(function() {
-        sinon.stub(FormController.prototype, 'middlewareChecks')
-        sinon.stub(controller, 'use')
-        sinon.stub(controller, 'isEnabled')
-
-        controller.middlewareChecks()
-      })
-
-      it('should call parent method', function() {
-        expect(FormController.prototype.middlewareChecks).to.have.been
-          .calledOnce
-      })
-
-      it('should call isEnabled middleware', function() {
-        expect(controller.use.firstCall).to.have.been.calledWithExactly(
-          controller.isEnabled(true)
-        )
-      })
-    })
-
     describe('#setNextStep()', function() {
       let req, nextSpy
 
@@ -162,47 +141,6 @@ describe('Move controllers', function() {
 
         it('should keep original next value', function() {
           expect(req.form.options.next).to.equal('/original-url')
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-    })
-
-    describe('#isEnabled()', function() {
-      let req, nextSpy
-
-      beforeEach(function() {
-        req = {
-          form: {
-            options: {},
-          },
-        }
-        nextSpy = sinon.spy()
-      })
-
-      context('when feature is enabled', function() {
-        beforeEach(function() {
-          controller.isEnabled(true)(req, {}, nextSpy)
-        })
-
-        it('should not set skip option', function() {
-          expect(req.form.options.skip).to.be.undefined
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-
-      context('when feature is not enabled', function() {
-        beforeEach(function() {
-          controller.isEnabled(false)(req, {}, nextSpy)
-        })
-
-        it('should set skip option', function() {
-          expect(req.form.options.skip).to.equal(true)
         })
 
         it('should call next', function() {

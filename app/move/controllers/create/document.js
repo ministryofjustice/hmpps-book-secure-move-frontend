@@ -3,7 +3,7 @@ const { reject } = require('lodash')
 
 const CreateBaseController = require('./base')
 const documentService = require('../../../../common/services/document')
-const { FILE_UPLOADS, FEATURE_FLAGS } = require('../../../../config')
+const { FILE_UPLOADS } = require('../../../../config')
 
 const upload = multer({
   dest: FILE_UPLOADS.UPLOAD_DIR,
@@ -25,26 +25,11 @@ class DocumentUploadController extends CreateBaseController {
     this.use(this.setNextStep)
   }
 
-  middlewareChecks() {
-    this.use(this.isEnabled(FEATURE_FLAGS.DOCUMENTS))
-    super.middlewareChecks()
-  }
-
   setNextStep(req, res, next) {
     if (req.body.upload || req.body.delete) {
       req.form.options.next = req.originalUrl
     }
     next()
-  }
-
-  isEnabled(enabled) {
-    return (req, res, next) => {
-      if (!enabled) {
-        req.form.options.skip = true
-      }
-
-      next()
-    }
   }
 
   async saveValues(req, res, next) {
