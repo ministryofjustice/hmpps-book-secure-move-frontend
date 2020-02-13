@@ -124,6 +124,7 @@ app.use(
 )
 // Development environment helpers
 if (config.IS_DEV) {
+  require('axios-debug-log')
   const development = require('./common/middleware/development')
   app.use(development.bypassAuth(config.AUTH_BYPASS_SSO))
   app.use(development.setUserPermissions(config.USER_PERMISSIONS))

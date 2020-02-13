@@ -48,7 +48,7 @@ Set the [environment variables](#environment-variables) accordingly.
 
 ## Running the application
 
-#### In production mode
+### In production mode
 
 ```
 NODE_ENV=production npm start
@@ -56,7 +56,7 @@ NODE_ENV=production npm start
 
 The app will run on port 3000 by default and be available at [http://localhost:3000](http://localhost:3000).
 
-#### In development mode
+### In development mode
 
 Ensure Redis is installed and running.
 
@@ -65,6 +65,28 @@ npm run develop
 ```
 
 The app will be running at [http://localhost:3000](http://localhost:3000) or with browsersync at [http://localhost:3001](http://localhost:3001).
+
+#### Running with debugging
+
+Some extra levels of debugging have been added to aid development.
+
+To see all axios requests/responses run:
+
+```
+DEBUG=axios npm run develop
+```
+
+To see app level debug logs run:
+
+```
+DEBUG=app:* npm run develop
+```
+
+You can combine namespaces, for example:
+
+```
+DEBUG=axios,app:* npm run develop
+```
 
 ## Testing and linting
 
