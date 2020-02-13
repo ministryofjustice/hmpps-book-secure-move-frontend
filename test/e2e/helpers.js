@@ -64,7 +64,7 @@ export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
 
   const optionCssSelector = '.autocomplete__menu .autocomplete__option'
   const autocompleteMenuOptions = await fieldSelector
-    .sibling('span')
+    .sibling('div')
     .find(optionCssSelector)
 
   return selectOption(
