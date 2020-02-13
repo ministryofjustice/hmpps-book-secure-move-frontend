@@ -27,6 +27,7 @@ const redisStore = require('./config/redis-store')({
   logErrors: error => logger.error(error),
 })
 const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
+const redirectOCAUser = require('./common/middleware/redirect-oca-user')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
@@ -132,6 +133,12 @@ if (config.IS_DEV) {
 app.use(
   ensureAuthenticated({
     provider: config.DEFAULT_AUTH_PROVIDER,
+    whitelist: config.AUTH_WHITELIST_URLS,
+  })
+)
+app.use(
+  redirectOCAUser({
+    ocaMountpath: moveRequestsApp.mountpath,
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
