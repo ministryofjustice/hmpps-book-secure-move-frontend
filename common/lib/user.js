@@ -25,7 +25,11 @@ User.prototype = {
   getPermissions(roles = []) {
     const permissions = []
 
-    if (roles.includes('ROLE_PECS_POLICE')) {
+    if (
+      roles.includes('ROLE_PECS_POLICE') ||
+      roles.includes('ROLE_PECS_SCH') ||
+      roles.includes('ROLE_PECS_STC')
+    ) {
       permissions.push(
         'moves:view:by_location',
         'moves:download:by_location',
@@ -35,7 +39,10 @@ User.prototype = {
       )
     }
 
-    if (roles.includes('ROLE_PECS_PRISON')) {
+    if (
+      roles.includes('ROLE_PECS_PRISON') ||
+      roles.includes('ROLE_PECS_HMYOI')
+    ) {
       permissions.push(
         'moves:view:by_location',
         'moves:download:by_location',

@@ -121,6 +121,52 @@ describe('User class', function() {
       })
     })
 
+    context('when user has ROLE_PECS_HMYOI', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_HMYOI'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'move:view',
+        ])
+      })
+    })
+
+    context('when user has ROLE_PECS_STC', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_STC'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'move:view',
+          'move:create',
+          'move:cancel',
+        ])
+      })
+    })
+
+    context('when user has ROLE_PECS_SCH', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_SCH'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'move:view',
+          'move:create',
+          'move:cancel',
+        ])
+      })
+    })
+
     context('when user has ROLE_PECS_PRISON', function() {
       beforeEach(function() {
         permissions = user.getPermissions(['ROLE_PECS_PRISON'])
@@ -157,6 +203,9 @@ describe('User class', function() {
           'ROLE_PECS_POLICE',
           'ROLE_PECS_PRISON',
           'ROLE_PECS_SUPPLIER',
+          'ROLE_PECS_STC',
+          'ROLE_PECS_SCH',
+          'ROLE_PECS_HMYOI',
         ])
       })
 
