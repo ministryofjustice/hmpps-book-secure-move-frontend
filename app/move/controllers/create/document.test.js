@@ -14,7 +14,6 @@ multerStub.MulterError = multer.MulterError
 const Controller = proxyquire('./document', {
   multer: multerStub,
 })
-const documentService = require('../../../../common/services/document')
 
 const controller = new Controller({ route: '/' })
 
@@ -180,7 +179,6 @@ describe('Move controllers', function() {
             { id: 'uploaded-file-id-2' },
           ]
           req.sessionModel.get.returns(mockDocuments)
-          sinon.stub(documentService, 'create').resolvesArg(0)
 
           await controller.saveValues(req, res, nextSpy)
         })
@@ -204,48 +202,25 @@ describe('Move controllers', function() {
       })
 
       context('with deleted file', function() {
-        context('when promise resolves', function() {
-          beforeEach(async function() {
-            req.body.delete = '12345'
-            req.sessionModel.get.returns(mockDocuments)
-            sinon.stub(documentService, 'destroy').resolvesArg(0)
+        beforeEach(async function() {
+          req.body.delete = '12345'
+          req.sessionModel.get.returns(mockDocuments)
 
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should delete document', function() {
-            expect(req.form.values.documents).to.deep.equal([
-              { id: '67890' },
-              { id: '112233' },
-              { id: '445566' },
-            ])
-          })
-
-          it('should call parent method', function() {
-            expect(
-              FormController.prototype.saveValues
-            ).to.be.calledOnceWithExactly(req, res, nextSpy)
-          })
+          await controller.saveValues(req, res, nextSpy)
         })
 
-        context('when promise rejects', function() {
-          const err = new Error('Promise error')
+        it('should delete document', function() {
+          expect(req.form.values.documents).to.deep.equal([
+            { id: '67890' },
+            { id: '112233' },
+            { id: '445566' },
+          ])
+        })
 
-          beforeEach(async function() {
-            req.body.delete = '12345'
-            req.sessionModel.get.returns(mockDocuments)
-            sinon.stub(documentService, 'destroy').rejects(err)
-
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should call next with error', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly(err)
-          })
-
-          it('should not call parent method', function() {
-            expect(FormController.prototype.saveValues).not.to.be.called
-          })
+        it('should call parent method', function() {
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
 

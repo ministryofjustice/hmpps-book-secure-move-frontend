@@ -2,7 +2,6 @@ const multer = require('multer')
 const { reject } = require('lodash')
 
 const CreateBaseController = require('./base')
-const documentService = require('../../../../common/services/document')
 const APIDocumentStorage = require('../../../../common/lib/multer.api-document.storage')
 const { FILE_UPLOADS } = require('../../../../config')
 
@@ -33,27 +32,19 @@ class DocumentUploadController extends CreateBaseController {
     next()
   }
 
-  async saveValues(req, res, next) {
-    const sessionDocuments = req.sessionModel.get('documents') || []
+  saveValues(req, res, next) {
     const { delete: deletedId } = req.body
-    let documents = []
+    const sessionDocuments = req.sessionModel.get('documents') || []
+    const uploadedDocuments = req.files || []
 
-    try {
-      if (req.files) {
-        documents = [...sessionDocuments, ...req.files]
+    req.form.values.documents = reject(
+      [...sessionDocuments, ...uploadedDocuments],
+      {
+        id: deletedId,
       }
+    )
 
-      if (deletedId) {
-        await documentService.destroy(deletedId)
-        documents = reject(sessionDocuments, { id: deletedId })
-      }
-
-      req.form.values.documents = documents
-
-      super.saveValues(req, res, next)
-    } catch (error) {
-      next(error)
-    }
+    super.saveValues(req, res, next)
   }
 
   errorHandler(err, req, res, next) {
