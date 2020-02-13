@@ -34,6 +34,7 @@ const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
 const locationsApp = require('./app/locations')
+const moveRequestsApp = require('./app/move-requests')
 const { getAssetPath } = require('./config/nunjucks/globals')
 
 const { omit } = require('lodash')
@@ -137,6 +138,7 @@ app.use(
 app.use(
   ensureCurrentLocation({
     locationsMountpath: locationsApp.mountpath,
+    ocaMountpath: moveRequestsApp.mountpath,
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )

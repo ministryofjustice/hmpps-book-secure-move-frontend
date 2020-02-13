@@ -23,6 +23,8 @@ function processAuthResponse() {
           return next(error)
         }
 
+        decodedAccessToken.authorities.push('ROLE_PECS_OCA')
+
         req.session.authExpiry = decodedAccessToken.exp
         req.session.currentLocation = currentLocation
         req.session.originalRequestUrl = originalRequestUrl

@@ -19,6 +19,10 @@ User.prototype = {
       role = 'Police'
     }
 
+    if (roles.includes('ROLE_PECS_OCA')) {
+      role = 'OCA'
+    }
+
     return role
   },
 
@@ -50,6 +54,12 @@ User.prototype = {
         'moves:view:by_location',
         'moves:download:by_location',
         'move:view'
+      )
+    }
+
+    if (roles.includes('ROLE_PECS_OCA')) {
+      permissions.push(
+        'moves:requests:view',
       )
     }
 
