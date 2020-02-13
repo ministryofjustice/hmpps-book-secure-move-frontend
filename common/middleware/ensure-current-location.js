@@ -1,6 +1,10 @@
 const { isUndefined } = require('lodash')
 
-function ensureCurrentLocation({ locationsMountpath, ocaMountpath, whitelist = [] } = {}) {
+function ensureCurrentLocation({
+  locationsMountpath,
+  ocaMountpath,
+  whitelist = [],
+} = {}) {
   return (req, res, next) => {
     if (
       !isUndefined(req.session.currentLocation) ||

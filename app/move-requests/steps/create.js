@@ -14,9 +14,16 @@ module.exports = {
     backLink: false,
     controller: FormWizardController,
     method: 'get',
-    action: '/move_requests/prison-number-search-results',
+    action: '/move_requests/new/prison-number-search-results',
     pageTitle: 'move_requests::prison_number.heading',
     next: 'prison-number-search-results',
     fields: ['prison_number'],
+  },
+  '/prison-number-search-results': {
+    checkJourney: false,
+    backLink: 'prison-number',
+    controller: FormWizardController,
+    pageTitle: 'move_requests::prison_number_search_results.heading',
+    next: 'personal-details',
   },
 }

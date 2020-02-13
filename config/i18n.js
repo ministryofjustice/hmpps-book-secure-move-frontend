@@ -14,6 +14,7 @@ i18next.use(Backend).init({
     'fields',
     'locations',
     'messages',
+    'move_requests',
     'moves',
     'statuses',
     'validation',
