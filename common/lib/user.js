@@ -58,9 +58,7 @@ User.prototype = {
     }
 
     if (roles.includes('ROLE_PECS_OCA')) {
-      permissions.push(
-        'moves:requests:view',
-      )
+      permissions.push('move:requests:view', 'move:requests:create')
     }
 
     return uniq(permissions)

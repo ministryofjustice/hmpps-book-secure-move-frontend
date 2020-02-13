@@ -1,0 +1,23 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+ {{t("move_requests::dashboard.title")}}
+{% endblock %}
+
+{% block content %}
+
+  {% if canAccess('move:requests:create') %}
+
+    {{ govukButton({
+      isStartButton: true,
+      text: t("move_requests::dashboard.start_button"),
+      href: "/move-requests/new",
+      classes: "govuk-!-margin-top-2 app-print--hide"
+    }) }}
+
+  {% endif %}
+
+{% endblock %}
+

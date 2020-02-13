@@ -1,0 +1,8 @@
+{
+  "dashboard": {
+    "title": "Transfers",
+    "subheading": "Transfers",
+    "heading": "Single requests",
+    "start_button": "Request an individual move"
+  }
+}
