@@ -4,5 +4,8 @@
     "subheading": "Transfers",
     "heading": "Single requests",
     "start_button": "Request an individual move"
+  },
+  "prison_number": {
+    "heading": "Request an individual move"
   }
 }
