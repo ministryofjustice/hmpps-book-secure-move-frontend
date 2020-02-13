@@ -1,5 +1,4 @@
 module.exports = {
-  // pnc search
   prison_number: {
     component: 'govukInput',
     label: {

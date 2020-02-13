@@ -24,6 +24,5 @@ module.exports = {
     backLink: 'prison-number',
     controller: FormWizardController,
     pageTitle: 'move_requests::prison_number_search_results.heading',
-    next: 'personal-details',
   },
 }
