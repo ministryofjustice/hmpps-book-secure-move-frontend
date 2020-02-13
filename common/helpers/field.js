@@ -189,23 +189,25 @@ function insertItemConditional({ key, field }) {
   }
 }
 
-function mapPersonToOption(person) {
+function mapPersonToOption(person = {}) {
   return {
-    text: person.fullname.toUpperCase(),
+    text: person.fullname ? person.fullname.toUpperCase() : '',
     label: {
       classes: 'govuk-label--s',
     },
-    value: person.id,
+    value: person.id || '',
     hint: {
       html: componentService.getComponent('appResults', {
         items: [
           {
             label: 'Date of Birth',
-            text: format(parseISO(person.date_of_birth), 'd MMM yyyy'),
+            text: person.date_of_birth
+              ? format(parseISO(person.date_of_birth), 'd MMM yyyy')
+              : '',
           },
           {
             label: 'Gender',
-            text: person.gender.title,
+            text: get(person, 'gender.title', ''),
           },
         ],
       }),

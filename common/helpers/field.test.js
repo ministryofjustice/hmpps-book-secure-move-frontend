@@ -849,19 +849,67 @@ describe('Form helpers', function() {
 
     beforeEach(function() {
       sinon.stub(componentService, 'getComponent').returnsArg(0)
-      response = mapPersonToOption(personMock)
     })
 
-    it('should not call translation method', function() {
-      expect(response).to.deep.equal({
-        text: 'BAZ, BOO',
-        label: {
-          classes: 'govuk-label--s',
-        },
-        value: '7777',
-        hint: {
-          html: 'appResults',
-        },
+    context('with person object', function() {
+      beforeEach(function() {
+        response = mapPersonToOption(personMock)
+      })
+
+      it('should call component correctly', function() {
+        expect(componentService.getComponent).to.be.calledOnceWithExactly(
+          'appResults',
+          {
+            items: [
+              { label: 'Date of Birth', text: '24 Apr 1948' },
+              { label: 'Gender', text: personMock.gender.title },
+            ],
+          }
+        )
+      })
+
+      it('should return option', function() {
+        expect(response).to.deep.equal({
+          text: 'BAZ, BOO',
+          label: {
+            classes: 'govuk-label--s',
+          },
+          value: '7777',
+          hint: {
+            html: 'appResults',
+          },
+        })
+      })
+    })
+
+    context('with empty object', function() {
+      beforeEach(function() {
+        response = mapPersonToOption()
+      })
+
+      it('should call component correctly', function() {
+        expect(componentService.getComponent).to.be.calledOnceWithExactly(
+          'appResults',
+          {
+            items: [
+              { label: 'Date of Birth', text: '' },
+              { label: 'Gender', text: '' },
+            ],
+          }
+        )
+      })
+
+      it('should return option', function() {
+        expect(response).to.deep.equal({
+          text: '',
+          label: {
+            classes: 'govuk-label--s',
+          },
+          value: '',
+          hint: {
+            html: 'appResults',
+          },
+        })
       })
     })
   })
