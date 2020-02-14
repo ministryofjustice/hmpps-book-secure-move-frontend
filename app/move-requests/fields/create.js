@@ -11,4 +11,16 @@ module.exports = {
     autocomplete: 'off',
     validate: 'required',
   },
+  prison_number_search_results: {
+    component: 'govukRadios',
+    multiple: true,
+    items: [],
+    name: 'prison_number_search_results',
+    fieldset: {
+      legend: {
+        text: 'fields::prison_number_search_results.label',
+        classes: 'govuk-fieldset__legend--s',
+      },
+    },
+  },
 }

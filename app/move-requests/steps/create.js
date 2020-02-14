@@ -26,5 +26,6 @@ module.exports = {
     backLink: 'prison-number',
     controller: SearchResultsController,
     pageTitle: 'move_requests::prison_number_search_results.heading',
+    fields: ['prison_number_search_results'],
   },
 }
