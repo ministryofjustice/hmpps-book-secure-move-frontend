@@ -192,10 +192,13 @@ workflows:
   pecs-frontend:
     jobs:
       - build_and_test
-      - e2e_test:
-          requires:
-            - deploy_staging
       - build_staging:
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only: master
+      - build_preprod:
           requires:
             - build_and_test
           filters:
@@ -204,25 +207,31 @@ workflows:
       - deploy_staging:
           requires:
             - build_staging
-      - build_preprod:
-          requires:
-            - build_and_test
-          filters:
-            branches:
-              only: master
       - deploy_preprod:
           requires:
             - build_preprod
-      - hold_production:
-          type: approval
+            - e2e_test
+      - e2e_test:
+          requires:
+            - deploy_staging
+      - build_production:
           requires:
             - build_and_test
           filters:
             branches:
-              only: master
-      - build_production:
-          requires:
-            - hold_production
-      - deploy_production:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - hold_production:
+          type: approval
           requires:
             - build_production
+            - e2e_test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - deploy_production:
+          requires:
+            - hold_production
