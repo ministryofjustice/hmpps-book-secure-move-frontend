@@ -5,9 +5,10 @@ module.exports = {
       html: 'fields::prison_number.label',
       classes: 'govuk-label--s',
     },
-    id: 'prison-number',
-    name: 'prison-number',
+    id: 'prison_number',
+    name: 'prison_number',
     classes: 'govuk-input--width-20',
     autocomplete: 'off',
+    validate: 'required',
   },
 }

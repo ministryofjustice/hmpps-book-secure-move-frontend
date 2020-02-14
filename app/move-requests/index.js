@@ -11,8 +11,10 @@ router.get('/', protectRoute('move:requests:view'), dashboard)
 
 router.use(
   '/new',
-  protectRoute('move:create'),
+  protectRoute('move:requests:create'),
   wizard(createSteps, createFields, {
+    name: 'create-move-request',
+    journeyName: 'create-move-request',
     template: 'form-wizard',
   })
 )
