@@ -458,7 +458,9 @@ describe('Person Service', function() {
 
     context('with ID', function() {
       beforeEach(async function() {
-        person = await personService.findAll(mockId)
+        person = await personService.findAll({
+          'filter[police_national_computer]': mockId,
+        })
       })
 
       it('should call findAll method with data', function() {

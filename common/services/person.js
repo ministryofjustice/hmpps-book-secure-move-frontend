@@ -69,16 +69,16 @@ const personService = {
       .then(person => personService.transform(person))
   },
 
-  findAll(pnc) {
-    if (!pnc) {
+  findAll(filter) {
+    if (!filter) {
       return Promise.reject(new Error('No PNC supplied'))
     }
-
+    const query = {
+      cache: false,
+      ...filter,
+    }
     return apiClient
-      .findAll('person', {
-        cache: false,
-        'filter[police_national_computer]': pnc,
-      })
+      .findAll('person', query)
       .then(response => response.data)
       .then(data => data.map(person => personService.transform(person)))
   },
