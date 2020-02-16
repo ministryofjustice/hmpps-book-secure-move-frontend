@@ -1,5 +1,4 @@
 const {
-  Base,
   PersonalDetails,
   Assessment,
   MoveDetails,
@@ -14,13 +13,9 @@ module.exports = {
     reset: true,
     resetJourney: true,
     skip: true,
-    checkJourney: false,
     next: 'pnc-search',
   },
   '/pnc-search': {
-    checkJourney: false,
-    backLink: false,
-    controller: Base,
     method: 'get',
     action: '/move/new/pnc-search-results',
     template: 'move/views/create/pnc-search',
@@ -29,8 +24,6 @@ module.exports = {
     fields: ['police_national_computer_search_term'],
   },
   '/pnc-search-results': {
-    checkJourney: false,
-    backLink: 'pnc-search',
     controller: PncSearchResults,
     template: 'move/views/create/pnc-search-results',
     pageTitle:
@@ -39,9 +32,7 @@ module.exports = {
     fields: ['police_national_computer_search_term_result'],
   },
   '/personal-details': {
-    entryPoint: true,
     controller: PersonalDetails,
-    backLink: 'pnc-search',
     pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',
     fields: [
