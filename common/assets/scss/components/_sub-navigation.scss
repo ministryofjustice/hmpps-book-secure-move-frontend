@@ -7,9 +7,15 @@
         margin-right: 0;
         position: relative;
         a {
-          background: url("../images/icon-search-blue.svg") no-repeat center left;
-          background-size: cover;
-          padding-left: 30px;
+          &::before {
+            content: " ";
+            background: url("../images/icon-search-blue.svg") no-repeat center left;
+            background-size: cover;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            left: -40px;
+          }
         }
       }
     }

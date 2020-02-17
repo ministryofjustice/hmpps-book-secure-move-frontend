@@ -7,10 +7,10 @@ const personService = require('../../../common/services/person')
 
 class searchResults extends FormWizardController {
   async configure(req, res, next) {
-    const prisonNumber = req.query.prison_number
-    if (prisonNumber) {
+    const nomisOffenderNumber = req.query.prison_number
+    if (nomisOffenderNumber) {
       const query = {
-        'filter[prison_number]': prisonNumber,
+        'filter[nomis_offender_no]': nomisOffenderNumber,
       }
       try {
         res.locals.people = await personService.findAll(query)
