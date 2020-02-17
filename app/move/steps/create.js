@@ -3,7 +3,8 @@ const {
   Assessment,
   MoveDetails,
   Save,
-  PncSearchResults,
+  PersonSearch,
+  PersonSearchResults,
   Document,
 } = require('../controllers/create')
 
@@ -13,25 +14,39 @@ module.exports = {
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'pnc-search',
+    next: 'person-search',
   },
-  '/pnc-search': {
-    method: 'get',
-    action: '/move/new/pnc-search-results',
+  '/person-search': {
+    controller: PersonSearch,
+    buttonText: 'actions::search',
     template: 'move/views/create/pnc-search',
-    pageTitle: 'moves::steps.police_national_computer_search_term.heading',
-    next: 'pnc-search-results',
-    fields: ['police_national_computer_search_term'],
+    pageTitle: 'moves::steps.person_search.heading',
+    next: [
+      {
+        field: 'is_manual_person_creation',
+        value: true,
+        next: 'personal-details',
+      },
+      'person-search-results',
+    ],
+    fields: ['filter.police_national_computer'],
   },
-  '/pnc-search-results': {
-    controller: PncSearchResults,
+  '/person-search-results': {
+    controller: PersonSearchResults,
     template: 'move/views/create/pnc-search-results',
-    pageTitle:
-      'moves::steps.police_national_computer_search_term_result.heading',
-    next: 'personal-details',
-    fields: ['police_national_computer_search_term_result'],
+    pageTitle: 'moves::steps.person_search_results.heading',
+    next: [
+      {
+        field: 'is_manual_person_creation',
+        value: true,
+        next: 'personal-details',
+      },
+      'move-details',
+    ],
+    fields: ['people'],
   },
   '/personal-details': {
+    backLink: 'person-search',
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',

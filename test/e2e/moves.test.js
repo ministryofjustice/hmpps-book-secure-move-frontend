@@ -8,7 +8,6 @@ import {
   getCsvDownloadFilePaths,
   waitForCsvDownloadFilePaths,
   clickSelectorIfExists,
-  getSelectedFieldsetOption,
 } from './helpers'
 
 const page = new Page()
@@ -28,11 +27,14 @@ test('Court move', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Create a move')
+    .eql('Who is being moved?')
 
   await t
-    .typeText('#police-national-computer-search-term', courtMovePncNumber)
-    .click(page.nodes.continueButton)
+    .typeText('[name="filter.police_national_computer"]', courtMovePncNumber)
+    .click(page.nodes.searchButton)
+
+  await t.expect(page.nodes.pageHeading.innerText).eql('Who is being moved?')
+  await t.click(page.nodes.moveSomeoneElseLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
   await t.expect(page.nodes.pncNumberInput.value).eql(courtMovePncNumber)
@@ -114,43 +116,17 @@ test('Court move with existing PNC', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Create a move')
+    .eql('Who is being moved?')
 
   await t
-    .typeText('#police-national-computer-search-term', courtMovePncNumber)
-    .click(page.nodes.continueButton)
+    .typeText('[name="filter.police_national_computer"]', courtMovePncNumber)
+    .click(page.nodes.searchButton)
 
-  await t.expect(page.nodes.pageHeading.innerText).eql('Create a move')
-  await t
-    .expect(page.nodes.pncSearchResultsHeader.innerText)
-    .eql(`Matches for ${courtMovePncNumber}`)
+  await t.expect(page.nodes.pageHeading.innerText).eql('Who is being moved?')
 
   await page.fillInPncSearchResults(
     `${courtMovePersonalDetails.text.last_name}, ${courtMovePersonalDetails.text.first_names}`.toUpperCase()
   )
-  await t.click(page.nodes.continueButton)
-
-  await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
-  await t.expect(page.nodes.pncNumberInput.value).eql(courtMovePncNumber)
-  await t
-    .expect(page.nodes.lastNameInput.value)
-    .eql(courtMovePersonalDetails.text.last_name)
-  await t
-    .expect(page.nodes.firstNamesInput.value)
-    .eql(courtMovePersonalDetails.text.first_names)
-  await t
-    .expect(page.nodes.dateOfBirthInput.value)
-    .eql(courtMovePersonalDetails.text.date_of_birth)
-  await t
-    .expect(page.nodes.ethnicityInput.value)
-    .eql(courtMovePersonalDetails.options.ethnicity)
-
-  const selectedFieldsetOption = await getSelectedFieldsetOption('Gender')
-
-  await t
-    .expect(selectedFieldsetOption.sibling('label').innerText)
-    .eql(courtMovePersonalDetails.options.gender)
-
   await t.click(page.nodes.continueButton)
 
   await t
@@ -225,15 +201,12 @@ test('Prison recall', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Create a move')
+    .eql('Who is being moved?')
 
   const pncNumber = faker.random.number().toString()
-  await t
-    .typeText('#police-national-computer-search-term', pncNumber)
-    .click(page.nodes.continueButton)
+  await t.click(page.nodes.noPNCLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
-  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
 
   const personalDetails = await page.fillInPersonalDetails({ pncNumber })
   await t.click(page.nodes.continueButton)
@@ -306,8 +279,8 @@ test('Upload documents', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Create a move')
-    .click(page.nodes.continueButton)
+    .eql('Who is being moved?')
+    .click(page.nodes.noPNCLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
 
@@ -397,15 +370,12 @@ test('Navigate tags in detailed move', async t => {
   await t
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
-    .eql('Create a move')
+    .eql('Who is being moved?')
 
   const pncNumber = faker.random.number().toString()
-  await t
-    .typeText('#police-national-computer-search-term', pncNumber)
-    .click(page.nodes.continueButton)
+  await t.click(page.nodes.noPNCLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
-  await t.expect(page.nodes.pncNumberInput.value).eql(pncNumber)
 
   const personalDetails = await page.fillInPersonalDetails({ pncNumber })
   await t.click(page.nodes.continueButton)
