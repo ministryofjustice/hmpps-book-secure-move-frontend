@@ -34,6 +34,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 
 // Import MoJ Frontend Components
 @import "@ministryofjustice/frontend/moj/components/organisation-switcher/_organisation-switcher.scss";
+@import "@ministryofjustice/frontend/moj/components/sub-navigation/_sub-navigation.scss";
 @import "@ministryofjustice/frontend/moj/components/badge/_badge.scss";
 
 // Import app settings/tools/helpers

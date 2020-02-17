@@ -1,0 +1,17 @@
+.moj-sub-navigation {
+  margin-bottom: 0;
+  .moj-sub-navigation__item {
+    &:last-child {
+      @include govuk-media-query($from: tablet) {
+        float: right;
+        margin-right: 0;
+        position: relative;
+        a {
+          background: url("../images/icon-search-blue.svg") no-repeat center left;
+          background-size: cover;
+          padding-left: 30px;
+        }
+      }
+    }
+  }
+}
