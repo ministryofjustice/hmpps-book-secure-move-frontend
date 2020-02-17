@@ -89,7 +89,7 @@ describe('Move controllers', function() {
         context('with results', function() {
           beforeEach(async function() {
             sinon
-              .stub(personService, 'findAll')
+              .stub(personService, 'getByIdentifiers')
               .resolves([personMock, personMockOne])
 
             await controller.configure(req, res, nextSpy)
@@ -159,7 +159,7 @@ describe('Move controllers', function() {
 
         context('without results', function() {
           beforeEach(async function() {
-            sinon.stub(personService, 'findAll').resolves([])
+            sinon.stub(personService, 'getByIdentifiers').resolves([])
 
             await controller.configure(req, res, nextSpy)
           })
@@ -199,7 +199,7 @@ describe('Move controllers', function() {
           const errorMock = new Error('Problem')
 
           beforeEach(async function() {
-            sinon.stub(personService, 'findAll').throws(errorMock)
+            sinon.stub(personService, 'getByIdentifiers').throws(errorMock)
 
             await controller.configure(req, res, nextSpy)
           })
@@ -224,7 +224,7 @@ describe('Move controllers', function() {
 
       context('without a pnc search term', function() {
         beforeEach(async function() {
-          sinon.stub(personService, 'findAll').resolves([])
+          sinon.stub(personService, 'getByIdentifiers').resolves([])
 
           await controller.configure(req, res, nextSpy)
         })

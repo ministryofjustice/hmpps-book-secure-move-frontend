@@ -14,7 +14,9 @@ class PncResultsController extends CreateBaseController {
 
     if (pncSearchTerm) {
       try {
-        const people = await personService.findAll(pncSearchTerm)
+        const people = await personService.getByIdentifiers({
+          police_national_computer: pncSearchTerm,
+        })
         searchResultsField.items = people.map(fieldHelpers.mapPersonToOption)
 
         if (searchResultsField.items.length) {

@@ -436,8 +436,7 @@ describe('Person Service', function() {
     })
   })
 
-  describe('#findAll()', function() {
-    const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+  describe('#getByIdentifiers()', function() {
     const mockResponse = {
       data: [mockPerson],
     }
@@ -448,28 +447,37 @@ describe('Person Service', function() {
       sinon.stub(personService, 'transform').returnsArg(0)
     })
 
-    context('without PNC ID', function() {
-      it('should reject with error', function() {
-        return expect(personService.findAll()).to.be.rejectedWith(
-          'No PNC supplied'
-        )
+    context('without filters', function() {
+      beforeEach(async function() {
+        person = await personService.getByIdentifiers()
+      })
+
+      it('should call findAll method with empty object', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {})
+      })
+
+      it('should transform response data', function() {
+        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
+      })
+
+      it('should return data property', function() {
+        expect(person).to.deep.equal(mockResponse.data)
       })
     })
 
-    context('with ID', function() {
+    context('with filters', function() {
       beforeEach(async function() {
-        person = await personService.findAll(mockId)
-      })
-
-      it('should call findAll method with data', function() {
-        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          cache: false,
-          'filter[police_national_computer]': mockId,
+        person = await personService.getByIdentifiers({
+          filterOne: 'filter-one-value',
+          filterTwo: 'filter-two-value',
         })
       })
 
-      it('should format data', function() {
-        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
+      it('should call findAll method with identifiers as filters', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
+          'filter[filterOne]': 'filter-one-value',
+          'filter[filterTwo]': 'filter-two-value',
+        })
       })
 
       it('should transform response data', function() {
