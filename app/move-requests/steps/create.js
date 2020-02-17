@@ -20,7 +20,7 @@ module.exports = {
     pageTitle: 'move_requests::prison_number.heading',
     next: 'prison-number-search-results',
     fields: ['prison_number'],
-    // template: 'move-requests/views/move-requests-base.njk',
+    template: 'move-requests/views/move-requests-base.njk',
   },
   '/prison-number-search-results': {
     checkJourney: false,
@@ -28,6 +28,6 @@ module.exports = {
     controller: SearchResultsController,
     pageTitle: 'move_requests::prison_number_search_results.heading',
     fields: ['prison_number_search_results'],
-    // template: 'move-requests/views/move-requests-base.njk',
+    template: 'move-requests/views/move-requests-base.njk',
   },
 }

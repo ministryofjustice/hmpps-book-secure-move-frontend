@@ -1,4 +1,4 @@
-{% extends "layouts/base.njk" %}
+{% extends "form-wizard.njk" %}
 
 {% block subNavigation %}
   {{ mojSubNavigation({
@@ -26,5 +26,6 @@
       } if USER.locations.length > 1
     }) }}
 {% endblock %}
+
 
 
