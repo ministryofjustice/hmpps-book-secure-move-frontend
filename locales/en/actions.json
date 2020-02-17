@@ -1,6 +1,5 @@
 {
   "create_move": "Create a move",
-  "create_move_different_person": "Create a move for a different person",
   "previous_day": "Previous day",
   "next_day": "Next day",
   "current_day": "Today",
@@ -9,8 +8,8 @@
   "back_to_move": "$t(actions::back) to move",
   "schedule_move": "Schedule move",
   "search": "Search",
+  "search_again": "Search again",
   "continue": "Continue",
-  "continue_without_pnc": "Continue without PNC",
   "restart": "Restart",
   "cancel": "Cancel",
   "cancel_move": "Cancel this move",

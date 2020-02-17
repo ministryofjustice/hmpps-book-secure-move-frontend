@@ -19,7 +19,7 @@ module.exports = {
   '/person-search': {
     controller: PersonSearch,
     buttonText: 'actions::search',
-    template: 'move/views/create/pnc-search',
+    template: 'move/views/create/person-search',
     pageTitle: 'moves::steps.person_search.heading',
     next: [
       {
@@ -33,7 +33,7 @@ module.exports = {
   },
   '/person-search-results': {
     controller: PersonSearchResults,
-    template: 'move/views/create/pnc-search-results',
+    template: 'move/views/create/person-search-results',
     pageTitle: 'moves::steps.person_search_results.heading',
     next: [
       {
