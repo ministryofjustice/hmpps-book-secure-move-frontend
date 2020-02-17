@@ -43,7 +43,10 @@ module.exports = {
       'move_to_prison_name',
       'move_request_agreed',
       'move_request_who_agreed',
-      'move_date_range',
+      'move_request_date',
+      'move_request_date_deadline',
+      'move_request_date_range',
+      'move_request_date_specific_date',
     ],
   },
   '/move-request-type': {

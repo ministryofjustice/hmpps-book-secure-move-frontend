@@ -69,4 +69,65 @@ module.exports = {
       classes: 'govuk-label--s',
     },
   },
+  move_request_date: {
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'move_request_date',
+    fieldset: {
+      legend: {
+        text: 'fields::move_request_date.label',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'move_request_date_deadline',
+        text: 'fields::move_request_date.items.deadline.label',
+        conditional: 'move_request_date_deadline',
+      },
+      {
+        value: 'move_request_date_range',
+        text: 'fields::move_request_date.items.range.label',
+        conditional: 'move_request_date_range',
+      },
+      {
+        value: 'move_request_date_specific_date',
+        text: 'fields::move_request_date.items.specific_date.label',
+        conditional: 'move_request_date_specific_date',
+      },
+    ],
+  },
+  move_request_date_deadline: {
+    id: 'move_request_date_deadline',
+    name: 'move_request_date_deadline',
+    skip: true,
+    component: 'govukInput',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'fields::move_request_date_deadline.label',
+      classes: 'govuk-label--s',
+    },
+  },
+  move_request_date_range: {
+    id: 'move_request_date_range',
+    name: 'move_request_date_range',
+    skip: true,
+    component: 'govukInput',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'fields::move_request_date_range.label',
+      classes: 'govuk-label--s',
+    },
+  },
+  move_request_date_specific_date: {
+    id: 'move_request_date_specific_date',
+    name: 'move_request_date_specific_date',
+    skip: true,
+    component: 'govukInput',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'fields::move_request_date_specific_date.label',
+      classes: 'govuk-label--s',
+    },
+  },
 }
