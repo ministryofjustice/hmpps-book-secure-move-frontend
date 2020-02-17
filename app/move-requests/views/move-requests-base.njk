@@ -1,0 +1,30 @@
+{% extends "layouts/base.njk" %}
+
+{% block subNavigation %}
+  {{ mojSubNavigation({
+    label: 'Sub navigation',
+    items: [{
+      text: 'Nav item 1',
+      href: '#1',
+      active: true
+    }, {
+      text: 'Nav item 2',
+      href: '#2'
+    }, {
+      text: 'Nav item 3',
+      href: '#3'
+    }]
+  }) }}
+{% endblock %}
+
+{% block organisationSwitcher %}
+    {{ mojOrganisationSwitcher({
+      text: "HMP Bedford",
+      link: {
+        text: t("actions::switch_location"),
+        href: '/locations'
+      } if USER.locations.length > 1
+    }) }}
+{% endblock %}
+
+
