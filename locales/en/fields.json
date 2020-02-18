@@ -137,5 +137,11 @@
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
+  },
+  "move_agreed": {
+    "label": "Move agreement status"
+  },
+  "move_agreed_by": {
+    "label": "Name of person who agreed the move"
   }
 }

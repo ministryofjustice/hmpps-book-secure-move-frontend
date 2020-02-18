@@ -83,6 +83,10 @@ module.exports = {
       'date_custom',
     ],
   },
+  '/agreement-status': {
+    pageTitle: 'moves::agreement_status.heading',
+    fields: ['move_agreed', 'move_agreed_by'],
+  },
   '/court-information': {
     controller: Assessment,
     pageTitle: 'moves::steps.court_information.heading',

@@ -117,5 +117,8 @@
       "content": "Reference number<br><strong>{{moveReference}}</strong>"
     },
     "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled."
+  },
+  "agreement_status": {
+    "heading": "Has this move been agreed with receiving prison?"
   }
 }
