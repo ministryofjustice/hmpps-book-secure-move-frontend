@@ -38,7 +38,8 @@ module.exports = {
     backLink: 'prison-number-search-results',
     controller: FormWizardController,
     method: 'get',
-    pageTitle: 'move_requests::prison_number_search_results.heading',
+    action: '/move-requests/new/move-request-reason',
+    pageTitle: 'move_requests::details.heading',
     fields: [
       'move_to_prison_name',
       'move_request_agreed',
@@ -48,14 +49,17 @@ module.exports = {
       'move_request_date_range',
       'move_request_date_specific_date',
     ],
+    next: 'move-request-reason',
   },
-  '/move-request-type': {
+  '/move-request-reason': {
     checkJourney: false,
     backLink: 'move-request-details',
     controller: FormWizardController,
     method: 'get',
-    pageTitle: 'move_requests::prison_number_search_results.heading',
-    fields: ['move_request_reason'],
+    action: '/move-requests/new/save',
+    pageTitle: 'move_requests::reason.heading',
+    fields: ['move_request_reason', 'move_request_reason_other_reason'],
+    next: 'save',
   },
   '/save': {
     skip: true,

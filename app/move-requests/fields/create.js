@@ -27,6 +27,7 @@ module.exports = {
   move_to_prison_name: {
     validate: 'required',
     component: 'govukInput',
+    hint: 'ields::move_to_prison_name.hint',
     label: {
       text: 'fields::move_to_prison_name.label',
       classes: 'govuk-label--s',
@@ -49,12 +50,12 @@ module.exports = {
       {
         id: 'move_request_agreed',
         value: 'yes',
-        text: 'fields::move_request_agreed.items.yes.label',
+        text: 'Yes',
         conditional: 'move_request_who_agreed',
       },
       {
         value: 'no',
-        text: 'fields::move_request_agreed.items.no.label',
+        text: 'No',
       },
     ],
   },
@@ -129,5 +130,47 @@ module.exports = {
       text: 'fields::move_request_date_specific_date.label',
       classes: 'govuk-label--s',
     },
+  },
+  move_request_reason: {
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'move_request_reason',
+    fieldset: {
+      legend: {
+        text: 'fields::move_request_reason.label',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        value: 'move_request_reason_accumulated_visits',
+        text: 'fields::move_request_reason.items.accumulated_visits.label',
+      },
+      {
+        value: 'move_request_reason_compassionate',
+        text: 'fields::move_request_reason.items.compassionate.label',
+      },
+      {
+        value: 'move_request_reason_court_move',
+        text: 'fields::move_request_reason.items.court_move.label',
+      },
+      {
+        value: 'move_request_reason_other_reason',
+        text: 'fields::move_request_reason.items.other_reason.label',
+        conditional: 'move_request_reason_other_reason',
+      },
+    ],
+  },
+  move_request_reason_other_reason: {
+    skip: true,
+    validate: 'required',
+    component: 'govukInput',
+    label: {
+      text: 'fields::move_request_reason_other_reason.label',
+      classes: 'govuk-label--s',
+    },
+    id: 'move_request_reason_other_reason',
+    name: 'move_request_reason_other_reason',
+    classes: 'govuk-input--width-20',
   },
 }

@@ -135,5 +135,55 @@
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
+  },
+  "prison_number_search_results": {
+    "label": "Select the person you are moving"
+  },
+  "move_to_prison_name": {
+    "label": "Move to",
+    "hint": "Name of prison"
+  },
+  "move_request_agreed": {
+    "label": "Has this move been agreed with receiving prison?"
+  },
+  "move_request_who_agreed": {
+    "label": "Name of person who agreed the move"
+  },
+  "move_request_date": {
+    "label": "Date of move",
+    "items": {
+      "deadline": { "label": "Deadline" },
+      "range": { "label": "Range" },
+      "specific_date": { "label": "Specific date" }
+    }
+  },
+  "move_request_date_specific_date": {
+    "label": "Date of travel"
+  },
+  "move_request_date_range": {
+    "label": "Travel between"
+  },
+  "move_request_date_deadline": {
+    "label": "Travel before"
+  },
+  "move_request_reason": {
+    "label": "Why does this person need to move?",
+    "items": {
+      "accumulated_visits": {
+        "label": "Accumulated visits"
+      },
+      "compassionate": {
+        "label": "Compassionate"
+      },
+      "court_move": {
+        "label": "Court move"
+      },
+      "other_reason": {
+        "label": "Other reason"
+      }
+    }
+  },
+  "move_request_reason_other_reason": {
+    "label": "Reason for move"
   }
 }

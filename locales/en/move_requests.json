@@ -7,5 +7,14 @@
   },
   "prison_number": {
     "heading": "Request an individual move"
+  },
+  "prison_number_search_results": {
+    "heading": "Matches for"
+  },
+  "details": {
+    "heading": "Where are you requesting this person move to?"
+  },
+  "reason": {
+    "heading": "Request type"
   }
 }
