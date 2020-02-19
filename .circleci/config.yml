@@ -178,6 +178,14 @@ jobs:
           path: artifacts
       - *notify_slack
 
+  publish_release_to_github:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - run:
+          name: Publish release to GitHub
+          command: npm run release:github
+
   build_staging:
     <<: *cloud_container
     steps:
@@ -222,34 +230,36 @@ workflows:
       - build_staging:
           <<: *only_master_and_tags
           requires:
-            - build_and_test
+          - build_and_test
       - build_preprod:
           <<: *only_master_and_tags
           requires:
-            - build_and_test
+          - build_and_test
       - deploy_staging:
           <<: *only_master_and_tags
           requires:
-            - build_staging
+          - build_staging
       - deploy_preprod:
           <<: *only_master_and_tags
           requires:
-            - build_preprod
-            - e2e_test
+          - build_preprod
+          - e2e_test
       - e2e_test:
           <<: *only_master_and_tags
           requires:
-            - deploy_staging
+          - deploy_staging
       - build_production:
           <<: *only_deploy_tags
           requires:
-            - build_and_test
+          - build_and_test
       - production_approval:
           <<: *only_deploy_tags
           type: approval
           requires:
-            - build_production
-            - e2e_test
+          - e2e_test
+      - publish_release_to_github:
+          <<: *only_deploy_tags
+          <<: *requires_production_approval
       - deploy_production:
           <<: *only_deploy_tags
           <<: *requires_production_approval
