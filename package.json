@@ -36,7 +36,8 @@
     "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.js": "eslint",
+    "package.json": "finepack"
   },
   "contributors": [
     "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)",
@@ -123,6 +124,7 @@
     "eslint-plugin-testcafe": "0.2.1",
     "faker": "4.1.0",
     "file-loader": "5.0.2",
+    "finepack": "2.10.1",
     "glob": "7.1.6",
     "husky": "4.2.3",
     "imagemin-webpack-plugin": "2.4.2",
