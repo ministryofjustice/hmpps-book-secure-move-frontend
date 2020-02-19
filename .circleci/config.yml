@@ -24,6 +24,25 @@ aliases:
   - &notify_slack
     slack/notify-on-failure:
       only_for_branches: master
+  - &all_tags
+    filters:
+      tags:
+        only: /.*/
+  - &only_master_and_tags
+    filters:
+      tags:
+        only: /.*/
+      branches:
+        only: master
+  - &only_deploy_tags
+    filters:
+      tags:
+        only: /^v.*/
+      branches:
+        ignore: /.*/
+  - &requires_production_approval
+    requires:
+      - production_approval
 
 references:
   cloud_container: &cloud_container
@@ -159,7 +178,6 @@ jobs:
           path: artifacts
       - *notify_slack
 
-
   build_staging:
     <<: *cloud_container
     steps:
@@ -199,47 +217,39 @@ jobs:
 workflows:
   pecs-frontend:
     jobs:
-      - build_and_test
+      - build_and_test:
+          <<: *all_tags
       - build_staging:
+          <<: *only_master_and_tags
           requires:
             - build_and_test
-          filters:
-            branches:
-              only: master
       - build_preprod:
+          <<: *only_master_and_tags
           requires:
             - build_and_test
-          filters:
-            branches:
-              only: master
       - deploy_staging:
+          <<: *only_master_and_tags
           requires:
             - build_staging
       - deploy_preprod:
+          <<: *only_master_and_tags
           requires:
             - build_preprod
             - e2e_test
       - e2e_test:
+          <<: *only_master_and_tags
           requires:
             - deploy_staging
       - build_production:
+          <<: *only_deploy_tags
           requires:
             - build_and_test
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-      - hold_production:
+      - production_approval:
+          <<: *only_deploy_tags
           type: approval
           requires:
             - build_production
             - e2e_test
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - deploy_production:
-          requires:
-            - hold_production
+          <<: *only_deploy_tags
+          <<: *requires_production_approval
