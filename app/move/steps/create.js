@@ -6,6 +6,7 @@ const {
   PersonSearch,
   PersonSearchResults,
   Document,
+  PrisonTransferReason,
 } = require('../controllers/create')
 
 const personSearchStep = {
@@ -106,6 +107,11 @@ module.exports = {
   '/move-date': {
     pageTitle: 'moves::steps.move_date.heading',
     fields: ['date_from', 'date_to'],
+  },
+  '/prison-transfer-reason': {
+    controller: PrisonTransferReason,
+    pageTitle: 'moves::steps.prison_transfer_reason.heading',
+    fields: ['prison_transfer_reason', 'prison_transfer_reason_comments'],
   },
   '/move-details': {
     controller: MoveDetails,

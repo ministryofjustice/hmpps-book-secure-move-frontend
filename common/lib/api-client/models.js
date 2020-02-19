@@ -117,6 +117,16 @@ module.exports = {
       collectionPath: 'reference/suppliers',
     },
   },
+  prison_transfer_reason: {
+    attributes: {
+      title: '',
+      key: '',
+    },
+    options: {
+      cache: true,
+      collectionPath: 'reference/prison_transfer_reasons',
+    },
+  },
   document: {
     attributes: {
       file: '',

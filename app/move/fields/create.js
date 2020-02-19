@@ -382,6 +382,30 @@ module.exports = {
       text: 'fields::documents.hint',
     },
   },
+  prison_transfer_reason: {
+    id: 'prison_transfer_reason',
+    name: 'prison_transfer_reason',
+    validate: 'required',
+    component: 'govukRadios',
+    fieldset: {
+      legend: {
+        text: 'fields::prison_transfer_reason.label',
+        classes: 'govuk-fieldset__legend--m',
+      },
+    },
+    items: [],
+  },
+  prison_transfer_reason_comments: {
+    id: 'prison_transfer_reason_comments',
+    name: 'prison_transfer_reason_comments',
+    rows: 3,
+    component: 'govukTextarea',
+    label: {
+      text: 'fields::prison_transfer_reason_comments.label',
+      classes: 'govuk-label--s',
+    },
+    classes: 'govuk-input--width-20',
+  },
   move_agreed: {
     validate: 'required',
     component: 'govukRadios',
