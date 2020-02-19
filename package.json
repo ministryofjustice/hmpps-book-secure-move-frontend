@@ -7,23 +7,23 @@
   "contributors": [
     {
       "name": "Dom Smith",
-      "email": "dom@teneightfive.com",
-      "url": "http://github.com/teneightfive"
-    },
-    {
-      "name": "Steven Lorek",
-      "email": "steve@stevelorek.com",
-      "url": "http://github.com/slorek"
-    },
-    {
-      "name": "Ben Chidgey",
-      "email": "ben@feedmypixel.com",
-      "url": "http://github.com/feedmypixel"
+      "email": "dom@teneightfive.com"
     },
     {
       "name": "Tyom Semonov",
-      "email": "tyom@semonov.com",
-      "url": "https://github.com/tyom"
+      "email": "inspiro@gmail.com"
+    },
+    {
+      "name": "barbaracassani",
+      "email": "barbara@kitsch-en.net"
+    },
+    {
+      "name": "Ryan Brooks",
+      "email": "ryan@slatehorse.com"
+    },
+    {
+      "name": "Steve Hook",
+      "email": "steve.hook@gmail.com"
     }
   ],
   "repository": {
