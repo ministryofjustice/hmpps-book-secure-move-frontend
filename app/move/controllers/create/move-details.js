@@ -1,4 +1,4 @@
-const { set } = require('lodash')
+const { find, set } = require('lodash')
 const { format, startOfToday, startOfTomorrow, parseISO } = require('date-fns')
 
 const CreateBaseController = require('./base')
@@ -37,10 +37,45 @@ class MoveDetailsController extends CreateBaseController {
         date: filters.formatDateWithDay(res.locals.TOMORROW),
       })
 
+      const itemForPrisonRecall = find(
+        req.form.options.fields.move_type.items,
+        { value: 'prison_recall' }
+      )
+
+      itemForPrisonRecall.conditional = MoveDetailsController.isPolice(req)
+        ? 'additional_information'
+        : 'to_location_prison'
+      itemForPrisonRecall.text = MoveDetailsController.isPolice(req)
+        ? req.t('fields::move_type.items.prison_recall.labelForPrisonRecall')
+        : req.t('fields::move_type.items.prison_recall.label')
+
+      if (MoveDetailsController.isPolice(req)) {
+        delete req.form.options.fields.to_location_prison
+      } else {
+        delete req.form.options.fields.additional_information
+
+        const items = await this.populatePrisonAutocomplete()
+        set(req, 'form.options.fields.to_location_prison.items', items)
+      }
+
       super.configure(req, res, next)
     } catch (error) {
       next(error)
     }
+  }
+
+  static isPolice(req) {
+    return req.session.currentLocation.location_type === 'police'
+  }
+
+  async populatePrisonAutocomplete() {
+    const prisons = await referenceDataService.getLocationsByType('prison')
+    return fieldHelpers.insertInitialOption(
+      prisons
+        .filter(referenceDataHelpers.filterDisabled())
+        .map(fieldHelpers.mapReferenceDataToOption),
+      'prison'
+    )
   }
 
   process(req, res, next) {
