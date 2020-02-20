@@ -370,5 +370,41 @@ describe('Move controllers', function() {
         })
       })
     })
+
+    describe('#saveValues()', function() {
+      let req, nextSpy
+      const currentLocationMock = {
+        id: '12345',
+        location_type: 'police',
+      }
+
+      beforeEach(function() {
+        sinon.stub(FormController.prototype, 'saveValues')
+        req = {
+          form: {
+            values: {},
+          },
+          session: {
+            currentLocation: currentLocationMock,
+          },
+        }
+        nextSpy = sinon.spy()
+        controller.saveValues(req, {}, nextSpy)
+      })
+
+      it('should set from_location_type based on current location type', function() {
+        expect(req.form.values.from_location_type).to.equal(
+          currentLocationMock.location_type
+        )
+      })
+
+      it('should call parent method', function() {
+        expect(FormController.prototype.saveValues).to.be.calledOnceWithExactly(
+          req,
+          {},
+          nextSpy
+        )
+      })
+    })
   })
 })

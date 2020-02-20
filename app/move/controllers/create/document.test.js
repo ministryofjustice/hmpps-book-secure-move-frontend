@@ -11,6 +11,7 @@ function multerStub() {
 }
 multerStub.MulterError = multer.MulterError
 
+const BaseController = require('./base')
 const Controller = proxyquire('./document', {
   multer: multerStub,
 })
@@ -169,7 +170,7 @@ describe('Move controllers', function() {
         }
         res = {}
         nextSpy = sinon.spy()
-        sinon.stub(FormController.prototype, 'saveValues')
+        sinon.stub(BaseController.prototype, 'saveValues')
       })
 
       context('with uploaded files', function() {
@@ -196,7 +197,7 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
@@ -219,7 +220,7 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
@@ -235,7 +236,7 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })

@@ -1,8 +1,8 @@
-const FormController = require('hmpo-form-wizard').Controller
 const referenceDataService = require('../../../../common/services/reference-data')
 const createFields = require('../../../move/fields/create')
 const fieldHelpers = require('../../../../common/helpers/field')
 
+const BaseController = require('./base')
 const Controller = require('./assessment')
 const controller = new Controller({ route: '/' })
 
@@ -67,7 +67,7 @@ describe('Move controllers', function() {
               },
             },
           }
-          sinon.stub(FormController.prototype, 'configure')
+          sinon.stub(BaseController.prototype, 'configure')
           nextSpy = sinon.spy()
         })
         afterEach(function() {
@@ -176,7 +176,7 @@ describe('Move controllers', function() {
         let nextSpy
 
         beforeEach(function() {
-          sinon.spy(FormController.prototype, 'configure')
+          sinon.spy(BaseController.prototype, 'configure')
           sinon.stub(referenceDataService, 'getAssessmentQuestions').resolves([
             {
               id: 'af8cfc67-757c-4019-9d5e-618017de1617',
@@ -243,7 +243,7 @@ describe('Move controllers', function() {
 
           it('should call parent configure method', function() {
             expect(
-              FormController.prototype.configure
+              BaseController.prototype.configure
             ).to.be.calledOnceWithExactly(req, {}, nextSpy)
           })
 
@@ -286,11 +286,12 @@ describe('Move controllers', function() {
           })
 
           it('should not call parent configure method', function() {
-            expect(FormController.prototype.configure).not.to.be.called
+            expect(BaseController.prototype.configure).not.to.be.called
           })
         })
       })
     })
+
     describe('#saveValues()', function() {
       let nextSpy
       const mockFields = {
@@ -317,7 +318,7 @@ describe('Move controllers', function() {
       }
 
       beforeEach(function() {
-        sinon.spy(FormController.prototype, 'saveValues')
+        sinon.stub(BaseController.prototype, 'saveValues')
         nextSpy = sinon.spy()
       })
 
@@ -377,12 +378,8 @@ describe('Move controllers', function() {
 
         it('should call parent configure method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
-        })
-
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
@@ -473,12 +470,8 @@ describe('Move controllers', function() {
 
         it('should call parent configure method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
-        })
-
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
