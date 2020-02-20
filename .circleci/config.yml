@@ -4,8 +4,15 @@ orbs:
   slack: circleci/slack@3.4.2
 
 aliases:
-  - &node_version circleci/node:12
-
+  # Shared containers
+  - &circle_container
+    docker:
+      - image: circleci/node:12-browsers
+  - &cloud_container
+    docker:
+      - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
+        environment:
+          GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
   - &install_dependencies
     run:
@@ -24,6 +31,7 @@ aliases:
   - &notify_slack
     slack/notify-on-failure:
       only_for_branches: master
+  # Common filters
   - &all_tags
     filters:
       tags:
@@ -42,14 +50,7 @@ aliases:
         ignore: /.*/
   - &requires_production_approval
     requires:
-      - production_approval
-
-references:
-  cloud_container: &cloud_container
-    docker:
-      - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
-        environment:
-          GITHUB_TEAM_NAME_SLUG: book-a-secure-move
+    - production_approval
 
 commands:
   build_for_k8s:
@@ -120,8 +121,7 @@ commands:
 
 jobs:
   build_and_test:
-    docker:
-      - image: *node_version
+    <<: *circle_container
     steps:
       - checkout
       - *restore_cache
@@ -162,8 +162,7 @@ jobs:
       - *notify_slack
 
   e2e_test:
-    docker:
-      - image: circleci/node:10-browsers
+    <<: *circle_container
     steps:
       - checkout
       - *restore_cache
@@ -179,8 +178,7 @@ jobs:
       - *notify_slack
 
   publish_release_to_github:
-    docker:
-      - image: circleci/node:10-browsers
+    <<: *circle_container
     steps:
       - run:
           name: Publish release to GitHub
@@ -229,8 +227,6 @@ workflows:
           <<: *all_tags
       - build_staging:
           <<: *only_master_and_tags
-          requires:
-          - build_and_test
       - build_preprod:
           <<: *only_master_and_tags
           requires:
@@ -238,6 +234,7 @@ workflows:
       - deploy_staging:
           <<: *only_master_and_tags
           requires:
+          - build_and_test
           - build_staging
       - deploy_preprod:
           <<: *only_master_and_tags
