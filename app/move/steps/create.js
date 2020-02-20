@@ -8,30 +8,45 @@ const {
   Document,
 } = require('../controllers/create')
 
+const personSearchStep = {
+  controller: PersonSearch,
+  buttonText: 'actions::search',
+  template: 'move/views/create/person-search',
+  pageTitle: 'moves::steps.person_search.heading',
+  next: [
+    {
+      field: 'is_manual_person_creation',
+      value: true,
+      next: 'personal-details',
+    },
+    'person-lookup-results',
+  ],
+}
+
 module.exports = {
   '/': {
     entryPoint: true,
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'person-search',
-  },
-  '/person-search': {
-    controller: PersonSearch,
-    buttonText: 'actions::search',
-    template: 'move/views/create/person-search',
-    pageTitle: 'moves::steps.person_search.heading',
     next: [
       {
-        field: 'is_manual_person_creation',
-        value: true,
-        next: 'personal-details',
+        field: 'from_location_type',
+        value: 'prison',
+        next: 'person-lookup-prison-number',
       },
-      'person-search-results',
+      'person-lookup-pnc',
     ],
+  },
+  '/person-lookup-prison-number': {
+    ...personSearchStep,
+    fields: ['filter.nomis_offender_no'],
+  },
+  '/person-lookup-pnc': {
+    ...personSearchStep,
     fields: ['filter.police_national_computer'],
   },
-  '/person-search-results': {
+  '/person-lookup-results': {
     controller: PersonSearchResults,
     template: 'move/views/create/person-search-results',
     pageTitle: 'moves::steps.person_search_results.heading',
@@ -46,7 +61,6 @@ module.exports = {
     fields: ['people'],
   },
   '/personal-details': {
-    backLink: 'person-search',
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
     next: 'move-details',

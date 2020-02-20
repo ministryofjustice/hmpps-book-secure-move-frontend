@@ -1,5 +1,15 @@
 const { date } = require('../formatters')
 
+const personSearchFilter = {
+  validate: 'required',
+  component: 'govukInput',
+  formGroup: {
+    classes: 'govuk-!-margin-bottom-2',
+  },
+  classes: 'govuk-input--width-10',
+  autocomplete: 'off',
+}
+
 const assessmentQuestionComments = {
   skip: true,
   rows: 3,
@@ -88,19 +98,22 @@ function explicitYesNo(name) {
 module.exports = {
   // Person search
   'filter.police_national_computer': {
-    validate: 'required',
-    component: 'govukInput',
+    ...personSearchFilter,
+    id: 'filter.police_national_computer',
+    name: 'filter.police_national_computer',
     label: {
       html: 'fields::filter.police_national_computer.label',
       classes: 'govuk-label--s',
     },
-    formGroup: {
-      classes: 'govuk-!-margin-bottom-2',
+  },
+  'filter.nomis_offender_no': {
+    ...personSearchFilter,
+    id: 'filter.nomis_offender_no',
+    name: 'filter.nomis_offender_no',
+    label: {
+      html: 'fields::filter.nomis_offender_no.label',
+      classes: 'govuk-label--s',
     },
-    id: 'filter.police_national_computer',
-    name: 'filter.police_national_computer',
-    classes: 'govuk-input--width-10',
-    autocomplete: 'off',
   },
   people: {
     validate: 'required',
