@@ -24,7 +24,7 @@
   "steps": {
     "person_search": {
       "heading": "Who is being moved?",
-      "no_pnc": "I don’t know the person’s PNC number"
+      "no_number": "I don’t know this number"
     },
     "person_search_results": {
       "heading": "Who is being moved?",
