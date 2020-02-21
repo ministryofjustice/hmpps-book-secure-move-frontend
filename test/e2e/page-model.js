@@ -47,9 +47,12 @@ export default class Page {
       paginationToday: Selector('.app-pagination__list-item a').withText(
         'Today'
       ),
+      searchButton: Selector('.govuk-button').withText('Searc'),
       continueButton: Selector('.govuk-button').withText('Continue'),
       scheduleMoveButton: Selector('.govuk-button').withText('Schedule move'),
       cancelMoveButton: Selector('.govuk-button').withText('Cancel move'),
+      moveSomeoneElseLink: Selector('a').withText('move someone else'),
+      noPNCLink: Selector('a').withText('I don’t know the person’s PNC number'),
       downloadMovesLink: Selector('a').withText('Download moves'),
       personalDetailsSummary: Selector('.govuk-summary-list'),
       cancelLink: Selector('.app-link--destructive').withText(
@@ -65,9 +68,6 @@ export default class Page {
       firstNamesInput: Selector('#first_names'),
       dateOfBirthInput: Selector('#date_of_birth'),
       ethnicityInput: Selector('#ethnicity'),
-      pncSearchResultsHeader: Selector('.govuk-heading-m').withText(
-        'Matches for'
-      ),
     }
   }
 
@@ -118,7 +118,7 @@ export default class Page {
   }
 
   async fillInPncSearchResults(userFullname) {
-    await selectFieldsetOption('Select the person you are moving', userFullname)
+    await selectFieldsetOption('Person to move', userFullname)
   }
 
   /**

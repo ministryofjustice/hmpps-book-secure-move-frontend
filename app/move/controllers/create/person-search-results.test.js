@@ -1,0 +1,432 @@
+const PersonController = require('./person')
+const Controller = require('./person-search-results')
+
+const fieldHelpers = require('../../../../common/helpers/field')
+const personService = require('../../../../common/services/person')
+
+const controller = new Controller({ route: '/' })
+
+describe('Move controllers', function() {
+  describe('Create Person controller', function() {
+    describe('#middlewareSetup()', function() {
+      beforeEach(function() {
+        sinon.stub(PersonController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setPeople')
+        sinon.stub(controller, 'setPeopleItems')
+
+        controller.middlewareSetup()
+      })
+
+      it('should call parent method', function() {
+        expect(PersonController.prototype.middlewareSetup).to.have.been
+          .calledOnce
+      })
+
+      it('should call setPeople middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.setPeople
+        )
+      })
+
+      it('should call setPeopleItems middleware', function() {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setPeopleItems
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
+    describe('#middlewareChecks()', function() {
+      beforeEach(function() {
+        sinon.stub(PersonController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkFilter')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function() {
+        expect(PersonController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call checkFilter middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.checkFilter
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#setPeople()', function() {
+      let req, nextSpy
+
+      beforeEach(function() {
+        sinon.stub(personService, 'getByIdentifiers')
+        req = {
+          query: {},
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('when query contains filter', function() {
+        beforeEach(function() {
+          req.query.filter = {
+            foo: 'bar',
+          }
+        })
+
+        context('when person service resolves', function() {
+          const mockResponse = [1, 2, 3, 4]
+
+          beforeEach(async function() {
+            personService.getByIdentifiers.resolves(mockResponse)
+            await controller.setPeople(req, {}, nextSpy)
+          })
+
+          it('should call service', function() {
+            expect(personService.getByIdentifiers).to.be.calledOnceWithExactly(
+              req.query.filter
+            )
+          })
+
+          it('should set req.people to empty array', function() {
+            expect(req).to.have.property('people')
+            expect(req.people).to.deep.equal(mockResponse)
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when person service errors', function() {
+          const mockError = new Error('failed')
+
+          beforeEach(async function() {
+            personService.getByIdentifiers.rejects(mockError)
+            await controller.setPeople(req, {}, nextSpy)
+          })
+
+          it('should call service', function() {
+            expect(personService.getByIdentifiers).to.be.calledOnceWithExactly(
+              req.query.filter
+            )
+          })
+
+          it('should set req.people to empty array', function() {
+            expect(req).to.have.property('people')
+            expect(req.people).to.deep.equal([])
+          })
+
+          it('should call next with error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly(mockError)
+          })
+        })
+      })
+
+      context('when query does not contain filter', function() {
+        beforeEach(async function() {
+          await controller.setPeople(req, {}, nextSpy)
+        })
+
+        it('should not call service', function() {
+          expect(personService.getByIdentifiers).not.to.be.called
+        })
+
+        it('should set req.people to empty array', function() {
+          expect(req).to.have.property('people')
+          expect(req.people).to.deep.equal([])
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setPeopleItems()', function() {
+      let req, nextSpy
+
+      beforeEach(function() {
+        sinon.stub(fieldHelpers, 'mapPersonToOption').returnsArg(0)
+        req = {
+          people: [],
+          form: {
+            options: {
+              fields: {
+                people: {},
+              },
+            },
+          },
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('with people items', function() {
+        const mockPeople = [1, 2, 3, 4]
+
+        beforeEach(function() {
+          req.people = mockPeople
+          controller.setPeopleItems(req, {}, nextSpy)
+        })
+
+        it('should set people items property', function() {
+          expect(req.form.options.fields.people.items).to.deep.equal(mockPeople)
+        })
+
+        it('should call field helper map correct number of times', function() {
+          expect(fieldHelpers.mapPersonToOption.callCount).to.equal(4)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('without people items', function() {
+        beforeEach(function() {
+          controller.setPeopleItems(req, {}, nextSpy)
+        })
+
+        it('should set people items property', function() {
+          expect(req.form.options.fields.people.items).to.deep.equal([])
+        })
+
+        it('should call field helper map correct number of times', function() {
+          expect(fieldHelpers.mapPersonToOption.callCount).to.equal(0)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#checkFilter()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        req = {
+          sessionModel: {
+            toJSON: sinon.stub(),
+          },
+          query: {},
+          path: 'url-path',
+          baseUrl: 'http://base-url.com/',
+        }
+        res = {
+          redirect: sinon.spy(),
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('when filters do not exist in query', function() {
+        context('when filters exist in session', function() {
+          beforeEach(function() {
+            req.sessionModel.toJSON.returns({
+              'filter.police_national_computer': '12345',
+              'filter.prison_number': 'ABCDE',
+            })
+            controller.checkFilter(req, res, nextSpy)
+          })
+
+          it('should not redirect', function() {
+            expect(res.redirect).to.be.calledOnceWithExactly(
+              'http://base-url.com/url-path?filter[police_national_computer]=12345&filter[prison_number]=ABCDE'
+            )
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).not.to.be.called
+          })
+        })
+
+        context('when filters do not exist in session', function() {
+          beforeEach(function() {
+            req.sessionModel.toJSON.returns({})
+            controller.checkFilter(req, res, nextSpy)
+          })
+
+          it('should not redirect', function() {
+            expect(res.redirect).not.to.be.called
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+
+      context('when filters exist in query', function() {
+        beforeEach(function() {
+          req.query.filter = {}
+        })
+
+        context('when filters exist in session', function() {
+          beforeEach(function() {
+            req.sessionModel.toJSON.returns({
+              'filter.police_national_computer': '12345',
+              'filter.prison_number': 'ABCDE',
+            })
+            controller.checkFilter(req, res, nextSpy)
+          })
+
+          it('should not redirect', function() {
+            expect(res.redirect).not.to.be.called
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when filters do not exist in session', function() {
+          beforeEach(function() {
+            req.sessionModel.toJSON.returns({})
+            controller.checkFilter(req, res, nextSpy)
+          })
+
+          it('should not redirect', function() {
+            expect(res.redirect).not.to.be.called
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+    })
+
+    describe('#middlewareLocals()', function() {
+      beforeEach(function() {
+        sinon.stub(PersonController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setSearchLocals')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function() {
+        expect(PersonController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call setSearchLocals middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.setSearchLocals
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#setSearchLocals()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        req = {
+          people: [],
+        }
+        res = {
+          locals: {},
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('with empty array', function() {
+        beforeEach(function() {
+          controller.setSearchLocals(req, res, nextSpy)
+        })
+
+        it('should set count to zero', function() {
+          expect(res.locals.resultCount).to.equal(0)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with items in array', function() {
+        beforeEach(function() {
+          req.people = [1, 2, 3, 4]
+          controller.setSearchLocals(req, res, nextSpy)
+        })
+
+        it('should set count to array length', function() {
+          expect(res.locals.resultCount).to.equal(4)
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#saveValues()', function() {
+      let req, nextSpy
+      const mockPerson = {
+        id: '8fadb516-f10a-45b1-91b7-a256196829f9',
+        name: 'Tom Jones',
+      }
+
+      beforeEach(function() {
+        sinon.stub(PersonController.prototype, 'saveValues')
+        req = {
+          people: [],
+          form: {
+            values: {},
+          },
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('when person exists', function() {
+        beforeEach(function() {
+          req.form.values.people = mockPerson.id
+          req.people = [mockPerson]
+          controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should set result to person value', function() {
+          expect(req.form.values).to.have.property('person')
+          expect(req.form.values.person).to.deep.equal(mockPerson)
+        })
+
+        it('should call parent', function() {
+          expect(
+            PersonController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
+      })
+
+      context('when person does not exist', function() {
+        beforeEach(function() {
+          req.form.values.people = mockPerson.id
+          controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should set person to undefined', function() {
+          expect(req.form.values).to.have.property('person')
+          expect(req.form.values.person).to.be.undefined
+        })
+
+        it('should call parent', function() {
+          expect(
+            PersonController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
+      })
+    })
+  })
+})

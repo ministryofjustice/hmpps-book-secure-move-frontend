@@ -1,4 +1,4 @@
-const { mapValues, uniqBy } = require('lodash')
+const { mapKeys, mapValues, uniqBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -69,16 +69,11 @@ const personService = {
       .then(person => personService.transform(person))
   },
 
-  findAll(pnc) {
-    if (!pnc) {
-      return Promise.reject(new Error('No PNC supplied'))
-    }
+  getByIdentifiers(identifiers) {
+    const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
 
     return apiClient
-      .findAll('person', {
-        cache: false,
-        'filter[police_national_computer]': pnc,
-      })
+      .findAll('person', filter)
       .then(response => response.data)
       .then(data => data.map(person => personService.transform(person)))
   },

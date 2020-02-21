@@ -86,36 +86,42 @@ function explicitYesNo(name) {
 }
 
 module.exports = {
-  // pnc search
-  police_national_computer_search_term: {
+  // Person search
+  'filter.police_national_computer': {
+    validate: 'required',
     component: 'govukInput',
     label: {
-      html: 'fields::police_national_computer_search_term.label',
+      html: 'fields::filter.police_national_computer.label',
       classes: 'govuk-label--s',
     },
-    hint: {
-      text: 'fields::police_national_computer_search_term.hint',
+    formGroup: {
+      classes: 'govuk-!-margin-bottom-2',
     },
-    id: 'police-national-computer-search-term',
-    name: 'police_national_computer_search_term',
-    classes: 'govuk-input--width-20',
+    id: 'filter.police_national_computer',
+    name: 'filter.police_national_computer',
+    classes: 'govuk-input--width-10',
     autocomplete: 'off',
   },
-  police_national_computer_search_term_result: {
+  people: {
+    validate: 'required',
     component: 'govukRadios',
-    multiple: true,
     items: [],
-    name: 'police_national_computer_search_term_result',
+    name: 'people',
+    formGroup: {
+      classes: 'govuk-!-margin-bottom-2',
+    },
     fieldset: {
       legend: {
-        text: 'fields::police_national_computer_search_term_result.label',
-        classes: 'govuk-fieldset__legend--s',
+        text: 'fields::people.label',
+        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
+    },
+    hint: {
+      text: 'fields::people.hint',
     },
   },
   // personal details
   police_national_computer: {
-    validate: 'required',
     component: 'govukInput',
     label: {
       html: 'fields::police_national_computer.label',

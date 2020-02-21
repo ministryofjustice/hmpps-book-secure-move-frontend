@@ -7,7 +7,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { cancel: cancelSteps, create: createSteps } = require('./steps')
 const { cancel: cancelFields, create: createFields } = require('./fields')
-const { confirmation, view } = require('./controllers')
+const { confirmation, create, view } = require('./controllers')
 const { setMove } = require('./middleware')
 
 const wizardConfig = {
@@ -16,6 +16,7 @@ const wizardConfig = {
 }
 const createConfig = {
   ...wizardConfig,
+  controller: create.Base,
   name: 'create-move',
   journeyName: 'create-move',
   journeyPageTitle: 'actions::create_move',

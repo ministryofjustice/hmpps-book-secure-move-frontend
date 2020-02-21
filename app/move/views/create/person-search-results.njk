@@ -1,0 +1,25 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeFields %}
+  <h2 class="govuk-heading-l">
+    {{ t("moves::steps::person_search_results::secondary_heading", {
+      count: resultCount
+    }) }}
+  </h2>
+{% endblock %}
+
+{% block fields %}
+  {% if resultCount %}
+    {{ super() }}
+  {% endif %}
+
+  <p class="govuk-body govuk-!-margin-bottom-6">
+    <a href="{{ backLink }}">{{ t("actions::search_again") }}</a>
+    {{ t("moves::steps.person_search_results.or") }}
+    <a href="?skip">
+      {{ t("moves::steps.person_search_results.move_someone_else") }}
+    </a>
+  </p>
+{% endblock %}
+
+{% block contentSidebar %}{% endblock %}

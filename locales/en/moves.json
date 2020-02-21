@@ -22,12 +22,15 @@
     }
   },
   "steps": {
-    "police_national_computer_search_term": {
-      "heading": "Create a move"
+    "person_search": {
+      "heading": "Who is being moved?",
+      "no_pnc": "I don’t know the person’s PNC number"
     },
-    "police_national_computer_search_term_result": {
-      "heading": "Create a move",
-      "secondary_heading": "Matches for {{- searchTerm}}"
+    "person_search_results": {
+      "heading": "Who is being moved?",
+      "secondary_heading": "{{- count}} people found",
+      "or": "or",
+      "move_someone_else": "move someone else"
     },
     "personal_details": {
       "heading": "Personal details"

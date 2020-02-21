@@ -1,0 +1,11 @@
+{% extends "form-wizard.njk" %}
+
+{% block fields %}
+  {{ super() }}
+
+  <p class="govuk-body govuk-!-margin-bottom-6">
+    <a href="?skip">{{ t("moves::steps.person_search.no_pnc") }}</a>
+  </p>
+{% endblock %}
+
+{% block contentSidebar %}{% endblock %}
