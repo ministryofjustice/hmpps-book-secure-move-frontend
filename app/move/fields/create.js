@@ -342,6 +342,45 @@ module.exports = {
       text: 'fields::documents.hint',
     },
   },
+  move_agreed: {
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'move_agreed',
+    fieldset: {
+      legend: {
+        text: 'fields::move_agreed.label',
+        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        id: 'move_agreed',
+        value: true,
+        text: 'Yes',
+        conditional: 'move_agreed_by',
+      },
+      {
+        value: false,
+        text: 'No',
+      },
+    ],
+  },
+  move_agreed_by: {
+    id: 'move_agreed_by',
+    name: 'move_agreed_by',
+    skip: true,
+    component: 'govukInput',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'fields::move_agreed_by.label',
+      classes: 'govuk-label--s',
+    },
+    validate: 'required',
+    dependent: {
+      field: 'move_agreed',
+      value: true,
+    },
+  },
   assessmentCategory,
   explicitYesNo,
 }
