@@ -136,11 +136,19 @@ Code coverage is provided by Istanbul's command line tool, [nyc](https://www.npm
 
 To see coverage reports run:
 
-```
+```bash
 npm run coverage
 ```
 
+To open the results in a browser after running use:
+
+```bash
+npm run coverage:open
+```
+
 ### Linting
+
+#### JavaScript
 
 [ESLint](https://eslint.org/) is used to lint JavaScript code and keep a consistent standard in the way it is written within this project.
 
@@ -152,9 +160,36 @@ to help with formatting on save.
 
 To check linting results run:
 
-```
+```bash
 npm run lint
 ```
+
+#### Commit messages
+
+[Commitlint](https://commitlint.js.org/) is used to lint commit messages to ensure they conform to [conventional convention](https://commitlint.js.org/#/concepts-commit-conventions).
+
+This convention is required to automate the generation of changelogs and release notes on GitHub during the [release process](#releases-and-deployment).
+
+## Releases and deployment
+
+Releases and changelogs are automatically generated using [standard-version](https://www.npmjs.com/package/standard-version). To generate a new release run:
+
+```bash
+npm run release
+```
+
+This will:
+
+- update contributors in `package.json`
+- increase the version in `package.json` based on commits since last tag
+- create a new changelog entry
+- create a version commit
+- create a new git tag
+- push commit and tags to remote
+
+It will also start a new deployment specific [job on CircleCI](https://app.circleci.com/github/ministryofjustice/hmpps-book-secure-move-frontend/pipelines) which will run the full suite of automated tests and create a [release on GitHub](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases).
+
+**Note:** The deployment job has a [manual approval](https://circleci.com/blog/supporting-digital-transformation-while-avoiding-common-stalls/) step before it will release that version to production.
 
 ## Environment variables
 

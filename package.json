@@ -1,54 +1,42 @@
 {
   "name": "hmpps-book-secure-move-frontend",
-  "version": "2.11.0",
-  "license": "MIT",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "bugs": {
-    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues"
-  },
+  "version": "2.11.0",
+  "main": "start.js",
+  "contributors": [
+    {
+      "name": "Dom Smith",
+      "email": "dom@teneightfive.com"
+    },
+    {
+      "name": "Tyom Semonov",
+      "email": "inspiro@gmail.com"
+    },
+    {
+      "name": "barbaracassani",
+      "email": "barbara@kitsch-en.net"
+    },
+    {
+      "name": "Ryan Brooks",
+      "email": "ryan@slatehorse.com"
+    },
+    {
+      "name": "Steve Hook",
+      "email": "steve.hook@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frontend.git"
   },
-  "engines": {
-    "node": "12"
+  "bugs": {
+    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues"
   },
-  "main": "start.js",
-  "scripts": {
-    "clean": "del .build/",
-    "build": "npm run clean && webpack --config webpack.config.js",
-    "start": "node start.js",
-    "develop": "run-p watch:js:*",
-    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
-    "test-e2e:ci": "npm run test-e2e:chrome -- --color --reporter spec,xunit:reports/testcafe/results-chrome.xml",
-    "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e:chrome -- --debug-on-fail",
-    "test-e2e:chrome": "testcafe chrome test/e2e/*.test.js",
-    "lint": "eslint .",
-    "lint-staged": "lint-staged",
-    "coverage": "nyc --reporter=html --reporter=lcov npm test",
-    "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
-    "watch:js:client": "webpack --watch --progress",
-    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
-    "watch:test": "npm test -- --reporter=min --watch",
-    "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
-    "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml"
-  },
-  "pre-commit": "lint-staged",
-  "lint-staged": {
-    "*.js": "eslint"
-  },
-  "contributors": [
-    "Dom Smith <dom@teneightfive.com> (http://github.com/teneightfive)",
-    "Steven Lorek <steve@stevelorek.com> (http://github.com/slorek)",
-    "Ben Chidgey <ben@feedmypixel.com> (http://github.com/feedmypixel)",
-    "Tyom Semonov <tyom@semonov.com> (https://github.com/tyom)"
-  ],
   "keywords": [
-    "ministryofjustice",
     "book-a-secure-move",
-    "hmpps"
+    "hmpps",
+    "ministryofjustice"
   ],
   "dependencies": {
     "@ministryofjustice/frontend": "0.0.17-alpha",
@@ -99,6 +87,8 @@
   "devDependencies": {
     "@babel/core": "7.8.4",
     "@babel/preset-env": "7.8.4",
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
     "@ffmpeg-installer/ffmpeg": "1.0.20",
     "babel-loader": "8.0.6",
     "babel-plugin-syntax-dynamic-import": "6.18.0",
@@ -107,6 +97,7 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "cheerio": "1.0.0-rc.3",
+    "conventional-github-releaser": "3.1.3",
     "coveralls": "3.0.9",
     "css-loader": "3.4.2",
     "del-cli": "3.0.0",
@@ -122,7 +113,10 @@
     "eslint-plugin-testcafe": "0.2.1",
     "faker": "4.1.0",
     "file-loader": "5.0.2",
+    "finepack": "2.10.1",
+    "git-authors-cli": "1.0.21",
     "glob": "7.1.6",
+    "husky": "4.2.3",
     "imagemin-webpack-plugin": "2.4.2",
     "js-yaml": "3.13.1",
     "lint-staged": "10.0.7",
@@ -133,15 +127,16 @@
     "nock": "11.8.2",
     "node-sass": "4.13.1",
     "nodemon": "2.0.2",
+    "npm-check-updates": "4.0.1",
     "nyc": "15.0.0",
     "open-cli": "5.0.0",
     "optimize-css-assets-webpack-plugin": "5.0.3",
-    "pre-commit": "1.2.2",
     "prettier": "1.19.1",
     "proxyquire": "2.1.3",
     "sass-loader": "8.0.2",
     "sinon": "8.1.1",
     "sinon-chai": "3.4.0",
+    "standard-version": "7.1.0",
     "style-loader": "1.1.3",
     "testcafe": "1.8.1",
     "testcafe-reporter-xunit": "2.1.0",
@@ -151,5 +146,62 @@
     "webpack-assets-manifest": "3.1.1",
     "webpack-cli": "3.3.11",
     "webpack-merge": "4.2.2"
+  },
+  "engines": {
+    "node": "12"
+  },
+  "files": [],
+  "scripts": {
+    "build": "npm run clean && webpack --config webpack.config.js",
+    "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
+    "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml",
+    "clean": "del .build/",
+    "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
+    "coverage": "nyc --reporter=html --reporter=lcov npm test",
+    "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
+    "develop": "run-p watch:js:*",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged",
+    "postrelease": "npm run release:tags",
+    "prerelease": "npm run update:check && npm run contributors",
+    "release": "standard-version -a",
+    "release:github": "conventional-github-releaser -p angular",
+    "release:tags": "git push --follow-tags origin HEAD:master",
+    "start": "node start.js",
+    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
+    "test-e2e:chrome": "testcafe chrome test/e2e/*.test.js",
+    "test-e2e:ci": "npm run test-e2e:chrome -- --color --reporter spec,xunit:reports/testcafe/results-chrome.xml",
+    "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e:chrome -- --debug-on-fail",
+    "update": "ncu -u",
+    "update:check": "ncu -- --error-level 2",
+    "watch:js:client": "webpack --watch --progress",
+    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
+    "watch:test": "npm test -- --reporter=min --watch"
+  },
+  "license": "MIT",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "always",
+        [
+          "sentence-case"
+        ]
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint",
+    "package.json": "finepack"
   }
 }
