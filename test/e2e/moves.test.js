@@ -204,7 +204,7 @@ test('Prison recall', async t => {
     .eql('Who is being moved?')
 
   const pncNumber = faker.random.number().toString()
-  await t.click(page.nodes.noPNCLink)
+  await t.click(page.nodes.noIdentifierLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
 
@@ -280,7 +280,7 @@ test('Upload documents', async t => {
     .click(page.nodes.createMoveButton)
     .expect(page.nodes.pageHeading.innerText)
     .eql('Who is being moved?')
-    .click(page.nodes.noPNCLink)
+    .click(page.nodes.noIdentifierLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
 
@@ -373,7 +373,7 @@ test('Navigate tags in detailed move', async t => {
     .eql('Who is being moved?')
 
   const pncNumber = faker.random.number().toString()
-  await t.click(page.nodes.noPNCLink)
+  await t.click(page.nodes.noIdentifierLink)
 
   await t.expect(page.nodes.pageHeading.innerText).eql('Personal details')
 

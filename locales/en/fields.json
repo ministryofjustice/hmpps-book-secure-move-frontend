@@ -2,6 +2,9 @@
   "filter": {
     "police_national_computer": {
       "label": "Police National Computer (PNC) number"
+    },
+    "nomis_offender_no": {
+      "label": "Prison number"
     }
   },
   "people": {

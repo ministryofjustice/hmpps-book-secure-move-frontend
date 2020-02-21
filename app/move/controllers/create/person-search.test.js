@@ -1,5 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
+const BaseController = require('./base')
 const Controller = require('./person-search')
 
 const controller = new Controller({ route: '/' })
@@ -89,7 +90,7 @@ describe('Move controllers', function() {
       let req, nextSpy
 
       beforeEach(function() {
-        sinon.stub(FormController.prototype, 'saveValues')
+        sinon.stub(BaseController.prototype, 'saveValues')
         req = {
           form: {
             values: {},
@@ -110,7 +111,7 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
@@ -126,7 +127,7 @@ describe('Move controllers', function() {
 
         it('should call parent method', function() {
           expect(
-            FormController.prototype.saveValues
+            BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })

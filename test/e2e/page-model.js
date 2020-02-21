@@ -52,7 +52,7 @@ export default class Page {
       scheduleMoveButton: Selector('.govuk-button').withText('Schedule move'),
       cancelMoveButton: Selector('.govuk-button').withText('Cancel move'),
       moveSomeoneElseLink: Selector('a').withText('move someone else'),
-      noPNCLink: Selector('a').withText('I don’t know the person’s PNC number'),
+      noIdentifierLink: Selector('a').withText('I don’t know this number'),
       downloadMovesLink: Selector('a').withText('Download moves'),
       personalDetailsSummary: Selector('.govuk-summary-list'),
       cancelLink: Selector('.app-link--destructive').withText(

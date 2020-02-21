@@ -65,6 +65,20 @@ class CreateBaseController extends FormWizardController {
 
     next()
   }
+
+  saveValues(req, res, next) {
+    const {
+      id: currentLocationId,
+      location_type: locationType,
+      can_upload_documents: canUploadDocuments,
+    } = req.session.currentLocation
+
+    req.form.values.from_location = currentLocationId
+    req.form.values.from_location_type = locationType
+    req.form.values.can_upload_documents = canUploadDocuments
+
+    super.saveValues(req, res, next)
+  }
 }
 
 module.exports = CreateBaseController
