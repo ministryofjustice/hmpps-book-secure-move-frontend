@@ -95,6 +95,29 @@ function explicitYesNo(name) {
   }
 }
 
+const dateField = {
+  validate: ['required', 'date', 'after'],
+  formatter: ['date'],
+  component: 'govukInput',
+  autocomplete: 'off',
+  classes: 'govuk-input--width-10',
+  hint: {
+    text: 'fields::date_custom.hint',
+  },
+}
+
+const dateRangeField = function(id) {
+  return {
+    ...dateField,
+    id: id,
+    name: id,
+    label: {
+      text: `fields::${id}.label`,
+      classes: 'govuk-label--s',
+    },
+  }
+}
+
 module.exports = {
   // Person search
   'filter.police_national_computer': {
@@ -297,26 +320,21 @@ module.exports = {
     ],
   },
   date_custom: {
+    ...dateField,
     skip: true,
-    validate: ['required', 'date', 'after'],
     dependent: {
       field: 'date_type',
       value: 'custom',
     },
-    formatter: [date],
-    component: 'govukInput',
     id: 'date_custom',
     name: 'date_custom',
     label: {
       text: 'fields::date_custom.label',
       classes: 'govuk-label--s',
     },
-    hint: {
-      text: 'fields::date_custom.hint',
-    },
-    classes: 'govuk-input--width-10',
-    autocomplete: 'off',
   },
+  date_from: dateRangeField('date_from'),
+  date_to: dateRangeField('date_to'),
   // risk information
   risk: assessmentCategory('risk'),
   violent: assessmentQuestionComments,

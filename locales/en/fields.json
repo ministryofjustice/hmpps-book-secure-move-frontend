@@ -151,5 +151,11 @@
   },
   "move_agreed_by": {
     "label": "Name of person who agreed the move"
+  },
+  "date_from": {
+    "label": "Earliest date of travel"
+  },
+  "date_to": {
+    "label": "Latest date of travel"
   }
 }
