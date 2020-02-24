@@ -49,7 +49,8 @@
     "short_label": "To",
     "items": {
       "prison_recall": {
-        "label": "Prison recall"
+        "label": "Prison",
+        "labelForPrisonRecall": "Prison recall"
       },
       "court_appearance": {
         "label": "Court"
@@ -140,6 +141,10 @@
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
+  },
+  "to_location_prison": {
+    "label": "Move to",
+    "hint": "Name of prison"
   },
   "move_agreed": {
     "label": "Move agreement status"

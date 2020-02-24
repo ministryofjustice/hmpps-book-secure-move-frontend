@@ -42,10 +42,23 @@ describe('Move controllers', function() {
 
           req = {
             t: sinon.stub().returns('__translated__'),
+            session: {
+              currentLocation: {
+                location_type: 'police',
+              },
+            },
             form: {
               options: {
                 fields: {
                   to_location_court_appearance: {},
+                  move_type: {
+                    items: [
+                      {
+                        value: 'prison_recall',
+                      },
+                    ],
+                  },
+                  to_location_prison: {},
                   date_type: {
                     items: [
                       {
@@ -122,6 +135,164 @@ describe('Move controllers', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
+      context(
+        'appends different fields depending on location type',
+        function() {
+          let req
+          let res
+          let locationsStub
+          beforeEach(function() {
+            locationsStub = sinon
+              .stub(referenceDataService, 'getLocationsByType')
+              .withArgs('prison')
+              .resolves([
+                {
+                  id: '1',
+                  title: 'Albany',
+                },
+                {
+                  id: '2',
+                  title: 'Altcourse',
+                },
+              ])
+              .withArgs('court')
+              .resolves([])
+            req = {
+              t: sinon.stub().returns('__translated__'),
+              form: {
+                options: {
+                  fields: {
+                    to_location_court_appearance: {
+                      items: [],
+                    },
+                    date_type: {
+                      items: [{}, {}],
+                    },
+                    move_type: {
+                      items: [
+                        {
+                          value: 'court_appearance',
+                        },
+                        {
+                          value: 'prison_recall',
+                        },
+                      ],
+                    },
+                    additional_information: {},
+                    to_location_prison: {},
+                  },
+                },
+              },
+            }
+            res = {
+              locals: {},
+            }
+          })
+          afterEach(function() {
+            locationsStub.resetHistory()
+          })
+
+          context('when the current location type is prison', function() {
+            beforeEach(async function() {
+              req.session = {
+                currentLocation: {
+                  location_type: 'prison',
+                },
+              }
+              await controller.configure(req, res, nextSpy)
+            })
+            it('populates the move type items', function() {
+              expect(req.form.options.fields.move_type).to.deep.equal({
+                items: [
+                  {
+                    value: 'court_appearance',
+                  },
+                  {
+                    value: 'prison_recall',
+                    text: '__translated__',
+                    conditional: 'to_location_prison',
+                  },
+                ],
+              })
+            })
+            it('creates a drop down with prison list', function() {
+              expect(req.form.options.fields.to_location_prison).to.deep.equal({
+                items: [
+                  {
+                    text: '--- Choose prison ---',
+                  },
+                  {
+                    text: 'Albany',
+                    value: '1',
+                  },
+                  {
+                    text: 'Altcourse',
+                    value: '2',
+                  },
+                ],
+              })
+            })
+            it('appends the correct conditional', function() {
+              expect(
+                req.form.options.fields.additional_information
+              ).not.to.exist
+              expect(
+                referenceDataService.getLocationsByType
+              ).to.have.been.calledTwice
+            })
+            it('calls the location service with the correct type of location', function() {
+              expect(
+                referenceDataService.getLocationsByType
+                  .getCall(0)
+                  .calledWithExactly('court')
+              ).to.be.true
+              expect(
+                referenceDataService.getLocationsByType
+                  .getCall(1)
+                  .calledWithExactly('prison')
+              ).to.be.true
+            })
+          })
+          context('when the current location type is police', function() {
+            beforeEach(async function f() {
+              req.session = {
+                currentLocation: {
+                  location_type: 'police',
+                },
+              }
+              await controller.configure(req, res, nextSpy)
+            })
+            it('populates the move type items correctly', function() {
+              expect(req.form.options.fields.move_type).to.deep.equal({
+                items: [
+                  {
+                    value: 'court_appearance',
+                  },
+                  {
+                    value: 'prison_recall',
+                    text: '__translated__',
+                    conditional: 'additional_information',
+                  },
+                ],
+              })
+            })
+            it('appends the correct conditional field', function() {
+              expect(req.form.options.fields.additional_information).to.exist
+              expect(req.form.options.fields.to_location_prison).not.to.exist
+            })
+            it('calls the location service with the right location', function() {
+              expect(
+                referenceDataService.getLocationsByType
+              ).to.have.been.calledOnce
+              expect(
+                referenceDataService.getLocationsByType
+                  .getCall(0)
+                  .calledWithExactly('court')
+              ).to.be.true
+            })
+          })
+        }
+      )
 
       context('when getReferenceData returns an error', function() {
         const errorMock = new Error('Problem')

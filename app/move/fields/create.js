@@ -249,12 +249,13 @@ module.exports = {
       },
       {
         value: 'prison_recall',
-        text: 'fields::move_type.items.prison_recall.label',
-        conditional: 'additional_information',
       },
     ],
   },
   to_location_court_appearance: toLocationType('court_appearance', {
+    validate: 'required',
+  }),
+  to_location_prison: toLocationType('prison', {
     validate: 'required',
   }),
   additional_information: {

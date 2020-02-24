@@ -90,6 +90,7 @@ module.exports = {
       'from_location',
       'to_location',
       'move_type',
+      'to_location_prison',
       'to_location_court_appearance',
       'additional_information',
       'date',
