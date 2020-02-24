@@ -137,6 +137,12 @@
   "special_vehicle__yesno": {
     "label": "Do they require a special vehicle?"
   },
+  "not_for_release": {
+    "label": "Release status details"
+  },
+  "not_for_release__yesno": {
+    "label": "Is there a reason this person should not be released?"
+  },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",

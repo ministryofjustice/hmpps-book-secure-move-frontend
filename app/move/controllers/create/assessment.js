@@ -39,7 +39,7 @@ class AssessmentController extends CreateBaseController {
     const person = req.sessionModel.get('person') || {}
     const assessment = req.sessionModel.get('assessment') || {}
     const { assessmentCategory } = req.form.options
-    const implicitAnswers = req.form.values[assessmentCategory]
+    const implicitAnswers = req.form.values[assessmentCategory] || []
 
     assessment[assessmentCategory] = req.questions
       .filter(({ id, key }) => {

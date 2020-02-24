@@ -23,6 +23,13 @@ const personSearchStep = {
   ],
 }
 
+const riskStep = {
+  controller: Assessment,
+  pageTitle: 'moves::steps.risk_information.heading',
+  assessmentCategory: 'risk',
+  next: 'health-information',
+}
+
 module.exports = {
   '/': {
     entryPoint: true,
@@ -110,14 +117,18 @@ module.exports = {
     controller: Assessment,
     pageTitle: 'moves::steps.court_information.heading',
     assessmentCategory: 'court',
-    next: 'risk-information',
+    next: [
+      {
+        field: 'from_location_type',
+        value: 'prison',
+        next: 'release-status',
+      },
+      'risk-information',
+    ],
     fields: ['solicitor', 'interpreter', 'other_court'],
   },
   '/risk-information': {
-    controller: Assessment,
-    assessmentCategory: 'risk',
-    pageTitle: 'moves::steps.risk_information.heading',
-    next: 'health-information',
+    ...riskStep,
     fields: [
       'violent',
       'escape',
@@ -126,6 +137,11 @@ module.exports = {
       'concealed_items',
       'other_risks',
     ],
+  },
+  '/release-status': {
+    ...riskStep,
+    pageTitle: 'moves::steps.release_status.heading',
+    fields: ['not_for_release'],
   },
   '/health-information': {
     controller: Assessment,
