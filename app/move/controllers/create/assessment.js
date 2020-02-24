@@ -12,18 +12,26 @@ class AssessmentController extends CreateBaseController {
       const questions = await referenceDataService.getAssessmentQuestions(
         assessmentCategory
       )
+      const implicitQuestions = questions.filter(
+        fieldHelpers.extractItemsForImplicitFields.bind(null, fields)
+      )
 
-      const implicitField = createFields.assessmentCategory(assessmentCategory)
-      implicitField.items = questions
-        .filter(fieldHelpers.extractItemsForImplicitFields.bind(null, fields))
-        .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
-        .map(fieldHelpers.mapAssessmentQuestionToTranslation)
-        .map(fieldHelpers.mapReferenceDataToOption)
+      if (implicitQuestions.length) {
+        const implicitField = createFields.assessmentCategory(
+          assessmentCategory
+        )
 
-      req.form.options.fields[assessmentCategory] = implicitField
+        req.form.options.fields[assessmentCategory] = {
+          ...implicitField,
+          items: implicitQuestions
+            .map(fieldHelpers.mapAssessmentQuestionToConditionalField)
+            .map(fieldHelpers.mapAssessmentQuestionToTranslation)
+            .map(fieldHelpers.mapReferenceDataToOption),
+        }
+      }
 
       req.form.options.fields = fieldHelpers.mapDependentFields(
-        req.form.options.fields,
+        fields,
         questions,
         assessmentCategory
       )
@@ -56,9 +64,10 @@ class AssessmentController extends CreateBaseController {
       })
 
     req.form.values.assessment = assessment
-    req.form.values.person = Object.assign({}, person, {
+    req.form.values.person = {
+      ...person,
       assessment_answers: flatten(values(assessment)),
-    })
+    }
 
     super.saveValues(req, res, next)
   }

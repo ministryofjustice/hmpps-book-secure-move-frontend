@@ -8,34 +8,42 @@ const controller = new Controller({ route: '/' })
 
 describe('Move controllers', function() {
   describe('Assessment controller', function() {
-    let nextSpy
-    let refDataService
-    let req
     describe('#configure()', function() {
+      let nextSpy
+      let req
+
+      beforeEach(function() {
+        sinon.stub(BaseController.prototype, 'configure')
+        sinon.stub(referenceDataService, 'getAssessmentQuestions')
+        sinon.stub(createFields, 'assessmentCategory')
+        sinon.stub(fieldHelpers, 'mapDependentFields').returnsArg(0)
+        nextSpy = sinon.spy()
+      })
+
       context('with explicit fields', function() {
+        const mockQuestionsResponse = [
+          {
+            id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+            type: 'assessment_questions',
+            key: 'special_diet_or_allergy',
+            category: 'health',
+            title: 'Special diet or allergy',
+            disabled_at: null,
+          },
+          {
+            id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+            type: 'assessment_questions',
+            key: 'special_vehicle',
+            category: 'health',
+            title: 'Special vehicle',
+            disabled_at: null,
+          },
+        ]
+
         beforeEach(async function() {
-          refDataService = sinon.stub(
-            referenceDataService,
-            'getAssessmentQuestions'
+          referenceDataService.getAssessmentQuestions.resolves(
+            mockQuestionsResponse
           )
-          refDataService.resolves([
-            {
-              id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-              type: 'assessment_questions',
-              key: 'special_diet_or_allergy',
-              category: 'health',
-              title: 'Special diet or allergy',
-              disabled_at: null,
-            },
-            {
-              id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-              type: 'assessment_questions',
-              key: 'special_vehicle',
-              category: 'health',
-              title: 'Special vehicle',
-              disabled_at: null,
-            },
-          ])
           req = {
             form: {
               options: {
@@ -67,227 +75,246 @@ describe('Move controllers', function() {
               },
             },
           }
-          sinon.stub(BaseController.prototype, 'configure')
-          nextSpy = sinon.spy()
-        })
-        afterEach(function() {
-          refDataService.reset()
+          await controller.configure(req, {}, nextSpy)
         })
 
-        it('produces the correct result', async function() {
-          await controller.configure(req, {}, nextSpy)
-          expect(req.form.options.fields).to.deep.equal({
-            special_diet_or_allergy: {
-              skip: true,
-              rows: 3,
-              component: 'govukTextarea',
-              classes: 'govuk-input--width-20',
-              label: {
-                text: 'fields::assessment_comment.optional',
-                classes: 'govuk-label--s',
-              },
-              dependent: {
-                field: 'health',
-                value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-              },
-            },
-            special_vehicle: {
-              skip: true,
-              rows: 3,
-              component: 'govukTextarea',
-              classes: 'govuk-input--width-20',
-              label: {
-                text: 'fields::assessment_comment.required',
-                classes: 'govuk-label--s',
-              },
-              validate: 'required',
-              explicit: true,
-              dependent: {
-                field: 'special_vehicle__yesno',
-                value: 'yes',
-              },
-            },
-            special_vehicle__yesno: {
-              validate: 'required',
-              component: 'govukRadios',
-              name: 'special_vehicle__yesno',
-              fieldset: {
-                legend: {
-                  text: 'fields::special_vehicle__yesno.label',
-                  classes: 'govuk-fieldset__legend--m',
-                },
-              },
-              items: [
-                {
-                  value: 'yes',
-                  text: 'Yes',
-                  conditional: 'special_vehicle',
-                },
-                {
-                  value: 'no',
-                  text: 'No',
-                },
-              ],
-            },
-            health: {
-              component: 'govukCheckboxes',
-              multiple: true,
-              items: [
-                {
-                  value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-                  text: 'Special diet or allergy',
-                  key: 'special_diet_or_allergy',
-                  conditional: 'special_diet_or_allergy',
-                },
-              ],
-              name: 'health',
-              fieldset: {
-                legend: {
-                  text: 'fields::health.label',
-                  classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
-                },
-              },
-              hint: {
-                text: 'fields::health.hint',
-              },
-            },
-          })
+        it('produces the correct result', function() {
+          expect(req.form.options.fields).to.deep.equal(req.form.options.fields)
         })
-        it('invokes getAssessmentQuestions', async function() {
-          await controller.configure(req, {}, nextSpy)
-          expect(refDataService).to.be.calledOnceWithExactly('health')
+
+        it('invokes getAssessmentQuestions', function() {
+          expect(
+            referenceDataService.getAssessmentQuestions
+          ).to.be.calledOnceWithExactly('health')
         })
-        it('invokes assessmentCategory', async function() {
-          sinon.stub(createFields, 'assessmentCategory')
-          await controller.configure(req, {}, nextSpy)
+
+        it('invokes assessmentCategory', function() {
           expect(createFields.assessmentCategory).to.be.calledOnceWithExactly(
             'health'
           )
-          createFields.assessmentCategory.restore()
         })
-        it('invokes mapDependentFields once', async function() {
-          sinon.stub(fieldHelpers, 'mapDependentFields')
-          await controller.configure(req, {}, nextSpy)
-          expect(fieldHelpers.mapDependentFields).to.be.calledOnce
-          fieldHelpers.mapDependentFields.restore()
+
+        it('invokes mapDependentFields with correct arguments', function() {
+          expect(fieldHelpers.mapDependentFields).to.be.calledOnceWithExactly(
+            req.form.options.fields,
+            mockQuestionsResponse,
+            req.form.options.assessmentCategory
+          )
+        })
+
+        it('should call parent configure method', function() {
+          expect(
+            BaseController.prototype.configure
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
+
       context('without explicit fields', function() {
-        let nextSpy
+        const mockQuestionsResponse = [
+          {
+            id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+            type: 'assessment_questions',
+            key: 'violent',
+            category: 'risk',
+            title: 'Violent',
+            disabled_at: null,
+          },
+          {
+            id: 'f2db9a8f-a5a9-40cf-875b-d1f5f62b2497',
+            type: 'assessment_questions',
+            key: 'escape',
+            category: 'risk',
+            title: 'Escape',
+            disabled_at: null,
+          },
+        ]
 
-        beforeEach(function() {
-          sinon.spy(BaseController.prototype, 'configure')
-          sinon.stub(referenceDataService, 'getAssessmentQuestions').resolves([
-            {
-              id: 'af8cfc67-757c-4019-9d5e-618017de1617',
-              type: 'assessment_questions',
-              key: 'violent',
-              category: 'risk',
-              title: 'Violent',
-              disabled_at: null,
-            },
-            {
-              id: 'f2db9a8f-a5a9-40cf-875b-d1f5f62b2497',
-              type: 'assessment_questions',
-              key: 'escape',
-              category: 'risk',
-              title: 'Escape',
-              disabled_at: null,
-            },
-          ])
-          nextSpy = sinon.spy()
-        })
-
-        context('by default', function() {
-          let req
-
-          beforeEach(async function() {
-            nextSpy = sinon.spy()
-
-            req = {
-              form: {
-                options: {
-                  assessmentCategory: 'risk',
-                  fields: {
-                    risk: {
-                      name: 'risk',
-                      items: [],
-                    },
-                    first_names: {
-                      name: 'first_names',
-                    },
-                    violent: {
-                      skip: true,
-                      rows: 3,
-                      component: 'govukTextarea',
-                      classes: 'govuk-input--width-20',
-                      label: {
-                        text: 'fields::assessment_comment.required',
-                        classes: 'govuk-label--s',
-                      },
-                      validate: 'required',
-                    },
-                  },
-                },
-              },
-            }
-
-            await controller.configure(req, {}, nextSpy)
-          })
-
-          it('should not update name field', function() {
-            expect(req.form.options.fields.first_names).to.deep.equal({
-              name: 'first_names',
-            })
-          })
-
-          it('should call parent configure method', function() {
-            expect(
-              BaseController.prototype.configure
-            ).to.be.calledOnceWithExactly(req, {}, nextSpy)
-          })
-
-          it('should not throw an error', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
-
-        context('when getAssessmentQuestions returns an error', function() {
-          const errorMock = new Error('Problem')
-          const req = {
+        beforeEach(async function() {
+          referenceDataService.getAssessmentQuestions.resolves(
+            mockQuestionsResponse
+          )
+          req = {
             form: {
               options: {
+                assessmentCategory: 'risk',
                 fields: {
                   risk: {
                     name: 'risk',
                     items: [],
+                  },
+                  first_names: {
+                    name: 'first_names',
+                  },
+                  violent: {
+                    skip: true,
+                    rows: 3,
+                    component: 'govukTextarea',
+                    classes: 'govuk-input--width-20',
+                    label: {
+                      text: 'fields::assessment_comment.required',
+                      classes: 'govuk-label--s',
+                    },
+                    validate: 'required',
                   },
                 },
               },
             },
           }
 
-          beforeEach(async function() {
-            referenceDataService.getAssessmentQuestions.throws(errorMock)
+          await controller.configure(req, {}, nextSpy)
+        })
 
-            await controller.configure(req, {}, nextSpy)
+        it('should not update name field', function() {
+          expect(req.form.options.fields.first_names).to.deep.equal({
+            name: 'first_names',
           })
+        })
 
-          it('should call next with the error', function() {
-            expect(nextSpy).to.be.calledWith(errorMock)
-          })
+        it('invokes getAssessmentQuestions', function() {
+          expect(
+            referenceDataService.getAssessmentQuestions
+          ).to.be.calledOnceWithExactly('risk')
+        })
 
-          it('should call next once', function() {
-            expect(nextSpy).to.be.calledOnce
-          })
+        it('invokes assessmentCategory', function() {
+          expect(createFields.assessmentCategory).to.be.calledOnceWithExactly(
+            'risk'
+          )
+        })
 
-          it('should not mutate request object', function() {
-            expect(req).to.deep.equal(req)
-          })
+        it('invokes mapDependentFields with correct arguments', function() {
+          expect(fieldHelpers.mapDependentFields).to.be.calledOnceWithExactly(
+            req.form.options.fields,
+            mockQuestionsResponse,
+            req.form.options.assessmentCategory
+          )
+        })
 
-          it('should not call parent configure method', function() {
-            expect(BaseController.prototype.configure).not.to.be.called
+        it('should call parent configure method', function() {
+          expect(
+            BaseController.prototype.configure
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
+      })
+
+      context('without implicit fields', function() {
+        const mockQuestionsResponse = [
+          {
+            id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+            type: 'assessment_questions',
+            key: 'violent',
+            category: 'risk',
+            title: 'Violent',
+            disabled_at: null,
+          },
+          {
+            id: 'f2db9a8f-a5a9-40cf-875b-d1f5f62b2497',
+            type: 'assessment_questions',
+            key: 'escape',
+            category: 'risk',
+            title: 'Escape',
+            disabled_at: null,
+          },
+        ]
+
+        beforeEach(async function() {
+          referenceDataService.getAssessmentQuestions.resolves(
+            mockQuestionsResponse
+          )
+          req = {
+            form: {
+              options: {
+                assessmentCategory: 'risk',
+                fields: {
+                  first_names: {
+                    name: 'first_names',
+                  },
+                  violent: {
+                    skip: true,
+                    rows: 3,
+                    component: 'govukTextarea',
+                    classes: 'govuk-input--width-20',
+                    label: {
+                      text: 'fields::assessment_comment.required',
+                      classes: 'govuk-label--s',
+                    },
+                    validate: 'required',
+                    explicit: true,
+                  },
+                },
+              },
+            },
+          }
+
+          await controller.configure(req, {}, nextSpy)
+        })
+
+        it('should not update name field', function() {
+          expect(req.form.options.fields.first_names).to.deep.equal({
+            name: 'first_names',
           })
+        })
+
+        it('invokes getAssessmentQuestions', function() {
+          expect(
+            referenceDataService.getAssessmentQuestions
+          ).to.be.calledOnceWithExactly('risk')
+        })
+
+        it('not create implicit field', function() {
+          expect(createFields.assessmentCategory).not.to.be.called
+        })
+
+        it('invokes mapDependentFields with correct arguments', function() {
+          expect(fieldHelpers.mapDependentFields).to.be.calledOnceWithExactly(
+            req.form.options.fields,
+            mockQuestionsResponse,
+            req.form.options.assessmentCategory
+          )
+        })
+
+        it('should call parent configure method', function() {
+          expect(
+            BaseController.prototype.configure
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
+      })
+
+      context('when getAssessmentQuestions returns an error', function() {
+        const errorMock = new Error('Problem')
+        const req = {
+          form: {
+            options: {
+              fields: {
+                risk: {
+                  name: 'risk',
+                  items: [],
+                },
+              },
+            },
+          },
+        }
+
+        beforeEach(async function() {
+          referenceDataService.getAssessmentQuestions.throws(errorMock)
+
+          await controller.configure(req, {}, nextSpy)
+        })
+
+        it('should call next with the error', function() {
+          expect(nextSpy).to.be.calledWith(errorMock)
+        })
+
+        it('should call next once', function() {
+          expect(nextSpy).to.be.calledOnce
+        })
+
+        it('should not mutate request object', function() {
+          expect(req).to.deep.equal(req)
+        })
+
+        it('should not call parent configure method', function() {
+          expect(BaseController.prototype.configure).not.to.be.called
         })
       })
     })
