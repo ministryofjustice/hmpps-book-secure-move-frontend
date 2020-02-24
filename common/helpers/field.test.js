@@ -1002,6 +1002,9 @@ describe('Form helpers', function() {
               classes: 'govuk-fieldset__legend--m',
             },
           },
+          hint: {
+            text: 'fields::special_vehicle__yesno.hint',
+          },
           items: [
             {
               value: 'yes',
@@ -1099,6 +1102,9 @@ describe('Form helpers', function() {
               text: 'fields::special_vehicle__yesno.label',
               classes: 'govuk-fieldset__legend--m',
             },
+          },
+          hint: {
+            text: 'fields::special_vehicle__yesno.hint',
           },
           items: [
             {

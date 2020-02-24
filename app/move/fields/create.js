@@ -82,6 +82,9 @@ function explicitYesNo(name) {
         classes: 'govuk-fieldset__legend--m',
       },
     },
+    hint: {
+      text: `fields::${name}.hint`,
+    },
     items: [
       {
         value: 'yes',
