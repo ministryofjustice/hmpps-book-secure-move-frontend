@@ -135,7 +135,15 @@
     "label": "Special vehicle details"
   },
   "special_vehicle__yesno": {
-    "label": "Do they require a special vehicle?"
+    "label": "Do they require a special vehicle?",
+    "hint": ""
+  },
+  "not_for_release": {
+    "label": "Release status details"
+  },
+  "not_for_release__yesno": {
+    "label": "Is there a reason this person should not be released?",
+    "hint": "For example, they may be wanted by immigration or recalled to custody"
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",

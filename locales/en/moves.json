@@ -47,6 +47,9 @@
     "risk_information": {
       "heading": "Are there risks with moving this person?"
     },
+    "release_status": {
+      "heading": "Release status"
+    },
     "health_information": {
       "heading": "Does this person’s health affect transport?"
     },

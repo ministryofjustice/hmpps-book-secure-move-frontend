@@ -82,6 +82,9 @@ function explicitYesNo(name) {
         classes: 'govuk-fieldset__legend--m',
       },
     },
+    hint: {
+      text: `fields::${name}.hint`,
+    },
     items: [
       {
         value: 'yes',
@@ -343,6 +346,10 @@ module.exports = {
   self_harm: assessmentQuestionComments,
   concealed_items: assessmentQuestionComments,
   other_risks: requiredAssessmentQuestionComments,
+  not_for_release: {
+    ...requiredAssessmentQuestionComments,
+    explicit: true,
+  },
   // health information
   special_diet_or_allergy: assessmentQuestionComments,
   health_issue: assessmentQuestionComments,
