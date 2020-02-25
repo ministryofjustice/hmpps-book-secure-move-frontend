@@ -1,9 +1,23 @@
 {% extends "form-wizard.njk" %}
 
+{% set defaultActions %}
+  <a href="{{ backLink }}">{{ t("actions::search_again") }}</a>
+  {{ t("moves::steps.person_search_results.or") }}
+  <a href="?skip">
+    {{ t("moves::steps.person_search_results.move_someone_else") }}
+  </a>
+{% endset %}
+
+{% set prisonActions %}
+  <a href="{{ backLink }}">{{ t("actions::search_again") }}</a>
+{% endset %}
+
 {% block beforeFields %}
-  <h2 class="govuk-heading-l">
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
     {{ t("moves::steps::person_search_results::secondary_heading", {
-      count: resultCount
+      type: "person" | pluralize(resultCount),
+      count: resultCount,
+      searchTerm: "123"
     }) }}
   </h2>
 {% endblock %}
@@ -11,15 +25,48 @@
 {% block fields %}
   {% if resultCount %}
     {{ super() }}
-  {% endif %}
 
-  <p class="govuk-body govuk-!-margin-bottom-6">
-    <a href="{{ backLink }}">{{ t("actions::search_again") }}</a>
-    {{ t("moves::steps.person_search_results.or") }}
-    <a href="?skip">
-      {{ t("moves::steps.person_search_results.move_someone_else") }}
-    </a>
-  </p>
+    {% set html %}
+      {% if values.from_location_type == "prison" %}
+        <p class="govuk-body">
+          {{ t("moves::steps.person_search_results.search_source") }}
+        </p>
+
+        <p class="govuk-body">
+          {{ prisonActions | safe }}
+        </p>
+      {% else %}
+        {{ defaultActions | safe }}
+      {% endif %}
+    {% endset %}
+
+    {{ govukDetails({
+      summaryText: t("moves::steps.person_search_results.cant_find_person"),
+      html: html
+    }) }}
+  {% else %}
+    {% if values.from_location_type == "prison" %}
+      {{ govukInsetText({
+        text: t("moves::steps.person_search_results.ensure_person_exists")
+      }) }}
+    {% endif %}
+
+    <p class="govuk-body govuk-!-margin-top-4  govuk-!-margin-bottom-6">
+      {{ (prisonActions if values.from_location_type == "prison" else defaultActions) | safe }}
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block submitAction %}
+  {% if resultCount %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block cancelAction %}
+  {% if (not resultCount and values.from_location_type != "prison") or resultCount %}
+    {{ super() }}
+  {% endif %}
 {% endblock %}
 
 {% block contentSidebar %}{% endblock %}

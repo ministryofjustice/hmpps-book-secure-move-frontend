@@ -3,9 +3,17 @@
 {% block fields %}
   {{ super() }}
 
-  <p class="govuk-body govuk-!-margin-bottom-6">
-    <a href="?skip">{{ t("moves::steps.person_search.no_number") }}</a>
-  </p>
+  {% set detailsHTML %}
+    {{ t("moves::steps.person_search.unknown_number", {
+      context: values.from_location_type,
+      href: "?skip"
+    }) | safe }}
+  {% endset %}
+
+  {{ govukDetails({
+    summaryText: t("moves::steps.person_search.no_number"),
+    html: detailsHTML
+  }) }}
 {% endblock %}
 
 {% block contentSidebar %}{% endblock %}
