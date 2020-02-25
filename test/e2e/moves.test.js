@@ -64,7 +64,10 @@ test('Court move', async t => {
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
 
-  await selectFieldsetOption('Do they require a special vehicle?', 'No')
+  await selectFieldsetOption(
+    'Does this person need to travel in a special vehicle?',
+    'No'
+  )
 
   await t.click(page.nodes.scheduleMoveButton)
 
@@ -149,7 +152,10 @@ test('Court move with existing PNC', async t => {
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
 
-  await selectFieldsetOption('Do they require a special vehicle?', 'No')
+  await selectFieldsetOption(
+    'Does this person need to travel in a special vehicle?',
+    'No'
+  )
 
   await t.click(page.nodes.scheduleMoveButton)
 
@@ -226,7 +232,10 @@ test('Prison recall', async t => {
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
 
-  await selectFieldsetOption('Do they require a special vehicle?', 'No')
+  await selectFieldsetOption(
+    'Does this person need to travel in a special vehicle?',
+    'No'
+  )
 
   await t.click(page.nodes.scheduleMoveButton)
 
@@ -302,7 +311,10 @@ test('Upload documents', async t => {
     .expect(page.nodes.pageHeading.innerText)
     .eql('Does this person’s health affect transport?')
 
-  await selectFieldsetOption('Do they require a special vehicle?', 'No')
+  await selectFieldsetOption(
+    'Does this person need to travel in a special vehicle?',
+    'No'
+  )
 
   await t.click(page.nodes.scheduleMoveButton)
 
@@ -391,7 +403,10 @@ test('Navigate tags in detailed move', async t => {
 
   // Does this person’s health affect transport?
   await selectFieldsetOption('Add health information', 'Medication')
-  await selectFieldsetOption('Do they require a special vehicle?', 'No')
+  await selectFieldsetOption(
+    'Does this person need to travel in a special vehicle?',
+    'No'
+  )
 
   await t.click(page.nodes.scheduleMoveButton)
 
