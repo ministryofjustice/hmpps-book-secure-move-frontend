@@ -27,7 +27,28 @@ const riskStep = {
   controller: Assessment,
   pageTitle: 'moves::steps.risk_information.heading',
   assessmentCategory: 'risk',
-  next: 'health-information',
+  next: [
+    {
+      field: 'from_location_type',
+      value: 'prison',
+      next: 'special-vehicle',
+    },
+    'health-information',
+  ],
+}
+
+const healthStep = {
+  controller: Assessment,
+  assessmentCategory: 'health',
+  pageTitle: 'moves::steps.health_information.heading',
+  next: [
+    {
+      field: 'can_upload_documents',
+      value: true,
+      next: 'document',
+    },
+    'save',
+  ],
 }
 
 module.exports = {
@@ -144,17 +165,7 @@ module.exports = {
     fields: ['not_for_release'],
   },
   '/health-information': {
-    controller: Assessment,
-    assessmentCategory: 'health',
-    next: [
-      {
-        field: 'can_upload_documents',
-        value: true,
-        next: 'document',
-      },
-      'save',
-    ],
-    pageTitle: 'moves::steps.health_information.heading',
+    ...healthStep,
     fields: [
       'special_diet_or_allergy',
       'health_issue',
@@ -164,6 +175,11 @@ module.exports = {
       'other_health',
       'special_vehicle',
     ],
+  },
+  '/special-vehicle': {
+    ...healthStep,
+    pageTitle: 'moves::steps.special_vehicle.heading',
+    fields: ['special_vehicle'],
   },
   '/document': {
     enctype: 'multipart/form-data',

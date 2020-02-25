@@ -53,6 +53,9 @@
     "health_information": {
       "heading": "Does this person’s health affect transport?"
     },
+    "special_vehicle": {
+      "heading": "Special vehicle"
+    },
     "document": {
       "heading": "Are there any documents to upload?"
     }
