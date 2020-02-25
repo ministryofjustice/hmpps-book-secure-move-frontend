@@ -35,6 +35,9 @@
     "personal_details": {
       "heading": "Personal details"
     },
+    "move_date": {
+      "heading": "When is this person moving?"
+    },
     "move_details": {
       "heading": "Where is this person moving?"
     },

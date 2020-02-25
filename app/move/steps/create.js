@@ -74,6 +74,10 @@ module.exports = {
       'gender_additional_information',
     ],
   },
+  '/move-date': {
+    pageTitle: 'moves::steps.move_date.heading',
+    fields: ['date_from', 'date_to'],
+  },
   '/move-details': {
     controller: MoveDetails,
     template: 'move/views/create/move-details',
