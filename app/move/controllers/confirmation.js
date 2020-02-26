@@ -1,15 +1,5 @@
-const { sendJourneyTime } = require('../../../common/lib/analytics')
-
-async function confirmation(req, res, next) {
+function confirmation(req, res) {
   const { move_type: moveType, to_location: toLocation } = res.locals.move
-
-  try {
-    await sendJourneyTime(req, 'createMoveJourneyTimestamp', {
-      utv: 'Create a move',
-    })
-  } catch (err) {
-    next(err)
-  }
 
   const locals = {
     location:

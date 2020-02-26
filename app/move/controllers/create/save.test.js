@@ -1,3 +1,4 @@
+const { capitalize } = require('lodash')
 const proxyquire = require('proxyquire')
 const FormController = require('hmpo-form-wizard').Controller
 
@@ -8,6 +9,7 @@ const Controller = proxyquire('./save', {
 })
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const analytics = require('../../../../common/lib/analytics')
 const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
@@ -21,6 +23,10 @@ const mockMove = {
   date: '2019-10-10',
   to_location: {
     title: 'To location',
+    location_type: 'court',
+  },
+  from_location: {
+    location_type: 'police',
   },
   person: mockPerson,
 }
@@ -116,12 +122,15 @@ describe('Move controllers', function() {
     })
 
     describe('#successHandler()', function() {
-      let req, res
+      let req, res, nextSpy
 
       beforeEach(function() {
         req = {
           form: {
             values: {},
+            options: {
+              name: 'create-move',
+            },
           },
           sessionModel: {
             get: sinon.stub(),
@@ -134,14 +143,32 @@ describe('Move controllers', function() {
         res = {
           redirect: sinon.stub(),
         }
+        nextSpy = sinon.stub()
 
         sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        sinon.stub(analytics, 'sendJourneyTime')
       })
 
       context('by default', function() {
-        beforeEach(function() {
+        const mockJourneyTimestamp = 12345
+        const mockCurrentTimestamp = new Date('2017-08-10').getTime()
+
+        beforeEach(async function() {
+          this.clock = sinon.useFakeTimers(mockCurrentTimestamp)
+          analytics.sendJourneyTime.resolves({})
           req.sessionModel.get.withArgs('move').returns(mockMove)
-          controller.successHandler(req, res)
+          req.sessionModel.get
+            .withArgs('journeyTimestamp')
+            .returns(mockJourneyTimestamp)
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should send journey time to analytics', function() {
+          expect(analytics.sendJourneyTime).to.be.calledOnceWithExactly({
+            utv: capitalize(req.form.options.name),
+            utt: mockCurrentTimestamp - mockJourneyTimestamp,
+            utc: capitalize(mockMove.from_location.location_type),
+          })
         })
 
         it('should reset the journey', function() {
@@ -157,6 +184,29 @@ describe('Move controllers', function() {
           expect(res.redirect).to.have.been.calledWith(
             `/move/${mockMove.id}/confirmation`
           )
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.have.been.called
+        })
+      })
+
+      context('when send journey time fails', function() {
+        const mockError = new Error('Error')
+
+        beforeEach(async function() {
+          analytics.sendJourneyTime.rejects(mockError)
+          req.sessionModel.get.withArgs('move').returns(mockMove)
+          req.sessionModel.get.withArgs('journeyTimestamp').returns(12345)
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        it('should not redirect', function() {
+          expect(res.redirect).not.to.have.been.called
+        })
+
+        it('should call next with error', function() {
+          expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
         })
       })
     })

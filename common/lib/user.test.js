@@ -36,30 +36,6 @@ describe('User class', function() {
       })
     })
 
-    context('with police role', function() {
-      beforeEach(function() {
-        sinon.stub(User.prototype, 'getPermissions').returnsArg(0)
-        roles = ['ROLE_PECS_POLICE']
-      })
-
-      it('should set police role', function() {
-        user = new User({ name: 'USERNAME', roles })
-        expect(user.role).to.equal('Police')
-      })
-    })
-
-    context('with prison role', function() {
-      beforeEach(function() {
-        sinon.stub(User.prototype, 'getPermissions').returnsArg(0)
-        roles = ['ROLE_PECS_PRISON']
-      })
-
-      it('should set prison role', function() {
-        user = new User({ name: 'USERNAME', roles })
-        expect(user.role).to.equal('Prison')
-      })
-    })
-
     context('without roles', function() {
       it('should set permissions to empty array', function() {
         user = new User()

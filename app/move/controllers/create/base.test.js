@@ -327,21 +327,26 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         this.clock = sinon.useFakeTimers(new Date('2017-08-10').getTime())
+        req = {
+          sessionModel: {
+            get: sinon.stub(),
+            set: sinon.stub(),
+          },
+        }
         nextSpy = sinon.spy()
       })
 
       context('with no timestamp in the session', function() {
         beforeEach(function() {
-          req = {
-            session: {
-              createMoveJourneyTimestamp: undefined,
-            },
-          }
+          req.sessionModel.get.withArgs('journeyTimestamp').returns(undefined)
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
         it('should set timestamp', function() {
-          expect(req.session.createMoveJourneyTimestamp).to.equal(1502323200000)
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+            'journeyTimestamp',
+            1502323200000
+          )
         })
 
         it('should call next', function() {
@@ -353,16 +358,14 @@ describe('Move controllers', function() {
         const mockTimestamp = 11212121212
 
         beforeEach(function() {
-          req = {
-            session: {
-              createMoveJourneyTimestamp: mockTimestamp,
-            },
-          }
+          req.sessionModel.get
+            .withArgs('journeyTimestamp')
+            .returns(mockTimestamp)
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
         it('should not set timestamp', function() {
-          expect(req.session.createMoveJourneyTimestamp).to.equal(mockTimestamp)
+          expect(req.sessionModel.set).not.to.be.called
         })
 
         it('should call next', function() {
