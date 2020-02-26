@@ -14,7 +14,7 @@
 {% block beforeContent %}
   {{ super() }}
 
-  {% if backLink %}
+  {% if backLink and not options.hideBackLink %}
     {{ govukBackLink({
       text: t("actions::back"),
       href: backLink
