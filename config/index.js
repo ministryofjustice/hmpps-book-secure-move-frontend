@@ -3,7 +3,9 @@ require('dotenv').config()
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-const SERVER_HOST = process.env.SERVER_HOST
+const SERVER_HOST = process.env.HEROKU_APP_NAME
+  ? `${process.env.HEROKU_APP_NAME}.herokuapp.com`
+  : process.env.SERVER_HOST
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const API_BASE_URL = process.env.API_BASE_URL
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
