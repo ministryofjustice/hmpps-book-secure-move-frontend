@@ -75,6 +75,7 @@ module.exports = {
     fields: ['filter.police_national_computer'],
   },
   '/person-lookup-results': {
+    hideBackLink: true,
     controller: PersonSearchResults,
     template: 'move/views/create/person-search-results',
     pageTitle: 'moves::steps.person_search_results.heading',

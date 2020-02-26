@@ -24,13 +24,17 @@
   "steps": {
     "person_search": {
       "heading": "Who is being moved?",
-      "no_number": "I don’t know this number"
+      "no_number": "I don’t have this number",
+      "unknown_number": "<p>Book a secure move uses the PNC number to ensure moves are linked to the correct person.</p><p>If you don’t have this number you can <a href=\"{{href}}\">move a person without a PNC number</a>.</p>",
+      "unknown_number_prison": "<p>Book a secure move uses the prison number to ensures moves are linked to the correct person.</p><p>Ensure the person you are looking for is in NOMIS.</p>"
     },
     "person_search_results": {
       "heading": "Who is being moved?",
-      "secondary_heading": "{{- count}} people found",
+      "secondary_heading": "{{- count}} {{type}} found for “{{searchTerm}}”",
+      "cant_find_person": "I can’t find the person I’m looking for",
       "or": "or",
-      "move_someone_else": "move someone else"
+      "move_someone_else": "move someone else",
+      "ensure_person_exists": "Ensure the person you are looking for is in NOMIS."
     },
     "personal_details": {
       "heading": "Personal details"
