@@ -4,6 +4,8 @@
   color: $govuk-link-colour;
   text-align: left;
   text-decoration: underline;
+  padding-left: 0;
+  padding-right: 0;
 
   &:link,
   &:visited {
@@ -24,5 +26,11 @@
   &:hover,
   &:focus {
     background: none;
+  }
+}
+
+.govuk-button + .govuk-button {
+  @include mq ($from: tablet) {
+    margin-left: govuk-spacing(3);
   }
 }
