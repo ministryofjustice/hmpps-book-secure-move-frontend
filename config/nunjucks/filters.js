@@ -9,6 +9,7 @@ const {
   isDate,
 } = require('date-fns')
 const { kebabCase, startCase } = require('lodash')
+const pluralize = require('pluralize')
 
 const { DATE_FORMATS } = require('../index')
 
@@ -130,4 +131,5 @@ module.exports = {
   formatTime,
   kebabcase: kebabCase,
   startCase,
+  pluralize,
 }
