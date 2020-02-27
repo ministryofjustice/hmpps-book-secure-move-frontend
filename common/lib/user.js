@@ -25,7 +25,8 @@ User.prototype = {
 
   getPermissions(roles = []) {
     const permissions = roles.reduce((accumulator, role) => {
-      return [...accumulator, ...permissionsByRole[role]]
+      const additionalPermissions = permissionsByRole[role] || []
+      return [...accumulator, ...additionalPermissions]
     }, [])
     return uniq(permissions)
   },
