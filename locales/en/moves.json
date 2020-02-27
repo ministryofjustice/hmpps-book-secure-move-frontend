@@ -106,7 +106,9 @@
     "upcoming_moves": "Upcoming moves for {{date}}",
     "cancelled_moves": "{{count}} cancelled moves",
     "move_to": "Move to",
-    "no_results": "No moves scheduled"
+    "no_results": "No moves scheduled",
+    "single_moves": "Single moves",
+    "single_moves_no_results": "No moves proposed"
   },
   "detail": {
     "page_title": "Move details for {{name}}"

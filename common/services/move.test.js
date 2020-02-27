@@ -445,6 +445,54 @@ describe('Move Service', function() {
     })
   })
 
+  describe('#getProposed', function() {
+    let moves
+    const mockCreatedAtRange = ['2019-10-10', '2019-10-17']
+    const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    beforeEach(async function() {
+      sinon.stub(moveService, 'getAll').resolves(['moves'])
+    })
+    context('with arguments', async function() {
+      beforeEach(async function() {
+        moves = await moveService.getProposed({
+          createdAtRange: mockCreatedAtRange,
+          fromLocationId: mockFromLocationId,
+        })
+      })
+      it('calls getAll', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'proposed',
+            'filter[created_at_from]': mockCreatedAtRange[0],
+            'filter[created_at_to]': mockCreatedAtRange[1],
+            'filter[from_location_id]': mockFromLocationId,
+          },
+        })
+      })
+      it('returns moves', function() {
+        expect(moves).to.deep.equal(['moves'])
+      })
+    })
+    context('without arguments', function() {
+      beforeEach(async function() {
+        moves = await moveService.getProposed()
+      })
+      it('calls getAll', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]': 'proposed',
+            'filter[created_at_from]': undefined,
+            'filter[created_at_to]': undefined,
+            'filter[from_location_id]': undefined,
+          },
+        })
+      })
+      it('returns moves', function() {
+        expect(moves).to.deep.equal(['moves'])
+      })
+    })
+  })
+
   describe('#getById()', function() {
     context('without move ID', function() {
       it('should reject with error', function() {

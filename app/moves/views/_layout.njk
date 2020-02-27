@@ -23,21 +23,23 @@
           }) }}
         </h1>
 
-        {{ appPagination({
-          classes: "app-pagination--inline app-print--hide",
-          previous: {
-            href: pagination.prevUrl,
-            text: t("actions::previous_day")
-          },
-          next: {
-            href: pagination.nextUrl,
-            text: t("actions::next_day")
-          },
-          items: [{
-            href: pagination.todayUrl,
-            text: t("actions::current_day")
-          }]
-        }) }}
+        {% block dateNavigation %}
+          {{ appPagination({
+            classes: "app-pagination--inline app-print--hide",
+            previous: {
+              href: pagination.prevUrl,
+              text: t("actions::previous_day")
+            },
+            next: {
+              href: pagination.nextUrl,
+              text: t("actions::next_day")
+            },
+            items: [{
+              href: pagination.todayUrl,
+              text: t("actions::current_day")
+            }]
+          }) }}
+        {% endblock %}
 
         {% block headerActions %}{% endblock %}
       </div>

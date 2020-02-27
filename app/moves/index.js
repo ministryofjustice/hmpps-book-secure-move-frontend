@@ -3,7 +3,7 @@ const router = require('express').Router()
 
 // Local dependencies
 const { protectRoute } = require('../../common/middleware/permissions')
-const { download, list } = require('./controllers')
+const { download, list, listProposed } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -39,6 +39,14 @@ router.get(
   setMovesByDateAndLocation,
   setPagination,
   list
+)
+router.get(
+  `/:date/:locationId(${uuidRegex})/proposed`,
+  protectRoute('moves:view:by_location'),
+  protectRoute('moves:view:proposed'),
+  setMovesByDateAndLocation,
+  setPagination,
+  listProposed
 )
 router.get(
   '/:date/download.:extension(csv|json)',
