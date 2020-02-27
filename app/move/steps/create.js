@@ -117,6 +117,11 @@ module.exports = {
         value: 'court_appearance',
         next: 'court-information',
       },
+      {
+        field: 'from_location_type',
+        value: 'prison',
+        next: 'release-status',
+      },
       'risk-information',
     ],
     fields: [
