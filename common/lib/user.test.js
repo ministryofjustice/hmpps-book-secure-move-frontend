@@ -68,6 +68,16 @@ describe('User class', function() {
       })
     })
 
+    context("with a role that isn't expected", function() {
+      it('should set permissions to an empty array for unknown roles', function() {
+        user = new User({
+          roles: ['ROLE_PECS_UNKNOWN'],
+        })
+
+        expect(user.permissions).to.deep.equal([])
+      })
+    })
+
     context('with locations', function() {
       beforeEach(function() {
         locations = ['PECS_TEST']
@@ -177,6 +187,22 @@ describe('User class', function() {
           'moves:view:by_location',
           'moves:download:by_location',
           'move:view',
+        ])
+      })
+    })
+
+    context('when user has ROLE_PECS_OCA', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_OCA'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'moves:view:by_location',
+          'moves:download:by_location',
+          'moves:view:proposed',
+          'move:view',
+          'move:create',
         ])
       })
     })
