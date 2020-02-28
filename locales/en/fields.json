@@ -138,10 +138,10 @@
     "label": "Does this person need to travel in a special vehicle?",
     "hint": "This could be a specially-adapted prison van (for example, to accomodate wheelchairs)"
   },
-  "not_for_release": {
+  "not_to_be_released": {
     "label": "Release status details"
   },
-  "not_for_release__yesno": {
+  "not_to_be_released__yesno": {
     "label": "Is there a reason this person should not be released?",
     "hint": "For example, they may be wanted by immigration or recalled to custody"
   },

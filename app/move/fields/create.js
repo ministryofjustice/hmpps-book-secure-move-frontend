@@ -346,7 +346,7 @@ module.exports = {
   self_harm: assessmentQuestionComments,
   concealed_items: assessmentQuestionComments,
   other_risks: requiredAssessmentQuestionComments,
-  not_for_release: {
+  not_to_be_released: {
     ...requiredAssessmentQuestionComments,
     explicit: true,
   },
