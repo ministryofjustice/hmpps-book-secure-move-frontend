@@ -8,6 +8,7 @@ module.exports = {
       cancellation_reason_comment: '',
       additional_information: '',
       updated_at: '',
+      created_at: '',
       time_due: '',
       date: '',
       person: {
