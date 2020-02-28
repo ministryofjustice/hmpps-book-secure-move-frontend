@@ -335,6 +335,7 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         req = {
+          query: {},
           people: [],
         }
         res = {
@@ -343,32 +344,100 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('with empty array', function() {
-        beforeEach(function() {
-          controller.setSearchLocals(req, res, nextSpy)
+      describe('result count', function() {
+        context('with empty array', function() {
+          beforeEach(function() {
+            controller.setSearchLocals(req, res, nextSpy)
+          })
+
+          it('should set count to zero', function() {
+            expect(res.locals.resultCount).to.equal(0)
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
 
-        it('should set count to zero', function() {
-          expect(res.locals.resultCount).to.equal(0)
-        })
+        context('with items in array', function() {
+          beforeEach(function() {
+            req.people = [1, 2, 3, 4]
+            controller.setSearchLocals(req, res, nextSpy)
+          })
 
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+          it('should set count to array length', function() {
+            expect(res.locals.resultCount).to.equal(4)
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
       })
 
-      context('with items in array', function() {
-        beforeEach(function() {
-          req.people = [1, 2, 3, 4]
-          controller.setSearchLocals(req, res, nextSpy)
+      describe('search term', function() {
+        context('with empty query', function() {
+          beforeEach(function() {
+            controller.setSearchLocals(req, res, nextSpy)
+          })
+
+          it('should set search term to undefined', function() {
+            expect(res.locals.searchTerm).to.be.undefined
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
 
-        it('should set count to array length', function() {
-          expect(res.locals.resultCount).to.equal(4)
+        context('with empty filter', function() {
+          beforeEach(function() {
+            req.query.filter = {}
+            controller.setSearchLocals(req, res, nextSpy)
+          })
+
+          it('should set search term to undefined', function() {
+            expect(res.locals.searchTerm).to.be.undefined
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
 
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+        context('with one filter', function() {
+          beforeEach(function() {
+            req.query.filter = {
+              filter_one: '12345',
+            }
+            controller.setSearchLocals(req, res, nextSpy)
+          })
+
+          it('should set search term to value of first key', function() {
+            expect(res.locals.searchTerm).to.equal('12345')
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('with multiple filters', function() {
+          beforeEach(function() {
+            req.query.filter = {
+              filter_one: '12345',
+              filter_two: '67890',
+            }
+            controller.setSearchLocals(req, res, nextSpy)
+          })
+
+          it('should set search term to value of first key', function() {
+            expect(res.locals.searchTerm).to.equal('12345')
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
       })
     })
