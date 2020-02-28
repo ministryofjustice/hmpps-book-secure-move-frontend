@@ -168,7 +168,7 @@ module.exports = {
   '/release-status': {
     ...riskStep,
     pageTitle: 'moves::steps.release_status.heading',
-    fields: ['not_for_release'],
+    fields: ['not_to_be_released'],
   },
   '/health-information': {
     ...healthStep,
