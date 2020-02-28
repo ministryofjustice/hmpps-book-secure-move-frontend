@@ -1,4 +1,3 @@
-const { get, set } = require('lodash')
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
 
@@ -35,8 +34,8 @@ class CreateBaseController extends FormWizardController {
   }
 
   setJourneyTimer(req, res, next) {
-    if (!get(req, 'session.createMoveJourneyTimestamp')) {
-      set(req, 'session.createMoveJourneyTimestamp', new Date().getTime())
+    if (!req.sessionModel.get('journeyTimestamp')) {
+      req.sessionModel.set('journeyTimestamp', new Date().getTime())
     }
 
     next()

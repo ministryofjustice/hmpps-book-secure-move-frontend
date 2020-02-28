@@ -1,8 +1,9 @@
-const { omit } = require('lodash')
+const { omit, capitalize } = require('lodash')
 
 const CreateBaseController = require('./base')
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const analytics = require('../../../../common/lib/analytics')
 
 class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
@@ -23,13 +24,26 @@ class SaveController extends CreateBaseController {
     }
   }
 
-  successHandler(req, res) {
-    const { id } = req.sessionModel.get('move')
+  async successHandler(req, res, next) {
+    const { id, from_location: fromLocation } = req.sessionModel.get('move')
+    const journeyDuration = Math.round(
+      new Date().getTime() - req.sessionModel.get('journeyTimestamp')
+    )
 
-    req.journeyModel.reset()
-    req.sessionModel.reset()
+    try {
+      await analytics.sendJourneyTime({
+        utv: capitalize(req.form.options.name),
+        utt: journeyDuration,
+        utc: capitalize(fromLocation.location_type),
+      })
 
-    res.redirect(`/move/${id}/confirmation`)
+      req.journeyModel.reset()
+      req.sessionModel.reset()
+
+      res.redirect(`/move/${id}/confirmation`)
+    } catch (err) {
+      next(err)
+    }
   }
 }
 

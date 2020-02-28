@@ -17,8 +17,8 @@ const wizardConfig = {
 const createConfig = {
   ...wizardConfig,
   controller: create.Base,
-  name: 'create-move',
-  journeyName: 'create-move',
+  name: 'create-a-move',
+  journeyName: 'create-a-move',
   journeyPageTitle: 'actions::create_move',
 }
 const cancelConfig = {
