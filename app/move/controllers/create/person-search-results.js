@@ -60,6 +60,10 @@ class PersonSearchResultsController extends PersonController {
   }
 
   setSearchLocals(req, res, next) {
+    const filter = req.query.filter || {}
+    const filters = Object.keys(filter)
+    // TODO: When we support multiple filters this will need updating
+    res.locals.searchTerm = filter ? filter[filters[0]] : undefined
     res.locals.resultCount = req.people.length
     next()
   }
