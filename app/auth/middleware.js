@@ -1,18 +1,22 @@
+const { get } = require('lodash')
+
 const User = require('../../common/lib/user')
 const { getFullname, getLocations } = require('../../common/services/user')
 const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
-    const { grant, originalRequestUrl, currentLocation } = req.session
+    const { originalRequestUrl, currentLocation } = req.session
+    const accessToken = get(req.session, 'grant.response.access_token')
 
-    if (!grant) {
-      return next()
+    if (!accessToken) {
+      const error = new Error('Could not authenticate user')
+      error.statusCode = 403
+      return next(error)
     }
 
     try {
-      const accessToken = grant.response.access_token
-      const decodedAccessToken = decodeAccessToken(grant.response.access_token)
+      const decodedAccessToken = decodeAccessToken(accessToken)
       const [locations, fullname] = await Promise.all([
         getLocations(accessToken),
         getFullname(accessToken),

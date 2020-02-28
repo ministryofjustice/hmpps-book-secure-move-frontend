@@ -13,5 +13,11 @@ describe('Access token library', function() {
         expect(decodeAccessToken(token)).to.deep.equal(payload)
       })
     })
+
+    context('with undefined token', function() {
+      it('should return an empty object', function() {
+        expect(decodeAccessToken()).to.deep.equal({})
+      })
+    })
   })
 })

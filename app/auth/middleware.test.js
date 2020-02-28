@@ -45,7 +45,7 @@ describe('Authentication middleware', function() {
       }
     })
 
-    context('when there is no grant response', function() {
+    context('when there is no grant in session', function() {
       beforeEach(async function() {
         const authentication = proxyquire('./middleware', {
           '../../common/lib/user': UserStub,
@@ -55,8 +55,36 @@ describe('Authentication middleware', function() {
         await authentication.processAuthResponse()(req, {}, nextSpy)
       })
 
-      it('returns next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      it('should pass a 403 error to next', function() {
+        const error = nextSpy.args[0][0]
+        expect(nextSpy).to.be.calledOnce
+        expect(error).to.be.an.instanceOf(Error)
+        expect(error.message).to.equal('Could not authenticate user')
+        expect(error.statusCode).to.equal(403)
+      })
+
+      it('doesn’t regenerate the session', function() {
+        expect(req.session.regenerate).not.to.be.called
+      })
+    })
+
+    context('when there is no response in grant object', function() {
+      beforeEach(async function() {
+        req.session.grant = {}
+        const authentication = proxyquire('./middleware', {
+          '../../common/lib/user': UserStub,
+          '../../common/services/user': userSuccessStub,
+        })
+
+        await authentication.processAuthResponse()(req, {}, nextSpy)
+      })
+
+      it('should pass a 403 error to next', function() {
+        const error = nextSpy.args[0][0]
+        expect(nextSpy).to.be.calledOnce
+        expect(error).to.be.an.instanceOf(Error)
+        expect(error.message).to.equal('Could not authenticate user')
+        expect(error.statusCode).to.equal(403)
       })
 
       it('doesn’t regenerate the session', function() {
