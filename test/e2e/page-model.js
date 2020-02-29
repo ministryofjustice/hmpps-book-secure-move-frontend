@@ -89,7 +89,7 @@ export default class Page {
         first_names: faker.name.firstName(),
         date_of_birth: format(
           faker.date.between('01-01-1940', '01-01-1990'),
-          'yyyy-MM-dd'
+          'do MMMM yyyy'
         ),
       },
       options: {
