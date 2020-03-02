@@ -1,4 +1,7 @@
 {
+  "date": {
+    "hint": "For example 28/10/1990 or 28 October 1990"
+  },
   "filter": {
     "police_national_computer": {
       "label": "Police National Computer (PNC) number"
@@ -27,8 +30,7 @@
     "label": "Last name"
   },
   "date_of_birth": {
-    "label": "Date of birth",
-    "hint": "For example 28/10/1990 or 28 October 1990"
+    "label": "Date of birth"
   },
   "gender": {
     "label": "Gender"
@@ -81,8 +83,7 @@
     }
   },
   "date_custom": {
-    "label": "Date of travel",
-    "hint": "For example 28/10/2019 or 28 October 2019"
+    "label": "Date of travel"
   },
   "time_due": {
     "label": "Time due"

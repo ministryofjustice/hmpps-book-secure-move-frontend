@@ -99,26 +99,14 @@ function explicitYesNo(name) {
 }
 
 const dateField = {
-  validate: ['required', 'date', 'after'],
-  formatter: ['date'],
+  validate: ['date'],
+  formatter: [date],
   component: 'govukInput',
   autocomplete: 'off',
   classes: 'govuk-input--width-10',
   hint: {
-    text: 'fields::date_custom.hint',
+    text: 'fields::date.hint',
   },
-}
-
-const dateRangeField = function(id) {
-  return {
-    ...dateField,
-    id: id,
-    name: id,
-    label: {
-      text: `fields::${id}.label`,
-      classes: 'govuk-label--s',
-    },
-  }
 }
 
 module.exports = {
@@ -196,20 +184,14 @@ module.exports = {
     autocomplete: 'off',
   },
   date_of_birth: {
-    validate: ['required', 'date', 'before'],
-    formatter: [date],
-    component: 'govukInput',
+    ...dateField,
+    validate: [...dateField.validate, 'required', 'before'],
     label: {
       text: 'fields::date_of_birth.label',
       classes: 'govuk-label--s',
     },
-    hint: {
-      text: 'fields::date_of_birth.hint',
-    },
     id: 'date_of_birth',
     name: 'date_of_birth',
-    classes: 'govuk-input--width-10',
-    autocomplete: 'off',
   },
   gender: {
     validate: 'required',
@@ -324,6 +306,7 @@ module.exports = {
   },
   date_custom: {
     ...dateField,
+    validate: [...dateField.validate, 'required', 'after'],
     skip: true,
     dependent: {
       field: 'date_type',
@@ -336,8 +319,26 @@ module.exports = {
       classes: 'govuk-label--s',
     },
   },
-  date_from: dateRangeField('date_from'),
-  date_to: dateRangeField('date_to'),
+  date_from: {
+    ...dateField,
+    validate: [...dateField.validate, 'required', 'after'],
+    id: 'date_from',
+    name: 'date_from',
+    label: {
+      text: 'fields::date_from.label',
+      classes: 'govuk-label--s',
+    },
+  },
+  date_to: {
+    ...dateField,
+    validate: [...dateField.validate, 'required', 'after'],
+    id: 'date_to',
+    name: 'date_to',
+    label: {
+      text: 'fields::date_to.label',
+      classes: 'govuk-label--s',
+    },
+  },
   // risk information
   risk: assessmentCategory('risk'),
   violent: assessmentQuestionComments,
