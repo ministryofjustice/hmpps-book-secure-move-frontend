@@ -13,6 +13,8 @@
         "time_due": "2019-09-06T14:00:00+01:00",
         "date": "2019-09-06",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -65,6 +67,8 @@
         "time_due": "2019-09-07T09:00:00+01:00",
         "date": "2019-09-07",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -111,6 +115,8 @@
         "time_due": "2019-09-14T09:00:00+01:00",
         "date": "2019-09-14",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -149,7 +155,9 @@
         "updated_at": "2019-08-26T19:31:42+01:00",
         "time_due": "2019-09-12T14:00:00+01:00",
         "date": "2019-09-12",
-        "move_type": "court_appearance",
+        "move_type": "prison_transfer",
+        "move_agreed": false,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -202,6 +210,8 @@
         "time_due": "2019-08-30T09:00:00+01:00",
         "date": "2019-08-30",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -241,6 +251,8 @@
         "time_due": "2019-08-27T14:00:00+01:00",
         "date": "2019-08-27",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -293,6 +305,8 @@
         "time_due": "2019-08-18T14:00:00+01:00",
         "date": "2019-08-18",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -339,6 +353,8 @@
         "time_due": "2019-08-17T12:00:00+01:00",
         "date": "2019-08-17",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -378,6 +394,8 @@
         "time_due": "2019-09-13T09:00:00+01:00",
         "date": "2019-09-13",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -430,6 +448,8 @@
         "time_due": "2019-08-19T14:00:00+01:00",
         "date": "2019-08-19",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -476,6 +496,8 @@
         "time_due": "2019-09-13T12:00:00+01:00",
         "date": "2019-09-13",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -528,6 +550,8 @@
         "time_due": "2019-09-05T12:00:00+01:00",
         "date": "2019-09-05",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -567,6 +591,8 @@
         "time_due": "2019-08-19T09:00:00+01:00",
         "date": "2019-08-19",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -613,6 +639,8 @@
         "time_due": "2019-08-18T12:00:00+01:00",
         "date": "2019-08-18",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -651,7 +679,9 @@
         "updated_at": "2019-08-26T19:31:44+01:00",
         "time_due": "2019-09-14T09:00:00+01:00",
         "date": "2019-09-14",
-        "move_type": "court_appearance",
+        "move_type": "prison_transfer",
+        "move_agreed": true,
+        "move_agreed_by": "Steve Rogers",
         "additional_information": null
       },
       "relationships": {
@@ -698,6 +728,8 @@
         "time_due": "2019-08-23T14:00:00+01:00",
         "date": "2019-08-23",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -750,6 +782,8 @@
         "time_due": "2019-09-04T14:00:00+01:00",
         "date": "2019-09-04",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -802,6 +836,8 @@
         "time_due": "2019-08-29T14:00:00+01:00",
         "date": "2019-08-29",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
@@ -840,7 +876,9 @@
         "updated_at": "2019-08-26T19:31:43+01:00",
         "time_due": "2019-08-25T14:00:00+01:00",
         "date": "2019-08-25",
-        "move_type": "court_appearance",
+        "move_type": "prison_transfer",
+        "move_agreed": true,
+        "move_agreed_by": "John Doe",
         "additional_information": null
       },
       "relationships": {
@@ -893,6 +931,8 @@
         "time_due": "2019-09-04T09:00:00+01:00",
         "date": "2019-09-04",
         "move_type": "court_appearance",
+        "move_agreed": null,
+        "move_agreed_by": null,
         "additional_information": null
       },
       "relationships": {
