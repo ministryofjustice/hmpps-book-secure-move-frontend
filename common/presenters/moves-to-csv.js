@@ -79,9 +79,12 @@ const move = [
     label: 'moves::download.move_type.label',
     value: 'move_type',
   },
-  // TODO: update to `created_at` when we have this in the API
   {
     label: 'moves::download.created_at.label',
+    value: 'created_at',
+  },
+  {
+    label: 'moves::download.updated_at.label',
     value: 'updated_at',
   },
   {

@@ -74,7 +74,7 @@ describe('Presenters', function() {
       })
 
       it('should call translations correct number of times', function() {
-        expect(i18n.t.callCount).to.equal(30)
+        expect(i18n.t.callCount).to.equal(31)
       })
 
       it('should check alert is expired on each question', function() {
