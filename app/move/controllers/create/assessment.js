@@ -1,4 +1,4 @@
-const { flatten, values } = require('lodash')
+const { flatten } = require('lodash')
 
 const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
@@ -25,7 +25,6 @@ class AssessmentController extends CreateBaseController {
   }
 
   saveValues(req, res, next) {
-    const person = req.sessionModel.get('person') || {}
     const assessment = req.sessionModel.get('assessment') || {}
     const formValues = flatten(Object.values(req.form.values))
     const { assessmentCategory } = req.form.options
@@ -40,10 +39,6 @@ class AssessmentController extends CreateBaseController {
       })
 
     req.form.values.assessment = assessment
-    req.form.values.person = {
-      ...person,
-      assessment_answers: flatten(values(assessment)),
-    }
 
     super.saveValues(req, res, next)
   }

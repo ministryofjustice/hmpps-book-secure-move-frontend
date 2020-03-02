@@ -1,4 +1,4 @@
-const { omit, capitalize } = require('lodash')
+const { omit, capitalize, flatten, values } = require('lodash')
 
 const CreateBaseController = require('./base')
 const moveService = require('../../../../common/services/move')
@@ -14,7 +14,10 @@ class SaveController extends CreateBaseController {
         'errorValues',
       ])
       const move = await moveService.create(data)
-      await personService.update(data.person)
+      await personService.update({
+        ...data.person,
+        assessment_answers: flatten(values(data.assessment)),
+      })
 
       req.sessionModel.set('move', move)
 

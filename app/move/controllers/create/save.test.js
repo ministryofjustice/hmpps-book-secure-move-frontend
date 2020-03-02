@@ -1,4 +1,4 @@
-const { capitalize } = require('lodash')
+const { capitalize, flatten, values } = require('lodash')
 const proxyquire = require('proxyquire')
 const FormController = require('hmpo-form-wizard').Controller
 
@@ -45,6 +45,34 @@ const valuesMock = {
     first_names: 'Steve',
     last_name: 'Smith',
   },
+  assessment: {
+    court: [
+      {
+        assessment_question_id: '2222',
+        comments: '',
+      },
+    ],
+    risk: [
+      {
+        assessment_question_id: '1111',
+        comments: 'Good climber',
+      },
+    ],
+    health: [
+      {
+        assessment_question_id: '4444',
+        comments: 'Health issue',
+      },
+      {
+        assessment_question_id: '3333',
+        comments: '',
+      },
+      {
+        assessment_question_id: '5555',
+        comments: 'Needs bigger car',
+      },
+    ],
+  },
 }
 
 describe('Move controllers', function() {
@@ -82,11 +110,18 @@ describe('Move controllers', function() {
               first_names: 'Steve',
               last_name: 'Smith',
             },
+            assessment: valuesMock.assessment,
           })
         })
 
         it('should call person update', function() {
-          expect(personService.update).to.be.calledWith(valuesMock.person)
+          expect(personService.update).to.be.calledOnceWithExactly({
+            ...valuesMock.person,
+            assessment_answers: flatten(values(valuesMock.assessment)),
+          })
+          expect(
+            personService.update.args[0][0].assessment_answers.length
+          ).to.equal(5)
         })
 
         it('should set response to session model', function() {

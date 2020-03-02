@@ -220,15 +220,6 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Additional comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-          ])
-        })
-
         it('should call parent configure method', function() {
           expect(
             BaseController.prototype.saveValues
@@ -308,19 +299,6 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Additional comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-            {
-              comments: '',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            },
-          ])
-        })
-
         it('should call parent configure method', function() {
           expect(
             BaseController.prototype.saveValues
@@ -371,15 +349,6 @@ describe('Move controllers', function() {
               },
             ],
           })
-        })
-
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: '',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-          ])
         })
       })
 
@@ -464,28 +433,6 @@ describe('Move controllers', function() {
               },
             ],
           })
-        })
-
-        it('should includes all flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers.length).to.equal(4)
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Violent comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-            {
-              comments: 'Escape comments',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            },
-            {
-              comments: 'Self comments',
-              assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
-            },
-            {
-              comments: 'Bully comments',
-              assessment_question_id: '29f8177c-2cf8-41e8-b1ad-1f66c3a1fda0',
-            },
-          ])
         })
       })
     })
