@@ -42,11 +42,15 @@ const moveService = {
       })
   },
 
-  getProposed({ createdAtRange = [], fromLocationId } = {}) {
+  getMovesByDateRangeAndStatus({
+    createdAtRange = [],
+    status,
+    fromLocationId,
+  } = {}) {
     const [createdAtFrom, createdAtTo] = createdAtRange
     return moveService.getAll({
       filter: {
-        'filter[status]': 'proposed',
+        'filter[status]': status,
         'filter[created_at_from]': createdAtFrom,
         'filter[created_at_to]': createdAtTo,
         'filter[from_location_id]': fromLocationId,

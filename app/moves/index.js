@@ -7,10 +7,15 @@ const { download, list, listProposed } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
+  setDateRange,
   setMoveDate,
+  setPeriod,
+  setStatus,
   setFromLocation,
   setPagination,
+  setPaginationForMovesByDateRangeAndStatus,
   setMovesByDateAndLocation,
+  setMovesByDateRangeAndStatus,
   setMovesByDateAllLocations,
 } = require('./middleware')
 
@@ -20,6 +25,8 @@ const uuidRegex =
 // Define param middleware
 router.param('locationId', setFromLocation)
 router.param('date', setMoveDate)
+router.param('period', setPeriod)
+router.param('status', setStatus)
 
 // Define shared middleware
 router.use('^([^.]+)$', saveUrl)
@@ -41,11 +48,12 @@ router.get(
   list
 )
 router.get(
-  `/:date/:locationId(${uuidRegex})/proposed`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed)`,
   protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
-  setMovesByDateAndLocation,
-  setPagination,
+  setDateRange,
+  setMovesByDateRangeAndStatus,
+  setPaginationForMovesByDateRangeAndStatus,
   listProposed
 )
 router.get(
