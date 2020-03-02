@@ -12,7 +12,7 @@ const {
 const personSearchStep = {
   controller: PersonSearch,
   buttonText: 'actions::search',
-  template: 'move/views/create/person-search',
+  template: 'person-search',
   pageTitle: 'moves::steps.person_search.heading',
   next: [
     {
@@ -78,7 +78,7 @@ module.exports = {
   '/person-lookup-results': {
     hideBackLink: true,
     controller: PersonSearchResults,
-    template: 'move/views/create/person-search-results',
+    template: 'person-search-results',
     pageTitle: 'moves::steps.person_search_results.heading',
     next: [
       {
@@ -115,7 +115,7 @@ module.exports = {
   },
   '/move-details': {
     controller: MoveDetails,
-    template: 'move/views/create/move-details',
+    template: 'move-details',
     pageTitle: 'moves::steps.move_details.heading',
     next: [
       {
