@@ -445,24 +445,26 @@ describe('Move Service', function() {
     })
   })
 
-  describe('#getProposed', function() {
+  describe('#getMovesByDateRangeAndStatus', function() {
     let moves
     const mockCreatedAtRange = ['2019-10-10', '2019-10-17']
     const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockStatus = 'booked'
     beforeEach(async function() {
       sinon.stub(moveService, 'getAll').resolves(['moves'])
     })
     context('with arguments', async function() {
       beforeEach(async function() {
-        moves = await moveService.getProposed({
+        moves = await moveService.getMovesByDateRangeAndStatus({
           createdAtRange: mockCreatedAtRange,
+          status: mockStatus,
           fromLocationId: mockFromLocationId,
         })
       })
       it('calls getAll', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
-            'filter[status]': 'proposed',
+            'filter[status]': mockStatus,
             'filter[created_at_from]': mockCreatedAtRange[0],
             'filter[created_at_to]': mockCreatedAtRange[1],
             'filter[from_location_id]': mockFromLocationId,
@@ -475,12 +477,12 @@ describe('Move Service', function() {
     })
     context('without arguments', function() {
       beforeEach(async function() {
-        moves = await moveService.getProposed()
+        moves = await moveService.getMovesByDateRangeAndStatus()
       })
       it('calls getAll', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
-            'filter[status]': 'proposed',
+            'filter[status]': undefined,
             'filter[created_at_from]': undefined,
             'filter[created_at_to]': undefined,
             'filter[from_location_id]': undefined,

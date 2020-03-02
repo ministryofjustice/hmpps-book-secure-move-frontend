@@ -192,6 +192,121 @@ describe('Moves middleware', function() {
     })
   })
 
+  describe('#setPeriod', function() {
+    it('creates setPeriod on the locals', function() {
+      const locals = {}
+      middleware.setPeriod({}, { locals }, () => {}, 'week')
+      expect(locals).to.deep.equal({
+        period: 'week',
+      })
+    })
+    it('invokes next', function() {
+      const next = sinon.stub()
+      middleware.setPeriod({}, { locals: {} }, next, 'week')
+      expect(next).to.have.been.calledOnce
+    })
+  })
+
+  describe('#setPeriod', function() {
+    it('creates setPeriod on the locals', function() {
+      const locals = {}
+      middleware.setPeriod({}, { locals }, () => {}, 'week')
+      expect(locals).to.deep.equal({
+        period: 'week',
+      })
+    })
+    it('invokes next', function() {
+      const next = sinon.stub()
+      middleware.setPeriod({}, { locals: {} }, next, 'week')
+      expect(next).to.have.been.calledOnce
+    })
+  })
+
+  describe('#setStatus', function() {
+    it('creates setStatus on the locals', function() {
+      const locals = {}
+      middleware.setStatus({}, { locals }, () => {}, 'proposed')
+      expect(locals).to.deep.equal({
+        status: 'proposed',
+      })
+    })
+    it('invokes next', function() {
+      const next = sinon.stub()
+      middleware.setStatus({}, { locals: {} }, next, 'proposed')
+      expect(next).to.have.been.calledOnce
+    })
+  })
+
+  describe('#setMovesByDateRangeAndStatus', function() {
+    let locals
+    beforeEach(function() {
+      locals = {
+        createdAtRange: ['2019-01-01', '2019-01-07'],
+        fromLocationId: '123',
+        status: 'proposed',
+      }
+    })
+    it('returns next if createdAtRange is not defined', async function() {
+      locals = {}
+      const next = sinon.stub()
+      await middleware.setMovesByDateRangeAndStatus({}, { locals }, next)
+      expect(next).to.have.been.calledOnce
+    })
+    it('interrogates the data service with the range of dates', async function() {
+      sinon.stub(moveService, 'getMovesByDateRangeAndStatus').resolves({})
+      await middleware.setMovesByDateRangeAndStatus({}, { locals }, () => {})
+      expect(moveService.getMovesByDateRangeAndStatus).to.have.been.calledWith({
+        createdAtRange: ['2019-01-01', '2019-01-07'],
+        fromLocationId: '123',
+        status: 'proposed',
+      })
+      moveService.getMovesByDateRangeAndStatus.restore()
+    })
+    it('in case of errors, it passes it to next()', async function() {
+      sinon
+        .stub(moveService, 'getMovesByDateRangeAndStatus')
+        .rejects(new Error('Error!'))
+      const next = sinon.stub()
+      await middleware.setMovesByDateRangeAndStatus({}, { locals }, next)
+      expect(next).to.have.been.calledWith(sinon.match.has('message', 'Error!'))
+      moveService.getMovesByDateRangeAndStatus.restore()
+    })
+  })
+
+  describe('#setDateRange', function() {
+    const mockMoveDate = '2020-01-02'
+
+    beforeEach(function() {
+      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
+    })
+
+    afterEach(function() {
+      this.clock.restore()
+    })
+    it('it creates createdAtRange on the locals', function() {
+      const locals = {
+        moveDate: mockMoveDate,
+      }
+      middleware.setDateRange({}, { locals }, () => {})
+      expect(locals.createdAtRange).to.exist
+    })
+    it('it can return the week ', function() {
+      const locals = {
+        moveDate: mockMoveDate,
+      }
+      middleware.setDateRange({}, { locals }, () => {})
+      expect(locals.createdAtRange).to.deep.equal(['2019-12-30', '2020-01-05'])
+    })
+    it('it can return the day ', function() {
+      const locals = {
+        moveDate: mockMoveDate,
+        period: 'day',
+      }
+      middleware.setDateRange({}, { locals }, () => {})
+      expect(locals.createdAtRange).to.deep.equal(['2020-01-02', '2020-01-03'])
+    })
+  })
+
   describe('#setPagination()', function() {
     const mockMoveDate = '2019-10-10'
     let req, res, nextSpy
@@ -270,6 +385,98 @@ describe('Moves middleware', function() {
 
       it('should call next', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
+  describe('#setPaginationForMovesByDateRangeAndStatus', function() {
+    const mockMoveDate = '2019-10-10'
+    let req, res, nextSpy
+    beforeEach(function() {
+      this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
+      nextSpy = sinon.spy()
+    })
+
+    afterEach(function() {
+      this.clock.restore()
+    })
+
+    context('with default values -- week as range, and no status', function() {
+      beforeEach(function() {
+        res = {
+          locals: {
+            moveDate: mockMoveDate,
+          },
+        }
+        req = {
+          baseUrl: '/moves',
+          params: {
+            locationId: '123',
+          },
+        }
+        nextSpy = sinon.spy()
+        middleware.setPaginationForMovesByDateRangeAndStatus(req, res, nextSpy)
+      })
+      it('creates pagination on locals', function() {
+        expect(res.locals.pagination).to.exist
+      })
+      it('creats correctly todayUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/week/2019-10-10/123/'
+        )
+      })
+      it('creats correctly prevUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/week/2019-10-03/123/'
+        )
+      })
+      it('creats correctly nextUrl', function() {
+        expect(res.locals.pagination.nextUrl).to.exist
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/week/2019-10-17/123/'
+        )
+      })
+    })
+    context('with params -- day as range, and proposed status', function() {
+      beforeEach(function() {
+        res = {
+          locals: {
+            moveDate: mockMoveDate,
+            status: 'proposed',
+            period: 'day',
+          },
+        }
+        req = {
+          baseUrl: '/moves',
+          params: {
+            locationId: '123',
+          },
+        }
+        nextSpy = sinon.spy()
+        middleware.setPaginationForMovesByDateRangeAndStatus(req, res, nextSpy)
+      })
+      it('creates pagination on locals', function() {
+        expect(res.locals.pagination).to.exist
+      })
+      it('creats correctly todayUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/day/2019-10-10/123/proposed'
+        )
+      })
+      it('creats correctly prevUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/day/2019-10-09/123/proposed'
+        )
+      })
+      it('creats correctly nextUrl', function() {
+        expect(res.locals.pagination.nextUrl).to.exist
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/day/2019-10-11/123/proposed'
+        )
       })
     })
   })

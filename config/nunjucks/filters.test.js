@@ -126,6 +126,61 @@ describe('Nunjucks filters', function() {
     })
   })
 
+  describe('#formatDateRange', function() {
+    const formatDateRange = filters.formatDateRange
+    context('when unforeseen parameters are passed to it', function() {
+      it('returns empty string if passed empty string', function() {
+        expect(formatDateRange('')).to.equal('')
+      })
+      it('returns a string if passed a string', function() {
+        expect(formatDateRange('10/10/2019')).to.equal('10/10/2019')
+      })
+      it('returns other unexpected things if passed to it', function() {
+        expect(formatDateRange({ time: '1' })).to.deep.equal({ time: '1' })
+        expect(formatDateRange(['2010-10-10'])).to.deep.equal(['2010-10-10'])
+      })
+      it('throws on invalid dates', function() {
+        expect(
+          formatDateRange.bind(null, ['2010-30-30', '2010-30-31'])
+        ).to.throw()
+      })
+    })
+    context('when dates as strings are passed to it ', function() {
+      it('returns the range correctly when spanning different years', function() {
+        expect(formatDateRange(['2019-11-01', '2020-01-18'])).to.equal(
+          '1 Nov 2019 to 18 Jan 2020'
+        )
+      })
+      it('returns the range correctly when spanning different months', function() {
+        expect(formatDateRange(['2019-11-01', '2019-12-10'])).to.equal(
+          '1 Nov to 10 Dec 2019'
+        )
+      })
+      it('returns the range correctly when in the same month', function() {
+        expect(formatDateRange(['2019-11-01', '2019-11-10'])).to.equal(
+          '1 to 10 Nov 2019'
+        )
+      })
+    })
+    context('when dates as date objects are passed to it ', function() {
+      it('returns the range correctly when spanning different years', function() {
+        expect(
+          formatDateRange([new Date('2019-11-01'), new Date('2020-01-18')])
+        ).to.equal('1 Nov 2019 to 18 Jan 2020')
+      })
+      it('returns the range correctly when spanning different months', function() {
+        expect(
+          formatDateRange([new Date('2019-11-01'), new Date('2019-12-10')])
+        ).to.equal('1 Nov to 10 Dec 2019')
+      })
+      it('returns the range correctly when in the same month', function() {
+        expect(
+          formatDateRange([new Date('2019-11-01'), new Date('2019-11-10')])
+        ).to.equal('1 to 10 Nov 2019')
+      })
+    })
+  })
+
   describe('#calculateAge()', function() {
     context('when given an invalid date', function() {
       it('should return input value', function() {

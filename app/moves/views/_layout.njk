@@ -16,12 +16,15 @@
     <header class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-xl">{{ t(pageTitle) }}</span>
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-          {{ appTime({
-            datetime: moveDate,
-            text: moveDate | formatDateAsRelativeDay
-          }) }}
-        </h1>
+
+        {% block dateTitle %}
+          <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+            {{ appTime({
+              datetime: moveDate,
+              text: moveDate | formatDateAsRelativeDay
+            }) }}
+          </h1>
+        {% endblock %}
 
         {% block dateNavigation %}
           {{ appPagination({
