@@ -693,4 +693,27 @@ describe('Reference Data Service', function() {
       })
     })
   })
+
+  describe('#getPrisonTransferReasons()', function() {
+    const mockResponse = {
+      data: ['item1', 'item2'],
+    }
+
+    let response
+    let stubForFind
+
+    beforeEach(async function() {
+      stubForFind = sinon.stub(apiClient, 'findAll').resolves(mockResponse)
+
+      response = await referenceDataService.getPrisonTransferReasons()
+    })
+
+    it('should request the list of reasons for transfer', function() {
+      expect(stubForFind).to.be.calledOnceWithExactly('prison_transfer_reason')
+    })
+
+    it('should return response.data', function() {
+      expect(response).to.deep.equal(mockResponse.data)
+    })
+  })
 })

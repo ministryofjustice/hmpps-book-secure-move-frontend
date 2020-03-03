@@ -106,6 +106,12 @@ const referenceDataService = {
 
     return apiClient.find('supplier', key).then(response => response.data)
   },
+
+  getPrisonTransferReasons() {
+    return apiClient
+      .findAll('prison_transfer_reason')
+      .then(response => response.data)
+  },
 }
 
 module.exports = referenceDataService

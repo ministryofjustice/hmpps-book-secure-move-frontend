@@ -7,6 +7,7 @@ const Person = require('./person')
 const PersonSearch = require('./person-search')
 const PersonSearchResults = require('./person-search-results')
 const Document = require('./document')
+const PrisonTransferReason = require('./prison-transfer-reason')
 
 module.exports = {
   Assessment,
@@ -18,4 +19,5 @@ module.exports = {
   PersonSearch,
   PersonSearchResults,
   Document,
+  PrisonTransferReason,
 }

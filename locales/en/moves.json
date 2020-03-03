@@ -62,6 +62,9 @@
     },
     "document": {
       "heading": "Are there any documents to upload?"
+    },
+    "prison_transfer_reason": {
+      "heading": "Request information"
     }
   },
   "download": {

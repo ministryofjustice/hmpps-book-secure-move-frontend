@@ -155,6 +155,12 @@
     "label": "Move to",
     "hint": "Name of prison"
   },
+  "prison_transfer_reason": {
+    "label": "Move type"
+  },
+  "prison_transfer_reason_comments": {
+    "label": "Reason for move"
+  },
   "move_agreed": {
     "label": "Move agreement status"
   },
