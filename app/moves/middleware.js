@@ -1,41 +1,34 @@
-const {
-  format,
-  addDays,
-  subDays,
-  parseISO,
-  startOfWeek,
-  endOfWeek,
-  isValid: isValidDate,
-} = require('date-fns')
+const { format } = require('date-fns')
 const { find, get, chunk } = require('lodash')
+
+const {
+  getDateRange,
+  getDateFromParams,
+  getPeriod,
+  dateFormat,
+} = require('../../common/helpers/date-utils')
 
 const moveService = require('../../common/services/move')
 const { LOCATIONS_BATCH_SIZE } = require('../../config')
 
-const moveDateFormat = 'yyyy-MM-dd'
-const weekStartsOn = 1
-
-function makeMultipleRequests(service, moveDate, locationIdBatches) {
+function makeMultipleRequests(service, dateRange, locationIdBatches) {
   return Promise.all(
-    locationIdBatches.map(chunk => service({ moveDate, fromLocationId: chunk }))
+    locationIdBatches.map(chunk =>
+      service({ dateRange, fromLocationId: chunk })
+    )
   )
-}
-
-function getPeriod(date, interval) {
-  const method = interval >= 0 ? addDays : subDays
-  return format(method(parseISO(date), Math.abs(interval)), moveDateFormat)
 }
 
 module.exports = {
   redirectBaseUrl: (req, res) => {
-    const today = format(new Date(), moveDateFormat)
+    const today = format(new Date(), dateFormat)
     const currentLocation = get(req.session, 'currentLocation.id')
 
     if (currentLocation) {
-      return res.redirect(`${req.baseUrl}/${today}/${currentLocation}`)
+      return res.redirect(`${req.baseUrl}/day/${today}/${currentLocation}`)
     }
 
-    return res.redirect(`${req.baseUrl}/${today}`)
+    return res.redirect(`${req.baseUrl}/day/${today}`)
   },
   saveUrl: (req, res, next) => {
     req.session.movesUrl = req.originalUrl
@@ -45,37 +38,13 @@ module.exports = {
     res.locals.period = period
     next()
   },
-  setStatus: (req, res, next, status) => {
-    res.locals.status = status
-    next()
-  },
-  setMoveDate: (req, res, next, date) => {
-    const parsedDate = parseISO(date)
-    const validDate = isValidDate(parsedDate)
-
-    if (!validDate) {
+  setDateRange: (req, res, next) => {
+    const { period } = req.params
+    const date = getDateFromParams(req)
+    if (!date) {
       return res.redirect(req.baseUrl)
     }
-
-    res.locals.moveDate = format(parsedDate, moveDateFormat)
-    next()
-  },
-  setDateRange: (req, res, next) => {
-    const { period = 'week' } = res.locals
-    let startDate
-    let endDate
-
-    if (period === 'week') {
-      startDate = startOfWeek(parseISO(res.locals.moveDate), { weekStartsOn })
-      endDate = endOfWeek(parseISO(res.locals.moveDate), { weekStartsOn })
-    } else {
-      startDate = parseISO(res.locals.moveDate)
-      endDate = addDays(startDate, 1)
-    }
-    res.locals.createdAtRange = [
-      format(startDate, moveDateFormat),
-      format(endDate, moveDateFormat),
-    ]
+    res.locals.dateRange = getDateRange(period, date)
     next()
   },
   setFromLocation: (req, res, next, locationId) => {
@@ -93,48 +62,35 @@ module.exports = {
     next()
   },
   setPagination: (req, res, next) => {
-    const { moveDate } = res.locals
-    const { locationId = '' } = req.params
-    const today = format(new Date(), moveDateFormat)
-    const previousDay = getPeriod(moveDate, -1)
-    const nextDay = getPeriod(moveDate, 1)
-
-    res.locals.pagination = {
-      todayUrl: `${req.baseUrl}/${today}/${locationId}`,
-      nextUrl: `${req.baseUrl}/${nextDay}/${locationId}`,
-      prevUrl: `${req.baseUrl}/${previousDay}/${locationId}`,
-    }
-
-    next()
-  },
-  setPaginationForMovesByDateRangeAndStatus: (req, res, next) => {
-    const { moveDate, period = 'week', status = '' } = res.locals
-    const { locationId = '' } = req.params
-    const today = format(new Date(), moveDateFormat)
+    const { locationId = '', period, status } = req.params
+    const baseDate = getDateFromParams(req)
     const interval = period === 'week' ? 7 : 1
 
-    const previousPeriod = getPeriod(moveDate, -interval)
-    const nextPeriod = getPeriod(moveDate, interval)
+    const previousPeriod = getPeriod(baseDate, -interval)
+    const nextPeriod = getPeriod(baseDate, interval)
+
+    const locationInUrl = locationId ? `/${locationId}` : ''
+    const statusInUrl = status ? `/${status}` : ''
 
     res.locals.pagination = {
-      todayUrl: `${req.baseUrl}/${period}/${today}/${locationId}/${status}`,
-      nextUrl: `${req.baseUrl}/${period}/${nextPeriod}/${locationId}/${status}`,
-      prevUrl: `${req.baseUrl}/${period}/${previousPeriod}/${locationId}/${status}`,
+      todayUrl: `${req.baseUrl}/${period}/${baseDate}${locationInUrl}${statusInUrl}`,
+      nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}${statusInUrl}`,
+      prevUrl: `${req.baseUrl}/${period}/${previousPeriod}${locationInUrl}${statusInUrl}`,
     }
 
     next()
   },
   setMovesByDateAndLocation: async (req, res, next) => {
-    const { moveDate, fromLocationId } = res.locals
+    const { dateRange, fromLocationId } = res.locals
 
-    if (!moveDate) {
+    if (!dateRange) {
       return next()
     }
 
     try {
       const [activeMoves, cancelledMoves] = await Promise.all([
-        moveService.getActive({ moveDate, fromLocationId }),
-        moveService.getCancelled({ moveDate, fromLocationId }),
+        moveService.getActive({ dateRange, fromLocationId }),
+        moveService.getCancelled({ dateRange, fromLocationId }),
       ])
 
       res.locals.activeMovesByDate = activeMoves
@@ -146,18 +102,19 @@ module.exports = {
     }
   },
   setMovesByDateRangeAndStatus: async (req, res, next) => {
-    const { createdAtRange, fromLocationId, status } = res.locals
+    const { dateRange } = res.locals
+    const { status, locationId } = req.params
 
-    if (!createdAtRange) {
+    if (!dateRange) {
       return next()
     }
 
     try {
       res.locals.movesByRangeAndStatus = await moveService.getMovesByDateRangeAndStatus(
         {
-          createdAtRange,
+          dateRange,
           status,
-          fromLocationId,
+          locationId,
         }
       )
 
@@ -167,9 +124,9 @@ module.exports = {
     }
   },
   setMovesByDateAllLocations: async (req, res, next) => {
-    const { moveDate } = res.locals
+    const { dateRange } = res.locals
 
-    if (!moveDate) {
+    if (!dateRange) {
       return next()
     }
 
@@ -188,8 +145,8 @@ module.exports = {
 
       const [activeMoves, cancelledMoves] = (
         await Promise.all([
-          makeMultipleRequests(moveService.getActive, moveDate, idChunks),
-          makeMultipleRequests(moveService.getCancelled, moveDate, idChunks),
+          makeMultipleRequests(moveService.getActive, dateRange, idChunks),
+          makeMultipleRequests(moveService.getCancelled, dateRange, idChunks),
         ])
       ).map(response => response.flat())
 

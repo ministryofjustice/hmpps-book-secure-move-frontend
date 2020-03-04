@@ -43,11 +43,11 @@ const moveService = {
   },
 
   getMovesByDateRangeAndStatus({
-    createdAtRange = [],
+    dateRange = [],
     status,
     fromLocationId,
   } = {}) {
-    const [createdAtFrom, createdAtTo] = createdAtRange
+    const [createdAtFrom, createdAtTo] = dateRange
     return moveService.getAll({
       filter: {
         'filter[status]': status,
@@ -58,36 +58,39 @@ const moveService = {
     })
   },
 
-  getRequested({ moveDate, fromLocationId, toLocationId } = {}) {
+  getRequested({ dateRange = [], fromLocationId, toLocationId } = {}) {
+    const [startDate, endDate] = dateRange
     return moveService.getAll({
       filter: {
         'filter[status]': 'requested',
-        'filter[date_from]': moveDate,
-        'filter[date_to]': moveDate,
+        'filter[date_from]': startDate,
+        'filter[date_to]': endDate,
         'filter[from_location_id]': fromLocationId,
         'filter[to_location_id]': toLocationId,
       },
     })
   },
 
-  getActive({ moveDate, fromLocationId, toLocationId } = {}) {
+  getActive({ dateRange = [], fromLocationId, toLocationId } = {}) {
+    const [startDate, endDate] = dateRange
     return moveService.getAll({
       filter: {
         'filter[status]': 'requested,accepted,completed',
-        'filter[date_from]': moveDate,
-        'filter[date_to]': moveDate,
+        'filter[date_from]': startDate,
+        'filter[date_to]': endDate,
         'filter[from_location_id]': fromLocationId,
         'filter[to_location_id]': toLocationId,
       },
     })
   },
 
-  getCancelled({ moveDate, fromLocationId, toLocationId } = {}) {
+  getCancelled({ dateRange = [], fromLocationId, toLocationId } = {}) {
+    const [startDate, endDate] = dateRange
     return moveService.getAll({
       filter: {
         'filter[status]': 'cancelled',
-        'filter[date_from]': moveDate,
-        'filter[date_to]': moveDate,
+        'filter[date_from]': startDate,
+        'filter[date_to]': endDate,
         'filter[from_location_id]': fromLocationId,
         'filter[to_location_id]': toLocationId,
       },

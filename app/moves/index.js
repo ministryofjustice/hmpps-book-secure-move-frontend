@@ -8,12 +8,9 @@ const {
   redirectBaseUrl,
   saveUrl,
   setDateRange,
-  setMoveDate,
   setPeriod,
-  setStatus,
   setFromLocation,
   setPagination,
-  setPaginationForMovesByDateRangeAndStatus,
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
   setMovesByDateAllLocations,
@@ -24,9 +21,8 @@ const uuidRegex =
 
 // Define param middleware
 router.param('locationId', setFromLocation)
-router.param('date', setMoveDate)
 router.param('period', setPeriod)
-router.param('status', setStatus)
+router.param('date', setDateRange)
 
 // Define shared middleware
 router.use('^([^.]+)$', saveUrl)
@@ -34,14 +30,14 @@ router.use('^([^.]+)$', saveUrl)
 // Define routes
 router.get('/', redirectBaseUrl)
 router.get(
-  '/:date',
+  '/:period(week|day)/:date',
   protectRoute('moves:view:all'),
   setMovesByDateAllLocations,
   setPagination,
   list
 )
 router.get(
-  `/:date/:locationId(${uuidRegex})`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:by_location'),
   setMovesByDateAndLocation,
   setPagination,
@@ -51,19 +47,18 @@ router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed)`,
   protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
-  setDateRange,
   setMovesByDateRangeAndStatus,
-  setPaginationForMovesByDateRangeAndStatus,
+  setPagination,
   listProposed
 )
 router.get(
-  '/:date/download.:extension(csv|json)',
+  '/:period(week|day)/:date/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
   setMovesByDateAllLocations,
   download
 )
 router.get(
-  `/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
   protectRoute('moves:download:by_location'),
   setMovesByDateAndLocation,
   download

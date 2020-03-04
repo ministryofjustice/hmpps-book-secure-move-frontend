@@ -67,6 +67,17 @@ describe('Nunjucks filters', function() {
     })
   })
 
+  describe('#formatISOWeek', function() {
+    it('returns the argument if it is not an array', function() {
+      expect(filters.formatISOWeek('invalid date')).to.equal('invalid date')
+    })
+    it('returns the correct week if the date range is passed correctly', function() {
+      expect(filters.formatISOWeek(['2020-03-02', '2020-03-08'])).to.equal(
+        '2020-W10'
+      )
+    })
+  })
+
   describe('#formatDateWithDay()', function() {
     it('should return config date with day format', function() {
       const formattedDate = filters.formatDateWithDay('2010-01-05')

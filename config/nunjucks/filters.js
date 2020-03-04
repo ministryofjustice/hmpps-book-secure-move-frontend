@@ -52,6 +52,16 @@ function formatDateRange(dateRange) {
   return `${formattedStartDay} to ${formattedEndDate}`
 }
 
+function formatISOWeek(dateRange) {
+  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
+    return dateRange
+  }
+  const [startDate, endDate] = dateRange
+  return startDate === endDate
+    ? startDate
+    : format(parseISO(startDate), "yyyy-'W'II")
+}
+
 /**
  * Formats a date to the long date format including day
  *
@@ -145,6 +155,7 @@ module.exports = {
   formatDateRange,
   formatDateWithDay,
   formatDateAsRelativeDay,
+  formatISOWeek,
   calculateAge,
   formatTime,
   kebabcase: kebabCase,

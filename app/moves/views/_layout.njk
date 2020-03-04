@@ -4,9 +4,17 @@
   gtag('set', {'page_title': 'Upcoming moves'});
 {% endblock %}
 
+{% if period === 'day' %}
+  {% set datetime = dateRange | first %}
+  {% set displayDate = datetime | formatDateAsRelativeDay %}
+{% else %}
+  {% set datetime = dateRange | formatISOWeek %}
+  {% set displayDate = dateRange | formatDateRange %}
+{% endif %}
+
 {% block pageTitle %}
   {{ t(pageTitle, {
-    date: moveDate | formatDateAsRelativeDay
+    date: displayDate
   }) }}
 {% endblock %}
 
@@ -20,8 +28,8 @@
         {% block dateTitle %}
           <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
             {{ appTime({
-              datetime: moveDate,
-              text: moveDate | formatDateAsRelativeDay
+              datetime: datetime,
+              text: displayDate
             }) }}
           </h1>
         {% endblock %}
@@ -31,15 +39,15 @@
             classes: "app-pagination--inline app-print--hide",
             previous: {
               href: pagination.prevUrl,
-              text: t("actions::previous_day")
+              text: t("actions::previous", { context: period })
             },
             next: {
               href: pagination.nextUrl,
-              text: t("actions::next_day")
+              text: t("actions::next", { context: period })
             },
             items: [{
               href: pagination.todayUrl,
-              text: t("actions::current_day")
+              text: t("actions::current", { context: period })
             }]
           }) }}
         {% endblock %}

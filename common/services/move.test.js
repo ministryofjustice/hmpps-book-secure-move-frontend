@@ -294,13 +294,13 @@ describe('Move Service', function() {
     })
 
     context('with arguments', function() {
-      const mockMoveDate = '2019-10-10'
+      const mockDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
         moves = await moveService.getRequested({
-          moveDate: mockMoveDate,
+          dateRange: mockDateRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
         })
@@ -310,8 +310,8 @@ describe('Move Service', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
             'filter[status]': 'requested',
-            'filter[date_from]': mockMoveDate,
-            'filter[date_to]': mockMoveDate,
+            'filter[date_from]': mockDateRange[0],
+            'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
           },
@@ -354,13 +354,13 @@ describe('Move Service', function() {
     })
 
     context('with arguments', function() {
-      const mockMoveDate = '2019-10-10'
+      const mockDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
         moves = await moveService.getActive({
-          moveDate: mockMoveDate,
+          dateRange: mockDateRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
         })
@@ -370,8 +370,8 @@ describe('Move Service', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
             'filter[status]': 'requested,accepted,completed',
-            'filter[date_from]': mockMoveDate,
-            'filter[date_to]': mockMoveDate,
+            'filter[date_from]': mockDateRange[0],
+            'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
           },
@@ -415,13 +415,13 @@ describe('Move Service', function() {
     })
 
     context('with arguments', function() {
-      const mockMoveDate = '2019-10-10'
+      const mockDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'c195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function() {
         moves = await moveService.getCancelled({
-          moveDate: mockMoveDate,
+          dateRange: mockDateRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
         })
@@ -431,8 +431,8 @@ describe('Move Service', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
             'filter[status]': 'cancelled',
-            'filter[date_from]': mockMoveDate,
-            'filter[date_to]': mockMoveDate,
+            'filter[date_from]': mockDateRange[0],
+            'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
           },
@@ -447,7 +447,7 @@ describe('Move Service', function() {
 
   describe('#getMovesByDateRangeAndStatus', function() {
     let moves
-    const mockCreatedAtRange = ['2019-10-10', '2019-10-17']
+    const mockDateRange = ['2019-10-10', '2019-10-17']
     const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     const mockStatus = 'booked'
     beforeEach(async function() {
@@ -456,7 +456,7 @@ describe('Move Service', function() {
     context('with arguments', async function() {
       beforeEach(async function() {
         moves = await moveService.getMovesByDateRangeAndStatus({
-          createdAtRange: mockCreatedAtRange,
+          dateRange: mockDateRange,
           status: mockStatus,
           fromLocationId: mockFromLocationId,
         })
@@ -465,8 +465,8 @@ describe('Move Service', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           filter: {
             'filter[status]': mockStatus,
-            'filter[created_at_from]': mockCreatedAtRange[0],
-            'filter[created_at_to]': mockCreatedAtRange[1],
+            'filter[created_at_from]': mockDateRange[0],
+            'filter[created_at_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
           },
         })

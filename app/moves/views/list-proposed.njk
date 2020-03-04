@@ -1,37 +1,5 @@
 {% extends "./_layout.njk" %}
 
-{% block dateTitle %}
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-  {% if period === 'day' %}
-    {% set displayDate = createdAtRange | first | formatDateAsRelativeDay %}
-  {% else %}
-    {% set displayDate = createdAtRange | formatDateRange %}
-  {% endif %}
-    {{ appTime({
-      datetime: moveDate,
-      text: displayDate
-    }) }}
-  </h1>
-{% endblock %}
-
-{% block dateNavigation %}
-  {{ appPagination({
-    classes: "app-pagination--inline app-print--hide",
-    previous: {
-      href: pagination.prevUrl,
-      text: t("actions::previous", { context: period })
-    },
-    next: {
-      href: pagination.nextUrl,
-      text: t("actions::next", { context: period })
-    },
-    items: [{
-      href: pagination.todayUrl,
-      text: t("actions::current", { context: period })
-    }]
-  }) }}
-{% endblock %}
-
 {% block headerActions %}
   {% if canAccess('move:create') %}
     {{ govukButton({

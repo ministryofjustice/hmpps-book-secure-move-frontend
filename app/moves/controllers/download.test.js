@@ -4,7 +4,7 @@ const presenters = require('../../../common/presenters')
 
 const controller = require('./download')
 
-const mockMoveDate = '2018-10-10'
+const mockDateRange = ['2018-10-10', '2018-10-17']
 const mockUTCDate = Date.UTC(2019, 10, 10, 15, 30, 15)
 const mockDownloadDate = new Date(mockUTCDate)
 const activeMovesStub = [
@@ -26,7 +26,10 @@ describe('Moves controllers', function() {
 
     beforeEach(function() {
       req = {
-        params: {},
+        params: {
+          date: '2018-10-10',
+          period: 'week',
+        },
         t: sinon.stub().returnsArg(0),
       }
       res = {
@@ -34,7 +37,7 @@ describe('Moves controllers', function() {
         json: sinon.stub(),
         setHeader: sinon.stub(),
         locals: {
-          moveDate: mockMoveDate,
+          dateRange: mockDateRange,
           activeMovesByDate: activeMovesStub,
           cancelledMovesByDate: cancelledMovesStub,
         },
@@ -89,7 +92,7 @@ describe('Moves controllers', function() {
 
       it('should translate filename', function() {
         expect(req.t).to.be.calledOnceWithExactly('moves::download_filename', {
-          date: mockMoveDate,
+          date: '2018-10-10to2018-10-17',
           timestamp: format(new Date(mockUTCDate), 'yyyy-MM-dd HH:mm:ss'),
         })
       })
@@ -126,7 +129,7 @@ describe('Moves controllers', function() {
           expect(req.t).to.be.calledOnceWithExactly(
             'moves::download_filename',
             {
-              date: mockMoveDate,
+              date: '2018-10-10to2018-10-17',
               timestamp: format(new Date(mockUTCDate), 'yyyy-MM-dd HH:mm:ss'),
             }
           )
