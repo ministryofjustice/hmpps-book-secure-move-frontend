@@ -1,17 +1,12 @@
-const {
-  cloneDeep,
-  find,
-  fromPairs,
-  forEach,
-  get,
-  mapValues,
-  set,
-} = require('lodash')
+const { cloneDeep, fromPairs, get, set } = require('lodash')
 const { format, parseISO } = require('date-fns')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
-const { explicitYesNo } = require('../../app/move/fields/create')
+const {
+  implicitAssessmentQuestions,
+  explicitAssessmentQuestion,
+} = require('../../app/move/fields/create')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
@@ -215,59 +210,45 @@ function mapPersonToOption(person = {}) {
   }
 }
 
-function appendDependent(questions, assessmentCategory, field, key) {
-  const question = find(questions, { key })
-  let dependent = {}
+function populateAssessmentFields(currentFields, questions) {
+  const fields = cloneDeep(currentFields)
+  const implicitQuestions = questions.filter(
+    ({ key }) => fields[key] && !fields[key].explicit
+  )
+  const explicitQuestions = questions.filter(
+    ({ key }) => fields[key] && fields[key].explicit
+  )
 
-  if (question) {
-    if (field.explicit) {
-      dependent = {
-        field: `${question.key}__yesno`,
-        value: 'yes',
-      }
-    } else {
-      dependent = {
-        field: assessmentCategory,
-        value: question.id,
-      }
+  if (implicitQuestions.length) {
+    const implicitFieldName = implicitQuestions[0].category
+    const implicitField = implicitAssessmentQuestions(implicitFieldName)
+
+    fields[implicitFieldName] = {
+      ...implicitField,
+      items: implicitQuestions
+        .map(mapAssessmentQuestionToConditionalField)
+        .map(mapAssessmentQuestionToTranslation)
+        .map(mapReferenceDataToOption),
     }
 
-    return {
-      ...field,
-      dependent,
+    implicitQuestions.forEach(({ key, id }) => {
+      fields[key].dependent = {
+        field: implicitFieldName,
+        value: id,
+      }
+    })
+  }
+
+  explicitQuestions.forEach(({ key, id }) => {
+    const explicitField = `${key}__explicit`
+    fields[explicitField] = explicitAssessmentQuestion(explicitField, id, key)
+
+    fields[key].dependent = {
+      field: explicitField,
+      value: id,
     }
-  }
+  })
 
-  return field
-}
-
-function extractItemsForImplicitFields(fields, question) {
-  const key = question.key
-  const field = fields[key]
-  return fields[key] && !field.explicit
-}
-
-function decorateWithExplicitFields(questions, collection, field, key) {
-  const question = find(questions, { key })
-
-  if (question && field.explicit) {
-    const explicitKey = `${key}__yesno`
-    const explicitField = explicitYesNo(explicitKey)
-    explicitField.items[0].conditional = key
-    collection[explicitKey] = explicitField
-  }
-}
-
-function mapDependentFields(originalFields, questions, assessmentCategory) {
-  let fields = cloneDeep(originalFields)
-  fields = mapValues(
-    fields,
-    appendDependent.bind(null, questions, assessmentCategory)
-  )
-  fields = forEach(
-    fields,
-    decorateWithExplicitFields.bind(null, questions, fields)
-  )
   return fields
 }
 
@@ -282,9 +263,5 @@ module.exports = {
   insertInitialOption,
   insertItemConditional,
   mapPersonToOption,
-  appendDependent,
-  extractItemsForImplicitFields,
-  explicitYesNo,
-  decorateWithExplicitFields,
-  mapDependentFields,
+  populateAssessmentFields,
 }
