@@ -19,6 +19,11 @@
         "heading": "Uploaded documents",
         "empty": "No uploaded documents"
       }
+    },
+    "retrieved_from_nomis": {
+      "heading": "This information is currently in NOMIS",
+      "description": "If you notice something missing, update NOMIS and it will also update here.",
+      "empty": "There are currently no active alerts. If you don’t think this is correct, update NOMIS."
     }
   },
   "steps": {
