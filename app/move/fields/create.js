@@ -30,20 +30,20 @@ const requiredAssessmentQuestionComments = {
   validate: 'required',
 }
 
-function assessmentCategory(category) {
+function implicitAssessmentQuestions(name) {
   return {
+    name,
     component: 'govukCheckboxes',
     multiple: true,
     items: [],
-    name: category,
     fieldset: {
       legend: {
-        text: `fields::${category}.label`,
+        text: `fields::${name}.label`,
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     hint: {
-      text: `fields::${category}.hint`,
+      text: `fields::${name}.hint`,
     },
   }
 }
@@ -71,11 +71,11 @@ function toLocationType(type, props) {
   }
 }
 
-function explicitYesNo(name) {
+function explicitAssessmentQuestion(name, value, conditional) {
   return {
+    name,
     validate: 'required',
     component: 'govukRadios',
-    name: name,
     fieldset: {
       legend: {
         text: `fields::${name}.label`,
@@ -87,11 +87,12 @@ function explicitYesNo(name) {
     },
     items: [
       {
-        value: 'yes',
+        value,
+        conditional,
         text: 'Yes',
       },
       {
-        value: 'no',
+        value: 'false',
         text: 'No',
       },
     ],
@@ -340,7 +341,6 @@ module.exports = {
     },
   },
   // risk information
-  risk: assessmentCategory('risk'),
   violent: assessmentQuestionComments,
   escape: assessmentQuestionComments,
   hold_separately: assessmentQuestionComments,
@@ -363,7 +363,6 @@ module.exports = {
     explicit: true,
   },
   // court information
-  court: assessmentCategory('court'),
   solicitor: assessmentQuestionComments,
   interpreter: assessmentQuestionComments,
   other_court: requiredAssessmentQuestionComments,
@@ -445,6 +444,6 @@ module.exports = {
       value: true,
     },
   },
-  assessmentCategory,
-  explicitYesNo,
+  implicitAssessmentQuestions,
+  explicitAssessmentQuestion,
 }

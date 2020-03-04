@@ -10,9 +10,7 @@ const {
   insertInitialOption,
   insertItemConditional,
   mapPersonToOption,
-  appendDependent,
-  decorateWithExplicitFields,
-  mapDependentFields,
+  populateAssessmentFields,
 } = require('./field')
 
 const personMock = {
@@ -36,6 +34,27 @@ const personMock = {
     },
   ],
 }
+
+const mockAssessmentQuestions = [
+  {
+    id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+    key: 'special_diet_or_allergy',
+    category: 'health',
+    title: 'Special diet or allergy',
+  },
+  {
+    id: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+    key: 'medication',
+    category: 'health',
+    title: 'Medication',
+  },
+  {
+    id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+    key: 'special_vehicle',
+    category: 'health',
+    title: 'Requires special vehicle',
+  },
+]
 
 describe('Form helpers', function() {
   describe('#mapReferenceDataToOption()', function() {
@@ -914,174 +933,174 @@ describe('Form helpers', function() {
     })
   })
 
-  describe('appendDependent', function() {
-    const questions = [
-      {
-        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-        type: 'assessment_questions',
-        key: 'special_diet_or_allergy',
-        category: 'health',
-        title: 'Special diet or allergy',
-        disabled_at: null,
-      },
-      {
-        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-        type: 'assessment_questions',
-        key: 'special_vehicle',
-        category: 'health',
-        title: 'Special vehicle',
-        disabled_at: null,
-      },
-    ]
-    const assessmentCategory = 'health'
-    const field = {
-      explicit: true,
-    }
-    const key = 'special_vehicle'
-    it('for explicit fields', function() {
-      const output = appendDependent(questions, assessmentCategory, field, key)
-      expect(output).to.deep.equal({
-        explicit: true,
-        dependent: {
-          field: 'special_vehicle__yesno',
-          value: 'yes',
-        },
+  describe('#populateAssessmentFields()', function() {
+    let fields
+
+    context('with only implicit fields', function() {
+      const mockFields = {
+        special_diet_or_allergy: {},
+        medication: {},
+      }
+
+      beforeEach(function() {
+        fields = populateAssessmentFields(mockFields, mockAssessmentQuestions)
       })
-    })
-    it('for implicit (normal) fields', function() {
-      const output = appendDependent(questions, assessmentCategory, {}, key)
-      expect(output).to.deep.equal({
-        dependent: {
-          field: 'health',
-          value: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-        },
-      })
-    })
-  })
-  describe('decorateWithExplicitFields', function() {
-    const questions = [
-      {
-        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-        type: 'assessment_questions',
-        key: 'special_diet_or_allergy',
-        category: 'health',
-        title: 'Special diet or allergy',
-        disabled_at: null,
-      },
-      {
-        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-        type: 'assessment_questions',
-        key: 'special_vehicle',
-        category: 'health',
-        title: 'Special vehicle',
-        disabled_at: null,
-      },
-    ]
-    const field = {
-      explicit: true,
-    }
-    const key = 'special_vehicle'
-    let fieldsCollection
-    beforeEach(function() {
-      fieldsCollection = {}
-    })
-    it('fields remain untouched for implicit (normal) fields', function() {
-      decorateWithExplicitFields(questions, fieldsCollection, {}, key)
-      expect(fieldsCollection).to.deep.equal({})
-    })
-    it('creates an additional field for explicit fields', function() {
-      decorateWithExplicitFields(questions, fieldsCollection, field, key)
-      expect(fieldsCollection).to.deep.equal({
-        special_vehicle__yesno: {
-          validate: 'required',
-          component: 'govukRadios',
-          name: 'special_vehicle__yesno',
-          fieldset: {
-            legend: {
-              text: 'fields::special_vehicle__yesno.label',
-              classes: 'govuk-fieldset__legend--m',
-            },
-          },
-          hint: {
-            text: 'fields::special_vehicle__yesno.hint',
-          },
+
+      it('should create impicit field', function() {
+        expect(fields).to.contain.property('health')
+        expect(fields.health).to.deep.equal({
+          name: 'health',
+          component: 'govukCheckboxes',
+          multiple: true,
           items: [
             {
-              value: 'yes',
-              text: 'Yes',
-              conditional: 'special_vehicle',
+              value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+              text: 'Special diet or allergy',
+              key: 'special_diet_or_allergy',
+              conditional: 'special_diet_or_allergy',
             },
             {
-              value: 'no',
-              text: 'No',
+              value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+              text: 'Medication',
+              key: 'medication',
+              conditional: 'medication',
             },
           ],
-        },
-      })
-    })
-  })
-
-  describe('mapDependentFields', function() {
-    const fields = {
-      special_diet_or_allergy: {
-        skip: true,
-      },
-      special_vehicle: {
-        skip: true,
-        validate: 'required',
-        explicit: true,
-      },
-      health: {
-        multiple: true,
-        items: [
-          {
-            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-            text: 'Special diet or allergy',
-            key: 'special_diet_or_allergy',
-            conditional: 'special_diet_or_allergy',
+          fieldset: {
+            legend: {
+              text: 'fields::health.label',
+              classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+            },
           },
-        ],
-        name: 'health',
-      },
-    }
-    const questions = [
-      {
-        id: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-        type: 'assessment_questions',
-        key: 'special_diet_or_allergy',
-        category: 'health',
-      },
-      {
-        id: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-        type: 'assessment_questions',
-        key: 'special_vehicle',
-        category: 'health',
-      },
-    ]
+          hint: { text: 'fields::health.hint' },
+        })
+      })
 
-    it('returns an object', function() {
-      expect(mapDependentFields(fields, questions, 'health')).to.be.an('object')
-    })
-
-    it('appends the explicit fields and their dependents', async function() {
-      expect(mapDependentFields(fields, questions, 'health')).to.deep.equal({
-        special_diet_or_allergy: {
-          skip: true,
+      it('should append dependent field properties', function() {
+        expect(fields.special_diet_or_allergy).to.deep.equal({
           dependent: {
             field: 'health',
             value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
           },
-        },
-        special_vehicle: {
-          skip: true,
-          validate: 'required',
-          explicit: true,
+        })
+        expect(fields.medication).to.deep.equal({
           dependent: {
-            field: 'special_vehicle__yesno',
-            value: 'yes',
+            field: 'health',
+            value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
           },
+        })
+      })
+
+      it('should return the correct number of fields', function() {
+        expect(Object.keys(fields).length).to.equal(3)
+      })
+    })
+
+    context('with only explicit fields', function() {
+      const mockFields = {
+        special_diet_or_allergy: {
+          explicit: true,
         },
-        health: {
+        medication: {
+          explicit: true,
+        },
+      }
+
+      beforeEach(function() {
+        fields = populateAssessmentFields(mockFields, mockAssessmentQuestions)
+      })
+
+      it('should not create impicit field', function() {
+        expect(fields).not.to.contain.property('health')
+      })
+
+      it('should create medication explicit field', function() {
+        expect(fields).to.contain.property('medication__explicit')
+        expect(fields.medication__explicit).to.deep.equal({
+          name: 'medication__explicit',
+          validate: 'required',
+          component: 'govukRadios',
+          fieldset: {
+            legend: {
+              text: 'fields::medication__explicit.label',
+              classes: 'govuk-fieldset__legend--m',
+            },
+          },
+          hint: { text: 'fields::medication__explicit.hint' },
+          items: [
+            {
+              value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+              conditional: 'medication',
+              text: 'Yes',
+            },
+            { value: 'false', text: 'No' },
+          ],
+        })
+      })
+
+      it('should create special diet explicit field', function() {
+        expect(fields).to.contain.property('special_diet_or_allergy__explicit')
+        expect(fields.special_diet_or_allergy__explicit).to.deep.equal({
+          name: 'special_diet_or_allergy__explicit',
+          validate: 'required',
+          component: 'govukRadios',
+          fieldset: {
+            legend: {
+              text: 'fields::special_diet_or_allergy__explicit.label',
+              classes: 'govuk-fieldset__legend--m',
+            },
+          },
+          hint: { text: 'fields::special_diet_or_allergy__explicit.hint' },
+          items: [
+            {
+              value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+              conditional: 'special_diet_or_allergy',
+              text: 'Yes',
+            },
+            { value: 'false', text: 'No' },
+          ],
+        })
+      })
+
+      it('should append dependent field properties', function() {
+        expect(fields.special_diet_or_allergy).to.deep.equal({
+          dependent: {
+            field: 'special_diet_or_allergy__explicit',
+            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+          },
+          explicit: true,
+        })
+        expect(fields.medication).to.deep.equal({
+          dependent: {
+            field: 'medication__explicit',
+            value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+          },
+          explicit: true,
+        })
+      })
+
+      it('should return the correct number of fields', function() {
+        expect(Object.keys(fields).length).to.equal(4)
+      })
+    })
+
+    context('with both implicit and explicit fields', function() {
+      const mockFields = {
+        special_diet_or_allergy: {},
+        medication: {
+          explicit: true,
+        },
+      }
+
+      beforeEach(function() {
+        fields = populateAssessmentFields(mockFields, mockAssessmentQuestions)
+      })
+
+      it('should create impicit field', function() {
+        expect(fields).to.contain.property('health')
+        expect(fields.health).to.deep.equal({
+          name: 'health',
+          component: 'govukCheckboxes',
           multiple: true,
           items: [
             {
@@ -1091,33 +1110,62 @@ describe('Form helpers', function() {
               conditional: 'special_diet_or_allergy',
             },
           ],
-          name: 'health',
-        },
-        special_vehicle__yesno: {
+          fieldset: {
+            legend: {
+              text: 'fields::health.label',
+              classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+            },
+          },
+          hint: { text: 'fields::health.hint' },
+        })
+      })
+
+      it('should create medication explicit field', function() {
+        expect(fields).to.contain.property('medication__explicit')
+        expect(fields.medication__explicit).to.deep.equal({
+          name: 'medication__explicit',
           validate: 'required',
-          name: 'special_vehicle__yesno',
           component: 'govukRadios',
           fieldset: {
             legend: {
-              text: 'fields::special_vehicle__yesno.label',
+              text: 'fields::medication__explicit.label',
               classes: 'govuk-fieldset__legend--m',
             },
           },
-          hint: {
-            text: 'fields::special_vehicle__yesno.hint',
-          },
+          hint: { text: 'fields::medication__explicit.hint' },
           items: [
             {
-              value: 'yes',
+              value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+              conditional: 'medication',
               text: 'Yes',
-              conditional: 'special_vehicle',
             },
-            {
-              value: 'no',
-              text: 'No',
-            },
+            { value: 'false', text: 'No' },
           ],
-        },
+        })
+      })
+
+      it('should append dependent field properties', function() {
+        expect(fields.medication).to.deep.equal({
+          dependent: {
+            field: 'medication__explicit',
+            value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
+          },
+          explicit: true,
+        })
+      })
+
+      it('should return the correct number of fields', function() {
+        expect(Object.keys(fields).length).to.equal(4)
+      })
+    })
+
+    context('with no implicit or explicit fields', function() {
+      beforeEach(function() {
+        fields = populateAssessmentFields({}, mockAssessmentQuestions)
+      })
+
+      it('should return original fields', function() {
+        expect(fields).to.deep.equal({})
       })
     })
   })
