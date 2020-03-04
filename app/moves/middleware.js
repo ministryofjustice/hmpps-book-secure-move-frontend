@@ -153,7 +153,7 @@ module.exports = {
     }
 
     try {
-      res.locals.proposedMovesByWeek = await moveService.getMovesByDateRangeAndStatus(
+      res.locals.movesByRangeAndStatus = await moveService.getMovesByDateRangeAndStatus(
         {
           createdAtRange,
           status,
