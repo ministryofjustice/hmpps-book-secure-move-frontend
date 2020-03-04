@@ -69,7 +69,7 @@ module.exports = {
   },
   '/person-lookup-prison-number': {
     ...personSearchStep,
-    fields: ['filter.nomis_offender_no'],
+    fields: ['filter.prison_number'],
   },
   '/person-lookup-pnc': {
     ...personSearchStep,

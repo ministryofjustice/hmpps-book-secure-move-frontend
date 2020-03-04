@@ -121,12 +121,12 @@ module.exports = {
       classes: 'govuk-label--s',
     },
   },
-  'filter.nomis_offender_no': {
+  'filter.prison_number': {
     ...personSearchFilter,
-    id: 'filter.nomis_offender_no',
-    name: 'filter.nomis_offender_no',
+    id: 'filter.prison_number',
+    name: 'filter.prison_number',
     label: {
-      html: 'fields::filter.nomis_offender_no.label',
+      html: 'fields::filter.prison_number.label',
       classes: 'govuk-label--s',
     },
   },
