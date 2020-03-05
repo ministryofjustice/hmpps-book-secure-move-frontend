@@ -180,6 +180,10 @@ jobs:
   publish_release_to_github:
     <<: *circle_container
     steps:
+      - checkout
+      - *restore_cache
+      - *install_dependencies
+      - *save_cache
       - run:
           name: Publish release to GitHub
           command: npm run release:github
