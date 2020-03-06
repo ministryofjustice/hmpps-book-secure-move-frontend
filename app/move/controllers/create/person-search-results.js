@@ -2,7 +2,8 @@ const { has, find } = require('lodash')
 
 const PersonController = require('./person')
 
-const fieldHelpers = require('../../../../common/helpers/field')
+const presenters = require('../../../../common/presenters')
+const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
 
 class PersonSearchResultsController extends PersonController {
@@ -33,7 +34,13 @@ class PersonSearchResultsController extends PersonController {
 
   setPeopleItems(req, res, next) {
     const { people } = req.form.options.fields
-    people.items = req.people.map(fieldHelpers.mapPersonToOption)
+    people.items = req.people.map(person => {
+      const card = presenters.personToCardComponent(person)
+      return {
+        html: componentService.getComponent('appCard', card),
+        value: person.id,
+      }
+    })
     next()
   }
 
