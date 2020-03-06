@@ -4,6 +4,7 @@ const assessmentToSummaryListComponent = require('./assessment-to-summary-list-c
 const assessmentByCategory = require('./assessment-by-category')
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
+const personToCardComponent = require('./person-to-card-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const documentsToMetaListComponent = require('./documents-to-meta-list-component')
 const movesByToLocation = require('./moves-by-to-location')
@@ -16,6 +17,7 @@ module.exports = {
   assessmentByCategory,
   moveToCardComponent,
   moveToMetaListComponent,
+  personToCardComponent,
   personToSummaryListComponent,
   documentsToMetaListComponent,
   movesByToLocation,
