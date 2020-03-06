@@ -50,14 +50,23 @@ describe('Card component', function() {
   })
 
   context('with image', function() {
-    it('should render image', function() {
-      const $ = renderComponentHtmlToCheerio('card', examples['with image'])
-      const $image = $('.app-card__image')
+    let $image
 
+    beforeEach(function() {
+      const $ = renderComponentHtmlToCheerio('card', examples['with image'])
+      $image = $('.app-card__image')
+    })
+
+    it('should render image', function() {
       expect($image.length).to.equal(1)
       expect($image.attr('src')).to.equal(
         'https://via.placeholder.com/80x105.png'
       )
+    })
+
+    it('should include image alt text', function() {
+      expect($image.length).to.equal(1)
+      expect($image.attr('alt')).to.equal('Example alt text')
     })
   })
 

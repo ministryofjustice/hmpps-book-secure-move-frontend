@@ -37,6 +37,10 @@ params:
   type: string
   required: false
   description: Optional image path for left hand image.
+- name: image_alt
+  type: string
+  required: false
+  description: Optional alt text for the left hand image.
 - name: meta
   type: object
   required: false
@@ -90,6 +94,7 @@ examples:
       title:
         text: Card with image
       image_path: https://via.placeholder.com/80x105.png
+      image_alt: Example alt text
   - name: with caption
     data:
       title:

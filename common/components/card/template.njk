@@ -6,7 +6,7 @@
 <div class="app-card{%- if params.classes %} {{ params.classes }}{% endif %}">
   {% if params.image_path %}
     <aside class="app-card__aside">
-      <img class="app-card__image" src="{{ params.image_path }}">
+      <img class="app-card__image" src="{{ params.image_path }}" alt="{{ params.image_alt }}">
     </aside>
   {% endif %}
 
