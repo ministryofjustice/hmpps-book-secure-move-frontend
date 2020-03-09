@@ -63,6 +63,7 @@ module.exports = {
   },
   setPagination: (req, res, next) => {
     const { locationId = '', period, status } = req.params
+    const today = format(new Date(), dateFormat)
     const baseDate = getDateFromParams(req)
     const interval = period === 'week' ? 7 : 1
 
@@ -73,7 +74,7 @@ module.exports = {
     const statusInUrl = status ? `/${status}` : ''
 
     res.locals.pagination = {
-      todayUrl: `${req.baseUrl}/${period}/${baseDate}${locationInUrl}${statusInUrl}`,
+      todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}${statusInUrl}`,
       nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}${statusInUrl}`,
       prevUrl: `${req.baseUrl}/${period}/${previousPeriod}${locationInUrl}${statusInUrl}`,
     }
