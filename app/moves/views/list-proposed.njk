@@ -1,7 +1,5 @@
 {% extends "./_layout.njk" %}
 
-{% block dateNavigation %}{% endblock %}
-
 {% block headerActions %}
   {% if canAccess('move:create') %}
     {{ govukButton({

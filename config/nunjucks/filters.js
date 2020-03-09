@@ -6,6 +6,8 @@ const {
   differenceInYears,
   parseISO,
   isValid: isValidDate,
+  isSameMonth,
+  isSameYear,
   isDate,
 } = require('date-fns')
 const { kebabCase, startCase } = require('lodash')
@@ -33,6 +35,31 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
     return value
   }
   return format(date, formattedDateStr)
+}
+
+function formatDateRange(dateRange) {
+  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
+    return dateRange
+  }
+  const parsedDates = dateRange.map(date => {
+    return isDate(date) ? date : parseISO(date)
+  })
+  const [startDate, endDate] = parsedDates
+  const displayMonth = isSameMonth(startDate, endDate) ? '' : ' MMM'
+  const displayYear = isSameYear(startDate, endDate) ? '' : ' yyyy'
+  const formattedStartDay = format(startDate, `d${displayMonth}${displayYear}`)
+  const formattedEndDate = format(endDate, 'd MMM yyyy')
+  return `${formattedStartDay} to ${formattedEndDate}`
+}
+
+function formatISOWeek(dateRange) {
+  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
+    return dateRange
+  }
+  const [startDate, endDate] = dateRange
+  return startDate === endDate
+    ? startDate
+    : format(parseISO(startDate), "yyyy-'W'II")
 }
 
 /**
@@ -125,8 +152,10 @@ function formatTime(value) {
 
 module.exports = {
   formatDate,
+  formatDateRange,
   formatDateWithDay,
   formatDateAsRelativeDay,
+  formatISOWeek,
   calculateAge,
   formatTime,
   kebabcase: kebabCase,
