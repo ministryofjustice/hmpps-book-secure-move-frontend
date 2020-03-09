@@ -482,7 +482,7 @@ describe('Moves middleware', function() {
     const mockDateRange = ['2019-10-10', '2019-10-10']
     let req, res, nextSpy
     beforeEach(function() {
-      this.clock = sinon.useFakeTimers(new Date(mockDateRange).getTime())
+      this.clock = sinon.useFakeTimers(new Date(mockDateRange[0]).getTime())
       nextSpy = sinon.spy()
     })
 
