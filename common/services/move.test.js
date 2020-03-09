@@ -458,7 +458,7 @@ describe('Move Service', function() {
         moves = await moveService.getMovesByDateRangeAndStatus({
           dateRange: mockDateRange,
           status: mockStatus,
-          fromLocationId: mockFromLocationId,
+          locationId: mockFromLocationId,
         })
       })
       it('calls getAll', function() {
@@ -491,6 +491,63 @@ describe('Move Service', function() {
       })
       it('returns moves', function() {
         expect(moves).to.deep.equal(['moves'])
+      })
+    })
+  })
+
+  describe('#getMovesCount', function() {
+    let count
+    const mockDateRange = ['2019-10-10', '2019-10-17']
+    const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockStatus = 'proposed'
+
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'findAll').resolves({
+        meta: {
+          pagination: {
+            total_objects: 10,
+          },
+        },
+      })
+    })
+    context('with arguments', async function() {
+      beforeEach(async function() {
+        count = await moveService.getMovesCount({
+          dateRange: mockDateRange,
+          status: mockStatus,
+          locationId: mockFromLocationId,
+        })
+      })
+      it('calls the api service', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+          page: 1,
+          per_page: 1,
+          'filter[status]': mockStatus,
+          'filter[created_at_from]': mockDateRange[0],
+          'filter[created_at_to]': mockDateRange[1],
+          'filter[from_location_id]': mockFromLocationId,
+        })
+      })
+      it('returns the count', function() {
+        expect(count).to.equal(10)
+      })
+    })
+    context('without arguments', function() {
+      beforeEach(async function() {
+        count = await moveService.getMovesCount()
+      })
+      it('calls getAll', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+          page: 1,
+          per_page: 1,
+          'filter[status]': undefined,
+          'filter[created_at_from]': undefined,
+          'filter[created_at_to]': undefined,
+          'filter[from_location_id]': undefined,
+        })
+      })
+      it('returns moves', function() {
+        expect(count).to.deep.equal(10)
       })
     })
   })

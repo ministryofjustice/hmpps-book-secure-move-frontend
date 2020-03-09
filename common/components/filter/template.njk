@@ -1,0 +1,23 @@
+<nav class="app-filter">
+  <ul class="app-filter__list">
+    {% for item in params.items %}
+      <li class="app-filter__list-item {{ 'app-filter__list-item--active' if item.active }}">
+        {% if not item.active %}
+        <a href="{{ item.href }}" class="app-filter__link">
+        {% endif %}
+          <span class="app-filter__content">
+          {% if item.value !== undefined %}
+            <span class="app-filter__value">{{ item.value }}</span>
+          {% endif %}
+          {% if item.label !== undefined %}
+            <span class="app-filter__label">{{ item.label }}</span>
+          {% endif %}
+          </span>
+        {% if not active %}
+        </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+

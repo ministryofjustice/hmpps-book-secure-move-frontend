@@ -9,6 +9,7 @@ const personToSummaryListComponent = require('./person-to-summary-list-component
 const documentsToMetaListComponent = require('./documents-to-meta-list-component')
 const movesByToLocation = require('./moves-by-to-location')
 const movesToCSV = require('./moves-to-csv')
+const moveTypesToFilterComponent = require('./move-type-for-filter')
 
 module.exports = {
   assessmentAnswerToTag,
@@ -22,4 +23,5 @@ module.exports = {
   documentsToMetaListComponent,
   movesByToLocation,
   movesToCSV,
+  moveTypesToFilterComponent,
 }

@@ -1,0 +1,62 @@
+params:
+  - name: items
+    type: object
+    required: true
+    description: Options for items.
+    params:
+      - name: items
+        type: array
+        required: true
+        description: Array of item objects.
+        params:
+          - name: active
+            type: boolean
+            required: true
+            description: true if the link matches the current url.
+          - name: href
+            type: string
+            required: true
+            description: the url the link points to.
+          - name: value
+            type: string
+            required: false
+            description: the content of the big text inside the link
+          - name: label
+            type: string
+            required: false
+            description: the content of the small text inside the link
+
+examples:
+  - name: default
+    data:
+      items:
+        - active: false
+          href: /moves/proposed
+          label: Moves proposed
+          value: 4
+        - active: true
+          href: /moves/requested
+          label: Moves requested
+          value: 4
+        - active: false
+          href: /moves/rejected
+          label: Moves rejected
+          value: 4
+  - name: withoutValue
+    data:
+      items:
+        - active: false
+          href: /moves/proposed
+          label: Moves proposed
+        - active: true
+          href: /moves/requested
+          label: Moves requested
+  - name: withoutLabel
+    data:
+      items:
+        - active: false
+          href: /moves/proposed
+          value: 1
+        - active: true
+          href: /moves/requested
+          value: 2

@@ -1,5 +1,7 @@
 {% extends "./_layout.njk" %}
 
+{% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
+
 {% block headerActions %}
   {% if canAccess('move:create') %}
     {{ govukButton({
@@ -9,6 +11,9 @@
       classes: "govuk-!-margin-top-2 app-print--hide"
     }) }}
   {% endif %}
+  {{ appFilter({
+    items: moveTypeNavigation
+  }) }}
 {% endblock %}
 
 {% block pageContent %}
@@ -26,4 +31,3 @@
     }) }}
 {% endif %}
 {% endblock %}
-
