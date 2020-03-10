@@ -19,6 +19,7 @@ const createConfig = {
   controller: create.Base,
   name: 'create-a-move',
   templatePath: 'move/views/create/',
+  template: '../../../form-wizard',
   journeyName: 'create-a-move',
   journeyPageTitle: 'actions::create_move',
 }
