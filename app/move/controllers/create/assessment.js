@@ -1,6 +1,7 @@
-const { flatten, values } = require('lodash')
+const { find, flatten } = require('lodash')
 
 const CreateBaseController = require('./base')
+const presenters = require('../../../../common/presenters')
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataService = require('../../../../common/services/reference-data')
 
@@ -24,8 +25,36 @@ class AssessmentController extends CreateBaseController {
     }
   }
 
-  saveValues(req, res, next) {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setPreviousAssessment)
+  }
+
+  setPreviousAssessment(req, res, next) {
+    const {
+      assessmentCategory,
+      showPreviousAssessment,
+      fields,
+    } = req.form.options
     const person = req.sessionModel.get('person') || {}
+    const filteredAssessment = person.assessment_answers
+      .filter(answer => answer.category === assessmentCategory)
+      .filter(answer => Object.keys(fields).includes(answer.key))
+      .filter(answer => answer.imported_from_nomis)
+
+    if (showPreviousAssessment) {
+      const previousAssessmentByCategory = presenters.assessmentByCategory(
+        filteredAssessment
+      )
+      res.locals.previousAssessment = find(previousAssessmentByCategory, {
+        key: assessmentCategory,
+      })
+    }
+
+    next()
+  }
+
+  saveValues(req, res, next) {
     const assessment = req.sessionModel.get('assessment') || {}
     const formValues = flatten(Object.values(req.form.values))
     const { assessmentCategory } = req.form.options
@@ -34,16 +63,13 @@ class AssessmentController extends CreateBaseController {
       .filter(({ id }) => formValues.includes(id))
       .map(({ id, key }) => {
         return {
+          key,
           assessment_question_id: id,
           comments: req.form.values[key],
         }
       })
 
     req.form.values.assessment = assessment
-    req.form.values.person = {
-      ...person,
-      assessment_answers: flatten(values(assessment)),
-    }
 
     super.saveValues(req, res, next)
   }

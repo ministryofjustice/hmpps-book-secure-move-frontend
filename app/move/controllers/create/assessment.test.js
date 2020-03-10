@@ -1,5 +1,6 @@
 const referenceDataService = require('../../../../common/services/reference-data')
 const fieldHelpers = require('../../../../common/helpers/field')
+const presenters = require('../../../../common/presenters')
 
 const BaseController = require('./base')
 const Controller = require('./assessment')
@@ -145,6 +146,221 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#middlewareLocals()', function() {
+      beforeEach(function() {
+        sinon.stub(BaseController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function() {
+        expect(BaseController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set previous assessment method', function() {
+        expect(controller.use.firstCall).to.have.been.calledWithExactly(
+          controller.setPreviousAssessment
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
+    describe('#setPreviousAssessment', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        sinon.stub(presenters, 'assessmentByCategory').returns([
+          {
+            key: 'risk',
+            answers: ['stubbed'],
+          },
+        ])
+        req = {
+          form: {
+            options: {
+              assessmentCategory: 'risk',
+              fields: {
+                violent: {},
+                self_harm: {},
+                escape: {},
+              },
+            },
+          },
+          sessionModel: {
+            get: sinon.stub(),
+          },
+        }
+        res = {
+          locals: {},
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context(
+        'when the step includes ability to show previous assessment',
+        function() {
+          beforeEach(function() {
+            req.form.options.showPreviousAssessment = true
+          })
+
+          context('with answers from a different category', function() {
+            beforeEach(function() {
+              req.sessionModel.get.withArgs('person').returns({
+                assessment_answers: [
+                  {
+                    category: 'risk',
+                    key: 'violent',
+                    imported_from_nomis: true,
+                  },
+                  {
+                    category: 'health',
+                    key: 'medication',
+                    imported_from_nomis: true,
+                  },
+                  {
+                    category: 'court',
+                    key: 'interpreter',
+                    imported_from_nomis: true,
+                  },
+                ],
+              })
+              controller.setPreviousAssessment(req, res, nextSpy)
+            })
+
+            it('should set previous assessment on local', function() {
+              expect(res.locals).to.contain.property('previousAssessment')
+              expect(res.locals.previousAssessment).to.deep.equal({
+                key: 'risk',
+                answers: ['stubbed'],
+              })
+            })
+
+            it('should call presenter with filtered assessment', function() {
+              expect(
+                presenters.assessmentByCategory
+              ).to.be.calledOnceWithExactly([
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+              ])
+            })
+
+            it('should call next', function() {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+
+          context('with answers not in the fields list', function() {
+            beforeEach(function() {
+              req.sessionModel.get.withArgs('person').returns({
+                assessment_answers: [
+                  {
+                    category: 'risk',
+                    key: 'violent',
+                    imported_from_nomis: true,
+                  },
+                  {
+                    category: 'risk',
+                    key: 'self_harm',
+                    imported_from_nomis: true,
+                  },
+                  {
+                    category: 'risk',
+                    key: 'missing_key',
+                    imported_from_nomis: true,
+                  },
+                ],
+              })
+              controller.setPreviousAssessment(req, res, nextSpy)
+            })
+
+            it('should call presenter with filtered assessment', function() {
+              expect(
+                presenters.assessmentByCategory
+              ).to.be.calledOnceWithExactly([
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+                {
+                  category: 'risk',
+                  key: 'self_harm',
+                  imported_from_nomis: true,
+                },
+              ])
+            })
+          })
+
+          context('with non imported answers', function() {
+            beforeEach(function() {
+              req.sessionModel.get.withArgs('person').returns({
+                assessment_answers: [
+                  {
+                    category: 'risk',
+                    key: 'violent',
+                    imported_from_nomis: true,
+                  },
+                  {
+                    category: 'risk',
+                    key: 'self_harm',
+                  },
+                  {
+                    category: 'risk',
+                    key: 'escape',
+                  },
+                ],
+              })
+              controller.setPreviousAssessment(req, res, nextSpy)
+            })
+
+            it('should call presenter with filtered assessment', function() {
+              expect(
+                presenters.assessmentByCategory
+              ).to.be.calledOnceWithExactly([
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+              ])
+            })
+          })
+        }
+      )
+
+      context(
+        'when the step does not include ability to show previous assessment',
+        function() {
+          beforeEach(function() {
+            req.sessionModel.get.withArgs('person').returns({
+              assessment_answers: [],
+            })
+            controller.setPreviousAssessment(req, res, nextSpy)
+          })
+
+          it('should not set previous assessment on locals', function() {
+            expect(res.locals).not.to.contain.property('previousAssessment')
+          })
+
+          it('should not call presenter', function() {
+            expect(presenters.assessmentByCategory).not.to.be.called
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        }
+      )
+    })
+
     describe('#saveValues()', function() {
       let nextSpy
       const mockFields = {
@@ -214,19 +430,11 @@ describe('Move controllers', function() {
             risk: [
               {
                 comments: 'Additional comments',
+                key: 'violent',
                 assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
               },
             ],
           })
-        })
-
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Additional comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-          ])
         })
 
         it('should call parent configure method', function() {
@@ -294,6 +502,7 @@ describe('Move controllers', function() {
           expect(req.form.values.assessment.risk).to.deep.equal([
             {
               comments: 'Additional comments',
+              key: 'violent',
               assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
             },
           ])
@@ -301,19 +510,6 @@ describe('Move controllers', function() {
 
         it('should not mutate other assessment fields', function() {
           expect(req.form.values.assessment.health).to.deep.equal([
-            {
-              comments: '',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            },
-          ])
-        })
-
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Additional comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
             {
               comments: '',
               assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
@@ -367,19 +563,11 @@ describe('Move controllers', function() {
             risk: [
               {
                 comments: '',
+                key: 'violent',
                 assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
               },
             ],
           })
-        })
-
-        it('should flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: '',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-          ])
         })
       })
 
@@ -448,44 +636,26 @@ describe('Move controllers', function() {
             risk: [
               {
                 comments: 'Violent comments',
+                key: 'violent',
                 assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
               },
               {
                 comments: 'Escape comments',
+                key: 'escape',
                 assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
               },
               {
                 comments: 'Self comments',
+                key: 'self',
                 assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
               },
               {
                 comments: 'Bully comments',
+                key: 'bully',
                 assessment_question_id: '29f8177c-2cf8-41e8-b1ad-1f66c3a1fda0',
               },
             ],
           })
-        })
-
-        it('should includes all flatten values on assessment_answers property', function() {
-          expect(req.form.values.person.assessment_answers.length).to.equal(4)
-          expect(req.form.values.person.assessment_answers).to.deep.equal([
-            {
-              comments: 'Violent comments',
-              assessment_question_id: 'a1f6a3b5-a448-4a78-8cf7-6659a71661c2',
-            },
-            {
-              comments: 'Escape comments',
-              assessment_question_id: '7360ea7b-f4c2-4a09-88fd-5e3b57de1a47',
-            },
-            {
-              comments: 'Self comments',
-              assessment_question_id: '534b05af-8b55-4a37-9f36-d36a60f04aa8',
-            },
-            {
-              comments: 'Bully comments',
-              assessment_question_id: '29f8177c-2cf8-41e8-b1ad-1f66c3a1fda0',
-            },
-          ])
         })
       })
     })
