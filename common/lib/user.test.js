@@ -117,6 +117,8 @@ describe('User class', function() {
           'moves:view:by_location',
           'moves:download:by_location',
           'move:view',
+          'move:create',
+          'move:cancel',
         ])
       })
     })
@@ -163,6 +165,8 @@ describe('User class', function() {
           'moves:view:by_location',
           'moves:download:by_location',
           'move:view',
+          'move:create',
+          'move:cancel',
         ])
       })
     })

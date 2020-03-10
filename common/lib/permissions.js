@@ -16,6 +16,8 @@ const prisonPermissions = [
   'moves:view:by_location',
   'moves:download:by_location',
   'move:view',
+  'move:create',
+  'move:cancel',
 ]
 const ocaPermissions = [
   'moves:view:by_location',
