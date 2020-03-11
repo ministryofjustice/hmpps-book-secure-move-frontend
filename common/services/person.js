@@ -69,6 +69,18 @@ const personService = {
       .then(person => personService.transform(person))
   },
 
+  getImageUrl(personId) {
+    if (!personId) {
+      return Promise.reject(new Error('No ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('image')
+      .get()
+      .then(response => response.data.url)
+  },
+
   getByIdentifiers(identifiers) {
     const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
 
