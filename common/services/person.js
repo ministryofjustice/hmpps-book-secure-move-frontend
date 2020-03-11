@@ -6,6 +6,7 @@ const personService = {
   transform(person = {}) {
     return {
       ...person,
+      image_url: `/person/${person.id}/image`,
       fullname: [person.last_name, person.first_names]
         .filter(Boolean)
         .join(', '),

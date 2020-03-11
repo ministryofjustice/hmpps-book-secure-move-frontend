@@ -27,6 +27,11 @@ describe('Person Service', function() {
         )
       })
 
+      it('should set image url', function() {
+        expect(transformed).to.contain.property('image_url')
+        expect(transformed.image_url).to.equal(`/person/${mockPerson.id}/image`)
+      })
+
       it('should contain original properties', function() {
         forEach(mockPerson, (value, key) => {
           expect(transformed).to.contain.property(key)
