@@ -44,6 +44,9 @@ module.exports = {
     TIMEOUT: 30000, // in milliseconds
     CACHE_EXPIRY: 60 * 60 * 24 * 7, // in seconds (7 days)
   },
+  PLACEHOLDER_IMAGES: {
+    PERSON: 'images/person-fallback.png',
+  },
   DATE_FORMATS: {
     SHORT: 'd M yyyy',
     LONG: 'd MMM yyyy',

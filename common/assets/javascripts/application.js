@@ -14,6 +14,8 @@ import '../images/download-icon.png'
 import '../images/download-icon@2x.png'
 import '../images/tick-icon.png'
 import '../images/tick-icon@2x.png'
+import '../images/person-fallback.png'
+import '../images/person-fallback@2x.png'
 
 const { nodeListForEach } = require('./utils')
 const { initAll } = require('govuk-frontend')
