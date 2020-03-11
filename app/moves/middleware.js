@@ -1,6 +1,8 @@
 const { format } = require('date-fns')
 const { find, get, chunk, cloneDeep } = require('lodash')
 
+const permissions = require('../../common/middleware/permissions')
+
 const {
   getDateRange,
   getDateFromParams,
@@ -40,7 +42,16 @@ const movesMiddleware = {
     const currentLocation = get(req.session, 'currentLocation.id')
 
     if (currentLocation) {
-      return res.redirect(`${req.baseUrl}/day/${today}/${currentLocation}`)
+      const userPermissions = get(req.session, 'user.permissions')
+      const canViewProposedMoves = permissions.check(
+        'moves:view:proposed',
+        userPermissions
+      )
+      return res.redirect(
+        `${req.baseUrl}/day/${today}/${currentLocation}/${
+          canViewProposedMoves ? 'proposed' : ''
+        }`
+      )
     }
 
     return res.redirect(`${req.baseUrl}/day/${today}`)

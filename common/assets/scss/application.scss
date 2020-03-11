@@ -22,7 +22,6 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/components/input/input.scss";
 @import "govuk-frontend/govuk/components/inset-text/inset-text.scss";
 @import "govuk-frontend/govuk/components/panel/panel.scss";
-@import "govuk-frontend/govuk/components/phase-banner/phase-banner.scss";
 @import "govuk-frontend/govuk/components/radios/radios.scss";
 @import "govuk-frontend/govuk/components/select/select.scss";
 @import "govuk-frontend/govuk/components/skip-link/skip-link.scss";
@@ -30,12 +29,16 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/components/textarea/textarea.scss";
 @import "govuk-frontend/govuk/components/warning-text/warning-text.scss";
 
+
 @import "govuk-frontend/govuk/utilities/all";
 @import "govuk-frontend/govuk/overrides/all";
 
 // Import MoJ Frontend Components
-@import "@ministryofjustice/frontend/moj/components/organisation-switcher/_organisation-switcher.scss";
-@import "@ministryofjustice/frontend/moj/components/badge/_badge.scss";
+@import "@ministryofjustice/frontend/moj/settings/all";
+@import "@ministryofjustice/frontend/moj/objects/all";
+@import "@ministryofjustice/frontend/moj/components/organisation-switcher/organisation-switcher";
+@import "@ministryofjustice/frontend/moj/components/primary-navigation/primary-navigation";
+@import "@ministryofjustice/frontend/moj/components/badge/badge";
 
 // Import app settings/tools/helpers
 @import "helpers/all";

@@ -35,23 +35,43 @@ describe('Moves middleware', function() {
     })
 
     context('with current location', function() {
-      const mockLocationId = 'c249ed09-0cd5-4f52-8aee-0506e2dc7579'
-
-      beforeEach(function() {
-        req.session.currentLocation = {
-          id: mockLocationId,
+      context('when location type is police', function() {
+        const mockLocation = {
+          id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
+          location_type: 'police',
         }
 
-        middleware.redirectBaseUrl(req, res)
-      })
+        beforeEach(function() {
+          req.session.currentLocation = mockLocation
 
-      it('should redirect to moves by location', function() {
-        expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/moves/day/${mockMoveDate}/${mockLocationId}`
-        )
+          middleware.redirectBaseUrl(req, res)
+        })
+
+        it('should redirect to moves by location', function() {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/moves/day/${mockMoveDate}/${mockLocation.id}`
+          )
+        })
+      })
+      context('when location type is prison', function() {
+        const mockLocation = {
+          id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
+          location_type: 'prison',
+        }
+
+        beforeEach(function() {
+          req.session.currentLocation = mockLocation
+
+          middleware.redirectBaseUrl(req, res)
+        })
+
+        it('should redirect to moves by location', function() {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/moves/day/${mockMoveDate}/${mockLocation.id}/proposed`
+          )
+        })
       })
     })
-
     context('without current location', function() {
       beforeEach(function() {
         middleware.redirectBaseUrl(req, res)
