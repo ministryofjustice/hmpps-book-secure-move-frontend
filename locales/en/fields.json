@@ -50,9 +50,11 @@
     "label": "Move to",
     "short_label": "To",
     "items": {
+      "prison": {
+        "label": "Prison"
+      },
       "prison_recall": {
-        "label": "Prison",
-        "labelForPrisonRecall": "Prison recall"
+        "label": "Prison recall"
       },
       "court_appearance": {
         "label": "Court"
@@ -64,6 +66,9 @@
   },
   "to_location_court_appearance": {
     "label": "Name of court"
+  },
+  "to_location_prison": {
+    "label": "Name of prison"
   },
   "additional_information": {
     "label": "Additional information (optional)"
@@ -150,10 +155,6 @@
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
-  },
-  "to_location_prison": {
-    "label": "Move to",
-    "hint": "Name of prison"
   },
   "prison_transfer_reason": {
     "label": "Move type"

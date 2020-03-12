@@ -24,6 +24,25 @@ const personSearchStep = {
   ],
 }
 
+const moveDetailsStep = {
+  controller: MoveDetails,
+  template: 'move-details',
+  pageTitle: 'moves::steps.move_details.heading',
+  next: [
+    {
+      field: 'move_type',
+      value: 'court_appearance',
+      next: 'court-information',
+    },
+    {
+      field: 'from_location_type',
+      value: 'prison',
+      next: 'release-status',
+    },
+    'risk-information',
+  ],
+}
+
 const riskStep = {
   controller: Assessment,
   assessmentCategory: 'risk',
@@ -88,6 +107,11 @@ module.exports = {
         value: true,
         next: 'personal-details',
       },
+      {
+        field: 'from_location_type',
+        value: 'police',
+        next: 'move-details-police',
+      },
       'move-details',
     ],
     fields: ['people'],
@@ -95,7 +119,14 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
-    next: 'move-details',
+    next: [
+      {
+        field: 'from_location_type',
+        value: 'police',
+        next: 'move-details-police',
+      },
+      'move-details',
+    ],
     fields: [
       'police_national_computer',
       'last_name',
@@ -116,27 +147,23 @@ module.exports = {
     fields: ['prison_transfer_reason', 'prison_transfer_reason_comments'],
   },
   '/move-details': {
-    controller: MoveDetails,
-    template: 'move-details',
-    pageTitle: 'moves::steps.move_details.heading',
-    next: [
-      {
-        field: 'move_type',
-        value: 'court_appearance',
-        next: 'court-information',
-      },
-      {
-        field: 'from_location_type',
-        value: 'prison',
-        next: 'release-status',
-      },
-      'risk-information',
-    ],
+    ...moveDetailsStep,
     fields: [
-      'from_location',
       'to_location',
       'move_type',
       'to_location_prison',
+      'to_location_court_appearance',
+      'date',
+      'date_type',
+      'date_custom',
+    ],
+  },
+  '/move-details-police': {
+    ...moveDetailsStep,
+    fields: [
+      'to_location',
+      'move_type__police',
+      'to_location_prison_recall',
       'to_location_court_appearance',
       'additional_information',
       'date',
