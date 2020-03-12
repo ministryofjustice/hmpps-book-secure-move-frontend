@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.13.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.12.1...v2.13.0) (2020-03-12)
+
+
+### Features
+
+* Allow previous assessments to be sent to API ([f77495d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f77495db689bae23be31ce0cbe756e442fac927d))
+* Date range in moves ([3cbb2cf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3cbb2cf082306408e44a5d870eef538cb9d181ec))
+* Replay a previous assessment during the create journey ([2eba169](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2eba16940ec87c0464b12849b4ee6d3386b669c5))
+* View per week in the dashboard ([53e69a0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/53e69a0e76e441d7e855083098cbc6bf218a9320))
+
+
+### Bug Fixes
+
+* Today date in pagination is to be current date, not the base date ([fe95bdf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fe95bdfd6781a3979a41a08ae59bbe48d7b0976c))
+* Update default template for create wizard ([d73e314](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d73e314e280f66efb4e272617fe18c86ec06da6c))
+
 ### [2.12.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.12.0...v2.12.1) (2020-03-05)
 
 
