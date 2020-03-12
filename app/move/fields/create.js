@@ -259,11 +259,12 @@ module.exports = {
         text: 'fields::move_type.items.court_appearance.label',
         conditional: 'to_location_court_appearance',
       },
-      {
-        value: 'prison',
-        text: 'fields::move_type.items.prison.label',
-        conditional: 'to_location_prison',
-      },
+      // TODO: Remove once we want to allow this journey
+      // {
+      //   value: 'prison',
+      //   text: 'fields::move_type.items.prison.label',
+      //   conditional: 'to_location_prison',
+      // },
     ],
   },
   move_type__police: {
