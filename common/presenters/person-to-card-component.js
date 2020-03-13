@@ -9,8 +9,6 @@ function personToCardComponent({
   image_url: imageUrl,
   date_of_birth: dateOfBirth,
 }) {
-  const meta = {}
-
   const dateOfBirthLabel = i18n.t('age', {
     context: 'with_date_of_birth',
     age: filters.calculateAge(dateOfBirth),
@@ -27,13 +25,14 @@ function personToCardComponent({
     },
   ]
 
-  meta.items = filter(metaItems, 'text')
-
   return {
-    meta,
     image_path: imageUrl,
+    image_alt: fullname.toUpperCase(),
     title: {
       text: fullname.toUpperCase(),
+    },
+    meta: {
+      items: filter(metaItems, 'text'),
     },
   }
 }

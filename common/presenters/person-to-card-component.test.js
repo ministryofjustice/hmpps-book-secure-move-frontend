@@ -43,6 +43,13 @@ describe('Presenters', function() {
             )
           })
 
+          it('should contain image alt', function() {
+            expect(transformedResponse).to.have.property('image_alt')
+            expect(transformedResponse.image_alt).to.equal(
+              mockPerson.fullname.toUpperCase()
+            )
+          })
+
           it('should contain correct meta data', function() {
             expect(transformedResponse).to.have.property('meta')
             expect(transformedResponse.meta).to.deep.equal({
