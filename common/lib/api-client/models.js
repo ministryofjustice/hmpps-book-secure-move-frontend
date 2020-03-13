@@ -31,6 +31,11 @@ module.exports = {
       },
     },
   },
+  image: {
+    attributes: {
+      url: '',
+    },
+  },
   person: {
     attributes: {
       first_names: '',

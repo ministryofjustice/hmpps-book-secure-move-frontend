@@ -38,6 +38,14 @@ const testCases = {
       args: {},
     },
   ],
+  image: [
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+    },
+  ],
   gender: [
     {
       method: 'findAll',
