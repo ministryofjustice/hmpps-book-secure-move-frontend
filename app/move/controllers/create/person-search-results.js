@@ -35,7 +35,7 @@ class PersonSearchResultsController extends PersonController {
   setPeopleItems(req, res, next) {
     const { people } = req.form.options.fields
     people.items = req.people.map(person => {
-      const card = presenters.personToCardComponent(person)
+      const card = presenters.personToCardComponent({ showTags: false })(person)
       return {
         html: componentService.getComponent('appCard', card),
         value: person.id,

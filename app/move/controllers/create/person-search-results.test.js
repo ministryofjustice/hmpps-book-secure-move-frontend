@@ -154,11 +154,14 @@ describe('Move controllers', function() {
     })
 
     describe('#setPeopleItems()', function() {
-      let req, nextSpy
+      let req, nextSpy, personToCardComponentStub
 
       beforeEach(function() {
-        sinon.stub(presenters, 'personToCardComponent').returnsArg(0)
+        personToCardComponentStub = sinon.stub().returnsArg(0)
         sinon.stub(componentService, 'getComponent').returnsArg(0)
+        sinon
+          .stub(presenters, 'personToCardComponent')
+          .callsFake(() => personToCardComponentStub)
         req = {
           people: [],
           form: {
@@ -209,10 +212,16 @@ describe('Move controllers', function() {
         it('should call presenter correctly', function() {
           expect(
             presenters.personToCardComponent.firstCall
-          ).to.be.calledWithExactly(mockPeople[0])
+          ).to.be.calledWithExactly({ showTags: false })
+          expect(personToCardComponentStub.firstCall).to.be.calledWithExactly(
+            mockPeople[0]
+          )
           expect(
             presenters.personToCardComponent.secondCall
-          ).to.be.calledWithExactly(mockPeople[1])
+          ).to.be.calledWithExactly({ showTags: false })
+          expect(personToCardComponentStub.secondCall).to.be.calledWithExactly(
+            mockPeople[1]
+          )
         })
 
         it('should call component service correct number of times', function() {
