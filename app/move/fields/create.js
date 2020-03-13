@@ -10,6 +10,18 @@ const personSearchFilter = {
   autocomplete: 'off',
 }
 
+const moveType = {
+  validate: 'required',
+  component: 'govukRadios',
+  name: 'move_type',
+  fieldset: {
+    legend: {
+      text: 'fields::move_type.label',
+      classes: 'govuk-fieldset__legend--m',
+    },
+  },
+}
+
 const assessmentQuestionComments = {
   skip: true,
   rows: 3,
@@ -237,18 +249,26 @@ module.exports = {
     items: [],
   },
   // move details
-  from_location: {},
   to_location: {},
   move_type: {
-    validate: 'required',
-    component: 'govukRadios',
-    name: 'move_type',
-    fieldset: {
-      legend: {
-        text: 'fields::move_type.label',
-        classes: 'govuk-fieldset__legend--m',
+    ...moveType,
+    items: [
+      {
+        id: 'move_type',
+        value: 'court_appearance',
+        text: 'fields::move_type.items.court_appearance.label',
+        conditional: 'to_location_court_appearance',
       },
-    },
+      // TODO: Remove once we want to allow this journey
+      // {
+      //   value: 'prison',
+      //   text: 'fields::move_type.items.prison.label',
+      //   conditional: 'to_location_prison',
+      // },
+    ],
+  },
+  move_type__police: {
+    ...moveType,
     items: [
       {
         id: 'move_type',
@@ -258,6 +278,8 @@ module.exports = {
       },
       {
         value: 'prison_recall',
+        text: 'fields::move_type.items.prison_recall.label',
+        conditional: 'additional_information',
       },
     ],
   },

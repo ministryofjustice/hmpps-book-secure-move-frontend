@@ -1,5 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
+const BaseController = require('./base')
 const Controller = require('./move-details')
 const filters = require('../../../../config/nunjucks/filters')
 const referenceDataService = require('../../../../common/services/reference-data')
@@ -19,297 +20,293 @@ const courtsMock = [
 
 describe('Move controllers', function() {
   describe('Move Details', function() {
-    describe('#configure()', function() {
-      let nextSpy
-
+    describe('#middlewareSetup()', function() {
       beforeEach(function() {
-        nextSpy = sinon.spy()
+        sinon.stub(BaseController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setMoveType')
+        sinon.stub(controller, 'setDateType')
+        sinon.stub(controller, 'setLocationItems')
+
+        controller.middlewareSetup()
       })
 
-      context('when getReferenceData returns 200', function() {
-        let req, res
+      it('should call parent method', function() {
+        expect(BaseController.prototype.middlewareSetup).to.have.been.calledOnce
+      })
 
-        beforeEach(async function() {
-          sinon.spy(FormController.prototype, 'configure')
-          sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
-            return () => true
-          })
-          sinon
-            .stub(referenceDataService, 'getLocationsByType')
-            .withArgs('court')
-            .resolves(courtsMock)
-          sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+      it('should call setMoveType middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.setMoveType
+        )
+      })
 
-          req = {
-            t: sinon.stub().returns('__translated__'),
-            session: {
-              currentLocation: {
-                location_type: 'police',
-              },
-            },
-            form: {
-              options: {
-                fields: {
-                  to_location_court_appearance: {},
-                  move_type: {
-                    items: [
-                      {
-                        value: 'prison_recall',
-                      },
-                    ],
-                  },
-                  to_location_prison: {},
-                  date_type: {
-                    items: [
-                      {
-                        text: 'fields::date_type.today',
-                        value: 'today',
-                      },
-                      {
-                        text: 'fields::date_type.tomorrow',
-                        value: 'tomorrow',
-                      },
-                      {
-                        text: 'fields::date_type.custom',
-                        value: 'custom',
-                      },
-                    ],
-                  },
+      it('should call setDateType middleware', function() {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setDateType
+        )
+      })
+
+      it('should call setLocationItems middleware', function() {
+        expect(controller.use.thirdCall).to.have.been.calledWith(
+          controller.setLocationItems()
+        )
+      })
+
+      it('should call setLocationItems middleware', function() {
+        expect(controller.use.getCall(3)).to.have.been.calledWith(
+          controller.setLocationItems()
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(4)
+      })
+    })
+
+    describe('#setDateType()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        req = {
+          t: sinon.stub().returns('__translated__'),
+          form: {
+            options: {
+              fields: {
+                date_type: {
+                  items: [
+                    {
+                      text: 'fields::date_type.today',
+                      value: 'today',
+                    },
+                    {
+                      text: 'fields::date_type.tomorrow',
+                      value: 'tomorrow',
+                    },
+                    {
+                      text: 'fields::date_type.custom',
+                      value: 'custom',
+                    },
+                  ],
                 },
               },
             },
-          }
+          },
+        }
+        res = {
+          locals: {
+            TODAY: 'today',
+            TOMORROW: 'tomorrow',
+          },
+        }
+        nextSpy = sinon.spy()
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
 
-          res = {
-            locals: {
-              TODAY: 'today',
-              TOMORROW: 'tomorrow',
+        controller.setDateType(req, res, nextSpy)
+      })
+
+      it('should translate today', function() {
+        expect(req.t.firstCall).to.be.calledWith('fields::date_type.today', {
+          date: 'today',
+        })
+      })
+
+      it('should translate tomorrow', function() {
+        expect(req.t.secondCall).to.be.calledWith(
+          'fields::date_type.tomorrow',
+          {
+            date: 'tomorrow',
+          }
+        )
+      })
+
+      it('should update today/tomorrow label', function() {
+        expect(req.form.options.fields.date_type.items).to.deep.equal([
+          { text: '__translated__', value: 'today' },
+          { text: '__translated__', value: 'tomorrow' },
+          { text: 'fields::date_type.custom', value: 'custom' },
+        ])
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#setLocationItems()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        req = {
+          form: {
+            options: {
+              fields: {
+                to_location_court: {},
+              },
             },
-          }
+          },
+        }
+        res = {}
+        nextSpy = sinon.spy()
 
-          await controller.configure(req, res, nextSpy)
+        sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
+          return () => true
         })
+        sinon.stub(referenceDataService, 'getLocationsByType')
+      })
 
-        it('should set list of courts dynamically', function() {
-          expect(
-            req.form.options.fields.to_location_court_appearance.items
-          ).to.deep.equal([
-            { text: '--- Choose court ---' },
-            { value: '8888', text: 'Court 8888' },
-            { value: '9999', text: 'Court 9999' },
-          ])
-        })
+      context('when field exists', function() {
+        const mockFieldName = 'to_location_court'
+        const mockLocationType = 'court'
 
-        it('should translate today', function() {
-          expect(req.t.firstCall).to.be.calledWith('fields::date_type.today', {
-            date: 'today',
+        context('when service resolves', function() {
+          beforeEach(async function() {
+            referenceDataService.getLocationsByType.resolves(courtsMock)
+
+            await controller.setLocationItems(mockLocationType, mockFieldName)(
+              req,
+              {},
+              nextSpy
+            )
+          })
+
+          it('should call reference data service', function() {
+            expect(
+              referenceDataService.getLocationsByType
+            ).to.be.calledOnceWithExactly(mockLocationType)
+          })
+
+          it('populates the move type items', function() {
+            expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
+              {
+                text: `--- Choose ${mockLocationType} ---`,
+              },
+              {
+                text: 'Court 8888',
+                value: '8888',
+              },
+              {
+                text: 'Court 9999',
+                value: '9999',
+              },
+            ])
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        it('should translate tomorrow', function() {
-          expect(req.t.secondCall).to.be.calledWith(
-            'fields::date_type.tomorrow',
-            {
-              date: 'tomorrow',
-            }
-          )
-        })
+        context('when service rejects', function() {
+          const errorMock = new Error('Problem')
 
-        it('should update today/tomorrow label', function() {
-          expect(req.form.options.fields.date_type.items).to.deep.equal([
-            { text: '__translated__', value: 'today' },
-            { text: '__translated__', value: 'tomorrow' },
-            { text: 'fields::date_type.custom', value: 'custom' },
-          ])
-        })
+          beforeEach(async function() {
+            referenceDataService.getLocationsByType.throws(errorMock)
 
-        it('should call parent configure method', function() {
-          expect(FormController.prototype.configure).to.be.calledOnceWith(
+            await controller.setLocationItems(mockLocationType, mockFieldName)(
+              req,
+              {},
+              nextSpy
+            )
+          })
+
+          it('should call next with the error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+          })
+
+          it('should not mutate request object', function() {
+            expect(req).to.deep.equal({
+              form: {
+                options: {
+                  fields: {
+                    to_location_court: {},
+                  },
+                },
+              },
+            })
+          })
+        })
+      })
+
+      context('when field does not exist', function() {
+        beforeEach(async function() {
+          await controller.setLocationItems('court', 'non_existent')(
             req,
             res,
             nextSpy
           )
         })
 
-        it('should not throw an error', function() {
+        it('should not call reference service', function() {
+          expect(referenceDataService.getLocationsByType).not.to.be.called
+        })
+
+        it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
-      context(
-        'appends different fields depending on location type',
-        function() {
-          let req
-          let res
-          let locationsStub
-          beforeEach(function() {
-            locationsStub = sinon
-              .stub(referenceDataService, 'getLocationsByType')
-              .withArgs('prison')
-              .resolves([
-                {
-                  id: '1',
-                  title: 'Albany',
-                },
-                {
-                  id: '2',
-                  title: 'Altcourse',
-                },
-              ])
-              .withArgs('court')
-              .resolves([])
-            req = {
-              t: sinon.stub().returns('__translated__'),
-              form: {
-                options: {
-                  fields: {
-                    to_location_court_appearance: {
-                      items: [],
-                    },
-                    date_type: {
-                      items: [{}, {}],
-                    },
-                    move_type: {
-                      items: [
-                        {
-                          value: 'court_appearance',
-                        },
-                        {
-                          value: 'prison_recall',
-                        },
-                      ],
-                    },
-                    additional_information: {},
-                    to_location_prison: {},
-                  },
-                },
-              },
-            }
-            res = {
-              locals: {},
-            }
-          })
-          afterEach(function() {
-            locationsStub.resetHistory()
-          })
+    })
 
-          context('when the current location type is prison', function() {
-            beforeEach(async function() {
-              req.session = {
-                currentLocation: {
-                  location_type: 'prison',
-                },
-              }
-              await controller.configure(req, res, nextSpy)
-            })
-            it('populates the move type items', function() {
-              expect(req.form.options.fields.move_type).to.deep.equal({
-                items: [
-                  {
-                    value: 'court_appearance',
-                  },
-                  {
-                    value: 'prison_recall',
-                    text: '__translated__',
-                    conditional: 'to_location_prison',
-                  },
-                ],
-              })
-            })
-            it('creates a drop down with prison list', function() {
-              expect(req.form.options.fields.to_location_prison).to.deep.equal({
-                items: [
-                  {
-                    text: '--- Choose prison ---',
-                  },
-                  {
-                    text: 'Albany',
-                    value: '1',
-                  },
-                  {
-                    text: 'Altcourse',
-                    value: '2',
-                  },
-                ],
-              })
-            })
-            it('appends the correct conditional', function() {
-              expect(
-                req.form.options.fields.additional_information
-              ).not.to.exist
-              expect(
-                referenceDataService.getLocationsByType
-              ).to.have.been.calledTwice
-            })
-            it('calls the location service with the correct type of location', function() {
-              expect(
-                referenceDataService.getLocationsByType
-                  .getCall(0)
-                  .calledWithExactly('court')
-              ).to.be.true
-              expect(
-                referenceDataService.getLocationsByType
-                  .getCall(1)
-                  .calledWithExactly('prison')
-              ).to.be.true
-            })
-          })
-          context('when the current location type is police', function() {
-            beforeEach(async function f() {
-              req.session = {
-                currentLocation: {
-                  location_type: 'police',
-                },
-              }
-              await controller.configure(req, res, nextSpy)
-            })
-            it('populates the move type items correctly', function() {
-              expect(req.form.options.fields.move_type).to.deep.equal({
-                items: [
-                  {
-                    value: 'court_appearance',
-                  },
-                  {
-                    value: 'prison_recall',
-                    text: '__translated__',
-                    conditional: 'additional_information',
-                  },
-                ],
-              })
-            })
-            it('appends the correct conditional field', function() {
-              expect(req.form.options.fields.additional_information).to.exist
-              expect(req.form.options.fields.to_location_prison).not.to.exist
-            })
-            it('calls the location service with the right location', function() {
-              expect(
-                referenceDataService.getLocationsByType
-              ).to.have.been.calledOnce
-              expect(
-                referenceDataService.getLocationsByType
-                  .getCall(0)
-                  .calledWithExactly('court')
-              ).to.be.true
-            })
-          })
+    describe('#setMoveType()', function() {
+      let req, res, nextSpy
+
+      beforeEach(function() {
+        req = {
+          form: {
+            options: {
+              fields: {},
+            },
+          },
         }
-      )
+        res = {}
+        nextSpy = sinon.spy()
+      })
 
-      context('when getReferenceData returns an error', function() {
-        const errorMock = new Error('Problem')
-        const req = {}
+      context('with custom move type', function() {
+        beforeEach(function() {
+          req.form.options.fields = {
+            move_type__police: {
+              foo: 'bar',
+            },
+          }
 
-        beforeEach(async function() {
-          sinon.stub(referenceDataService, 'getLocations').throws(errorMock)
-
-          await controller.configure(req, {}, nextSpy)
+          controller.setMoveType(req, res, nextSpy)
         })
 
-        it('should call next with the error', function() {
-          expect(nextSpy).to.be.calledOnceWith(errorMock)
+        it('should update the move_type field', function() {
+          expect(req.form.options.fields).to.deep.equal({
+            move_type: {
+              foo: 'bar',
+            },
+          })
         })
 
-        it('should not mutate request object', function() {
-          expect(req).to.deep.equal({})
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('without custom move type', function() {
+        beforeEach(function() {
+          req.form.options.fields = {
+            move_type: {
+              foo: 'bar',
+            },
+          }
+
+          controller.setMoveType(req, res, nextSpy)
+        })
+
+        it('should not update the move_type field', function() {
+          expect(req.form.options.fields).to.deep.equal({
+            move_type: {
+              foo: 'bar',
+            },
+          })
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
