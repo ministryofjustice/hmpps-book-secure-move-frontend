@@ -1,5 +1,4 @@
 const { cloneDeep, fromPairs, get, set } = require('lodash')
-const { format, parseISO } = require('date-fns')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
@@ -184,32 +183,6 @@ function insertItemConditional({ key, field }) {
   }
 }
 
-function mapPersonToOption(person = {}) {
-  return {
-    text: person.fullname ? person.fullname.toUpperCase() : '',
-    label: {
-      classes: 'govuk-label--s',
-    },
-    value: person.id || '',
-    hint: {
-      html: componentService.getComponent('appResults', {
-        items: [
-          {
-            label: 'Date of Birth',
-            text: person.date_of_birth
-              ? format(parseISO(person.date_of_birth), 'd MMM yyyy')
-              : '',
-          },
-          {
-            label: 'Gender',
-            text: get(person, 'gender.title', ''),
-          },
-        ],
-      }),
-    },
-  }
-}
-
 function populateAssessmentFields(currentFields, questions) {
   const fields = cloneDeep(currentFields)
   const implicitQuestions = questions.filter(
@@ -262,6 +235,5 @@ module.exports = {
   translateField,
   insertInitialOption,
   insertItemConditional,
-  mapPersonToOption,
   populateAssessmentFields,
 }

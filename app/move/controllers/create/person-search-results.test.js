@@ -1,7 +1,8 @@
 const PersonController = require('./person')
 const Controller = require('./person-search-results')
 
-const fieldHelpers = require('../../../../common/helpers/field')
+const presenters = require('../../../../common/presenters')
+const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
 
 const controller = new Controller({ route: '/' })
@@ -153,10 +154,14 @@ describe('Move controllers', function() {
     })
 
     describe('#setPeopleItems()', function() {
-      let req, nextSpy
+      let req, nextSpy, personToCardComponentStub
 
       beforeEach(function() {
-        sinon.stub(fieldHelpers, 'mapPersonToOption').returnsArg(0)
+        personToCardComponentStub = sinon.stub().returnsArg(0)
+        sinon.stub(componentService, 'getComponent').returnsArg(0)
+        sinon
+          .stub(presenters, 'personToCardComponent')
+          .callsFake(() => personToCardComponentStub)
         req = {
           people: [],
           form: {
@@ -171,7 +176,16 @@ describe('Move controllers', function() {
       })
 
       context('with people items', function() {
-        const mockPeople = [1, 2, 3, 4]
+        const mockPeople = [
+          {
+            id: 1,
+            name: 'foo',
+          },
+          {
+            id: 2,
+            name: 'bar',
+          },
+        ]
 
         beforeEach(function() {
           req.people = mockPeople
@@ -179,11 +193,48 @@ describe('Move controllers', function() {
         })
 
         it('should set people items property', function() {
-          expect(req.form.options.fields.people.items).to.deep.equal(mockPeople)
+          expect(req.form.options.fields.people.items).to.deep.equal([
+            {
+              value: 1,
+              html: 'appCard',
+            },
+            {
+              value: 2,
+              html: 'appCard',
+            },
+          ])
         })
 
-        it('should call field helper map correct number of times', function() {
-          expect(fieldHelpers.mapPersonToOption.callCount).to.equal(4)
+        it('should call presenter correct number of times', function() {
+          expect(presenters.personToCardComponent.callCount).to.equal(2)
+        })
+
+        it('should call presenter correctly', function() {
+          expect(
+            presenters.personToCardComponent.firstCall
+          ).to.be.calledWithExactly({ showTags: false })
+          expect(personToCardComponentStub.firstCall).to.be.calledWithExactly(
+            mockPeople[0]
+          )
+          expect(
+            presenters.personToCardComponent.secondCall
+          ).to.be.calledWithExactly({ showTags: false })
+          expect(personToCardComponentStub.secondCall).to.be.calledWithExactly(
+            mockPeople[1]
+          )
+        })
+
+        it('should call component service correct number of times', function() {
+          expect(componentService.getComponent.callCount).to.equal(2)
+        })
+
+        it('should call component service correctly', function() {
+          expect(
+            componentService.getComponent.firstCall
+          ).to.be.calledWithExactly('appCard', mockPeople[0])
+          expect(
+            componentService.getComponent.secondCall
+          ).to.be.calledWithExactly('appCard', mockPeople[1])
         })
 
         it('should call next', function() {
@@ -200,8 +251,12 @@ describe('Move controllers', function() {
           expect(req.form.options.fields.people.items).to.deep.equal([])
         })
 
-        it('should call field helper map correct number of times', function() {
-          expect(fieldHelpers.mapPersonToOption.callCount).to.equal(0)
+        it('should not call presenter', function() {
+          expect(presenters.personToCardComponent).not.to.be.called
+        })
+
+        it('should not call component service', function() {
+          expect(componentService.getComponent).not.to.be.called
         })
 
         it('should call next', function() {

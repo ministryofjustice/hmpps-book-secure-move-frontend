@@ -6,6 +6,7 @@ const personService = {
   transform(person = {}) {
     return {
       ...person,
+      image_url: `/person/${person.id}/image`,
       fullname: [person.last_name, person.first_names]
         .filter(Boolean)
         .join(', '),
@@ -67,6 +68,18 @@ const personService = {
       .update('person', personService.format(data))
       .then(response => response.data)
       .then(person => personService.transform(person))
+  },
+
+  getImageUrl(personId) {
+    if (!personId) {
+      return Promise.reject(new Error('No ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('image')
+      .get()
+      .then(response => response.data.url)
   },
 
   getByIdentifiers(identifiers) {
