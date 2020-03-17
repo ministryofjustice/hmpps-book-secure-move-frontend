@@ -22,8 +22,15 @@
     },
     "retrieved_from_nomis": {
       "heading": "This information is currently in NOMIS",
-      "description": "If you notice something missing, update NOMIS and it will also update here.",
-      "empty": "There are currently no active alerts. If you don’t think this is correct, update NOMIS."
+      "details": {
+        "summary": "This information is not correct"
+      }
+    },
+    "incorrect_nomis_information": {
+      "lede": "You will need to",
+      "step_one": "cancel this move",
+      "step_two": "update this person’s information in NOMIS",
+      "step_three": "create a new move for this person"
     }
   },
   "steps": {
