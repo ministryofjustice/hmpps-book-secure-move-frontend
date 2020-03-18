@@ -10,6 +10,14 @@
       "email": "dom@teneightfive.com"
     },
     {
+      "name": "Ben Chidgey",
+      "email": "ben@feedmypixel.com"
+    },
+    {
+      "name": "Steve Lorek",
+      "email": "steve@stevelorek.com"
+    },
+    {
       "name": "Tyom Semonov",
       "email": "inspiro@gmail.com"
     },
@@ -22,8 +30,16 @@
       "email": "ryan@slatehorse.com"
     },
     {
+      "name": "Ed Brindley",
+      "email": "ed@maidavale.org"
+    },
+    {
       "name": "Steve Hook",
       "email": "steve.hook@gmail.com"
+    },
+    {
+      "name": "Andy White",
+      "email": "andy@wireworldmedia.co.uk"
     }
   ],
   "repository": {
