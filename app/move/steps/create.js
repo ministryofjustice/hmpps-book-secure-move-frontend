@@ -203,7 +203,7 @@ module.exports = {
   },
   '/release-status': {
     ...riskStep,
-    showPreviousAssessment: true,
+    previousAssessmentKeys: ['not_to_be_released'],
     pageTitle: 'moves::steps.release_status.heading',
     fields: ['not_to_be_released'],
   },
@@ -221,7 +221,7 @@ module.exports = {
   },
   '/special-vehicle': {
     ...healthStep,
-    showPreviousAssessment: true,
+    previousAssessmentKeys: ['special_vehicle', 'pregnant'],
     pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
   },

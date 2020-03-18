@@ -31,18 +31,14 @@ class AssessmentController extends CreateBaseController {
   }
 
   setPreviousAssessment(req, res, next) {
-    const {
-      assessmentCategory,
-      showPreviousAssessment,
-      fields,
-    } = req.form.options
+    const { assessmentCategory, previousAssessmentKeys = [] } = req.form.options
     const person = req.sessionModel.get('person') || {}
     const filteredAssessment = person.assessment_answers
       .filter(answer => answer.category === assessmentCategory)
-      .filter(answer => Object.keys(fields).includes(answer.key))
+      .filter(answer => previousAssessmentKeys.includes(answer.key))
       .filter(answer => answer.imported_from_nomis)
 
-    if (showPreviousAssessment) {
+    if (previousAssessmentKeys.length) {
       const previousAssessmentByCategory = presenters.assessmentByCategory(
         filteredAssessment
       )
