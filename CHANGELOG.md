@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.14.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.13.0...v2.14.0) (2020-03-18)
+
+
+### Features
+
+* Add support for images in person search results ([cee9e42](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cee9e42a427f5f5c32c381c3a98bb277a0be82b2))
+
+
+### Bug Fixes
+
+* Unescape search term in person search results ([d8b4b8f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d8b4b8f35e5ff51a00bcc55c6fcc40bfa9262c25))
+* Update card component ([6bc8ccc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6bc8ccc20c3b4edb6fd3283ff90d8239c99fad6b))
+* Update text for incorrect NOMIS information ([5ebae5c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5ebae5c9c9ae1270d384ad60c65f698a704172fe))
+
 ## [2.13.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.12.1...v2.13.0) (2020-03-12)
 
 
