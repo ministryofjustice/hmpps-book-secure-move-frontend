@@ -201,90 +201,64 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context(
-        'when the step includes ability to show previous assessment',
-        function() {
+      context('when the step includes previous assessment keys', function() {
+        beforeEach(function() {
+          req.form.options.previousAssessmentKeys = ['violent', 'self_harm']
+        })
+
+        context('with answers in the list of keys', function() {
           beforeEach(function() {
-            req.form.options.showPreviousAssessment = true
-          })
-
-          context('with answers from a different category', function() {
-            beforeEach(function() {
-              req.sessionModel.get.withArgs('person').returns({
-                assessment_answers: [
-                  {
-                    category: 'risk',
-                    key: 'violent',
-                    imported_from_nomis: true,
-                  },
-                  {
-                    category: 'health',
-                    key: 'medication',
-                    imported_from_nomis: true,
-                  },
-                  {
-                    category: 'court',
-                    key: 'interpreter',
-                    imported_from_nomis: true,
-                  },
-                ],
-              })
-              controller.setPreviousAssessment(req, res, nextSpy)
-            })
-
-            it('should set previous assessment on local', function() {
-              expect(res.locals).to.contain.property('previousAssessment')
-              expect(res.locals.previousAssessment).to.deep.equal({
-                key: 'risk',
-                answers: ['stubbed'],
-              })
-            })
-
-            it('should call presenter with filtered assessment', function() {
-              expect(
-                presenters.assessmentByCategory
-              ).to.be.calledOnceWithExactly([
+            req.sessionModel.get.withArgs('person').returns({
+              assessment_answers: [
                 {
                   category: 'risk',
                   key: 'violent',
                   imported_from_nomis: true,
                 },
-              ])
+                {
+                  category: 'health',
+                  key: 'medication',
+                  imported_from_nomis: true,
+                },
+                {
+                  category: 'court',
+                  key: 'interpreter',
+                  imported_from_nomis: true,
+                },
+              ],
             })
+            controller.setPreviousAssessment(req, res, nextSpy)
+          })
 
-            it('should call next', function() {
-              expect(nextSpy).to.be.calledOnceWithExactly()
+          it('should set previous assessment on local', function() {
+            expect(res.locals).to.contain.property('previousAssessment')
+            expect(res.locals.previousAssessment).to.deep.equal({
+              key: 'risk',
+              answers: ['stubbed'],
             })
           })
 
-          context('with answers not in the fields list', function() {
-            beforeEach(function() {
-              req.sessionModel.get.withArgs('person').returns({
-                assessment_answers: [
-                  {
-                    category: 'risk',
-                    key: 'violent',
-                    imported_from_nomis: true,
-                  },
-                  {
-                    category: 'risk',
-                    key: 'self_harm',
-                    imported_from_nomis: true,
-                  },
-                  {
-                    category: 'risk',
-                    key: 'missing_key',
-                    imported_from_nomis: true,
-                  },
-                ],
-              })
-              controller.setPreviousAssessment(req, res, nextSpy)
-            })
+          it('should call presenter with filtered assessment', function() {
+            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
+              [
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+              ]
+            )
+          })
 
-            it('should call presenter with filtered assessment', function() {
-              expect(
-                presenters.assessmentByCategory
-              ).to.be.calledOnceWithExactly([
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('with answers not in the list of keys', function() {
+          beforeEach(function() {
+            req.sessionModel.get.withArgs('person').returns({
+              assessment_answers: [
                 {
                   category: 'risk',
                   key: 'violent',
@@ -295,49 +269,72 @@ describe('Move controllers', function() {
                   key: 'self_harm',
                   imported_from_nomis: true,
                 },
-              ])
+                {
+                  category: 'risk',
+                  key: 'missing_key',
+                  imported_from_nomis: true,
+                },
+              ],
             })
+            controller.setPreviousAssessment(req, res, nextSpy)
           })
 
-          context('with non imported answers', function() {
-            beforeEach(function() {
-              req.sessionModel.get.withArgs('person').returns({
-                assessment_answers: [
-                  {
-                    category: 'risk',
-                    key: 'violent',
-                    imported_from_nomis: true,
-                  },
-                  {
-                    category: 'risk',
-                    key: 'self_harm',
-                  },
-                  {
-                    category: 'risk',
-                    key: 'escape',
-                  },
-                ],
-              })
-              controller.setPreviousAssessment(req, res, nextSpy)
-            })
-
-            it('should call presenter with filtered assessment', function() {
-              expect(
-                presenters.assessmentByCategory
-              ).to.be.calledOnceWithExactly([
+          it('should call presenter with filtered assessment', function() {
+            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
+              [
                 {
                   category: 'risk',
                   key: 'violent',
                   imported_from_nomis: true,
                 },
-              ])
-            })
+                {
+                  category: 'risk',
+                  key: 'self_harm',
+                  imported_from_nomis: true,
+                },
+              ]
+            )
           })
-        }
-      )
+        })
+
+        context('with non imported answers', function() {
+          beforeEach(function() {
+            req.sessionModel.get.withArgs('person').returns({
+              assessment_answers: [
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+                {
+                  category: 'risk',
+                  key: 'self_harm',
+                },
+                {
+                  category: 'risk',
+                  key: 'escape',
+                },
+              ],
+            })
+            controller.setPreviousAssessment(req, res, nextSpy)
+          })
+
+          it('should call presenter with filtered assessment', function() {
+            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
+              [
+                {
+                  category: 'risk',
+                  key: 'violent',
+                  imported_from_nomis: true,
+                },
+              ]
+            )
+          })
+        })
+      })
 
       context(
-        'when the step does not include ability to show previous assessment',
+        'when the step does not include previous assessment keys',
         function() {
           beforeEach(function() {
             req.sessionModel.get.withArgs('person').returns({
