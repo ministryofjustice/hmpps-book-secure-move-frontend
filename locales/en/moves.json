@@ -24,7 +24,8 @@
       "heading": "This information is currently in NOMIS",
       "details": {
         "summary": "This information is not correct"
-      }
+      },
+      "empty": "There are currently no active alerts. If you don’t think this is correct, update NOMIS."
     },
     "incorrect_nomis_information": {
       "lede": "You will need to",
