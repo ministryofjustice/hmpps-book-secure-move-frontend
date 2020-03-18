@@ -2,61 +2,73 @@
 
 {% block fields %}
   {% if previousAssessment %}
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-      {{ t("moves::assessment.retrieved_from_nomis.heading") }}
-    </h2>
+    <div class="govuk-!-margin-bottom-6">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+        {{ t("moves::assessment.retrieved_from_nomis.heading") }}
+      </h2>
 
-    <p>
-      {{ t("moves::assessment.retrieved_from_nomis.description") }}
-    </p>
+      {% for title, answers in previousAssessment.answersByTitle %}
+        {% call appPanel({
+          attributes: {
+            id: title | kebabcase
+          },
+          tag: {
+            text: title,
+            classes: previousAssessment.tagClass
+          }
+        }) %}
 
-    {% for title, answers in previousAssessment.answersByTitle %}
-      {% call appPanel({
-        classes: "govuk-!-margin-bottom-6",
-        attributes: {
-          id: title | kebabcase
-        },
-        tag: {
-          text: title,
-          classes: previousAssessment.tagClass
-        }
-      }) %}
+          {% set items = [] %}
+          {% for answer in answers %}
+            {% set answerHtml %}
+              {% if answer.nomis_alert_description %}
+                <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
+                  {{ answer.nomis_alert_description }}
+                </h4>
+              {% endif %}
 
-        {% set items = [] %}
-        {% for answer in answers %}
-          {% set answerHtml %}
-            {% if answer.nomis_alert_description %}
-              <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
-                {{ answer.nomis_alert_description }}
-              </h4>
-            {% endif %}
+              {{ answer.comments if answer.comments }}
 
-            {{ answer.comments if answer.comments }}
+              {% if answer.created_at %}
+                <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
+                  Created on {{ answer.created_at | formatDateWithDay }}
+                </div>
+              {% endif %}
+            {% endset %}
 
-            {% if answer.created_at %}
-              <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
-                Created on {{ answer.created_at | formatDateWithDay }}
-              </div>
-            {% endif %}
-          {% endset %}
+            {% set items = (items.push({ value: { html: answerHtml } }), items) %}
+          {% endfor %}
 
-          {% set items = (items.push({ value: { html: answerHtml } }), items) %}
-        {% endfor %}
-
-        {{ appMetaList({
-          classes: "app-meta-list--divider",
-          items: items
+          {{ appMetaList({
+            classes: "app-meta-list--divider",
+            items: items
+          }) }}
+        {% endcall %}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted",
+          allowDismiss: false,
+          content: {
+            html: t("moves::assessment.retrieved_from_nomis.empty")
+          }
         }) }}
-      {% endcall %}
-    {% else %}
-      {{ appMessage({
-        classes: "app-message--muted govuk-!-margin-bottom-6",
-        allowDismiss: false,
-        content: {
-          html: t("moves::assessment.retrieved_from_nomis.empty")
-        }
+      {% endfor %}
+
+      {% set html %}
+        <p>{{ t("moves::assessment.incorrect_nomis_information.lede") }}</p>
+        <ul>
+          <li>{{ t("moves::assessment.incorrect_nomis_information.step_one") }}</li>
+          <li>{{ t("moves::assessment.incorrect_nomis_information.step_two") }}</li>
+          <li>{{ t("moves::assessment.incorrect_nomis_information.step_three") }}</li>
+        </ul>
+      {% endset %}
+
+      {{ govukDetails({
+        classes: "govuk-!-margin-top-2",
+        summaryText: t("moves::assessment.retrieved_from_nomis.details.summary"),
+        html: html
       }) }}
-    {% endfor %}
+    </div>
   {% endif %}
 
   {{ super() }}
