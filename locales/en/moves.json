@@ -35,7 +35,7 @@
     },
     "person_search_results": {
       "heading": "Who is being moved?",
-      "secondary_heading": "{{- count}} {{type}} found for “{{searchTerm}}”",
+      "secondary_heading": "{{count}} {{type}} found for “{{-searchTerm}}”",
       "cant_find_person": "I can’t find the person I’m looking for",
       "or": "or",
       "move_someone_else": "move someone else",
