@@ -1,6 +1,7 @@
 const FormData = require('form-data')
 
 const postMiddleware = require('./post')
+const { FILE_UPLOADS } = require('../../../../config')
 
 const originalHeaders = {
   original: 'header',
@@ -47,6 +48,15 @@ describe('API Client', function() {
               ...payload.req.headers,
               ...payload.req.data.getHeaders(),
             })
+          })
+
+          it('should set correct max lengths for content and body', function() {
+            expect(response.req.maxContentLength).to.equal(
+              FILE_UPLOADS.MAX_FILE_SIZE
+            )
+            expect(response.req.maxBodyLength).to.equal(
+              FILE_UPLOADS.MAX_FILE_SIZE
+            )
           })
 
           it('should return payload', function() {

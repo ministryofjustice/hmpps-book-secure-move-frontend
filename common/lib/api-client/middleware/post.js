@@ -1,5 +1,6 @@
 const FormData = require('form-data')
 const { find } = require('lodash')
+const { FILE_UPLOADS } = require('../../../../config')
 
 module.exports = {
   name: 'POST',
@@ -10,6 +11,8 @@ module.exports = {
     })
 
     if (req.method === 'POST' && req.data instanceof FormData) {
+      payload.req.maxContentLength = FILE_UPLOADS.MAX_FILE_SIZE
+      payload.req.maxBodyLength = FILE_UPLOADS.MAX_FILE_SIZE
       payload.req.headers = {
         ...req.headers,
         ...req.data.getHeaders(),
