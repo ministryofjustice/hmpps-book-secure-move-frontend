@@ -49,6 +49,7 @@ MultiFileUpload.prototype = {
 
   bindEvents() {
     this.$module.addEventListener('click', this.onDeleteClickHandler.bind(this))
+    this.$module.addEventListener('change', this.onChangeHandler.bind(this))
   },
 
   render() {
@@ -96,6 +97,10 @@ MultiFileUpload.prototype = {
     )
 
     $progress.innerText = Math.round(progress)
+  },
+
+  onChangeHandler(event) {
+    this.dropzone.processQueue()
   },
 
   onDeleteClickHandler(event) {

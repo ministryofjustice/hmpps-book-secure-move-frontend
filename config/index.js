@@ -124,4 +124,21 @@ module.exports = {
   FEATURE_FLAGS: {
     IMAGES: process.env.FEATURE_FLAG_IMAGES,
   },
+  E2E: {
+    BASE_URL: process.env.E2E_BASE_URL || BASE_URL,
+    ROLES: {
+      POLICE: {
+        username: process.env.E2E_POLICE_USERNAME,
+        password: process.env.E2E_POLICE_PASSWORD,
+      },
+      STC: {
+        username: process.env.E2E_STC_USERNAME,
+        password: process.env.E2E_STC_PASSWORD,
+      },
+      SUPPLIER: {
+        username: process.env.E2E_SUPPLIER_USERNAME,
+        password: process.env.E2E_SUPPLIER_PASSWORD,
+      },
+    },
+  },
 }

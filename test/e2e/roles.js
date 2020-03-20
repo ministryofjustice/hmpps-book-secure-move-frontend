@@ -1,20 +1,28 @@
-import dotenv from 'dotenv'
 import { Role } from 'testcafe'
-import Page from './page-model'
 
-dotenv.config()
-const page = new Page()
+import { E2E } from '../../config'
+import { home } from './_routes'
+import { page } from './pages'
 
-export const policeUser = Role(page.locations.signout, async t => {
+export const policeUser = Role(home, async t => {
   await t
-    .typeText('#username', process.env.E2E_POLICE_USERNAME)
-    .typeText('#password', process.env.E2E_POLICE_PASSWORD)
+    .typeText('#username', E2E.ROLES.POLICE.username)
+    .typeText('#password', E2E.ROLES.POLICE.password)
     .pressKey('enter')
+  await page.chooseLocation()
 })
 
-export const supplierUser = Role(page.locations.signout, async t => {
+export const supplierUser = Role(home, async t => {
   await t
-    .typeText('#username', process.env.E2E_SUPPLIER_USERNAME)
-    .typeText('#password', process.env.E2E_SUPPLIER_PASSWORD)
+    .typeText('#username', E2E.ROLES.SUPPLIER.username)
+    .typeText('#password', E2E.ROLES.SUPPLIER.password)
+    .pressKey('enter')
+  await page.chooseLocation()
+})
+
+export const stcUser = Role(home, async t => {
+  await t
+    .typeText('#username', E2E.ROLES.STC.username)
+    .typeText('#password', E2E.ROLES.STC.password)
     .pressKey('enter')
 })

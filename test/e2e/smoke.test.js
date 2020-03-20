@@ -1,53 +1,55 @@
-import { policeUser, supplierUser } from './roles'
-import Page from './page-model'
-import { clickSelectorIfExists } from './helpers'
-
-const page = new Page()
+import { movesByDay } from './_routes'
+import { policeUser, stcUser, supplierUser } from './roles'
+import { page, movesDashboardPage } from './pages'
 
 const users = [
   {
     name: 'Police user',
     role: policeUser,
-    username: page.nodes.policeUserName,
-    homeButton: page.nodes.createMoveButton,
+    username: 'End-to-End Test Police',
+    homeButton: movesDashboardPage.nodes.createMoveButton,
+  },
+  {
+    name: 'STC user',
+    role: stcUser,
+    username: 'End-to-End Test STC',
+    homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'Supplier user',
     role: supplierUser,
-    username: page.nodes.supplierUserName,
-    homeButton: page.nodes.downloadMovesLink,
+    username: 'End-to-End Test Supplier',
+    homeButton: movesDashboardPage.nodes.downloadMovesLink,
   },
 ]
 
-fixture`Smoke test`
-
 users.forEach(user => {
-  test(`${user.name}: logs in/signs out, navigates days and loads without errors`, async t => {
-    await t.useRole(user.role).navigateTo(page.locations.home)
+  fixture(`Smoke test (${user.name})`).beforeEach(async t => {
+    await t.useRole(user.role).navigateTo(movesByDay)
+  })
 
-    await clickSelectorIfExists(page.nodes.custodySuitLocationLink)
-
+  test('Sign in/sign out, navigate days and load without errors', async t => {
     await t
       .expect(page.nodes.appHeader.exists)
       .ok()
-      .expect(user.username.exists)
-      .ok()
+      .expect(page.nodes.username.innerText)
+      .eql(user.username)
       .expect(user.homeButton.exists)
       .ok()
       // Navigate
       .expect(page.nodes.pageHeading.innerText)
       .eql('Today')
-      .click(page.nodes.paginationPrev)
+      .click(movesDashboardPage.nodes.pagination.previousLink)
       .expect(page.nodes.pageHeading.innerText)
       .eql('Yesterday')
-      .click(page.nodes.paginationToday)
+      .click(movesDashboardPage.nodes.pagination.todayLink)
       .expect(page.nodes.pageHeading.innerText)
       .eql('Today')
-      .click(page.nodes.paginationNext)
+      .click(movesDashboardPage.nodes.pagination.nextLink)
       .expect(page.nodes.pageHeading.innerText)
       .eql('Tomorrow')
       // Sign out
-      .navigateTo('/auth/sign-out')
+      .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)
       .ok()
   })
