@@ -10,11 +10,12 @@
   "before": "must be in the past",
   "default": "is required",
   "generic": "something went wrong",
-  "LIMIT_FILE_SIZE": "must be smaller than 50 MB",
+  "LIMIT_FILE_SIZE": "must be smaller than 50MB",
   "LIMIT_PART_COUNT": "has too many parts",
   "LIMIT_FILE_COUNT": "has too mamy files",
   "LIMIT_FIELD_KEY": "must include a shorter field name",
   "LIMIT_FIELD_VALUE": "must include a shorter field value",
   "LIMIT_FIELD_COUNT": "includes too many fields",
-  "LIMIT_UNEXPECTED_FILE": "must include expected file types"
+  "LIMIT_UNEXPECTED_FILE": "must include expected file types",
+  "API_DOCUMENT_STORAGE_FAILED": "could not be uploaded – try again"
 }
