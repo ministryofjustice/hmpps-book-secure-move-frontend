@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.14.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.14.2...v2.14.3) (2020-03-23)
+
 ### [2.14.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.14.1...v2.14.2) (2020-03-18)
 
 
