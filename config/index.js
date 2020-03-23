@@ -121,4 +121,7 @@ module.exports = {
     },
   },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
+  FEATURE_FLAGS: {
+    IMAGES: process.env.FEATURE_FLAG_IMAGES,
+  },
 }

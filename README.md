@@ -227,6 +227,7 @@ It will also start a new deployment specific [job on CircleCI](https://app.circl
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
 | E2E_SUPPLIER_PASSWORD | Supplier user password used for acceptance testing | |
 | LOCATIONS_BATCH_SIZE | Maximum number of location IDs to send in one request when requesting moves for all locations | 40 |
+| FEATURE_FLAG_IMAGES | Whether to display images from the API. If set to false, it will always show the fallback image | false |
 
 ### Development specific
 

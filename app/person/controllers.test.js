@@ -29,10 +29,31 @@ describe('Person app', function() {
       }
     })
 
-    context('when person service errors', function() {
+    context('when set to not show images', function() {
       beforeEach(async function() {
         personService.getImageUrl.rejects(new Error())
         await controllers.image(placeholderImage)(req, res)
+      })
+
+      it('should not call res.end', function() {
+        expect(res.end).not.to.be.called
+      })
+
+      it('should get placeholder image from manifest', function() {
+        expect(nunjucksGlobals.getAssetPath).to.be.calledOnceWithExactly(
+          placeholderImage
+        )
+      })
+
+      it('should redirect to placeholder images', function() {
+        expect(res.redirect).to.be.calledOnceWithExactly(manifestImagePath)
+      })
+    })
+
+    context('when person service errors', function() {
+      beforeEach(async function() {
+        personService.getImageUrl.rejects(new Error())
+        await controllers.image(placeholderImage, true)(req, res)
       })
 
       it('should not call res.end', function() {
@@ -60,7 +81,7 @@ describe('Person app', function() {
       context('when axios errors', function() {
         beforeEach(async function() {
           axios.get.rejects(new Error())
-          await controllers.image(placeholderImage)(req, res)
+          await controllers.image(placeholderImage, true)(req, res)
         })
 
         it('should not call res.end', function() {
@@ -90,7 +111,7 @@ describe('Person app', function() {
 
         beforeEach(async function() {
           axios.get.resolves(mockResponse)
-          await controllers.image(placeholderImage)(req, res)
+          await controllers.image(placeholderImage, true)(req, res)
         })
 
         it('should set headers', function() {
