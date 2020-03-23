@@ -45,6 +45,9 @@ describe('Multer Document Storage Engine', function() {
       it('should call callback with error', function(done) {
         function callback(error) {
           expect(error).to.equal(error)
+          expect(error.name).to.equal('MulterError')
+          expect(error.message).to.equal('Document error')
+          expect(error.code).to.equal('API_DOCUMENT_STORAGE_FAILED')
           done()
         }
 
