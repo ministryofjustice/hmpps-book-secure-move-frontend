@@ -1,7 +1,8 @@
 const FormData = require('form-data')
 
 const postMiddleware = require('./post')
-const { FILE_UPLOADS } = require('../../../../config')
+
+const MAX_FILE_SIZE = 2000
 
 const originalHeaders = {
   original: 'header',
@@ -40,7 +41,7 @@ describe('API Client', function() {
         context('when data is instance of FormData', function() {
           beforeEach(function() {
             payload.req.data = new FormData()
-            response = postMiddleware.req(payload)
+            response = postMiddleware(MAX_FILE_SIZE).req(payload)
           })
 
           it('should update headers', function() {
@@ -51,12 +52,8 @@ describe('API Client', function() {
           })
 
           it('should set correct max lengths for content and body', function() {
-            expect(response.req.maxContentLength).to.equal(
-              FILE_UPLOADS.MAX_FILE_SIZE
-            )
-            expect(response.req.maxBodyLength).to.equal(
-              FILE_UPLOADS.MAX_FILE_SIZE
-            )
+            expect(response.req.maxContentLength).to.equal(MAX_FILE_SIZE)
+            expect(response.req.maxBodyLength).to.equal(MAX_FILE_SIZE)
           })
 
           it('should return payload', function() {
@@ -70,7 +67,7 @@ describe('API Client', function() {
 
         context('when data is not instance of FormData', function() {
           beforeEach(function() {
-            response = postMiddleware.req(payload)
+            response = postMiddleware().req(payload)
           })
 
           it('should not update headers', function() {
@@ -89,7 +86,7 @@ describe('API Client', function() {
 
       context('when request is not POST', function() {
         beforeEach(function() {
-          response = postMiddleware.req(payload)
+          response = postMiddleware().req(payload)
         })
 
         it('should not update headers', function() {

@@ -9,6 +9,9 @@ const mockConfig = {
     TIMEOUT: 1000,
     CACHE_EXPIRY: 5000,
   },
+  FILE_UPLOADS: {
+    MAX_FILE_SIZE: 2000,
+  },
 }
 const mockModels = {
   withoutOptions: {
@@ -89,7 +92,10 @@ describe('Back-end API client', function() {
         it('should replace post middleware', function() {
           expect(
             JsonApiStub.prototype.replaceMiddleware.secondCall
-          ).to.be.calledWithExactly('POST', postStub)
+          ).to.be.calledWithExactly(
+            'POST',
+            postStub(mockConfig.FILE_UPLOADS.MAX_FILE_SIZE)
+          )
         })
 
         it('should insert request cache', function() {

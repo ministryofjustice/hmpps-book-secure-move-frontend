@@ -1,6 +1,6 @@
 const JsonApi = require('devour-client')
 
-const { API, IS_DEV } = require('../../../config')
+const { API, IS_DEV, FILE_UPLOADS } = require('../../../config')
 const { auth, errors, request, requestTimeout, post } = require('./middleware')
 const models = require('./models')
 
@@ -17,7 +17,7 @@ module.exports = function() {
   })
 
   instance.replaceMiddleware('errors', errors)
-  instance.replaceMiddleware('POST', post)
+  instance.replaceMiddleware('POST', post(FILE_UPLOADS.MAX_FILE_SIZE))
   instance.replaceMiddleware('axios-request', request(API.CACHE_EXPIRY))
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
   instance.insertMiddlewareBefore('axios-request', auth)
