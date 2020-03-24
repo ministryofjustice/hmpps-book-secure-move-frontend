@@ -3,13 +3,14 @@ const router = require('express').Router()
 
 // Local dependencies
 const { protectRoute } = require('../../common/middleware/permissions')
-const { download, list, listProposed } = require('./controllers')
+const { download, list, listByStatus } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
   setDateRange,
   setPeriod,
   setFromLocation,
+  setMoveTypeNavigation,
   setPagination,
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
@@ -44,12 +45,13 @@ router.get(
   list
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed|requested,accepted,completed|rejected)`,
   protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
+  setMoveTypeNavigation,
   setMovesByDateRangeAndStatus,
   setPagination,
-  listProposed
+  listByStatus
 )
 router.get(
   '/:period(week|day)/:date/download.:extension(csv|json)',
@@ -63,7 +65,6 @@ router.get(
   setMovesByDateAndLocation,
   download
 )
-
 // Export
 module.exports = {
   router,

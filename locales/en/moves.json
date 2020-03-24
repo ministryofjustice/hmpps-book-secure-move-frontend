@@ -127,7 +127,12 @@
     "move_to": "Move to",
     "no_results": "No moves scheduled",
     "single_moves": "Single moves",
-    "single_moves_no_results": "No moves proposed"
+    "single_moves_no_results": "No moves proposed",
+    "filter": {
+      "proposed": "proposed",
+      "approved": "approved",
+      "rejected": "rejected"
+    }
   },
   "detail": {
     "page_title": "Move details for {{name}}"

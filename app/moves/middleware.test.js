@@ -255,7 +255,7 @@ describe('Moves middleware', function() {
       await middleware.setMovesByDateRangeAndStatus(req, { locals }, () => {})
       expect(moveService.getMovesByDateRangeAndStatus).to.have.been.calledWith({
         dateRange: ['2019-01-01', '2019-01-07'],
-        locationId: '123',
+        fromLocationId: '123',
         status: 'proposed',
       })
       moveService.getMovesByDateRangeAndStatus.restore()
@@ -571,6 +571,97 @@ describe('Moves middleware', function() {
     })
   })
 
+  describe('#setMoveTypeNavigation', function() {
+    let next
+    let req
+    let res
+    context('happy path', function() {
+      beforeEach(async function() {
+        sinon.stub(moveService, 'getMovesCount').resolves(4)
+        next = sinon.spy()
+        req = {
+          baseUrl: '/moves',
+          url: '/moves/week/2010-09-07/123/proposed',
+          params: {
+            locationId: '123',
+            date: '2010-09-07',
+            period: 'week',
+          },
+        }
+        res = {
+          locals: {
+            dateRange: ['2010-09-03', '2010-09-10'],
+          },
+        }
+        await middleware.setMoveTypeNavigation(req, res, next)
+      })
+      afterEach(function() {
+        moveService.getMovesCount.restore()
+      })
+      it('sets res.locals.moveTypeNavigation', function() {
+        expect(res.locals).to.deep.equal({
+          dateRange: ['2010-09-03', '2010-09-10'],
+          moveTypeNavigation: [
+            {
+              active: false,
+              href: '/moves/week/2010-09-07/123/proposed',
+              label: 'proposed',
+              value: 4,
+            },
+            {
+              active: false,
+              href: '/moves/week/2010-09-07/123/requested,accepted,completed',
+              label: 'approved',
+              value: 4,
+            },
+            {
+              active: false,
+              href: '/moves/week/2010-09-07/123/rejected',
+              label: 'rejected',
+              value: 4,
+            },
+          ],
+        })
+      })
+      it('calls next', function() {
+        expect(next).to.have.been.calledWithExactly()
+      })
+      it('returns predictable results', function() {
+        const locals1 = { ...res.locals }
+        middleware.setMoveTypeNavigation({}, res, next)
+        expect(res.locals).to.deep.equal(locals1)
+      })
+    })
+    context('unhappy path', function() {
+      it('calls next with error if needed', async function() {
+        sinon.stub(moveService, 'getMovesCount').rejects(new Error('Error!'))
+        next = sinon.spy()
+        await middleware.setMoveTypeNavigation(
+          {
+            baseUrl: '/moves',
+            url: '/moves/week/2010-09-07/123/proposed',
+            params: {
+              locationId: '123',
+              date: '2010-09-07',
+            },
+          },
+          {
+            locals: {
+              period: 'week',
+              dateRange: ['2010-09-03', '2010-09-10'],
+            },
+          },
+          next
+        )
+        expect(next).to.have.been.calledWith(
+          sinon.match({
+            message: 'Error!',
+          })
+        )
+        moveService.getMovesCount.restore()
+      })
+    })
+  })
   describe('#setMovesByDateAndLocation()', function() {
     let res, nextSpy
     const mockCurrentLocation = '5555'

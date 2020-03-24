@@ -58,6 +58,23 @@ const moveService = {
     })
   },
 
+  getMovesCount({ dateRange = [], status, locationId } = {}) {
+    const [createdAtFrom, createdAtTo] = dateRange
+    const filter = {
+      'filter[status]': status,
+      'filter[created_at_from]': createdAtFrom,
+      'filter[created_at_to]': createdAtTo,
+      'filter[from_location_id]': locationId,
+    }
+    return apiClient
+      .findAll('move', {
+        ...filter,
+        page: 1,
+        per_page: 1,
+      })
+      .then(response => response.meta.pagination.total_objects)
+  },
+
   getRequested({ dateRange = [], fromLocationId, toLocationId } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({

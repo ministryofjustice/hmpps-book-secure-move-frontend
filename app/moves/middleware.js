@@ -1,5 +1,5 @@
 const { format } = require('date-fns')
-const { find, get, chunk } = require('lodash')
+const { find, get, chunk, cloneDeep } = require('lodash')
 
 const {
   getDateRange,
@@ -7,6 +7,8 @@ const {
   getPeriod,
   dateFormat,
 } = require('../../common/helpers/date-utils')
+
+const presenters = require('../../common/presenters')
 
 const moveService = require('../../common/services/move')
 const { LOCATIONS_BATCH_SIZE } = require('../../config')
@@ -18,8 +20,21 @@ function makeMultipleRequests(service, dateRange, locationIdBatches) {
     )
   )
 }
-
-module.exports = {
+const moveTypeNavigationConfig = [
+  {
+    label: 'moves::dashboard.filter.proposed',
+    filter: 'proposed',
+  },
+  {
+    label: 'moves::dashboard.filter.approved',
+    filter: 'requested,accepted,completed',
+  },
+  {
+    label: 'moves::dashboard.filter.rejected',
+    filter: 'rejected',
+  },
+]
+const movesMiddleware = {
   redirectBaseUrl: (req, res) => {
     const today = format(new Date(), dateFormat)
     const currentLocation = get(req.session, 'currentLocation.id')
@@ -81,6 +96,33 @@ module.exports = {
 
     next()
   },
+  setMoveTypeNavigation: async (req, res, next) => {
+    const { dateRange } = res.locals
+    const { locationId, period, date } = req.params
+    try {
+      res.locals.moveTypeNavigation = await Promise.all(
+        cloneDeep(moveTypeNavigationConfig).map(moveType => {
+          return moveService
+            .getMovesCount({ dateRange, status: moveType.filter, locationId })
+            .then(count => {
+              const { label } = moveType
+              return {
+                label,
+                value: count,
+                active: moveType.filter === req.params.status,
+                href: `${req.baseUrl}/${period}/${date}${
+                  locationId ? '/' + locationId : ''
+                }/${moveType.filter}`,
+              }
+            })
+            .then(presenters.moveTypesToFilterComponent)
+        })
+      )
+      next()
+    } catch (error) {
+      next(error)
+    }
+  },
   setMovesByDateAndLocation: async (req, res, next) => {
     const { dateRange, fromLocationId } = res.locals
 
@@ -115,7 +157,7 @@ module.exports = {
         {
           dateRange,
           status,
-          locationId,
+          fromLocationId: locationId,
         }
       )
 
@@ -159,3 +201,5 @@ module.exports = {
     }
   },
 }
+
+module.exports = movesMiddleware
