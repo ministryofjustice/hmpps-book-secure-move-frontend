@@ -255,7 +255,7 @@ describe('Moves middleware', function() {
       await middleware.setMovesByDateRangeAndStatus(req, { locals }, () => {})
       expect(moveService.getMovesByDateRangeAndStatus).to.have.been.calledWith({
         dateRange: ['2019-01-01', '2019-01-07'],
-        locationId: '123',
+        fromLocationId: '123',
         status: 'proposed',
       })
       moveService.getMovesByDateRangeAndStatus.restore()

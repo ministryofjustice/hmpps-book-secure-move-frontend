@@ -157,7 +157,7 @@ const movesMiddleware = {
         {
           dateRange,
           status,
-          locationId,
+          fromLocationId: locationId,
         }
       )
 

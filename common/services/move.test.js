@@ -458,7 +458,7 @@ describe('Move Service', function() {
         moves = await moveService.getMovesByDateRangeAndStatus({
           dateRange: mockDateRange,
           status: mockStatus,
-          locationId: mockFromLocationId,
+          fromLocationId: mockFromLocationId,
         })
       })
       it('calls getAll', function() {
