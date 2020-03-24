@@ -11,6 +11,8 @@ const {
 
 function MultiFileUpload($module) {
   this.$module = $module
+  const $input = $module.querySelector('[type="file"]')
+  this.$input = $input
 
   this.defaultParams = {
     url: this.$module.getAttribute('data-url'),
@@ -18,7 +20,24 @@ function MultiFileUpload($module) {
     createImageThumbnails: false,
     clickable: '[data-dz-clickable]',
     previewsContainer: '[data-dz-previews-container]',
-    paramName: this.$module.querySelector('input[type="file"]').name,
+    paramName: $input.name,
+    // acceptedFiles: $input.getAttribute('accept') || '',
+    // maxFilesize: parseInt($input.getAttribute('data-max-filesize') || ''),
+    accept: function(file, done) {
+      const accept = $input.getAttribute('accept')
+      // if (!accept.match(new RegExp(file.type + ';*'))) {
+      if (accept) {
+        if (!file.type || accept.indexOf(file.type) === -1) {
+          return done('is not an acceptable file type')
+          // NB. should actually be of the form The selected file must be a Word, Excel, PDF or JPEG file
+        }
+      }
+      const maxSize = $input.getAttribute('data-max-filesize')
+      if (maxSize && file.size > parseInt(maxSize, 10) * 1024 * 1024) {
+        return done('must be smaller than ' + maxSize)
+      }
+      done()
+    },
   }
 
   this.params = this.defaultParams
