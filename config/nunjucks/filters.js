@@ -12,6 +12,7 @@ const {
 } = require('date-fns')
 const { kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
+const chrono = require('chrono-node')
 
 const { DATE_FORMATS } = require('../index')
 
@@ -127,7 +128,7 @@ function calculateAge(value) {
  * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
  */
 function formatTime(value) {
-  const parsedDate = parseISO(value)
+  const parsedDate = chrono.en_GB.parseDate(value)
 
   if (!value || !isValidDate(parsedDate)) {
     return value
