@@ -6,6 +6,7 @@
 {% from "govuk/components/checkboxes/macro.njk"        import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk"           import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk"     import govukErrorSummary %}
+{% from "govuk/components/footer/macro.njk"            import govukFooter %}
 {% from "govuk/components/input/macro.njk"             import govukInput %}
 {% from "govuk/components/inset-text/macro.njk"        import govukInsetText %}
 {% from "govuk/components/panel/macro.njk"             import govukPanel %}
@@ -116,6 +117,19 @@
   {% endblock %}
 
   {% include "includes/messages.njk" %}
+{% endblock %}
+
+{% block footer %}
+    {{ govukFooter({
+      meta: {
+        items: [
+          {
+            href: FEEDBACK_URL,
+            text: t("feedback_link")
+          }
+        ] if FEEDBACK_URL
+      }
+    }) }}
 {% endblock %}
 
 {% block bodyEnd %}
