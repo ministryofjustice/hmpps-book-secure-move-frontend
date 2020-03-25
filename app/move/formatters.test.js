@@ -44,4 +44,44 @@ describe('Formatters', function() {
       })
     })
   })
+
+  describe('#time()', function() {
+    context('when input value is a valid time', function() {
+      context('with default time format', function() {
+        it('should return formatted time', function() {
+          const time = formatters.time('5:00')
+          expect(time).to.equal('05:00')
+        })
+
+        it('should return formatted time', function() {
+          const time = formatters.time('5am')
+          expect(time).to.equal('05:00')
+        })
+
+        it('should return formatted time', function() {
+          const time = formatters.time('22:00')
+          expect(time).to.equal('22:00')
+        })
+
+        it('should return formatted time', function() {
+          const time = formatters.time('10pm')
+          expect(time).to.equal('22:00')
+        })
+      })
+
+      context('with custom date format', function() {
+        it('should return custom date format', function() {
+          const time = formatters.time('10:00', "H:mmaaaaa'm")
+          expect(time).to.equal('10:00am')
+        })
+      })
+    })
+
+    context('when input value is not a valid time', function() {
+      it('should return input value', function() {
+        const time = formatters.time('not-a-date')
+        expect(time).to.equal('not-a-date')
+      })
+    })
+  })
 })
