@@ -1,13 +1,14 @@
 const {
-  PersonalDetails,
   Assessment,
+  CourtHearings,
+  Document,
   MoveDate,
   MoveDetails,
-  Save,
   PersonSearch,
   PersonSearchResults,
-  Document,
+  PersonalDetails,
   PrisonTransferReason,
+  Save,
 } = require('../controllers/create')
 
 const personSearchStep = {
@@ -232,6 +233,17 @@ module.exports = {
       'risk-information',
     ],
     fields: ['solicitor', 'interpreter', 'other_court'],
+  },
+  '/hearing-details': {
+    controller: CourtHearings,
+    pageTitle: 'moves::steps.hearing_details.heading',
+    next: ['release-status'],
+    fields: [
+      'has_court_case',
+      'court_hearing__start_time',
+      'court_hearing__court_case',
+      'court_hearing__comments',
+    ],
   },
   '/risk-information': {
     ...riskStep,

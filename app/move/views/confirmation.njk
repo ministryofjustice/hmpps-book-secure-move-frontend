@@ -60,6 +60,16 @@
         }) }}
       {% endif %}
 
+      {# TODO: Remove once we support creating hearings without a case #}
+      {% if move.from_location.location_type == 'prison' and move.to_location.location_type == 'court' and not move.court_hearings.length %}
+        {{ govukWarningText({
+          text: t("moves::confirmation.saved_to_nomis", {
+            context: "failed"
+          }),
+          iconFallbackText: "Warning"
+        }) }}
+      {% endif %}
+
       <p>
         <a href="{{ MOVES_URL }}">
           {{ t("actions::back_to_dashboard") }}
