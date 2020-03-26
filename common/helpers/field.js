@@ -1,4 +1,4 @@
-const { cloneDeep, fromPairs, get, set } = require('lodash')
+const { cloneDeep, concat, fromPairs, get, set, compact } = require('lodash')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
@@ -59,17 +59,27 @@ function renderConditionalFields([key, field], index, obj) {
     {
       ...field,
       items: field.items.map(item => {
-        const fieldName = item.conditional
-        const field = fields[fieldName]
+        const conditionalFields = concat([], item.conditional)
 
-        if (!field) {
+        const components = conditionalFields.map(conditionalField => {
+          const field = fields[conditionalField]
+
+          if (!field) {
+            return
+          }
+
+          return componentService.getComponent(field.component, {
+            ...field,
+            id: conditionalField,
+            name: conditionalField,
+          })
+        })
+
+        if (!compact(components).length) {
           return item
         }
 
-        const params = { ...field, id: fieldName, name: fieldName }
-        const html = componentService.getComponent(params.component, params)
-
-        return { ...item, conditional: { html } }
+        return { ...item, conditional: { html: components.join('') } }
       }),
     },
   ]

@@ -258,40 +258,35 @@ describe('Nunjucks filters', function() {
   describe('#formatTime()', function() {
     context('when given an invalid datetime', function() {
       it('should return input value', function() {
-        const age = filters.formatTime('2010-45-5')
-        expect(age).to.equal('2010-45-5')
+        const time = filters.formatTime('2010-45-5')
+        expect(time).to.equal('2010-45-5')
       })
 
       it('should return input value', function() {
-        const age = filters.formatTime('not a date')
-        expect(age).to.equal('not a date')
+        const time = filters.formatTime('not a date')
+        expect(time).to.equal('not a date')
       })
     })
 
     context('when given falsey values', function() {
       it('should return input value', function() {
-        const age = filters.formatTime(undefined)
-        expect(age).to.be.undefined
+        const time = filters.formatTime(undefined)
+        expect(time).to.be.undefined
       })
 
       it('should return input value', function() {
-        const age = filters.formatTime(null)
-        expect(age).to.equal(null)
+        const time = filters.formatTime(null)
+        expect(time).to.equal(null)
       })
 
       it('should return input value', function() {
-        const age = filters.formatTime(false)
-        expect(age).to.equal(false)
+        const time = filters.formatTime(false)
+        expect(time).to.equal(false)
       })
 
       it('should return input value', function() {
-        const age = filters.formatTime(0)
-        expect(age).to.equal(0)
-      })
-
-      it('should return input value', function() {
-        const age = filters.formatTime('')
-        expect(age).to.equal('')
+        const time = filters.formatTime('')
+        expect(time).to.equal('')
       })
     })
 
@@ -368,6 +363,16 @@ describe('Nunjucks filters', function() {
         it('should return correct format', function() {
           const time = filters.formatTime('2000-06-01T01:00:00Z')
           expect(time).to.equal('1am')
+        })
+
+        it('should return correct format', function() {
+          const time = filters.formatTime('10:00')
+          expect(time).to.equal('10am')
+        })
+
+        it('should return correct format', function() {
+          const time = filters.formatTime('22:00')
+          expect(time).to.equal('10pm')
         })
       })
 

@@ -260,6 +260,94 @@ describe('Form helpers', function() {
           ])
         })
       })
+
+      context('when conditional is an array', function() {
+        const field = [
+          'field',
+          {
+            name: 'field',
+            items: [
+              {
+                value: '31b90233-7043-4633-8055-f24854545ead',
+                text: 'Item one',
+                conditional: [
+                  'conditional_field_one',
+                  'conditional_field_two',
+                  'unknown_field',
+                ],
+              },
+              {
+                value: '31b90233-7043-4633-8055-f24854545eac',
+                text: 'Item two',
+              },
+            ],
+          },
+        ]
+        const fields = [
+          ...field,
+          [
+            'conditional_field_one',
+            {
+              component: 'govukInput',
+              classes: 'input-classes',
+            },
+          ],
+          [
+            'conditional_field_two',
+            {
+              component: 'govukTextarea',
+              classes: 'input-classes',
+            },
+          ],
+        ]
+        let response
+
+        beforeEach(function() {
+          response = renderConditionalFields(field, 0, fields)
+        })
+
+        it('should call component service for each item', function() {
+          expect(componentService.getComponent).to.be.calledTwice
+        })
+
+        it('should call component service with correct args', function() {
+          expect(
+            componentService.getComponent.firstCall
+          ).to.be.calledWithExactly('govukInput', {
+            component: 'govukInput',
+            classes: 'input-classes',
+            id: 'conditional_field_one',
+            name: 'conditional_field_one',
+          })
+        })
+
+        it('should call component service with correct args', function() {
+          expect(
+            componentService.getComponent.secondCall
+          ).to.be.calledWithExactly('govukTextarea', {
+            component: 'govukTextarea',
+            classes: 'input-classes',
+            id: 'conditional_field_two',
+            name: 'conditional_field_two',
+          })
+        })
+
+        it('should render conditional content', function() {
+          expect(response[1].items).to.deep.equal([
+            {
+              value: '31b90233-7043-4633-8055-f24854545ead',
+              text: 'Item one',
+              conditional: {
+                html: 'govukInputgovukTextarea',
+              },
+            },
+            {
+              value: '31b90233-7043-4633-8055-f24854545eac',
+              text: 'Item two',
+            },
+          ])
+        })
+      })
     })
   })
 

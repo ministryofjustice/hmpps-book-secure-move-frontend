@@ -1,7 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
-const timezoneMock = require('timezone-mock')
 
 const CreateBaseController = require('./base')
+const presenters = require('../../../../common/presenters')
 
 const controller = new CreateBaseController({ route: '/' })
 
@@ -225,73 +225,73 @@ describe('Move controllers', function() {
 
     describe('#setMoveSummary()', function() {
       let req, res, nextSpy
-
-      const mockPerson = {
-        first_names: 'Mr',
-        fullname: 'Benn, Mr',
-        last_name: 'Benn',
-      }
-      const mockSessionModel = overrides => {
-        const sessionModel = {
-          date: '2019-06-09',
-          time_due: '2000-01-01T14:00:00Z',
-          move_type: 'court_appearance',
-          to_location: {
-            title: 'Mock to location',
-          },
-          additional_information: 'Additional information',
-          person: mockPerson,
-          ...overrides,
-        }
-
-        return {
-          ...sessionModel,
-          toJSON: () => sessionModel,
-          get: () => sessionModel.person,
-        }
-      }
-      const expectedMoveSummary = {
-        items: [
-          { key: { text: 'From' }, value: { text: 'Mock location' } },
-          {
-            key: { text: 'To' },
-            value: { text: 'Mock to location — Additional information' },
-          },
-          { key: { text: 'Date' }, value: { text: 'Sunday 9 Jun 2019' } },
-          { key: { text: 'Time due' }, value: { text: '2pm' } },
-        ],
+      const mockSessionModel = {
+        date: '2019-06-09',
+        time_due: '2000-01-01T14:00:00Z',
+        to_location: {
+          title: 'Mock to location',
+        },
+        additional_information: 'Additional information',
+        person: {
+          first_names: 'Mr',
+          fullname: 'Benn, Mr',
+          last_name: 'Benn',
+        },
       }
 
       beforeEach(function() {
-        timezoneMock.register('UTC')
+        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         nextSpy = sinon.spy()
         req = {
           session: {
             currentLocation: {
-              title: 'Mock location',
+              title: 'Mock current location',
             },
+          },
+          sessionModel: {
+            toJSON: sinon.stub().returns(mockSessionModel),
           },
         }
         res = {
-          locals: {},
+          locals: {
+            existing_key: 'foo',
+          },
         }
       })
 
-      afterEach(function() {
-        timezoneMock.unregister()
-      })
+      context('with move_type', function() {
+        beforeEach(function() {
+          req.sessionModel.toJSON.returns({
+            ...mockSessionModel,
+            move_type: 'court_appearance',
+          })
 
-      context('when current location exists', function() {
-        beforeEach(async function() {
-          req.sessionModel = mockSessionModel()
+          controller.setMoveSummary(req, res, nextSpy)
+        })
 
-          await controller.setMoveSummary(req, res, nextSpy)
+        it('should call presenter correctly', function() {
+          expect(
+            presenters.moveToMetaListComponent
+          ).to.be.calledOnceWithExactly({
+            ...mockSessionModel,
+            move_type: 'court_appearance',
+            from_location: {
+              title: 'Mock current location',
+            },
+          })
         })
 
         it('should set locals as expected', function() {
           expect(res.locals).to.deep.equal({
-            person: mockPerson,
-            moveSummary: expectedMoveSummary,
+            existing_key: 'foo',
+            person: mockSessionModel.person,
+            moveSummary: {
+              ...mockSessionModel,
+              move_type: 'court_appearance',
+              from_location: {
+                title: 'Mock current location',
+              },
+            },
           })
         })
 
@@ -301,17 +301,25 @@ describe('Move controllers', function() {
       })
 
       context('without move_type', function() {
-        beforeEach(async function() {
-          req.sessionModel = mockSessionModel({
-            move_type: '',
-          })
+        beforeEach(function() {
+          controller.setMoveSummary(req, res, nextSpy)
+        })
 
-          await controller.setMoveSummary(req, res, nextSpy)
+        it('should call presenter correctly', function() {
+          expect(
+            presenters.moveToMetaListComponent
+          ).to.be.calledOnceWithExactly({
+            ...mockSessionModel,
+            from_location: {
+              title: 'Mock current location',
+            },
+          })
         })
 
         it('should set locals as expected', function() {
           expect(res.locals).to.deep.equal({
-            person: mockPerson,
+            existing_key: 'foo',
+            person: mockSessionModel.person,
             moveSummary: {},
           })
         })
