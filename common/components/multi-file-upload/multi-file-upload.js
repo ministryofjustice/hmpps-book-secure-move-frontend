@@ -116,7 +116,24 @@ MultiFileUpload.prototype = {
           row.parentNode.removeChild(row)
           this.render()
         })
-        .catch(() => false)
+        .catch(error => {
+          let errorMessage = 'could not be deleted'
+          if (error.response && error.response.data) {
+            errorMessage = error.response.data
+          }
+          const row = target.closest('.dz-success')
+          row.classList.remove('dz-success')
+          row.classList.add('dz-error')
+          row.querySelector('[data-dz-errormessage]').innerHTML = errorMessage
+          const buttons = document.querySelectorAll(
+            '.govuk-summary-list__actions button'
+          )
+          const actions = [...buttons]
+          actions.forEach(action => {
+            action.style.visibility = 'hidden'
+          })
+          return false
+        })
     }
   },
 

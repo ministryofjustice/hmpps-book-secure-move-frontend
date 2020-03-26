@@ -17,6 +17,7 @@ const SESSION = {
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
 }
+const AUTH_EXPIRY_MARGIN = process.env.AUTH_EXPIRY_MARGIN || 5 * 60 // 5 minutes
 
 function _authUrl(path) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
@@ -26,6 +27,7 @@ module.exports = {
   IS_DEV,
   IS_PRODUCTION,
   SESSION,
+  AUTH_EXPIRY_MARGIN,
   SERVER_HOST,
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),

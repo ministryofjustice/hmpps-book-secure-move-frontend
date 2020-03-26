@@ -30,6 +30,7 @@ const ensureCurrentLocation = require('./common/middleware/ensure-current-locati
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
+const ensureBodyProcessed = require('./common/middleware/ensure-body-processed')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
@@ -133,6 +134,7 @@ app.use(
   ensureAuthenticated({
     provider: config.DEFAULT_AUTH_PROVIDER,
     whitelist: config.AUTH_WHITELIST_URLS,
+    expiryMargin: config.AUTH_EXPIRY_MARGIN,
   })
 )
 app.use(
@@ -142,6 +144,9 @@ app.use(
   })
 )
 app.use(helmet())
+
+// Ensure body processed after reauthentication
+app.use(ensureBodyProcessed())
 
 // Routing
 app.use(router)

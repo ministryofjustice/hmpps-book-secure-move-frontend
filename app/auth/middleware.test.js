@@ -41,6 +41,8 @@ describe('Authentication middleware', function() {
           originalRequestUrl: '/test',
           currentLocation: '1234567890',
           regenerate: sinon.stub(),
+          anotherKey: 'abc',
+          grant: 'grantObject',
         },
       }
     })
@@ -190,6 +192,14 @@ describe('Authentication middleware', function() {
 
           it('sets the location in the session', function() {
             expect(req.session.currentLocation).to.equal('1234567890')
+          })
+
+          it('copies additional properties in the session', function() {
+            expect(req.session.anotherKey).to.equal('abc')
+          })
+
+          it('does not copy grant property', function() {
+            expect(req.session.grant).to.equal(undefined)
           })
 
           it('calls the next action', function() {
