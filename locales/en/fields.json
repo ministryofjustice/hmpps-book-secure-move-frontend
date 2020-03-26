@@ -87,6 +87,9 @@
       }
     }
   },
+  "has_date_to": {
+    "legend": "Is there a date this move has to be completed by?"
+  },
   "date_custom": {
     "label": "Date of travel"
   },

@@ -151,13 +151,13 @@ module.exports = {
     ],
   },
   '/move-date-range': {
-    fields: ['date_from', 'date_to'],
     ...moveDateStep,
+    fields: ['date_from', 'has_date_to', 'date_to'],
   },
   '/move-date': {
+    ...moveDateStep,
     controller: MoveDate,
     fields: ['date', 'date_type', 'date_custom'],
-    ...moveDateStep,
   },
   '/prison-transfer-reason': {
     controller: PrisonTransferReason,

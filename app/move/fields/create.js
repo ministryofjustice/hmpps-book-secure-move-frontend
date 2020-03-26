@@ -112,7 +112,7 @@ function explicitAssessmentQuestion(name, value, conditional) {
 }
 
 const dateField = {
-  validate: ['date'],
+  validate: ['date', 'required'],
   formatter: [date],
   component: 'govukInput',
   autocomplete: 'off',
@@ -198,7 +198,7 @@ module.exports = {
   },
   date_of_birth: {
     ...dateField,
-    validate: [...dateField.validate, 'required', 'before'],
+    validate: [...dateField.validate, 'before'],
     label: {
       text: 'fields::date_of_birth.label',
       classes: 'govuk-label--s',
@@ -329,7 +329,7 @@ module.exports = {
   },
   date_custom: {
     ...dateField,
-    validate: [...dateField.validate, 'required', 'after'],
+    validate: [...dateField.validate, 'after'],
     skip: true,
     dependent: {
       field: 'date_type',
@@ -344,7 +344,7 @@ module.exports = {
   },
   date_from: {
     ...dateField,
-    validate: [...dateField.validate, 'required', 'after'],
+    validate: [...dateField.validate, 'after'],
     id: 'date_from',
     name: 'date_from',
     label: {
@@ -352,9 +352,36 @@ module.exports = {
       classes: 'govuk-label--s',
     },
   },
+  has_date_to: {
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'has_date_to',
+    fieldset: {
+      legend: {
+        text: 'fields::has_date_to.legend',
+        classes: 'govuk-label--m',
+      },
+    },
+    items: [
+      {
+        value: 'yes',
+        text: 'Yes',
+        conditional: 'date_to',
+      },
+      {
+        value: 'no',
+        text: 'No',
+      },
+    ],
+  },
   date_to: {
+    skip: true,
     ...dateField,
-    validate: [...dateField.validate, 'required', 'after'],
+    validate: [...dateField.validate, 'after'],
+    dependent: {
+      field: 'has_date_to',
+      value: 'yes',
+    },
     id: 'date_to',
     name: 'date_to',
     label: {
