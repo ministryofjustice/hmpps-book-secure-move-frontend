@@ -38,6 +38,18 @@ class CreateMovePage extends Page {
           searchAgainLink: Selector('a').withText('Search again'),
         },
       },
+      personalDetails: {
+        nodes: {
+          ethnicity: Selector('#ethnicity'),
+        },
+      },
+      moveDetails: {
+        nodes: {
+          to_location_court_appearance: Selector(
+            '#to_location_court_appearance'
+          ),
+        },
+      },
       documents: {
         nodes: {
           uploadList: Selector('.app-multi-file-upload__list'),
@@ -111,7 +123,9 @@ class CreateMovePage extends Page {
     return {
       ...textFields,
       fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
-      ethnicity: await selectAutocompleteOption('Ethnicity').then(getInnerText),
+      ethnicity: await selectAutocompleteOption(
+        this.steps.personalDetails.nodes.ethnicity
+      ),
       gender: await selectFieldsetOption(
         'Gender',
         faker.random.arrayElement(['Male', 'Female'])
@@ -129,12 +143,26 @@ class CreateMovePage extends Page {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-details')
     await selectFieldsetOption('Move to', moveType)
 
+    let values = {}
+    switch (moveType) {
+      case 'Court':
+        values = {
+          to_location_court_appearance: await selectAutocompleteOption(
+            this.steps.moveDetails.nodes.to_location_court_appearance
+          ),
+        }
+        break
+      case 'Prison recall':
+        values = await fillInForm({
+          additional_information: faker.lorem.sentence(6),
+        })
+        break
+    }
+
     return {
-      to_location_court_appearance:
-        moveType === 'Court'
-          ? await selectAutocompleteOption('Name of court').then(getInnerText)
-          : moveType,
+      move_type: moveType,
       date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
+      ...values,
     }
   }
 

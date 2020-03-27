@@ -91,25 +91,21 @@ export async function createPersonFixture() {
 /**
  * Select random option from autocomplete menu
  *
- * @param {string} labelText - label text for the option
+ * @param {Selector} selector - An autocomplete field
  * @param {string|number} [optionTextOrIndex] - option text or 0-based index or 'random'.
- * @returns {Selector}
+ * @returns {string} - selected value
  */
-export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
-  const fieldSelector = Selector('.govuk-label').withText(labelText)
+export async function selectAutocompleteOption(selector, optionTextOrIndex) {
+  await t.click(selector)
 
-  await t.click(fieldSelector)
-
-  const optionCssSelector = '.autocomplete__menu .autocomplete__option'
-  const autocompleteMenuOptions = await fieldSelector
-    .sibling('div')
-    .find(optionCssSelector)
+  const optionsSelector = '.autocomplete__menu .autocomplete__option'
+  const autocompleteMenuOptions = await selector.parent().find(optionsSelector)
 
   return selectOption(
     autocompleteMenuOptions,
     optionTextOrIndex,
-    optionCssSelector
-  )
+    optionsSelector
+  ).then(getInnerText)
 }
 
 /**
