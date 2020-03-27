@@ -22,6 +22,7 @@ class CreateMovePage extends Page {
           pncNumberSearch: Selector(
             'input[name="filter.police_national_computer"]'
           ),
+          prisonNumberSearch: Selector('input[name="filter.prison_number"]'),
           noIdentifierLink: Selector('summary').withText(
             'I don’t have this number'
           ),
@@ -34,6 +35,7 @@ class CreateMovePage extends Page {
         nodes: {
           searchSummary: Selector('h2.govuk-heading-m'),
           moveSomeoneNew: Selector('a').withText('move someone else'),
+          searchAgainLink: Selector('a').withText('Search again'),
         },
       },
       documents: {
@@ -67,6 +69,21 @@ class CreateMovePage extends Page {
       .selectText(this.steps.personLookup.nodes.pncNumberSearch)
       .pressKey('delete')
       .typeText(this.steps.personLookup.nodes.pncNumberSearch, searchTerm)
+  }
+
+  /**
+   * Fill in prison number search
+   *
+   * @param {String} searchTerm - Search term to enter
+   * @returns {Promise<FormDetails>}
+   */
+  fillInPrisonNumberSearch(searchTerm) {
+    return t
+      .expect(this.getCurrentUrl())
+      .contains('/move/new/person-lookup-prison-number')
+      .selectText(this.steps.personLookup.nodes.prisonNumberSearch)
+      .pressKey('delete')
+      .typeText(this.steps.personLookup.nodes.prisonNumberSearch, searchTerm)
   }
 
   /**
@@ -142,6 +159,20 @@ class CreateMovePage extends Page {
   }
 
   /**
+   * Fill in release status
+   *
+   * @returns {Promise}
+   */
+  async fillInReleaseStatus() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/release-status')
+
+    return selectFieldsetOption(
+      'Is there a reason this person should not be released?',
+      'No'
+    )
+  }
+
+  /**
    * Fill in health information
    *
    * @returns {Promise}
@@ -150,6 +181,20 @@ class CreateMovePage extends Page {
     await t
       .expect(this.getCurrentUrl())
       .contains('/move/new/health-information')
+
+    return selectFieldsetOption(
+      'Does this person need to travel in a special vehicle?',
+      'No'
+    )
+  }
+
+  /**
+   * Fill in special vehicle
+   *
+   * @returns {Promise}
+   */
+  async fillInSpecialVehicle() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/special-vehicle')
 
     return selectFieldsetOption(
       'Does this person need to travel in a special vehicle?',
