@@ -107,7 +107,7 @@ describe('Person Service', function() {
       })
     })
 
-    context('when relationship field is not a string', function() {
+    context('when relationship field is an object', function() {
       let formatted
 
       beforeEach(async function() {
@@ -345,6 +345,29 @@ describe('Person Service', function() {
 
         it('should not affect non relationship fields', function() {
           expect(formatted.first_names).to.equal('Foo')
+        })
+      })
+    })
+
+    context('with falsy values', function() {
+      let formatted
+
+      beforeEach(async function() {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          last_name: '',
+          date_of_birth: undefined,
+          gender: null,
+          ethnicity: false,
+        })
+      })
+
+      it('should remove null and undefined', function() {
+        expect(formatted).to.deep.equal({
+          first_names: 'Foo',
+          last_name: '',
+          ethnicity: false,
+          identifiers: [],
         })
       })
     })
