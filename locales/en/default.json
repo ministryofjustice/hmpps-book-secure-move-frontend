@@ -1,6 +1,9 @@
 {
-  "phase_banner": "This is a new service",
-  "phase_banner_with_feedback": "This is a new service – your <a class=\"govuk-link\" href=\"{{url}}\">feedback</a> will help us to improve it.",
+  "feedback_link": "Give us feedback",
   "age": "Age",
-  "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})"
+  "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})",
+  "primary_navigation": {
+    "upcoming_moves": "Upcoming moves",
+    "single_moves": "Single moves"
+  }
 }

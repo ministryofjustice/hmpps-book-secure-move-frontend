@@ -6,10 +6,10 @@
 {% from "govuk/components/checkboxes/macro.njk"        import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk"           import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk"     import govukErrorSummary %}
+{% from "govuk/components/footer/macro.njk"            import govukFooter %}
 {% from "govuk/components/input/macro.njk"             import govukInput %}
 {% from "govuk/components/inset-text/macro.njk"        import govukInsetText %}
 {% from "govuk/components/panel/macro.njk"             import govukPanel %}
-{% from "govuk/components/phase-banner/macro.njk"      import govukPhaseBanner %}
 {% from "govuk/components/radios/macro.njk"            import govukRadios %}
 {% from "govuk/components/select/macro.njk"            import govukSelect %}
 {% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
@@ -17,6 +17,7 @@
 {% from "govuk/components/warning-text/macro.njk"      import govukWarningText %}
 
 {% from "moj/components/organisation-switcher/macro.njk" import mojOrganisationSwitcher %}
+{% from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation %}
 
 {# App level components #}
 {% from "card/macro.njk"              import appCard %}
@@ -91,18 +92,17 @@
       }
     ]
   }) }}
+  {{ mojPrimaryNavigation({
+    label: 'Primary navigation',
+    items: [{
+      text: t("default::primary_navigation.single_moves") if CURRENT_LOCATION and CURRENT_LOCATION.location_type === 'prison' else t("default::primary_navigation.upcoming_moves"),
+      href: '/moves'
+    }]
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukPhaseBanner({
-    tag: {
-      text: "Beta"
-    },
-    html: t("phase_banner", {
-      context: "with_feedback" if FEEDBACK_URL,
-      url: FEEDBACK_URL
-    })
-  }) }}
+
 
   {% block organisationSwitcher %}
     {% if CURRENT_LOCATION or canAccess("moves:view:all") %}
@@ -117,6 +117,19 @@
   {% endblock %}
 
   {% include "includes/messages.njk" %}
+{% endblock %}
+
+{% block footer %}
+    {{ govukFooter({
+      meta: {
+        items: [
+          {
+            href: FEEDBACK_URL,
+            text: t("feedback_link")
+          }
+        ] if FEEDBACK_URL
+      }
+    }) }}
 {% endblock %}
 
 {% block bodyEnd %}

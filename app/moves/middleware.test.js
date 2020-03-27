@@ -35,32 +35,84 @@ describe('Moves middleware', function() {
     })
 
     context('with current location', function() {
-      const mockLocationId = 'c249ed09-0cd5-4f52-8aee-0506e2dc7579'
+      context(
+        "when user hasn't got permission to see the proposed moves",
+        function() {
+          context('when there is a location', function() {
+            const mockLocation = {
+              id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
+            }
 
-      beforeEach(function() {
-        req.session.currentLocation = {
-          id: mockLocationId,
+            beforeEach(function() {
+              req.session = {
+                currentLocation: mockLocation,
+                user: {
+                  permissions: [],
+                },
+              }
+
+              middleware.redirectBaseUrl(req, res)
+            })
+
+            it('should redirect to moves by location', function() {
+              expect(res.redirect).to.have.been.calledOnceWithExactly(
+                `/moves/day/${mockMoveDate}/${mockLocation.id}/`
+              )
+            })
+          })
+        }
+      )
+      context('when user has permission to see the proposed moves', function() {
+        const mockLocation = {
+          id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
         }
 
-        middleware.redirectBaseUrl(req, res)
-      })
+        beforeEach(function() {
+          req.session = {
+            currentLocation: mockLocation,
+            user: {
+              permissions: ['moves:view:proposed'],
+            },
+          }
 
-      it('should redirect to moves by location', function() {
-        expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/moves/day/${mockMoveDate}/${mockLocationId}`
-        )
+          middleware.redirectBaseUrl(req, res)
+        })
+        it('should redirect to proposed moves by location if the user can see them', function() {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/moves/day/${mockMoveDate}/${mockLocation.id}/proposed`
+          )
+        })
       })
     })
-
     context('without current location', function() {
       beforeEach(function() {
         middleware.redirectBaseUrl(req, res)
       })
-
-      it('should redirect to moves without location', function() {
-        expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/moves/day/${mockMoveDate}`
-        )
+      context(
+        "when user hasn't got permission to see the proposed moves",
+        function() {
+          it('should redirect to moves without location', function() {
+            expect(res.redirect).to.have.been.calledOnceWithExactly(
+              `/moves/day/${mockMoveDate}`
+            )
+          })
+        }
+      )
+      context('when user has permission to see the proposed moves', function() {
+        beforeEach(function() {
+          req.session = {
+            user: {
+              permissions: ['move:proposed:view'],
+            },
+          }
+          res.redirect.resetHistory()
+          middleware.redirectBaseUrl(req, res)
+        })
+        it('should redirect to moves without location', function() {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/moves/day/${mockMoveDate}`
+          )
+        })
       })
     })
   })
