@@ -148,21 +148,36 @@ describe('Presenters', function() {
         })
       })
 
-      context('when meta contains all falsey values', function() {
-        let transformedResponse
-
-        beforeEach(function() {
-          transformedResponse = personToCardComponent()({
-            last_name: 'Jones',
-            first_names: 'Steve',
+      context('when meta contains falsey values', function() {
+        it('should correctly remove false items', function() {
+          const transformedResponse = personToCardComponent()({
             date_of_birth: '',
-            gender: false,
-            ethnicity: undefined,
-            assessment_answers: [],
+            gender: '',
+            ethnicity: '',
           })
+
+          expect(transformedResponse).to.have.property('meta')
+          expect(transformedResponse.meta.items.length).to.equal(0)
         })
 
         it('should correctly remove false items', function() {
+          const transformedResponse = personToCardComponent()({
+            date_of_birth: null,
+            gender: null,
+            ethnicity: null,
+          })
+
+          expect(transformedResponse).to.have.property('meta')
+          expect(transformedResponse.meta.items.length).to.equal(0)
+        })
+
+        it('should correctly remove false items', function() {
+          const transformedResponse = personToCardComponent()({
+            date_of_birth: undefined,
+            gender: undefined,
+            ethnicity: undefined,
+          })
+
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta.items.length).to.equal(0)
         })

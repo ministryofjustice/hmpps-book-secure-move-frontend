@@ -7,7 +7,7 @@ const assessmentToTagList = require('./assessment-to-tag-list')
 function personToCardComponent({ showMeta = true, showTags = true } = {}) {
   return function item({
     href,
-    gender = {},
+    gender,
     fullname = '',
     image_url: imageUrl,
     date_of_birth: dateOfBirth,
@@ -25,11 +25,11 @@ function personToCardComponent({ showMeta = true, showTags = true } = {}) {
       const metaItems = [
         {
           label: i18n.t('fields::date_of_birth.label'),
-          text: dateOfBirth ? dateOfBirthLabel : '',
+          text: dateOfBirth ? dateOfBirthLabel : undefined,
         },
         {
           label: i18n.t('fields::gender.label'),
-          text: gender.title,
+          text: gender ? gender.title : undefined,
         },
       ]
 
