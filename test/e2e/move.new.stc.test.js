@@ -43,16 +43,15 @@ test('Secure Training Centre to Court with new person', async t => {
   await page.submitForm()
 
   // Confirmation page
-  const fullname = `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
 
   await createMovePage.checkConfirmationStep({
-    fullname,
+    fullname: personalDetails.fullname,
     location: moveDetails.to_location_court_appearance,
   })
-  await t.click(Selector('a').withExactText(fullname))
+  await t.click(Selector('a').withExactText(personalDetails.fullname))
 
   // Move detail assertions
-  await moveDetailPage.checkHeader({ fullname })
+  await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)

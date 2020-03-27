@@ -155,20 +155,26 @@ export async function selectFieldsetOption(
  * Fill in form details on page
  *
  * @param {FormDetails} details - text fields and select options objects with field IDs as properties
- * @returns {Promise<FormDetails>} - details used to fill the form
+ * @returns {Promise<textFields>} - details used to fill the form
  */
-export async function fillInForm(details = {}) {
-  const textFields = details.text || {}
+export async function fillInForm(fields = {}) {
+  const filledInFields = {}
 
-  for (const [id, value] of Object.entries(textFields)) {
+  for (const [id, value] of Object.entries(fields)) {
     const textInputSelector = `#${id}`
-    await t
-      .selectText(textInputSelector)
-      .pressKey('delete')
-      .typeText(textInputSelector, value)
+    const exists = await Selector(textInputSelector).exists
+
+    if (exists) {
+      await t
+        .selectText(textInputSelector)
+        .pressKey('delete')
+        .typeText(textInputSelector, value)
+
+      filledInFields[id] = value
+    }
   }
 
-  return details
+  return filledInFields
 }
 
 /**

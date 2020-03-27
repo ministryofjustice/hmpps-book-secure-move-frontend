@@ -8,6 +8,7 @@ import {
   selectAutocompleteOption,
   selectFieldsetOption,
   fillInForm,
+  generatePerson,
 } from '../helpers'
 
 class CreateMovePage extends Page {
@@ -56,16 +57,16 @@ class CreateMovePage extends Page {
   /**
    * Fill in PNC search
    *
-   * @param {String} PNC number - PNC number to search with
+   * @param {String} searchTerm - Search term to enter
    * @returns {Promise<FormDetails>}
    */
-  fillInPncSearch(pncNumber) {
+  fillInPncSearch(searchTerm) {
     return t
       .expect(this.getCurrentUrl())
       .contains('/move/new/person-lookup-pnc')
       .selectText(this.steps.personLookup.nodes.pncNumberSearch)
       .pressKey('delete')
-      .typeText(this.steps.personLookup.nodes.pncNumberSearch, pncNumber)
+      .typeText(this.steps.personLookup.nodes.pncNumberSearch, searchTerm)
   }
 
   /**
@@ -84,23 +85,21 @@ class CreateMovePage extends Page {
    * @param {Object} personalDetails - personal details to fill form in with
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails({ pncNumber } = {}) {
+  async fillInPersonalDetails(personalDetails) {
     await t.expect(this.getCurrentUrl()).contains('/move/new/personal-details')
-    return fillInForm({
-      text: {
-        police_national_computer: pncNumber || faker.random.number().toString(),
-        last_name: faker.name.lastName(),
-        first_names: faker.name.firstName(),
-        date_of_birth: faker.date
-          .between('01-01-1940', '01-01-1990')
-          .toString(),
-      },
+
+    const person = generatePerson(personalDetails)
+    const textFields = await fillInForm(person)
+
+    return {
+      ...textFields,
+      fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
       ethnicity: await selectAutocompleteOption('Ethnicity').then(getInnerText),
       gender: await selectFieldsetOption(
         'Gender',
         faker.random.arrayElement(['Male', 'Female'])
       ).then(getInnerText),
-    })
+    }
   }
 
   /**
@@ -113,13 +112,13 @@ class CreateMovePage extends Page {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-details')
     await selectFieldsetOption('Move to', moveType)
 
-    return fillInForm({
+    return {
       to_location_court_appearance:
         moveType === 'Court'
           ? await selectAutocompleteOption('Name of court').then(getInnerText)
           : moveType,
       date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
-    })
+    }
   }
 
   /**
