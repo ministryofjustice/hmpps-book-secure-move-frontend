@@ -1,8 +1,12 @@
+import { find } from 'lodash'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
 import { ClientFunction, Selector, t } from 'testcafe'
+import faker from 'faker'
 import glob from 'glob'
+
+import personService from '../../common/services/person'
 
 /**
  * Get inner text of TestCafe selector
@@ -48,6 +52,40 @@ async function selectOption(selector, textOrIndex = 'random', cssSelector) {
   await t.click(option)
 
   return option
+}
+
+export function generatePerson({ pncNumber } = {}) {
+  return {
+    police_national_computer:
+      pncNumber ||
+      faker
+        .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
+        .toUpperCase(),
+    prison_number: faker.fake(
+      '{{helpers.replaceSymbols("?")}}{{random.number}}{{helpers.replaceSymbols("??")}}'
+    ),
+    last_name: faker.name.lastName(),
+    first_names: faker.name.firstName(),
+    date_of_birth: format(
+      faker.date.between('01-01-1940', '01-01-1990'),
+      'yyyy-MM-dd'
+    ),
+  }
+}
+
+export async function createPersonFixture() {
+  const person = await personService.create(generatePerson())
+
+  return {
+    ...person,
+    fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
+    prison_number: find(person.identifiers, {
+      identifier_type: 'prison_number',
+    }).value,
+    police_national_computer: find(person.identifiers, {
+      identifier_type: 'police_national_computer',
+    }).value,
+  }
 }
 
 /**
