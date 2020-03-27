@@ -3,7 +3,7 @@ const router = require('express').Router()
 
 // Local dependencies
 const { protectRoute } = require('../../common/middleware/permissions')
-const { download, list, listByStatus } = require('./controllers')
+const { dashboard, download, list, listByStatus } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -15,6 +15,8 @@ const {
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
   setMovesByDateAllLocations,
+  setTotalMoves,
+  setTranslatedMoveTypes,
 } = require('./middleware')
 
 const uuidRegex =
@@ -45,10 +47,21 @@ router.get(
   list
 )
 router.get(
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(dashboard)`,
+  protectRoute('moves:view:by_location'),
+  protectRoute('moves:view:proposed'),
+  setMoveTypeNavigation,
+  setTotalMoves,
+  setTranslatedMoveTypes,
+  setPagination,
+  dashboard
+)
+router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed|requested,accepted,completed|rejected)`,
   protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
   setMoveTypeNavigation,
+  setTranslatedMoveTypes,
   setMovesByDateRangeAndStatus,
   setPagination,
   listByStatus

@@ -1,4 +1,5 @@
 const moveService = require('../../common/services/move')
+const presenters = require('../../common/presenters')
 
 const middleware = require('./middleware')
 
@@ -77,9 +78,9 @@ describe('Moves middleware', function() {
 
           middleware.redirectBaseUrl(req, res)
         })
-        it('should redirect to proposed moves by location if the user can see them', function() {
+        it('should redirect to the dashboard if the user can see them', function() {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/day/${mockMoveDate}/${mockLocation.id}/proposed`
+            `/moves/week/${mockMoveDate}/${mockLocation.id}/dashboard`
           )
         })
       })
@@ -621,6 +622,44 @@ describe('Moves middleware', function() {
         )
       })
     })
+    context('with param view instead of status', function() {
+      beforeEach(function() {
+        res = {
+          locals: {
+            moveDate: mockDateRange,
+          },
+        }
+        req = {
+          baseUrl: '/moves',
+          params: {
+            locationId: '123',
+            date: '2019-10-10',
+            view: 'dashboard',
+            period: 'day',
+          },
+        }
+        nextSpy = sinon.spy()
+        middleware.setPagination(req, res, nextSpy)
+      })
+      it('creats correctly todayUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/day/2019-10-10/123/dashboard'
+        )
+      })
+      it('creats correctly prevUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/day/2019-10-09/123/dashboard'
+        )
+      })
+      it('creats correctly nextUrl', function() {
+        expect(res.locals.pagination.nextUrl).to.exist
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/day/2019-10-11/123/dashboard'
+        )
+      })
+    })
   })
 
   describe('#setMoveTypeNavigation', function() {
@@ -656,20 +695,23 @@ describe('Moves middleware', function() {
           moveTypeNavigation: [
             {
               active: false,
+              filter: 'proposed',
+              label: 'moves::dashboard.filter.proposed',
               href: '/moves/week/2010-09-07/123/proposed',
-              label: 'proposed',
               value: 4,
             },
             {
               active: false,
+              filter: 'requested,accepted,completed',
+              label: 'moves::dashboard.filter.approved',
               href: '/moves/week/2010-09-07/123/requested,accepted,completed',
-              label: 'approved',
               value: 4,
             },
             {
               active: false,
+              filter: 'rejected',
+              label: 'moves::dashboard.filter.rejected',
               href: '/moves/week/2010-09-07/123/rejected',
-              label: 'rejected',
               value: 4,
             },
           ],
@@ -714,6 +756,128 @@ describe('Moves middleware', function() {
       })
     })
   })
+
+  describe('#setTotalMoves', function() {
+    context('without res.locals.moveTypeNavigation', function() {
+      const locals = {}
+      const next = sinon.spy()
+      beforeEach(function() {
+        middleware.setTotalMoves({}, { locals }, next)
+      })
+      afterEach(function() {
+        next.resetHistory()
+      })
+      it('calls next if res.locals.moveTypeNavigation has not been created', function() {
+        expect(locals).to.deep.equal({})
+        expect(next).to.have.been.calledOnce
+      })
+    })
+    context('with res.locals.moveTypeNavigation', function() {
+      let locals
+      const next = sinon.spy()
+      beforeEach(function() {
+        locals = {
+          moveTypeNavigation: [
+            {
+              filter: 'proposed',
+              value: 8,
+              href: '/proposed',
+            },
+            {
+              filter: 'rejected',
+              value: 5,
+              href: '/rejected',
+            },
+          ],
+        }
+        middleware.setTotalMoves({}, { locals }, next)
+      })
+      afterEach(function() {
+        next.resetHistory()
+      })
+      it('adds a new type called total ', function() {
+        expect(
+          locals.moveTypeNavigation.find(type => {
+            return type.filter === 'total'
+          })
+        ).to.exist
+      })
+      it('has a total value of all the moves', function() {
+        expect(
+          locals.moveTypeNavigation.find(type => {
+            return type.filter === 'total'
+          }).value
+        ).to.equal(13)
+      })
+      it('has a total link to the proposed moves tab', function() {
+        expect(
+          locals.moveTypeNavigation.find(type => {
+            return type.filter === 'total'
+          }).href
+        ).to.equal('/proposed')
+      })
+      it('drops the proposed moves', function() {
+        expect(
+          locals.moveTypeNavigation.find(type => {
+            return type.filter === 'proposed'
+          })
+        ).not.to.exist
+      })
+      it('calls next', function() {
+        expect(next).to.have.been.calledOnce
+      })
+    })
+  })
+
+  describe('#setTranslatedMoveTypes', function() {
+    let locals
+    const next = sinon.spy()
+    context('without res.locals.moveTypeNavigation', function() {
+      beforeEach(function() {
+        locals = {}
+        middleware.setTranslatedMoveTypes({}, { locals }, next)
+      })
+      afterEach(function() {
+        next.resetHistory()
+      })
+      it('calls next', function() {
+        expect(next).to.have.been.calledOnce
+      })
+    })
+    context('with res.locals.moveTypeNavigation', function() {
+      beforeEach(function() {
+        locals = {
+          moveTypeNavigation: [
+            {
+              filter: 'proposed',
+              value: 8,
+              href: '/proposed',
+            },
+          ],
+        }
+        sinon.stub(presenters, 'moveTypesToFilterComponent')
+        middleware.setTranslatedMoveTypes({}, { locals }, next)
+      })
+      afterEach(function() {
+        next.resetHistory()
+      })
+      it('invokes the presenter', function() {
+        expect(
+          presenters.moveTypesToFilterComponent
+        ).to.have.been.calledOnceWithExactly([
+          {
+            filter: 'proposed',
+            value: 8,
+            href: '/proposed',
+          },
+        ])
+      })
+      it('calls next', function() {
+        expect(next).to.have.been.calledOnce
+      })
+    })
+  })
+
   describe('#setMovesByDateAndLocation()', function() {
     let res, nextSpy
     const mockCurrentLocation = '5555'

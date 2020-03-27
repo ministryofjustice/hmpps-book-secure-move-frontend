@@ -1,0 +1,9 @@
+{% extends "./_layout.njk" %}
+
+{% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
+
+{% block headerActions %}
+  {{ appFilter({
+    items: moveTypeNavigation
+  }) }}
+{% endblock %}
