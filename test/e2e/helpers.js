@@ -1,8 +1,12 @@
+import { find } from 'lodash'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
 import { ClientFunction, Selector, t } from 'testcafe'
+import faker from 'faker'
 import glob from 'glob'
+
+import personService from '../../common/services/person'
 
 /**
  * Get inner text of TestCafe selector
@@ -50,28 +54,58 @@ async function selectOption(selector, textOrIndex = 'random', cssSelector) {
   return option
 }
 
+export function generatePerson({ pncNumber } = {}) {
+  return {
+    police_national_computer:
+      pncNumber ||
+      faker
+        .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
+        .toUpperCase(),
+    prison_number: faker.fake(
+      '{{helpers.replaceSymbols("?")}}{{random.number}}{{helpers.replaceSymbols("??")}}'
+    ),
+    last_name: faker.name.lastName(),
+    first_names: faker.name.firstName(),
+    date_of_birth: format(
+      faker.date.between('01-01-1940', '01-01-1990'),
+      'yyyy-MM-dd'
+    ),
+  }
+}
+
+export async function createPersonFixture() {
+  const person = await personService.create(generatePerson())
+
+  return {
+    ...person,
+    fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
+    prison_number: find(person.identifiers, {
+      identifier_type: 'prison_number',
+    }).value,
+    police_national_computer: find(person.identifiers, {
+      identifier_type: 'police_national_computer',
+    }).value,
+  }
+}
+
 /**
  * Select random option from autocomplete menu
  *
- * @param {string} labelText - label text for the option
+ * @param {Selector} selector - An autocomplete field
  * @param {string|number} [optionTextOrIndex] - option text or 0-based index or 'random'.
- * @returns {Selector}
+ * @returns {string} - selected value
  */
-export async function selectAutocompleteOption(labelText, optionTextOrIndex) {
-  const fieldSelector = Selector('.govuk-label').withText(labelText)
+export async function selectAutocompleteOption(selector, optionTextOrIndex) {
+  await t.click(selector)
 
-  await t.click(fieldSelector)
-
-  const optionCssSelector = '.autocomplete__menu .autocomplete__option'
-  const autocompleteMenuOptions = await fieldSelector
-    .sibling('div')
-    .find(optionCssSelector)
+  const optionsSelector = '.autocomplete__menu .autocomplete__option'
+  const autocompleteMenuOptions = await selector.parent().find(optionsSelector)
 
   return selectOption(
     autocompleteMenuOptions,
     optionTextOrIndex,
-    optionCssSelector
-  )
+    optionsSelector
+  ).then(getInnerText)
 }
 
 /**
@@ -117,20 +151,26 @@ export async function selectFieldsetOption(
  * Fill in form details on page
  *
  * @param {FormDetails} details - text fields and select options objects with field IDs as properties
- * @returns {Promise<FormDetails>} - details used to fill the form
+ * @returns {Promise<textFields>} - details used to fill the form
  */
-export async function fillInForm(details = {}) {
-  const textFields = details.text || {}
+export async function fillInForm(fields = {}) {
+  const filledInFields = {}
 
-  for (const [id, value] of Object.entries(textFields)) {
+  for (const [id, value] of Object.entries(fields)) {
     const textInputSelector = `#${id}`
-    await t
-      .selectText(textInputSelector)
-      .pressKey('delete')
-      .typeText(textInputSelector, value)
+    const exists = await Selector(textInputSelector).exists
+
+    if (exists) {
+      await t
+        .selectText(textInputSelector)
+        .pressKey('delete')
+        .typeText(textInputSelector, value)
+
+      filledInFields[id] = value
+    }
   }
 
-  return details
+  return filledInFields
 }
 
 /**

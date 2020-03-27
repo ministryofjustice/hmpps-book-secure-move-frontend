@@ -1,8 +1,7 @@
 import { Selector } from 'testcafe'
-import faker from 'faker'
 
 import { newMove, movesByDay } from './_routes'
-import { policeUser, stcUser } from './roles'
+import { policeUser } from './roles'
 import {
   page,
   moveDetailPage,
@@ -10,28 +9,30 @@ import {
   cancelMovePage,
   createMovePage,
 } from './pages'
-
-const pncNumber = faker.random.number().toString()
-let personalDetails
-let fullname
+import { generatePerson, createPersonFixture } from './helpers'
 
 fixture('New move from Police Custody').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(newMove)
 })
 
 test('Police to Court with unfound person', async t => {
+  const person = generatePerson()
+
   // PNC lookup
-  await createMovePage.fillInPncSearch(pncNumber)
+  await createMovePage.fillInPncSearch(person.police_national_computer)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(0, pncNumber)
+  await createMovePage.checkPersonLookupResults(
+    0,
+    person.police_national_computer
+  )
   await t.click(createMovePage.steps.personLookupResults.nodes.moveSomeoneNew)
 
   // Personal details
   // TODO: Check pnc number is pre-filled
-  personalDetails = await createMovePage.fillInPersonalDetails({
-    pncNumber,
+  const personalDetails = await createMovePage.fillInPersonalDetails({
+    pncNumber: person.police_national_computer,
   })
   await page.submitForm()
 
@@ -52,29 +53,32 @@ test('Police to Court with unfound person', async t => {
   await page.submitForm()
 
   // Confirmation page
-  fullname = `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
-
   await createMovePage.checkConfirmationStep({
-    fullname,
+    fullname: personalDetails.fullname,
     location: moveDetails.to_location_court_appearance,
   })
-  await t.click(Selector('a').withExactText(fullname))
+  await t.click(Selector('a').withExactText(personalDetails.fullname))
 
   // Move detail assertions
-  await moveDetailPage.checkHeader({ fullname })
+  await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
 })
 
 test('Police to Court with existing person', async t => {
+  const personalDetails = await createPersonFixture()
+
   // PNC lookup
-  await createMovePage.fillInPncSearch(pncNumber)
+  await createMovePage.fillInPncSearch(personalDetails.police_national_computer)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(1, pncNumber)
-  await createMovePage.selectSearchResults(fullname)
+  await createMovePage.checkPersonLookupResults(
+    1,
+    personalDetails.police_national_computer
+  )
+  await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 
   // Move details
@@ -95,13 +99,13 @@ test('Police to Court with existing person', async t => {
 
   // Confirmation page
   await createMovePage.checkConfirmationStep({
-    fullname,
+    fullname: personalDetails.fullname,
     location: moveDetails.to_location_court_appearance,
   })
-  await t.click(Selector('a').withExactText(fullname))
+  await t.click(Selector('a').withExactText(personalDetails.fullname))
 
   // Move detail assertions
-  await moveDetailPage.checkHeader({ fullname })
+  await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
@@ -116,9 +120,7 @@ test('Police to Prison (recall) with new person', async t => {
     .click(createMovePage.steps.personLookup.nodes.moveSomeoneNew)
 
   // Personal details
-  const personalDetails = await createMovePage.fillInPersonalDetails({
-    pncNumber,
-  })
+  const personalDetails = await createMovePage.fillInPersonalDetails()
   await page.submitForm()
 
   // Move details
@@ -134,16 +136,14 @@ test('Police to Prison (recall) with new person', async t => {
   await page.submitForm()
 
   // Confirmation page
-  const fullname = `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
-
   await createMovePage.checkConfirmationStep({
-    fullname,
+    fullname: personalDetails.fullname,
     location: 'Prison',
   })
-  await t.click(Selector('a').withExactText(fullname))
+  await t.click(Selector('a').withExactText(personalDetails.fullname))
 
   // Move detail assertions
-  await moveDetailPage.checkHeader({ fullname })
+  await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
@@ -193,62 +193,4 @@ test('Cancel move `Another reason`', async t => {
     heading: 'Move cancelled',
     content: 'Reason — Flat tyre on the van',
   })
-})
-
-fixture('New move from Secure Training Centre (STC)').beforeEach(async t => {
-  await t.useRole(stcUser).navigateTo(newMove)
-})
-
-test('Secure Training Centre to Court with new person', async t => {
-  // PNC lookup
-  await t
-    .expect(page.getCurrentUrl())
-    .contains('/move/new/person-lookup-pnc')
-    .click(createMovePage.steps.personLookup.nodes.noIdentifierLink)
-    .click(createMovePage.steps.personLookup.nodes.moveSomeoneNew)
-
-  // Personal details
-  const personalDetails = await createMovePage.fillInPersonalDetails({
-    pncNumber,
-  })
-  await page.submitForm()
-
-  // Move details
-  const moveDetails = await createMovePage.fillInMoveDetails('Court')
-  await page.submitForm()
-
-  // Court information
-  await createMovePage.fillInCourtInformation()
-  await page.submitForm()
-
-  // Risk information
-  await createMovePage.fillInRiskInformation()
-  await page.submitForm()
-
-  // Health information
-  await createMovePage.fillInHealthInformation()
-  await page.submitForm()
-
-  // Documents upload
-  const files = ['a-random-text-file.txt', 'boy-the-cat.jpg', 'leo-the-cat.png']
-  await createMovePage.fillInDocumentUploads(files)
-  await createMovePage.checkDocumentUploads(files)
-  await page.submitForm()
-
-  // Confirmation page
-  const fullname = `${personalDetails.text.last_name}, ${personalDetails.text.first_names}`.toUpperCase()
-
-  await createMovePage.checkConfirmationStep({
-    fullname,
-    location: moveDetails.to_location_court_appearance,
-  })
-  await t.click(Selector('a').withExactText(fullname))
-
-  // Move detail assertions
-  await moveDetailPage.checkHeader({ fullname })
-
-  // Personal details assertions
-  await moveDetailPage.checkPersonalDetails(personalDetails)
-
-  // TODO: Check files are present
 })

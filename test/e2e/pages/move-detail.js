@@ -1,6 +1,8 @@
+import { forEach } from 'lodash'
 import { Selector, t } from 'testcafe'
 
 import Page from './page'
+import filters from '../../../config/nunjucks/filters'
 
 class MoveDetailPage extends Page {
   constructor() {
@@ -37,26 +39,34 @@ class MoveDetailPage extends Page {
       .contains(content, 'Content contains text')
   }
 
-  checkPersonalDetails({ text, gender, ethnicity } = {}) {
-    return t
-      .expect(
-        this.getDlDefinitionByKey(
-          this.nodes.personalDetailsSummary,
-          'PNC number'
-        )
-      )
-      .eql(text.police_national_computer)
-      .expect(
-        this.getDlDefinitionByKey(this.nodes.personalDetailsSummary, 'Gender')
-      )
-      .eql(gender)
-      .expect(
-        this.getDlDefinitionByKey(
-          this.nodes.personalDetailsSummary,
-          'Ethnicity'
-        )
-      )
-      .eql(ethnicity)
+  async checkPersonalDetails({
+    police_national_computer: pncNumber,
+    prison_number: prisonNumber,
+    date_of_birth: dateOfBirth,
+    gender,
+    ethnicity,
+  } = {}) {
+    const labelMap = {
+      'PNC number': pncNumber,
+      'Prison number': prisonNumber,
+      'Date of birth': dateOfBirth
+        ? `${filters.formatDate(dateOfBirth)} (Age ${filters.calculateAge(
+            dateOfBirth
+          )})`
+        : undefined,
+      Gender: gender,
+      Ethnicity: ethnicity,
+    }
+
+    forEach(labelMap, async (value, key) => {
+      if (value) {
+        await t
+          .expect(
+            this.getDlDefinitionByKey(this.nodes.personalDetailsSummary, key)
+          )
+          .eql(value)
+      }
+    })
   }
 }
 

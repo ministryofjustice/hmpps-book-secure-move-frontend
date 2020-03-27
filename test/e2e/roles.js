@@ -26,3 +26,10 @@ export const stcUser = Role(home, async t => {
     .typeText('#password', E2E.ROLES.STC.password)
     .pressKey('enter')
 })
+
+export const prisonUser = Role(home, async t => {
+  await t
+    .typeText('#username', E2E.ROLES.PRISON.username)
+    .typeText('#password', E2E.ROLES.PRISON.password)
+    .pressKey('enter')
+})

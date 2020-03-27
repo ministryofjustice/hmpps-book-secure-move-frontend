@@ -1,4 +1,4 @@
-const { mapKeys, mapValues, uniqBy } = require('lodash')
+const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -46,10 +46,13 @@ const personService = {
       'identifier_type'
     )
 
-    return {
-      ...formatted,
-      identifiers,
-    }
+    return omitBy(
+      {
+        ...formatted,
+        identifiers,
+      },
+      isNil
+    )
   },
 
   create(data) {

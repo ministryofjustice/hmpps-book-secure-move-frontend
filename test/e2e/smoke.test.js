@@ -1,5 +1,5 @@
 import { movesByDay } from './_routes'
-import { policeUser, stcUser, supplierUser } from './roles'
+import { policeUser, stcUser, prisonUser, supplierUser } from './roles'
 import { page, movesDashboardPage } from './pages'
 
 const users = [
@@ -13,6 +13,12 @@ const users = [
     name: 'STC user',
     role: stcUser,
     username: 'End-to-End Test STC',
+    homeButton: movesDashboardPage.nodes.createMoveButton,
+  },
+  {
+    name: 'Prison user',
+    role: prisonUser,
+    username: 'End-to-End Test Prison',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
