@@ -375,8 +375,8 @@ module.exports = {
     ],
   },
   date_to: {
-    skip: true,
     ...dateField,
+    skip: true,
     validate: [...dateField.validate, 'after'],
     dependent: {
       field: 'has_date_to',

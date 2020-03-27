@@ -40,6 +40,10 @@ test('Police to Court with unfound person', async t => {
   const moveDetails = await createMovePage.fillInMoveDetails('Court')
   await page.submitForm()
 
+  // Fill in date
+  await createMovePage.fillInDate()
+  await page.submitForm()
+
   // Court information
   await createMovePage.fillInCourtInformation()
   await page.submitForm()
@@ -85,6 +89,10 @@ test('Police to Court with existing person', async t => {
   const moveDetails = await createMovePage.fillInMoveDetails('Court')
   await page.submitForm()
 
+  // Fill in date
+  await createMovePage.fillInDate()
+  await page.submitForm()
+
   // Court information
   await createMovePage.fillInCourtInformation()
   await page.submitForm()
@@ -125,6 +133,10 @@ test('Police to Prison (recall) with new person', async t => {
 
   // Move details
   await createMovePage.fillInMoveDetails('Prison recall')
+  await page.submitForm()
+
+  // Fill in date
+  await createMovePage.fillInDate()
   await page.submitForm()
 
   // Risk information
