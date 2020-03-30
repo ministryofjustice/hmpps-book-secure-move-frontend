@@ -1,37 +1,21 @@
 const logger = require('../../config/logger')
 
 function _getMessage(error) {
+  let errorLookup = 'default'
+
   if (error.code === 'EBADCSRFTOKEN') {
-    return {
-      heading: 'errors::tampered_with.heading',
-      content: 'errors::tampered_with.content',
-    }
-  }
-
-  if (error.statusCode === 404) {
-    return {
-      heading: 'errors::not_found.heading',
-      content: 'errors::not_found.content',
-    }
-  }
-
-  if (error.statusCode === 403 || error.statusCode === 401) {
-    return {
-      heading: 'errors::unauthorized.heading',
-      content: 'errors::unauthorized.content',
-    }
-  }
-
-  if (error.statusCode === 422) {
-    return {
-      heading: 'errors::unprocessable_entity.heading',
-      content: 'errors::unprocessable_entity.content',
-    }
+    errorLookup = 'tampered_with'
+  } else if (error.statusCode === 404) {
+    errorLookup = 'not_found'
+  } else if (error.statusCode === 403 || error.statusCode === 401) {
+    errorLookup = 'unauthorized'
+  } else if (error.statusCode === 422) {
+    errorLookup = 'unprocessable_entity'
   }
 
   return {
-    heading: 'errors::default.heading',
-    content: 'errors::default.content',
+    heading: `errors::${errorLookup}.heading`,
+    content: `errors::${errorLookup}.content`,
   }
 }
 
@@ -44,12 +28,11 @@ function notFound(req, res, next) {
 
 function catchAll(showStackTrace = false) {
   return function errors(error, req, res, next) {
-    const statusCode = error.statusCode || 500
-
     if (res.headersSent) {
       return next(error)
     }
 
+    const statusCode = error.statusCode || 500
     logger[statusCode < 500 ? 'info' : 'error'](error)
 
     if (req.xhr) {
