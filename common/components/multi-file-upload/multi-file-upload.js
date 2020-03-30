@@ -125,9 +125,10 @@ MultiFileUpload.prototype = {
           row.classList.remove('dz-success')
           row.classList.add('dz-error')
           row.querySelector('[data-dz-errormessage]').innerHTML = errorMessage
-          const buttons = row
-            .closest('.app-multi-file-upload__list')
-            .querySelectorAll('button[name="delete"]')
+
+          const buttons = this.dropzone.previewsContainer.querySelectorAll(
+            'button[data-dz-remove]'
+          )
           const actions = [...buttons]
           actions.forEach(action => {
             action.style.visibility = 'hidden'
