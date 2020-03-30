@@ -92,13 +92,15 @@
       }
     ]
   }) }}
-  {{ mojPrimaryNavigation({
-    label: 'Primary navigation',
-    items: [{
-      text: t("default::primary_navigation.single_moves") if CURRENT_LOCATION and CURRENT_LOCATION.location_type === 'prison' else t("default::primary_navigation.upcoming_moves"),
-      href: '/moves'
-    }]
-  }) }}
+  {% block primaryNavigation %}
+    {{ mojPrimaryNavigation({
+      label: 'Primary navigation',
+      items: [{
+        text: t("default::primary_navigation.single_moves") if CURRENT_LOCATION and canAccess("moves:view:proposed") else t("default::primary_navigation.upcoming_moves"),
+        href: '/moves'
+      }]
+    }) }}
+  {% endblock %}
 {% endblock %}
 
 {% block beforeContent %}
