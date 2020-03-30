@@ -1,9 +1,10 @@
 {% extends "./_layout.njk" %}
 
-{% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
+{% block headerGridColumnClass %}govuk-grid-column-full view-dashboard{% endblock %}
 
 {% block headerActions %}
   {{ appFilter({
-    items: moveTypeNavigation
+    items: moveTypeNavigation,
+    classes: "app-filter--stacked"
   }) }}
 {% endblock %}

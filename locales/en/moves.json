@@ -132,7 +132,7 @@
       "proposed": "proposed",
       "approved": "approved",
       "rejected": "rejected",
-      "total": "total"
+      "total": "single requests"
     }
   },
   "detail": {

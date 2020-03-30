@@ -75,3 +75,46 @@
 .app-filter__label {
   text-decoration: underline;
 }
+
+.app-filter--stacked {
+  .app-filter__list {
+    flex-direction: column;
+  }
+  .app-filter__list-item {
+    margin-bottom: govuk-spacing(1);
+  }
+  .app-filter__list-item:not(:first-of-type) {
+    border-color: govuk-colour('light-grey');
+    .app-filter__link {
+      background-color: govuk-colour('light-grey');
+      .app-filter__value {
+        text-decoration: underline;
+        display: inline-block;
+        font: inherit;
+      }
+      &:link,
+      &:active,
+      &:visited {
+        color: govuk-colour('blue');
+      }
+
+      &:hover {
+        color: govuk-colour('black');
+      }
+
+      &:focus {
+        background-color: govuk-colour('yellow');
+        color: govuk-colour('black');
+      }
+    }
+    @include govuk-media-query($until: 370px) {
+      min-height: auto;
+    }
+  }
+  .app-filter__list-item:first-of-type {
+    min-height: 110px;
+  }
+  .app-filter__link {
+    height: auto;
+  }
+}
