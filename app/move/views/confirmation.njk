@@ -38,6 +38,28 @@
         }) | safe }}
       </p>
 
+      {% if savedHearings|length %}
+        {{ govukInsetText({
+          html: t("moves::confirmation.saved_to_nomis", {
+            name: move.person.fullname | upper,
+            date: move.date | formatDateWithDay,
+            cases: savedHearings | oxfordJoin,
+            count: savedHearings.length
+          })
+        }) }}
+      {% endif %}
+
+      {% if unsavedHearings|length %}
+        {{ govukWarningText({
+          text: t("moves::confirmation.saved_to_nomis", {
+            context: "failed",
+            cases: unsavedHearings | oxfordJoin,
+            count: unsavedHearings.length
+          }),
+          iconFallbackText: "Warning"
+        }) }}
+      {% endif %}
+
       <p>
         <a href="{{ MOVES_URL }}">
           {{ t("actions::back_to_dashboard") }}

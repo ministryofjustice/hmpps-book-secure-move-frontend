@@ -50,6 +50,18 @@ describe('Move controllers', function() {
       it('should translate supplier fallback key', function() {
         expect(req.t).to.have.been.calledOnceWithExactly('supplier_fallback')
       })
+
+      it('should use empty array for saved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('savedHearings')
+        expect(params.savedHearings).to.deep.equal([])
+      })
+
+      it('should use empty array for unsaved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('unsavedHearings')
+        expect(params.unsavedHearings).to.deep.equal([])
+      })
     })
 
     describe('with move_type "prison_recall"', function() {
@@ -143,6 +155,71 @@ describe('Move controllers', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('supplierName')
         expect(params.supplierName).to.equal('Supplier one and Supplier two')
+      })
+    })
+
+    describe('with hearings', function() {
+      beforeEach(function() {
+        res.locals.move = {
+          ...mockMove,
+          hearings: [
+            {
+              case_number: 'S72525',
+              saved_to_nomis: true,
+            },
+            {
+              case_number: 'T43406',
+              saved_to_nomis: false,
+            },
+            {
+              case_number: 'S67301',
+              saved_to_nomis: false,
+            },
+            {
+              case_number: 'T15222',
+              saved_to_nomis: true,
+            },
+            {
+              case_number: 'T45483',
+              saved_to_nomis: false,
+            },
+            {
+              case_number: 'T30532',
+              saved_to_nomis: false,
+            },
+          ],
+        }
+
+        controller(req, res)
+      })
+
+      it('should contain correct number of saved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('savedHearings')
+        expect(params.savedHearings.length).to.equal(2)
+      })
+
+      it('should contain correct case numbers in saved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('savedHearings')
+        expect(params.savedHearings).to.deep.equal(['S72525', 'T15222'])
+      })
+
+      it('should contain correct number of unsaved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('unsavedHearings')
+        expect(params.unsavedHearings.length).to.equal(4)
+      })
+
+      it('should contain correct case numbers in unsaved hearings', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('unsavedHearings')
+        expect(params.unsavedHearings).to.deep.equal([
+          'T43406',
+          'S67301',
+          'T45483',
+          'T30532',
+        ])
       })
     })
   })
