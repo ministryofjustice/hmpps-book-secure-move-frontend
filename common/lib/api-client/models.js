@@ -13,6 +13,8 @@ module.exports = {
       created_at: '',
       time_due: '',
       date: '',
+      date_from: '',
+      date_to: '',
       person: {
         jsonApi: 'hasOne',
         type: 'people',

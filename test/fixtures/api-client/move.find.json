@@ -11,6 +11,8 @@
       "updated_at": "2019-10-26T10:13:16+01:00",
       "time_due": "2019-09-06T14:00:00+01:00",
       "date": "2019-09-06",
+      "date_from": "2019-09-06",
+      "date_to": "2019-10-01",
       "move_type": "court_appearance",
       "move_agreed": false,
       "move_agreed_by": null,

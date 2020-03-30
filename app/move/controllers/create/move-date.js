@@ -1,0 +1,44 @@
+const { format, startOfToday, startOfTomorrow, parseISO } = require('date-fns')
+
+const CreateBaseController = require('./base')
+const filters = require('../../../../config/nunjucks/filters')
+
+class MoveDateController extends CreateBaseController {
+  middlewareSetup() {
+    super.middlewareSetup()
+    this.use(this.setDateType)
+  }
+
+  setDateType(req, res, next) {
+    const { date_type: dateType } = req.form.options.fields
+    const { items } = dateType
+
+    items[0].text = req.t(items[0].text, {
+      date: filters.formatDateWithDay(res.locals.TODAY),
+    })
+    items[1].text = req.t(items[1].text, {
+      date: filters.formatDateWithDay(res.locals.TOMORROW),
+    })
+    next()
+  }
+
+  process(req, res, next) {
+    const { date_type: dateType } = req.form.values
+
+    // process move date
+    let moveDate
+
+    if (dateType === 'custom') {
+      moveDate = parseISO(req.form.values.date_custom)
+    } else {
+      req.form.values.date_custom = ''
+      moveDate = dateType === 'today' ? startOfToday() : startOfTomorrow()
+    }
+
+    req.form.values.date = format(moveDate, 'yyyy-MM-dd')
+
+    next()
+  }
+}
+
+module.exports = MoveDateController

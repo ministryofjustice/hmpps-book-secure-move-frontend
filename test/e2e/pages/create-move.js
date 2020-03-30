@@ -161,9 +161,16 @@ class CreateMovePage extends Page {
 
     return {
       move_type: moveType,
-      date_type: await selectFieldsetOption('Date', 'Today').then(getInnerText),
       ...values,
     }
+  }
+
+  /**
+   * Fill in date
+   */
+  async fillInDate() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/move-date')
+    return selectFieldsetOption('Date', 'Today').then(getInnerText)
   }
 
   /**

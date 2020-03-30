@@ -1,6 +1,7 @@
 const {
   PersonalDetails,
   Assessment,
+  MoveDate,
   MoveDetails,
   Save,
   PersonSearch,
@@ -30,16 +31,11 @@ const moveDetailsStep = {
   pageTitle: 'moves::steps.move_details.heading',
   next: [
     {
-      field: 'move_type',
-      value: 'court_appearance',
-      next: 'court-information',
-    },
-    {
       field: 'from_location_type',
       value: 'prison',
-      next: 'release-status',
+      next: 'move-date-range',
     },
-    'risk-information',
+    'move-date',
   ],
 }
 
@@ -70,6 +66,23 @@ const healthStep = {
       next: 'document',
     },
     'save',
+  ],
+}
+
+const moveDateStep = {
+  pageTitle: 'moves::steps.move_date.heading',
+  next: [
+    {
+      field: 'move_type',
+      value: 'court_appearance',
+      next: 'court-information',
+    },
+    {
+      field: 'from_location_type',
+      value: 'prison',
+      next: 'release-status',
+    },
+    'risk-information',
   ],
 }
 
@@ -137,9 +150,14 @@ module.exports = {
       'gender_additional_information',
     ],
   },
+  '/move-date-range': {
+    ...moveDateStep,
+    fields: ['date_from', 'has_date_to', 'date_to'],
+  },
   '/move-date': {
-    pageTitle: 'moves::steps.move_date.heading',
-    fields: ['date_from', 'date_to'],
+    ...moveDateStep,
+    controller: MoveDate,
+    fields: ['date', 'date_type', 'date_custom'],
   },
   '/prison-transfer-reason': {
     controller: PrisonTransferReason,
@@ -153,9 +171,6 @@ module.exports = {
       'move_type',
       'to_location_prison',
       'to_location_court_appearance',
-      'date',
-      'date_type',
-      'date_custom',
     ],
   },
   '/move-details-police': {
@@ -166,9 +181,6 @@ module.exports = {
       'to_location_prison_recall',
       'to_location_court_appearance',
       'additional_information',
-      'date',
-      'date_type',
-      'date_custom',
     ],
   },
   '/agreement-status': {

@@ -1,5 +1,6 @@
 const Assessment = require('./assessment')
 const Base = require('./base')
+const MoveDate = require('./move-date')
 const MoveDetails = require('./move-details')
 const PersonalDetails = require('./personal-details')
 const Save = require('./save')
@@ -12,6 +13,7 @@ const PrisonTransferReason = require('./prison-transfer-reason')
 module.exports = {
   Assessment,
   Base,
+  MoveDate,
   MoveDetails,
   PersonalDetails,
   Save,
