@@ -1,4 +1,4 @@
-module.exports = function ensureBodyProcessed(authMountpoint = '/auth') {
+module.exports = function processOriginalRequestBody(authMountpoint = '/auth') {
   return (req, res, next) => {
     if (!req.url.startsWith(authMountpoint)) {
       const originalBody = req.session.originalRequestBody

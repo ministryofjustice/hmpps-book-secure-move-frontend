@@ -199,7 +199,7 @@ describe('Authentication middleware', function() {
           })
 
           it('does not copy grant property', function() {
-            expect(req.session.grant).to.equal(undefined)
+            expect(req.session).not.to.contain.property('grant')
           })
 
           it('calls the next action', function() {

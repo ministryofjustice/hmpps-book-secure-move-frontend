@@ -125,9 +125,9 @@ MultiFileUpload.prototype = {
           row.classList.remove('dz-success')
           row.classList.add('dz-error')
           row.querySelector('[data-dz-errormessage]').innerHTML = errorMessage
-          const buttons = document.querySelectorAll(
-            '.govuk-summary-list__actions button'
-          )
+          const buttons = row
+            .closest('.app-multi-file-upload__list')
+            .querySelectorAll('button[name="delete"]')
           const actions = [...buttons]
           actions.forEach(action => {
             action.style.visibility = 'hidden'

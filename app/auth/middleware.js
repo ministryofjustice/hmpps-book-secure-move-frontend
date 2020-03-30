@@ -6,7 +6,6 @@ const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
-    // const { grant, originalRequestUrl, currentLocation } = req.session
     const accessToken = get(req.session, 'grant.response.access_token')
 
     if (!accessToken) {
@@ -22,7 +21,7 @@ function processAuthResponse() {
         getFullname(accessToken),
       ])
 
-      const previousSession = req.session
+      const previousSession = { ...req.session }
 
       req.session.regenerate(error => {
         if (error) {

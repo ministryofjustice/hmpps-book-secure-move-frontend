@@ -22,6 +22,13 @@ function _getMessage(error) {
     }
   }
 
+  if (error.statusCode === 422) {
+    return {
+      heading: 'errors::unprocessable_entity.heading',
+      content: 'errors::unprocessable_entity.content',
+    }
+  }
+
   return {
     heading: 'errors::default.heading',
     content: 'errors::default.content',
@@ -43,7 +50,11 @@ function catchAll(showStackTrace = false) {
       return next(error)
     }
 
-    logger[statusCode === 404 ? 'info' : 'error'](error)
+    logger[statusCode < 500 ? 'info' : 'error'](error)
+
+    if (req.xhr) {
+      return res.status(statusCode).send(error.message)
+    }
 
     res.status(statusCode).render('error', {
       error,

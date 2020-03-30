@@ -7,8 +7,6 @@ describe('Authentication middleware', function() {
     let req, res, nextSpy
 
     beforeEach(function() {
-      const headerStub = sinon.stub()
-      headerStub.returns('')
       nextSpy = sinon.spy()
       req = {
         url: '/url',
@@ -16,7 +14,8 @@ describe('Authentication middleware', function() {
         session: {
           authExpiry: null,
         },
-        header: headerStub,
+        header: sinon.stub().returns(''),
+        t: sinon.stub().returns(''),
       }
       res = {
         redirect: sinon.spy(),
@@ -108,29 +107,26 @@ describe('Authentication middleware', function() {
       context('method is multipart upload', function() {
         beforeEach(function() {
           req.method = 'POST'
-          req.header = sinon.stub()
           req.header.returns('multipart/form-data; boundary=xxxx')
           res.status = sinon.spy()
-          res.send = sinon.spy()
-          req.t = sinon.stub()
-          req.t.returns('multipartErrorString')
+          req.t = sinon.stub().returns('multipartErrorString')
           ensureAuthenticated({ provider })(req, res, nextSpy)
         })
 
-        it('should get the correct error string', function() {
-          expect(req.t).to.be.calledWith('validation::MULTIPART_FAILED_AUTH')
+        it('should call locales lookup with correct args', function() {
+          const localeArgs = req.t.getCall(0).args
+          expect(localeArgs).to.deep.equal([
+            'validation::AUTH_EXPIRED',
+            { context: 'MULTIPART' },
+          ])
         })
 
-        it('should send the error string as the response', function() {
-          expect(res.send).to.be.calledWith('multipartErrorString')
-        })
-
-        it('should emit the correct status', function() {
-          expect(res.status).to.be.calledWith(401)
-        })
-
-        it('should not call next', function() {
-          expect(nextSpy).not.to.be.called
+        it('should call next with the correct error object', function() {
+          const { message, statusCode } = nextSpy.getCall(0).args[0]
+          expect({ message, statusCode }).to.deep.equal({
+            message: 'multipartErrorString',
+            statusCode: 422,
+          })
         })
 
         it('should not redirect', function() {
@@ -142,29 +138,26 @@ describe('Authentication middleware', function() {
         beforeEach(function() {
           req.method = 'POST'
           req.xhr = true
-          req.header = sinon.stub()
-          req.header.returns('')
           res.status = sinon.spy()
           res.send = sinon.spy()
-          req.t = sinon.stub()
-          req.t.returns('xhrErrorString')
+          req.t = sinon.stub().returns('xhrErrorString')
           ensureAuthenticated({ provider })(req, res, nextSpy)
         })
 
-        it('should get the correct error string', function() {
-          expect(req.t).to.be.calledWith('validation::DELETE_FAILED_AUTH')
+        it('should call locales lookup with correct args', function() {
+          const localeArgs = req.t.getCall(0).args
+          expect(localeArgs).to.deep.equal([
+            'validation::AUTH_EXPIRED',
+            { context: '' },
+          ])
         })
 
-        it('should send the error string as the response', function() {
-          expect(res.send).to.be.calledWith('xhrErrorString')
-        })
-
-        it('should emit the correct status', function() {
-          expect(res.status).to.be.calledWith(401)
-        })
-
-        it('should not call next', function() {
-          expect(nextSpy).not.to.be.called
+        it('should call next with the correct error object', function() {
+          const { message, statusCode } = nextSpy.getCall(0).args[0]
+          expect({ message, statusCode }).to.deep.equal({
+            message: 'xhrErrorString',
+            statusCode: 422,
+          })
         })
 
         it('should not redirect', function() {
