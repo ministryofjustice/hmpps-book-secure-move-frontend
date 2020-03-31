@@ -2,6 +2,7 @@
   "feedback_link": "Give us feedback",
   "age": "Age",
   "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})",
+  "supplier_fallback": "the supplier",
   "primary_navigation": {
     "upcoming_moves": "Upcoming moves",
     "single_moves": "Single moves"
