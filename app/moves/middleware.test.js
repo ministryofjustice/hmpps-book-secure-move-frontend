@@ -678,9 +678,9 @@ describe('Moves middleware', function() {
       it('calls next', function() {
         expect(next).to.have.been.calledWithExactly()
       })
-      it('returns predictable results', function() {
+      it('returns predictable results', async function() {
         const locals1 = { ...res.locals }
-        middleware.setMoveTypeNavigation({}, res, next)
+        await middleware.setMoveTypeNavigation(req, res, next)
         expect(res.locals).to.deep.equal(locals1)
       })
     })
