@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.15.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.14.3...v2.15.0) (2020-03-31)
+
+
+### Features
+
+* Add e2e smoke tests for Prison users ([f456d87](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f456d8733452ecba14f84e08a7655fb9b7639291))
+* Add end-to-end tests for Prison to Court journeys ([74da7c2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/74da7c26924cb04ba779a201e99da4b28480bd08))
+* Add has_date_to field to the date page ([3f14804](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3f148042d33e4bfc8e1a00a6ab62527ab698aea3))
+* Add redirection according to location type ([d44c45a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d44c45a96837abd8806b8022615d45a014066e3f))
+* Link give us feedback ([d5c484d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d5c484d6957c6be911eeb2924d9ecdce58879a9d))
+* Navigation for multiple types of moves ([8ffa844](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8ffa844cc71bb6f6d37206057c7ff8bce160ecbf))
+* Primary navigation with link to the dashboard ([441e837](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/441e8374f47a8bf569dd0c3073df6ae00b81fa9b))
+* Split date from move details ([99e9665](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/99e96655de1be627ce9f2320b1167c7d707fee7e))
+* Tests ([d914192](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d9141929002a34231aa342ef523356c371f10160))
+* Use supplier name in confirmation message ([3acf7a9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3acf7a977e3b89e9fc2a7680713f6190fed704de))
+
+
+### Bug Fixes
+
+* [P4-1041] Extend service timeout ([be9e963](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/be9e96387bd41e86fc3d41ed91b5452854f2c476))
+* Add missing test file and make requested tweaks ([e959006](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e959006326b2468cd039eeb87a955db7e8684e90))
+* Allow size of uploaded files to be up to that specified in config ([95f11ff](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/95f11ff65a2555e277a38b1fa0a352fe3c65d1c2))
+* Check meta items in person to card presenter ([c7d12ba](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c7d12bacd0c797c38eca4de27f6bec85717d4ff1))
+* Ensure form submit button has correct type ([5dd9841](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5dd9841fc46cfff48eedd44ddbfb244e54ceb8c3))
+* Ensure the date range step only applies to prison to prison ([3e97060](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3e97060d4ef1a748820b7a42ff33c4f01ed87cae))
+* Fix broken unit test ([0b35f16](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0b35f16d4c6d9b3bb8447f76906512e8fe621bd5))
+* Make changes requested in pr401 review ([f5f6761](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f5f67611462b54b74d7c80e3480cc433c9f2078a))
+* Navigation displays wrong label ([f8fa010](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f8fa01059dc87cc1c40ede1b351034ce611f7157))
+* Prevent garbled upload error being displayed ([8ae1313](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8ae13136c76e862f847d9e3fa25006a99ddb379d))
+* Remove null and undefined from Person formatter ([dd68617](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dd686175d342dad914677f6274a403516ffaf2fc))
+* Update end-to-end tests to cater for separate date step ([fb5c681](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fb5c681acf175f5fa2b47c7c379b669e26bc7c5e))
+* Use selector to populate autocomplete fields ([dcee06b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dcee06bdc48f8d8695288ea0c751e53ceed974bb))
+
 ### [2.14.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.14.2...v2.14.3) (2020-03-23)
 
 ### [2.14.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.14.1...v2.14.2) (2020-03-18)
