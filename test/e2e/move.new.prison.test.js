@@ -53,6 +53,10 @@ test('Prison to Court with existing person', async t => {
   const moveDetails = await createMovePage.fillInMoveDetails('Court')
   await page.submitForm()
 
+  // Move date
+  await createMovePage.fillInDate()
+  await page.submitForm()
+
   // Court information
   await createMovePage.fillInCourtInformation()
   await page.submitForm()
