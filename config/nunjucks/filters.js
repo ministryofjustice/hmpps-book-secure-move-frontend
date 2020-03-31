@@ -1,5 +1,7 @@
 const {
+  differenceInDays,
   format,
+  isThisWeek,
   isToday,
   isTomorrow,
   isYesterday,
@@ -13,8 +15,12 @@ const {
 const { kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 const chrono = require('chrono-node')
+const i18n = require('../i18n')
 
 const { DATE_FORMATS } = require('../index')
+const weekOptions = {
+  weekStartsOn: 1,
+}
 
 /**
  * Formats a date into the desired string format
@@ -46,6 +52,16 @@ function formatDateRange(dateRange) {
     return isDate(date) ? date : parseISO(date)
   })
   const [startDate, endDate] = parsedDates
+  if (
+    isThisWeek(startDate, weekOptions) &&
+    differenceInDays(endDate, startDate) === 6
+  ) {
+    return i18n.t('actions::current_week')
+  }
+  return _formatAnyDateRange(startDate, endDate)
+}
+
+function _formatAnyDateRange(startDate, endDate) {
   const displayMonth = isSameMonth(startDate, endDate) ? '' : ' MMM'
   const displayYear = isSameYear(startDate, endDate) ? '' : ' yyyy'
   const formattedStartDay = format(startDate, `d${displayMonth}${displayYear}`)
