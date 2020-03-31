@@ -33,7 +33,14 @@ const moveDetailsStep = {
     {
       field: 'from_location_type',
       value: 'prison',
-      next: 'move-date-range',
+      next: [
+        {
+          field: 'to_location_type',
+          value: 'prison',
+          next: 'move-date-range',
+        },
+        'move-date',
+      ],
     },
     'move-date',
   ],
