@@ -124,6 +124,13 @@ const dateField = {
   },
 }
 
+const moveTypeCourtAppearance = {
+  id: 'move_type',
+  value: 'court_appearance',
+  text: 'fields::move_type.items.court_appearance.label',
+  conditional: 'to_location_court_appearance',
+}
+
 module.exports = {
   // Person search
   'filter.police_national_computer': {
@@ -254,30 +261,23 @@ module.exports = {
   to_location: {},
   move_type: {
     ...cloneDeep(moveType),
+    items: [{ ...moveTypeCourtAppearance }],
+  },
+  move_type__prison_to_prison: {
+    ...cloneDeep(moveType),
     items: [
+      { ...moveTypeCourtAppearance },
       {
-        id: 'move_type',
-        value: 'court_appearance',
-        text: 'fields::move_type.items.court_appearance.label',
-        conditional: 'to_location_court_appearance',
+        value: 'prison',
+        text: 'fields::move_type.items.prison.label',
+        conditional: 'to_location_prison',
       },
-      // TODO: Remove once we want to allow this journey
-      // {
-      //   value: 'prison',
-      //   text: 'fields::move_type.items.prison.label',
-      //   conditional: 'to_location_prison',
-      // },
     ],
   },
   move_type__police: {
     ...cloneDeep(moveType),
     items: [
-      {
-        id: 'move_type',
-        value: 'court_appearance',
-        text: 'fields::move_type.items.court_appearance.label',
-        conditional: 'to_location_court_appearance',
-      },
+      { ...moveTypeCourtAppearance },
       {
         value: 'prison_recall',
         text: 'fields::move_type.items.prison_recall.label',
@@ -469,12 +469,12 @@ module.exports = {
     items: [
       {
         id: 'move_agreed',
-        value: true,
+        value: 'yes',
         text: 'Yes',
         conditional: 'move_agreed_by',
       },
       {
-        value: false,
+        value: 'no',
         text: 'No',
       },
     ],
@@ -492,7 +492,7 @@ module.exports = {
     validate: 'required',
     dependent: {
       field: 'move_agreed',
-      value: true,
+      value: 'yes',
     },
   },
   implicitAssessmentQuestions,

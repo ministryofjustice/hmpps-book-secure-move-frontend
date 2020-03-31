@@ -55,7 +55,14 @@ const riskStep = {
     {
       field: 'from_location_type',
       value: 'prison',
-      next: 'special-vehicle',
+      next: [
+        {
+          field: 'to_location_type',
+          value: 'prison',
+          next: 'save',
+        },
+        'health-information',
+      ],
     },
     'health-information',
   ],
@@ -87,7 +94,14 @@ const moveDateStep = {
     {
       field: 'from_location_type',
       value: 'prison',
-      next: 'release-status',
+      next: [
+        {
+          field: 'to_location_type',
+          value: 'prison',
+          next: 'prison-transfer-reason',
+        },
+        'release-status',
+      ],
     },
     'risk-information',
   ],
@@ -132,6 +146,12 @@ module.exports = {
         value: 'police',
         next: 'move-details-police',
       },
+      {
+        fn: req => {
+          return req.session.user.permissions.includes('moves:view:proposed')
+        },
+        next: 'move-details-prison-to-prison',
+      },
       'move-details',
     ],
     fields: ['people'],
@@ -157,9 +177,11 @@ module.exports = {
       'gender_additional_information',
     ],
   },
+  // OCA journey
   '/move-date-range': {
-    ...moveDateStep,
+    pageTitle: 'moves::steps.move_date.heading',
     fields: ['date_from', 'has_date_to', 'date_to'],
+    next: 'prison-transfer-reason',
   },
   '/move-date': {
     ...moveDateStep,
@@ -170,12 +192,22 @@ module.exports = {
     controller: PrisonTransferReason,
     pageTitle: 'moves::steps.prison_transfer_reason.heading',
     fields: ['prison_transfer_reason', 'prison_transfer_reason_comments'],
+    next: 'agreement-status',
   },
   '/move-details': {
     ...moveDetailsStep,
     fields: [
       'to_location',
       'move_type',
+      'to_location_prison',
+      'to_location_court_appearance',
+    ],
+  },
+  '/move-details-prison-to-prison': {
+    ...moveDetailsStep,
+    fields: [
+      'to_location',
+      'move_type__prison_to_prison',
       'to_location_prison',
       'to_location_court_appearance',
     ],
@@ -193,6 +225,7 @@ module.exports = {
   '/agreement-status': {
     pageTitle: 'moves::agreement_status.heading',
     fields: ['move_agreed', 'move_agreed_by'],
+    next: 'special-vehicle',
   },
   '/court-information': {
     controller: Assessment,

@@ -66,6 +66,7 @@ describe('Moves middleware', function() {
       context('when user has permission to see the proposed moves', function() {
         const mockLocation = {
           id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
+          location_type: 'prison',
         }
 
         beforeEach(function() {
