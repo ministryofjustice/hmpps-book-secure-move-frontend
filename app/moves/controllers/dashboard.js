@@ -1,4 +1,3 @@
-module.exports = function list(req, res) {
-  const template = 'moves/views/dashboard'
-  res.render(template, res.locals)
+module.exports = function dashboard(req, res) {
+  res.render('moves/views/dashboard')
 }

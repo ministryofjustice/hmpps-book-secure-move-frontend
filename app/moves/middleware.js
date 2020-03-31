@@ -48,12 +48,12 @@ const movesMiddleware = {
         userPermissions
       )
       const url = canViewProposedMoves
-        ? `${req.baseUrl}/week/${today}/${currentLocation}/dashboard`
-        : `${req.baseUrl}/day/${today}/${currentLocation}/`
+        ? `${req.baseUrl}/week/${today}/${currentLocation}/`
+        : `${req.baseUrl}/day/${today}/${currentLocation}/outgoing`
       return res.redirect(url)
     }
 
-    return res.redirect(`${req.baseUrl}/day/${today}`)
+    return res.redirect(`${req.baseUrl}/day/${today}/outgoing`)
   },
   saveUrl: (req, res, next) => {
     req.session.movesUrl = req.originalUrl
@@ -125,17 +125,14 @@ const movesMiddleware = {
               }
             })
         })
-      )
+      ).then(moveTypes => moveTypes.map(presenters.moveTypesToFilterComponent))
       next()
     } catch (error) {
       next(error)
     }
   },
-  setTotalMoves: (req, res, next) => {
-    if (!get(res, 'locals.moveTypeNavigation')) {
-      return next()
-    }
-    const totalMoves = {
+  setDashboardMoveSummary: (req, res, next) => {
+    let totalMoves = {
       label: 'moves::dashboard.filter.total',
       filter: 'total',
       href: find(res.locals.moveTypeNavigation, { filter: 'proposed' }).href,
@@ -146,19 +143,13 @@ const movesMiddleware = {
       },
       0
     )
-    res.locals.moveTypeNavigation = reject(res.locals.moveTypeNavigation, {
-      filter: 'proposed',
-    })
-    res.locals.moveTypeNavigation.unshift(totalMoves)
-    next()
-  },
-  setTranslatedMoveTypes(req, res, next) {
-    if (!get(res, 'locals.moveTypeNavigation')) {
-      return next()
-    }
-    res.locals.moveTypeNavigation = presenters.moveTypesToFilterComponent(
-      res.locals.moveTypeNavigation
-    )
+    totalMoves = presenters.moveTypesToFilterComponent(totalMoves)
+    res.locals.dashboardMoveSummary = [
+      totalMoves,
+      ...reject(res.locals.moveTypeNavigation, {
+        filter: 'proposed',
+      }),
+    ]
     next()
   },
   setMovesByDateAndLocation: async (req, res, next) => {

@@ -15,8 +15,7 @@ const {
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
   setMovesByDateAllLocations,
-  setTotalMoves,
-  setTranslatedMoveTypes,
+  setDashboardMoveSummary,
 } = require('./middleware')
 
 const uuidRegex =
@@ -33,7 +32,7 @@ router.use('^([^.]+)$', saveUrl)
 // Define routes
 router.get('/', redirectBaseUrl)
 router.get(
-  '/:period(week|day)/:date',
+  '/:period(week|day)/:date/:view(outgoing)',
   protectRoute('moves:view:all'),
   setMovesByDateAllLocations,
   setPagination,
@@ -42,38 +41,36 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:by_location'),
+  protectRoute('moves:view:proposed'),
+  setMoveTypeNavigation,
+  setDashboardMoveSummary,
+  setPagination,
+  dashboard
+)
+router.get(
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
+  protectRoute('moves:view:by_location'),
   setMovesByDateAndLocation,
   setPagination,
   list
-)
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(dashboard)`,
-  protectRoute('moves:view:by_location'),
-  protectRoute('moves:view:proposed'),
-  setMoveTypeNavigation,
-  setTotalMoves,
-  setTranslatedMoveTypes,
-  setPagination,
-  dashboard
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed|requested,accepted,completed|rejected)`,
   protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
   setMoveTypeNavigation,
-  setTranslatedMoveTypes,
   setMovesByDateRangeAndStatus,
   setPagination,
   listByStatus
 )
 router.get(
-  '/:period(week|day)/:date/download.:extension(csv|json)',
+  '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
   setMovesByDateAllLocations,
   download
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
   protectRoute('moves:download:by_location'),
   setMovesByDateAndLocation,
   download

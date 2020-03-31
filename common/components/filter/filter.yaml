@@ -25,10 +25,15 @@ params:
             type: string
             required: false
             description: the content of the small text inside the link
+          - name: classes
+            type: string
+            required: false
+            description: the css class applied to the container
 
 examples:
   - name: default
     data:
+      classes: 'app-filter-stacked'
       items:
         - active: false
           href: /moves/proposed

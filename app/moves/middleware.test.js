@@ -55,9 +55,9 @@ describe('Moves middleware', function() {
               middleware.redirectBaseUrl(req, res)
             })
 
-            it('should redirect to moves by location', function() {
+            it('should redirect to outgoing moves by location', function() {
               expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/day/${mockMoveDate}/${mockLocation.id}/`
+                `/moves/day/${mockMoveDate}/${mockLocation.id}/outgoing`
               )
             })
           })
@@ -80,7 +80,7 @@ describe('Moves middleware', function() {
         })
         it('should redirect to the dashboard if the user can see them', function() {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/week/${mockMoveDate}/${mockLocation.id}/dashboard`
+            `/moves/week/${mockMoveDate}/${mockLocation.id}/`
           )
         })
       })
@@ -94,7 +94,7 @@ describe('Moves middleware', function() {
         function() {
           it('should redirect to moves without location', function() {
             expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/day/${mockMoveDate}`
+              `/moves/day/${mockMoveDate}/outgoing`
             )
           })
         }
@@ -111,7 +111,7 @@ describe('Moves middleware', function() {
         })
         it('should redirect to moves without location', function() {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/day/${mockMoveDate}`
+            `/moves/day/${mockMoveDate}/outgoing`
           )
         })
       })
@@ -669,6 +669,7 @@ describe('Moves middleware', function() {
     context('happy path', function() {
       beforeEach(async function() {
         sinon.stub(moveService, 'getMovesCount').resolves(4)
+        sinon.stub(presenters, 'moveTypesToFilterComponent').returnsArg(0)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -725,6 +726,11 @@ describe('Moves middleware', function() {
         await middleware.setMoveTypeNavigation(req, res, next)
         expect(res.locals).to.deep.equal(locals1)
       })
+      it('calls the presenter on each element', async function() {
+        presenters.moveTypesToFilterComponent.resetHistory()
+        await middleware.setMoveTypeNavigation(req, res, next)
+        expect(presenters.moveTypesToFilterComponent).to.have.been.calledThrice
+      })
     })
     context('unhappy path', function() {
       it('calls next with error if needed', async function() {
@@ -757,21 +763,7 @@ describe('Moves middleware', function() {
     })
   })
 
-  describe('#setTotalMoves', function() {
-    context('without res.locals.moveTypeNavigation', function() {
-      const locals = {}
-      const next = sinon.spy()
-      beforeEach(function() {
-        middleware.setTotalMoves({}, { locals }, next)
-      })
-      afterEach(function() {
-        next.resetHistory()
-      })
-      it('calls next if res.locals.moveTypeNavigation has not been created', function() {
-        expect(locals).to.deep.equal({})
-        expect(next).to.have.been.calledOnce
-      })
-    })
+  describe('#setDashboardMoveSummary', function() {
     context('with res.locals.moveTypeNavigation', function() {
       let locals
       const next = sinon.spy()
@@ -788,37 +780,45 @@ describe('Moves middleware', function() {
               value: 5,
               href: '/rejected',
             },
+            {
+              filter: 'approved',
+              value: 2,
+              href: '/approved',
+            },
           ],
         }
-        middleware.setTotalMoves({}, { locals }, next)
+        middleware.setDashboardMoveSummary({}, { locals }, next)
       })
       afterEach(function() {
         next.resetHistory()
       })
       it('adds a new type called total ', function() {
         expect(
-          locals.moveTypeNavigation.find(type => {
+          locals.dashboardMoveSummary.find(type => {
             return type.filter === 'total'
           })
         ).to.exist
       })
+      it('maps all requested types of moves ', function() {
+        expect(locals.dashboardMoveSummary.length).to.equal(3)
+      })
       it('has a total value of all the moves', function() {
         expect(
-          locals.moveTypeNavigation.find(type => {
+          locals.dashboardMoveSummary.find(type => {
             return type.filter === 'total'
           }).value
-        ).to.equal(13)
+        ).to.equal(15)
       })
       it('has a total link to the proposed moves tab', function() {
         expect(
-          locals.moveTypeNavigation.find(type => {
+          locals.dashboardMoveSummary.find(type => {
             return type.filter === 'total'
           }).href
         ).to.equal('/proposed')
       })
       it('drops the proposed moves', function() {
         expect(
-          locals.moveTypeNavigation.find(type => {
+          locals.dashboardMoveSummary.find(type => {
             return type.filter === 'proposed'
           })
         ).not.to.exist
@@ -828,56 +828,6 @@ describe('Moves middleware', function() {
       })
     })
   })
-
-  describe('#setTranslatedMoveTypes', function() {
-    let locals
-    const next = sinon.spy()
-    context('without res.locals.moveTypeNavigation', function() {
-      beforeEach(function() {
-        locals = {}
-        middleware.setTranslatedMoveTypes({}, { locals }, next)
-      })
-      afterEach(function() {
-        next.resetHistory()
-      })
-      it('calls next', function() {
-        expect(next).to.have.been.calledOnce
-      })
-    })
-    context('with res.locals.moveTypeNavigation', function() {
-      beforeEach(function() {
-        locals = {
-          moveTypeNavigation: [
-            {
-              filter: 'proposed',
-              value: 8,
-              href: '/proposed',
-            },
-          ],
-        }
-        sinon.stub(presenters, 'moveTypesToFilterComponent')
-        middleware.setTranslatedMoveTypes({}, { locals }, next)
-      })
-      afterEach(function() {
-        next.resetHistory()
-      })
-      it('invokes the presenter', function() {
-        expect(
-          presenters.moveTypesToFilterComponent
-        ).to.have.been.calledOnceWithExactly([
-          {
-            filter: 'proposed',
-            value: 8,
-            href: '/proposed',
-          },
-        ])
-      })
-      it('calls next', function() {
-        expect(next).to.have.been.calledOnce
-      })
-    })
-  })
-
   describe('#setMovesByDateAndLocation()', function() {
     let res, nextSpy
     const mockCurrentLocation = '5555'
