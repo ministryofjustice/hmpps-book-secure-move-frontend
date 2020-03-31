@@ -651,7 +651,7 @@ describe('Moves middleware', function() {
         moveService.getMovesCount.restore()
       })
       it('sets res.locals.moveTypeNavigation', function() {
-        expect(res.locals).to.deep.equal({
+        expect({ ...res.locals }).to.deep.equal({
           dateRange: ['2010-09-03', '2010-09-10'],
           moveTypeNavigation: [
             {

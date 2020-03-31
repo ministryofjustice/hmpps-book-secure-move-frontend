@@ -9,13 +9,34 @@ function _isExpired(authExpiry) {
 module.exports = function ensureAuthenticated({
   provider,
   whitelist = [],
+  expiryMargin,
 } = {}) {
   return (req, res, next) => {
-    if (whitelist.includes(req.url) || !_isExpired(req.session.authExpiry)) {
+    let authExpiry = req.session.authExpiry
+    if (req.method === 'GET' && expiryMargin) {
+      authExpiry -= expiryMargin
+    }
+    if (whitelist.includes(req.url) || !_isExpired(authExpiry)) {
       return next()
     }
 
     req.session.originalRequestUrl = req.originalUrl
+
+    if (req.method === 'POST') {
+      const contentType = req.header('content-type')
+      const isMultipart = contentType.startsWith('multipart/form-data;')
+      if (isMultipart || req.xhr) {
+        const error = new Error(
+          req.t('validation::AUTH_EXPIRED', {
+            context: isMultipart ? 'MULTIPART' : '',
+          })
+        )
+        error.statusCode = 422
+        return next(error)
+      }
+
+      req.session.originalRequestBody = req.body
+    }
     res.redirect(`/connect/${provider}`)
   }
 }

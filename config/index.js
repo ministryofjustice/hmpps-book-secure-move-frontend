@@ -26,6 +26,7 @@ module.exports = {
   IS_DEV,
   IS_PRODUCTION,
   SESSION,
+  AUTH_EXPIRY_MARGIN: process.env.AUTH_EXPIRY_MARGIN || 5 * 60, // 5 minutes
   SERVER_HOST,
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),

@@ -6,7 +6,6 @@ const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
-    const { originalRequestUrl, currentLocation } = req.session
     const accessToken = get(req.session, 'grant.response.access_token')
 
     if (!accessToken) {
@@ -22,18 +21,28 @@ function processAuthResponse() {
         getFullname(accessToken),
       ])
 
+      const previousSession = { ...req.session }
+
       req.session.regenerate(error => {
         if (error) {
           return next(error)
         }
-
         req.session.authExpiry = decodedAccessToken.exp
-        req.session.currentLocation = currentLocation
-        req.session.originalRequestUrl = originalRequestUrl
         req.session.user = new User({
           fullname,
           locations,
           roles: decodedAccessToken.authorities,
+        })
+
+        // copy any previous session properties ignoring grant or any that already exist
+        Object.keys(previousSession).forEach(key => {
+          if (req.session[key]) {
+            return
+          }
+          if (key === 'grant') {
+            return
+          }
+          req.session[key] = previousSession[key]
         })
 
         next()

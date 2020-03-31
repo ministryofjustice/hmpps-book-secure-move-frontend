@@ -14,10 +14,11 @@ describe('Error middleware', function() {
 
   describe('#notFound', function() {
     let nextSpy
+    const mockReq = {}
 
     beforeEach(function() {
       nextSpy = sinon.spy()
-      errors.notFound(null, null, nextSpy)
+      errors.notFound(mockReq, null, nextSpy)
     })
 
     it('should set a 404 status code', function() {
@@ -33,6 +34,7 @@ describe('Error middleware', function() {
 
   describe('#catchAll', function() {
     let nextSpy
+    const req = {}
     let mockError
     let mockRes
 
@@ -48,7 +50,7 @@ describe('Error middleware', function() {
     context('when headers have already been sent', function() {
       beforeEach(function() {
         mockRes.headersSent = true
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should call next middleware with error', function() {
@@ -64,7 +66,7 @@ describe('Error middleware', function() {
 
     context('when stack trace should be visible', function() {
       beforeEach(function() {
-        errors.catchAll(true)(mockError, null, mockRes, nextSpy)
+        errors.catchAll(true)(mockError, req, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function() {
@@ -78,7 +80,7 @@ describe('Error middleware', function() {
 
     context('when stack trace should not be visible', function() {
       beforeEach(function() {
-        errors.catchAll(false)(mockError, null, mockRes, nextSpy)
+        errors.catchAll(false)(mockError, req, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function() {
@@ -92,7 +94,7 @@ describe('Error middleware', function() {
 
     context('when show stack trace is not set', function() {
       beforeEach(function() {
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function() {
@@ -107,7 +109,7 @@ describe('Error middleware', function() {
     context('with a 404 error status code', function() {
       beforeEach(function() {
         mockError.statusCode = errorCode404
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function() {
@@ -149,7 +151,7 @@ describe('Error middleware', function() {
     context('with a standard 403 error status code', function() {
       beforeEach(function() {
         mockError.statusCode = errorCode403
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function() {
@@ -174,13 +176,13 @@ describe('Error middleware', function() {
         })
       })
 
-      it('should log error level message to logger', function() {
-        expect(logger.error).to.have.been.calledOnce
-        expect(logger.error).to.have.been.calledWith(mockError)
+      it('should log unauthorized message to logger error level', function() {
+        expect(logger.info).to.have.been.calledOnce
+        expect(logger.info).to.have.been.calledWith(mockError)
       })
 
-      it('should not log info level message to logger', function() {
-        expect(logger.info).not.to.have.been.called
+      it('should not log unauthorized message to logger error level', function() {
+        expect(logger.error).not.to.have.been.called
       })
 
       it('should not call next', function() {
@@ -192,7 +194,7 @@ describe('Error middleware', function() {
       beforeEach(function() {
         mockError.statusCode = errorCode403
         mockError.code = 'EBADCSRFTOKEN'
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function() {
@@ -218,12 +220,12 @@ describe('Error middleware', function() {
       })
 
       it('should log error level message to logger', function() {
-        expect(logger.error).to.have.been.calledOnce
-        expect(logger.error).to.have.been.calledWith(mockError)
+        expect(logger.info).to.have.been.calledOnce
+        expect(logger.info).to.have.been.calledWith(mockError)
       })
 
-      it('should not log info level message to logger', function() {
-        expect(logger.info).not.to.have.been.called
+      it('should not log unauthorized message to logger error level', function() {
+        expect(logger.error).not.to.have.been.called
       })
 
       it('should not call next', function() {
@@ -234,7 +236,7 @@ describe('Error middleware', function() {
     context('with a 500 error status code', function() {
       beforeEach(function() {
         mockError.statusCode = errorCode500
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function() {
@@ -275,7 +277,7 @@ describe('Error middleware', function() {
 
     context('with no error status code', function() {
       beforeEach(function() {
-        errors.catchAll()(mockError, null, mockRes, nextSpy)
+        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function() {
@@ -311,6 +313,37 @@ describe('Error middleware', function() {
 
       it('should not call next', function() {
         expect(nextSpy).not.to.have.been.called
+      })
+    })
+
+    describe('#xhr', function() {
+      let mockReq
+      let mockRes
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        mockReq = {
+          xhr: true,
+        }
+        mockRes = {
+          send: sinon.spy(),
+        }
+        mockRes.status = sinon.stub().returns(mockRes)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+      })
+
+      it('should set the correct error status', function() {
+        expect(mockRes.status).to.be.calledOnce
+        expect(mockRes.status.args[0][0]).to.equal(500)
+      })
+
+      it('should send the correct error message', function() {
+        expect(mockRes.send).to.be.calledOnce
+        expect(mockRes.send.args[0][0]).to.equal(mockError.message)
+      })
+
+      it('should not call next with an error', function() {
+        expect(nextSpy).to.not.be.called
       })
     })
   })

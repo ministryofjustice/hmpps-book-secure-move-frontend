@@ -28,5 +28,9 @@
   "unauthorized": {
     "heading": "You don’t have permission to view this page",
     "content": "If you think you should have access please contact the support team."
+  },
+  "unprocessable_entity": {
+    "heading": "We could not process the request",
+    "content": "Try again in a few moments."
   }
 }
