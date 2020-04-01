@@ -1,3 +1,5 @@
+const { get } = require('lodash')
+
 const logger = require('../../config/logger')
 
 function _getMessage(error) {
@@ -39,10 +41,14 @@ function catchAll(showStackTrace = false) {
       return res.status(statusCode).send(error.message)
     }
 
+    const locationType = get(res.locals, 'CURRENT_LOCATION.location_type')
+    const showNomisMessage = locationType === 'prison' && statusCode === 500
+
     res.status(statusCode).render('error', {
       error,
       statusCode,
       showStackTrace,
+      showNomisMessage,
       message: _getMessage(error),
     })
   }
