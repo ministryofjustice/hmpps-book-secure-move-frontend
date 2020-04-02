@@ -49,7 +49,8 @@ const personService = {
     return omitBy(
       {
         ...formatted,
-        identifiers,
+        identifiers:
+          identifiers.length || data.identifiers ? identifiers : null,
       },
       isNil
     )
