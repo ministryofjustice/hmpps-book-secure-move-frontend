@@ -44,6 +44,7 @@ describe('Error middleware', function() {
       mockRes = {
         status: sinon.stub().returnsThis(),
         render: sinon.spy(),
+        locals: {},
       }
     })
 
@@ -127,6 +128,7 @@ describe('Error middleware', function() {
           error: mockError,
           statusCode: errorCode404,
           showStackTrace: false,
+          showNomisMessage: false,
           message: {
             heading: 'errors::not_found.heading',
             content: 'errors::not_found.content',
@@ -169,6 +171,7 @@ describe('Error middleware', function() {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
+          showNomisMessage: false,
           message: {
             heading: 'errors::unauthorized.heading',
             content: 'errors::unauthorized.content',
@@ -212,6 +215,7 @@ describe('Error middleware', function() {
           error: mockError,
           statusCode: errorCode403,
           showStackTrace: false,
+          showNomisMessage: false,
           message: {
             heading: 'errors::tampered_with.heading',
             content: 'errors::tampered_with.content',
@@ -236,83 +240,136 @@ describe('Error middleware', function() {
     context('with a 500 error status code', function() {
       beforeEach(function() {
         mockError.statusCode = errorCode500
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
       })
 
-      it('should set correct status code on response', function() {
-        expect(mockRes.status).to.have.been.calledOnce
-        expect(mockRes.status).to.have.been.calledWith(errorCode500)
-      })
+      context('without location', function() {
+        beforeEach(function() {
+          errors.catchAll()(mockError, req, mockRes, nextSpy)
+        })
 
-      it('should render the error template', function() {
-        expect(mockRes.render).to.have.been.calledOnce
-        expect(mockRes.render.args[0][0]).to.equal('error')
-      })
+        it('should set correct status code on response', function() {
+          expect(mockRes.status).to.have.been.calledOnce
+          expect(mockRes.status).to.have.been.calledWith(errorCode500)
+        })
 
-      it('should pass correct values to template', function() {
-        expect(mockRes.render.args[0][1]).to.deep.equal({
-          error: mockError,
-          statusCode: errorCode500,
-          showStackTrace: false,
-          message: {
-            heading: 'errors::default.heading',
-            content: 'errors::default.content',
-          },
+        it('should render the error template', function() {
+          expect(mockRes.render).to.have.been.calledOnce
+          expect(mockRes.render.args[0][0]).to.equal('error')
+        })
+
+        it('should pass correct values to template', function() {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: false,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
+
+        it('should log error level message to logger', function() {
+          expect(logger.error).to.have.been.calledOnce
+          expect(logger.error).to.have.been.calledWith(mockError)
+        })
+
+        it('should not log info level message to logger', function() {
+          expect(logger.info).not.to.have.been.called
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.have.been.called
         })
       })
 
-      it('should log error level message to logger', function() {
-        expect(logger.error).to.have.been.calledOnce
-        expect(logger.error).to.have.been.calledWith(mockError)
-      })
+      context('with prison location', function() {
+        beforeEach(function() {
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'prison',
+          }
+          errors.catchAll()(mockError, req, mockRes, nextSpy)
+        })
 
-      it('should not log info level message to logger', function() {
-        expect(logger.info).not.to.have.been.called
-      })
-
-      it('should not call next', function() {
-        expect(nextSpy).not.to.have.been.called
+        it('should pass correct values to template', function() {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: true,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
       })
     })
 
     context('with no error status code', function() {
-      beforeEach(function() {
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
-      })
+      context('without location', function() {
+        beforeEach(function() {
+          errors.catchAll()(mockError, req, mockRes, nextSpy)
+        })
 
-      it('should set correct status code on response', function() {
-        expect(mockRes.status).to.have.been.calledOnce
-        expect(mockRes.status).to.have.been.calledWith(errorCode500)
-      })
+        it('should set correct status code on response', function() {
+          expect(mockRes.status).to.have.been.calledOnce
+          expect(mockRes.status).to.have.been.calledWith(errorCode500)
+        })
 
-      it('should render the error template', function() {
-        expect(mockRes.render).to.have.been.calledOnce
-        expect(mockRes.render.args[0][0]).to.equal('error')
-      })
+        it('should render the error template', function() {
+          expect(mockRes.render).to.have.been.calledOnce
+          expect(mockRes.render.args[0][0]).to.equal('error')
+        })
 
-      it('should pass correct values to template', function() {
-        expect(mockRes.render.args[0][1]).to.deep.equal({
-          error: mockError,
-          statusCode: errorCode500,
-          showStackTrace: false,
-          message: {
-            heading: 'errors::default.heading',
-            content: 'errors::default.content',
-          },
+        it('should pass correct values to template', function() {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: false,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
+
+        it('should log error level message to logger', function() {
+          expect(logger.error).to.have.been.calledOnce
+          expect(logger.error).to.have.been.calledWith(mockError)
+        })
+
+        it('should not log info level message to logger', function() {
+          expect(logger.info).not.to.have.been.called
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.have.been.called
         })
       })
 
-      it('should log error level message to logger', function() {
-        expect(logger.error).to.have.been.calledOnce
-        expect(logger.error).to.have.been.calledWith(mockError)
-      })
+      context('with prison location', function() {
+        beforeEach(function() {
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'prison',
+          }
+          errors.catchAll()(mockError, req, mockRes, nextSpy)
+        })
 
-      it('should not log info level message to logger', function() {
-        expect(logger.info).not.to.have.been.called
-      })
-
-      it('should not call next', function() {
-        expect(nextSpy).not.to.have.been.called
+        it('should pass correct values to template', function() {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: true,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
       })
     })
 

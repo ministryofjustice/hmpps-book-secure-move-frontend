@@ -1,9 +1,17 @@
 {% extends "layouts/base.njk" %}
 
+{% block primaryNavigation %}{% endblock %}
+
+{% block organisationSwitcher %}{% endblock %}
+
 {% block content %}
   <h1 class="govuk-heading-xl">{{ t(message.heading) }}</h1>
 
   <p>{{ t(message.content) }}</p>
+
+  {% if showNomisMessage %}
+    <p>{{ t("errors::nomis_status_message") }}</p>
+  {% endif %}
 
   {% if showStackTrace %}
     <dl class="app-stack-trace">
