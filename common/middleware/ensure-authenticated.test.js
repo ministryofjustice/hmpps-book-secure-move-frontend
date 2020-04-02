@@ -14,7 +14,7 @@ describe('Authentication middleware', function() {
         session: {
           authExpiry: null,
         },
-        header: sinon.stub().returns(''),
+        get: sinon.stub(),
         t: sinon.stub().returns(''),
       }
       res = {
@@ -107,7 +107,7 @@ describe('Authentication middleware', function() {
       context('method is multipart upload', function() {
         beforeEach(function() {
           req.method = 'POST'
-          req.header.returns('multipart/form-data; boundary=xxxx')
+          req.get.returns('multipart/form-data; boundary=xxxx')
           res.status = sinon.spy()
           req.t = sinon.stub().returns('multipartErrorString')
           ensureAuthenticated({ provider })(req, res, nextSpy)
