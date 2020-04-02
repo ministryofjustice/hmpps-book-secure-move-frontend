@@ -23,7 +23,7 @@ module.exports = function ensureAuthenticated({
     req.session.originalRequestUrl = req.originalUrl
 
     if (req.method === 'POST') {
-      const contentType = req.header('content-type')
+      const contentType = req.get('content-type') || ''
       const isMultipart = contentType.startsWith('multipart/form-data;')
       if (isMultipart || req.xhr) {
         const error = new Error(
