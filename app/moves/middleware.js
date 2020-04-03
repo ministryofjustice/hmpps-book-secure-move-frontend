@@ -1,5 +1,5 @@
 const { format } = require('date-fns')
-const { find, get, chunk, cloneDeep } = require('lodash')
+const { find, get, chunk, cloneDeep, reject } = require('lodash')
 
 const permissions = require('../../common/middleware/permissions')
 
@@ -47,14 +47,13 @@ const movesMiddleware = {
         'moves:view:proposed',
         userPermissions
       )
-      return res.redirect(
-        `${req.baseUrl}/day/${today}/${currentLocation}/${
-          canViewProposedMoves ? 'proposed' : ''
-        }`
-      )
+      const url = canViewProposedMoves
+        ? `${req.baseUrl}/week/${today}/${currentLocation}/`
+        : `${req.baseUrl}/day/${today}/${currentLocation}/outgoing`
+      return res.redirect(url)
     }
 
-    return res.redirect(`${req.baseUrl}/day/${today}`)
+    return res.redirect(`${req.baseUrl}/day/${today}/outgoing`)
   },
   saveUrl: (req, res, next) => {
     req.session.movesUrl = req.originalUrl
@@ -88,7 +87,7 @@ const movesMiddleware = {
     next()
   },
   setPagination: (req, res, next) => {
-    const { locationId = '', period, status } = req.params
+    const { locationId = '', period, status, view } = req.params
     const today = format(new Date(), dateFormat)
     const baseDate = getDateFromParams(req)
     const interval = period === 'week' ? 7 : 1
@@ -97,12 +96,12 @@ const movesMiddleware = {
     const nextPeriod = getPeriod(baseDate, interval)
 
     const locationInUrl = locationId ? `/${locationId}` : ''
-    const statusInUrl = status ? `/${status}` : ''
+    const viewInUrl = status || view ? `/${status || view}` : ''
 
     res.locals.pagination = {
-      todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}${statusInUrl}`,
-      nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}${statusInUrl}`,
-      prevUrl: `${req.baseUrl}/${period}/${previousPeriod}${locationInUrl}${statusInUrl}`,
+      todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}${viewInUrl}`,
+      nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}${viewInUrl}`,
+      prevUrl: `${req.baseUrl}/${period}/${previousPeriod}${locationInUrl}${viewInUrl}`,
     }
 
     next()
@@ -116,9 +115,8 @@ const movesMiddleware = {
           return moveService
             .getMovesCount({ dateRange, status: moveType.filter, locationId })
             .then(count => {
-              const { label } = moveType
               return {
-                label,
+                ...moveType,
                 value: count,
                 active: moveType.filter === req.params.status,
                 href: `${req.baseUrl}/${period}/${date}${
@@ -126,13 +124,33 @@ const movesMiddleware = {
                 }/${moveType.filter}`,
               }
             })
-            .then(presenters.moveTypesToFilterComponent)
         })
-      )
+      ).then(moveTypes => moveTypes.map(presenters.moveTypesToFilterComponent))
       next()
     } catch (error) {
       next(error)
     }
+  },
+  setDashboardMoveSummary: (req, res, next) => {
+    let totalMoves = {
+      label: 'moves::dashboard.filter.total',
+      filter: 'total',
+      href: find(res.locals.moveTypeNavigation, { filter: 'proposed' }).href,
+    }
+    totalMoves.value = res.locals.moveTypeNavigation.reduce(
+      (accumulator, moveType) => {
+        return (accumulator += moveType.value)
+      },
+      0
+    )
+    totalMoves = presenters.moveTypesToFilterComponent(totalMoves)
+    res.locals.dashboardMoveSummary = [
+      totalMoves,
+      ...reject(res.locals.moveTypeNavigation, {
+        filter: 'proposed',
+      }),
+    ]
+    next()
   },
   setMovesByDateAndLocation: async (req, res, next) => {
     const { dateRange, fromLocationId } = res.locals

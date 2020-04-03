@@ -57,6 +57,11 @@ describe('Results component', function() {
       expect(valueSpan.length).to.equal(1)
       expect(valueSpan.html()).to.equal('Moves proposed')
     })
+    it('incorporates the classes passed to it', function() {
+      expect(component.get(0).attribs.class).to.equal(
+        'app-filter app-filter-stacked'
+      )
+    })
   })
   context('without value', function() {
     let component, items, $

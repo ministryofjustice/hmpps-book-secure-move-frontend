@@ -3,7 +3,7 @@ const router = require('express').Router()
 
 // Local dependencies
 const { protectRoute } = require('../../common/middleware/permissions')
-const { download, list, listByStatus } = require('./controllers')
+const { dashboard, download, list, listByStatus } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -15,6 +15,7 @@ const {
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
   setMovesByDateAllLocations,
+  setDashboardMoveSummary,
 } = require('./middleware')
 
 const uuidRegex =
@@ -31,7 +32,7 @@ router.use('^([^.]+)$', saveUrl)
 // Define routes
 router.get('/', redirectBaseUrl)
 router.get(
-  '/:period(week|day)/:date',
+  '/:period(week|day)/:date/:view(outgoing)',
   protectRoute('moves:view:all'),
   setMovesByDateAllLocations,
   setPagination,
@@ -39,6 +40,15 @@ router.get(
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
+  protectRoute('moves:view:by_location'),
+  protectRoute('moves:view:proposed'),
+  setMoveTypeNavigation,
+  setDashboardMoveSummary,
+  setPagination,
+  dashboard
+)
+router.get(
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
   protectRoute('moves:view:by_location'),
   setMovesByDateAndLocation,
   setPagination,
@@ -54,13 +64,13 @@ router.get(
   listByStatus
 )
 router.get(
-  '/:period(week|day)/:date/download.:extension(csv|json)',
+  '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download:all'),
   setMovesByDateAllLocations,
   download
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/download.:extension(csv|json)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
   protectRoute('moves:download:by_location'),
   setMovesByDateAndLocation,
   download

@@ -1,4 +1,4 @@
-<nav class="app-filter">
+<nav class="app-filter {{ params.classes if params.classes }}">
   <ul class="app-filter__list">
     {% for item in params.items %}
       <li class="app-filter__list-item {{ 'app-filter__list-item--active' if item.active }}">

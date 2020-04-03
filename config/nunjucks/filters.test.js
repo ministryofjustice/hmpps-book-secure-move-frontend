@@ -1,5 +1,7 @@
 const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
+const { startOfWeek, endOfWeek } = require('date-fns')
+const i18n = require('../i18n')
 
 const filters = proxyquire('./filters', {
   '../index': {
@@ -190,6 +192,25 @@ describe('Nunjucks filters', function() {
         ).to.equal('1 to 10 Nov 2019')
       })
     })
+    context(
+      'when both start date and end date are on the current week ',
+      function() {
+        const weekOpts = {
+          weekStartsOn: 1,
+        }
+        before(function() {
+          sinon.stub(i18n, 't').returnsArg(0)
+        })
+        it('returns "this week"', function() {
+          expect(
+            formatDateRange([
+              startOfWeek(new Date(), weekOpts),
+              endOfWeek(new Date(), weekOpts),
+            ])
+          ).to.equal('actions::current_week')
+        })
+      }
+    )
   })
 
   describe('#calculateAge()', function() {

@@ -131,7 +131,8 @@
     "filter": {
       "proposed": "proposed",
       "approved": "approved",
-      "rejected": "rejected"
+      "rejected": "rejected",
+      "total": "single requests"
     }
   },
   "detail": {

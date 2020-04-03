@@ -1,4 +1,5 @@
 const moveService = require('../../common/services/move')
+const presenters = require('../../common/presenters')
 
 const middleware = require('./middleware')
 
@@ -54,9 +55,9 @@ describe('Moves middleware', function() {
               middleware.redirectBaseUrl(req, res)
             })
 
-            it('should redirect to moves by location', function() {
+            it('should redirect to outgoing moves by location', function() {
               expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/day/${mockMoveDate}/${mockLocation.id}/`
+                `/moves/day/${mockMoveDate}/${mockLocation.id}/outgoing`
               )
             })
           })
@@ -77,9 +78,9 @@ describe('Moves middleware', function() {
 
           middleware.redirectBaseUrl(req, res)
         })
-        it('should redirect to proposed moves by location if the user can see them', function() {
+        it('should redirect to the dashboard if the user can see them', function() {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/day/${mockMoveDate}/${mockLocation.id}/proposed`
+            `/moves/week/${mockMoveDate}/${mockLocation.id}/`
           )
         })
       })
@@ -93,7 +94,7 @@ describe('Moves middleware', function() {
         function() {
           it('should redirect to moves without location', function() {
             expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/day/${mockMoveDate}`
+              `/moves/day/${mockMoveDate}/outgoing`
             )
           })
         }
@@ -110,7 +111,7 @@ describe('Moves middleware', function() {
         })
         it('should redirect to moves without location', function() {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
-            `/moves/day/${mockMoveDate}`
+            `/moves/day/${mockMoveDate}/outgoing`
           )
         })
       })
@@ -621,6 +622,44 @@ describe('Moves middleware', function() {
         )
       })
     })
+    context('with param view instead of status', function() {
+      beforeEach(function() {
+        res = {
+          locals: {
+            moveDate: mockDateRange,
+          },
+        }
+        req = {
+          baseUrl: '/moves',
+          params: {
+            locationId: '123',
+            date: '2019-10-10',
+            view: 'dashboard',
+            period: 'day',
+          },
+        }
+        nextSpy = sinon.spy()
+        middleware.setPagination(req, res, nextSpy)
+      })
+      it('creats correctly todayUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.todayUrl).to.equal(
+          '/moves/day/2019-10-10/123/dashboard'
+        )
+      })
+      it('creats correctly prevUrl', function() {
+        expect(res.locals.pagination.todayUrl).to.exist
+        expect(res.locals.pagination.prevUrl).to.equal(
+          '/moves/day/2019-10-09/123/dashboard'
+        )
+      })
+      it('creats correctly nextUrl', function() {
+        expect(res.locals.pagination.nextUrl).to.exist
+        expect(res.locals.pagination.nextUrl).to.equal(
+          '/moves/day/2019-10-11/123/dashboard'
+        )
+      })
+    })
   })
 
   describe('#setMoveTypeNavigation', function() {
@@ -630,6 +669,7 @@ describe('Moves middleware', function() {
     context('happy path', function() {
       beforeEach(async function() {
         sinon.stub(moveService, 'getMovesCount').resolves(4)
+        sinon.stub(presenters, 'moveTypesToFilterComponent').returnsArg(0)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -656,20 +696,23 @@ describe('Moves middleware', function() {
           moveTypeNavigation: [
             {
               active: false,
+              filter: 'proposed',
+              label: 'moves::dashboard.filter.proposed',
               href: '/moves/week/2010-09-07/123/proposed',
-              label: 'proposed',
               value: 4,
             },
             {
               active: false,
+              filter: 'requested,accepted,completed',
+              label: 'moves::dashboard.filter.approved',
               href: '/moves/week/2010-09-07/123/requested,accepted,completed',
-              label: 'approved',
               value: 4,
             },
             {
               active: false,
+              filter: 'rejected',
+              label: 'moves::dashboard.filter.rejected',
               href: '/moves/week/2010-09-07/123/rejected',
-              label: 'rejected',
               value: 4,
             },
           ],
@@ -682,6 +725,11 @@ describe('Moves middleware', function() {
         const locals1 = { ...res.locals }
         await middleware.setMoveTypeNavigation(req, res, next)
         expect(res.locals).to.deep.equal(locals1)
+      })
+      it('calls the presenter on each element', async function() {
+        presenters.moveTypesToFilterComponent.resetHistory()
+        await middleware.setMoveTypeNavigation(req, res, next)
+        expect(presenters.moveTypesToFilterComponent).to.have.been.calledThrice
       })
     })
     context('unhappy path', function() {
@@ -711,6 +759,72 @@ describe('Moves middleware', function() {
           })
         )
         moveService.getMovesCount.restore()
+      })
+    })
+  })
+
+  describe('#setDashboardMoveSummary', function() {
+    context('with res.locals.moveTypeNavigation', function() {
+      let locals
+      const next = sinon.spy()
+      beforeEach(function() {
+        locals = {
+          moveTypeNavigation: [
+            {
+              filter: 'proposed',
+              value: 8,
+              href: '/proposed',
+            },
+            {
+              filter: 'rejected',
+              value: 5,
+              href: '/rejected',
+            },
+            {
+              filter: 'approved',
+              value: 2,
+              href: '/approved',
+            },
+          ],
+        }
+        middleware.setDashboardMoveSummary({}, { locals }, next)
+      })
+      afterEach(function() {
+        next.resetHistory()
+      })
+      it('adds a new type called total ', function() {
+        expect(
+          locals.dashboardMoveSummary.find(type => {
+            return type.filter === 'total'
+          })
+        ).to.exist
+      })
+      it('maps all requested types of moves ', function() {
+        expect(locals.dashboardMoveSummary.length).to.equal(3)
+      })
+      it('has a total value of all the moves', function() {
+        expect(
+          locals.dashboardMoveSummary.find(type => {
+            return type.filter === 'total'
+          }).value
+        ).to.equal(15)
+      })
+      it('has a total link to the proposed moves tab', function() {
+        expect(
+          locals.dashboardMoveSummary.find(type => {
+            return type.filter === 'total'
+          }).href
+        ).to.equal('/proposed')
+      })
+      it('drops the proposed moves', function() {
+        expect(
+          locals.dashboardMoveSummary.find(type => {
+            return type.filter === 'proposed'
+          })
+        ).not.to.exist
+      })
+      it('calls next', function() {
+        expect(next).to.have.been.calledOnce
       })
     })
   })
