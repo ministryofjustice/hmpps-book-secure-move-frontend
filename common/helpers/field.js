@@ -1,4 +1,12 @@
-const { cloneDeep, concat, fromPairs, get, set, compact } = require('lodash')
+const {
+  cloneDeep,
+  compact,
+  concat,
+  fromPairs,
+  get,
+  mapValues,
+  set,
+} = require('lodash')
 
 const componentService = require('../services/component')
 const i18n = require('../../config/i18n')
@@ -194,7 +202,7 @@ function insertItemConditional({ key, field }) {
 }
 
 function populateAssessmentFields(currentFields, questions) {
-  const fields = cloneDeep(currentFields)
+  const fields = mapValues(currentFields, field => cloneDeep(field))
   const implicitQuestions = questions.filter(
     ({ key }) => fields[key] && !fields[key].explicit
   )

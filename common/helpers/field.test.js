@@ -1080,8 +1080,13 @@ describe('Form helpers', function() {
     })
 
     context('with both implicit and explicit fields', function() {
+      const mockImplicitField = {
+        skip: true,
+        implicit: true,
+      }
       const mockFields = {
-        special_diet_or_allergy: {},
+        special_diet_or_allergy: mockImplicitField,
+        special_vehicle: mockImplicitField,
         medication: {
           explicit: true,
         },
@@ -1103,6 +1108,12 @@ describe('Form helpers', function() {
               text: 'Special diet or allergy',
               key: 'special_diet_or_allergy',
               conditional: 'special_diet_or_allergy',
+            },
+            {
+              value: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+              text: 'Requires special vehicle',
+              key: 'special_vehicle',
+              conditional: 'special_vehicle',
             },
           ],
           fieldset: {
@@ -1147,10 +1158,26 @@ describe('Form helpers', function() {
           },
           explicit: true,
         })
+        expect(fields.special_diet_or_allergy).to.deep.equal({
+          skip: true,
+          implicit: true,
+          dependent: {
+            field: 'health',
+            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+          },
+        })
+        expect(fields.special_vehicle).to.deep.equal({
+          skip: true,
+          implicit: true,
+          dependent: {
+            field: 'health',
+            value: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
+          },
+        })
       })
 
       it('should return the correct number of fields', function() {
-        expect(Object.keys(fields).length).to.equal(4)
+        expect(Object.keys(fields).length).to.equal(5)
       })
     })
 
