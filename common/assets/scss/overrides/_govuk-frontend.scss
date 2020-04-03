@@ -1,0 +1,7 @@
+// required to allow the card component to be nested
+// and to use the full width of the container
+//
+// previous value - display: inline-block;
+.govuk-radios__label {
+  display: block;
+}
