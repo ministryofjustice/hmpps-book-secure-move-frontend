@@ -185,5 +185,15 @@
   },
   "agreement_status": {
     "heading": "Has this move been agreed with receiving prison?"
+  },
+  "court_case": {
+    "items": {
+      "start_date": {
+        "label": "Start date"
+      },
+      "case_type": {
+        "label": "Case type"
+      }
+    }
   }
 }
