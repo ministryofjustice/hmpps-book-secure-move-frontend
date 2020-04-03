@@ -307,7 +307,7 @@ module.exports = {
     fieldset: {
       legend: {
         text: 'fields::date_type.label',
-        classes: 'govuk-fieldset__legend--m',
+        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
       },
     },
     items: [
