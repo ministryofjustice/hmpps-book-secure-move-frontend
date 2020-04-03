@@ -44,6 +44,11 @@
 .app-card__title {
   @include govuk-font($size: 19, $weight: bold);
   margin: 0;
+
+  .govuk-checkboxes &,
+  .govuk-radios & {
+    margin-top: 8px;
+  }
 }
 
 .app-card__content {
