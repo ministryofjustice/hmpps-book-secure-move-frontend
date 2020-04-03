@@ -1,0 +1,34 @@
+{
+  "data": {
+    "id": "007f6aa0-7d82-4bf1-9191-2e27235d0f76",
+    "type": "court_cases",
+    "attributes": {
+      "nomis_case_id": "T20167984",
+      "nomis_case_status": "ACTIVE",
+      "case_start_date": "2016-11-14",
+      "case_type": "Adult",
+      "case_number": "T20167984"
+    },
+    "relationships": {
+      "location": {
+        "data": {
+          "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
+          "type": "locations"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
+      "type": "locations",
+      "attributes": {
+        "key": "durham_crown_court",
+        "title": "Durham Crown Court",
+        "location_type": "court",
+        "nomis_agency_id": null,
+        "disabled_at": null
+      }
+    }
+  ]
+}

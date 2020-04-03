@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "id": "007f6aa0-7d82-4bf1-9191-2e27235d0f76",
+      "type": "court_cases",
+      "attributes": {
+        "nomis_case_id": "T20167984",
+        "nomis_case_status": "ACTIVE",
+        "case_start_date": "2016-11-14",
+        "case_type": "Adult",
+        "case_number": "T20167984"
+      },
+      "relationships": {
+        "location": {
+          "data": {
+            "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
+            "type": "locations"
+          }
+        }
+      }
+    },
+    {
+      "id": "0194fe97-fa7e-49f5-b109-e1db6fee2190",
+      "type": "court_cases",
+      "attributes": {
+        "nomis_case_id": "T30391985",
+        "nomis_case_status": "ACTIVE",
+        "case_start_date": "2018-10-10",
+        "case_type": "Adult",
+        "case_number": "T30391985"
+      },
+      "relationships": {
+        "location": {
+          "data": {
+            "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
+            "type": "locations"
+          }
+        }
+      }
+    },
+    {
+      "id": "04a177a2-b899-425d-90ec-47f61cc5cc2d",
+      "type": "court_cases",
+      "attributes": {
+        "nomis_case_id": "T10123991",
+        "nomis_case_status": "ACTIVE",
+        "case_start_date": "2017-04-19",
+        "case_type": "Adult",
+        "case_number": "T10123991"
+      },
+      "relationships": {
+        "location": {
+          "data": {
+            "id": "3374c092-8080-4dd3-82c6-3621cbcecc33",
+            "type": "locations"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "870c1142-cb71-4e3b-82b0-217fda895a1a",
+      "type": "locations",
+      "attributes": {
+        "key": "durham_crown_court",
+        "title": "Durham Crown Court",
+        "location_type": "court",
+        "nomis_agency_id": null,
+        "disabled_at": null
+      }
+    },
+    {
+      "id": "3374c092-8080-4dd3-82c6-3621cbcecc33",
+      "type": "locations",
+      "attributes": {
+        "key": "warrington_crown_court",
+        "title": "Warrington Crown Court",
+        "location_type": "court",
+        "nomis_agency_id": null,
+        "disabled_at": null
+      }
+    }
+  ],
+  "links": {
+    "self": "http://localhost:5000/api/v1/court_cases?page%5Bnumber%5D=1&page%5Bsize%5D=20",
+    "first": "http://localhost:5000/api/v1/court_cases?page%5Bnumber%5D=1&page%5Bsize%5D=20",
+    "prev": null,
+    "next": "http://localhost:5000/api/v1/court_cases?page%5Bnumber%5D=2&page%5Bsize%5D=20",
+    "last": "http://localhost:5000/api/v1/court_cases?page%5Bnumber%5D=25&page%5Bsize%5D=20"
+  },
+  "meta": {
+    "pagination": {
+      "per_page": 20,
+      "total_pages": 1,
+      "total_objects": 3,
+      "links": {
+        "first": "/api/v1/court_cases?page=1",
+        "last": "/api/v1/court_cases?page=25",
+        "next": "/api/v1/court_cases?page=2"
+      }
+    }
+  }
+}

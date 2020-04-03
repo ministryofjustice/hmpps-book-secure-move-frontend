@@ -46,6 +46,18 @@ const testCases = {
       args: '1',
     },
   ],
+  court_case: [
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+    },
+    {
+      method: 'findAll',
+      httpMock: 'get',
+    },
+  ],
   gender: [
     {
       method: 'findAll',
