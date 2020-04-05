@@ -1,9 +1,12 @@
 import { unlinkSync, readFileSync } from 'fs'
 
 import { movesByDay } from './_routes'
-import { policeUser, supplierUser } from './roles'
+import { policeUser, supplierUser } from './_roles'
+import {
+  getCsvDownloadFilePaths,
+  waitForCsvDownloadFilePaths,
+} from './_helpers'
 import { movesDashboardPage } from './pages'
-import { getCsvDownloadFilePaths, waitForCsvDownloadFilePaths } from './helpers'
 
 function deleteDownloads() {
   const csvDownloads = getCsvDownloadFilePaths()

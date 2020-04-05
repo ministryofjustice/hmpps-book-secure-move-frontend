@@ -1,7 +1,7 @@
 import { Selector, t } from 'testcafe'
 
 import Page from './page'
-import { selectFieldsetOption } from '../helpers'
+import { selectFieldsetOption } from '../_helpers'
 
 class CancelMovePage extends Page {
   constructor() {

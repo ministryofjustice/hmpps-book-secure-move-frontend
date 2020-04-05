@@ -9,7 +9,7 @@ import {
   selectFieldsetOption,
   fillInForm,
   generatePerson,
-} from '../helpers'
+} from '../_helpers'
 
 class CreateMovePage extends Page {
   constructor() {

@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe'
 
 import { newMove } from './_routes'
-import { ocaUser, prisonUser } from './roles'
+import { ocaUser, prisonUser } from './_roles'
+import { createPersonFixture } from './_helpers'
 import { page, moveDetailPage, createMovePage } from './pages'
-import { createPersonFixture } from './helpers'
 
 fixture('New move from Prison').beforeEach(async t => {
   await t.useRole(prisonUser).navigateTo(newMove)

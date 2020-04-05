@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe'
 
 import { newMove } from './_routes'
-import { stcUser } from './roles'
+import { stcUser } from './_roles'
 import { page, moveDetailPage, createMovePage } from './pages'
 
 fixture('New move from Secure Training Centre (STC)').beforeEach(async t => {
