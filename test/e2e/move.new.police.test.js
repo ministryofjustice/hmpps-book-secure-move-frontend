@@ -19,20 +19,20 @@ test('Police to Court with unfound person', async t => {
   const person = generatePerson()
 
   // PNC lookup
-  await createMovePage.fillInPncSearch(person.police_national_computer)
+  await createMovePage.fillInPncSearch(person.policeNationalComputer)
   await page.submitForm()
 
   // PNC lookup results
   await createMovePage.checkPersonLookupResults(
     0,
-    person.police_national_computer
+    person.policeNationalComputer
   )
   await t.click(createMovePage.steps.personLookupResults.nodes.moveSomeoneNew)
 
   // Personal details
   // TODO: Check pnc number is pre-filled
   const personalDetails = await createMovePage.fillInPersonalDetails({
-    pncNumber: person.police_national_computer,
+    policeNationalComputer: person.policeNationalComputer,
   })
   await page.submitForm()
 
@@ -74,13 +74,13 @@ test('Police to Court with existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPncSearch(personalDetails.police_national_computer)
+  await createMovePage.fillInPncSearch(personalDetails.policeNationalComputer)
   await page.submitForm()
 
   // PNC lookup results
   await createMovePage.checkPersonLookupResults(
     1,
-    personalDetails.police_national_computer
+    personalDetails.policeNationalComputer
   )
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()

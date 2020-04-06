@@ -12,35 +12,47 @@ export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
 })
 
-export function generatePerson({ pncNumber } = {}) {
+export function generatePerson(overrides = {}) {
+  const firstNames = faker.name.firstName()
+  const lastName = faker.name.lastName()
   return {
-    police_national_computer:
-      pncNumber ||
-      faker
-        .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
-        .toUpperCase(),
-    prison_number: faker.fake(
+    lastName,
+    firstNames,
+    fullname: `${lastName}, ${firstNames}`.toUpperCase(),
+    policeNationalComputer: faker
+      .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
+      .toUpperCase(),
+    prisonNumber: faker.fake(
       '{{helpers.replaceSymbols("?")}}{{random.number}}{{helpers.replaceSymbols("??")}}'
     ),
-    last_name: faker.name.lastName(),
-    first_names: faker.name.firstName(),
-    date_of_birth: format(
+    dateOfBirth: format(
       faker.date.between('01-01-1940', '01-01-1990'),
       'yyyy-MM-dd'
     ),
+    ...overrides,
   }
 }
 
 export async function createPersonFixture() {
-  const person = await personService.create(generatePerson())
+  const fixture = generatePerson()
+  const person = await personService.create({
+    police_national_computer: fixture.policeNationalComputer,
+    prison_number: fixture.prisonNumber,
+    last_name: fixture.lastName,
+    first_names: fixture.firstNames,
+    date_of_birth: fixture.dateOfBirth,
+  })
 
   return {
     ...person,
     fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
-    prison_number: find(person.identifiers, {
+    lastName: person.last_name,
+    firstNames: person.first_names,
+    dateOfBirth: person.date_of_birth,
+    prisonNumber: find(person.identifiers, {
       identifier_type: 'prison_number',
     }).value,
-    police_national_computer: find(person.identifiers, {
+    policeNationalComputer: find(person.identifiers, {
       identifier_type: 'police_national_computer',
     }).value,
   }

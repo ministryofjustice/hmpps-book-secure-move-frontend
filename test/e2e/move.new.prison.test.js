@@ -38,14 +38,11 @@ test('Prison to Court with existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPrisonNumberSearch(personalDetails.prison_number)
+  await createMovePage.fillInPrisonNumberSearch(personalDetails.prisonNumber)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(
-    1,
-    personalDetails.prison_number
-  )
+  await createMovePage.checkPersonLookupResults(1, personalDetails.prisonNumber)
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 
@@ -91,14 +88,11 @@ test('Prison to prison as proposed move', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPrisonNumberSearch(personalDetails.prison_number)
+  await createMovePage.fillInPrisonNumberSearch(personalDetails.prisonNumber)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(
-    1,
-    personalDetails.prison_number
-  )
+  await createMovePage.checkPersonLookupResults(1, personalDetails.prisonNumber)
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 

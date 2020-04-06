@@ -46,14 +46,14 @@ class MoveDetailPage extends Page {
   }
 
   async checkPersonalDetails({
-    police_national_computer: pncNumber,
-    prison_number: prisonNumber,
-    date_of_birth: dateOfBirth,
+    policeNationalComputer,
+    prisonNumber,
+    dateOfBirth,
     gender,
     ethnicity,
   } = {}) {
     const labelMap = {
-      'PNC number': pncNumber,
+      'PNC number': policeNationalComputer,
       'Prison number': prisonNumber,
       'Date of birth': dateOfBirth
         ? `${filters.formatDate(dateOfBirth)} (Age ${filters.calculateAge(

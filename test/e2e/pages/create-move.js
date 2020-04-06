@@ -27,7 +27,7 @@ class CreateMovePage extends Page {
       prisonLocation: Selector('#to_location_prison'),
       additionalInformation: Selector('#additional_information'),
       dateType: Selector('[name="date_type"]'),
-      dateForm: Selector('#date_from'),
+      dateFrom: Selector('#date_from'),
       hasDateTo: Selector('[name="has_date_to"]'),
       moveAgreed: Selector('[name="move_agreed"]'),
       moveAgreedBy: Selector('#move_agreed_by'),
@@ -135,21 +135,21 @@ class CreateMovePage extends Page {
 
     const person = generatePerson(personalDetails)
     const fields = await fillInForm({
-      police_national_computer: {
+      policeNationalComputer: {
         selector: this.fields.policeNationalComputer,
-        value: person.police_national_computer,
+        value: person.policeNationalComputer,
       },
-      last_name: {
+      lastName: {
         selector: this.fields.lastName,
-        value: person.last_name,
+        value: person.lastName,
       },
-      first_names: {
+      firstNames: {
         selector: this.fields.firstNames,
-        value: person.first_names,
+        value: person.firstNames,
       },
-      date_of_birth: {
+      dateOfBirth: {
         selector: this.fields.dateOfBirth,
-        value: person.date_of_birth,
+        value: person.dateOfBirth,
       },
       ethnicity: {
         selector: this.fields.ethnicity,
@@ -164,7 +164,7 @@ class CreateMovePage extends Page {
 
     return {
       ...fields,
-      fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
+      fullname: person.fullname,
     }
   }
 
