@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.16.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.15.1...v2.16.0) (2020-04-06)
+
+
+### Features
+
+* Dashboard for the OCA journey ([8af537c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8af537cd795e155e68792e73bc845a0af5e0036a))
+* Move landing page to correct url ([e78ae77](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e78ae772be9d2fc2c0a62ab67f3656076aae5695))
+* Presentation of dashboard filters ([6e32f42](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6e32f4207db7cede03972ef1faee6ce883e0471a))
+* Show this week for the date range ([0f16ab1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0f16ab11e2f121b6c82e9b5563c9307a944eae54))
+
+
+### Bug Fixes
+
+* Ensure all shared field configs are a deep copy ([73cd1d5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/73cd1d5fabde494ee7a0ed98230f7cce2b0cb6b4))
+* Ensure person formatter doesn't send empty identifiers ([80c6dbe](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/80c6dbe6feea7a8be6d81d8a103f185fa0992422))
+* Prevent field helper mutating properties ([e3a8069](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e3a806963c5885fd40af61f022c2f74068a491ac))
+* Visually hide date fieldset legend ([938635b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/938635bf78e6e393767214ac691918c8f2e22d6b))
+
 ### [2.15.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.15.0...v2.15.1) (2020-04-02)
 
 
