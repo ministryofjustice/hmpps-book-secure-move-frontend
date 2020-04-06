@@ -50,7 +50,7 @@ test('Secure Training Centre to Court with new person', async t => {
 
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 

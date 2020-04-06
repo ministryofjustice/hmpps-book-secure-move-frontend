@@ -244,23 +244,30 @@ export async function fillTextField({ selector, value }) {
 /**
  * Fill in form details on page
  *
- * @param {FormDetails} details - text fields and select options objects with field IDs as properties
- * @returns {Promise<textFields>} - details used to fill the form
+ * @param {array} [fields] - An array of fields to fill in
+ * @param {Selector} [fields.selector] - TestCafe selector of field element
+ * @param {string} [fields.value] - Value to enter/select
+ * @param {string} [fields.type] - Type of field. Can be `autocomplete`, `radio`, `checkbox`
+ *
+ * @returns {object} - object of filled in values
  */
-export async function fillInForm(fields = {}) {
+export async function fillInForm(fields = []) {
   const filledInFields = {}
 
-  for (const [id, value] of Object.entries(fields)) {
-    const textInputSelector = `#${id}`
-    const exists = await Selector(textInputSelector).exists
-
-    if (exists) {
-      await t
-        .selectText(textInputSelector)
-        .pressKey('delete')
-        .typeText(textInputSelector, value)
-
-      filledInFields[id] = value
+  for (const [key, field] of Object.entries(fields)) {
+    switch (field.type) {
+      case 'autocomplete':
+        filledInFields[key] = await fillAutocomplete(field)
+        break
+      case 'radio':
+        filledInFields[key] = await fillRadioOrCheckbox(field)
+        break
+      case 'checkbox':
+        filledInFields[key] = await fillRadioOrCheckbox(field)
+        break
+      default:
+        filledInFields[key] = await fillTextField(field)
+        break
     }
   }
 

@@ -72,7 +72,7 @@ test('Prison to Court with existing person', async t => {
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -125,7 +125,7 @@ test('Prison to prison as proposed move', async t => {
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_prison,
+    location: moveDetails.prisonLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
