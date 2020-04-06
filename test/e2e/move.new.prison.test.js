@@ -55,15 +55,15 @@ test('Prison to Court with existing person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInReleaseStatus()
+  const riskInformation = await createMovePage.fillInReleaseStatus()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInSpecialVehicle()
+  const healthInformation = await createMovePage.fillInSpecialVehicle()
   await page.submitForm()
 
   // Confirmation page
@@ -78,6 +78,11 @@ test('Prison to Court with existing person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
 fixture('New proposed move').beforeEach(async t => {

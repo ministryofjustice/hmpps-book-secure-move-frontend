@@ -45,15 +45,15 @@ test('Police to Court with unfound person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
@@ -68,6 +68,11 @@ test('Police to Court with unfound person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
 test('Police to Court with existing person', async t => {
@@ -94,15 +99,15 @@ test('Police to Court with existing person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
@@ -117,6 +122,11 @@ test('Police to Court with existing person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
 test('Police to Prison (recall) with new person', async t => {
@@ -140,11 +150,11 @@ test('Police to Prison (recall) with new person', async t => {
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
@@ -161,6 +171,8 @@ test('Police to Prison (recall) with new person', async t => {
   await moveDetailPage.checkPersonalDetails(personalDetails)
 
   // Check assessment
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
   await t
     .expect(moveDetailPage.nodes.courtInformationHeading.exists)
     .notOk()

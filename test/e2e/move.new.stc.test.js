@@ -29,15 +29,15 @@ test('Secure Training Centre to Court with new person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Documents upload
@@ -59,6 +59,11 @@ test('Secure Training Centre to Court with new person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 
   // TODO: Check files are present
 })
