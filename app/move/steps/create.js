@@ -55,14 +55,7 @@ const riskStep = {
     {
       field: 'from_location_type',
       value: 'prison',
-      next: [
-        {
-          field: 'to_location_type',
-          value: 'prison',
-          next: 'save',
-        },
-        'health-information',
-      ],
+      next: 'special-vehicle',
     },
     'health-information',
   ],
@@ -80,30 +73,6 @@ const healthStep = {
       next: 'document',
     },
     'save',
-  ],
-}
-
-const moveDateStep = {
-  pageTitle: 'moves::steps.move_date.heading',
-  next: [
-    {
-      field: 'move_type',
-      value: 'court_appearance',
-      next: 'court-information',
-    },
-    {
-      field: 'from_location_type',
-      value: 'prison',
-      next: [
-        {
-          field: 'to_location_type',
-          value: 'prison',
-          next: 'prison-transfer-reason',
-        },
-        'release-status',
-      ],
-    },
-    'risk-information',
   ],
 }
 
@@ -184,7 +153,27 @@ module.exports = {
     next: 'prison-transfer-reason',
   },
   '/move-date': {
-    ...moveDateStep,
+    pageTitle: 'moves::steps.move_date.heading',
+    next: [
+      {
+        field: 'move_type',
+        value: 'court_appearance',
+        next: 'court-information',
+      },
+      {
+        field: 'from_location_type',
+        value: 'prison',
+        next: [
+          {
+            field: 'to_location_type',
+            value: 'prison',
+            next: 'prison-transfer-reason',
+          },
+          'release-status',
+        ],
+      },
+      'risk-information',
+    ],
     controller: MoveDate,
     fields: ['date', 'date_type', 'date_custom'],
   },

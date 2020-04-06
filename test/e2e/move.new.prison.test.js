@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe'
 
 import { newMove } from './_routes'
-import { prisonUser } from './roles'
+import { ocaUser, prisonUser } from './roles'
 import { page, moveDetailPage, createMovePage } from './pages'
 import { createPersonFixture } from './helpers'
 
@@ -73,6 +73,59 @@ test('Prison to Court with existing person', async t => {
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
     location: moveDetails.to_location_court_appearance,
+  })
+  await t.click(Selector('a').withExactText(personalDetails.fullname))
+
+  // Move detail assertions
+  await moveDetailPage.checkHeader(personalDetails)
+
+  // Personal details assertions
+  await moveDetailPage.checkPersonalDetails(personalDetails)
+})
+
+fixture('New proposed move').beforeEach(async t => {
+  await t.useRole(ocaUser).navigateTo(newMove)
+})
+
+test('Prison to prison as proposed move', async t => {
+  const personalDetails = await createPersonFixture()
+
+  // PNC lookup
+  await createMovePage.fillInPrisonNumberSearch(personalDetails.prison_number)
+  await page.submitForm()
+
+  // PNC lookup results
+  await createMovePage.checkPersonLookupResults(
+    1,
+    personalDetails.prison_number
+  )
+  await createMovePage.selectSearchResults(personalDetails.fullname)
+  await page.submitForm()
+
+  // Move details
+  const moveDetails = await createMovePage.fillInMoveDetails('Prison')
+  await page.submitForm()
+
+  // Move date
+  await createMovePage.fillInDateRange()
+  await page.submitForm()
+
+  // Transfer reason
+  await createMovePage.fillInPrisonTransferReasons()
+  await page.submitForm()
+
+  // Agreement status
+  await createMovePage.fillInAgreementStatus()
+  await page.submitForm()
+
+  // Health information
+  await createMovePage.fillInSpecialVehicle()
+  await page.submitForm()
+
+  // Confirmation page
+  await createMovePage.checkConfirmationStep({
+    fullname: personalDetails.fullname,
+    location: moveDetails.to_location_prison,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 

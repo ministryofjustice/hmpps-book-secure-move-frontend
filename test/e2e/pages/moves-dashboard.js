@@ -13,9 +13,13 @@ class MovesDashboardPage extends Page {
       createMoveButton: Selector('.govuk-button').withExactText(
         'Create a move'
       ),
+      filterContainer: Selector('.app-filter'),
       pagination: {
         previousLink: Selector('.app-pagination__list-item--prev a'),
         todayLink: Selector('.app-pagination__list-item a').withText('Today'),
+        thisWeekLink: Selector('.app-pagination__list-item a').withText(
+          'This week'
+        ),
         nextLink: Selector('.app-pagination__list-item--next a'),
       },
     }
