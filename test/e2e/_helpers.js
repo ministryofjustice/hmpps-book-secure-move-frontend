@@ -1,4 +1,4 @@
-import { find } from 'lodash'
+import { find, isArray, isNil } from 'lodash'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
@@ -145,6 +145,100 @@ export async function selectFieldsetOption(
     .withText(optionLabelTextOrIndex)
 
   return selectOption(optionSelector, optionLabelTextOrIndex, optionCssSelector)
+}
+
+/**
+ * Select option from selector
+ *
+ * @param {object} [item]
+ * @param {Selector} [item.options] - TestCafe selector of options
+ * @param {string|number|array} [item.value] - option text, 0-based index to select, or array it items to select
+ *
+ * @returns {string|array} - value of the selected item or array of items selected
+ */
+async function chooseOption({ options, value }) {
+  if (isArray(value)) {
+    const filledInValues = []
+
+    for (const itemValue of value) {
+      filledInValues.push(
+        await chooseOption({
+          options,
+          value: itemValue,
+        })
+      )
+    }
+
+    return Promise.resolve(filledInValues)
+  }
+
+  let option
+  if (!isNil(value) && typeof value === 'string') {
+    option = await options.withText(value)
+  } else if (!isNil(value) && typeof value === 'number') {
+    option = await options.nth(value)
+  } else {
+    option = await options.nth(
+      Math.floor(Math.random() * (await options.count))
+    )
+  }
+
+  await t.click(option)
+  return option.innerText
+}
+
+/**
+ * Fill in an autocomplete field
+ *
+ * @param {object} [field]
+ * @param {Selector} [field.selector] - A TestCafe selector
+ * @param {string|number} [field.value] - Text value or index to select. If undefined, will select a random item
+ *
+ * @returns {string} - value of the selected item
+ */
+export async function fillAutocomplete({ selector, value }) {
+  await t.click(selector)
+
+  const optionsSelector = '.autocomplete__menu .autocomplete__option'
+  const autocompleteMenuOptions = await selector.parent().find(optionsSelector)
+
+  return chooseOption({
+    value,
+    options: autocompleteMenuOptions,
+  })
+}
+
+/**
+ * Fill in a radio or checkbox field
+ *
+ * @param {object} [field]
+ * @param {Selector} [field.selector] - A TestCafe selector of radios or checkboxes
+ * @param {string|number} [field.value] - Text value or index to select. If undefined, will select a random item
+ *
+ * @returns {string|array} - value of the selected item or array of items selected
+ */
+export async function fillRadioOrCheckbox({ selector, value }) {
+  const options = selector
+    .parent('fieldset')
+    .find('[type="radio"] ~ label, [type="checkbox"] ~ label')
+  return chooseOption({
+    value,
+    options,
+  })
+}
+
+/**
+ * Fill in a text or textarea field
+ *
+ * @param {object} [field]
+ * @param {Selector} [field.selector] - A TestCafe selector
+ * @param {string|number} [field.value] - Text value to enter
+ *
+ * @returns {string} - value of the selected item
+ */
+export async function fillTextField({ selector, value }) {
+  await t.typeText(selector, value, { replace: true })
+  return selector.value
 }
 
 /**
