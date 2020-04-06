@@ -1,3 +1,5 @@
+const { cloneDeep } = require('lodash')
+
 const { date } = require('../formatters')
 
 const personSearchFilter = {
@@ -125,7 +127,7 @@ const dateField = {
 module.exports = {
   // Person search
   'filter.police_national_computer': {
-    ...personSearchFilter,
+    ...cloneDeep(personSearchFilter),
     id: 'filter.police_national_computer',
     name: 'filter.police_national_computer',
     label: {
@@ -134,7 +136,7 @@ module.exports = {
     },
   },
   'filter.prison_number': {
-    ...personSearchFilter,
+    ...cloneDeep(personSearchFilter),
     id: 'filter.prison_number',
     name: 'filter.prison_number',
     label: {
@@ -197,7 +199,7 @@ module.exports = {
     autocomplete: 'off',
   },
   date_of_birth: {
-    ...dateField,
+    ...cloneDeep(dateField),
     validate: [...dateField.validate, 'before'],
     label: {
       text: 'fields::date_of_birth.label',
@@ -251,7 +253,7 @@ module.exports = {
   // move details
   to_location: {},
   move_type: {
-    ...moveType,
+    ...cloneDeep(moveType),
     items: [
       {
         id: 'move_type',
@@ -268,7 +270,7 @@ module.exports = {
     ],
   },
   move_type__police: {
-    ...moveType,
+    ...cloneDeep(moveType),
     items: [
       {
         id: 'move_type',
@@ -328,7 +330,7 @@ module.exports = {
     ],
   },
   date_custom: {
-    ...dateField,
+    ...cloneDeep(dateField),
     validate: [...dateField.validate, 'after'],
     skip: true,
     dependent: {
@@ -343,7 +345,7 @@ module.exports = {
     },
   },
   date_from: {
-    ...dateField,
+    ...cloneDeep(dateField),
     validate: [...dateField.validate, 'after'],
     id: 'date_from',
     name: 'date_from',
@@ -375,7 +377,7 @@ module.exports = {
     ],
   },
   date_to: {
-    ...dateField,
+    ...cloneDeep(dateField),
     skip: true,
     validate: [...dateField.validate, 'after'],
     dependent: {
@@ -390,31 +392,31 @@ module.exports = {
     },
   },
   // risk information
-  violent: assessmentQuestionComments,
-  escape: assessmentQuestionComments,
-  hold_separately: assessmentQuestionComments,
-  self_harm: assessmentQuestionComments,
-  concealed_items: assessmentQuestionComments,
-  other_risks: requiredAssessmentQuestionComments,
+  violent: cloneDeep(assessmentQuestionComments),
+  escape: cloneDeep(assessmentQuestionComments),
+  hold_separately: cloneDeep(assessmentQuestionComments),
+  self_harm: cloneDeep(assessmentQuestionComments),
+  concealed_items: cloneDeep(assessmentQuestionComments),
+  other_risks: cloneDeep(requiredAssessmentQuestionComments),
   not_to_be_released: {
-    ...requiredAssessmentQuestionComments,
+    ...cloneDeep(requiredAssessmentQuestionComments),
     explicit: true,
   },
   // health information
-  special_diet_or_allergy: assessmentQuestionComments,
-  health_issue: assessmentQuestionComments,
-  medication: assessmentQuestionComments,
-  wheelchair: assessmentQuestionComments,
-  pregnant: assessmentQuestionComments,
-  other_health: requiredAssessmentQuestionComments,
+  special_diet_or_allergy: cloneDeep(assessmentQuestionComments),
+  health_issue: cloneDeep(assessmentQuestionComments),
+  medication: cloneDeep(assessmentQuestionComments),
+  wheelchair: cloneDeep(assessmentQuestionComments),
+  pregnant: cloneDeep(assessmentQuestionComments),
+  other_health: cloneDeep(requiredAssessmentQuestionComments),
   special_vehicle: {
-    ...requiredAssessmentQuestionComments,
+    ...cloneDeep(requiredAssessmentQuestionComments),
     explicit: true,
   },
   // court information
-  solicitor: assessmentQuestionComments,
-  interpreter: assessmentQuestionComments,
-  other_court: requiredAssessmentQuestionComments,
+  solicitor: cloneDeep(assessmentQuestionComments),
+  interpreter: cloneDeep(assessmentQuestionComments),
+  other_court: cloneDeep(requiredAssessmentQuestionComments),
   documents: {
     id: 'documents',
     name: 'documents',
