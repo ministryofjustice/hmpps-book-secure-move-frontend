@@ -32,8 +32,28 @@ class CreateMovePage extends Page {
       moveAgreed: Selector('[name="move_agreed"]'),
       moveAgreedBy: Selector('#move_agreed_by'),
       prisonTransferReason: Selector('[name="prison_transfer_reason"]'),
-      notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
+      courtInformation: Selector('[name="court"]'),
+      solicitor: Selector('#solicitor'),
+      interpreter: Selector('#interpreter'),
+      otherCourt: Selector('#other_court'),
+      riskInformation: Selector('[name="risk"]'),
+      violent: Selector('#violent'),
+      escape: Selector('#escape'),
+      holdSeparately: Selector('#hold_separately'),
+      selfHarm: Selector('#self_harm'),
+      concealedItems: Selector('#concealed_items'),
+      otherRisks: Selector('#other_risks'),
+      healthInformation: Selector('[name="health"]'),
+      specialDietOrAllergy: Selector('#special_diet_or_allergy'),
+      healthIssue: Selector('#health_issue'),
+      medication: Selector('#medication'),
+      wheelchair: Selector('#wheelchair'),
+      pregnant: Selector('#pregnant'),
+      otherHealth: Selector('#other_health'),
+      specialVehicle: Selector('#special_vehicle'),
       specialVehicleRadio: Selector('[name="special_vehicle__explicit"]'),
+      notToBeReleased: Selector('#not_to_be_released'),
+      notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
     }
 
     this.steps = {
@@ -248,10 +268,39 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  fillInCourtInformation() {
-    return t
-      .expect(this.getCurrentUrl())
-      .contains('/move/new/court-information')
+  async fillInCourtInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/court-information')
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.courtInformation,
+        value: selectAll ? [0, 1, 2] : [],
+        type: 'checkbox',
+      },
+    }
+
+    if (selectAll) {
+      fields.otherCourt = {
+        selector: this.fields.otherCourt,
+        value: faker.lorem.sentence(6),
+      }
+
+      if (fillInOptional) {
+        fields.solicitor = {
+          selector: this.fields.solicitor,
+          value: faker.lorem.sentence(6),
+        }
+        fields.interpreter = {
+          selector: this.fields.interpreter,
+          value: faker.lorem.sentence(6),
+        }
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -259,8 +308,51 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  fillInRiskInformation() {
-    return t.expect(this.getCurrentUrl()).contains('/move/new/risk-information')
+  async fillInRiskInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/risk-information')
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.riskInformation,
+        value: selectAll ? [0, 1, 2, 3, 4, 5] : [],
+        type: 'checkbox',
+      },
+    }
+
+    if (selectAll) {
+      fields.otherRisks = {
+        selector: this.fields.otherRisks,
+        value: faker.lorem.sentence(6),
+      }
+
+      if (fillInOptional) {
+        fields.violent = {
+          selector: this.fields.violent,
+          value: faker.lorem.sentence(6),
+        }
+        fields.escape = {
+          selector: this.fields.escape,
+          value: faker.lorem.sentence(6),
+        }
+        fields.holdSeparately = {
+          selector: this.fields.holdSeparately,
+          value: faker.lorem.sentence(6),
+        }
+        fields.selfHarm = {
+          selector: this.fields.selfHarm,
+          value: faker.lorem.sentence(6),
+        }
+        fields.concealedItems = {
+          selector: this.fields.concealedItems,
+          value: faker.lorem.sentence(6),
+        }
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -324,18 +416,69 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  async fillInHealthInformation() {
+  async fillInHealthInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
     await t
       .expect(this.getCurrentUrl())
       .contains('/move/new/health-information')
 
-    return fillInForm({
+    if (!selectAll) {
+      return fillInForm({
+        specialVehicleRadio: {
+          selector: this.fields.specialVehicleRadio,
+          value: 'No',
+          type: 'radio',
+        },
+      })
+    }
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.healthInformation,
+        value: [0, 1, 2, 3, 4, 5],
+        type: 'checkbox',
+      },
       specialVehicleRadio: {
         selector: this.fields.specialVehicleRadio,
-        value: 'No',
+        value: 'Yes',
         type: 'radio',
       },
-    })
+      specialVehicle: {
+        selector: this.fields.specialVehicle,
+        value: faker.lorem.sentence(6),
+      },
+      otherHealth: {
+        selector: this.fields.otherHealth,
+        value: faker.lorem.sentence(6),
+      },
+    }
+
+    if (fillInOptional) {
+      fields.specialDietOrAllergy = {
+        selector: this.fields.specialDietOrAllergy,
+        value: faker.lorem.sentence(6),
+      }
+      fields.healthIssue = {
+        selector: this.fields.healthIssue,
+        value: faker.lorem.sentence(6),
+      }
+      fields.medication = {
+        selector: this.fields.medication,
+        value: faker.lorem.sentence(6),
+      }
+      fields.wheelchair = {
+        selector: this.fields.wheelchair,
+        value: faker.lorem.sentence(6),
+      }
+      fields.pregnant = {
+        selector: this.fields.pregnant,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
