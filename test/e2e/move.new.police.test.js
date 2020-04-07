@@ -159,6 +159,13 @@ test('Police to Prison (recall) with new person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await t
+    .expect(moveDetailPage.nodes.courtInformationHeading.exists)
+    .notOk()
+    .expect(moveDetailPage.nodes.courtInformation.exists)
+    .notOk()
 })
 
 fixture('Cancel move from Police Custody').beforeEach(async t => {
