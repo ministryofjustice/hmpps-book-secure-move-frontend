@@ -117,7 +117,9 @@ module.exports = {
       },
       {
         fn: req => {
-          return req.session.user.permissions.includes('moves:view:proposed')
+          return req.session.user.permissions.includes(
+            'move:create:prison_to_prison'
+          )
         },
         next: 'move-details-prison-to-prison',
       },
