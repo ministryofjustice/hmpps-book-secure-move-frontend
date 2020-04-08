@@ -69,6 +69,7 @@ class MoveDetailsController extends CreateBaseController {
         )
 
         req.sessionModel.set('to_location', locationDetail)
+        req.sessionModel.set('to_location_type', locationDetail.location_type)
       }
 
       super.successHandler(req, res, next)

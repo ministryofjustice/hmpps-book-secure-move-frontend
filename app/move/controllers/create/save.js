@@ -44,8 +44,13 @@ class SaveController extends CreateBaseController {
       person,
       assessment,
       from_location_type: fromLocationType,
+      to_location_type: toLocationType,
     } = req.form.values
     const currentAssessment = flatten(values(assessment))
+
+    if (fromLocationType === 'prison' && toLocationType === 'prison') {
+      req.sessionModel.set('status', 'proposed')
+    }
 
     if (fromLocationType !== 'prison') {
       req.sessionModel.set('assessment', currentAssessment)

@@ -39,7 +39,7 @@ const moveTypeNavigationConfig = [
 const movesMiddleware = {
   redirectBaseUrl: (req, res) => {
     const today = format(new Date(), dateFormat)
-    const currentLocation = get(req.session, 'currentLocation.id')
+    const currentLocation = get(req.session, 'currentLocation')
 
     if (currentLocation) {
       const userPermissions = get(req.session, 'user.permissions')
@@ -47,9 +47,10 @@ const movesMiddleware = {
         'moves:view:proposed',
         userPermissions
       )
-      const url = canViewProposedMoves
-        ? `${req.baseUrl}/week/${today}/${currentLocation}/`
-        : `${req.baseUrl}/day/${today}/${currentLocation}/outgoing`
+      const url =
+        canViewProposedMoves && currentLocation.location_type === 'prison'
+          ? `${req.baseUrl}/week/${today}/${currentLocation.id}/`
+          : `${req.baseUrl}/day/${today}/${currentLocation.id}/outgoing`
       return res.redirect(url)
     }
 

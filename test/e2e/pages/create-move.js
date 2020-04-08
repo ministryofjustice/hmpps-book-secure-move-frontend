@@ -48,6 +48,7 @@ class CreateMovePage extends Page {
           to_location_court_appearance: Selector(
             '#to_location_court_appearance'
           ),
+          to_location_prison: Selector('#to_location_prison'),
         },
       },
       documents: {
@@ -136,7 +137,7 @@ class CreateMovePage extends Page {
   /**
    * Fill in move details
    *
-   * @param {'Court'|'Prison recall'} moveType - type of move
+   * @param {'Court'|'Prison recall'|'Prison'} moveType - type of move
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInMoveDetails(moveType) {
@@ -157,6 +158,11 @@ class CreateMovePage extends Page {
           additional_information: faker.lorem.sentence(6),
         })
         break
+      case 'Prison':
+        values = await selectAutocompleteOption(
+          this.steps.moveDetails.nodes.to_location_prison
+        )
+        break
     }
 
     return {
@@ -171,6 +177,20 @@ class CreateMovePage extends Page {
   async fillInDate() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-date')
     return selectFieldsetOption('Date', 'Today').then(getInnerText)
+  }
+
+  /**
+   * Fill in date range
+   */
+  async fillInDateRange() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/move-date-range')
+    await fillInForm({
+      date_from: faker.date.future().toLocaleDateString(),
+    })
+    return selectFieldsetOption(
+      'Is there a date this move has to be completed by?',
+      'No'
+    ).then(getInnerText)
   }
 
   /**
@@ -205,6 +225,31 @@ class CreateMovePage extends Page {
       'Is there a reason this person should not be released?',
       'No'
     )
+  }
+
+  /**
+   * Fill in agreement status
+   *
+   * @returns {Promise}
+   */
+  async fillInAgreementStatus() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/agreement-status')
+    await selectFieldsetOption('Move agreement status', 'Yes')
+    await fillInForm({
+      move_agreed_by: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    })
+  }
+
+  /**
+   * Fill in release status
+   *
+   * @returns {Promise}
+   */
+  async fillInPrisonTransferReasons() {
+    await t
+      .expect(this.getCurrentUrl())
+      .contains('/move/new/prison-transfer-reason')
+    return selectFieldsetOption('Move type', 'Resettlement')
   }
 
   /**

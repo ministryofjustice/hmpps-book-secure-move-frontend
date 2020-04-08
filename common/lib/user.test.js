@@ -183,6 +183,7 @@ describe('User class', function() {
           'moves:view:proposed',
           'move:view',
           'move:create',
+          'move:create:prison_to_prison',
         ])
       })
     })

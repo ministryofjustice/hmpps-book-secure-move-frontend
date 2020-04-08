@@ -289,6 +289,7 @@ describe('Move controllers', function() {
       const toLocationId = '123456-7'
       const mockLocationDetail = {
         title: 'mock to location',
+        location_type: 'prison',
       }
       let req, res, nextSpy
 
@@ -318,10 +319,15 @@ describe('Move controllers', function() {
         })
 
         it('should set to_location in session as expected', function() {
-          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+          expect(req.sessionModel.set).to.have.been.calledTwice
+          expect(req.sessionModel.set.firstCall.args).to.deep.equal([
             'to_location',
-            mockLocationDetail
-          )
+            mockLocationDetail,
+          ])
+          expect(req.sessionModel.set.secondCall.args).to.deep.equal([
+            'to_location_type',
+            mockLocationDetail.location_type,
+          ])
         })
 
         it('should call parent successHandler', function() {

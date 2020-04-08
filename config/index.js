@@ -144,6 +144,10 @@ module.exports = {
         username: process.env.E2E_SUPPLIER_USERNAME,
         password: process.env.E2E_SUPPLIER_PASSWORD,
       },
+      OCA: {
+        username: process.env.E2E_OCA_USERNAME,
+        password: process.env.E2E_OCA_PASSWORD,
+      },
     },
   },
 }

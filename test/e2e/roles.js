@@ -33,3 +33,10 @@ export const prisonUser = Role(home, async t => {
     .typeText('#password', E2E.ROLES.PRISON.password)
     .pressKey('enter')
 })
+
+export const ocaUser = Role(home, async t => {
+  await t
+    .typeText('#username', E2E.ROLES.OCA.username)
+    .typeText('#password', E2E.ROLES.OCA.password)
+    .pressKey('enter')
+})

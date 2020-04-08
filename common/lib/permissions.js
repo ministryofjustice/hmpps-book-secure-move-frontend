@@ -25,6 +25,7 @@ const ocaPermissions = [
   'moves:view:proposed',
   'move:view',
   'move:create',
+  'move:create:prison_to_prison',
 ]
 
 const permissionsByRole = {

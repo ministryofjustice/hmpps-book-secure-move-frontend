@@ -554,6 +554,19 @@ describe('Move controllers', function() {
             }
           )
         })
+
+        context('when to location is also Prison', function() {
+          beforeEach(function() {
+            req.form.values.to_location_type = 'prison'
+            controller.process(req, {}, {})
+          })
+          it('will create a status of proposed on the move', function() {
+            expect(req.sessionModel.set).to.have.been.calledWithExactly(
+              'status',
+              'proposed'
+            )
+          })
+        })
       })
     })
 
