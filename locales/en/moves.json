@@ -152,11 +152,14 @@
   },
   "confirmation": {
     "page_title": "Move scheduled for {{name}}",
+    "page_title_proposed": "Move sent for {{name}}",
     "panel": {
       "heading": "Move scheduled",
+      "heading_proposed": "Move sent for review",
       "content": "Reference number<br><strong>{{moveReference}}</strong>"
     },
-    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled with {{supplier}}."
+    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled with {{supplier}}.",
+    "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review."
   },
   "agreement_status": {
     "heading": "Has this move been agreed with receiving prison?"
