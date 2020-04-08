@@ -136,7 +136,14 @@
     }
   },
   "detail": {
-    "page_title": "Move details for {{name}}"
+    "page_title": "Move details for {{name}}",
+    "court_hearing": {
+      "time_of_hearing": "Time of hearing",
+      "case_number": "Case number",
+      "started_on": "started on <time datetime=\"{{datetime}}\">{{datestring}}</time>",
+      "case_type": "Case type",
+      "comments": "Comments"
+    }
   },
   "cancel": {
     "steps": {
