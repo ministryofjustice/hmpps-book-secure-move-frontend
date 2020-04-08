@@ -20,6 +20,12 @@ class MoveDetailPage extends Page {
       personalDetailsSummary: Selector(
         '#main-content .govuk-grid-column-two-thirds dl.govuk-summary-list'
       ),
+      courtInformationHeading: Selector('#main-content h2').withText(
+        'Information for the court'
+      ),
+      courtInformation: Selector('#main-content h2')
+        .withText('Information for the court')
+        .sibling('dl'),
     }
   }
 

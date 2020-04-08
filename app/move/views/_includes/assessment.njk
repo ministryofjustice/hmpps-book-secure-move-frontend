@@ -51,18 +51,20 @@
   {% endfor %}
 {% endfor %}
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-  {{ t("moves::assessment.categories.court.heading") }}
-</h2>
+{% if move.to_location.location_type == 'court' %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+    {{ t("moves::assessment.categories.court.heading") }}
+  </h2>
 
-{% if courtSummary.rows | length %}
-  {{ govukSummaryList(courtSummary) }}
-{% else %}
-  {{ appMessage({
-    classes: "app-message--muted",
-    allowDismiss: false,
-    content: {
-      html: t("moves::assessment.categories.court.empty")
-    }
-  }) }}
+  {% if courtSummary.rows | length %}
+    {{ govukSummaryList(courtSummary) }}
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted",
+      allowDismiss: false,
+      content: {
+        html: t("moves::assessment.categories.court.empty")
+      }
+    }) }}
+  {% endif %}
 {% endif %}
