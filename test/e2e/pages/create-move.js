@@ -159,9 +159,11 @@ class CreateMovePage extends Page {
         })
         break
       case 'Prison':
-        values = await selectAutocompleteOption(
-          this.steps.moveDetails.nodes.to_location_prison
-        )
+        values = {
+          to_location_prison: await selectAutocompleteOption(
+            this.steps.moveDetails.nodes.to_location_prison
+          ),
+        }
         break
     }
 
