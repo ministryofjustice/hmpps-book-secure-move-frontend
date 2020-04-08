@@ -44,12 +44,12 @@ const usersWhoHaveADashboard = [
   },
 ]
 
-users.forEach(user => {
-  fixture(`Smoke test (${user.name})`).beforeEach(async t => {
-    await t.useRole(user.role).navigateTo(movesByDay)
-  })
+fixture('Smoke tests')
 
-  test('Sign in/sign out, navigate days and load without errors', async t => {
+users.forEach(user => {
+  test.before(async t => {
+    await t.useRole(user.role).navigateTo(movesByDay)
+  })(`As ${user.name}`, async t => {
     await t
       .expect(page.nodes.appHeader.exists)
       .ok()
@@ -77,11 +77,9 @@ users.forEach(user => {
 })
 
 usersWhoHaveADashboard.forEach(user => {
-  fixture(`Smoke test (${user.name})`).beforeEach(async t => {
+  test.before(async t => {
     await t.useRole(user.role).navigateTo(movesByDay)
-  })
-
-  test('Sign in/sign out, navigate weeks and load without errors', async t => {
+  })(`As ${user.name}`, async t => {
     await t
       .expect(page.nodes.appHeader.exists)
       .ok()

@@ -5,11 +5,11 @@ import { ocaUser, prisonUser } from './_roles'
 import { createPersonFixture } from './_helpers'
 import { page, moveDetailPage, createMovePage } from './pages'
 
-fixture('New move from Prison').beforeEach(async t => {
+fixture('New move from Prison to Court').beforeEach(async t => {
   await t.useRole(prisonUser).navigateTo(newMove)
 })
 
-test('Prison to Court with unfound person', async t => {
+test('With unfound person', async t => {
   const searchTerm = 'UNKNOWN_PRISONER'
 
   // PNC lookup
@@ -34,7 +34,7 @@ test('Prison to Court with unfound person', async t => {
     .contains('/move/new/person-lookup-prison-number')
 })
 
-test('Prison to Court with existing person', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
@@ -85,11 +85,11 @@ test('Prison to Court with existing person', async t => {
   await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-fixture('New proposed move').beforeEach(async t => {
+fixture('New move from Prison to Prison').beforeEach(async t => {
   await t.useRole(ocaUser).navigateTo(newMove)
 })
 
-test('Prison to prison as proposed move', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup

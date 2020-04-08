@@ -11,11 +11,11 @@ import {
 } from './pages'
 import { generatePerson, createPersonFixture } from './_helpers'
 
-fixture('New move from Police Custody').beforeEach(async t => {
+fixture('New move from Police Custody to Court').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(newMove)
 })
 
-test('Police to Court with unfound person', async t => {
+test('With unfound person', async t => {
   const person = generatePerson()
 
   // PNC lookup
@@ -75,7 +75,7 @@ test('Police to Court with unfound person', async t => {
   await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-test('Police to Court with existing person', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
@@ -129,7 +129,13 @@ test('Police to Court with existing person', async t => {
   await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-test('Police to Prison (recall) with new person', async t => {
+fixture('New move from Police Custody to Prison (recall)').beforeEach(
+  async t => {
+    await t.useRole(policeUser).navigateTo(newMove)
+  }
+)
+
+test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
@@ -184,7 +190,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(movesByDay)
 })
 
-test('Cancel move `Made in error`', async t => {
+test('Reason - `Made in error`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)
@@ -198,7 +204,7 @@ test('Cancel move `Made in error`', async t => {
   })
 })
 
-test('Cancel move `Supplier declined to move this person`', async t => {
+test('Reason - `Supplier declined to move this person`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)
@@ -212,7 +218,7 @@ test('Cancel move `Supplier declined to move this person`', async t => {
   })
 })
 
-test('Cancel move `Another reason`', async t => {
+test('Reason - `Another reason`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)

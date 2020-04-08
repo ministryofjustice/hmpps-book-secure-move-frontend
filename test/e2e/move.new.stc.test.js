@@ -4,11 +4,13 @@ import { newMove } from './_routes'
 import { stcUser } from './_roles'
 import { page, moveDetailPage, createMovePage } from './pages'
 
-fixture('New move from Secure Training Centre (STC)').beforeEach(async t => {
-  await t.useRole(stcUser).navigateTo(newMove)
-})
+fixture('New move from Secure Training Centre (STC) to Court').beforeEach(
+  async t => {
+    await t.useRole(stcUser).navigateTo(newMove)
+  }
+)
 
-test('Secure Training Centre to Court with new person', async t => {
+test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
