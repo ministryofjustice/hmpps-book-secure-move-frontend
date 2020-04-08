@@ -43,8 +43,8 @@ describe('Move controllers', function() {
 
       it('should use supplier fallback as supplier name', function() {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierName')
-        expect(params.supplierName).to.equal('supplier_fallback')
+        expect(params).to.have.property('supplierNames')
+        expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
       })
 
       it('should translate supplier fallback key', function() {
@@ -100,8 +100,8 @@ describe('Move controllers', function() {
 
       it('should use supplier fallback as supplier name', function() {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierName')
-        expect(params.supplierName).to.equal('supplier_fallback')
+        expect(params).to.have.property('supplierNames')
+        expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
       })
 
       it('should translate supplier fallback key', function() {
@@ -125,10 +125,10 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should use first supplier name as supplier param', function() {
+      it('should only contain first supplier in supplier param', function() {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierName')
-        expect(params.supplierName).to.equal('Supplier one')
+        expect(params).to.have.property('supplierNames')
+        expect(params.supplierNames).to.deep.equal(['Supplier one'])
       })
     })
 
@@ -151,10 +151,13 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should join supplier names as supplier param', function() {
+      it('should contain all supplier names as supplier param', function() {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierName')
-        expect(params.supplierName).to.equal('Supplier one and Supplier two')
+        expect(params).to.have.property('supplierNames')
+        expect(params.supplierNames).to.deep.equal([
+          'Supplier one',
+          'Supplier two',
+        ])
       })
     })
 

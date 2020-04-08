@@ -34,7 +34,7 @@
           name: move.person.fullname | upper,
           location: location,
           date: move.date | formatDateWithDay,
-          supplier: supplierName
+          supplier: supplierNames | oxfordJoin
         }) | safe }}
       </p>
 
