@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ t("moves::confirmation.page_title", { name: move.person.fullname | upper }) }}
+  {{ t("moves::confirmation.page_title", {
+    context: move.status,
+    name: move.person.fullname | upper }) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -18,14 +20,16 @@
 
       {{ govukPanel({
         classes: "govuk-!-margin-bottom-7",
-        titleText: t("moves::confirmation.panel.heading"),
+        titleText: t("moves::confirmation.panel.heading", { context: move.status }),
         html: t("moves::confirmation.panel.content", {
+          context: move.status,
           moveReference: move.reference
         })
       }) }}
 
       <p>
         {{ t("moves::confirmation.detail", {
+          context: move.status,
           href: "/move/" + move.id,
           name: move.person.fullname | upper,
           location: location,
