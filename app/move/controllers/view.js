@@ -1,3 +1,5 @@
+const { sortBy } = require('lodash')
+
 const presenters = require('../../../common/presenters')
 
 module.exports = function view(req, res) {
@@ -17,6 +19,12 @@ module.exports = function view(req, res) {
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(person.assessment_answers),
     assessment: presenters.assessmentByCategory(person.assessment_answers),
+    courtHearings: sortBy(move.hearings, 'start_time').map(hearing => {
+      return {
+        ...hearing,
+        summaryList: presenters.courtHearingToSummaryListComponent(hearing),
+      }
+    }),
     courtSummary: presenters.assessmentToSummaryListComponent(
       person.assessment_answers,
       'court'

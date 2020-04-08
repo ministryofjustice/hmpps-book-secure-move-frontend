@@ -137,6 +137,16 @@
   },
   "detail": {
     "page_title": "Move details for {{name}}",
+    "court_hearings": {
+      "heading": "Court hearing",
+      "heading_plural": "Court hearings",
+      "heading_with_count": "Court hearings ({{count}})",
+      "subheading": "Hearing",
+      "subheading_with_index": "Hearing {{index}}",
+      "empty": "No court hearings",
+      "nomis_failed": "A court date for this hearing could not be added to NOMIS — check it was added manually",
+      "nomis_failed_with_index": "A court date for hearing {{index}} could not be added to NOMIS — check it was added manually"
+    },
     "court_hearing": {
       "time_of_hearing": "Time of hearing",
       "case_number": "Case number",

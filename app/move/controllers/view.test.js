@@ -8,6 +8,33 @@ const mockMove = {
     assessment_answers: [],
   },
   documents: [],
+  hearings: [
+    {
+      id: '1',
+      start_time: '2020-10-20T13:00:00+00:00',
+      case_number: 'T12345',
+    },
+    {
+      id: '2',
+      start_time: '2020-10-20T20:00:00+00:00',
+      case_number: 'S12345',
+    },
+    {
+      id: '3',
+      start_time: '2020-10-20T09:00:00+00:00',
+      case_number: 'S67890',
+    },
+    {
+      id: '4',
+      start_time: '2020-10-20T16:30:00+00:00',
+      case_number: 'T001144',
+    },
+    {
+      id: '5',
+      start_time: '2020-10-20T11:20:00+00:00',
+      case_number: 'T66992277',
+    },
+  ],
 }
 
 describe('Move controllers', function() {
@@ -20,6 +47,9 @@ describe('Move controllers', function() {
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentByCategory').returnsArg(0)
       sinon.stub(presenters, 'assessmentToSummaryListComponent').returnsArg(0)
+      sinon
+        .stub(presenters, 'courtHearingToSummaryListComponent')
+        .callsFake(hearing => `summaryList__${hearing.id}`)
 
       req = {
         t: sinon.stub().returnsArg(0),
@@ -95,6 +125,53 @@ describe('Move controllers', function() {
         ).to.be.calledOnceWithExactly(
           mockMove.person.assessment_answers,
           'court'
+        )
+      })
+
+      it('should contain court hearings param', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('courtHearings')
+      })
+
+      it('should order court hearings by start time', function() {
+        const params = res.render.args[0][1]
+        expect(params.courtHearings).to.deep.equal([
+          {
+            id: '3',
+            start_time: '2020-10-20T09:00:00+00:00',
+            case_number: 'S67890',
+            summaryList: 'summaryList__3',
+          },
+          {
+            id: '5',
+            start_time: '2020-10-20T11:20:00+00:00',
+            case_number: 'T66992277',
+            summaryList: 'summaryList__5',
+          },
+          {
+            id: '1',
+            start_time: '2020-10-20T13:00:00+00:00',
+            case_number: 'T12345',
+            summaryList: 'summaryList__1',
+          },
+          {
+            id: '4',
+            start_time: '2020-10-20T16:30:00+00:00',
+            case_number: 'T001144',
+            summaryList: 'summaryList__4',
+          },
+          {
+            id: '2',
+            start_time: '2020-10-20T20:00:00+00:00',
+            case_number: 'S12345',
+            summaryList: 'summaryList__2',
+          },
+        ])
+      })
+
+      it('should call courtHearingToSummaryListComponent for each hearing', function() {
+        expect(presenters.courtHearingToSummaryListComponent).to.be.callCount(
+          mockMove.hearings.length
         )
       })
 
