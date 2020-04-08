@@ -167,6 +167,33 @@ function formatTime(value) {
   return `${hours}${minutes}${suffix}`
 }
 
+/**
+ * Join a list of items using commas and `and` as
+ * the final join
+ *
+ * @param  {Array} an array of items to join
+ * @param  {String} last delimiter to use
+ * @return {String} items joined using commas and the last delimiter
+ * @example {{ ["one","two","three"] | oxfordJoin }}
+ */
+function oxfordJoin(arr = [], lastDelimiter = 'and') {
+  if (arr.length === 0) {
+    return ''
+  }
+
+  if (arr.length === 1) {
+    return arr[0]
+  }
+
+  if (arr.length === 2) {
+    // joins all with "and" but no commas
+    return arr.join(` ${lastDelimiter} `)
+  }
+
+  // joins all with commas, but last one gets ", and" (oxford comma!)
+  return `${arr.slice(0, -1).join(', ')}, ${lastDelimiter} ${arr.slice(-1)}`
+}
+
 module.exports = {
   formatDate,
   formatDateRange,
@@ -178,4 +205,5 @@ module.exports = {
   kebabcase: kebabCase,
   startCase,
   pluralize,
+  oxfordJoin,
 }

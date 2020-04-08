@@ -438,4 +438,66 @@ describe('Nunjucks filters', function() {
       })
     })
   })
+
+  describe('#oxfordJoin()', function() {
+    context('by default', function() {
+      context('with no items', function() {
+        it('should return empty string', function() {
+          const joined = filters.oxfordJoin([])
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with one item', function() {
+        it('should return item', function() {
+          const joined = filters.oxfordJoin(['one'])
+          expect(joined).to.equal('one')
+        })
+      })
+
+      context('with two items', function() {
+        it('should join with `and`', function() {
+          const joined = filters.oxfordJoin(['one', 'two'])
+          expect(joined).to.equal('one and two')
+        })
+      })
+
+      context('with multiple items', function() {
+        it('should join with comma and `and`', function() {
+          const joined = filters.oxfordJoin(['one', 'two', 'three'])
+          expect(joined).to.equal('one, two, and three')
+        })
+      })
+    })
+
+    context('with custom delimiter', function() {
+      context('with no items', function() {
+        it('should return empty string', function() {
+          const joined = filters.oxfordJoin([], 'or')
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with one item', function() {
+        it('should return item', function() {
+          const joined = filters.oxfordJoin(['one'], 'or')
+          expect(joined).to.equal('one')
+        })
+      })
+
+      context('with two items', function() {
+        it('should join with `or`', function() {
+          const joined = filters.oxfordJoin(['one', 'two'], 'or')
+          expect(joined).to.equal('one or two')
+        })
+      })
+
+      context('with multiple items', function() {
+        it('should join with comma and `or`', function() {
+          const joined = filters.oxfordJoin(['one', 'two', 'three'], 'or')
+          expect(joined).to.equal('one, two, or three')
+        })
+      })
+    })
+  })
 })
