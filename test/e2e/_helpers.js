@@ -2,6 +2,7 @@ import { find, isArray, isNil } from 'lodash'
 import { format } from 'date-fns'
 import { join } from 'path'
 import { homedir } from 'os'
+import { unlinkSync } from 'fs'
 import { ClientFunction, t } from 'testcafe'
 import faker from 'faker'
 import glob from 'glob'
@@ -216,18 +217,32 @@ export function getCsvDownloadFilePaths() {
 
 /**
  * Wait for the csvDownload path to exist. Handy when the files are downloading
- * @param t
  * @param delay
  * @returns {string[]}
  */
-export async function waitForCsvDownloadFilePaths(t, delay) {
-  for (let i = 0; i < delay; i++) {
-    await t.wait(200)
+export async function waitForCsvDownloadFilePaths(delay = 500) {
+  await t.wait(delay)
 
-    const csvDownloadFilePaths = getCsvDownloadFilePaths()
+  const csvDownloadFilePaths = getCsvDownloadFilePaths()
 
-    if (csvDownloadFilePaths.length) {
-      return csvDownloadFilePaths
+  if (csvDownloadFilePaths.length) {
+    return csvDownloadFilePaths
+  }
+}
+
+/**
+ * Clean existing downloads
+ *
+ * @returns {}
+ */
+export function deleteCsvDownloads() {
+  const csvDownloads = getCsvDownloadFilePaths()
+
+  for (const file of csvDownloads) {
+    try {
+      unlinkSync(file)
+    } catch (err) {
+      throw new Error(`Failed to delete CSV download file: ${err.message}`)
     }
   }
 }

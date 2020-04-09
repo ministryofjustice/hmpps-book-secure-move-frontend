@@ -1,43 +1,30 @@
-import { unlinkSync, readFileSync } from 'fs'
+import { every } from 'lodash'
+import { readFileSync } from 'fs'
 
 import { movesByDay } from './_routes'
 import { policeUser, supplierUser } from './_roles'
-import {
-  getCsvDownloadFilePaths,
-  waitForCsvDownloadFilePaths,
-} from './_helpers'
+import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
 import { movesDashboardPage } from './pages'
 
-function deleteDownloads() {
-  const csvDownloads = getCsvDownloadFilePaths()
-  for (const file of csvDownloads) {
-    try {
-      unlinkSync(file)
-    } catch (err) {
-      throw new Error(`failed to delete CSV download file: ${err.message}`)
-    }
-  }
-}
-
 fixture('Download moves as Police User').beforeEach(async t => {
-  deleteDownloads()
+  deleteCsvDownloads()
   await t.useRole(policeUser).navigateTo(movesByDay)
 })
 
 test('Download moves', async t => {
   await t.click(movesDashboardPage.nodes.downloadMovesLink)
 
-  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
+  const csvDownloads = await waitForCsvDownloadFilePaths()
 
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
-    const contentsLines = csvContents.split('\n')
-    const csvHeader = contentsLines[0].split(',')
-    const csvFirstLine = contentsLines[1].split(',')
+    const lineLengths = csvContents
+      .split('\n')
+      .map(line => line.split(',').length)
 
-    await t.expect(csvHeader.length).eql(csvFirstLine.length)
+    await t.expect(every(lineLengths)).ok()
   } catch (err) {
-    throw new Error('Failed to read CSV download file')
+    throw new Error(err)
   }
 })
 
@@ -48,16 +35,16 @@ fixture('Download moves as Supplier User').beforeEach(async t => {
 test('Download moves as supplier user', async t => {
   await t.click(movesDashboardPage.nodes.downloadMovesLink)
 
-  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
+  const csvDownloads = await waitForCsvDownloadFilePaths()
 
   try {
     const csvContents = readFileSync(csvDownloads[0], 'utf8')
-    const contentsLines = csvContents.split('\n')
-    const csvHeader = contentsLines[0].split(',')
-    const csvFirstLine = contentsLines[1].split(',')
+    const lineLengths = csvContents
+      .split('\n')
+      .map(line => line.split(',').length)
 
-    await t.expect(csvHeader.length).eql(csvFirstLine.length)
+    await t.expect(every(lineLengths)).ok()
   } catch (err) {
-    throw new Error('Failed to read CSV download file')
+    throw new Error(err)
   }
 })
