@@ -159,7 +159,11 @@
       "content": "Reference number<br><strong>{{moveReference}}</strong>"
     },
     "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled with {{supplier}}.",
-    "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review."
+    "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review.",
+    "saved_to_nomis": "<p>A court date for case number <strong>{{cases}}</strong> on <strong>{{date}}</strong> has been added to NOMIS.</p><p>If this person has more than one hearing you will need to add any extra court dates.</p>",
+    "saved_to_nomis_plural": "<p>Court dates for case numbers <strong>{{cases}}</strong> on <strong>{{date}}</strong> have been added to NOMIS.</p>",
+    "saved_to_nomis_failed": "You need to add this court date to NOMIS as it could not be added.",
+    "saved_to_nomis_failed_plural": "You need to add court dates to NOMIS for {{cases}} as they could not be added."
   },
   "agreement_status": {
     "heading": "Has this move been agreed with receiving prison?"
