@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe'
 
 import { newMove, movesByDay } from './_routes'
-import { policeUser } from './roles'
+import { policeUser } from './_roles'
 import {
   page,
   moveDetailPage,
@@ -9,30 +9,30 @@ import {
   cancelMovePage,
   createMovePage,
 } from './pages'
-import { generatePerson, createPersonFixture } from './helpers'
+import { generatePerson, createPersonFixture } from './_helpers'
 
-fixture('New move from Police Custody').beforeEach(async t => {
+fixture('New move from Police Custody to Court').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(newMove)
 })
 
-test('Police to Court with unfound person', async t => {
+test('With unfound person', async t => {
   const person = generatePerson()
 
   // PNC lookup
-  await createMovePage.fillInPncSearch(person.police_national_computer)
+  await createMovePage.fillInPncSearch(person.policeNationalComputer)
   await page.submitForm()
 
   // PNC lookup results
   await createMovePage.checkPersonLookupResults(
     0,
-    person.police_national_computer
+    person.policeNationalComputer
   )
   await t.click(createMovePage.steps.personLookupResults.nodes.moveSomeoneNew)
 
   // Personal details
   // TODO: Check pnc number is pre-filled
   const personalDetails = await createMovePage.fillInPersonalDetails({
-    pncNumber: person.police_national_computer,
+    policeNationalComputer: person.policeNationalComputer,
   })
   await page.submitForm()
 
@@ -45,21 +45,21 @@ test('Police to Court with unfound person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -68,19 +68,24 @@ test('Police to Court with unfound person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-test('Police to Court with existing person', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPncSearch(personalDetails.police_national_computer)
+  await createMovePage.fillInPncSearch(personalDetails.policeNationalComputer)
   await page.submitForm()
 
   // PNC lookup results
   await createMovePage.checkPersonLookupResults(
     1,
-    personalDetails.police_national_computer
+    personalDetails.policeNationalComputer
   )
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
@@ -94,21 +99,21 @@ test('Police to Court with existing person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -117,9 +122,20 @@ test('Police to Court with existing person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-test('Police to Prison (recall) with new person', async t => {
+fixture('New move from Police Custody to Prison (recall)').beforeEach(
+  async t => {
+    await t.useRole(policeUser).navigateTo(newMove)
+  }
+)
+
+test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
@@ -140,11 +156,11 @@ test('Police to Prison (recall) with new person', async t => {
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Confirmation page
@@ -161,6 +177,8 @@ test('Police to Prison (recall) with new person', async t => {
   await moveDetailPage.checkPersonalDetails(personalDetails)
 
   // Check assessment
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
   await t
     .expect(moveDetailPage.nodes.courtInformationHeading.exists)
     .notOk()
@@ -172,7 +190,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(movesByDay)
 })
 
-test('Cancel move `Made in error`', async t => {
+test('Reason - `Made in error`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)
@@ -186,7 +204,7 @@ test('Cancel move `Made in error`', async t => {
   })
 })
 
-test('Cancel move `Supplier declined to move this person`', async t => {
+test('Reason - `Supplier declined to move this person`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)
@@ -200,7 +218,7 @@ test('Cancel move `Supplier declined to move this person`', async t => {
   })
 })
 
-test('Cancel move `Another reason`', async t => {
+test('Reason - `Another reason`', async t => {
   await t
     .click(movesDashboardPage.nodes.movesLinks.nth(0))
     .click(moveDetailPage.nodes.cancelLink)

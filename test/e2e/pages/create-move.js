@@ -3,26 +3,62 @@ import pluralize from 'pluralize'
 import faker from 'faker'
 
 import Page from './page'
-import {
-  getInnerText,
-  selectAutocompleteOption,
-  selectFieldsetOption,
-  fillInForm,
-  generatePerson,
-} from '../helpers'
+import { fillInForm, generatePerson } from '../_helpers'
 
 class CreateMovePage extends Page {
   constructor() {
     super()
     this.url = '/move/new'
 
+    this.fields = {
+      pncNumberSearch: Selector(
+        'input[name="filter.police_national_computer"]'
+      ),
+      prisonNumberSearch: Selector('input[name="filter.prison_number"]'),
+      people: Selector('input[name="people"]'),
+      firstNames: Selector('#first_names'),
+      lastName: Selector('#last_name'),
+      dateOfBirth: Selector('#date_of_birth'),
+      policeNationalComputer: Selector('#police_national_computer'),
+      ethnicity: Selector('#ethnicity'),
+      gender: Selector('[name="gender"]'),
+      moveType: Selector('[name="move_type"]'),
+      courtLocation: Selector('#to_location_court_appearance'),
+      prisonLocation: Selector('#to_location_prison'),
+      additionalInformation: Selector('#additional_information'),
+      dateType: Selector('[name="date_type"]'),
+      dateFrom: Selector('#date_from'),
+      hasDateTo: Selector('[name="has_date_to"]'),
+      moveAgreed: Selector('[name="move_agreed"]'),
+      moveAgreedBy: Selector('#move_agreed_by'),
+      prisonTransferReason: Selector('[name="prison_transfer_reason"]'),
+      courtInformation: Selector('[name="court"]'),
+      solicitor: Selector('#solicitor'),
+      interpreter: Selector('#interpreter'),
+      otherCourt: Selector('#other_court'),
+      riskInformation: Selector('[name="risk"]'),
+      violent: Selector('#violent'),
+      escape: Selector('#escape'),
+      holdSeparately: Selector('#hold_separately'),
+      selfHarm: Selector('#self_harm'),
+      concealedItems: Selector('#concealed_items'),
+      otherRisks: Selector('#other_risks'),
+      healthInformation: Selector('[name="health"]'),
+      specialDietOrAllergy: Selector('#special_diet_or_allergy'),
+      healthIssue: Selector('#health_issue'),
+      medication: Selector('#medication'),
+      wheelchair: Selector('#wheelchair'),
+      pregnant: Selector('#pregnant'),
+      otherHealth: Selector('#other_health'),
+      specialVehicle: Selector('#special_vehicle'),
+      specialVehicleRadio: Selector('[name="special_vehicle__explicit"]'),
+      notToBeReleased: Selector('#not_to_be_released'),
+      notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
+    }
+
     this.steps = {
       personLookup: {
         nodes: {
-          pncNumberSearch: Selector(
-            'input[name="filter.police_national_computer"]'
-          ),
-          prisonNumberSearch: Selector('input[name="filter.prison_number"]'),
           noIdentifierLink: Selector('summary').withText(
             'I don’t have this number'
           ),
@@ -36,19 +72,6 @@ class CreateMovePage extends Page {
           searchSummary: Selector('h2.govuk-heading-m'),
           moveSomeoneNew: Selector('a').withText('move someone else'),
           searchAgainLink: Selector('a').withText('Search again'),
-        },
-      },
-      personalDetails: {
-        nodes: {
-          ethnicity: Selector('#ethnicity'),
-        },
-      },
-      moveDetails: {
-        nodes: {
-          to_location_court_appearance: Selector(
-            '#to_location_court_appearance'
-          ),
-          to_location_prison: Selector('#to_location_prison'),
         },
       },
       documents: {
@@ -75,13 +98,15 @@ class CreateMovePage extends Page {
    * @param {String} searchTerm - Search term to enter
    * @returns {Promise<FormDetails>}
    */
-  fillInPncSearch(searchTerm) {
-    return t
-      .expect(this.getCurrentUrl())
-      .contains('/move/new/person-lookup-pnc')
-      .selectText(this.steps.personLookup.nodes.pncNumberSearch)
-      .pressKey('delete')
-      .typeText(this.steps.personLookup.nodes.pncNumberSearch, searchTerm)
+  async fillInPncSearch(searchTerm) {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/person-lookup-pnc')
+
+    return fillInForm({
+      pncNumberSearch: {
+        selector: this.fields.pncNumberSearch,
+        value: searchTerm,
+      },
+    })
   }
 
   /**
@@ -90,13 +115,17 @@ class CreateMovePage extends Page {
    * @param {String} searchTerm - Search term to enter
    * @returns {Promise<FormDetails>}
    */
-  fillInPrisonNumberSearch(searchTerm) {
-    return t
+  async fillInPrisonNumberSearch(searchTerm) {
+    await t
       .expect(this.getCurrentUrl())
       .contains('/move/new/person-lookup-prison-number')
-      .selectText(this.steps.personLookup.nodes.prisonNumberSearch)
-      .pressKey('delete')
-      .typeText(this.steps.personLookup.nodes.prisonNumberSearch, searchTerm)
+
+    return fillInForm({
+      prisonNumberSearch: {
+        selector: this.fields.prisonNumberSearch,
+        value: searchTerm,
+      },
+    })
   }
 
   /**
@@ -106,7 +135,13 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   selectSearchResults(name) {
-    return selectFieldsetOption('Person to move', name)
+    return fillInForm({
+      people: {
+        selector: this.fields.people,
+        value: name,
+        type: 'radio',
+      },
+    })
   }
 
   /**
@@ -119,18 +154,37 @@ class CreateMovePage extends Page {
     await t.expect(this.getCurrentUrl()).contains('/move/new/personal-details')
 
     const person = generatePerson(personalDetails)
-    const textFields = await fillInForm(person)
+    const fields = await fillInForm({
+      policeNationalComputer: {
+        selector: this.fields.policeNationalComputer,
+        value: person.policeNationalComputer,
+      },
+      lastName: {
+        selector: this.fields.lastName,
+        value: person.lastName,
+      },
+      firstNames: {
+        selector: this.fields.firstNames,
+        value: person.firstNames,
+      },
+      dateOfBirth: {
+        selector: this.fields.dateOfBirth,
+        value: person.dateOfBirth,
+      },
+      ethnicity: {
+        selector: this.fields.ethnicity,
+        type: 'autocomplete',
+      },
+      gender: {
+        selector: this.fields.gender,
+        value: faker.random.arrayElement(['Male', 'Female']),
+        type: 'radio',
+      },
+    })
 
     return {
-      ...textFields,
-      fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
-      ethnicity: await selectAutocompleteOption(
-        this.steps.personalDetails.nodes.ethnicity
-      ),
-      gender: await selectFieldsetOption(
-        'Gender',
-        faker.random.arrayElement(['Male', 'Female'])
-      ).then(getInnerText),
+      ...fields,
+      fullname: person.fullname,
     }
   }
 
@@ -142,35 +196,37 @@ class CreateMovePage extends Page {
    */
   async fillInMoveDetails(moveType) {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-details')
-    await selectFieldsetOption('Move to', moveType)
 
-    let values = {}
-    switch (moveType) {
-      case 'Court':
-        values = {
-          to_location_court_appearance: await selectAutocompleteOption(
-            this.steps.moveDetails.nodes.to_location_court_appearance
-          ),
-        }
-        break
-      case 'Prison recall':
-        values = await fillInForm({
-          additional_information: faker.lorem.sentence(6),
-        })
-        break
-      case 'Prison':
-        values = {
-          to_location_prison: await selectAutocompleteOption(
-            this.steps.moveDetails.nodes.to_location_prison
-          ),
-        }
-        break
+    const fields = {
+      moveType: {
+        selector: this.fields.moveType,
+        value: moveType,
+        type: 'radio',
+      },
     }
 
-    return {
-      move_type: moveType,
-      ...values,
+    if (moveType === 'Court') {
+      fields.courtLocation = {
+        selector: this.fields.courtLocation,
+        type: 'autocomplete',
+      }
     }
+
+    if (moveType === 'Prison') {
+      fields.prisonLocation = {
+        selector: this.fields.prisonLocation,
+        type: 'autocomplete',
+      }
+    }
+
+    if (moveType === 'Prison recall') {
+      fields.additionalInformation = {
+        selector: this.fields.additionalInformation,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -178,7 +234,14 @@ class CreateMovePage extends Page {
    */
   async fillInDate() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-date')
-    return selectFieldsetOption('Date', 'Today').then(getInnerText)
+
+    return fillInForm({
+      dateType: {
+        selector: this.fields.dateType,
+        value: 'Today',
+        type: 'radio',
+      },
+    })
   }
 
   /**
@@ -186,13 +249,18 @@ class CreateMovePage extends Page {
    */
   async fillInDateRange() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/move-date-range')
-    await fillInForm({
-      date_from: faker.date.future().toLocaleDateString(),
+
+    return fillInForm({
+      dateFrom: {
+        selector: this.fields.dateFrom,
+        value: faker.date.future().toLocaleDateString(),
+      },
+      hasDateTo: {
+        selector: this.fields.hasDateTo,
+        value: 'No',
+        type: 'radio',
+      },
     })
-    return selectFieldsetOption(
-      'Is there a date this move has to be completed by?',
-      'No'
-    ).then(getInnerText)
   }
 
   /**
@@ -200,10 +268,39 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  fillInCourtInformation() {
-    return t
-      .expect(this.getCurrentUrl())
-      .contains('/move/new/court-information')
+  async fillInCourtInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/court-information')
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.courtInformation,
+        value: selectAll ? [0, 1, 2] : [],
+        type: 'checkbox',
+      },
+    }
+
+    if (selectAll) {
+      fields.otherCourt = {
+        selector: this.fields.otherCourt,
+        value: faker.lorem.sentence(6),
+      }
+
+      if (fillInOptional) {
+        fields.solicitor = {
+          selector: this.fields.solicitor,
+          value: faker.lorem.sentence(6),
+        }
+        fields.interpreter = {
+          selector: this.fields.interpreter,
+          value: faker.lorem.sentence(6),
+        }
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -211,8 +308,51 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  fillInRiskInformation() {
-    return t.expect(this.getCurrentUrl()).contains('/move/new/risk-information')
+  async fillInRiskInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/risk-information')
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.riskInformation,
+        value: selectAll ? [0, 1, 2, 3, 4, 5] : [],
+        type: 'checkbox',
+      },
+    }
+
+    if (selectAll) {
+      fields.otherRisks = {
+        selector: this.fields.otherRisks,
+        value: faker.lorem.sentence(6),
+      }
+
+      if (fillInOptional) {
+        fields.violent = {
+          selector: this.fields.violent,
+          value: faker.lorem.sentence(6),
+        }
+        fields.escape = {
+          selector: this.fields.escape,
+          value: faker.lorem.sentence(6),
+        }
+        fields.holdSeparately = {
+          selector: this.fields.holdSeparately,
+          value: faker.lorem.sentence(6),
+        }
+        fields.selfHarm = {
+          selector: this.fields.selfHarm,
+          value: faker.lorem.sentence(6),
+        }
+        fields.concealedItems = {
+          selector: this.fields.concealedItems,
+          value: faker.lorem.sentence(6),
+        }
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -223,10 +363,13 @@ class CreateMovePage extends Page {
   async fillInReleaseStatus() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/release-status')
 
-    return selectFieldsetOption(
-      'Is there a reason this person should not be released?',
-      'No'
-    )
+    return fillInForm({
+      notToBeReleasedRadio: {
+        selector: this.fields.notToBeReleasedRadio,
+        value: 'No',
+        type: 'radio',
+      },
+    })
   }
 
   /**
@@ -236,14 +379,22 @@ class CreateMovePage extends Page {
    */
   async fillInAgreementStatus() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/agreement-status')
-    await selectFieldsetOption('Move agreement status', 'Yes')
-    await fillInForm({
-      move_agreed_by: `${faker.name.firstName()} ${faker.name.lastName()}`,
+
+    return fillInForm({
+      moveAgreed: {
+        selector: this.fields.moveAgreed,
+        value: 'Yes',
+        type: 'radio',
+      },
+      moveAgreedBy: {
+        selector: this.fields.moveAgreedBy,
+        value: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      },
     })
   }
 
   /**
-   * Fill in release status
+   * Fill in prison transfer reason
    *
    * @returns {Promise}
    */
@@ -251,7 +402,13 @@ class CreateMovePage extends Page {
     await t
       .expect(this.getCurrentUrl())
       .contains('/move/new/prison-transfer-reason')
-    return selectFieldsetOption('Move type', 'Resettlement')
+
+    return fillInForm({
+      prisonTransferReason: {
+        selector: this.fields.prisonTransferReason,
+        type: 'radio',
+      },
+    })
   }
 
   /**
@@ -259,15 +416,69 @@ class CreateMovePage extends Page {
    *
    * @returns {Promise}
    */
-  async fillInHealthInformation() {
+  async fillInHealthInformation({
+    selectAll = true,
+    fillInOptional = false,
+  } = {}) {
     await t
       .expect(this.getCurrentUrl())
       .contains('/move/new/health-information')
 
-    return selectFieldsetOption(
-      'Does this person need to travel in a special vehicle?',
-      'No'
-    )
+    if (!selectAll) {
+      return fillInForm({
+        specialVehicleRadio: {
+          selector: this.fields.specialVehicleRadio,
+          value: 'No',
+          type: 'radio',
+        },
+      })
+    }
+
+    const fields = {
+      selectedItems: {
+        selector: this.fields.healthInformation,
+        value: [0, 1, 2, 3, 4, 5],
+        type: 'checkbox',
+      },
+      specialVehicleRadio: {
+        selector: this.fields.specialVehicleRadio,
+        value: 'Yes',
+        type: 'radio',
+      },
+      specialVehicle: {
+        selector: this.fields.specialVehicle,
+        value: faker.lorem.sentence(6),
+      },
+      otherHealth: {
+        selector: this.fields.otherHealth,
+        value: faker.lorem.sentence(6),
+      },
+    }
+
+    if (fillInOptional) {
+      fields.specialDietOrAllergy = {
+        selector: this.fields.specialDietOrAllergy,
+        value: faker.lorem.sentence(6),
+      }
+      fields.healthIssue = {
+        selector: this.fields.healthIssue,
+        value: faker.lorem.sentence(6),
+      }
+      fields.medication = {
+        selector: this.fields.medication,
+        value: faker.lorem.sentence(6),
+      }
+      fields.wheelchair = {
+        selector: this.fields.wheelchair,
+        value: faker.lorem.sentence(6),
+      }
+      fields.pregnant = {
+        selector: this.fields.pregnant,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    return fillInForm(fields)
   }
 
   /**
@@ -278,10 +489,13 @@ class CreateMovePage extends Page {
   async fillInSpecialVehicle() {
     await t.expect(this.getCurrentUrl()).contains('/move/new/special-vehicle')
 
-    return selectFieldsetOption(
-      'Does this person need to travel in a special vehicle?',
-      'No'
-    )
+    return fillInForm({
+      specialVehicleRadio: {
+        selector: this.fields.specialVehicleRadio,
+        value: 'No',
+        type: 'radio',
+      },
+    })
   }
 
   /**

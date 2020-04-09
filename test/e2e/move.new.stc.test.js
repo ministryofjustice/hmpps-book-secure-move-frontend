@@ -1,14 +1,16 @@
 import { Selector } from 'testcafe'
 
 import { newMove } from './_routes'
-import { stcUser } from './roles'
+import { stcUser } from './_roles'
 import { page, moveDetailPage, createMovePage } from './pages'
 
-fixture('New move from Secure Training Centre (STC)').beforeEach(async t => {
-  await t.useRole(stcUser).navigateTo(newMove)
-})
+fixture('New move from Secure Training Centre (STC) to Court').beforeEach(
+  async t => {
+    await t.useRole(stcUser).navigateTo(newMove)
+  }
+)
 
-test('Secure Training Centre to Court with new person', async t => {
+test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
@@ -29,15 +31,15 @@ test('Secure Training Centre to Court with new person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInRiskInformation()
+  const riskInformation = await createMovePage.fillInRiskInformation()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInHealthInformation()
+  const healthInformation = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
   // Documents upload
@@ -50,7 +52,7 @@ test('Secure Training Centre to Court with new person', async t => {
 
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -59,6 +61,11 @@ test('Secure Training Centre to Court with new person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 
   // TODO: Check files are present
 })

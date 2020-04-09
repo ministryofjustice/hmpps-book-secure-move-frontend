@@ -1,15 +1,15 @@
 import { Selector } from 'testcafe'
 
 import { newMove } from './_routes'
-import { ocaUser, prisonUser } from './roles'
+import { ocaUser, prisonUser } from './_roles'
+import { createPersonFixture } from './_helpers'
 import { page, moveDetailPage, createMovePage } from './pages'
-import { createPersonFixture } from './helpers'
 
-fixture('New move from Prison').beforeEach(async t => {
+fixture('New move from Prison to Court').beforeEach(async t => {
   await t.useRole(prisonUser).navigateTo(newMove)
 })
 
-test('Prison to Court with unfound person', async t => {
+test('With unfound person', async t => {
   const searchTerm = 'UNKNOWN_PRISONER'
 
   // PNC lookup
@@ -34,18 +34,15 @@ test('Prison to Court with unfound person', async t => {
     .contains('/move/new/person-lookup-prison-number')
 })
 
-test('Prison to Court with existing person', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPrisonNumberSearch(personalDetails.prison_number)
+  await createMovePage.fillInPrisonNumberSearch(personalDetails.prisonNumber)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(
-    1,
-    personalDetails.prison_number
-  )
+  await createMovePage.checkPersonLookupResults(1, personalDetails.prisonNumber)
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 
@@ -58,21 +55,21 @@ test('Prison to Court with existing person', async t => {
   await page.submitForm()
 
   // Court information
-  await createMovePage.fillInCourtInformation()
+  const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
-  await createMovePage.fillInReleaseStatus()
+  const riskInformation = await createMovePage.fillInReleaseStatus()
   await page.submitForm()
 
   // Health information
-  await createMovePage.fillInSpecialVehicle()
+  const healthInformation = await createMovePage.fillInSpecialVehicle()
   await page.submitForm()
 
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_court_appearance,
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -81,24 +78,26 @@ test('Prison to Court with existing person', async t => {
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
+
+  // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
+  await moveDetailPage.checkRiskInformation(riskInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation)
 })
 
-fixture('New proposed move').beforeEach(async t => {
+fixture('New move from Prison to Prison').beforeEach(async t => {
   await t.useRole(ocaUser).navigateTo(newMove)
 })
 
-test('Prison to prison as proposed move', async t => {
+test('With existing person', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
-  await createMovePage.fillInPrisonNumberSearch(personalDetails.prison_number)
+  await createMovePage.fillInPrisonNumberSearch(personalDetails.prisonNumber)
   await page.submitForm()
 
   // PNC lookup results
-  await createMovePage.checkPersonLookupResults(
-    1,
-    personalDetails.prison_number
-  )
+  await createMovePage.checkPersonLookupResults(1, personalDetails.prisonNumber)
   await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 
@@ -125,7 +124,7 @@ test('Prison to prison as proposed move', async t => {
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: moveDetails.to_location_prison,
+    location: moveDetails.prisonLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 

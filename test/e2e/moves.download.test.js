@@ -1,60 +1,49 @@
-import { unlinkSync, readFileSync } from 'fs'
+import { every } from 'lodash'
+import { readFileSync } from 'fs'
 
 import { movesByDay } from './_routes'
-import { policeUser, supplierUser } from './roles'
+import { policeUser, prisonUser, stcUser, supplierUser } from './_roles'
+import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
 import { movesDashboardPage } from './pages'
-import { getCsvDownloadFilePaths, waitForCsvDownloadFilePaths } from './helpers'
 
-function deleteDownloads() {
-  const csvDownloads = getCsvDownloadFilePaths()
-  for (const file of csvDownloads) {
+const users = [
+  {
+    name: 'Police user',
+    role: policeUser,
+  },
+  {
+    name: 'Prison user',
+    role: prisonUser,
+  },
+  {
+    name: 'STC user',
+    role: stcUser,
+  },
+  {
+    name: 'Supplier user',
+    role: supplierUser,
+  },
+]
+
+fixture('Download moves')
+
+users.forEach(user => {
+  test.before(async t => {
+    deleteCsvDownloads()
+    await t.useRole(user.role).navigateTo(movesByDay)
+  })(`As ${user.name}`, async t => {
+    await t.click(movesDashboardPage.nodes.downloadMovesLink)
+    const csvDownloads = await waitForCsvDownloadFilePaths()
+
     try {
-      unlinkSync(file)
+      const csvContents = readFileSync(csvDownloads[0], 'utf8')
+      const lineLengths = csvContents
+        .split('\n')
+        .map(line => line.split(',').length)
+
+      await t.expect(every(lineLengths)).ok()
     } catch (err) {
-      throw new Error(`failed to delete CSV download file: ${err.message}`)
+      throw new Error(err)
     }
-  }
-}
-
-fixture('Download moves as Police User').beforeEach(async t => {
-  deleteDownloads()
-  await t.useRole(policeUser).navigateTo(movesByDay)
-})
-
-test('Download moves', async t => {
-  await t.click(movesDashboardPage.nodes.downloadMovesLink)
-
-  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
-
-  try {
-    const csvContents = readFileSync(csvDownloads[0], 'utf8')
-    const contentsLines = csvContents.split('\n')
-    const csvHeader = contentsLines[0].split(',')
-    const csvFirstLine = contentsLines[1].split(',')
-
-    await t.expect(csvHeader.length).eql(csvFirstLine.length)
-  } catch (err) {
-    throw new Error('Failed to read CSV download file')
-  }
-})
-
-fixture('Download moves as Supplier User').beforeEach(async t => {
-  await t.useRole(supplierUser).navigateTo(movesByDay)
-})
-
-test('Download moves as supplier user', async t => {
-  await t.click(movesDashboardPage.nodes.downloadMovesLink)
-
-  const csvDownloads = await waitForCsvDownloadFilePaths(t, 100)
-
-  try {
-    const csvContents = readFileSync(csvDownloads[0], 'utf8')
-    const contentsLines = csvContents.split('\n')
-    const csvHeader = contentsLines[0].split(',')
-    const csvFirstLine = contentsLines[1].split(',')
-
-    await t.expect(csvHeader.length).eql(csvFirstLine.length)
-  } catch (err) {
-    throw new Error('Failed to read CSV download file')
-  }
+  })
 })

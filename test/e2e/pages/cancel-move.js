@@ -1,13 +1,14 @@
-import { Selector, t } from 'testcafe'
+import { Selector } from 'testcafe'
 
 import Page from './page'
-import { selectFieldsetOption } from '../helpers'
+import { fillInForm } from '../_helpers'
 
 class CancelMovePage extends Page {
   constructor() {
     super()
 
-    this.nodes = {
+    this.fields = {
+      cancellationReason: Selector('[name="cancellation_reason"]'),
       cancellationReasonComment: Selector('#cancellation_reason_comment'),
     }
   }
@@ -18,14 +19,22 @@ class CancelMovePage extends Page {
    * @returns {Promise}
    */
   async selectReason(reason, comment) {
-    await selectFieldsetOption(
-      'Why are you cancelling this move request?',
-      reason
-    )
+    const fields = {
+      cancellation_reason: {
+        selector: this.fields.cancellationReason,
+        value: reason,
+        type: 'radio',
+      },
+    }
 
     if (comment) {
-      await t.typeText(this.nodes.cancellationReasonComment, comment)
+      fields.cancellation_reason_comment = {
+        selector: this.fields.cancellationReasonComment,
+        value: comment,
+      }
     }
+
+    return fillInForm(fields)
   }
 }
 
