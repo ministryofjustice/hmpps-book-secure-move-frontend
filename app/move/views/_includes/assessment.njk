@@ -52,19 +52,61 @@
 {% endfor %}
 
 {% if move.to_location.location_type == 'court' %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-    {{ t("moves::assessment.categories.court.heading") }}
-  </h2>
+  {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+      {{ t("moves::detail.court_hearings.heading", {
+        context: "with_count" if courtHearings.length > 1,
+        count: courtHearings.length
+      }) }}
+    </h2>
 
-  {% if courtSummary.rows | length %}
-    {{ govukSummaryList(courtSummary) }}
+    {% if courtHearings.length %}
+      {% for courtHearing in courtHearings %}
+        {% if courtHearings.length > 1 %}
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
+            {{ t("moves::detail.court_hearings.subheading", {
+              context: "with_index",
+              index: loop.index
+            }) }}
+          </h3>
+        {% endif %}
+
+        {{ govukSummaryList(courtHearing.summaryList) }}
+
+        {% if not courtHearing.saved_to_nomis %}
+          {{ govukWarningText({
+            text: t("moves::detail.court_hearings.nomis_failed", {
+              context: "with_index" if courtHearings.length > 1,
+              index: loop.index
+            }),
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted",
+        allowDismiss: false,
+        content: {
+          html: t("moves::detail.court_hearings.empty")
+        }
+      }) }}
+    {% endif %}
   {% else %}
-    {{ appMessage({
-      classes: "app-message--muted",
-      allowDismiss: false,
-      content: {
-        html: t("moves::assessment.categories.court.empty")
-      }
-    }) }}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+      {{ t("moves::assessment.categories.court.heading") }}
+    </h2>
+
+    {% if courtSummary.rows | length %}
+      {{ govukSummaryList(courtSummary) }}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted",
+        allowDismiss: false,
+        content: {
+          html: t("moves::assessment.categories.court.empty")
+        }
+      }) }}
+    {% endif %}
   {% endif %}
 {% endif %}

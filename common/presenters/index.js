@@ -2,6 +2,7 @@ const assessmentAnswerToTag = require('./assessment-answer-to-tag')
 const assessmentToTagList = require('./assessment-to-tag-list')
 const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
 const assessmentByCategory = require('./assessment-by-category')
+const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const personToCardComponent = require('./person-to-card-component')
@@ -16,6 +17,7 @@ module.exports = {
   assessmentToTagList,
   assessmentToSummaryListComponent,
   assessmentByCategory,
+  courtHearingToSummaryListComponent,
   moveToCardComponent,
   moveToMetaListComponent,
   personToCardComponent,
