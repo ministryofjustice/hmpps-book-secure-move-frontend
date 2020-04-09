@@ -1,0 +1,22 @@
+{
+  "data": {
+    "id": "007f6aa0-7d82-4bf1-9191-2e27235d0f76",
+    "type": "court_hearings",
+    "attributes": {
+      "start_time": "2020-10-20T13:00:00+00:00",
+      "case_number": "T18725",
+      "case_start_date": "2019-10-08T10:30:00+00:00",
+      "case_type": "Adult",
+      "comments": "Distinctio accusantium enim libero eligendi est.",
+      "nomis_case_id": "3918461",
+      "nomis_hearing_id": "20167984",
+      "saved_to_nomis": "true"
+    },
+    "relationships": {
+      "move": {
+        "data": null
+      }
+    }
+  },
+  "included": []
+}

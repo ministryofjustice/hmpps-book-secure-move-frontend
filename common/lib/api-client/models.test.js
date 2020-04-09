@@ -58,6 +58,13 @@ const testCases = {
       httpMock: 'get',
     },
   ],
+  court_hearing: [
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+    },
+  ],
   gender: [
     {
       method: 'findAll',

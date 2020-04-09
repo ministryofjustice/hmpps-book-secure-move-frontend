@@ -31,6 +31,10 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'documents',
       },
+      court_hearings: {
+        jsonApi: 'hasMany',
+        type: 'court_hearings',
+      },
     },
   },
   image: {
@@ -66,6 +70,22 @@ module.exports = {
       location: {
         jsonApi: 'hasOne',
         type: 'locations',
+      },
+    },
+  },
+  court_hearing: {
+    attributes: {
+      start_time: '',
+      case_number: '',
+      case_type: '',
+      case_start_date: '',
+      comments: '',
+      nomis_case_id: '',
+      nomis_hearing_id: '',
+      saved_to_nomis: '',
+      move: {
+        jsonApi: 'hasOne',
+        type: 'moves',
       },
     },
   },
