@@ -2,7 +2,20 @@
 
 {% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
 
+{% block dateTitle %}
+  <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
+    <li>
+      <a href="javascript:window.print()" class="app-icon app-icon--print">
+        {{ t("actions::print_move_list") }}
+      </a>
+    </li>
+  </ul>
+{{ super() }}
+{% endblock %}
+
 {% block headerActions %}
+
+
   {% if canAccess('move:create') %}
     {{ govukButton({
       isStartButton: true,
