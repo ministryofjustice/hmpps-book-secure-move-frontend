@@ -21,7 +21,13 @@
     "label": "Prison number"
   },
   "criminal_records_office": {
-    "label": "CRO  number"
+    "label": "<abbr title=\"Criminal Records Office\">CRO</abbr> number"
+  },
+  "niche_reference": {
+    "label": "Niche reference"
+  },
+  "athena_reference": {
+    "label": "Athena reference"
   },
   "first_names": {
     "label": "First name(s)"

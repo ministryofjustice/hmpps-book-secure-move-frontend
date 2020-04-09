@@ -25,6 +25,9 @@ export function generatePerson(overrides = {}) {
     prisonNumber: faker.fake(
       '{{helpers.replaceSymbols("?")}}{{random.number}}{{helpers.replaceSymbols("??")}}'
     ),
+    criminalRecordsOffice: faker.fake('CRO/{{random.number}}'),
+    nicheReference: faker.fake('NI/{{random.number}}'),
+    athenaReference: faker.fake('AT/{{random.number}}'),
     dateOfBirth: format(
       faker.date.between('01-01-1940', '01-01-1990'),
       'yyyy-MM-dd'
@@ -38,6 +41,9 @@ export async function createPersonFixture() {
   const person = await personService.create({
     police_national_computer: fixture.policeNationalComputer,
     prison_number: fixture.prisonNumber,
+    criminal_records_office: fixture.criminalRecordsOffice,
+    niche_reference: fixture.nicheReference,
+    athena_reference: fixture.athenaReference,
     last_name: fixture.lastName,
     first_names: fixture.firstNames,
     date_of_birth: fixture.dateOfBirth,
@@ -54,6 +60,15 @@ export async function createPersonFixture() {
     }).value,
     policeNationalComputer: find(person.identifiers, {
       identifier_type: 'police_national_computer',
+    }).value,
+    criminalRecordsOffice: find(person.identifiers, {
+      identifier_type: 'criminal_records_office',
+    }).value,
+    nicheReference: find(person.identifiers, {
+      identifier_type: 'niche_reference',
+    }).value,
+    athenaReference: find(person.identifiers, {
+      identifier_type: 'athena_reference',
     }).value,
   }
 }
