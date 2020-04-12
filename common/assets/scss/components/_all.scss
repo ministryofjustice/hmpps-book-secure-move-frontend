@@ -6,13 +6,12 @@
 // Load components from the shared components folder
 @import "card/card";
 @import "data/data";
+@import "filter/filter";
 @import "internal-header/internal-header";
 @import "message/message";
 @import "meta-list/meta-list";
+@import "multi-file-upload/multi-file-upload";
 @import "pagination/pagination";
 @import "panel/panel";
-@import "tag/tag";
 @import "results/results";
-@import "multi-file-upload/multi-file-upload";
-@import "link/link";
-@import "filter/filter";
+@import "tag/tag";
