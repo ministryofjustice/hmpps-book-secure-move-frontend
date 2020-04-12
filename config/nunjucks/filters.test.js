@@ -3,6 +3,8 @@ const timezoneMock = require('timezone-mock')
 const { startOfWeek, endOfWeek } = require('date-fns')
 const i18n = require('../i18n')
 
+const mockFilesizeResponse = '10 MB'
+const mockFilesizejs = sinon.stub().returns(mockFilesizeResponse)
 const filters = proxyquire('./filters', {
   '../index': {
     DATE_FORMATS: {
@@ -10,6 +12,7 @@ const filters = proxyquire('./filters', {
       WITH_DAY: 'EEEE d MMM yyyy',
     },
   },
+  filesize: mockFilesizejs,
 })
 
 describe('Nunjucks filters', function() {
@@ -498,6 +501,25 @@ describe('Nunjucks filters', function() {
           expect(joined).to.equal('one, two, or three')
         })
       })
+    })
+  })
+
+  describe('#filesize()', function() {
+    const testFilesize = '101010'
+    let filesize
+
+    beforeEach(function() {
+      filesize = filters.filesize(testFilesize)
+    })
+
+    it('should call filesizejs with string', function() {
+      expect(mockFilesizejs).to.be.calledOnceWithExactly(testFilesize, {
+        round: 0,
+      })
+    })
+
+    it('should return filesize', function() {
+      expect(filesize).to.equal(mockFilesizeResponse)
     })
   })
 })

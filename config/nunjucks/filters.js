@@ -15,6 +15,8 @@ const {
 const { kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 const chrono = require('chrono-node')
+const filesizejs = require('filesize')
+
 const i18n = require('../i18n')
 
 const { DATE_FORMATS } = require('../index')
@@ -194,6 +196,12 @@ function oxfordJoin(arr = [], lastDelimiter = 'and') {
   return `${arr.slice(0, -1).join(', ')}, ${lastDelimiter} ${arr.slice(-1)}`
 }
 
+function filesize(str) {
+  return filesizejs(str, {
+    round: 0,
+  })
+}
+
 module.exports = {
   formatDate,
   formatDateRange,
@@ -206,4 +214,5 @@ module.exports = {
   startCase,
   pluralize,
   oxfordJoin,
+  filesize,
 }
