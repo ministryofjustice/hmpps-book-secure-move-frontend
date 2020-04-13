@@ -32,11 +32,11 @@ const wizardConfig = {
 const createConfig = {
   ...wizardConfig,
   controller: create.Base,
-  name: 'create-a-move',
-  templatePath: 'move/views/create/',
-  template: '../../../form-wizard',
   journeyName: 'create-a-move',
   journeyPageTitle: 'actions::create_move',
+  name: 'create-a-move',
+  template: '../../../form-wizard',
+  templatePath: 'move/views/create/',
 }
 const updateConfig = {
   ...wizardConfig,
@@ -47,8 +47,8 @@ const updateConfig = {
 }
 const cancelConfig = {
   ...wizardConfig,
-  name: 'cancel-move',
   journeyName: 'cancel-move',
+  name: 'cancel-move',
 }
 const reviewConfig = {
   ...wizardConfig,
@@ -125,6 +125,6 @@ router.use(
 
 // Export
 module.exports = {
-  router,
   mountpath: '/move',
+  router,
 }

@@ -17,9 +17,9 @@ try {
 
 module.exports = {
   FEEDBACK_URL,
-  SUPPORT_EMAIL,
-  SERVICE_NAME: 'Book a secure move',
   GA_ID: ANALYTICS.GA_ID,
+  SERVICE_NAME: 'Book a secure move',
+  SUPPORT_EMAIL,
   callAsMacro(name) {
     const macro = this.ctx[name]
 

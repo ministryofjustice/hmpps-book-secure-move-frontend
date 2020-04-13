@@ -84,6 +84,6 @@ router.use(COLLECTION_BASE_PATH, viewRouter)
 
 // Export
 module.exports = {
-  router,
   mountpath: MOUNTPATH,
+  router,
 }

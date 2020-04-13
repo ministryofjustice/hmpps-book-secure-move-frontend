@@ -11,15 +11,9 @@ const configPaths = require('./config/paths')
 
 const commonConfig = {
   entry: {
+    app: './common/assets/javascripts/application.js',
     styles: './common/assets/scss/application.scss',
     'styles-ie8': './common/assets/scss/application-ie8.scss',
-    app: './common/assets/javascripts/application.js',
-  },
-
-  output: {
-    path: configPaths.build,
-    filename: 'javascripts/[name].js',
-    publicPath: '/',
   },
 
   mode: IS_DEV ? 'development' : 'production',
@@ -27,24 +21,24 @@ const commonConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
         exclude: /@babel(?:\/|\\{1,2})runtime|core-js|css-loader/, // IE 10 issues with core-js 3 details here: https://github.com/zloirock/core-js/issues/514#issuecomment-523524472
         loader: 'babel-loader',
         options: {
-          plugins: ['syntax-dynamic-import'],
-          compact: false,
           cacheDirectory: true,
+          compact: false,
+          plugins: ['syntax-dynamic-import'],
           presets: [
             [
               '@babel/preset-env',
               {
+                corejs: 3,
                 modules: false,
                 useBuiltIns: 'entry',
-                corejs: 3,
               },
             ],
           ],
         },
+        test: /\.js$/,
       },
       {
         test: /\.(scss|css)$/,
@@ -52,8 +46,8 @@ const commonConfig = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../',
               hmr: IS_DEV,
+              publicPath: '../',
             },
           },
           {
@@ -114,6 +108,12 @@ const commonConfig = {
       minSize: 30000,
       name: true,
     },
+  },
+
+  output: {
+    filename: 'javascripts/[name].js',
+    path: configPaths.build,
+    publicPath: '/',
   },
 
   plugins: [new WebpackAssetsManifest()],

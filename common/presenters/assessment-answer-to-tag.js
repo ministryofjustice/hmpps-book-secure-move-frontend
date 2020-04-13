@@ -7,10 +7,10 @@ module.exports = function assessmentAnswerToTag(hrefPrefix = '') {
     const whitelisted = TAG_CATEGORY_WHITELIST[category]
 
     return {
-      href: `${hrefPrefix}#${kebabCase(title)}`,
-      text: title,
       classes: whitelisted ? whitelisted.tagClass : 'app-tag--inactive',
+      href: `${hrefPrefix}#${kebabCase(title)}`,
       sortOrder: whitelisted ? whitelisted.sortOrder : null,
+      text: title,
     }
   }
 }

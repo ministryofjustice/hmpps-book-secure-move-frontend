@@ -12,6 +12,6 @@ router.get('/sign-out', signOut)
 
 // Export
 module.exports = {
-  router,
   mountpath: '/auth',
+  router,
 }

@@ -10,22 +10,6 @@ function Message($module) {
 }
 
 Message.prototype = {
-  init: function() {
-    this.render()
-  },
-
-  cacheEls: function($module) {
-    this.$module = $module
-  },
-
-  render: function() {
-    this.appendClose(this.$module)
-
-    if (this.settings.isFocused) {
-      this.$module.focus()
-    }
-  },
-
   appendClose: function($element) {
     if (
       $element.className.indexOf('error') !== -1 ||
@@ -47,6 +31,14 @@ Message.prototype = {
     $element.appendChild(link)
   },
 
+  cacheEls: function($module) {
+    this.$module = $module
+  },
+
+  init: function() {
+    this.render()
+  },
+
   removeElement: function(element) {
     const parent = element.parentNode
 
@@ -54,6 +46,14 @@ Message.prototype = {
 
     if (parent.children.length === 0) {
       parent.remove()
+    }
+  },
+
+  render: function() {
+    this.appendClose(this.$module)
+
+    if (this.settings.isFocused) {
+      this.$module.focus()
     }
   },
 }

@@ -248,17 +248,17 @@ function filesize(str) {
 }
 
 module.exports = {
+  calculateAge,
+  filesize,
   formatDate,
+  formatDateAsRelativeDay,
   formatDateRange,
   formatDateRangeAsRelativeWeek,
   formatDateWithDay,
-  formatDateAsRelativeDay,
   formatISOWeek,
-  calculateAge,
   formatTime,
   kebabcase: kebabCase,
-  startCase,
-  pluralize,
   oxfordJoin,
-  filesize,
+  pluralize,
+  startCase,
 }

@@ -16,8 +16,8 @@ function _getMessage(error) {
   }
 
   return {
-    heading: `errors::${errorLookup}.heading`,
     content: `errors::${errorLookup}.content`,
+    heading: `errors::${errorLookup}.heading`,
   }
 }
 
@@ -46,15 +46,15 @@ function catchAll(showStackTrace = false) {
 
     res.status(statusCode).render('error', {
       error,
-      statusCode,
-      showStackTrace,
-      showNomisMessage,
       message: _getMessage(error),
+      showNomisMessage,
+      showStackTrace,
+      statusCode,
     })
   }
 }
 
 module.exports = {
-  notFound,
   catchAll,
+  notFound,
 }

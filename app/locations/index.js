@@ -21,6 +21,6 @@ router.get('/:locationId', setLocation, redirect)
 
 // Export
 module.exports = {
-  router,
   mountpath: '/locations',
+  router,
 }

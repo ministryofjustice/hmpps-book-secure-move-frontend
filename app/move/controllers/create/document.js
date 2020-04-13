@@ -7,10 +7,10 @@ const { FILE_UPLOADS } = require('../../../../config')
 const CreateBaseController = require('./base')
 
 const upload = multer({
-  storage: APIDocumentStorage(),
   limits: {
     fileSize: FILE_UPLOADS.MAX_FILE_SIZE,
   },
+  storage: APIDocumentStorage(),
 })
 
 class DocumentUploadController extends CreateBaseController {

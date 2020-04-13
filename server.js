@@ -91,17 +91,17 @@ app.use(cookieParser())
 app.use(responseTime())
 app.use(
   session({
-    store: redisStore(),
-    secret: config.SESSION.SECRET,
+    cookie: {
+      httpOnly: true,
+      maxAge: config.SESSION.TTL,
+      secure: config.IS_PRODUCTION,
+    },
     name: config.SESSION.NAME,
-    saveUninitialized: false,
     resave: false,
     rolling: true,
-    cookie: {
-      secure: config.IS_PRODUCTION,
-      maxAge: config.SESSION.TTL,
-      httpOnly: true,
-    },
+    saveUninitialized: false,
+    secret: config.SESSION.SECRET,
+    store: redisStore(),
   })
 )
 app.use(checkSession)
@@ -110,11 +110,13 @@ app.use(locals)
 app.use(
   grant({
     defaults: {
+      callback: '/auth/callback',
+      host: config.SERVER_HOST,
       origin:
         (config.IS_PRODUCTION ? 'https' : 'http') + `://${config.SERVER_HOST}`,
-      callback: '/auth/callback',
-      transport: 'session',
+      protocol: config.IS_PRODUCTION ? 'https' : 'http',
       state: true,
+      transport: 'session',
     },
     ...config.AUTH_PROVIDERS,
   })
@@ -129,9 +131,9 @@ if (config.IS_DEV) {
 }
 app.use(
   ensureAuthenticated({
+    expiryMargin: config.AUTH_EXPIRY_MARGIN,
     provider: config.DEFAULT_AUTH_PROVIDER,
     whitelist: config.AUTH_WHITELIST_URLS,
-    expiryMargin: config.AUTH_EXPIRY_MARGIN,
   })
 )
 app.use(

@@ -45,9 +45,9 @@ const $autocompletes = document.querySelectorAll(
 )
 nodeListForEach($autocompletes, function($autocomplete) {
   accessibleAutocomplete.enhanceSelectElement({
+    defaultValue: '',
     selectElement: $autocomplete,
     showAllValues: true,
-    defaultValue: '',
   })
 })
 
@@ -55,10 +55,10 @@ const $stickySidebars = document.querySelectorAll('.sticky-sidebar')
 if ($stickySidebars.length) {
   // eslint-disable-next-line no-new
   new StickySidebar('.sticky-sidebar', {
-    topSpacing: 20,
     bottomSpacing: 20,
     containerSelector: '.sticky-sidebar-container',
     innerWrapperSelector: '.sticky-sidebar__inner',
+    topSpacing: 20,
   })
 }
 

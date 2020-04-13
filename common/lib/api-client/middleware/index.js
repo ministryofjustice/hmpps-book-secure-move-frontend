@@ -7,7 +7,7 @@ const requestTimeout = require('./request-timeout')
 module.exports = {
   auth,
   errors,
+  post,
   request,
   requestTimeout,
-  post,
 }

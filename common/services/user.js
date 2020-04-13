@@ -78,6 +78,6 @@ function getNomisLocations(token) {
 }
 
 module.exports = {
-  getLocations,
   getFullname,
+  getLocations,
 }

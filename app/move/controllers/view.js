@@ -25,9 +25,6 @@ module.exports = function view(req, res) {
   }
 
   const locals = {
-    moveSummary: presenters.moveToMetaListComponent(move, updateActions),
-    personalDetailsSummary: presenters.personToSummaryListComponent(person),
-    tagList: presenters.assessmentToTagList(assessmentAnswers),
     assessment: presenters
       .assessmentAnswersByCategory(assessmentAnswers)
       .map(presenters.assessmentCategoryToPanelComponent),
@@ -45,13 +42,16 @@ module.exports = function view(req, res) {
       assessmentAnswers,
       'court'
     ),
+    messageContent: req.t('statuses::description', {
+      comment: cancellationComments,
+      context: cancellationReason,
+    }),
     messageTitle: bannerStatuses.includes(status)
       ? req.t('statuses::' + status, { context: cancellationReason })
       : undefined,
-    messageContent: req.t('statuses::description', {
-      context: cancellationReason,
-      comment: cancellationComments,
-    }),
+    moveSummary: presenters.moveToMetaListComponent(move, updateActions),
+    personalDetailsSummary: presenters.personToSummaryListComponent(person),
+    tagList: presenters.assessmentToTagList(assessmentAnswers),
     updateLinks: updateActions,
     urls,
   }

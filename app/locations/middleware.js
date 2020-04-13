@@ -33,8 +33,8 @@ function setAllLocations(req, res, next) {
 }
 
 module.exports = {
-  setUserLocations,
   checkLocationsLength,
-  setLocation,
   setAllLocations,
+  setLocation,
+  setUserLocations,
 }

@@ -13,13 +13,6 @@ const { DATE_FORMATS } = require('../../config/index')
 
 module.exports = {
   dateFormat: DATE_FORMATS.URL_PARAM,
-  getRelativeDate: (date, interval) => {
-    const method = interval >= 0 ? addDays : subDays
-    return format(
-      method(parseISO(date), Math.abs(interval)),
-      DATE_FORMATS.URL_PARAM
-    )
-  },
   getDateFromParams: req => {
     const date = req.params.date
     const parsedDate = parseISO(date)
@@ -59,5 +52,12 @@ module.exports = {
       format(dateFrom, DATE_FORMATS.URL_PARAM),
       format(dateTo, DATE_FORMATS.URL_PARAM),
     ]
+  },
+  getRelativeDate: (date, interval) => {
+    const method = interval >= 0 ? addDays : subDays
+    return format(
+      method(parseISO(date), Math.abs(interval)),
+      DATE_FORMATS.URL_PARAM
+    )
   },
 }

@@ -3,19 +3,19 @@ const path = require('path')
 const root = path.normalize(`${__dirname}/..`)
 
 module.exports = {
-  root,
-  build: path.resolve(root, '.build'),
   app: path.resolve(root, 'app'),
   assets: path.resolve(root, 'common', 'assets'),
-  templates: path.resolve(root, 'common', 'templates'),
+  build: path.resolve(root, '.build'),
   components: path.resolve(root, 'common', 'components'),
-  manifest: path.resolve(root, '.build', 'manifest.json'),
+  fixtures: path.resolve(root, 'test', 'fixtures'),
   govukFrontend: path.resolve(root, 'node_modules', 'govuk-frontend'),
+  manifest: path.resolve(root, '.build', 'manifest.json'),
   mojFrontend: path.resolve(
     root,
     'node_modules',
     '@ministryofjustice',
     'frontend'
   ),
-  fixtures: path.resolve(root, 'test', 'fixtures'),
+  root,
+  templates: path.resolve(root, 'common', 'templates'),
 }

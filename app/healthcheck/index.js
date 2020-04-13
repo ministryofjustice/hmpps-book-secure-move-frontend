@@ -11,7 +11,7 @@ router.get('/ping', checkDependencies, ping)
 
 // Export
 module.exports = {
+  mountpath: '/healthcheck',
   router,
   skip: true,
-  mountpath: '/healthcheck',
 }

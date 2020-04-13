@@ -92,9 +92,9 @@ class SaveController extends CreateBaseController {
 
     try {
       await analytics.sendJourneyTime({
-        utv: capitalize(req.form.options.name),
-        utt: journeyDuration,
         utc: capitalize(fromLocation.location_type),
+        utt: journeyDuration,
+        utv: capitalize(req.form.options.name),
       })
 
       req.journeyModel.reset()

@@ -9,9 +9,9 @@ function _healthcheck(dependencies) {
       })
       .catch(error => {
         return {
+          error: error.message,
           name: dependency.name,
           status: 'Service unavailable',
-          error: error.message,
         }
       })
   })

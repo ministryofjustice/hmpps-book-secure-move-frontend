@@ -1,5 +1,4 @@
 module.exports = {
-  name: 'errors',
   error: function error(payload = {}) {
     if (!payload.response) {
       if (payload instanceof Error) {
@@ -16,4 +15,5 @@ module.exports = {
 
     return error
   },
+  name: 'errors',
 }

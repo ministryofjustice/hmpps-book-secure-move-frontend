@@ -28,6 +28,6 @@ router.get(
 
 // Export
 module.exports = {
-  router,
   mountpath: '/',
+  router,
 }

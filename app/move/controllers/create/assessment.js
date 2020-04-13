@@ -85,9 +85,9 @@ class AssessmentController extends CreateBaseController {
       .filter(({ id }) => formValues.includes(id))
       .map(({ id, key }) => {
         return {
-          key,
           assessment_question_id: id,
           comments: req.form.values[key],
+          key,
         }
       })
   }

@@ -10,18 +10,18 @@ module.exports = function setLocals(req, res, next) {
   const baseUrl = `${protocol}://${req.get('host')}`
   const locals = {
     CANONICAL_URL: baseUrl + req.path,
-    TODAY: new Date(),
-    TOMORROW: startOfTomorrow(),
-    REQUEST_PATH: req.path,
-    USER: req.session.user,
     CURRENT_LOCATION: req.session.currentLocation,
     MOVES_URL: req.session.movesUrl || movesApp.mountpath,
-    getLocal: key => res.locals[key],
-    getMessages: () => req.flash(),
+    REQUEST_PATH: req.path,
+    TODAY: new Date(),
+    TOMORROW: startOfTomorrow(),
+    USER: req.session.user,
     canAccess: permission => {
       const userPermissions = get(req.session, 'user.permissions')
       return check(permission, userPermissions)
     },
+    getLocal: key => res.locals[key],
+    getMessages: () => req.flash(),
   }
 
   res.locals = {

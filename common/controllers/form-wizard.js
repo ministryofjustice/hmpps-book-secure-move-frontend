@@ -9,8 +9,8 @@ class FormController extends Controller {
     const errors = super.getErrors(req, res)
     const errorList = map(errors, ({ key, type }) => {
       return {
-        html: fieldHelpers.getFieldErrorMessage(key, type),
         href: `#${key}`,
+        html: fieldHelpers.getFieldErrorMessage(key, type),
       }
     })
 
@@ -34,9 +34,9 @@ class FormController extends Controller {
       ].includes(err.code)
     ) {
       return res.render('form-wizard-error', {
-        journeyName: req.form.options.journeyName.replace('-', '_'),
-        journeyBaseUrl: req.baseUrl,
         errorKey: err.code.toLowerCase(),
+        journeyBaseUrl: req.baseUrl,
+        journeyName: req.form.options.journeyName.replace('-', '_'),
       })
     }
 

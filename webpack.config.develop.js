@@ -8,15 +8,15 @@ module.exports = {
 
   plugins: [
     new BrowserSyncPlugin({
-      proxy: `http://localhost:${PORT}`,
-      port: '3001',
-      open: false,
       files: ['.build/**/*.*', 'app/**/*.njk', 'common/**/*.njk'],
+      open: false,
+      port: '3001',
+      proxy: `http://localhost:${PORT}`,
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'stylesheets/[name].css',
       chunkFilename: '[id].css',
+      filename: 'stylesheets/[name].css',
     }),
   ],
 }

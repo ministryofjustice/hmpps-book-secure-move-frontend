@@ -9,8 +9,8 @@ module.exports = function courtHearingsToSummaryListComponent({
   case_start_date: caseStartDate,
 } = {}) {
   const startedOn = i18n.t('moves::detail.court_hearing.started_on', {
-    datetime: filters.formatDate(caseStartDate, 'yyyy-MM-dd'),
     datestring: filters.formatDate(caseStartDate),
+    datetime: filters.formatDate(caseStartDate, 'yyyy-MM-dd'),
   })
   const startedOnString = caseStartDate ? ` (${startedOn})` : ''
 

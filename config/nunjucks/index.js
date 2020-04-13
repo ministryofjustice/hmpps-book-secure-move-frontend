@@ -12,13 +12,13 @@ module.exports = (app, { IS_DEV = false }, paths) => {
     paths.app,
   ]
   const nunjucksConfiguration = {
-    express: app,
     autoescape: true,
+    express: app,
+    lstripBlocks: true,
+    noCache: IS_DEV,
     throwOnUndefined: false,
     trimBlocks: true,
-    lstripBlocks: true,
     watch: IS_DEV,
-    noCache: IS_DEV,
   }
 
   // Initialise nunjucks environment

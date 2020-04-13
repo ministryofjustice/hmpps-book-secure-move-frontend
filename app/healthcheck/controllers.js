@@ -11,12 +11,12 @@ module.exports = {
 
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.status(errors ? 503 : 200).json({
-      status,
-      version,
-      dependencies,
       buildDate: BUILD_DATE,
       buildTag: BUILD_BRANCH,
+      dependencies,
       gitSha: GIT_SHA,
+      status,
+      version,
     })
   },
   ping: (req, res) => {

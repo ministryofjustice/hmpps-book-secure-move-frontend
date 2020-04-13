@@ -6,19 +6,19 @@ const mockFilters = {
   filterTwo: () => {},
 }
 const mockGlobals = {
-  FOO: 'Bar',
   FIZZ: 'Buzz',
+  FOO: 'Bar',
 }
 const mockApp = {
   app: true,
 }
 const mockPaths = {
-  root: '/root',
-  templates: '_templates/',
-  components: '_components/',
   app: '_app/',
+  components: '_components/',
   govukFrontend: '_govukFrontend/',
   mojFrontend: '_mojFrontend/',
+  root: '/root',
+  templates: '_templates/',
 }
 
 const nunjucksEnv = proxyquire('./', {
@@ -179,17 +179,11 @@ describe('Nunjucks', function() {
     })
 
     it('should set first global', function() {
-      expect(mockConfigure.addGlobal.firstCall).to.be.calledWithExactly(
-        'FOO',
-        'Bar'
-      )
+      expect(mockConfigure.addGlobal).to.be.calledWithExactly('FOO', 'Bar')
     })
 
     it('should set second global', function() {
-      expect(mockConfigure.addGlobal.secondCall).to.be.calledWithExactly(
-        'FIZZ',
-        'Buzz'
-      )
+      expect(mockConfigure.addGlobal).to.be.calledWithExactly('FIZZ', 'Buzz')
     })
   })
 })

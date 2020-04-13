@@ -21,27 +21,26 @@ function _checkApiDependency(url) {
 
 module.exports = [
   {
-    name: 'API',
     healthcheck: () => {
       return _checkApiDependency(API.HEALTHCHECK_URL)
     },
+    name: 'API',
   },
   {
-    name: 'HMPPS SSO',
     healthcheck: () => {
       return _checkApiDependency(
         AUTH_PROVIDERS[DEFAULT_AUTH_PROVIDER].healthcheck_url
       )
     },
+    name: 'HMPPS SSO',
   },
   {
-    name: 'HMPPS Elite2 API',
     healthcheck: () => {
       return _checkApiDependency(NOMIS_ELITE2_API.healthcheck_url)
     },
+    name: 'HMPPS Elite2 API',
   },
   {
-    name: 'redis',
     healthcheck: () => {
       return new Promise((resolve, reject) => {
         const result = redisStore().client.ping()
@@ -53,5 +52,6 @@ module.exports = [
         resolve('OK')
       })
     },
+    name: 'redis',
   },
 ]

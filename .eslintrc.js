@@ -46,6 +46,11 @@ module.exports = {
         'index',
       ]
     }],
+    'sort-keys': ['error', 'asc', {
+      caseSensitive: true,
+      natural: true,
+      minKeys: 2
+    }],
   },
   overrides: [
     {
@@ -64,8 +69,18 @@ module.exports = {
         'no-unused-expressions': 'off',
         'mocha/no-exclusive-tests': 'error',
         'mocha/no-mocha-arrows': 'error',
+        'sort-keys': 'off',
       },
       plugins: ['mocha'],
+    },
+    {
+      files: ['test/e2e/**/*.js'],
+      extends: ['plugin:testcafe/recommended'],
+      rules: {
+        'mocha/no-mocha-arrows': 'off',
+        'comma-dangle': 'off',
+        'sort-keys': 'off',
+      },
     },
   ],
 }

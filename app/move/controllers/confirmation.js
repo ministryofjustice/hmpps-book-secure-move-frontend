@@ -21,13 +21,13 @@ function confirmation(req, res) {
   )
 
   const locals = {
-    supplierNames,
-    savedHearings,
-    unsavedHearings,
     location:
       moveType === 'prison_recall'
         ? req.t('fields::move_type.items.prison_recall.label')
         : toLocation.title,
+    savedHearings,
+    supplierNames,
+    unsavedHearings,
   }
 
   res.render('move/views/confirmation', locals)

@@ -8,34 +8,34 @@ function setPrimaryNavigation(req, res, next) {
 
   if (permissions.check('dashboard:view', userPermissions)) {
     items.push({
-      text: req.t('primary_navigation.home'),
-      href: '/',
       active: req.path === '/',
+      href: '/',
+      text: req.t('primary_navigation.home'),
     })
   }
 
   if (permissions.check('moves:view:proposed', userPermissions)) {
     items.push({
-      text: req.t('primary_navigation.single_requests'),
-      href: '/moves/requested',
       active: req.path.startsWith('/moves') && req.path.endsWith('/requested'),
+      href: '/moves/requested',
+      text: req.t('primary_navigation.single_requests'),
     })
   }
 
   if (permissions.check('allocations:view', userPermissions)) {
     items.push({
-      text: req.t('primary_navigation.allocations'),
-      href: '/allocations',
       active:
         req.path.startsWith('/allocations') && req.path.endsWith('/outgoing'),
+      href: '/allocations',
+      text: req.t('primary_navigation.allocations'),
     })
   }
 
   if (permissions.check('moves:view:outgoing', userPermissions)) {
     items.push({
-      text: req.t('primary_navigation.outgoing'),
-      href: '/moves/outgoing',
       active: req.path.startsWith('/moves') && req.path.endsWith('/outgoing'),
+      href: '/moves/outgoing',
+      text: req.t('primary_navigation.outgoing'),
     })
   }
 

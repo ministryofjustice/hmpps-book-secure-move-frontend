@@ -17,8 +17,8 @@ class PersonalDetailsController extends CreateBaseController {
         .map(fieldHelpers.mapReferenceDataToOption)
         .map(
           fieldHelpers.insertItemConditional({
-            key: 'trans',
             field: 'gender_additional_information',
+            key: 'trans',
           })
         )
       const ethnicityOptions = ethnicities

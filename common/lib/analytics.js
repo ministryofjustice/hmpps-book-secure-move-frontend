@@ -19,12 +19,12 @@ function sendHit(params) {
 
   return axios
     .post('https://www.google-analytics.com/collect', null, {
-      timeout: 30000,
       params: {
         ...params,
         cid: uuidv4(),
         tid: GA_ID,
       },
+      timeout: 30000,
     })
     .then(response => response.data)
 }
@@ -36,9 +36,9 @@ function sendHit(params) {
  */
 function sendJourneyTime(params = {}) {
   return sendHit({
-    v: 1,
     t: 'timing',
     utl: 'Journey duration',
+    v: 1,
     ...params,
   })
 }

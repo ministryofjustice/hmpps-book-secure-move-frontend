@@ -32,8 +32,8 @@ function personToCardComponent({
 
     if (showMeta) {
       const dateOfBirthLabel = i18n.t('age', {
-        context: 'with_date_of_birth',
         age: filters.calculateAge(dateOfBirth),
+        context: 'with_date_of_birth',
         date_of_birth: filters.formatDate(dateOfBirth),
       })
       const metaItems = [

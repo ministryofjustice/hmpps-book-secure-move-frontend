@@ -21,27 +21,27 @@ if (!IS_DEV) {
   )
   transports.push(
     new winston.transports.File({
-      format: prodFormat,
       filename: 'quick-start-combined.log',
+      format: prodFormat,
     })
   )
   transports.push(
     new winston.transports.File({
-      format: prodFormat,
       filename: 'quick-start-error.log',
+      format: prodFormat,
       level: 'error',
     })
   )
 }
 
 const logger = winston.createLogger({
-  level,
-  transports,
   format: winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.splat(),
     winston.format.json()
   ),
+  level,
+  transports,
 })
 
 module.exports = logger

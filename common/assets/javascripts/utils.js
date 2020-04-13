@@ -28,8 +28,8 @@ function fileApiAvailable() {
 }
 
 module.exports = {
-  nodeListForEach,
   dragAndDropAvailable,
-  formDataAvailable,
   fileApiAvailable,
+  formDataAvailable,
+  nodeListForEach,
 }

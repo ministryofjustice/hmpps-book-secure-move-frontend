@@ -11,10 +11,10 @@ function Auth({ timeout = 10000, authUrl, username, password } = {}) {
   this.accessToken = null
   this.tokenExpiresAt = null
   this.config = {
-    timeout,
     authUrl,
-    username,
     password,
+    timeout,
+    username,
   }
 }
 
@@ -32,23 +32,6 @@ Auth.prototype = {
     return Promise.resolve(this.accessToken)
   },
 
-  refreshAccessToken() {
-    const data = {
-      grant_type: 'client_credentials',
-    }
-    const config = {
-      timeout: this.config.timeout,
-      auth: {
-        username: this.config.username,
-        password: this.config.password,
-      },
-    }
-
-    return axios
-      .post(this.config.authUrl, data, config)
-      .then(response => response.data)
-  },
-
   isExpired() {
     if (!this.accessToken || !this.tokenExpiresAt) {
       return true
@@ -56,14 +39,31 @@ Auth.prototype = {
 
     return this.tokenExpiresAt <= getTimestamp()
   },
+
+  refreshAccessToken() {
+    const data = {
+      grant_type: 'client_credentials',
+    }
+    const config = {
+      auth: {
+        password: this.config.password,
+        username: this.config.username,
+      },
+      timeout: this.config.timeout,
+    }
+
+    return axios
+      .post(this.config.authUrl, data, config)
+      .then(response => response.data)
+  },
 }
 
 function getAuthInstance(
   options = {
-    timeout: API.TIMEOUT,
     authUrl: API.AUTH_URL,
-    username: API.CLIENT_ID,
     password: API.SECRET,
+    timeout: API.TIMEOUT,
+    username: API.CLIENT_ID,
   }
 ) {
   if (!authInstance) {

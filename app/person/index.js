@@ -11,6 +11,6 @@ router.get('/:personId/image', image(PLACEHOLDER_IMAGES.PERSON))
 
 // Export
 module.exports = {
-  router,
   mountpath: '/person',
+  router,
 }

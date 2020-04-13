@@ -46,6 +46,6 @@ router.get(
 )
 
 module.exports = {
-  router,
   mountpath: MOUNTPATH,
+  router,
 }

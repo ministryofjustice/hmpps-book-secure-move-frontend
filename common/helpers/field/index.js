@@ -25,8 +25,8 @@ function mapReferenceDataToOption({
   checked,
 }) {
   const option = {
-    value: id,
     text: title,
+    value: id,
   }
 
   if (hint) {
@@ -129,7 +129,7 @@ function setFieldValue(values) {
             selected = item.value === value
           }
 
-          return { ...item, selected, checked: selected }
+          return { ...item, checked: selected, selected }
         }),
       },
     ]
@@ -221,9 +221,9 @@ function populateAssessmentFields(currentFields, questions) {
   explicitQuestions.forEach(({ key, id }) => {
     const explicitField = `${key}__explicit`
     fields[explicitField] = explicitAssessmentAnswer({
+      conditional: key,
       name: explicitField,
       value: id,
-      conditional: key,
     })
 
     fields[key].dependent = {
@@ -236,15 +236,15 @@ function populateAssessmentFields(currentFields, questions) {
 }
 
 module.exports = {
+  getFieldErrorMessage,
+  insertInitialOption,
+  insertItemConditional,
   mapAssessmentQuestionToConditionalField,
   mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
-  renderConditionalFields,
-  getFieldErrorMessage,
-  setFieldValue,
-  setFieldError,
-  translateField,
-  insertInitialOption,
-  insertItemConditional,
   populateAssessmentFields,
+  renderConditionalFields,
+  setFieldError,
+  setFieldValue,
+  translateField,
 }
