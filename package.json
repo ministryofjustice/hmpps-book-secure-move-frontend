@@ -189,7 +189,7 @@
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin HEAD:master",
     "start": "node start.js",
-    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js' --opts ./test/unit/mocha.opts",
+    "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js'",
     "test-e2e:chrome": "testcafe chrome test/e2e/*.test.js",
     "test-e2e:ci": "npm run test-e2e:chrome -- --color --reporter spec,xunit:reports/testcafe/results-chrome.xml",
     "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e:chrome -- --debug-on-fail",
