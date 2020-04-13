@@ -2,7 +2,7 @@ const { filter, get, map, reject } = require('lodash')
 
 function confirmation(req, res) {
   const {
-    hearings,
+    court_hearings: courtHearings,
     move_type: moveType,
     to_location: toLocation,
   } = res.locals.move
@@ -11,8 +11,14 @@ function confirmation(req, res) {
     suppliers && suppliers.length
       ? map(suppliers, 'name')
       : [req.t('supplier_fallback')]
-  const savedHearings = map(filter(hearings, 'saved_to_nomis'), 'case_number')
-  const unsavedHearings = map(reject(hearings, 'saved_to_nomis'), 'case_number')
+  const savedHearings = map(
+    filter(courtHearings, 'saved_to_nomis'),
+    'case_number'
+  )
+  const unsavedHearings = map(
+    reject(courtHearings, 'saved_to_nomis'),
+    'case_number'
+  )
 
   const locals = {
     supplierNames,
