@@ -1,4 +1,4 @@
-const { get, set } = require('lodash')
+const { set } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
@@ -56,7 +56,7 @@ class PersonalDetailsController extends CreateBaseController {
 
   async saveValues(req, res, next) {
     try {
-      const id = get(req.sessionModel.get('person'), 'id')
+      const id = this.getPersonId(req, res)
 
       req.form.values.person = await this.savePerson(id, req.form.values)
       super.saveValues(req, res, next)
