@@ -19,7 +19,9 @@
         "heading": "Supporting documents",
         "heading_plural": "Supporting documents ({{count}})",
         "empty": "No documents uploaded"
-      }
+      },
+      "update_link": "Change",
+      "update_link_with_description": "Change <span class=\"govuk-visually-hidden\">{{ category }}</span>"
     },
     "retrieved_from_nomis": {
       "heading": "This information is currently in NOMIS",
@@ -57,7 +59,8 @@
       "heading": "When is this person moving?"
     },
     "move_details": {
-      "heading": "Where is this person moving?"
+      "heading": "Where is this person moving?",
+      "update_link": "where this person is moving to"
     },
     "hearing_details": {
       "heading": "Is this move associated with a court case?"

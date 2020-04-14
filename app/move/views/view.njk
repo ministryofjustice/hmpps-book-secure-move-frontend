@@ -60,12 +60,53 @@
   </header>
 {% endblock %}
 
+{% set urls = {
+  personal_details: 'personal-details',
+  move_details: 'move-details',
+  court: 'court-information',
+  risk: 'risk-information',
+  health: 'health-information'
+} %}
+
+{% macro updateLink(category, categoryHeading) %}
+  {% if canAccess("move:update") %}
+    {% if not categoryHeading %}
+      {% set categoryKey = "moves::assessment.categories." + category + ".heading" %}
+      {% set stepsKey = "moves::steps." + category + ".heading" %}
+      {% set categoryHeading = t([categoryKey, stepsKey]) %}
+    {% endif %}
+    {% set updateLinkText = t("moves::assessment.categories.update_link", {
+      context: "with_description" if categoryHeading,
+      category: categoryHeading
+    }) %}
+    <p class="update-link"><a href="/move/{{ move.id }}/edit/{{ urls[category] }}" data-update-link="{{ category }}">{{ updateLinkText | safe }}</a></p>
+  {% endif %}
+{% endmacro %}
+
 {% block contentMain %}
+<style>
+.app-section {
+  position: relative;
+}
+.update-link {
+  position: absolute;
+  top: 0.25rem;
+  right: 0;
+}
+.sticky-sidebar .update-link {
+  position: static;
+  top: auto;
+  margin-top: 20px;
+}
+</style>
+<section class="app-section" data-app-section="personal">
   <h2 class="govuk-heading-m">
     {{ t("moves::steps.personal_details.heading") }}
   </h2>
 
   {{ govukSummaryList(personalDetailsSummary) }}
+  {{ updateLink('personal_details') }}
+</section>
 
   {% include "move/views/_includes/assessment.njk" %}
 
@@ -124,6 +165,8 @@
         </h3>
 
         {{ appMetaList(moveSummary) }}
+        {# TODO: enable updating of move details when to_location can be set via api #}
+        {{ updateLink('move_details', t("moves::steps.move_details.update_link")) }}
       </div>
     </div>
   {% endif %}
