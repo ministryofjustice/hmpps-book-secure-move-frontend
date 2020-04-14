@@ -27,7 +27,9 @@ describe('Analytics', function() {
 
       beforeEach(function() {
         analytics = proxyquire('./analytics', {
-          'uuid/v4': () => mockUUID,
+          uuid: {
+            v4: () => mockUUID,
+          },
           '../../config': {
             ANALYTICS: {
               GA_ID: mockGaID,
