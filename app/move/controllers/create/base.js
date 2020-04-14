@@ -51,16 +51,32 @@ class CreateBaseController extends FormWizardController {
     next()
   }
 
+  getMove(req, res) {
+    return req.sessionModel.toJSON() || {}
+  }
+
+  getMoveId(req, res) {
+    return this.getMove(req, res).id
+  }
+
+  getPerson(req, res) {
+    return req.sessionModel.get('person') || {}
+  }
+
+  getPersonId(req, res) {
+    return this.getPerson(req, res).id
+  }
+
   setMoveSummary(req, res, next) {
     const currentLocation = req.session.currentLocation
-    const sessionModel = req.sessionModel.toJSON()
+    const move = this.getMove(req, res)
     const moveSummary = presenters.moveToMetaListComponent({
-      ...sessionModel,
+      ...move,
       from_location: currentLocation,
     })
 
-    res.locals.person = sessionModel.person
-    res.locals.moveSummary = sessionModel.move_type ? moveSummary : {}
+    res.locals.person = this.getPerson(req, res)
+    res.locals.moveSummary = move.move_type ? moveSummary : {}
 
     next()
   }
