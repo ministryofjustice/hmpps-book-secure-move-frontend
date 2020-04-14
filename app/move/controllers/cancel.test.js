@@ -42,6 +42,7 @@ describe('Move controllers', function() {
           redirect: sinon.stub(),
           locals: {
             move: mockMove,
+            moveId: mockMove.id,
           },
         }
       })

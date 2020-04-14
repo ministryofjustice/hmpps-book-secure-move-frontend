@@ -5,7 +5,7 @@ const moveService = require('../../../common/services/move')
 
 class CancelController extends FormWizardController {
   async successHandler(req, res, next) {
-    const { id: moveId } = res.locals.move
+    const { moveId } = res.locals
 
     try {
       const data = pick(
