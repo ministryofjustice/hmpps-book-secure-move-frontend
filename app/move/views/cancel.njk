@@ -19,7 +19,7 @@
 
 {% block formActions %}
   {{ govukWarningText({
-    text: t("moves::cancel.warning", {
+    html: t("moves::cancel.warning", {
       name: move.person.fullname | upper
     }),
     iconFallbackText: "Warning"
