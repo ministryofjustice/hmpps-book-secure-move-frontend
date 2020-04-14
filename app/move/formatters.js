@@ -6,6 +6,9 @@ const formatters = {
     const parsedDate = chrono.en_GB.parseDate(value)
     return parsedDate ? formatDate(parsedDate, format) : value
   },
+  displayDate(value, format = 'd MMM yyyy') {
+    return formatters.date(value, format)
+  },
   time(value, format = 'HH:mm') {
     const parsedDate = chrono.en_GB.parseDate(value)
     return parsedDate ? formatDate(parsedDate, format) : value
