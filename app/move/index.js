@@ -7,9 +7,17 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const { confirmation, create, view } = require('./controllers')
-const { cancel: cancelFields, create: createFields } = require('./fields')
+const {
+  cancel: cancelFields,
+  create: createFields,
+  update: updateFields,
+} = require('./fields')
 const { setMove } = require('./middleware')
-const { cancel: cancelSteps, create: createSteps } = require('./steps')
+const {
+  cancel: cancelSteps,
+  create: createSteps,
+  update: updateSteps,
+} = require('./steps')
 
 const wizardConfig = {
   controller: FormWizardController,
@@ -23,6 +31,13 @@ const createConfig = {
   template: '../../../form-wizard',
   journeyName: 'create-a-move',
   journeyPageTitle: 'actions::create_move',
+}
+const updateConfig = {
+  ...wizardConfig,
+  controller: create.Base,
+  templatePath: 'move/views/create/',
+  template: '../../../form-wizard',
+  journeyPageTitle: 'actions::update_move',
 }
 const cancelConfig = {
   ...wizardConfig,
@@ -40,12 +55,27 @@ router.use(
   wizard(createSteps, createFields, createConfig)
 )
 router.get('/:moveId', protectRoute('move:view'), view)
+
 router.get('/:moveId/confirmation', protectRoute('move:create'), confirmation)
 router.use(
   '/:moveId/cancel',
   protectRoute('move:cancel'),
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
+
+updateSteps.forEach(updateStep => {
+  const key = Object.keys(updateStep)[0]
+  const updateStepConfig = {
+    ...updateConfig,
+    name: 'update-a-move' + key,
+    journeyName: 'update-a-move' + key,
+  }
+  router.use(
+    '/:moveId',
+    protectRoute('move:update'),
+    wizard(updateStep, updateFields, updateStepConfig)
+  )
+})
 
 // Export
 module.exports = {
