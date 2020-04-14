@@ -1,0 +1,16 @@
+{% from "items/macro.njk" import appItems %}
+
+<div class="app-display govuk-form-group {%- if params.classes %} {{ params.classes }}{% endif %}">
+{% if params.name %}
+<input type="hidden" name="{{ params.name }}" value="{{ params.value }}">
+{% endif %}
+<h2 class="app-display__heading govuk-label {%- if params.label.classes %} {{ params.label.classes }}{% endif %}">
+{% if params.label.html %}{{ params.label.html | safe }}{% else %}{{ params.label.text }}{% endif %}
+</h2>
+<p class="app-display__value govuk-body">{{ params.value }}</p>
+{% if params.items %}
+<div class="app-display__items">
+{{ callAsMacro('appItems')({items: params.items}) }}
+</div>
+{% endif %}
+</div>

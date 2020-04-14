@@ -1,0 +1,73 @@
+params:
+- name: classes
+  type: string
+  required: false
+  description: Classes to add to the parent element.
+- name: name
+  type: string
+  required: true
+  description: Field name.
+- name: value
+  type: string
+  required: true
+  description: Field value.
+- name: noHidden
+  type: boolean
+  required: false
+  description: Whether to include a hidden field.
+- name: label
+  type: object
+  required: false
+  description: Options for the caption.
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the label. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the label. If `html` is provided, the `text` argument will be ignored.
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the label element.
+- name: items
+  type: array
+  required: false
+  description: Array of components.
+
+examples:
+  - name: default
+    data:
+      label:
+        text: Display text
+      value: Display value
+  - name: with html
+    data:
+      label:
+        html: Display html
+        text: Display text
+      vale: Display value
+  - name: with classes
+    data:
+      label:
+        classes: heading-class
+        text: Display text
+      value: Display value
+      classes: display-class
+  - name: with name
+    data:
+      label:
+        text: Display text
+      value: Display value
+      name: display
+  - name: with items
+    data:
+      label:
+        text: Display text
+      value: Display value
+      items:
+        - component: govukDetails
+          summaryHtml: detailsSummary
+          html: detailsHtml

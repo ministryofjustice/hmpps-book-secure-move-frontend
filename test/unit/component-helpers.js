@@ -12,9 +12,15 @@ const views = [
   configPaths.mojFrontend,
 ]
 
-nunjucks.configure(views, {
+const nunjucksEnvironment = nunjucks.configure(views, {
   trimBlocks: true,
   lstripBlocks: true,
+})
+
+const templateGlobals = require('../../config/nunjucks/globals')
+// Global variables
+Object.keys(templateGlobals).forEach(global => {
+  nunjucksEnvironment.addGlobal(global, templateGlobals[global])
 })
 
 /**

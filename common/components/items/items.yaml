@@ -1,0 +1,39 @@
+params:
+- name: items
+  type: array
+  required: false
+  description: Array of components.
+- name: wrapper
+  type: object
+  required: false
+  description: Options for wrapper element.
+  params:
+  - name: element
+    type: string
+    required: false
+    description: Wrapper element tagname.
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the wrapper element.
+
+examples:
+  - name: default
+    data:
+      items:
+        - component: govukDetails
+          summaryHtml: detailsSummary
+          html: detailsHtml
+        - component: govukDetails
+          summaryHtml: detailsSummaryB
+          html: detailsHtmlB
+  - name: with no items
+    data:
+      items:
+  - name: with classes
+    data:
+      items:
+        - component: govukDetails
+          summaryHtml: detailsSummary
+          html: detailsHtml
+      classes: items-class
