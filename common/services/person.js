@@ -1,6 +1,43 @@
 const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
-
+const { displayDate } = require('../../app/move/formatters')
 const apiClient = require('../lib/api-client')()
+
+const relationshipKeys = ['gender', 'ethnicity']
+const identifierKeys = [
+  'police_national_computer',
+  'criminal_records_office',
+  'prison_number',
+  'niche_reference',
+  'athena_reference',
+]
+const dateKeys = ['date_of_birth']
+const assessmentKeys = [
+  // court
+  'solicitor',
+  'interpreter',
+  'other_court',
+  // risk
+  'violent',
+  'escape',
+  'hold_separately',
+  'self_harm',
+  'concealed_items',
+  'other_risks',
+  // health
+  'special_diet_or_allergy',
+  'health_issue',
+  'medication',
+  'wheelchair',
+  'pregnant',
+  'other_health',
+  'special_vehicle',
+]
+const explicitAssessment = ['special_vehicle']
+const getAnswer = (assessments, field) => {
+  return assessments.filter(assessment => {
+    return assessment.key === field
+  })[0]
+}
 
 const personService = {
   transform(person = {}) {
@@ -15,15 +52,6 @@ const personService = {
 
   format(data) {
     const existingIdentifiers = data.identifiers || []
-    const relationshipKeys = ['gender', 'ethnicity']
-    const identifierKeys = [
-      'police_national_computer',
-      'criminal_records_office',
-      'prison_number',
-      'niche_reference',
-      'athena_reference',
-    ]
-
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
         if (relationshipKeys.includes(key)) {
@@ -54,6 +82,61 @@ const personService = {
       },
       isNil
     )
+  },
+
+  unformat(person, fields = []) {
+    const assessments = person.assessment_answers || []
+    const assessmentCategories = {}
+
+    const fieldData = fields.map(field => {
+      let value
+      const fieldValue = person[field]
+      if (identifierKeys.includes(field)) {
+        const identifiers = person.identifiers || []
+        const identifier = identifiers.filter(
+          identifier => identifier.identifier_type === field
+        )[0]
+        if (identifier) {
+          value = identifier.value
+        }
+      } else if (relationshipKeys.includes(field)) {
+        const relationship = fieldValue
+        if (relationship) {
+          value = relationship.id
+        }
+      } else if (dateKeys.includes(field)) {
+        if (fieldValue) {
+          value = displayDate(fieldValue)
+        }
+      } else if (explicitAssessment.includes(field)) {
+        const explicitKey = `${field}__explicit`
+        const matchedAnswer = getAnswer(assessments, field)
+
+        if (matchedAnswer) {
+          const questionId = matchedAnswer.assessment_question_id
+          value = matchedAnswer.comments
+          assessmentCategories[explicitKey] = questionId
+        } else {
+          assessmentCategories[explicitKey] = 'false'
+        }
+      } else if (assessmentKeys.includes(field)) {
+        const matchedAnswer = getAnswer(assessments, field)
+
+        if (matchedAnswer) {
+          const questionId = matchedAnswer.assessment_question_id
+          value = matchedAnswer.comments
+          const category = matchedAnswer.category
+          assessmentCategories[category] = assessmentCategories[category] || []
+          assessmentCategories[category].push(questionId)
+        }
+      } else {
+        value = fieldValue
+      }
+      return {
+        [field]: value,
+      }
+    })
+    return Object.assign({}, ...fieldData, assessmentCategories)
   },
 
   create(data) {

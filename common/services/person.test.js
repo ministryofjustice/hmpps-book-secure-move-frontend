@@ -1,8 +1,14 @@
 const { forEach } = require('lodash')
+const proxyquire = require('proxyquire')
 
+const formatters = require('../../app/move/formatters')
+const displayDateStub = sinon
+  .stub(formatters, 'displayDate')
+  .returns('28 Oct 2010')
+const personService = proxyquire('./person', {
+  '../../app/move/formatters': formatters,
+})
 const apiClient = require('../lib/api-client')()
-
-const personService = require('./person')
 
 const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
@@ -426,6 +432,266 @@ describe('Person Service', function() {
           first_names: 'Foo',
           last_name: '',
           ethnicity: false,
+        })
+      })
+    })
+  })
+
+  describe('#unformat()', function() {
+    context('when values are present', function() {
+      const mockPerson = {
+        id: 'd8ddd29b-2e16-4d5e-8b90-9306b77e942d',
+        type: 'people',
+        first_names: 'Albert',
+        last_name: 'Aardvark',
+        date_of_birth: '1990-10-28',
+        identifiers: [
+          {
+            identifier_type: 'police_national_computer',
+            value: 'AAA',
+          },
+          {
+            identifier_type: 'criminal_records_office',
+            value: 'CRO',
+          },
+          {
+            identifier_type: 'prison_number',
+            value: 'PNO',
+          },
+          {
+            identifier_type: 'niche_reference',
+            value: 'NICHE',
+          },
+          {
+            identifier_type: 'athena_reference',
+            value: 'ATHENA',
+          },
+        ],
+        gender_additional_information: '',
+        ethnicity: {
+          id: '8bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+          type: 'ethnicities',
+          key: 'a4',
+          title: 'Asian/Asian British: Chinese',
+          description: null,
+          nomis_code: 'A4',
+          disabled_at: null,
+        },
+        gender: {
+          id: 'ffac6763-26d6-4425-8005-6e5d052aed88',
+          type: 'genders',
+          key: 'male',
+          title: 'Male',
+          description: null,
+          disabled_at: null,
+          nomis_code: 'M',
+        },
+        assessment_answers: [
+          {
+            key: 'solicitor',
+            category: 'court',
+            assessment_question_id: '9bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+            comments: '#solicitor',
+          },
+          {
+            key: 'interpreter',
+            category: 'court',
+            assessment_question_id: '6bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+            comments: '#interpreter',
+          },
+          {
+            key: 'special_vehicle',
+            category: 'health',
+            assessment_question_id: '1bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+            comments: '#special_vehicle',
+          },
+        ],
+        image_url: '/person/d8ddd29b-2e16-4d5e-8b90-9306b77e942d/image',
+        fullname: 'Aardvark, Albert',
+      }
+
+      it('should return correct value for regular property', function() {
+        const unformatted = personService.unformat(mockPerson, ['first_names'])
+        expect(unformatted).to.deep.equal({
+          first_names: 'Albert',
+        })
+      })
+
+      it('should return correct values for regular properties', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'first_names',
+          'last_name',
+        ])
+        expect(unformatted).to.deep.equal({
+          first_names: 'Albert',
+          last_name: 'Aardvark',
+        })
+      })
+
+      it('should return correct value for ethnicity property', function() {
+        const unformatted = personService.unformat(mockPerson, ['ethnicity'])
+        expect(unformatted).to.deep.equal({
+          ethnicity: '8bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+        })
+      })
+
+      it('should return correct value for gender property', function() {
+        const unformatted = personService.unformat(mockPerson, ['gender'])
+        expect(unformatted).to.deep.equal({
+          gender: 'ffac6763-26d6-4425-8005-6e5d052aed88',
+        })
+      })
+
+      it('should return correct value for police_national_computer property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'police_national_computer',
+        ])
+        expect(unformatted).to.deep.equal({
+          police_national_computer: 'AAA',
+        })
+      })
+
+      it('should return correct value for criminal_records_office property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'criminal_records_office',
+        ])
+        expect(unformatted).to.deep.equal({
+          criminal_records_office: 'CRO',
+        })
+      })
+
+      it('should return correct value for prison_number property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'prison_number',
+        ])
+        expect(unformatted).to.deep.equal({
+          prison_number: 'PNO',
+        })
+      })
+
+      it('should return correct value for niche_reference property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'niche_reference',
+        ])
+        expect(unformatted).to.deep.equal({
+          niche_reference: 'NICHE',
+        })
+      })
+
+      it('should return correct value for athena_reference property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'athena_reference',
+        ])
+        expect(unformatted).to.deep.equal({
+          athena_reference: 'ATHENA',
+        })
+      })
+
+      it('should return correct values for assessment property', function() {
+        const unformatted = personService.unformat(mockPerson, ['solicitor'])
+        expect(unformatted).to.deep.equal({
+          solicitor: '#solicitor',
+          court: ['9bf95acf-2fb3-4d7a-8b30-b06c6cb821e2'],
+        })
+      })
+
+      it('should return correct values for multiple assessment property sharing the same category', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'interpreter',
+          'solicitor',
+        ])
+        expect(unformatted).to.deep.equal({
+          interpreter: '#interpreter',
+          solicitor: '#solicitor',
+          court: [
+            '6bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+            '9bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+          ],
+        })
+      })
+
+      it('should return correct value for explicit assessment property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'special_vehicle',
+        ])
+        expect(unformatted).to.deep.equal({
+          special_vehicle: '#special_vehicle',
+          special_vehicle__explicit: '1bf95acf-2fb3-4d7a-8b30-b06c6cb821e2',
+        })
+      })
+
+      it('should return correct value for date_of_birth property', function() {
+        displayDateStub.resetHistory()
+        const unformatted = personService.unformat(mockPerson, [
+          'date_of_birth',
+        ])
+        expect(displayDateStub).to.be.calledOnceWithExactly('1990-10-28')
+        expect(unformatted).to.deep.equal({
+          date_of_birth: '28 Oct 2010',
+        })
+        displayDateStub.resetHistory()
+      })
+    })
+    context('when values are missing', function() {
+      const mockPerson = {}
+
+      it('should return undefined for missing regular property', function() {
+        const unformatted = personService.unformat(mockPerson, ['first_names'])
+        expect(unformatted).to.deep.equal({
+          first_names: undefined,
+        })
+      })
+
+      it('should return undefined for missing regular properties', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'first_names',
+          'last_name',
+        ])
+        expect(unformatted).to.deep.equal({
+          first_names: undefined,
+          last_name: undefined,
+        })
+      })
+
+      it('should return undefined for missing relationship property', function() {
+        const unformatted = personService.unformat(mockPerson, ['ethnicity'])
+        expect(unformatted).to.deep.equal({
+          ethnicity: undefined,
+        })
+      })
+
+      it('should return undefined for missing identifier property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'police_national_computer',
+        ])
+        expect(unformatted).to.deep.equal({
+          police_national_computer: undefined,
+        })
+      })
+
+      it('should return undefined for missing assessment property', function() {
+        const unformatted = personService.unformat(mockPerson, ['solicitor'])
+        expect(unformatted).to.deep.equal({
+          solicitor: undefined,
+        })
+      })
+
+      it('should return correct values for missing explicit assessment property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'special_vehicle',
+        ])
+        expect(unformatted).to.deep.equal({
+          special_vehicle: undefined,
+          special_vehicle__explicit: 'false',
+        })
+      })
+
+      it('should return undefined for missing date property', function() {
+        const unformatted = personService.unformat(mockPerson, [
+          'date_of_birth',
+        ])
+        expect(unformatted).to.deep.equal({
+          date_of_birth: undefined,
         })
       })
     })
