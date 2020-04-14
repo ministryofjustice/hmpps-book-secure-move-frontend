@@ -1,9 +1,10 @@
 const FormController = require('hmpo-form-wizard').Controller
 
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const referenceDataService = require('../../../../common/services/reference-data')
+
 const BaseController = require('./base')
 const Controller = require('./move-details')
-const referenceDataService = require('../../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
 const controller = new Controller({ route: '/' })
 const courtsMock = [

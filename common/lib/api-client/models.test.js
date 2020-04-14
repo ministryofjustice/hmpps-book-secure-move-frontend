@@ -1,6 +1,6 @@
-const proxyquire = require('proxyquire')
-const pluralize = require('pluralize')
 const { forEach, flatten, get, startCase } = require('lodash')
+const pluralize = require('pluralize')
+const proxyquire = require('proxyquire')
 
 const models = require('./models')
 

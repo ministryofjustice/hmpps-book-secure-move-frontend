@@ -1,12 +1,14 @@
 const fs = require('fs')
 const path = require('path')
+
 const json2csv = require('json2csv')
 
-const movesToCSV = require('./moves-to-csv')
-const referenceDataService = require('../services/reference-data')
-const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
 const mockMoves = require('../../test/fixtures/moves.json')
+const referenceDataHelpers = require('../helpers/reference-data')
+const referenceDataService = require('../services/reference-data')
+
+const movesToCSV = require('./moves-to-csv')
 
 const csv = fs.readFileSync(
   path.resolve(__dirname, '../../test/fixtures/moves.csv'),

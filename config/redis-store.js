@@ -1,10 +1,10 @@
-const redis = require('redis')
-const session = require('express-session')
-const RedisStore = require('connect-redis')(session)
 const bluebird = require('bluebird')
+const RedisStore = require('connect-redis')(require('express-session'))
+const redis = require('redis')
+
+const logger = require('./logger')
 
 const { REDIS } = require('./')
-const logger = require('./logger')
 
 const defaultOptions = {
   ...REDIS.SESSION,

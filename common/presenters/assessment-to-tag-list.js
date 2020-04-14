@@ -1,7 +1,8 @@
 const { sortBy, uniqBy } = require('lodash')
 
-const { TAG_CATEGORY_WHITELIST } = require('../../config')
 const { filterExpired } = require('../../common/helpers/reference-data')
+const { TAG_CATEGORY_WHITELIST } = require('../../config')
+
 const assessmentAnswerToTag = require('./assessment-answer-to-tag')
 
 module.exports = function assessmentToTagList(answers, hrefPrefix = '') {

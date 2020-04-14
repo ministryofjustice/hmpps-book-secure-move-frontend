@@ -2,6 +2,7 @@ const { filter } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+
 const assessmentToTagList = require('./assessment-to-tag-list')
 
 function personToCardComponent({ showMeta = true, showTags = true } = {}) {

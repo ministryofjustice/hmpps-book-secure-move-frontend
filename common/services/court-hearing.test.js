@@ -1,5 +1,6 @@
-const courtHearingService = require('./court-hearing')
 const apiClient = require('../lib/api-client')()
+
+const courtHearingService = require('./court-hearing')
 
 const mockCourtHearing = {
   start_time: '2020-10-20T13:00:00+00:00',

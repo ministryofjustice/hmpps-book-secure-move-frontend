@@ -1,5 +1,6 @@
-const personToCardComponent = require('./person-to-card-component')
 const i18n = require('../../config/i18n')
+
+const personToCardComponent = require('./person-to-card-component')
 
 function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
   return function item({ id, reference, person = {}, status }) {

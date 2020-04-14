@@ -1,9 +1,10 @@
-const multer = require('multer')
 const { reject } = require('lodash')
+const multer = require('multer')
 
-const CreateBaseController = require('./base')
 const APIDocumentStorage = require('../../../../common/lib/multer.api-document.storage')
 const { FILE_UPLOADS } = require('../../../../config')
+
+const CreateBaseController = require('./base')
 
 const upload = multer({
   storage: APIDocumentStorage(),

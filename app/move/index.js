@@ -5,10 +5,11 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
-const { cancel: cancelSteps, create: createSteps } = require('./steps')
-const { cancel: cancelFields, create: createFields } = require('./fields')
+
 const { confirmation, create, view } = require('./controllers')
+const { cancel: cancelFields, create: createFields } = require('./fields')
 const { setMove } = require('./middleware')
+const { cancel: cancelSteps, create: createSteps } = require('./steps')
 
 const wizardConfig = {
   controller: FormWizardController,

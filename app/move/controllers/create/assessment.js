@@ -1,9 +1,10 @@
 const { find, flatten } = require('lodash')
 
-const CreateBaseController = require('./base')
-const presenters = require('../../../../common/presenters')
 const fieldHelpers = require('../../../../common/helpers/field')
+const presenters = require('../../../../common/presenters')
 const referenceDataService = require('../../../../common/services/reference-data')
+
+const CreateBaseController = require('./base')
 
 class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {

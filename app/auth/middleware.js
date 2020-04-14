@@ -1,8 +1,8 @@
 const { get } = require('lodash')
 
+const { decodeAccessToken } = require('../../common/lib/access-token')
 const User = require('../../common/lib/user')
 const { getFullname, getLocations } = require('../../common/services/user')
-const { decodeAccessToken } = require('../../common/lib/access-token')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {

@@ -1,5 +1,5 @@
-const presenters = require('../../../common/presenters')
 const permissions = require('../../../common/middleware/permissions')
+const presenters = require('../../../common/presenters')
 
 const controller = require('./list')
 

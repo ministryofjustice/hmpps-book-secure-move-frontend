@@ -1,7 +1,7 @@
-const proxyquire = require('proxyquire').noCallThru()
-const multer = require('multer')
 const FormController = require('hmpo-form-wizard').Controller
 const FormError = require('hmpo-form-wizard/lib/error')
+const multer = require('multer')
+const proxyquire = require('proxyquire').noCallThru()
 
 function MulterStub() {}
 MulterStub.prototype.array = sinon.stub()

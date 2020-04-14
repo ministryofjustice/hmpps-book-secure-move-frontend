@@ -1,6 +1,7 @@
 import { Role } from 'testcafe'
 
 import { E2E } from '../../config'
+
 import { home } from './_routes'
 import { page } from './pages'
 

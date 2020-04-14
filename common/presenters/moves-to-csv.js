@@ -1,9 +1,9 @@
 const json2csv = require('json2csv')
 const { find, flatten, some } = require('lodash')
 
-const referenceDataService = require('../services/reference-data')
-const referenceDataHelpers = require('../helpers/reference-data')
 const i18n = require('../../config/i18n')
+const referenceDataHelpers = require('../helpers/reference-data')
+const referenceDataService = require('../services/reference-data')
 
 function getIdentifier(identifier) {
   return function(row) {

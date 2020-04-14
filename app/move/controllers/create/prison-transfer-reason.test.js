@@ -1,7 +1,7 @@
+const FormController = require('hmpo-form-wizard').Controller
+
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataService = require('../../../../common/services/reference-data')
-
-const FormController = require('hmpo-form-wizard').Controller
 
 const PrisonTransferReasonsController = require('./prison-transfer-reason')
 const prisonTransferReasonsController = new PrisonTransferReasonsController({

@@ -1,7 +1,7 @@
 const { groupBy, sortBy, mapValues } = require('lodash')
 
-const { TAG_CATEGORY_WHITELIST } = require('../../config')
 const { filterExpired } = require('../../common/helpers/reference-data')
+const { TAG_CATEGORY_WHITELIST } = require('../../config')
 
 module.exports = function assessmentByCategory(assessment) {
   const mapped = mapValues(TAG_CATEGORY_WHITELIST, (params, category) => {

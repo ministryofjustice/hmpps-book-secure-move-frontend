@@ -1,8 +1,10 @@
 const { set } = require('lodash')
-const CreateBaseController = require('./base')
-const referenceDataService = require('../../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+
 const fieldHelpers = require('../../../../common/helpers/field')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const referenceDataService = require('../../../../common/services/reference-data')
+
+const CreateBaseController = require('./base')
 
 class PrisonTransferReasonController extends CreateBaseController {
   async configure(req, res, next) {

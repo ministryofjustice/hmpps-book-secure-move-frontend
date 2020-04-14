@@ -1,9 +1,9 @@
-const { requireUncached } = require('./helpers')
-
 const chai = require('chai')
-const sinon = require('sinon')
-const nock = require('nock')
 const mockFs = require('mock-fs')
+const nock = require('nock')
+const sinon = require('sinon')
+
+const { requireUncached } = require('./helpers')
 
 chai.use(require('sinon-chai'))
 chai.use(require('chai-as-promised'))

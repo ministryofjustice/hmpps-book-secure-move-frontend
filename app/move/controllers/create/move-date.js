@@ -1,7 +1,8 @@
 const { format, startOfToday, startOfTomorrow, parseISO } = require('date-fns')
 
-const CreateBaseController = require('./base')
 const filters = require('../../../../config/nunjucks/filters')
+
+const CreateBaseController = require('./base')
 
 class MoveDateController extends CreateBaseController {
   middlewareSetup() {

@@ -3,6 +3,7 @@ const router = require('express').Router()
 
 // Local dependencies
 const { PLACEHOLDER_IMAGES, FEATURE_FLAGS } = require('../../config')
+
 const { image } = require('./controllers')
 
 // Define routes

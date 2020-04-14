@@ -1,11 +1,11 @@
 const { format } = require('date-fns')
-const allocationService = require('../../common/services/allocation')
 
 const {
   dateFormat,
   getDateFromParams,
   getPeriod,
 } = require('../../common/helpers/date-utils')
+const allocationService = require('../../common/services/allocation')
 
 const allocationsMiddleware = {
   // TODO: refactor this to be common with the /moves pagination.

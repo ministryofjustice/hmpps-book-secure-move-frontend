@@ -1,7 +1,7 @@
 const nunjucks = require('nunjucks')
 
-const templateGlobals = require('./globals')
 const filters = require('./filters')
+const templateGlobals = require('./globals')
 
 module.exports = (app, { IS_DEV = false }, paths) => {
   const views = [

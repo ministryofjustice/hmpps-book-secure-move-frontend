@@ -1,6 +1,7 @@
 const JsonApi = require('devour-client')
 
 const { API, IS_DEV, FILE_UPLOADS } = require('../../../config')
+
 const { auth, errors, request, requestTimeout, post } = require('./middleware')
 const models = require('./models')
 

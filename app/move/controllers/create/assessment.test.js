@@ -1,9 +1,9 @@
-const referenceDataService = require('../../../../common/services/reference-data')
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
+const referenceDataService = require('../../../../common/services/reference-data')
 
-const BaseController = require('./base')
 const Controller = require('./assessment')
+const BaseController = require('./base')
 const controller = new Controller({ route: '/' })
 
 describe('Move controllers', function() {

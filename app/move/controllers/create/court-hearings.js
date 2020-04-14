@@ -1,10 +1,11 @@
-const { find, pick } = require('lodash')
 const { formatISO, parseISO } = require('date-fns')
+const { find, pick } = require('lodash')
+
+const presenters = require('../../../../common/presenters')
+const componentService = require('../../../../common/services/component')
+const personService = require('../../../../common/services/person')
 
 const CreateBaseController = require('./base')
-const personService = require('../../../../common/services/person')
-const componentService = require('../../../../common/services/component')
-const presenters = require('../../../../common/presenters')
 
 class CourtHearingsController extends CreateBaseController {
   middlewareSetup() {

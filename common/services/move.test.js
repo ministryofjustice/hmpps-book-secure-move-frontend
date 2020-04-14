@@ -1,6 +1,7 @@
+const apiClient = require('../lib/api-client')()
+
 const moveService = require('./move')
 const personService = require('./person')
-const apiClient = require('../lib/api-client')()
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',

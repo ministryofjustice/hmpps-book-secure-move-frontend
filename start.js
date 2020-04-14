@@ -1,8 +1,8 @@
 const http = require('http')
 
-const app = require('./server')
-const logger = require('./config/logger')
 const { PORT } = require('./config')
+const logger = require('./config/logger')
+const app = require('./server')
 
 /**
  * Get port from config and store in Express.

@@ -1,17 +1,19 @@
 const { capitalize } = require('lodash')
 const proxyquire = require('proxyquire')
 
+const analytics = require('../../../../common/lib/analytics')
+const courtHearingService = require('../../../../common/services/court-hearing')
+const moveService = require('../../../../common/services/move')
+const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
+
 const BaseController = require('./base')
+
 const Controller = proxyquire('./save', {
   '../../../moves': {
     mountpath: '/moves',
   },
 })
-const courtHearingService = require('../../../../common/services/court-hearing')
-const moveService = require('../../../../common/services/move')
-const personService = require('../../../../common/services/person')
-const analytics = require('../../../../common/lib/analytics')
-const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 

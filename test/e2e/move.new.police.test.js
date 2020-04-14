@@ -1,7 +1,8 @@
 import { Selector } from 'testcafe'
 
-import { newMove, movesByDay } from './_routes'
+import { generatePerson, createPersonFixture } from './_helpers'
 import { policeUser } from './_roles'
+import { newMove, movesByDay } from './_routes'
 import {
   page,
   moveDetailPage,
@@ -9,7 +10,6 @@ import {
   cancelMovePage,
   createMovePage,
 } from './pages'
-import { generatePerson, createPersonFixture } from './_helpers'
 
 fixture('New move from Police Custody to Court').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(newMove)

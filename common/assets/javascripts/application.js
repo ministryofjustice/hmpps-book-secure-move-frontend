@@ -17,14 +17,16 @@ import '../images/tick-icon@2x.png'
 import '../images/person-fallback.png'
 import '../images/person-fallback@2x.png'
 
-const { nodeListForEach } = require('./utils')
-const { initAll } = require('govuk-frontend')
 const accessibleAutocomplete = require('accessible-autocomplete')
+const { initAll } = require('govuk-frontend')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
-const Message = require('../../components/message/message')
+
 const Header = require('../../components/internal-header/internal-header')
+const Message = require('../../components/message/message')
 const MultiFileUpload = require('../../components/multi-file-upload/multi-file-upload')
+
 const Analytics = require('./analytics')
+const { nodeListForEach } = require('./utils')
 
 initAll()
 

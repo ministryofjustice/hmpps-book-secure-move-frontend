@@ -1,4 +1,3 @@
-import { movesByDay } from './_routes'
 import {
   policeUser,
   stcUser,
@@ -6,6 +5,7 @@ import {
   supplierUser,
   ocaUser,
 } from './_roles'
+import { movesByDay } from './_routes'
 import { page, movesDashboardPage } from './pages'
 
 const users = [

@@ -1,9 +1,10 @@
 const { mapKeys, set } = require('lodash')
 
-const CreateBaseController = require('./base')
 const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataService = require('../../../../common/services/reference-data')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const referenceDataService = require('../../../../common/services/reference-data')
+
+const CreateBaseController = require('./base')
 
 class MoveDetailsController extends CreateBaseController {
   middlewareSetup() {

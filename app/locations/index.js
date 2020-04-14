@@ -3,6 +3,7 @@ const router = require('express').Router()
 
 // Local dependencies
 const { redirect } = require('../auth/controllers')
+
 const { locations } = require('./controllers')
 const {
   setUserLocations,
