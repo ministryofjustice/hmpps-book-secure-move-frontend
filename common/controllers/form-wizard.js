@@ -1,6 +1,7 @@
 const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
-const { map, fromPairs } = require('lodash')
+const { map, fromPairs, get } = require('lodash')
+const { compile } = require('path-to-regexp')
 
 const fieldHelpers = require('../helpers/field')
 
@@ -46,6 +47,83 @@ class FormController extends Controller {
     }
 
     super.errorHandler(err, req, res, next)
+  }
+
+  getUpdateBackStepUrl(req, res) {
+    let returnUrl = req.form.options.updateBackStep
+    if (returnUrl && returnUrl.includes(':')) {
+      const toPath = compile(returnUrl)
+      returnUrl = toPath(res.locals)
+    }
+    return returnUrl
+  }
+
+  getValues(req, res, callback) {
+    return super.getValues(req, res, (err, values) => {
+      if (err) {
+        return callback(err)
+      }
+
+      try {
+        if (req.form.options.update) {
+          values = Object.assign(values, this.getUpdateValues(req, res))
+          this.protectUpdateFields(req, res, values)
+        }
+      } catch (error) {
+        return callback(error)
+      }
+
+      callback(null, values)
+    })
+  }
+
+  protectUpdateFields(req, res, values) {
+    if (!req.form.options.update) {
+      return
+    }
+    const fields = req.form.options.fields || {}
+    Object.keys(fields).forEach(key => {
+      const field = fields[key]
+      if (
+        field.updateProtect &&
+        values[key] !== undefined &&
+        values[key] !== null
+      ) {
+        fields[key] = {
+          ...field,
+          ...field.updateComponent,
+          value: values[key],
+        }
+      }
+    })
+  }
+
+  getUpdateValues(req, res) {
+    return {}
+  }
+
+  hasOptions(req, options = []) {
+    options = Array.isArray(options) ? options : [options]
+    const formOptions = get(req, 'form.options', {})
+    const optionsDefined = options.filter(option => formOptions[option])
+    return optionsDefined.length === options.length
+  }
+
+  successHandler(req, res, next) {
+    // const formOptions = get(req, 'form.options', {})
+    // if (formOptions.update && formOptions.updateBackStep) {
+    if (this.hasOptions(req, ['update', 'updateBackStep'])) {
+      try {
+        req.journeyModel.reset()
+        req.sessionModel.reset()
+
+        const redirectUrl = this.getUpdateBackStepUrl(req, res, next)
+        return res.redirect(redirectUrl)
+      } catch (err) {
+        return next(err)
+      }
+    }
+    super.successHandler(req, res, next)
   }
 
   render(req, res, next) {
