@@ -29,7 +29,6 @@ module.exports = function view(req, res) {
       person.assessment_answers,
       'court'
     ),
-    documentsList: presenters.documentsToMetaListComponent(move.documents),
     messageTitle: req.t('statuses::' + status),
     messageContent: req.t('statuses::description', {
       context: status,

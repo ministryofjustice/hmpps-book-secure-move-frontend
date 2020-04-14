@@ -29,7 +29,7 @@ module.exports = {
       },
       documents: {
         jsonApi: 'hasMany',
-        type: 'document',
+        type: 'documents',
       },
     },
   },
