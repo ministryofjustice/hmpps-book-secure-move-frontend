@@ -15,11 +15,15 @@
 {% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
 {% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 {% from "govuk/components/warning-text/macro.njk"      import govukWarningText %}
+{% from "govuk/components/label/macro.njk"             import govukLabel %}
+{% from "govuk/components/hint/macro.njk"              import govukHint %}
 
 {% from "moj/components/organisation-switcher/macro.njk" import mojOrganisationSwitcher %}
 {% from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation %}
 
 {# App level components #}
+{% from "items/macro.njk"             import appItems %}
+{% from "display/macro.njk"           import appDisplay %}
 {% from "card/macro.njk"              import appCard %}
 {% from "data/macro.njk"              import appData %}
 {% from "filter/macro.njk"            import appFilter %}

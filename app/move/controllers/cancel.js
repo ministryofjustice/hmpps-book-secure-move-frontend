@@ -1,11 +1,11 @@
-const { pick } = require('lodash')
+const { get, pick } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const moveService = require('../../../common/services/move')
 
 class CancelController extends FormWizardController {
   async successHandler(req, res, next) {
-    const { moveId } = res.locals
+    const moveId = get(res.locals, 'move.id')
 
     try {
       const data = pick(

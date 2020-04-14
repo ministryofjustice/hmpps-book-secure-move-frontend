@@ -1,14 +1,18 @@
 const { forEach } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const formatters = require('../../app/move/formatters')
-const displayDateStub = sinon
-  .stub(formatters, 'displayDate')
-  .returns('28 Oct 2010')
-const personService = proxyquire('./person', {
-  '../../app/move/formatters': formatters,
-})
+const filters = require('../../config/nunjucks/filters')
 const apiClient = require('../lib/api-client')()
+
+const formatDateStub = sinon.stub(filters, 'formatDate').returns('28 Oct 2010')
+
+const unformat = proxyquire('./person-unformat', {
+  '../../config/nunjucks/filters': filters,
+})
+
+const personService = proxyquire('./person', {
+  './person-unformat': unformat,
+})
 
 const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
@@ -621,15 +625,15 @@ describe('Person Service', function() {
       })
 
       it('should return correct value for date_of_birth property', function() {
-        displayDateStub.resetHistory()
+        formatDateStub.resetHistory()
         const unformatted = personService.unformat(mockPerson, [
           'date_of_birth',
         ])
-        expect(displayDateStub).to.be.calledOnceWithExactly('1990-10-28')
+        expect(formatDateStub).to.be.calledOnceWithExactly('1990-10-28')
         expect(unformatted).to.deep.equal({
           date_of_birth: '28 Oct 2010',
         })
-        displayDateStub.resetHistory()
+        formatDateStub.resetHistory()
       })
     })
     context('when values are missing', function() {
