@@ -71,7 +71,7 @@ updateSteps.forEach(updateStep => {
     journeyName: 'update-a-move' + key,
   }
   router.use(
-    '/:moveId',
+    '/:moveId/edit',
     protectRoute('move:update'),
     wizard(updateStep, updateFields, updateStepConfig)
   )
