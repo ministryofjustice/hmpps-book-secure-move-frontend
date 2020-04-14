@@ -224,6 +224,136 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#getMove()', function() {
+      const req = {
+        sessionModel: {
+          toJSON: sinon.stub(),
+        },
+      }
+      const res = {}
+      const mockSessionModel = {
+        foo: 'bar',
+      }
+
+      beforeEach(function() {
+        req.sessionModel.toJSON.returns()
+      })
+
+      it('should get session model correctly', function() {
+        controller.getMove(req, res)
+        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
+      })
+
+      context('When session model exists', function() {
+        beforeEach(function() {
+          req.sessionModel.toJSON.returns(mockSessionModel)
+        })
+        it('should return session model', function() {
+          expect(controller.getMove(req, res)).to.equal(mockSessionModel)
+        })
+      })
+
+      context('When no session model exists', function() {
+        it('should return an empty object', function() {
+          expect(controller.getMove(req, res)).to.deep.equal({})
+        })
+      })
+    })
+
+    describe('#getMoveId()', function() {
+      const req = {}
+      const res = {}
+
+      beforeEach(function() {
+        sinon.stub(controller, 'getMove').returns({})
+      })
+
+      it('should get move correctly', function() {
+        controller.getMoveId(req, res)
+        expect(controller.getMove).to.be.calledOnceWithExactly(req, res)
+      })
+
+      context('When move exists ', function() {
+        beforeEach(function() {
+          controller.getMove.returns({ id: '#id' })
+        })
+        it('should return the id', function() {
+          expect(controller.getMoveId(req, res)).to.equal('#id')
+        })
+      })
+
+      context('When no move exists', function() {
+        it('should return undefined', function() {
+          expect(controller.getMoveId(req, res)).to.be.undefined
+        })
+      })
+    })
+
+    describe('#getPerson()', function() {
+      const req = {
+        sessionModel: {
+          get: sinon.stub(),
+        },
+      }
+      const res = {}
+      const mockPerson = {
+        foo: 'bar',
+      }
+
+      beforeEach(function() {
+        req.sessionModel.get.returns()
+      })
+
+      it('should get session model correctly', function() {
+        controller.getPerson(req, res)
+        expect(req.sessionModel.get).to.be.calledOnceWithExactly('person')
+      })
+
+      context('When session model has a person', function() {
+        beforeEach(function() {
+          req.sessionModel.get.returns(mockPerson)
+        })
+        it('should return the person', function() {
+          expect(controller.getPerson(req, res)).to.equal(mockPerson)
+        })
+      })
+
+      context('When session model has no person', function() {
+        it('should return an empty object', function() {
+          expect(controller.getPerson(req, res)).to.deep.equal({})
+        })
+      })
+    })
+
+    describe('#getPersonId()', function() {
+      const req = {}
+      const res = {}
+
+      beforeEach(function() {
+        sinon.stub(controller, 'getPerson').returns({})
+      })
+
+      it('should get person correctly', function() {
+        controller.getPersonId(req, res)
+        expect(controller.getPerson).to.be.calledOnceWithExactly(req, res)
+      })
+
+      context('When person exists ', function() {
+        beforeEach(function() {
+          controller.getPerson.returns({ id: '#id' })
+        })
+        it('should return the id', function() {
+          expect(controller.getPersonId(req, res)).to.equal('#id')
+        })
+      })
+
+      context('When no person exists', function() {
+        it('should return undefined', function() {
+          expect(controller.getPersonId(req, res)).to.be.undefined
+        })
+      })
+    })
+
     describe('#setMoveSummary()', function() {
       let req, res, nextSpy
       const mockSessionModel = {
@@ -242,15 +372,14 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+        sinon.stub(controller, 'getPerson').returns(mockSessionModel.person)
+        sinon.stub(controller, 'getMove').returns(mockSessionModel)
         nextSpy = sinon.spy()
         req = {
           session: {
             currentLocation: {
               title: 'Mock current location',
             },
-          },
-          sessionModel: {
-            toJSON: sinon.stub().returns(mockSessionModel),
           },
         }
         res = {
@@ -262,7 +391,7 @@ describe('Move controllers', function() {
 
       context('with move_type', function() {
         beforeEach(function() {
-          req.sessionModel.toJSON.returns({
+          controller.getMove.returns({
             ...mockSessionModel,
             move_type: 'court_appearance',
           })
