@@ -96,7 +96,7 @@
     {# {{ mojPrimaryNavigation({
       label: 'Primary navigation',
       items: [{
-        text: t("default::primary_navigation.single_moves") if CURRENT_LOCATION and canAccess("moves:view:proposed") else t("default::primary_navigation.upcoming_moves"),
+        text: t("default::primary_navigation.single_requests") if CURRENT_LOCATION and canAccess("moves:view:proposed") else t("default::primary_navigation.outgoing"),
         href: '/moves'
       }]
     }) }} #}

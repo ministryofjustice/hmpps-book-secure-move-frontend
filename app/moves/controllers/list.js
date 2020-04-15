@@ -14,7 +14,7 @@ module.exports = function list(req, res) {
   const template =
     canViewMove && fromLocationId ? 'moves/views/list' : 'moves/views/download'
   const locals = {
-    pageTitle: 'moves::dashboard.upcoming_moves',
+    pageTitle: 'moves::dashboard.outgoing_moves',
     destinations: presenters.movesByToLocation(activeMovesByDate),
     cancelledMoves: cancelledMovesByDate.map(
       presenters.moveToCardComponent({
