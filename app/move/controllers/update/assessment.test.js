@@ -63,26 +63,27 @@ describe('Move controllers', function() {
       let nextSpy
       beforeEach(function() {
         sinon.stub(personService, 'update').resolves()
-        sinon.stub(controller, 'getPerson').returns({
-          id: '#personId',
-          assessment_answers: [
-            {
-              title: 'Violent',
-              comments: '#original_value',
-              created_at: '2020-04-10',
-              expires_at: null,
-              assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
-              category: 'risk',
-              key: 'violent',
-              nomis_alert_type: null,
-              nomis_alert_code: null,
-              nomis_alert_type_description: null,
-              nomis_alert_description: null,
-              imported_from_nomis: null,
-            },
-          ],
-        })
         req = {
+          getPersonId: sinon.stub().returns('#personId'),
+          getPerson: sinon.stub().returns({
+            id: '#personId',
+            assessment_answers: [
+              {
+                title: 'Violent',
+                comments: '#original_value',
+                created_at: '2020-04-10',
+                expires_at: null,
+                assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+                category: 'risk',
+                key: 'violent',
+                nomis_alert_type: null,
+                nomis_alert_code: null,
+                nomis_alert_type_description: null,
+                nomis_alert_description: null,
+                imported_from_nomis: null,
+              },
+            ],
+          }),
           form: {
             values: {
               violent: '#original_value',
@@ -235,7 +236,7 @@ describe('Move controllers', function() {
 
       context('When there were no assessment answers originally', function() {
         beforeEach(function() {
-          controller.getPerson.returns({ id: '#personId' })
+          req.getPerson.returns({ id: '#personId' })
         })
         it('should update the person data', async function() {
           await controller.saveValues(req, res, nextSpy)

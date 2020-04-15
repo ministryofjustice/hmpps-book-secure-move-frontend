@@ -7,7 +7,7 @@ const UpdateBase = require('./base')
 
 class UpdateMoveDetailsController extends UpdateBase {
   getUpdateValues(req, res) {
-    const move = this.getMove(req, res)
+    const move = req.getMove()
     if (!move) {
       return {}
     }
@@ -25,7 +25,7 @@ class UpdateMoveDetailsController extends UpdateBase {
 
   async saveValues(req, res, next) {
     try {
-      const id = this.getMoveId(req, res)
+      const id = req.getMoveId()
       const data = {
         id,
         ...pick(get(req, 'form.values'), ['move_type', 'to_location']),
