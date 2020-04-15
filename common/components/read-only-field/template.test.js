@@ -3,13 +3,13 @@ const {
   getExamples,
 } = require('../../../test/unit/component-helpers')
 
-const examples = getExamples('display')
+const examples = getExamples('read-only-field')
 const getComponent = example => {
-  const $ = renderComponentHtmlToCheerio('display', examples[example])
-  return $('.app-display')
+  const $ = renderComponentHtmlToCheerio('read-only-field', examples[example])
+  return $('.app-read-only-field')
 }
 
-describe('Display component', function() {
+describe('Read only field component', function() {
   describe('default', function() {
     let $component
 
@@ -30,7 +30,7 @@ describe('Display component', function() {
       let $heading
 
       beforeEach(function() {
-        $heading = $component.find('.app-display__heading')
+        $heading = $component.find('.app-read-only-field__heading')
       })
       it('should create the expected element', function() {
         expect($heading.get(0).tagName).to.equal('h2')
@@ -47,7 +47,7 @@ describe('Display component', function() {
       let $value
 
       beforeEach(function() {
-        $value = $component.find('.app-display__value')
+        $value = $component.find('.app-read-only-field__value')
       })
       it('should create the expected element', function() {
         expect($value.get(0).tagName).to.equal('p')
@@ -76,7 +76,7 @@ describe('Display component', function() {
       let $items
 
       beforeEach(function() {
-        $items = $component.find('.app-display__items')
+        $items = $component.find('.app-read-only-field__items')
       })
 
       it('should omit it', function() {
@@ -96,7 +96,7 @@ describe('Display component', function() {
       let $heading
 
       beforeEach(function() {
-        $heading = $component.find('.app-display__heading')
+        $heading = $component.find('.app-read-only-field__heading')
       })
 
       it('should prefer html value for heading', function() {
@@ -122,7 +122,7 @@ describe('Display component', function() {
       let $heading
 
       beforeEach(function() {
-        $heading = $component.find('.app-display__heading')
+        $heading = $component.find('.app-read-only-field__heading')
       })
 
       it('should add the custom class', function() {
@@ -166,7 +166,7 @@ describe('Display component', function() {
       let $items
 
       beforeEach(function() {
-        $items = $component.find('.app-display__items')
+        $items = $component.find('.app-read-only-field__items')
       })
 
       it('should wrap the items', function() {

@@ -5,3 +5,15 @@
 .app-\!-float-left {
   float: left !important;
 }
+
+.app-\!-position-relative {
+  position: relative !important;
+}
+
+@media (min-width: 40.0625em) {
+  .app-\!-position-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
