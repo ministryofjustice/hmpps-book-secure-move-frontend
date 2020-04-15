@@ -107,7 +107,7 @@ describe('Move controllers', function() {
       const values = { foo: 'bar' }
 
       beforeEach(function() {
-        sinon.stub(controller, 'getPerson').returns(person)
+        req.getPerson = sinon.stub().returns(person)
         sinon.stub(personService, 'unformat').returns(values)
       })
 
@@ -120,7 +120,7 @@ describe('Move controllers', function() {
           controller.getUpdateValues(req, res)
         })
         it('should get person data', function() {
-          expect(controller.getPerson).to.be.calledOnceWithExactly(req, res)
+          expect(req.getPerson).to.be.calledOnceWithExactly()
         })
         it('should get person data', function() {
           expect(personService.unformat).to.be.calledOnceWithExactly(person, [
@@ -131,65 +131,32 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#getMove()', function() {
-      const req = {}
-      const res = {
-        locals: {},
+    describe('#_setModels()', function() {
+      let req
+      const mockSession = {
+        id: '#move',
+        person: {
+          id: '#person',
+        },
       }
-      const mockMove = {
-        foo: 'bar',
-      }
-
-      context('When move exists', function() {
-        beforeEach(function() {
-          res.locals.move = mockMove
-        })
-        it('should return move', function() {
-          expect(controller.getMove(req, res)).to.equal(mockMove)
-        })
-      })
-
-      context('When no move exists', function() {
-        beforeEach(function() {
-          delete res.locals.move
-        })
-        it('should return an empty object', function() {
-          expect(controller.getMove(req, res)).to.deep.equal({})
-        })
-      })
-    })
-
-    describe('#getPerson()', function() {
-      const req = {}
-      const res = {}
-      const mockPerson = {
-        foo: 'bar',
-      }
-
       beforeEach(function() {
-        sinon.stub(controller, 'getMove').returns()
+        req = {
+          models: {},
+          res: {
+            locals: {
+              move: mockSession,
+            },
+          },
+        }
+        controller._setModels(req)
       })
 
-      it('should get move correctly', function() {
-        controller.getPerson(req, res)
-        expect(controller.getMove).to.be.calledOnceWithExactly(req, res)
+      it('should add move model to req', function() {
+        expect(req.models.move).to.deep.equal(mockSession)
       })
 
-      context('When move has a person', function() {
-        beforeEach(function() {
-          controller.getMove.returns({
-            person: mockPerson,
-          })
-        })
-        it('should return the person', function() {
-          expect(controller.getPerson(req, res)).to.equal(mockPerson)
-        })
-      })
-
-      context('When move has no person', function() {
-        it('should return an empty object', function() {
-          expect(controller.getPerson(req, res)).to.deep.equal({})
-        })
+      it('should add person model to req', function() {
+        expect(req.models.person).to.deep.equal(mockSession.person)
       })
     })
 

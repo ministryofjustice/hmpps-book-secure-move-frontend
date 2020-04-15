@@ -181,6 +181,7 @@ describe('Move controllers', function() {
           },
         ])
         req = {
+          getPerson: sinon.stub(),
           form: {
             options: {
               assessmentCategory: 'risk',
@@ -190,9 +191,6 @@ describe('Move controllers', function() {
                 escape: {},
               },
             },
-          },
-          sessionModel: {
-            get: sinon.stub(),
           },
         }
         res = {
@@ -208,7 +206,7 @@ describe('Move controllers', function() {
 
         context('with answers in the list of keys', function() {
           beforeEach(function() {
-            req.sessionModel.get.withArgs('person').returns({
+            req.getPerson.returns({
               assessment_answers: [
                 {
                   category: 'risk',
@@ -257,7 +255,7 @@ describe('Move controllers', function() {
 
         context('with answers not in the list of keys', function() {
           beforeEach(function() {
-            req.sessionModel.get.withArgs('person').returns({
+            req.getPerson.returns({
               assessment_answers: [
                 {
                   category: 'risk',
@@ -299,7 +297,7 @@ describe('Move controllers', function() {
 
         context('with non imported answers', function() {
           beforeEach(function() {
-            req.sessionModel.get.withArgs('person').returns({
+            req.getPerson.returns({
               assessment_answers: [
                 {
                   category: 'risk',
@@ -337,7 +335,7 @@ describe('Move controllers', function() {
         'when the step does not include previous assessment keys',
         function() {
           beforeEach(function() {
-            req.sessionModel.get.withArgs('person').returns({
+            req.getPerson.returns({
               assessment_answers: [],
             })
             controller.setPreviousAssessment(req, res, nextSpy)

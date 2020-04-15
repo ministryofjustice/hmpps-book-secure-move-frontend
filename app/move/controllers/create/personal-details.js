@@ -56,7 +56,7 @@ class PersonalDetailsController extends CreateBaseController {
 
   async saveValues(req, res, next) {
     try {
-      const id = this.getPersonId(req, res)
+      const id = req.getPersonId()
 
       req.form.values.person = await this.savePerson(id, req.form.values)
       super.saveValues(req, res, next)

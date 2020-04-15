@@ -33,7 +33,7 @@ class AssessmentController extends CreateBaseController {
 
   setPreviousAssessment(req, res, next) {
     const { assessmentCategory, previousAssessmentKeys = [] } = req.form.options
-    const person = this.getPerson(req, res)
+    const person = req.getPerson()
     const filteredAssessment = person.assessment_answers
       .filter(answer => answer.category === assessmentCategory)
       .filter(answer => previousAssessmentKeys.includes(answer.key))
@@ -66,6 +66,7 @@ class AssessmentController extends CreateBaseController {
 
   saveValues(req, res, next) {
     const assessment = req.sessionModel.get('assessment') || {}
+    // const assessment = req.sessionModel.get('assessment') || {}
     const { assessmentCategory } = req.form.options
 
     assessment[assessmentCategory] = this.getAssessments(req, res)
