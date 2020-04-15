@@ -5,9 +5,9 @@ const updateFields = cloneDeep(createFields)
 
 updateFields.police_national_computer = {
   ...updateFields.police_national_computer,
-  updateProtect: true,
+  readOnly: true,
   updateComponent: {
-    component: 'appDisplay',
+    component: 'appReadOnlyField',
     classes: '',
     items: [
       {
