@@ -62,10 +62,13 @@ describe('Move controllers', function() {
     })
 
     describe('#getUpdateValues', function() {
-      const req = {}
+      let req = {}
       const res = {}
       beforeEach(function() {
-        sinon.stub(controller, 'getMove')
+        req = {
+          getMove: sinon.stub(),
+        }
+        // sinon.stub(controller, 'getMove')
       })
 
       context('When no move exists', function() {
@@ -77,7 +80,7 @@ describe('Move controllers', function() {
       context('When a move exists without a move type', function() {
         const move = { id: '#moveWithoutType' }
         beforeEach(function() {
-          controller.getMove.returns(move)
+          req.getMove.returns(move)
         })
         it('should return an empty object', function() {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({})
@@ -87,7 +90,7 @@ describe('Move controllers', function() {
       context('When a move exists without a location id', function() {
         const move = { move_type: '#move_type' }
         beforeEach(function() {
-          controller.getMove.returns(move)
+          req.getMove.returns(move)
         })
         it('should return just the move type', function() {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({
@@ -104,7 +107,7 @@ describe('Move controllers', function() {
           },
         }
         beforeEach(function() {
-          controller.getMove.returns(move)
+          req.getMove.returns(move)
         })
         it('should return the move type and to_location', function() {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({
@@ -122,8 +125,8 @@ describe('Move controllers', function() {
       beforeEach(function() {
         nextSpy = sinon.spy()
         sinon.stub(moveService, 'update').resolves()
-        sinon.stub(controller, 'getMoveId').returns('#moveId')
         req = {
+          getMoveId: sinon.stub().returns('#moveId'),
           form: {
             values: {
               move_type: '#move_type',

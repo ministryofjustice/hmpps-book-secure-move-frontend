@@ -23,8 +23,8 @@ const getAnswerKeys = answers => {
 class UpdateAssessmentController extends UpdateBase {
   async saveValues(req, res, next) {
     try {
-      const personId = this.getPersonId(req, res)
-      const person = this.getPerson(req, res)
+      const personId = req.getPersonId()
+      const person = req.getPerson()
       const assessments = person.assessment_answers || []
       const fieldKeys = keys(get(req, 'form.options.fields'))
 
