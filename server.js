@@ -31,6 +31,7 @@ const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
+const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const locals = require('./common/middleware/locals')
 const router = require('./app/router')
 const healthcheckApp = require('./app/healthcheck')
@@ -149,6 +150,7 @@ app.use(helmet())
 app.use(processOriginalRequestBody())
 
 // Routing
+app.use(setPrimaryNavigation)
 app.use(router)
 
 // error handling

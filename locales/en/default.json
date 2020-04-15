@@ -6,6 +6,7 @@
   "supplier_fallback": "the supplier",
   "opens_new_window": "Opens in a new window",
   "primary_navigation": {
+    "home": "Home",
     "outgoing": "Outgoing",
     "single_requests": "Single requests"
   }
