@@ -8,6 +8,7 @@ i18next.use(Backend).init({
   preload: ['en'],
   nsSeparator: '::',
   ns: [
+    'allocations',
     'default',
     'actions',
     'errors',

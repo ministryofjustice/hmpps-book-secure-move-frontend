@@ -1,10 +1,14 @@
 {% extends "layouts/list-view.njk" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Allocations'});
+{% endblock %}
+
 {% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
 
 {% block headerActions %}
   {{ appFilter({
-    items: dashboardMoveSummary,
+    items: allocationsSummary,
     classes: "app-filter--stacked"
   }) }}
 {% endblock %}

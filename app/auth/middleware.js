@@ -28,9 +28,6 @@ function processAuthResponse() {
           return next(error)
         }
         req.session.authExpiry = decodedAccessToken.exp
-
-        // decodedAccessToken.authorities.push('ROLE_PECS_PMU')
-
         req.session.user = new User({
           fullname,
           locations,

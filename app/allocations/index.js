@@ -2,23 +2,27 @@ const router = require('express').Router()
 const { format } = require('date-fns')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { dateFormat } = require('../../common/helpers/date-utils')
+const {
+  setAllocationsSummary,
+  setDateRange,
+  setPeriod,
+  setPagination,
+} = require('./middleware')
+const { dashboard } = require('./controllers')
+
+router.param('period', setPeriod)
+router.param('date', setDateRange)
 
 router.get('/', protectRoute('allocations:view'), (req, res, next) => {
   const today = format(new Date(), dateFormat)
-  const currentLocation = {
-    id: 'london',
-    location_type: 'adult-male',
-  }
-  return res.redirect(
-    `${req.baseUrl}/week/${today}/${currentLocation.id}/${currentLocation.location_type}`
-  )
+  return res.redirect(`${req.baseUrl}/week/${today}/`)
 })
 router.get(
-  '/:period(week|day)/:date/:locationId/:locationType',
+  '/:period(week|day)/:date/',
   protectRoute('allocations:view'),
-  (req, res, next) => {
-    return res.render('alloc')
-  }
+  setAllocationsSummary,
+  setPagination,
+  dashboard
 )
 module.exports = {
   router,
