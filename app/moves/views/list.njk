@@ -14,7 +14,7 @@
 {% block headerNav %}
   <div class="govuk-grid-column-one-third">
     <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
-      {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
+      {% if canAccess('moves:download') %}
         <li>
           <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
             {{ t("actions::download_csv") }}

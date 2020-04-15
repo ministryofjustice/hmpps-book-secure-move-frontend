@@ -40,7 +40,6 @@ router.get(
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
-  protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
   setMoveTypeNavigation,
   setDashboardMoveSummary,
@@ -49,14 +48,13 @@ router.get(
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
-  protectRoute('moves:view:by_location'),
+  protectRoute('moves:view:outgoing'),
   setMovesByDateAndLocation,
   setPagination,
   list
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed|requested,accepted,completed|rejected)`,
-  protectRoute('moves:view:by_location'),
   protectRoute('moves:view:proposed'),
   setMoveTypeNavigation,
   setMovesByDateRangeAndStatus,
@@ -65,13 +63,14 @@ router.get(
 )
 router.get(
   '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
-  protectRoute('moves:download:all'),
+  protectRoute('moves:download'),
+  protectRoute('moves:view:all'),
   setMovesByDateAllLocations,
   download
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
-  protectRoute('moves:download:by_location'),
+  protectRoute('moves:download'),
   setMovesByDateAndLocation,
   download
 )

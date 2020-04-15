@@ -1,7 +1,7 @@
 {% extends "./_layout.njk" %}
 
 {% block pageContent %}
-  {% if canAccess('moves:download:all') or canAccess('moves:download:by_location') %}
+  {% if canAccess('moves:download') %}
     {{ govukButton({
       isStartButton: true,
       text: t("actions::download"),
