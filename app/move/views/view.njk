@@ -60,53 +60,15 @@
   </header>
 {% endblock %}
 
-{% set urls = {
-  personal_details: 'personal-details',
-  move_details: 'move-details',
-  court: 'court-information',
-  risk: 'risk-information',
-  health: 'health-information'
-} %}
-
-{% macro updateLink(category, categoryHeading) %}
-  {% if canAccess("move:update") %}
-    {% if not categoryHeading %}
-      {% set categoryKey = "moves::assessment.categories." + category + ".heading" %}
-      {% set stepsKey = "moves::steps." + category + ".heading" %}
-      {% set categoryHeading = t([categoryKey, stepsKey]) %}
-    {% endif %}
-    {% set updateLinkText = t("moves::assessment.categories.update_link", {
-      context: "with_description" if categoryHeading,
-      category: categoryHeading
-    }) %}
-    <p class="update-link"><a href="/move/{{ move.id }}/edit/{{ urls[category] }}" data-update-link="{{ category }}">{{ updateLinkText | safe }}</a></p>
-  {% endif %}
-{% endmacro %}
-
 {% block contentMain %}
-<style>
-.app-section {
-  position: relative;
-}
-.update-link {
-  position: absolute;
-  top: 0.25rem;
-  right: 0;
-}
-.sticky-sidebar .update-link {
-  position: static;
-  top: auto;
-  margin-top: 20px;
-}
-</style>
-<section class="app-section" data-app-section="personal">
-  <h2 class="govuk-heading-m">
-    {{ t("moves::steps.personal_details.heading") }}
-  </h2>
+  <section class="app-section app-!-position-relative" data-app-section="personal">
+    <h2 class="govuk-heading-m">
+      {{ t("moves::steps.personal_details.heading") }}
+    </h2>
 
-  {{ govukSummaryList(personalDetailsSummary) }}
-  {{ updateLink('personal_details') }}
-</section>
+    {{ govukSummaryList(personalDetailsSummary) }}
+    <p class="app-!-position-top-right"><a href="{{ urls.update.personal_details }}" data-update-link="personal_details">{{ t('moves::update_links.personal_details') | safe }}</a></p>
+  </section>
 
   {% include "move/views/_includes/assessment.njk" %}
 
@@ -166,7 +128,9 @@
 
         {{ appMetaList(moveSummary) }}
         {# TODO: enable updating of move details when to_location can be set via api #}
-        {{ updateLink('move_details', t("moves::steps.move_details.update_link")) }}
+        {% if canAccess("move:update") %}
+          <p class="govuk-!-padding-top-4"><a href="{{ urls.update.move_details }}" data-update-link="move_details">{{ t('moves::update_links.move_details') | safe }}</a></p>
+        {% endif %}
       </div>
     </div>
   {% endif %}

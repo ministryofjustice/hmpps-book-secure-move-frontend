@@ -84,11 +84,7 @@ class FormController extends Controller {
     const fields = req.form.options.fields || {}
     Object.keys(fields).forEach(key => {
       const field = fields[key]
-      if (
-        field.updateProtect &&
-        values[key] !== undefined &&
-        values[key] !== null
-      ) {
+      if (field.readOnly && values[key] !== undefined && values[key] !== null) {
         fields[key] = {
           ...field,
           ...field.updateComponent,
@@ -110,8 +106,6 @@ class FormController extends Controller {
   }
 
   successHandler(req, res, next) {
-    // const formOptions = get(req, 'form.options', {})
-    // if (formOptions.update && formOptions.updateBackStep) {
     if (this.hasOptions(req, ['update', 'updateBackStep'])) {
       try {
         req.journeyModel.reset()

@@ -6,7 +6,7 @@ const wizard = require('hmpo-form-wizard')
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { confirmation, create, view } = require('./controllers')
+const { confirmation, create, update, view } = require('./controllers')
 const {
   cancel: cancelFields,
   create: createFields,
@@ -34,7 +34,7 @@ const createConfig = {
 }
 const updateConfig = {
   ...wizardConfig,
-  controller: create.Base,
+  controller: update.Base,
   templatePath: 'move/views/create/',
   template: '../../../form-wizard',
   journeyPageTitle: 'actions::update_move',

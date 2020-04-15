@@ -486,7 +486,7 @@ describe('Form wizard', function() {
       },
     }
     const protectedComponent = cloneDeep(unprotectedComponent)
-    protectedComponent.updateProtect = true
+    protectedComponent.readOnly = true
 
     const fields = {
       unprotected: cloneDeep(unprotectedComponent),
