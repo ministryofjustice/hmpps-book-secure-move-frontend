@@ -10,6 +10,7 @@ const {
   PrisonTransferReason,
   Save,
 } = require('../controllers/create')
+const { FEATURE_FLAGS } = require('../../../config')
 
 const personSearchStep = {
   controller: PersonSearch,
@@ -161,7 +162,18 @@ module.exports = {
       {
         field: 'move_type',
         value: 'court_appearance',
-        next: 'court-information',
+        next: [
+          {
+            // TODO: Remove function call once court hearings are fully released and replace with what is below
+            fn: CourtHearings.prototype.canAccessCourtHearings(
+              FEATURE_FLAGS.PRISON_COURT_HEARINGS
+            ),
+            // field: 'from_location_type',
+            // value: 'prison',
+            next: 'hearing-details',
+          },
+          'court-information',
+        ],
       },
       {
         field: 'from_location_type',

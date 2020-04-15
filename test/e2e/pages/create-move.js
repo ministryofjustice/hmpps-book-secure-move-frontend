@@ -54,6 +54,7 @@ class CreateMovePage extends Page {
       specialVehicleRadio: Selector('[name="special_vehicle__explicit"]'),
       notToBeReleased: Selector('#not_to_be_released'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
+      hasCourtCase: Selector('[name="has_court_case"]'),
     }
 
     this.steps = {
@@ -301,6 +302,23 @@ class CreateMovePage extends Page {
     }
 
     return fillInForm(fields)
+  }
+
+  /**
+   * Fill in court hearings
+   *
+   * @returns {Promise}
+   */
+  async fillInCourtHearings() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/hearing-details')
+
+    return fillInForm({
+      hasCourtCase: {
+        selector: this.fields.hasCourtCase,
+        value: 'No',
+        type: 'radio',
+      },
+    })
   }
 
   /**

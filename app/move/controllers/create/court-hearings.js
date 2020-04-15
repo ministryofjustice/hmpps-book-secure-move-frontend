@@ -81,6 +81,15 @@ class CourtHearingsController extends CreateBaseController {
       next(error)
     }
   }
+
+  // TODO: Remove once court hearings are fully released
+  canAccessCourtHearings(isEnabled) {
+    return req => {
+      return (
+        req.sessionModel.get('from_location_type') === 'prison' && isEnabled
+      )
+    }
+  }
 }
 
 module.exports = CourtHearingsController
