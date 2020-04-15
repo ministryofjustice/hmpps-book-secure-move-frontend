@@ -8,7 +8,7 @@ const mockMove = {
     assessment_answers: [],
   },
   documents: [],
-  hearings: [
+  court_hearings: [
     {
       id: '1',
       start_time: '2020-10-20T13:00:00+00:00',
@@ -171,7 +171,7 @@ describe('Move controllers', function() {
 
       it('should call courtHearingToSummaryListComponent for each hearing', function() {
         expect(presenters.courtHearingToSummaryListComponent).to.be.callCount(
-          mockMove.hearings.length
+          mockMove.court_hearings.length
         )
       })
 

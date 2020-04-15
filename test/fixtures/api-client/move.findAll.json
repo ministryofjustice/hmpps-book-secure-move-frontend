@@ -49,6 +49,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -97,6 +109,14 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -139,6 +159,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -192,6 +215,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -234,6 +269,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -287,6 +325,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -335,6 +385,14 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -377,6 +435,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -430,6 +491,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -476,6 +549,14 @@
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
               "type": "documents"
+            }
+          ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
             }
           ]
         }
@@ -530,6 +611,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -572,6 +665,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -621,6 +717,14 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -663,6 +767,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -710,6 +817,14 @@
             {
               "id": "4c613f24-e218-4e3c-afa3-c371893269f5",
               "type": "documents"
+            }
+          ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
             }
           ]
         }
@@ -764,6 +879,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -816,6 +943,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -858,6 +997,9 @@
           }
         },
         "documents": {
+          "data": []
+        },
+        "court_hearings": {
           "data": []
         }
       }
@@ -911,6 +1053,18 @@
               "type": "documents"
             }
           ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
+            }
+          ]
         }
       }
     },
@@ -961,6 +1115,18 @@
             {
               "id": "b3da96e8-ffbd-4b09-9de1-b09130980aaf",
               "type": "documents"
+            }
+          ]
+        },
+        "court_hearings": {
+          "data": [
+            {
+              "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+              "type": "court_hearings"
+            },
+            {
+              "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+              "type": "court_hearings"
             }
           ]
         }
@@ -2722,6 +2888,34 @@
         "content_type": "image/png",
         "filesize": "290 KB",
         "url": "http://example-document/url-another"
+      }
+    },
+    {
+      "id": "76e00bf9-55f6-4ea5-b018-2c47d060caf5",
+      "type": "court_hearings",
+      "attributes": {
+        "start_time": "2020-10-20T13:00:00+00:00",
+        "case_number": "T18725",
+        "case_start_date": "2019-10-08T10:30:00+00:00",
+        "case_type": "Adult",
+        "comments": "Distinctio accusantium enim libero eligendi est.",
+        "nomis_case_id": "3918461",
+        "nomis_hearing_id": "20167984",
+        "saved_to_nomis": "true"
+      }
+    },
+    {
+      "id": "3ef88a47-6f1f-5b9b-b2fc-c0fe42cb0c92",
+      "type": "court_hearings",
+      "attributes": {
+        "start_time": "2020-108-12T09:00:00+00:00",
+        "case_number": "T109625",
+        "case_start_date": "2018-08-08T10:30:00+00:00",
+        "case_type": "Adult",
+        "comments": "Distinctio ano enim libero eligendi est.",
+        "nomis_case_id": "195710123",
+        "nomis_hearing_id": "0919381",
+        "saved_to_nomis": "false"
       }
     }
   ],

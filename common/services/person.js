@@ -86,6 +86,18 @@ const personService = {
       .then(response => response.data.url)
   },
 
+  getCourtCases(personId) {
+    if (!personId) {
+      return Promise.reject(new Error('No ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('court_case')
+      .get()
+      .then(response => response.data)
+  },
+
   getByIdentifiers(identifiers) {
     const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
 

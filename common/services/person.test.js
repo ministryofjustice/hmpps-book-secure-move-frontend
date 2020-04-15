@@ -561,6 +561,51 @@ describe('Person Service', function() {
     })
   })
 
+  describe('#getCourtCases()', function() {
+    const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockResponse = {
+      data: [
+        {
+          id: 'T20167984',
+        },
+        {
+          id: 'T20177984',
+        },
+      ],
+    }
+    let imageUrl
+
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'one').returnsThis()
+      sinon.stub(apiClient, 'all').returnsThis()
+      sinon.stub(apiClient, 'get').resolves(mockResponse)
+    })
+
+    context('without ID', function() {
+      it('should reject with error', function() {
+        return expect(personService.getCourtCases()).to.be.rejectedWith(
+          'No ID supplied'
+        )
+      })
+    })
+
+    context('with ID', function() {
+      beforeEach(async function() {
+        imageUrl = await personService.getCourtCases(mockId)
+      })
+
+      it('should call correct api client methods', function() {
+        expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
+        expect(apiClient.all).to.be.calledOnceWithExactly('court_case')
+        expect(apiClient.get).to.be.calledOnceWithExactly()
+      })
+
+      it('should return image url property', function() {
+        expect(imageUrl).to.deep.equal(mockResponse.data)
+      })
+    })
+  })
+
   describe('#getByIdentifiers()', function() {
     const mockResponse = {
       data: [mockPerson],

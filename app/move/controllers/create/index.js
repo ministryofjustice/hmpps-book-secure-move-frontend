@@ -1,25 +1,27 @@
 const Assessment = require('./assessment')
 const Base = require('./base')
+const CourtHearings = require('./court-hearings')
+const Document = require('./document')
 const MoveDate = require('./move-date')
 const MoveDetails = require('./move-details')
-const PersonalDetails = require('./personal-details')
-const Save = require('./save')
-const Person = require('./person')
-const PersonSearch = require('./person-search')
 const PersonSearchResults = require('./person-search-results')
-const Document = require('./document')
+const PersonSearch = require('./person-search')
+const Person = require('./person')
+const PersonalDetails = require('./personal-details')
 const PrisonTransferReason = require('./prison-transfer-reason')
+const Save = require('./save')
 
 module.exports = {
   Assessment,
   Base,
+  CourtHearings,
+  Document,
   MoveDate,
   MoveDetails,
-  PersonalDetails,
-  Save,
-  Person,
-  PersonSearch,
   PersonSearchResults,
-  Document,
+  PersonSearch,
+  Person,
+  PersonalDetails,
   PrisonTransferReason,
+  Save,
 }

@@ -29,6 +29,9 @@ class MoveDetailPage extends Page {
       noCourtInformationMessage: Selector('.app-message').withText(
         'No information for the court'
       ),
+      noCourtHearingsMessage: Selector('.app-message').withText(
+        'No court hearings'
+      ),
       riskInformation: Selector('#main-content h2')
         .withText('Risk information')
         .sibling('.app-panel'),
@@ -78,6 +81,15 @@ class MoveDetailPage extends Page {
       Gender: gender,
       Ethnicity: ethnicity,
     })
+  }
+
+  checkCourtHearings({ hasCourtCase } = {}) {
+    if (hasCourtCase === 'No') {
+      return t.expect(this.nodes.noCourtHearingsMessage.exists).ok()
+    }
+
+    // TODO: Write further assertions for when a move does have a court case
+    return t.expect(this.nodes.noCourtHearingsMessage.exists).not.ok()
   }
 
   checkCourtInformation({

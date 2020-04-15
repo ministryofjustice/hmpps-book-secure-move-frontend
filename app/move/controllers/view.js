@@ -19,12 +19,16 @@ module.exports = function view(req, res) {
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(person.assessment_answers),
     assessment: presenters.assessmentByCategory(person.assessment_answers),
-    courtHearings: sortBy(move.hearings, 'start_time').map(hearing => {
-      return {
-        ...hearing,
-        summaryList: presenters.courtHearingToSummaryListComponent(hearing),
+    courtHearings: sortBy(move.court_hearings, 'start_time').map(
+      courtHearing => {
+        return {
+          ...courtHearing,
+          summaryList: presenters.courtHearingToSummaryListComponent(
+            courtHearing
+          ),
+        }
       }
-    }),
+    ),
     courtSummary: presenters.assessmentToSummaryListComponent(
       person.assessment_answers,
       'court'

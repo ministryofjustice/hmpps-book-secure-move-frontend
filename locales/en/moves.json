@@ -59,6 +59,9 @@
     "move_details": {
       "heading": "Where is this person moving?"
     },
+    "hearing_details": {
+      "heading": "Is this move associated with a court case?"
+    },
     "court_information": {
       "heading": "Is there information for the court?"
     },
@@ -185,5 +188,15 @@
   },
   "agreement_status": {
     "heading": "Has this move been agreed with receiving prison?"
+  },
+  "court_case": {
+    "items": {
+      "start_date": {
+        "label": "Start date"
+      },
+      "case_type": {
+        "label": "Case type"
+      }
+    }
   }
 }

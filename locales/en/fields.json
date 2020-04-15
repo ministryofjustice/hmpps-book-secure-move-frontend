@@ -102,6 +102,28 @@
   "time_due": {
     "label": "Time due"
   },
+  "has_court_case": {
+    "label": "Associated court case",
+    "items": {
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "court_hearing__start_time": {
+    "label": "Time of first hearing",
+    "hint": "We only require the time of the earliest hearing to book the move"
+  },
+  "court_hearing__court_case": {
+    "label": "What court case is this move for?",
+    "hint": "The case must exist in NOMIS to appear here"
+  },
+  "court_hearing__comments": {
+    "label": "Give details (optional)"
+  },
   "risk": {
     "label": "Add risk information",
     "hint": "Select all that apply"

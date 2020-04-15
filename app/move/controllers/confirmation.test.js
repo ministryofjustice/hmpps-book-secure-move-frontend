@@ -165,7 +165,7 @@ describe('Move controllers', function() {
       beforeEach(function() {
         res.locals.move = {
           ...mockMove,
-          hearings: [
+          court_hearings: [
             {
               case_number: 'S72525',
               saved_to_nomis: true,

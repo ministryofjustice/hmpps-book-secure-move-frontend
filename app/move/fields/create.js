@@ -1,6 +1,7 @@
 const { cloneDeep } = require('lodash')
 
-const { date } = require('../formatters')
+const { date, time: timeFormatter } = require('../formatters')
+const { time: timeValidator } = require('../validators')
 
 const personSearchFilter = {
   validate: 'required',
@@ -389,6 +390,90 @@ module.exports = {
     label: {
       text: 'fields::date_to.label',
       classes: 'govuk-label--s',
+    },
+  },
+  has_court_case: {
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'has_court_case',
+    fieldset: {
+      legend: {
+        text: 'fields::has_court_case.label',
+        classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+      },
+    },
+    items: [
+      {
+        id: 'has_court_case',
+        value: 'true',
+        text: 'fields::has_court_case.items.yes.label',
+        conditional: [
+          'court_hearing__court_case',
+          'court_hearing__start_time',
+          'court_hearing__comments',
+        ],
+      },
+      {
+        value: 'false',
+        text: 'fields::has_court_case.items.no.label',
+      },
+    ],
+  },
+  court_hearing__start_time: {
+    id: 'court_hearing__start_time',
+    name: 'court_hearing__start_time',
+    validate: ['required', timeValidator],
+    formatter: [timeFormatter],
+    component: 'govukInput',
+    classes: 'govuk-input--width-10',
+    autocomplete: 'off',
+    skip: true,
+    label: {
+      html: 'fields::court_hearing__start_time.label',
+      classes: 'govuk-label--s',
+    },
+    hint: {
+      text: 'fields::court_hearing__start_time.hint',
+    },
+    dependent: {
+      field: 'has_court_case',
+      value: 'true',
+    },
+  },
+  court_hearing__court_case: {
+    name: 'court_hearing__court_case',
+    validate: 'required',
+    component: 'govukRadios',
+    items: [],
+    skip: true,
+    fieldset: {
+      legend: {
+        text: 'fields::court_hearing__court_case.label',
+        classes: 'govuk-fieldset__legend--s',
+      },
+    },
+    hint: {
+      text: 'fields::court_hearing__court_case.hint',
+    },
+    dependent: {
+      field: 'has_court_case',
+      value: 'true',
+    },
+  },
+  court_hearing__comments: {
+    id: 'court_hearing__comments',
+    name: 'court_hearing__comments',
+    skip: true,
+    rows: 3,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: 'fields::court_hearing__comments.label',
+      classes: 'govuk-label--s',
+    },
+    dependent: {
+      field: 'has_court_case',
+      value: 'true',
     },
   },
   // risk information
