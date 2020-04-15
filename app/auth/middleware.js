@@ -28,12 +28,14 @@ function processAuthResponse() {
           return next(error)
         }
         req.session.authExpiry = decodedAccessToken.exp
+
+        // decodedAccessToken.authorities.push('ROLE_PECS_PMU')
+
         req.session.user = new User({
           fullname,
           locations,
           roles: decodedAccessToken.authorities,
         })
-
         // copy any previous session properties ignoring grant or any that already exist
         Object.keys(previousSession).forEach(key => {
           if (req.session[key]) {
@@ -44,7 +46,6 @@ function processAuthResponse() {
           }
           req.session[key] = previousSession[key]
         })
-
         next()
       })
     } catch (error) {
