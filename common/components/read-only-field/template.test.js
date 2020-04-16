@@ -164,9 +164,19 @@ describe('Read only field component', function() {
 
     context('when rendering items', function() {
       let $items
+      let summaryText
+      let detailsText
 
       beforeEach(function() {
         $items = $component.find('.app-read-only-field__items')
+        summaryText = $items
+          .find('.govuk-details__summary-text')
+          .text()
+          .trim()
+        detailsText = $items
+          .find('.govuk-details__text')
+          .text()
+          .trim()
       })
 
       it('should wrap the items', function() {
@@ -174,7 +184,8 @@ describe('Read only field component', function() {
       })
 
       it('should output the items', function() {
-        expect($items.find('.app-items').get(0)).to.exist
+        expect(summaryText).to.equal('summaryText')
+        expect(detailsText).to.equal('detailsText')
       })
     })
   })

@@ -69,5 +69,5 @@ examples:
       value: Display value
       items:
         - component: govukDetails
-          summaryHtml: detailsSummary
-          html: detailsHtml
+          summaryHtml: summaryText
+          html: detailsText
