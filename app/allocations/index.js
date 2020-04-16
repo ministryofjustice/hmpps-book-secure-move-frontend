@@ -2,15 +2,13 @@ const router = require('express').Router()
 const { format } = require('date-fns')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { dateFormat } = require('../../common/helpers/date-utils')
-const {
-  setAllocationsSummary,
-  setDateRange,
-  setPeriod,
-  setPagination,
-} = require('./middleware')
+const { setAllocationsSummary, setPagination } = require('./middleware')
+
+const { setDateRange, setDatePeriod } = require('../../common/middleware')
+
 const { dashboard } = require('./controllers')
 
-router.param('period', setPeriod)
+router.param('period', setDatePeriod)
 router.param('date', setDateRange)
 
 router.get('/', protectRoute('allocations:view'), (req, res, next) => {

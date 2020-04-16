@@ -4,7 +4,6 @@ const { find, get, chunk, cloneDeep, reject } = require('lodash')
 const permissions = require('../../common/middleware/permissions')
 
 const {
-  getDateRange,
   getDateFromParams,
   getPeriod,
   dateFormat,
@@ -58,19 +57,6 @@ const movesMiddleware = {
   },
   saveUrl: (req, res, next) => {
     req.session.movesUrl = req.originalUrl
-    next()
-  },
-  setPeriod: (req, res, next, period) => {
-    res.locals.period = period
-    next()
-  },
-  setDateRange: (req, res, next) => {
-    const { period } = req.params
-    const date = getDateFromParams(req)
-    if (!date) {
-      return res.redirect(req.baseUrl)
-    }
-    res.locals.dateRange = getDateRange(period, date)
     next()
   },
   setFromLocation: (req, res, next, locationId) => {

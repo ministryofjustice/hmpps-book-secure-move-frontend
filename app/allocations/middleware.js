@@ -8,7 +8,7 @@ const {
 } = require('../../common/helpers/date-utils')
 
 const allocationsMiddleware = {
-  // todo: refactor this to be common with the /moves pagination.
+  // TODO: refactor this to be common with the /moves pagination.
   //  It differs only in the output of the url
   setPagination: (req, res, next) => {
     const { period } = req.params
@@ -37,13 +37,6 @@ const allocationsMiddleware = {
         value,
       },
     ]
-    /* res.locals.allocationsSummary = [
-      {
-        active: false,
-        label: 'Allocations',
-        href: '/allocations/week/2010-09-07/',
-        value: 4,
-      } */
     next()
   },
 }

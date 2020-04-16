@@ -7,8 +7,6 @@ const { dashboard, download, list, listByStatus } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
-  setDateRange,
-  setPeriod,
   setFromLocation,
   setMoveTypeNavigation,
   setPagination,
@@ -18,12 +16,14 @@ const {
   setDashboardMoveSummary,
 } = require('./middleware')
 
+const { setDateRange, setDatePeriod } = require('../../common/middleware')
+
 const uuidRegex =
   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 // Define param middleware
 router.param('locationId', setFromLocation)
-router.param('period', setPeriod)
+router.param('period', setDatePeriod)
 router.param('date', setDateRange)
 
 // Define shared middleware

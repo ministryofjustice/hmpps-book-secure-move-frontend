@@ -23,11 +23,13 @@ describe('#setAllocationsSummary', function() {
       next
     )
   })
+
   it('calls get count with the date range', function() {
     expect(allocationService.getCount).to.have.been.calledOnceWithExactly({
       dateRange: ['2020-01-01', '2020-01-10'],
     })
   })
+
   it('updates the locals', function() {
     expect(locals.allocationsSummary).to.deep.equal([
       {
@@ -38,6 +40,7 @@ describe('#setAllocationsSummary', function() {
       },
     ])
   })
+
   it('calls next', function() {
     expect(next).to.have.been.calledOnce
   })
@@ -70,21 +73,25 @@ describe('#setPagination', function() {
       nextSpy = sinon.spy()
       middleware.setPagination(req, res, nextSpy)
     })
+
     it('creates pagination on locals', function() {
       expect(res.locals.pagination).to.exist
     })
+
     it('creats correctly todayUrl', function() {
       expect(res.locals.pagination.todayUrl).to.exist
       expect(res.locals.pagination.todayUrl).to.equal(
         '/allocations/week/2020-04-13/'
       )
     })
+
     it('creats correctly prevUrl', function() {
       expect(res.locals.pagination.todayUrl).to.exist
       expect(res.locals.pagination.prevUrl).to.equal(
         '/allocations/week/2020-04-09/'
       )
     })
+
     it('creats correctly nextUrl', function() {
       expect(res.locals.pagination.nextUrl).to.exist
       expect(res.locals.pagination.nextUrl).to.equal(
@@ -107,21 +114,25 @@ describe('#setPagination', function() {
       nextSpy = sinon.spy()
       middleware.setPagination(req, res, nextSpy)
     })
+
     it('creates pagination on locals', function() {
       expect(res.locals.pagination).to.exist
     })
+
     it('creats correctly todayUrl', function() {
       expect(res.locals.pagination.todayUrl).to.exist
       expect(res.locals.pagination.todayUrl).to.equal(
         '/allocations/day/2020-04-13/'
       )
     })
+
     it('creats correctly prevUrl', function() {
       expect(res.locals.pagination.todayUrl).to.exist
       expect(res.locals.pagination.prevUrl).to.equal(
         '/allocations/day/2020-04-15/'
       )
     })
+
     it('creats correctly nextUrl', function() {
       expect(res.locals.pagination.nextUrl).to.exist
       expect(res.locals.pagination.nextUrl).to.equal(
