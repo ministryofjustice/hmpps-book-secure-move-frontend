@@ -19,12 +19,8 @@ const updateControllers = {
 const provideStepProps = (key, step) => {
   const stepProps = {
     entryPoint: true,
-    checkSession: false,
-    checkJourney: false,
-    update: true,
-    // backLink: '/move/:moveId',
-    // next: '/move/:moveId',
-    // updateBackStep: '/move/:moveId',
+    backLink: undefined,
+    next: undefined,
   }
 
   const updatedStep = {
