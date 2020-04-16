@@ -1,5 +1,4 @@
 const { get, keys } = require('lodash')
-// const presenters = require('../../../../common/presenters')
 
 const personService = require('../../../../common/services/person')
 const CreateBaseController = require('../create/base')
@@ -94,14 +93,6 @@ class UpdateBaseController extends CreateBaseController {
     const fields = keys(get(req, 'form.options.fields'))
     return personService.unformat(person, fields)
   }
-
-  // setMoveSummary(req, res, next) {
-  //   const move = req.getMove()
-  //   res.locals.moveSummary = presenters.moveToMetaListComponent(move)
-  //   res.locals.person = req.getPerson()
-
-  //   next()
-  // }
 }
 
 UpdateBaseController.mixin = function mixin(controller, mixinController) {
