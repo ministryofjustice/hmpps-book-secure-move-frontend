@@ -189,5 +189,59 @@ describe('Presenters', function() {
         })
       })
     })
+    context('when date is a range', function() {
+      const presentDate = '2020-04-14'
+      const mockMove = {
+        date_from: '2020-05-01',
+        date_to: '2020-05-05',
+      }
+      before(function() {
+        this.clock = sinon.useFakeTimers(
+          subDays(new Date(presentDate), 1).getTime()
+        )
+      })
+      after(function() {
+        this.clock.restore()
+      })
+      describe('response', function() {
+        it("doesn't return anything when no date is passed", function() {
+          const transformedResponse = moveToMetaListComponent({})
+          const item = transformedResponse.items[2]
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: null },
+          })
+        })
+        it('returns the from date if there is no "to" date', function() {
+          const move = { ...mockMove }
+          delete move.date_to
+          const transformedResponse = moveToMetaListComponent(move)
+          const item = transformedResponse.items[2]
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: '__translated__ Friday 1 May 2020' },
+          })
+        })
+        it('returns the range if both dates are present', function() {
+          const move = { ...mockMove }
+          const transformedResponse = moveToMetaListComponent(move)
+          const item = transformedResponse.items[2]
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: '1 to 5 May 2020' },
+          })
+        })
+        it('returns the date if date and range are both present', function() {
+          const move = { ...mockMove }
+          move.date = '2021-01-01'
+          const transformedResponse = moveToMetaListComponent(move)
+          const item = transformedResponse.items[2]
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: 'Friday 1 Jan 2021' },
+          })
+        })
+      })
+    })
   })
 })
