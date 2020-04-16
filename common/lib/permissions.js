@@ -48,13 +48,6 @@ const ocaPermissions = [
 ]
 const pmuPermissions = ['allocations:view', 'allocation:create']
 
-// TODO: turn this on properly
-// eslint-disable-next-line no-process-env
-if (process.env.CAN_UPDATE) {
-  policePermissions.push('move:update')
-  prisonPermissions.push('move:update')
-}
-
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
   ROLE_PECS_SCH: secureChildrensHomePermissions,
