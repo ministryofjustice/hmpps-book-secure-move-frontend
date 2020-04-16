@@ -21,6 +21,11 @@ const getAnswerKeys = answers => {
 }
 
 class UpdateAssessmentController extends UpdateBase {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setPreviousAssessment)
+  }
+
   async saveValues(req, res, next) {
     try {
       const personId = req.getPersonId()

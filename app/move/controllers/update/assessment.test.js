@@ -23,12 +23,6 @@ describe('Move controllers', function() {
         expect(controller.configure).to.exist.and.equal(MixinProto.configure)
       })
 
-      it('should copy middlewareLocals from CreateAssessment', function() {
-        expect(controller.middlewareLocals).to.exist.and.equal(
-          MixinProto.middlewareLocals
-        )
-      })
-
       it('should copy setPreviousAssessment from CreateAssessment', function() {
         expect(controller.setPreviousAssessment).to.exist.and.equal(
           MixinProto.setPreviousAssessment
@@ -54,6 +48,30 @@ describe('Move controllers', function() {
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
         )
         expect(ownProps).to.deep.equal(ownMethods)
+      })
+    })
+
+    describe('#middlewareLocals()', function() {
+      beforeEach(function() {
+        sinon.stub(UpdateBaseController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function() {
+        expect(UpdateBaseController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set previous assessment method', function() {
+        expect(controller.use.firstCall).to.have.been.calledWithExactly(
+          controller.setPreviousAssessment
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use).to.be.callCount(1)
       })
     })
 
