@@ -21,8 +21,8 @@ describe('Move controllers', function() {
     })
 
     describe('#middlewareLocals()', function() {
-      it('should inherit middlewareLocals from CreateBaseController', function() {
-        expect(controller.middlewareLocals).to.exist.and.equal(
+      it('should not inherit middlewareLocals from CreateBaseController', function() {
+        expect(controller.middlewareLocals).to.exist.and.not.equal(
           BaseProto.middlewareLocals
         )
       })
@@ -60,30 +60,81 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#middlewareLocals()', function() {
+      beforeEach(function() {
+        sinon.stub(BaseProto, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function() {
+        expect(BaseProto.middlewareLocals).to.have.been.calledOnce
+      })
+
+      it('should call set step urls method', function() {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setStepUrls
+        )
+      })
+
+      it('should call correct number of additional middleware', function() {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
     describe('#setCancelUrl()', function() {
-      const req = {}
+      let req = {}
       let res, nextSpy
 
       beforeEach(function() {
         nextSpy = sinon.spy()
+        req = {
+          getMoveId: sinon.stub().returns('moveId'),
+        }
         res = {
           locals: {
             moveId: '#moveId',
           },
         }
-        sinon.stub(controller, 'getUpdateBackStepUrl').returns('/cancelUrl')
         controller.setCancelUrl(req, res, nextSpy)
       })
 
-      it('should call getUpdateBackStepUrl with correct args', function() {
-        expect(controller.getUpdateBackStepUrl).to.be.calledOnceWithExactly(
-          req,
-          res
-        )
+      it('should set cancel url correctly', function() {
+        expect(res.locals.cancelUrl).to.equal('/move/moveId')
       })
 
-      it('should set cancel url correctly', function() {
-        expect(res.locals.cancelUrl).to.equal('/cancelUrl')
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#setStepUrls()', function() {
+      let req = {}
+      let res, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          getMoveId: sinon.stub().returns('moveId'),
+          form: {
+            options: {},
+          },
+        }
+        res = {
+          locals: {
+            moveId: '#moveId',
+          },
+        }
+        controller.setStepUrls(req, res, nextSpy)
+      })
+
+      it('should set form options next step', function() {
+        expect(req.form.options.next).to.equal('/move/moveId')
+      })
+
+      it('should set form options backLink', function() {
+        expect(req.form.options.backLink).to.equal('/move/moveId')
       })
 
       it('should call next', function() {

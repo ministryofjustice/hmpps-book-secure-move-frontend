@@ -22,7 +22,9 @@ const provideStepProps = (key, step) => {
     checkSession: false,
     checkJourney: false,
     update: true,
-    updateBackStep: '/move/:moveId',
+    // backLink: '/move/:moveId',
+    // next: '/move/:moveId',
+    // updateBackStep: '/move/:moveId',
   }
 
   const updatedStep = {
