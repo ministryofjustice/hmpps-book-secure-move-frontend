@@ -1,8 +1,0 @@
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-{% if params.items %}
-<div class="app-items {% if params.classes %}{{ params.classes }}{% endif %}">
-{% for item in params.items %}
-{{ callAsMacro(item.component)(item) }}
-{% endfor %}
-</div>
-{% endif %}
