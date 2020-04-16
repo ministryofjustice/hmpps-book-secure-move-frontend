@@ -31,14 +31,6 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#setButtonText()', function() {
-      it('should inherit setButtonText from CreateBaseController', function() {
-        expect(controller.setButtonText).to.exist.and.equal(
-          BaseProto.setButtonText
-        )
-      })
-    })
-
     describe('#setMoveSummary()', function() {
       it('should inherit setMoveSummary from CreateBaseController', function() {
         expect(controller.setMoveSummary).to.exist.and.equal(
@@ -83,6 +75,30 @@ describe('Move controllers', function() {
 
       it('should call correct number of additional middleware', function() {
         expect(controller.use).to.be.callCount(2)
+      })
+    })
+
+    describe('#setButtonText()', function() {
+      let req = {}
+      let nextSpy
+      const res = {}
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        req = {
+          form: {
+            options: {},
+          },
+        }
+        controller.setButtonText(req, res, nextSpy)
+      })
+
+      it('should set cancel url correctly', function() {
+        expect(req.form.options.buttonText).to.equal('actions::continue')
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
