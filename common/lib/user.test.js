@@ -105,6 +105,7 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:create:prison_recall',
           'move:cancel',
+          'move:update',
         ])
       })
     })
@@ -233,6 +234,7 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:create:prison_recall',
           'move:cancel',
+          'move:update',
           'moves:view:all',
           'moves:view:dashboard',
           'moves:view:proposed',
