@@ -21,6 +21,11 @@ class UpdateBaseController extends CreateBaseController {
     return `/move/${moveId}`
   }
 
+  setButtonText(req, res, next) {
+    req.form.options.buttonText = 'actions::continue'
+    next()
+  }
+
   setCancelUrl(req, res, next) {
     res.locals.cancelUrl = this.getBaseUrl(req)
     next()
