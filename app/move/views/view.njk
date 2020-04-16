@@ -128,9 +128,9 @@
 
         {{ appMetaList(moveSummary) }}
         {# TODO: enable updating of move details when to_location can be set via api #}
-        {% if canAccess("move:update") %}
+        {# {% if canAccess("move:update") %}
           <p class="govuk-!-padding-top-4"><a href="{{ urls.update.move_details }}" data-update-link="move_details">{{ t('moves::update_links.move_details') | safe }}</a></p>
-        {% endif %}
+        {% endif %} #}
       </div>
     </div>
   {% endif %}
