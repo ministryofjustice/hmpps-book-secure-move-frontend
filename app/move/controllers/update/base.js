@@ -5,6 +5,11 @@ const personService = require('../../../../common/services/person')
 const CreateBaseController = require('../create/base')
 
 class UpdateBaseController extends CreateBaseController {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setStepUrls)
+  }
+
   _setModels(req) {
     const res = req.res
     req.models.move = res.locals.move
@@ -17,8 +22,20 @@ class UpdateBaseController extends CreateBaseController {
     return personService.unformat(person, fields)
   }
 
+  getBaseUrl(req) {
+    const moveId = req.getMoveId()
+    return `/move/${moveId}`
+  }
+
   setCancelUrl(req, res, next) {
-    res.locals.cancelUrl = this.getUpdateBackStepUrl(req, res)
+    res.locals.cancelUrl = this.getBaseUrl(req)
+    next()
+  }
+
+  setStepUrls(req, res, next) {
+    const nextUrl = this.getBaseUrl(req)
+    req.form.options.next = nextUrl
+    req.form.options.backLink = nextUrl
     next()
   }
 
