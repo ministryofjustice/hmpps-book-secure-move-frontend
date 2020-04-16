@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.17.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.16.0...v2.17.0) (2020-04-16)
+
+
+### Features
+
+* Add message to confirmation screen for prison to court moves ([ae4a52c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ae4a52ccb33854fd899b74016769babafc183703))
+* Create a new step for capturing case details ([dd55c3d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dd55c3d89db4073ad1424f4ddd1bb93adea898f7))
+* Create permission move:create:prison_to_prison ([13ea5a9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/13ea5a952869e4eb7cad57a942b7951531e91e92))
+* Create status as proposed if to and from locations are both prison ([70851e5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/70851e563350c74e8d52a6517c08d44a000e9bcb))
+* Display court hearings on the move detail view ([7a980d0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7a980d0ee30a78b756c0ce72dc546dec84fa1c01))
+* Feature flag court hearing support ([852303b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/852303b6b39a82e2eea256893d7e9f6204d0d3d7))
+* **e2e:** Check assessment answers in end-to-end tests ([42115f8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/42115f8a4aee468750d86316b0e4c33c40c38329))
+* **e2e:** Fill in court, risk and health section in end-to-end tests ([458cb8d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/458cb8d3f90f7693659b97c013316506f6dfe6ee))
+* End to end tests for OCA journey ([603fb2f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/603fb2ffa5f78f8792ac67bac82d32fcc764bf53))
+* Journey for the OCA user ([f62e38d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f62e38d4e8f2efedeaf8361f1af353621cc4d29b))
+
+
+### Bug Fixes
+
+* Adjust spacing of card nested within radio/checkbox list ([cb24dfa](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cb24dfa5488ba88304d9c420000cce816198e8fb))
+* Correct model and tests for documents entity ([955ffe0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/955ffe09b0945129ef70240928d07c113c2f7e62))
+* Ensure court information is only displayed when appropriate ([2fdd719](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2fdd7193786bf434cfdf114a273c4c4ab3505017))
+* Ensure names that contain special characters don't escape ([dbfd40d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dbfd40d2d8dd032e99ffd8d3734c5ac473be5127))
+* Fix broken e2e test ([16fd465](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/16fd465ccfd577578efb3709a969d3f423d951f6))
+* Make govuk radios display block ([e4e0b4c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e4e0b4c21f2f939de0640c55b10372ac4949124f))
+* **e2e:** Add support for missing person identifiers ([7b587a3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7b587a39013f210e26527474c373d24925317870))
+* **e2e:** Handle case where no moves are in the download ([dbfa598](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dbfa59840e4c4a6a70302243de59adb340042039))
+* Text for proposed moves confirmation page ([20adbef](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/20adbef49adaa7e85f1c361d4b78002ca23fd1aa))
+
 ## [2.16.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.15.1...v2.16.0) (2020-04-06)
 
 
