@@ -42,7 +42,7 @@ describe('Form wizard', function() {
         const reqMock = {
           t: sinon.stub().returnsArg(0),
         }
-        errors = controller.getErrors(reqMock, {}) // ?
+        errors = controller.getErrors(reqMock, {})
       })
 
       it('should contain correct number of errors', function() {

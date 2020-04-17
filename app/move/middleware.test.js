@@ -55,10 +55,6 @@ describe('Move middleware', function() {
           expect(res.locals.move).to.equal(moveStub)
         })
 
-        it('should set moveId on locals object', function() {
-          expect(res.locals.moveId).to.equal(mockMoveId)
-        })
-
         it('should call next with no argument', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
@@ -78,10 +74,6 @@ describe('Move middleware', function() {
 
         it('should not set a value on the locals object', function() {
           expect(res.locals).not.to.have.property('move')
-        })
-
-        it('should not set moveId on locals object', function() {
-          expect(res.locals).not.to.have.property('moveId')
         })
 
         it('should send error to next function', function() {
