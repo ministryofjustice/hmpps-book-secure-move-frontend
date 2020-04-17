@@ -55,10 +55,6 @@ describe('Move middleware', function() {
           expect(res.locals.move).to.equal(moveStub)
         })
 
-        it('should set moveId on locals object', function() {
-          expect(res.locals.moveId).to.equal(mockMoveId)
-        })
-
         it('should call next with no argument', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
