@@ -1,6 +1,7 @@
 const { omit, capitalize, flatten, values, some } = require('lodash')
 
 const CreateBaseController = require('./base')
+const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const analytics = require('../../../../common/lib/analytics')
@@ -26,10 +27,21 @@ class SaveController extends CreateBaseController {
         'errorValues',
       ])
       const move = await moveService.create(data)
-      await personService.update({
-        ...data.person,
-        assessment_answers: data.assessment,
-      })
+
+      await Promise.all([
+        // update person
+        personService.update({
+          ...data.person,
+          assessment_answers: data.assessment,
+        }),
+        // create hearings
+        ...data.court_hearings.map(hearing =>
+          courtHearingService.create({
+            ...hearing,
+            move: move.id,
+          })
+        ),
+      ])
 
       req.sessionModel.set('move', move)
 

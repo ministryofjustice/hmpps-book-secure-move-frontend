@@ -3,7 +3,6 @@ const { formatISO, parseISO } = require('date-fns')
 
 const CreateBaseController = require('./base')
 const personService = require('../../../../common/services/person')
-const courtHearingService = require('../../../../common/services/court-hearing')
 const componentService = require('../../../../common/services/component')
 const presenters = require('../../../../common/presenters')
 
@@ -43,43 +42,37 @@ class CourtHearingsController extends CreateBaseController {
     }
   }
 
-  async saveValues(req, res, next) {
+  saveValues(req, res, next) {
     // TODO: Remove once we support creating hearings without a case
     if (req.form.values.has_court_case === 'false') {
-      return next()
+      return super.saveValues(req, res, next)
     }
 
-    const moveDate = req.sessionModel.get('date')
     const {
       court_hearing__comments: comments,
       court_hearing__court_case: courtCaseId,
       court_hearing__start_time: startTime,
     } = req.form.values
-    const courtCase = find(req.courtCases, {
-      id: courtCaseId,
-    })
+    const moveDate = req.sessionModel.get('date')
+    const courtCase = find(req.courtCases, { id: courtCaseId })
+    const hearingDatetime = parseISO(`${moveDate}T${startTime}`)
+    const whitelistedCaseAttributes = pick(courtCase, [
+      'nomis_case_id',
+      'nomis_case_status',
+      'case_number',
+      'case_type',
+      'case_start_date',
+    ])
 
-    try {
-      const whitelistedCaseAttributes = pick(courtCase, [
-        'nomis_case_id',
-        'nomis_case_status',
-        'case_number',
-        'case_type',
-        'case_start_date',
-      ])
-      const hearingDatetime = parseISO(`${moveDate}T${startTime}`)
-      const courtHearing = await courtHearingService.create({
+    req.form.values.court_hearings = [
+      {
         ...whitelistedCaseAttributes,
         comments,
         start_time: formatISO(hearingDatetime),
-      })
+      },
+    ]
 
-      req.form.values.court_hearings = [courtHearing]
-
-      super.saveValues(req, res, next)
-    } catch (error) {
-      next(error)
-    }
+    super.saveValues(req, res, next)
   }
 
   // TODO: Remove once court hearings are fully released
