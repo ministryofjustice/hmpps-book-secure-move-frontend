@@ -1,5 +1,5 @@
 {% for assessmentCategory in assessment %}
-  <section class="app-section app-!-position-relative">
+  <section class="app-!-position-relative" data-app-section="{{ assessmentCategory.key }}">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
       {{ t("moves::assessment.categories." + assessmentCategory.key + ".heading") }}
     </h2>
@@ -50,15 +50,11 @@
         }
       }) }}
     {% endfor %}
-    {% if canAccess('move:update') %}
-      <p class="app-!-position-top-right"><a href="{{ urls.update[assessmentCategory.key] }}" data-update-link="{{ assessmentKey }}">{{ t('moves::update_links.' + assessmentCategory.key, {
-        context: 'information'
-      }) | safe }}</a></p>
-    {% endif %}
+    {{ updateLink(assessmentCategory.key) }}
   </section>
 {% endfor %}
 
-<section class="app-section app-!-position-relative" data-app-section="court">
+<section class="app-!-position-relative" data-app-section="court">
   {% if move.to_location.location_type == 'court' %}
     {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
@@ -118,7 +114,5 @@
       {% endif %}
     {% endif %}
   {% endif %}
-  {% if canAccess('move:update') %}
-    <p class="app-!-position-top-right"><a href="{{ urls.update.court }}" data-update-link="court">{{ t('moves::update_links.court') | safe }}</a></p>
-  {% endif %}
+  {{ updateLink('court') }}
 </section>
