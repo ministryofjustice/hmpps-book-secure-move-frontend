@@ -196,11 +196,15 @@
       }
     }
   },
-  "update_links": {
-    "court": "Change <span class=\"app-!-visually-hidden-desktop\">information for the court</span>",
-    "health": "Change <span class=\"app-!-visually-hidden-desktop\">health information</span>",
-    "move_details": "Change <span class=\"app-!-visually-hidden-desktop\">move details</span>",
-    "personal_details": "Change <span class=\"app-!-visually-hidden-desktop\">personal details</span>",
-    "risk": "Change <span class=\"app-!-visually-hidden-desktop\">risk information</span>"
+  "update_link": {
+    "link_text": "Change",
+    "link_text_with_category": "Change <span class=\"app-!-visually-hidden-desktop\">{{ category }}</span>",
+    "categories": {
+      "court": "information for the court",
+      "health": "health information",
+      "move_details": "move details",
+      "personal_details": "personal details",
+      "risk": "risk information"
+    }
   }
 }

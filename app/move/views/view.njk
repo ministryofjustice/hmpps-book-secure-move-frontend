@@ -60,16 +60,27 @@
   </header>
 {% endblock %}
 
+{% macro updateLink(category, permission='move:update', classes='app-!-position-top-right') %}
+  {% if canAccess(permission) %}
+    <p class="{{ classes }}">
+      <a href="{{ urls.update[category] }}" data-update-link="{{ category }}">
+        {{ t('moves::update_link.link_text', {
+          context: 'with_category',
+          category: t('moves::update_link.categories.' + category)
+        }) | safe }}
+      </a>
+    </p>
+  {% endif %}
+{% endmacro %}
+
 {% block contentMain %}
-  <section class="app-section app-!-position-relative" data-app-section="personal">
+  <section class="app-!-position-relative" data-app-section="personal_details">
     <h2 class="govuk-heading-m">
       {{ t("moves::steps.personal_details.heading") }}
     </h2>
 
     {{ govukSummaryList(personalDetailsSummary) }}
-    {% if canAccess('move:update') %}
-      <p class="app-!-position-top-right"><a href="{{ urls.update.personal_details }}" data-update-link="personal_details">{{ t('moves::update_links.personal_details') | safe }}</a></p>
-    {% endif %}
+    {{ updateLink('personal_details') }}
   </section>
 
   {% include "move/views/_includes/assessment.njk" %}
@@ -130,9 +141,7 @@
 
         {{ appMetaList(moveSummary) }}
         {# TODO: enable updating of move details when to_location can be set via api #}
-        {# {% if canAccess("move:update") %}
-          <p class="govuk-!-padding-top-4"><a href="{{ urls.update.move_details }}" data-update-link="move_details">{{ t('moves::update_links.move_details') | safe }}</a></p>
-        {% endif %} #}
+        {{ updateLink('move_details', classes='govuk-!-padding-top-4') }}
       </div>
     </div>
   {% endif %}
