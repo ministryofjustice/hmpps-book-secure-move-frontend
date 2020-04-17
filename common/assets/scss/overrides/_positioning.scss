@@ -10,7 +10,7 @@
   position: relative !important;
 }
 
-@media (min-width: 40.0625em) {
+@include govuk-media-query($from: tablet) {
   .app-\!-position-top-right {
     position: absolute;
     top: 0;
