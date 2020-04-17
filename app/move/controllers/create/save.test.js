@@ -7,6 +7,7 @@ const Controller = proxyquire('./save', {
     mountpath: '/moves',
   },
 })
+const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const analytics = require('../../../../common/lib/analytics')
@@ -73,6 +74,24 @@ const valuesMock = {
       },
     ],
   },
+  court_hearings: [
+    {
+      start_time: '2020-04-20T10:00:00+01:00',
+      case_number: '12345678',
+      case_start_date: '2020-04-20',
+      case_type: 'Adult',
+      comments: '',
+      nomis_case_id: 1563156,
+    },
+    {
+      start_time: '2020-04-22T10:00:00+01:00',
+      case_number: '98765432',
+      case_start_date: '2018-04-22',
+      case_type: 'Youth',
+      comments: '',
+      nomis_case_id: 98765432,
+    },
+  ],
 }
 
 describe('Move controllers', function() {
@@ -81,6 +100,8 @@ describe('Move controllers', function() {
       let req, nextSpy
 
       beforeEach(function() {
+        sinon.stub(personService, 'update').resolves(mockPerson)
+        sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
         req = {
           form: {
@@ -96,7 +117,6 @@ describe('Move controllers', function() {
       context('when move save is successful', function() {
         beforeEach(async function() {
           sinon.stub(moveService, 'create').resolves(mockMove)
-          sinon.stub(personService, 'update').resolves(mockPerson)
           await controller.saveValues(req, {}, nextSpy)
         })
 
@@ -110,6 +130,7 @@ describe('Move controllers', function() {
               last_name: 'Smith',
             },
             assessment: valuesMock.assessment,
+            court_hearings: valuesMock.court_hearings,
           })
         })
 
@@ -117,6 +138,23 @@ describe('Move controllers', function() {
           expect(personService.update).to.be.calledOnceWithExactly({
             ...valuesMock.person,
             assessment_answers: valuesMock.assessment,
+          })
+        })
+
+        it('should call court hearing service correct number of times', function() {
+          expect(courtHearingService.create.callCount).to.equal(
+            valuesMock.court_hearings.length
+          )
+        })
+
+        it('should call court hearing service with correct arguments', function() {
+          expect(courtHearingService.create).to.be.calledWithExactly({
+            ...valuesMock.court_hearings[0],
+            move: mockMove.id,
+          })
+          expect(courtHearingService.create).to.be.calledWithExactly({
+            ...valuesMock.court_hearings[1],
+            move: mockMove.id,
           })
         })
 
@@ -146,8 +184,12 @@ describe('Move controllers', function() {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not set person response on form values', function() {
-          expect(req.form.values).not.to.have.property('person')
+        it('should not update person', function() {
+          expect(personService.update).not.to.be.called
+        })
+
+        it('should not save court hearings', function() {
+          expect(courtHearingService.create).not.to.be.called
         })
       })
     })

@@ -6,7 +6,6 @@ const Controller = require('./court-hearings')
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
-const courtHearingService = require('../../../../common/services/court-hearing')
 
 const controller = new Controller({ route: '/' })
 
@@ -194,8 +193,8 @@ describe('Move controllers', function() {
       const mockDate = '2020-05-15'
 
       beforeEach(function() {
+        sinon.stub(CreateBaseController.prototype, 'saveValues')
         timezoneMock.register('UTC')
-        sinon.stub(courtHearingService, 'create')
         req = {
           courtCases: mockCourtCases,
           form: {
@@ -220,59 +219,26 @@ describe('Move controllers', function() {
       })
 
       context('when not associated with a court case', function() {
-        beforeEach(async function() {
+        beforeEach(function() {
           req.form.values.has_court_case = 'false'
-          await controller.saveValues(req, {}, nextSpy)
+          controller.saveValues(req, {}, nextSpy)
         })
 
         it('should not set court hearings', function() {
           expect(req.form.values).not.to.contain.property('court_hearings')
         })
 
-        it('should call next without error', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+        it('should call parent save values', function() {
+          expect(
+            CreateBaseController.prototype.saveValues
+          ).to.have.been.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
 
       context('when associated with a court case', function() {
-        context('when court hearing service rejects', function() {
-          const mockError = new Error('Mock error')
-
-          beforeEach(async function() {
-            courtHearingService.create.rejects(mockError)
-            await controller.saveValues(req, {}, nextSpy)
-          })
-
-          it('should not set court hearings', function() {
-            expect(req.form.values).not.to.contain.property('court_hearings')
-          })
-
-          it('should call next with error', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly(mockError)
-          })
-        })
-
         context('when court hearing service resolves', function() {
-          const mockResponse = {
-            id: 'ea7dfa93-b0d9-491f-8d18-0c5f32a08eeb',
-            type: 'court_hearings',
-          }
-
-          beforeEach(async function() {
-            courtHearingService.create.resolves(mockResponse)
-            await controller.saveValues(req, {}, nextSpy)
-          })
-
-          it('should send correct data to court hearings service', function() {
-            expect(courtHearingService.create).to.be.calledOnceWithExactly({
-              nomis_case_id: mockCourtCases[0].nomis_case_id,
-              nomis_case_status: mockCourtCases[0].nomis_case_status,
-              case_number: mockCourtCases[0].case_number,
-              case_type: mockCourtCases[0].case_type,
-              case_start_date: mockCourtCases[0].case_start_date,
-              comments: req.form.values.court_hearing__comments,
-              start_time: '2020-05-15T10:00:00Z',
-            })
+          beforeEach(function() {
+            controller.saveValues(req, {}, nextSpy)
           })
 
           it('should add court_hearings to form values', function() {
@@ -280,7 +246,23 @@ describe('Move controllers', function() {
           })
 
           it('should set court hearings service response to form values', function() {
-            expect(req.form.values.court_hearings).to.deep.equal([mockResponse])
+            expect(req.form.values.court_hearings).to.deep.equal([
+              {
+                nomis_case_id: mockCourtCases[0].nomis_case_id,
+                nomis_case_status: mockCourtCases[0].nomis_case_status,
+                case_number: mockCourtCases[0].case_number,
+                case_type: mockCourtCases[0].case_type,
+                case_start_date: mockCourtCases[0].case_start_date,
+                comments: req.form.values.court_hearing__comments,
+                start_time: '2020-05-15T10:00:00Z',
+              },
+            ])
+          })
+
+          it('should call parent save values', function() {
+            expect(
+              CreateBaseController.prototype.saveValues
+            ).to.have.been.calledOnceWithExactly(req, {}, nextSpy)
           })
         })
       })
