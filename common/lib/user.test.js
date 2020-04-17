@@ -98,8 +98,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
@@ -114,8 +114,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
@@ -130,8 +130,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
@@ -146,8 +146,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
@@ -162,8 +162,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
@@ -178,9 +178,9 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:dashboard',
           'moves:view:proposed',
+          'moves:download',
           'move:view',
           'move:create',
           'move:create:prison_to_prison',
@@ -196,9 +196,8 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'moves:view:all',
-          'moves:download:all',
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
         ])
       })
@@ -218,13 +217,12 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:by_location',
-          'moves:download:by_location',
+          'moves:view:outgoing',
+          'moves:download',
           'move:view',
           'move:create',
           'move:cancel',
           'moves:view:all',
-          'moves:download:all',
         ])
       })
     })

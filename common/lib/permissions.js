@@ -1,28 +1,27 @@
 const policePermissions = [
-  'moves:view:by_location',
-  'moves:download:by_location',
+  'moves:view:outgoing',
+  'moves:download',
   'move:view',
   'move:create',
   'move:cancel',
 ]
 const supplierPermissions = [
   'moves:view:all',
-  'moves:download:all',
-  'moves:view:by_location',
-  'moves:download:by_location',
+  'moves:view:outgoing',
+  'moves:download',
   'move:view',
 ]
 const prisonPermissions = [
-  'moves:view:by_location',
-  'moves:download:by_location',
+  'moves:view:outgoing',
+  'moves:download',
   'move:view',
   'move:create',
   'move:cancel',
 ]
 const ocaPermissions = [
-  'moves:view:by_location',
-  'moves:download:by_location',
+  'moves:view:dashboard',
   'moves:view:proposed',
+  'moves:download',
   'move:view',
   'move:create',
   'move:create:prison_to_prison',

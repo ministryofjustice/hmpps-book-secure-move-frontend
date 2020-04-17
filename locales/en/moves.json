@@ -126,7 +126,8 @@
     }
   },
   "dashboard": {
-    "upcoming_moves": "Upcoming moves for {{date}}",
+    "outgoing_moves": "Outgoing moves",
+    "outgoing_moves_with_date": "Outgoing moves for {{date}}",
     "cancelled_moves": "{{count}} cancelled moves",
     "move_to": "Move to",
     "no_results": "No moves scheduled",

@@ -1,7 +1,7 @@
 {% extends "layouts/base.njk" %}
 
 {% block customGtagConfig %}
-  gtag('set', {'page_title': 'Upcoming moves'});
+  gtag('set', {'page_title': '{{ t(pageTitle) }}'});
 {% endblock %}
 
 {% if period === 'day' %}
@@ -23,7 +23,9 @@
   {% block pageHeader %}
     <header class="govuk-grid-row">
       <div class="{% block headerGridColumnClass %}govuk-grid-column-two-thirds{% endblock %}">
-        <span class="govuk-caption-xl">{{ t(pageTitle) }}</span>
+        <span class="govuk-caption-xl">{{ t(pageTitle, {
+          context: "with_date"
+        }) }}</span>
 
         {% block dateTitle %}
           <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
