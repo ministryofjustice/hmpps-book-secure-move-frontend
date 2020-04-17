@@ -15,6 +15,10 @@ module.exports = {
       date: '',
       date_from: '',
       date_to: '',
+      prison_transfer_reason: {
+        jsonApi: 'hasOne',
+        type: 'prison_transfer_reasons',
+      },
       person: {
         jsonApi: 'hasOne',
         type: 'people',
