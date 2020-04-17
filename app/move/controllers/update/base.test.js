@@ -31,6 +31,14 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#setButtonText()', function() {
+      it('should inherit setButtonText from CreateBaseController', function() {
+        expect(controller.setButtonText).to.exist.and.equal(
+          BaseProto.setButtonText
+        )
+      })
+    })
+
     describe('#setMoveSummary()', function() {
       it('should inherit setMoveSummary from CreateBaseController', function() {
         expect(controller.setMoveSummary).to.exist.and.equal(
@@ -67,38 +75,14 @@ describe('Move controllers', function() {
         expect(BaseProto.middlewareLocals).to.have.been.calledOnce
       })
 
-      it('should call set step urls method', function() {
+      it('should call set next step method', function() {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
-          controller.setStepUrls
+          controller.setNextStep
         )
       })
 
       it('should call correct number of additional middleware', function() {
         expect(controller.use).to.be.callCount(2)
-      })
-    })
-
-    describe('#setButtonText()', function() {
-      let req = {}
-      let nextSpy
-      const res = {}
-
-      beforeEach(function() {
-        nextSpy = sinon.spy()
-        req = {
-          form: {
-            options: {},
-          },
-        }
-        controller.setButtonText(req, res, nextSpy)
-      })
-
-      it('should set cancel url correctly', function() {
-        expect(req.form.options.buttonText).to.equal('actions::continue')
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
@@ -128,32 +112,24 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#setStepUrls()', function() {
+    describe('#setNextStep()', function() {
       let req = {}
-      let res, nextSpy
+      let nextSpy
+      const res = {}
 
       beforeEach(function() {
         nextSpy = sinon.spy()
         req = {
-          getMoveId: sinon.stub().returns('moveId'),
           form: {
             options: {},
           },
         }
-        res = {
-          locals: {
-            moveId: '#moveId',
-          },
-        }
-        controller.setStepUrls(req, res, nextSpy)
+        controller.getBaseUrl = sinon.stub().returns('/move/moveId')
+        controller.setNextStep(req, res, nextSpy)
       })
 
       it('should set form options next step', function() {
         expect(req.form.options.next).to.equal('/move/moveId')
-      })
-
-      it('should set form options backLink', function() {
-        expect(req.form.options.backLink).to.equal('/move/moveId')
       })
 
       it('should call next', function() {
@@ -207,12 +183,8 @@ describe('Move controllers', function() {
       beforeEach(function() {
         req = {
           get: sinon.stub(),
-          form: {
-            options: {
-              backLink: '/baseUrl',
-            },
-          },
         }
+        controller.getBaseUrl = sinon.stub().returns('/baseUrl')
         nextSpy = sinon.stub()
       })
 

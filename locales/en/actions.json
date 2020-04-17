@@ -22,5 +22,6 @@
   "print_move_list": "Print moves",
   "print_move_detail": "Print move",
   "sign_out": "Sign out",
-  "switch_location": "Switch location"
+  "switch_location": "Switch location",
+  "save": "Save and continue"
 }

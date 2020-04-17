@@ -6,7 +6,7 @@ const CreateBaseController = require('../create/base')
 class UpdateBaseController extends CreateBaseController {
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setStepUrls)
+    this.use(this.setNextStep)
     this.use(this.setInitialStep)
   }
 
@@ -21,20 +21,14 @@ class UpdateBaseController extends CreateBaseController {
     return `/move/${moveId}`
   }
 
-  setButtonText(req, res, next) {
-    req.form.options.buttonText = 'actions::continue'
-    next()
-  }
-
   setCancelUrl(req, res, next) {
     res.locals.cancelUrl = this.getBaseUrl(req)
     next()
   }
 
-  setStepUrls(req, res, next) {
+  setNextStep(req, res, next) {
     const nextUrl = this.getBaseUrl(req)
     req.form.options.next = nextUrl
-    req.form.options.backLink = nextUrl
     next()
   }
 
@@ -45,7 +39,7 @@ class UpdateBaseController extends CreateBaseController {
       initialStep = true
     } else {
       const { pathname } = new URL(referrer)
-      if (pathname === req.form.options.backLink) {
+      if (pathname === this.getBaseUrl(req)) {
         initialStep = true
       }
     }
