@@ -31,7 +31,7 @@ const mockMove = {
   },
   person: mockPerson,
 }
-const valuesMock = {
+const mockValues = {
   'csrf-secret': 'secret',
   errors: null,
   errorValues: {
@@ -74,24 +74,6 @@ const valuesMock = {
       },
     ],
   },
-  court_hearings: [
-    {
-      start_time: '2020-04-20T10:00:00+01:00',
-      case_number: '12345678',
-      case_start_date: '2020-04-20',
-      case_type: 'Adult',
-      comments: '',
-      nomis_case_id: 1563156,
-    },
-    {
-      start_time: '2020-04-22T10:00:00+01:00',
-      case_number: '98765432',
-      case_start_date: '2018-04-22',
-      case_type: 'Youth',
-      comments: '',
-      nomis_case_id: 98765432,
-    },
-  ],
 }
 
 describe('Move controllers', function() {
@@ -109,7 +91,7 @@ describe('Move controllers', function() {
           },
           sessionModel: {
             set: sinon.stub(),
-            toJSON: () => valuesMock,
+            toJSON: () => mockValues,
           },
         }
       })
@@ -117,54 +99,121 @@ describe('Move controllers', function() {
       context('when move save is successful', function() {
         beforeEach(async function() {
           sinon.stub(moveService, 'create').resolves(mockMove)
-          await controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should filter out correct properties', function() {
-          expect(moveService.create).to.be.calledWith({
-            reference: '',
-            to_location: 'Court',
-            from_location: 'Prison',
-            person: {
-              first_names: 'Steve',
-              last_name: 'Smith',
-            },
-            assessment: valuesMock.assessment,
-            court_hearings: valuesMock.court_hearings,
+        context('without court hearings', function() {
+          beforeEach(async function() {
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should filter out correct properties', function() {
+            expect(moveService.create).to.be.calledWith({
+              reference: '',
+              to_location: 'Court',
+              from_location: 'Prison',
+              person: {
+                first_names: 'Steve',
+                last_name: 'Smith',
+              },
+              assessment: mockValues.assessment,
+            })
+          })
+
+          it('should call person update', function() {
+            expect(personService.update).to.be.calledOnceWithExactly({
+              ...mockValues.person,
+              assessment_answers: mockValues.assessment,
+            })
+          })
+
+          it('should not call court hearing service', function() {
+            expect(courtHearingService.create).not.to.called
+          })
+
+          it('should set move to session model', function() {
+            expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
           })
         })
 
-        it('should call person update', function() {
-          expect(personService.update).to.be.calledOnceWithExactly({
-            ...valuesMock.person,
-            assessment_answers: valuesMock.assessment,
+        context('with court hearings', function() {
+          const mockValuesWithHearings = {
+            ...mockValues,
+            court_hearings: [
+              {
+                start_time: '2020-04-20T10:00:00+01:00',
+                case_number: '12345678',
+                case_start_date: '2020-04-20',
+                case_type: 'Adult',
+                comments: '',
+                nomis_case_id: 1563156,
+              },
+              {
+                start_time: '2020-04-22T10:00:00+01:00',
+                case_number: '98765432',
+                case_start_date: '2018-04-22',
+                case_type: 'Youth',
+                comments: '',
+                nomis_case_id: 98765432,
+              },
+            ],
+          }
+
+          beforeEach(async function() {
+            req.sessionModel.toJSON = () => mockValuesWithHearings
+            await controller.saveValues(req, {}, nextSpy)
           })
-        })
 
-        it('should call court hearing service correct number of times', function() {
-          expect(courtHearingService.create.callCount).to.equal(
-            valuesMock.court_hearings.length
-          )
-        })
-
-        it('should call court hearing service with correct arguments', function() {
-          expect(courtHearingService.create).to.be.calledWithExactly({
-            ...valuesMock.court_hearings[0],
-            move: mockMove.id,
+          it('should filter out correct properties', function() {
+            expect(moveService.create).to.be.calledWith({
+              reference: '',
+              to_location: 'Court',
+              from_location: 'Prison',
+              person: {
+                first_names: 'Steve',
+                last_name: 'Smith',
+              },
+              assessment: mockValuesWithHearings.assessment,
+              court_hearings: mockValuesWithHearings.court_hearings,
+            })
           })
-          expect(courtHearingService.create).to.be.calledWithExactly({
-            ...valuesMock.court_hearings[1],
-            move: mockMove.id,
+
+          it('should call person update', function() {
+            expect(personService.update).to.be.calledOnceWithExactly({
+              ...mockValuesWithHearings.person,
+              assessment_answers: mockValuesWithHearings.assessment,
+            })
           })
-        })
 
-        it('should set response to session model', function() {
-          expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
-        })
+          it('should call court hearing service correct number of times', function() {
+            expect(courtHearingService.create.callCount).to.equal(
+              mockValuesWithHearings.court_hearings.length
+            )
+          })
 
-        it('should not throw an error', function() {
-          expect(nextSpy).to.be.calledOnce
-          expect(nextSpy).to.be.calledWith()
+          it('should call court hearing service with correct arguments', function() {
+            expect(courtHearingService.create).to.be.calledWithExactly({
+              ...mockValuesWithHearings.court_hearings[0],
+              move: mockMove.id,
+            })
+            expect(courtHearingService.create).to.be.calledWithExactly({
+              ...mockValuesWithHearings.court_hearings[1],
+              move: mockMove.id,
+            })
+          })
+
+          it('should set move to session model', function() {
+            expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
+          })
+
+          it('should not throw an error', function() {
+            expect(nextSpy).to.be.calledOnce
+            expect(nextSpy).to.be.calledWith()
+          })
         })
       })
 
