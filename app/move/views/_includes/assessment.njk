@@ -50,9 +50,11 @@
         }
       }) }}
     {% endfor %}
-    <p class="app-!-position-top-right"><a href="{{ urls.update[assessmentCategory.key] }}" data-update-link="{{ assessmentKey }}">{{ t('moves::update_links.' + assessmentCategory.key, {
-    context: 'information'
-    }) | safe }}</a></p>
+    {% if canAccess('move:update') %}
+      <p class="app-!-position-top-right"><a href="{{ urls.update[assessmentCategory.key] }}" data-update-link="{{ assessmentKey }}">{{ t('moves::update_links.' + assessmentCategory.key, {
+        context: 'information'
+      }) | safe }}</a></p>
+    {% endif %}
   </section>
 {% endfor %}
 
@@ -116,5 +118,7 @@
       {% endif %}
     {% endif %}
   {% endif %}
-  <p class="app-!-position-top-right"><a href="{{ urls.update.court }}" data-update-link="court">{{ t('moves::update_links.court') | safe }}</a></p>
+  {% if canAccess('move:update') %}
+    <p class="app-!-position-top-right"><a href="{{ urls.update.court }}" data-update-link="court">{{ t('moves::update_links.court') | safe }}</a></p>
+  {% endif %}
 </section>

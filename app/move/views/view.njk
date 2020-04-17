@@ -67,7 +67,9 @@
     </h2>
 
     {{ govukSummaryList(personalDetailsSummary) }}
-    <p class="app-!-position-top-right"><a href="{{ urls.update.personal_details }}" data-update-link="personal_details">{{ t('moves::update_links.personal_details') | safe }}</a></p>
+    {% if canAccess('move:update') %}
+      <p class="app-!-position-top-right"><a href="{{ urls.update.personal_details }}" data-update-link="personal_details">{{ t('moves::update_links.personal_details') | safe }}</a></p>
+    {% endif %}
   </section>
 
   {% include "move/views/_includes/assessment.njk" %}
