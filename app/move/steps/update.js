@@ -19,8 +19,9 @@ const updateControllers = {
 const provideStepProps = (key, step) => {
   const stepProps = {
     entryPoint: true,
-    backLink: undefined,
+    backLink: null,
     next: undefined,
+    buttonText: 'actions::save',
   }
 
   const updatedStep = {
