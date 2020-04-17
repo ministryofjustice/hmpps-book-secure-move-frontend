@@ -1,4 +1,4 @@
-const defaultPermissions = [
+const policePermissions = [
   'moves:view:by_location',
   'moves:download:by_location',
   'move:view',
@@ -22,6 +22,7 @@ const secureTrainingCentrePermissions = [
   'move:create',
   'move:create:court_appearance',
   'move:cancel',
+  'move:update',
 ]
 const supplierPermissions = [
   'moves:view:all',
@@ -47,8 +48,6 @@ const ocaPermissions = [
   'move:create:prison_transfer',
 ]
 const pmuPermissions = ['allocations:view', 'allocation:create']
-
-const policePermissions = [...defaultPermissions, 'move:update']
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
