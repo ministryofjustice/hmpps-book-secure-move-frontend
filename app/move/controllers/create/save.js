@@ -35,7 +35,7 @@ class SaveController extends CreateBaseController {
           assessment_answers: data.assessment,
         }),
         // create hearings
-        ...data.court_hearings.map(hearing =>
+        ...(data.court_hearings || []).map(hearing =>
           courtHearingService.create({
             ...hearing,
             move: move.id,
