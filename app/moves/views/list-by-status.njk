@@ -18,9 +18,10 @@
 
 {% block pageContent %}
 {% if moves.length %}
-  {% for move in moves %}
-    {{ appCard(move) }}
-  {% endfor %}
+  {{ govukTable({
+    rows: moves,
+    head: movesHeads
+  }) }}
 {% else %}
     {{ appMessage({
       classes: "app-message--muted govuk-!-margin-top-7",
