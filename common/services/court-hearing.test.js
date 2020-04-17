@@ -10,6 +10,81 @@ const mockCourtHearing = {
 }
 
 describe('Court Hearing Service', function() {
+  describe('#format()', function() {
+    const mockMoveId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+
+    context('when relationship field is string', function() {
+      let formatted
+
+      beforeEach(async function() {
+        formatted = await courtHearingService.format({
+          date: '2010-10-10',
+          move: mockMoveId,
+        })
+      })
+
+      it('should format as relationship object', function() {
+        expect(formatted.move).to.deep.equal({
+          id: mockMoveId,
+        })
+      })
+
+      it('should not affect non relationship fields', function() {
+        expect(formatted.date).to.equal('2010-10-10')
+      })
+    })
+
+    context('when relationship field is not a string', function() {
+      let formatted
+
+      beforeEach(async function() {
+        formatted = await courtHearingService.format({
+          date: '2010-10-10',
+          move: {
+            id: mockMoveId,
+          },
+        })
+      })
+
+      it('should return its original value', function() {
+        expect(formatted.move).to.deep.equal({
+          id: mockMoveId,
+        })
+      })
+
+      it('should not affect non relationship fields', function() {
+        expect(formatted.date).to.equal('2010-10-10')
+      })
+    })
+
+    context('with falsey values', function() {
+      let formatted
+
+      beforeEach(async function() {
+        formatted = await courtHearingService.format({
+          date: '2010-10-10',
+          move: {
+            id: mockMoveId,
+          },
+          empty_string: '',
+          false: false,
+          undefined: undefined,
+          empty_array: [],
+        })
+      })
+
+      it('should remove falsey values', function() {
+        expect(formatted).to.deep.equal({
+          date: '2010-10-10',
+          move: {
+            id: mockMoveId,
+          },
+          empty_array: [],
+        })
+      })
+    })
+  })
+
   describe('#create()', function() {
     const mockData = {
       name: 'Steve Bloggs',
