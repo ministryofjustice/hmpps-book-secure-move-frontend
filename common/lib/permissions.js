@@ -26,6 +26,7 @@ const ocaPermissions = [
   'move:create',
   'move:create:prison_to_prison',
 ]
+const pmuPermissions = ['allocations:view', 'allocation:create']
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
@@ -34,6 +35,7 @@ const permissionsByRole = {
   ROLE_PECS_PRISON: prisonPermissions,
   ROLE_PECS_HMYOI: prisonPermissions,
   ROLE_PECS_OCA: ocaPermissions,
+  ROLE_PECS_PMU: pmuPermissions,
   ROLE_PECS_SUPPLIER: supplierPermissions,
 }
 
