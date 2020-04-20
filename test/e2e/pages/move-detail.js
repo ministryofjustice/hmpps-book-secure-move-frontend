@@ -45,6 +45,9 @@ class MoveDetailPage extends Page {
       noHealthInformationMessage: Selector('.app-message').withText(
         'No health affecting transport'
       ),
+      getUpdateLink: category => {
+        return Selector(`[data-update-link="${category}"]`)
+      },
     }
   }
 
@@ -79,7 +82,7 @@ class MoveDetailPage extends Page {
             dateOfBirth
           )})`
         : undefined,
-      Gender: gender,
+      // Gender: gender,
       Ethnicity: ethnicity,
     })
   }
@@ -188,6 +191,20 @@ class MoveDetailPage extends Page {
         await t.expect(panel.innerText).contains(comment)
       }
     }
+  }
+
+  async checkUpdateLink(category, exists = true) {
+    const selector = this.nodes.getUpdateLink(category)
+    await t.expect(selector.exists).eql(exists)
+  }
+
+  async checkNoUpdateLink(category) {
+    await this.checkUpdateLink(category, false)
+  }
+
+  async clickUpdateLink(category, exists = true) {
+    const selector = this.nodes.getUpdateLink(category)
+    await t.click(selector)
   }
 }
 
