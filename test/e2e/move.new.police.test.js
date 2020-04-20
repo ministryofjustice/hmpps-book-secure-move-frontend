@@ -16,7 +16,7 @@ fixture('New move from Police Custody to Court').beforeEach(async t => {
 })
 
 test('With unfound person', async t => {
-  const person = generatePerson()
+  const person = await generatePerson()
 
   // PNC lookup
   await createMovePage.fillInPncSearch(person.policeNationalComputer)
