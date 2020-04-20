@@ -43,7 +43,8 @@ module.exports = {
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
-    CACHE_EXPIRY: 60 * 60 * 24 * 7, // in seconds (7 days)
+    CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
+    DISABLE_CACHE: process.env.API_DISABLE_CACHE,
   },
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',

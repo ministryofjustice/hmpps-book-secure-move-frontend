@@ -211,6 +211,8 @@ It will also start a new deployment specific [job on CircleCI](https://app.circl
 | API_AUTH_PATH **(required)** | Path to which OAuth2 access token requests should be sent | |
 | API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |
 | API_SECRET **(required)** | Client secret used to authenticate with the backend API | |
+| API_CACHE_EXPIRY | The expiry time of cached API request (in seconds) | 7 days |
+| API_DISABLE_CACHE | Whether to disable caching of API requests | false |
 | AUTH_PROVIDER_KEY **(required)** | Client key provided by the OAuth2 provider for user authentication | |
 | AUTH_PROVIDER_SECRET **(required)** | Client secret provided by the OAuth2 provider for user authentication | |
 | AUTH_PROVIDER_URL **(required)** | Base URL for the auth provider server | |

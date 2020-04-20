@@ -178,23 +178,82 @@ describe('API Client', function() {
           setexAsyncStub.resolves(true)
         })
 
-        context('without expiry argument', function() {
-          beforeEach(async function() {
-            response = await requestMiddleware().req(payload)
+        describe('cache expiry', function() {
+          context('without cache expiry argument', function() {
+            beforeEach(async function() {
+              response = await requestMiddleware().req(payload)
+            })
+
+            it('should use default value', function() {
+              expect(setexAsyncStub.args[0][1]).to.equal(60)
+            })
           })
 
-          it('should use default value', function() {
-            expect(setexAsyncStub.args[0][1]).to.equal(60)
+          context('with cache expiry argument', function() {
+            beforeEach(async function() {
+              response = await requestMiddleware({ cacheExpiry: 1000 }).req(
+                payload
+              )
+            })
+
+            it('should use argument value', function() {
+              expect(setexAsyncStub.args[0][1]).to.equal(1000)
+            })
           })
         })
 
-        context('with expiry argument', function() {
+        describe('disable cache', function() {
           beforeEach(async function() {
-            response = await requestMiddleware(1000).req(payload)
+            payload.req.model = 'cachedModel'
           })
 
-          it('should use argument value', function() {
-            expect(setexAsyncStub.args[0][1]).to.equal(1000)
+          context('without argument', function() {
+            beforeEach(async function() {
+              response = await requestMiddleware().req(payload)
+            })
+
+            it('should attempt to get key from redis', function() {
+              expect(getAsyncStub).to.be.calledOnceWithExactly(
+                'cache:GET./path/to/endpoint'
+              )
+            })
+
+            it('should make request using axios library', function() {
+              expect(payload.jsonApi.axios).to.be.calledOnceWithExactly(
+                payload.req
+              )
+            })
+
+            it('should set response data in redis', function() {
+              expect(setexAsyncStub).to.be.calledOnceWithExactly(
+                'cache:GET./path/to/endpoint',
+                60,
+                JSON.stringify(mockResponse.data)
+              )
+            })
+
+            it('should return a request', function() {
+              expect(response).to.deep.equal(mockResponse)
+            })
+          })
+
+          context('with cache disabled', function() {
+            beforeEach(async function() {
+              response = await requestMiddleware({ disableCache: true }).req(
+                payload
+              )
+            })
+
+            it('should make request using axios library with payload', function() {
+              expect(payload.jsonApi.axios).to.be.calledOnceWithExactly(
+                payload.req
+              )
+            })
+
+            it('should not call redis client', function() {
+              expect(getAsyncStub).not.to.be.called
+              expect(setexAsyncStub).not.to.be.called
+            })
           })
         })
       })
