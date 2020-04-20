@@ -2,8 +2,8 @@ const fs = require('fs')
 const path = require('path')
 
 const cheerio = require('cheerio')
-const nunjucks = require('nunjucks')
 const yaml = require('js-yaml')
+const nunjucks = require('nunjucks')
 
 const configPaths = require('../../config/paths')
 const views = [

@@ -1,5 +1,5 @@
-const { get } = require('lodash')
 const debug = require('debug')('app:api-client')
+const { get } = require('lodash')
 
 const redisStore = require('../../../../config/redis-store')
 const models = require('../models')

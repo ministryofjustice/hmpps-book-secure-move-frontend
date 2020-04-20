@@ -1,10 +1,11 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const Controller = require('./personal-details')
+const fieldHelpers = require('../../../../common/helpers/field')
+const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 const personService = require('../../../../common/services/person')
 const referenceDataService = require('../../../../common/services/reference-data')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const fieldHelpers = require('../../../../common/helpers/field')
+
+const Controller = require('./personal-details')
 
 const controller = new Controller({ route: '/' })
 const genderMock = [

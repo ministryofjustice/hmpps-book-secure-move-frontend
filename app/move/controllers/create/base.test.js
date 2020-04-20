@@ -1,7 +1,8 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const CreateBaseController = require('./base')
 const presenters = require('../../../../common/presenters')
+
+const CreateBaseController = require('./base')
 
 const controller = new CreateBaseController({ route: '/' })
 

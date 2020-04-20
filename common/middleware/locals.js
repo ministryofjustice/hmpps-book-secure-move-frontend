@@ -1,7 +1,8 @@
-const { get } = require('lodash')
 const { startOfTomorrow } = require('date-fns')
+const { get } = require('lodash')
 
 const movesApp = require('../../app/moves')
+
 const { check } = require('./permissions')
 
 module.exports = function setLocals(req, res, next) {

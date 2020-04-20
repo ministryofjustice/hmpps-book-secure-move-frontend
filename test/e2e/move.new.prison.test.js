@@ -1,9 +1,10 @@
 import { Selector } from 'testcafe'
 
 import { FEATURE_FLAGS } from '../../config'
-import { newMove } from './_routes'
-import { ocaUser, prisonUser } from './_roles'
+
 import { createPersonFixture } from './_helpers'
+import { ocaUser, prisonUser } from './_roles'
+import { newMove } from './_routes'
 import { page, moveDetailPage, createMovePage } from './pages'
 
 fixture('New move from Prison to Court').beforeEach(async t => {

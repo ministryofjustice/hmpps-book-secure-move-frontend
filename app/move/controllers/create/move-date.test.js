@@ -1,6 +1,7 @@
+const filters = require('../../../../config/nunjucks/filters')
+
 const BaseController = require('./base')
 const Controller = require('./move-date')
-const filters = require('../../../../config/nunjucks/filters')
 
 const controller = new Controller({ route: '/' })
 

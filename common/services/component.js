@@ -1,8 +1,8 @@
 const { kebabCase } = require('lodash')
 
 const config = require('../../config')
-const configPaths = require('../../config/paths')
 const nunjucksConfig = require('../../config/nunjucks')
+const configPaths = require('../../config/paths')
 
 /**
  * Return a filename name for a macro

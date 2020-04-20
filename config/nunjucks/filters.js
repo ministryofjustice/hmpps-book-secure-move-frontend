@@ -1,3 +1,4 @@
+const chrono = require('chrono-node')
 const {
   differenceInDays,
   format,
@@ -12,13 +13,11 @@ const {
   isSameYear,
   isDate,
 } = require('date-fns')
+const filesizejs = require('filesize')
 const { kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
-const chrono = require('chrono-node')
-const filesizejs = require('filesize')
 
 const i18n = require('../i18n')
-
 const { DATE_FORMATS } = require('../index')
 const weekOptions = {
   weekStartsOn: 1,

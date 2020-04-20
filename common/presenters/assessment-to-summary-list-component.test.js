@@ -1,8 +1,8 @@
-const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
-
 const {
   data: mockPerson,
 } = require('../../test/fixtures/api-client/person.create.json')
+
+const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
 
 describe('Presenters', function() {
   describe('#assessmentToSummaryListComponent()', function() {

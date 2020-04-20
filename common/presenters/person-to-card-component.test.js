@@ -1,7 +1,7 @@
-const personToCardComponent = require('./person-to-card-component')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+
+const personToCardComponent = require('./person-to-card-component')
 
 const mockPerson = {
   href: '/move/12345',

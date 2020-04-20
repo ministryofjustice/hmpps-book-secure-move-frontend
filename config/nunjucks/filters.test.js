@@ -1,6 +1,7 @@
+const { startOfWeek, endOfWeek } = require('date-fns')
 const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
-const { startOfWeek, endOfWeek } = require('date-fns')
+
 const i18n = require('../i18n')
 
 const mockFilesizeResponse = '10 MB'

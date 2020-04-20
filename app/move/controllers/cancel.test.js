@@ -1,5 +1,6 @@
-const CancelController = require('./cancel')
 const moveService = require('../../../common/services/move')
+
+const CancelController = require('./cancel')
 
 const controller = new CancelController({ route: '/' })
 const mockMove = {

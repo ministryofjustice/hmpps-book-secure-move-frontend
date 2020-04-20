@@ -1,5 +1,5 @@
-const moveService = require('../../../common/services/move')
 const presenters = require('../../../common/presenters')
+const moveService = require('../../../common/services/move')
 
 const middleware = require('./set-move-type-navigation')
 

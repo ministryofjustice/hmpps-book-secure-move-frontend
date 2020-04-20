@@ -1,7 +1,8 @@
 const { ObjectReadableMock } = require('stream-mock')
 
-const APIDocumentStorage = require('./multer.api-document.storage')()
 const documentService = require('../services/document')
+
+const APIDocumentStorage = require('./multer.api-document.storage')()
 
 const mockServiceResponse = {
   id: '12345',

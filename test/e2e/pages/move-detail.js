@@ -1,7 +1,8 @@
 import { Selector, t } from 'testcafe'
 
-import Page from './page'
 import filters from '../../../config/nunjucks/filters'
+
+import Page from './page'
 
 class MoveDetailPage extends Page {
   constructor() {

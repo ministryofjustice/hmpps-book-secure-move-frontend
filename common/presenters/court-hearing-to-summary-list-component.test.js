@@ -1,7 +1,7 @@
-const courtHearingsToSummaryListComponent = require('./court-hearing-to-summary-list-component')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+
+const courtHearingsToSummaryListComponent = require('./court-hearing-to-summary-list-component')
 
 const mockHearing = {
   start_time: '2020-10-20T13:00:00+00:00',

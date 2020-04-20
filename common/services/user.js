@@ -1,12 +1,13 @@
 const axios = require('axios')
 
+const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
+const { decodeAccessToken } = require('../lib/access-token')
+
 const {
   getLocationsBySupplierId,
   getLocationsByNomisAgencyId,
   getSupplierByKey,
 } = require('./reference-data')
-const { decodeAccessToken } = require('../lib/access-token')
-const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 
 const getAuthHeader = token => ({ Authorization: `Bearer ${token}` })
 

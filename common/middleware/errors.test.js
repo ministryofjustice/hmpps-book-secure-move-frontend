@@ -1,6 +1,6 @@
-const errors = require('./errors')
-
 const logger = require('../../config/logger')
+
+const errors = require('./errors')
 
 const errorCode404 = 404
 const errorCode403 = 403

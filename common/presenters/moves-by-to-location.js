@@ -1,6 +1,7 @@
 const { get, groupBy, sortBy } = require('lodash')
 
 const i18n = require('../../config/i18n')
+
 const moveToCardComponent = require('./move-to-card-component')
 
 function _emptyToLocation(move) {

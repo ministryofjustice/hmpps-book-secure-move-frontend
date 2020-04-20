@@ -1,9 +1,9 @@
-const PersonController = require('./person')
-const Controller = require('./person-search-results')
-
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
+
+const PersonController = require('./person')
+const Controller = require('./person-search-results')
 
 const controller = new Controller({ route: '/' })
 

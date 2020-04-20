@@ -1,8 +1,9 @@
-const FormController = require('hmpo-form-wizard').Controller
 const Sentry = require('@sentry/node')
+const FormController = require('hmpo-form-wizard').Controller
+
+const fieldHelpers = require('../helpers/field')
 
 const Controller = require('./form-wizard')
-const fieldHelpers = require('../helpers/field')
 
 const controller = new Controller({ route: '/' })
 

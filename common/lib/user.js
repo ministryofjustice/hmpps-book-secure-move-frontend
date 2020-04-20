@@ -1,4 +1,5 @@
 const { uniq } = require('lodash')
+
 const { permissionsByRole } = require('./permissions')
 
 function User({ fullname, roles = [], locations = [] } = {}) {

@@ -1,6 +1,6 @@
-const { map, fromPairs } = require('lodash')
-const { Controller } = require('hmpo-form-wizard')
 const Sentry = require('@sentry/node')
+const { Controller } = require('hmpo-form-wizard')
+const { map, fromPairs } = require('lodash')
 
 const fieldHelpers = require('../helpers/field')
 

@@ -1,10 +1,10 @@
 const { has, find } = require('lodash')
 
-const PersonController = require('./person')
-
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
+
+const PersonController = require('./person')
 
 class PersonSearchResultsController extends PersonController {
   middlewareSetup() {

@@ -1,8 +1,8 @@
-import Page from './page'
+import CancelMovePage from './cancel-move'
+import CreateMovePage from './create-move'
 import MoveDetailPage from './move-detail'
 import MovesDashboardPage from './moves-dashboard'
-import CreateMovePage from './create-move'
-import CancelMovePage from './cancel-move'
+import Page from './page'
 
 const page = new Page()
 const moveDetailPage = new MoveDetailPage()

@@ -1,5 +1,5 @@
-const proxyquire = require('proxyquire').noCallThru()
 const nunjucks = require('nunjucks')
+const proxyquire = require('proxyquire').noCallThru()
 
 const mockFilters = {
   filterOne: () => {},

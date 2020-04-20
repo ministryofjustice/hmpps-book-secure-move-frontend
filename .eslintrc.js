@@ -5,7 +5,7 @@ module.exports = {
     node: true,
   },
   extends: ['prettier', 'standard'],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'import'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -31,6 +31,21 @@ module.exports = {
     'dot-notation': 'error',
     'no-process-env': 'error',
     'no-console': 'error',
+    'import/no-unresolved': ['error', { commonjs: true }],
+    'import/order': ['error', {
+      alphabetize: {
+        order: 'asc',
+      },
+      'newlines-between': 'always',
+      'groups': [
+        'builtin',
+        'external',
+        'internal',
+        'parent',
+        'sibling',
+        'index',
+      ]
+    }],
   },
   overrides: [
     {

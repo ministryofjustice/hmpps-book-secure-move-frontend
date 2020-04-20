@@ -1,7 +1,7 @@
-const courtCaseToCardComponent = require('./court-case-to-card-component')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+
+const courtCaseToCardComponent = require('./court-case-to-card-component')
 
 const mockCourtCase = {
   nomis_case_id: 'T20167984',

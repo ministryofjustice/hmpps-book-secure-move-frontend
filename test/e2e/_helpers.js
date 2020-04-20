@@ -1,11 +1,12 @@
-import { find, isArray, isNil } from 'lodash'
-import { format } from 'date-fns'
-import { join } from 'path'
-import { homedir } from 'os'
 import { unlinkSync } from 'fs'
-import { ClientFunction, t } from 'testcafe'
+import { homedir } from 'os'
+import { join } from 'path'
+
+import { format } from 'date-fns'
 import faker from 'faker'
 import glob from 'glob'
+import { find, isArray, isNil } from 'lodash'
+import { ClientFunction, t } from 'testcafe'
 
 import personService from '../../common/services/person'
 

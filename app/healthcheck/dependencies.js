@@ -6,7 +6,6 @@ const {
   API,
   NOMIS_ELITE2_API,
 } = require('../../config')
-
 const redisStore = require('../../config/redis-store')
 
 const timeout = 5000

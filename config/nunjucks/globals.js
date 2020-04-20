@@ -1,8 +1,8 @@
 const { isFunction } = require('lodash')
 
 const { ANALYTICS, ASSETS_HOST, FEEDBACK_URL, SUPPORT_EMAIL } = require('../')
-const { manifest: manifestPath } = require('../paths')
 const logger = require('../logger')
+const { manifest: manifestPath } = require('../paths')
 
 let webpackManifest = {}
 

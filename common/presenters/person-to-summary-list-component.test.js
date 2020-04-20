@@ -1,7 +1,7 @@
-const personToSummaryListComponent = require('./person-to-summary-list-component')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+
+const personToSummaryListComponent = require('./person-to-summary-list-component')
 
 const mockPerson = {
   date_of_birth: '1948-04-24',

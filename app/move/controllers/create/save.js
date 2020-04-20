@@ -1,10 +1,11 @@
 const { omit, capitalize, flatten, values, some } = require('lodash')
 
-const CreateBaseController = require('./base')
+const analytics = require('../../../../common/lib/analytics')
 const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const analytics = require('../../../../common/lib/analytics')
+
+const CreateBaseController = require('./base')
 
 function filterAnswer(currentAssessment, searchKey) {
   return item => {

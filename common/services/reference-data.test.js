@@ -1,7 +1,8 @@
 const { sortBy } = require('lodash')
 
-const referenceDataService = require('./reference-data')
 const apiClient = require('../lib/api-client')()
+
+const referenceDataService = require('./reference-data')
 
 const mockGenders = [
   {

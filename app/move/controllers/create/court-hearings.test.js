@@ -1,11 +1,11 @@
 const timezoneMock = require('timezone-mock')
 
-const CreateBaseController = require('./base')
-const Controller = require('./court-hearings')
-
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
+
+const CreateBaseController = require('./base')
+const Controller = require('./court-hearings')
 
 const controller = new Controller({ route: '/' })
 

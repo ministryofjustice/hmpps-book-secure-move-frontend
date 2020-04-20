@@ -1,5 +1,5 @@
-const proxyquire = require('proxyquire')
 const { kebabCase } = require('lodash')
+const proxyquire = require('proxyquire')
 
 const assessmentAnswerToTag = proxyquire('./assessment-answer-to-tag', {
   '../../config': {

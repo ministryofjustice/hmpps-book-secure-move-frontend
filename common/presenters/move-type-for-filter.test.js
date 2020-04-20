@@ -1,4 +1,5 @@
 const i18n = require('../../config/i18n')
+
 const presenter = require('./move-type-for-filter')
 
 describe('move type for filter', function() {

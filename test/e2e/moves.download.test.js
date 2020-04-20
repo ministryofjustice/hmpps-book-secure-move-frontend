@@ -1,9 +1,10 @@
-import { every } from 'lodash'
 import { readFileSync } from 'fs'
 
-import { movesByDay } from './_routes'
-import { policeUser, prisonUser, stcUser, supplierUser } from './_roles'
+import { every } from 'lodash'
+
 import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
+import { policeUser, prisonUser, stcUser, supplierUser } from './_roles'
+import { movesByDay } from './_routes'
 import { movesDashboardPage } from './pages'
 
 const users = [

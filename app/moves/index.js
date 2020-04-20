@@ -2,7 +2,9 @@
 const router = require('express').Router()
 
 // Local dependencies
+const { setDateRange, setDatePeriod } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
+
 const { dashboard, download, list, listByStatus } = require('./controllers')
 const {
   redirectBaseUrl,
@@ -15,8 +17,6 @@ const {
   setMovesByDateAllLocations,
   setDashboardMoveSummary,
 } = require('./middleware')
-
-const { setDateRange, setDatePeriod } = require('../../common/middleware')
 
 const uuidRegex =
   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'

@@ -1,8 +1,9 @@
 const { subDays, addDays } = require('date-fns')
 const timezoneMock = require('timezone-mock')
 
-const moveToMetaListComponent = require('./move-to-meta-list-component')
 const i18n = require('../../config/i18n')
+
+const moveToMetaListComponent = require('./move-to-meta-list-component')
 
 const mockMove = {
   date: '2019-06-09',

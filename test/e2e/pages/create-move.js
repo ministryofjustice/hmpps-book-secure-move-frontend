@@ -1,9 +1,10 @@
-import { Selector, t } from 'testcafe'
-import pluralize from 'pluralize'
 import faker from 'faker'
+import pluralize from 'pluralize'
+import { Selector, t } from 'testcafe'
+
+import { fillInForm, generatePerson } from '../_helpers'
 
 import Page from './page'
-import { fillInForm, generatePerson } from '../_helpers'
 
 class CreateMovePage extends Page {
   constructor() {

@@ -8,12 +8,12 @@ const {
   set,
 } = require('lodash')
 
-const componentService = require('../services/component')
-const i18n = require('../../config/i18n')
 const {
   implicitAssessmentQuestions,
   explicitAssessmentQuestion,
 } = require('../../app/move/fields/create')
+const i18n = require('../../config/i18n')
+const componentService = require('../services/component')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {

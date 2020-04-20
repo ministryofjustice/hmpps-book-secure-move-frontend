@@ -1,7 +1,7 @@
 const Cancel = require('./cancel')
+const confirmation = require('./confirmation')
 const create = require('./create')
 const view = require('./view')
-const confirmation = require('./confirmation')
 
 module.exports = {
   Cancel,

@@ -1,7 +1,7 @@
 const { chunk, get } = require('lodash')
 
-const { LOCATIONS_BATCH_SIZE } = require('../../../config')
 const moveService = require('../../../common/services/move')
+const { LOCATIONS_BATCH_SIZE } = require('../../../config')
 
 function makeMultipleRequests(service, dateRange, locationIdBatches) {
   return Promise.all(
