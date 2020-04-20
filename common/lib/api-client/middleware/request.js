@@ -1,12 +1,12 @@
 const { get } = require('lodash')
 const debug = require('debug')('app:api-client')
 
-const redisStore = require('../../../../config/redis-store')()
+const redisStore = require('../../../../config/redis-store')
 const models = require('../models')
 
 function cacheResponse(key, expiry) {
   return async response => {
-    await redisStore.client.setexAsync(
+    await redisStore().client.setexAsync(
       key,
       expiry,
       JSON.stringify(response.data)
@@ -32,17 +32,19 @@ function requestMiddleware(expiry = 60) {
         return jsonApi.axios(req)
       }
 
-      return redisStore.client.getAsync(key).then(response => {
-        if (!response) {
-          debug('From cache (uncached)')
-          return jsonApi.axios(req).then(cacheResponse(key, expiry))
-        }
+      return redisStore()
+        .client.getAsync(key)
+        .then(response => {
+          if (!response) {
+            debug('From cache (uncached)')
+            return jsonApi.axios(req).then(cacheResponse(key, expiry))
+          }
 
-        debug('From cache (cached)')
-        return {
-          data: JSON.parse(response),
-        }
-      })
+          debug('From cache (cached)')
+          return {
+            data: JSON.parse(response),
+          }
+        })
     },
   }
 }

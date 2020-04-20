@@ -3,15 +3,19 @@ const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 const bluebird = require('bluebird')
 
+const { REDIS } = require('./')
+const logger = require('./logger')
+
+const defaultOptions = {
+  ...REDIS.SESSION,
+  logErrors: logger.error,
+}
+
 let store
 
-module.exports = function redisStore(options) {
+module.exports = function redisStore(options = defaultOptions) {
   if (store) {
     return store
-  }
-
-  if (!options) {
-    return
   }
 
   const client = redis.createClient(options)
