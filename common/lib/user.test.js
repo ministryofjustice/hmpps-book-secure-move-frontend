@@ -1,3 +1,5 @@
+const { FEATURE_FLAGS } = require('../../config')
+
 const User = require('./user')
 
 describe('User class', function() {
@@ -97,7 +99,7 @@ describe('User class', function() {
       })
 
       it('should contain correct permission', function() {
-        expect(permissions).to.deep.equal([
+        const policePermissions = [
           'moves:view:outgoing',
           'moves:download',
           'move:view',
@@ -105,8 +107,11 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:create:prison_recall',
           'move:cancel',
-          'move:update',
-        ])
+        ]
+        if (FEATURE_FLAGS.EDITABILITY) {
+          policePermissions.push('move:update')
+        }
+        expect(permissions).to.deep.equal(policePermissions)
       })
     })
 
@@ -226,7 +231,7 @@ describe('User class', function() {
       })
 
       it('should contain correct permission', function() {
-        expect(permissions).to.deep.equal([
+        const allPermissions = [
           'moves:view:outgoing',
           'moves:download',
           'move:view',
@@ -234,14 +239,18 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:create:prison_recall',
           'move:cancel',
-          'move:update',
           'moves:view:all',
           'moves:view:dashboard',
           'moves:view:proposed',
           'move:create:prison_transfer',
           'allocations:view',
           'allocation:create',
-        ])
+          'moves:download:all',
+        ]
+        if (FEATURE_FLAGS.EDITABILITY) {
+          allPermissions.push('move:update')
+        }
+        expect(permissions.sort()).to.deep.equal(allPermissions.sort())
       })
     })
   })
