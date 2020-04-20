@@ -1,6 +1,7 @@
 // NPM dependencies
 const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
+const { FEATURE_FLAGS } = require('../../config')
 
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
@@ -63,19 +64,21 @@ router.use(
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
 
-updateSteps.forEach(updateStep => {
-  const key = Object.keys(updateStep)[0]
-  const updateStepConfig = {
-    ...updateConfig,
-    name: 'update-a-move' + key,
-    journeyName: 'update-a-move' + key,
-  }
-  router.use(
-    '/:moveId/edit',
-    protectRoute('move:update'),
-    wizard(updateStep, updateFields, updateStepConfig)
-  )
-})
+if (FEATURE_FLAGS.EDITABILITY) {
+  updateSteps.forEach(updateStep => {
+    const key = Object.keys(updateStep)[0]
+    const updateStepConfig = {
+      ...updateConfig,
+      name: 'update-a-move' + key,
+      journeyName: 'update-a-move' + key,
+    }
+    router.use(
+      '/:moveId/edit',
+      protectRoute('move:update'),
+      wizard(updateStep, updateFields, updateStepConfig)
+    )
+  })
+}
 
 // Export
 module.exports = {
