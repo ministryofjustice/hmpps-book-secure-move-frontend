@@ -19,13 +19,9 @@ const Sentry = require('@sentry/node')
 // Local dependencies
 const config = require('./config')
 const configPaths = require('./config/paths')
-const logger = require('./config/logger')
 const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
-const redisStore = require('./config/redis-store')({
-  ...config.REDIS.SESSION,
-  logErrors: error => logger.error(error),
-})
+const redisStore = require('./config/redis-store')
 const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
 const errorHandlers = require('./common/middleware/errors')
 const checkSession = require('./common/middleware/check-session')
@@ -96,7 +92,7 @@ app.use(cookieParser())
 app.use(responseTime())
 app.use(
   session({
-    store: redisStore,
+    store: redisStore(),
     secret: config.SESSION.SECRET,
     name: config.SESSION.NAME,
     saveUninitialized: false,
