@@ -180,4 +180,25 @@ module.exports = {
       filesize: '',
     },
   },
+  allocation: {
+    attributes: {
+      from_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      date: '',
+      prisoner_category: '',
+      sentence_length: '',
+      complex_cases: [],
+      moves_count: 0,
+      complete_in_full: '', // boolean
+      other_criteria: '',
+      created_at: '',
+      updated_at: '',
+    },
+  },
 }

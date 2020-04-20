@@ -107,6 +107,12 @@ const testCases = {
       args: '1',
     },
   ],
+  allocation: [
+    {
+      method: 'findAll',
+      httpMock: 'get',
+    },
+  ],
 }
 
 const client = proxyquire('./', {

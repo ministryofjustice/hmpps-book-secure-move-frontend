@@ -32,7 +32,7 @@ const allocationsMiddleware = {
     res.locals.allocationsSummary = [
       {
         active: false,
-        label: req.t('allocations::dashboard.label'),
+        label: req.t('allocations::dashboard.labels.single_requests'),
         href: `/allocations/week/${getDateFromParams(req)}/`,
         value,
       },

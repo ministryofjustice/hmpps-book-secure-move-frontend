@@ -1,0 +1,80 @@
+{
+  "data": [
+    {
+      "id": "0e180146-d911-49d8-a62e-63ea5cec7ba5",
+      "type": "allocations",
+      "attributes": {
+        "moves_count": 2,
+        "date": "2020-04-20",
+        "created_at": "2020-04-20T10:44:37+01:00",
+        "updated_at": "2020-04-20T10:44:37+01:00",
+        "prisoner_category": "c",
+        "sentence_length": "short",
+        "complex_cases": null,
+        "complete_in_full": true,
+        "other_criteria": null
+      },
+      "relationships": {
+        "from_location": {
+          "data": {
+            "id": "8387e205-97d1-4023-83c5-4f16f0c479d0",
+            "type": "locations"
+          }
+        },
+        "to_location": {
+          "data": {
+            "id": "9efd0df4-70b2-411f-8df8-8bb09b2eafe0",
+            "type": "locations"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "8387e205-97d1-4023-83c5-4f16f0c479d0",
+      "type": "locations",
+      "attributes": {
+        "key": "kmi",
+        "title": "KIRKHAM (HMP)",
+        "location_type": "prison",
+        "nomis_agency_id": "KMI",
+        "can_upload_documents": false,
+        "disabled_at": null,
+        "suppliers": []
+      }
+    },
+    {
+      "id": "9efd0df4-70b2-411f-8df8-8bb09b2eafe0",
+      "type": "locations",
+      "attributes": {
+        "key": "nmi",
+        "title": "NOTTINGHAM (HMP)",
+        "location_type": "prison",
+        "nomis_agency_id": "NMI",
+        "can_upload_documents": false,
+        "disabled_at": null,
+        "suppliers": []
+      }
+    }
+  ],
+  "links": {
+    "self": "http://localhost:5000/api/v1/allocations?filter%5Bdate_from%5D=2020-04-20&filter%5Bdate_to%5D=2020-04-26&page%5Bnumber%5D=1&page%5Bsize%5D=1&per_page=1",
+    "first": "http://localhost:5000/api/v1/allocations?filter%5Bdate_from%5D=2020-04-20&filter%5Bdate_to%5D=2020-04-26&page%5Bnumber%5D=1&page%5Bsize%5D=1&per_page=1",
+    "prev": null,
+    "next": "http://localhost:5000/api/v1/allocations?filter%5Bdate_from%5D=2020-04-20&filter%5Bdate_to%5D=2020-04-26&page%5Bnumber%5D=2&page%5Bsize%5D=1&per_page=1",
+    "last": "http://localhost:5000/api/v1/allocations?filter%5Bdate_from%5D=2020-04-20&filter%5Bdate_to%5D=2020-04-26&page%5Bnumber%5D=14&page%5Bsize%5D=1&per_page=1"
+  },
+  "meta": {
+    "pagination": {
+      "per_page": 10,
+      "total_pages": 1,
+      "total_objects": 1,
+      "links": {
+        "first": "/api/v1/allocations",
+        "last": "/api/v1/allocations",
+        "next": "/api/v1/allocations"
+      }
+    }
+  }
+}
