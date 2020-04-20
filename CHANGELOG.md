@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.18.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.17.0...v2.18.0) (2020-04-20)
+
+
+### Features
+
+* Add primary navigation menu ([b3c3eb4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b3c3eb4af3a18faeca2fbcbc20bcf86c882af78e))
+* Dashboard for allocations ([0cfad86](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0cfad861bffed31010c8bfea4ba39981a3a5894c))
+* Route for the allocations dashboard ([ecdf0ca](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ecdf0ca79aba347b33aa787f9a5360f8d42f974e))
+* Service for the allocations (partial) ([dcbac67](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dcbac67dac306228837328d930cda0d60ebb98b3))
+
+
+### Bug Fixes
+
+* Handle moves with no court hearings ([d16c7b6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d16c7b6fc9aff3586b42e837d6dac3664a1c317e))
+* Move saving of court hearing to end of create journey ([ce1c86e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ce1c86e8496b7e77984e4f946512d8713bdd71c7))
+
 ## [2.17.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.16.0...v2.17.0) (2020-04-16)
 
 
