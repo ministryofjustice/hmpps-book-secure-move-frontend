@@ -78,6 +78,7 @@ class UpdateBaseController extends CreateBaseController {
         if (req.initialStep) {
           values = this.getUpdateValues(req)
         }
+        // values = Object.assign({}, this.getUpdateValues(req), values)
         this.protectReadOnlyFields(req, values)
       } catch (error) {
         return callback(error)

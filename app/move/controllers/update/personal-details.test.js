@@ -24,11 +24,11 @@ describe('Move controllers', function() {
         expect(controller.savePerson).to.exist.and.equal(MixinProto.savePerson)
       })
 
-      it('should inherit saveValues from CreatePersonalDetails', function() {
-        expect(controller.saveValues).to.exist.and.equal(MixinProto.saveValues)
+      it('should override saveValues', function() {
+        expect(controller.saveValues).to.exist.and.equal(ownProto.saveValues)
       })
 
-      it('should have no methods of its own', function() {
+      it('should have no further methods of its own', function() {
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop)
