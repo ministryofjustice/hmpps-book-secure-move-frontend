@@ -1,7 +1,7 @@
 {% extends "layouts/base.njk" %}
 
 {% block customGtagConfig %}
-  gtag('set', {'page_title': 'Move scheduled'});
+  gtag('set', {'page_title': 'Move requested'});
 {% endblock %}
 
 {% block pageTitle %}
@@ -20,8 +20,8 @@
 
       {{ govukPanel({
         classes: "govuk-!-margin-bottom-7",
-        titleText: t("moves::confirmation.panel.heading", { context: move.status }),
-        html: t("moves::confirmation.panel.content", {
+        titleText: t("messages::create_move.success.heading", { context: move.status }),
+        html: t("messages::create_move.success.content", {
           context: move.status,
           moveReference: move.reference
         })

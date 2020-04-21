@@ -20,7 +20,7 @@ class CreateBaseController extends FormWizardController {
     const steps = Object.keys(req.form.options.steps)
     const lastStep = steps[steps.length - 1]
     const buttonText = nextStep.includes(lastStep)
-      ? 'actions::schedule_move'
+      ? 'actions::request_move'
       : 'actions::continue'
 
     req.form.options.buttonText = req.form.options.buttonText || buttonText
