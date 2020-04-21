@@ -49,6 +49,9 @@ function formatDateRange(dateRange) {
   if (!Array.isArray(dateRange) || dateRange.length !== 2) {
     return dateRange
   }
+  if (!dateRange[1]) {
+    return dateRange[0]
+  }
   const parsedDates = dateRange.map(date => {
     return isDate(date) ? date : parseISO(date)
   })

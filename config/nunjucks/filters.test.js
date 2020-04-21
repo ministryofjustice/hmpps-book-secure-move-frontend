@@ -152,6 +152,9 @@ describe('Nunjucks filters', function() {
       it('returns a string if passed a string', function() {
         expect(formatDateRange('10/10/2019')).to.equal('10/10/2019')
       })
+      it('accepts a null second date', function() {
+        expect(formatDateRange(['10/10/2019', null])).to.equal('10/10/2019')
+      })
       it('returns other unexpected things if passed to it', function() {
         expect(formatDateRange({ time: '1' })).to.deep.equal({ time: '1' })
         expect(formatDateRange(['2010-10-10'])).to.deep.equal(['2010-10-10'])
