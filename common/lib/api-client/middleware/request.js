@@ -15,7 +15,7 @@ function cacheResponse(key, expiry) {
   }
 }
 
-function requestMiddleware(expiry = 60) {
+function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
   return {
     name: 'axios-request',
     req: async function req(payload) {
@@ -27,7 +27,7 @@ function requestMiddleware(expiry = 60) {
       }`
       const cacheModel = get(models, `${req.model}.options.cache`)
 
-      if (!cacheModel || req.params.cache === false) {
+      if (!cacheModel || req.params.cache === false || disableCache) {
         debug('Uncached')
         return jsonApi.axios(req)
       }
@@ -37,7 +37,7 @@ function requestMiddleware(expiry = 60) {
         .then(response => {
           if (!response) {
             debug('From cache (uncached)')
-            return jsonApi.axios(req).then(cacheResponse(key, expiry))
+            return jsonApi.axios(req).then(cacheResponse(key, cacheExpiry))
           }
 
           debug('From cache (cached)')

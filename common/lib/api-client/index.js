@@ -19,7 +19,13 @@ module.exports = function() {
 
   instance.replaceMiddleware('errors', errors)
   instance.replaceMiddleware('POST', post(FILE_UPLOADS.MAX_FILE_SIZE))
-  instance.replaceMiddleware('axios-request', request(API.CACHE_EXPIRY))
+  instance.replaceMiddleware(
+    'axios-request',
+    request({
+      cacheExpiry: API.CACHE_EXPIRY,
+      disableCache: API.DISABLE_CACHE,
+    })
+  )
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
   instance.insertMiddlewareBefore('axios-request', auth)
 
