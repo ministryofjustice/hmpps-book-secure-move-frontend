@@ -24,7 +24,7 @@ describe('Move controllers', function() {
       beforeEach(function() {
         sinon.stub(BaseController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
-        sinon.stub(controller, 'setMoveType')
+        sinon.stub(controller, 'setMoveTypes')
         sinon.stub(controller, 'setLocationItems')
 
         controller.middlewareSetup()
@@ -36,7 +36,7 @@ describe('Move controllers', function() {
 
       it('should call setMoveType middleware', function() {
         expect(controller.use.firstCall).to.have.been.calledWith(
-          controller.setMoveType
+          controller.setMoveTypes
         )
       })
 
@@ -171,14 +171,36 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#setMoveType()', function() {
+    describe('#setMoveTypes()', function() {
       let req, res, nextSpy
 
       beforeEach(function() {
         req = {
+          session: {},
           form: {
             options: {
-              fields: {},
+              fields: {
+                move_type: {
+                  items: [
+                    {
+                      value: 'court_appearance',
+                      conditional: 'to_location_court_appearance',
+                    },
+                    {
+                      value: 'prison_transfer',
+                      conditional: 'to_location_prison_transfer',
+                    },
+                    {
+                      value: 'prison_recall',
+                      conditional: 'additional_information',
+                    },
+                  ],
+                },
+                to_location_court_appearance: {},
+                to_location_prison_transfer: {},
+                additional_information: {},
+                unrelated_field: {},
+              },
             },
           },
         }
@@ -186,51 +208,92 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('with custom move type', function() {
+      context('with no permissions', function() {
         beforeEach(function() {
-          req.form.options.fields = {
-            move_type__police: {
-              foo: 'bar',
-            },
-          }
-
-          controller.setMoveType(req, res, nextSpy)
+          controller.setMoveTypes(req, res, nextSpy)
         })
 
-        it('should update the move_type field', function() {
+        it('should remove all items from move_type', function() {
+          expect(req.form.options.fields.move_type.items.length).to.equal(0)
+        })
+
+        it('should remove all conditional fields', function() {
           expect(req.form.options.fields).to.deep.equal({
             move_type: {
-              foo: 'bar',
+              items: [],
             },
+            unrelated_field: {},
           })
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('without custom move type', function() {
+      context('with permissions for all move types', function() {
         beforeEach(function() {
-          req.form.options.fields = {
-            move_type: {
-              foo: 'bar',
-            },
+          req.session.user = {
+            permissions: [
+              'move:create:court_appearance',
+              'move:create:prison_transfer',
+              'move:create:prison_recall',
+            ],
           }
-
-          controller.setMoveType(req, res, nextSpy)
+          controller.setMoveTypes(req, res, nextSpy)
         })
 
-        it('should not update the move_type field', function() {
+        it('should not remove any items from move_type', function() {
+          expect(req.form.options.fields.move_type.items.length).to.equal(3)
+        })
+
+        it('should keep all conditional fields', function() {
           expect(req.form.options.fields).to.deep.equal({
             move_type: {
-              foo: 'bar',
+              items: [
+                {
+                  value: 'court_appearance',
+                  conditional: 'to_location_court_appearance',
+                },
+                {
+                  value: 'prison_transfer',
+                  conditional: 'to_location_prison_transfer',
+                },
+                {
+                  value: 'prison_recall',
+                  conditional: 'additional_information',
+                },
+              ],
             },
+            to_location_court_appearance: {},
+            to_location_prison_transfer: {},
+            additional_information: {},
+            unrelated_field: {},
           })
         })
+      })
 
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+      context('with permissions for only some move types', function() {
+        beforeEach(function() {
+          req.session.user = {
+            permissions: ['move:create:court_appearance'],
+          }
+          controller.setMoveTypes(req, res, nextSpy)
+        })
+
+        it('should remove unpermitted items from move_type', function() {
+          expect(req.form.options.fields.move_type.items.length).to.equal(1)
+        })
+
+        it('should remove unpermitted conditional fields', function() {
+          expect(req.form.options.fields).to.deep.equal({
+            move_type: {
+              items: [
+                {
+                  value: 'court_appearance',
+                  conditional: 'to_location_court_appearance',
+                },
+              ],
+            },
+            to_location_court_appearance: {},
+            unrelated_field: {},
+          })
         })
       })
     })

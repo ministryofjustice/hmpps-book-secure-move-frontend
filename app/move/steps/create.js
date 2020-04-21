@@ -27,27 +27,6 @@ const personSearchStep = {
   ],
 }
 
-const moveDetailsStep = {
-  controller: MoveDetails,
-  template: 'move-details',
-  pageTitle: 'moves::steps.move_details.heading',
-  next: [
-    {
-      field: 'from_location_type',
-      value: 'prison',
-      next: [
-        {
-          field: 'to_location_type',
-          value: 'prison',
-          next: 'move-date-range',
-        },
-        'move-date',
-      ],
-    },
-    'move-date',
-  ],
-}
-
 const riskStep = {
   controller: Assessment,
   assessmentCategory: 'risk',
@@ -112,19 +91,6 @@ module.exports = {
         value: true,
         next: 'personal-details',
       },
-      {
-        field: 'from_location_type',
-        value: 'police',
-        next: 'move-details-police',
-      },
-      {
-        fn: req => {
-          return req.session.user.permissions.includes(
-            'move:create:prison_to_prison'
-          )
-        },
-        next: 'move-details-prison-to-prison',
-      },
       'move-details',
     ],
     fields: ['people'],
@@ -132,14 +98,7 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
-    next: [
-      {
-        field: 'from_location_type',
-        value: 'police',
-        next: 'move-details-police',
-      },
-      'move-details',
-    ],
+    next: 'move-details',
     fields: [
       'police_national_computer',
       'last_name',
@@ -199,30 +158,29 @@ module.exports = {
     next: 'agreement-status',
   },
   '/move-details': {
-    ...moveDetailsStep,
+    controller: MoveDetails,
+    template: 'move-details',
+    pageTitle: 'moves::steps.move_details.heading',
+    next: [
+      {
+        field: 'from_location_type',
+        value: 'prison',
+        next: [
+          {
+            field: 'to_location_type',
+            value: 'prison',
+            next: 'move-date-range',
+          },
+          'move-date',
+        ],
+      },
+      'move-date',
+    ],
     fields: [
-      'to_location',
       'move_type',
-      'to_location_prison',
-      'to_location_court_appearance',
-    ],
-  },
-  '/move-details-prison-to-prison': {
-    ...moveDetailsStep,
-    fields: [
       'to_location',
-      'move_type__prison_to_prison',
-      'to_location_prison',
       'to_location_court_appearance',
-    ],
-  },
-  '/move-details-police': {
-    ...moveDetailsStep,
-    fields: [
-      'to_location',
-      'move_type__police',
-      'to_location_prison_recall',
-      'to_location_court_appearance',
+      'to_location_prison_transfer',
       'additional_information',
     ],
   },

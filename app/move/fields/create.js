@@ -13,18 +13,6 @@ const personSearchFilter = {
   autocomplete: 'off',
 }
 
-const moveType = {
-  validate: 'required',
-  component: 'govukRadios',
-  name: 'move_type',
-  fieldset: {
-    legend: {
-      text: 'fields::move_type.label',
-      classes: 'govuk-fieldset__legend--m',
-    },
-  },
-}
-
 const assessmentQuestionComments = {
   skip: true,
   rows: 3,
@@ -123,13 +111,6 @@ const dateField = {
   hint: {
     text: 'fields::date.hint',
   },
-}
-
-const moveTypeCourtAppearance = {
-  id: 'move_type',
-  value: 'court_appearance',
-  text: 'fields::move_type.items.court_appearance.label',
-  conditional: 'to_location_court_appearance',
 }
 
 module.exports = {
@@ -261,24 +242,27 @@ module.exports = {
   // move details
   to_location: {},
   move_type: {
-    ...cloneDeep(moveType),
-    items: [{ ...moveTypeCourtAppearance }],
-  },
-  move_type__prison_to_prison: {
-    ...cloneDeep(moveType),
-    items: [
-      { ...moveTypeCourtAppearance },
-      {
-        value: 'prison',
-        text: 'fields::move_type.items.prison.label',
-        conditional: 'to_location_prison',
+    validate: 'required',
+    component: 'govukRadios',
+    name: 'move_type',
+    fieldset: {
+      legend: {
+        text: 'fields::move_type.label',
+        classes: 'govuk-fieldset__legend--m',
       },
-    ],
-  },
-  move_type__police: {
-    ...cloneDeep(moveType),
+    },
     items: [
-      { ...moveTypeCourtAppearance },
+      {
+        id: 'move_type',
+        value: 'court_appearance',
+        text: 'fields::move_type.items.court_appearance.label',
+        conditional: 'to_location_court_appearance',
+      },
+      {
+        value: 'prison_transfer',
+        text: 'fields::move_type.items.prison_transfer.label',
+        conditional: 'to_location_prison_transfer',
+      },
       {
         value: 'prison_recall',
         text: 'fields::move_type.items.prison_recall.label',
@@ -289,7 +273,7 @@ module.exports = {
   to_location_court_appearance: toLocationType('court_appearance', {
     validate: 'required',
   }),
-  to_location_prison: toLocationType('prison', {
+  to_location_prison_transfer: toLocationType('prison_transfer', {
     validate: 'required',
   }),
   additional_information: {
