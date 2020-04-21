@@ -56,7 +56,7 @@
     "label": "Move to",
     "short_label": "To",
     "items": {
-      "prison": {
+      "prison_transfer": {
         "label": "Prison"
       },
       "prison_recall": {
@@ -73,7 +73,7 @@
   "to_location_court_appearance": {
     "label": "Name of court"
   },
-  "to_location_prison": {
+  "to_location_prison_transfer": {
     "label": "Name of prison"
   },
   "additional_information": {

@@ -102,6 +102,8 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
+          'move:create:prison_recall',
           'move:cancel',
         ])
       })
@@ -118,6 +120,7 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
           'move:cancel',
         ])
       })
@@ -134,6 +137,7 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
           'move:cancel',
         ])
       })
@@ -150,6 +154,7 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
           'move:cancel',
         ])
       })
@@ -166,6 +171,7 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
           'move:cancel',
         ])
       })
@@ -183,7 +189,8 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
-          'move:create:prison_to_prison',
+          'move:create:court_appearance',
+          'move:create:prison_transfer',
         ])
       })
     })
@@ -211,6 +218,8 @@ describe('User class', function() {
           'ROLE_PECS_SUPPLIER',
           'ROLE_PECS_STC',
           'ROLE_PECS_SCH',
+          'ROLE_PECS_OCA',
+          'ROLE_PECS_PMU',
           'ROLE_PECS_HMYOI',
         ])
       })
@@ -221,8 +230,15 @@ describe('User class', function() {
           'moves:download',
           'move:view',
           'move:create',
+          'move:create:court_appearance',
+          'move:create:prison_recall',
           'move:cancel',
           'moves:view:all',
+          'moves:view:dashboard',
+          'moves:view:proposed',
+          'move:create:prison_transfer',
+          'allocations:view',
+          'allocation:create',
         ])
       })
     })
