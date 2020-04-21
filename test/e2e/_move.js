@@ -40,14 +40,14 @@ export async function createMove(options) {
 
     options.moveOverrides = {
       from_location: currentLocation,
-      ...(options.moveOverrides || {}),
+      ...options.moveOverrides,
     }
   }
 
   if (options.defaultMoveOptions) {
     options.moveOptions = {
       ...options.defaultMoveOptions,
-      ...(options.moveOptions || {}),
+      ...options.moveOptions,
     }
   }
 
