@@ -9,7 +9,7 @@
   "back": "Back",
   "back_to_dashboard": "$t(actions::back) to dashboard",
   "back_to_move": "$t(actions::back) to move",
-  "schedule_move": "Schedule move",
+  "request_move": "Request move",
   "search": "Search",
   "search_again": "Search again",
   "continue": "Continue",

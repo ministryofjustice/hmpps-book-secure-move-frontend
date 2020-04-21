@@ -132,7 +132,7 @@ describe('Move controllers', function() {
 
           it('should set cancel url correctly', function() {
             expect(req.form.options.buttonText).to.equal(
-              'actions::schedule_move'
+              'actions::request_move'
             )
           })
 

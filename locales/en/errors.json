@@ -17,7 +17,7 @@
   },
   "missing_prereq": {
     "heading": "Journey expired",
-    "heading_create_move": "This move has been scheduled",
+    "heading_create_move": "This move has been requested",
     "content": "Your journey has been completed.",
     "content_create_move": "You can view upcoming moves or create a new move from the dashboard."
   },

@@ -130,7 +130,7 @@
     "outgoing_moves_with_date": "Outgoing moves for {{date}}",
     "cancelled_moves": "{{count}} cancelled moves",
     "move_to": "Move to",
-    "no_results": "No moves scheduled",
+    "no_results": "No moves requested",
     "single_moves": "Single moves",
     "single_moves_no_results": "No moves proposed",
     "filter": {
@@ -173,14 +173,9 @@
     }
   },
   "confirmation": {
-    "page_title": "Move scheduled for {{name}}",
+    "page_title": "Move requested for {{name}}",
     "page_title_proposed": "Move sent for {{name}}",
-    "panel": {
-      "heading": "Move scheduled",
-      "heading_proposed": "Move sent for review",
-      "content": "Reference number<br><strong>{{moveReference}}</strong>"
-    },
-    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been scheduled with {{supplier}}.",
+    "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been requested with {{supplier}}.",
     "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review.",
     "saved_to_nomis": "<p>A court date for case number <strong>{{cases}}</strong> on <strong>{{date}}</strong> has been added to NOMIS.</p><p>If this person has more than one hearing you will need to add any extra court dates.</p>",
     "saved_to_nomis_plural": "<p>Court dates for case numbers <strong>{{cases}}</strong> on <strong>{{date}}</strong> have been added to NOMIS.</p>",
