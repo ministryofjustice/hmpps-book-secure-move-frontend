@@ -124,7 +124,6 @@ module.exports = {
   },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
   FEATURE_FLAGS: {
-    IMAGES: process.env.FEATURE_FLAG_IMAGES,
     // TODO: Remove once court hearings are fully released
     PRISON_COURT_HEARINGS: process.env.FEATURE_FLAG_PRISON_COURT_HEARINGS,
   },
