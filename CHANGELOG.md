@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.19.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.18.0...v2.19.0) (2020-04-21)
+
+
+### Features
+
+* Allow API cache to be controlled by environment variables ([9b7b55a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9b7b55a1517879743e0295b08cd318e2a385ff12))
+
+
+### Bug Fixes
+
+* Allow message component to be focusable ([fb13e84](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fb13e843c99ca68a1a5959380c64dca7a504944d))
+* Update consistency of "requested" language ([79336c9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/79336c966cffcaa392edce386557d5b84494fac4))
+* Use fallback config when creating Redis store ([cc9232a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cc9232abf11f024e269d8eff511391f9964d3b78))
+
 ## [2.18.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.17.0...v2.18.0) (2020-04-20)
 
 
