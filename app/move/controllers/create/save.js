@@ -1,4 +1,4 @@
-const { omit, capitalize, flatten, values, some } = require('lodash')
+const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
 const analytics = require('../../../../common/lib/analytics')
 const courtHearingService = require('../../../../common/services/court-hearing')
@@ -105,6 +105,20 @@ class SaveController extends CreateBaseController {
     } catch (err) {
       next(err)
     }
+  }
+
+  errorHandler(err, req, res, next) {
+    const apiErrorCode = get(err, 'errors[0].code')
+
+    if (err.statusCode === 422 && apiErrorCode === 'taken') {
+      const existingMoveId = get(err, 'errors[0].meta.existing_id')
+
+      return res.render('move/views/create/save-conflict', {
+        existingMoveId,
+      })
+    }
+
+    super.errorHandler(err, req, res, next)
   }
 }
 
