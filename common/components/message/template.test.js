@@ -30,6 +30,14 @@ describe('Message component', function() {
     it('should render module data attribute', function() {
       expect($component.attr('data-module')).to.equal('app-message')
     })
+
+    it('should render dismissable attribute', function() {
+      expect($component.attr('data-allow-dismiss')).to.exist
+    })
+
+    it('should not render focus attribute', function() {
+      expect($component.attr('data-focus')).not.to.exist
+    })
   })
 
   context('with classes', function() {
@@ -155,12 +163,22 @@ describe('Message component', function() {
     })
 
     context('when dismiss is prevented', function() {
-      it('should render unescaped html', function() {
+      it('should not render dismissable attribute', function() {
         const $ = renderComponentHtmlToCheerio(
           'message',
           examples['without dismiss']
         )
-        expect($('.app-message').attr('data-module')).to.be.undefined
+        expect($('.app-message').attr('data-allow-dismiss')).not.to.exist
+      })
+    })
+
+    context('when focus on load is set', function() {
+      it('should render focus attribute', function() {
+        const $ = renderComponentHtmlToCheerio(
+          'message',
+          examples['focused on load']
+        )
+        expect($('.app-message').attr('data-focus')).to.exist
       })
     })
   })

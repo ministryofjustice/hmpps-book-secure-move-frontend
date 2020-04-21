@@ -14,7 +14,7 @@ $_message-border-width: 5px;
   }
 
   &:focus {
-    outline: none;
+    outline: $govuk-focus-width solid $govuk-focus-colour;
   }
 
   * {
