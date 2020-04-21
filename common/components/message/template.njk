@@ -1,9 +1,18 @@
 {% set element = params.element | default('div') %}
 {% set allowDismiss = params.allowDismiss | default(true) %}
+{% set focusOnload = params.focusOnload | default(false) %}
 
-<{{ element }} class="app-message{% if params.classes %} {{ params.classes }}{% endif %}"{% if allowDismiss %} data-module="app-message"{% endif %} tabindex="-1" role="alert">
+<{{ element }}
+  class="app-message{% if params.classes %} {{ params.classes }}{% endif %}"
+  data-module="app-message"
+  {% if allowDismiss %} data-allow-dismiss{% endif %}
+  {% if focusOnload %} data-focus{% endif %}
+  tabindex="-1"
+  role="alert"
+  aria-labelledby="app-message__heading"
+  >
   {% if params.title.html or params.title.text %}
-    <h2 class="app-message__heading">
+    <h2 class="app-message__heading" id="app-message__heading">
       {{ params.title.html | safe if params.title.html else params.title.text }}
     </h2>
   {% endif %}

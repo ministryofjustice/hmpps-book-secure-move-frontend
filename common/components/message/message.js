@@ -1,5 +1,12 @@
 function Message($module) {
   this.cacheEls($module)
+
+  this.defaults = {
+    isDismissable: this.$module.hasAttribute('data-allow-dismiss'),
+    isFocused: this.$module.hasAttribute('data-focus'),
+  }
+
+  this.settings = this.defaults
 }
 
 Message.prototype = {
@@ -13,10 +20,17 @@ Message.prototype = {
 
   render: function() {
     this.appendClose(this.$module)
+
+    if (this.settings.isFocused) {
+      this.$module.focus()
+    }
   },
 
   appendClose: function($element) {
-    if ($element.className.indexOf('error') !== -1) {
+    if (
+      $element.className.indexOf('error') !== -1 ||
+      !this.settings.isDismissable
+    ) {
       return
     }
 

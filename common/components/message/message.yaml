@@ -3,6 +3,14 @@ params:
   type: string
   required: false
   description: Classes to add to the parent element.
+- name: allowDismiss
+  type: boolean
+  required: false
+  description: Whether to allow the message to be dismissed. Default is `true`
+- name: focusOnload
+  type: boolean
+  required: false
+  description: Whether to focus the element on page load. Default is `false`
 - name: title
   type: object
   required: true
@@ -65,6 +73,13 @@ examples:
     data:
       allowDismiss: false
       title:
-        html: A message heading
+        html: Cannot be dismissed
+      content:
+        html: Containing some <strong>extra content</strong>.
+  - name: focused on load
+    data:
+      focusOnload: true
+      title:
+        html: Focused on page load
       content:
         html: Containing some <strong>extra content</strong>.
