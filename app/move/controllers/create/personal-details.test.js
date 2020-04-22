@@ -205,9 +205,8 @@ describe('Move controllers', function() {
           form: {
             values: {},
           },
-          sessionModel: {
-            get: sinon.stub(),
-          },
+          getPerson: sinon.stub(),
+          getPersonId: sinon.stub(),
         }
       })
 
@@ -215,7 +214,8 @@ describe('Move controllers', function() {
         context('with a new person', function() {
           beforeEach(async function() {
             sinon.stub(controller, 'savePerson').resolves(personMock)
-            req.sessionModel.get.withArgs('person').returns(personMock)
+            req.getPerson.returns(personMock)
+            req.getPersonId.returns(personMock.id)
 
             await controller.saveValues(req, {}, nextSpy)
           })
@@ -241,7 +241,7 @@ describe('Move controllers', function() {
         context('with a pre-existing person', function() {
           beforeEach(async function() {
             sinon.stub(controller, 'savePerson').resolves(personMock)
-            req.sessionModel.get.withArgs('person').returns(undefined)
+            req.getPerson.returns(undefined)
 
             await controller.saveValues(req, {}, nextSpy)
           })

@@ -1,4 +1,4 @@
-const { find, flatten } = require('lodash')
+const { find, flatten, get, values } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
@@ -33,7 +33,7 @@ class AssessmentController extends CreateBaseController {
 
   setPreviousAssessment(req, res, next) {
     const { assessmentCategory, previousAssessmentKeys = [] } = req.form.options
-    const person = req.sessionModel.get('person') || {}
+    const person = req.getPerson()
     const filteredAssessment = person.assessment_answers
       .filter(answer => answer.category === assessmentCategory)
       .filter(answer => previousAssessmentKeys.includes(answer.key))
@@ -51,12 +51,9 @@ class AssessmentController extends CreateBaseController {
     next()
   }
 
-  saveValues(req, res, next) {
-    const assessment = req.sessionModel.get('assessment') || {}
-    const formValues = flatten(Object.values(req.form.values))
-    const { assessmentCategory } = req.form.options
-
-    assessment[assessmentCategory] = req.questions
+  getAssessments(req, res) {
+    const formValues = flatten(values(get(req, 'form.values')))
+    return req.questions
       .filter(({ id }) => formValues.includes(id))
       .map(({ id, key }) => {
         return {
@@ -65,6 +62,13 @@ class AssessmentController extends CreateBaseController {
           comments: req.form.values[key],
         }
       })
+  }
+
+  saveValues(req, res, next) {
+    const assessment = req.sessionModel.get('assessment') || {}
+    const { assessmentCategory } = req.form.options
+
+    assessment[assessmentCategory] = this.getAssessments(req, res)
 
     req.form.values.assessment = assessment
 
