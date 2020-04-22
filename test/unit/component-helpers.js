@@ -5,16 +5,23 @@ const cheerio = require('cheerio')
 const yaml = require('js-yaml')
 const nunjucks = require('nunjucks')
 
+const templateGlobals = require('../../config/nunjucks/globals')
 const configPaths = require('../../config/paths')
+
 const views = [
   configPaths.components,
   configPaths.govukFrontend,
   configPaths.mojFrontend,
 ]
 
-nunjucks.configure(views, {
+const nunjucksEnvironment = nunjucks.configure(views, {
   trimBlocks: true,
   lstripBlocks: true,
+})
+
+// Global variables
+Object.keys(templateGlobals).forEach(global => {
+  nunjucksEnvironment.addGlobal(global, templateGlobals[global])
 })
 
 /**
