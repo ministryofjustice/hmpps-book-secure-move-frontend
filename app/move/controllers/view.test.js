@@ -1,8 +1,19 @@
+const proxyquire = require('proxyquire')
+
 const presenters = require('../../../common/presenters')
 
-const controller = require('./view')
+const updateSteps = [
+  { '/foo': {} },
+  { '/bar-details': {} },
+  { '/baz-information': {} },
+]
+Object.defineProperty(updateSteps, '@noCallThru', { value: true })
+const controller = proxyquire('./view', {
+  '../steps/update': updateSteps,
+})
 
 const mockMove = {
+  id: 'moveId',
   status: 'requested',
   person: {
     assessment_answers: [],
@@ -191,6 +202,27 @@ describe('Move controllers', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
+      })
+
+      describe('update urls', function() {
+        let update
+        beforeEach(function() {
+          update = res.render.args[0][1].urls.update
+        })
+
+        it('should contain update urls', function() {
+          const urls = res.render.args[0][1].urls
+          expect(urls).to.have.property('update')
+        })
+
+        it('should contain expected url values', function() {
+          expect(update.foo).to.equal('/move/moveId/edit/foo')
+          expect(update.bar_details).to.equal('/move/moveId/edit/bar-details')
+          expect(update.baz_information).to.equal(
+            '/move/moveId/edit/baz-information'
+          )
+          expect(update.baz).to.equal('/move/moveId/edit/baz-information')
+        })
       })
     })
 

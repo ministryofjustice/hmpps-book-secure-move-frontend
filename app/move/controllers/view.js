@@ -1,6 +1,7 @@
 const { sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const updateSteps = require('../steps/update')
 
 module.exports = function view(req, res) {
   const { move } = res.locals
@@ -14,6 +15,21 @@ module.exports = function view(req, res) {
     cancellationReason === 'other'
       ? cancellationComments
       : req.t(`fields::cancellation_reason.items.${cancellationReason}.label`)
+
+  const urls = {
+    update: {},
+  }
+  updateSteps.forEach(step => {
+    const url = Object.keys(step)[0].replace(/^\//, '')
+    const key = url.replace(/-/g, '_')
+    urls.update[key] = `/move/${move.id}/edit/${url}`
+    // some assessment categories aren't suffixed with _information
+    if (key.endsWith('_information')) {
+      const keyWithoutInformation = key.replace(/_information$/, '')
+      urls.update[keyWithoutInformation] = urls.update[key]
+    }
+  })
+
   const locals = {
     moveSummary: presenters.moveToMetaListComponent(move),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
@@ -38,6 +54,7 @@ module.exports = function view(req, res) {
       context: status,
       reason,
     }),
+    urls,
   }
 
   res.render('move/views/view', locals)
