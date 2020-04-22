@@ -1,5 +1,6 @@
 {
   "dashboard": {
-    "heading": "Allocations"
+    "heading": "Allocations",
+    "labels": { "single_requests": "single requests" }
   }
 }

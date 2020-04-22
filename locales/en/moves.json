@@ -133,6 +133,8 @@
     "no_results": "No moves requested",
     "single_moves": "Single moves",
     "single_moves_no_results": "No moves proposed",
+    "created_at": "Created at",
+    "move_type": "Move type",
     "filter": {
       "proposed": "proposed",
       "approved": "approved",

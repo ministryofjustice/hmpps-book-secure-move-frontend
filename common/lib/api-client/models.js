@@ -15,6 +15,10 @@ module.exports = {
       date: '',
       date_from: '',
       date_to: '',
+      prison_transfer_reason: {
+        jsonApi: 'hasOne',
+        type: 'prison_transfer_reasons',
+      },
       person: {
         jsonApi: 'hasOne',
         type: 'people',
@@ -174,6 +178,27 @@ module.exports = {
       content_type: '',
       url: '',
       filesize: '',
+    },
+  },
+  allocation: {
+    attributes: {
+      from_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      date: '',
+      prisoner_category: '',
+      sentence_length: '',
+      complex_cases: [],
+      moves_count: 0,
+      complete_in_full: '', // boolean
+      other_criteria: '',
+      created_at: '',
+      updated_at: '',
     },
   },
 }

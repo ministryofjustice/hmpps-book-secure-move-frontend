@@ -17,7 +17,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -81,7 +82,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -137,7 +139,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -183,7 +186,8 @@
         "move_type": "prison_transfer",
         "move_agreed": false,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -247,7 +251,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -293,7 +298,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -357,7 +363,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -413,7 +420,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -459,7 +467,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -523,7 +532,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -579,7 +589,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -643,7 +654,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -689,7 +701,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -745,7 +758,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -791,7 +805,8 @@
         "move_type": "prison_transfer",
         "move_agreed": true,
         "move_agreed_by": "Steve Rogers",
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -847,7 +862,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -911,7 +927,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -975,7 +992,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -1021,7 +1039,8 @@
         "move_type": "prison_transfer",
         "move_agreed": true,
         "move_agreed_by": "John Doe",
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {
@@ -1085,7 +1104,8 @@
         "move_type": "court_appearance",
         "move_agreed": null,
         "move_agreed_by": null,
-        "additional_information": null
+        "additional_information": null,
+        "prison_transfer_reason": null
       },
       "relationships": {
         "person": {

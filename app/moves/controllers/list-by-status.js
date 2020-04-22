@@ -5,12 +5,7 @@ module.exports = function list(req, res) {
   const template = 'moves/views/list-by-status'
   const locals = {
     pageTitle: 'moves::dashboard.single_moves',
-    moves: movesByRangeAndStatus.map(
-      presenters.moveToCardComponent({
-        showMeta: false,
-        showTags: false,
-      })
-    ),
+    ...presenters.movesToTable(movesByRangeAndStatus),
   }
 
   res.render(template, locals)

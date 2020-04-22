@@ -16,7 +16,8 @@
       "move_type": "court_appearance",
       "move_agreed": false,
       "move_agreed_by": null,
-      "additional_information": null
+      "additional_information": null,
+      "prison_transfer_reason": null
     },
     "relationships": {
       "person": {

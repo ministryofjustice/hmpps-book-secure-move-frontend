@@ -35,7 +35,7 @@ describe('#setAllocationsSummary', function() {
     expect(locals.allocationsSummary).to.deep.equal([
       {
         active: false,
-        label: 'allocations::dashboard.label',
+        label: 'allocations::dashboard.labels.single_requests',
         href: '/allocations/week/2020-01-01/',
         value: 18,
       },
