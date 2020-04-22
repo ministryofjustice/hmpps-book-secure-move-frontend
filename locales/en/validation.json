@@ -11,6 +11,11 @@
   "before": "must be in the past",
   "default": "is required",
   "generic": "something went wrong",
+  "move_conflict": {
+    "heading": "This move cannot be created",
+    "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
+    "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>."
+  },
   "LIMIT_FILE_SIZE": "must be smaller than 50MB",
   "LIMIT_PART_COUNT": "has too many parts",
   "LIMIT_FILE_COUNT": "has too mamy files",

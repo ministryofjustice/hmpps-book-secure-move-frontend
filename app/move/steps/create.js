@@ -116,6 +116,7 @@ module.exports = {
     next: 'prison-transfer-reason',
   },
   '/move-date': {
+    editable: true,
     pageTitle: 'moves::steps.move_date.heading',
     next: [
       {
@@ -158,6 +159,7 @@ module.exports = {
     next: 'agreement-status',
   },
   '/move-details': {
+    editable: true,
     controller: MoveDetails,
     template: 'move-details',
     pageTitle: 'moves::steps.move_details.heading',

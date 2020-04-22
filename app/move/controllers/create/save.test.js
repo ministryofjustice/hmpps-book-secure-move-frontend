@@ -752,5 +752,93 @@ describe('Move controllers', function() {
         })
       })
     })
+
+    describe('#errorHandler()', function() {
+      let resMock, errorMock, nextSpy
+
+      beforeEach(function() {
+        sinon.stub(BaseController.prototype, 'errorHandler')
+        nextSpy = sinon.spy()
+        errorMock = new Error()
+        resMock = {
+          render: sinon.spy(),
+        }
+      })
+
+      context('with non validation error', function() {
+        beforeEach(function() {
+          errorMock.statusCode = 500
+          controller.errorHandler(errorMock, {}, resMock, nextSpy)
+        })
+
+        it('should call parent error handler', function() {
+          expect(
+            BaseController.prototype.errorHandler
+          ).to.have.been.calledOnceWithExactly(errorMock, {}, resMock, nextSpy)
+        })
+
+        it('should not render a template', function() {
+          expect(resMock.render).not.to.have.been.called
+        })
+      })
+
+      context('with validation error', function() {
+        const mockExistingMoveId = '12345'
+
+        beforeEach(function() {
+          errorMock.statusCode = 422
+        })
+
+        context('with `taken` error code', function() {
+          beforeEach(function() {
+            errorMock.errors = [
+              {
+                code: 'taken',
+                meta: {
+                  existing_id: mockExistingMoveId,
+                },
+              },
+            ]
+            controller.errorHandler(errorMock, {}, resMock, nextSpy)
+          })
+
+          it('should not call parent error handler', function() {
+            expect(
+              BaseController.prototype.errorHandler
+            ).not.to.have.been.called
+          })
+
+          it('should render a template', function() {
+            expect(resMock.render).to.have.been.calledOnceWithExactly(
+              'move/views/create/save-conflict',
+              {
+                existingMoveId: mockExistingMoveId,
+              }
+            )
+          })
+        })
+
+        context('with any other error code', function() {
+          beforeEach(function() {
+            controller.errorHandler(errorMock, {}, resMock, nextSpy)
+          })
+
+          it('should call parent error handler', function() {
+            expect(
+              BaseController.prototype.errorHandler
+            ).to.have.been.calledOnceWithExactly(
+              errorMock,
+              {},
+              resMock,
+              nextSpy
+            )
+          })
+
+          it('should not render a template', function() {
+            expect(resMock.render).not.to.have.been.called
+          })
+        })
+      })
+    })
   })
 })
