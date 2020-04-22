@@ -2,6 +2,40 @@ const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
+const unformat = require('./person-unformat')
+
+const relationshipKeys = ['gender', 'ethnicity']
+const identifierKeys = [
+  'police_national_computer',
+  'criminal_records_office',
+  'prison_number',
+  'niche_reference',
+  'athena_reference',
+]
+const dateKeys = ['date_of_birth']
+const assessmentKeys = [
+  // court
+  'solicitor',
+  'interpreter',
+  'other_court',
+  // risk
+  'violent',
+  'escape',
+  'hold_separately',
+  'self_harm',
+  'concealed_items',
+  'other_risks',
+  // health
+  'special_diet_or_allergy',
+  'health_issue',
+  'medication',
+  'wheelchair',
+  'pregnant',
+  'other_health',
+  'special_vehicle',
+]
+const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
+
 const personService = {
   transform(person = {}) {
     return {
@@ -15,15 +49,6 @@ const personService = {
 
   format(data) {
     const existingIdentifiers = data.identifiers || []
-    const relationshipKeys = ['gender', 'ethnicity']
-    const identifierKeys = [
-      'police_national_computer',
-      'criminal_records_office',
-      'prison_number',
-      'niche_reference',
-      'athena_reference',
-    ]
-
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
         if (relationshipKeys.includes(key)) {
@@ -54,6 +79,16 @@ const personService = {
       },
       isNil
     )
+  },
+
+  unformat(person, fields = []) {
+    return unformat(person, fields, {
+      identifier: identifierKeys,
+      relationship: relationshipKeys,
+      date: dateKeys,
+      assessment: assessmentKeys,
+      explicitAssessment: explicitAssessmentKeys,
+    })
   },
 
   create(data) {
