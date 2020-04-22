@@ -25,7 +25,7 @@ class CreateMovePage extends Page {
       gender: Selector('[name="gender"]'),
       moveType: Selector('[name="move_type"]'),
       courtLocation: Selector('#to_location_court_appearance'),
-      prisonLocation: Selector('#to_location_prison'),
+      prisonLocation: Selector('#to_location_prison_transfer'),
       additionalInformation: Selector('#additional_information'),
       dateType: Selector('[name="date_type"]'),
       dateFrom: Selector('#date_from'),
