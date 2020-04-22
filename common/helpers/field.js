@@ -8,10 +8,8 @@ const {
   set,
 } = require('lodash')
 
-const {
-  implicitAssessmentQuestions,
-  explicitAssessmentQuestion,
-} = require('../../app/move/fields/create')
+const assessmentCheckboxes = require('../../app/move/fields/common.assessment-checkboxes')
+const explicitAssessmentAnswer = require('../../app/move/fields/common.explicit-assessment-answer')
 const i18n = require('../../config/i18n')
 const componentService = require('../services/component')
 
@@ -213,7 +211,7 @@ function populateAssessmentFields(currentFields, questions) {
 
   if (implicitQuestions.length) {
     const implicitFieldName = implicitQuestions[0].category
-    const implicitField = implicitAssessmentQuestions(implicitFieldName)
+    const implicitField = assessmentCheckboxes(implicitFieldName)
 
     fields[implicitFieldName] = {
       ...implicitField,
@@ -233,7 +231,11 @@ function populateAssessmentFields(currentFields, questions) {
 
   explicitQuestions.forEach(({ key, id }) => {
     const explicitField = `${key}__explicit`
-    fields[explicitField] = explicitAssessmentQuestion(explicitField, id, key)
+    fields[explicitField] = explicitAssessmentAnswer({
+      name: explicitField,
+      value: id,
+      conditional: key,
+    })
 
     fields[key].dependent = {
       field: explicitField,
