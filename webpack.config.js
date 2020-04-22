@@ -2,7 +2,7 @@ const path = require('path')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const merge = require('webpack-merge')
 
@@ -100,7 +100,7 @@ const commonConfig = {
   },
 
   optimization: {
-    minimizer: [new UglifyJsPlugin(), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})],
     splitChunks: {
       cacheGroups: {
         vendors: {
