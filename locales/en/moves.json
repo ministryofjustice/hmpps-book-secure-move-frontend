@@ -57,7 +57,8 @@
       "heading": "When is this person moving?"
     },
     "move_details": {
-      "heading": "Where is this person moving?"
+      "heading": "Where is this person moving?",
+      "update_link": "where this person is moving to"
     },
     "hearing_details": {
       "heading": "Is this move associated with a court case?"
@@ -195,6 +196,17 @@
       "case_type": {
         "label": "Case type"
       }
+    }
+  },
+  "update_link": {
+    "link_text": "Change",
+    "link_text_with_category": "Change <span class=\"app-!-visually-hidden-desktop\">{{ category }}</span>",
+    "categories": {
+      "court": "information for the court",
+      "health": "health information",
+      "move_details": "move details",
+      "personal_details": "personal details",
+      "risk": "risk information"
     }
   }
 }
