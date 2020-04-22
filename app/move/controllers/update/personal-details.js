@@ -1,7 +1,7 @@
-const PersonalDetails = require('../create/personal-details')
-const UpdateBase = require('./base')
-
 const personService = require('../../../../common/services/person')
+const PersonalDetails = require('../create/personal-details')
+
+const UpdateBase = require('./base')
 
 class UpdatePersonalDetailsController extends UpdateBase {
   async saveValues(req, res, next) {

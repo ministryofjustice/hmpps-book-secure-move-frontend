@@ -1,7 +1,7 @@
 const { get, pick } = require('lodash')
 
-const CreateMoveDetailsController = require('../create/move-details')
 const moveService = require('../../../../common/services/move')
+const CreateMoveDetailsController = require('../create/move-details')
 
 const UpdateBase = require('./base')
 

@@ -1,7 +1,7 @@
 const CreatePersonalDetails = require('../create/personal-details')
+
 const MixinProto = CreatePersonalDetails.prototype
 const UpdateBaseController = require('./base')
-
 const PersonalDetailsController = require('./personal-details')
 
 const controller = new PersonalDetailsController({ route: '/' })

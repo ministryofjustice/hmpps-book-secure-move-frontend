@@ -1,5 +1,7 @@
 const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
+
 const apiClient = require('../lib/api-client')()
+
 const unformat = require('./person-unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']

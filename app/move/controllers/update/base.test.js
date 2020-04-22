@@ -1,9 +1,8 @@
 const FormController = require('hmpo-form-wizard').Controller
 const { cloneDeep } = require('lodash')
-
 const proxyquire = require('proxyquire')
-const personService = require('../../../../common/services/person')
 
+const personService = require('../../../../common/services/person')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
 

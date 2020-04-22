@@ -1,8 +1,8 @@
 const { get, keys, pick } = require('lodash')
 
 const personService = require('../../../../common/services/person')
-
 const Assessment = require('../create/assessment')
+
 const UpdateBase = require('./base')
 
 const compare = (a, b) => {

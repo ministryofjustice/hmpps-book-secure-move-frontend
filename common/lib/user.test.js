@@ -245,7 +245,6 @@ describe('User class', function() {
           'move:create:prison_transfer',
           'allocations:view',
           'allocation:create',
-          'moves:download:all',
         ]
         if (FEATURE_FLAGS.EDITABILITY) {
           allPermissions.push('move:update')

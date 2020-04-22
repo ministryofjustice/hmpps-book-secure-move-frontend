@@ -1,5 +1,6 @@
-const presenters = require('../../../common/presenters')
 const proxyquire = require('proxyquire')
+
+const presenters = require('../../../common/presenters')
 
 const updateSteps = [
   { '/foo': {} },

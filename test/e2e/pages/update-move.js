@@ -1,4 +1,5 @@
 import { Selector, t } from 'testcafe'
+
 import CreateMovePage from './create-move'
 import MoveDetailPage from './move-detail'
 

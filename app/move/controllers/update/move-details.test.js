@@ -1,11 +1,10 @@
-const CreateMoveDetails = require('../create/move-details')
-const MixinProto = CreateMoveDetails.prototype
-const UpdateBaseController = require('./base')
-
 const moveService = require('../../../../common/services/move')
+const CreateMoveDetails = require('../create/move-details')
 
-// TODO: figure out how to proxyquire lodash without breaking it elsewhere
+const UpdateBaseController = require('./base')
 const MoveDetailsController = require('./move-details')
+
+const MixinProto = CreateMoveDetails.prototype
 
 const controller = new MoveDetailsController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
@@ -36,8 +35,8 @@ describe('Move controllers', function() {
       })
 
       it('should copy setLocationItems from CreateMoveDetails', function() {
-        expect(controller.setMoveType).to.exist.and.equal(
-          MixinProto.setMoveType
+        expect(controller.setMoveTypes).to.exist.and.equal(
+          MixinProto.setMoveTypes
         )
       })
 

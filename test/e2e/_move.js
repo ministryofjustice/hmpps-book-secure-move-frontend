@@ -1,10 +1,10 @@
 import { t } from 'testcafe'
 
+import { createMoveFixture, expectForbidden } from './_helpers'
+import { policeUser, stcUser } from './_roles'
+import { home, getMove, getUpdateMove } from './_routes'
 import { page, moveDetailPage } from './pages'
 import UpdateMovePage from './pages/update-move'
-import { home, getMove, getUpdateMove } from './_routes'
-import { policeUser, stcUser } from './_roles'
-import { createMoveFixture, expectForbidden } from './_helpers'
 
 /**
  * Create a move

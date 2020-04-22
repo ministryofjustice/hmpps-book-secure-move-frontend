@@ -15,14 +15,11 @@
 {% from "govuk/components/summary-list/macro.njk"      import govukSummaryList %}
 {% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 {% from "govuk/components/warning-text/macro.njk"      import govukWarningText %}
-{% from "govuk/components/label/macro.njk"             import govukLabel %}
-{% from "govuk/components/hint/macro.njk"              import govukHint %}
 
 {% from "moj/components/organisation-switcher/macro.njk" import mojOrganisationSwitcher %}
-{% from "moj/components/primary-navigation/macro.njk"    import mojPrimaryNavigation %}
+{% from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation %}
 
 {# App level components #}
-{% from "read-only-field/macro.njk"   import appReadOnlyField %}
 {% from "card/macro.njk"              import appCard %}
 {% from "data/macro.njk"              import appData %}
 {% from "filter/macro.njk"            import appFilter %}
@@ -32,6 +29,7 @@
 {% from "multi-file-upload/macro.njk" import appMultiFileUpload %}
 {% from "pagination/macro.njk"        import appPagination %}
 {% from "panel/macro.njk"             import appPanel %}
+{% from "read-only-field/macro.njk"   import appReadOnlyField %}
 {% from "tag/macro.njk"               import appTag %}
 {% from "time/macro.njk"              import appTime %}
 
@@ -39,20 +37,14 @@
   <link rel="canonical" href="{{ CANONICAL_URL }}">
 
   <!--[if lte IE 8]><link href="{{ getAssetPath('styles-ie8.css') }}" rel="stylesheet" type="text/css" /><![endif]-->
-
-  <!--[if gt IE 8]><!--><link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" />
-
-  <!--<![endif]-->
+  <!--[if gt IE 8]><!--><link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
 
   {% if GA_ID %}
-
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       {% block customGtagConfig %}{% endblock %}
       gtag('config', '{{ GA_ID }}')
@@ -65,7 +57,7 @@
 {% endblock %}
 
 {% block headIcons %}
-  <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="{{ getAssetPath('images/favicon.ico') }}" type="image/x-icon" />
+  <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="{{ getAssetPath('images/favicon.ico') }}" type="image/x-icon"/>
   <link rel="apple-touch-icon" sizes="180x180" href="{{ getAssetPath('images/hmpps-apple-touch-icon-180x180.png') }}">
   <link rel="apple-touch-icon" sizes="167x167" href="{{ getAssetPath('images/hmpps-apple-touch-icon-167x167.png') }}">
   <link rel="apple-touch-icon" sizes="152x152" href="{{ getAssetPath('images/hmpps-apple-touch-icon-152x152.png') }}">
@@ -74,12 +66,11 @@
 
 {% block bodyStart %}
   {% if GA_ID %}
-
     <!-- Google Tag Manager (noscript) -->
     <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id={{ GA_ID }}" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+      <iframe src="https://www.googletagmanager.com/ns.html?id={{ GA_ID }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
-
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
 {% endblock %}
@@ -111,6 +102,7 @@
 
 {% block beforeContent %}
 
+
   {% block organisationSwitcher %}
     {% if CURRENT_LOCATION or canAccess("moves:view:all") %}
       {{ mojOrganisationSwitcher({
@@ -127,7 +119,7 @@
 {% endblock %}
 
 {% block footer %}
-  {{ govukFooter({
+    {{ govukFooter({
       meta: {
         items: [
           {

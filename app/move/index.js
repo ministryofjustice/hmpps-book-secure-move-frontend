@@ -1,11 +1,11 @@
 // NPM dependencies
 const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
-const { FEATURE_FLAGS } = require('../../config')
 
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { FEATURE_FLAGS } = require('../../config')
 
 const { confirmation, create, update, view } = require('./controllers')
 const {
