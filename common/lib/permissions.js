@@ -6,7 +6,9 @@ const policePermissions = [
   'move:create:court_appearance',
   'move:create:prison_recall',
   'move:cancel',
+  'move:update',
 ]
+
 const secureChildrensHomePermissions = [
   'moves:view:outgoing',
   'moves:download',
@@ -23,6 +25,7 @@ const secureTrainingCentrePermissions = [
   'move:create:court_appearance',
   'move:cancel',
 ]
+
 const supplierPermissions = [
   'moves:view:all',
   'moves:view:outgoing',
