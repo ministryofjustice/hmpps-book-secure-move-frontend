@@ -1,3 +1,5 @@
+const { FEATURE_FLAGS } = require('../../config')
+
 const policePermissions = [
   'moves:view:outgoing',
   'moves:download',
@@ -6,8 +8,11 @@ const policePermissions = [
   'move:create:court_appearance',
   'move:create:prison_recall',
   'move:cancel',
-  'move:update',
 ]
+
+if (FEATURE_FLAGS.EDITABILITY) {
+  policePermissions.push('move:update')
+}
 
 const secureChildrensHomePermissions = [
   'moves:view:outgoing',
