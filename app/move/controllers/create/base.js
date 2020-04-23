@@ -9,10 +9,30 @@ class CreateBaseController extends FormWizardController {
 
   middlewareLocals() {
     super.middlewareLocals()
+    this.use(this.setModels)
     this.use(this.setButtonText)
     this.use(this.setCancelUrl)
     this.use(this.setMoveSummary)
     this.use(this.setJourneyTimer)
+  }
+
+  _addModelMethods(req) {
+    req.getMove = () => req.models.move || {}
+    req.getMoveId = () => req.getMove().id
+    req.getPerson = () => req.models.person || {}
+    req.getPersonId = () => req.getPerson().id
+  }
+
+  _setModels(req) {
+    req.models.move = req.sessionModel.toJSON()
+    req.models.person = req.sessionModel.get('person')
+  }
+
+  setModels(req, res, next) {
+    req.models = req.models || {}
+    this._setModels(req)
+    this._addModelMethods(req)
+    next()
   }
 
   setButtonText(req, res, next) {
@@ -53,14 +73,14 @@ class CreateBaseController extends FormWizardController {
 
   setMoveSummary(req, res, next) {
     const currentLocation = req.session.currentLocation
-    const sessionModel = req.sessionModel.toJSON()
+    const move = req.getMove()
     const moveSummary = presenters.moveToMetaListComponent({
-      ...sessionModel,
+      ...move,
       from_location: currentLocation,
     })
 
-    res.locals.person = sessionModel.person
-    res.locals.moveSummary = sessionModel.move_type ? moveSummary : {}
+    res.locals.person = req.getPerson()
+    res.locals.moveSummary = move.move_type ? moveSummary : {}
 
     next()
   }

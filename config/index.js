@@ -126,6 +126,7 @@ module.exports = {
   FEATURE_FLAGS: {
     // TODO: Remove once court hearings are fully released
     PRISON_COURT_HEARINGS: process.env.FEATURE_FLAG_PRISON_COURT_HEARINGS,
+    EDITABILITY: process.env.FEATURE_FLAG_EDITABILITY,
   },
   E2E: {
     BASE_URL: process.env.E2E_BASE_URL || BASE_URL,

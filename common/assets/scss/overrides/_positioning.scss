@@ -5,3 +5,15 @@
 .app-\!-float-left {
   float: left !important;
 }
+
+.app-\!-position-relative {
+  position: relative !important;
+}
+
+@include govuk-media-query($from: tablet) {
+  .app-\!-position-top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

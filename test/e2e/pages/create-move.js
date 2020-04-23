@@ -1,4 +1,5 @@
 import faker from 'faker'
+import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
 import { Selector, t } from 'testcafe'
 
@@ -101,7 +102,9 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>}
    */
   async fillInPncSearch(searchTerm) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/person-lookup-pnc')
+    await t
+      .expect(this.getCurrentUrl())
+      .contains(`${this.url}/person-lookup-pnc`)
 
     return fillInForm({
       pncNumberSearch: {
@@ -120,7 +123,7 @@ class CreateMovePage extends Page {
   async fillInPrisonNumberSearch(searchTerm) {
     await t
       .expect(this.getCurrentUrl())
-      .contains('/move/new/person-lookup-prison-number')
+      .contains(`${this.url}/person-lookup-prison-number`)
 
     return fillInForm({
       prisonNumberSearch: {
@@ -150,13 +153,18 @@ class CreateMovePage extends Page {
    * Fill in personal details
    *
    * @param {Object} personalDetails - personal details to fill form in with
+   * @param {Object} [options]
+   * @param {String[]} [options.exclude] - fields to exclude
+   * @param {String[]} [options.include] - fields to include
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails(personalDetails) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/personal-details')
+  async fillInPersonalDetails(personalDetails, { include, exclude } = {}) {
+    await t
+      .expect(this.getCurrentUrl())
+      .contains(`${this.url}/personal-details`)
 
-    const person = generatePerson(personalDetails)
-    const fields = await fillInForm({
+    const person = await generatePerson(personalDetails)
+    let data = {
       policeNationalComputer: {
         selector: this.fields.policeNationalComputer,
         value: person.policeNationalComputer,
@@ -182,7 +190,14 @@ class CreateMovePage extends Page {
         value: faker.random.arrayElement(['Male', 'Female']),
         type: 'radio',
       },
-    })
+    }
+    if (exclude) {
+      data = omit(data, exclude)
+    } else if (include) {
+      data = pick(data, include)
+    }
+
+    const fields = await fillInForm(data)
 
     return {
       ...fields,
@@ -197,7 +212,7 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInMoveDetails(moveType) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/move-details')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-details`)
 
     const fields = {
       moveType: {
@@ -235,7 +250,7 @@ class CreateMovePage extends Page {
    * Fill in date
    */
   async fillInDate() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/move-date')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-date`)
 
     return fillInForm({
       dateType: {
@@ -250,7 +265,7 @@ class CreateMovePage extends Page {
    * Fill in date range
    */
   async fillInDateRange() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/move-date-range')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-date-range`)
 
     return fillInForm({
       dateFrom: {
@@ -274,7 +289,9 @@ class CreateMovePage extends Page {
     selectAll = true,
     fillInOptional = false,
   } = {}) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/court-information')
+    await t
+      .expect(this.getCurrentUrl())
+      .contains(`${this.url}/court-information`)
 
     const fields = {
       selectedItems: {
@@ -331,7 +348,9 @@ class CreateMovePage extends Page {
     selectAll = true,
     fillInOptional = false,
   } = {}) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/risk-information')
+    await t
+      .expect(this.getCurrentUrl())
+      .contains(`${this.url}/risk-information`)
 
     const fields = {
       selectedItems: {
@@ -380,7 +399,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInReleaseStatus() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/release-status')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/release-status`)
 
     return fillInForm({
       notToBeReleasedRadio: {
@@ -397,7 +416,9 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInAgreementStatus() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/agreement-status')
+    await t
+      .expect(this.getCurrentUrl())
+      .contains(`${this.url}/agreement-status`)
 
     return fillInForm({
       moveAgreed: {
@@ -420,7 +441,7 @@ class CreateMovePage extends Page {
   async fillInPrisonTransferReasons() {
     await t
       .expect(this.getCurrentUrl())
-      .contains('/move/new/prison-transfer-reason')
+      .contains(`${this.url}/prison-transfer-reason`)
 
     return fillInForm({
       prisonTransferReason: {
@@ -441,7 +462,7 @@ class CreateMovePage extends Page {
   } = {}) {
     await t
       .expect(this.getCurrentUrl())
-      .contains('/move/new/health-information')
+      .contains(`${this.url}/health-information`)
 
     if (!selectAll) {
       return fillInForm({
@@ -506,7 +527,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInSpecialVehicle() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/special-vehicle')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/special-vehicle`)
 
     return fillInForm({
       specialVehicleRadio: {
@@ -524,7 +545,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInDocumentUploads(files) {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/document')
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/document`)
     await t.setFilesToUpload(
       '#documents',
       files.map(fileName => `../fixtures/files/${fileName}`)
@@ -557,7 +578,7 @@ class CreateMovePage extends Page {
   checkPersonLookupResults(count, searchTerm) {
     return t
       .expect(this.getCurrentUrl())
-      .contains('/move/new/person-lookup-results')
+      .contains(`${this.url}/person-lookup-results`)
       .expect(this.steps.personLookupResults.nodes.searchSummary.innerText)
       .contains(
         `${count} ${pluralize('person', count)} found for “${searchTerm}”`

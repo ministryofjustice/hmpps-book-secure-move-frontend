@@ -1,112 +1,118 @@
 {% for assessmentCategory in assessment %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-    {{ t("moves::assessment.categories." + assessmentCategory.key + ".heading") }}
-  </h2>
+  <section class="app-!-position-relative" data-app-section="{{ assessmentCategory.key }}">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+      {{ t("moves::assessment.categories." + assessmentCategory.key + ".heading") }}
+    </h2>
 
-  {% for title, answers in assessmentCategory.answersByTitle %}
-    {% call appPanel({
-      attributes: {
-        id: title | kebabcase
-      },
-      tag: {
-        text: title,
-        classes: assessmentCategory.tagClass
-      }
-    }) %}
+    {% for title, answers in assessmentCategory.answersByTitle %}
+      {% call appPanel({
+        attributes: {
+          id: title | kebabcase
+        },
+        tag: {
+          text: title,
+          classes: assessmentCategory.tagClass
+        }
+      }) %}
 
-      {% set items = [] %}
-      {% for answer in answers %}
-        {% set answerHtml %}
-          {% if answer.nomis_alert_description %}
-            <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
-              {{ answer.nomis_alert_description }}
-            </h4>
-          {% endif %}
+        {% set items = [] %}
+        {% for answer in answers %}
+          {% set answerHtml %}
+            {% if answer.nomis_alert_description %}
+              <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
+                {{ answer.nomis_alert_description }}
+              </h4>
+            {% endif %}
 
-          {{ answer.comments if answer.comments }}
+            {{ answer.comments if answer.comments }}
 
-          {% if answer.created_at %}
-            <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
-              {{ answer.created_at | formatDateWithDay }}
-            </div>
-          {% endif %}
-        {% endset %}
+            {% if answer.created_at %}
+              <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
+                {{ answer.created_at | formatDateWithDay }}
+              </div>
+            {% endif %}
+          {% endset %}
 
-        {% set items = (items.push({ value: { html: answerHtml } }), items) %}
-      {% endfor %}
+          {% set items = (items.push({ value: { html: answerHtml } }), items) %}
+        {% endfor %}
 
-      {{ appMetaList({
-        classes: "app-meta-list--divider",
-        items: items
+        {{ appMetaList({
+          classes: "app-meta-list--divider",
+          items: items
+        }) }}
+      {% endcall %}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted",
+        allowDismiss: false,
+        content: {
+          html: t("moves::assessment.categories." + assessmentCategory.key + ".empty")
+        }
       }) }}
-    {% endcall %}
-  {% else %}
-    {{ appMessage({
-      classes: "app-message--muted",
-      allowDismiss: false,
-      content: {
-        html: t("moves::assessment.categories." + assessmentCategory.key + ".empty")
-      }
-    }) }}
-  {% endfor %}
+    {% endfor %}
+    {{ updateLink(assessmentCategory.key) }}
+  </section>
 {% endfor %}
 
-{% if move.to_location.location_type == 'court' %}
-  {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-      {{ t("moves::detail.court_hearings.heading", {
-        context: "with_count" if courtHearings.length > 1,
-        count: courtHearings.length
-      }) }}
-    </h2>
+<section class="app-!-position-relative" data-app-section="court">
+  {% if move.to_location.location_type == 'court' %}
+    {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+        {{ t("moves::detail.court_hearings.heading", {
+          context: "with_count" if courtHearings.length > 1,
+          count: courtHearings.length
+        }) }}
+      </h2>
 
-    {% if courtHearings.length %}
-      {% for courtHearing in courtHearings %}
-        {% if courtHearings.length > 1 %}
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
-            {{ t("moves::detail.court_hearings.subheading", {
-              context: "with_index",
-              index: loop.index
+      {% if courtHearings.length %}
+        {% for courtHearing in courtHearings %}
+          {% if courtHearings.length > 1 %}
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
+              {{ t("moves::detail.court_hearings.subheading", {
+                context: "with_index",
+                index: loop.index
+              }) }}
+            </h3>
+          {% endif %}
+
+          {{ govukSummaryList(courtHearing.summaryList) }}
+
+          {% if not courtHearing.saved_to_nomis %}
+            {{ govukWarningText({
+              text: t("moves::detail.court_hearings.nomis_failed", {
+                context: "with_index" if courtHearings.length > 1,
+                index: loop.index
+              }),
+              iconFallbackText: "Warning"
             }) }}
-          </h3>
-        {% endif %}
-
-        {{ govukSummaryList(courtHearing.summaryList) }}
-
-        {% if not courtHearing.saved_to_nomis %}
-          {{ govukWarningText({
-            text: t("moves::detail.court_hearings.nomis_failed", {
-              context: "with_index" if courtHearings.length > 1,
-              index: loop.index
-            }),
-            iconFallbackText: "Warning"
-          }) }}
-        {% endif %}
-      {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted",
+          allowDismiss: false,
+          content: {
+            html: t("moves::detail.court_hearings.empty")
+          }
+        }) }}
+      {% endif %}
     {% else %}
-      {{ appMessage({
-        classes: "app-message--muted",
-        allowDismiss: false,
-        content: {
-          html: t("moves::detail.court_hearings.empty")
-        }
-      }) }}
-    {% endif %}
-  {% else %}
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-      {{ t("moves::assessment.categories.court.heading") }}
-    </h2>
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
+        {{ t("moves::assessment.categories.court.heading") }}
+      </h2>
 
-    {% if courtSummary.rows | length %}
-      {{ govukSummaryList(courtSummary) }}
-    {% else %}
-      {{ appMessage({
-        classes: "app-message--muted",
-        allowDismiss: false,
-        content: {
-          html: t("moves::assessment.categories.court.empty")
-        }
-      }) }}
+      {% if courtSummary.rows | length %}
+        {{ govukSummaryList(courtSummary) }}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted",
+          allowDismiss: false,
+          content: {
+            html: t("moves::assessment.categories.court.empty")
+          }
+        }) }}
+      {% endif %}
     {% endif %}
   {% endif %}
-{% endif %}
+  {{ updateLink('court') }}
+</section>

@@ -60,12 +60,28 @@
   </header>
 {% endblock %}
 
-{% block contentMain %}
-  <h2 class="govuk-heading-m">
-    {{ t("moves::steps.personal_details.heading") }}
-  </h2>
+{% macro updateLink(category, permission='move:update', classes='app-!-position-top-right') %}
+  {% if canAccess(permission) %}
+    <p class="{{ classes }}">
+      <a href="{{ urls.update[category] }}" data-update-link="{{ category }}">
+        {{ t('moves::update_link.link_text', {
+          context: 'with_category',
+          category: t('moves::update_link.categories.' + category)
+        }) | safe }}
+      </a>
+    </p>
+  {% endif %}
+{% endmacro %}
 
-  {{ govukSummaryList(personalDetailsSummary) }}
+{% block contentMain %}
+  <section class="app-!-position-relative" data-app-section="personal_details">
+    <h2 class="govuk-heading-m">
+      {{ t("moves::steps.personal_details.heading") }}
+    </h2>
+
+    {{ govukSummaryList(personalDetailsSummary) }}
+    {{ updateLink('personal_details') }}
+  </section>
 
   {% include "move/views/_includes/assessment.njk" %}
 
@@ -124,6 +140,8 @@
         </h3>
 
         {{ appMetaList(moveSummary) }}
+        {# TODO: enable updating of move details when to_location can be set via api #}
+        {# {{ updateLink('move_details', classes='govuk-!-padding-top-4') }} #}
       </div>
     </div>
   {% endif %}

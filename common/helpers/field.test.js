@@ -638,6 +638,9 @@ describe('Form helpers', function() {
             html: 'heading.html',
           },
         },
+        summaryHtml: {
+          summaryHtml: 'summaryHtml',
+        },
       }
 
       Object.entries(scenarios).forEach(function([path, properties]) {

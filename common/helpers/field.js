@@ -161,6 +161,7 @@ function translateField(translate) {
       'fieldset.legend.html',
       'heading.text',
       'heading.html',
+      'summaryHtml',
     ]
 
     translationPaths.forEach(path => {
