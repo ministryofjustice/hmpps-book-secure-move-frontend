@@ -1,11 +1,7 @@
-const { cloneDeep } = require('lodash')
+const policeNationalComputer = require('./police-national-computer')
 
-const createFields = require('./create')
-
-const updateFields = cloneDeep(createFields)
-
-updateFields.police_national_computer = {
-  ...updateFields.police_national_computer,
+const policeNationalComputerUpdate = {
+  ...policeNationalComputer,
   readOnly: true,
   updateComponent: {
     component: 'appReadOnlyField',
@@ -20,4 +16,4 @@ updateFields.police_national_computer = {
   },
 }
 
-module.exports = updateFields
+module.exports = policeNationalComputerUpdate
