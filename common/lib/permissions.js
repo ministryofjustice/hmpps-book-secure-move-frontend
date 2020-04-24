@@ -31,6 +31,10 @@ const secureTrainingCentrePermissions = [
   'move:cancel',
 ]
 
+if (FEATURE_FLAGS.EDITABILITY) {
+  secureTrainingCentrePermissions.push('move:update')
+}
+
 const supplierPermissions = [
   'moves:view:all',
   'moves:view:outgoing',

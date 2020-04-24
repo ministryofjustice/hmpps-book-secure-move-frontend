@@ -1,5 +1,6 @@
 const {
   Assessment,
+  Documents,
   MoveDate,
   MoveDetails,
   PersonalDetails,
