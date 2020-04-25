@@ -9,6 +9,7 @@ i18next.use(Backend).init({
   nsSeparator: '::',
   ns: [
     'allocations',
+    'assessment',
     'default',
     'actions',
     'errors',

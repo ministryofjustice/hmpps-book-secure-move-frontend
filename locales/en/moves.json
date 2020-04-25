@@ -1,40 +1,6 @@
 {
   "download_filename": "Moves on {{date}} (Downloaded {{timestamp}})",
   "move_reference": "Move reference: {{reference}}",
-  "assessment": {
-    "categories": {
-      "risk": {
-        "heading": "Risk information",
-        "empty": "No risk information"
-      },
-      "health": {
-        "heading": "Health affecting transport",
-        "empty": "No health affecting transport"
-      },
-      "court": {
-        "heading": "Information for the court",
-        "empty": "No information for the court"
-      },
-      "document": {
-        "heading": "Supporting documents",
-        "heading_plural": "Supporting documents ({{count}})",
-        "empty": "No documents uploaded"
-      }
-    },
-    "retrieved_from_nomis": {
-      "heading": "This information is currently in NOMIS",
-      "details": {
-        "summary": "This information is not correct"
-      },
-      "empty": "There are currently no active alerts. If you don’t think this is correct, update NOMIS."
-    },
-    "incorrect_nomis_information": {
-      "lede": "You will need to",
-      "step_one": "cancel this move",
-      "step_two": "update this person’s information in NOMIS",
-      "step_three": "create a new move for this person"
-    }
-  },
   "steps": {
     "person_search": {
       "heading": "Who is being moved?",
@@ -161,6 +127,11 @@
       "started_on": "started on <time datetime=\"{{datetime}}\">{{datestring}}</time>",
       "case_type": "Case type",
       "comments": "Comments"
+    },
+    "documents": {
+      "heading": "Supporting documents",
+      "heading_plural": "Supporting documents ({{count}})",
+      "empty": "No documents uploaded"
     }
   },
   "cancel": {

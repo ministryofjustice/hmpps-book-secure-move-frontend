@@ -1,0 +1,31 @@
+{
+  "heading": {
+    "text": "Information",
+    "text_risk": "Risk information",
+    "text_risk_nomis": "This information is currently in NOMIS",
+    "text_health": "Health affecting transport",
+    "text_health_nomis": "This information is currently in NOMIS",
+    "text_court": "Information for the court",
+    "text_release_status": "Release status information"
+  },
+  "no_items": {
+    "text": "No information",
+    "text_risk": "No risk information",
+    "text_risk_nomis": "There is no active risk information",
+    "text_health": "No health affecting transport",
+    "text_health_nomis": "There is no health information",
+    "text_court": "No information for the court",
+    "text_release_status": "There is no active release status information"
+  },
+  "retrieved_from_nomis": {
+    "details": {
+      "summary": "The information in NOMIS is not correct",
+      "content": {
+        "lede": "You will need to",
+        "step_one": "cancel this move",
+        "step_two": "update this person’s information in NOMIS",
+        "step_three": "create a new move for this person"
+      }
+    }
+  }
+}
