@@ -135,9 +135,15 @@
   {% if moveSummary %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
-        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4">
+        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
           {{ move.person.fullname | upper }}
         </h3>
+
+        {% if move.person.image_url %}
+          <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
+            <img src="{{ move.person.image_url }}" alt="{{ move.person.fullname | upper }}">
+          </div>
+        {% endif %}
 
         {{ appMetaList(moveSummary) }}
         {# TODO: enable updating of move details when to_location can be set via api #}
