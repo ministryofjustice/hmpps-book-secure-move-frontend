@@ -174,12 +174,15 @@ describe('Move controllers', function() {
       let req, res, nextSpy
 
       beforeEach(function() {
-        sinon.stub(presenters, 'assessmentByCategory').returns([
+        sinon.stub(presenters, 'assessmentAnswersByCategory').returns([
           {
             key: 'risk',
             answers: ['stubbed'],
           },
         ])
+        sinon
+          .stub(presenters, 'assessmentCategoryToPanelComponent')
+          .returnsArg(0)
         req = {
           getPerson: sinon.stub(),
           form: {
@@ -237,15 +240,15 @@ describe('Move controllers', function() {
           })
 
           it('should call presenter with filtered assessment', function() {
-            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
-              [
-                {
-                  category: 'risk',
-                  key: 'violent',
-                  imported_from_nomis: true,
-                },
-              ]
-            )
+            expect(
+              presenters.assessmentAnswersByCategory
+            ).to.be.calledOnceWithExactly([
+              {
+                category: 'risk',
+                key: 'violent',
+                imported_from_nomis: true,
+              },
+            ])
           })
 
           it('should call next', function() {
@@ -278,20 +281,20 @@ describe('Move controllers', function() {
           })
 
           it('should call presenter with filtered assessment', function() {
-            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
-              [
-                {
-                  category: 'risk',
-                  key: 'violent',
-                  imported_from_nomis: true,
-                },
-                {
-                  category: 'risk',
-                  key: 'self_harm',
-                  imported_from_nomis: true,
-                },
-              ]
-            )
+            expect(
+              presenters.assessmentAnswersByCategory
+            ).to.be.calledOnceWithExactly([
+              {
+                category: 'risk',
+                key: 'violent',
+                imported_from_nomis: true,
+              },
+              {
+                category: 'risk',
+                key: 'self_harm',
+                imported_from_nomis: true,
+              },
+            ])
           })
         })
 
@@ -318,15 +321,15 @@ describe('Move controllers', function() {
           })
 
           it('should call presenter with filtered assessment', function() {
-            expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
-              [
-                {
-                  category: 'risk',
-                  key: 'violent',
-                  imported_from_nomis: true,
-                },
-              ]
-            )
+            expect(
+              presenters.assessmentAnswersByCategory
+            ).to.be.calledOnceWithExactly([
+              {
+                category: 'risk',
+                key: 'violent',
+                imported_from_nomis: true,
+              },
+            ])
           })
         })
       })
@@ -346,7 +349,7 @@ describe('Move controllers', function() {
           })
 
           it('should not call presenter', function() {
-            expect(presenters.assessmentByCategory).not.to.be.called
+            expect(presenters.assessmentAnswersByCategory).not.to.be.called
           })
 
           it('should call next', function() {

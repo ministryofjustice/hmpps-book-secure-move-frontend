@@ -34,7 +34,9 @@ module.exports = function view(req, res) {
     moveSummary: presenters.moveToMetaListComponent(move),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(person.assessment_answers),
-    assessment: presenters.assessmentByCategory(person.assessment_answers),
+    assessment: presenters
+      .assessmentAnswersByCategory(person.assessment_answers)
+      .map(presenters.assessmentCategoryToPanelComponent),
     courtHearings: sortBy(move.court_hearings, 'start_time').map(
       courtHearing => {
         return {

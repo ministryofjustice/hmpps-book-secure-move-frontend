@@ -40,9 +40,10 @@ class AssessmentController extends CreateBaseController {
       .filter(answer => answer.imported_from_nomis)
 
     if (previousAssessmentKeys.length) {
-      const previousAssessmentByCategory = presenters.assessmentByCategory(
-        filteredAssessment
-      )
+      const previousAssessmentByCategory = presenters
+        .assessmentAnswersByCategory(filteredAssessment)
+        .map(presenters.assessmentCategoryToPanelComponent)
+
       res.locals.previousAssessment = find(previousAssessmentByCategory, {
         key: assessmentCategory,
       })
