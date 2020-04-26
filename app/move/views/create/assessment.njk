@@ -1,15 +1,15 @@
 {% extends "form-wizard.njk" %}
 
 {% block fields %}
-  {% if previousAssessment %}
+  {% if previousAnswers %}
     <div class="govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
         {{ t('assessment::heading.text', {
-          context: previousAssessment.key + "_nomis"
+          context: previousAnswers.key + "_nomis"
         }) }}
       </h2>
 
-      {% for panel in previousAssessment.panels %}
+      {% for panel in previousAnswers.panels %}
         {% call appPanel(panel) %}
           {{ appMetaList({
             classes: "app-meta-list--divider",
@@ -22,10 +22,37 @@
           allowDismiss: false,
           content: {
             text: t('assessment::no_items.text', {
-              context: previousAssessment.key + "_nomis"
+              context: previousAnswers.key + "_nomis"
             })
           }
         }) }}
+      {% endfor %}
+
+      {% for answerGroup in customAnswerGroupings %}
+        <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+          {{ t('assessment::heading.text', {
+            context: answerGroup.key
+          }) }}
+        </h2>
+
+        {% for panel in answerGroup.panels %}
+          {% call appPanel(panel) %}
+            {{ appMetaList({
+              classes: "app-meta-list--divider",
+              items: panel.items
+            }) }}
+          {% endcall %}
+        {% else %}
+          {{ appMessage({
+            classes: "app-message--muted govuk-!-margin-top-2",
+            allowDismiss: false,
+            content: {
+              text: t('assessment::no_items.text', {
+                context: answerGroup.key
+              })
+            }
+          }) }}
+        {% endfor %}
       {% endfor %}
 
       {% set html %}

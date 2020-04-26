@@ -172,9 +172,42 @@ describe('Move controllers', function() {
 
     describe('#setPreviousAssessment', function() {
       let req, res, nextSpy
+      const mockPerson = {
+        assessment_answers: [
+          {
+            category: 'risk',
+            key: 'violent',
+            imported_from_nomis: true,
+          },
+          {
+            category: 'risk',
+            key: 'escape',
+            imported_from_nomis: true,
+          },
+          {
+            category: 'risk',
+            key: 'self_harm',
+            imported_from_nomis: true,
+          },
+          {
+            category: 'health',
+            key: 'medication',
+            imported_from_nomis: true,
+          },
+          {
+            category: 'court',
+            key: 'interpreter',
+            imported_from_nomis: true,
+          },
+        ],
+      }
 
       beforeEach(function() {
         sinon.stub(presenters, 'assessmentAnswersByCategory').returns([
+          {
+            key: 'health',
+            answers: ['stubbed'],
+          },
           {
             key: 'risk',
             answers: ['stubbed'],
@@ -184,7 +217,7 @@ describe('Move controllers', function() {
           .stub(presenters, 'assessmentCategoryToPanelComponent')
           .returnsArg(0)
         req = {
-          getPerson: sinon.stub(),
+          getPerson: sinon.stub().returns(mockPerson),
           form: {
             options: {
               assessmentCategory: 'risk',
@@ -202,41 +235,27 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('when the step includes previous assessment keys', function() {
+      context('when the step should show previous assessment', function() {
         beforeEach(function() {
-          req.form.options.previousAssessmentKeys = ['violent', 'self_harm']
+          req.form.options.showPreviousAssessment = true
         })
 
-        context('with answers in the list of keys', function() {
+        context('with no custom groupings', function() {
           beforeEach(function() {
-            req.getPerson.returns({
-              assessment_answers: [
-                {
-                  category: 'risk',
-                  key: 'violent',
-                  imported_from_nomis: true,
-                },
-                {
-                  category: 'health',
-                  key: 'medication',
-                  imported_from_nomis: true,
-                },
-                {
-                  category: 'court',
-                  key: 'interpreter',
-                  imported_from_nomis: true,
-                },
-              ],
-            })
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
           it('should set previous assessment on local', function() {
-            expect(res.locals).to.contain.property('previousAssessment')
-            expect(res.locals.previousAssessment).to.deep.equal({
+            expect(res.locals).to.contain.property('previousAnswers')
+            expect(res.locals.previousAnswers).to.deep.equal({
               key: 'risk',
               answers: ['stubbed'],
             })
+          })
+
+          it('should set empty custom groupings on local', function() {
+            expect(res.locals).to.contain.property('customAnswerGroupings')
+            expect(res.locals.customAnswerGroupings).to.deep.equal([])
           })
 
           it('should call presenter with filtered assessment', function() {
@@ -248,6 +267,16 @@ describe('Move controllers', function() {
                 key: 'violent',
                 imported_from_nomis: true,
               },
+              {
+                category: 'risk',
+                key: 'escape',
+                imported_from_nomis: true,
+              },
+              {
+                category: 'risk',
+                key: 'self_harm',
+                imported_from_nomis: true,
+              },
             ])
           })
 
@@ -256,34 +285,21 @@ describe('Move controllers', function() {
           })
         })
 
-        context('with answers not in the list of keys', function() {
+        context('with custom groupings', function() {
           beforeEach(function() {
-            req.getPerson.returns({
-              assessment_answers: [
-                {
-                  category: 'risk',
-                  key: 'violent',
-                  imported_from_nomis: true,
-                },
-                {
-                  category: 'risk',
-                  key: 'self_harm',
-                  imported_from_nomis: true,
-                },
-                {
-                  category: 'risk',
-                  key: 'missing_key',
-                  imported_from_nomis: true,
-                },
-              ],
-            })
+            req.form.options.customAssessmentGroupings = [
+              {
+                i18nContext: 'escape',
+                keys: ['escape'],
+              },
+            ]
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
           it('should call presenter with filtered assessment', function() {
             expect(
               presenters.assessmentAnswersByCategory
-            ).to.be.calledOnceWithExactly([
+            ).to.be.calledWithExactly([
               {
                 category: 'risk',
                 key: 'violent',
@@ -295,6 +311,44 @@ describe('Move controllers', function() {
                 imported_from_nomis: true,
               },
             ])
+          })
+
+          it('should call presenter with custom assessment', function() {
+            expect(
+              presenters.assessmentAnswersByCategory
+            ).to.be.calledWithExactly([
+              {
+                category: 'risk',
+                key: 'escape',
+                imported_from_nomis: true,
+              },
+            ])
+          })
+
+          it('should call presenter custom number of times', function() {
+            expect(presenters.assessmentAnswersByCategory.callCount).to.equal(2)
+          })
+
+          it('should set previous assessment on local', function() {
+            expect(res.locals).to.contain.property('previousAnswers')
+            expect(res.locals.previousAnswers).to.deep.equal({
+              key: 'risk',
+              answers: ['stubbed'],
+            })
+          })
+
+          it('should set empty custom groupings on local', function() {
+            expect(res.locals).to.contain.property('customAnswerGroupings')
+            expect(res.locals.customAnswerGroupings).to.deep.equal([
+              {
+                key: 'escape',
+                answers: ['stubbed'],
+              },
+            ])
+          })
+
+          it('should call next', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
@@ -335,21 +389,21 @@ describe('Move controllers', function() {
       })
 
       context(
-        'when the step does not include previous assessment keys',
+        'when the step should not include previous assessment',
         function() {
           beforeEach(function() {
-            req.getPerson.returns({
-              assessment_answers: [],
-            })
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
           it('should not set previous assessment on locals', function() {
-            expect(res.locals).not.to.contain.property('previousAssessment')
+            expect(res.locals).not.to.contain.property('previousAnswers')
+            expect(res.locals).not.to.contain.property('customAnswerGroupings')
           })
 
-          it('should not call presenter', function() {
+          it('should not call presenters', function() {
             expect(presenters.assessmentAnswersByCategory).not.to.be.called
+            expect(presenters.assessmentCategoryToPanelComponent).not.to.be
+              .called
           })
 
           it('should call next', function() {
