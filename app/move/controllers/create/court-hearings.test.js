@@ -70,7 +70,7 @@ describe('Move controllers', function() {
       let req, nextSpy
 
       beforeEach(function() {
-        sinon.stub(personService, 'getCourtCases')
+        sinon.stub(personService, 'getActiveCourtCases')
         sinon.stub(componentService, 'getComponent').returnsArg(0)
         sinon.stub(presenters, 'courtCaseToCardComponent').returnsArg(0)
         req = {
@@ -96,7 +96,7 @@ describe('Move controllers', function() {
         })
 
         it('should not person service', function() {
-          expect(personService.getCourtCases).not.to.be.called
+          expect(personService.getActiveCourtCases).not.to.be.called
         })
 
         it('should not set court case items', function() {
@@ -115,11 +115,11 @@ describe('Move controllers', function() {
           req.sessionModel.get.withArgs('person').returns(mockPerson)
         })
 
-        context('when getCourtCases rejects', function() {
+        context('when getActiveCourtCases rejects', function() {
           const mockError = new Error('Mock error')
 
           beforeEach(async function() {
-            personService.getCourtCases.rejects(mockError)
+            personService.getActiveCourtCases.rejects(mockError)
             await controller.setCourtCaseItems(req, {}, nextSpy)
           })
 
@@ -134,9 +134,9 @@ describe('Move controllers', function() {
           })
         })
 
-        context('when getCourtCases resolves', function() {
+        context('when getActiveCourtCases resolves', function() {
           beforeEach(async function() {
-            personService.getCourtCases.resolves(mockCourtCases)
+            personService.getActiveCourtCases.resolves(mockCourtCases)
             await controller.setCourtCaseItems(req, {}, nextSpy)
           })
 

@@ -21,7 +21,7 @@ class CourtHearingsController extends CreateBaseController {
     }
 
     try {
-      const courtCases = await personService.getCourtCases(person.id)
+      const courtCases = await personService.getActiveCourtCases(person.id)
       const {
         court_hearing__court_case: courtCaseField,
       } = req.form.options.fields

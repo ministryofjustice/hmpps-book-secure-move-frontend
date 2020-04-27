@@ -832,7 +832,7 @@ describe('Person Service', function() {
     })
   })
 
-  describe('#getCourtCases()', function() {
+  describe('#getActiveCourtCases()', function() {
     const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     const mockResponse = {
       data: [
@@ -854,7 +854,7 @@ describe('Person Service', function() {
 
     context('without ID', function() {
       it('should reject with error', function() {
-        return expect(personService.getCourtCases()).to.be.rejectedWith(
+        return expect(personService.getActiveCourtCases()).to.be.rejectedWith(
           'No ID supplied'
         )
       })
@@ -862,13 +862,15 @@ describe('Person Service', function() {
 
     context('with ID', function() {
       beforeEach(async function() {
-        imageUrl = await personService.getCourtCases(mockId)
+        imageUrl = await personService.getActiveCourtCases(mockId)
       })
 
       it('should call correct api client methods', function() {
         expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
         expect(apiClient.all).to.be.calledOnceWithExactly('court_case')
-        expect(apiClient.get).to.be.calledOnceWithExactly()
+        expect(apiClient.get).to.be.calledOnceWithExactly({
+          'filter[active]': true,
+        })
       })
 
       it('should return image url property', function() {
