@@ -1,0 +1,23 @@
+{% set html %}
+  <p>
+    {{ t("assessment::retrieved_from_nomis.details.content.lede") }}
+  </p>
+
+  <ul>
+    <li>
+      {{ t("assessment::retrieved_from_nomis.details.content.step_one") }}
+    </li>
+    <li>
+      {{ t("assessment::retrieved_from_nomis.details.content.step_two") }}
+    </li>
+    <li>
+      {{ t("assessment::retrieved_from_nomis.details.content.step_three") }}
+    </li>
+  </ul>
+{% endset %}
+
+{{ govukDetails({
+  classes: "govuk-!-margin-top-3",
+  summaryText: t("assessment::retrieved_from_nomis.details.summary"),
+  html: html
+}) }}
