@@ -25,10 +25,10 @@
     {{ t("actions::print_move_detail") }}
   </a>
 
-  {% if move.status %}
+  {% if messageTitle %}
     {{ appMessage({
       allowDismiss: false,
-      classes: "app-message--info",
+      classes: "app-message--temporary",
       title: {
         text: messageTitle
       },
@@ -41,6 +41,14 @@
 
 {% block contentHeader %}
   <header class="govuk-!-margin-bottom-8">
+    {% if not messageTitle %}
+      <div class="govuk-!-margin-bottom-2">
+        {{ mojBadge({
+          text: t("statuses::" + move.status)
+        }) }}
+      </div>
+    {% endif %}
+
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
       {{ move.person.fullname | upper }}
     </h1>

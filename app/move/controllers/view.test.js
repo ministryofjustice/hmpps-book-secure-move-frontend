@@ -198,7 +198,7 @@ describe('Move controllers', function() {
       it('should contain message title param', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('messageTitle')
-        expect(params.messageTitle).to.equal('statuses::requested')
+        expect(params.messageTitle).to.equal(undefined)
       })
 
       it('should contain message content param', function() {
