@@ -1,71 +1,81 @@
 {% extends "form-wizard.njk" %}
 
 {% block fields %}
-  {% if previousAssessment %}
+  {% if previousAnswers %}
     <div class="govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-        {{ t("moves::assessment.retrieved_from_nomis.heading") }}
+        {{ t('assessment::heading.text', {
+          context: previousAnswers.key + "_nomis"
+        }) }}
       </h2>
 
-      {% for title, answers in previousAssessment.answersByTitle %}
-        {% call appPanel({
-          attributes: {
-            id: title | kebabcase
-          },
-          tag: {
-            text: title,
-            classes: previousAssessment.tagClass
-          }
-        }) %}
-
-          {% set items = [] %}
-          {% for answer in answers %}
-            {% set answerHtml %}
-              {% if answer.nomis_alert_description %}
-                <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
-                  {{ answer.nomis_alert_description }}
-                </h4>
-              {% endif %}
-
-              {{ answer.comments if answer.comments }}
-
-              {% if answer.created_at %}
-                <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
-                  Created on {{ answer.created_at | formatDateWithDay }}
-                </div>
-              {% endif %}
-            {% endset %}
-
-            {% set items = (items.push({ value: { html: answerHtml } }), items) %}
-          {% endfor %}
-
+      {% for panel in previousAnswers.panels %}
+        {% call appPanel(panel) %}
           {{ appMetaList({
             classes: "app-meta-list--divider",
-            items: items
+            items: panel.items
           }) }}
         {% endcall %}
       {% else %}
         {{ appMessage({
-          classes: "app-message--muted",
+          classes: "app-message--muted govuk-!-margin-top-2",
           allowDismiss: false,
           content: {
-            html: t("moves::assessment.retrieved_from_nomis.empty")
+            text: t('assessment::no_items.text', {
+              context: previousAnswers.key + "_nomis"
+            })
           }
         }) }}
       {% endfor %}
 
+      {% for answerGroup in customAnswerGroupings %}
+        <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+          {{ t('assessment::heading.text', {
+            context: answerGroup.key
+          }) }}
+        </h2>
+
+        {% for panel in answerGroup.panels %}
+          {% call appPanel(panel) %}
+            {{ appMetaList({
+              classes: "app-meta-list--divider",
+              items: panel.items
+            }) }}
+          {% endcall %}
+        {% else %}
+          {{ appMessage({
+            classes: "app-message--muted govuk-!-margin-top-2",
+            allowDismiss: false,
+            content: {
+              text: t('assessment::no_items.text', {
+                context: answerGroup.key
+              })
+            }
+          }) }}
+        {% endfor %}
+      {% endfor %}
+
       {% set html %}
-        <p>{{ t("moves::assessment.incorrect_nomis_information.lede") }}</p>
+        <p>
+          {{ t("assessment::retrieved_from_nomis.details.content.lede") }}
+        </p>
+
         <ul>
-          <li>{{ t("moves::assessment.incorrect_nomis_information.step_one") }}</li>
-          <li>{{ t("moves::assessment.incorrect_nomis_information.step_two") }}</li>
-          <li>{{ t("moves::assessment.incorrect_nomis_information.step_three") }}</li>
+          <li>
+            {{ t("assessment::retrieved_from_nomis.details.content.step_one") }}
+          </li>
+          <li>
+            {{ t("assessment::retrieved_from_nomis.details.content.step_two") }}
+          </li>
+          <li>
+            {{ t("assessment::retrieved_from_nomis.details.content.step_three") }}
+          </li>
         </ul>
       {% endset %}
 
       {{ govukDetails({
-        classes: "govuk-!-margin-top-2",
-        summaryText: t("moves::assessment.retrieved_from_nomis.details.summary"),
+        classes: "govuk-!-margin-top-3",
+        summaryText: t("assessment::retrieved_from_nomis.details.summary"),
         html: html
       }) }}
     </div>

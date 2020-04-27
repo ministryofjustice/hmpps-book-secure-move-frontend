@@ -87,7 +87,7 @@
 
   {% if move.from_location.can_upload_documents %}
     <h2 class="govuk-heading-m govuk-!-margin-top-7">
-      {{ t("moves::assessment.categories.document.heading", {
+      {{ t("moves::detail.documents.heading", {
         count: move.documents.length if move.documents.length > 1
       }) }}
     </h2>
@@ -116,7 +116,7 @@
         classes: "app-message--muted",
         allowDismiss: false,
         content: {
-          html: t("moves::assessment.categories.document.empty")
+          html: t("moves::detail.documents.empty")
         }
       }) }}
     {% endif %}

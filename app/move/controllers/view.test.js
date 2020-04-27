@@ -56,7 +56,8 @@ describe('Move controllers', function() {
       sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
-      sinon.stub(presenters, 'assessmentByCategory').returnsArg(0)
+      sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
+      sinon.stub(presenters, 'assessmentCategoryToPanelComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToSummaryListComponent').returnsArg(0)
       sinon
         .stub(presenters, 'courtHearingToSummaryListComponent')
@@ -118,16 +119,18 @@ describe('Move controllers', function() {
         expect(params.tagList).to.equal(mockMove.person.assessment_answers)
       })
 
-      it('should call assessmentByCategory presenter with correct args', function() {
-        expect(presenters.assessmentByCategory).to.be.calledOnceWithExactly(
-          mockMove.person.assessment_answers
-        )
+      it('should call assessmentAnswersByCategory presenter with correct args', function() {
+        expect(
+          presenters.assessmentAnswersByCategory
+        ).to.be.calledOnceWithExactly(mockMove.person.assessment_answers)
       })
 
       it('should contain assessment param', function() {
         const params = res.render.args[0][1]
         expect(params).to.have.property('assessment')
-        expect(params.assessment).to.equal(mockMove.person.assessment_answers)
+        expect(params.assessment).to.deep.equal(
+          mockMove.person.assessment_answers
+        )
       })
 
       it('should call assessmentToSummaryListComponent presenter with correct args', function() {

@@ -1,55 +1,30 @@
 {% for assessmentCategory in assessment %}
-  <section class="app-!-position-relative" data-app-section="{{ assessmentCategory.key }}">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-      {{ t("moves::assessment.categories." + assessmentCategory.key + ".heading") }}
+  <section class="app-!-position-relative govuk-!-margin-top-7" data-app-section="{{ assessmentCategory.key }}">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+      {{ t('assessment::heading.text', {
+        context: assessmentCategory.key
+      }) }}
     </h2>
 
-    {% for title, answers in assessmentCategory.answersByTitle %}
-      {% call appPanel({
-        attributes: {
-          id: title | kebabcase
-        },
-        tag: {
-          text: title,
-          classes: assessmentCategory.tagClass
-        }
-      }) %}
-
-        {% set items = [] %}
-        {% for answer in answers %}
-          {% set answerHtml %}
-            {% if answer.nomis_alert_description %}
-              <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
-                {{ answer.nomis_alert_description }}
-              </h4>
-            {% endif %}
-
-            {{ answer.comments if answer.comments }}
-
-            {% if answer.created_at %}
-              <div class="govuk-!-margin-top-2 govuk-!-font-size-16">
-                {{ answer.created_at | formatDateWithDay }}
-              </div>
-            {% endif %}
-          {% endset %}
-
-          {% set items = (items.push({ value: { html: answerHtml } }), items) %}
-        {% endfor %}
-
+    {% for panel in assessmentCategory.panels %}
+      {% call appPanel(panel) %}
         {{ appMetaList({
           classes: "app-meta-list--divider",
-          items: items
+          items: panel.items
         }) }}
       {% endcall %}
     {% else %}
       {{ appMessage({
-        classes: "app-message--muted",
+        classes: "app-message--muted govuk-!-margin-top-2",
         allowDismiss: false,
         content: {
-          html: t("moves::assessment.categories." + assessmentCategory.key + ".empty")
+          text: t('assessment::no_items.text', {
+            context: assessmentCategory.key
+          })
         }
       }) }}
     {% endfor %}
+
     {{ updateLink(assessmentCategory.key) }}
   </section>
 {% endfor %}
@@ -98,7 +73,9 @@
       {% endif %}
     {% else %}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
-        {{ t("moves::assessment.categories.court.heading") }}
+        {{ t("assessment::heading.text", {
+          context: "court"
+        }) }}
       </h2>
 
       {% if courtSummary.rows | length %}
@@ -108,7 +85,9 @@
           classes: "app-message--muted",
           allowDismiss: false,
           content: {
-            html: t("moves::assessment.categories.court.empty")
+            html: t("assessment::no_items.text", {
+              context: "court"
+            })
           }
         }) }}
       {% endif %}

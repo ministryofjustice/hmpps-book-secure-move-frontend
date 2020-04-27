@@ -1,4 +1,4 @@
-const { find, flatten, get, values } = require('lodash')
+const { flatten, get, values } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
@@ -32,20 +32,48 @@ class AssessmentController extends CreateBaseController {
   }
 
   setPreviousAssessment(req, res, next) {
-    const { assessmentCategory, previousAssessmentKeys = [] } = req.form.options
-    const person = req.getPerson()
-    const filteredAssessment = person.assessment_answers
-      .filter(answer => answer.category === assessmentCategory)
-      .filter(answer => previousAssessmentKeys.includes(answer.key))
-      .filter(answer => answer.imported_from_nomis)
+    const {
+      assessmentCategory,
+      customAssessmentGroupings = [],
+      showPreviousAssessment,
+    } = req.form.options
 
-    if (previousAssessmentKeys.length) {
-      const previousAssessmentByCategory = presenters.assessmentByCategory(
-        filteredAssessment
+    if (showPreviousAssessment) {
+      const person = req.getPerson()
+      const customAssessmentKeys = customAssessmentGroupings
+        .map(grouping => grouping.keys)
+        .flat()
+      const previousAnswers = person.assessment_answers
+        .filter(answer => answer.category === assessmentCategory)
+        .filter(answer => answer.imported_from_nomis)
+      const previousAnswersByCategory = presenters
+        .assessmentAnswersByCategory(
+          previousAnswers.filter(
+            answer => !customAssessmentKeys.includes(answer.key)
+          )
+        )
+        .filter(category => category.key === assessmentCategory)
+        .map(presenters.assessmentCategoryToPanelComponent)
+
+      res.locals.previousAnswers = previousAnswersByCategory[0]
+
+      res.locals.customAnswerGroupings = customAssessmentGroupings.map(
+        grouping => {
+          const byCategory = presenters
+            .assessmentAnswersByCategory(
+              previousAnswers.filter(answer =>
+                grouping.keys.includes(answer.key)
+              )
+            )
+            .filter(category => category.key === assessmentCategory)
+            .map(presenters.assessmentCategoryToPanelComponent)
+
+          return {
+            ...byCategory[0],
+            key: grouping.i18nContext,
+          }
+        }
       )
-      res.locals.previousAssessment = find(previousAssessmentByCategory, {
-        key: assessmentCategory,
-      })
     }
 
     next()
