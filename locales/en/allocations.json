@@ -11,5 +11,18 @@
   "move_from": "Move from",
   "move_to": "Move to",
   "requested": "Requested",
-  "progress": "Progress"
+  "progress": "Progress",
+  "confirmation": {
+    "page_title": "Allocation requested",
+    "detail":
+      "The request for {{moves_count}} {{people}} from {{from_location}} to {{to_location}} on {{date}} has been sent",
+    "view_all": "View all allocations",
+    "view_by_from_location": "View {{from_location}} overview"
+  },
+  "allocation_details": {
+    "page_title": "Allocation details'"
+  },
+  "allocation_criteria": {
+    "page_title": "Allocation criteria"
+  }
 }

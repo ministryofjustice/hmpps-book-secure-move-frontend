@@ -5,5 +5,8 @@
       "heading_proposed": "Move sent for review",
       "content": "Move reference<br><strong>{{moveReference}}</strong>"
     }
+  },
+  "create_allocation": {
+    "heading": "Allocation requested"
   }
 }

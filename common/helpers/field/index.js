@@ -16,7 +16,14 @@ const componentService = require('../../services/component')
 const getFieldErrorMessage = require('./get-field-error-message')
 const setFieldError = require('./set-field-error')
 
-function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
+function mapReferenceDataToOption({
+  id,
+  title,
+  key,
+  conditional,
+  hint,
+  checked,
+}) {
   const option = {
     value: id,
     text: title,
@@ -28,6 +35,10 @@ function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
 
   if (key) {
     option.key = key
+  }
+
+  if (checked) {
+    option.checked = checked
   }
 
   if (conditional) {

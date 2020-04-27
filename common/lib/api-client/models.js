@@ -210,10 +210,21 @@ module.exports = {
       sentence_length: '',
       complex_cases: [],
       moves_count: 0,
-      complete_in_full: '', // boolean
+      complete_in_full: false, // boolean
       other_criteria: '',
       created_at: '',
       updated_at: '',
+    },
+  },
+  allocation_complex_case: {
+    attributes: {
+      disabled_at: '',
+      key: '',
+      title: '',
+    },
+    options: {
+      cache: true,
+      collectionPath: 'reference/allocation_complex_cases',
     },
   },
 }

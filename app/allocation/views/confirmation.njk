@@ -1,0 +1,43 @@
+{% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Allocation requested'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("allocations::confirmation.page_title") }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        classes: "govuk-!-margin-bottom-7",
+        titleText: t("messages::create_allocation.heading")
+      }) }}
+
+      <p>
+        {{ t("allocations::confirmation.detail", {
+          moves_count: allocation.moves_count,
+          from_location: allocation.from_location.title,
+          to_location: allocation.to_location.title,
+          date: allocation.date | formatDateWithDay,
+          people: "person" | pluralize(allocation.moves_count)
+        }) | safe }}
+      </p>
+
+      <p>
+        <a href="{{ ALLOCATIONS_URL }}">
+          {{ t("allocations::confirmation.view_all") }}
+        </a>
+        <span> {{t("or")}} </span>
+        <a href="{{ ALLOCATIONS_URL }}">
+          {{ t("allocations::confirmation.view_by_from_location", {
+            from_location: allocation.from_location.title
+          }) }}
+        </a>
+      </p>
+    </div>
+  </div>
+{% endblock %}
