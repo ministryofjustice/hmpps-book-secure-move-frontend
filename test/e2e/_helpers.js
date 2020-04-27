@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import faker from 'faker'
 import glob from 'glob'
 import { find, get, isArray, isNil } from 'lodash'
-import { ClientFunction, RequestLogger, t } from 'testcafe'
+import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
 import moveService from '../../common/services/move'
 import personService from '../../common/services/person'
@@ -208,7 +208,14 @@ async function selectOption({ options, value }) {
     )
   }
 
-  await t.click(option)
+  const optionFor = await option.getAttribute('for')
+  if (optionFor) {
+    const idOption = Selector('#' + optionFor)
+    await t.click(idOption)
+  } else {
+    await t.click(option)
+  }
+
   return option.innerText
 }
 
