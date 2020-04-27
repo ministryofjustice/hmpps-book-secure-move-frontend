@@ -879,6 +879,81 @@ describe('Person Service', function() {
     })
   })
 
+  describe('#getTimetableByDate()', function() {
+    const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    const mockResponse = {
+      data: [
+        {
+          id: '12345',
+        },
+        {
+          id: '67890',
+        },
+      ],
+    }
+    let imageUrl
+
+    beforeEach(async function() {
+      sinon.stub(apiClient, 'one').returnsThis()
+      sinon.stub(apiClient, 'all').returnsThis()
+      sinon.stub(apiClient, 'get').resolves(mockResponse)
+    })
+
+    context('without ID', function() {
+      it('should reject with error', function() {
+        return expect(personService.getTimetableByDate()).to.be.rejectedWith(
+          'No ID supplied'
+        )
+      })
+    })
+
+    context('with ID', function() {
+      context('with date', function() {
+        const mockDate = '2020-10-10'
+
+        beforeEach(async function() {
+          imageUrl = await personService.getTimetableByDate(mockId, mockDate)
+        })
+
+        it('should call correct api client methods', function() {
+          expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
+          expect(apiClient.all).to.be.calledOnceWithExactly('timetable')
+          expect(apiClient.get).to.be.calledOnceWithExactly({
+            filter: {
+              'filter[date_from]': mockDate,
+              'filter[date_to]': mockDate,
+            },
+          })
+        })
+
+        it('should return image url property', function() {
+          expect(imageUrl).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('without date', function() {
+        beforeEach(async function() {
+          imageUrl = await personService.getTimetableByDate(mockId)
+        })
+
+        it('should call correct api client methods', function() {
+          expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
+          expect(apiClient.all).to.be.calledOnceWithExactly('timetable')
+          expect(apiClient.get).to.be.calledOnceWithExactly({
+            filter: {
+              'filter[date_from]': undefined,
+              'filter[date_to]': undefined,
+            },
+          })
+        })
+
+        it('should return image url property', function() {
+          expect(imageUrl).to.deep.equal(mockResponse.data)
+        })
+      })
+    })
+  })
+
   describe('#getByIdentifiers()', function() {
     const mockResponse = {
       data: [mockPerson],

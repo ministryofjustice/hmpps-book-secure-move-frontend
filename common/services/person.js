@@ -135,6 +135,23 @@ const personService = {
       .then(response => response.data)
   },
 
+  getTimetableByDate(personId, date) {
+    if (!personId) {
+      return Promise.reject(new Error('No ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('timetable')
+      .get({
+        filter: {
+          'filter[date_from]': date,
+          'filter[date_to]': date,
+        },
+      })
+      .then(response => response.data)
+  },
+
   getByIdentifiers(identifiers) {
     const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
 
