@@ -16,6 +16,7 @@ const objectToTableHead = require('./object-to-table-head')
 const objectToTableRow = require('./object-to-table-row')
 const personToCardComponent = require('./person-to-card-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
+const timetableToTableComponent = require('./timetable-to-table-component')
 
 module.exports = {
   allocationsToTable,
@@ -36,4 +37,5 @@ module.exports = {
   objectToTableHead,
   objectToTableRow,
   movesToTable,
+  timetableToTableComponent,
 }
