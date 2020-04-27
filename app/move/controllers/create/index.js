@@ -10,6 +10,7 @@ const PersonSearchResults = require('./person-search-results')
 const PersonalDetails = require('./personal-details')
 const PrisonTransferReason = require('./prison-transfer-reason')
 const Save = require('./save')
+const Timetable = require('./timetable')
 
 module.exports = {
   Assessment,
@@ -24,4 +25,5 @@ module.exports = {
   PersonalDetails,
   PrisonTransferReason,
   Save,
+  Timetable,
 }

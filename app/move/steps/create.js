@@ -10,6 +10,7 @@ const {
   PersonalDetails,
   PrisonTransferReason,
   Save,
+  Timetable,
 } = require('../controllers/create')
 
 const personSearchStep = {
@@ -216,6 +217,13 @@ module.exports = {
       'court_hearing__court_case',
       'court_hearing__comments',
     ],
+  },
+  '/timetable': {
+    controller: Timetable,
+    pageTitle: 'moves::steps.timetable.heading',
+    next: 'release-status',
+    template: 'timetable',
+    fields: ['should_save_court_hearings'],
   },
   '/risk-information': {
     ...riskStep,

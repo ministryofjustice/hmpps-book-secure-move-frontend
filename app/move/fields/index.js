@@ -31,6 +31,7 @@ const policeNationalComputer = require('./police-national-computer')
 const policeNationalComputerUpdate = require('./police-national-computer.update')
 const prisonTransferReason = require('./prison-transfer-reason')
 const prisonTransferReasonComments = require('./prison-transfer-reason-comments')
+const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
@@ -88,6 +89,7 @@ const create = {
     isRequired: true,
     isExplicit: true,
   }),
+  should_save_court_hearings: shouldSaveCourtHearings,
   to_location: toLocation,
   to_location_court_appearance: toLocationCourtAppearance,
   to_location_prison_transfer: toLocationPrisonTransfer,

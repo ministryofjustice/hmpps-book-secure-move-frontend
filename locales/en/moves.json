@@ -29,6 +29,10 @@
     "hearing_details": {
       "heading": "Is this move associated with a court case?"
     },
+    "timetable": {
+      "heading": "This court date may already exist in NOMIS",
+      "subheading": "{{name}}’s timetable for {{date}}"
+    },
     "court_information": {
       "heading": "Is there information for the court?"
     },

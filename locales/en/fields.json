@@ -128,6 +128,17 @@
   "court_hearing__comments": {
     "label": "Give details (optional)"
   },
+  "should_save_court_hearings": {
+    "label": "Would you like to add this court date to NOMIS?",
+    "items": {
+      "yes": {
+        "label": "Yes, add to NOMIS"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
   "risk": {
     "label": "Add risk information",
     "hint": "Select all that apply"
