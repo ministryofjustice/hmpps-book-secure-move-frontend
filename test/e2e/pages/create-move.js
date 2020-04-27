@@ -328,7 +328,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInCourtHearings() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/hearing-details')
+    await t.expect(this.getCurrentUrl()).contains('/move/new/court-hearings')
 
     return fillInForm({
       hasCourtCase: {
