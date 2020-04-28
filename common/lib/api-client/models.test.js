@@ -65,6 +65,12 @@ const testCases = {
       args: {},
     },
   ],
+  timetable: [
+    {
+      method: 'findAll',
+      httpMock: 'get',
+    },
+  ],
   gender: [
     {
       method: 'findAll',

@@ -93,6 +93,17 @@ module.exports = {
       },
     },
   },
+  timetable: {
+    attributes: {
+      start_time: '',
+      activity_type: '',
+      reason: '',
+      location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+    },
+  },
   gender: {
     attributes: {
       key: '',

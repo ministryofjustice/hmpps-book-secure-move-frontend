@@ -1,0 +1,20 @@
+{% extends "form-wizard.njk" %}
+
+{% block fields %}
+  {% if timetable.rows.length %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+      {{ t("moves::steps.timetable.subheading", {
+        name: person.fullname | upper,
+        date: values.date | formatDateWithDay
+      }) }}
+    </h2>
+
+    {% call appPanel() %}
+      {{ govukTable(timetable) }}
+    {% endcall %}
+
+    {% include "move/views/_includes/incorrect-nomis-details.njk" %}
+  {% endif %}
+
+  {{ super() }}
+{% endblock %}
