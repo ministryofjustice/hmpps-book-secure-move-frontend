@@ -121,7 +121,7 @@ const personService = {
       .then(response => response.data.url)
   },
 
-  getCourtCases(personId) {
+  getActiveCourtCases(personId) {
     if (!personId) {
       return Promise.reject(new Error('No ID supplied'))
     }
@@ -129,7 +129,9 @@ const personService = {
     return apiClient
       .one('person', personId)
       .all('court_case')
-      .get()
+      .get({
+        'filter[active]': true,
+      })
       .then(response => response.data)
   },
 
