@@ -67,18 +67,15 @@ describe('Presenters', function() {
 
         describe('translations', function() {
           it('should translate status', function() {
-            expect(i18n.t.firstCall).to.be.calledWithExactly(
+            expect(i18n.t).to.be.calledWithExactly(
               `statuses::${mockMove.status}`
             )
           })
 
           it('should translate move reference', function() {
-            expect(i18n.t.secondCall).to.be.calledWithExactly(
-              'moves::move_reference',
-              {
-                reference: 'AB12FS45',
-              }
-            )
+            expect(i18n.t).to.be.calledWithExactly('moves::move_reference', {
+              reference: 'AB12FS45',
+            })
           })
 
           it('should translate correct number of times', function() {
@@ -124,6 +121,35 @@ describe('Presenters', function() {
           showTags: false,
         })
       })
+    })
+
+    context('with statuses that should not show badge', function() {
+      const excludedStatuses = ['cancelled']
+
+      for (const excludedStatus of excludedStatuses) {
+        beforeEach(function() {
+          transformedResponse = moveToCardComponent()({
+            ...mockMove,
+            status: excludedStatus,
+          })
+        })
+
+        it('should not translate status', function() {
+          expect(i18n.t).not.to.be.calledWithExactly(
+            `statuses::${excludedStatus}`
+          )
+        })
+
+        it('should contain correct output', function() {
+          expect(transformedResponse).to.deep.equal({
+            ...mockPersonCardComponent,
+            status: undefined,
+            caption: {
+              text: '__translated__',
+            },
+          })
+        })
+      }
     })
   })
 })
