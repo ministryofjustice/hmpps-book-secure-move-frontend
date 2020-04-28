@@ -5,6 +5,10 @@ const personToCardComponent = require('./person-to-card-component')
 function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
   return function item({ id, reference, person = {}, status }) {
     const href = `/move/${id}`
+    const excludedBadgeStatuses = ['cancelled']
+    const statusBadge = excludedBadgeStatuses.includes(status)
+      ? undefined
+      : { text: i18n.t(`statuses::${status}`) }
     const personCardComponent = personToCardComponent({ showMeta, showTags })({
       ...person,
       href,
@@ -12,9 +16,7 @@ function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
 
     return {
       ...personCardComponent,
-      status: {
-        text: i18n.t(`statuses::${status}`),
-      },
+      status: statusBadge,
       caption: {
         text: i18n.t('moves::move_reference', {
           reference,
