@@ -15,7 +15,7 @@ module.exports = function view(req, res) {
     cancellationReason === 'other'
       ? cancellationComments
       : req.t(`fields::cancellation_reason.items.${cancellationReason}.label`)
-
+  const bannerStatuses = ['cancelled']
   const urls = {
     update: {},
   }
@@ -51,7 +51,9 @@ module.exports = function view(req, res) {
       person.assessment_answers,
       'court'
     ),
-    messageTitle: req.t('statuses::' + status),
+    messageTitle: bannerStatuses.includes(status)
+      ? req.t('statuses::' + status)
+      : undefined,
     messageContent: req.t('statuses::description', {
       context: status,
       reason,
