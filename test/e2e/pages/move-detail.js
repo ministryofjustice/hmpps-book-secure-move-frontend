@@ -12,8 +12,8 @@ class MoveDetailPage extends Page {
       title: Selector('#main-content > header > h1'),
       subTitle: Selector('#main-content > header > span'),
       banner: Selector('.app-message--info'),
-      bannerHeading: Selector('.app-message--info .app-message__heading'),
-      bannerContent: Selector('.app-message--info .app-message__content'),
+      bannerHeading: Selector('.app-message--temporary .app-message__heading'),
+      bannerContent: Selector('.app-message--temporary .app-message__content'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
