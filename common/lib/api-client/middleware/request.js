@@ -28,7 +28,7 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
       const cacheModel = get(models, `${req.model}.options.cache`)
 
       if (!cacheModel || req.params.cache === false || disableCache) {
-        debug('Uncached')
+        debug('NO CACHE', key)
         return jsonApi.axios(req)
       }
 
@@ -36,11 +36,11 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
         .client.getAsync(key)
         .then(response => {
           if (!response) {
-            debug('From cache (uncached)')
+            debug('CACHED (first hit)', key)
             return jsonApi.axios(req).then(cacheResponse(key, cacheExpiry))
           }
 
-          debug('From cache (cached)')
+          debug('CACHED', key)
           return {
             data: JSON.parse(response),
           }
