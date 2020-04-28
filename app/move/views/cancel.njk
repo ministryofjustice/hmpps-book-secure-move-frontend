@@ -9,12 +9,12 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ super() }}
-
   {{ govukBackLink({
     text: t("actions::back_to_move"),
     href: "/move/" + move.id
   }) }}
+
+  {{ super() }}
 {% endblock %}
 
 {% block formActions %}

@@ -1,18 +1,20 @@
 {% set messages = getMessages() if getMessages %}
 
 {% if messages | length %}
-  {% for type, items in messages %}
-    {% for item in items %}
-      {{ appMessage({
-        classes: "app-message--" + type,
-        title: {
-          text: item.title or item
-        },
-        focusOnload: true,
-        content: {
-          html: item.content
-        }
-      }) }}
+  <div class="govuk-!-margin-top-3">
+    {% for type, items in messages %}
+      {% for item in items %}
+        {{ appMessage({
+          classes: "app-message--" + type,
+          title: {
+            text: item.title or item
+          },
+          focusOnload: true,
+          content: {
+            html: item.content
+          }
+        }) }}
+      {% endfor %}
     {% endfor %}
-  {% endfor %}
+  </div>
 {% endif %}

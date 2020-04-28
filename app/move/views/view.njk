@@ -13,8 +13,6 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ super() }}
-
   {{ govukBackLink({
     text: t("actions::back_to_dashboard"),
     classes: "app-print--hide",
@@ -24,6 +22,8 @@
   <a href="javascript:window.print()" class="app-!-float-right app-print--hide govuk-!-margin-top-3 app-icon app-icon--print">
     {{ t("actions::print_move_detail") }}
   </a>
+
+  {{ super() }}
 
   {% if messageTitle %}
     {{ appMessage({

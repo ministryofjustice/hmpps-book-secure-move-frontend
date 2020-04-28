@@ -100,23 +100,23 @@
       items: primaryNavigation
     }) }}
   {% endblock %}
-{% endblock %}
-
-{% block beforeContent %}
-
 
   {% block organisationSwitcher %}
     {% if CURRENT_LOCATION or canAccess("moves:view:all") %}
-      {{ mojOrganisationSwitcher({
-        text: CURRENT_LOCATION.title or t("locations::all_locations"),
-        link: {
-          text: t("actions::switch_location"),
-          href: '/locations'
-        } if USER.locations.length > 1
-      }) }}
+      <div class="govuk-width-container">
+        {{ mojOrganisationSwitcher({
+          text: CURRENT_LOCATION.title or t("locations::all_locations"),
+          link: {
+            text: t("actions::switch_location"),
+            href: '/locations'
+          } if USER.locations.length > 1
+        }) }}
+      </div>
     {% endif %}
   {% endblock %}
+{% endblock %}
 
+{% block beforeContent %}
   {% include "includes/messages.njk" %}
 {% endblock %}
 
