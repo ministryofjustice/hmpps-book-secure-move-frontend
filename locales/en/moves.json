@@ -97,14 +97,17 @@
     }
   },
   "dashboard": {
+    "dashboard": "Dashboard",
+    "dashboard_with_date": "Dashboard for {{date}}",
     "outgoing_moves": "Outgoing moves",
     "outgoing_moves_with_date": "Outgoing moves for {{date}}",
     "cancelled_moves": "{{count}} cancelled moves",
     "move_to": "Move to",
     "no_results": "No moves requested",
-    "single_moves": "Single moves",
-    "single_moves_no_results": "No moves proposed",
     "created_at": "Created at",
+    "single_moves": "Single requests sent",
+    "single_moves_with_date": "Single requests sent {{date}}",
+    "single_moves_no_results": "No single requests",
     "move_type": "Move type",
     "filter": {
       "proposed": "proposed",
