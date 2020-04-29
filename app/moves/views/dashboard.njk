@@ -5,8 +5,16 @@
 {% block headerLinks %}{% endblock %}
 
 {% block pageContent %}
-  {{ appFilter({
-    items: dashboardMoveSummary,
-    classes: "app-filter--stacked"
-  }) }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
+        {{ t("primary_navigation.single_requests") }}
+      </h2>
+
+      {{ appFilter({
+        items: dashboardMoveSummary,
+        classes: "app-filter--stacked"
+      }) }}
+    </div>
+  </div>
 {% endblock %}
