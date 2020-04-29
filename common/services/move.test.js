@@ -508,6 +508,8 @@ describe('Move Service', function() {
             'filter[created_at_from]': mockDateRange[0],
             'filter[created_at_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
+            'sort[by]': 'created_at',
+            'sort[direction]': 'desc',
           },
         })
       })
@@ -526,6 +528,8 @@ describe('Move Service', function() {
             'filter[created_at_from]': undefined,
             'filter[created_at_to]': undefined,
             'filter[from_location_id]': undefined,
+            'sort[by]': 'created_at',
+            'sort[direction]': 'desc',
           },
         })
       })
