@@ -132,13 +132,7 @@ export async function checkNoUpdateLink(page) {
   return moveDetailPage.checkNoUpdateLink(page)
 }
 
-const updatePages = [
-  'personal_details',
-  'risk',
-  'health',
-  'court',
-  'move_details',
-]
+const updatePages = ['personal_details', 'risk', 'health', 'court', 'date']
 
 /**
  * Filter update pages into
@@ -267,7 +261,11 @@ export async function clickUpdateLink(page) {
 export async function checkUpdatePersonalDetails(options) {
   const { person } = t.ctx
   const updateMovePage = await clickUpdateLink('personal_details')
-  const updatedFields = await updateMovePage.fillInPersonalDetails({}, options)
+  const gender = person.gender === 'Female' ? 'Male' : 'Female'
+  const updatedFields = await updateMovePage.fillInPersonalDetails(
+    { gender },
+    options
+  )
   const updatedDetails = { ...person, ...updatedFields }
 
   await updateMovePage.submitForm()

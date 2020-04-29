@@ -1,5 +1,5 @@
 {% for assessmentCategory in assessment %}
-  <section class="app-!-position-relative govuk-!-margin-top-7" data-app-section="{{ assessmentCategory.key }}">
+  <section class="app-!-position-relative govuk-!-margin-top-7">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
       {{ t('assessment::heading.text', {
         context: assessmentCategory.key
@@ -25,11 +25,11 @@
       }) }}
     {% endfor %}
 
-    {{ updateLink(assessmentCategory.key) }}
+    {{ updateLink(updateLinks[assessmentCategory.key]) }}
   </section>
 {% endfor %}
 
-<section class="app-!-position-relative" data-app-section="court">
+<section class="app-!-position-relative">
   {% if move.to_location.location_type == 'court' %}
     {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
@@ -93,5 +93,6 @@
       {% endif %}
     {% endif %}
   {% endif %}
-  {{ updateLink('court') }}
+
+  {{ updateLink(updateLinks.court) }}
 </section>

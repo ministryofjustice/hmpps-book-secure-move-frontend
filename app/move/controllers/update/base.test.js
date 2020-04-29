@@ -444,7 +444,7 @@ describe('Move controllers', function() {
       })
       it('should call the getUpdateValues method with the correct args', function() {
         controller.getValues(req, res, callback)
-        expect(controller.getUpdateValues).to.be.calledOnceWithExactly(req)
+        expect(controller.getUpdateValues).to.be.calledOnceWithExactly(req, res)
       })
       it('should call the protectReadOnlyFields method with the correct args', function() {
         controller.getValues(req, res, callback)

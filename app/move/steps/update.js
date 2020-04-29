@@ -1,44 +1,88 @@
-const { cloneDeep } = require('lodash')
-
 const {
   Assessment,
   MoveDate,
-  MoveDetails,
+  // TODO: reenable when redirect api available
+  // MoveDetails,
   PersonalDetails,
 } = require('../controllers/update')
 
 const createSteps = require('./create')
 
-const updateControllers = {
-  '/personal-details': PersonalDetails,
-  '/move-details': MoveDetails,
-  '/move-date': MoveDate,
-  '/court-information': Assessment,
-  '/risk-information': Assessment,
-  '/health-information': Assessment,
+const updateStepPropOverrides = {
+  entryPoint: true,
+  backLink: null,
+  next: undefined,
+  buttonText: 'actions::save_and_continue',
 }
 
-const provideStepProps = (key, step) => {
-  const stepProps = {
-    entryPoint: true,
-    backLink: null,
-    next: undefined,
-    buttonText: 'actions::save_and_continue',
-  }
-
-  const updatedStep = {
-    ...cloneDeep(step),
-    ...stepProps,
-  }
-
-  if (updateControllers[key]) {
-    updatedStep.controller = updateControllers[key]
-  }
-  return updatedStep
-}
-
-const updateSteps = Object.keys(createSteps)
-  .filter(key => updateControllers[key])
-  .map(key => ({ [key]: provideStepProps(key, createSteps[key]) }))
+const updateSteps = [
+  {
+    key: 'personal_details',
+    permission: 'move:update',
+    steps: {
+      '/personal-details': {
+        ...createSteps['/personal-details'],
+        ...updateStepPropOverrides,
+        controller: PersonalDetails,
+      },
+    },
+  },
+  // TODO: reenable when redirect api available
+  // {
+  //   key: 'move',
+  //   role: 'move:update',
+  //   steps: {
+  //     '/move-details': {
+  //       ...createSteps['/move-details'],
+  //       ...updateStepPropOverrides,
+  //       controller: MoveDetails,
+  //     },
+  //   },
+  // },
+  {
+    key: 'date',
+    permission: 'move:update',
+    steps: {
+      '/move-date': {
+        ...createSteps['/move-date'],
+        ...updateStepPropOverrides,
+        controller: MoveDate,
+      },
+    },
+  },
+  {
+    key: 'court',
+    permission: 'move:update',
+    steps: {
+      '/court-information': {
+        ...createSteps['/court-information'],
+        ...updateStepPropOverrides,
+        controller: Assessment,
+      },
+    },
+  },
+  {
+    key: 'risk',
+    permission: 'move:update',
+    steps: {
+      '/risk-information': {
+        ...createSteps['/risk-information'],
+        ...updateStepPropOverrides,
+        controller: Assessment,
+      },
+    },
+  },
+  {
+    key: 'health',
+    permission: 'move:update',
+    steps: {
+      '/health-information': {
+        ...createSteps['/health-information'],
+        ...updateStepPropOverrides,
+        controller: Assessment,
+      },
+    },
+  },
+]
 
 module.exports = updateSteps
