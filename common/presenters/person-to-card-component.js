@@ -5,7 +5,11 @@ const filters = require('../../config/nunjucks/filters')
 
 const assessmentToTagList = require('./assessment-to-tag-list')
 
-function personToCardComponent({ showMeta = true, showTags = true } = {}) {
+function personToCardComponent({
+  showImage = true,
+  showMeta = true,
+  showTags = true,
+} = {}) {
   return function item({
     href,
     gender,
@@ -14,6 +18,7 @@ function personToCardComponent({ showMeta = true, showTags = true } = {}) {
     date_of_birth: dateOfBirth,
     assessment_answers: assessmentAnswers,
   }) {
+    const card = {}
     const meta = {}
     const tags = {}
 
@@ -41,12 +46,16 @@ function personToCardComponent({ showMeta = true, showTags = true } = {}) {
       tags.items = assessmentToTagList(assessmentAnswers, href)
     }
 
+    if (showImage) {
+      card.image_path = imageUrl
+      card.image_alt = fullname.toUpperCase()
+    }
+
     return {
+      ...card,
       href,
       meta,
       tags,
-      image_path: imageUrl,
-      image_alt: fullname.toUpperCase(),
       title: {
         text: fullname.toUpperCase(),
       },

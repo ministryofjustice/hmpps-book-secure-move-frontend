@@ -15,6 +15,11 @@
   }
 }
 
+.app-card--compact {
+  border: 0;
+  padding: 0;
+}
+
 .app-card__aside {
   margin-right: govuk-spacing(4);
 }

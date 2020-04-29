@@ -1,6 +1,8 @@
+const componentService = require('../../common/services/component')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
+const moveToCardComponent = require('./move-to-card-component')
 const objectToTableHead = require('./object-to-table-head')
 const objectToTableRow = require('./object-to-table-row')
 
@@ -13,7 +15,8 @@ const tableConfig = [
       },
     },
     row: data => {
-      return `<a href="/move/${data.id}">${data.person.fullname}</a> (${data.person.identifiers[0].value})`
+      const card = moveToCardComponent({ isCompact: true })(data)
+      return componentService.getComponent('appCard', card)
     },
   },
   {
