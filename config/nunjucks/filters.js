@@ -1,6 +1,5 @@
 const chrono = require('chrono-node')
 const {
-  differenceInDays,
   format,
   isThisWeek,
   isToday,
@@ -14,14 +13,11 @@ const {
   isDate,
 } = require('date-fns')
 const filesizejs = require('filesize')
-const { kebabCase, startCase } = require('lodash')
+const { filter, kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 
 const i18n = require('../i18n')
 const { DATE_FORMATS } = require('../index')
-const weekOptions = {
-  weekStartsOn: 1,
-}
 
 /**
  * Formats a date into the desired string format
@@ -45,32 +41,83 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   return format(date, formattedDateStr)
 }
 
-function formatDateRange(dateRange) {
-  if (!Array.isArray(dateRange) || dateRange.length !== 2) {
-    return dateRange
+/**
+ * Formats an array of dates into the desired string format
+ *
+ * With multiple dates it will join them using `to`
+ *
+ * @param  {Any} a any type
+ * @param  {String} a string date format to return
+ * @return {String} a formatted date
+ *
+ * @example {{ "2019-02-21" | formatDateRange }}
+ * @example {{ ["2019-02-21"] | formatDateRange }}
+ * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
+ * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
+ */
+function formatDateRange(value) {
+  const dates = filter(value)
+
+  if (!value || !Array.isArray(value) || dates.length === 0) {
+    return value
   }
-  if (!dateRange[1]) {
-    return dateRange[0]
+
+  if (dates.length === 1) {
+    return formatDate(dates[0])
   }
-  const parsedDates = dateRange.map(date => {
-    return isDate(date) ? date : parseISO(date)
-  })
-  const [startDate, endDate] = parsedDates
-  if (
-    isThisWeek(startDate, weekOptions) &&
-    differenceInDays(endDate, startDate) === 6
-  ) {
-    return i18n.t('actions::current_week')
-  }
-  return _formatAnyDateRange(startDate, endDate)
+
+  const [startDate, endDate] = dates.map(date =>
+    isDate(date) ? date : parseISO(date)
+  )
+
+  const yearFormat = isSameYear(startDate, endDate) ? '' : ' yyyy'
+  const monthFormat = isSameMonth(startDate, endDate) ? '' : ' MMM'
+  const formattedStartDate = formatDate(
+    startDate,
+    `d${monthFormat}${yearFormat}`
+  )
+  const formattedEndDate = formatDate(endDate)
+
+  return `${formattedStartDate} to ${formattedEndDate}`
 }
 
-function _formatAnyDateRange(startDate, endDate) {
-  const displayMonth = isSameMonth(startDate, endDate) ? '' : ' MMM'
-  const displayYear = isSameYear(startDate, endDate) ? '' : ' yyyy'
-  const formattedStartDay = format(startDate, `d${displayMonth}${displayYear}`)
-  const formattedEndDate = format(endDate, 'd MMM yyyy')
-  return `${formattedStartDay} to ${formattedEndDate}`
+/**
+ * Formats an array of dates into the desired string format
+ *
+ * With multiple dates it will join them using `to`
+ *
+ * @param  {Any} a any type
+ * @param  {String} a string date format to return
+ * @return {String} a formatted date
+ *
+ * @example {{ "2019-02-21" | formatDateRange }}
+ * @example {{ ["2019-02-21"] | formatDateRange }}
+ * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
+ * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
+ */
+function formatDateRangeAsRelativeWeek(value) {
+  const dates = filter(value)
+
+  if (!value || !Array.isArray(value) || dates.length === 0) {
+    return value
+  }
+
+  if (dates.length === 1) {
+    return formatDate(dates[0])
+  }
+
+  const options = { weekStartsOn: 1 }
+  const [startDate, endDate] = dates.map(date =>
+    isDate(date) ? date : parseISO(date)
+  )
+  const isCurrentWeek =
+    isThisWeek(startDate, options) && isThisWeek(endDate, options)
+
+  if (isCurrentWeek) {
+    return i18n.t('actions::current_week')
+  }
+
+  return formatDateRange(value)
 }
 
 function formatISOWeek(dateRange) {
@@ -207,6 +254,7 @@ function filesize(str) {
 module.exports = {
   formatDate,
   formatDateRange,
+  formatDateRangeAsRelativeWeek,
   formatDateWithDay,
   formatDateAsRelativeDay,
   formatISOWeek,

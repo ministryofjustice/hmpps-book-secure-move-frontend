@@ -9,7 +9,7 @@
   {% set displayDate = datetime | formatDateAsRelativeDay %}
 {% else %}
   {% set datetime = dateRange | formatISOWeek %}
-  {% set displayDate = dateRange | formatDateRange %}
+  {% set displayDate = dateRange | formatDateRangeAsRelativeWeek %}
 {% endif %}
 
 {% block pageTitle %}
