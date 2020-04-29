@@ -1,7 +1,10 @@
 const { get } = require('lodash')
 
-function check(permission, userPermissions = []) {
-  return userPermissions.includes(permission)
+function check(permissions, userPermissions = []) {
+  if (!Array.isArray(permissions)) {
+    permissions = [permissions]
+  }
+  return permissions.every(permission => userPermissions.includes(permission))
 }
 
 function protectRoute(permission) {

@@ -27,6 +27,37 @@ describe('Permissions middleware', function() {
         expect(permit).to.be.true
       })
     })
+
+    describe('when multiple permissions are required', function() {
+      let permit
+      context('and all required permissions are missing', function() {
+        beforeEach(function() {
+          permit = middleware.check(['perm1', 'perm2'], ['permZ'])
+        })
+        it('should return false', function() {
+          expect(permit).to.be.false
+        })
+      })
+      context('and some of the required permissions are missing', function() {
+        beforeEach(function() {
+          permit = middleware.check(['perm1', 'perm2'], ['perm1', 'permZ'])
+        })
+        it('should return false', function() {
+          expect(permit).to.be.false
+        })
+      })
+      context('and the required permissions exist', function() {
+        beforeEach(function() {
+          permit = middleware.check(
+            ['perm1', 'perm2'],
+            ['perm1', 'perm2', 'permZ']
+          )
+        })
+        it('should return true', function() {
+          expect(permit).to.be.true
+        })
+      })
+    })
   })
 
   describe('#protectRoute()', function() {
@@ -84,6 +115,47 @@ describe('Permissions middleware', function() {
 
       it('should call next without error', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('when there multiple permissions are required', function() {
+      context('and user does not have all required permissions', function() {
+        beforeEach(function() {
+          req.session.user = {
+            permissions: ['user_permission_1', 'required_permission'],
+          }
+          middleware.protectRoute([
+            'required_permission',
+            'required_permission_2',
+          ])(req, {}, nextSpy)
+        })
+
+        it('should call next without error', function() {
+          const error = nextSpy.args[0][0]
+          expect(nextSpy).to.be.calledOnce
+          expect(error).to.be.an.instanceOf(Error)
+          expect(error.message).to.equal(
+            "Forbidden. Missing permission: 'required_permission,required_permission_2'"
+          )
+          expect(error.statusCode).to.equal(403)
+        })
+      })
+
+      context('and user has all required permissions', function() {
+        beforeEach(function() {
+          req.session.user = {
+            permissions: ['user_permission_1', 'required_permission'],
+          }
+          middleware.protectRoute(['user_permission_1', 'required_permission'])(
+            req,
+            {},
+            nextSpy
+          )
+        })
+
+        it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
   })
