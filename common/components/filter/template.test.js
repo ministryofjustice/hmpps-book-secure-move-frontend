@@ -5,7 +5,7 @@ const {
 
 const examples = getExamples('filter')
 
-describe('Results component', function() {
+describe('Filter component', function() {
   context('by default', function() {
     let component, items, $
 
@@ -24,45 +24,104 @@ describe('Results component', function() {
       expect(component.find('ul').length).to.equal(1)
     })
 
-    it('should render correct number of items', function() {
-      expect(items.length).to.equal(3)
+    it('should render role attribute on list', function() {
+      expect(component.find('ul').attr('role')).to.equal('tablist')
     })
 
-    it('should render correct items', function() {
-      const item1 = $(items[0])
-      const item2 = $(items[1])
-      const item3 = $(items[2])
+    describe('items', function() {
+      let item1
+      let item2
+      let item3
 
-      expect(item1.html()).to.contain('Moves proposed')
-      expect(item2.html()).to.contain('Moves requested')
-      expect(item3.html()).to.contain('Moves rejected')
-    })
-    it('has link on the non active items', function() {
-      const item1 = $(items[0]).find('a')
-      const item3 = $(items[2]).find('a')
-      expect(item1.length).to.equal(1)
-      expect(item3.length).to.equal(1)
-    })
-    it('has no link on the active item', function() {
-      const item2 = $(items[1]).find('a')
-      expect(item2.length).to.equal(0)
-    })
-    it('renders the value span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__value')
-      expect(valueSpan.length).to.equal(1)
-      expect(valueSpan.html()).to.equal('4')
-    })
-    it('renders the label span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__label')
-      expect(valueSpan.length).to.equal(1)
-      expect(valueSpan.html()).to.equal('Moves proposed')
-    })
-    it('incorporates the classes passed to it', function() {
-      expect(component.get(0).attribs.class).to.equal(
-        'app-filter app-filter-stacked'
-      )
+      beforeEach(function() {
+        item1 = $(items[0])
+        item2 = $(items[1])
+        item3 = $(items[2])
+      })
+
+      it('should render correct number', function() {
+        expect(items.length).to.equal(3)
+      })
+
+      it('should render correct labels', function() {
+        expect(item1.find('.app-filter__label').text()).to.equal(
+          'Moves proposed'
+        )
+        expect(item2.find('.app-filter__label').text()).to.equal(
+          'Moves requested'
+        )
+        expect(item3.find('.app-filter__label').text()).to.equal(
+          'Moves rejected'
+        )
+      })
+
+      it('should render correct values', function() {
+        expect(item1.find('.app-filter__value').text()).to.equal('4')
+        expect(item2.find('.app-filter__value').text()).to.equal('3')
+        expect(item3.find('.app-filter__value').text()).to.equal('5')
+      })
+
+      it('should render role attribute', function() {
+        expect(item1.attr('role')).to.equal('tab')
+        expect(item2.attr('role')).to.equal('tab')
+        expect(item3.attr('role')).to.equal('tab')
+      })
+
+      context('when not active', function() {
+        it('should contain a link', function() {
+          const item1 = $(items[0]).find('.app-filter__link')
+          const item3 = $(items[2]).find('.app-filter__link')
+          expect(item1.length).to.equal(1)
+          expect(item3.length).to.equal(1)
+        })
+
+        it('should render correct href', function() {
+          expect(item1.find('.app-filter__link').attr('href')).to.equal(
+            '/moves/proposed'
+          )
+          expect(item3.find('.app-filter__link').attr('href')).to.equal(
+            '/moves/rejected'
+          )
+        })
+
+        it('should not contain a tabindex attribute', function() {
+          expect(item1.attr('tabindex')).to.be.undefined
+          expect(item3.attr('tabindex')).to.be.undefined
+        })
+
+        it('should set aria selected to false', function() {
+          expect(item1.attr('aria-selected')).to.equal('false')
+          expect(item3.attr('aria-selected')).to.equal('false')
+        })
+      })
+
+      context('when active', function() {
+        it('should not contain a link', function() {
+          expect(item2.find('.app-filter__link').length).to.equal(0)
+        })
+
+        it('should contain a tabindex attribute', function() {
+          expect(item2.attr('tabindex')).to.equal('0')
+        })
+
+        it('should set aria selected to true', function() {
+          expect(item2.attr('aria-selected')).to.equal('true')
+        })
+      })
     })
   })
+
+  context('with classes param', function() {
+    it('should render classes', function() {
+      const $ = renderComponentHtmlToCheerio('filter', {
+        classes: 'app-filter--compact',
+      })
+
+      const $component = $('.app-filter')
+      expect($component.hasClass('app-filter--compact')).to.be.true
+    })
+  })
+
   context('without value', function() {
     let component, items, $
 
@@ -72,14 +131,33 @@ describe('Results component', function() {
       component = $('.app-filter')
       items = component.find('.app-filter__list-item')
     })
-    it('does not render the value span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__value')
-      expect(valueSpan.length).to.equal(0)
-    })
-    it('renders the label span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__label')
-      expect(valueSpan.length).to.equal(1)
-      expect(valueSpan.html()).to.equal('Moves proposed')
+
+    describe('items', function() {
+      let item1
+      let item2
+
+      beforeEach(function() {
+        item1 = $(items[0])
+        item2 = $(items[1])
+      })
+
+      it('should render correct number', function() {
+        expect(items.length).to.equal(2)
+      })
+
+      it('should render correct labels', function() {
+        expect(item1.find('.app-filter__label').text()).to.equal(
+          'Moves proposed'
+        )
+        expect(item2.find('.app-filter__label').text()).to.equal(
+          'Moves requested'
+        )
+      })
+
+      it('should not render values', function() {
+        expect(item1.find('.app-filter__value').length).to.equal(0)
+        expect(item2.find('.app-filter__value').length).to.equal(0)
+      })
     })
   })
   context('without label', function() {
@@ -91,14 +169,29 @@ describe('Results component', function() {
       component = $('.app-filter')
       items = component.find('.app-filter__list-item')
     })
-    it('renders the value span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__value')
-      expect(valueSpan.length).to.equal(1)
-      expect(valueSpan.html()).to.equal('1')
-    })
-    it('does not render the label span', function() {
-      const valueSpan = $(items[0]).find('.app-filter__label')
-      expect(valueSpan.length).to.equal(0)
+
+    describe('items', function() {
+      let item1
+      let item2
+
+      beforeEach(function() {
+        item1 = $(items[0])
+        item2 = $(items[1])
+      })
+
+      it('should render correct number', function() {
+        expect(items.length).to.equal(2)
+      })
+
+      it('should not render labels', function() {
+        expect(item1.find('.app-filter__label').length).to.equal(0)
+        expect(item2.find('.app-filter__label').length).to.equal(0)
+      })
+
+      it('should render correct values', function() {
+        expect(item1.find('.app-filter__value').text()).to.equal('1')
+        expect(item2.find('.app-filter__value').text()).to.equal('2')
+      })
     })
   })
 })

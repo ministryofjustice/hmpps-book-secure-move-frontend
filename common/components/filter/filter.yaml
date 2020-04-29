@@ -42,10 +42,18 @@ examples:
         - active: true
           href: /moves/requested
           label: Moves requested
-          value: 4
+          value: 3
         - active: false
           href: /moves/rejected
           label: Moves rejected
+          value: 5
+  - name: withClasses
+    data:
+      classes: 'app-filter-stacked'
+      items:
+        - active: true
+          href: /moves/proposed
+          label: Moves proposed
           value: 4
   - name: withoutValue
     data:
