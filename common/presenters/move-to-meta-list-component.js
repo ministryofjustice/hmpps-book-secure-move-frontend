@@ -32,22 +32,32 @@ function setDateToDisplay({ date, dateFrom, dateTo }) {
   return null
 }
 
-function moveToMetaListComponent({
-  date,
-  date_from: dateFrom,
-  date_to: dateTo,
-  time_due: timeDue,
-  move_type: moveType,
-  from_location: fromLocation,
-  to_location: toLocation,
-  additional_information: additionalInfo,
-} = {}) {
+function moveToMetaListComponent(
+  {
+    date,
+    date_from: dateFrom,
+    date_to: dateTo,
+    time_due: timeDue,
+    move_type: moveType,
+    from_location: fromLocation,
+    to_location: toLocation,
+    additional_information: additionalInfo,
+  } = {},
+  actions = {}
+) {
   const destination = get(toLocation, 'title', 'Unknown')
   const destinationLabel =
     moveType === 'prison_recall'
       ? i18n.t('fields::move_type.items.prison_recall.label')
       : destination
   const additionalInformation = additionalInfo ? ` — ${additionalInfo}` : ''
+
+  Object.keys(actions).forEach(key => {
+    actions[key] = {
+      classes: 'app-meta-list__action--sidebar',
+      ...actions[key],
+    }
+  })
   const items = [
     {
       key: {
@@ -64,6 +74,7 @@ function moveToMetaListComponent({
       value: {
         text: destinationLabel + additionalInformation,
       },
+      action: actions.move,
     },
     {
       key: {
@@ -72,6 +83,7 @@ function moveToMetaListComponent({
       value: {
         text: setDateToDisplay({ date, dateFrom, dateTo }),
       },
+      action: actions.date,
     },
     {
       key: {

@@ -59,6 +59,7 @@ describe('Presenters', function() {
             value: {
               text: `${mockMove.to_location.title} — ${mockMove.additional_information}`,
             },
+            action: undefined,
           })
         })
 
@@ -68,6 +69,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: 'Sunday 9 Jun 2019' },
+            action: undefined,
           })
         })
 
@@ -132,6 +134,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: 'Sunday 9 Jun 2019 (Today)' },
+            action: undefined,
           })
         })
       })
@@ -159,6 +162,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: 'Sunday 9 Jun 2019 (Tomorrow)' },
+            action: undefined,
           })
         })
       })
@@ -186,6 +190,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: 'Sunday 9 Jun 2019 (Yesterday)' },
+            action: undefined,
           })
         })
       })
@@ -211,6 +216,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: null },
+            action: undefined,
           })
         })
         it('returns the from date if there is no "to" date', function() {
@@ -221,6 +227,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: '__translated__ Friday 1 May 2020' },
+            action: undefined,
           })
         })
         it('returns the range if both dates are present', function() {
@@ -230,6 +237,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: '1 to 5 May 2020' },
+            action: undefined,
           })
         })
         it('returns the date if date and range are both present', function() {
@@ -240,8 +248,50 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: { text: 'Friday 1 Jan 2021' },
+            action: undefined,
           })
         })
+      })
+    })
+
+    context('when provided with an action', function() {
+      let transformedResponse
+      const moveAction = {
+        href: '/move',
+        html: 'Update move',
+      }
+      const dateAction = {
+        href: '/date',
+        html: 'Update date',
+      }
+
+      const expectedMoveAction = {
+        ...moveAction,
+        classes: 'app-meta-list__action--sidebar',
+      }
+      const expectedDateAction = {
+        ...dateAction,
+        classes: 'app-meta-list__action--sidebar',
+      }
+
+      it('should add actions to move and date items', function() {
+        transformedResponse = moveToMetaListComponent(mockMove, {
+          move: moveAction,
+          date: dateAction,
+        })
+        const { items } = transformedResponse
+        expect(items[0].action).to.be.undefined
+        expect(items[1].action).to.deep.equal(expectedMoveAction)
+        expect(items[2].action).to.deep.equal(expectedDateAction)
+      })
+
+      it('should add actions to move and date items', function() {
+        transformedResponse = moveToMetaListComponent(mockMove, {
+          date: dateAction,
+        })
+        const { items } = transformedResponse
+        expect(items[1].action).to.be.undefined
+        expect(items[2].action).to.deep.equal(expectedDateAction)
       })
     })
   })
