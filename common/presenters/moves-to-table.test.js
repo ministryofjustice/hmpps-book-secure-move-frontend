@@ -131,7 +131,7 @@ describe('#movesToTable', function() {
     })
     it('returns the date range on the fourth cell', function() {
       expect(output.moves[0][3]).to.deep.equal({
-        html: '28 Sep to 28 Oct 2020',
+        html: '28 Sep 2020',
       })
     })
     it('returns the move type on the fifth cell', function() {
@@ -148,13 +148,13 @@ describe('#movesToTable', function() {
           html: 'Name',
         },
         {
-          html: 'Created at',
+          html: 'Sent on',
         },
         {
           html: 'Move to',
         },
         {
-          html: 'Date',
+          html: 'Earliest move date',
         },
         {
           html: 'Move type',

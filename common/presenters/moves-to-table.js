@@ -25,8 +25,8 @@ const tableConfig = [
     row: 'to_location.title',
   },
   {
-    head: i18n.t('date'),
-    row: data => filters.formatDateRange([data.date_from, data.date_to]),
+    head: i18n.t('moves::dashboard.earliest_move_date'),
+    row: data => filters.formatDate(data.date_from),
   },
   {
     head: i18n.t('moves::dashboard.move_type'),
