@@ -1,4 +1,4 @@
-const { date: dateFormatter } = require('../formatters')
+const { date: dateFormatter } = require('../../../common/formatters')
 
 const date = {
   validate: ['date'],
