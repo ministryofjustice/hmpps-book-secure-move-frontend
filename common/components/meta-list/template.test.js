@@ -7,12 +7,13 @@ const examples = getExamples('meta-list')
 
 describe('Meta list component', function() {
   context('default', function() {
-    let $, $component, $items
+    let $, $component, $items, $action
 
     beforeEach(function() {
       $ = renderComponentHtmlToCheerio('meta-list', examples.default)
       $component = $('.app-meta-list')
       $items = $component.find('.app-meta-list__item')
+      $action = $component.find('.app-meta-list__action')
     })
 
     it('should render', function() {
@@ -21,6 +22,10 @@ describe('Meta list component', function() {
 
     it('should render correct number of items', function() {
       expect($items.length).to.equal(2)
+    })
+
+    it('should render no actions', function() {
+      expect($action.length).to.equal(0)
     })
   })
 
@@ -159,6 +164,41 @@ describe('Meta list component', function() {
 
     it('should not render item', function() {
       expect($items.length).to.equal(0)
+    })
+  })
+
+  context('with action', function() {
+    let $, $component, $action, $link
+
+    beforeEach(function() {
+      $ = renderComponentHtmlToCheerio('meta-list', examples['with action'])
+      $component = $('.app-meta-list')
+      $action = $component.find('.app-meta-list__action')
+      $link = $action.find('.govuk-link')
+    })
+
+    it('should render action', function() {
+      expect($action.length).to.equal(1)
+    })
+
+    it('should set correct class on action', function() {
+      expect($action.hasClass('action-class')).to.be.true
+    })
+
+    it('should render action link', function() {
+      expect($link.length).to.equal(1)
+    })
+
+    it('should set correct text for link', function() {
+      expect($link.text().trim()).to.equal('Action text')
+    })
+
+    it('should set correct href on link', function() {
+      expect($link.attr('href')).to.equal('/action')
+    })
+
+    it('should set correct attributes on link', function() {
+      expect($link.attr('foo')).to.equal('bar')
     })
   })
 })

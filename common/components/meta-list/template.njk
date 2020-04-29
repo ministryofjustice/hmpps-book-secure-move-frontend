@@ -1,7 +1,7 @@
 <dl class="app-meta-list {% if params.classes -%} {{ params.classes }}{%- endif %}">
   {% for item in params.items %}
     {% if item.value.text or item.value.html %}
-      <div class="app-meta-list__item">
+      <div class="app-meta-list__item {% if item.classes -%} {{ item.classes }}{%- endif %}">
         {% if item.key.html or item.key.text %}
           <dt class="app-meta-list__key">
             {{ item.key.html | safe if item.key.html else item.key.text }}
@@ -11,6 +11,14 @@
         <dd class="app-meta-list__value">
           {{ item.value.html | safe if item.value.html else item.value.text }}
         </dd>
+
+        {% if item.action.html or item.action.text %}
+          <dd class="app-meta-list__action {% if item.action.classes -%} {{ item.action.classes }}{%- endif %}">
+            <a href="{{ item.action.href }}" class="govuk-link" {%- for attribute, value in item.action.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+              {{ item.action.html | safe if item.action.html else item.action.text }}
+            </a>
+          </dd>
+        {% endif %}
       </div>
     {% endif %}
   {% endfor %}
