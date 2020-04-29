@@ -2,14 +2,24 @@ const i18n = require('../../config/i18n')
 
 const personToCardComponent = require('./person-to-card-component')
 
-function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
+function moveToCardComponent({
+  isCompact = false,
+  showImage = true,
+  showMeta = true,
+  showTags = true,
+} = {}) {
   return function item({ id, reference, person = {}, status }) {
     const href = `/move/${id}`
     const excludedBadgeStatuses = ['cancelled']
-    const statusBadge = excludedBadgeStatuses.includes(status)
-      ? undefined
-      : { text: i18n.t(`statuses::${status}`) }
-    const personCardComponent = personToCardComponent({ showMeta, showTags })({
+    const statusBadge =
+      excludedBadgeStatuses.includes(status) || isCompact
+        ? undefined
+        : { text: i18n.t(`statuses::${status}`) }
+    const personCardComponent = personToCardComponent({
+      showImage: isCompact ? false : showImage,
+      showMeta: isCompact ? false : showMeta,
+      showTags: isCompact ? false : showTags,
+    })({
       ...person,
       href,
     })
@@ -17,6 +27,7 @@ function moveToCardComponent({ showMeta = true, showTags = true } = {}) {
     return {
       ...personCardComponent,
       status: statusBadge,
+      classes: isCompact ? 'app-card--compact' : '',
       caption: {
         text: i18n.t('moves::move_reference', {
           reference,

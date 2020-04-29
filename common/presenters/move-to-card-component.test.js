@@ -47,6 +47,7 @@ describe('Presenters', function() {
               href: '/move/12345',
             })
             expect(personToCardComponentStub).to.be.calledWithExactly({
+              showImage: true,
               showMeta: true,
               showTags: true,
             })
@@ -55,6 +56,7 @@ describe('Presenters', function() {
           it('should contain correct output', function() {
             expect(transformedResponse).to.deep.equal({
               ...mockPersonCardComponent,
+              classes: '',
               status: {
                 text: '__translated__',
               },
@@ -85,6 +87,26 @@ describe('Presenters', function() {
       })
     })
 
+    context('with image disabled', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          showImage: false,
+        })(mockMove)
+      })
+
+      it('should call person to card component correctly', function() {
+        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.person,
+          href: '/move/12345',
+        })
+        expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: false,
+          showMeta: true,
+          showTags: true,
+        })
+      })
+    })
+
     context('with meta disabled', function() {
       beforeEach(function() {
         transformedResponse = moveToCardComponent({
@@ -98,6 +120,7 @@ describe('Presenters', function() {
           href: '/move/12345',
         })
         expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: true,
           showMeta: false,
           showTags: true,
         })
@@ -117,8 +140,74 @@ describe('Presenters', function() {
           href: '/move/12345',
         })
         expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: true,
           showMeta: true,
           showTags: false,
+        })
+      })
+    })
+
+    context('with compact design', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          isCompact: true,
+        })(mockMove)
+      })
+
+      it('should call person to card component correctly', function() {
+        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.person,
+          href: '/move/12345',
+        })
+        expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: false,
+          showMeta: false,
+          showTags: false,
+        })
+      })
+
+      it('should contain correct output', function() {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: 'app-card--compact',
+          status: undefined,
+          caption: {
+            text: '__translated__',
+          },
+        })
+      })
+    })
+
+    context('with compact design and all others disabled', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          isCompact: true,
+          showImage: true,
+          showMeta: true,
+          showTags: true,
+        })(mockMove)
+      })
+
+      it('should call person to card component correctly', function() {
+        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.person,
+          href: '/move/12345',
+        })
+        expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: false,
+          showMeta: false,
+          showTags: false,
+        })
+      })
+
+      it('should contain correct output', function() {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: 'app-card--compact',
+          status: undefined,
+          caption: {
+            text: '__translated__',
+          },
         })
       })
     })
@@ -143,6 +232,7 @@ describe('Presenters', function() {
         it('should contain correct output', function() {
           expect(transformedResponse).to.deep.equal({
             ...mockPersonCardComponent,
+            classes: '',
             status: undefined,
             caption: {
               text: '__translated__',

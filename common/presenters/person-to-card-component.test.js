@@ -340,8 +340,7 @@ describe('Presenters', function() {
       })
 
       it('should not contain meta items', function() {
-        expect(transformedResponse).to.have.property('meta')
-        expect(transformedResponse.meta.items).to.be.undefined
+        expect(transformedResponse).not.to.have.property('meta')
       })
 
       it('should contain href', function() {
@@ -366,8 +365,36 @@ describe('Presenters', function() {
       })
 
       it('should not contain tags items', function() {
-        expect(transformedResponse).to.have.property('tags')
-        expect(transformedResponse.tags.items).to.be.undefined
+        expect(transformedResponse).not.to.have.property('tags')
+      })
+
+      it('should contain href', function() {
+        expect(transformedResponse).to.have.property('href')
+      })
+
+      it('should contain title', function() {
+        expect(transformedResponse).to.have.property('title')
+      })
+
+      it('should contain meta', function() {
+        expect(transformedResponse).to.have.property('meta')
+        expect(transformedResponse.meta.items.length).to.equal(2)
+      })
+    })
+
+    context('with image disabled', function() {
+      beforeEach(function() {
+        transformedResponse = personToCardComponent({
+          showImage: false,
+        })(mockPerson)
+      })
+
+      it('should not contain an image path', function() {
+        expect(transformedResponse).not.to.have.property('image_path')
+      })
+
+      it('should not contain image alt', function() {
+        expect(transformedResponse).not.to.have.property('image_alt')
       })
 
       it('should contain href', function() {
