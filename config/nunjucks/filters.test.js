@@ -1,4 +1,3 @@
-const { startOfWeek, endOfWeek } = require('date-fns')
 const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
@@ -218,25 +217,6 @@ describe('Nunjucks filters', function() {
             })
           }
         )
-
-        context('when dates and are in the current week', function() {
-          const weekOpts = {
-            weekStartsOn: 1,
-          }
-
-          beforeEach(function() {
-            sinon.stub(i18n, 't').returnsArg(0)
-          })
-
-          it('returns "this week"', function() {
-            expect(
-              formatDateRange([
-                startOfWeek(new Date(), weekOpts),
-                endOfWeek(new Date(), weekOpts),
-              ])
-            ).to.equal('actions::current_week')
-          })
-        })
       })
     })
 
@@ -289,25 +269,96 @@ describe('Nunjucks filters', function() {
             })
           }
         )
+      })
+    })
+  })
 
-        context('when dates and are in the current week', function() {
-          const weekOpts = {
-            weekStartsOn: 1,
-          }
+  describe('#formatDateRangeAsRelativeWeek()', function() {
+    beforeEach(function() {
+      const mockDate = new Date('2020-04-06')
+      this.clock = sinon.useFakeTimers(mockDate.getTime())
+      sinon.stub(i18n, 't').returnsArg(0)
+    })
 
-          beforeEach(function() {
-            sinon.stub(i18n, 't').returnsArg(0)
-          })
+    afterEach(function() {
+      this.clock.restore()
+    })
 
-          it('returns "this week"', function() {
-            expect(
-              formatDateRange([
-                startOfWeek(new Date(), weekOpts),
-                endOfWeek(new Date(), weekOpts),
-              ])
-            ).to.equal('actions::current_week')
-          })
+    context('when current dates are this week', function() {
+      context('with exact dates', function() {
+        it('should return `This week`', function() {
+          const formattedRange = filters.formatDateRangeAsRelativeWeek([
+            '2020-04-06',
+            '2020-04-12',
+          ])
+          expect(formattedRange).to.equal('actions::current_week')
         })
+      })
+
+      context('with dates within this week', function() {
+        it('should return `This week`', function() {
+          const formattedRange = filters.formatDateRangeAsRelativeWeek([
+            '2020-04-08',
+            '2020-04-12',
+          ])
+          expect(formattedRange).to.equal('actions::current_week')
+        })
+
+        it('should return `This week`', function() {
+          const formattedRange = filters.formatDateRangeAsRelativeWeek([
+            '2020-04-06',
+            '2020-04-10',
+          ])
+          expect(formattedRange).to.equal('actions::current_week')
+        })
+      })
+    })
+
+    context('when current dates are next week', function() {
+      it('should return `Next week`', function() {
+        const formattedRange = filters.formatDateRangeAsRelativeWeek([
+          '2020-04-13',
+          '2020-04-19',
+        ])
+        expect(formattedRange).to.equal('13 to 19 Apr 2020')
+        // expect(formattedRange).to.equal('Next week')
+      })
+    })
+
+    context('when current dates are last week', function() {
+      it('should return `Last week`', function() {
+        const formattedRange = filters.formatDateRangeAsRelativeWeek([
+          '2020-03-30',
+          '2020-04-05',
+        ])
+        expect(formattedRange).to.equal('30 Mar to 5 Apr 2020')
+        // expect(formattedRange).to.equal('Last week')
+      })
+    })
+
+    context('when dates are other weeks', function() {
+      it('should return date in default format', function() {
+        const formattedRange = filters.formatDateRangeAsRelativeWeek([
+          '2020-04-05',
+          '2020-04-12',
+        ])
+        expect(formattedRange).to.equal('5 to 12 Apr 2020')
+      })
+
+      it('should return date in default format', function() {
+        const formattedRange = filters.formatDateRangeAsRelativeWeek([
+          '2020-04-06',
+          '2020-04-13',
+        ])
+        expect(formattedRange).to.equal('6 to 13 Apr 2020')
+      })
+
+      it('should return date in default format', function() {
+        const formattedRange = filters.formatDateRangeAsRelativeWeek([
+          '2017-08-01',
+          '2017-08-08',
+        ])
+        expect(formattedRange).to.equal('1 to 8 Aug 2017')
       })
     })
   })

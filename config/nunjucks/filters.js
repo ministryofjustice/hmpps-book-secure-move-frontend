@@ -1,6 +1,5 @@
 const chrono = require('chrono-node')
 const {
-  differenceInDays,
   format,
   isThisWeek,
   isToday,
@@ -19,9 +18,6 @@ const pluralize = require('pluralize')
 
 const i18n = require('../i18n')
 const { DATE_FORMATS } = require('../index')
-const weekOptions = {
-  weekStartsOn: 1,
-}
 
 /**
  * Formats a date into the desired string format
@@ -73,13 +69,6 @@ function formatDateRange(value) {
   const [startDate, endDate] = dates.map(date =>
     isDate(date) ? date : parseISO(date)
   )
-  const isCurrentWeek =
-    isThisWeek(startDate, weekOptions) &&
-    differenceInDays(endDate, startDate) === 6
-
-  if (isCurrentWeek) {
-    return i18n.t('actions::current_week')
-  }
 
   const yearFormat = isSameYear(startDate, endDate) ? '' : ' yyyy'
   const monthFormat = isSameMonth(startDate, endDate) ? '' : ' MMM'
@@ -90,6 +79,45 @@ function formatDateRange(value) {
   const formattedEndDate = formatDate(endDate)
 
   return `${formattedStartDate} to ${formattedEndDate}`
+}
+
+/**
+ * Formats an array of dates into the desired string format
+ *
+ * With multiple dates it will join them using `to`
+ *
+ * @param  {Any} a any type
+ * @param  {String} a string date format to return
+ * @return {String} a formatted date
+ *
+ * @example {{ "2019-02-21" | formatDateRange }}
+ * @example {{ ["2019-02-21"] | formatDateRange }}
+ * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
+ * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
+ */
+function formatDateRangeAsRelativeWeek(value) {
+  const dates = filter(value)
+
+  if (!value || !Array.isArray(value) || dates.length === 0) {
+    return value
+  }
+
+  if (dates.length === 1) {
+    return formatDate(dates[0])
+  }
+
+  const options = { weekStartsOn: 1 }
+  const [startDate, endDate] = dates.map(date =>
+    isDate(date) ? date : parseISO(date)
+  )
+  const isCurrentWeek =
+    isThisWeek(startDate, options) && isThisWeek(endDate, options)
+
+  if (isCurrentWeek) {
+    return i18n.t('actions::current_week')
+  }
+
+  return formatDateRange(value)
 }
 
 function formatISOWeek(dateRange) {
@@ -226,6 +254,7 @@ function filesize(str) {
 module.exports = {
   formatDate,
   formatDateRange,
+  formatDateRangeAsRelativeWeek,
   formatDateWithDay,
   formatDateAsRelativeDay,
   formatISOWeek,
