@@ -1,36 +1,5 @@
 {% extends "layouts/list-view.njk" %}
 
-{% block headerActions %}
-  {% if canAccess('move:create') %}
-    {{ govukButton({
-      isStartButton: true,
-      text: t("actions::create_move"),
-      href: "/move/new",
-      classes: "govuk-!-margin-top-2 app-print--hide"
-    }) }}
-  {% endif %}
-{% endblock %}
-
-{% block headerNav %}
-  <div class="govuk-grid-column-one-third">
-    <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
-      {% if canAccess('moves:download') %}
-        <li>
-          <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
-            {{ t("actions::download_csv") }}
-          </a>
-        </li>
-      {% endif %}
-
-      <li>
-        <a href="javascript:window.print()" class="app-icon app-icon--print">
-          {{ t("actions::print_move_list") }}
-        </a>
-      </li>
-    </ul>
-  </div>
-{% endblock %}
-
 {% block pageContent %}
   {% for destination in destinations %}
     <div class="
