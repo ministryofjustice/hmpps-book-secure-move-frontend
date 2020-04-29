@@ -65,8 +65,9 @@ router.use(
 )
 
 if (FEATURE_FLAGS.EDITABILITY) {
-  updateSteps.forEach(updateStep => {
-    const key = Object.keys(updateStep)[0]
+  updateSteps.forEach(updateJourney => {
+    const steps = updateJourney.steps
+    const key = Object.keys(steps)[0]
     const updateStepConfig = {
       ...updateConfig,
       name: 'update-a-move' + key,
@@ -74,8 +75,8 @@ if (FEATURE_FLAGS.EDITABILITY) {
     }
     router.use(
       '/:moveId/edit',
-      protectRoute('move:update'),
-      wizard(updateStep, updateFields, updateStepConfig)
+      protectRoute(updateJourney.permission),
+      wizard(steps, updateFields, updateStepConfig)
     )
   })
 }

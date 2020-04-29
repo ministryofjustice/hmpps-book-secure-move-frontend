@@ -179,7 +179,8 @@
     "categories": {
       "court": "information for the court",
       "health": "health information",
-      "move_details": "move details",
+      "date": "when this person is moving",
+      "move": "where this person is moving",
       "personal_details": "personal details",
       "risk": "risk information"
     }

@@ -187,7 +187,7 @@ class CreateMovePage extends Page {
       },
       gender: {
         selector: this.fields.gender,
-        value: faker.random.arrayElement(['Male', 'Female']),
+        value: person.gender,
         type: 'radio',
       },
     }

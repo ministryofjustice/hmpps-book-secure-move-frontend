@@ -17,7 +17,13 @@ if (FEATURE_FLAGS.EDITABILITY) {
   })
 
   test('User should see expected update links on move page', async () => {
-    await checkUpdateLinks(['personal_details', 'risk', 'health', 'court'])
+    await checkUpdateLinks([
+      'personal_details',
+      'risk',
+      'health',
+      'court',
+      'date',
+    ])
   })
 
   test('User should see be able to access update pages', async () => {
@@ -26,7 +32,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
       'risk',
       'health',
       'court',
-      'move_details',
+      'date',
     ])
   })
 

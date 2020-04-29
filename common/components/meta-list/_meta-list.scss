@@ -32,3 +32,20 @@
 .app-meta-list__value {
   margin: 0;
 }
+
+.app-meta-list__action {
+  margin: 0;
+}
+
+@include govuk-media-query($from: tablet) {
+  .app-meta-list__item {
+    position: relative;
+  }
+
+  .app-meta-list__action--sidebar {
+    @include govuk-font($size: 16);
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

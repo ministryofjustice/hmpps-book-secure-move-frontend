@@ -2,14 +2,15 @@ const proxyquire = require('proxyquire')
 
 const presenters = require('../../../common/presenters')
 
-const updateSteps = [
-  { '/foo': {} },
-  { '/bar-details': {} },
-  { '/baz-information': {} },
-]
+const getUpdateUrls = sinon.stub()
+const getUpdateLinks = sinon.stub()
+
+const updateSteps = []
 Object.defineProperty(updateSteps, '@noCallThru', { value: true })
 const controller = proxyquire('./view', {
   '../steps/update': updateSteps,
+  './view/view.update.urls': getUpdateUrls,
+  './view/view.update.links': getUpdateLinks,
 })
 
 const mockMove = {
@@ -48,11 +49,31 @@ const mockMove = {
   ],
 }
 
+const mockUrls = {
+  somewhere: '/somewhere',
+}
+const mockUpdateLinks = {
+  somewhere: {
+    attributes: {
+      'data-update-link': 'somewhere',
+    },
+    category: 'somewhere',
+    html: 'Update somewhere',
+    url: '/somewhere',
+  },
+}
+
+getUpdateUrls.returns(mockUrls)
+getUpdateLinks.returns(mockUpdateLinks)
+
 describe('Move controllers', function() {
   describe('#view()', function() {
     let req, res
+    const userPermissions = ['permA']
 
     beforeEach(function() {
+      getUpdateUrls.resetHistory()
+      getUpdateLinks.resetHistory()
       sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
@@ -65,6 +86,11 @@ describe('Move controllers', function() {
 
       req = {
         t: sinon.stub().returnsArg(0),
+        session: {
+          user: {
+            permissions: userPermissions,
+          },
+        },
       }
       res = {
         render: sinon.spy(),
@@ -85,7 +111,8 @@ describe('Move controllers', function() {
 
       it('should call moveToMetaListComponent presenter with correct args', function() {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
-          mockMove
+          mockMove,
+          mockUpdateLinks
         )
       })
 
@@ -207,24 +234,30 @@ describe('Move controllers', function() {
         expect(params.messageContent).to.equal('statuses::description')
       })
 
-      describe('update urls', function() {
-        let update
-        beforeEach(function() {
-          update = res.render.args[0][1].urls.update
+      describe('update urls and links', function() {
+        it('should call getUpdateUrls with expected args', function() {
+          expect(getUpdateUrls).to.be.calledOnceWithExactly(
+            updateSteps,
+            'moveId',
+            userPermissions
+          )
         })
 
-        it('should contain update urls', function() {
+        it('should call getUpdateLinks with expected args', function() {
+          expect(getUpdateLinks).to.be.calledOnceWithExactly(
+            updateSteps,
+            mockUrls
+          )
+        })
+
+        it('should pass update urls in locals to render', function() {
           const urls = res.render.args[0][1].urls
           expect(urls).to.have.property('update')
         })
 
-        it('should contain expected url values', function() {
-          expect(update.foo).to.equal('/move/moveId/edit/foo')
-          expect(update.bar_details).to.equal('/move/moveId/edit/bar-details')
-          expect(update.baz_information).to.equal(
-            '/move/moveId/edit/baz-information'
-          )
-          expect(update.baz).to.equal('/move/moveId/edit/baz-information')
+        it('should pass update links in locals to render', function() {
+          const updateLinks = res.render.args[0][1].updateLinks
+          expect(updateLinks).to.deep.equal(mockUpdateLinks)
         })
       })
     })

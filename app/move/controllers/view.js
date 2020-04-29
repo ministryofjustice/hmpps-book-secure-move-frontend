@@ -1,7 +1,10 @@
-const { sortBy } = require('lodash')
+const { get, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
 const updateSteps = require('../steps/update')
+
+const getUpdateLinks = require('./view/view.update.links')
+const getUpdateUrls = require('./view/view.update.urls')
 
 module.exports = function view(req, res) {
   const { move } = res.locals
@@ -16,22 +19,17 @@ module.exports = function view(req, res) {
       ? cancellationComments
       : req.t(`fields::cancellation_reason.items.${cancellationReason}.label`)
   const bannerStatuses = ['cancelled']
+
+  const userPermissions = get(req.session, 'user.permissions')
+  const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
+  const updateActions = getUpdateLinks(updateSteps, updateUrls)
+
   const urls = {
-    update: {},
+    update: updateUrls,
   }
-  updateSteps.forEach(step => {
-    const url = Object.keys(step)[0].replace(/^\//, '')
-    const key = url.replace(/-/g, '_')
-    urls.update[key] = `/move/${move.id}/edit/${url}`
-    // some assessment categories aren't suffixed with _information
-    if (key.endsWith('_information')) {
-      const keyWithoutInformation = key.replace(/_information$/, '')
-      urls.update[keyWithoutInformation] = urls.update[key]
-    }
-  })
 
   const locals = {
-    moveSummary: presenters.moveToMetaListComponent(move),
+    moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(person.assessment_answers),
     assessment: presenters
@@ -58,6 +56,7 @@ module.exports = function view(req, res) {
       context: status,
       reason,
     }),
+    updateLinks: updateActions,
     urls,
   }
 

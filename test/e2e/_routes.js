@@ -3,8 +3,9 @@ import { E2E } from '../../config'
 const getUpdatePageStub = page => {
   const updateMap = {
     court: 'court-information',
+    date: 'move-date',
     health: 'health-information',
-    move_details: 'move-details',
+    move: 'move-details',
     personal_details: 'personal-details',
     risk: 'risk-information',
   }
