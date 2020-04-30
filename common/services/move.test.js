@@ -37,15 +37,18 @@ describe('Move Service', function() {
   describe('#format()', function() {
     const mockToLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     const mockFromLocationId = 'f6e1f57c-7d07-41d2-afee-1662f5103e2d'
+    const mockPersonId = '0e180146-d911-49d8-a62e-63ea5cec7ba5'
+    const mockPrisonTransferReasonId = '8387e205-97d1-4023-83c5-4f16f0c479d0'
+    let formatted
 
-    context('when relationship field is string', function() {
-      let formatted
-
+    context('when relationship fields are a string', function() {
       beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
           to_location: mockToLocationId,
           from_location: mockFromLocationId,
+          person: mockPersonId,
+          prison_transfer_reason: mockPrisonTransferReasonId,
         })
       })
 
@@ -61,14 +64,24 @@ describe('Move Service', function() {
         })
       })
 
+      it('should format as relationship object', function() {
+        expect(formatted.person).to.deep.equal({
+          id: mockPersonId,
+        })
+      })
+
+      it('should format as relationship object', function() {
+        expect(formatted.prison_transfer_reason).to.deep.equal({
+          id: mockPrisonTransferReasonId,
+        })
+      })
+
       it('should not affect non relationship fields', function() {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
 
-    context('when relationship field is not a string', function() {
-      let formatted
-
+    context('when relationship fields are not a string', function() {
       beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
@@ -78,6 +91,12 @@ describe('Move Service', function() {
           from_location: {
             id: mockFromLocationId,
           },
+          person: {
+            id: mockPersonId,
+          },
+          prison_transfer_reason: {
+            id: mockPrisonTransferReasonId,
+          },
         })
       })
 
@@ -93,14 +112,24 @@ describe('Move Service', function() {
         })
       })
 
+      it('should return its original value', function() {
+        expect(formatted.person).to.deep.equal({
+          id: mockPersonId,
+        })
+      })
+
+      it('should return its original value', function() {
+        expect(formatted.prison_transfer_reason).to.deep.equal({
+          id: mockPrisonTransferReasonId,
+        })
+      })
+
       it('should not affect non relationship fields', function() {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
 
     context('with falsey values', function() {
-      let formatted
-
       beforeEach(async function() {
         formatted = await moveService.format({
           date: '2010-10-10',
@@ -108,6 +137,10 @@ describe('Move Service', function() {
             id: mockToLocationId,
           },
           from_location: mockFromLocationId,
+          person: mockPersonId,
+          prison_transfer_reason: {
+            id: mockPrisonTransferReasonId,
+          },
           empty_string: '',
           false: false,
           undefined: undefined,
@@ -123,6 +156,12 @@ describe('Move Service', function() {
           },
           from_location: {
             id: mockFromLocationId,
+          },
+          person: {
+            id: mockPersonId,
+          },
+          prison_transfer_reason: {
+            id: mockPrisonTransferReasonId,
           },
           empty_array: [],
         })
