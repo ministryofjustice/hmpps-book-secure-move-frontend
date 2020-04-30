@@ -12,10 +12,9 @@ const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByToLocation = require('./moves-by-to-location')
 const movesToCSV = require('./moves-to-csv')
 const movesToTable = require('./moves-to-table')
-const objectToTableHead = require('./object-to-table-head')
-const objectToTableRow = require('./object-to-table-row')
 const personToCardComponent = require('./person-to-card-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
+const tablePresenters = require('./table')
 const timetableToTableComponent = require('./timetable-to-table-component')
 
 module.exports = {
@@ -34,8 +33,7 @@ module.exports = {
   movesByToLocation,
   movesToCSV,
   moveTypesToFilterComponent,
-  objectToTableHead,
-  objectToTableRow,
   movesToTable,
+  tablePresenters,
   timetableToTableComponent,
 }

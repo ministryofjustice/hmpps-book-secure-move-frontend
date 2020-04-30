@@ -1,6 +1,8 @@
+const i18n = require('../../../config/i18n')
+
 function objectToTableHead(schemaEl) {
   return {
-    html: schemaEl.head,
+    html: i18n.t(schemaEl.head),
   }
 }
 module.exports = objectToTableHead
