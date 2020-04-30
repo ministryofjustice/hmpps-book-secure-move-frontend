@@ -67,9 +67,19 @@ class MoveDetailsController extends CreateBaseController {
 
   process(req, res, next) {
     const { move_type: moveType } = req.form.values
+    const existingMoveType = req.sessionModel.get('move_type')
 
     // process locations
     req.form.values.to_location = req.form.values[`to_location_${moveType}`]
+
+    if (moveType === 'prison_recall') {
+      req.form.values.additional_information =
+        req.form.values.prison_recall_comments
+    }
+
+    if (moveType !== 'prison_recall' && existingMoveType === 'prison_recall') {
+      req.form.values.additional_information = null
+    }
 
     next()
   }

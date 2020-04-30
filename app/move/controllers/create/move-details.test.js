@@ -307,6 +307,9 @@ describe('Move controllers', function() {
           form: {
             values: {},
           },
+          sessionModel: {
+            get: sinon.stub(),
+          },
         }
       })
       context('when location type is court', function() {
@@ -324,27 +327,105 @@ describe('Move controllers', function() {
           expect(req.form.values.to_location).to.equal('12345')
         })
 
+        it('should not set additional_information', function() {
+          expect(req.form.values.additional_information).to.be.undefined
+        })
+
         it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when location type is prison', function() {
+      context('when location type is prison recall', function() {
+        const mockComments = 'Some prison recall specific information'
+
         beforeEach(function() {
           req.form.values = {
             move_type: 'prison_recall',
+            prison_recall_comments: mockComments,
             to_location: '',
           }
 
           controller.process(req, {}, nextSpy)
         })
 
-        it('should set to_location based on location type', function() {
+        it('should not set to_location', function() {
           expect(req.form.values.to_location).to.be.undefined
+        })
+
+        it('should set additional_information', function() {
+          expect(req.form.values.additional_information).to.equal(mockComments)
         })
 
         it('should call next without error', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when location type is prison transfer', function() {
+        beforeEach(function() {
+          req.form.values = {
+            move_type: 'prison_transfer',
+            to_location: '',
+            to_location_prison_transfer: '67890',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function() {
+          expect(req.form.values.to_location).to.equal('67890')
+        })
+
+        it('should not set additional_information', function() {
+          expect(req.form.values.additional_information).to.be.undefined
+        })
+
+        it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when location type is not a prison recall', function() {
+        const mockComments = 'Some prison recall specific information'
+
+        beforeEach(function() {
+          req.form.values = {
+            move_type: 'prison_transfer',
+            additional_information: mockComments,
+            to_location: '',
+          }
+        })
+
+        context('when existing move type is prison recall', function() {
+          beforeEach(function() {
+            req.sessionModel.get.returns('prison_recall')
+            controller.process(req, {}, nextSpy)
+          })
+
+          it('should clear additional_information', function() {
+            expect(req.form.values.additional_information).to.equal(null)
+          })
+
+          it('should call next without error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when existing move type is not prison recall', function() {
+          beforeEach(function() {
+            controller.process(req, {}, nextSpy)
+          })
+
+          it('should not clear additional_information', function() {
+            expect(req.form.values.additional_information).to.equal(
+              mockComments
+            )
+          })
+
+          it('should call next without error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
       })
     })

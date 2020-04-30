@@ -184,7 +184,7 @@ module.exports = {
       'to_location',
       'to_location_court_appearance',
       'to_location_prison_transfer',
-      'additional_information',
+      'prison_recall_comments',
     ],
   },
   '/agreement-status': {

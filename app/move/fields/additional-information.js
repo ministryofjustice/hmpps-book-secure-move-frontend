@@ -1,5 +1,4 @@
 const additionalInformation = {
-  skip: true,
   rows: 3,
   component: 'govukTextarea',
   classes: 'govuk-input--width-20',

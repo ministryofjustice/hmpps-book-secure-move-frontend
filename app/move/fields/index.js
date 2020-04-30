@@ -41,7 +41,6 @@ const cancel = {
   cancellation_reason_comment: cancellationReasonComment,
 }
 const create = {
-  additional_information: additionalInformation,
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
   court_hearing__court_case: courtHearingCourtCase,
@@ -82,6 +81,10 @@ const create = {
   pregnant: assessmentAnswer(),
   prison_transfer_reason: prisonTransferReason,
   prison_transfer_reason_comments: prisonTransferReasonComments,
+  prison_recall_comments: {
+    ...cloneDeep(additionalInformation),
+    skip: true,
+  },
   self_harm: assessmentAnswer(),
   solicitor: assessmentAnswer(),
   special_diet_or_allergy: assessmentAnswer(),
