@@ -1,12 +1,14 @@
-const { get, pick } = require('lodash')
-
-const moveService = require('../../../../common/services/move')
 const { formatDate } = require('../../../../config/nunjucks/filters')
 const CreateMoveDateController = require('../create/move-date')
 
 const UpdateBase = require('./base')
 
 class UpdateMoveDetailsController extends UpdateBase {
+  constructor(options) {
+    super(options)
+    this.saveFields = ['date']
+  }
+
   getUpdateValues(req, res) {
     const move = req.getMove()
     if (!move) {
@@ -30,23 +32,8 @@ class UpdateMoveDetailsController extends UpdateBase {
     return values
   }
 
-  async saveValues(req, res, next) {
-    try {
-      const id = req.getMoveId()
-      const data = {
-        ...pick(get(req, 'form.values'), ['date', 'date_type', 'date_custom']),
-        id,
-      }
-
-      if (req.getMove().date !== data.date) {
-        await moveService.update(data)
-      }
-
-      // no need to call super
-      next()
-    } catch (error) {
-      next(error)
-    }
+  saveValues(req, res, next) {
+    this.saveMove(req, res, next)
   }
 }
 
