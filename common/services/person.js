@@ -2,7 +2,7 @@ const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
-const unformat = require('./person-unformat')
+const unformat = require('./person/person.unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']
 const identifierKeys = [
@@ -81,13 +81,23 @@ const personService = {
     )
   },
 
-  unformat(person, fields = []) {
+  unformat(
+    person,
+    fields = [],
+    {
+      identifier = identifierKeys,
+      relationship = relationshipKeys,
+      date = dateKeys,
+      assessment = assessmentKeys,
+      explicitAssessment = explicitAssessmentKeys,
+    } = {}
+  ) {
     return unformat(person, fields, {
-      identifier: identifierKeys,
-      relationship: relationshipKeys,
-      date: dateKeys,
-      assessment: assessmentKeys,
-      explicitAssessment: explicitAssessmentKeys,
+      identifier,
+      relationship,
+      date,
+      assessment,
+      explicitAssessment,
     })
   },
 
