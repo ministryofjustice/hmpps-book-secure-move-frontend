@@ -604,15 +604,15 @@ describe('Move controllers', function() {
         await controller.saveMove(req, res, nextSpy)
       })
 
-      it('should call savePerson with expected data', async function() {
+      it('should call savePerson with expected data', function() {
         expect(moveService.update).to.not.be.called
       })
 
-      it('should not set the confirmation message', async function() {
+      it('should not set the confirmation message', function() {
         expect(controller.setFlash).to.not.be.called
       })
 
-      it('should invoke next with no error', async function() {
+      it('should invoke next with no error', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
@@ -622,7 +622,7 @@ describe('Move controllers', function() {
         await controller.saveMove(req, res, nextSpy)
       })
 
-      it('should call savePerson with expected data', async function() {
+      it('should call savePerson with expected data', function() {
         expect(moveService.update).to.be.calledOnceWithExactly({
           id: '#moveId',
           foo: 'a',
@@ -630,11 +630,11 @@ describe('Move controllers', function() {
         })
       })
 
-      it('should set the confirmation message', async function() {
+      it('should set the confirmation message', function() {
         expect(controller.setFlash).to.be.calledOnceWithExactly(req)
       })
 
-      it('should invoke next with no error', async function() {
+      it('should invoke next with no error', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
@@ -646,7 +646,7 @@ describe('Move controllers', function() {
         moveService.update.rejects(error)
         await controller.saveMove(req, res, nextSpy)
       })
-      it('should invoke next with the error', async function() {
+      it('should invoke next with the error', function() {
         expect(nextSpy).to.be.calledOnceWithExactly(error)
       })
     })
@@ -672,7 +672,7 @@ describe('Move controllers', function() {
         await controller.setFlash(req, 'categoryKey')
       })
 
-      it('should set confirmation message using explicit key', async function() {
+      it('should set confirmation message using explicit key', function() {
         expect(req.flash).to.be.calledOnceWithExactly('success', {
           title: 'moves::update_flash.categories.categoryKey.heading',
           content: 'moves::update_flash.categories.categoryKey.message',
@@ -688,7 +688,7 @@ describe('Move controllers', function() {
           await controller.setFlash(req)
         })
 
-        it('should set confirmation message using explicit key', async function() {
+        it('should set confirmation message using explicit key', function() {
           expect(req.flash).to.be.calledOnceWithExactly('success', {
             title: 'moves::update_flash.categories.flashKey.heading',
             content: 'moves::update_flash.categories.flashKey.message',
@@ -705,7 +705,7 @@ describe('Move controllers', function() {
           await controller.setFlash(req)
         })
 
-        it('should set confirmation message using explicit key', async function() {
+        it('should set confirmation message using explicit key', function() {
           expect(req.flash).to.be.calledOnceWithExactly('success', {
             title: 'moves::update_flash.categories.optionsKey.heading',
             content: 'moves::update_flash.categories.optionsKey.message',
