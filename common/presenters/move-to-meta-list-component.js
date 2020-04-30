@@ -12,24 +12,16 @@ function isRelativeDate(date) {
   )
 }
 
-function formatDateRange(dateFrom, dateTo) {
-  if (dateTo) {
-    return filters.formatDateRange([dateFrom, dateTo])
+function _formatDate(date) {
+  if (!date) {
+    return
   }
-  return `${i18n.t('from')} ${filters.formatDateAsRelativeDay(dateFrom)}`
-}
 
-function setDateToDisplay({ date, dateFrom, dateTo }) {
-  if (date) {
-    const dateWithDay = filters.formatDateWithDay(date)
-    return isRelativeDate(date)
-      ? `${dateWithDay} (${filters.formatDateAsRelativeDay(date)})`
-      : dateWithDay
-  }
-  if (dateFrom) {
-    return formatDateRange(dateFrom, dateTo)
-  }
-  return null
+  const dateWithDay = filters.formatDateWithDay(date)
+
+  return isRelativeDate(date)
+    ? `${dateWithDay} (${filters.formatDateAsRelativeDay(date)})`
+    : dateWithDay
 }
 
 function moveToMetaListComponent(
@@ -81,9 +73,25 @@ function moveToMetaListComponent(
         text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: setDateToDisplay({ date, dateFrom, dateTo }),
+        text: _formatDate(date),
       },
       action: actions.date,
+    },
+    {
+      key: {
+        text: i18n.t('fields::date_from.label'),
+      },
+      value: {
+        text: date ? undefined : _formatDate(dateFrom),
+      },
+    },
+    {
+      key: {
+        text: i18n.t('fields::date_to.label'),
+      },
+      value: {
+        text: date ? undefined : _formatDate(dateTo),
+      },
     },
     {
       key: {

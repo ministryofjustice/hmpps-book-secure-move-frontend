@@ -2,6 +2,7 @@ const { subDays, addDays } = require('date-fns')
 const timezoneMock = require('timezone-mock')
 
 const i18n = require('../../config/i18n')
+const filters = require('../../config/nunjucks/filters')
 
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 
@@ -21,25 +22,25 @@ const mockMove = {
 describe('Presenters', function() {
   describe('#moveToMetaListComponent()', function() {
     beforeEach(function() {
+      timezoneMock.register('UTC')
       sinon.stub(i18n, 't').returns('__translated__')
+    })
+
+    afterEach(function() {
+      timezoneMock.unregister()
     })
 
     context('when provided with a mock move object', function() {
       let transformedResponse
 
       beforeEach(function() {
-        timezoneMock.register('UTC')
         transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        timezoneMock.unregister()
       })
 
       describe('response', function() {
         it('should contain items list', function() {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(4)
+          expect(transformedResponse.items.length).to.equal(6)
         })
 
         it('should contain from location as first item', function() {
@@ -73,8 +74,26 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain time due as forth item', function() {
+        it('should contain empty date from as forth item', function() {
           const item = transformedResponse.items[3]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should contain empty date to as fifth item', function() {
+          const item = transformedResponse.items[4]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should contain time due as sixth item', function() {
+          const item = transformedResponse.items[5]
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
@@ -85,31 +104,35 @@ describe('Presenters', function() {
 
       describe('translations', function() {
         it('should translate from location label', function() {
-          expect(i18n.t.firstCall).to.be.calledWithExactly(
+          expect(i18n.t).to.be.calledWithExactly(
             'fields::from_location.short_label'
           )
         })
 
         it('should translate to location label', function() {
-          expect(i18n.t.secondCall).to.be.calledWithExactly(
+          expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.short_label'
           )
         })
 
         it('should translate date label', function() {
-          expect(i18n.t.thirdCall).to.be.calledWithExactly(
-            'fields::date_type.label'
-          )
+          expect(i18n.t).to.be.calledWithExactly('fields::date_type.label')
+        })
+
+        it('should translate date from label', function() {
+          expect(i18n.t).to.be.calledWithExactly('fields::date_from.label')
+        })
+
+        it('should translate date to label', function() {
+          expect(i18n.t).to.be.calledWithExactly('fields::date_to.label')
         })
 
         it('should translate time due label', function() {
-          expect(i18n.t.getCall(3)).to.be.calledWithExactly(
-            'fields::time_due.label'
-          )
+          expect(i18n.t).to.be.calledWithExactly('fields::time_due.label')
         })
 
         it('should translate correct number of times', function() {
-          expect(i18n.t).to.be.callCount(4)
+          expect(i18n.t).to.be.callCount(6)
         })
       })
     })
@@ -195,61 +218,186 @@ describe('Presenters', function() {
         })
       })
     })
-    context('when date is a range', function() {
-      const presentDate = '2020-04-14'
+
+    context('with only `date from`', function() {
+      const presentDate = '2010-04-14'
       const mockMove = {
         date_from: '2020-05-01',
-        date_to: '2020-05-05',
       }
-      before(function() {
-        this.clock = sinon.useFakeTimers(
-          subDays(new Date(presentDate), 1).getTime()
-        )
+      let transformedResponse
+
+      beforeEach(function() {
+        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        transformedResponse = moveToMetaListComponent(mockMove)
       })
-      after(function() {
+
+      afterEach(function() {
         this.clock.restore()
       })
+
       describe('response', function() {
-        it("doesn't return anything when no date is passed", function() {
-          const transformedResponse = moveToMetaListComponent({})
-          const item = transformedResponse.items[2]
+        it('should render `date from` row', function() {
+          const item = transformedResponse.items[3]
+
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: null },
+            value: { text: mockMove.date_from },
+          })
+        })
+
+        it('should not render `date to` row', function() {
+          const item = transformedResponse.items[4]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should not render `date` row', function() {
+          const item = transformedResponse.items[2]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
             action: undefined,
           })
         })
-        it('returns the from date if there is no "to" date', function() {
-          const move = { ...mockMove }
-          delete move.date_to
-          const transformedResponse = moveToMetaListComponent(move)
-          const item = transformedResponse.items[2]
+
+        it('should format date from', function() {
+          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+            mockMove.date_from
+          )
+        })
+
+        it('should format correct number of date', function() {
+          expect(filters.formatDateWithDay.callCount).to.equal(1)
+        })
+      })
+    })
+
+    context('with both `date from` and `date to`', function() {
+      const presentDate = '2010-04-14'
+      const mockMove = {
+        date_from: '2020-05-01',
+        date_to: '2020-05-10',
+      }
+      let transformedResponse
+
+      beforeEach(function() {
+        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        transformedResponse = moveToMetaListComponent(mockMove)
+      })
+
+      afterEach(function() {
+        this.clock.restore()
+      })
+
+      describe('response', function() {
+        it('should render `date from` row', function() {
+          const item = transformedResponse.items[3]
+
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: '__translated__ Friday 1 May 2020' },
+            value: { text: mockMove.date_from },
+          })
+        })
+
+        it('should render `date to` row', function() {
+          const item = transformedResponse.items[4]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: mockMove.date_to },
+          })
+        })
+
+        it('should not render `date` row', function() {
+          const item = transformedResponse.items[2]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
             action: undefined,
           })
         })
-        it('returns the range if both dates are present', function() {
-          const move = { ...mockMove }
-          const transformedResponse = moveToMetaListComponent(move)
-          const item = transformedResponse.items[2]
+
+        it('should format date from', function() {
+          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+            mockMove.date_from
+          )
+        })
+
+        it('should format date to', function() {
+          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+            mockMove.date_to
+          )
+        })
+
+        it('should format correct number of date', function() {
+          expect(filters.formatDateWithDay.callCount).to.equal(2)
+        })
+      })
+    })
+
+    context('with all dates', function() {
+      const presentDate = '2010-04-14'
+      const mockMove = {
+        date_from: '2020-05-01',
+        date_to: '2020-05-10',
+        date: '2020-06-01',
+      }
+      let transformedResponse
+
+      beforeEach(function() {
+        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        transformedResponse = moveToMetaListComponent(mockMove)
+      })
+
+      afterEach(function() {
+        this.clock.restore()
+      })
+
+      describe('response', function() {
+        it('should not render `date from` row', function() {
+          const item = transformedResponse.items[3]
+
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: '1 to 5 May 2020' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should not render `date to` row', function() {
+          const item = transformedResponse.items[4]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should render `date` row', function() {
+          const item = transformedResponse.items[2]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: mockMove.date },
             action: undefined,
           })
         })
-        it('returns the date if date and range are both present', function() {
-          const move = { ...mockMove }
-          move.date = '2021-01-01'
-          const transformedResponse = moveToMetaListComponent(move)
-          const item = transformedResponse.items[2]
-          expect(item).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: 'Friday 1 Jan 2021' },
-            action: undefined,
-          })
+
+        it('should format date', function() {
+          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+            mockMove.date
+          )
+        })
+
+        it('should format correct number of date', function() {
+          expect(filters.formatDateWithDay.callCount).to.equal(1)
         })
       })
     })
