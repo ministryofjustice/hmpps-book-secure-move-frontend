@@ -1,3 +1,5 @@
+const { isEqual, pick } = require('lodash')
+
 const personService = require('../../../../common/services/person')
 const PersonalDetails = require('../create/personal-details')
 
@@ -5,18 +7,29 @@ const UpdateBase = require('./base')
 
 class UpdatePersonalDetailsController extends UpdateBase {
   async saveValues(req, res, next) {
-    const person = req.getPerson()
+    try {
+      const person = req.getPerson()
+      const fields = req.form.options.fields
+      const fieldKeys = Object.keys(fields).filter(
+        key =>
+          !fields[key].readOnly || !personService.unformat(person, [key])[key]
+      )
+      const oldData = personService.unformat(person, fieldKeys, { date: [] })
+      const newData = pick(req.form.values, fieldKeys)
 
-    const identifiers = person.identifiers.map(
-      identifier => identifier.identifier_type
-    )
-    const identifiersData = personService.unformat(person, identifiers)
-    req.form.values = {
-      ...identifiersData,
-      ...req.form.values,
+      if (!isEqual(newData, oldData)) {
+        const id = req.getPersonId()
+
+        await personService.update({
+          id,
+          ...newData,
+        })
+      }
+
+      next()
+    } catch (error) {
+      next(error)
     }
-
-    PersonalDetails.prototype.saveValues.apply(this, [req, res, next])
   }
 }
 
