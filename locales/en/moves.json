@@ -191,7 +191,7 @@
     }
   },
   "update_flash": {
-    "supplier_message": "This move has been updated with the supplier",
+    "supplier_message": "This move has been updated with {{ supplier }}",
     "categories": {
       "court": {
         "heading": "Information for the court updated",

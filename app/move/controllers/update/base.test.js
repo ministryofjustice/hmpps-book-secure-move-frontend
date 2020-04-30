@@ -3,6 +3,7 @@ const { cloneDeep } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
 
@@ -655,6 +656,9 @@ describe('Move controllers', function() {
   describe('#setFlash', function() {
     let req
     beforeEach(async function() {
+      sinon.stub(filters, 'oxfordJoin').callsFake((...arr) => {
+        return arr.join(',')
+      })
       req = {
         t: sinon.stub().returnsArg(0),
         flash: sinon.spy(),
@@ -663,7 +667,64 @@ describe('Move controllers', function() {
             key: 'optionsKey',
           },
         },
+        getMove: sinon.stub().returns({
+          from_location: {
+            suppliers: [
+              {
+                name: 'Supplier A',
+              },
+              {
+                name: 'Supplier B',
+              },
+            ],
+          },
+        }),
       }
+    })
+
+    context('when the supplier is known', function() {
+      beforeEach(async function() {
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should output localised strings containing the suppliers', function() {
+        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
+          'Supplier A',
+          'Supplier B',
+        ])
+        expect(req.t).to.be.callCount(2)
+        expect(req.t.getCall(0).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.heading',
+        ])
+        expect(req.t.getCall(1).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.message',
+          { supplier: 'Supplier A,Supplier B' },
+        ])
+      })
+    })
+
+    context('when the supplier is not known', function() {
+      beforeEach(async function() {
+        req.getMove = sinon.stub().returns({})
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should output localised strings containing generic supplier info', function() {
+        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
+          'supplier_fallback',
+        ])
+        expect(req.t).to.be.callCount(3)
+        expect(req.t.getCall(0).args).to.deep.equal(['supplier_fallback'])
+        expect(req.t.getCall(1).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.heading',
+        ])
+        expect(req.t.getCall(2).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.message',
+          {
+            supplier: 'supplier_fallback',
+          },
+        ])
+      })
     })
 
     context('when passed an explicit key', function() {
