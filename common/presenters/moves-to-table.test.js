@@ -1,3 +1,10 @@
+const proxyquire = require('proxyquire')
+
+const componentService = require('../../common/services/component')
+const filters = require('../../config/nunjucks/filters')
+
+const tablePresenters = require('./table')
+
 const mockMoves = [
   {
     id: 'acba3ad5-a8d3-4b95-9e48-121dafb3babe',
@@ -88,8 +95,14 @@ const mockMoves = [
     },
   },
 ]
-const presenter = require('./moves-to-table')
-const tablePresenters = require('./table')
+const moveToCardComponentStub = sinon.stub().returnsArg(0)
+const moveToCardComponentOptsStub = sinon
+  .stub()
+  .callsFake(() => moveToCardComponentStub)
+
+const presenter = proxyquire('./moves-to-table', {
+  './move-to-card-component': moveToCardComponentOptsStub,
+})
 
 describe('#movesToTable', function() {
   let output
@@ -97,6 +110,9 @@ describe('#movesToTable', function() {
     sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => {
       return { html: arg.head }
     })
+    sinon.stub(filters, 'formatDate').returnsArg(0)
+    sinon.stub(filters, 'formatDateRange').returnsArg(0)
+    sinon.stub(componentService, 'getComponent').returnsArg(0)
     output = presenter([])
   })
   it('returns an object with movesHeads', function() {
@@ -114,31 +130,36 @@ describe('#movesToTable', function() {
     })
     it('returns html with composite name on the first cell', function() {
       expect(output.moves[0][0]).to.deep.equal({
-        html:
-          '<a href="/move/acba3ad5-a8d3-4b95-9e48-121dafb3babe">DOE, JOHN</a> (17/522710A)',
+        html: 'appCard',
         attributes: {
           scope: 'row',
         },
       })
     })
+    it('should call card component with correct arguments', function() {
+      expect(moveToCardComponentOptsStub).to.be.calledWithExactly({
+        isCompact: true,
+      })
+      expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
+    })
     it('returns html with createdAt on the second cell', function() {
       expect(output.moves[0][1]).to.deep.equal({
-        html: '20 Apr 2020',
+        html: mockMoves[0].created_at,
       })
     })
     it('returns toLocation on the third cell', function() {
       expect(output.moves[0][2]).to.deep.equal({
-        html: 'ALBANY (HMP)',
+        html: mockMoves[0].to_location.title,
       })
     })
     it('returns the date range on the fourth cell', function() {
       expect(output.moves[0][3]).to.deep.equal({
-        html: '28 Sep 2020',
+        html: mockMoves[0].date_from,
       })
     })
     it('returns the move type on the fifth cell', function() {
       expect(output.moves[0][4]).to.deep.equal({
-        html: 'MAPPA',
+        html: mockMoves[0].prison_transfer_reason,
       })
     })
     it('returns a row per record', function() {

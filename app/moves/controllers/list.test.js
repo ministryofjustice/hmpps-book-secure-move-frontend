@@ -52,6 +52,7 @@ describe('Moves controllers', function() {
           expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
             showMeta: false,
             showTags: false,
+            showImage: false,
           })
           expect(moveToCardComponentMapStub).to.be.calledTwice
         })
@@ -76,6 +77,7 @@ describe('Moves controllers', function() {
           expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
             showMeta: false,
             showTags: false,
+            showImage: false,
           })
           expect(moveToCardComponentMapStub).not.to.be.called
         })

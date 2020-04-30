@@ -1,5 +1,7 @@
+const componentService = require('../../common/services/component')
 const filters = require('../../config/nunjucks/filters')
 
+const moveToCardComponent = require('./move-to-card-component')
 const tablePresenters = require('./table')
 
 const tableConfig = [
@@ -11,7 +13,8 @@ const tableConfig = [
       },
     },
     row: data => {
-      return `<a href="/move/${data.id}">${data.person.fullname}</a> (${data.person.identifiers[0].value})`
+      const card = moveToCardComponent({ isCompact: true })(data)
+      return componentService.getComponent('appCard', card)
     },
   },
   {

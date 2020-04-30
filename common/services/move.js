@@ -59,6 +59,8 @@ const moveService = {
         'filter[created_at_from]': createdAtFrom,
         'filter[created_at_to]': createdAtTo,
         'filter[from_location_id]': fromLocationId,
+        'sort[by]': 'created_at',
+        'sort[direction]': 'desc',
       },
     })
   },
