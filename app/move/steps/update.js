@@ -30,7 +30,7 @@ const updateSteps = [
   // TODO: reenable when redirect api available
   // {
   //   key: 'move',
-  //   role: 'move:update',
+  //   permission: 'move:update',
   //   steps: {
   //     '/move-details': {
   //       ...createSteps['/move-details'],
