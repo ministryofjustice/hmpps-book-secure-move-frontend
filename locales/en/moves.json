@@ -189,5 +189,34 @@
       "personal_details": "personal details",
       "risk": "risk information"
     }
+  },
+  "update_flash": {
+    "supplier_message": "This move has been updated with the supplier",
+    "categories": {
+      "court": {
+        "heading": "Information for the court updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "date": {
+        "heading": "Move date updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "health": {
+        "heading": "Health affecting transport updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "move": {
+        "heading": "Move location updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "personal_details": {
+        "heading": "Personal details updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "risk": {
+        "heading": "Risk information updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      }
+    }
   }
 }

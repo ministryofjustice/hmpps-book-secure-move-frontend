@@ -24,6 +24,7 @@ class UpdatePersonalDetailsController extends UpdateBase {
           id,
           ...newData,
         })
+        this.setFlash(req)
       }
 
       next()

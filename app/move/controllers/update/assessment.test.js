@@ -79,6 +79,7 @@ describe('Move controllers', function() {
       let nextSpy
       beforeEach(function() {
         sinon.stub(personService, 'update').resolves()
+        sinon.stub(controller, 'setFlash')
         req = {
           getPersonId: sinon.stub().returns('#personId'),
           getPerson: sinon.stub().returns({
@@ -180,6 +181,11 @@ describe('Move controllers', function() {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.not.be.called
         })
+
+        it('should not set the confirmation message', async function() {
+          await controller.saveValues(req, res, nextSpy)
+          expect(controller.setFlash).to.not.be.called
+        })
       })
 
       context('When assessment answers have changed', function() {
@@ -198,6 +204,11 @@ describe('Move controllers', function() {
             ],
             id: '#personId',
           })
+        })
+
+        it('should set the confirmation message', async function() {
+          await controller.saveValues(req, res, nextSpy)
+          expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
       })
 

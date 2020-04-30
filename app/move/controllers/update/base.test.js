@@ -574,6 +574,7 @@ describe('Move controllers', function() {
     const res = {}
     let nextSpy
     beforeEach(async function() {
+      sinon.stub(controller, 'setFlash')
       sinon.stub(moveService, 'update').resolves()
       req = {
         getMoveId: sinon.stub().returns('#moveId'),
@@ -607,6 +608,10 @@ describe('Move controllers', function() {
         expect(moveService.update).to.not.be.called
       })
 
+      it('should not set the confirmation message', async function() {
+        expect(controller.setFlash).to.not.be.called
+      })
+
       it('should invoke next with no error', async function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
@@ -625,6 +630,10 @@ describe('Move controllers', function() {
         })
       })
 
+      it('should set the confirmation message', async function() {
+        expect(controller.setFlash).to.be.calledOnceWithExactly(req)
+      })
+
       it('should invoke next with no error', async function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
@@ -641,5 +650,68 @@ describe('Move controllers', function() {
         expect(nextSpy).to.be.calledOnceWithExactly(error)
       })
     })
+  })
+
+  describe('#setFlash', function() {
+    let req
+    beforeEach(async function() {
+      req = {
+        t: sinon.stub().returnsArg(0),
+        flash: sinon.spy(),
+        form: {
+          options: {
+            key: 'optionsKey',
+          },
+        },
+      }
+    })
+
+    context('when passed an explicit key', function() {
+      beforeEach(async function() {
+        controller.flashKey = 'flashKey'
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should set confirmation message using explicit key', async function() {
+        expect(req.flash).to.be.calledOnceWithExactly('success', {
+          title: 'moves::update_flash.categories.categoryKey.heading',
+          content: 'moves::update_flash.categories.categoryKey.message',
+        })
+      })
+    })
+
+    context(
+      'when passed no explicit key but has a flashKey property',
+      function() {
+        beforeEach(async function() {
+          controller.flashKey = 'flashKey'
+          await controller.setFlash(req)
+        })
+
+        it('should set confirmation message using explicit key', async function() {
+          expect(req.flash).to.be.calledOnceWithExactly('success', {
+            title: 'moves::update_flash.categories.flashKey.heading',
+            content: 'moves::update_flash.categories.flashKey.message',
+          })
+        })
+      }
+    )
+
+    context(
+      'when passed no explicit key and has no flashKey property',
+      function() {
+        beforeEach(async function() {
+          delete controller.flashKey
+          await controller.setFlash(req)
+        })
+
+        it('should set confirmation message using explicit key', async function() {
+          expect(req.flash).to.be.calledOnceWithExactly('success', {
+            title: 'moves::update_flash.categories.optionsKey.heading',
+            content: 'moves::update_flash.categories.optionsKey.message',
+          })
+        })
+      }
+    )
   })
 })

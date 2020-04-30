@@ -43,6 +43,7 @@ describe('Move controllers', function() {
       const res = {}
       let nextSpy
       beforeEach(async function() {
+        sinon.stub(controller, 'setFlash')
         sinon.stub(personService, 'unformat').returns({})
         sinon.stub(personService, 'update').resolves()
         req = {
@@ -77,6 +78,10 @@ describe('Move controllers', function() {
           expect(personService.update).to.not.be.called
         })
 
+        it('should set the confirmation message', async function() {
+          expect(controller.setFlash).to.not.be.called
+        })
+
         it('should invoke next with no error', async function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
@@ -102,6 +107,10 @@ describe('Move controllers', function() {
             foo: 'a',
             bar: 'b',
           })
+        })
+
+        it('should set the confirmation message', async function() {
+          expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
 
         it('should invoke next with no error', async function() {

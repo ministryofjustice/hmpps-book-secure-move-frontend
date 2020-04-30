@@ -57,6 +57,8 @@ class UpdateAssessmentController extends UpdateBase {
           id: personId,
           assessment_answers: updatedAssessments,
         })
+
+        this.setFlash(req)
       }
 
       next()

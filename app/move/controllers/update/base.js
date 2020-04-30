@@ -108,12 +108,21 @@ class UpdateBaseController extends CreateBaseController {
         }
 
         await moveService.update(data)
+        this.setFlash(req)
       }
 
       next()
     } catch (error) {
       next(error)
     }
+  }
+
+  setFlash(req, category) {
+    category = category || this.flashKey || req.form.options.key
+    req.flash('success', {
+      title: req.t(`moves::update_flash.categories.${category}.heading`),
+      content: req.t(`moves::update_flash.categories.${category}.message`),
+    })
   }
 }
 
