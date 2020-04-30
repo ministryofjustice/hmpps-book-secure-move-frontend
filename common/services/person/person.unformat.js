@@ -1,4 +1,4 @@
-const { formatDate } = require('../../config/nunjucks/filters')
+const filters = require('../../../config/nunjucks/filters')
 
 const getAnswer = (person, field) => {
   const assessments = person.assessment_answers || []
@@ -29,7 +29,7 @@ mapMethods.relationship = (person, field) => {
 mapMethods.date = (person, field) => {
   const fieldValue = person[field]
   if (fieldValue) {
-    return formatDate(fieldValue)
+    return filters.formatDate(fieldValue)
   }
 }
 
