@@ -6,7 +6,12 @@ const personService = require('../services/person')
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   format(data) {
-    const relationships = ['to_location', 'from_location']
+    const relationships = [
+      'to_location',
+      'from_location',
+      'person',
+      'prison_transfer_reason',
+    ]
 
     return mapValues(pickBy(data), (value, key) => {
       if (relationships.includes(key) && typeof value === 'string') {
