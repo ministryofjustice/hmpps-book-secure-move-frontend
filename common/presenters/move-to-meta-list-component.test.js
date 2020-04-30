@@ -10,7 +10,6 @@ const mockMove = {
   date: '2019-06-09',
   time_due: '2000-01-01T14:00:00Z',
   move_type: 'court_appearance',
-  additional_information: 'Some additional information about this move',
   from_location: {
     title: 'HMP Leeds',
   },
@@ -40,7 +39,7 @@ describe('Presenters', function() {
       describe('response', function() {
         it('should contain items list', function() {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
+          expect(transformedResponse.items.length).to.equal(7)
         })
 
         it('should contain from location as first item', function() {
@@ -58,7 +57,7 @@ describe('Presenters', function() {
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
             value: {
-              text: `${mockMove.to_location.title} — ${mockMove.additional_information}`,
+              text: mockMove.to_location.title,
             },
             action: undefined,
           })
@@ -100,6 +99,15 @@ describe('Presenters', function() {
             value: { text: '2pm' },
           })
         })
+
+        it('should contain time due as seventh item', function() {
+          const item = transformedResponse.items[6]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
       })
 
       describe('translations', function() {
@@ -131,8 +139,14 @@ describe('Presenters', function() {
           expect(i18n.t).to.be.calledWithExactly('fields::time_due.label')
         })
 
+        it('should translate prison transfer type label', function() {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::prison_transfer_type.label'
+          )
+        })
+
         it('should translate correct number of times', function() {
-          expect(i18n.t).to.be.callCount(6)
+          expect(i18n.t).to.be.callCount(7)
         })
       })
     })
@@ -440,6 +454,109 @@ describe('Presenters', function() {
         const { items } = transformedResponse
         expect(items[1].action).to.be.undefined
         expect(items[2].action).to.deep.equal(expectedDateAction)
+      })
+    })
+
+    context('with additional information', function() {
+      const mockAdditionalInformation =
+        'Some additional information about this move'
+      let transformedResponse
+
+      context('with prison recall move type', function() {
+        beforeEach(function() {
+          transformedResponse = moveToMetaListComponent({
+            ...mockMove,
+            move_type: 'prison_recall',
+            additional_information: mockAdditionalInformation,
+          })
+        })
+
+        it('should add additional information to move type', function() {
+          expect(transformedResponse.items[1]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: `__translated__ — ${mockAdditionalInformation}`,
+            },
+            action: undefined,
+          })
+        })
+
+        it('should not add additional information to transfer reason', function() {
+          expect(transformedResponse.items[6]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: undefined,
+            },
+          })
+        })
+
+        it('should translate label', function() {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.prison_recall.label'
+          )
+        })
+      })
+
+      context('with prison transfer move type', function() {
+        const mockPrisonTransferReason = 'Parole'
+
+        beforeEach(function() {
+          transformedResponse = moveToMetaListComponent({
+            ...mockMove,
+            move_type: 'prison_transfer',
+            additional_information: mockAdditionalInformation,
+            prison_transfer_reason: {
+              title: mockPrisonTransferReason,
+            },
+          })
+        })
+
+        it('should not add additional information to move type', function() {
+          expect(transformedResponse.items[1]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: mockMove.to_location.title,
+            },
+            action: undefined,
+          })
+        })
+
+        it('should add additional information to transfer reason', function() {
+          expect(transformedResponse.items[6]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: `${mockPrisonTransferReason} — ${mockAdditionalInformation}`,
+            },
+          })
+        })
+      })
+
+      context('with other move type', function() {
+        beforeEach(function() {
+          transformedResponse = moveToMetaListComponent({
+            ...mockMove,
+            additional_information: mockAdditionalInformation,
+          })
+        })
+
+        it('should not add additional information to move type', function() {
+          expect(transformedResponse.items[1]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: mockMove.to_location.title,
+            },
+            action: undefined,
+          })
+        })
+
+        it('should not add additional information to transfer reason', function() {
+          expect(transformedResponse.items[6]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: undefined,
+            },
+          })
+        })
       })
     })
   })
