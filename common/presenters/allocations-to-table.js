@@ -1,12 +1,10 @@
-const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const objectToTableHead = require('./object-to-table-head')
-const objectToTableRow = require('./object-to-table-row')
+const tablePresenters = require('./object-to-table-presenters')
 
 const tableConfig = [
   {
-    head: i18n.t('allocations::move_size'),
+    head: 'allocations::move_size',
     attributes: {
       attributes: {
         scope: 'row',
@@ -15,23 +13,23 @@ const tableConfig = [
     row: 'moves_count',
   },
   {
-    head: i18n.t('allocations::requested'),
+    head: 'allocations::requested',
     row: data => filters.formatDate(data.created_at),
   },
   {
-    head: i18n.t('allocations::move_from'),
+    head: 'allocations::move_from',
     row: 'from_location.title',
   },
   {
-    head: i18n.t('allocations::move_to'),
+    head: 'allocations::move_to',
     row: 'to_location.title',
   },
   {
-    head: i18n.t('date'),
+    head: 'date',
     row: data => filters.formatDate(data.date),
   },
   {
-    head: i18n.t('allocations::progress'),
+    head: 'allocations::progress',
     // todo: this field does not exist yet and it might end up having a different name or format
     row: 'progress',
   },
@@ -39,8 +37,12 @@ const tableConfig = [
 
 function allocationsToTable(allocations) {
   return {
-    headerForAllocationTable: tableConfig.map(objectToTableHead),
-    rowsForAllocationTable: allocations.map(objectToTableRow(tableConfig)),
+    headerForAllocationTable: tableConfig.map(
+      tablePresenters.objectToTableHead
+    ),
+    rowsForAllocationTable: allocations.map(
+      tablePresenters.objectToTableRow(tableConfig)
+    ),
   }
 }
 

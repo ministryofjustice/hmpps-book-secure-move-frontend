@@ -67,9 +67,14 @@ const mockAllocations = [
   },
 ]
 const presenter = require('./allocations-to-table')
+const tablePresenters = require('./object-to-table-presenters')
+
 describe('#allocationsToTable', function() {
   let output
   beforeEach(function() {
+    sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => {
+      return { html: arg.head }
+    })
     output = presenter([])
   })
   it('returns an object with allocationsHeads', function() {
@@ -120,22 +125,22 @@ describe('#allocationsToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.headerForAllocationTable).to.deep.equal([
         {
-          html: 'Move size',
+          html: 'allocations::move_size',
         },
         {
-          html: 'Requested',
+          html: 'allocations::requested',
         },
         {
-          html: 'Move from',
+          html: 'allocations::move_from',
         },
         {
-          html: 'Move to',
+          html: 'allocations::move_to',
         },
         {
-          html: 'Date',
+          html: 'date',
         },
         {
-          html: 'Progress',
+          html: 'allocations::progress',
         },
       ])
     })

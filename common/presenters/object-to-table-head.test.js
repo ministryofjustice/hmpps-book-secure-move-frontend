@@ -1,23 +1,27 @@
+const i18n = require('../../config/i18n')
+
 const schemaExample = [
   {
-    head: 'Move type',
+    head: 'move_type::label',
     row: 'prison_transfer_reason',
   },
   {
-    head: 'Age',
+    head: 'fields::age',
     row: 'age',
   },
 ]
-const presenter = require('./object-to-table-head')
+const objectToTableHead = require('./object-to-table-head')
+
 describe('table head presenter', function() {
   it('returns the heading specified', function() {
-    const output = schemaExample.map(presenter)
+    sinon.stub(i18n, 't').returnsArg(0)
+    const output = schemaExample.map(objectToTableHead)
     expect(output).to.deep.equal([
       {
-        html: 'Move type',
+        html: 'move_type::label',
       },
       {
-        html: 'Age',
+        html: 'fields::age',
       },
     ])
   })

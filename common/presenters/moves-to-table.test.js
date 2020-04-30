@@ -1,5 +1,3 @@
-const i18n = require('../../config/i18n')
-
 const mockMoves = [
   {
     id: 'acba3ad5-a8d3-4b95-9e48-121dafb3babe',
@@ -91,9 +89,14 @@ const mockMoves = [
   },
 ]
 const presenter = require('./moves-to-table')
+const tablePresenters = require('./object-to-table-presenters')
+
 describe('#movesToTable', function() {
   let output
   beforeEach(function() {
+    sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => {
+      return { html: arg.head }
+    })
     output = presenter([])
   })
   it('returns an object with movesHeads', function() {
@@ -108,7 +111,6 @@ describe('#movesToTable', function() {
     let output
     beforeEach(function() {
       output = presenter(mockMoves)
-      sinon.stub(i18n, 't').returnsArg(0)
     })
     it('returns html with composite name on the first cell', function() {
       expect(output.moves[0][0]).to.deep.equal({
@@ -145,19 +147,19 @@ describe('#movesToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.movesHeads).to.deep.equal([
         {
-          html: 'Name',
+          html: 'name',
         },
         {
-          html: 'Sent on',
+          html: 'moves::dashboard.created_at',
         },
         {
-          html: 'Move to',
+          html: 'moves::dashboard.move_to',
         },
         {
-          html: 'Earliest move date',
+          html: 'moves::dashboard.earliest_move_date',
         },
         {
-          html: 'Move type',
+          html: 'moves::dashboard.move_type',
         },
       ])
     })

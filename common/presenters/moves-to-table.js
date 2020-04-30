@@ -1,12 +1,10 @@
-const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const objectToTableHead = require('./object-to-table-head')
-const objectToTableRow = require('./object-to-table-row')
+const tablePresenters = require('./object-to-table-presenters')
 
 const tableConfig = [
   {
-    head: i18n.t('name'),
+    head: 'name',
     attributes: {
       attributes: {
         scope: 'row',
@@ -17,27 +15,29 @@ const tableConfig = [
     },
   },
   {
-    head: i18n.t('moves::dashboard.created_at'),
+    head: 'moves::dashboard.created_at',
     row: data => filters.formatDate(data.created_at),
   },
   {
-    head: i18n.t('moves::dashboard.move_to'),
+    head: 'moves::dashboard.move_to',
     row: 'to_location.title',
   },
   {
-    head: i18n.t('moves::dashboard.earliest_move_date'),
+    head: 'moves::dashboard.earliest_move_date',
     row: data => filters.formatDate(data.date_from),
   },
   {
-    head: i18n.t('moves::dashboard.move_type'),
+    head: 'moves::dashboard.move_type',
     row: 'prison_transfer_reason',
   },
 ]
 
 function movesToTable(movesByRangeAndStatus) {
   return {
-    movesHeads: tableConfig.map(objectToTableHead),
-    moves: movesByRangeAndStatus.map(objectToTableRow(tableConfig)),
+    movesHeads: tableConfig.map(tablePresenters.objectToTableHead),
+    moves: movesByRangeAndStatus.map(
+      tablePresenters.objectToTableRow(tableConfig)
+    ),
   }
 }
 
