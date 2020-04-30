@@ -85,4 +85,10 @@ const updateSteps = [
   },
 ]
 
+updateSteps.forEach(updateJourney => {
+  const { key, steps } = updateJourney
+  const firstStepKey = Object.keys(steps)[0]
+  steps[firstStepKey].key = key
+})
+
 module.exports = updateSteps
