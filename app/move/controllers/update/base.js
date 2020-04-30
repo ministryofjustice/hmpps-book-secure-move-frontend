@@ -1,5 +1,6 @@
-const { get, keys } = require('lodash')
+const { get, isEqual, keys, pick } = require('lodash')
 
+const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const CreateBaseController = require('../create/base')
 
@@ -92,6 +93,27 @@ class UpdateBaseController extends CreateBaseController {
     const person = req.getPerson()
     const fields = keys(get(req, 'form.options.fields'))
     return personService.unformat(person, fields)
+  }
+
+  async saveMove(req, res, next) {
+    try {
+      const fields = this.saveFields || Object.keys(req.form.options.fields)
+      const newValues = pick(req.form.values, fields)
+      const oldValues = pick(req.getMove(), fields)
+      if (!isEqual(newValues, oldValues)) {
+        const id = req.getMoveId()
+        const data = {
+          id,
+          ...newValues,
+        }
+
+        await moveService.update(data)
+      }
+
+      next()
+    } catch (error) {
+      next(error)
+    }
   }
 }
 

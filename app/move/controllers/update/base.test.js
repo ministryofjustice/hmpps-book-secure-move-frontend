@@ -1,6 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
 const { cloneDeep } = require('lodash')
 
+const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
@@ -565,6 +566,80 @@ describe('Move controllers', function() {
       expect(protectedField.component).to.equal('b')
       expect(protectedField).to.have.property('prop', true)
       expect(protectedField).to.have.property('anotherProp', true)
+    })
+  })
+
+  describe('#saveMove', function() {
+    let req
+    const res = {}
+    let nextSpy
+    beforeEach(async function() {
+      sinon.stub(moveService, 'update').resolves()
+      req = {
+        getMoveId: sinon.stub().returns('#moveId'),
+        getMove: sinon.stub().returns({
+          id: '#moveId',
+        }),
+        form: {
+          options: {
+            fields: {
+              foo: {},
+              bar: {},
+            },
+          },
+          values: {
+            foo: 'a',
+            bar: 'b',
+            baz: 'c',
+          },
+        },
+      }
+      nextSpy = sinon.stub()
+    })
+
+    context('when the values have not changed', function() {
+      beforeEach(async function() {
+        req.getMove.returns({ foo: 'a', bar: 'b', baz: 'x' })
+        await controller.saveMove(req, res, nextSpy)
+      })
+
+      it('should call savePerson with expected data', async function() {
+        expect(moveService.update).to.not.be.called
+      })
+
+      it('should invoke next with no error', async function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when the values have changed', function() {
+      beforeEach(async function() {
+        await controller.saveMove(req, res, nextSpy)
+      })
+
+      it('should call savePerson with expected data', async function() {
+        expect(moveService.update).to.be.calledOnceWithExactly({
+          id: '#moveId',
+          foo: 'a',
+          bar: 'b',
+        })
+      })
+
+      it('should invoke next with no error', async function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when an error is thrown', function() {
+      let error
+      beforeEach(async function() {
+        error = new Error()
+        moveService.update.rejects(error)
+        await controller.saveMove(req, res, nextSpy)
+      })
+      it('should invoke next with the error', async function() {
+        expect(nextSpy).to.be.calledOnceWithExactly(error)
+      })
     })
   })
 })
