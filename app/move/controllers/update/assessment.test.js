@@ -5,8 +5,6 @@ const MixinProto = CreateAssessment.prototype
 const AssessmentController = require('./assessment')
 const UpdateBaseController = require('./base')
 
-// TODO: figure out how to proxyquire lodash without breaking it elsewhere
-
 const controller = new AssessmentController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
