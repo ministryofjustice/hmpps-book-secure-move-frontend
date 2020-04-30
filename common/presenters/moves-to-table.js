@@ -31,7 +31,8 @@ const tableConfig = [
   },
   {
     head: 'moves::dashboard.move_type',
-    row: 'prison_transfer_reason',
+    row: data =>
+      data.prison_transfer_reason ? data.prison_transfer_reason.title : '',
   },
 ]
 
