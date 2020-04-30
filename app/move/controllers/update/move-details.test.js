@@ -1,4 +1,3 @@
-const moveService = require('../../../../common/services/move')
 const CreateMoveDetails = require('../create/move-details')
 
 const UpdateBaseController = require('./base')
@@ -117,50 +116,23 @@ describe('Move controllers', function() {
     })
 
     describe('#saveValues', function() {
-      let req = {}
+      const req = {}
       const res = {}
       let nextSpy
-      beforeEach(function() {
+      beforeEach(async function() {
+        sinon.stub(UpdateBaseController.prototype, 'saveMove')
         nextSpy = sinon.spy()
-        sinon.stub(moveService, 'update').resolves()
-        req = {
-          getMoveId: sinon.stub().returns('#moveId'),
-          form: {
-            values: {
-              move_type: '#move_type',
-              to_location: '#to_location',
-              another_prop: true,
-            },
-          },
-        }
-      })
-
-      it('should call move API with correct values', async function() {
         await controller.saveValues(req, res, nextSpy)
-        expect(moveService.update).to.be.calledOnceWithExactly({
-          id: '#moveId',
-          move_type: '#move_type',
-          to_location: '#to_location',
-        })
       })
 
-      it('should invoke the next method without error', async function() {
-        await controller.saveValues(req, res, nextSpy)
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      it('should call base’s saveMove', async function() {
+        expect(
+          UpdateBaseController.prototype.saveMove
+        ).to.be.calledOnceWithExactly(req, res, nextSpy)
       })
 
-      context('When the API throws an error', function() {
-        const err = new Error()
-        beforeEach(function() {
-          moveService.update.throws(err)
-        })
-
-        it('should invoke the next method without error', async function() {
-          try {
-            await controller.saveValues(req, res, nextSpy)
-          } catch (e) {}
-          expect(nextSpy).to.be.calledOnceWithExactly(err)
-        })
+      it('should not invoke next itself', async function() {
+        expect(nextSpy).to.not.be.called
       })
     })
   })
