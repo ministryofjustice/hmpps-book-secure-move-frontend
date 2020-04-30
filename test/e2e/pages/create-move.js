@@ -27,13 +27,13 @@ class CreateMovePage extends Page {
       moveType: Selector('[name="move_type"]'),
       courtLocation: Selector('#to_location_court_appearance'),
       prisonLocation: Selector('#to_location_prison_transfer'),
-      additionalInformation: Selector('#additional_information'),
+      prisonRecallComments: Selector('#prison_recall_comments'),
       dateType: Selector('[name="date_type"]'),
       dateFrom: Selector('#date_from'),
       hasDateTo: Selector('[name="has_date_to"]'),
       moveAgreed: Selector('[name="move_agreed"]'),
       moveAgreedBy: Selector('#move_agreed_by'),
-      prisonTransferReason: Selector('[name="prison_transfer_reason"]'),
+      prisonTransferReason: Selector('[name="prison_transfer_type"]'),
       courtInformation: Selector('[name="court"]'),
       solicitor: Selector('#solicitor'),
       interpreter: Selector('#interpreter'),
@@ -237,8 +237,8 @@ class CreateMovePage extends Page {
     }
 
     if (moveType === 'Prison recall') {
-      fields.additionalInformation = {
-        selector: this.fields.additionalInformation,
+      fields.prisonRecallComments = {
+        selector: this.fields.prisonRecallComments,
         value: faker.lorem.sentence(6),
       }
     }
