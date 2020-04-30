@@ -419,7 +419,7 @@ describe('Move controllers', function() {
     context('when req.initialStep is false', function() {
       it('should not call the getUpdateValues method', function() {
         controller.getValues(req, res, callback)
-        expect(controller.getUpdateValues).to.not.be.called
+        expect(controller.getUpdateValues).to.be.calledOnceWithExactly(req, res)
       })
 
       it('should call the protectReadOnlyFields method with the correct args', function() {
@@ -427,7 +427,7 @@ describe('Move controllers', function() {
         expect(controller.protectReadOnlyFields).to.be.calledOnceWithExactly(
           req,
           {
-            foo: 'bar',
+            baz: 'tastic',
           }
         )
       })
