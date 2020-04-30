@@ -1,21 +1,28 @@
 <nav class="app-filter {{ params.classes if params.classes }}">
-  <ul class="app-filter__list">
+  <ul class="app-filter__list" role="tablist">
     {% for item in params.items %}
-      <li class="app-filter__list-item {{ 'app-filter__list-item--active' if item.active }}">
-        {% if not item.active %}
-        <a href="{{ item.href }}" class="app-filter__link">
+      <li
+        class="app-filter__list-item {{ 'app-filter__list-item--active' if item.active }}"
+        role="tab"
+        aria-selected="{{ 'true' if item.active else 'false' }}"
+        {% if item.active %}
+        tabindex="0"
         {% endif %}
-          <span class="app-filter__content">
-          {% if item.value !== undefined %}
-            <span class="app-filter__value">{{ item.value }}</span>
+        >
+        <div class="app-filter__content">
+          {% if not item.active %}
+          <a href="{{ item.href }}" class="app-filter__link">
           {% endif %}
-          {% if item.label !== undefined %}
-            <span class="app-filter__label">{{ item.label }}</span>
+            {% if item.value !== undefined %}
+              <span class="app-filter__value">{{ item.value }}</span>
+            {% endif %}
+            {% if item.label !== undefined %}
+              <span class="app-filter__label">{{ item.label }}</span>
+            {% endif %}
+          {% if not item.active %}
+          </a>
           {% endif %}
-          </span>
-        {% if not active %}
-        </a>
-        {% endif %}
+        </div>
       </li>
     {% endfor %}
   </ul>
