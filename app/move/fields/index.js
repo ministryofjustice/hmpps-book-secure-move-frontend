@@ -29,8 +29,7 @@ const moveType = require('./move-type')
 const people = require('./people')
 const policeNationalComputer = require('./police-national-computer')
 const policeNationalComputerUpdate = require('./police-national-computer.update')
-const prisonTransferReason = require('./prison-transfer-reason')
-const prisonTransferReasonComments = require('./prison-transfer-reason-comments')
+const prisonTransferType = require('./prison-transfer-type')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
@@ -79,11 +78,15 @@ const create = {
   people,
   police_national_computer: policeNationalComputer,
   pregnant: assessmentAnswer(),
-  prison_transfer_reason: prisonTransferReason,
-  prison_transfer_reason_comments: prisonTransferReasonComments,
   prison_recall_comments: {
     ...cloneDeep(additionalInformation),
     skip: true,
+  },
+  prison_transfer_type: prisonTransferType,
+  prison_transfer_comments: {
+    ...cloneDeep(additionalInformation),
+    name: 'prison_transfer_comments',
+    id: 'prison_transfer_comments',
   },
   self_harm: assessmentAnswer(),
   solicitor: assessmentAnswer(),

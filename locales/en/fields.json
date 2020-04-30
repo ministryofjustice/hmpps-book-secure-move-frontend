@@ -202,10 +202,7 @@
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
   },
-  "prison_transfer_reason": {
-    "label": "Move type"
-  },
-  "prison_transfer_reason_comments": {
+  "prison_transfer_type": {
     "label": "Reason for move"
   },
   "move_agreed": {
