@@ -20,6 +20,7 @@ module.exports = function list(req, res) {
       presenters.moveToCardComponent({
         showMeta: false,
         showTags: false,
+        showImage: false,
       })
     ),
   }
