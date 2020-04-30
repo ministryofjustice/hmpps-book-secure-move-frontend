@@ -13,7 +13,9 @@ const mockMoves = [
     status: 'proposed',
     updated_at: '2020-04-20T11:48:53+01:00',
     created_at: '2020-04-20T11:48:53+01:00',
-    prison_transfer_reason: 'MAPPA',
+    prison_transfer_reason: {
+      title: 'MAPPA',
+    },
     time_due: null,
     date: null,
     move_type: 'prison_transfer',
@@ -58,7 +60,7 @@ const mockMoves = [
     status: 'proposed',
     updated_at: '2020-04-21T10:56:02+01:00',
     created_at: '2020-04-21T10:56:02+01:00',
-    prison_transfer_reason: 'Compassionate',
+    prison_transfer_reason: null,
     time_due: null,
     date: null,
     move_type: 'prison_transfer',
@@ -159,7 +161,12 @@ describe('#movesToTable', function() {
     })
     it('returns the move type on the fifth cell', function() {
       expect(output.moves[0][4]).to.deep.equal({
-        html: mockMoves[0].prison_transfer_reason,
+        html: mockMoves[0].prison_transfer_reason.title,
+      })
+    })
+    it('returns empty string with null prison transfer reason', function() {
+      expect(output.moves[1][4]).to.deep.equal({
+        html: '',
       })
     })
     it('returns a row per record', function() {

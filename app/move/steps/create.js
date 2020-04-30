@@ -156,7 +156,7 @@ module.exports = {
   '/prison-transfer-reason': {
     controller: PrisonTransferReason,
     pageTitle: 'moves::steps.prison_transfer_reason.heading',
-    fields: ['prison_transfer_reason', 'prison_transfer_reason_comments'],
+    fields: ['prison_transfer_type', 'prison_transfer_comments'],
     next: 'agreement-status',
   },
   '/move-details': {
@@ -184,7 +184,7 @@ module.exports = {
       'to_location',
       'to_location_court_appearance',
       'to_location_prison_transfer',
-      'additional_information',
+      'prison_recall_comments',
     ],
   },
   '/agreement-status': {

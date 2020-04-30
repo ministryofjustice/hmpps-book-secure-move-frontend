@@ -23,7 +23,7 @@ const moveType = {
     {
       value: 'prison_recall',
       text: 'fields::move_type.items.prison_recall.label',
-      conditional: 'additional_information',
+      conditional: 'prison_recall_comments',
     },
   ],
 }

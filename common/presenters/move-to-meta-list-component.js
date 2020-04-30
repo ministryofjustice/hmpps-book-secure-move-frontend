@@ -34,6 +34,7 @@ function moveToMetaListComponent(
     from_location: fromLocation,
     to_location: toLocation,
     additional_information: additionalInfo,
+    prison_transfer_reason: prisonTransferReason = {},
   } = {},
   actions = {}
 ) {
@@ -42,7 +43,13 @@ function moveToMetaListComponent(
     moveType === 'prison_recall'
       ? i18n.t('fields::move_type.items.prison_recall.label')
       : destination
-  const additionalInformation = additionalInfo ? ` — ${additionalInfo}` : ''
+  const destinationSuffix =
+    additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
+  const showPrisonTransferReason =
+    prisonTransferReason.title && moveType === 'prison_transfer'
+  const prisonTransferReasonSuffix = additionalInfo
+    ? ` — ${additionalInfo}`
+    : ''
 
   Object.keys(actions).forEach(key => {
     actions[key] = {
@@ -64,7 +71,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::move_type.short_label'),
       },
       value: {
-        text: destinationLabel + additionalInformation,
+        text: destinationLabel + destinationSuffix,
       },
       action: actions.move,
     },
@@ -99,6 +106,16 @@ function moveToMetaListComponent(
       },
       value: {
         text: filters.formatTime(timeDue),
+      },
+    },
+    {
+      key: {
+        text: i18n.t('fields::prison_transfer_type.label'),
+      },
+      value: {
+        text: showPrisonTransferReason
+          ? prisonTransferReason.title + prisonTransferReasonSuffix
+          : undefined,
       },
     },
   ]
