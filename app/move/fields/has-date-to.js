@@ -4,7 +4,7 @@ const hasDateTo = {
   name: 'has_date_to',
   fieldset: {
     legend: {
-      text: 'fields::has_date_to.legend',
+      text: 'fields::has_date_to.label',
       classes: 'govuk-label--m',
     },
   },
