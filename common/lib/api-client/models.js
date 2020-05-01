@@ -174,8 +174,9 @@ module.exports = {
   },
   prison_transfer_reason: {
     attributes: {
-      title: '',
+      disabled_at: '',
       key: '',
+      title: '',
     },
     options: {
       cache: true,
