@@ -110,7 +110,7 @@ describe('Moves controllers', function() {
             const template = res.render.args[0][0]
 
             expect(res.render).to.be.calledOnce
-            expect(template).to.equal('moves/views/list')
+            expect(template).to.equal('moves/views/list-as-cards')
           })
         }
       )

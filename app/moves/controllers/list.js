@@ -12,7 +12,9 @@ module.exports = function list(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const canViewMove = permissions.check('move:view', userPermissions)
   const template =
-    canViewMove && fromLocationId ? 'moves/views/list' : 'moves/views/download'
+    canViewMove && fromLocationId
+      ? 'moves/views/list-as-cards'
+      : 'moves/views/download'
   const locals = {
     pageTitle: 'moves::dashboard.outgoing_moves',
     destinations: presenters.movesByToLocation(activeMovesByDate),

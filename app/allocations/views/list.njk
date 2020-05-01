@@ -1,6 +1,4 @@
-{% extends "layouts/list-view.njk" %}
-
-{% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
+{% extends "layouts/list.njk" %}
 
 {% block headerActions %}
   {% if canAccess('move:create') %}
@@ -11,12 +9,13 @@
       classes: "govuk-!-margin-top-2 app-print--hide"
     }) }}
   {% endif %}
-  {{ appFilter({
-    items: allocationTypeNavigation
-  }) }}
 {% endblock %}
 
 {% block pageContent %}
+  {{ appFilter({
+    items: allocationTypeNavigation
+  }) }}
+
   {% if allocations.length %}
     {{ govukTable({
       rows: rowsForAllocationTable,
