@@ -97,18 +97,62 @@ describe('Court Hearing Service', function() {
 
     beforeEach(async function() {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
-      courtHearing = await courtHearingService.create(mockData)
     })
 
-    it('should call create method with data', function() {
-      expect(apiClient.create).to.be.calledOnceWithExactly(
-        'court_hearing',
-        mockData
-      )
+    context('by default', function() {
+      beforeEach(async function() {
+        courtHearing = await courtHearingService.create(mockData)
+      })
+
+      it('should create with empty params', function() {
+        expect(apiClient.create).to.be.calledOnceWithExactly(
+          'court_hearing',
+          mockData,
+          {}
+        )
+      })
+
+      it('should return court hearing', function() {
+        expect(courtHearing).to.deep.equal(mockResponse.data)
+      })
     })
 
-    it('should return court hearing', function() {
-      expect(courtHearing).to.deep.equal(mockResponse.data)
+    context('with disabled save set to true', function() {
+      beforeEach(async function() {
+        courtHearing = await courtHearingService.create(mockData, true)
+      })
+
+      it('should create with query string', function() {
+        expect(apiClient.create).to.be.calledOnceWithExactly(
+          'court_hearing',
+          mockData,
+          {
+            do_not_save_to_nomis: true,
+          }
+        )
+      })
+
+      it('should return court hearing', function() {
+        expect(courtHearing).to.deep.equal(mockResponse.data)
+      })
+    })
+
+    context('with disabled save set to true', function() {
+      beforeEach(async function() {
+        courtHearing = await courtHearingService.create(mockData, false)
+      })
+
+      it('should create with empty params', function() {
+        expect(apiClient.create).to.be.calledOnceWithExactly(
+          'court_hearing',
+          mockData,
+          {}
+        )
+      })
+
+      it('should return court hearing', function() {
+        expect(courtHearing).to.deep.equal(mockResponse.data)
+      })
     })
   })
 })
