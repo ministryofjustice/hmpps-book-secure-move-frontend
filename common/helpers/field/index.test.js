@@ -7,7 +7,6 @@ const {
   mapReferenceDataToOption,
   renderConditionalFields,
   setFieldValue,
-  setFieldError,
   translateField,
   insertInitialOption,
   insertItemConditional,
@@ -494,74 +493,6 @@ describe('Form helpers', function() {
             ])
           })
         })
-      })
-    })
-  })
-
-  describe('#setFieldError()', function() {
-    beforeEach(function() {
-      sinon.stub(i18n, 't').returnsArg(0)
-    })
-
-    context('when no error exists', function() {
-      let response
-      const field = ['field', { name: 'field' }]
-
-      beforeEach(function() {
-        response = setFieldError({})(field)
-      })
-
-      it('should not call translation method', function() {
-        expect(i18n.t).not.to.be.called
-      })
-
-      it('should return original field', function() {
-        expect(response).to.deep.equal(field)
-      })
-    })
-
-    context('when error exists', function() {
-      const errors = {
-        error_field: {
-          type: 'required',
-          key: 'error_field',
-        },
-      }
-      let field, response
-
-      beforeEach(function() {
-        field = ['error_field', { name: 'error_field' }]
-
-        response = setFieldError(errors)(field)
-      })
-
-      it('should call translation correct amount of times', function() {
-        expect(i18n.t).to.be.calledTwice
-      })
-
-      it('should call translation with correct values', function() {
-        expect(i18n.t.firstCall).to.be.calledWithExactly(
-          'fields::error_field.label'
-        )
-        expect(i18n.t.secondCall).to.be.calledWithExactly(
-          'validation::required'
-        )
-      })
-
-      it('should return field with error message', function() {
-        expect(response).to.deep.equal([
-          'error_field',
-          {
-            name: 'error_field',
-            errorMessage: {
-              html: 'fields::error_field.label validation::required',
-            },
-          },
-        ])
-      })
-
-      it('should not mutate original field', function() {
-        expect(field).to.deep.equal(['error_field', { name: 'error_field' }])
       })
     })
   })

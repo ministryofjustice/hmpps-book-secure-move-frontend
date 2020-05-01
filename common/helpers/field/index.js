@@ -13,6 +13,9 @@ const explicitAssessmentAnswer = require('../../../app/move/fields/common.explic
 const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
+const getFieldErrorMessage = require('./get-field-error-message')
+const setFieldError = require('./set-field-error')
+
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
     value: id,
@@ -122,29 +125,6 @@ function setFieldValue(values) {
   }
 }
 
-function setFieldError(errors) {
-  return ([key, field]) => {
-    const fieldError = errors[key]
-
-    if (!fieldError) {
-      return [key, field]
-    }
-
-    const label = i18n.t(`fields::${fieldError.key}.label`)
-    const message = i18n.t(`validation::${fieldError.type}`)
-
-    return [
-      key,
-      {
-        ...field,
-        errorMessage: {
-          html: `${label} ${message}`,
-        },
-      },
-    ]
-  }
-}
-
 function translateField([key, field]) {
   const translated = cloneDeep(field)
   const translationPaths = [
@@ -249,6 +229,7 @@ module.exports = {
   mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   renderConditionalFields,
+  getFieldErrorMessage,
   setFieldValue,
   setFieldError,
   translateField,

@@ -12,6 +12,11 @@ describe('Form wizard', function() {
     let errors
 
     beforeEach(function() {
+      sinon
+        .stub(fieldHelpers, 'getFieldErrorMessage')
+        .callsFake((key, type) => {
+          return `${key}.${type}`
+        })
       sinon.stub(FormController.prototype, 'getErrors')
     })
 
@@ -27,19 +32,20 @@ describe('Form wizard', function() {
     })
 
     context('when parent returns an errors object', function() {
+      const mockErrors = {
+        fieldOne: {
+          key: 'fieldOne',
+          type: 'required',
+          url: '/step-url',
+        },
+        fieldTwo: {
+          key: 'fieldTwo',
+          type: 'before',
+          url: '/step-url',
+        },
+      }
       beforeEach(function() {
-        FormController.prototype.getErrors.returns({
-          fieldOne: {
-            key: 'fieldOne',
-            type: 'required',
-            url: '/step-url',
-          },
-          fieldTwo: {
-            key: 'fieldTwo',
-            type: 'required',
-            url: '/step-url',
-          },
-        })
+        FormController.prototype.getErrors.returns(mockErrors)
         const reqMock = {
           t: sinon.stub().returnsArg(0),
         }
@@ -48,6 +54,21 @@ describe('Form wizard', function() {
 
       it('should contain correct number of errors', function() {
         expect(errors.errorList.length).to.equal(2)
+      })
+
+      it('should get error messages', function() {
+        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
+          mockErrors.fieldOne.key,
+          mockErrors.fieldOne.type
+        )
+        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
+          mockErrors.fieldTwo.key,
+          mockErrors.fieldTwo.type
+        )
+      })
+
+      it('should get error messages correct number of times', function() {
+        expect(fieldHelpers.getFieldErrorMessage.callCount).to.equal(2)
       })
 
       it('should transform and append messages property', function() {
@@ -59,17 +80,17 @@ describe('Form wizard', function() {
           },
           fieldTwo: {
             key: 'fieldTwo',
-            type: 'required',
+            type: 'before',
             url: '/step-url',
           },
           errorList: [
             {
-              href: '#fieldOne',
-              html: 'fields::fieldOne.label validation::required',
+              href: `#${mockErrors.fieldOne.key}`,
+              html: `${mockErrors.fieldOne.key}.${mockErrors.fieldOne.type}`,
             },
             {
-              href: '#fieldTwo',
-              html: 'fields::fieldTwo.label validation::required',
+              href: `#${mockErrors.fieldTwo.key}`,
+              html: `${mockErrors.fieldTwo.key}.${mockErrors.fieldTwo.type}`,
             },
           ],
         })

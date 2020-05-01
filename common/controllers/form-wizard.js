@@ -7,18 +7,17 @@ const fieldHelpers = require('../helpers/field')
 class FormController extends Controller {
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
-
-    errors.errorList = map(errors, error => {
-      const label = req.t(`fields::${error.key}.label`)
-      const message = req.t(`validation::${error.type}`)
-
+    const errorList = map(errors, ({ key, type }) => {
       return {
-        html: `${label} ${message}`,
-        href: `#${error.key}`,
+        html: fieldHelpers.getFieldErrorMessage(key, type),
+        href: `#${key}`,
       }
     })
 
-    return errors
+    return {
+      ...errors,
+      errorList,
+    }
   }
 
   errorHandler(err, req, res, next) {
