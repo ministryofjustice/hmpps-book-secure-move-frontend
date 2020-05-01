@@ -752,11 +752,11 @@ describe('Person Service', function() {
 
         it('should call correct api client methods', function() {
           expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
-          expect(apiClient.all).to.be.calledOnceWithExactly('timetable')
+          expect(apiClient.all).to.be.calledOnceWithExactly('timetable_entry')
           expect(apiClient.get).to.be.calledOnceWithExactly({
             filter: {
-              'filter[date_from]': mockDate,
-              'filter[date_to]': mockDate,
+              date_from: mockDate,
+              date_to: mockDate,
             },
           })
         })
@@ -773,11 +773,11 @@ describe('Person Service', function() {
 
         it('should call correct api client methods', function() {
           expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
-          expect(apiClient.all).to.be.calledOnceWithExactly('timetable')
+          expect(apiClient.all).to.be.calledOnceWithExactly('timetable_entry')
           expect(apiClient.get).to.be.calledOnceWithExactly({
             filter: {
-              'filter[date_from]': undefined,
-              'filter[date_to]': undefined,
+              date_from: undefined,
+              date_to: undefined,
             },
           })
         })

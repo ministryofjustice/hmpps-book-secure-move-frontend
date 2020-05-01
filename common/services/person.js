@@ -152,11 +152,11 @@ const personService = {
 
     return apiClient
       .one('person', personId)
-      .all('timetable')
+      .all('timetable_entry')
       .get({
         filter: {
-          'filter[date_from]': date,
-          'filter[date_to]': date,
+          date_from: date,
+          date_to: date,
         },
       })
       .then(response => response.data)

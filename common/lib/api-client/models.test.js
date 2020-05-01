@@ -65,7 +65,7 @@ const testCases = {
       args: {},
     },
   ],
-  timetable: [
+  timetable_entry: [
     {
       method: 'findAll',
       httpMock: 'get',

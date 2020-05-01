@@ -11,7 +11,7 @@ module.exports = function timetableToTableComponent(timetable) {
     { text: i18n.t('location') },
   ]
   const rows = sortBy(timetable, 'start_time').map(
-    ({ start_time: time, activity_type: type, reason, location }) => {
+    ({ start_time: time, nomis_type: type, reason, location }) => {
       return [
         { text: time ? filters.formatTime(time) : '' },
         { text: type || '' },
