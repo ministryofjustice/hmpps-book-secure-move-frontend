@@ -1,6 +1,8 @@
-const { get, keys } = require('lodash')
+const { get, isEqual, keys, map, pick } = require('lodash')
 
+const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 
 class UpdateBaseController extends CreateBaseController {
@@ -75,10 +77,11 @@ class UpdateBaseController extends CreateBaseController {
       }
 
       try {
+        const initialValues = this.getUpdateValues(req, res)
         if (req.initialStep) {
-          values = this.getUpdateValues(req, res)
+          values = initialValues
         }
-        this.protectReadOnlyFields(req, values)
+        this.protectReadOnlyFields(req, initialValues)
       } catch (error) {
         return callback(error)
       }
@@ -91,6 +94,44 @@ class UpdateBaseController extends CreateBaseController {
     const person = req.getPerson()
     const fields = keys(get(req, 'form.options.fields'))
     return personService.unformat(person, fields)
+  }
+
+  async saveMove(req, res, next) {
+    try {
+      const fields = this.saveFields || Object.keys(req.form.options.fields)
+      const newValues = pick(req.form.values, fields)
+      const oldValues = pick(req.getMove(), fields)
+      if (!isEqual(newValues, oldValues)) {
+        const id = req.getMoveId()
+        const data = {
+          id,
+          ...newValues,
+        }
+
+        await moveService.update(data)
+        this.setFlash(req)
+      }
+
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  setFlash(req, category) {
+    const suppliers = get(req.getMove(), 'from_location.suppliers')
+    const supplierNames =
+      suppliers && suppliers.length
+        ? map(suppliers, 'name')
+        : [req.t('supplier_fallback')]
+    const supplier = filters.oxfordJoin(supplierNames)
+    category = category || this.flashKey || req.form.options.key
+    req.flash('success', {
+      title: req.t(`moves::update_flash.categories.${category}.heading`),
+      content: req.t(`moves::update_flash.categories.${category}.message`, {
+        supplier,
+      }),
+    })
   }
 }
 

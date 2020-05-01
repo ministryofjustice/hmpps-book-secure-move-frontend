@@ -1,4 +1,4 @@
-const { pick } = require('lodash')
+const { isEqual, pick } = require('lodash')
 
 const personService = require('../../../../common/services/person')
 const Assessment = require('../create/assessment')
@@ -28,7 +28,6 @@ class UpdateAssessmentController extends UpdateBase {
 
   async saveValues(req, res, next) {
     try {
-      const personId = req.getPersonId()
       const person = req.getPerson()
       const assessments = person.assessment_answers || []
       const fieldKeys = Object.keys(req.form.options.fields)
@@ -49,14 +48,17 @@ class UpdateAssessmentController extends UpdateBase {
       // TODO: don't set assessments if not from prison?
       // fromLocationType !== 'prison'
 
-      const originalKeys = getAnswerKeys(assessments)
-      const updatedKeys = getAnswerKeys(updatedAssessments)
+      const oldKeys = getAnswerKeys(assessments)
+      const newKeys = getAnswerKeys(updatedAssessments)
 
-      if (JSON.stringify(originalKeys) !== JSON.stringify(updatedKeys)) {
+      if (!isEqual(oldKeys, newKeys)) {
+        const personId = req.getPersonId()
         await personService.update({
           id: personId,
           assessment_answers: updatedAssessments,
         })
+
+        this.setFlash(req)
       }
 
       next()

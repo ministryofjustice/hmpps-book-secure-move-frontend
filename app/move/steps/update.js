@@ -30,7 +30,7 @@ const updateSteps = [
   // TODO: reenable when redirect api available
   // {
   //   key: 'move',
-  //   role: 'move:update',
+  //   permission: 'move:update',
   //   steps: {
   //     '/move-details': {
   //       ...createSteps['/move-details'],
@@ -84,5 +84,11 @@ const updateSteps = [
     },
   },
 ]
+
+updateSteps.forEach(updateJourney => {
+  const { key, steps } = updateJourney
+  const firstStepKey = Object.keys(steps)[0]
+  steps[firstStepKey].key = key
+})
 
 module.exports = updateSteps

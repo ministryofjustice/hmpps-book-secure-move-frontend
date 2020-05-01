@@ -43,49 +43,91 @@ describe('Move controllers', function() {
       const res = {}
       let nextSpy
       beforeEach(async function() {
-        sinon.stub(CreatePersonalDetails.prototype, 'saveValues')
-        sinon.stub(personService, 'update').resolves()
+        sinon.stub(controller, 'setFlash')
         sinon.stub(personService, 'unformat').returns({})
+        sinon.stub(personService, 'update').resolves()
         req = {
           getPersonId: sinon.stub().returns('#personId'),
           getPerson: sinon.stub().returns({
             id: '#personId',
-            identifiers: [
-              {
-                identifier_type: 'foo',
-              },
-            ],
           }),
           form: {
+            options: {
+              fields: {
+                foo: {},
+                bar: {},
+              },
+            },
             values: {
-              bar: 'baz',
+              foo: 'a',
+              bar: 'b',
+              baz: 'c',
             },
           },
         }
-        nextSpy = sinon.spy()
-
-        await controller.saveValues(req, res, nextSpy)
+        nextSpy = sinon.stub()
       })
 
-      it('should call unformat with expected identifier fields', async function() {
-        expect(personService.unformat).to.be.calledOnceWithExactly(
-          {
+      context('when the values have not changed', function() {
+        beforeEach(async function() {
+          personService.unformat.returns({ foo: 'a', bar: 'b' })
+          await controller.saveValues(req, res, nextSpy)
+        })
+
+        it('should call savePerson with expected data', async function() {
+          expect(personService.update).to.not.be.called
+        })
+
+        it('should set the confirmation message', async function() {
+          expect(controller.setFlash).to.not.be.called
+        })
+
+        it('should invoke next with no error', async function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when the values have changed', function() {
+        beforeEach(async function() {
+          await controller.saveValues(req, res, nextSpy)
+        })
+        it('should call unformat with expected field keys', async function() {
+          expect(personService.unformat).to.be.calledOnceWithExactly(
+            {
+              id: '#personId',
+            },
+            ['foo', 'bar'],
+            { date: [] }
+          )
+        })
+
+        it('should call savePerson with expected data', async function() {
+          expect(personService.update).to.be.calledOnceWithExactly({
             id: '#personId',
-            identifiers: [
-              {
-                identifier_type: 'foo',
-              },
-            ],
-          },
-          ['foo']
-        )
+            foo: 'a',
+            bar: 'b',
+          })
+        })
+
+        it('should set the confirmation message', async function() {
+          expect(controller.setFlash).to.be.calledOnceWithExactly(req)
+        })
+
+        it('should invoke next with no error', async function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should yield to CreatePersonalDetails’s saveValue', async function() {
-        expect(personService.update).to.not.be.called
-        expect(
-          CreatePersonalDetails.prototype.saveValues
-        ).to.be.calledOnceWithExactly(req, res, nextSpy)
+      context('when an error is thrown', function() {
+        let error
+        beforeEach(async function() {
+          error = new Error()
+          personService.update.rejects(error)
+          await controller.saveValues(req, res, nextSpy)
+        })
+        it('should invoke next with the error', async function() {
+          expect(nextSpy).to.be.calledOnceWithExactly(error)
+        })
       })
     })
   })

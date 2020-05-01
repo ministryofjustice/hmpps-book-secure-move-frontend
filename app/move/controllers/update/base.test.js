@@ -1,7 +1,9 @@
 const FormController = require('hmpo-form-wizard').Controller
 const { cloneDeep } = require('lodash')
 
+const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
 
@@ -419,7 +421,7 @@ describe('Move controllers', function() {
     context('when req.initialStep is false', function() {
       it('should not call the getUpdateValues method', function() {
         controller.getValues(req, res, callback)
-        expect(controller.getUpdateValues).to.not.be.called
+        expect(controller.getUpdateValues).to.be.calledOnceWithExactly(req, res)
       })
 
       it('should call the protectReadOnlyFields method with the correct args', function() {
@@ -427,7 +429,7 @@ describe('Move controllers', function() {
         expect(controller.protectReadOnlyFields).to.be.calledOnceWithExactly(
           req,
           {
-            foo: 'bar',
+            baz: 'tastic',
           }
         )
       })
@@ -566,5 +568,211 @@ describe('Move controllers', function() {
       expect(protectedField).to.have.property('prop', true)
       expect(protectedField).to.have.property('anotherProp', true)
     })
+  })
+
+  describe('#saveMove', function() {
+    let req
+    const res = {}
+    let nextSpy
+    beforeEach(async function() {
+      sinon.stub(controller, 'setFlash')
+      sinon.stub(moveService, 'update').resolves()
+      req = {
+        getMoveId: sinon.stub().returns('#moveId'),
+        getMove: sinon.stub().returns({
+          id: '#moveId',
+        }),
+        form: {
+          options: {
+            fields: {
+              foo: {},
+              bar: {},
+            },
+          },
+          values: {
+            foo: 'a',
+            bar: 'b',
+            baz: 'c',
+          },
+        },
+      }
+      nextSpy = sinon.stub()
+    })
+
+    context('when the values have not changed', function() {
+      beforeEach(async function() {
+        req.getMove.returns({ foo: 'a', bar: 'b', baz: 'x' })
+        await controller.saveMove(req, res, nextSpy)
+      })
+
+      it('should call savePerson with expected data', function() {
+        expect(moveService.update).to.not.be.called
+      })
+
+      it('should not set the confirmation message', function() {
+        expect(controller.setFlash).to.not.be.called
+      })
+
+      it('should invoke next with no error', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when the values have changed', function() {
+      beforeEach(async function() {
+        await controller.saveMove(req, res, nextSpy)
+      })
+
+      it('should call savePerson with expected data', function() {
+        expect(moveService.update).to.be.calledOnceWithExactly({
+          id: '#moveId',
+          foo: 'a',
+          bar: 'b',
+        })
+      })
+
+      it('should set the confirmation message', function() {
+        expect(controller.setFlash).to.be.calledOnceWithExactly(req)
+      })
+
+      it('should invoke next with no error', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when an error is thrown', function() {
+      let error
+      beforeEach(async function() {
+        error = new Error()
+        moveService.update.rejects(error)
+        await controller.saveMove(req, res, nextSpy)
+      })
+      it('should invoke next with the error', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly(error)
+      })
+    })
+  })
+
+  describe('#setFlash', function() {
+    let req
+    beforeEach(async function() {
+      sinon.stub(filters, 'oxfordJoin').callsFake((...arr) => {
+        return arr.join(',')
+      })
+      req = {
+        t: sinon.stub().returnsArg(0),
+        flash: sinon.spy(),
+        form: {
+          options: {
+            key: 'optionsKey',
+          },
+        },
+        getMove: sinon.stub().returns({
+          from_location: {
+            suppliers: [
+              {
+                name: 'Supplier A',
+              },
+              {
+                name: 'Supplier B',
+              },
+            ],
+          },
+        }),
+      }
+    })
+
+    context('when the supplier is known', function() {
+      beforeEach(async function() {
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should output localised strings containing the suppliers', function() {
+        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
+          'Supplier A',
+          'Supplier B',
+        ])
+        expect(req.t).to.be.callCount(2)
+        expect(req.t.getCall(0).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.heading',
+        ])
+        expect(req.t.getCall(1).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.message',
+          { supplier: 'Supplier A,Supplier B' },
+        ])
+      })
+    })
+
+    context('when the supplier is not known', function() {
+      beforeEach(async function() {
+        req.getMove = sinon.stub().returns({})
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should output localised strings containing generic supplier info', function() {
+        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
+          'supplier_fallback',
+        ])
+        expect(req.t).to.be.callCount(3)
+        expect(req.t.getCall(0).args).to.deep.equal(['supplier_fallback'])
+        expect(req.t.getCall(1).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.heading',
+        ])
+        expect(req.t.getCall(2).args).to.deep.equal([
+          'moves::update_flash.categories.categoryKey.message',
+          {
+            supplier: 'supplier_fallback',
+          },
+        ])
+      })
+    })
+
+    context('when passed an explicit key', function() {
+      beforeEach(async function() {
+        controller.flashKey = 'flashKey'
+        await controller.setFlash(req, 'categoryKey')
+      })
+
+      it('should set confirmation message using explicit key', function() {
+        expect(req.flash).to.be.calledOnceWithExactly('success', {
+          title: 'moves::update_flash.categories.categoryKey.heading',
+          content: 'moves::update_flash.categories.categoryKey.message',
+        })
+      })
+    })
+
+    context(
+      'when passed no explicit key but has a flashKey property',
+      function() {
+        beforeEach(async function() {
+          controller.flashKey = 'flashKey'
+          await controller.setFlash(req)
+        })
+
+        it('should set confirmation message using explicit key', function() {
+          expect(req.flash).to.be.calledOnceWithExactly('success', {
+            title: 'moves::update_flash.categories.flashKey.heading',
+            content: 'moves::update_flash.categories.flashKey.message',
+          })
+        })
+      }
+    )
+
+    context(
+      'when passed no explicit key and has no flashKey property',
+      function() {
+        beforeEach(async function() {
+          delete controller.flashKey
+          await controller.setFlash(req)
+        })
+
+        it('should set confirmation message using explicit key', function() {
+          expect(req.flash).to.be.calledOnceWithExactly('success', {
+            title: 'moves::update_flash.categories.optionsKey.heading',
+            content: 'moves::update_flash.categories.optionsKey.message',
+          })
+        })
+      }
+    )
   })
 })

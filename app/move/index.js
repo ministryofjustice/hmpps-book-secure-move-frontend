@@ -66,12 +66,11 @@ router.use(
 
 if (FEATURE_FLAGS.EDITABILITY) {
   updateSteps.forEach(updateJourney => {
-    const steps = updateJourney.steps
-    const key = Object.keys(steps)[0]
+    const { key, steps } = updateJourney
     const updateStepConfig = {
       ...updateConfig,
-      name: 'update-a-move' + key,
-      journeyName: 'update-a-move' + key,
+      name: `update-move-${key}`,
+      journeyName: `update-move-${key}`,
     }
     router.use(
       '/:moveId/edit',
