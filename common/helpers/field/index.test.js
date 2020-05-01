@@ -1,5 +1,6 @@
 const { cloneDeep, set } = require('lodash')
 
+const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
 const {
@@ -498,10 +499,8 @@ describe('Form helpers', function() {
   })
 
   describe('#setFieldError()', function() {
-    let translateStub
-
     beforeEach(function() {
-      translateStub = sinon.stub().returnsArg(0)
+      sinon.stub(i18n, 't').returnsArg(0)
     })
 
     context('when no error exists', function() {
@@ -509,11 +508,11 @@ describe('Form helpers', function() {
       const field = ['field', { name: 'field' }]
 
       beforeEach(function() {
-        response = setFieldError({}, translateStub)(field)
+        response = setFieldError({})(field)
       })
 
       it('should not call translation method', function() {
-        expect(translateStub).not.to.be.called
+        expect(i18n.t).not.to.be.called
       })
 
       it('should return original field', function() {
@@ -533,18 +532,18 @@ describe('Form helpers', function() {
       beforeEach(function() {
         field = ['error_field', { name: 'error_field' }]
 
-        response = setFieldError(errors, translateStub)(field)
+        response = setFieldError(errors)(field)
       })
 
       it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledTwice
+        expect(i18n.t).to.be.calledTwice
       })
 
       it('should call translation with correct values', function() {
-        expect(translateStub.firstCall).to.be.calledWithExactly(
+        expect(i18n.t.firstCall).to.be.calledWithExactly(
           'fields::error_field.label'
         )
-        expect(translateStub.secondCall).to.be.calledWithExactly(
+        expect(i18n.t.secondCall).to.be.calledWithExactly(
           'validation::required'
         )
       })
@@ -568,10 +567,8 @@ describe('Form helpers', function() {
   })
 
   describe('#translateField()', function() {
-    let translateStub
-
     beforeEach(function() {
-      translateStub = sinon.stub().returns('__translated__')
+      sinon.stub(i18n, 't').returns('__translated__')
     })
 
     context('when no translation properties exist', function() {
@@ -579,11 +576,11 @@ describe('Form helpers', function() {
       const field = ['field', { name: 'field' }]
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should not call translation method', function() {
-        expect(translateStub).not.to.be.called
+        expect(i18n.t).not.to.be.called
       })
 
       it('should return original field', function() {
@@ -653,11 +650,11 @@ describe('Form helpers', function() {
               { ...defaultProperties, ...cloneDeep(properties) },
             ]
 
-            response = translateField(translateStub)(field)
+            response = translateField(field)
           })
 
           it('should call translation with correct value', function() {
-            expect(translateStub).to.be.calledOnceWithExactly(path)
+            expect(i18n.t).to.be.calledOnceWithExactly(path)
           })
 
           it('should return translated field', function() {
@@ -701,11 +698,11 @@ describe('Form helpers', function() {
       let response
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledThrice
+        expect(i18n.t).to.be.calledThrice
       })
 
       it('should return translated field', function() {
@@ -769,11 +766,11 @@ describe('Form helpers', function() {
       let response
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledTwice
+        expect(i18n.t).to.be.calledTwice
       })
 
       it('should return translated field with items', function() {

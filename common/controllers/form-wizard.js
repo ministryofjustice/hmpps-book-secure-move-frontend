@@ -51,8 +51,8 @@ class FormController extends Controller {
   render(req, res, next) {
     const fields = Object.entries(req.form.options.fields)
       .map(fieldHelpers.setFieldValue(req.form.values))
-      .map(fieldHelpers.setFieldError(req.form.errors, req.t))
-      .map(fieldHelpers.translateField(req.t))
+      .map(fieldHelpers.setFieldError(req.form.errors))
+      .map(fieldHelpers.translateField)
       .map(fieldHelpers.renderConditionalFields)
 
     req.form.options.fields = fromPairs(fields)

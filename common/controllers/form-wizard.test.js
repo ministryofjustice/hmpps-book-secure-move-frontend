@@ -260,7 +260,7 @@ describe('Form wizard', function() {
     })
   })
 
-  describe('#renderComponentHtmlToCheerio()', function() {
+  describe('#render()', function() {
     let reqMock, nextSpy
 
     beforeEach(function() {
@@ -276,11 +276,9 @@ describe('Form wizard', function() {
         .callsFake(() => ([key, field]) => {
           return [key, { ...field, setFieldError: true }]
         })
-      sinon
-        .stub(fieldHelpers, 'translateField')
-        .callsFake(() => ([key, field]) => {
-          return [key, { ...field, translateField: true }]
-        })
+      sinon.stub(fieldHelpers, 'translateField').callsFake(([key, field]) => {
+        return [key, { ...field, translateField: true }]
+      })
       sinon
         .stub(fieldHelpers, 'renderConditionalFields')
         .callsFake(([key, field]) => {

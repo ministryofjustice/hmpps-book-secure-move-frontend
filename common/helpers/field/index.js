@@ -122,7 +122,7 @@ function setFieldValue(values) {
   }
 }
 
-function setFieldError(errors, translate) {
+function setFieldError(errors) {
   return ([key, field]) => {
     const fieldError = errors[key]
 
@@ -130,8 +130,8 @@ function setFieldError(errors, translate) {
       return [key, field]
     }
 
-    const label = translate(`fields::${fieldError.key}.label`)
-    const message = translate(`validation::${fieldError.type}`)
+    const label = i18n.t(`fields::${fieldError.key}.label`)
+    const message = i18n.t(`validation::${fieldError.type}`)
 
     return [
       key,
@@ -145,38 +145,36 @@ function setFieldError(errors, translate) {
   }
 }
 
-function translateField(translate) {
-  return ([key, field]) => {
-    const translated = cloneDeep(field)
-    const translationPaths = [
-      'text',
-      'html',
-      'label.text',
-      'label.html',
-      'hint.text',
-      'hint.html',
-      'fieldset.legend.text',
-      'fieldset.legend.html',
-      'heading.text',
-      'heading.html',
-      'summaryHtml',
-    ]
+function translateField([key, field]) {
+  const translated = cloneDeep(field)
+  const translationPaths = [
+    'text',
+    'html',
+    'label.text',
+    'label.html',
+    'hint.text',
+    'hint.html',
+    'fieldset.legend.text',
+    'fieldset.legend.html',
+    'heading.text',
+    'heading.html',
+    'summaryHtml',
+  ]
 
-    translationPaths.forEach(path => {
-      const key = get(translated, path)
-      if (key) {
-        set(translated, path, translate(key))
-      }
-    })
-
-    if (field.items) {
-      translated.items = Object.entries(field.items)
-        .map(translateField(translate))
-        .map(item => item[1])
+  translationPaths.forEach(path => {
+    const key = get(translated, path)
+    if (key) {
+      set(translated, path, i18n.t(key))
     }
+  })
 
-    return [key, translated]
+  if (field.items) {
+    translated.items = Object.entries(field.items)
+      .map(translateField)
+      .map(item => item[1])
   }
+
+  return [key, translated]
 }
 
 function insertInitialOption(items, label = 'option') {
