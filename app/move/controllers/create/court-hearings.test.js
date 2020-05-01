@@ -3,6 +3,7 @@ const timezoneMock = require('timezone-mock')
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 const Controller = require('./court-hearings')
@@ -194,7 +195,6 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         sinon.stub(CreateBaseController.prototype, 'saveValues')
-        timezoneMock.register('UTC')
         req = {
           courtCases: mockCourtCases,
           form: {
@@ -212,10 +212,6 @@ describe('Move controllers', function() {
           },
         }
         nextSpy = sinon.spy()
-      })
-
-      afterEach(function() {
-        timezoneMock.unregister()
       })
 
       context('when not associated with a court case', function() {
@@ -254,7 +250,7 @@ describe('Move controllers', function() {
                 case_type: mockCourtCases[0].case_type,
                 case_start_date: mockCourtCases[0].case_start_date,
                 comments: req.form.values.court_hearing__comments,
-                start_time: '2020-05-15T10:00:00Z',
+                start_time: '10:00',
               },
             ])
           })
@@ -264,6 +260,123 @@ describe('Move controllers', function() {
               CreateBaseController.prototype.saveValues
             ).to.have.been.calledOnceWithExactly(req, {}, nextSpy)
           })
+        })
+      })
+    })
+
+    describe('#process()', function() {
+      let mockReq, nextSpy
+
+      beforeEach(function() {
+        timezoneMock.register('UTC')
+        nextSpy = sinon.spy()
+        mockReq = {
+          form: {
+            values: {},
+          },
+          sessionModel: {
+            get: sinon.stub().returns('2020-10-10'),
+          },
+        }
+      })
+
+      afterEach(function() {
+        timezoneMock.unregister()
+      })
+
+      context('with start time', function() {
+        context('with valid time value', function() {
+          beforeEach(function() {
+            mockReq.form.values.court_hearing__start_time = '10:00'
+            controller.process(mockReq, {}, nextSpy)
+          })
+
+          it('should format as ISO', function() {
+            expect(mockReq.form.values.court_hearing__start_time).to.equal(
+              '2020-10-10T10:00:00Z'
+            )
+          })
+        })
+
+        context('with invalid time value', function() {
+          beforeEach(function() {
+            mockReq.form.values.court_hearing__start_time = 'foo'
+            controller.process(mockReq, {}, nextSpy)
+          })
+
+          it('should return start time', function() {
+            expect(mockReq.form.values.court_hearing__start_time).to.equal(
+              'foo'
+            )
+          })
+        })
+      })
+
+      context('without start time', function() {
+        beforeEach(function() {
+          mockReq.form.values.court_hearing__start_time = 'foo'
+          controller.process(mockReq, {}, nextSpy)
+        })
+
+        it('should not change value', function() {
+          expect(mockReq.form.values.court_hearing__start_time).to.equal('foo')
+        })
+      })
+    })
+
+    describe('#getValues()', function() {
+      let callback
+      const mockUnformattedTime = '10:00'
+      const mockFormattedTime = '10pm'
+
+      beforeEach(function() {
+        callback = sinon.spy()
+        sinon.stub(filters, 'formatTime').returns(mockFormattedTime)
+        sinon
+          .stub(CreateBaseController.prototype, 'getValues')
+          .callsFake((req, res, valuesCallback) => {
+            valuesCallback(null, {
+              foo: 'bar',
+              court_hearing__start_time: mockUnformattedTime,
+            })
+          })
+      })
+
+      context('when parent method does not throw an error', function() {
+        beforeEach(function() {
+          controller.getValues({}, {}, callback)
+        })
+
+        it('should format time', function() {
+          expect(filters.formatTime).to.be.calledOnceWithExactly(
+            mockUnformattedTime
+          )
+        })
+
+        it('should invoke the callback', function() {
+          expect(callback).to.be.calledOnceWithExactly(null, {
+            foo: 'bar',
+            court_hearing__start_time: mockFormattedTime,
+          })
+        })
+      })
+
+      context('when parent method throws an error', function() {
+        const mockError = new Error()
+
+        beforeEach(function() {
+          CreateBaseController.prototype.getValues.callsFake(
+            (req, res, valuesCallback) => {
+              valuesCallback(mockError, {
+                foo: 'bar',
+              })
+            }
+          )
+          controller.getValues({}, {}, callback)
+        })
+
+        it('should invoke the callback with the error', function() {
+          expect(callback).to.be.calledOnceWithExactly(mockError)
         })
       })
     })

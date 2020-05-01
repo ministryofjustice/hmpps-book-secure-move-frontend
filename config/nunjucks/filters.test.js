@@ -478,13 +478,6 @@ describe('Nunjucks filters', function() {
           })
         })
 
-        context('when the time is 12pm', function() {
-          it('should midday as a string', function() {
-            const time = filters.formatTime('2000-01-01T12:00:00Z')
-            expect(time).to.equal('Midday')
-          })
-        })
-
         context('when time is in the morning', function() {
           it('should return correct format', function() {
             const time = filters.formatTime('2000-01-01T08:00:00Z')

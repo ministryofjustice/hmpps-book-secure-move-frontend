@@ -1,9 +1,10 @@
-const { formatISO, parseISO } = require('date-fns')
+const { formatISO, isValid, parseISO } = require('date-fns')
 const { find, pick } = require('lodash')
 
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 
@@ -43,6 +44,37 @@ class CourtHearingsController extends CreateBaseController {
     }
   }
 
+  process(req, res, next) {
+    const { court_hearing__start_time: startTime } = req.form.values
+
+    if (startTime) {
+      const moveDate = req.sessionModel.get('date')
+      const hearingDate = parseISO(`${moveDate}T${startTime}`)
+      req.form.values.court_hearing__start_time = isValid(hearingDate)
+        ? formatISO(hearingDate)
+        : startTime
+    }
+
+    next()
+  }
+
+  getValues(req, res, callback) {
+    super.getValues(req, res, (err, values) => {
+      if (err) {
+        return callback(err)
+      }
+
+      const updatedValues = {
+        ...values,
+        court_hearing__start_time: filters.formatTime(
+          values.court_hearing__start_time
+        ),
+      }
+
+      callback(null, updatedValues)
+    })
+  }
+
   saveValues(req, res, next) {
     // TODO: Remove once we support creating hearings without a case
     if (req.form.values.has_court_case === 'false') {
@@ -54,9 +86,7 @@ class CourtHearingsController extends CreateBaseController {
       court_hearing__court_case: courtCaseId,
       court_hearing__start_time: startTime,
     } = req.form.values
-    const moveDate = req.sessionModel.get('date')
     const courtCase = find(req.courtCases, { id: courtCaseId })
-    const hearingDatetime = parseISO(`${moveDate}T${startTime}`)
     const whitelistedCaseAttributes = pick(courtCase, [
       'nomis_case_id',
       'nomis_case_status',
@@ -69,7 +99,7 @@ class CourtHearingsController extends CreateBaseController {
       {
         ...whitelistedCaseAttributes,
         comments,
-        start_time: formatISO(hearingDatetime),
+        start_time: startTime,
       },
     ]
 
