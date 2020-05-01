@@ -1,6 +1,6 @@
 const { cloneDeep, set } = require('lodash')
 
-const componentService = require('../services/component')
+const componentService = require('../../services/component')
 
 const {
   mapReferenceDataToOption,
@@ -11,7 +11,7 @@ const {
   insertInitialOption,
   insertItemConditional,
   populateAssessmentFields,
-} = require('./field')
+} = require('./')
 
 const mockAssessmentQuestions = [
   {
