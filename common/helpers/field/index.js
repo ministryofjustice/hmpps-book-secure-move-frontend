@@ -8,10 +8,13 @@ const {
   set,
 } = require('lodash')
 
-const assessmentCheckboxes = require('../../app/move/fields/common.assessment-checkboxes')
-const explicitAssessmentAnswer = require('../../app/move/fields/common.explicit-assessment-answer')
-const i18n = require('../../config/i18n')
-const componentService = require('../services/component')
+const assessmentCheckboxes = require('../../../app/move/fields/common.assessment-checkboxes')
+const explicitAssessmentAnswer = require('../../../app/move/fields/common.explicit-assessment-answer')
+const i18n = require('../../../config/i18n')
+const componentService = require('../../services/component')
+
+const getFieldErrorMessage = require('./get-field-error-message')
+const setFieldError = require('./set-field-error')
 
 function mapReferenceDataToOption({ id, title, key, conditional, hint }) {
   const option = {
@@ -122,61 +125,36 @@ function setFieldValue(values) {
   }
 }
 
-function setFieldError(errors, translate) {
-  return ([key, field]) => {
-    const fieldError = errors[key]
+function translateField([key, field]) {
+  const translated = cloneDeep(field)
+  const translationPaths = [
+    'text',
+    'html',
+    'label.text',
+    'label.html',
+    'hint.text',
+    'hint.html',
+    'fieldset.legend.text',
+    'fieldset.legend.html',
+    'heading.text',
+    'heading.html',
+    'summaryHtml',
+  ]
 
-    if (!fieldError) {
-      return [key, field]
+  translationPaths.forEach(path => {
+    const key = get(translated, path)
+    if (key) {
+      set(translated, path, i18n.t(key))
     }
+  })
 
-    const label = translate(`fields::${fieldError.key}.label`)
-    const message = translate(`validation::${fieldError.type}`)
-
-    return [
-      key,
-      {
-        ...field,
-        errorMessage: {
-          html: `${label} ${message}`,
-        },
-      },
-    ]
+  if (field.items) {
+    translated.items = Object.entries(field.items)
+      .map(translateField)
+      .map(item => item[1])
   }
-}
 
-function translateField(translate) {
-  return ([key, field]) => {
-    const translated = cloneDeep(field)
-    const translationPaths = [
-      'text',
-      'html',
-      'label.text',
-      'label.html',
-      'hint.text',
-      'hint.html',
-      'fieldset.legend.text',
-      'fieldset.legend.html',
-      'heading.text',
-      'heading.html',
-      'summaryHtml',
-    ]
-
-    translationPaths.forEach(path => {
-      const key = get(translated, path)
-      if (key) {
-        set(translated, path, translate(key))
-      }
-    })
-
-    if (field.items) {
-      translated.items = Object.entries(field.items)
-        .map(translateField(translate))
-        .map(item => item[1])
-    }
-
-    return [key, translated]
-  }
+  return [key, translated]
 }
 
 function insertInitialOption(items, label = 'option') {
@@ -251,6 +229,7 @@ module.exports = {
   mapAssessmentQuestionToTranslation,
   mapReferenceDataToOption,
   renderConditionalFields,
+  getFieldErrorMessage,
   setFieldValue,
   setFieldError,
   translateField,

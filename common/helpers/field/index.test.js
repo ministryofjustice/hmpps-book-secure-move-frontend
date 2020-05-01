@@ -1,17 +1,17 @@
 const { cloneDeep, set } = require('lodash')
 
-const componentService = require('../services/component')
+const i18n = require('../../../config/i18n')
+const componentService = require('../../services/component')
 
 const {
   mapReferenceDataToOption,
   renderConditionalFields,
   setFieldValue,
-  setFieldError,
   translateField,
   insertInitialOption,
   insertItemConditional,
   populateAssessmentFields,
-} = require('./field')
+} = require('./')
 
 const mockAssessmentQuestions = [
   {
@@ -497,81 +497,9 @@ describe('Form helpers', function() {
     })
   })
 
-  describe('#setFieldError()', function() {
-    let translateStub
-
-    beforeEach(function() {
-      translateStub = sinon.stub().returnsArg(0)
-    })
-
-    context('when no error exists', function() {
-      let response
-      const field = ['field', { name: 'field' }]
-
-      beforeEach(function() {
-        response = setFieldError({}, translateStub)(field)
-      })
-
-      it('should not call translation method', function() {
-        expect(translateStub).not.to.be.called
-      })
-
-      it('should return original field', function() {
-        expect(response).to.deep.equal(field)
-      })
-    })
-
-    context('when error exists', function() {
-      const errors = {
-        error_field: {
-          type: 'required',
-          key: 'error_field',
-        },
-      }
-      let field, response
-
-      beforeEach(function() {
-        field = ['error_field', { name: 'error_field' }]
-
-        response = setFieldError(errors, translateStub)(field)
-      })
-
-      it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledTwice
-      })
-
-      it('should call translation with correct values', function() {
-        expect(translateStub.firstCall).to.be.calledWithExactly(
-          'fields::error_field.label'
-        )
-        expect(translateStub.secondCall).to.be.calledWithExactly(
-          'validation::required'
-        )
-      })
-
-      it('should return field with error message', function() {
-        expect(response).to.deep.equal([
-          'error_field',
-          {
-            name: 'error_field',
-            errorMessage: {
-              html: 'fields::error_field.label validation::required',
-            },
-          },
-        ])
-      })
-
-      it('should not mutate original field', function() {
-        expect(field).to.deep.equal(['error_field', { name: 'error_field' }])
-      })
-    })
-  })
-
   describe('#translateField()', function() {
-    let translateStub
-
     beforeEach(function() {
-      translateStub = sinon.stub().returns('__translated__')
+      sinon.stub(i18n, 't').returns('__translated__')
     })
 
     context('when no translation properties exist', function() {
@@ -579,11 +507,11 @@ describe('Form helpers', function() {
       const field = ['field', { name: 'field' }]
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should not call translation method', function() {
-        expect(translateStub).not.to.be.called
+        expect(i18n.t).not.to.be.called
       })
 
       it('should return original field', function() {
@@ -653,11 +581,11 @@ describe('Form helpers', function() {
               { ...defaultProperties, ...cloneDeep(properties) },
             ]
 
-            response = translateField(translateStub)(field)
+            response = translateField(field)
           })
 
           it('should call translation with correct value', function() {
-            expect(translateStub).to.be.calledOnceWithExactly(path)
+            expect(i18n.t).to.be.calledOnceWithExactly(path)
           })
 
           it('should return translated field', function() {
@@ -701,11 +629,11 @@ describe('Form helpers', function() {
       let response
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledThrice
+        expect(i18n.t).to.be.calledThrice
       })
 
       it('should return translated field', function() {
@@ -769,11 +697,11 @@ describe('Form helpers', function() {
       let response
 
       beforeEach(function() {
-        response = translateField(translateStub)(field)
+        response = translateField(field)
       })
 
       it('should call translation correct amount of times', function() {
-        expect(translateStub).to.be.calledTwice
+        expect(i18n.t).to.be.calledTwice
       })
 
       it('should return translated field with items', function() {

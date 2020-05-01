@@ -98,7 +98,8 @@
     }
   },
   "has_date_to": {
-    "legend": "Is there a date this move has to be completed by?"
+    "label": "Is there a date this move has to be completed by?",
+    "label_with_error": "Whether a move needs to be completed by a date"
   },
   "date_custom": {
     "label": "Date of travel"
@@ -123,6 +124,8 @@
   },
   "court_hearing__court_case": {
     "label": "What court case is this move for?",
+    "label_with_error": "Court case",
+    "error_message_required": "Select a court case",
     "hint": "The case must exist in NOMIS to appear here"
   },
   "court_hearing__comments": {
@@ -188,6 +191,7 @@
   },
   "special_vehicle__explicit": {
     "label": "Does this person need to travel in a special vehicle?",
+    "label_with_error": "Special vehicle needs",
     "hint": "This could be a specially-adapted prison van (for example, to accomodate wheelchairs)"
   },
   "not_to_be_released": {
@@ -195,6 +199,7 @@
   },
   "not_to_be_released__explicit": {
     "label": "Is there a reason this person should not be released?",
+    "label_with_error": "Release status",
     "hint": "For example, they may be wanted by immigration or recalled to custody"
   },
   "documents": {

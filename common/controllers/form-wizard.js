@@ -7,18 +7,17 @@ const fieldHelpers = require('../helpers/field')
 class FormController extends Controller {
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
-
-    errors.errorList = map(errors, error => {
-      const label = req.t(`fields::${error.key}.label`)
-      const message = req.t(`validation::${error.type}`)
-
+    const errorList = map(errors, ({ key, type }) => {
       return {
-        html: `${label} ${message}`,
-        href: `#${error.key}`,
+        html: fieldHelpers.getFieldErrorMessage(key, type),
+        href: `#${key}`,
       }
     })
 
-    return errors
+    return {
+      ...errors,
+      errorList,
+    }
   }
 
   errorHandler(err, req, res, next) {
@@ -51,8 +50,8 @@ class FormController extends Controller {
   render(req, res, next) {
     const fields = Object.entries(req.form.options.fields)
       .map(fieldHelpers.setFieldValue(req.form.values))
-      .map(fieldHelpers.setFieldError(req.form.errors, req.t))
-      .map(fieldHelpers.translateField(req.t))
+      .map(fieldHelpers.setFieldError(req.form.errors))
+      .map(fieldHelpers.translateField)
       .map(fieldHelpers.renderConditionalFields)
 
     req.form.options.fields = fromPairs(fields)
