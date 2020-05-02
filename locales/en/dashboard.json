@@ -1,0 +1,12 @@
+{
+  "page_title": "Your overview",
+  "your_overview": "Your overview",
+  "sections": {
+    "single_requests": {
+      "heading": "$t(primary_navigation.single_requests) this week"
+    },
+    "allocations": {
+      "heading": "$t(primary_navigation.allocations) this week"
+    }
+  }
+}

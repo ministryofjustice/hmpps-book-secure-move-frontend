@@ -1,14 +1,23 @@
-{% extends "layouts/list-view.njk" %}
+{% extends "layouts/list.njk" %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Allocations'});
 {% endblock %}
 
-{% block headerGridColumnClass %}govuk-grid-column-full{% endblock %}
+{% block headerActions %}{% endblock %}
+{% block headerLinks %}{% endblock %}
 
-{% block headerActions %}
-  {{ appFilter({
-    items: allocationsSummary,
-    classes: "app-filter--stacked"
-  }) }}
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-one-half">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
+        {{ t("dashboard::sections.allocations.heading") }}
+      </h2>
+
+      {{ appFilter({
+        items: allocationsSummary,
+        classes: "app-filter--stacked"
+      }) }}
+    </section>
+  </div>
 {% endblock %}

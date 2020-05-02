@@ -1,20 +1,26 @@
-{% extends "layouts/list-view.njk" %}
+{% extends "layouts/base.njk" %}
 
-{% block headerActions %}{% endblock %}
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
 
-{% block headerLinks %}{% endblock %}
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t("dashboard::your_overview") }}
+    </h1>
+  </header>
 
-{% block pageContent %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-half">
+    <section class="govuk-grid-column-one-half">
       <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
-        {{ t("primary_navigation.single_requests") }}
+        {{ t("dashboard::sections.single_requests.heading") }}
       </h2>
 
       {{ appFilter({
         items: dashboardMoveSummary,
         classes: "app-filter--stacked"
       }) }}
-    </div>
+    </section>
   </div>
 {% endblock %}
