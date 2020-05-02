@@ -36,12 +36,10 @@ const tableConfig = [
   },
 ]
 
-function movesToTable(movesByRangeAndStatus) {
+function movesToTable(moves) {
   return {
-    movesHeads: tableConfig.map(tablePresenters.objectToTableHead),
-    moves: movesByRangeAndStatus.map(
-      tablePresenters.objectToTableRow(tableConfig)
-    ),
+    head: tableConfig.map(tablePresenters.objectToTableHead),
+    rows: moves.map(tablePresenters.objectToTableRow(tableConfig)),
   }
 }
 

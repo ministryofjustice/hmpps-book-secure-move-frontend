@@ -1,15 +1,24 @@
 {% extends "layouts/list.njk" %}
 
 {% block pageContent %}
-  {% if moves.length %}
+  {% if totalMoves > 0 %}
     {{ appFilter({
       items: moveTypeNavigation
     }) }}
 
-    {{ govukTable({
-      rows: moves,
-      head: movesHeads
-    }) }}
+    {% if movesAsTable.rows.length %}
+      {{ govukTable(movesAsTable) }}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted govuk-!-margin-top-7",
+        allowDismiss: false,
+        content: {
+          html: t("moves::dashboard.single_moves_no_results", {
+            context: activeContext
+          })
+        }
+      }) }}
+    {% endif %}
   {% else %}
     {{ appMessage({
       classes: "app-message--muted govuk-!-margin-top-7",

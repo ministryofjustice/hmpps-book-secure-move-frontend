@@ -117,13 +117,13 @@ describe('#movesToTable', function() {
     sinon.stub(componentService, 'getComponent').returnsArg(0)
     output = presenter([])
   })
-  it('returns an object with movesHeads', function() {
-    expect(output.movesHeads).to.exist
-    expect(output.movesHeads).to.be.an('array')
+  it('returns an object with heads', function() {
+    expect(output.head).to.exist
+    expect(output.head).to.be.an('array')
   })
   it('returns an object with moves', function() {
-    expect(output.moves).to.exist
-    expect(output.moves).to.be.an('array')
+    expect(output.rows).to.exist
+    expect(output.rows).to.be.an('array')
   })
   describe('its behaviour', function() {
     let output
@@ -131,7 +131,7 @@ describe('#movesToTable', function() {
       output = presenter(mockMoves)
     })
     it('returns html with composite name on the first cell', function() {
-      expect(output.moves[0][0]).to.deep.equal({
+      expect(output.rows[0][0]).to.deep.equal({
         html: 'appCard',
         attributes: {
           scope: 'row',
@@ -145,35 +145,35 @@ describe('#movesToTable', function() {
       expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
     })
     it('returns html with createdAt on the second cell', function() {
-      expect(output.moves[0][1]).to.deep.equal({
+      expect(output.rows[0][1]).to.deep.equal({
         html: mockMoves[0].created_at,
       })
     })
     it('returns toLocation on the third cell', function() {
-      expect(output.moves[0][2]).to.deep.equal({
+      expect(output.rows[0][2]).to.deep.equal({
         html: mockMoves[0].to_location.title,
       })
     })
     it('returns the date range on the fourth cell', function() {
-      expect(output.moves[0][3]).to.deep.equal({
+      expect(output.rows[0][3]).to.deep.equal({
         html: mockMoves[0].date_from,
       })
     })
     it('returns the move type on the fifth cell', function() {
-      expect(output.moves[0][4]).to.deep.equal({
+      expect(output.rows[0][4]).to.deep.equal({
         html: mockMoves[0].prison_transfer_reason.title,
       })
     })
     it('returns empty string with null prison transfer reason', function() {
-      expect(output.moves[1][4]).to.deep.equal({
+      expect(output.rows[1][4]).to.deep.equal({
         html: '',
       })
     })
     it('returns a row per record', function() {
-      expect(output.moves.length).to.equal(2)
+      expect(output.rows.length).to.equal(2)
     })
     it('returns one head row with all the cells', function() {
-      expect(output.movesHeads).to.deep.equal([
+      expect(output.head).to.deep.equal([
         {
           html: 'name',
         },
