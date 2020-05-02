@@ -40,13 +40,19 @@ class CreateBaseController extends FormWizardController {
   }
 
   setButtonText(req, res, next) {
+    const toLocation = req.sessionModel.get('to_location') || {}
+    const fromLocation = req.session.currentLocation || {}
     const nextStep = this.getNextStep(req, res)
     const steps = Object.keys(req.form.options.steps)
     const lastStep = steps[steps.length - 1]
+    const saveButtonText =
+      toLocation.location_type === 'prison' &&
+      fromLocation.location_type === 'prison'
+        ? 'actions::send_for_review'
+        : 'actions::request_move'
     const buttonText = nextStep.includes(lastStep)
-      ? 'actions::request_move'
+      ? saveButtonText
       : 'actions::continue'
-
     req.form.options.buttonText = req.form.options.buttonText || buttonText
 
     next()

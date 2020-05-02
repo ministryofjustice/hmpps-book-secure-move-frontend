@@ -10,6 +10,7 @@
   "back_to_dashboard": "$t(actions::back) to dashboard",
   "back_to_move": "$t(actions::back) to move",
   "request_move": "Request move",
+  "send_for_review": "Send for review",
   "search": "Search",
   "search_again": "Search again",
   "continue": "Continue",
