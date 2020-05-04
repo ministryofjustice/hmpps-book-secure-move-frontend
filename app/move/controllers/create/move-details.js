@@ -1,7 +1,6 @@
 const { get, map, omitBy, set } = require('lodash')
 
-const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const commonMiddleware = require('../../../../common/middleware')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
@@ -10,35 +9,12 @@ class MoveDetailsController extends CreateBaseController {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setMoveTypes)
-    this.use(this.setLocationItems('court', 'to_location_court_appearance'))
-    this.use(this.setLocationItems('prison', 'to_location_prison_transfer'))
-  }
-
-  setLocationItems(locationType, fieldName) {
-    return async (req, res, next) => {
-      const { fields } = req.form.options
-
-      if (!fields[fieldName]) {
-        return next()
-      }
-
-      try {
-        const locations = await referenceDataService.getLocationsByType(
-          locationType
-        )
-        const items = fieldHelpers.insertInitialOption(
-          locations
-            .filter(referenceDataHelpers.filterDisabled())
-            .map(fieldHelpers.mapReferenceDataToOption),
-          locationType
-        )
-
-        set(req, `form.options.fields.${fieldName}.items`, items)
-        next()
-      } catch (error) {
-        next(error)
-      }
-    }
+    this.use(
+      commonMiddleware.setLocationItems('court', 'to_location_court_appearance')
+    )
+    this.use(
+      commonMiddleware.setLocationItems('prison', 'to_location_prison_transfer')
+    )
   }
 
   setMoveTypes(req, res, next) {
