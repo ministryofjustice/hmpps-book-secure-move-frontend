@@ -6,7 +6,7 @@ import {
   ocaUser,
 } from './_roles'
 import { movesByDay } from './_routes'
-import { page, movesDashboardPage } from './pages'
+import { dashboardPage, page, movesDashboardPage } from './pages'
 
 const users = [
   {
@@ -40,11 +40,13 @@ const usersWhoHaveADashboard = [
     name: 'OCA user',
     role: ocaUser,
     username: 'End-to-end OCA',
-    homeButton: movesDashboardPage.nodes.filterContainer,
+    homeSection: dashboardPage.nodes.singleRequestsSection,
+    homeButton: dashboardPage.nodes.singleRequestsLink,
+    timePeriod: 'This week',
   },
 ]
 
-fixture('Smoke tests')
+fixture.only('Smoke tests')
 
 users.forEach(user => {
   test.before(async t => {
@@ -84,17 +86,17 @@ usersWhoHaveADashboard.forEach(user => {
       .expect(page.nodes.appHeader.exists)
       .ok()
       .expect(page.nodes.username.innerText)
-      .eql(user.username)
+      .contains(user.username)
+      .expect(page.nodes.pageHeading.innerText)
+      .eql('Your overview')
+      .expect(user.homeSection.exists)
+      .ok()
       .expect(user.homeButton.exists)
       .ok()
       // Navigate
+      .click(user.homeButton)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('This week')
-      .click(movesDashboardPage.nodes.pagination.previousLink)
-      .click(movesDashboardPage.nodes.pagination.nextLink)
-      .click(movesDashboardPage.nodes.pagination.thisWeekLink)
-      .expect(page.nodes.pageHeading.innerText)
-      .eql('This week')
+      .eql(user.timePeriod)
       // Sign out
       .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)

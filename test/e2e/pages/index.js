@@ -1,5 +1,6 @@
 import CancelMovePage from './cancel-move'
 import CreateMovePage from './create-move'
+import DashboardPage from './dashboard'
 import MoveDetailPage from './move-detail'
 import MovesDashboardPage from './moves-dashboard'
 import Page from './page'
@@ -10,6 +11,7 @@ const moveDetailPage = new MoveDetailPage()
 const movesDashboardPage = new MovesDashboardPage()
 const createMovePage = new CreateMovePage()
 const cancelMovePage = new CancelMovePage()
+const dashboardPage = new DashboardPage()
 
 export {
   page,
@@ -17,5 +19,6 @@ export {
   movesDashboardPage,
   createMovePage,
   cancelMovePage,
+  dashboardPage,
   UpdateMovePage,
 }
