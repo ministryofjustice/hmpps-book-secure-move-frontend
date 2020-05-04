@@ -210,7 +210,19 @@ module.exports = {
   '/court-hearings': {
     controller: CourtHearings,
     pageTitle: 'moves::steps.hearing_details.heading',
-    next: 'timetable',
+    next: [
+      // TODO: Remove feature flag when this feature has been released
+      {
+        fn: () => !FEATURE_FLAGS.PRISON_COURT_TIMETABLE,
+        next: 'release-status',
+      },
+      {
+        field: 'has_court_case',
+        value: 'true',
+        next: 'timetable',
+      },
+      'release-status',
+    ],
     fields: [
       'has_court_case',
       'court_hearing__start_time',
