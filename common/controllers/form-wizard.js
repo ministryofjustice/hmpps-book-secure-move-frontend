@@ -26,9 +26,12 @@ class FormController extends Controller {
     }
 
     if (
-      ['SESSION_TIMEOUT', 'MISSING_PREREQ', 'MISSING_LOCATION'].includes(
-        err.code
-      )
+      [
+        'SESSION_TIMEOUT',
+        'CSRF_ERROR',
+        'MISSING_PREREQ',
+        'MISSING_LOCATION',
+      ].includes(err.code)
     ) {
       return res.render('form-wizard-error', {
         journeyName: req.form.options.journeyName.replace('-', '_'),
