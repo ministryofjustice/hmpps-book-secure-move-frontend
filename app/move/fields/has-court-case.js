@@ -22,6 +22,9 @@ const hasCourtCase = {
     {
       value: 'false',
       text: 'fields::has_court_case.items.no.label',
+      hint: {
+        text: 'fields::has_court_case.items.no.hint',
+      },
     },
   ],
 }

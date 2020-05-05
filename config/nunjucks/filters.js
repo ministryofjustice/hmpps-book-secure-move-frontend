@@ -211,10 +211,6 @@ function formatTime(value) {
     return 'Midnight'
   }
 
-  if (timeStr === '12pm') {
-    return 'Midday'
-  }
-
   return `${hours}${minutes}${suffix}`
 }
 

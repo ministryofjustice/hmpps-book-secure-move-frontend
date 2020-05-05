@@ -37,10 +37,13 @@ class SaveController extends CreateBaseController {
         }),
         // create hearings
         ...(data.court_hearings || []).map(hearing =>
-          courtHearingService.create({
-            ...hearing,
-            move: move.id,
-          })
+          courtHearingService.create(
+            {
+              ...hearing,
+              move: move.id,
+            },
+            data.should_save_court_hearings === 'false'
+          )
         ),
       ])
 

@@ -51,7 +51,7 @@ describe('Presenters', function() {
         {
           id: '12345',
           start_time: '2020-10-10T11:00Z',
-          activity_type: 'Prison act.',
+          nomis_type: 'Prison act.',
           reason: 'Because',
           location: {
             title: 'HMP Bedford',
@@ -60,7 +60,7 @@ describe('Presenters', function() {
         {
           id: '67890',
           start_time: '2020-10-10T15:00Z',
-          activity_type: 'Prison act.',
+          nomis_type: 'Prison act.',
           reason: 'Bricklaying course',
           location: {
             title: 'HMP Bedford',
@@ -69,7 +69,7 @@ describe('Presenters', function() {
         {
           id: '09876',
           start_time: '2020-10-10T08:00Z',
-          activity_type: 'Court date',
+          nomis_type: 'Court date',
           reason: 'Sentence',
           location: {
             title: 'Luton Crown Court',
@@ -117,19 +117,19 @@ describe('Presenters', function() {
             rows: [
               [
                 { text: mockTimetable[2].start_time },
-                { text: mockTimetable[2].activity_type },
+                { text: mockTimetable[2].nomis_type },
                 { text: mockTimetable[2].reason },
                 { text: mockTimetable[2].location.title },
               ],
               [
                 { text: mockTimetable[0].start_time },
-                { text: mockTimetable[0].activity_type },
+                { text: mockTimetable[0].nomis_type },
                 { text: mockTimetable[0].reason },
                 { text: mockTimetable[0].location.title },
               ],
               [
                 { text: mockTimetable[1].start_time },
-                { text: mockTimetable[1].activity_type },
+                { text: mockTimetable[1].nomis_type },
                 { text: mockTimetable[1].reason },
                 { text: mockTimetable[1].location.title },
               ],
@@ -145,7 +145,7 @@ describe('Presenters', function() {
             {
               id: '12345',
               start_time: null,
-              activity_type: null,
+              nomis_type: null,
               reason: null,
             },
           ])

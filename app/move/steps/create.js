@@ -131,7 +131,7 @@ module.exports = {
             ),
             // field: 'from_location_type',
             // value: 'prison',
-            next: 'hearing-details',
+            next: 'court-hearings',
           },
           'court-information',
         ],
@@ -207,10 +207,22 @@ module.exports = {
     ],
     fields: ['solicitor', 'interpreter', 'other_court'],
   },
-  '/hearing-details': {
+  '/court-hearings': {
     controller: CourtHearings,
     pageTitle: 'moves::steps.hearing_details.heading',
-    next: ['release-status'],
+    next: [
+      // TODO: Remove feature flag when this feature has been released
+      {
+        fn: () => !FEATURE_FLAGS.PRISON_COURT_TIMETABLE,
+        next: 'release-status',
+      },
+      {
+        field: 'has_court_case',
+        value: 'true',
+        next: 'timetable',
+      },
+      'release-status',
+    ],
     fields: [
       'has_court_case',
       'court_hearing__start_time',

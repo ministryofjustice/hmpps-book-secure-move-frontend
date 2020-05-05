@@ -2,10 +2,10 @@
   "data": [
     {
       "id": "007f6aa0-7d82-4bf1-9191-2e27235d0f76",
-      "type": "timetable",
+      "type": "timetable_entries",
       "attributes": {
         "start_time": "2016-11-14",
-        "activity_type": "Prison activities",
+        "nomis_type": "Prison activities",
         "reason": "Bricklaying course"
       },
       "relationships": {
@@ -19,10 +19,10 @@
     },
     {
       "id": "0194fe97-fa7e-49f5-b109-e1db6fee2190",
-      "type": "timetable",
+      "type": "timetable_entries",
       "attributes": {
         "start_time": "2018-10-10",
-        "activity_type": "Court date",
+        "nomis_type": "Court date",
         "reason": "Sentencing"
       },
       "relationships": {
@@ -36,10 +36,10 @@
     },
     {
       "id": "04a177a2-b899-425d-90ec-47f61cc5cc2d",
-      "type": "timetable",
+      "type": "timetable_entries",
       "attributes": {
         "start_time": "2017-04-19",
-        "activity_type": "Prison activities",
+        "nomis_type": "Prison activities",
         "reason": "PE"
       },
       "relationships": {

@@ -114,7 +114,8 @@
         "label": "Yes"
       },
       "no": {
-        "label": "No"
+        "label": "No",
+        "hint": "A court date will not be added to NOMIS"
       }
     }
   },

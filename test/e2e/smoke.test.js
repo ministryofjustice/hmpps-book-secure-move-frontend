@@ -46,7 +46,7 @@ const usersWhoHaveADashboard = [
   },
 ]
 
-fixture.only('Smoke tests')
+fixture('Smoke tests')
 
 users.forEach(user => {
   test.before(async t => {
