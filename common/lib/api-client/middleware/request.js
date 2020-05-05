@@ -1,5 +1,6 @@
 const debug = require('debug')('app:api-client')
 const { get } = require('lodash')
+const uuid = require('uuid')
 
 const redisStore = require('../../../../config/redis-store')
 const models = require('../models')
@@ -29,6 +30,11 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
 
       if (!cacheModel || req.params.cache === false || disableCache) {
         debug('NO CACHE', key)
+
+        req.headers = {
+          ...req.headers,
+          'Idempotency-Key': uuid.v4(),
+        }
         return jsonApi.axios(req)
       }
 
