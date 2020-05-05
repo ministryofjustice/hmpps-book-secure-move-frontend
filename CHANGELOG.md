@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.20.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.19.1...v2.20.0) (2020-05-05)
+
+
+### Features
+
+* **validation:** Add support for custom error messages ([cf05de7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cf05de7b602a46451bfe284664ed269ed163400e))
+* Add image to move detail and create summary ([44030a0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/44030a0c8abcd19281c83a7a125e99ebb5754dc2))
+* Show confirmation message after updating move [P4-1353] ([783f21d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/783f21d42eafc8b934455f27d15c7588a67b89ca))
+* **single requests:** Display transfer reason in summary panel ([4286762](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4286762e84be4a034841cc880a0f165e555a6731))
+* Add step to check NOMIS timetable before adding court dates ([1cec059](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1cec059c41ff724d6204bade96cc765275655339))
+* Add support for all previous NOMIS information ([e281151](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e281151beeb9a723a2215a967ce9f5ac37bbb48e))
+* Display proposed moves as a table ([a53b1ab](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a53b1abaf689aed2cf3dde0bf09539bbdd2b5bc5))
+* List view by status and period for allocations ([c3cf6a8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c3cf6a8b5ff988ac3b076e667449d395b6c9715d))
+
+
+### Bug Fixes
+
+* Add spacing between columns when they are stacked ([d0d74b0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d0d74b0428c0b99a29fd1a84e7040d391b2871ba))
+* Ensure court hearing start time is in the future ([2ac6982](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2ac69822cdc99aa38d7572106d73db9a64e3b910))
+* Update support for user deciding to save to NOMIS ([eabdc40](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/eabdc40207f0c231e245059d8f1036a7633ad3a8))
+* **single requests:** Ensure filter is only hidden when no total moves ([6fe4584](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6fe45846ddfc2ec1ca640000af3c7f7a40752412))
+* Add prison_transfer_reason to move attributes ([b7fe108](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b7fe1089e374926981cf649227c6c821dcd8ea64))
+* Ensure flash banners get focus on page load ([763f47c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/763f47c4e697a80306185ae828c8c8c4ceae730b))
+* Ensure readOnly fields remain editable until value saved ([0221bfb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0221bfb0bee7d967da87ee36f194bf7cfc0e502c))
+* Ensure that radios and checkboxes are selected when clicked ([784d2b6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/784d2b620a8f113e0de1286364b01e6d3470c6d5))
+* Ensure the status badge isn't shown for cancelled moves ([26a17e9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/26a17e9260ecc34ea243dd97e2144da8eee885c6))
+* Format prison transfer relationships ([a77a442](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a77a442497aafbc1308f9311ffe867811e6f81fe))
+* Make the date range filter accept a null second date ([da94c91](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/da94c9113aaf0259d306716a5b4d6437e8c5acc3))
+* Move "flash" messages to below page actions ([9098af6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9098af6136e3b3fadbc0dfa96e60e986a19a4704))
+* Sort moves in table by created at, descending ([da64841](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/da64841df122cfd1c87409284e1d448bafe5fb2b))
+* Split date range filters so current week is shown correctly ([94bd7c0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/94bd7c06d8d33176e867f194b07cefb198b474c3))
+* Update banner selector for end-to-end tests ([5700ac2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5700ac29f85d42786e2c7f33e4e9831ff0f83f24))
+* Update end-to-end tests to support new "home" dashboard ([264d389](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/264d389921100edabbf03f46a5de00a56952b071))
+* Update how from and to dates are handled in the summary panel ([1776277](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/177627785cfbff14d38b88a3a17f8a377de027bf))
+* Update selectors in end-to-end tests ([b60a333](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b60a333cb5bb799d56f114ee09274f6c85a634d9))
+* **filter cmpt:** Update filter component to show correct styles ([923cf73](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/923cf738a91ac80778e4bcc38de42ff473e3d566))
+* **filters:** Use consistent format for date range filter ([a50bcff](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a50bcffee19e115e583aab707b91c6fcabb662af))
+* **moves:** Don't show image for cancelled moves ([ebb4e81](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ebb4e81ba426fbb9376b62271d1740bb68e24179))
+* **single requests:** Add header links for single requests ([6a6b52a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6a6b52a2a3b1cd9acbb0cd6417f9a55ccde14fbe))
+* **single requests:** Ensure page titles are present and consistent ([5f484af](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5f484af51c49d279d78485cc4094f9007bfaee1e))
+* **single requests:** Ensure prison transfer reason is being displayed ([97e8200](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/97e82009aa1a0fbfe3afa251bd71a095131492ff))
+* **single requests:** Ensure transfer reason and comments are saved ([1bc3f79](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1bc3f7946dcd3f7af37df2445f7ec22408d8886c))
+* Update court cases endpoint to only return active cases ([32e6707](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/32e6707ba7079a0514e165642431f756705d7b4a))
+* Use correct variable for person image during creation journey ([527ca7c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/527ca7c402de8e98101e9414baecc40c03c87a99))
+
 ### [2.19.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.19.0...v2.19.1) (2020-04-22)
 
 
