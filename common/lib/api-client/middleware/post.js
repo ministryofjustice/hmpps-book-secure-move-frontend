@@ -11,9 +11,9 @@ module.exports = function post(maxFileSize) {
       })
 
       if (req.method === 'POST' && req.data instanceof FormData) {
-        payload.req.maxContentLength = maxFileSize
-        payload.req.maxBodyLength = maxFileSize
-        payload.req.headers = {
+        req.maxContentLength = maxFileSize
+        req.maxBodyLength = maxFileSize
+        req.headers = {
           ...req.headers,
           ...req.data.getHeaders(),
         }
