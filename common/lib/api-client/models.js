@@ -39,6 +39,10 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'court_hearings',
       },
+      events: {
+        jsonApi: 'hasMany',
+        type: 'events',
+      },
     },
   },
   image: {
@@ -225,6 +229,17 @@ module.exports = {
     options: {
       cache: true,
       collectionPath: 'reference/allocation_complex_cases',
+    },
+  },
+  event: {
+    attributes: {
+      event_name: '',
+      timestamp: '',
+      notes: '',
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
     },
   },
 }
