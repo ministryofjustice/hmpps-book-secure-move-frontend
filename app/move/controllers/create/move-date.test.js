@@ -119,24 +119,51 @@ describe('Move controllers', function() {
             date_type: 'custom',
             date_custom: '2019-10-17',
           }
-
-          controller.process(req, {}, nextSpy)
         })
 
-        it('should set the value of date field to the custom date', function() {
-          expect(req.form.values.date).to.equal('2019-10-17')
+        context('with valid date', function() {
+          beforeEach(function() {
+            controller.process(req, {}, nextSpy)
+          })
+
+          it('should set the value of date field to the custom date', function() {
+            expect(req.form.values.date).to.equal('2019-10-17')
+          })
+
+          it('should store the value of custom date', function() {
+            expect(req.form.values.date_custom).to.equal('2019-10-17')
+          })
+
+          it('should set date type to custom', function() {
+            expect(req.form.values.date_type).to.equal('custom')
+          })
+
+          it('should call next without error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
 
-        it('should store the value of custom date', function() {
-          expect(req.form.values.date_custom).to.equal('2019-10-17')
-        })
+        context('with invalid date', function() {
+          beforeEach(function() {
+            req.form.values.date_custom = 'foo'
+            controller.process(req, {}, nextSpy)
+          })
 
-        it('should set date type to custom', function() {
-          expect(req.form.values.date_type).to.equal('custom')
-        })
+          it('should not set value for date field', function() {
+            expect(req.form.values.date).to.be.undefined
+          })
 
-        it('should call next without error', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+          it('should store the value of custom date', function() {
+            expect(req.form.values.date_custom).to.equal('foo')
+          })
+
+          it('should set date type to custom', function() {
+            expect(req.form.values.date_type).to.equal('custom')
+          })
+
+          it('should call next without error', function() {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
       })
 

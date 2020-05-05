@@ -1,4 +1,10 @@
-const { format, startOfToday, startOfTomorrow, parseISO } = require('date-fns')
+const {
+  format,
+  startOfToday,
+  startOfTomorrow,
+  parseISO,
+  isValid: isValidDate,
+} = require('date-fns')
 
 const filters = require('../../../../config/nunjucks/filters')
 
@@ -36,7 +42,9 @@ class MoveDateController extends CreateBaseController {
       moveDate = dateType === 'today' ? startOfToday() : startOfTomorrow()
     }
 
-    req.form.values.date = format(moveDate, 'yyyy-MM-dd')
+    req.form.values.date = isValidDate(moveDate)
+      ? format(moveDate, 'yyyy-MM-dd')
+      : undefined
 
     next()
   }
