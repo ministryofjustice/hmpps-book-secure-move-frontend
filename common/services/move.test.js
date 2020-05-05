@@ -1,7 +1,16 @@
+const proxyquire = require('proxyquire')
+
 const apiClient = require('../lib/api-client')()
 
-const moveService = require('./move')
 const personService = require('./person')
+
+const formatISOStub = sinon.stub().returns('#timestamp')
+
+const moveService = proxyquire('./move', {
+  'date-fns': {
+    formatISO: formatISOStub,
+  },
+})
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -829,6 +838,59 @@ describe('Move Service', function() {
 
       it('should return move', function() {
         expect(move).to.deep.equal(mockResponse.data)
+      })
+    })
+  })
+
+  describe('#redirect()', function() {
+    const mockRedirect = {
+      id: '#moveId',
+      to_location: {
+        id: '#locationId',
+      },
+    }
+    const mockResponse = {
+      data: mockMove,
+    }
+
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(moveService.redirect({})).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function() {
+      const currentDate = new Date(2020, 1, 1, 0, 0)
+      let clock
+      beforeEach(async function() {
+        clock = sinon.useFakeTimers({
+          now: currentDate,
+        })
+        formatISOStub.resetHistory()
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        sinon.spy(apiClient, 'all')
+        sinon.spy(apiClient, 'one')
+
+        await moveService.redirect(mockRedirect)
+      })
+      afterEach(function() {
+        clock.restore()
+      })
+
+      it('should add the timestamp', function() {
+        expect(formatISOStub).to.be.calledOnceWithExactly(currentDate)
+      })
+
+      it('should call redirect method with data', function() {
+        expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
+        expect(apiClient.all).to.be.calledOnceWithExactly('event')
+        expect(apiClient.post).to.be.calledOnceWithExactly({
+          event_name: 'redirect',
+          timestamp: '#timestamp',
+          ...mockRedirect,
+        })
       })
     })
   })
