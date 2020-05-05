@@ -219,5 +219,6 @@
         "message": "$t(moves::update_flash.supplier_message)"
       }
     }
-  }
+  },
+  "redirect_notes": "Requested by {{fullname}} (user_name:{{username}} / user_id:{{userId}})"
 }
