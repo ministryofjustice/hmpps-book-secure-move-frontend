@@ -74,6 +74,24 @@ describe('User class', function() {
         expect(user.locations).to.deep.equal([])
       })
     })
+
+    context('with username', function() {
+      const username = 'user1'
+
+      it('should set username', function() {
+        user = new User({ name: 'USERNAME', username })
+        expect(user.username).to.deep.equal(username)
+      })
+    })
+
+    context('with userId', function() {
+      const userId = 'uuid'
+
+      it('should set userId', function() {
+        user = new User({ name: 'USERNAME', userId })
+        expect(user.userId).to.deep.equal(userId)
+      })
+    })
   })
 
   describe('#getPermissions()', function() {
