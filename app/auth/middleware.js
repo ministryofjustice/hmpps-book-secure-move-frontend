@@ -16,6 +16,7 @@ function processAuthResponse() {
 
     try {
       const decodedAccessToken = decodeAccessToken(accessToken)
+      const { user_name: username, user_id: userId } = decodedAccessToken
       const [locations, fullname] = await Promise.all([
         getLocations(accessToken),
         getFullname(accessToken),
@@ -32,6 +33,8 @@ function processAuthResponse() {
           fullname,
           locations,
           roles: decodedAccessToken.authorities,
+          username,
+          userId,
         })
 
         // copy any previous session properties ignoring grant or any that already exist

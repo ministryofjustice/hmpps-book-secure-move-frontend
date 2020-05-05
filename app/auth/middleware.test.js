@@ -14,10 +14,18 @@ const userFullNameFailureStub = {
   getFullname: () => Promise.reject(userFailureError),
 }
 
-function UserStub({ fullname, roles = [], locations = [] } = {}) {
+function UserStub({
+  fullname,
+  roles = [],
+  locations = [],
+  username,
+  userId,
+} = {}) {
   this.fullname = fullname
   this.permissions = []
   this.locations = locations
+  this.username = username
+  this.userId = userId
 }
 
 const expiryTime = 1000
