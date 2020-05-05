@@ -260,9 +260,9 @@
   "sentence_length": {
     "label": "Sentence length",
     "items": {
-      "long": "Over 16 months only",
-      "short": "Under 16 months only",
-      "any": "Any sentence"
+      "length_long": "Over 16 months",
+      "length_short": "16 months or less",
+      "length": "Any time to serve"
     }
   },
   "complete_in_full": {

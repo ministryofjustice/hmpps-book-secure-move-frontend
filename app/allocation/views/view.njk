@@ -1,0 +1,93 @@
+{% extends "layouts/two-column.njk" %}
+
+{% set additionalContainerClass = "sticky-sidebar-container" %}
+
+{% block pageTitle %}
+  {{ t("allocations::view.page_title") }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_dashboard"),
+    classes: "app-print--hide",
+    href: dashboardUrl
+  }) }}
+
+  <a href="javascript:window.print()" class="app-!-float-right app-print--hide govuk-!-margin-top-3 app-icon app-icon--print">
+    {{ t("actions::print_move_detail") }}
+  </a>
+
+  {{ super() }}
+{% endblock %}
+
+{% block contentHeader %}
+  <header class="govuk-!-margin-bottom-8 govuk-!-padding-left-0 govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-1">
+      {{ t("allocations::view.heading", {
+        count: allocation.moves_count,
+        from_location: allocation.from_location.title,
+        to_location: allocation.to_location.title,
+        date: allocation.date | formatDate
+      })}}
+    </h1>
+  </header>
+{% endblock %}
+
+{% block contentMain %}
+  <section>
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.criteria_for_allocation") }}</h2>
+    <span class="govuk-caption-m govuk-!-margin-bottom-4">
+      {{ t("allocations::view.created_at") }}
+      {{ allocation.created_at | formatDateAsRelativeDay }}
+      {{ allocation.created_at | formatTime }}
+    </span>
+
+    {{ govukSummaryList(allocationDetails) }}
+
+    {% if allocation.complete_in_full and allocationPeople.emptySlots %}
+      {{ govukWarningText({
+        text: t("allocations::view.complete_in_full"),
+        iconFallbackText: "Warning"
+      }) }}
+    {% endif %}
+  </section>
+
+  <section class="govuk-!-margin-top-8">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people.heading") }}</h2>
+    <h3 class="govuk-heading-s">{{ t("allocations::view.people.slots_filled", {
+      slots_filled: allocationPeople.filledSlots.length,
+      total_slots: allocation.moves_count,
+      person_or_people: t('person', {
+        count: allocation.moves_count
+      })
+    }) }}</h3>
+  </section>
+
+  {% for i in range(0, allocationPeople.emptySlots) -%}
+    <div class="app-border-top-1">
+      {{ appMessage({
+        classes: "app-message--muted govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-padding-right-8",
+        allowDismiss: false,
+        content: {
+          html: t("allocations::view.people.empty_slot")
+        }
+      }) }}
+    </div>
+  {%- endfor %}
+
+  {% for slot in allocationPeople.filledSlots %}
+    {{ appCard(slot) }}
+  {% endfor %}
+
+{% endblock %}
+
+{% block contentSidebar %}
+  <div class="sticky-sidebar">
+    <div class="sticky-sidebar__inner">
+      <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+        {{ t("allocations::view.allocation_details") }}
+      </h3>
+      {{ appMetaList(allocationSummary) }}
+    </div>
+  </div>
+{% endblock %}

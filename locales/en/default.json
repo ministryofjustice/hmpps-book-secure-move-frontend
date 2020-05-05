@@ -9,6 +9,8 @@
   "or": "or",
   "reason": "Reason",
   "location": "Location",
+  "person": "person",
+  "person_plural": "people",
   "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})",
   "supplier_fallback": "the supplier",
   "opens_new_window": "Opens in a new window",

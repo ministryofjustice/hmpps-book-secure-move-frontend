@@ -14,15 +14,15 @@ const sentenceLength = {
   items: [
     {
       value: 'null',
-      text: 'fields::sentence_length.items.any',
+      text: 'fields::sentence_length.items.length',
     },
     {
       value: 'short',
-      text: 'fields::sentence_length.items.short',
+      text: 'fields::sentence_length.items.length_short',
     },
     {
       value: 'long',
-      text: 'fields::sentence_length.items.long',
+      text: 'fields::sentence_length.items.length_long',
     },
   ],
 }

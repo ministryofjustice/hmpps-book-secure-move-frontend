@@ -218,6 +218,10 @@ module.exports = {
       other_criteria: '',
       created_at: '',
       updated_at: '',
+      moves: {
+        jsonApi: 'hasMany',
+        type: 'moves',
+      },
     },
   },
   allocation_complex_case: {

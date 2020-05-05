@@ -1,3 +1,5 @@
+const allocationToMetaListComponent = require('./allocation-to-meta-list-component')
+const allocationToSummaryListComponent = require('./allocation-to-summary-list-component')
 const allocationsToTable = require('./allocations-to-table')
 const assessmentAnswerToTag = require('./assessment-answer-to-tag')
 const assessmentAnswersByCategory = require('./assessment-answers-by-category')
@@ -19,6 +21,8 @@ const timetableToTableComponent = require('./timetable-to-table-component')
 
 module.exports = {
   allocationsToTable,
+  allocationToMetaListComponent,
+  allocationToSummaryListComponent,
   assessmentAnswerToTag,
   assessmentAnswersByCategory,
   assessmentCategoryToPanelComponent,
