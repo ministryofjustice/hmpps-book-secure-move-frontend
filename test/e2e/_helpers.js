@@ -78,6 +78,15 @@ export async function createPersonFixture(overrides = {}) {
     gender,
   })
 
+  const getIdentifierValue = type => {
+    return get(
+      find(person.identifiers, {
+        identifier_type: type,
+      }),
+      'value'
+    )
+  }
+
   return {
     ...person,
     fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
@@ -86,24 +95,11 @@ export async function createPersonFixture(overrides = {}) {
     dateOfBirth: person.date_of_birth,
     gender: fixture.gender,
     ethnicity: fixture.ethnicity,
-    prisonNumber: find(person.identifiers, {
-      identifier_type: 'prison_number',
-    }).value,
-    policeNationalComputer: get(
-      find(person.identifiers, {
-        identifier_type: 'police_national_computer',
-      }),
-      'value'
-    ),
-    criminalRecordsOffice: find(person.identifiers, {
-      identifier_type: 'criminal_records_office',
-    }).value,
-    nicheReference: find(person.identifiers, {
-      identifier_type: 'niche_reference',
-    }).value,
-    athenaReference: find(person.identifiers, {
-      identifier_type: 'athena_reference',
-    }).value,
+    prisonNumber: getIdentifierValue('prison_number'),
+    policeNationalComputer: getIdentifierValue('police_national_computer'),
+    criminalRecordsOffice: getIdentifierValue('criminal_records_office'),
+    nicheReference: getIdentifierValue('niche_reference'),
+    athenaReference: getIdentifierValue('athena_reference'),
   }
 }
 

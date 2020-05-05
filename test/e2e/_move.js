@@ -22,7 +22,7 @@ import UpdateMovePage from './pages/update-move'
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-export async function createMove(options) {
+export async function createMove(options = {}) {
   await t.useRole(options.user)
 
   if (!options.moveOverrides || !options.moveOverrides.from_location) {
@@ -78,7 +78,15 @@ export async function createMove(options) {
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-export async function createPoliceMove(options) {
+export async function createPoliceMove(options = {}) {
+  options.personOverrides = {
+    prisonNumber: undefined,
+    criminalRecordsOffice: undefined,
+    nicheReference: undefined,
+    athenaReference: undefined,
+    ...options.personOverrides,
+  }
+
   return createMove({
     user: policeUser,
     defaultMoveOptions: {
