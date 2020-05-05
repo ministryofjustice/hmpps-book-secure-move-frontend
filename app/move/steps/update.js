@@ -1,8 +1,7 @@
 const {
   Assessment,
   MoveDate,
-  // TODO: reenable when redirect api available
-  // MoveDetails,
+  MoveDetails,
   PersonalDetails,
 } = require('../controllers/update')
 
@@ -27,18 +26,17 @@ const updateSteps = [
       },
     },
   },
-  // TODO: reenable when redirect api available
-  // {
-  //   key: 'move',
-  //   permission: 'move:update',
-  //   steps: {
-  //     '/move-details': {
-  //       ...createSteps['/move-details'],
-  //       ...updateStepPropOverrides,
-  //       controller: MoveDetails,
-  //     },
-  //   },
-  // },
+  {
+    key: 'move',
+    permission: 'move:update',
+    steps: {
+      '/move-details': {
+        ...createSteps['/move-details'],
+        ...updateStepPropOverrides,
+        controller: MoveDetails,
+      },
+    },
+  },
   {
     key: 'date',
     permission: 'move:update',
