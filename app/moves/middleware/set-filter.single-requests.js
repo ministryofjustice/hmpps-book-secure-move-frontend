@@ -4,44 +4,44 @@ const singleRequestService = require('../../../common/services/single-request')
 const filterConfig = [
   {
     label: 'statuses::pending',
-    filter: 'pending',
+    status: 'pending',
   },
   {
     label: 'statuses::approved',
-    filter: 'approved',
+    status: 'approved',
   },
   {
     label: 'statuses::rejected',
-    filter: 'rejected',
+    status: 'rejected',
   },
 ]
 
-async function setMoveTypeNavigation(req, res, next) {
+async function setfilterSingleRequests(req, res, next) {
   const { dateRange } = res.locals
   const { locationId, period, date } = req.params
   const promises = filterConfig.map(item =>
     singleRequestService
       .getAll({
         isAggregation: true,
-        createdAtDate: dateRange,
         fromLocationId: locationId,
-        status: item.filter,
+        createdAtDate: dateRange,
+        status: item.status,
       })
       .then(value => {
         return {
           ...item,
           value,
-          active: item.filter === req.params.status,
+          active: item.status === req.params.status,
           href: `${req.baseUrl}/${period}/${date}${
             locationId ? `/${locationId}` : ''
-          }/${item.filter}`,
+          }/${item.status || ''}`,
         }
       })
   )
 
   try {
-    res.locals.moveTypeNavigation = await Promise.all(promises).then(filters =>
-      filters.map(presenters.moveTypesToFilterComponent)
+    req.filter = await Promise.all(promises).then(data =>
+      data.map(presenters.moveTypesToFilterComponent)
     )
 
     next()
@@ -50,4 +50,4 @@ async function setMoveTypeNavigation(req, res, next) {
   }
 }
 
-module.exports = setMoveTypeNavigation
+module.exports = setfilterSingleRequests

@@ -2,31 +2,32 @@ const middleware = require('./set-dashboard-move-summary')
 
 describe('Moves middleware', function() {
   describe('#setDashboardMoveSummary()', function() {
-    context('with res.locals.moveTypeNavigation', function() {
-      let locals
+    context('with req.filter', function() {
+      let locals, req
       const next = sinon.spy()
 
       beforeEach(function() {
-        locals = {
-          moveTypeNavigation: [
+        req = {
+          filter: [
             {
-              filter: 'pending',
+              status: 'pending',
               value: 8,
               href: '/pending',
             },
             {
-              filter: 'rejected',
+              status: 'rejected',
               value: 5,
               href: '/rejected',
             },
             {
-              filter: 'approved',
+              status: 'approved',
               value: 2,
               href: '/approved',
             },
           ],
         }
-        middleware({}, { locals }, next)
+        locals = {}
+        middleware(req, { locals }, next)
       })
 
       afterEach(function() {
@@ -36,7 +37,7 @@ describe('Moves middleware', function() {
       it('adds a new type called total ', function() {
         expect(
           locals.dashboardMoveSummary.find(type => {
-            return type.filter === 'total'
+            return type.status === 'total'
           })
         ).to.exist
       })
@@ -45,37 +46,21 @@ describe('Moves middleware', function() {
         expect(locals.dashboardMoveSummary.length).to.equal(3)
       })
 
-      it('has a total value of all the moves', function() {
-        expect(
-          locals.dashboardMoveSummary.find(type => {
-            return type.filter === 'total'
-          }).value
-        ).to.equal(15)
-      })
-
-      it('has a total link to the proposed moves tab', function() {
-        expect(
-          locals.dashboardMoveSummary.find(type => {
-            return type.filter === 'total'
-          }).href
-        ).to.equal('/pending')
-      })
-
       it('drops the proposed moves', function() {
         expect(locals.dashboardMoveSummary).to.deep.equal([
           {
-            filter: 'total',
+            status: 'total',
             value: 15,
             href: '/pending',
             label: 'sent for review',
           },
           {
-            filter: 'rejected',
+            status: 'rejected',
             value: 5,
             href: '/rejected',
           },
           {
-            filter: 'approved',
+            status: 'approved',
             value: 2,
             href: '/approved',
           },

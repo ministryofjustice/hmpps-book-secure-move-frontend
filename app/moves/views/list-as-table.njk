@@ -3,7 +3,7 @@
 {% block pageContent %}
   {% if totalResults > 0 %}
     {{ appFilter({
-      items: moveTypeNavigation
+      items: filter
     }) }}
 
     {% if resultsAsTable.active.rows.length %}

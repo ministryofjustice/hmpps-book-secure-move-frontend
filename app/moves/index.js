@@ -15,7 +15,7 @@ const {
   redirectBaseUrl,
   saveUrl,
   setFromLocation,
-  setMoveTypeNavigation,
+  setFilterSingleRequests,
   setPagination,
   setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
@@ -46,7 +46,7 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:proposed'),
-  setMoveTypeNavigation,
+  setFilterSingleRequests,
   setDashboardMoveSummary,
   setPagination,
   dashboard
@@ -61,8 +61,8 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
   protectRoute('moves:view:proposed'),
-  setMoveTypeNavigation,
   setMovesByDateRangeAndStatus,
+  setFilterSingleRequests,
   setPagination,
   listAsTable
 )
