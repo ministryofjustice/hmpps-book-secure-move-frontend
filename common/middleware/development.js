@@ -1,5 +1,7 @@
 const { addDays, getTime } = require('date-fns')
 
+const referenceDataService = require('../services/reference-data')
+
 function bypassAuth(bypass) {
   return (req, res, next) => {
     if (bypass) {
@@ -20,7 +22,21 @@ function setUserPermissions(permissions) {
   }
 }
 
+function setUserLocations(locations) {
+  return async (req, res, next) => {
+    req.session.user = req.session.user || {}
+
+    if (locations && !req.session.user.locations) {
+      req.session.user.locations = await referenceDataService.getLocationsByNomisAgencyId(
+        locations.split(',')
+      )
+    }
+    next()
+  }
+}
+
 module.exports = {
   bypassAuth,
   setUserPermissions,
+  setUserLocations,
 }

@@ -125,6 +125,7 @@ if (config.IS_DEV) {
   const development = require('./common/middleware/development')
   app.use(development.bypassAuth(config.AUTH_BYPASS_SSO))
   app.use(development.setUserPermissions(config.USER_PERMISSIONS))
+  app.use(development.setUserLocations(config.USER_LOCATIONS))
 }
 app.use(
   ensureAuthenticated({

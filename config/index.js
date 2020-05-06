@@ -76,6 +76,7 @@ module.exports = {
     },
   },
   USER_PERMISSIONS: process.env.USER_PERMISSIONS,
+  USER_LOCATIONS: process.env.USER_LOCATIONS,
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
   AUTH_WHITELIST_URLS: [
     '/auth',
