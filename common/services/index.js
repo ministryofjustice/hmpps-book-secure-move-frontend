@@ -3,6 +3,7 @@ const courtHearing = require('./court-hearing')
 const move = require('./move')
 const person = require('./person')
 const referenceData = require('./reference-data')
+const singleRequest = require('./single-request')
 
 module.exports = {
   allocation,
@@ -10,4 +11,5 @@ module.exports = {
   move,
   person,
   referenceData,
+  singleRequest,
 }

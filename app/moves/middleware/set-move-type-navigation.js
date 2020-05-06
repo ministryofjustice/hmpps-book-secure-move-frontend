@@ -1,19 +1,17 @@
-const { cloneDeep } = require('lodash')
-
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
+const singleRequestService = require('../../../common/services/single-request')
 
-const moveTypeNavigationConfig = [
+const filterConfig = [
   {
-    label: 'moves::dashboard.filter.proposed',
-    filter: 'proposed',
+    label: 'statuses::pending',
+    filter: 'pending',
   },
   {
-    label: 'moves::dashboard.filter.approved',
-    filter: 'requested,accepted,completed',
+    label: 'statuses::approved',
+    filter: 'approved',
   },
   {
-    label: 'moves::dashboard.filter.rejected',
+    label: 'statuses::rejected',
     filter: 'rejected',
   },
 ]
@@ -21,23 +19,31 @@ const moveTypeNavigationConfig = [
 async function setMoveTypeNavigation(req, res, next) {
   const { dateRange } = res.locals
   const { locationId, period, date } = req.params
-  try {
-    res.locals.moveTypeNavigation = await Promise.all(
-      cloneDeep(moveTypeNavigationConfig).map(moveType => {
-        return moveService
-          .getMovesCount({ dateRange, status: moveType.filter, locationId })
-          .then(count => {
-            return {
-              ...moveType,
-              value: count,
-              active: moveType.filter === req.params.status,
-              href: `${req.baseUrl}/${period}/${date}${
-                locationId ? '/' + locationId : ''
-              }/${moveType.filter}`,
-            }
-          })
+  const promises = filterConfig.map(item =>
+    singleRequestService
+      .getAll({
+        isAggregation: true,
+        createdAtDate: dateRange,
+        fromLocationId: locationId,
+        status: item.filter,
       })
-    ).then(moveTypes => moveTypes.map(presenters.moveTypesToFilterComponent))
+      .then(value => {
+        return {
+          ...item,
+          value,
+          active: item.filter === req.params.status,
+          href: `${req.baseUrl}/${period}/${date}${
+            locationId ? `/${locationId}` : ''
+          }/${item.filter}`,
+        }
+      })
+  )
+
+  try {
+    res.locals.moveTypeNavigation = await Promise.all(promises).then(filters =>
+      filters.map(presenters.moveTypesToFilterComponent)
+    )
+
     next()
   } catch (error) {
     next(error)

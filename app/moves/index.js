@@ -54,7 +54,7 @@ router.get(
   list
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(proposed|requested,accepted,completed|rejected)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
   protectRoute('moves:view:proposed'),
   setMoveTypeNavigation,
   setMovesByDateRangeAndStatus,

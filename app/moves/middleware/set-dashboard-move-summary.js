@@ -1,26 +1,21 @@
-const { find, reject } = require('lodash')
+const { find, reject, sumBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
 
 function setDashboardMoveSummary(req, res, next) {
-  let totalMoves = {
+  const { moveTypeNavigation } = res.locals
+  const totalMoves = {
     label: 'moves::dashboard.filter.total',
     filter: 'total',
-    href: find(res.locals.moveTypeNavigation, { filter: 'proposed' }).href,
+    href: find(moveTypeNavigation, { filter: 'pending' }).href,
+    value: sumBy(moveTypeNavigation, 'value'),
   }
-  totalMoves.value = res.locals.moveTypeNavigation.reduce(
-    (accumulator, moveType) => {
-      return (accumulator += moveType.value)
-    },
-    0
-  )
-  totalMoves = presenters.moveTypesToFilterComponent(totalMoves)
+
   res.locals.dashboardMoveSummary = [
-    totalMoves,
-    ...reject(res.locals.moveTypeNavigation, {
-      filter: 'proposed',
-    }),
+    presenters.moveTypesToFilterComponent(totalMoves),
+    ...reject(moveTypeNavigation, { filter: 'pending' }),
   ]
+
   next()
 }
 

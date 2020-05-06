@@ -173,11 +173,21 @@ describe('Move Service', function() {
     const mockResponse = {
       data: mockMoves,
       links: {},
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
+      },
     }
     const mockMultiPageResponse = {
       data: mockMoves,
       links: {
         next: 'http://next-page.com',
+      },
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
       },
     }
     const mockFilter = {
@@ -232,6 +242,31 @@ describe('Move Service', function() {
             page: 1,
             per_page: 100,
           })
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with aggregation', function() {
+        beforeEach(async function() {
+          moves = await moveService.getAll({
+            filter: mockFilter,
+            isAggregation: true,
+          })
+        })
+
+        it('should call the API client with only one per page', function() {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+            ...mockFilter,
+            page: 1,
+            per_page: 1,
+          })
+        })
+
+        it('should return a count', function() {
+          expect(moves).to.equal(10)
         })
       })
     })
@@ -298,6 +333,27 @@ describe('Move Service', function() {
             page: 2,
             per_page: 100,
           })
+        })
+      })
+
+      context('with aggregation', function() {
+        beforeEach(async function() {
+          moves = await moveService.getAll({
+            filter: mockFilter,
+            isAggregation: true,
+          })
+        })
+
+        it('should call the API client with only one per page', function() {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+            ...mockFilter,
+            page: 1,
+            per_page: 1,
+          })
+        })
+
+        it('should return a count', function() {
+          expect(moves).to.equal(10)
         })
       })
     })

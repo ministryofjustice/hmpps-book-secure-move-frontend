@@ -65,7 +65,7 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
-              href: '/moves/week/2020-05-10/12345/proposed',
+              href: '/moves/week/2020-05-10/12345/pending',
               text: 'primary_navigation.single_requests',
             },
             {
@@ -94,7 +94,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/12345/proposed',
+                href: '/moves/week/2020-05-10/12345/pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -106,31 +106,33 @@ describe('#setPrimaryNavigation()', function() {
           })
         })
 
-        context('on proposed page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH =
-              '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/proposed'
-            middleware(req, res, nextSpy)
-          })
+        const statuses = ['pending', 'accepted', 'rejected']
+        statuses.forEach(status => {
+          context(`on ${status} page`, function() {
+            beforeEach(function() {
+              res.locals.REQUEST_PATH = `/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/${status}`
+              middleware(req, res, nextSpy)
+            })
 
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: false,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: true,
-                href: '/moves/week/2020-05-10/12345/proposed',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: false,
-                href: '/moves/day/2020-05-10/12345/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
+            it('should set active state', function() {
+              expect(res.locals.primaryNavigation).to.deep.equal([
+                {
+                  active: false,
+                  href: '/moves',
+                  text: 'primary_navigation.home',
+                },
+                {
+                  active: true,
+                  href: '/moves/week/2020-05-10/12345/pending',
+                  text: 'primary_navigation.single_requests',
+                },
+                {
+                  active: false,
+                  href: '/moves/day/2020-05-10/12345/outgoing',
+                  text: 'primary_navigation.outgoing',
+                },
+              ])
+            })
           })
         })
 
@@ -150,7 +152,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/12345/proposed',
+                href: '/moves/week/2020-05-10/12345/pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -184,7 +186,7 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
-              href: '/moves/week/2020-05-10/proposed',
+              href: '/moves/week/2020-05-10/pending',
               text: 'primary_navigation.single_requests',
             },
             {
@@ -212,7 +214,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/proposed',
+                href: '/moves/week/2020-05-10/pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -226,7 +228,7 @@ describe('#setPrimaryNavigation()', function() {
 
         context('on proposed page', function() {
           beforeEach(function() {
-            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/proposed'
+            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/pending'
             middleware(req, res, nextSpy)
           })
 
@@ -239,7 +241,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: true,
-                href: '/moves/week/2020-05-10/proposed',
+                href: '/moves/week/2020-05-10/pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -266,7 +268,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/proposed',
+                href: '/moves/week/2020-05-10/pending',
                 text: 'primary_navigation.single_requests',
               },
               {

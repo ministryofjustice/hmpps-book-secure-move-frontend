@@ -1,16 +1,20 @@
-const moveService = require('../../../common/services/move')
+const singleRequestService = require('../../../common/services/single-request')
 
 const middleware = require('./set-moves-by-date-range-and-status')
 
 describe('Moves middleware', function() {
   describe('#setMovesByDateRangeAndStatus()', function() {
-    let locals
+    let res
     let req
+    let next
 
     beforeEach(function() {
-      locals = {
-        dateRange: ['2019-01-01', '2019-01-07'],
-        status: 'proposed',
+      sinon.stub(singleRequestService, 'getAll')
+      next = sinon.stub()
+      res = {
+        locals: {
+          status: 'proposed',
+        },
       }
       req = {
         params: {
@@ -20,32 +24,58 @@ describe('Moves middleware', function() {
       }
     })
 
-    it('returns next if dateRange is not defined', async function() {
-      locals = {}
-      const next = sinon.stub()
-      await middleware(req, { locals }, next)
-      expect(next).to.have.been.calledOnce
-    })
-
-    it('interrogates the data service with the range of dates', async function() {
-      sinon.stub(moveService, 'getMovesByDateRangeAndStatus').resolves({})
-      await middleware(req, { locals }, () => {})
-      expect(moveService.getMovesByDateRangeAndStatus).to.have.been.calledWith({
-        dateRange: ['2019-01-01', '2019-01-07'],
-        fromLocationId: '123',
-        status: 'proposed',
+    context('with no date range', function() {
+      beforeEach(async function() {
+        await middleware(req, res, next)
       })
-      moveService.getMovesByDateRangeAndStatus.restore()
+
+      it('should not call service', function() {
+        expect(singleRequestService.getAll).not.to.have.been.called
+      })
+
+      it('returns next', function() {
+        expect(next).to.have.been.calledOnceWithExactly()
+      })
     })
 
-    it('in case of errors, it passes it to next()', async function() {
-      sinon
-        .stub(moveService, 'getMovesByDateRangeAndStatus')
-        .rejects(new Error('Error!'))
-      const next = sinon.stub()
-      await middleware(req, { locals }, next)
-      expect(next).to.have.been.calledWith(sinon.match.has('message', 'Error!'))
-      moveService.getMovesByDateRangeAndStatus.restore()
+    context('with date range', function() {
+      beforeEach(function() {
+        res.locals.dateRange = ['2019-01-01', '2019-01-07']
+      })
+
+      context('when service resolves', function() {
+        beforeEach(async function() {
+          singleRequestService.getAll.resolves({})
+          await middleware(req, res, next)
+        })
+
+        it('interrogates the data service', function() {
+          expect(
+            singleRequestService.getAll
+          ).to.have.been.calledOnceWithExactly({
+            status: 'proposed',
+            createdAtDate: ['2019-01-01', '2019-01-07'],
+            fromLocationId: '123',
+          })
+        })
+
+        it('should call next', function() {
+          expect(next).to.have.been.calledOnceWithExactly()
+        })
+      })
+
+      context('when service rejects', function() {
+        const mockError = new Error('Error!')
+
+        beforeEach(async function() {
+          singleRequestService.getAll.rejects(mockError)
+          await middleware(req, res, next)
+        })
+
+        it('should call next with error', function() {
+          expect(next).to.have.been.calledOnceWithExactly(mockError)
+        })
+      })
     })
   })
 })
