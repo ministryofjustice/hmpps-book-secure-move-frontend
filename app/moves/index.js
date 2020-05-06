@@ -66,6 +66,13 @@ router.get(
   listAsTable
 )
 router.get(
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)/download.:extension(csv|json)`,
+  protectRoute('moves:download'),
+  protectRoute('moves:view:proposed'),
+  setResultsSingleRequests,
+  download
+)
+router.get(
   '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:all'),
