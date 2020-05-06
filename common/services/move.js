@@ -21,16 +21,25 @@ const moveService = {
     })
   },
 
-  getAll({ filter, combinedData = [], page = 1 } = {}) {
+  getAll({
+    filter = {},
+    combinedData = [],
+    page = 1,
+    isAggregation = false,
+  } = {}) {
     return apiClient
       .findAll('move', {
         ...filter,
         page,
-        per_page: 100,
+        per_page: isAggregation ? 1 : 100,
       })
       .then(response => {
-        const { data, links } = response
+        const { data, links, meta } = response
         const moves = [...combinedData, ...data]
+
+        if (isAggregation) {
+          return meta.pagination.total_objects
+        }
 
         if (!links.next) {
           return moves.map(move => ({
