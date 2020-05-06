@@ -1,4 +1,4 @@
-const moveService = require('../../../common/services/move')
+const singleRequestService = require('../../../common/services/single-request')
 
 async function setMovesByDateRangeAndStatus(req, res, next) {
   const { dateRange } = res.locals
@@ -9,13 +9,11 @@ async function setMovesByDateRangeAndStatus(req, res, next) {
   }
 
   try {
-    res.locals.movesByRangeAndStatus = await moveService.getMovesByDateRangeAndStatus(
-      {
-        dateRange,
-        status,
-        fromLocationId: locationId,
-      }
-    )
+    res.locals.movesByRangeAndStatus = await singleRequestService.getAll({
+      status,
+      createdAtDate: dateRange,
+      fromLocationId: locationId,
+    })
 
     next()
   } catch (error) {

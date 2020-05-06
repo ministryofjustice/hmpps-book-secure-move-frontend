@@ -6,7 +6,7 @@ const permissions = require('./permissions')
 const baseRegex =
   '^\\/moves\\/(day|week)(\\/\\d{4}-\\d{2}-\\d{2})(\\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})?'
 const homeRegex = new RegExp(`${baseRegex}$`)
-const proposedRegex = new RegExp(`${baseRegex}\\/proposed$`)
+const proposedRegex = new RegExp(`${baseRegex}\\/(pending|accepted|rejected)$`)
 const outgoingRegex = new RegExp(`${baseRegex}\\/outgoing$`)
 
 function setPrimaryNavigation(req, res, next) {
@@ -28,7 +28,7 @@ function setPrimaryNavigation(req, res, next) {
   if (permissions.check('moves:view:proposed', userPermissions)) {
     items.push({
       text: req.t('primary_navigation.single_requests'),
-      href: `/moves/week/${date}${locationInUrl}/proposed`,
+      href: `/moves/week/${date}${locationInUrl}/pending`,
       active: proposedRegex.test(REQUEST_PATH),
     })
   }

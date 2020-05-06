@@ -10,9 +10,9 @@ describe('Moves middleware', function() {
         locals = {
           moveTypeNavigation: [
             {
-              filter: 'proposed',
+              filter: 'pending',
               value: 8,
-              href: '/proposed',
+              href: '/pending',
             },
             {
               filter: 'rejected',
@@ -58,15 +58,28 @@ describe('Moves middleware', function() {
           locals.dashboardMoveSummary.find(type => {
             return type.filter === 'total'
           }).href
-        ).to.equal('/proposed')
+        ).to.equal('/pending')
       })
 
       it('drops the proposed moves', function() {
-        expect(
-          locals.dashboardMoveSummary.find(type => {
-            return type.filter === 'proposed'
-          })
-        ).not.to.exist
+        expect(locals.dashboardMoveSummary).to.deep.equal([
+          {
+            filter: 'total',
+            value: 15,
+            href: '/pending',
+            label: 'sent for review',
+          },
+          {
+            filter: 'rejected',
+            value: 5,
+            href: '/rejected',
+          },
+          {
+            filter: 'approved',
+            value: 2,
+            href: '/approved',
+          },
+        ])
       })
 
       it('calls next', function() {
