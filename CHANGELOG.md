@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.20.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.20.0...v2.20.1) (2020-05-06)
+
+
+### Bug Fixes
+
+* Ensure move date is valid before processing ([4546a7b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4546a7b31b030c14acf74f4d74be0c4859147ae8)), closes [#BOOK-A-SECURE-MOVE-FRONTEND-1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues/BOOK-A-SECURE-MOVE-FRONTEND-1)
+* Handle how CSRF errors are dealt with ([abeaa89](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/abeaa8950638b20ee719846ae8fc6c814edeb0f6)), closes [#BOOK-A-SECURE-MOVE-FRONTEND-10](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues/BOOK-A-SECURE-MOVE-FRONTEND-10)
+
 ## [2.20.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.19.1...v2.20.0) (2020-05-05)
 
 
