@@ -3,9 +3,10 @@ const { format } = require('date-fns')
 const presenters = require('../../../common/presenters')
 
 module.exports = function download(req, res, next) {
+  const { results } = req
   const { extension } = req.params
-  const { dateRange, activeMovesByDate, cancelledMovesByDate } = res.locals
-  const moves = [...activeMovesByDate, ...cancelledMovesByDate]
+  const { dateRange } = res.locals
+  const moves = [...results.active, ...results.cancelled]
   const currentTimestamp = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
   const filename = req.t('moves::download_filename', {
     date: dateRange.toString().replace(/,/g, 'to'),

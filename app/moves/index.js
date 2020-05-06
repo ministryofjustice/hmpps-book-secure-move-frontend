@@ -17,9 +17,8 @@ const {
   setFromLocation,
   setFilterSingleRequests,
   setPagination,
-  setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
-  setMovesByDateAllLocations,
+  setResultsOutgoing,
   setDashboardMoveSummary,
 } = require('./middleware')
 
@@ -39,7 +38,7 @@ router.get('/', redirectBaseUrl)
 router.get(
   '/:period(week|day)/:date/:view(outgoing)',
   protectRoute('moves:view:all'),
-  setMovesByDateAllLocations,
+  setResultsOutgoing,
   setPagination,
   listAsCards
 )
@@ -54,7 +53,7 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
   protectRoute('moves:view:outgoing'),
-  setMovesByDateAndLocation,
+  setResultsOutgoing,
   setPagination,
   listAsCards
 )
@@ -70,13 +69,13 @@ router.get(
   '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:all'),
-  setMovesByDateAllLocations,
+  setResultsOutgoing,
   download
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
   protectRoute('moves:download'),
-  setMovesByDateAndLocation,
+  setResultsOutgoing,
   download
 )
 // Export

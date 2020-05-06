@@ -3,19 +3,17 @@ const saveUrl = require('./save-url')
 const setDashboardMoveSummary = require('./set-dashboard-move-summary')
 const setFilterSingleRequests = require('./set-filter.single-requests')
 const setFromLocation = require('./set-from-location')
-const setMovesByDateAllLocations = require('./set-moves-by-date-all-locations')
-const setMovesByDateAndLocation = require('./set-moves-by-date-and-location')
 const setMovesByDateRangeAndStatus = require('./set-moves-by-date-range-and-status')
 const setPagination = require('./set-pagination')
+const setResultsOutgoing = require('./set-results.outgoing')
 
 module.exports = {
   redirectBaseUrl,
   saveUrl,
   setDashboardMoveSummary,
   setFromLocation,
-  setMovesByDateAllLocations,
-  setMovesByDateAndLocation,
   setMovesByDateRangeAndStatus,
   setFilterSingleRequests,
+  setResultsOutgoing,
   setPagination,
 }
