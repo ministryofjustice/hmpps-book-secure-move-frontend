@@ -242,6 +242,7 @@ The following environment variables can be set to help development.
 |:-----|:------------|:--------|
 | BYPASS_SSO | Set to `true` to bypass authentication | |
 | USER_PERMISSIONS | Comma delimited string of available permissions (required if bypassing auth) | |
+| USER_LOCATIONS | Comma delimited string of available locations (required if bypassing auth) | |
 
 ## Components
 
