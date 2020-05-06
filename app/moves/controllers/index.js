@@ -1,11 +1,11 @@
 const dashboard = require('./dashboard')
 const download = require('./download')
-const list = require('./list')
-const listByStatus = require('./list-by-status')
+const listAsCards = require('./list-as-cards')
+const listAsTable = require('./list-as-table')
 
 module.exports = {
   dashboard,
   download,
-  list,
-  listByStatus,
+  listAsCards,
+  listAsTable,
 }

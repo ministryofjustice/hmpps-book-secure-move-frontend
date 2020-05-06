@@ -3,7 +3,7 @@ const { get } = require('lodash')
 const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
-module.exports = function list(req, res) {
+module.exports = function listAsCards(req, res) {
   const {
     cancelledMovesByDate = [],
     activeMovesByDate = [],
@@ -17,14 +17,16 @@ module.exports = function list(req, res) {
       : 'moves/views/download'
   const locals = {
     pageTitle: 'moves::dashboard.outgoing_moves',
-    destinations: presenters.movesByToLocation(activeMovesByDate),
-    cancelledMoves: cancelledMovesByDate.map(
-      presenters.moveToCardComponent({
-        showMeta: false,
-        showTags: false,
-        showImage: false,
-      })
-    ),
+    resultsAsCards: {
+      active: presenters.movesByToLocation(activeMovesByDate),
+      cancelled: cancelledMovesByDate.map(
+        presenters.moveToCardComponent({
+          showMeta: false,
+          showTags: false,
+          showImage: false,
+        })
+      ),
+    },
   }
 
   res.render(template, locals)

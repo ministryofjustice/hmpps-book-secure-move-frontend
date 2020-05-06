@@ -1,13 +1,13 @@
 {% extends "layouts/list.njk" %}
 
 {% block pageContent %}
-  {% if totalMoves > 0 %}
+  {% if totalResults > 0 %}
     {{ appFilter({
       items: moveTypeNavigation
     }) }}
 
-    {% if movesAsTable.rows.length %}
-      {{ govukTable(movesAsTable) }}
+    {% if resultsAsTable.active.rows.length %}
+      {{ govukTable(resultsAsTable.active) }}
     {% else %}
       {{ appMessage({
         classes: "app-message--muted govuk-!-margin-top-7",

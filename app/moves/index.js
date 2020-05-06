@@ -5,7 +5,12 @@ const router = require('express').Router()
 const { setDateRange, setDatePeriod } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { dashboard, download, list, listByStatus } = require('./controllers')
+const {
+  dashboard,
+  download,
+  listAsCards,
+  listAsTable,
+} = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -36,7 +41,7 @@ router.get(
   protectRoute('moves:view:all'),
   setMovesByDateAllLocations,
   setPagination,
-  list
+  listAsCards
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
@@ -51,7 +56,7 @@ router.get(
   protectRoute('moves:view:outgoing'),
   setMovesByDateAndLocation,
   setPagination,
-  list
+  listAsCards
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
@@ -59,7 +64,7 @@ router.get(
   setMoveTypeNavigation,
   setMovesByDateRangeAndStatus,
   setPagination,
-  listByStatus
+  listAsTable
 )
 router.get(
   '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',

@@ -1,7 +1,7 @@
 {% extends "layouts/list.njk" %}
 
 {% block pageContent %}
-  {% for destination in destinations %}
+  {% for destination in resultsAsCards.active %}
     <div class="
       govuk-!-margin-top-7
       app-border-top-2
@@ -16,8 +16,8 @@
         }) }}
       </div>
 
-      {% for move in destination.items %}
-        {{ appCard(move) }}
+      {% for item in destination.items %}
+        {{ appCard(item) }}
       {% endfor %}
     </div>
   {% else %}
@@ -30,18 +30,18 @@
     }) }}
   {% endfor %}
 
-  {% if cancelledMoves.length %}
+  {% if resultsAsCards.cancelled.length %}
     <div class="govuk-!-margin-top-9">
-      {% set cancelledMovesHtml %}
-        {% for cancelledMove in cancelledMoves %}
-          {{ appCard(cancelledMove) }}
+      {% set html %}
+        {% for result in resultsAsCards.cancelled %}
+          {{ appCard(result) }}
         {% endfor %}
       {% endset %}
 
       {{ govukDetails({
-        html: cancelledMovesHtml,
+        html: html,
         summaryText: t("moves::dashboard.cancelled_moves", {
-          count: cancelledMoves.length
+          count: resultsAsCards.cancelled.length
         })
       }) }}
     </div>

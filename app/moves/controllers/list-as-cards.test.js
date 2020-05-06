@@ -1,7 +1,7 @@
 const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
-const controller = require('./list')
+const controller = require('./list-as-cards')
 
 const mockActiveMovesByDate = [
   { foo: 'bar', status: 'requested' },
@@ -57,10 +57,13 @@ describe('Moves controllers', function() {
           expect(moveToCardComponentMapStub).to.be.calledTwice
         })
 
-        it('should contain destinations property', function() {
+        it('should contain resultsAsCards property', function() {
           const params = res.render.args[0][1]
-          expect(params).to.have.property('destinations')
-          expect(params.destinations).to.deep.equal(mockActiveMovesByDate)
+          expect(params).to.have.property('resultsAsCards')
+          expect(params.resultsAsCards).to.deep.equal({
+            active: mockActiveMovesByDate,
+            cancelled: mockCancelledMovesByDate,
+          })
         })
       })
 
