@@ -9,10 +9,11 @@ import {
   checkUpdateRiskInformation,
   checkUpdateHealthInformation,
   checkUpdateCourtInformation,
+  checkUpdateMoveDetails,
 } from './_move'
 
 if (FEATURE_FLAGS.EDITABILITY) {
-  fixture('Existing move from Police Custody to Court').beforeEach(async () => {
+  fixture('Existing move from Police Custody').beforeEach(async () => {
     await createPoliceMove()
   })
 
@@ -22,6 +23,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
       'risk',
       'health',
       'court',
+      'move',
       'date',
     ])
   })
@@ -32,6 +34,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
       'risk',
       'health',
       'court',
+      'move',
       'date',
     ])
   })
@@ -72,4 +75,21 @@ if (FEATURE_FLAGS.EDITABILITY) {
   test('User should be able to update court information', async () => {
     await checkUpdateCourtInformation()
   })
+
+  test('User should be able to update move details for a court appearance', async () => {
+    await checkUpdateMoveDetails()
+  })
+
+  test.before(async () => {
+    await createPoliceMove({
+      moveOverrides: {
+        move_type: 'prison_recall',
+      },
+    })
+  })(
+    'User should be able to update move details for a prison recall',
+    async t => {
+      await checkUpdateMoveDetails()
+    }
+  )
 }

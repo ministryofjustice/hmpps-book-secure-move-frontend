@@ -1,6 +1,7 @@
-import { t } from 'testcafe'
+import faker from 'faker'
+import { Selector, t } from 'testcafe'
 
-import { createMoveFixture, expectForbidden } from './_helpers'
+import { createMoveFixture, expectForbidden, fillInForm } from './_helpers'
 import { policeUser, stcUser } from './_roles'
 import { home, getMove, getUpdateMove } from './_routes'
 import { page, moveDetailPage } from './pages'
@@ -25,7 +26,10 @@ import UpdateMovePage from './pages/update-move'
 export async function createMove(options = {}) {
   await t.useRole(options.user)
 
-  if (!options.moveOverrides || !options.moveOverrides.from_location) {
+  if (
+    !options.moveOverrides ||
+    (options.moveOverrides && !options.moveOverrides.from_location)
+  ) {
     await t.navigateTo(home)
 
     const currentUrl = await page.getCurrentUrl()
@@ -53,15 +57,18 @@ export async function createMove(options = {}) {
 
   const move = await createMoveFixture(options)
   t.ctx.move = move
-  t.ctx.person = move.person
+  const { person } = move
+  t.ctx.person = person
   await t.navigateTo(getMove(move.id))
 
-  // double check that personal data is as expected
-  const { person } = t.ctx
+  // double check that all move and person data is as expected
   await moveDetailPage.checkPersonalDetails(person)
-  await moveDetailPage.checkCourtInformation(person)
   await moveDetailPage.checkRiskInformation(person)
   await moveDetailPage.checkHealthInformation(person)
+  if (move.moveType !== 'prison_recall') {
+    await moveDetailPage.checkCourtInformation(person)
+  }
+  await moveDetailPage.checkMoveDetails(move)
 }
 
 /**
@@ -363,6 +370,43 @@ export async function checkUpdateCourtInformation(options) {
     'checkCourtInformation',
     options
   )
+}
+
+/**
+ * Change move details and confirm changes on move view page
+ *
+ * @returns {undefined}
+ */
+export async function checkUpdateMoveDetails() {
+  const updateMovePage = await clickUpdateLink('move')
+
+  const { moveType } = t.ctx.move
+
+  const data = {}
+  if (moveType === 'prison_recall') {
+    data.additionalInformation = {
+      selector: updateMovePage.fields.prisonRecallComments,
+      value: faker.lorem.sentence(6),
+    }
+  } else {
+    const locationSelectors = {
+      court_appearance: updateMovePage.fields.courtLocation,
+      prison_transfer: updateMovePage.fields.prisonLocation,
+    }
+    const selector =
+      locationSelectors[moveType] || Selector(`#to_location_${moveType}`)
+    data.toLocation = {
+      selector,
+      type: 'autocomplete',
+    }
+  }
+
+  const fields = await fillInForm(data)
+  const updatedMove = { moveType, ...fields }
+
+  await updateMovePage.submitForm()
+
+  await moveDetailPage.checkMoveDetails(updatedMove)
 }
 
 /**

@@ -1,5 +1,6 @@
 import { Selector, t } from 'testcafe'
 
+import moveToMetaListComponent from '../../../common/presenters/move-to-meta-list-component'
 import filters from '../../../config/nunjucks/filters'
 
 import Page from './page'
@@ -21,6 +22,7 @@ class MoveDetailPage extends Page {
       personalDetails: Selector('#main-content h2')
         .withText('Personal details')
         .sibling('dl'),
+      moveDetails: Selector('.sticky-sidebar .app-meta-list'),
       courtInformationHeading: Selector('#main-content h2').withText(
         'Information for the court'
       ),
@@ -84,6 +86,27 @@ class MoveDetailPage extends Page {
         : undefined,
       Gender: gender,
       Ethnicity: ethnicity,
+    })
+  }
+
+  async checkMoveDetails(move = {}) {
+    const { moveType, additionalInformation } = move
+    let { toLocation } = move
+
+    if (moveType === 'prison_recall') {
+      toLocation = 'Prison recall'
+    }
+
+    if (additionalInformation) {
+      toLocation += ` — ${additionalInformation}`
+    }
+
+    const metaListedItems = moveToMetaListComponent(move).items
+    const date = metaListedItems.filter(item => item.key.text === 'Date')[0]
+      .value.text
+    await this.checkSummaryList(this.nodes.moveDetails, {
+      To: toLocation,
+      Date: date,
     })
   }
 

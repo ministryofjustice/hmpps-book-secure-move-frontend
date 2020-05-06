@@ -133,7 +133,7 @@ export async function generateMove(personId, options = {}, overrides = {}) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
 
-  return {
+  const move = {
     person: {
       id: personId,
     },
@@ -143,6 +143,12 @@ export async function generateMove(personId, options = {}, overrides = {}) {
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     ...overrides,
   }
+
+  if (move.move_type === 'prison_recall') {
+    delete move.to_location
+  }
+
+  return move
 }
 
 /**
@@ -163,8 +169,16 @@ export async function createMoveFixture({
 } = {}) {
   const person = await createPersonFixture(personOverrides)
   const moveFixture = await generateMove(person.id, moveOptions, moveOverrides)
-  const move = await moveService.create(moveFixture)
-  move.person = person
+  let move = await moveService.create(moveFixture)
+  move = {
+    ...move,
+    person,
+    moveType: move.move_type,
+    additionalInformation: move.additional_information,
+    [`${move.move_type}_comments`]: move.additional_information,
+    fromLocation: move.to_location ? move.to_location.title : undefined,
+    toLocation: move.to_location ? move.to_location.title : undefined,
+  }
   return move
 }
 
