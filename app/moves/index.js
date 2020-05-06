@@ -17,7 +17,7 @@ const {
   setFromLocation,
   setFilterSingleRequests,
   setPagination,
-  setMovesByDateRangeAndStatus,
+  setResultsSingleRequests,
   setResultsOutgoing,
   setDashboardMoveSummary,
 } = require('./middleware')
@@ -60,8 +60,8 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
   protectRoute('moves:view:proposed'),
-  setMovesByDateRangeAndStatus,
   setFilterSingleRequests,
+  setResultsSingleRequests,
   setPagination,
   listAsTable
 )

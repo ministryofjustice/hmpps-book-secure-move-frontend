@@ -1,20 +1,14 @@
 const { find, sumBy } = require('lodash')
 
-const presenters = require('../../../common/presenters')
-
 module.exports = function listAsTable(req, res) {
-  const { filter } = req
-  const { movesByRangeAndStatus = [] } = res.locals
-  const template = 'moves/views/list-as-table'
-  const locals = {
-    filter,
-    pageTitle: 'moves::dashboard.single_moves',
-    activeContext: find(filter, { active: true }).status,
-    totalResults: sumBy(filter, 'value'),
-    resultsAsTable: {
-      active: presenters.movesToTable(movesByRangeAndStatus),
-    },
-  }
+  const { filter, resultsAsTable } = req
+  const activeFilter = find(filter, { active: true }) || {}
 
-  res.render(template, locals)
+  res.render('moves/views/list-as-table', {
+    filter,
+    resultsAsTable,
+    pageTitle: 'moves::dashboard.single_moves',
+    activeContext: activeFilter.status,
+    totalResults: sumBy(filter, 'value'),
+  })
 }
