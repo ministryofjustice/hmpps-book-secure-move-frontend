@@ -23,7 +23,11 @@
   },
   "tampered_with": {
     "heading": "This form has been tampered with",
-    "content": "Try to submit the form again in a few moments."
+    "content": "Try to reload the page and submit the form again in a few moments."
+  },
+  "csrf_error": {
+    "heading": "$t(errors::tampered_with.heading)",
+    "content": "$t(errors::tampered_with.content)"
   },
   "unauthorized": {
     "heading": "You don’t have permission to view this page",

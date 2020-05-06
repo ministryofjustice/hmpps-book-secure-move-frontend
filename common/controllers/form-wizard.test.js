@@ -195,11 +195,45 @@ describe('Form wizard', function() {
       })
     })
 
-    context('when it returns missing prereq error', function() {
+    context('when it returns missing location error', function() {
       let reqMock
 
       beforeEach(function() {
         errorMock.code = 'MISSING_LOCATION'
+        reqMock = {
+          baseUrl: '/journey-base-url-other',
+          form: {
+            options: {
+              journeyName: 'mock-journey',
+            },
+          },
+        }
+
+        controller.errorHandler(errorMock, reqMock, resMock)
+      })
+
+      it('should render the timeout template', function() {
+        expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+      })
+
+      it('should pass the correct data to the view', function() {
+        expect(resMock.render.args[0][1]).to.deep.equal({
+          journeyBaseUrl: reqMock.baseUrl,
+          errorKey: errorMock.code.toLowerCase(),
+          journeyName: 'mock_journey',
+        })
+      })
+
+      it('should not call parent error handler', function() {
+        expect(FormController.prototype.errorHandler).not.to.be.called
+      })
+    })
+
+    context('when it returns a CSRF error', function() {
+      let reqMock
+
+      beforeEach(function() {
+        errorMock.code = 'CSRF_ERROR'
         reqMock = {
           baseUrl: '/journey-base-url-other',
           form: {
