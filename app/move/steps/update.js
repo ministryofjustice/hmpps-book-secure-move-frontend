@@ -1,6 +1,6 @@
 const {
   Assessment,
-  Documents,
+  Document,
   MoveDate,
   MoveDetails,
   PersonalDetails,
@@ -79,6 +79,17 @@ const updateSteps = [
         ...createSteps['/health-information'],
         ...updateStepPropOverrides,
         controller: Assessment,
+      },
+    },
+  },
+  {
+    key: 'document',
+    permission: 'move:update',
+    steps: {
+      '/document': {
+        ...createSteps['/document'],
+        ...updateStepPropOverrides,
+        controller: Document,
       },
     },
   },
