@@ -2,6 +2,11 @@ const FormWizardController = require('../../../../common/controllers/form-wizard
 const presenters = require('../../../../common/presenters')
 
 class CreateBaseController extends FormWizardController {
+  middlewareSetup() {
+    super.middlewareSetup()
+    this.use(this.setModels)
+  }
+
   middlewareChecks() {
     super.middlewareChecks()
     this.use(this.checkCurrentLocation)
@@ -9,7 +14,6 @@ class CreateBaseController extends FormWizardController {
 
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setModels)
     this.use(this.setButtonText)
     this.use(this.setCancelUrl)
     this.use(this.setMoveSummary)

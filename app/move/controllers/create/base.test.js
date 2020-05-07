@@ -28,6 +28,29 @@ describe('Move controllers', function() {
       })
     })
 
+    describe('#middlewareSetup()', function() {
+      beforeEach(function() {
+        sinon.stub(FormController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareSetup()
+      })
+
+      it('should call parent method', function() {
+        expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
+      })
+
+      it('should call set models method', function() {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setModels
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
     describe('#middlewareLocals()', function() {
       beforeEach(function() {
         sinon.stub(FormController.prototype, 'middlewareLocals')
@@ -43,36 +66,30 @@ describe('Move controllers', function() {
 
       it('should call set button text method', function() {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
-          controller.setModels
-        )
-      })
-
-      it('should call set button text method', function() {
-        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call set cancel url method', function() {
-        expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
           controller.setCancelUrl
         )
       })
 
       it('should call set move summary method', function() {
-        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
           controller.setMoveSummary
         )
       })
 
       it('should call set journey timer method', function() {
-        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setJourneyTimer
         )
       })
 
       it('should call correct number of middleware', function() {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(4)
       })
     })
 

@@ -40,6 +40,9 @@ describe('API Client', function() {
         },
       }
       requestMiddleware = proxyquire('./request', {
+        uuid: {
+          v4: () => 'uuid-value',
+        },
         '../../../../config/redis-store': () => {
           return {
             client: {
@@ -49,6 +52,15 @@ describe('API Client', function() {
           }
         },
         '../models': mockModels,
+      })
+    })
+
+    context('when api-client sends request', function() {
+      beforeEach(async function() {
+        response = await requestMiddleware().req(payload)
+      })
+      it('should add the Idempotency-Key header', function() {
+        expect(payload.req.headers['Idempotency-Key']).to.equal('uuid-value')
       })
     })
 

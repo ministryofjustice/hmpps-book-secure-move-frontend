@@ -1,3 +1,4 @@
+const dateFunctions = require('date-fns')
 const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
@@ -166,6 +167,21 @@ const moveService = {
         ...move,
         person: personService.transform(move.person),
       }))
+  },
+
+  redirect(data) {
+    if (!data.id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+    const timestamp = dateFunctions.formatISO(new Date())
+    return apiClient
+      .one('move', data.id)
+      .all('event')
+      .post({
+        event_name: 'redirect',
+        timestamp,
+        ...data,
+      })
   },
 
   cancel(id, { reason, comment } = {}) {

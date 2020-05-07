@@ -75,13 +75,13 @@ describe('Move controllers', function() {
       })
 
       it('should call setNextStep middleware', function() {
-        expect(controller.use.secondCall).to.have.been.calledWith(
+        expect(controller.use.getCall(2)).to.have.been.calledWith(
           controller.setNextStep
         )
       })
 
       it('should call correct number of middleware', function() {
-        expect(controller.use.callCount).to.equal(2)
+        expect(controller.use.callCount).to.equal(3)
       })
     })
 

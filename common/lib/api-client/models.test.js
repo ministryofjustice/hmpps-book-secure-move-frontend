@@ -119,6 +119,13 @@ const testCases = {
       httpMock: 'get',
     },
   ],
+  event: [
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+    },
+  ],
 }
 
 const client = proxyquire('./', {
