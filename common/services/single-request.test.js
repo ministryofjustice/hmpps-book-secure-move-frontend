@@ -36,6 +36,8 @@ describe('Single request service', function() {
           isAggregation: false,
           filter: {
             'filter[move_type]': 'prison_transfer',
+            'sort[by]': 'created_at',
+            'sort[direction]': 'desc',
           },
         })
       })
@@ -74,6 +76,8 @@ describe('Single request service', function() {
               'filter[from_location_id]': mockFromLocationId,
               'filter[to_location_id]': mockToLocationId,
               'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'created_at',
+              'sort[direction]': 'desc',
             },
           })
         })
@@ -99,6 +103,55 @@ describe('Single request service', function() {
               'filter[created_at_to]': mockCreatedDateRange[1],
               'filter[from_location_id]': mockFromLocationId,
               'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'created_at',
+              'sort[direction]': 'desc',
+            },
+          })
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with sort by', function() {
+        beforeEach(async function() {
+          moves = await singleRequestService.getAll({
+            sortBy: 'date_from',
+          })
+        })
+
+        it('should call moves.getAll with correct args', function() {
+          expect(moveService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
+            filter: {
+              'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'date_from',
+              'sort[direction]': 'desc',
+            },
+          })
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with sort direction', function() {
+        beforeEach(async function() {
+          moves = await singleRequestService.getAll({
+            isAggregation: true,
+            sortDirection: 'asc',
+          })
+        })
+
+        it('should call moves.getAll with correct args', function() {
+          expect(moveService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: true,
+            filter: {
+              'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'created_at',
+              'sort[direction]': 'asc',
             },
           })
         })
@@ -122,6 +175,8 @@ describe('Single request service', function() {
             filter: {
               'filter[from_location_id]': mockFromLocationId,
               'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'created_at',
+              'sort[direction]': 'desc',
             },
           })
         })
@@ -142,6 +197,8 @@ describe('Single request service', function() {
               isAggregation: false,
               filter: {
                 'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
               },
             })
           })
@@ -164,6 +221,8 @@ describe('Single request service', function() {
               filter: {
                 'filter[status]': 'proposed',
                 'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
               },
             })
           })
@@ -186,6 +245,8 @@ describe('Single request service', function() {
               filter: {
                 'filter[status]': 'requested,accepted,completed',
                 'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
               },
             })
           })
@@ -209,6 +270,8 @@ describe('Single request service', function() {
                 'filter[status]': 'cancelled',
                 'filter[cancellation_reason]': 'rejected',
                 'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
               },
             })
           })
