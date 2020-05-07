@@ -186,6 +186,7 @@
       "court": "information for the court",
       "health": "health information",
       "date": "when this person is moving",
+      "document": "supporting documents",
       "move": "where this person is moving",
       "personal_details": "personal details",
       "risk": "risk information"
@@ -200,6 +201,10 @@
       },
       "date": {
         "heading": "Move date updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "document": {
+        "heading": "Supporting documents updated",
         "message": "$t(moves::update_flash.supplier_message)"
       },
       "health": {

@@ -1,17 +1,31 @@
-const { reject } = require('lodash')
+const { get, reject } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
-const Documents = require('../create/document')
+const DocumentUploadController = require('../create/document')
 
 const UpdateBase = require('./base')
 
-class UpdateDocumentsController extends UpdateBase {
+class UpdateDocumentUploadController extends UpdateBase {
+  configure(req, res, next) {
+    const canUploadDocuments = get(
+      req,
+      'session.currentLocation.can_upload_documents'
+    )
+    if (!canUploadDocuments) {
+      const error = new Error(
+        "Forbidden. Document upload not allowed for this move}'"
+      )
+      error.statusCode = 403
+      return next(error)
+    }
+    DocumentUploadController.prototype.configure.apply(this, [req, res, next])
+  }
+
   getUpdateValues(req, res) {
     const move = req.getMove()
     if (!move) {
       return {}
     }
-
     const values = {}
     if (req.initialStep) {
       req.sessionModel.set('documents', move.documents)
@@ -24,20 +38,21 @@ class UpdateDocumentsController extends UpdateBase {
     const { delete: deletedId } = req.body
     const sessionDocuments = req.sessionModel.get('documents') || []
     const uploadedDocuments = req.files || []
-
     req.form.values.documents = reject(
       [...sessionDocuments, ...uploadedDocuments],
       {
         id: deletedId,
       }
     )
-
     const isXhr = req.xhr
     if (!isXhr) {
       try {
         await moveService.update({
           id: req.getMoveId(),
           documents: req.form.values.documents,
+          // TODO: remove this - it's just to force the addition of any attributes
+          // currently the api 500s if not attribute present
+          move_type: req.getMove().move_type,
         })
         next()
       } catch (err) {
@@ -50,20 +65,16 @@ class UpdateDocumentsController extends UpdateBase {
 
   successHandler(req, res, next) {
     const isXhr = req.xhr
-
     if (isXhr) {
       const response =
         req.files && req.files.length === 1 ? req.files[0] : req.files
-
       return res.status(200).json(response || [])
     }
 
-    // TODO: what should actually happen
-
-    super.successHandler(req, res, next)
+    res.redirect(this.getBaseUrl(req))
   }
 }
 
-UpdateBase.mixin(UpdateDocumentsController, Documents)
+UpdateBase.mixin(UpdateDocumentUploadController, DocumentUploadController)
 
-module.exports = UpdateDocumentsController
+module.exports = UpdateDocumentUploadController
