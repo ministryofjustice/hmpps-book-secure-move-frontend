@@ -112,6 +112,12 @@ const referenceDataService = {
       .findAll('prison_transfer_reason')
       .then(response => response.data)
   },
+
+  getAllocationComplexCases() {
+    return apiClient.findAll('allocation_complex_case').then(response => {
+      return response.data
+    })
+  },
 }
 
 module.exports = referenceDataService

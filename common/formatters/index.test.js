@@ -1,4 +1,4 @@
-const formatters = require('./formatters')
+const formatters = require('./index')
 
 describe('Formatters', function() {
   describe('#date()', function() {

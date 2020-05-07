@@ -717,4 +717,27 @@ describe('Reference Data Service', function() {
       expect(response).to.deep.equal(mockResponse.data)
     })
   })
+
+  describe('#getAllocationComplexCases', function() {
+    const mockResponse = {
+      data: ['item1', 'item2'],
+    }
+
+    let response
+    let serviceStub
+
+    beforeEach(async function() {
+      serviceStub = sinon.stub(apiClient, 'findAll').resolves(mockResponse)
+
+      response = await referenceDataService.getAllocationComplexCases()
+    })
+
+    it('should request the list of allocation complex cases', function() {
+      expect(serviceStub).to.be.calledOnceWithExactly('allocation_complex_case')
+    })
+
+    it('should return response.data', function() {
+      expect(response).to.deep.equal(mockResponse.data)
+    })
+  })
 })

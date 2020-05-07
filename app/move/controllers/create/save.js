@@ -9,13 +9,9 @@ const CreateBaseController = require('./base')
 
 function filterAnswer(currentAssessment, searchKey) {
   return item => {
-    if (
-      !some(currentAssessment, { key: searchKey }) &&
-      item.key === searchKey
-    ) {
-      return false
-    }
-    return true
+    return !(
+      !some(currentAssessment, { key: searchKey }) && item.key === searchKey
+    )
   }
 }
 

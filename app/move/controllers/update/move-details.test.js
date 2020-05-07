@@ -27,13 +27,7 @@ describe('Move controllers', function() {
         )
       })
 
-      it('should copy setLocationItems from CreateMoveDetails', function() {
-        expect(controller.setLocationItems).to.exist.and.equal(
-          MixinProto.setLocationItems
-        )
-      })
-
-      it('should copy setLocationItems from CreateMoveDetails', function() {
+      it('should copy setMoveTypes from CreateMoveDetails', function() {
         expect(controller.setMoveTypes).to.exist.and.equal(
           MixinProto.setMoveTypes
         )

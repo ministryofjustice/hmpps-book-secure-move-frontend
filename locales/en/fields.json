@@ -56,6 +56,9 @@
     "label": "Move from",
     "short_label": "From"
   },
+  "to_location": {
+    "label": "Move to"
+  },
   "move_type": {
     "label": "Move to",
     "short_label": "To",
@@ -222,5 +225,35 @@
   },
   "date_to": {
     "label": "Latest date of travel"
+  },
+  "moves_count": {
+    "label": "Number of prisoners"
+  },
+  "date_of_allocation": {
+    "label": "Date of allocation"
+  },
+  "prisoner_category": {
+    "label": "Prisoner category"
+  },
+  "sentence_length": {
+    "label": "Sentence length",
+    "items": {
+      "long": "Over 16 months only",
+      "short": "Under 16 months only",
+      "any": "Any sentence"
+    }
+  },
+  "complete_in_full": {
+    "label": "Does this allocation have to be filled in full?"
+  },
+  "has_other_criteria": {
+    "label": "Is there any other criteria you need to add?"
+  },
+  "other_criteria": {
+    "label": "Give details"
+  },
+  "complex_cases": {
+    "label": "Prisoners with complex cases",
+    "hint": "Complex cases must be discussed with the receiving prison. This includes:"
   }
 }
