@@ -34,6 +34,21 @@ class UpdateDocumentUploadController extends UpdateBase {
     return values
   }
 
+  async saveDocumentRelationships(req, res, next) {
+    try {
+      await moveService.update({
+        id: req.getMoveId(),
+        documents: req.form.values.documents,
+        // TODO: remove this - it's just to force the addition of any attributes
+        // currently the api 500s if not attribute present
+        move_type: req.getMove().move_type,
+      })
+      next()
+    } catch (err) {
+      next(err)
+    }
+  }
+
   async saveValues(req, res, next) {
     const { delete: deletedId } = req.body
     const sessionDocuments = req.sessionModel.get('documents') || []
@@ -44,20 +59,10 @@ class UpdateDocumentUploadController extends UpdateBase {
         id: deletedId,
       }
     )
+
     const isXhr = req.xhr
     if (!isXhr) {
-      try {
-        await moveService.update({
-          id: req.getMoveId(),
-          documents: req.form.values.documents,
-          // TODO: remove this - it's just to force the addition of any attributes
-          // currently the api 500s if not attribute present
-          move_type: req.getMove().move_type,
-        })
-        next()
-      } catch (err) {
-        next(err)
-      }
+      this.saveDocumentRelationships(req, res, next)
     } else {
       super.saveValues(req, res, next)
     }
