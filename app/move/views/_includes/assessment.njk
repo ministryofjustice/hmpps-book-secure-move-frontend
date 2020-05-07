@@ -29,8 +29,8 @@
   </section>
 {% endfor %}
 
-<section class="app-!-position-relative">
-  {% if move.to_location.location_type == 'court' %}
+{% if move.to_location.location_type == 'court' %}
+  <section class="app-!-position-relative">
     {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
       <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-7">
         {{ t("moves::detail.court_hearings.heading", {
@@ -92,7 +92,8 @@
         }) }}
       {% endif %}
     {% endif %}
-  {% endif %}
 
-  {{ updateLink(updateLinks.court) }}
-</section>
+    {{ updateLink(updateLinks.court) }}
+  </section>
+{% endif %}
+
