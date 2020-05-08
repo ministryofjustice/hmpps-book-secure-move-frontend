@@ -28,9 +28,46 @@ aliases:
       key: dependency-cache-{{ checksum "package.json" }}
       paths:
         - ./node_modules
-  - &notify_slack
+  - &set_package_version
+    run:
+      name: Set version
+      command: |
+        echo "export PACKAGE_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')" >> $BASH_ENV
+  - &notify_slack_on_failure
     slack/notify-on-failure:
       only_for_branches: master
+  - &notify_slack_on_release_start
+    slack/notify:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      title: 'Frontend v${PACKAGE_VERSION} is being prepared for release :building_construction:'
+      title_link: 'https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md'
+      message: A new release was created by ${CIRCLE_USERNAME}
+      footer: Click the title to view the changes
+      include_project_field: false
+      include_job_number_field: false
+      include_visit_job_action: false
+      color: '#1d70b8'
+      mentions: here
+  - &notify_slack_of_approval
+    slack/approval:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      message: 'Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:'
+      include_project_field: false
+      include_job_number_field: false
+      color: '#912b88'
+      mentions: $BUILD_NOTIFICATIONS_MENTION_ID
+  - &notify_slack_on_release_end
+    slack/notify:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      title: 'Frontend v${PACKAGE_VERSION} has been deployed :rocket:'
+      title_link: https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}
+      message: This release was successfully deployed to production
+      footer: Click the title to view the release notes
+      include_project_field: false
+      include_job_number_field: false
+      include_visit_job_action: false
+      color: '#28a197'
+      mentions: here
   # Common filters
   - &all_tags
     filters:
@@ -58,14 +95,20 @@ commands:
     parameters:
       env:
         type: string
+      notify_slack:
+        type: string
+        default: ""
     steps:
       - checkout
-
+      - *set_package_version
+      - when:
+          condition: <<parameters.notify_slack>>
+          steps:
+            - *notify_slack_on_release_start
       - setup_remote_docker:
           docker_layer_caching: true
-
       - run:
-          name: build docker image
+          name: Build docker image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
             source $BASH_ENV
@@ -78,9 +121,8 @@ commands:
               --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
               -t app .
-
       - run:
-          name: push docker image
+          name: Push docker image
           command: |
             login="$(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)"
             ${login}
@@ -98,15 +140,14 @@ commands:
         type: string
     steps:
       - checkout
-
+      - *set_package_version
       - run:
-          name: kubectl use context
+          name: Set k8s context
           command: |
             setup-kube-auth
             kubectl config use-context << parameters.env >>
-
       - deploy:
-          name: rolling update image to << parameters.env >>
+          name: Deploy image to << parameters.env >>
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
             source $BASH_ENV
@@ -120,10 +161,18 @@ commands:
                     kubernetes.io/change-cause="${BUILD_DATE} set image ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} via CircleCI"
 
 jobs:
+  notify-of-approval:
+    <<: *circle_container
+    steps:
+      - checkout
+      - *set_package_version
+      - *notify_slack_of_approval
+
   build_and_test:
     <<: *circle_container
     steps:
       - checkout
+      - *set_package_version
       - *restore_cache
       - *install_dependencies
       - *save_cache
@@ -159,12 +208,13 @@ jobs:
           path: reports
       - store_artifacts:
           path: coverage
-      - *notify_slack
+      - *notify_slack_on_failure
 
   e2e_test:
     <<: *circle_container
     steps:
       - checkout
+      - *set_package_version
       - *restore_cache
       - *install_dependencies
       - *save_cache
@@ -175,7 +225,7 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
-      - *notify_slack
+      - *notify_slack_on_failure
 
   publish_release_to_github:
     <<: *circle_container
@@ -217,15 +267,17 @@ jobs:
     steps:
       - build_for_k8s:
           env: 'production'
+          notify_slack: 'true'
 
   deploy_production:
     <<: *cloud_container
     steps:
       - deploy_to_k8s:
           env: 'production'
+      - *notify_slack_on_release_end
 
 workflows:
-  pecs-frontend:
+  frontend:
     jobs:
       - build_and_test:
           <<: *all_tags
@@ -256,6 +308,10 @@ workflows:
       - production_approval:
           <<: *only_deploy_tags
           type: approval
+          requires:
+          - e2e_test
+      - notify-of-approval:
+          <<: *only_deploy_tags
           requires:
           - e2e_test
       - publish_release_to_github:
