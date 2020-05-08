@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns'
 import faker from 'faker'
 import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
@@ -28,6 +29,7 @@ class CreateMovePage extends Page {
       courtLocation: Selector('#to_location_court_appearance'),
       prisonLocation: Selector('#to_location_prison_transfer'),
       prisonRecallComments: Selector('#prison_recall_comments'),
+      dateCustom: Selector('[name="date_custom"]'),
       dateType: Selector('[name="date_type"]'),
       dateFrom: Selector('#date_from'),
       hasDateTo: Selector('[name="has_date_to"]'),
@@ -248,17 +250,42 @@ class CreateMovePage extends Page {
 
   /**
    * Fill in date
+   *
+   * @param {'Today'|'Tomorrow'|{string}|{number}} dateValue - type of date
+   * Any string other than 'Today' or 'Tomorrow' is treated as 'Another date'
+   * and used as is for the date_custom field. If passed as a number, sets
+   * date_custom to current date plus that number of days
+   * @returns {Promise<FormDetails>} - filled in move details
    */
-  async fillInDate() {
+  async fillInDate(dateValue = 'Today') {
     await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-date`)
+    let dateCustom
 
-    return fillInForm({
+    let dateType = dateValue
+    if (dateType !== 'Today' && dateType !== 'Tomorrow') {
+      dateType = 'Another date'
+
+      dateCustom = dateValue
+      if (typeof dateCustom === 'number') {
+        dateCustom = format(addDays(new Date(), dateCustom), 'iiii d MMM yyyy')
+      }
+    }
+
+    const data = {
       dateType: {
         selector: this.fields.dateType,
-        value: 'Today',
+        value: dateType,
         type: 'radio',
       },
-    })
+    }
+    if (dateCustom) {
+      data.dateCustom = {
+        selector: this.fields.dateCustom,
+        value: dateCustom,
+      }
+    }
+
+    return fillInForm(data)
   }
 
   /**

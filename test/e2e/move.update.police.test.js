@@ -10,6 +10,7 @@ import {
   checkUpdateHealthInformation,
   checkUpdateCourtInformation,
   checkUpdateMoveDetails,
+  checkUpdateMoveDate,
 } from './_move'
 
 if (FEATURE_FLAGS.EDITABILITY) {
@@ -92,4 +93,12 @@ if (FEATURE_FLAGS.EDITABILITY) {
       await checkUpdateMoveDetails()
     }
   )
+
+  test('User should be able to change move date to tomorrow', async () => {
+    await checkUpdateMoveDate()
+  })
+
+  test('User should be able to change move date to another date', async () => {
+    await checkUpdateMoveDate(3)
+  })
 }
