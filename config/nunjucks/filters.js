@@ -55,7 +55,7 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
  * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
  */
-function formatDateRange(value) {
+function formatDateRange(value, delimiter = 'to') {
   const dates = filter(value)
 
   if (!value || !Array.isArray(value) || dates.length === 0) {
@@ -78,7 +78,7 @@ function formatDateRange(value) {
   )
   const formattedEndDate = formatDate(endDate)
 
-  return `${formattedStartDate} to ${formattedEndDate}`
+  return `${formattedStartDate} ${delimiter} ${formattedEndDate}`
 }
 
 /**
