@@ -73,6 +73,14 @@ aliases:
     filters:
       tags:
         only: /.*/
+  - &only_master
+    filters:
+      branches:
+        only: master
+  - &ignore_master
+    filters:
+      branches:
+        ignore: master
   - &only_master_and_tags
     filters:
       tags:
@@ -141,12 +149,24 @@ jobs:
 
   end-to-end-test:
     <<: *circle_container
+    parameters:
+      use_review_app:
+        type: string
+        default: ""
     steps:
       - checkout
       - *set_package_version
       - *restore_cache
       - *install_dependencies
       - *save_cache
+      - when:
+          condition: <<parameters.use_review_app>>
+          steps:
+            - run:
+                name: Set Heroku Review Apps URL for Pull Requests
+                command: |
+                  echo "export E2E_BASE_URL=$(sh .circleci/get-review-app-url.sh)" >> $BASH_ENV
+                no_output_timeout: 180s
       - run:
           name: Run E2E tests
           command: npm run test-e2e:ci
@@ -277,36 +297,44 @@ workflows:
       - lint-and-unit-test:
           <<: *all_tags
       - end-to-end-test:
-          <<: *only_master_and_tags
+          <<: *ignore_master
+          name: end-to-end-test-pr
+          use_review_app: 'true'
+      - end-to-end-test:
+          <<: *only_master
+          name: end-to-end-test-master
           requires:
             - deploy-staging
+      - end-to-end-test:
+          <<: *only_deploy_tags
+          name: end-to-end-test-release
+          requires:
+            - deploy-preproduction
       # Docker builds
       - build-docker-image:
-          <<: *only_master_and_tags
+          <<: *only_master
+          name: build-docker-image-master
           staging: 'true'
-          preprod: 'true'
       - build-docker-image:
           <<: *only_deploy_tags
-          name: build-docker-image-production
-          staging: 'true'
+          name: build-docker-image-release
           preprod: 'true'
           production: 'true'
       # Deployment
       - deploy:
-          <<: *only_master_and_tags
+          <<: *only_master
           name: deploy-staging
           env: 'staging'
           requires:
-            - build-docker-image
+            - build-docker-image-master
             - lint-and-unit-test
       - deploy:
-          <<: *only_master_and_tags
+          <<: *only_deploy_tags
           name: deploy-preproduction
           env: 'preprod'
           requires:
-            - build-docker-image
+            - build-docker-image-release
             - lint-and-unit-test
-            - end-to-end-test
       - deploy:
           <<: *only_deploy_tags
           <<: *requires_production_approval
@@ -318,15 +346,11 @@ workflows:
           <<: *only_deploy_tags
           type: approval
           requires:
-            - lint-and-unit-test
-            - end-to-end-test
-            - build-docker-image-production
+            - end-to-end-test-release
       - notify-of-approval:
           <<: *only_deploy_tags
           requires:
-            - lint-and-unit-test
-            - end-to-end-test
-            - build-docker-image-production
+            - end-to-end-test-release
       # Post release
       - publish-release-to-github:
           <<: *only_deploy_tags
