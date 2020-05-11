@@ -87,7 +87,7 @@ aliases:
         ignore: /.*/
   - &requires_production_approval
     requires:
-    - production_approval
+      - approval
 
 jobs:
   notify-of-approval:
@@ -97,7 +97,7 @@ jobs:
       - *set_package_version
       - *notify_slack_of_approval
 
-  build_and_test:
+  lint-and-unit-test:
     <<: *circle_container
     steps:
       - checkout
@@ -139,7 +139,7 @@ jobs:
           path: coverage
       - *notify_slack_on_failure
 
-  e2e_test:
+  end-to-end-test:
     <<: *circle_container
     steps:
       - checkout
@@ -156,7 +156,7 @@ jobs:
           path: artifacts
       - *notify_slack_on_failure
 
-  publish_release_to_github:
+  publish-release-to-github:
     <<: *circle_container
     steps:
       - checkout
@@ -271,56 +271,63 @@ jobs:
             - *notify_slack_on_release_end
 
 workflows:
-  frontend:
+  continuous-deployment:
     jobs:
-      - build_and_test:
+      # Tests
+      - lint-and-unit-test:
           <<: *all_tags
+      - end-to-end-test:
+          <<: *only_master_and_tags
+          requires:
+            - deploy-staging
+      # Docker builds
       - build-docker-image:
           <<: *only_master_and_tags
           staging: 'true'
           preprod: 'true'
-          requires:
-          - build_and_test
-      - deploy:
-          <<: *only_master_and_tags
-          name: deploy-staging
-          env: 'staging'
-          requires:
-            - build-docker-image
-            - build_and_test
-      - deploy:
-          <<: *only_master_and_tags
-          name: deploy-preproduction
-          env: 'preprod'
-          requires:
-            - build-docker-image
-            - build_and_test
-            - e2e_test
-      - e2e_test:
-          <<: *only_master_and_tags
-          requires:
-          - deploy_staging
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-production
           staging: 'true'
           preprod: 'true'
           production: 'true'
-      - production_approval:
-          <<: *only_deploy_tags
-          type: approval
+      # Deployment
+      - deploy:
+          <<: *only_master_and_tags
+          name: deploy-staging
+          env: 'staging'
           requires:
-          - e2e_test
-      - notify-of-approval:
-          <<: *only_deploy_tags
+            - build-docker-image
+            - lint-and-unit-test
+      - deploy:
+          <<: *only_master_and_tags
+          name: deploy-preproduction
+          env: 'preprod'
           requires:
-          - e2e_test
-      - publish_release_to_github:
-          <<: *only_deploy_tags
-          <<: *requires_production_approval
+            - build-docker-image
+            - lint-and-unit-test
+            - end-to-end-test
       - deploy:
           <<: *only_deploy_tags
           <<: *requires_production_approval
           name: deploy-production
           env: 'production'
           notify_slack: 'true'
+      # Production approval
+      - approval:
+          <<: *only_deploy_tags
+          type: approval
+          requires:
+            - lint-and-unit-test
+            - end-to-end-test
+            - build-docker-image-production
+      - notify-of-approval:
+          <<: *only_deploy_tags
+          requires:
+            - lint-and-unit-test
+            - end-to-end-test
+            - build-docker-image-production
+      # Post release
+      - publish-release-to-github:
+          <<: *only_deploy_tags
+          <<: *requires_production_approval
