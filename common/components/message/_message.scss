@@ -113,3 +113,17 @@ $_message-border-width: 5px;
     color: govuk-colour("white");
   }
 }
+
+.app-message--instruction {
+  background-color: govuk-tint(govuk-colour("light-blue"), 75);
+  border-width: 0;
+  padding: $_message-padding + $_message-border-width;
+
+  .app-message__heading + * {
+    margin-top: govuk-spacing(4);
+  }
+
+  * + * {
+    margin-top: govuk-spacing(3);
+  }
+}

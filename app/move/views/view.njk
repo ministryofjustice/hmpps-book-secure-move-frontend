@@ -37,11 +37,35 @@
       }
     }) }}
   {% endif %}
+
+  {% if move.status == "proposed" %}
+    {% set html %}
+      <p>{{ t("messages::pending_review.content") }}</p>
+
+      {% if canAccess("move:review") %}
+        {{ govukButton({
+          href: move.id + "/review",
+          text: t("actions::review")
+        }) }}
+      {% endif %}
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction",
+      title: {
+        text: t("messages::pending_review.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block contentHeader %}
   <header class="govuk-!-margin-bottom-8">
-    {% if not messageTitle %}
+    {% if not messageTitle and move.status != "proposed" %}
       <div class="govuk-!-margin-bottom-2">
         {{ mojBadge({
           text: t("statuses::" + move.status)
