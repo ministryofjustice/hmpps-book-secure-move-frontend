@@ -28,14 +28,59 @@ aliases:
       key: dependency-cache-{{ checksum "package.json" }}
       paths:
         - ./node_modules
-  - &notify_slack
+  - &set_package_version
+    run:
+      name: Set version
+      command: |
+        echo "export PACKAGE_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')" >> $BASH_ENV
+  - &notify_slack_on_failure
     slack/notify-on-failure:
       only_for_branches: master
+  - &notify_slack_on_release_start
+    slack/notify:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      title: 'Frontend v${PACKAGE_VERSION} is being prepared for release :building_construction:'
+      title_link: 'https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md'
+      message: A new release was created by ${CIRCLE_USERNAME}
+      footer: Click the title to view the changes
+      include_project_field: false
+      include_job_number_field: false
+      include_visit_job_action: false
+      color: '#1d70b8'
+      mentions: here
+  - &notify_slack_of_approval
+    slack/approval:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      message: 'Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:'
+      include_project_field: false
+      include_job_number_field: false
+      color: '#912b88'
+      mentions: $BUILD_NOTIFICATIONS_MENTION_ID
+  - &notify_slack_on_release_end
+    slack/notify:
+      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
+      title: 'Frontend v${PACKAGE_VERSION} has been deployed :rocket:'
+      title_link: https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}
+      message: This release was successfully deployed to production
+      footer: Click the title to view the release notes
+      include_project_field: false
+      include_job_number_field: false
+      include_visit_job_action: false
+      color: '#28a197'
+      mentions: here
   # Common filters
   - &all_tags
     filters:
       tags:
         only: /.*/
+  - &only_master
+    filters:
+      branches:
+        only: master
+  - &ignore_master
+    filters:
+      branches:
+        ignore: master
   - &only_master_and_tags
     filters:
       tags:
@@ -50,80 +95,21 @@ aliases:
         ignore: /.*/
   - &requires_production_approval
     requires:
-    - production_approval
-
-commands:
-  build_for_k8s:
-    description: 'Builds a Docker image for staging/production and pushes to ECR'
-    parameters:
-      env:
-        type: string
-    steps:
-      - checkout
-
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      - run:
-          name: build docker image
-          command: |
-            export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            source $BASH_ENV
-
-            docker build \
-              --label build.git.sha=${CIRCLE_SHA1} \
-              --label build.git.branch=${CIRCLE_BRANCH} \
-              --label build.date=${BUILD_DATE} \
-              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
-              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
-              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
-              -t app .
-
-      - run:
-          name: push docker image
-          command: |
-            login="$(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)"
-            ${login}
-
-            docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-
-            docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:<< parameters.env >>.latest"
-            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:<< parameters.env >>.latest"
-
-  deploy_to_k8s:
-    description: 'Deploys a previously built Docker image to staging/production k8s environment'
-    parameters:
-      env:
-        type: string
-    steps:
-      - checkout
-
-      - run:
-          name: kubectl use context
-          command: |
-            setup-kube-auth
-            kubectl config use-context << parameters.env >>
-
-      - deploy:
-          name: rolling update image to << parameters.env >>
-          command: |
-            export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            source $BASH_ENV
-
-            kubectl set image -n hmpps-book-secure-move-frontend-<< parameters.env >> \
-                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
-                    webapp="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-
-            kubectl annotate -n hmpps-book-secure-move-frontend-<< parameters.env >> \
-                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
-                    kubernetes.io/change-cause="${BUILD_DATE} set image ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} via CircleCI"
+      - approval
 
 jobs:
-  build_and_test:
+  notify-of-approval:
     <<: *circle_container
     steps:
       - checkout
+      - *set_package_version
+      - *notify_slack_of_approval
+
+  lint-and-unit-test:
+    <<: *circle_container
+    steps:
+      - checkout
+      - *set_package_version
       - *restore_cache
       - *install_dependencies
       - *save_cache
@@ -159,15 +145,28 @@ jobs:
           path: reports
       - store_artifacts:
           path: coverage
-      - *notify_slack
+      - *notify_slack_on_failure
 
-  e2e_test:
+  end-to-end-test:
     <<: *circle_container
+    parameters:
+      use_review_app:
+        type: string
+        default: ""
     steps:
       - checkout
+      - *set_package_version
       - *restore_cache
       - *install_dependencies
       - *save_cache
+      - when:
+          condition: <<parameters.use_review_app>>
+          steps:
+            - run:
+                name: Set Heroku Review Apps URL for Pull Requests
+                command: |
+                  echo "export E2E_BASE_URL=$(sh .circleci/get-review-app-url.sh)" >> $BASH_ENV
+                no_output_timeout: 180s
       - run:
           name: Run E2E tests
           command: npm run test-e2e:ci
@@ -175,9 +174,9 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
-      - *notify_slack
+      - *notify_slack_on_failure
 
-  publish_release_to_github:
+  publish-release-to-github:
     <<: *circle_container
     steps:
       - checkout
@@ -188,79 +187,171 @@ jobs:
           name: Publish release to GitHub
           command: npm run release:github
 
-  build_staging:
+  build-docker-image:
     <<: *cloud_container
+    parameters:
+      staging:
+        type: string
+        default: ""
+      preprod:
+        type: string
+        default: ""
+      production:
+        type: string
+        default: ""
     steps:
-      - build_for_k8s:
-          env: 'staging'
+      - checkout
+      - *set_package_version
+      - when:
+          condition: <<parameters.production>>
+          steps:
+            - *notify_slack_on_release_start
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build docker image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
 
-  deploy_staging:
-    <<: *cloud_container
-    steps:
-      - deploy_to_k8s:
-          env: 'staging'
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              -t app .
+      - run:
+          name: Login to ECR
+          command: |
+            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
+      - run:
+          name: Push docker image to ECR
+          command: |
+            docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
+            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
+      - when:
+          condition: <<parameters.staging>>
+          steps:
+            - run:
+                name: Push staging docker image to ECR
+                command: |
+                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
+                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
+      - when:
+          condition: <<parameters.preprod>>
+          steps:
+            - run:
+                name: Push preproduction docker image to ECR
+                command: |
+                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:preprod.latest"
+                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:preprod.latest"
+      - when:
+          condition: <<parameters.production>>
+          steps:
+            - run:
+                name: Push production docker image to ECR
+                command: |
+                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:production.latest"
+                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:production.latest"
 
-  build_preprod:
+  deploy:
     <<: *cloud_container
+    parameters:
+      env:
+        type: string
+      notify_slack:
+        type: string
+        default: ""
     steps:
-      - build_for_k8s:
-          env: 'preprod'
+      - checkout
+      - *set_package_version
+      - run:
+          name: Set k8s context
+          command: |
+            setup-kube-auth
+            kubectl config use-context << parameters.env >>
+      - deploy:
+          name: Deploy image to << parameters.env >>
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
 
-  deploy_preprod:
-    <<: *cloud_container
-    steps:
-      - deploy_to_k8s:
-          env: 'preprod'
+            kubectl set image -n hmpps-book-secure-move-frontend-<< parameters.env >> \
+                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
+                    webapp="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
 
-  build_production:
-    <<: *cloud_container
-    steps:
-      - build_for_k8s:
-          env: 'production'
-
-  deploy_production:
-    <<: *cloud_container
-    steps:
-      - deploy_to_k8s:
-          env: 'production'
+            kubectl annotate -n hmpps-book-secure-move-frontend-<< parameters.env >> \
+                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
+                    kubernetes.io/change-cause="${BUILD_DATE} set image ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} via CircleCI"
+      - when:
+          condition: <<parameters.notify_slack>>
+          steps:
+            - *notify_slack_on_release_end
 
 workflows:
-  pecs-frontend:
+  continuous-deployment:
     jobs:
-      - build_and_test:
+      # Tests
+      - lint-and-unit-test:
           <<: *all_tags
-      - build_staging:
-          <<: *only_master_and_tags
-      - build_preprod:
-          <<: *only_master_and_tags
+      - end-to-end-test:
+          <<: *ignore_master
+          name: end-to-end-test-pr
+          use_review_app: 'true'
+      - end-to-end-test:
+          <<: *only_master
+          name: end-to-end-test-master
           requires:
-          - build_and_test
-      - deploy_staging:
-          <<: *only_master_and_tags
-          requires:
-          - build_and_test
-          - build_staging
-      - deploy_preprod:
-          <<: *only_master_and_tags
-          requires:
-          - build_preprod
-          - e2e_test
-      - e2e_test:
-          <<: *only_master_and_tags
-          requires:
-          - deploy_staging
-      - build_production:
+            - deploy-staging
+      - end-to-end-test:
           <<: *only_deploy_tags
+          name: end-to-end-test-release
           requires:
-          - build_and_test
-      - production_approval:
+            - deploy-preproduction
+      # Docker builds
+      - build-docker-image:
+          <<: *only_master
+          name: build-docker-image-master
+          staging: 'true'
+      - build-docker-image:
+          <<: *only_deploy_tags
+          name: build-docker-image-release
+          preprod: 'true'
+          production: 'true'
+      # Deployment
+      - deploy:
+          <<: *only_master
+          name: deploy-staging
+          env: 'staging'
+          requires:
+            - build-docker-image-master
+            - lint-and-unit-test
+      - deploy:
+          <<: *only_deploy_tags
+          name: deploy-preproduction
+          env: 'preprod'
+          requires:
+            - build-docker-image-release
+            - lint-and-unit-test
+      - deploy:
+          <<: *only_deploy_tags
+          <<: *requires_production_approval
+          name: deploy-production
+          env: 'production'
+          notify_slack: 'true'
+      # Production approval
+      - approval:
           <<: *only_deploy_tags
           type: approval
           requires:
-          - e2e_test
-      - publish_release_to_github:
+            - end-to-end-test-release
+      - notify-of-approval:
           <<: *only_deploy_tags
-          <<: *requires_production_approval
-      - deploy_production:
+          requires:
+            - end-to-end-test-release
+      # Post release
+      - publish-release-to-github:
           <<: *only_deploy_tags
           <<: *requires_production_approval
