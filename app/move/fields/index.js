@@ -30,16 +30,17 @@ const people = require('./people')
 const policeNationalComputer = require('./police-national-computer')
 const policeNationalComputerUpdate = require('./police-national-computer.update')
 const prisonTransferType = require('./prison-transfer-type')
+const reviewFields = require('./review')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
 
-const cancel = {
+const cancelFields = {
   cancellation_reason: cancellationReason,
   cancellation_reason_comment: cancellationReasonComment,
 }
-const create = {
+const createFields = {
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
   court_hearing__court_case: courtHearingCourtCase,
@@ -102,13 +103,14 @@ const create = {
   wheelchair: assessmentAnswer(),
   violent: assessmentAnswer(),
 }
-const update = {
-  ...cloneDeep(create),
+const updateFields = {
+  ...cloneDeep(cancelFields),
   police_national_computer: policeNationalComputerUpdate,
 }
 
 module.exports = {
-  cancel,
-  create,
-  update,
+  cancelFields,
+  createFields,
+  reviewFields,
+  updateFields,
 }

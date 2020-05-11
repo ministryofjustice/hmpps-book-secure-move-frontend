@@ -1,7 +1,7 @@
 const { isToday, isTomorrow, isYesterday, parseISO } = require('date-fns')
 const { get } = require('lodash')
 
-const { create: createFields } = require('../../app/move/fields')
+const moveAgreedField = require('../../app/move/fields/move-agreed')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -59,8 +59,7 @@ function moveToMetaListComponent(
   })
   const notAgreedLabel = i18n.t('moves::detail.agreement_status.not_agreed')
   const agreementLabel =
-    moveAgreed === true ||
-    moveAgreed === createFields.move_agreed.items[0].value
+    moveAgreed === true || moveAgreed === moveAgreedField.items[0].value
       ? agreedLabel
       : notAgreedLabel
 
