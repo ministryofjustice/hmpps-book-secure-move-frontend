@@ -30,6 +30,10 @@ describe('Moves controllers', function() {
           date: '2018-10-10',
           period: 'week',
         },
+        results: {
+          active: activeMovesStub,
+          cancelled: cancelledMovesStub,
+        },
         t: sinon.stub().returnsArg(0),
       }
       res = {
@@ -38,8 +42,6 @@ describe('Moves controllers', function() {
         setHeader: sinon.stub(),
         locals: {
           dateRange: mockDateRange,
-          activeMovesByDate: activeMovesStub,
-          cancelledMovesByDate: cancelledMovesStub,
         },
       }
       nextSpy = sinon.spy()

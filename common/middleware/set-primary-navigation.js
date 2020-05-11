@@ -6,7 +6,7 @@ const permissions = require('./permissions')
 const baseRegex =
   '^\\/moves\\/(day|week)(\\/\\d{4}-\\d{2}-\\d{2})(\\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})?'
 const homeRegex = new RegExp(`${baseRegex}$`)
-const proposedRegex = new RegExp(`${baseRegex}\\/(pending|accepted|rejected)$`)
+const proposedRegex = new RegExp(`${baseRegex}\\/(pending|approved|rejected)$`)
 const outgoingRegex = new RegExp(`${baseRegex}\\/outgoing$`)
 
 function setPrimaryNavigation(req, res, next) {

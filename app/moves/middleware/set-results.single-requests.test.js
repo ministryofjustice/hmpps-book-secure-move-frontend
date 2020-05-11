@@ -1,15 +1,24 @@
+const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
 
-const middleware = require('./set-moves-by-date-range-and-status')
+const middleware = require('./set-results.single-requests')
+
+const mockActiveMoves = [
+  { id: '1', foo: 'bar', status: 'requested' },
+  { id: '2', fizz: 'buzz', status: 'requested' },
+  { id: '3', foo: 'bar', status: 'completed' },
+  { id: '4', fizz: 'buzz', status: 'completed' },
+]
 
 describe('Moves middleware', function() {
-  describe('#setMovesByDateRangeAndStatus()', function() {
+  describe('#setResultsSingleRequests()', function() {
     let res
     let req
     let next
 
     beforeEach(function() {
       sinon.stub(singleRequestService, 'getAll')
+      sinon.stub(presenters, 'movesToTable').returnsArg(0)
       next = sinon.stub()
       res = {
         locals: {
@@ -33,7 +42,12 @@ describe('Moves middleware', function() {
         expect(singleRequestService.getAll).not.to.have.been.called
       })
 
-      it('returns next', function() {
+      it('should not request properties', function() {
+        expect(req).not.to.have.property('results')
+        expect(req).not.to.have.property('resultsAsTable')
+      })
+
+      it('should call next', function() {
         expect(next).to.have.been.calledOnceWithExactly()
       })
     })
@@ -45,11 +59,11 @@ describe('Moves middleware', function() {
 
       context('when service resolves', function() {
         beforeEach(async function() {
-          singleRequestService.getAll.resolves({})
+          singleRequestService.getAll.resolves(mockActiveMoves)
           await middleware(req, res, next)
         })
 
-        it('interrogates the data service', function() {
+        it('should call the data service', function() {
           expect(
             singleRequestService.getAll
           ).to.have.been.calledOnceWithExactly({
@@ -57,6 +71,28 @@ describe('Moves middleware', function() {
             createdAtDate: ['2019-01-01', '2019-01-07'],
             fromLocationId: '123',
           })
+        })
+
+        it('should set results on req', function() {
+          expect(req).to.have.property('results')
+          expect(req.results).to.deep.equal({
+            active: mockActiveMoves,
+            cancelled: [],
+          })
+        })
+
+        it('should set resultsAsTable on req', function() {
+          expect(req).to.have.property('resultsAsTable')
+          expect(req.resultsAsTable).to.deep.equal({
+            active: mockActiveMoves,
+            cancelled: [],
+          })
+        })
+
+        it('should call movesToTable presenter', function() {
+          expect(presenters.movesToTable).to.be.calledOnceWithExactly(
+            mockActiveMoves
+          )
         })
 
         it('should call next', function() {
@@ -70,6 +106,11 @@ describe('Moves middleware', function() {
         beforeEach(async function() {
           singleRequestService.getAll.rejects(mockError)
           await middleware(req, res, next)
+        })
+
+        it('should not request properties', function() {
+          expect(req).not.to.have.property('results')
+          expect(req).not.to.have.property('resultsAsTable')
         })
 
         it('should call next with error', function() {

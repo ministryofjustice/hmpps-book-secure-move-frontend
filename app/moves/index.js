@@ -5,16 +5,20 @@ const router = require('express').Router()
 const { setDateRange, setDatePeriod } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { dashboard, download, list, listByStatus } = require('./controllers')
+const {
+  dashboard,
+  download,
+  listAsCards,
+  listAsTable,
+} = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
   setFromLocation,
-  setMoveTypeNavigation,
+  setFilterSingleRequests,
   setPagination,
-  setMovesByDateAndLocation,
-  setMovesByDateRangeAndStatus,
-  setMovesByDateAllLocations,
+  setResultsSingleRequests,
+  setResultsOutgoing,
   setDashboardMoveSummary,
 } = require('./middleware')
 
@@ -34,14 +38,14 @@ router.get('/', redirectBaseUrl)
 router.get(
   '/:period(week|day)/:date/:view(outgoing)',
   protectRoute('moves:view:all'),
-  setMovesByDateAllLocations,
+  setResultsOutgoing,
   setPagination,
-  list
+  listAsCards
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:proposed'),
-  setMoveTypeNavigation,
+  setFilterSingleRequests,
   setDashboardMoveSummary,
   setPagination,
   dashboard
@@ -49,29 +53,36 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
   protectRoute('moves:view:outgoing'),
-  setMovesByDateAndLocation,
+  setResultsOutgoing,
   setPagination,
-  list
+  listAsCards
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
   protectRoute('moves:view:proposed'),
-  setMoveTypeNavigation,
-  setMovesByDateRangeAndStatus,
+  setFilterSingleRequests,
+  setResultsSingleRequests,
   setPagination,
-  listByStatus
+  listAsTable
+)
+router.get(
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)/download.:extension(csv|json)`,
+  protectRoute('moves:download'),
+  protectRoute('moves:view:proposed'),
+  setResultsSingleRequests,
+  download
 )
 router.get(
   '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:all'),
-  setMovesByDateAllLocations,
+  setResultsOutgoing,
   download
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
   protectRoute('moves:download'),
-  setMovesByDateAndLocation,
+  setResultsOutgoing,
   download
 )
 // Export

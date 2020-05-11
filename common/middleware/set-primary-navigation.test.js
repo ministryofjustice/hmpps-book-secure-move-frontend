@@ -106,7 +106,7 @@ describe('#setPrimaryNavigation()', function() {
           })
         })
 
-        const statuses = ['pending', 'accepted', 'rejected']
+        const statuses = ['pending', 'approved', 'rejected']
         statuses.forEach(status => {
           context(`on ${status} page`, function() {
             beforeEach(function() {

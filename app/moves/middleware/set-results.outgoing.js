@@ -1,5 +1,6 @@
 const { chunk, get } = require('lodash')
 
+const presenters = require('../../../common/presenters')
 const moveService = require('../../../common/services/move')
 const { LOCATIONS_BATCH_SIZE } = require('../../../config')
 
@@ -11,23 +12,24 @@ function makeMultipleRequests(service, dateRange, locationIdBatches) {
   )
 }
 
-async function setMovesByDateAllLocations(req, res, next) {
+async function setResultsOutgoing(req, res, next) {
   const { dateRange } = res.locals
+  const { locationId } = req.params
 
   if (!dateRange) {
     return next()
   }
 
   try {
-    const userLocations = get(req.session, 'user.locations', []).map(
-      location => location.id
-    )
+    const locations = locationId
+      ? [locationId]
+      : get(req.session, 'user.locations', []).map(location => location.id)
 
-    if (userLocations.length === 0) {
+    if (locations.length === 0) {
       return next()
     }
 
-    const idChunks = chunk(userLocations, LOCATIONS_BATCH_SIZE).map(id =>
+    const idChunks = chunk(locations, LOCATIONS_BATCH_SIZE).map(id =>
       id.join(',')
     )
 
@@ -38,12 +40,25 @@ async function setMovesByDateAllLocations(req, res, next) {
       ])
     ).map(response => response.flat())
 
-    res.locals.activeMovesByDate = activeMoves
-    res.locals.cancelledMovesByDate = cancelledMoves
+    req.results = {
+      active: activeMoves,
+      cancelled: cancelledMoves,
+    }
+    req.resultsAsCards = {
+      active: presenters.movesByToLocation(activeMoves),
+      cancelled: cancelledMoves.map(
+        presenters.moveToCardComponent({
+          showMeta: false,
+          showTags: false,
+          showImage: false,
+        })
+      ),
+    }
+
     next()
   } catch (error) {
     next(error)
   }
 }
 
-module.exports = setMovesByDateAllLocations
+module.exports = setResultsOutgoing

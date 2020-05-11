@@ -1,10 +1,10 @@
 const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
 
-const middleware = require('./set-move-type-navigation')
+const middleware = require('./set-filter.single-requests')
 
 describe('Moves middleware', function() {
-  describe('#setMoveTypeNavigation()', function() {
+  describe('#setfilterSingleRequests()', function() {
     let next
     let req
     let res
@@ -35,33 +35,30 @@ describe('Moves middleware', function() {
         await middleware(req, res, next)
       })
 
-      it('sets res.locals.moveTypeNavigation', function() {
-        expect(res.locals).to.deep.equal({
-          dateRange: ['2010-09-03', '2010-09-10'],
-          moveTypeNavigation: [
-            {
-              active: true,
-              filter: 'pending',
-              label: 'statuses::pending',
-              href: '/moves/week/2010-09-07/123/pending',
-              value: 4,
-            },
-            {
-              active: false,
-              filter: 'approved',
-              label: 'statuses::approved',
-              href: '/moves/week/2010-09-07/123/approved',
-              value: 4,
-            },
-            {
-              active: false,
-              filter: 'rejected',
-              label: 'statuses::rejected',
-              href: '/moves/week/2010-09-07/123/rejected',
-              value: 4,
-            },
-          ],
-        })
+      it('sets req.filter', function() {
+        expect(req.filter).to.deep.equal([
+          {
+            active: true,
+            status: 'pending',
+            label: 'statuses::pending',
+            href: '/moves/week/2010-09-07/123/pending',
+            value: 4,
+          },
+          {
+            active: false,
+            status: 'approved',
+            label: 'statuses::approved',
+            href: '/moves/week/2010-09-07/123/approved',
+            value: 4,
+          },
+          {
+            active: false,
+            status: 'rejected',
+            label: 'statuses::rejected',
+            href: '/moves/week/2010-09-07/123/rejected',
+            value: 4,
+          },
+        ])
       })
 
       it('calls the servive with correct arguments', async function() {

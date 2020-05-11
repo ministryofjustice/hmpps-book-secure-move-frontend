@@ -1,5 +1,7 @@
 {
-  "pending": "pending review",
+  "pending": "Pending review",
+  "approved": "Approved",
+  "rejected": "Rejected",
   "proposed": "Move pending review",
   "requested": "Move requested",
   "accepted": "Move accepted",

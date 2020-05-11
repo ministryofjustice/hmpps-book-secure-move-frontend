@@ -232,10 +232,10 @@ describe('Single request service', function() {
           })
         })
 
-        context('with accepted status', function() {
+        context('with approved status', function() {
           beforeEach(async function() {
             moves = await singleRequestService.getAll({
-              status: 'accepted',
+              status: 'approved',
             })
           })
 

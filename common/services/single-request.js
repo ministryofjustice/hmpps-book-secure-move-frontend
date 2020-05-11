@@ -23,7 +23,7 @@ const singleRequestService = {
           'filter[status]': 'proposed',
         }
         break
-      case 'accepted':
+      case 'approved':
         statusFilter = {
           'filter[status]': 'requested,accepted,completed',
         }

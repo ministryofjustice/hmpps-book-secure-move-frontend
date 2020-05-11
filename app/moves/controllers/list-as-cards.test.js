@@ -1,7 +1,6 @@
 const permissions = require('../../../common/middleware/permissions')
-const presenters = require('../../../common/presenters')
 
-const controller = require('./list')
+const controller = require('./list-as-cards')
 
 const mockActiveMovesByDate = [
   { foo: 'bar', status: 'requested' },
@@ -13,16 +12,17 @@ const mockCancelledMovesByDate = [
 ]
 
 describe('Moves controllers', function() {
-  describe('#list()', function() {
-    let req, res, moveToCardComponentMapStub
+  describe('#listAsCards()', function() {
+    let req, res
 
     beforeEach(function() {
-      moveToCardComponentMapStub = sinon.stub().returnsArg(0)
-      sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
-      sinon
-        .stub(presenters, 'moveToCardComponent')
-        .callsFake(() => moveToCardComponentMapStub)
-      req = {}
+      req = {
+        params: {},
+        resultsAsCards: {
+          active: mockActiveMovesByDate,
+          cancelled: mockCancelledMovesByDate,
+        },
+      }
       res = {
         locals: {},
         render: sinon.spy(),
@@ -30,56 +30,20 @@ describe('Moves controllers', function() {
     })
 
     describe('template params', function() {
-      context('with moves', function() {
-        beforeEach(function() {
-          res.locals.activeMovesByDate = mockActiveMovesByDate
-          res.locals.cancelledMovesByDate = mockCancelledMovesByDate
-
-          controller(req, res)
-        })
-
-        it('should contain a page title', function() {
-          expect(res.render.args[0][1]).to.have.property('pageTitle')
-        })
-
-        it('should call movesByToLocation presenter', function() {
-          expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
-            mockActiveMovesByDate
-          )
-        })
-
-        it('should call moveToCardComponent presenter', function() {
-          expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
-            showMeta: false,
-            showTags: false,
-            showImage: false,
-          })
-          expect(moveToCardComponentMapStub).to.be.calledTwice
-        })
-
-        it('should contain destinations property', function() {
-          const params = res.render.args[0][1]
-          expect(params).to.have.property('destinations')
-          expect(params.destinations).to.deep.equal(mockActiveMovesByDate)
-        })
+      beforeEach(function() {
+        controller(req, res)
       })
 
-      context('without moves', function() {
-        beforeEach(function() {
-          controller(req, res)
-        })
+      it('should contain a page title', function() {
+        expect(res.render.args[0][1]).to.have.property('pageTitle')
+      })
 
-        it('should call movesByToLocation presenter', function() {
-          expect(presenters.movesByToLocation).to.be.calledOnceWithExactly([])
-        })
-
-        it('should call moveToCardComponent presenter', function() {
-          expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
-            showMeta: false,
-            showTags: false,
-            showImage: false,
-          })
-          expect(moveToCardComponentMapStub).not.to.be.called
+      it('should contain resultsAsCards property', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('resultsAsCards')
+        expect(params.resultsAsCards).to.deep.equal({
+          active: mockActiveMovesByDate,
+          cancelled: mockCancelledMovesByDate,
         })
       })
     })
@@ -98,8 +62,8 @@ describe('Moves controllers', function() {
                 permissions: ['move:view'],
               },
             }
-            res.locals = {
-              fromLocationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
+            req.params = {
+              locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
             }
             permissions.check.withArgs('move:view', ['move:view']).returns(true)
 
