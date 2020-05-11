@@ -73,7 +73,7 @@ describe('#allocationsToTable', function() {
   let output
   beforeEach(function() {
     sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => {
-      return { html: arg.head }
+      return { text: arg.head }
     })
     output = presenter([])
   })
@@ -92,7 +92,7 @@ describe('#allocationsToTable', function() {
     })
     it('returns the total moves count on the first cell', function() {
       expect(output.rowsForAllocationTable[0][0]).to.deep.equal({
-        html: 3,
+        text: 3,
         attributes: {
           scope: 'row',
         },
@@ -100,22 +100,22 @@ describe('#allocationsToTable', function() {
     })
     it('returns the created date on the second cell', function() {
       expect(output.rowsForAllocationTable[0][1]).to.deep.equal({
-        html: '20 Apr 2020',
+        text: '20 Apr 2020',
       })
     })
     it('returns location_from on the third cell', function() {
       expect(output.rowsForAllocationTable[0][2]).to.deep.equal({
-        html: 'HOLME HOUSE (HMP)',
+        text: 'HOLME HOUSE (HMP)',
       })
     })
     it('returns location_to on the fourth cell', function() {
       expect(output.rowsForAllocationTable[0][3]).to.deep.equal({
-        html: 'HMP Ashfield',
+        text: 'HMP Ashfield',
       })
     })
     it('returns move date on the fifth cell', function() {
       expect(output.rowsForAllocationTable[0][4]).to.deep.equal({
-        html: '3 May 2020',
+        text: '3 May 2020',
       })
     })
     xit('returns progress on the sixth cell', function() {
@@ -125,22 +125,22 @@ describe('#allocationsToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.headerForAllocationTable).to.deep.equal([
         {
-          html: 'allocations::move_size',
+          text: 'allocations::move_size',
         },
         {
-          html: 'allocations::requested',
+          text: 'allocations::requested',
         },
         {
-          html: 'allocations::move_from',
+          text: 'allocations::move_from',
         },
         {
-          html: 'allocations::move_to',
+          text: 'allocations::move_to',
         },
         {
-          html: 'date',
+          text: 'date',
         },
         {
-          html: 'allocations::progress',
+          text: 'allocations::progress',
         },
       ])
     })

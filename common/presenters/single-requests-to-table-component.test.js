@@ -1,9 +1,8 @@
 const proxyquire = require('proxyquire')
 
-const componentService = require('../../common/services/component')
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
-
-const tablePresenters = require('./table')
+const componentService = require('../services/component')
 
 const mockMoves = [
   {
@@ -102,34 +101,36 @@ const moveToCardComponentOptsStub = sinon
   .stub()
   .callsFake(() => moveToCardComponentStub)
 
-const presenter = proxyquire('./moves-to-table', {
+const presenter = proxyquire('./single-requests-to-table-component', {
   './move-to-card-component': moveToCardComponentOptsStub,
 })
 
-describe('#movesToTable', function() {
+describe('#singleRequestsToTableComponent()', function() {
   let output
+
   beforeEach(function() {
-    sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => {
-      return { html: arg.head }
-    })
+    sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(filters, 'formatDate').returnsArg(0)
     sinon.stub(filters, 'formatDateRange').returnsArg(0)
     sinon.stub(componentService, 'getComponent').returnsArg(0)
     output = presenter([])
   })
+
   it('returns an object with heads', function() {
     expect(output.head).to.exist
     expect(output.head).to.be.an('array')
   })
+
   it('returns an object with moves', function() {
     expect(output.rows).to.exist
     expect(output.rows).to.be.an('array')
   })
+
   describe('its behaviour', function() {
-    let output
     beforeEach(function() {
       output = presenter(mockMoves)
     })
+
     it('returns html with composite name on the first cell', function() {
       expect(output.rows[0][0]).to.deep.equal({
         html: 'appCard',
@@ -146,28 +147,26 @@ describe('#movesToTable', function() {
     })
     it('returns html with createdAt on the second cell', function() {
       expect(output.rows[0][1]).to.deep.equal({
-        html: mockMoves[0].created_at,
+        text: mockMoves[0].created_at,
       })
     })
     it('returns toLocation on the third cell', function() {
       expect(output.rows[0][2]).to.deep.equal({
-        html: mockMoves[0].to_location.title,
+        text: mockMoves[0].to_location.title,
       })
     })
     it('returns the date range on the fourth cell', function() {
       expect(output.rows[0][3]).to.deep.equal({
-        html: mockMoves[0].date_from,
+        text: mockMoves[0].date_from,
       })
     })
     it('returns the move type on the fifth cell', function() {
       expect(output.rows[0][4]).to.deep.equal({
-        html: mockMoves[0].prison_transfer_reason.title,
+        text: mockMoves[0].prison_transfer_reason.title,
       })
     })
-    it('returns empty string with null prison transfer reason', function() {
-      expect(output.rows[1][4]).to.deep.equal({
-        html: '',
-      })
+    it('returns empty object with null prison transfer reason', function() {
+      expect(output.rows[1][4]).to.deep.equal({})
     })
     it('returns a row per record', function() {
       expect(output.rows.length).to.equal(2)
@@ -175,19 +174,28 @@ describe('#movesToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.head).to.deep.equal([
         {
-          html: 'name',
+          text: 'name',
+          attributes: {
+            width: '220',
+          },
         },
         {
-          html: 'moves::dashboard.created_at',
+          text: 'moves::dashboard.created_at',
+          attributes: {
+            width: '120',
+          },
         },
         {
-          html: 'moves::dashboard.move_to',
+          text: 'moves::dashboard.move_to',
         },
         {
-          html: 'moves::dashboard.earliest_move_date',
+          text: 'moves::dashboard.earliest_move_date',
+          attributes: {
+            width: '120',
+          },
         },
         {
-          html: 'moves::dashboard.move_type',
+          text: 'moves::dashboard.move_type',
         },
       ])
     })

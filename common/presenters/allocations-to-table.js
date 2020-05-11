@@ -5,33 +5,43 @@ const tablePresenters = require('./table')
 const tableConfig = [
   {
     head: 'allocations::move_size',
-    attributes: {
+    row: {
+      text: 'moves_count',
       attributes: {
         scope: 'row',
       },
     },
-    row: 'moves_count',
   },
   {
     head: 'allocations::requested',
-    row: data => filters.formatDate(data.created_at),
+    row: {
+      text: data => filters.formatDate(data.created_at),
+    },
   },
   {
     head: 'allocations::move_from',
-    row: 'from_location.title',
+    row: {
+      text: 'from_location.title',
+    },
   },
   {
     head: 'allocations::move_to',
-    row: 'to_location.title',
+    row: {
+      text: 'to_location.title',
+    },
   },
   {
     head: 'date',
-    row: data => filters.formatDate(data.date),
+    row: {
+      text: data => filters.formatDate(data.date),
+    },
   },
   {
     head: 'allocations::progress',
     // todo: this field does not exist yet and it might end up having a different name or format
-    row: 'progress',
+    row: {
+      text: 'progress',
+    },
   },
 ]
 

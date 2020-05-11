@@ -15,35 +15,41 @@ describe('the presenter for the table rows', function() {
       const output = dataExample.map(
         presenter([
           {
-            row: 'name',
+            row: {
+              text: 'name',
+            },
           },
         ])
       )
       expect(output).to.deep.equal([
         [
           {
-            html: 'John',
+            text: 'John',
           },
         ],
       ])
     })
+
     it('returns a nested path', function() {
       const output = dataExample.map(
         presenter([
           {
-            row: 'details.risk',
+            row: {
+              text: 'details.risk',
+            },
           },
         ])
       )
       expect(output).to.deep.equal([
         [
           {
-            html: 'violent',
+            text: 'violent',
           },
         ],
       ])
     })
   })
+
   context(
     'when the property passed to it is described by an array',
     function() {
@@ -51,20 +57,23 @@ describe('the presenter for the table rows', function() {
         const output = dataExample.map(
           presenter([
             {
-              row: ['name', 'surname'],
+              row: {
+                text: ['name', 'surname'],
+              },
             },
           ])
         )
         expect(output).to.deep.equal([
           [
             {
-              html: 'John Doe',
+              text: 'John Doe',
             },
           ],
         ])
       })
     }
   )
+
   context(
     'when the property passed to it is described by a function',
     function() {
@@ -72,8 +81,10 @@ describe('the presenter for the table rows', function() {
         const output = dataExample.map(
           presenter([
             {
-              row: data => {
-                return `<ul><li>${data.name}</li><li>${data.created_at}</li></ul>`
+              row: {
+                html: data => {
+                  return `<ul><li>${data.name}</li><li>${data.created_at}</li></ul>`
+                },
               },
             },
           ])
@@ -88,25 +99,57 @@ describe('the presenter for the table rows', function() {
       })
     }
   )
+
   context('with multiple cells', function() {
     it('returns an object with all the data for the cells', function() {
       const output = dataExample.map(
         presenter([
           {
-            row: 'name',
+            row: {
+              text: 'name',
+            },
           },
           {
-            row: 'details.risk',
+            row: {
+              html: 'details.risk',
+            },
           },
         ])
       )
       expect(output).to.deep.equal([
         [
           {
-            html: 'John',
+            text: 'John',
           },
           {
             html: 'violent',
+          },
+        ],
+      ])
+    })
+  })
+
+  context('with attributes', function() {
+    it('returns an object with attributes', function() {
+      const output = dataExample.map(
+        presenter([
+          {
+            row: {
+              attributes: {
+                scope: 'row',
+              },
+              text: 'name',
+            },
+          },
+        ])
+      )
+      expect(output).to.deep.equal([
+        [
+          {
+            attributes: {
+              scope: 'row',
+            },
+            text: 'John',
           },
         ],
       ])
