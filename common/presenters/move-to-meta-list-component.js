@@ -1,6 +1,7 @@
 const { isToday, isTomorrow, isYesterday, parseISO } = require('date-fns')
 const { get } = require('lodash')
 
+const { create: createFields } = require('../../app/move/fields')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -35,6 +36,8 @@ function moveToMetaListComponent(
     to_location: toLocation,
     additional_information: additionalInfo,
     prison_transfer_reason: prisonTransferReason = {},
+    move_agreed: moveAgreed,
+    move_agreed_by: moveAgreedBy,
   } = {},
   actions = {}
 ) {
@@ -50,6 +53,16 @@ function moveToMetaListComponent(
   const prisonTransferReasonSuffix = additionalInfo
     ? ` — ${additionalInfo}`
     : ''
+  const agreedLabel = i18n.t('moves::detail.agreement_status.agreed', {
+    context: moveAgreedBy ? 'with_name' : '',
+    name: moveAgreedBy,
+  })
+  const notAgreedLabel = i18n.t('moves::detail.agreement_status.not_agreed')
+  const agreementLabel =
+    moveAgreed === true ||
+    moveAgreed === createFields.move_agreed.items[0].value
+      ? agreedLabel
+      : notAgreedLabel
 
   Object.keys(actions).forEach(key => {
     actions[key] = {
@@ -116,6 +129,14 @@ function moveToMetaListComponent(
         text: showPrisonTransferReason
           ? prisonTransferReason.title + prisonTransferReasonSuffix
           : undefined,
+      },
+    },
+    {
+      key: {
+        text: i18n.t('fields::move_agreed.label'),
+      },
+      value: {
+        text: moveAgreed !== undefined ? agreementLabel : undefined,
       },
     },
   ]

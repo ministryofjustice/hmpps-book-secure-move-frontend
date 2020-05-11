@@ -39,7 +39,7 @@ describe('Presenters', function() {
       describe('response', function() {
         it('should contain items list', function() {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(7)
+          expect(transformedResponse.items.length).to.equal(8)
         })
 
         it('should contain from location as first item', function() {
@@ -100,8 +100,17 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain time due as seventh item', function() {
+        it('should contain transfer type as seventh item', function() {
           const item = transformedResponse.items[6]
+
+          expect(item).to.deep.equal({
+            key: { text: '__translated__' },
+            value: { text: undefined },
+          })
+        })
+
+        it('should contain agreement status as eigth item', function() {
+          const item = transformedResponse.items[7]
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
@@ -145,8 +154,12 @@ describe('Presenters', function() {
           )
         })
 
+        it('should translate agreement status type label', function() {
+          expect(i18n.t).to.be.calledWithExactly('fields::move_agreed.label')
+        })
+
         it('should translate correct number of times', function() {
-          expect(i18n.t).to.be.callCount(7)
+          expect(i18n.t).to.be.callCount(10)
         })
       })
     })
@@ -555,6 +568,191 @@ describe('Presenters', function() {
             value: {
               text: undefined,
             },
+          })
+        })
+      })
+    })
+
+    context('with agreement status', function() {
+      let transformedResponse
+
+      beforeEach(function() {
+        i18n.t.returnsArg(0)
+      })
+
+      context('with true status', function() {
+        context('without name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: true,
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: '',
+                name: undefined,
+              }
+            )
+          })
+        })
+
+        context('with name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: true,
+              move_agreed_by: 'Jon Doe',
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: 'with_name',
+                name: 'Jon Doe',
+              }
+            )
+          })
+        })
+      })
+
+      context('with false status', function() {
+        context('without name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: false,
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.not_agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: '',
+                name: undefined,
+              }
+            )
+          })
+        })
+
+        context('with name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: false,
+              move_agreed_by: 'Jon Doe',
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.not_agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: 'with_name',
+                name: 'Jon Doe',
+              }
+            )
+          })
+        })
+      })
+
+      context('with status that matches `yes` from field`', function() {
+        context('without name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: 'true',
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: '',
+                name: undefined,
+              }
+            )
+          })
+        })
+
+        context('with name', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: 'true',
+              move_agreed_by: 'Jon Doe',
+            })
+          })
+
+          it('should not add additional information to transfer reason', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: 'moves::detail.agreement_status.agreed',
+              },
+            })
+          })
+
+          it('should translate agreed label correctly', function() {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::detail.agreement_status.agreed',
+              {
+                context: 'with_name',
+                name: 'Jon Doe',
+              }
+            )
           })
         })
       })
