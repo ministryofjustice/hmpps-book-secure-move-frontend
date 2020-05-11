@@ -1,5 +1,6 @@
 const {
   Assessment,
+  Court,
   MoveDate,
   MoveDetails,
   PersonalDetails,
@@ -55,7 +56,7 @@ const updateSteps = [
       '/court-information': {
         ...createSteps['/court-information'],
         ...updateStepPropOverrides,
-        controller: Assessment,
+        controller: Court,
       },
     },
   },
