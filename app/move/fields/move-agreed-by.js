@@ -11,7 +11,7 @@ const moveAgreedBy = {
   validate: 'required',
   dependent: {
     field: 'move_agreed',
-    value: 'yes',
+    value: 'true',
   },
 }
 
