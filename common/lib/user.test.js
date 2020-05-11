@@ -219,6 +219,20 @@ describe('User class', function() {
       })
     })
 
+    context('when user has ROLE_PECS_PMU', function() {
+      beforeEach(function() {
+        permissions = user.getPermissions(['ROLE_PECS_PMU'])
+      })
+
+      it('should contain correct permission', function() {
+        expect(permissions).to.deep.equal([
+          'allocations:view',
+          'allocation:create',
+          'move:review',
+        ])
+      })
+    })
+
     context('when user has ROLE_PECS_SUPPLIER role', function() {
       beforeEach(function() {
         permissions = user.getPermissions(['ROLE_PECS_SUPPLIER'])
@@ -252,6 +266,7 @@ describe('User class', function() {
         const allPermissions = [
           'moves:view:outgoing',
           'moves:download',
+          'move:review',
           'move:view',
           'move:create',
           'move:create:court_appearance',
