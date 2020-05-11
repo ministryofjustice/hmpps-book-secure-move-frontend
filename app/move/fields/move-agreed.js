@@ -11,12 +11,12 @@ const moveAgreed = {
   items: [
     {
       id: 'move_agreed',
-      value: 'yes',
+      value: 'true',
       text: 'Yes',
       conditional: 'move_agreed_by',
     },
     {
-      value: 'no',
+      value: 'false',
       text: 'No',
     },
   ],

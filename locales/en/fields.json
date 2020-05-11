@@ -215,7 +215,7 @@
     "label": "Reason for move"
   },
   "move_agreed": {
-    "label": "Move agreement status"
+    "label": "Transfer status"
   },
   "move_agreed_by": {
     "label": "Name of person who agreed the move"

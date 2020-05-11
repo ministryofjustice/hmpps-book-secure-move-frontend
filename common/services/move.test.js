@@ -51,8 +51,8 @@ describe('Move Service', function() {
     let formatted
 
     context('when relationship fields are a string', function() {
-      beforeEach(async function() {
-        formatted = await moveService.format({
+      beforeEach(function() {
+        formatted = moveService.format({
           date: '2010-10-10',
           to_location: mockToLocationId,
           from_location: mockFromLocationId,
@@ -91,8 +91,8 @@ describe('Move Service', function() {
     })
 
     context('when relationship fields are not a string', function() {
-      beforeEach(async function() {
-        formatted = await moveService.format({
+      beforeEach(function() {
+        formatted = moveService.format({
           date: '2010-10-10',
           to_location: {
             id: mockToLocationId,
@@ -139,8 +139,8 @@ describe('Move Service', function() {
     })
 
     context('with falsey values', function() {
-      beforeEach(async function() {
-        formatted = await moveService.format({
+      beforeEach(function() {
+        formatted = moveService.format({
           date: '2010-10-10',
           to_location: {
             id: mockToLocationId,
@@ -174,6 +174,22 @@ describe('Move Service', function() {
           },
           empty_array: [],
         })
+      })
+    })
+
+    context('with strings that be booleans', function() {
+      it('should `false` string as boolean', function() {
+        const formatted = moveService.format({
+          move_agreed: 'false',
+        })
+        expect(formatted.move_agreed).to.equal(false)
+      })
+
+      it('should `true` string as boolean', function() {
+        const formatted = moveService.format({
+          move_agreed: 'true',
+        })
+        expect(formatted.move_agreed).to.equal(true)
       })
     })
   })

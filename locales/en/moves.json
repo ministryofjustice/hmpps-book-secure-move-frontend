@@ -143,6 +143,11 @@
       "heading": "Supporting documents",
       "heading_plural": "Supporting documents ({{count}})",
       "empty": "No documents uploaded"
+    },
+    "agreement_status": {
+      "agreed": "Agreed with receiving prison",
+      "agreed_with_name": "Agreed by {{name}}",
+      "not_agreed": "Not agreed with receiving prison"
     }
   },
   "cancel": {

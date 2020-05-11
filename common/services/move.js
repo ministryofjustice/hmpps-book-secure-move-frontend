@@ -7,6 +7,7 @@ const personService = require('../services/person')
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   format(data) {
+    const booleansAndNulls = ['move_agreed']
     const relationships = [
       'to_location',
       'from_location',
@@ -15,6 +16,11 @@ const moveService = {
     ]
 
     return mapValues(pickBy(data), (value, key) => {
+      if (booleansAndNulls.includes(key)) {
+        try {
+          value = JSON.parse(value)
+        } catch (e) {}
+      }
       if (relationships.includes(key) && typeof value === 'string') {
         return { id: value }
       }
