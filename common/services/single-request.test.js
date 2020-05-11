@@ -1,6 +1,17 @@
+const apiClient = require('../lib/api-client')()
+
 const moveService = require('./move')
 const singleRequestService = require('./single-request')
 
+const mockMove = {
+  id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
+  status: 'requested',
+  person: {
+    id: 'f6e1f57c-7d07-41d2-afee-1662f5103e2d',
+    first_names: 'Steve Jones',
+    last_name: 'Bloggs',
+  },
+}
 const mockMoves = [
   {
     id: '12345',
@@ -279,6 +290,134 @@ describe('Single request service', function() {
           it('should return moves', function() {
             expect(moves).to.deep.equal(mockMoves)
           })
+        })
+      })
+    })
+  })
+
+  describe('#approve()', function() {
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(singleRequestService.approve()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: {
+          ...mockMove,
+          status: 'requested',
+        },
+      }
+      let move
+
+      beforeEach(async function() {
+        sinon.stub(apiClient, 'update').resolves(mockResponse)
+      })
+
+      context('without data args', function() {
+        beforeEach(async function() {
+          move = await singleRequestService.approve(mockId)
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            date: undefined,
+            status: 'requested',
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('with data args', function() {
+        beforeEach(async function() {
+          move = await singleRequestService.approve(mockId, {
+            date: '2020-10-10',
+          })
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            date: '2020-10-10',
+            status: 'requested',
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
+        })
+      })
+    })
+  })
+
+  describe('#reject()', function() {
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(singleRequestService.reject()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: {
+          ...mockMove,
+          status: 'cancelled',
+        },
+      }
+      let move
+
+      beforeEach(async function() {
+        sinon.stub(apiClient, 'update').resolves(mockResponse)
+      })
+
+      context('without data args', function() {
+        beforeEach(async function() {
+          move = await singleRequestService.reject(mockId)
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            status: 'cancelled',
+            cancellation_reason: 'rejected',
+            cancellation_reason_comment: undefined,
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('with data args', function() {
+        beforeEach(async function() {
+          move = await singleRequestService.reject(mockId, {
+            comment: 'Reason for rejecting',
+          })
+        })
+
+        it('should call update method with data', function() {
+          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
+            id: mockId,
+            status: 'cancelled',
+            cancellation_reason: 'rejected',
+            cancellation_reason_comment: 'Reason for rejecting',
+          })
+        })
+
+        it('should return move', function() {
+          expect(move).to.deep.equal(mockResponse.data)
         })
       })
     })
