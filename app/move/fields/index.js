@@ -104,7 +104,7 @@ const createFields = {
   violent: assessmentAnswer(),
 }
 const updateFields = {
-  ...cloneDeep(cancelFields),
+  ...cloneDeep(createFields),
   police_national_computer: policeNationalComputerUpdate,
 }
 
