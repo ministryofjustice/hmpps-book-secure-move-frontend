@@ -156,14 +156,16 @@ describe('User class', function() {
       })
 
       it('should contain correct permission', function() {
-        expect(permissions).to.deep.equal([
+        const stcPermissions = [
           'moves:view:outgoing',
           'moves:download',
           'move:view',
           'move:create',
           'move:create:court_appearance',
           'move:cancel',
-        ])
+          'move:update',
+        ]
+        expect(permissions).to.deep.equal(stcPermissions)
       })
     })
 
