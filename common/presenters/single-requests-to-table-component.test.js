@@ -142,6 +142,7 @@ describe('#singleRequestsToTableComponent()', function() {
     it('should call card component with correct arguments', function() {
       expect(moveToCardComponentOptsStub).to.be.calledWithExactly({
         isCompact: true,
+        hrefSuffix: '/review',
       })
       expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
     })

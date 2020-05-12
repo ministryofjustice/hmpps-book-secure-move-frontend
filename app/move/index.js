@@ -69,11 +69,7 @@ router.use(
   protectRoute('move:cancel'),
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
-router.use(
-  '/:moveId/review',
-  protectRoute('move:review'),
-  wizard(reviewSteps, reviewFields, reviewConfig)
-)
+router.use('/:moveId/review', wizard(reviewSteps, reviewFields, reviewConfig))
 
 if (FEATURE_FLAGS.EDITABILITY) {
   updateSteps.forEach(updateJourney => {

@@ -30,7 +30,7 @@ describe('Move controllers', function() {
           .calledOnce
       })
 
-      it('should call setCourtCaseItems middleware', function() {
+      it('should call updateDateHint middleware', function() {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.updateDateHint
         )
@@ -55,7 +55,7 @@ describe('Move controllers', function() {
           .calledOnce
       })
 
-      it('should call setCourtCaseItems middleware', function() {
+      it('should call setMoveSummary middleware', function() {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.setMoveSummary
         )
@@ -63,6 +63,159 @@ describe('Move controllers', function() {
 
       it('should call correct number of middleware', function() {
         expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#middlewareChecks()', function() {
+      beforeEach(function() {
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkStatus')
+        sinon.stub(controller, 'canAccess')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function() {
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call checkStatus middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.checkStatus
+        )
+      })
+
+      it('should call canAccess middleware', function() {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.canAccess
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
+    describe('#checkStatus()', function() {
+      let mockRes, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        mockRes = {
+          locals: {
+            move: {
+              id: '12345',
+            },
+          },
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('with proposed status', function() {
+        beforeEach(function() {
+          mockRes.locals.move.status = 'proposed'
+          controller.checkStatus({}, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function() {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      const statuses = ['requested', 'cancelled', 'accepted']
+      statuses.forEach(status => {
+        context(`with ${status} status`, function() {
+          beforeEach(function() {
+            mockRes.locals.move.status = status
+            controller.checkStatus({}, mockRes, nextSpy)
+          })
+
+          it('should redirect to move', function() {
+            expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+          })
+
+          it('should not call next', function() {
+            expect(nextSpy).not.to.be.called
+          })
+        })
+      })
+    })
+
+    describe('#canAccess()', function() {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        mockReq = {
+          session: {
+            user: {
+              permissions: ['move:view'],
+            },
+          },
+        }
+        mockRes = {
+          locals: {
+            move: {
+              id: '12345',
+            },
+            canAccess: sinon.stub().returns(false),
+          },
+          redirect: sinon.spy(),
+        }
+
+        mockRes.locals.canAccess
+          .withArgs('move:review', ['move:review', 'move:view'])
+          .returns(true)
+      })
+
+      context('with correct permission', function() {
+        beforeEach(function() {
+          mockReq.session.user.permissions = ['move:review', 'move:view']
+          controller.canAccess(mockReq, mockRes, nextSpy)
+        })
+
+        it('should check permissions', function() {
+          expect(
+            mockRes.locals.canAccess
+          ).to.be.calledOnceWithExactly('move:review', [
+            'move:review',
+            'move:view',
+          ])
+        })
+
+        it('should not redirect', function() {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with incorrect permission', function() {
+        beforeEach(function() {
+          controller.canAccess(mockReq, mockRes, nextSpy)
+        })
+
+        it('should check permissions', function() {
+          expect(
+            mockRes.locals.canAccess
+          ).to.be.calledOnceWithExactly('move:review', ['move:view'])
+        })
+
+        it('should redirect', function() {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.be.called
+        })
       })
     })
 

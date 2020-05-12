@@ -16,7 +16,10 @@ function singleRequestsToTable(moves) {
       },
       row: {
         html: data => {
-          const card = moveToCardComponent({ isCompact: true })(data)
+          const card = moveToCardComponent({
+            isCompact: true,
+            hrefSuffix: '/review',
+          })(data)
           return componentService.getComponent('appCard', card)
         },
         attributes: {
