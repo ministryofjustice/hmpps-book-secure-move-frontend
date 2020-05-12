@@ -9,15 +9,24 @@
 
 {% block pageContent %}
   <div class="govuk-grid-row">
-    <section class="govuk-grid-column-one-half">
+    <section class="govuk-grid-column-full">
       <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
         {{ t("dashboard::sections.allocations.heading") }}
       </h2>
-
-      {{ appFilter({
-        items: allocationsSummary,
-        classes: "app-filter--stacked"
-      }) }}
+      <div class="paired-filters">
+        <div class="paired-filters__filters">
+          {{ appFilter({
+            items: singleRequestsSummary,
+            classes: "app-filter--stacked"
+          }) }}
+        </div>
+        <div class="paired-filters__filters">
+          {{ appFilter({
+            items: allocationsSummary,
+            classes: "app-filter--stacked"
+          }) }}
+        </div>
+      </div>
     </section>
   </div>
 {% endblock %}

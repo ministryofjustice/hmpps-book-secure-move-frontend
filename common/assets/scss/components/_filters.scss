@@ -1,0 +1,19 @@
+.paired-filters {
+  display: flex;
+  @include govuk-media-query($until: desktop) {
+    flex-direction: column;
+  }
+}
+.paired-filters__filters {
+  flex: 1;
+}
+.paired-filters__filters:first-child {
+  @include govuk-media-query($from: desktop) {
+    margin-right: govuk-spacing(2);
+  }
+}
+.paired-filters__filters:last-child {
+  @include govuk-media-query($from: desktop) {
+    margin-left: govuk-spacing(2);
+  }
+}

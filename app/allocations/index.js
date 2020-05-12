@@ -11,6 +11,7 @@ const {
   setAllocationsSummary,
   setAllocationTypeNavigation,
   setPagination,
+  setSingleRequestsSummary,
 } = require('./middleware')
 
 router.param('period', setDatePeriod)
@@ -24,6 +25,7 @@ router.get(
   '/:period(week|day)/:date/',
   protectRoute('allocations:view'),
   setAllocationsSummary,
+  setSingleRequestsSummary,
   setPagination,
   dashboard
 )

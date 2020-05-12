@@ -9,6 +9,7 @@ const {
 } = require('../../common/helpers/date-utils')
 const presenters = require('../../common/presenters')
 const allocationService = require('../../common/services/allocation')
+const singleRequestService = require('../../common/services/single-request')
 
 const allocationTypeNavigationConfig = [
   {
@@ -50,13 +51,39 @@ function setPagination(req, res, next) {
 }
 async function setAllocationsSummary(req, res, next) {
   const { dateRange } = res.locals
-  const value = await allocationService.getCount({ dateRange })
+  const allocationsCount = await allocationService.getCount({ dateRange })
   res.locals.allocationsSummary = [
     {
       active: false,
-      label: req.t('allocations::dashboard.labels.single_requests'),
+      label: req.t('allocations::dashboard.labels.allocations'),
       href: `/allocations/week/${getDateFromParams(req)}/outgoing`,
-      value,
+      value: allocationsCount,
+    },
+  ]
+  next()
+}
+async function setSingleRequestsSummary(req, res, next) {
+  const { dateRange } = res.locals
+  const singleRequests = await singleRequestService.getAll({
+    status: 'approved',
+    createdAtDate: dateRange,
+  })
+  const pendingSingleRequests = await singleRequestService.getAll({
+    status: 'pending',
+    createdAtDate: dateRange,
+  })
+  res.locals.singleRequestsSummary = [
+    {
+      active: false,
+      label: req.t('allocations::dashboard.labels.single_requests'),
+      href: `/moves/week/${getDateFromParams(req)}/approved`,
+      value: singleRequests.length,
+    },
+    {
+      active: false,
+      label: req.t('allocations::dashboard.labels.single_requests.pending'),
+      href: `/moves/week/${getDateFromParams(req)}/pending`,
+      value: pendingSingleRequests.length,
     },
   ]
   next()
@@ -146,4 +173,5 @@ module.exports = {
   getAllocationTypeMetadata,
   addTotalAllocationsToFilter,
   setAllocationTypeNavigation,
+  setSingleRequestsSummary,
 }
