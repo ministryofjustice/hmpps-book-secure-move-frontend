@@ -1,11 +1,12 @@
 // NPM dependencies
 const router = require('express').Router()
 
-// Local dependencies
-const { mountpath: movesUrl } = require('../moves')
+const { determineEntryPoint } = require('./middleware')
 
 // Define routes
-router.get('/', (req, res) => res.redirect(movesUrl))
+router.get('/', determineEntryPoint, (req, res) =>
+  res.redirect(res.locals.entryPoint)
+)
 
 // Export
 module.exports = {
