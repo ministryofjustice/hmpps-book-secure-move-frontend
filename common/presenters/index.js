@@ -11,9 +11,9 @@ const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByToLocation = require('./moves-by-to-location')
 const movesToCSV = require('./moves-to-csv')
-const movesToTable = require('./moves-to-table')
 const personToCardComponent = require('./person-to-card-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
+const singleRequestsToTableComponent = require('./single-requests-to-table-component')
 const tablePresenters = require('./table')
 const timetableToTableComponent = require('./timetable-to-table-component')
 
@@ -33,7 +33,7 @@ module.exports = {
   movesByToLocation,
   movesToCSV,
   moveTypesToFilterComponent,
-  movesToTable,
+  singleRequestsToTableComponent,
   tablePresenters,
   timetableToTableComponent,
 }

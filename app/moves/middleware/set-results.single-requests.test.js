@@ -18,7 +18,7 @@ describe('Moves middleware', function() {
 
     beforeEach(function() {
       sinon.stub(singleRequestService, 'getAll')
-      sinon.stub(presenters, 'movesToTable').returnsArg(0)
+      sinon.stub(presenters, 'singleRequestsToTableComponent').returnsArg(0)
       next = sinon.stub()
       res = {
         locals: {
@@ -89,10 +89,10 @@ describe('Moves middleware', function() {
           })
         })
 
-        it('should call movesToTable presenter', function() {
-          expect(presenters.movesToTable).to.be.calledOnceWithExactly(
-            mockActiveMoves
-          )
+        it('should call singleRequestsToTableComponent presenter', function() {
+          expect(
+            presenters.singleRequestsToTableComponent
+          ).to.be.calledOnceWithExactly(mockActiveMoves)
         })
 
         it('should call next', function() {

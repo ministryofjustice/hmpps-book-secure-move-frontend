@@ -21,7 +21,7 @@ async function setResultsSingleRequests(req, res, next) {
       cancelled: [],
     }
     req.resultsAsTable = {
-      active: presenters.movesToTable(singleRequests),
+      active: presenters.singleRequestsToTableComponent(singleRequests),
       cancelled: [],
     }
 

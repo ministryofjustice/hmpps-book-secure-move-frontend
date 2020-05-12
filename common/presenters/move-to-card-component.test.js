@@ -87,6 +87,26 @@ describe('Presenters', function() {
       })
     })
 
+    context('with href suffix', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          hrefSuffix: '/path/to/somewhere',
+        })(mockMove)
+      })
+
+      it('should call person to card component correctly', function() {
+        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.person,
+          href: '/move/12345/path/to/somewhere',
+        })
+        expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: true,
+          showMeta: true,
+          showTags: true,
+        })
+      })
+    })
+
     context('with image disabled', function() {
       beforeEach(function() {
         transformedResponse = moveToCardComponent({

@@ -1,24 +1,24 @@
-const { get, isFunction } = require('lodash')
+const { get, isFunction, pickBy } = require('lodash')
+
 function objectToTableRow(schema) {
   return function(data) {
-    return schema.map(schemaProp => {
-      let html
-      const prop = schemaProp.row
+    return schema.map(({ row }) => {
+      const prop = row.html || row.text
+      let content
+
       if (isFunction(prop)) {
-        html = prop(data)
+        content = prop(data)
       } else if (Array.isArray(prop)) {
-        html = prop
-          .map(singleProp => {
-            return get(data, singleProp)
-          })
-          .join(' ')
+        content = prop.map(singleProp => get(data, singleProp)).join(' ')
       } else {
-        html = get(data, prop)
+        content = get(data, prop)
       }
-      return {
-        html,
-        ...schemaProp.attributes,
-      }
+
+      return pickBy({
+        ...row,
+        html: row.html ? content : undefined,
+        text: row.text ? content : undefined,
+      })
     })
   }
 }

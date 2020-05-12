@@ -16,6 +16,32 @@ class ReviewController extends FormWizardController {
     this.use(this.setMoveSummary)
   }
 
+  middlewareChecks() {
+    super.middlewareChecks()
+    this.use(this.checkStatus)
+    this.use(this.canAccess)
+  }
+
+  checkStatus(req, res, next) {
+    const { id, status } = res.locals.move
+
+    if (status !== 'proposed') {
+      return res.redirect(`/move/${id}`)
+    }
+
+    next()
+  }
+
+  canAccess(req, res, next) {
+    const { canAccess, move } = res.locals
+
+    if (canAccess('move:review', req.session.user.permissions)) {
+      return next()
+    }
+
+    res.redirect(`/move/${move.id}`)
+  }
+
   updateDateHint(req, res, next) {
     const { move_date: moveDate } = req.form.options.fields
     const { date_to: dateTo, date_from: dateFrom } = res.locals.move
