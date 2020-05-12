@@ -1,7 +1,10 @@
 const { pickBy } = require('lodash')
 
+const apiClient = require('../lib/api-client')()
+
 const moveService = require('./move')
 
+const noMoveIdMessage = 'No move ID supplied'
 const singleRequestService = {
   getAll({
     status,
@@ -51,6 +54,35 @@ const singleRequestService = {
         'sort[direction]': sortDirection,
       }),
     })
+  },
+
+  approve(id, { date } = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    return apiClient
+      .update('move', {
+        id,
+        date,
+        status: 'requested',
+      })
+      .then(response => response.data)
+  },
+
+  reject(id, { comment } = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    return apiClient
+      .update('move', {
+        id,
+        status: 'cancelled',
+        cancellation_reason: 'rejected',
+        cancellation_reason_comment: comment,
+      })
+      .then(response => response.data)
   },
 }
 

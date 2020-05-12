@@ -8,5 +8,9 @@
   },
   "create_allocation": {
     "heading": "Allocation requested"
+  },
+  "pending_review": {
+    "heading": "Pending review",
+    "content": "This request needs to be reviewed by a member of the Population Management Unit (PMU) before it can be requested with the supplier."
   }
 }

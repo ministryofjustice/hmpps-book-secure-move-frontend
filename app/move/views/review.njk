@@ -1,0 +1,40 @@
+{% extends "form-wizard.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Review move'});
+{% endblock %}
+
+{% block innerPageTitle %}
+  {{ t("moves::review.page_title", { name: move.person.fullname | upper }) }}
+{% endblock %}
+
+{% block pageHeading %}
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+    {{ t("moves::review.page_title", { name: move.person.fullname | upper }) }}
+  </h1>
+  <span class="govuk-caption-xl govuk-!-margin-bottom-8">
+    {{ t("moves::move_reference", {
+      reference: move.reference
+    }) }}
+  </span>
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_move"),
+    href: "/move/" + move.id
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block summaryPanelContent %}
+  {{ super() }}
+
+  <p class="govuk-!-margin-top-3 govuk-!-margin-bottom-0">
+    <a href="/move/{{ move.id }}">
+      {{ t("actions::view_more_information") }}
+    </a>
+  </p>
+{% endblock %}
+

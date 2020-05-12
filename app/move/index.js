@@ -9,14 +9,16 @@ const { FEATURE_FLAGS } = require('../../config')
 
 const { confirmation, create, update, view } = require('./controllers')
 const {
-  cancel: cancelFields,
-  create: createFields,
-  update: updateFields,
+  cancelFields,
+  createFields,
+  reviewFields,
+  updateFields,
 } = require('./fields')
 const { setMove } = require('./middleware')
 const {
   cancel: cancelSteps,
   create: createSteps,
+  review: reviewSteps,
   update: updateSteps,
 } = require('./steps')
 
@@ -45,6 +47,11 @@ const cancelConfig = {
   name: 'cancel-move',
   journeyName: 'cancel-move',
 }
+const reviewConfig = {
+  ...wizardConfig,
+  name: 'review-move',
+  journeyName: 'review-move',
+}
 
 // Define param middleware
 router.param('moveId', setMove)
@@ -56,12 +63,16 @@ router.use(
   wizard(createSteps, createFields, createConfig)
 )
 router.get('/:moveId', protectRoute('move:view'), view)
-
 router.get('/:moveId/confirmation', protectRoute('move:create'), confirmation)
 router.use(
   '/:moveId/cancel',
   protectRoute('move:cancel'),
   wizard(cancelSteps, cancelFields, cancelConfig)
+)
+router.use(
+  '/:moveId/review',
+  protectRoute('move:review'),
+  wizard(reviewSteps, reviewFields, reviewConfig)
 )
 
 if (FEATURE_FLAGS.EDITABILITY) {

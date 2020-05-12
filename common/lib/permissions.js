@@ -54,7 +54,7 @@ const ocaPermissions = [
   'move:create:court_appearance',
   'move:create:prison_transfer',
 ]
-const pmuPermissions = ['allocations:view', 'allocation:create']
+const pmuPermissions = ['allocations:view', 'allocation:create', 'move:review']
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,

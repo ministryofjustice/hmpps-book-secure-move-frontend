@@ -14,12 +14,7 @@ module.exports = function view(req, res) {
     cancellation_reason: cancellationReason,
     cancellation_reason_comment: cancellationComments,
   } = move
-  const reason =
-    cancellationReason === 'other'
-      ? cancellationComments
-      : req.t(`fields::cancellation_reason.items.${cancellationReason}.label`)
   const bannerStatuses = ['cancelled']
-
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
@@ -50,11 +45,11 @@ module.exports = function view(req, res) {
       'court'
     ),
     messageTitle: bannerStatuses.includes(status)
-      ? req.t('statuses::' + status)
+      ? req.t('statuses::' + status, { context: cancellationReason })
       : undefined,
     messageContent: req.t('statuses::description', {
-      context: status,
-      reason,
+      context: cancellationReason,
+      comment: cancellationComments,
     }),
     updateLinks: updateActions,
     urls,

@@ -162,6 +162,28 @@
     "required": "Give details",
     "optional": "Give details (optional)"
   },
+  "review_decision": {
+    "label": "Can this move be requested with the supplier?",
+    "label_with_error": "Review decision",
+    "items": {
+      "approve": {
+        "label": "Yes, approve this request"
+      },
+      "reject": {
+        "label": "No, reject this request"
+      }
+    }
+  },
+  "move_date": {
+    "label": "Date of travel",
+    "hint": "$t(fields::date.hint)",
+    "hint_with_date": "Travel has been requested for {{date}}",
+    "hint_with_date_range": "Travel has been requested for between {{date}}"
+  },
+  "rejection_reason_comment": {
+    "label": "Additional information (optional)",
+    "label_with_error": "Additional information"
+  },
   "cancellation_reason": {
     "label": "Why are you cancelling this move request?",
     "items": {

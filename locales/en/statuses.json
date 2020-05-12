@@ -7,6 +7,10 @@
   "accepted": "Move accepted",
   "completed": "Move completed",
   "cancelled": "Move cancelled",
+  "cancelled_rejected": "Single request rejected",
   "description": "",
-  "description_cancelled": "Reason — {{reason}}"
+  "description_made_in_error": "Reason — $t(fields::cancellation_reason.items.made_in_error.label)",
+  "description_supplier_declined_to_move": "Reason — $t(fields::cancellation_reason.items.supplier_declined_to_move.label)",
+  "description_other": "Reason — {{comment}}",
+  "description_rejected": "Comments — {{comment}}"
 }

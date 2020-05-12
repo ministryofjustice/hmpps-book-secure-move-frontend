@@ -266,62 +266,32 @@ describe('Move controllers', function() {
       let params
 
       beforeEach(function() {
+        req.t.returns('__translated__')
         res.locals.move = {
           ...mockMove,
           status: 'cancelled',
           cancellation_reason: 'made_in_error',
+          cancellation_reason_comment: 'Reason for cancelling comments',
         }
+
+        controller(req, res)
+        params = res.render.args[0][1]
       })
 
-      context('when cancellation reason is not "other"', function() {
-        beforeEach(function() {
-          req.t.returns('__translated__')
+      it('should contain a message title param', function() {
+        expect(params).to.have.property('messageTitle')
+      })
 
-          controller(req, res)
-          params = res.render.args[0][1]
-        })
-
-        it('should contain a message title param', function() {
-          expect(params).to.have.property('messageTitle')
-        })
-
-        it('should contain a message content param', function() {
-          expect(params).to.have.property('messageContent')
-          expect(params.messageContent).to.equal('statuses::description')
-        })
-
-        it('should call correct translation', function() {
-          expect(req.t.thirdCall).to.be.calledWithExactly(
-            'statuses::description',
-            {
-              context: 'cancelled',
-              reason: 'fields::cancellation_reason.items.made_in_error.label',
-            }
-          )
+      it('should call correct translation', function() {
+        expect(req.t).to.be.calledWithExactly('statuses::description', {
+          context: 'made_in_error',
+          comment: 'Reason for cancelling comments',
         })
       })
 
-      context('when cancellation reason is "other"', function() {
-        beforeEach(function() {
-          res.locals.move = {
-            ...mockMove,
-            status: 'cancelled',
-            cancellation_reason: 'other',
-            cancellation_reason_comments: 'Another reason for cancelling',
-          }
-
-          controller(req, res)
-          params = res.render.args[0][1]
-        })
-
-        it('should contain a message title param', function() {
-          expect(params).to.have.property('messageTitle')
-        })
-
-        it('should contain a message content param', function() {
-          expect(params).to.have.property('messageContent')
-          expect(params.messageContent).to.equal('statuses::description')
-        })
+      it('should contain a message content param', function() {
+        expect(params).to.have.property('messageContent')
+        expect(params.messageContent).to.equal('statuses::description')
       })
     })
   })

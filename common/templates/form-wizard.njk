@@ -32,9 +32,11 @@
 
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">
-        {{ t(options.pageTitle) }}
-      </h1>
+      {% block pageHeading %}
+        <h1 class="govuk-heading-xl">
+          {{ t(options.pageTitle) }}
+        </h1>
+      {% endblock %}
     </div>
   </header>
 {% endblock %}
@@ -88,17 +90,19 @@
   {% if person %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
-        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-          {{ person.fullname | upper }}
-        </h3>
+        {% block summaryPanelContent %}
+          <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+            {{ person.fullname | upper }}
+          </h3>
 
-        {% if person.image_url %}
-          <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
-            <img src="{{ person.image_url }}" alt="{{ person.fullname | upper }}">
-          </div>
-        {% endif %}
+          {% if person.image_url %}
+            <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
+              <img src="{{ person.image_url }}" alt="{{ person.fullname | upper }}">
+            </div>
+          {% endif %}
 
-        {{ appMetaList(moveSummary) }}
+          {{ appMetaList(moveSummary) }}
+        {% endblock %}
       </div>
     </div>
   {% endif %}

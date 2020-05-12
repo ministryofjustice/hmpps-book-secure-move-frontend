@@ -271,6 +271,53 @@ describe('Nunjucks filters', function() {
         )
       })
     })
+
+    context('with custom delimiter', function() {
+      const mockStartDate = new Date('2019-11-01')
+
+      context('with one date', function() {
+        it('should not contain delimiter', function() {
+          expect(formatDateRange([mockStartDate], 'and')).to.equal('1 Nov 2019')
+        })
+      })
+
+      context('with two dates', function() {
+        context('when dates span different years', function() {
+          it('should contain both years', function() {
+            expect(
+              formatDateRange([mockStartDate, new Date('2020-01-18')], 'and')
+            ).to.equal('1 Nov 2019 and 18 Jan 2020')
+          })
+        })
+
+        context('when dates span different months', function() {
+          it('should contain both months', function() {
+            expect(
+              formatDateRange([mockStartDate, new Date('2019-12-10')], 'and')
+            ).to.equal('1 Nov and 10 Dec 2019')
+          })
+        })
+
+        context('when dates are in the same month', function() {
+          it('should contain both years', function() {
+            expect(
+              formatDateRange([mockStartDate, new Date('2019-11-10')], 'and')
+            ).to.equal('1 and 10 Nov 2019')
+          })
+        })
+
+        context(
+          'when dates are in the same month of different years',
+          function() {
+            it('should contain both years', function() {
+              expect(
+                formatDateRange([mockStartDate, new Date('2020-11-10')], 'and')
+              ).to.equal('1 Nov 2019 and 10 Nov 2020')
+            })
+          }
+        )
+      })
+    })
   })
 
   describe('#formatDateRangeAsRelativeWeek()', function() {
