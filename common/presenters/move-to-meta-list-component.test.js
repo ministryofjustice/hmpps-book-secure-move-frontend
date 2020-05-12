@@ -580,16 +580,17 @@ describe('Presenters', function() {
         i18n.t.returnsArg(0)
       })
 
-      context('with true status', function() {
+      context('with `true` value', function() {
         context('without name', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: true,
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -613,12 +614,13 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: true,
               move_agreed_by: 'Jon Doe',
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -637,18 +639,37 @@ describe('Presenters', function() {
             )
           })
         })
+
+        context('when not a prison transfer', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: true,
+            })
+          })
+
+          it('should not set move agreed item', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: undefined,
+              },
+            })
+          })
+        })
       })
 
-      context('with false status', function() {
+      context('with `false` value', function() {
         context('without name', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: false,
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -672,12 +693,13 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: false,
               move_agreed_by: 'Jon Doe',
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -696,18 +718,37 @@ describe('Presenters', function() {
             )
           })
         })
+
+        context('when not a prison transfer', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: false,
+            })
+          })
+
+          it('should not set move agreed item', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: undefined,
+              },
+            })
+          })
+        })
       })
 
-      context('with status that matches `yes` from field`', function() {
+      context('with status that matches `yes` from field', function() {
         context('without name', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: 'true',
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -731,12 +772,13 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
+              move_type: 'prison_transfer',
               move_agreed: 'true',
               move_agreed_by: 'Jon Doe',
             })
           })
 
-          it('should not add additional information to transfer reason', function() {
+          it('should set move agreed item', function() {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -753,6 +795,25 @@ describe('Presenters', function() {
                 name: 'Jon Doe',
               }
             )
+          })
+        })
+
+        context('when not a prison transfer', function() {
+          beforeEach(function() {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              move_agreed: 'true',
+              move_agreed_by: 'Jon Doe',
+            })
+          })
+
+          it('should not set move agreed item', function() {
+            expect(transformedResponse.items[7]).to.deep.equal({
+              key: { text: 'fields::move_agreed.label' },
+              value: {
+                text: undefined,
+              },
+            })
           })
         })
       })

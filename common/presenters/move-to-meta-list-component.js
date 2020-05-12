@@ -1,5 +1,5 @@
 const { isToday, isTomorrow, isYesterday, parseISO } = require('date-fns')
-const { get } = require('lodash')
+const { get, isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/fields/move-agreed')
 const i18n = require('../../config/i18n')
@@ -135,7 +135,10 @@ function moveToMetaListComponent(
         text: i18n.t('fields::move_agreed.label'),
       },
       value: {
-        text: moveAgreed !== undefined ? agreementLabel : undefined,
+        text:
+          !isNil(moveAgreed) && moveType === 'prison_transfer'
+            ? agreementLabel
+            : undefined,
       },
     },
   ]
