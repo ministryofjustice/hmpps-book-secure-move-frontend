@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.21.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.20.1...v2.21.0) (2020-05-12)
+
+
+### Features
+
+* **single requests:** Add approval and rejection workflows ([d7a88d9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d7a88d9fa7da3a5be0fb270a081a70b8d23fdcf4))
+* **single requests:** Link dashboard to review page ([316380b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/316380b419e100cf3972550b65331f4c38f25c4d))
+* **single requests:** Show banner for pending reviews on move page ([5c93506](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5c9350606a470a118f58561b48f21ec274d2f665))
+* Create allocation details and criteria ([6292ebe](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6292ebe6fee0b539a72505ae34153a5676f5914c))
+* Provide ability to update to location [P4-1440] ([3d3deb7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3d3deb7d294aaa3a9109be33c7cb6aef0d1fe049))
+
+
+### Bug Fixes
+
+* **edit:** Correct the reference to update fields ([8d23cae](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8d23cae12066e484b00e7a9a954cf95dff7e807f))
+* **single requests:** Allow moves to be downloaded ([12b97b2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/12b97b23035173401e2cc85b5f2e61d7709b9bc4))
+* **single requests:** Fix default sort direction of single requests ([5c9bd19](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5c9bd1968a263d50a34adc16237202812f885b39))
+* **single requests:** Fix filtering of approved requests ([e196211](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e196211225a93087b5b3a6c167e859695931dbf2))
+* **single requests:** Fix single request filtering ([54c0e3c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/54c0e3c23f61d518b90198a0a1ab6baebd368159))
+* **single requests:** Send correct move agreed value to API ([c90cd4a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c90cd4a092a6b5723597489aa47eeaca2ff2b4a5))
+* **single requests:** Show agreement status with receiving prison ([47d50b5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/47d50b5b86365c772b788fc4745f1df4e4c2856d))
+* **single requests:** Update column widths of table ([e6ea854](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e6ea8542b9ab8e329a81055c1bff674ed4f1d9e0))
+* Ensure fillinAutocomplete e2e helper can change its value ([6344f42](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6344f42ecd5e6834f8a873ac5b610010b15b3b98))
+* Prevent setting of unnecessary properties on person fixture ([a2f71ca](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a2f71ca1bcad3600b44c449834e30a7fee75d7c0))
+* Prevent update court link when move not to court ([52d5110](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/52d511043b06461058ffc050b9b447d2bc45ca88))
+
 ### [2.20.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.20.0...v2.20.1) (2020-05-06)
 
 
