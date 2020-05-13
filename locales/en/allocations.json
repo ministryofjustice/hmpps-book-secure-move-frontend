@@ -1,7 +1,11 @@
 {
   "dashboard": {
     "heading": "Allocations",
-    "labels": { "single_requests": "single requests" },
+    "labels": {
+      "single_requests": "single requests",
+      "pending": "pending",
+      "allocations": "allocations"
+    },
     "no_results": "No allocations found"
   },
   "complete": "complete",

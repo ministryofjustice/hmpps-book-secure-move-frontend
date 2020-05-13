@@ -119,10 +119,6 @@ describe('#allocationsToTable', function() {
         text: '3 May 2020',
       })
     })
-    xit('returns progress on the sixth cell', function() {
-      // define this when we have agreed on this field's format
-      expect(output.rowsForAllocationTable[0][5]).to.deep.equal()
-    })
     it('returns one head row with all the cells', function() {
       expect(output.headerForAllocationTable).to.deep.equal([
         {
@@ -139,9 +135,6 @@ describe('#allocationsToTable', function() {
         },
         {
           text: 'date',
-        },
-        {
-          text: 'allocations::progress',
         },
       ])
     })

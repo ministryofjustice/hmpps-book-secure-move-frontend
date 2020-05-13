@@ -230,6 +230,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
+          'allocations:view',
+          'allocation:create',
           'dashboard:view',
           'locations:all',
           'moves:view:proposed',
@@ -270,6 +272,8 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         const allPermissions = [
+          'allocation:create',
+          'allocations:view',
           'moves:view:outgoing',
           'moves:download',
           'move:review',

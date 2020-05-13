@@ -42,13 +42,6 @@ const tableConfig = [
       text: data => filters.formatDate(data.date),
     },
   },
-  {
-    head: 'allocations::progress',
-    // todo: this field does not exist yet and it might end up having a different name or format
-    row: {
-      text: 'progress',
-    },
-  },
 ]
 
 function allocationsToTable(allocations) {
