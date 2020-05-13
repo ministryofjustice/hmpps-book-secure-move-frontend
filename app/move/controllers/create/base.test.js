@@ -108,6 +108,10 @@ describe('Move controllers', function() {
               },
             },
           },
+          session: {},
+          sessionModel: {
+            get: sinon.stub(),
+          },
         }
         sinon.stub(FormController.prototype, 'getNextStep')
       })
@@ -120,7 +124,7 @@ describe('Move controllers', function() {
           controller.setButtonText(req, {}, nextSpy)
         })
 
-        it('should set cancel url correctly', function() {
+        it('should set button text correctly', function() {
           expect(req.form.options.buttonText).to.equal('Override button text')
         })
 
@@ -137,7 +141,7 @@ describe('Move controllers', function() {
             controller.setButtonText(req, {}, nextSpy)
           })
 
-          it('should set cancel url correctly', function() {
+          it('should set button text correctly', function() {
             expect(req.form.options.buttonText).to.equal('actions::continue')
           })
 
@@ -149,18 +153,49 @@ describe('Move controllers', function() {
         context('when step is penultimate step', function() {
           beforeEach(function() {
             FormController.prototype.getNextStep.returns('/last-step')
-
-            controller.setButtonText(req, {}, nextSpy)
+            req.session.currentLocation = {
+              location_type: 'prison',
+            }
           })
 
-          it('should set cancel url correctly', function() {
-            expect(req.form.options.buttonText).to.equal(
-              'actions::request_move'
-            )
+          context('with single requests', function() {
+            beforeEach(function() {
+              req.sessionModel.get.withArgs('to_location').returns({
+                location_type: 'prison',
+              })
+
+              controller.setButtonText(req, {}, nextSpy)
+            })
+
+            it('should set button text correctly', function() {
+              expect(req.form.options.buttonText).to.equal(
+                'actions::send_for_review'
+              )
+            })
+
+            it('should call next', function() {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
           })
 
-          it('should call next', function() {
-            expect(nextSpy).to.be.calledOnceWithExactly()
+          context('with single requests', function() {
+            beforeEach(function() {
+              req.sessionModel.get.withArgs('to_location').returns({
+                location_type: 'court',
+              })
+
+              controller.setButtonText(req, {}, nextSpy)
+            })
+
+            it('should set button text correctly', function() {
+              expect(req.form.options.buttonText).to.equal(
+                'actions::request_move'
+              )
+            })
+
+            it('should call next', function() {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
           })
         })
       })
