@@ -1,3 +1,5 @@
+import { addDays, format } from 'date-fns'
+
 import { FEATURE_FLAGS } from '../../config'
 
 import {
@@ -99,6 +101,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
   })
 
   test('User should be able to change move date to another date', async () => {
-    await checkUpdateMoveDate(3)
+    const anotherDate = format(addDays(new Date(), 3), 'iiii d MMM yyyy')
+    await checkUpdateMoveDate(anotherDate)
   })
 }
