@@ -5,9 +5,9 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const confirmation = require('./controllers/create/confirmation')
-const { createFields } = require('./fields')
+const { cancelFields, createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
-const { createSteps } = require('./steps')
+const { cancelSteps, createSteps } = require('./steps')
 
 const wizardConfig = {
   controller: FormWizardController,
@@ -32,6 +32,20 @@ router.get(
   '/:allocationId/confirmation',
   protectRoute('allocation:create'),
   confirmation
+)
+const cancelConfig = {
+  ...wizardConfig,
+  controller: FormWizardController,
+  name: 'cancel-an-allocation',
+  templatePath: 'allocation/views/cancel/',
+  template: '../../../form-wizard',
+  journeyName: 'cancel-an-allocation',
+  journeyPageTitle: 'actions::cancel_allocation',
+}
+router.use(
+  '/:allocationId/cancel',
+  protectRoute('allocation:create'),
+  wizard(cancelSteps, cancelFields, cancelConfig)
 )
 
 // Export

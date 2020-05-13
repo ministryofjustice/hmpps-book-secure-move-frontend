@@ -12,7 +12,9 @@
         "sentence_length": "short",
         "complex_cases": null,
         "complete_in_full": true,
-        "other_criteria": null
+        "other_criteria": null,
+        "cancel_reason": "other",
+        "cancel_reason_comment": ""
       },
       "relationships": {
         "from_location": {
@@ -26,6 +28,9 @@
             "id": "9efd0df4-70b2-411f-8df8-8bb09b2eafe0",
             "type": "locations"
           }
+        },
+        "events": {
+          "data": []
         }
       }
     }

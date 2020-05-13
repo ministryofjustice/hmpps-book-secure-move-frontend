@@ -43,6 +43,10 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'events',
       },
+      allocations: {
+        jsonApi: 'hasOne',
+        type: 'allocations',
+      },
     },
   },
   image: {
@@ -218,6 +222,10 @@ module.exports = {
       other_criteria: '',
       created_at: '',
       updated_at: '',
+      events: {
+        jsonApi: 'hasMany',
+        type: 'events',
+      },
     },
   },
   allocation_complex_case: {
@@ -236,6 +244,7 @@ module.exports = {
       event_name: '',
       timestamp: '',
       notes: '',
+      cancel_reason: '',
       to_location: {
         jsonApi: 'hasOne',
         type: 'locations',

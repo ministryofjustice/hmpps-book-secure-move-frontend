@@ -14,8 +14,7 @@
   "progress": "Progress",
   "confirmation": {
     "page_title": "Allocation requested",
-    "detail":
-      "The request for {{moves_count}} {{people}} from {{from_location}} to {{to_location}} on {{date}} has been sent",
+    "detail": "The request for {{moves_count}} {{people}} from {{from_location}} to {{to_location}} on {{date}} has been sent",
     "view_all": "View all allocations",
     "view_by_from_location": "View {{from_location}} overview"
   },
@@ -24,5 +23,8 @@
   },
   "allocation_criteria": {
     "page_title": "Allocation criteria"
+  },
+  "allocation_cancel_reasons": {
+    "page_title": "Cancel this allocation",
   }
 }
