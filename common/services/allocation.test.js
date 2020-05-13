@@ -1,6 +1,30 @@
 const apiClient = require('../lib/api-client')()
 
 const allocationService = require('./allocation')
+describe('cancel', function() {
+  let outcome
+  beforeEach(async function() {
+    sinon.stub(apiClient, 'post').resolves({
+      data: {
+        events: [],
+      },
+    })
+    sinon.spy(apiClient, 'one')
+    sinon.spy(apiClient, 'all')
+    outcome = await allocationService.cancel('123')
+  })
+  it('calls the service to post an event', function() {
+    expect(apiClient.post).to.have.been.calledOnceWithExactly({
+      event_name: 'cancel',
+      timestamp: sinon.match.string,
+    })
+  })
+  it('returns the data', function() {
+    expect(outcome).to.deep.equal({
+      events: [],
+    })
+  })
+})
 describe('format', function() {
   let output
   beforeEach(function() {

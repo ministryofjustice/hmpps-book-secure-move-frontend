@@ -5,7 +5,8 @@
     "attributes": {
       "event_name": "redirect",
       "timestamp": "2020-05-01T11:33:00+01:00",
-      "notes": "requested by Alex"
+      "notes": "requested by Alex",
+      "cancel_reason": ""
     },
     "relationships": {
       "to_location": {
