@@ -1,3 +1,5 @@
+import { FEATURE_FLAGS } from '../../config'
+
 import {
   createPrisonMove,
   createOcaMove,
@@ -6,27 +8,29 @@ import {
   checkUpdatePagesForbidden,
 } from './_move'
 
-const checkUserCannotUpdate = () => {
-  test('User should not see any update links on move page', async () => {
-    await checkNoUpdateLinks()
-  })
+if (FEATURE_FLAGS.EDITABILITY) {
+  const checkUserCannotUpdate = () => {
+    test('User should not see any update links on move page', async () => {
+      await checkNoUpdateLinks()
+    })
 
-  test('User should not be able to access move update pages', async () => {
-    await checkUpdatePagesForbidden()
+    test('User should not be able to access move update pages', async () => {
+      await checkUpdatePagesForbidden()
+    })
+  }
+
+  fixture('Existing move - Prison user').beforeEach(async () => {
+    await createPrisonMove()
   })
+  checkUserCannotUpdate()
+
+  fixture('Existing move - OCA user').beforeEach(async () => {
+    await createOcaMove()
+  })
+  checkUserCannotUpdate()
+
+  fixture('Existing move - Supplier user').beforeEach(async () => {
+    await createSupplierMove()
+  })
+  checkUserCannotUpdate()
 }
-
-fixture('Existing move - Prison user').beforeEach(async () => {
-  await createPrisonMove()
-})
-checkUserCannotUpdate()
-
-fixture('Existing move - OCA user').beforeEach(async () => {
-  await createOcaMove()
-})
-checkUserCannotUpdate()
-
-fixture('Existing move - Supplier user').beforeEach(async () => {
-  await createSupplierMove()
-})
-checkUserCannotUpdate()

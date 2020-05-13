@@ -29,8 +29,10 @@ const secureTrainingCentrePermissions = [
   'move:create',
   'move:create:court_appearance',
   'move:cancel',
-  'move:update',
 ]
+if (FEATURE_FLAGS.EDITABILITY) {
+  secureTrainingCentrePermissions.push('move:update')
+}
 
 const supplierPermissions = [
   'moves:view:all',
