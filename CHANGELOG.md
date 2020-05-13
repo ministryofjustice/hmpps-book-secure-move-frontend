@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.21.0...v2.21.1) (2020-05-13)
+
+
+### Bug Fixes
+
+* **single requests:** Update submit button text ([c593e6c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c593e6cf89d758ecc209c9140c54eee8fd98c393))
+* Only display move agreed status for single requests ([8f737e1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8f737e15831b8baa8fc97b24ac38b28502e99752))
+
 ## [2.21.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.20.1...v2.21.0) (2020-05-12)
 
 
