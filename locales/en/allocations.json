@@ -38,10 +38,7 @@
       "none_provided": "None provided",
       "other_criteria": "Other criteria",
       "sentence_length": {
-        "label": "Time left to serve",
-        "value": "Any length of sentence",
-        "value_short": "16 months or less to serve",
-        "value_long": "16 months or longer to serve"
+        "label": "Time left to serve"
       }
     },
     "complete_in_full": "This allocation should be filled in full - consider prisoners that are the next best for this allocation",
