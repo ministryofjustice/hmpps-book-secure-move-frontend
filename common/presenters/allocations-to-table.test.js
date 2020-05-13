@@ -92,7 +92,8 @@ describe('#allocationsToTable', function() {
     })
     it('returns the total moves count on the first cell', function() {
       expect(output.rowsForAllocationTable[0][0]).to.deep.equal({
-        text: 3,
+        html:
+          '<a href="/allocation/8567f1a5-2201-4bc2-b655-f6526401303a">3 people</a>',
         attributes: {
           scope: 'row',
         },
@@ -118,10 +119,6 @@ describe('#allocationsToTable', function() {
         text: '3 May 2020',
       })
     })
-    xit('returns progress on the sixth cell', function() {
-      // define this when we have agreed on this field's format
-      expect(output.rowsForAllocationTable[0][5]).to.deep.equal()
-    })
     it('returns one head row with all the cells', function() {
       expect(output.headerForAllocationTable).to.deep.equal([
         {
@@ -138,9 +135,6 @@ describe('#allocationsToTable', function() {
         },
         {
           text: 'date',
-        },
-        {
-          text: 'allocations::progress',
         },
       ])
     })

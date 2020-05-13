@@ -6,9 +6,15 @@ const tableConfig = [
   {
     head: 'allocations::move_size',
     row: {
-      text: 'moves_count',
       attributes: {
         scope: 'row',
+      },
+      html: data => {
+        const content = `${data.moves_count} ${filters.pluralize(
+          'person',
+          data.moves_count
+        )}`
+        return `<a href="/allocation/${data.id}">${content}</a>`
       },
     },
   },
@@ -34,13 +40,6 @@ const tableConfig = [
     head: 'date',
     row: {
       text: data => filters.formatDate(data.date),
-    },
-  },
-  {
-    head: 'allocations::progress',
-    // todo: this field does not exist yet and it might end up having a different name or format
-    row: {
-      text: 'progress',
     },
   },
 ]
