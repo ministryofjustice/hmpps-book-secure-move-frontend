@@ -4,7 +4,7 @@ GITHUB_DEPLOYMENTS_URL="https://api.github.com/repos/ministryofjustice/hmpps-boo
 
 while true
 do
-  DEPLOYED_SHA=$(curl --silent -XGET -H "Authorization: token ${GITHUB_API_TOKEN}" $GITHUB_DEPLOYMENTS_URL | jq -r '.[0].sha')
+  DEPLOYED_SHA=$(curl --silent -XGET -H "Authorization: token ${GITHUB_API_TOKEN}" $GITHUB_DEPLOYMENTS_URL?ref=${CIRCLE_SHA1} | jq -r '.[0].sha')
   if [ "$DEPLOYED_SHA" = "$CIRCLE_SHA1" ]; then
     break
   fi
