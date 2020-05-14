@@ -49,7 +49,7 @@ function setPagination(req, res, next) {
   next()
 }
 async function setAllocationsSummary(req, res, next) {
-  const { dateRange } = res.locals
+  const { dateRange } = req.params
   const value = await allocationService.getCount({ dateRange })
   res.locals.allocationsSummary = [
     {
@@ -65,7 +65,7 @@ async function setAllocationsByDateAndFilter(req, res, next) {
   const additionalFilters = queryString.parse(req._parsedOriginalUrl.query, {
     parseBooleans: true,
   })
-  const { dateRange } = res.locals
+  const { dateRange } = req.params
   res.locals.allocations = await allocationService.getByStatus({
     dateRange,
     additionalFilters,
@@ -104,8 +104,7 @@ function addTotalAllocationsToFilter(
 }
 async function setAllocationTypeNavigation(req, res, next) {
   const { baseUrl } = req
-  const { dateRange } = res.locals
-  const { locationId, period, date } = req.params
+  const { dateRange, locationId, period, date } = req.params
   const currentFilter = queryString.parse(req._parsedOriginalUrl.query, {
     parseBooleans: true,
   })

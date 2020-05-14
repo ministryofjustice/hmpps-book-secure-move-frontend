@@ -13,8 +13,7 @@ function makeMultipleRequests(service, dateRange, locationIdBatches) {
 }
 
 async function setResultsOutgoing(req, res, next) {
-  const { dateRange } = res.locals
-  const { locationId } = req.params
+  const { dateRange, locationId } = req.params
 
   if (!dateRange) {
     return next()

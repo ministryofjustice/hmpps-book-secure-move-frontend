@@ -29,7 +29,7 @@ describe('Moves middleware', function() {
         .stub(presenters, 'moveToCardComponent')
         .callsFake(() => moveToCardComponentMapStub)
       nextSpy = sinon.spy()
-      res = { locals: {} }
+      res = {}
       req = {
         session: {
           user: {},
@@ -59,11 +59,7 @@ describe('Moves middleware', function() {
 
     context('when move date exists', function() {
       beforeEach(function() {
-        res = {
-          locals: {
-            dateRange: ['2010-10-10', '2010-10-11'],
-          },
-        }
+        req.params.dateRange = ['2010-10-10', '2010-10-11']
       })
 
       context('when API call returns successfully', function() {
@@ -88,14 +84,14 @@ describe('Moves middleware', function() {
               expect(req.session.user.locations).to.have.length(75)
               expect(moveService.getActive).to.have.callCount(2)
               expect(moveService.getActive).to.be.calledWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
                   .slice(0, 40)
                   .join(','),
               })
               expect(moveService.getActive).to.be.calledWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
                   .slice(40)
@@ -104,14 +100,14 @@ describe('Moves middleware', function() {
 
               expect(moveService.getCancelled).to.have.callCount(2)
               expect(moveService.getCancelled).to.be.calledWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
                   .slice(0, 40)
                   .join(','),
               })
               expect(moveService.getCancelled).to.be.calledWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: req.session.user.locations
                   .map(location => location.id)
                   .slice(40)
@@ -196,11 +192,11 @@ describe('Moves middleware', function() {
 
             it('should call API with move date and location ID', function() {
               expect(moveService.getActive).to.be.calledOnceWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: mockCurrentLocation,
               })
               expect(moveService.getCancelled).to.be.calledOnceWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: mockCurrentLocation,
               })
             })
@@ -258,11 +254,11 @@ describe('Moves middleware', function() {
 
             it('should call API with move date and location ID', function() {
               expect(moveService.getActive).to.be.calledOnceWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: mockCurrentLocation,
               })
               expect(moveService.getCancelled).to.be.calledOnceWithExactly({
-                dateRange: res.locals.dateRange,
+                dateRange: req.params.dateRange,
                 fromLocationId: mockCurrentLocation,
               })
             })

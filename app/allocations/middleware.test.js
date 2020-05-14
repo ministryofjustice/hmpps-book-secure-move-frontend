@@ -8,19 +8,16 @@ describe('#setAllocationsSummary', function() {
   beforeEach(async function() {
     sinon.stub(allocationService, 'getCount').returns(18)
     next = sinon.stub()
-    locals = {
-      dateRange: ['2020-01-01', '2020-01-10'],
-    }
+    locals = {}
     await middleware.setAllocationsSummary(
       {
         params: {
           date: '2020-01-01',
+          dateRange: ['2020-01-01', '2020-01-10'],
         },
         t: sinon.stub().returnsArg(0),
       },
-      {
-        locals,
-      },
+      { locals },
       next
     )
   })
@@ -195,12 +192,11 @@ describe('#setAllocationsByDateAndFilter', function() {
         _parsedOriginalUrl: {
           query: 'complete_in_full=true',
         },
-      },
-      {
-        locals: {
+        params: {
           dateRange: ['2020-01-01', null],
         },
       },
+      { locals: {} },
       next
     )
   })
@@ -220,9 +216,7 @@ describe('#setAllocationTypeNavigation', function() {
     let locals
     beforeEach(async function() {
       sinon.stub(allocationService, 'getCount').resolves(1)
-      locals = {
-        dateRange: ['2019-12-30', '2020-01-05'],
-      }
+      locals = {}
       next = sinon.stub()
       await middleware.setAllocationTypeNavigation(
         {
@@ -231,6 +225,7 @@ describe('#setAllocationTypeNavigation', function() {
             locationId: 123,
             period: 'week',
             date: '2020-01-01',
+            dateRange: ['2019-12-30', '2020-01-05'],
           },
           _parsedOriginalUrl: {
             query: '?filter[complete_in_full]=true&createdBy=456',
@@ -255,7 +250,6 @@ describe('#setAllocationTypeNavigation', function() {
     })
     it('takes the resulting counts and calculates the total', function() {
       expect(locals).to.deep.equal({
-        dateRange: ['2019-12-30', '2020-01-05'],
         allocationTypeNavigation: [
           {
             label: 'total',

@@ -3,6 +3,7 @@ const middleware = require('./set-pagination')
 describe('Moves middleware', function() {
   describe('#setPagination()', function() {
     const mockDate = '2019-10-10'
+    const mockView = 'requested'
     let req, res, nextSpy
 
     beforeEach(function() {
@@ -14,6 +15,7 @@ describe('Moves middleware', function() {
         baseUrl: '/moves',
         params: {
           date: mockDate,
+          view: mockView,
         },
       }
       nextSpy = sinon.spy()
@@ -36,19 +38,19 @@ describe('Moves middleware', function() {
 
         it('should set correct today link', function() {
           expect(res.locals.pagination.todayUrl).to.equal(
-            '/moves/day/2019-10-10'
+            `/moves/day/2019-10-10/${mockView}`
           )
         })
 
         it('should set correct next link', function() {
           expect(res.locals.pagination.nextUrl).to.equal(
-            '/moves/day/2019-10-11'
+            `/moves/day/2019-10-11/${mockView}`
           )
         })
 
         it('should set correct previous link', function() {
           expect(res.locals.pagination.prevUrl).to.equal(
-            '/moves/day/2019-10-09'
+            `/moves/day/2019-10-09/${mockView}`
           )
         })
 
@@ -69,19 +71,19 @@ describe('Moves middleware', function() {
 
         it('should set correct today link', function() {
           expect(res.locals.pagination.todayUrl).to.equal(
-            '/moves/week/2019-10-10'
+            `/moves/week/2019-10-10/${mockView}`
           )
         })
 
         it('should set correct next link', function() {
           expect(res.locals.pagination.nextUrl).to.equal(
-            '/moves/week/2019-10-17'
+            `/moves/week/2019-10-17/${mockView}`
           )
         })
 
         it('should set correct previous link', function() {
           expect(res.locals.pagination.prevUrl).to.equal(
-            '/moves/week/2019-10-03'
+            `/moves/week/2019-10-03/${mockView}`
           )
         })
 
@@ -105,19 +107,19 @@ describe('Moves middleware', function() {
 
         it('should set correct today link', function() {
           expect(res.locals.pagination.todayUrl).to.equal(
-            '/moves/day/2019-10-10/12345'
+            `/moves/day/2019-10-10/12345/${mockView}`
           )
         })
 
         it('should set correct next link', function() {
           expect(res.locals.pagination.nextUrl).to.equal(
-            '/moves/day/2019-10-11/12345'
+            `/moves/day/2019-10-11/12345/${mockView}`
           )
         })
 
         it('should set correct previous link', function() {
           expect(res.locals.pagination.prevUrl).to.equal(
-            '/moves/day/2019-10-09/12345'
+            `/moves/day/2019-10-09/12345/${mockView}`
           )
         })
 
@@ -139,19 +141,19 @@ describe('Moves middleware', function() {
 
         it('should set correct today link', function() {
           expect(res.locals.pagination.todayUrl).to.equal(
-            '/moves/week/2019-10-10/12345'
+            `/moves/week/2019-10-10/12345/${mockView}`
           )
         })
 
         it('should set correct next link', function() {
           expect(res.locals.pagination.nextUrl).to.equal(
-            '/moves/week/2019-10-17/12345'
+            `/moves/week/2019-10-17/12345/${mockView}`
           )
         })
 
         it('should set correct previous link', function() {
           expect(res.locals.pagination.prevUrl).to.equal(
-            '/moves/week/2019-10-03/12345'
+            `/moves/week/2019-10-03/12345/${mockView}`
           )
         })
 

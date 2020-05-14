@@ -1,15 +1,24 @@
-const {
-  getDateFromParams,
-  getDateRange,
-} = require('../../common/helpers/date-utils')
+const dateHelpers = require('../../common/helpers/date-utils')
 
-function setDateRange(req, res, next) {
+function setDateRange(req, res, next, date) {
   const { period } = req.params
-  const date = getDateFromParams(req)
-  if (!date) {
-    return res.redirect(req.baseUrl)
+  const dateRange = dateHelpers.getDateRange(date, period)
+
+  if (!dateRange[0] && !dateRange[1]) {
+    const error = new Error('Invalid date')
+    error.statusCode = 404
+
+    return next(error)
   }
-  res.locals.dateRange = getDateRange(period, date)
+
+  req.params.dateRange = dateRange
+
+  // TODO: Move these to the controller to move away
+  // from setting `res.locals` in middleware
+  res.locals.dateRange = dateRange
+  res.locals.period = period
+
   next()
 }
+
 module.exports = setDateRange

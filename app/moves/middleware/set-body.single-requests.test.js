@@ -6,13 +6,10 @@ describe('Moves middleware', function() {
 
     beforeEach(function() {
       nextSpy = sinon.spy()
-      mockRes = {
-        locals: {
-          dateRange: ['2020-10-10', '2020-10-10'],
-        },
-      }
+      mockRes = {}
       mockReq = {
         params: {
+          dateRange: ['2020-10-10', '2020-10-10'],
           locationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
         },
         query: {
