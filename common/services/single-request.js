@@ -37,6 +37,10 @@ const singleRequestService = {
           'filter[cancellation_reason]': 'rejected',
         }
         break
+      default:
+        statusFilter = {
+          'filter[status]': status,
+        }
     }
 
     return moveService.getAll({

@@ -16,37 +16,36 @@ const filterConfig = [
   },
 ]
 
-async function setfilterSingleRequests(req, res, next) {
-  const { dateRange } = res.locals
-  const { locationId, period, date } = req.params
-  const promises = filterConfig.map(item =>
-    singleRequestService
-      .getAll({
-        isAggregation: true,
-        fromLocationId: locationId,
-        createdAtDate: dateRange,
-        status: item.status,
-      })
-      .then(value => {
-        return {
-          ...item,
-          value,
-          active: item.status === req.params.status,
-          href: `${req.baseUrl}/${period}/${date}${
-            locationId ? `/${locationId}` : ''
-          }/${item.status || ''}`,
-        }
-      })
-  )
-
-  try {
-    req.filter = await Promise.all(promises).then(data =>
-      data.map(presenters.moveTypesToFilterComponent)
+function setfilterSingleRequests(customPath = '') {
+  return async function buildFilter(req, res, next) {
+    const promises = filterConfig.map(item =>
+      singleRequestService
+        .getAll({
+          ...req.body,
+          isAggregation: true,
+          status: item.status,
+        })
+        .then(value => {
+          return {
+            ...item,
+            value,
+            active: item.status === req.body.status,
+            href: `${req.baseUrl +
+              req.path +
+              customPath}?status=${item.status || ''}`,
+          }
+        })
     )
 
-    next()
-  } catch (error) {
-    next(error)
+    try {
+      req.filter = await Promise.all(promises).then(data =>
+        data.map(presenters.moveTypesToFilterComponent)
+      )
+
+      next()
+    } catch (error) {
+      next(error)
+    }
   }
 }
 

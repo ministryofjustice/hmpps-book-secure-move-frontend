@@ -65,7 +65,7 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
-              href: '/moves/week/2020-05-10/12345/pending',
+              href: '/moves/week/2020-05-10/12345/requested?status=pending',
               text: 'primary_navigation.single_requests',
             },
             {
@@ -94,7 +94,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/12345/pending',
+                href: '/moves/week/2020-05-10/12345/requested?status=pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -110,7 +110,8 @@ describe('#setPrimaryNavigation()', function() {
         statuses.forEach(status => {
           context(`on ${status} page`, function() {
             beforeEach(function() {
-              res.locals.REQUEST_PATH = `/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/${status}`
+              res.locals.REQUEST_PATH =
+                '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/requested'
               middleware(req, res, nextSpy)
             })
 
@@ -123,7 +124,7 @@ describe('#setPrimaryNavigation()', function() {
                 },
                 {
                   active: true,
-                  href: '/moves/week/2020-05-10/12345/pending',
+                  href: '/moves/week/2020-05-10/12345/requested?status=pending',
                   text: 'primary_navigation.single_requests',
                 },
                 {
@@ -152,7 +153,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/12345/pending',
+                href: '/moves/week/2020-05-10/12345/requested?status=pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -186,7 +187,7 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
-              href: '/moves/week/2020-05-10/pending',
+              href: '/moves/week/2020-05-10/requested?status=pending',
               text: 'primary_navigation.single_requests',
             },
             {
@@ -214,7 +215,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/pending',
+                href: '/moves/week/2020-05-10/requested?status=pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -226,9 +227,9 @@ describe('#setPrimaryNavigation()', function() {
           })
         })
 
-        context('on proposed page', function() {
+        context('on requested page', function() {
           beforeEach(function() {
-            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/pending'
+            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/requested'
             middleware(req, res, nextSpy)
           })
 
@@ -241,7 +242,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: true,
-                href: '/moves/week/2020-05-10/pending',
+                href: '/moves/week/2020-05-10/requested?status=pending',
                 text: 'primary_navigation.single_requests',
               },
               {
@@ -268,7 +269,7 @@ describe('#setPrimaryNavigation()', function() {
               },
               {
                 active: false,
-                href: '/moves/week/2020-05-10/pending',
+                href: '/moves/week/2020-05-10/requested?status=pending',
                 text: 'primary_navigation.single_requests',
               },
               {

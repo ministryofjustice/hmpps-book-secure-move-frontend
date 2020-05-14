@@ -291,6 +291,30 @@ describe('Single request service', function() {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
+
+        context('with any other status', function() {
+          beforeEach(async function() {
+            moves = await singleRequestService.getAll({
+              status: 'other',
+            })
+          })
+
+          it('should call moves.getAll with correct filter', function() {
+            expect(moveService.getAll).to.be.calledOnceWithExactly({
+              isAggregation: false,
+              filter: {
+                'filter[status]': 'other',
+                'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
+              },
+            })
+          })
+
+          it('should return moves', function() {
+            expect(moves).to.deep.equal(mockMoves)
+          })
+        })
       })
     })
   })
