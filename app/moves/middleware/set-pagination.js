@@ -1,4 +1,6 @@
 const { format } = require('date-fns')
+const { isEmpty } = require('lodash')
+const querystring = require('qs')
 
 const { getPeriod } = require('../../../common/helpers/date-utils')
 const { DATE_FORMATS } = require('../../../config')
@@ -12,11 +14,18 @@ function setPagination(req, res, next) {
   const nextPeriod = getPeriod(date, interval)
 
   const locationInUrl = locationId ? `/${locationId}` : ''
+  const queryInUrl = !isEmpty(req.query)
+    ? `?${querystring.stringify(req.query)}`
+    : ''
 
   res.locals.pagination = {
-    todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}/${view}`,
-    nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}/${view}`,
-    prevUrl: `${req.baseUrl}/${period}/${previousPeriod}${locationInUrl}/${view}`,
+    todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}/${view +
+      queryInUrl}`,
+    nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}/${view +
+      queryInUrl}`,
+    prevUrl: `${
+      req.baseUrl
+    }/${period}/${previousPeriod}${locationInUrl}/${view + queryInUrl}`,
   }
 
   next()

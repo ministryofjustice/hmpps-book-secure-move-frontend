@@ -13,6 +13,7 @@ describe('Moves middleware', function() {
       }
       req = {
         baseUrl: '/moves',
+        query: {},
         params: {
           date: mockDate,
           view: mockView,
@@ -160,6 +161,42 @@ describe('Moves middleware', function() {
         it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
+      })
+    })
+
+    context('with query', function() {
+      beforeEach(function() {
+        req.params.period = 'day'
+        req.query = {
+          status: 'approved',
+        }
+        middleware(req, res, nextSpy)
+      })
+
+      it('should contain pagination on locals', function() {
+        expect(res.locals).to.have.property('pagination')
+      })
+
+      it('should set correct today link', function() {
+        expect(res.locals.pagination.todayUrl).to.equal(
+          `/moves/day/2019-10-10/${mockView}?status=approved`
+        )
+      })
+
+      it('should set correct next link', function() {
+        expect(res.locals.pagination.nextUrl).to.equal(
+          `/moves/day/2019-10-11/${mockView}?status=approved`
+        )
+      })
+
+      it('should set correct previous link', function() {
+        expect(res.locals.pagination.prevUrl).to.equal(
+          `/moves/day/2019-10-09/${mockView}?status=approved`
+        )
+      })
+
+      it('should call next', function() {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
   })
