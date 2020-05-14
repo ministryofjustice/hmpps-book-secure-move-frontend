@@ -70,7 +70,7 @@ describe('Move controllers', function() {
         })
 
         it('should not call next', function() {
-          expect(nextSpy).to.not.be.called
+          expect(nextSpy).not.to.be.called
         })
 
         it('should invoke mixin’s configure', function() {
@@ -97,7 +97,7 @@ describe('Move controllers', function() {
         })
 
         it('should not invoke mixin’s configure', function() {
-          expect(MixinProto.configure).to.not.be.called
+          expect(MixinProto.configure).not.to.be.called
         })
 
         it('should call next once with an error', function() {
@@ -149,7 +149,7 @@ describe('Move controllers', function() {
           })
 
           it('should not copy the documents from the move to the session', function() {
-            expect(req.sessionModel.set).to.not.be.called
+            expect(req.sessionModel.set).not.to.be.called
           })
 
           it('should get the move’s documents correctly', function() {
@@ -220,11 +220,11 @@ describe('Move controllers', function() {
         })
 
         it('should not invoke mixin’s successHandler', async function() {
-          expect(MixinProto.successHandler).to.not.be.called
+          expect(MixinProto.successHandler).not.to.be.called
         })
 
         it('should not invoke next', async function() {
-          expect(nextSpy).to.not.be.called
+          expect(nextSpy).not.to.be.called
         })
       })
 
@@ -247,7 +247,7 @@ describe('Move controllers', function() {
         })
 
         it('should not update the move', async function() {
-          expect(moveService.update).to.not.be.called
+          expect(moveService.update).not.to.be.called
         })
 
         it('should invoke mixin’s successHandler', async function() {
@@ -259,7 +259,7 @@ describe('Move controllers', function() {
         })
 
         it('should not invoke next', async function() {
-          expect(nextSpy).to.not.be.called
+          expect(nextSpy).not.to.be.called
         })
       })
     })

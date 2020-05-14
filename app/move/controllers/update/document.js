@@ -35,22 +35,22 @@ class UpdateDocumentUploadController extends UpdateBase {
   }
 
   async successHandler(req, res, next) {
-    if (!req.xhr) {
-      try {
-        await moveService.update({
-          id: req.getMoveId(),
-          documents: req.form.values.documents,
-        })
-        return res.redirect(this.getBaseUrl(req))
-      } catch (err) {
-        next(err)
-      }
+    if (req.xhr) {
+      return DocumentUploadController.prototype.successHandler.apply(this, [
+        req,
+        res,
+        next,
+      ])
     }
-    DocumentUploadController.prototype.successHandler.apply(this, [
-      req,
-      res,
-      next,
-    ])
+    try {
+      await moveService.update({
+        id: req.getMoveId(),
+        documents: req.form.values.documents,
+      })
+      return res.redirect(this.getBaseUrl(req))
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
