@@ -5,6 +5,7 @@ const router = require('express').Router()
 const { setDateRange } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
+const { DEFAULTS } = require('./constants')
 const {
   dashboard,
   download,
@@ -13,6 +14,7 @@ const {
 } = require('./controllers')
 const {
   redirectBaseUrl,
+  redirectDefaultQuery,
   saveUrl,
   setFromLocation,
   setBodySingleRequests,
@@ -29,6 +31,7 @@ const uuidRegex =
 // Define param middleware
 router.param('locationId', setFromLocation)
 router.param('date', setDateRange)
+router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
 // Define shared middleware
 router.use('^([^.]+)$', saveUrl)

@@ -1,4 +1,5 @@
 const redirectBaseUrl = require('./redirect-base-url')
+const redirectDefaultQuery = require('./redirect-default-query')
 const saveUrl = require('./save-url')
 const setBodySingleRequests = require('./set-body.single-requests')
 const setDashboardMoveSummary = require('./set-dashboard-move-summary')
@@ -10,6 +11,7 @@ const setResultsSingleRequests = require('./set-results.single-requests')
 
 module.exports = {
   redirectBaseUrl,
+  redirectDefaultQuery,
   saveUrl,
   setDashboardMoveSummary,
   setBodySingleRequests,
