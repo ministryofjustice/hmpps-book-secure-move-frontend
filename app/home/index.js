@@ -8,11 +8,13 @@ const {
 } = require('../moves/middleware')
 
 const { dashboard } = require('./controllers')
+const { overrideBodySingleRequests } = require('./middleware')
 
 // Define routes
 router.get(
   '/',
   setBodySingleRequests,
+  overrideBodySingleRequests,
   setFilterSingleRequests('/moves/requested'),
   dashboard
 )
