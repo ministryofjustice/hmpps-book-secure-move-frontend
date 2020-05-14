@@ -13,85 +13,125 @@ describe('Moves middleware', function() {
       const mockDateRange = ['2010-09-03', '2010-09-10']
       const mockLocationId = '123'
 
-      beforeEach(async function() {
+      beforeEach(function() {
         sinon.stub(singleRequestService, 'getAll').resolves(4)
         sinon.stub(presenters, 'moveTypesToFilterComponent').returnsArg(0)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
-          url: '/moves/week/2010-09-07/123/pending',
-          params: {
-            locationId: mockLocationId,
-            date: '2010-09-07',
-            period: 'week',
+          path: '/week/2010-09-07/123',
+          body: {
+            createdAtDate: mockDateRange,
+            fromLocationId: mockLocationId,
             status: 'pending',
           },
         }
-        res = {
-          locals: {
-            dateRange: mockDateRange,
-          },
-        }
-        await middleware(req, res, next)
+        res = {}
       })
 
-      it('sets req.filter', function() {
-        expect(req.filter).to.deep.equal([
-          {
-            active: true,
+      context('without custom path', function() {
+        beforeEach(async function() {
+          await middleware()(req, res, next)
+        })
+
+        it('sets req.filter', function() {
+          expect(req.filter).to.deep.equal([
+            {
+              active: true,
+              status: 'pending',
+              label: 'statuses::pending',
+              href: '/moves/week/2010-09-07/123?status=pending',
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'approved',
+              label: 'statuses::approved',
+              href: '/moves/week/2010-09-07/123?status=approved',
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'rejected',
+              label: 'statuses::rejected',
+              href: '/moves/week/2010-09-07/123?status=rejected',
+              value: 4,
+            },
+          ])
+        })
+
+        it('calls the servive with correct arguments', async function() {
+          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+            isAggregation: true,
             status: 'pending',
-            label: 'statuses::pending',
-            href: '/moves/week/2010-09-07/123/pending',
-            value: 4,
-          },
-          {
-            active: false,
+            createdAtDate: mockDateRange,
+            fromLocationId: mockLocationId,
+          })
+          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+            isAggregation: true,
             status: 'approved',
-            label: 'statuses::approved',
-            href: '/moves/week/2010-09-07/123/approved',
-            value: 4,
-          },
-          {
-            active: false,
+            createdAtDate: mockDateRange,
+            fromLocationId: mockLocationId,
+          })
+          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+            isAggregation: true,
             status: 'rejected',
-            label: 'statuses::rejected',
-            href: '/moves/week/2010-09-07/123/rejected',
-            value: 4,
-          },
-        ])
-      })
+            createdAtDate: mockDateRange,
+            fromLocationId: mockLocationId,
+          })
+        })
 
-      it('calls the servive with correct arguments', async function() {
-        expect(singleRequestService.getAll).to.have.been.calledWithExactly({
-          isAggregation: true,
-          status: 'pending',
-          createdAtDate: mockDateRange,
-          fromLocationId: mockLocationId,
+        it('calls the service on each item', async function() {
+          expect(singleRequestService.getAll.callCount).to.equal(3)
         })
-        expect(singleRequestService.getAll).to.have.been.calledWithExactly({
-          isAggregation: true,
-          status: 'approved',
-          createdAtDate: mockDateRange,
-          fromLocationId: mockLocationId,
+
+        it('calls the presenter on each element', async function() {
+          expect(
+            presenters.moveTypesToFilterComponent
+          ).to.have.been.calledThrice
         })
-        expect(singleRequestService.getAll).to.have.been.calledWithExactly({
-          isAggregation: true,
-          status: 'rejected',
-          createdAtDate: mockDateRange,
-          fromLocationId: mockLocationId,
+
+        it('calls next', function() {
+          expect(next).to.have.been.calledWithExactly()
         })
       })
 
-      it('calls the service on each item', async function() {
-        expect(singleRequestService.getAll.callCount).to.equal(3)
-      })
+      context('with custom path', function() {
+        const customPath = '/requested'
 
-      it('calls the presenter on each element', async function() {
-        expect(presenters.moveTypesToFilterComponent).to.have.been.calledThrice
-      })
+        beforeEach(async function() {
+          await middleware(customPath)(req, res, next)
+        })
 
-      it('calls next', function() {
-        expect(next).to.have.been.calledWithExactly()
+        it('should use custom path in URLs req.filter', function() {
+          expect(req.filter).to.deep.equal([
+            {
+              active: true,
+              status: 'pending',
+              label: 'statuses::pending',
+              href: `/moves/week/2010-09-07/123${customPath}?status=pending`,
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'approved',
+              label: 'statuses::approved',
+              href: `/moves/week/2010-09-07/123${customPath}?status=approved`,
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'rejected',
+              label: 'statuses::rejected',
+              href: `/moves/week/2010-09-07/123${customPath}?status=rejected`,
+              value: 4,
+            },
+          ])
+        })
+
+        it('calls next', function() {
+          expect(next).to.have.been.calledWithExactly()
+        })
       })
     })
 
@@ -108,7 +148,7 @@ describe('Moves middleware', function() {
           locals: {},
         }
 
-        await middleware(req, res, next)
+        await middleware()(req, res, next)
       })
 
       it('calls next with error', function() {

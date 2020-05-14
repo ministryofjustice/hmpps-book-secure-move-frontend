@@ -15,6 +15,7 @@ const {
   redirectBaseUrl,
   saveUrl,
   setFromLocation,
+  setBodySingleRequests,
   setFilterSingleRequests,
   setPagination,
   setResultsSingleRequests,
@@ -45,7 +46,8 @@ router.get(
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})`,
   protectRoute('moves:view:proposed'),
-  setFilterSingleRequests,
+  setBodySingleRequests,
+  setFilterSingleRequests('/requested'),
   setDashboardMoveSummary,
   setPagination,
   dashboard
@@ -58,17 +60,19 @@ router.get(
   listAsCards
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(requested)`,
   protectRoute('moves:view:proposed'),
-  setFilterSingleRequests,
+  setBodySingleRequests,
+  setFilterSingleRequests(),
   setResultsSingleRequests,
   setPagination,
   listAsTable
 )
 router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:status(pending|approved|rejected)/download.:extension(csv|json)`,
+  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(requested)/download.:extension(csv|json)`,
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
+  setBodySingleRequests,
   setResultsSingleRequests,
   download
 )
