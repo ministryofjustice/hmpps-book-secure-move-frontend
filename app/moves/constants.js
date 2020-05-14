@@ -1,3 +1,5 @@
+const { setPagination } = require('./middleware')
+
 const CONSTANTS = {
   DEFAULTS: {
     QUERY: {
@@ -9,6 +11,7 @@ const CONSTANTS = {
       outgoing: 'day',
     },
   },
+  COLLECTION_MIDDLEWARE: [setPagination],
 }
 
 module.exports = CONSTANTS
