@@ -4,6 +4,10 @@ const CONSTANTS = {
       requested: { status: 'pending' },
       outgoing: {},
     },
+    TIME_PERIOD: {
+      requested: 'week',
+      outgoing: 'day',
+    },
   },
 }
 

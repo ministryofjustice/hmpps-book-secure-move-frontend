@@ -15,6 +15,7 @@ const {
 const {
   redirectBaseUrl,
   redirectDefaultQuery,
+  redirectView,
   saveUrl,
   setFromLocation,
   setBodySingleRequests,
@@ -91,6 +92,8 @@ router.get(
   setResultsOutgoing,
   download
 )
+router.get('/:view(outgoing|requested)', redirectView(DEFAULTS.TIME_PERIOD))
+
 // Export
 module.exports = {
   router,
