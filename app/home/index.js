@@ -2,10 +2,20 @@
 const router = require('express').Router()
 
 // Local dependencies
-const { mountpath: movesUrl } = require('../moves')
+const {
+  setFilterSingleRequests,
+  setBodySingleRequests,
+} = require('../moves/middleware')
+
+const { dashboard } = require('./controllers')
 
 // Define routes
-router.get('/', (req, res) => res.redirect(movesUrl))
+router.get(
+  '/',
+  setBodySingleRequests,
+  setFilterSingleRequests('/moves/requested'),
+  dashboard
+)
 
 // Export
 module.exports = {

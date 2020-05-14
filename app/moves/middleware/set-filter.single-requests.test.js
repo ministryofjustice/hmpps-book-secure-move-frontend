@@ -109,21 +109,60 @@ describe('Moves middleware', function() {
               active: true,
               status: 'pending',
               label: 'statuses::pending',
-              href: `/moves/week/2010-09-07/123${customPath}?status=pending`,
+              href: `${customPath}?status=pending`,
               value: 4,
             },
             {
               active: false,
               status: 'approved',
               label: 'statuses::approved',
-              href: `/moves/week/2010-09-07/123${customPath}?status=approved`,
+              href: `${customPath}?status=approved`,
               value: 4,
             },
             {
               active: false,
               status: 'rejected',
               label: 'statuses::rejected',
-              href: `/moves/week/2010-09-07/123${customPath}?status=rejected`,
+              href: `${customPath}?status=rejected`,
+              value: 4,
+            },
+          ])
+        })
+
+        it('calls next', function() {
+          expect(next).to.have.been.calledWithExactly()
+        })
+      })
+
+      context('with existing query', function() {
+        beforeEach(async function() {
+          req.query = {
+            foo: 'bar',
+          }
+          await middleware()(req, res, next)
+        })
+
+        it('should combine query in URLs', function() {
+          expect(req.filter).to.deep.equal([
+            {
+              active: true,
+              status: 'pending',
+              label: 'statuses::pending',
+              href: '/moves/week/2010-09-07/123?foo=bar&status=pending',
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'approved',
+              label: 'statuses::approved',
+              href: '/moves/week/2010-09-07/123?foo=bar&status=approved',
+              value: 4,
+            },
+            {
+              active: false,
+              status: 'rejected',
+              label: 'statuses::rejected',
+              href: '/moves/week/2010-09-07/123?foo=bar&status=rejected',
               value: 4,
             },
           ])

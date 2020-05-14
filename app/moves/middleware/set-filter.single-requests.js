@@ -1,3 +1,5 @@
+const querystring = require('qs')
+
 const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
 
@@ -16,7 +18,7 @@ const filterConfig = [
   },
 ]
 
-function setfilterSingleRequests(customPath = '') {
+function setfilterSingleRequests(customPath) {
   return async function buildFilter(req, res, next) {
     const promises = filterConfig.map(item =>
       singleRequestService
@@ -26,13 +28,15 @@ function setfilterSingleRequests(customPath = '') {
           status: item.status,
         })
         .then(value => {
+          const query = querystring.stringify({
+            ...req.query,
+            status: item.status,
+          })
           return {
             ...item,
             value,
             active: item.status === req.body.status,
-            href: `${req.baseUrl +
-              req.path +
-              customPath}?status=${item.status || ''}`,
+            href: `${customPath || req.baseUrl + req.path}?${query}`,
           }
         })
     )

@@ -6,12 +6,7 @@ const { setDateRange } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const { DEFAULTS } = require('./constants')
-const {
-  dashboard,
-  download,
-  listAsCards,
-  listAsTable,
-} = require('./controllers')
+const { download, listAsCards, listAsTable } = require('./controllers')
 const {
   redirectBaseUrl,
   redirectDefaultQuery,
@@ -23,7 +18,6 @@ const {
   setPagination,
   setResultsSingleRequests,
   setResultsOutgoing,
-  setDashboardMoveSummary,
 } = require('./middleware')
 
 const uuidRegex =
@@ -45,15 +39,6 @@ router.get(
   setResultsOutgoing,
   setPagination,
   listAsCards
-)
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})`,
-  protectRoute('moves:view:proposed'),
-  setBodySingleRequests,
-  setFilterSingleRequests('/requested'),
-  setDashboardMoveSummary,
-  setPagination,
-  dashboard
 )
 router.get(
   `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,

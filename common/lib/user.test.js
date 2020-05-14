@@ -212,7 +212,7 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:dashboard',
+          'dashboard:view',
           'moves:view:proposed',
           'moves:download',
           'move:view',
@@ -230,6 +230,7 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
+          'dashboard:view',
           'allocations:view',
           'allocation:create',
           'move:review',
@@ -277,7 +278,7 @@ describe('User class', function() {
           'move:create:prison_recall',
           'move:cancel',
           'moves:view:all',
-          'moves:view:dashboard',
+          'dashboard:view',
           'moves:view:proposed',
           'move:create:prison_transfer',
           'allocations:view',
