@@ -410,6 +410,21 @@ export async function checkUpdateMoveDetails() {
 }
 
 /**
+ * Change move date and confirm changes on move view page
+ *
+ * @returns {undefined}
+ */
+export async function checkUpdateMoveDate(date = 'Tomorrow') {
+  const updateMovePage = await clickUpdateLink('date')
+
+  const updatedMove = await updateMovePage.fillInDate(date)
+
+  await updateMovePage.submitForm()
+
+  await moveDetailPage.checkMoveDetails(updatedMove)
+}
+
+/**
  * Check that PNC details are uneditable and displayed corectly on the personal details page
  *
  * @returns {undefined}
