@@ -166,7 +166,7 @@ jobs:
                 name: Set Heroku Review Apps URL for Pull Requests
                 command: |
                   echo "export E2E_BASE_URL=$(sh .circleci/get-review-app-url.sh)" >> $BASH_ENV
-                no_output_timeout: 180s
+                no_output_timeout: 600s
       - run:
           name: Run E2E tests
           command: npm run test-e2e:ci
