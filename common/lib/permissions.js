@@ -35,7 +35,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
 }
 
 const supplierPermissions = [
-  'moves:view:all',
+  'locations:all',
   'moves:view:outgoing',
   'moves:download',
   'move:view',

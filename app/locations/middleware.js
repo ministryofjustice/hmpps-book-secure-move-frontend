@@ -24,7 +24,7 @@ function setLocation(req, res, next) {
 function setAllLocations(req, res, next) {
   const { permissions = [] } = req.session.user || {}
 
-  if (!permissions.includes('moves:view:all')) {
+  if (!permissions.includes('locations:all')) {
     return next()
   }
 

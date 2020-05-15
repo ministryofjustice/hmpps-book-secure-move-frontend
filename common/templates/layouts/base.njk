@@ -102,7 +102,7 @@
   {% endblock %}
 
   {% block organisationSwitcher %}
-    {% if CURRENT_LOCATION or canAccess("moves:view:all") %}
+    {% if CURRENT_LOCATION or canAccess("locations:all") %}
       <div class="govuk-width-container">
         {{ mojOrganisationSwitcher({
           text: CURRENT_LOCATION.title or t("locations::all_locations"),

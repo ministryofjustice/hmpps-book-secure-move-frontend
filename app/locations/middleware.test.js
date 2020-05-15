@@ -234,7 +234,7 @@ describe('Locations middleware', function() {
     context('when locationId is found in user locations', function() {
       beforeEach(function() {
         req.session.user = {
-          permissions: ['moves:view:all'],
+          permissions: ['locations:all'],
         }
 
         middleware.setAllLocations(req, {}, nextSpy)

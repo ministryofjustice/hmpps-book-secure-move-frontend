@@ -15,8 +15,8 @@
     </h1>
   </header>
 
-  {% if locations | length %}
-    {% if canAccess("moves:view:all") %}
+  {% if locations | length or canAccess("locations:all") %}
+    {% if canAccess("locations:all") %}
       <p class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
         <a href="/locations/all">{{ t("locations::view_all_locations") }}</a>
       </p>
