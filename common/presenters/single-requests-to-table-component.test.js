@@ -139,6 +139,7 @@ describe('#singleRequestsToTableComponent()', function() {
         },
       })
     })
+
     it('should call card component with correct arguments', function() {
       expect(moveToCardComponentOptsStub).to.be.calledWithExactly({
         isCompact: true,
@@ -146,32 +147,45 @@ describe('#singleRequestsToTableComponent()', function() {
       })
       expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
     })
+
     it('returns html with createdAt on the second cell', function() {
       expect(output.rows[0][1]).to.deep.equal({
         text: mockMoves[0].created_at,
       })
     })
-    it('returns toLocation on the third cell', function() {
+
+    it('returns fromLocation on the third cell', function() {
       expect(output.rows[0][2]).to.deep.equal({
+        text: mockMoves[0].from_location.title,
+      })
+    })
+
+    it('returns toLocation on the forth cell', function() {
+      expect(output.rows[0][3]).to.deep.equal({
         text: mockMoves[0].to_location.title,
       })
     })
-    it('returns the date range on the fourth cell', function() {
-      expect(output.rows[0][3]).to.deep.equal({
+
+    it('returns the date range on the fifth cell', function() {
+      expect(output.rows[0][4]).to.deep.equal({
         text: mockMoves[0].date_from,
       })
     })
-    it('returns the move type on the fifth cell', function() {
-      expect(output.rows[0][4]).to.deep.equal({
+
+    it('returns the move type on the sixth cell', function() {
+      expect(output.rows[0][5]).to.deep.equal({
         text: mockMoves[0].prison_transfer_reason.title,
       })
     })
+
     it('returns empty object with null prison transfer reason', function() {
-      expect(output.rows[1][4]).to.deep.equal({})
+      expect(output.rows[1][5]).to.deep.equal({})
     })
+
     it('returns a row per record', function() {
       expect(output.rows.length).to.equal(2)
     })
+
     it('returns one head row with all the cells', function() {
       expect(output.head).to.deep.equal([
         {
@@ -185,6 +199,9 @@ describe('#singleRequestsToTableComponent()', function() {
           attributes: {
             width: '120',
           },
+        },
+        {
+          text: 'moves::dashboard.move_from',
         },
         {
           text: 'moves::dashboard.move_to',
