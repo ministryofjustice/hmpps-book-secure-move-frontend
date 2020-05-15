@@ -1,8 +1,14 @@
 import faker from 'faker'
 import { Selector, t } from 'testcafe'
 
-import { createMoveFixture, expectForbidden, fillInForm } from './_helpers'
-import { policeUser, stcUser } from './_roles'
+import { createMoveFixture, fillInForm, expectStatusCode } from './_helpers'
+import {
+  ocaUser,
+  policeUser,
+  prisonUser,
+  stcUser,
+  supplierUser,
+} from './_roles'
 import { home, getMove, getUpdateMove } from './_routes'
 import { page, moveDetailPage } from './pages'
 import UpdateMovePage from './pages/update-move'
@@ -65,7 +71,10 @@ export async function createMove(options = {}) {
   await moveDetailPage.checkPersonalDetails(person)
   await moveDetailPage.checkRiskInformation(person)
   await moveDetailPage.checkHealthInformation(person)
-  if (move.moveType !== 'prison_recall') {
+  if (
+    move.moveType !== 'prison_recall' &&
+    move.from_location.location_type !== 'prison'
+  ) {
     await moveDetailPage.checkCourtInformation(person)
   }
   await moveDetailPage.checkMoveDetails(move)
@@ -85,7 +94,7 @@ export async function createMove(options = {}) {
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-export async function createPoliceMove(options = {}) {
+function createNonPrisonMove(user, options = {}) {
   options.personOverrides = {
     prisonNumber: undefined,
     criminalRecordsOffice: undefined,
@@ -95,7 +104,7 @@ export async function createPoliceMove(options = {}) {
   }
 
   return createMove({
-    user: policeUser,
+    user,
     defaultMoveOptions: {
       to_location_type: 'court',
       move_type: 'court_appearance',
@@ -105,7 +114,31 @@ export async function createPoliceMove(options = {}) {
 }
 
 /**
+ * Create a move as a police user
+ *
+ * @param {object} options
+ * See createNonPrisonMove for more details
+ *
+ * @returns {undefined} Creates person and move, checking that move has all expected values
+ */
+export async function createPoliceMove(options = {}) {
+  return createNonPrisonMove(policeUser, options)
+}
+
+/**
  * Create a move as a stc user
+ *
+ * @param {object} options
+ * See createNonPrisonMove for more details
+ *
+ * @returns {undefined} Creates person and move, checking that move has all expected values
+ */
+export async function createStcMove(options) {
+  return createNonPrisonMove(stcUser, options)
+}
+
+/**
+ * Create a move as a prison user
  *
  * @param {object} options
  *
@@ -118,9 +151,51 @@ export async function createPoliceMove(options = {}) {
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-export async function createStcMove(options) {
+export async function createPrisonMove(options) {
   return createMove({
-    user: stcUser,
+    user: prisonUser,
+    ...options,
+  })
+}
+
+/**
+ * Create a move as a oca user
+ *
+ * @param {object} options
+ *
+ * @param {object} [options.personOverrides] - override values for person
+ *
+ * @param {object} [options.moveOverrides] - override values for move
+ *
+ * @param {object} [options.moveOptions] - config for move creation
+ * See createMoveFixture for more details
+ *
+ * @returns {undefined} Creates person and move, checking that move has all expected values
+ */
+export async function createOcaMove(options) {
+  return createMove({
+    user: ocaUser,
+    ...options,
+  })
+}
+
+/**
+ * Create a move as a supplier user
+ *
+ * @param {object} options
+ *
+ * @param {object} [options.personOverrides] - override values for person
+ *
+ * @param {object} [options.moveOverrides] - override values for move
+ *
+ * @param {object} [options.moveOptions] - config for move creation
+ * See createMoveFixture for more details
+ *
+ * @returns {undefined} Creates person and move, checking that move has all expected values
+ */
+export async function createSupplierMove(options) {
+  return createMove({
+    user: supplierUser,
     ...options,
   })
 }
@@ -147,7 +222,14 @@ export async function checkNoUpdateLink(page) {
   return moveDetailPage.checkNoUpdateLink(page)
 }
 
-const updatePages = ['personal_details', 'risk', 'health', 'court', 'date']
+const updatePages = [
+  'personal_details',
+  'risk',
+  'health',
+  'court',
+  'date',
+  'document',
+]
 
 /**
  * Filter update pages into
@@ -210,17 +292,17 @@ export async function checkNoUpdateLinks() {
 }
 
 /**
- * Check whether current user is forbidden from accessing update page
+ * Check status of page for current user
  *
  * @param {string} page - page key
  *
- * @param {boolean} [negated] - whether to negate the assertion
+ * @param {string} statusCode - status to check fot
  *
  * @returns {undefined}
  */
-export async function checkUpdatePageForbidden(page, negated) {
+export async function checkUpdatePageStatus(page, statusCode) {
   const url = getUpdateMove(t.ctx.move.id, page)
-  await expectForbidden(url, negated)
+  await expectStatusCode(url, statusCode)
 }
 
 /**
@@ -236,10 +318,10 @@ export async function checkUpdatePagesAccessible(pages, negated) {
   const filteredPages = filterUpdatePages(pages, negated)
 
   for await (const page of filteredPages.show) {
-    await checkUpdatePageForbidden(page, false)
+    await checkUpdatePageStatus(page, 200)
   }
   for await (const page of filteredPages.hide) {
-    await checkUpdatePageForbidden(page)
+    await checkUpdatePageStatus(page, 404)
   }
 }
 
@@ -249,7 +331,9 @@ export async function checkUpdatePagesAccessible(pages, negated) {
  * @returns {undefined}
  */
 export async function checkUpdatePagesForbidden() {
-  await checkUpdatePagesAccessible([])
+  for await (const page of updatePages) {
+    await checkUpdatePageStatus(page, 403)
+  }
 }
 
 /**
@@ -422,6 +506,62 @@ export async function checkUpdateMoveDate(date = 'Tomorrow') {
   await updateMovePage.submitForm()
 
   await moveDetailPage.checkMoveDetails(updatedMove)
+}
+
+/*
+ * Change documents and confirm changes on move view page
+ *
+ * First adds 2 documents and then deletes all documents
+ *
+ * @returns {undefined}
+ */
+export async function checkUpdateDocuments() {
+  const noDocumentsMessage = moveDetailPage.nodes.noDocumentsMessage
+  const documentList = moveDetailPage.nodes.documentList
+  const deleteDocumentButton = Selector('[name=delete]')
+
+  const { documents } = t.ctx.move
+  let documentCount = documents ? documents.length : 0
+
+  const checkDocumentList = async () => {
+    if (documentCount) {
+      await t.expect(noDocumentsMessage.exists).notOk()
+      await t.expect(documentList.find('li').count).eql(documentCount)
+    } else {
+      await t.expect(noDocumentsMessage.exists).ok()
+      await t.expect(documentList.exists).notOk()
+    }
+  }
+
+  const addDocuments = async files => {
+    const updateMovePage = await clickUpdateLink('document')
+
+    await updateMovePage.fillInDocumentUploads(files)
+    documentCount += files.length
+
+    await updateMovePage.submitForm()
+
+    await checkDocumentList()
+  }
+
+  const deleteDocument = async () => {
+    const updateMovePage = await clickUpdateLink('document')
+
+    await t.click(deleteDocumentButton)
+    documentCount--
+
+    await updateMovePage.submitForm()
+
+    await checkDocumentList()
+  }
+
+  await checkDocumentList()
+
+  await addDocuments(['a-random-text-file.txt', 'leo-the-cat.png'])
+  // eslint-disable-next-line no-unmodified-loop-condition
+  while (documentCount) {
+    await deleteDocument()
+  }
 }
 
 /**

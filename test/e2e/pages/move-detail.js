@@ -47,6 +47,12 @@ class MoveDetailPage extends Page {
       noHealthInformationMessage: Selector('.app-message').withText(
         'No health affecting transport'
       ),
+      documentList: Selector('#main-content h2')
+        .withText('Supporting documents')
+        .sibling('.govuk-list'),
+      noDocumentsMessage: Selector('.app-message').withText(
+        'No documents uploaded'
+      ),
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
       },

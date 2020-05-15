@@ -16,7 +16,7 @@ import {
 } from './_move'
 
 if (FEATURE_FLAGS.EDITABILITY) {
-  fixture('Existing move from Police Custody').beforeEach(async () => {
+  fixture('Existing move - Police user').beforeEach(async () => {
     await createPoliceMove()
   })
 

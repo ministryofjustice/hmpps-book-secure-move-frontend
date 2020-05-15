@@ -429,16 +429,3 @@ export async function expectStatusCode(url, statusCode, negated = true) {
   await t.expect(getResponseStatus(logger, url) === statusCode)[expectMethod]()
   await t.removeRequestHooks(logger)
 }
-
-/**
- * Check whether a url is protected
- *
- * @param {string} url - URL to check
- *
- * @param {boolean} [negated] - whether to negate the assertion
- *
- * @returns {Promise<boolean>}
- */
-export async function expectForbidden(url, negated) {
-  await expectStatusCode(url, 403, negated)
-}

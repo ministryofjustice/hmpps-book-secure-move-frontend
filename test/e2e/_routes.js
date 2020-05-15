@@ -8,8 +8,9 @@ const getUpdatePageStub = page => {
     move: 'move-details',
     personal_details: 'personal-details',
     risk: 'risk-information',
+    document: 'document',
   }
-  return updateMap[page]
+  return updateMap[page] || page
 }
 
 export const home = E2E.BASE_URL
