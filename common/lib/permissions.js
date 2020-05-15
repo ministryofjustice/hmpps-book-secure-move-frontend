@@ -59,9 +59,10 @@ const ocaPermissions = [
 ]
 const pmuPermissions = [
   'dashboard:view',
-  'allocations:view',
-  'allocation:create',
+  'locations:all',
+  'moves:view:proposed',
   'move:review',
+  'move:view',
 ]
 
 const permissionsByRole = {

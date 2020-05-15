@@ -231,9 +231,10 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'dashboard:view',
-          'allocations:view',
-          'allocation:create',
+          'locations:all',
+          'moves:view:proposed',
           'move:review',
+          'move:view',
         ])
       })
     })
@@ -281,8 +282,6 @@ describe('User class', function() {
           'dashboard:view',
           'moves:view:proposed',
           'move:create:prison_transfer',
-          'allocations:view',
-          'allocation:create',
         ]
         if (FEATURE_FLAGS.EDITABILITY) {
           allPermissions.push('move:update')
