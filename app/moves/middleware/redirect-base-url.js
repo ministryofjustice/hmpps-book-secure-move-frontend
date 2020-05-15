@@ -16,7 +16,7 @@ function redirectBaseUrl(req, res) {
     )
     const url =
       canViewProposedMoves && currentLocation.location_type === 'prison'
-        ? `${req.baseUrl}/week/${today}/${currentLocation.id}/`
+        ? `${req.baseUrl}/week/${today}/${currentLocation.id}/requested`
         : `${req.baseUrl}/day/${today}/${currentLocation.id}/outgoing`
     return res.redirect(url)
   }

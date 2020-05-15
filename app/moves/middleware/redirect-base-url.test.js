@@ -91,7 +91,7 @@ describe('Moves middleware', function() {
           })
           it('should redirect to the dashboard if the user can see them', function() {
             expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/week/${mockMoveDate}/${mockLocation.id}/`
+              `/moves/week/${mockMoveDate}/${mockLocation.id}/requested`
             )
           })
         })
