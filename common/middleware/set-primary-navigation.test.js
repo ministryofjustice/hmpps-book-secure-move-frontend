@@ -36,7 +36,7 @@ describe('#setPrimaryNavigation()', function() {
   context('with permissions', function() {
     beforeEach(function() {
       req.session.user.permissions = [
-        'moves:view:dashboard',
+        'dashboard:view',
         'moves:view:proposed',
         'moves:view:outgoing',
       ]
@@ -51,7 +51,7 @@ describe('#setPrimaryNavigation()', function() {
         expect(res.locals.primaryNavigation).to.deep.equal([
           {
             active: false,
-            href: '/moves',
+            href: '/',
             text: 'primary_navigation.home',
           },
           {
@@ -71,8 +71,7 @@ describe('#setPrimaryNavigation()', function() {
     describe('active state', function() {
       context('on home page', function() {
         beforeEach(function() {
-          req.path =
-            '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9'
+          req.path = '/'
           middleware(req, res, nextSpy)
         })
 
@@ -80,7 +79,7 @@ describe('#setPrimaryNavigation()', function() {
           expect(res.locals.primaryNavigation).to.deep.equal([
             {
               active: true,
-              href: '/moves',
+              href: '/',
               text: 'primary_navigation.home',
             },
             {
@@ -107,7 +106,7 @@ describe('#setPrimaryNavigation()', function() {
           expect(res.locals.primaryNavigation).to.deep.equal([
             {
               active: false,
-              href: '/moves',
+              href: '/',
               text: 'primary_navigation.home',
             },
             {
@@ -134,7 +133,7 @@ describe('#setPrimaryNavigation()', function() {
           expect(res.locals.primaryNavigation).to.deep.equal([
             {
               active: false,
-              href: '/moves',
+              href: '/',
               text: 'primary_navigation.home',
             },
             {

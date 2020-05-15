@@ -1,0 +1,30 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t(pageTitle) }}
+    </h1>
+  </header>
+
+  <div class="govuk-grid-row">
+    {% for key, section in sections %}
+      {% if canAccess(section.permission) %}
+        <section class="govuk-grid-column-one-half">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
+            {{ t(section.heading) }}
+          </h2>
+
+          {{ appFilter({
+            items: section.filter,
+            classes: "app-filter--stacked"
+          }) }}
+        </section>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
