@@ -92,7 +92,8 @@ describe('#allocationsToTable', function() {
     })
     it('returns the total moves count on the first cell', function() {
       expect(output.rowsForAllocationTable[0][0]).to.deep.equal({
-        text: 3,
+        html:
+          '<a href="/allocation/8567f1a5-2201-4bc2-b655-f6526401303a">3 people</a>',
         attributes: {
           scope: 'row',
         },
