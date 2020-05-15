@@ -5,7 +5,7 @@ import {
   supplierUser,
   ocaUser,
 } from './_roles'
-import { movesByDay } from './_routes'
+import { home, movesByDay } from './_routes'
 import { dashboardPage, page, movesDashboardPage } from './pages'
 
 const users = [
@@ -80,7 +80,7 @@ users.forEach(user => {
 
 usersWhoHaveADashboard.forEach(user => {
   test.before(async t => {
-    await t.useRole(user.role).navigateTo(movesByDay)
+    await t.useRole(user.role).navigateTo(home)
   })(`As ${user.name}`, async t => {
     await t
       .expect(page.nodes.appHeader.exists)
