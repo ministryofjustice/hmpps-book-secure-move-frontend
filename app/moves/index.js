@@ -6,7 +6,13 @@ const viewRouter = require('express').Router({ mergeParams: true })
 const { setDateRange } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { COLLECTION_MIDDLEWARE, DEFAULTS } = require('./constants')
+const {
+  COLLECTION_MIDDLEWARE,
+  COLLECTION_BASE_PATH,
+  COLLECTION_VIEW_PATH,
+  DEFAULTS,
+  MOUNTPATH,
+} = require('./constants')
 const { download, listAsCards, listAsTable } = require('./controllers')
 const {
   redirectBaseUrl,
@@ -19,9 +25,6 @@ const {
   setResultsSingleRequests,
   setResultsOutgoing,
 } = require('./middleware')
-
-const uuidRegex =
-  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 // Define param middleware
 router.param('locationId', setFromLocation)
@@ -62,14 +65,11 @@ viewRouter.get(
 )
 
 router.get('/', redirectBaseUrl)
-router.get('/:view(outgoing|requested)', redirectView(DEFAULTS.TIME_PERIOD))
-router.use(
-  `/:period(week|day)/:date([0-9]{4}-[0-9]{2}-[0-9]{2})/:locationId(${uuidRegex})?`,
-  viewRouter
-)
+router.get(COLLECTION_VIEW_PATH, redirectView(DEFAULTS.TIME_PERIOD))
+router.use(COLLECTION_BASE_PATH, viewRouter)
 
 // Export
 module.exports = {
   router,
-  mountpath: '/moves',
+  mountpath: MOUNTPATH,
 }

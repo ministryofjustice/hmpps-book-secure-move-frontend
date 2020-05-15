@@ -10,6 +10,10 @@ const mockCancelledMovesByDate = [
   { foo: 'bar', status: 'cancelled' },
   { fizz: 'buzz', status: 'cancelled' },
 ]
+const mockPagination = {
+  next: '/next',
+  prev: '/prev',
+}
 
 describe('Moves controllers', function() {
   describe('#listAsCards()', function() {
@@ -17,6 +21,7 @@ describe('Moves controllers', function() {
 
     beforeEach(function() {
       req = {
+        pagination: mockPagination,
         params: {},
         resultsAsCards: {
           active: mockActiveMovesByDate,
@@ -45,6 +50,17 @@ describe('Moves controllers', function() {
           active: mockActiveMovesByDate,
           cancelled: mockCancelledMovesByDate,
         })
+      })
+
+      it('should contain pagination property', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('pagination')
+        expect(params.pagination).to.deep.equal(mockPagination)
+      })
+
+      it('should contain correct number of properties', function() {
+        const params = res.render.args[0][1]
+        expect(Object.keys(params)).to.have.length(3)
       })
     })
 

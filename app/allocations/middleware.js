@@ -5,7 +5,7 @@ const queryString = require('query-string')
 const {
   dateFormat,
   getDateFromParams,
-  getPeriod,
+  getRelativeDate,
 } = require('../../common/helpers/date-utils')
 const presenters = require('../../common/presenters')
 const allocationService = require('../../common/services/allocation')
@@ -30,8 +30,8 @@ function setPagination(req, res, next) {
   const baseDate = getDateFromParams(req)
   const interval = period === 'week' ? 7 : 1
 
-  const previousPeriod = getPeriod(baseDate, -interval)
-  const nextPeriod = getPeriod(baseDate, interval)
+  const previousPeriod = getRelativeDate(baseDate, -interval)
+  const nextPeriod = getRelativeDate(baseDate, interval)
   const viewInUrl = view ? `${view}` : ''
 
   const urlPeriods = {
