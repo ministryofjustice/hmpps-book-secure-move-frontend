@@ -6,6 +6,7 @@ describe('#setPrimaryNavigation()', function() {
   beforeEach(function() {
     nextSpy = sinon.spy()
     req = {
+      path: '',
       session: {
         user: {
           permissions: [],
@@ -14,10 +15,7 @@ describe('#setPrimaryNavigation()', function() {
       t: sinon.stub().returnsArg(0),
     }
     res = {
-      locals: {
-        TODAY: new Date(2020, 4, 10),
-        REQUEST_PATH: '',
-      },
+      locals: {},
     }
   })
 
@@ -44,141 +42,95 @@ describe('#setPrimaryNavigation()', function() {
       ]
     })
 
-    context('with location', function() {
+    describe('navigation items', function() {
       beforeEach(function() {
-        res.locals.CURRENT_LOCATION = {
-          id: '12345',
-        }
-      })
-
-      describe('navigation items', function() {
-        beforeEach(function() {
-          middleware(req, res, nextSpy)
-        })
-
-        it('should set items correctly', function() {
-          expect(res.locals.primaryNavigation).to.deep.equal([
-            {
-              active: false,
-              href: '/moves',
-              text: 'primary_navigation.home',
-            },
-            {
-              active: false,
-              href: '/moves/week/2020-05-10/12345/requested?status=pending',
-              text: 'primary_navigation.single_requests',
-            },
-            {
-              active: false,
-              href: '/moves/day/2020-05-10/12345/outgoing',
-              text: 'primary_navigation.outgoing',
-            },
-          ])
-        })
-      })
-
-      describe('active state', function() {
-        context('on home page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH =
-              '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9'
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: true,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: false,
-                href: '/moves/week/2020-05-10/12345/requested?status=pending',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: false,
-                href: '/moves/day/2020-05-10/12345/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
-          })
-        })
-
-        const statuses = ['pending', 'approved', 'rejected']
-        statuses.forEach(status => {
-          context(`on ${status} page`, function() {
-            beforeEach(function() {
-              res.locals.REQUEST_PATH =
-                '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/requested'
-              middleware(req, res, nextSpy)
-            })
-
-            it('should set active state', function() {
-              expect(res.locals.primaryNavigation).to.deep.equal([
-                {
-                  active: false,
-                  href: '/moves',
-                  text: 'primary_navigation.home',
-                },
-                {
-                  active: true,
-                  href: '/moves/week/2020-05-10/12345/requested?status=pending',
-                  text: 'primary_navigation.single_requests',
-                },
-                {
-                  active: false,
-                  href: '/moves/day/2020-05-10/12345/outgoing',
-                  text: 'primary_navigation.outgoing',
-                },
-              ])
-            })
-          })
-        })
-
-        context('on outgoing page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH =
-              '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9/outgoing'
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: false,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: false,
-                href: '/moves/week/2020-05-10/12345/requested?status=pending',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: true,
-                href: '/moves/day/2020-05-10/12345/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
-          })
-        })
-      })
-
-      it('should call next', function() {
         middleware(req, res, nextSpy)
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should set items correctly', function() {
+        expect(res.locals.primaryNavigation).to.deep.equal([
+          {
+            active: false,
+            href: '/moves',
+            text: 'primary_navigation.home',
+          },
+          {
+            active: false,
+            href: '/moves/requested',
+            text: 'primary_navigation.single_requests',
+          },
+          {
+            active: false,
+            href: '/moves/outgoing',
+            text: 'primary_navigation.outgoing',
+          },
+        ])
       })
     })
 
-    context('without location', function() {
-      describe('navigation items', function() {
+    describe('active state', function() {
+      context('on home page', function() {
         beforeEach(function() {
+          req.path =
+            '/moves/day/2020-04-16/8fadb516-f10a-45b1-91b7-a256196829f9'
           middleware(req, res, nextSpy)
         })
 
-        it('should set items correctly', function() {
+        it('should set active state', function() {
+          expect(res.locals.primaryNavigation).to.deep.equal([
+            {
+              active: true,
+              href: '/moves',
+              text: 'primary_navigation.home',
+            },
+            {
+              active: false,
+              href: '/moves/requested',
+              text: 'primary_navigation.single_requests',
+            },
+            {
+              active: false,
+              href: '/moves/outgoing',
+              text: 'primary_navigation.outgoing',
+            },
+          ])
+        })
+      })
+
+      context('on requested page', function() {
+        beforeEach(function() {
+          req.path = '/moves/day/2020-04-16/requested'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set active state', function() {
+          expect(res.locals.primaryNavigation).to.deep.equal([
+            {
+              active: false,
+              href: '/moves',
+              text: 'primary_navigation.home',
+            },
+            {
+              active: true,
+              href: '/moves/requested',
+              text: 'primary_navigation.single_requests',
+            },
+            {
+              active: false,
+              href: '/moves/outgoing',
+              text: 'primary_navigation.outgoing',
+            },
+          ])
+        })
+      })
+
+      context('on outgoing page', function() {
+        beforeEach(function() {
+          req.path = '/moves/day/2020-04-16/outgoing'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set active state', function() {
           expect(res.locals.primaryNavigation).to.deep.equal([
             {
               active: false,
@@ -187,105 +139,22 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
-              href: '/moves/week/2020-05-10/requested?status=pending',
+              href: '/moves/requested',
               text: 'primary_navigation.single_requests',
             },
             {
-              active: false,
-              href: '/moves/day/2020-05-10/outgoing',
+              active: true,
+              href: '/moves/outgoing',
               text: 'primary_navigation.outgoing',
             },
           ])
         })
       })
+    })
 
-      describe('active state', function() {
-        context('on home page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH = '/moves/day/2020-04-16'
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: true,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: false,
-                href: '/moves/week/2020-05-10/requested?status=pending',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: false,
-                href: '/moves/day/2020-05-10/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
-          })
-        })
-
-        context('on requested page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/requested'
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: false,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: true,
-                href: '/moves/week/2020-05-10/requested?status=pending',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: false,
-                href: '/moves/day/2020-05-10/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
-          })
-        })
-
-        context('on outgoing page', function() {
-          beforeEach(function() {
-            res.locals.REQUEST_PATH = '/moves/day/2020-04-16/outgoing'
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set active state', function() {
-            expect(res.locals.primaryNavigation).to.deep.equal([
-              {
-                active: false,
-                href: '/moves',
-                text: 'primary_navigation.home',
-              },
-              {
-                active: false,
-                href: '/moves/week/2020-05-10/requested?status=pending',
-                text: 'primary_navigation.single_requests',
-              },
-              {
-                active: true,
-                href: '/moves/day/2020-05-10/outgoing',
-                text: 'primary_navigation.outgoing',
-              },
-            ])
-          })
-        })
-      })
-
-      it('should call next', function() {
-        middleware(req, res, nextSpy)
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
+    it('should call next', function() {
+      middleware(req, res, nextSpy)
+      expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 })
