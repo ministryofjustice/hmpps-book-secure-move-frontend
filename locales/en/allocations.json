@@ -24,5 +24,36 @@
   },
   "allocation_criteria": {
     "page_title": "Allocation criteria"
+  },
+  "view": {
+    "page_title": "View allocation",
+    "heading": "{{count}} person from {{from_location}} to {{to_location}}, {{date}}",
+    "heading_plural": "{{count}} people from {{from_location}} to {{to_location}}, {{date}}",
+    "criteria_for_allocation": "Criteria for allocation",
+    "created_at": "Created {{datetime}}",
+    "fields": {
+      "estate_type": "Estate type",
+      "category": "Category",
+      "complex_cases": "Complex cases for prisons to agree",
+      "none_provided": "None provided",
+      "other_criteria": "Other criteria",
+      "sentence_length": {
+        "label": "Time left to serve"
+      }
+    },
+    "complete_in_full": "This allocation should be filled in full - consider prisoners that are the next best for this allocation",
+    "people": {
+      "slots_filled": "{{slots_filled}} of {{total_slots}} {{person_or_people}} allocated",
+      "heading": "People for allocation",
+      "empty_slot": "Person to be allocated"
+    },
+    "cancel_allocation": "Cancel allocation",
+    "allocation_details": "Allocation details",
+    "sidebar": {
+      "number_of_prisoners": "Number of people",
+      "move_from": "Move from",
+      "move_to": "Move to",
+      "date": "Date"
+    }
   }
 }

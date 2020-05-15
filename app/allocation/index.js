@@ -5,6 +5,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const confirmation = require('./controllers/create/confirmation')
+const view = require('./controllers/view')
 const { createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
 const { createSteps } = require('./steps')
@@ -33,7 +34,7 @@ router.get(
   protectRoute('allocation:create'),
   confirmation
 )
-
+router.get('/:allocationId', protectRoute('allocations:view'), view)
 // Export
 module.exports = {
   router,
