@@ -53,6 +53,8 @@ module.exports = {
     SHORT: 'd M yyyy',
     LONG: 'd MMM yyyy',
     WITH_DAY: 'EEEE d MMM yyyy',
+    URL_PARAM: 'yyyy-MM-dd',
+    WEEK_STARTS_ON: 1,
   },
   FILE_UPLOADS: {
     UPLOAD_DIR: '.tmp/uploads/',

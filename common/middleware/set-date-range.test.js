@@ -1,16 +1,20 @@
+const dateHelpers = require('../../common/helpers/date-utils')
+
 const setDateRange = require('./set-date-range')
+
 describe('Moves middleware', function() {
   describe('#setDateRange()', function() {
     let req, res, nextSpy
 
     beforeEach(function() {
+      sinon.stub(dateHelpers, 'getDateRange').callsFake(date => [date, date])
       req = {
-        params: { date: '2019-10-10' },
-      }
-      res = {
-        locals: {
+        params: {
           period: 'day',
         },
+      }
+      res = {
+        locals: {},
         redirect: sinon.stub(),
       }
       nextSpy = sinon.spy()
@@ -18,12 +22,22 @@ describe('Moves middleware', function() {
 
     context('with valid move date', function() {
       beforeEach(function() {
-        setDateRange(req, res, nextSpy)
+        setDateRange(req, res, nextSpy, '2019-10-10')
       })
 
-      it('should set move date to query value', function() {
+      it('should set move date on req', function() {
+        expect(req.params).to.have.property('dateRange')
+        expect(req.params.dateRange).to.deep.equal(['2019-10-10', '2019-10-10'])
+      })
+
+      it('should set move date on locals', function() {
         expect(res.locals).to.have.property('dateRange')
         expect(res.locals.dateRange).to.deep.equal(['2019-10-10', '2019-10-10'])
+      })
+
+      it('should set time period on locals', function() {
+        expect(res.locals).to.have.property('period')
+        expect(res.locals.period).to.equal('day')
       })
 
       it('should call next', function() {
@@ -33,69 +47,33 @@ describe('Moves middleware', function() {
 
     context('with invalid move date', function() {
       beforeEach(function() {
+        dateHelpers.getDateRange.returns([undefined, undefined])
         req = {
           baseUrl: '/req-base',
           params: { date: 'Invalid date' },
         }
 
-        setDateRange(req, res, nextSpy)
+        setDateRange(req, res, nextSpy, 'Invalid date')
       })
 
-      it('should redirect to base url', function() {
-        expect(res.redirect).to.be.calledOnceWithExactly('/req-base')
+      it('should not set req.params', function() {
+        expect(req.params).not.to.have.property('dateRange')
       })
 
-      it('should not set move date', function() {
+      it('should not set locals', function() {
         expect(res.locals).not.to.have.property('dateRange')
+        expect(res.locals).not.to.have.property('period')
       })
 
-      it('should not call next', function() {
-        expect(nextSpy).not.to.be.called
+      it('should call next with 404 error', function() {
+        const error = nextSpy.args[0][0]
+
+        expect(nextSpy).to.be.calledOnce
+
+        expect(error).to.be.an('error')
+        expect(error.message).to.equal('Invalid date')
+        expect(error.statusCode).to.equal(404)
       })
-    })
-  })
-  describe('#setDateRange', function() {
-    const date = '2020-01-02'
-
-    beforeEach(function() {
-      this.clock = sinon.useFakeTimers(new Date(date).getTime())
-    })
-
-    afterEach(function() {
-      this.clock.restore()
-    })
-    it('it creates dateRange on the locals', function() {
-      const locals = {}
-      setDateRange(
-        {
-          params: {
-            date,
-          },
-        },
-        { locals },
-        () => {}
-      )
-      expect(locals.dateRange).to.exist
-    })
-    it('it can return the week ', function() {
-      const locals = {}
-      setDateRange({ params: { date, period: 'week' } }, { locals }, () => {})
-      expect(locals.dateRange).to.deep.equal(['2019-12-30', '2020-01-05'])
-    })
-    it('it can return the day ', function() {
-      const locals = {
-        period: 'day',
-      }
-      setDateRange(
-        {
-          params: {
-            date,
-          },
-        },
-        { locals },
-        () => {}
-      )
-      expect(locals.dateRange).to.deep.equal(['2020-01-02', '2020-01-02'])
     })
   })
 })

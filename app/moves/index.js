@@ -2,7 +2,7 @@
 const router = require('express').Router()
 
 // Local dependencies
-const { setDateRange, setDatePeriod } = require('../../common/middleware')
+const { setDateRange } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const {
@@ -28,7 +28,6 @@ const uuidRegex =
 
 // Define param middleware
 router.param('locationId', setFromLocation)
-router.param('period', setDatePeriod)
 router.param('date', setDateRange)
 
 // Define shared middleware

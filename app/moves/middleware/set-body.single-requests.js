@@ -1,7 +1,6 @@
 function setBodySingleRequests(req, res, next) {
-  const { locationId } = req.params
-  const { dateRange } = res.locals
   const { status } = req.query
+  const { dateRange, locationId } = req.params
 
   req.body = {
     status,

@@ -29,6 +29,7 @@ describe('Moves controllers', function() {
         params: {
           date: '2018-10-10',
           period: 'week',
+          dateRange: mockDateRange,
         },
         results: {
           active: activeMovesStub,
@@ -40,9 +41,7 @@ describe('Moves controllers', function() {
         send: sinon.stub(),
         json: sinon.stub(),
         setHeader: sinon.stub(),
-        locals: {
-          dateRange: mockDateRange,
-        },
+        locals: {},
       }
       nextSpy = sinon.spy()
       sinon.stub(presenters, 'movesToCSV')
