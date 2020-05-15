@@ -150,6 +150,8 @@ jobs:
   end-to-end-test:
     <<: *circle_container
     parameters:
+      base_url_env:
+        type: string
       use_review_app:
         type: string
         default: ""
@@ -165,11 +167,12 @@ jobs:
             - run:
                 name: Set Heroku Review Apps URL for Pull Requests
                 command: |
-                  echo "export E2E_BASE_URL=$(sh .circleci/get-review-app-url.sh)" >> $BASH_ENV
+                  echo "export E2E_BASE_URL_REVIEW_APP=$(sh .circleci/get-review-app-url.sh)" >> $BASH_ENV
+                  source $BASH_ENV
                 no_output_timeout: 600s
       - run:
           name: Run E2E tests
-          command: npm run test-e2e:ci
+          command: E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
@@ -300,14 +303,17 @@ workflows:
           <<: *ignore_master
           name: end-to-end-test-pr
           use_review_app: 'true'
+          base_url_env: E2E_BASE_URL_REVIEW_APP
       - end-to-end-test:
           <<: *only_master
           name: end-to-end-test-master
+          base_url_env: E2E_BASE_URL_STAGING
           requires:
             - deploy-staging
       - end-to-end-test:
           <<: *only_deploy_tags
           name: end-to-end-test-release
+          base_url_env: E2E_BASE_URL_PREPROD
           requires:
             - deploy-preproduction
       # Docker builds
