@@ -231,9 +231,10 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'dashboard:view',
-          'allocations:view',
-          'allocation:create',
+          'locations:all',
+          'moves:view:proposed',
           'move:review',
+          'move:view',
         ])
       })
     })
@@ -245,7 +246,7 @@ describe('User class', function() {
 
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
-          'moves:view:all',
+          'locations:all',
           'moves:view:outgoing',
           'moves:download',
           'move:view',
@@ -277,12 +278,10 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:create:prison_recall',
           'move:cancel',
-          'moves:view:all',
+          'locations:all',
           'dashboard:view',
           'moves:view:proposed',
           'move:create:prison_transfer',
-          'allocations:view',
-          'allocation:create',
         ]
         if (FEATURE_FLAGS.EDITABILITY) {
           allPermissions.push('move:update')

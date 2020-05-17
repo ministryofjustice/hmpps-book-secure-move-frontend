@@ -1,6 +1,6 @@
 const {
   dateFormat,
-  getPeriod,
+  getRelativeDate,
   getDateFromParams,
   getDateRange,
 } = require('./date-utils')
@@ -12,12 +12,12 @@ describe('Date helpers', function() {
       expect(dateFormat).to.equal('yyyy-MM-dd')
     })
   })
-  describe('#getPeriod', function() {
+  describe('#getRelativeDate', function() {
     it('invoked with a negative number, returns the date minus the days specified', function() {
-      expect(getPeriod('2010-01-02', -7)).to.equal('2009-12-26')
+      expect(getRelativeDate('2010-01-02', -7)).to.equal('2009-12-26')
     })
     it('invoked with a positive number, returns the date plus the days specified', function() {
-      expect(getPeriod('2010-01-02', 7)).to.equal('2010-01-09')
+      expect(getRelativeDate('2010-01-02', 7)).to.equal('2010-01-09')
     })
   })
   describe('#getDateFromParams', function() {

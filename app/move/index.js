@@ -63,7 +63,11 @@ router.use(
   wizard(createSteps, createFields, createConfig)
 )
 router.get('/:moveId', protectRoute('move:view'), view)
-router.get('/:moveId/confirmation', protectRoute('move:create'), confirmation)
+router.get(
+  '/:moveId/confirmation',
+  protectRoute(['move:create', 'move:review']),
+  confirmation
+)
 router.use(
   '/:moveId/cancel',
   protectRoute('move:cancel'),

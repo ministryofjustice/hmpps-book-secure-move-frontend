@@ -1,22 +1,25 @@
+const urlHelpers = require('../../../common/helpers/url')
+
 const middleware = require('./set-pagination')
 
 describe('Moves middleware', function() {
   describe('#setPagination()', function() {
+    const mockToday = '2020-10-10'
     const mockDate = '2019-10-10'
-    const mockView = 'requested'
+    const mockRoute = '/moves/:date/:locationId?'
+
     let req, res, nextSpy
 
     beforeEach(function() {
-      this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-      res = {
-        locals: {},
-      }
+      sinon.stub(urlHelpers, 'compileFromRoute').returnsArg(0)
+      this.clock = sinon.useFakeTimers(new Date(mockToday).getTime())
+      res = {}
       req = {
-        baseUrl: '/moves',
+        baseUrl: '/base-url',
+        path: '/path',
         query: {},
         params: {
           date: mockDate,
-          view: mockView,
         },
       }
       nextSpy = sinon.spy()
@@ -26,35 +29,87 @@ describe('Moves middleware', function() {
       this.clock.restore()
     })
 
-    context('without location ID', function() {
+    context('when matching route is found', function() {
+      context('by default', function() {
+        beforeEach(function() {
+          middleware(mockRoute)(req, res, nextSpy)
+        })
+        it('should contain pagination on req', function() {
+          expect(req).to.have.property('pagination')
+        })
+        it('should set today link', function() {
+          expect(req.pagination.todayUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2020-10-10',
+            }
+          )
+        })
+        it('should set next link', function() {
+          expect(req.pagination.nextUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-11',
+            }
+          )
+        })
+        it('should set previous link', function() {
+          expect(req.pagination.prevUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-09',
+            }
+          )
+        })
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
       context('with day', function() {
         beforeEach(function() {
           req.params.period = 'day'
-          middleware(req, res, nextSpy)
+          middleware(mockRoute)(req, res, nextSpy)
         })
-
-        it('should contain pagination on locals', function() {
-          expect(res.locals).to.have.property('pagination')
+        it('should contain pagination on req', function() {
+          expect(req).to.have.property('pagination')
         })
-
-        it('should set correct today link', function() {
-          expect(res.locals.pagination.todayUrl).to.equal(
-            `/moves/day/2019-10-10/${mockView}`
+        it('should set today link', function() {
+          expect(req.pagination.todayUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2020-10-10',
+            }
           )
         })
-
-        it('should set correct next link', function() {
-          expect(res.locals.pagination.nextUrl).to.equal(
-            `/moves/day/2019-10-11/${mockView}`
+        it('should set next link', function() {
+          expect(req.pagination.nextUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-11',
+            }
           )
         })
-
-        it('should set correct previous link', function() {
-          expect(res.locals.pagination.prevUrl).to.equal(
-            `/moves/day/2019-10-09/${mockView}`
+        it('should set previous link', function() {
+          expect(req.pagination.prevUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-09',
+            }
           )
         })
-
         it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
@@ -63,140 +118,44 @@ describe('Moves middleware', function() {
       context('with week', function() {
         beforeEach(function() {
           req.params.period = 'week'
-          middleware(req, res, nextSpy)
+          middleware(mockRoute)(req, res, nextSpy)
         })
-
-        it('should contain pagination on locals', function() {
-          expect(res.locals).to.have.property('pagination')
+        it('should contain pagination on req', function() {
+          expect(req).to.have.property('pagination')
         })
-
-        it('should set correct today link', function() {
-          expect(res.locals.pagination.todayUrl).to.equal(
-            `/moves/week/2019-10-10/${mockView}`
+        it('should set today link', function() {
+          expect(req.pagination.todayUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2020-10-10',
+            }
           )
         })
-
-        it('should set correct next link', function() {
-          expect(res.locals.pagination.nextUrl).to.equal(
-            `/moves/week/2019-10-17/${mockView}`
+        it('should set next link', function() {
+          expect(req.pagination.nextUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-17',
+            }
           )
         })
-
-        it('should set correct previous link', function() {
-          expect(res.locals.pagination.prevUrl).to.equal(
-            `/moves/week/2019-10-03/${mockView}`
+        it('should set previous link', function() {
+          expect(req.pagination.prevUrl).to.equal(mockRoute)
+          expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
+            mockRoute,
+            req,
+            {
+              date: '2019-10-03',
+            }
           )
         })
-
         it('should call next', function() {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
-      })
-    })
-
-    context('with location ID', function() {
-      context('with day', function() {
-        beforeEach(function() {
-          req.params.locationId = '12345'
-          req.params.period = 'day'
-          middleware(req, res, nextSpy)
-        })
-
-        it('should contain pagination on locals', function() {
-          expect(res.locals).to.have.property('pagination')
-        })
-
-        it('should set correct today link', function() {
-          expect(res.locals.pagination.todayUrl).to.equal(
-            `/moves/day/2019-10-10/12345/${mockView}`
-          )
-        })
-
-        it('should set correct next link', function() {
-          expect(res.locals.pagination.nextUrl).to.equal(
-            `/moves/day/2019-10-11/12345/${mockView}`
-          )
-        })
-
-        it('should set correct previous link', function() {
-          expect(res.locals.pagination.prevUrl).to.equal(
-            `/moves/day/2019-10-09/12345/${mockView}`
-          )
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-
-      context('with week', function() {
-        beforeEach(function() {
-          req.params.locationId = '12345'
-          req.params.period = 'week'
-          middleware(req, res, nextSpy)
-        })
-
-        it('should contain pagination on locals', function() {
-          expect(res.locals).to.have.property('pagination')
-        })
-
-        it('should set correct today link', function() {
-          expect(res.locals.pagination.todayUrl).to.equal(
-            `/moves/week/2019-10-10/12345/${mockView}`
-          )
-        })
-
-        it('should set correct next link', function() {
-          expect(res.locals.pagination.nextUrl).to.equal(
-            `/moves/week/2019-10-17/12345/${mockView}`
-          )
-        })
-
-        it('should set correct previous link', function() {
-          expect(res.locals.pagination.prevUrl).to.equal(
-            `/moves/week/2019-10-03/12345/${mockView}`
-          )
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-    })
-
-    context('with query', function() {
-      beforeEach(function() {
-        req.params.period = 'day'
-        req.query = {
-          status: 'approved',
-        }
-        middleware(req, res, nextSpy)
-      })
-
-      it('should contain pagination on locals', function() {
-        expect(res.locals).to.have.property('pagination')
-      })
-
-      it('should set correct today link', function() {
-        expect(res.locals.pagination.todayUrl).to.equal(
-          `/moves/day/2019-10-10/${mockView}?status=approved`
-        )
-      })
-
-      it('should set correct next link', function() {
-        expect(res.locals.pagination.nextUrl).to.equal(
-          `/moves/day/2019-10-11/${mockView}?status=approved`
-        )
-      })
-
-      it('should set correct previous link', function() {
-        expect(res.locals.pagination.prevUrl).to.equal(
-          `/moves/day/2019-10-09/${mockView}?status=approved`
-        )
-      })
-
-      it('should call next', function() {
-        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
   })

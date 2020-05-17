@@ -1,11 +1,18 @@
 // NPM dependencies
 const router = require('express').Router()
+const viewRouter = require('express').Router({ mergeParams: true })
 
 // Local dependencies
 const { setDateRange } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { DEFAULTS } = require('./constants')
+const {
+  COLLECTION_MIDDLEWARE,
+  COLLECTION_BASE_PATH,
+  COLLECTION_VIEW_PATH,
+  DEFAULTS,
+  MOUNTPATH,
+} = require('./constants')
 const { download, listAsCards, listAsTable } = require('./controllers')
 const {
   redirectBaseUrl,
@@ -15,13 +22,9 @@ const {
   setFromLocation,
   setBodySingleRequests,
   setFilterSingleRequests,
-  setPagination,
   setResultsSingleRequests,
   setResultsOutgoing,
 } = require('./middleware')
-
-const uuidRegex =
-  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 
 // Define param middleware
 router.param('locationId', setFromLocation)
@@ -32,55 +35,41 @@ router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 router.use('^([^.]+)$', saveUrl)
 
 // Define routes
-router.get('/', redirectBaseUrl)
-router.get(
-  '/:period(week|day)/:date/:view(outgoing)',
-  protectRoute('moves:view:all'),
-  setResultsOutgoing,
-  setPagination,
-  listAsCards
-)
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)`,
-  protectRoute('moves:view:outgoing'),
-  setResultsOutgoing,
-  setPagination,
-  listAsCards
-)
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(requested)`,
+viewRouter.get(
+  '/:view(requested)',
   protectRoute('moves:view:proposed'),
-  setBodySingleRequests,
-  setFilterSingleRequests(),
-  setResultsSingleRequests,
-  setPagination,
+  COLLECTION_MIDDLEWARE,
+  [setBodySingleRequests, setFilterSingleRequests(), setResultsSingleRequests],
   listAsTable
 )
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(requested)/download.:extension(csv|json)`,
+viewRouter.get(
+  '/:view(requested)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
-  setBodySingleRequests,
-  setResultsSingleRequests,
+  [setBodySingleRequests, setResultsSingleRequests],
   download
 )
-router.get(
-  '/:period(week|day)/:date/:view(outgoing)/download.:extension(csv|json)',
+viewRouter.get(
+  '/:view(outgoing)',
+  protectRoute('moves:view:outgoing'),
+  COLLECTION_MIDDLEWARE,
+  [setResultsOutgoing],
+  listAsCards
+)
+viewRouter.get(
+  '/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
-  protectRoute('moves:view:all'),
-  setResultsOutgoing,
+  protectRoute('moves:view:outgoing'),
+  [setResultsOutgoing],
   download
 )
-router.get(
-  `/:period(week|day)/:date/:locationId(${uuidRegex})/:view(outgoing)/download.:extension(csv|json)`,
-  protectRoute('moves:download'),
-  setResultsOutgoing,
-  download
-)
-router.get('/:view(outgoing|requested)', redirectView(DEFAULTS.TIME_PERIOD))
+
+router.get('/', redirectBaseUrl)
+router.get(COLLECTION_VIEW_PATH, redirectView(DEFAULTS.TIME_PERIOD))
+router.use(COLLECTION_BASE_PATH, viewRouter)
 
 // Export
 module.exports = {
   router,
-  mountpath: '/moves',
+  mountpath: MOUNTPATH,
 }

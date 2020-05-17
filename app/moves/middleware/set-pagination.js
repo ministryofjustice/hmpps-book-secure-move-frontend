@@ -1,34 +1,26 @@
 const { format } = require('date-fns')
-const { isEmpty } = require('lodash')
-const querystring = require('qs')
 
-const { getPeriod } = require('../../../common/helpers/date-utils')
+const dateHelpers = require('../../../common/helpers/date-utils')
+const urlHelpers = require('../../../common/helpers/url')
 const { DATE_FORMATS } = require('../../../config')
 
-function setPagination(req, res, next) {
-  const { date, locationId = '', period, view } = req.params
-  const today = format(new Date(), DATE_FORMATS.URL_PARAM)
-  const interval = period === 'week' ? 7 : 1
+function setPagination(route) {
+  return function handlePagination(req, res, next) {
+    const { date, period } = req.params
 
-  const previousPeriod = getPeriod(date, -interval)
-  const nextPeriod = getPeriod(date, interval)
+    const today = format(new Date(), DATE_FORMATS.URL_PARAM)
+    const interval = period === 'week' ? 7 : 1
+    const prevDate = dateHelpers.getRelativeDate(date, -interval)
+    const nextDate = dateHelpers.getRelativeDate(date, interval)
 
-  const locationInUrl = locationId ? `/${locationId}` : ''
-  const queryInUrl = !isEmpty(req.query)
-    ? `?${querystring.stringify(req.query)}`
-    : ''
+    req.pagination = {
+      todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
+      nextUrl: urlHelpers.compileFromRoute(route, req, { date: nextDate }),
+      prevUrl: urlHelpers.compileFromRoute(route, req, { date: prevDate }),
+    }
 
-  res.locals.pagination = {
-    todayUrl: `${req.baseUrl}/${period}/${today}${locationInUrl}/${view +
-      queryInUrl}`,
-    nextUrl: `${req.baseUrl}/${period}/${nextPeriod}${locationInUrl}/${view +
-      queryInUrl}`,
-    prevUrl: `${
-      req.baseUrl
-    }/${period}/${previousPeriod}${locationInUrl}/${view + queryInUrl}`,
+    next()
   }
-
-  next()
 }
 
 module.exports = setPagination

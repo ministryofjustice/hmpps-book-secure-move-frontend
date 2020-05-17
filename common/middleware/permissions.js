@@ -4,7 +4,7 @@ function check(permissions, userPermissions = []) {
   if (!Array.isArray(permissions)) {
     permissions = [permissions]
   }
-  return permissions.every(permission => userPermissions.includes(permission))
+  return permissions.some(permission => userPermissions.includes(permission))
 }
 
 function protectRoute(permission) {

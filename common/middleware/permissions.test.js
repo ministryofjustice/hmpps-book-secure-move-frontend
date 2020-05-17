@@ -28,31 +28,37 @@ describe('Permissions middleware', function() {
       })
     })
 
-    describe('when multiple permissions are required', function() {
+    describe('when multiple permissions are possible', function() {
       let permit
+
       context('and all required permissions are missing', function() {
         beforeEach(function() {
           permit = middleware.check(['perm1', 'perm2'], ['permZ'])
         })
+
         it('should return false', function() {
           expect(permit).to.be.false
         })
       })
+
       context('and some of the required permissions are missing', function() {
         beforeEach(function() {
           permit = middleware.check(['perm1', 'perm2'], ['perm1', 'permZ'])
         })
-        it('should return false', function() {
-          expect(permit).to.be.false
+
+        it('should return true', function() {
+          expect(permit).to.be.true
         })
       })
-      context('and the required permissions exist', function() {
+
+      context('and all the required permissions exist', function() {
         beforeEach(function() {
           permit = middleware.check(
             ['perm1', 'perm2'],
             ['perm1', 'perm2', 'permZ']
           )
         })
+
         it('should return true', function() {
           expect(permit).to.be.true
         })
@@ -118,14 +124,14 @@ describe('Permissions middleware', function() {
       })
     })
 
-    describe('when there multiple permissions are required', function() {
-      context('and user does not have all required permissions', function() {
+    describe('when multiple permissions are possible', function() {
+      context('and user does not have any required permissions', function() {
         beforeEach(function() {
           req.session.user = {
-            permissions: ['user_permission_1', 'required_permission'],
+            permissions: ['user_permission_1', 'user_permission_2'],
           }
           middleware.protectRoute([
-            'required_permission',
+            'required_permission_1',
             'required_permission_2',
           ])(req, {}, nextSpy)
         })
@@ -135,22 +141,41 @@ describe('Permissions middleware', function() {
           expect(nextSpy).to.be.calledOnce
           expect(error).to.be.an.instanceOf(Error)
           expect(error.message).to.equal(
-            "Forbidden. Missing permission: 'required_permission,required_permission_2'"
+            "Forbidden. Missing permission: 'required_permission_1,required_permission_2'"
           )
           expect(error.statusCode).to.equal(403)
+        })
+      })
+
+      context('and user has some of the required permissions', function() {
+        beforeEach(function() {
+          req.session.user = {
+            permissions: ['user_permission_1', 'required_permission_1'],
+          }
+          middleware.protectRoute([
+            'required_permission_1',
+            'required_permission_2',
+          ])(req, {}, nextSpy)
+        })
+
+        it('should call next without error', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
       context('and user has all required permissions', function() {
         beforeEach(function() {
           req.session.user = {
-            permissions: ['user_permission_1', 'required_permission'],
+            permissions: [
+              'user_permission_1',
+              'required_permission_1',
+              'required_permission_2',
+            ],
           }
-          middleware.protectRoute(['user_permission_1', 'required_permission'])(
-            req,
-            {},
-            nextSpy
-          )
+          middleware.protectRoute([
+            'required_permission_1',
+            'required_permission_2',
+          ])(req, {}, nextSpy)
         })
 
         it('should call next without error', function() {
