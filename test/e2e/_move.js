@@ -38,14 +38,9 @@ export async function createMove(options = {}) {
   ) {
     await t.navigateTo(home)
 
-    const currentUrl = await page.getCurrentUrl()
-    const matched = currentUrl.match(
-      /([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/
+    const currentLocation = await page.nodes.locationMeta.getAttribute(
+      'content'
     )
-    if (!matched) {
-      throw new Error('Could not determine current location')
-    }
-    const currentLocation = matched[0]
     t.ctx.from_location = currentLocation
 
     options.moveOverrides = {

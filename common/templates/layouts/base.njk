@@ -38,6 +38,8 @@
 {% block head %}
   <link rel="canonical" href="{{ CANONICAL_URL }}">
 
+  <meta name="location" content="{{ CURRENT_LOCATION.id }}">
+
   <!--[if lte IE 8]><link href="{{ getAssetPath('styles-ie8.css') }}" rel="stylesheet" type="text/css" /><![endif]-->
   <!--[if gt IE 8]><!--><link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
 

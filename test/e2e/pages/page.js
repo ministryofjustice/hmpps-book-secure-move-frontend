@@ -6,6 +6,7 @@ export default class Page {
   constructor() {
     this.baseUrl = E2E.BASE_URL
     this.nodes = {
+      locationMeta: Selector('meta').withAttribute('name', 'location'),
       appHeader: Selector('.app-header__logo').withExactText(
         'HMPPS Book a secure move'
       ),
