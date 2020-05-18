@@ -5,7 +5,6 @@ const saveUrl = require('./save-url')
 const setBodySingleRequests = require('./set-body.single-requests')
 const setFilterSingleRequests = require('./set-filter.single-requests')
 const setFromLocation = require('./set-from-location')
-const setPagination = require('./set-pagination')
 const setResultsOutgoing = require('./set-results.outgoing')
 const setResultsSingleRequests = require('./set-results.single-requests')
 
@@ -19,5 +18,4 @@ module.exports = {
   setFilterSingleRequests,
   setResultsOutgoing,
   setResultsSingleRequests,
-  setPagination,
 }

@@ -5,14 +5,20 @@ const controller = require('./list')
 describe('the controller of the allocations outgoing list view', function() {
   let locals
   let render
-  let t
+  let req
   beforeEach(function() {
-    t = sinon.stub().returnsArg(0)
     render = sinon.stub()
     sinon.stub(presenters, 'allocationsToTable').returns({
       head: [],
       rows: [],
     })
+    req = {
+      t: sinon.stub().returnsArg(0),
+      pagination: {
+        next: '/next',
+        prev: '/prev',
+      },
+    }
     locals = {
       allocations: [
         {
@@ -23,15 +29,10 @@ describe('the controller of the allocations outgoing list view', function() {
         },
       ],
     }
-    controller(
-      {
-        t,
-      },
-      {
-        locals,
-        render,
-      }
-    )
+    controller(req, {
+      locals,
+      render,
+    })
   })
   it('invokes the presenter with res.locals.allocations', function() {
     expect(presenters.allocationsToTable).to.have.been.calledOnceWithExactly([
@@ -48,6 +49,10 @@ describe('the controller of the allocations outgoing list view', function() {
       'allocations/views/list',
       {
         pageTitle: 'allocations::dashboard.heading',
+        pagination: {
+          next: '/next',
+          prev: '/prev',
+        },
         head: [],
         rows: [],
       }

@@ -1,8 +1,5 @@
-const { setPagination } = require('./middleware')
-
-const uuidRegex =
-  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
-const dateRegex = '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+const { dateRegex, uuidRegex } = require('../../common/helpers/url')
+const { setPagination } = require('../../common/middleware/collection')
 
 const MOUNTPATH = '/moves'
 const COLLECTION_BASE_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?`
