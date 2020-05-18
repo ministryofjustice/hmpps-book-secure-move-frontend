@@ -11,6 +11,7 @@ const {
   COLLECTION_BASE_PATH,
   COLLECTION_VIEW_PATH,
   DEFAULTS,
+  FILTERS,
   MOUNTPATH,
 } = require('./constants')
 const { download, listAsCards, listAsTable } = require('./controllers')
@@ -39,7 +40,11 @@ viewRouter.get(
   '/:view(requested)',
   protectRoute('moves:view:proposed'),
   COLLECTION_MIDDLEWARE,
-  [setBodySingleRequests, setFilterSingleRequests(), setResultsSingleRequests],
+  [
+    setBodySingleRequests,
+    setFilterSingleRequests(FILTERS.requested),
+    setResultsSingleRequests,
+  ],
   listAsTable
 )
 viewRouter.get(
