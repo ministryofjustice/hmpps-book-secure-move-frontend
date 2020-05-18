@@ -18,7 +18,7 @@ function dashboard(req, res) {
       filter: req.filterSingleRequests,
     },
     allocations: {
-      permission: 'moves:view:proposed',
+      permission: 'allocations:view',
       heading: 'dashboard::sections.allocations.heading',
       filter: req.filterAllocations,
     },

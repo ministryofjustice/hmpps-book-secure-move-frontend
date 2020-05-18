@@ -50,7 +50,7 @@ const allocationService = {
     fromLocationId,
     toLocationId,
     isAggregation = false,
-    sortBy = 'created_at',
+    sortBy = 'date',
     sortDirection = 'desc',
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
