@@ -1,3 +1,4 @@
+const dateFunctions = require('date-fns')
 const { mapKeys, mapValues } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
@@ -8,6 +9,17 @@ function urlKeyToFilter(additionalFilters) {
   })
 }
 const allocationService = {
+  cancel(allocationId) {
+    const timestamp = dateFunctions.formatISO(new Date())
+    return apiClient
+      .one('allocation', allocationId)
+      .all('event')
+      .post({
+        event_name: 'cancel',
+        timestamp,
+      })
+      .then(response => response.data)
+  },
   format(data) {
     const booleansAndNulls = ['complete_in_full', 'sentence_length']
     const relationships = ['to_location', 'from_location']

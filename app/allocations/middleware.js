@@ -1,5 +1,5 @@
 const { format } = require('date-fns')
-const { cloneDeep, isEqual, mapValues } = require('lodash')
+const { mapValues } = require('lodash')
 const queryString = require('query-string')
 
 const {
@@ -9,17 +9,6 @@ const {
 } = require('../../common/helpers/date-utils')
 const presenters = require('../../common/presenters')
 const allocationService = require('../../common/services/allocation')
-
-const allocationTypeNavigationConfig = [
-  {
-    label: 'allocations::complete',
-    filter: { complete_in_full: true },
-  },
-  {
-    label: 'allocations::incomplete',
-    filter: { complete_in_full: false },
-  },
-]
 
 // TODO: refactor this to be common with the /moves pagination.
 //  It differs only in the output of the url
@@ -49,14 +38,14 @@ function setPagination(req, res, next) {
   next()
 }
 async function setAllocationsSummary(req, res, next) {
-  const { dateRange } = req.params
-  const value = await allocationService.getCount({ dateRange })
+  const { dateRange } = res.locals
+  const allocationsCount = await allocationService.getCount({ dateRange })
   res.locals.allocationsSummary = [
     {
       active: false,
-      label: req.t('allocations::dashboard.labels.single_requests'),
+      label: req.t('allocations::dashboard.labels.allocations'),
       href: `/allocations/week/${getDateFromParams(req)}/outgoing`,
-      value,
+      value: allocationsCount,
     },
   ]
   next()
@@ -72,66 +61,18 @@ async function setAllocationsByDateAndFilter(req, res, next) {
   })
   next()
 }
-function getAllocationTypeMetadata(params, allocationType) {
-  const { baseUrl, dateRange, period, date, currentFilter } = params
-  return allocationService
-    .getCount({ dateRange, additionalFilters: allocationType.filter })
-    .then(count => {
-      return {
-        ...allocationType,
-        value: count,
-        active: isEqual(allocationType.filter, currentFilter),
-        href: `${baseUrl}/${period}/${date}/outgoing?${queryString.stringify(
-          allocationType.filter
-        )}`,
-      }
-    })
-}
-function addTotalAllocationsToFilter(
-  allocationTypes,
-  { baseUrl, period, date, currentFilter }
-) {
-  const totalAllocationItem = {
-    label: 'allocations::total',
-    filter: null,
-    value: allocationTypes.reduce((accumulator, item) => {
-      return (accumulator += item.value)
-    }, 0),
-    active: isEqual({}, currentFilter),
-    href: `${baseUrl}/${period}/${date}/outgoing`,
-  }
-  return [totalAllocationItem, ...allocationTypes]
-}
 async function setAllocationTypeNavigation(req, res, next) {
-  const { baseUrl } = req
-  const { dateRange, locationId, period, date } = req.params
-  const currentFilter = queryString.parse(req._parsedOriginalUrl.query, {
-    parseBooleans: true,
-  })
+  const { dateRange } = res.locals
   try {
-    res.locals.allocationTypeNavigation = await Promise.all(
-      cloneDeep(allocationTypeNavigationConfig).map(
-        getAllocationTypeMetadata.bind(null, {
-          baseUrl,
-          dateRange,
-          locationId,
-          period,
-          date,
-          currentFilter,
-        })
-      )
-    ).then(allocationTypes => {
-      const allocationTypesWithTotal = addTotalAllocationsToFilter(
-        allocationTypes,
-        {
-          baseUrl,
-          period,
-          date,
-          currentFilter,
-        }
-      )
-      return allocationTypesWithTotal.map(presenters.moveTypesToFilterComponent)
-    })
+    const count = await allocationService.getCount({ dateRange })
+    res.locals.allocationTypeNavigation = [
+      {
+        label: 'allocations::total',
+        filter: null,
+        value: count,
+        active: false,
+      },
+    ].map(presenters.moveTypesToFilterComponent)
     next()
   } catch (error) {
     next(error)
@@ -142,7 +83,5 @@ module.exports = {
   setPagination,
   setAllocationsSummary,
   setAllocationsByDateAndFilter,
-  getAllocationTypeMetadata,
-  addTotalAllocationsToFilter,
   setAllocationTypeNavigation,
 }

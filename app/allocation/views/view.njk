@@ -18,6 +18,20 @@
   </a>
 
   {{ super() }}
+
+  {% if messageTitle %}
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--temporary",
+      title: {
+        text: messageTitle
+      },
+      content: {
+        text: messageContent
+      }
+    }) }}
+  {% endif %}
+
 {% endblock %}
 
 {% block contentHeader %}
@@ -79,6 +93,14 @@
     {{ appCard(slot) }}
   {% endfor %}
 
+
+  {% if allocation.status != "cancelled" %}
+    <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
+      <a href="{{ allocation.id }}/cancel" class="app-link--destructive">
+        {{ t("actions::cancel_allocation") }}
+      </a>
+    </p>
+  {%- endif %}
 {% endblock %}
 
 {% block contentSidebar %}

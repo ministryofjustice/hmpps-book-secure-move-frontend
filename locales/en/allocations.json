@@ -1,7 +1,11 @@
 {
   "dashboard": {
     "heading": "Allocations",
-    "labels": { "single_requests": "single requests" },
+    "labels": {
+      "single_requests": "single requests",
+      "pending": "pending",
+      "allocations": "allocations"
+    },
     "no_results": "No allocations found"
   },
   "complete": "complete",
@@ -14,8 +18,7 @@
   "progress": "Progress",
   "confirmation": {
     "page_title": "Allocation requested",
-    "detail":
-      "The request for {{moves_count}} {{people}} from {{from_location}} to {{to_location}} on {{date}} has been sent",
+    "detail": "The request for {{moves_count}} {{people}} from {{from_location}} to {{to_location}} on {{date}} has been sent",
     "view_all": "View all allocations",
     "view_by_from_location": "View {{from_location}} overview"
   },
@@ -55,5 +58,12 @@
       "move_to": "Move to",
       "date": "Date"
     }
+  },
+  "allocation_cancel_reasons": {
+    "page_title": "Are you sure you want to cancel this allocation?"
+  },
+  "statuses": {
+    "cancelled": "Allocation cancelled",
+    "description": "Reason — Allocation was cancelled"
   }
 }
