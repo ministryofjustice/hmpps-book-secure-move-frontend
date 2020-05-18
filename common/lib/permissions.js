@@ -56,6 +56,8 @@ const ocaPermissions = [
   'move:create',
   'move:create:court_appearance',
   'move:create:prison_transfer',
+  'allocations:view',
+  'allocation:view',
 ]
 const pmuPermissions = [
   'dashboard:view',
