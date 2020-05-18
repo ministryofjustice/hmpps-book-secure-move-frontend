@@ -36,9 +36,11 @@ describe('Moves middleware', function() {
           baseUrl: '/moves',
           path: '/week/2010-09-07/123',
           body: {
-            createdAtDate: mockDateRange,
-            fromLocationId: mockLocationId,
-            status: 'pending',
+            requested: {
+              createdAtDate: mockDateRange,
+              fromLocationId: mockLocationId,
+              status: 'pending',
+            },
           },
         }
         res = {}
@@ -197,11 +199,8 @@ describe('Moves middleware', function() {
         req = {
           params: {},
         }
-        res = {
-          locals: {},
-        }
 
-        await middleware(mockConfig)(req, res, next)
+        await middleware(mockConfig)(req, {}, next)
       })
 
       it('calls next with error', function() {

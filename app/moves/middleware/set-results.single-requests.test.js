@@ -23,9 +23,11 @@ describe('Moves middleware', function() {
       res = {}
       req = {
         body: {
-          status: 'proposed',
-          createdAtDate: ['2019-01-01', '2019-01-07'],
-          fromLocationId: '123',
+          requested: {
+            status: 'proposed',
+            createdAtDate: ['2019-01-01', '2019-01-07'],
+            fromLocationId: '123',
+          },
         },
       }
     })

@@ -18,10 +18,12 @@ describe('Home middleware', function() {
       mockRes = {}
       mockReq = {
         body: {
-          foo: 'bar',
-          fizz: 'buzz',
-          createdAtDate: ['2020-10-10', '2020-10-16'],
-          fromLocationId: '12345',
+          requested: {
+            foo: 'bar',
+            fizz: 'buzz',
+            createdAtDate: ['2020-10-10', '2020-10-16'],
+            fromLocationId: '12345',
+          },
         },
       }
     })
@@ -34,7 +36,7 @@ describe('Home middleware', function() {
       it('should override values correctly', function() {
         middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
 
-        expect(mockReq.body).to.deep.equal({
+        expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
           createdAtDate: ['2017-08-07', '2017-08-13'],
@@ -56,7 +58,7 @@ describe('Home middleware', function() {
       it('should override values correctly', function() {
         middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
 
-        expect(mockReq.body).to.deep.equal({
+        expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
           createdAtDate: ['2017-08-07', '2017-08-13'],

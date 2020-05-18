@@ -17,8 +17,8 @@ function overrideBodySingleRequests(req, res, next) {
     DATE_FORMATS.URL_PARAM
   )
 
-  req.body = {
-    ...req.body,
+  req.body.requested = {
+    ...req.body.requested,
     createdAtDate: [startDate, endDate],
     fromLocationId: get(req.session, 'currentLocation.id'),
   }
