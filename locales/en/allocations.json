@@ -61,5 +61,9 @@
   },
   "allocation_cancel_reasons": {
     "page_title": "Are you sure you want to cancel this allocation?"
+  },
+  "statuses": {
+    "cancelled": "Allocation cancelled",
+    "description": "Reason — Allocation was cancelled"
   }
 }

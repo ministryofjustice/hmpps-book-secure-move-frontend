@@ -222,6 +222,7 @@ module.exports = {
       other_criteria: '',
       created_at: '',
       updated_at: '',
+      status: '',
       moves: {
         jsonApi: 'hasMany',
         type: 'moves',
@@ -248,7 +249,6 @@ module.exports = {
       event_name: '',
       timestamp: '',
       notes: '',
-      cancel_reason: '',
       to_location: {
         jsonApi: 'hasOne',
         type: 'locations',
