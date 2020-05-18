@@ -64,7 +64,8 @@
       },
       "events": {
         "data": []
-      }
+      },
+      "allocation": {}
     }
   },
   "included": [

@@ -43,7 +43,7 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'events',
       },
-      allocations: {
+      allocation: {
         jsonApi: 'hasOne',
         type: 'allocations',
       },

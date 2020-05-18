@@ -27,6 +27,9 @@
           "type": "locations"
         }
       },
+      "events": {
+        "data": []
+      },
       "moves": {
         "data": [
           {
