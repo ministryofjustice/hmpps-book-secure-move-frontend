@@ -382,6 +382,34 @@ describe('Move Service', function() {
         })
       })
     })
+
+    context('with moves without associated person', function() {
+      const mockMoves = [
+        {
+          id: '12345',
+          status: 'requested',
+        },
+        {
+          id: '67890',
+          status: 'cancelled',
+        },
+      ]
+      let moves
+      beforeEach(async function() {
+        apiClient.findAll.resolves({
+          data: mockMoves,
+          links: {},
+        })
+        moves = await moveService.getAll()
+      })
+      it('does not call format', function() {
+        expect(personService.transform).to.not.have.been.called
+      })
+      it('returns an empty object instead of person', function() {
+        expect(moves[0].person).to.deep.equal({})
+        expect(moves[1].person).to.deep.equal({})
+      })
+    })
   })
 
   describe('#getRequested()', function() {
