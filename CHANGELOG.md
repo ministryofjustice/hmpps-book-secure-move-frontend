@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.22.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.21.1...v2.22.0) (2020-05-18)
+
+
+### Features
+
+* **allocations:** New feature: screen for single allocation view ([2c95a3d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2c95a3d9ad90c1167dc1e7354062db8935d0cdd9))
+* Create new unified dashboard ([74796f5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/74796f58f193233967fe3284fecee8ef122652aa))
+* **update move:** Provide ability for STC user to update move documents ([6811f27](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6811f27ae98b297f98231ebc3f46330794ae86a1))
+
+
+### Bug Fixes
+
+* **allocations:** Restored link on table header ([48718c3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/48718c3440aa64a41a8653ac32d20703b4a09ff0))
+* **e2e:** Update the tests for dashboards ([3fda4f6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3fda4f623f65d2d2391ba9f339250de087872e05))
+
 ### [2.21.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.21.0...v2.21.1) (2020-05-13)
 
 
