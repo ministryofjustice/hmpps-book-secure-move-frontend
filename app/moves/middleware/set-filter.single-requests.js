@@ -8,7 +8,7 @@ function setfilterSingleRequests(items = []) {
     const promises = items.map(item =>
       singleRequestService
         .getAll({
-          ...req.body,
+          ...req.body.requested,
           isAggregation: true,
           status: item.status,
         })
@@ -21,14 +21,16 @@ function setfilterSingleRequests(items = []) {
           return {
             value,
             label: i18n.t(item.label).toLowerCase(),
-            active: item.status === req.body.status,
+            active: item.status === req.body.requested.status,
             href: `${item.href || req.baseUrl + req.path}?${query}`,
           }
         })
     )
 
     try {
-      req.filter = await Promise.all(promises)
+      const filter = await Promise.all(promises)
+      req.filter = filter
+      req.filterSingleRequests = filter
 
       next()
     } catch (error) {

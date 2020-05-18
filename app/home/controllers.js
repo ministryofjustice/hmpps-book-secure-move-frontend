@@ -15,7 +15,7 @@ function dashboard(req, res) {
     singleRequests: {
       permission: 'moves:view:proposed',
       heading: 'dashboard::sections.single_requests.heading',
-      filter: req.filter,
+      filter: req.filterSingleRequests,
     },
   }
 
