@@ -5,12 +5,12 @@ const { dateFormat } = require('../../common/helpers/date-utils')
 const { setDateRange, setDatePeriod } = require('../../common/middleware')
 const { protectRoute } = require('../../common/middleware/permissions')
 
+const { COLLECTION_MIDDLEWARE, MOUNTPATH } = require('./constants')
 const { dashboard, list } = require('./controllers')
 const {
   setAllocationsByDateAndFilter,
   setAllocationsSummary,
   setAllocationTypeNavigation,
-  setPagination,
 } = require('./middleware')
 
 router.param('period', setDatePeriod)
@@ -24,7 +24,6 @@ router.get(
   '/:period(week|day)/:date/',
   protectRoute('allocations:view'),
   setAllocationsSummary,
-  setPagination,
   dashboard
 )
 router.get(
@@ -32,10 +31,10 @@ router.get(
   protectRoute('allocations:view'),
   setAllocationsByDateAndFilter,
   setAllocationTypeNavigation,
-  setPagination,
+  COLLECTION_MIDDLEWARE,
   list
 )
 module.exports = {
   router,
-  mountpath: '/allocations',
+  mountpath: MOUNTPATH,
 }

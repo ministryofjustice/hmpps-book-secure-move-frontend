@@ -1,12 +1,7 @@
-const { format } = require('date-fns')
-const { cloneDeep, isEqual, mapValues } = require('lodash')
+const { cloneDeep, isEqual } = require('lodash')
 const queryString = require('query-string')
 
-const {
-  dateFormat,
-  getDateFromParams,
-  getRelativeDate,
-} = require('../../common/helpers/date-utils')
+const { getDateFromParams } = require('../../common/helpers/date-utils')
 const presenters = require('../../common/presenters')
 const allocationService = require('../../common/services/allocation')
 
@@ -21,33 +16,6 @@ const allocationTypeNavigationConfig = [
   },
 ]
 
-// TODO: refactor this to be common with the /moves pagination.
-//  It differs only in the output of the url
-function setPagination(req, res, next) {
-  const { period, view } = req.params
-  const query = req.query
-  const today = format(new Date(), dateFormat)
-  const baseDate = getDateFromParams(req)
-  const interval = period === 'week' ? 7 : 1
-
-  const previousPeriod = getRelativeDate(baseDate, -interval)
-  const nextPeriod = getRelativeDate(baseDate, interval)
-  const viewInUrl = view ? `${view}` : ''
-
-  const urlPeriods = {
-    todayUrl: today,
-    nextUrl: nextPeriod,
-    prevUrl: previousPeriod,
-  }
-
-  res.locals.pagination = mapValues(urlPeriods, urlPeriod => {
-    return queryString.stringifyUrl({
-      url: `${req.baseUrl}/${period}/${urlPeriod}/${viewInUrl}`,
-      query,
-    })
-  })
-  next()
-}
 async function setAllocationsSummary(req, res, next) {
   const { dateRange } = req.params
   const value = await allocationService.getCount({ dateRange })
@@ -139,7 +107,6 @@ async function setAllocationTypeNavigation(req, res, next) {
 }
 
 module.exports = {
-  setPagination,
   setAllocationsSummary,
   setAllocationsByDateAndFilter,
   getAllocationTypeMetadata,
