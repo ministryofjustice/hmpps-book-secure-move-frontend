@@ -31,7 +31,7 @@ UpdateMovePage.gotoPersonalDetails = async () => {
 }
 
 UpdateMovePage.updatePersonalDetails = async options => {
-  const { person } = t.ctx
+  const { person } = t.ctx.move
   const updateMovePage = await UpdateMovePage.gotoPersonalDetails()
   const updatedFields = await updateMovePage.fillInPersonalDetails({}, options)
   const updatedDetails = { ...person, ...updatedFields }
