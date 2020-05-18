@@ -6,12 +6,12 @@ const { setDateRange, setDatePeriod } = require('../../common/middleware')
 const { setPagination } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { COLLECTION_PATH, MOUNTPATH } = require('./constants')
-const { dashboard, list } = require('./controllers')
+const { COLLECTION_PATH, FILTERS, MOUNTPATH } = require('./constants')
+const { list } = require('./controllers')
 const {
-  setAllocationsByDateAndFilter,
-  setAllocationsSummary,
-  setAllocationTypeNavigation,
+  setBodyAllocations,
+  setResultsAllocations,
+  setFilterAllocations,
 } = require('./middleware')
 
 router.param('period', setDatePeriod)
@@ -21,16 +21,17 @@ router.use('date', protectRoute('allocations:view'))
 
 router.get('/', (req, res) => {
   const today = format(new Date(), dateFormat)
-  return res.redirect(`${req.baseUrl}/week/${today}/`)
+  return res.redirect(`${req.baseUrl}/week/${today}/outgoing`)
 })
-
-router.get('/:period(week|day)/:date/', setAllocationsSummary, dashboard)
 
 router.get(
   COLLECTION_PATH,
-  setAllocationsByDateAndFilter,
-  setAllocationTypeNavigation,
   setPagination(MOUNTPATH + COLLECTION_PATH),
+  [
+    setBodyAllocations,
+    setResultsAllocations,
+    setFilterAllocations(FILTERS.outgoing),
+  ],
   list
 )
 
