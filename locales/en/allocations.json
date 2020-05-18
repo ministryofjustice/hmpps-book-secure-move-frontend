@@ -1,7 +1,6 @@
 {
   "dashboard": {
-    "heading": "Allocations",
-    "labels": { "single_requests": "single requests" },
+    "heading": "Allocations for",
     "no_results": "No allocations found"
   },
   "complete": "complete",
@@ -11,7 +10,7 @@
   "move_from": "Move from",
   "move_to": "Move to",
   "requested": "Requested",
-  "progress": "Progress",
+  "progress": "Unfilled allocations",
   "confirmation": {
     "page_title": "Allocation requested",
     "detail":

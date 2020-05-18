@@ -17,6 +17,11 @@ function dashboard(req, res) {
       heading: 'dashboard::sections.single_requests.heading',
       filter: req.filterSingleRequests,
     },
+    allocations: {
+      permission: 'moves:view:proposed',
+      heading: 'dashboard::sections.allocations.heading',
+      filter: req.filterAllocations,
+    },
   }
 
   res.render('home/dashboard', {

@@ -10,10 +10,28 @@ const COLLECTION_VIEW_PATH = '/:view(outgoing)'
 const COLLECTION_MIDDLEWARE = [
   setPagination(MOUNTPATH + COLLECTION_BASE_PATH + COLLECTION_VIEW_PATH),
 ]
+const DEFAULTS = {
+  QUERY: {
+    outgoing: { status: '' },
+  },
+  TIME_PERIOD: {
+    outgoing: 'week',
+  },
+}
+const FILTERS = {
+  outgoing: [
+    {
+      label: 'in_total',
+      status: '',
+    },
+  ],
+}
 
 module.exports = {
   COLLECTION_BASE_PATH,
   COLLECTION_MIDDLEWARE,
   COLLECTION_VIEW_PATH,
+  DEFAULTS,
+  FILTERS,
   MOUNTPATH,
 }

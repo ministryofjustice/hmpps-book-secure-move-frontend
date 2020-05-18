@@ -1,13 +1,11 @@
-const presenters = require('../../../common/presenters')
-
 module.exports = function list(req, res) {
-  const { pagination } = req
-  const { allocations = [] } = res.locals
+  const { filter, pagination, resultsAsTable } = req
   const template = 'allocations/views/list'
   const locals = {
+    filter,
     pagination,
+    resultsAsTable,
     pageTitle: req.t('allocations::dashboard.heading'),
-    ...presenters.allocationsToTable(allocations),
   }
 
   res.render(template, locals)

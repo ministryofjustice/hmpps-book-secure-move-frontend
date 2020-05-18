@@ -1,3 +1,4 @@
+const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 const tablePresenters = require('./table')
@@ -10,11 +11,10 @@ const tableConfig = [
         scope: 'row',
       },
       html: data => {
-        const content = `${data.moves_count} ${filters.pluralize(
-          'person',
-          data.moves_count
-        )}`
-        return `<a href="/allocation/${data.id}">${content}</a>`
+        const count = data.moves.length
+        return `<a href="/allocation/${data.id}">${count} ${i18n.t('person', {
+          count,
+        })}</a>`
       },
     },
   },
@@ -46,19 +46,20 @@ const tableConfig = [
     head: 'allocations::progress',
     // todo: this field does not exist yet and it might end up having a different name or format
     row: {
-      text: 'progress',
+      html: data => {
+        const total = data.moves.length
+        const unfilled = data.moves.filter(move => !move.person).length
+        return `${unfilled} of ${total}`
+      },
+      // text: 'progress',
     },
   },
 ]
 
 function allocationsToTable(allocations) {
   return {
-    headerForAllocationTable: tableConfig.map(
-      tablePresenters.objectToTableHead
-    ),
-    rowsForAllocationTable: allocations.map(
-      tablePresenters.objectToTableRow(tableConfig)
-    ),
+    head: tableConfig.map(tablePresenters.objectToTableHead),
+    rows: allocations.map(tablePresenters.objectToTableRow(tableConfig)),
   }
 }
 

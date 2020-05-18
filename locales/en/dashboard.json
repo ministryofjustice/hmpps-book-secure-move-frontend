@@ -5,7 +5,10 @@
       "heading": "$t(primary_navigation.single_requests) sent this week"
     },
     "allocations": {
-      "heading": "$t(primary_navigation.allocations) this week"
+      "heading": "$t(primary_navigation.allocations) this week",
+      "summary": {
+        "total": "outgoing"
+      }
     }
   }
 }

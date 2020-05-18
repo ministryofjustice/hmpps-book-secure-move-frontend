@@ -63,6 +63,9 @@ const pmuPermissions = [
   'moves:view:proposed',
   'move:review',
   'move:view',
+  'allocations:view',
+  'allocation:view',
+  'allocation:create',
 ]
 
 const permissionsByRole = {

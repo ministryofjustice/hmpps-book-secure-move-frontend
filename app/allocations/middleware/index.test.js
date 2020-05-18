@@ -1,6 +1,6 @@
-const allocationService = require('../../common/services/allocation')
+const allocationService = require('../../../common/services/allocation')
 
-const middleware = require('./middleware')
+const middleware = require('./index')
 
 describe('#setAllocationsSummary', function() {
   let next

@@ -1,9 +1,13 @@
 const { cloneDeep, isEqual } = require('lodash')
 const queryString = require('query-string')
 
-const { getDateFromParams } = require('../../common/helpers/date-utils')
-const presenters = require('../../common/presenters')
-const allocationService = require('../../common/services/allocation')
+const { getDateFromParams } = require('../../../common/helpers/date-utils')
+const presenters = require('../../../common/presenters')
+const allocationService = require('../../../common/services/allocation')
+
+const setBodyAllocations = require('./set-body.allocations')
+const setFilterAllocations = require('./set-filter.allocations')
+const setResultsAllocations = require('./set-results.allocations')
 
 const allocationTypeNavigationConfig = [
   {
@@ -107,6 +111,9 @@ async function setAllocationTypeNavigation(req, res, next) {
 }
 
 module.exports = {
+  setBodyAllocations,
+  setFilterAllocations,
+  setResultsAllocations,
   setAllocationsSummary,
   setAllocationsByDateAndFilter,
   getAllocationTypeMetadata,

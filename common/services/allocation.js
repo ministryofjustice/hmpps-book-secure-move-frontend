@@ -1,4 +1,4 @@
-const { mapKeys, mapValues } = require('lodash')
+const { mapKeys, mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -44,20 +44,62 @@ const allocationService = {
       })
       .then(response => response.meta.pagination.total_objects)
   },
-  getByStatus({ dateRange = [], additionalFilters }) {
-    const [dateFrom, dateTo] = dateRange
-    const filter = {
-      'filter[date_from]': dateFrom,
-      'filter[date_to]': dateTo,
-      ...urlKeyToFilter(additionalFilters),
-    }
+  getByDateAndLocation({
+    moveDate = [],
+    createdAtDate = [],
+    fromLocationId,
+    toLocationId,
+    isAggregation = false,
+    sortBy = 'created_at',
+    sortDirection = 'desc',
+  } = {}) {
+    const [moveDateFrom, moveDateTo] = moveDate
+    const [createdAtFrom, createdAtTo] = createdAtDate
+
+    return allocationService.getAll({
+      isAggregation,
+      filter: pickBy({
+        'filter[from_locations]': fromLocationId,
+        'filter[to_locations]': toLocationId,
+        'filter[date_from]': moveDateFrom,
+        'filter[date_to]': moveDateTo,
+        'filter[created_at_from]': createdAtFrom,
+        'filter[created_at_to]': createdAtTo,
+        'sort[by]': sortBy,
+        'sort[direction]': sortDirection,
+      }),
+    })
+  },
+  getAll({
+    filter = {},
+    combinedData = [],
+    page = 1,
+    isAggregation = false,
+  } = {}) {
     return apiClient
       .findAll('allocation', {
         ...filter,
-        page: 1,
-        per_page: 100,
+        page,
+        per_page: isAggregation ? 1 : 100,
       })
-      .then(response => response.data)
+      .then(response => {
+        const { data, links, meta } = response
+        const results = [...combinedData, ...data]
+
+        if (isAggregation) {
+          return meta.pagination.total_objects
+        }
+
+        if (!links.next) {
+          return results
+        }
+
+        return allocationService.getAll({
+          filter,
+          combinedData: results,
+          page: page + 1,
+        })
+      })
   },
   getById(id) {
     return apiClient.find('allocation', id).then(response => response.data)
