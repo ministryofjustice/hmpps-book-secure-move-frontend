@@ -7,6 +7,7 @@ const {
   setBodySingleRequests,
 } = require('../moves/middleware')
 
+const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
 const { overrideBodySingleRequests } = require('./middleware')
 
@@ -15,7 +16,7 @@ router.get(
   '/',
   setBodySingleRequests,
   overrideBodySingleRequests,
-  setFilterSingleRequests('/moves/requested'),
+  setFilterSingleRequests(FILTERS.requested),
   dashboard
 )
 

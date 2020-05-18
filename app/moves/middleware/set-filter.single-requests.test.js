@@ -1,7 +1,22 @@
-const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
+const i18n = require('../../../config/i18n')
 
 const middleware = require('./set-filter.single-requests')
+
+const mockConfig = [
+  {
+    status: 'pending',
+    label: 'statuses::pending',
+  },
+  {
+    status: 'approved',
+    label: 'statuses::approved',
+  },
+  {
+    status: 'rejected',
+    label: 'statuses::rejected',
+  },
+]
 
 describe('Moves middleware', function() {
   describe('#setfilterSingleRequests()', function() {
@@ -14,8 +29,8 @@ describe('Moves middleware', function() {
       const mockLocationId = '123'
 
       beforeEach(function() {
+        sinon.stub(i18n, 't').returnsArg(0)
         sinon.stub(singleRequestService, 'getAll').resolves(4)
-        sinon.stub(presenters, 'moveTypesToFilterComponent').returnsArg(0)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -29,30 +44,27 @@ describe('Moves middleware', function() {
         res = {}
       })
 
-      context('without custom path', function() {
+      context('without custom href', function() {
         beforeEach(async function() {
-          await middleware()(req, res, next)
+          await middleware(mockConfig)(req, res, next)
         })
 
         it('sets req.filter', function() {
           expect(req.filter).to.deep.equal([
             {
               active: true,
-              status: 'pending',
               label: 'statuses::pending',
               href: '/moves/week/2010-09-07/123?status=pending',
               value: 4,
             },
             {
               active: false,
-              status: 'approved',
               label: 'statuses::approved',
               href: '/moves/week/2010-09-07/123?status=approved',
               value: 4,
             },
             {
               active: false,
-              status: 'rejected',
               label: 'statuses::rejected',
               href: '/moves/week/2010-09-07/123?status=rejected',
               value: 4,
@@ -85,45 +97,50 @@ describe('Moves middleware', function() {
           expect(singleRequestService.getAll.callCount).to.equal(3)
         })
 
-        it('calls the presenter on each element', async function() {
-          expect(
-            presenters.moveTypesToFilterComponent
-          ).to.have.been.calledThrice
-        })
-
         it('calls next', function() {
           expect(next).to.have.been.calledWithExactly()
         })
       })
 
-      context('with custom path', function() {
-        const customPath = '/requested'
-
+      context('with custom href', function() {
         beforeEach(async function() {
-          await middleware(customPath)(req, res, next)
+          await middleware([
+            {
+              status: 'pending',
+              label: 'statuses::pending',
+              href: '/custom/pending',
+            },
+            {
+              status: 'approved',
+              label: 'statuses::approved',
+              href: '/custom/approved',
+            },
+            {
+              status: 'rejected',
+              label: 'statuses::rejected',
+              href: '/custom/rejected',
+            },
+          ])(req, res, next)
         })
 
         it('should use custom path in URLs req.filter', function() {
           expect(req.filter).to.deep.equal([
             {
               active: true,
-              status: 'pending',
               label: 'statuses::pending',
-              href: `${customPath}?status=pending`,
+              href: '/custom/pending?status=pending',
               value: 4,
             },
             {
               active: false,
-              status: 'approved',
               label: 'statuses::approved',
-              href: `${customPath}?status=approved`,
+              href: '/custom/approved?status=approved',
               value: 4,
             },
             {
               active: false,
-              status: 'rejected',
               label: 'statuses::rejected',
-              href: `${customPath}?status=rejected`,
+              href: '/custom/rejected?status=rejected',
               value: 4,
             },
           ])
@@ -139,28 +156,25 @@ describe('Moves middleware', function() {
           req.query = {
             foo: 'bar',
           }
-          await middleware()(req, res, next)
+          await middleware(mockConfig)(req, res, next)
         })
 
         it('should combine query in URLs', function() {
           expect(req.filter).to.deep.equal([
             {
               active: true,
-              status: 'pending',
               label: 'statuses::pending',
               href: '/moves/week/2010-09-07/123?foo=bar&status=pending',
               value: 4,
             },
             {
               active: false,
-              status: 'approved',
               label: 'statuses::approved',
               href: '/moves/week/2010-09-07/123?foo=bar&status=approved',
               value: 4,
             },
             {
               active: false,
-              status: 'rejected',
               label: 'statuses::rejected',
               href: '/moves/week/2010-09-07/123?foo=bar&status=rejected',
               value: 4,
@@ -187,7 +201,7 @@ describe('Moves middleware', function() {
           locals: {},
         }
 
-        await middleware()(req, res, next)
+        await middleware(mockConfig)(req, res, next)
       })
 
       it('calls next with error', function() {

@@ -20,11 +20,28 @@ const DEFAULTS = {
     outgoing: 'day',
   },
 }
+const FILTERS = {
+  requested: [
+    {
+      label: 'statuses::pending',
+      status: 'pending',
+    },
+    {
+      label: 'statuses::approved',
+      status: 'approved',
+    },
+    {
+      label: 'statuses::rejected',
+      status: 'rejected',
+    },
+  ],
+}
 
 module.exports = {
   COLLECTION_BASE_PATH,
   COLLECTION_MIDDLEWARE,
   COLLECTION_VIEW_PATH,
   DEFAULTS,
+  FILTERS,
   MOUNTPATH,
 }

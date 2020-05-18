@@ -1,26 +1,11 @@
 const querystring = require('qs')
 
-const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
+const i18n = require('../../../config/i18n')
 
-const filterConfig = [
-  {
-    label: 'statuses::pending',
-    status: 'pending',
-  },
-  {
-    label: 'statuses::approved',
-    status: 'approved',
-  },
-  {
-    label: 'statuses::rejected',
-    status: 'rejected',
-  },
-]
-
-function setfilterSingleRequests(customPath) {
+function setfilterSingleRequests(items = []) {
   return async function buildFilter(req, res, next) {
-    const promises = filterConfig.map(item =>
+    const promises = items.map(item =>
       singleRequestService
         .getAll({
           ...req.body,
@@ -32,19 +17,18 @@ function setfilterSingleRequests(customPath) {
             ...req.query,
             status: item.status,
           })
+
           return {
-            ...item,
             value,
+            label: i18n.t(item.label).toLowerCase(),
             active: item.status === req.body.status,
-            href: `${customPath || req.baseUrl + req.path}?${query}`,
+            href: `${item.href || req.baseUrl + req.path}?${query}`,
           }
         })
     )
 
     try {
-      req.filter = await Promise.all(promises).then(data =>
-        data.map(presenters.moveTypesToFilterComponent)
-      )
+      req.filter = await Promise.all(promises)
 
       next()
     } catch (error) {
