@@ -542,59 +542,7 @@
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-20",
     "documents": [],
-    "person": {
-      "id": "c22acfcb-471d-4481-905c-f5d470e80f59",
-      "type": "people",
-      "first_names": "Aubrey",
-      "last_name": "Sipes",
-      "date_of_birth": "1970-05-26",
-      "assessment_answers": [{
-        "title": "Self harm",
-        "comments": "Attempted suicide",
-        "created_at": "2019-06-28",
-        "expires_at": null,
-        "assessment_question_id": "3e3e20ce-4b41-4c52-a10c-23be5971b00b",
-        "category": "risk",
-        "key": "self_harm"
-      }, {
-        "title": "Pregnant",
-        "comments": "",
-        "created_at": "2019-06-28",
-        "expires_at": null,
-        "assessment_question_id": "0906442a-e1f3-43cd-a7c9-6c511c71532e",
-        "category": "health",
-        "key": "pregnant"
-      }, {
-        "title": "Must be held separately",
-        "comments": "Threat to other prisoners",
-        "created_at": "2019-06-06",
-        "expires_at": null,
-        "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
-        "category": "risk",
-        "key": "hold_separately"
-      }],
-      "identifiers": [{
-        "identifier_type": "niche_reference",
-        "value": "996054"
-      }, {
-        "identifier_type": "athena_reference",
-        "value": "392460"
-      }],
-      "ethnicity": {
-        "id": "6ccd61ae-f271-4fec-9d99-b14a66d0d85b",
-        "type": "ethnicities",
-        "key": "O9",
-        "title": "Any other ethnic group",
-        "description": "O9 - Any other ethnic group"
-      },
-      "gender": {
-        "id": "665aba44-5562-4c75-9290-b25f87c5bdc2",
-        "type": "genders",
-        "key": "female",
-        "title": "Female",
-        "description": null
-      }
-    },
+    "person": {},
     "from_location": {
       "id": "7a4cca3b-58c3-4f02-9b0e-24ce150b5cd7",
       "type": "locations",
@@ -947,59 +895,7 @@
     "time_due": "2000-01-01T12:00:00Z",
     "date": "2019-07-17",
     "documents": [],
-    "person": {
-      "id": "e42ca653-3d4b-4e6e-ac9c-322b0399cb18",
-      "type": "people",
-      "first_names": "Fernando",
-      "last_name": "Mante",
-      "date_of_birth": "1989-11-28",
-      "assessment_answers": [{
-        "title": "Must be held separately",
-        "comments": "Incitement to riot",
-        "created_at": "2015-04-27",
-        "expires_at": null,
-        "assessment_question_id": "f47e5937-c154-4a7c-8af8-84523e5718e6",
-        "category": "risk",
-        "key": "hold_separately"
-      }, {
-        "title": "Sign or other language interpreter",
-        "comments": "Only speaks Welsh",
-        "created_at": "2015-05-28",
-        "expires_at": null,
-        "assessment_question_id": "06d6584a-91bd-4b24-9c32-64fe880bfdba",
-        "category": "court",
-        "key": "interpreter"
-      }, {
-        "title": "Health issue",
-        "comments": "Heart condition",
-        "created_at": "2016-04-10",
-        "expires_at": null,
-        "assessment_question_id": "2f1996c6-b274-4d95-b84f-5b14a54e44ba",
-        "category": "health",
-        "key": "health_issue"
-      }],
-      "identifiers": [{
-        "identifier_type": "prison_number",
-        "value": "965260"
-      }, {
-        "identifier_type": "athena_reference",
-        "value": "181027"
-      }],
-      "ethnicity": {
-        "id": "45935763-7486-4446-a5ff-d10f1a917a26",
-        "type": "ethnicities",
-        "key": "A3",
-        "title": "Asian or Asian British (Bangladeshi)",
-        "description": "A3 - Asian or Asian British (Bangladeshi)"
-      },
-      "gender": {
-        "id": "d2735a7f-63ad-478e-aa61-99ec4b0b9e75",
-        "type": "genders",
-        "key": "transexual",
-        "title": "Transexual",
-        "description": null
-      }
-    },
+    "person": {},
     "from_location": {
       "id": "f21be4ec-1c16-4f08-9acc-c56cc570c758",
       "type": "locations",
@@ -1433,59 +1329,7 @@
     "time_due": "2000-01-01T14:00:00Z",
     "date": "2019-07-20",
     "documents": [],
-    "person": {
-      "id": "061a7430-f46d-4031-a123-4a19d37f11aa",
-      "type": "people",
-      "first_names": "Eliseo",
-      "last_name": "Runolfsdottir",
-      "date_of_birth": "1992-11-01",
-      "assessment_answers": [{
-        "title": "Any other risks",
-        "comments": "",
-        "created_at": "2015-05-28",
-        "expires_at": null,
-        "assessment_question_id": "228aa58e-f405-42a9-a45e-8f556618beb4",
-        "category": "risk",
-        "key": "other_risks"
-      }, {
-        "title": "Any other information",
-        "comments": "Former prison officer",
-        "created_at": "2013-08-20",
-        "expires_at": null,
-        "assessment_question_id": "1f4e38f8-656c-4fb8-847e-f1855563661e",
-        "category": "court",
-        "key": "other_court"
-      }, {
-        "title": "Special diet or allergy",
-        "comments": "Gluten allergy",
-        "created_at": "2019-09-18",
-        "expires_at": null,
-        "assessment_question_id": "6e24de93-efdf-4789-9595-8995f4ea34b9",
-        "category": "health",
-        "key": "special_diet_or_allergy"
-      }],
-      "identifiers": [{
-        "identifier_type": "niche_reference",
-        "value": "884385"
-      }, {
-        "identifier_type": "prison_number",
-        "value": "757119"
-      }],
-      "ethnicity": {
-        "id": "36d16451-f68c-44e3-a2da-e2208ee277ea",
-        "type": "ethnicities",
-        "key": "M3",
-        "title": "Mixed (White and Asian)",
-        "description": "M3 - Mixed (White and Asian)"
-      },
-      "gender": {
-        "id": "d2735a7f-63ad-478e-aa61-99ec4b0b9e75",
-        "type": "genders",
-        "key": "transexual",
-        "title": "Transexual",
-        "description": null
-      }
-    },
+    "person": {},
     "from_location": {
       "id": "2cef07b7-39e6-4552-9d28-0cae9d6e00c7",
       "type": "locations",
