@@ -1,0 +1,10 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_allocation"),
+    href: "/allocation/" + allocation.id
+  }) }}
+
+  {{ super() }}
+{% endblock %}
