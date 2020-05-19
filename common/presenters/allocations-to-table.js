@@ -46,12 +46,8 @@ const tableConfig = [
 
 function allocationsToTable(allocations) {
   return {
-    headerForAllocationTable: tableConfig.map(
-      tablePresenters.objectToTableHead
-    ),
-    rowsForAllocationTable: allocations.map(
-      tablePresenters.objectToTableRow(tableConfig)
-    ),
+    head: tableConfig.map(tablePresenters.objectToTableHead),
+    rows: allocations.map(tablePresenters.objectToTableRow(tableConfig)),
   }
 }
 

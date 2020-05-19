@@ -1,15 +1,15 @@
 const { get } = require('lodash')
 const querystring = require('qs')
 
-const singleRequestService = require('../../../common/services/single-request')
+const allocationService = require('../../../common/services/allocation')
 const i18n = require('../../../config/i18n')
 
-function setfilterSingleRequests(items = []) {
+function setfilterAllocations(items = []) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
-      singleRequestService
-        .getAll({
-          ...get(req, 'body.requested', {}),
+      allocationService
+        .getByDateAndLocation({
+          ...req.body.allocations,
           isAggregation: true,
           status: item.status,
         })
@@ -22,7 +22,7 @@ function setfilterSingleRequests(items = []) {
           return {
             value,
             label: i18n.t(item.label).toLowerCase(),
-            active: item.status === get(req, 'body.requested.status'),
+            active: item.status === get(req, 'body.allocations.status'),
             href: `${item.href || req.baseUrl + req.path}?${query}`,
           }
         })
@@ -31,7 +31,7 @@ function setfilterSingleRequests(items = []) {
     try {
       const filter = await Promise.all(promises)
       req.filter = filter
-      req.filterSingleRequests = filter
+      req.filterAllocations = filter
 
       next()
     } catch (error) {
@@ -40,4 +40,4 @@ function setfilterSingleRequests(items = []) {
   }
 }
 
-module.exports = setfilterSingleRequests
+module.exports = setfilterAllocations

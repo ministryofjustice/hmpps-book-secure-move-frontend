@@ -1,7 +1,7 @@
-const singleRequestService = require('../../../common/services/single-request')
+const allocationService = require('../../../common/services/allocation')
 const i18n = require('../../../config/i18n')
 
-const middleware = require('./set-filter.single-requests')
+const middleware = require('./set-filter.allocations')
 
 const mockConfig = [
   {
@@ -18,8 +18,8 @@ const mockConfig = [
   },
 ]
 
-describe('Moves middleware', function() {
-  describe('#setfilterSingleRequests()', function() {
+describe('Allocations middleware', function() {
+  describe('#setfilterAllocations()', function() {
     let next
     let req
     let res
@@ -30,13 +30,13 @@ describe('Moves middleware', function() {
 
       beforeEach(function() {
         sinon.stub(i18n, 't').returnsArg(0)
-        sinon.stub(singleRequestService, 'getAll').resolves(4)
+        sinon.stub(allocationService, 'getByDateAndLocation').resolves(4)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
           path: '/week/2010-09-07/123',
           body: {
-            requested: {
+            allocations: {
               createdAtDate: mockDateRange,
               fromLocationId: mockLocationId,
               status: 'pending',
@@ -75,19 +75,25 @@ describe('Moves middleware', function() {
         })
 
         it('calls the servive with correct arguments', async function() {
-          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+          expect(
+            allocationService.getByDateAndLocation
+          ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'pending',
             createdAtDate: mockDateRange,
             fromLocationId: mockLocationId,
           })
-          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+          expect(
+            allocationService.getByDateAndLocation
+          ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'approved',
             createdAtDate: mockDateRange,
             fromLocationId: mockLocationId,
           })
-          expect(singleRequestService.getAll).to.have.been.calledWithExactly({
+          expect(
+            allocationService.getByDateAndLocation
+          ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'rejected',
             createdAtDate: mockDateRange,
@@ -96,7 +102,7 @@ describe('Moves middleware', function() {
         })
 
         it('calls the service on each item', async function() {
-          expect(singleRequestService.getAll.callCount).to.equal(3)
+          expect(allocationService.getByDateAndLocation.callCount).to.equal(3)
         })
 
         it('calls next', function() {
@@ -194,9 +200,10 @@ describe('Moves middleware', function() {
       const mockError = new Error('Error!')
 
       beforeEach(async function() {
-        sinon.stub(singleRequestService, 'getAll').rejects(mockError)
+        sinon.stub(allocationService, 'getByDateAndLocation').rejects(mockError)
         next = sinon.spy()
         req = {
+          body: {},
           params: {},
         }
 

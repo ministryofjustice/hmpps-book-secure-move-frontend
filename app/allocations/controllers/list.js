@@ -1,11 +1,14 @@
-const presenters = require('../../../common/presenters')
+const { sumBy } = require('lodash')
 
 module.exports = function list(req, res) {
-  const { allocations = [] } = res.locals
+  const { filter, pagination, resultsAsTable } = req
   const template = 'allocations/views/list'
   const locals = {
+    filter,
+    pagination,
+    resultsAsTable,
     pageTitle: req.t('allocations::dashboard.heading'),
-    ...presenters.allocationsToTable(allocations),
+    totalResults: sumBy(filter, 'value'),
   }
 
   res.render(template, locals)

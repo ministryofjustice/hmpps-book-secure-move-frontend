@@ -1,16 +1,16 @@
 const { set } = require('lodash')
 
-function setBodySingleRequests(req, res, next) {
+function setBodyAllocations(req, res, next) {
   const { status } = req.query
   const { dateRange, locationId } = req.params
 
-  set(req, 'body.requested', {
+  set(req, 'body.allocations', {
     status,
-    createdAtDate: dateRange,
+    moveDate: dateRange,
     fromLocationId: locationId,
   })
 
   next()
 }
 
-module.exports = setBodySingleRequests
+module.exports = setBodyAllocations

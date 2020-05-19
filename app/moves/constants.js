@@ -1,8 +1,5 @@
-const { setPagination } = require('./middleware')
-
-const uuidRegex =
-  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
-const dateRegex = '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+const { dateRegex, uuidRegex } = require('../../common/helpers/url')
+const { setPagination } = require('../../common/middleware/collection')
 
 const MOUNTPATH = '/moves'
 const COLLECTION_BASE_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?`
@@ -20,11 +17,28 @@ const DEFAULTS = {
     outgoing: 'day',
   },
 }
+const FILTERS = {
+  requested: [
+    {
+      label: 'statuses::pending',
+      status: 'pending',
+    },
+    {
+      label: 'statuses::approved',
+      status: 'approved',
+    },
+    {
+      label: 'statuses::rejected',
+      status: 'rejected',
+    },
+  ],
+}
 
 module.exports = {
   COLLECTION_BASE_PATH,
   COLLECTION_MIDDLEWARE,
   COLLECTION_VIEW_PATH,
   DEFAULTS,
+  FILTERS,
   MOUNTPATH,
 }

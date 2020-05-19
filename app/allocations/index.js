@@ -1,41 +1,41 @@
-const { format } = require('date-fns')
 const router = require('express').Router()
 
-const { dateFormat } = require('../../common/helpers/date-utils')
-const { setDateRange, setDatePeriod } = require('../../common/middleware')
+const { setDateRange } = require('../../common/middleware')
+const {
+  redirectDefaultQuery,
+  redirectView,
+  setPagination,
+} = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { dashboard, list } = require('./controllers')
+const { COLLECTION_PATH, DEFAULTS, FILTERS, MOUNTPATH } = require('./constants')
+const { list } = require('./controllers')
 const {
-  setAllocationsByDateAndFilter,
-  setAllocationsSummary,
-  setAllocationTypeNavigation,
-  setPagination,
+  setBodyAllocations,
+  setResultsAllocations,
+  setFilterAllocations,
 } = require('./middleware')
 
-router.param('period', setDatePeriod)
 router.param('date', setDateRange)
+router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-router.get('/', protectRoute('allocations:view'), (req, res, next) => {
-  const today = format(new Date(), dateFormat)
-  return res.redirect(`${req.baseUrl}/week/${today}/`)
-})
+router.use('date', protectRoute('allocations:view'))
+
+router.get('/', (req, res) => res.redirect(`${MOUNTPATH}/outgoing`))
+router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
+
 router.get(
-  '/:period(week|day)/:date/',
-  protectRoute('allocations:view'),
-  setAllocationsSummary,
-  setPagination,
-  dashboard
-)
-router.get(
-  '/:period(week|day)/:date/:view(outgoing)',
-  protectRoute('allocations:view'),
-  setAllocationsByDateAndFilter,
-  setAllocationTypeNavigation,
-  setPagination,
+  COLLECTION_PATH,
+  setPagination(MOUNTPATH + COLLECTION_PATH),
+  [
+    setBodyAllocations,
+    setResultsAllocations,
+    setFilterAllocations(FILTERS.outgoing),
+  ],
   list
 )
+
 module.exports = {
   router,
-  mountpath: '/allocations',
+  mountpath: MOUNTPATH,
 }

@@ -1,13 +1,8 @@
 const dateFunctions = require('date-fns')
-const { mapKeys, mapValues } = require('lodash')
+const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
-function urlKeyToFilter(additionalFilters) {
-  return mapKeys(additionalFilters, (value, key) => {
-    return `filter[${key}]`
-  })
-}
 const allocationService = {
   cancel(allocationId) {
     const timestamp = dateFunctions.formatISO(new Date())
@@ -41,35 +36,54 @@ const allocationService = {
       .create('allocation', allocationService.format(data))
       .then(response => response.data)
   },
-  getCount({ dateRange = [], additionalFilters }) {
-    const [dateFrom, dateTo] = dateRange
-    const filter = {
-      'filter[date_from]': dateFrom,
-      'filter[date_to]': dateTo,
-      ...urlKeyToFilter(additionalFilters),
-    }
-    return apiClient
-      .findAll('allocation', {
-        ...filter,
-        page: 1,
-        per_page: 1,
-      })
-      .then(response => response.meta.pagination.total_objects)
+  getByDateAndLocation({
+    moveDate = [],
+    fromLocationId,
+    toLocationId,
+    isAggregation = false,
+  } = {}) {
+    const [moveDateFrom, moveDateTo] = moveDate
+
+    return allocationService.getAll({
+      isAggregation,
+      filter: pickBy({
+        'filter[from_locations]': fromLocationId,
+        'filter[to_locations]': toLocationId,
+        'filter[date_from]': moveDateFrom,
+        'filter[date_to]': moveDateTo,
+      }),
+    })
   },
-  getByStatus({ dateRange = [], additionalFilters }) {
-    const [dateFrom, dateTo] = dateRange
-    const filter = {
-      'filter[date_from]': dateFrom,
-      'filter[date_to]': dateTo,
-      ...urlKeyToFilter(additionalFilters),
-    }
+  getAll({
+    filter = {},
+    combinedData = [],
+    page = 1,
+    isAggregation = false,
+  } = {}) {
     return apiClient
       .findAll('allocation', {
         ...filter,
-        page: 1,
-        per_page: 100,
+        page,
+        per_page: isAggregation ? 1 : 100,
       })
-      .then(response => response.data)
+      .then(response => {
+        const { data, links, meta } = response
+        const results = [...combinedData, ...data]
+
+        if (isAggregation) {
+          return meta.pagination.total_objects
+        }
+
+        if (!links.next) {
+          return results
+        }
+
+        return allocationService.getAll({
+          filter,
+          combinedData: results,
+          page: page + 1,
+        })
+      })
   },
   getById(id) {
     return apiClient.find('allocation', id).then(response => response.data)

@@ -1,4 +1,4 @@
-{% extends "layouts/list.njk" %}
+{% extends "moves/views/list-as-table.njk" %}
 
 {% block headerActions %}
   {% if canAccess('move:create') %}
@@ -7,27 +7,6 @@
       text: t("actions::create_move"),
       href: "/allocation/new",
       classes: "govuk-!-margin-top-2 app-print--hide"
-    }) }}
-  {% endif %}
-{% endblock %}
-
-{% block pageContent %}
-  {{ appFilter({
-    items: allocationTypeNavigation
-  }) }}
-
-  {% if allocations.length %}
-    {{ govukTable({
-      rows: rowsForAllocationTable,
-      head: headerForAllocationTable
-    }) }}
-  {% else %}
-    {{ appMessage({
-      classes: "app-message--muted govuk-!-margin-top-7",
-      allowDismiss: false,
-      content: {
-        html: t("allocations::dashboard.no_results")
-      }
     }) }}
   {% endif %}
 {% endblock %}

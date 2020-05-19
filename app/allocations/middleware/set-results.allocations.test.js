@@ -1,7 +1,7 @@
 const presenters = require('../../../common/presenters')
-const singleRequestService = require('../../../common/services/single-request')
+const allocationService = require('../../../common/services/allocation')
 
-const middleware = require('./set-results.single-requests')
+const middleware = require('./set-results.allocations')
 
 const mockActiveMoves = [
   { id: '1', foo: 'bar', status: 'requested' },
@@ -10,22 +10,22 @@ const mockActiveMoves = [
   { id: '4', fizz: 'buzz', status: 'completed' },
 ]
 
-describe('Moves middleware', function() {
-  describe('#setResultsSingleRequests()', function() {
+describe('Allocations middleware', function() {
+  describe('#setResultsAllocations()', function() {
     let res
     let req
     let next
 
     beforeEach(function() {
-      sinon.stub(singleRequestService, 'getAll')
-      sinon.stub(presenters, 'singleRequestsToTableComponent').returnsArg(0)
+      sinon.stub(allocationService, 'getByDateAndLocation')
+      sinon.stub(presenters, 'allocationsToTable').returnsArg(0)
       next = sinon.stub()
       res = {}
       req = {
         body: {
-          requested: {
+          allocations: {
             status: 'proposed',
-            createdAtDate: ['2019-01-01', '2019-01-07'],
+            moveDate: ['2019-01-01', '2019-01-07'],
             fromLocationId: '123',
           },
         },
@@ -34,14 +34,16 @@ describe('Moves middleware', function() {
 
     context('when service resolves', function() {
       beforeEach(async function() {
-        singleRequestService.getAll.resolves(mockActiveMoves)
+        allocationService.getByDateAndLocation.resolves(mockActiveMoves)
         await middleware(req, res, next)
       })
 
       it('should call the data service with request body', function() {
-        expect(singleRequestService.getAll).to.have.been.calledOnceWithExactly({
+        expect(
+          allocationService.getByDateAndLocation
+        ).to.have.been.calledOnceWithExactly({
           status: 'proposed',
-          createdAtDate: ['2019-01-01', '2019-01-07'],
+          moveDate: ['2019-01-01', '2019-01-07'],
           fromLocationId: '123',
         })
       })
@@ -62,10 +64,10 @@ describe('Moves middleware', function() {
         })
       })
 
-      it('should call singleRequestsToTableComponent presenter', function() {
-        expect(
-          presenters.singleRequestsToTableComponent
-        ).to.be.calledOnceWithExactly(mockActiveMoves)
+      it('should call allocationsToTable presenter', function() {
+        expect(presenters.allocationsToTable).to.be.calledOnceWithExactly(
+          mockActiveMoves
+        )
       })
 
       it('should call next', function() {
@@ -77,7 +79,7 @@ describe('Moves middleware', function() {
       const mockError = new Error('Error!')
 
       beforeEach(async function() {
-        singleRequestService.getAll.rejects(mockError)
+        allocationService.getByDateAndLocation.rejects(mockError)
         await middleware(req, res, next)
       })
 

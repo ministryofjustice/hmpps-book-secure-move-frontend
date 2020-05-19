@@ -1,4 +1,4 @@
-const urlHelpers = require('../../../common/helpers/url')
+const urlHelpers = require('../../helpers/url')
 
 const middleware = require('./set-pagination')
 

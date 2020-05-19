@@ -3,7 +3,7 @@ const singleRequestService = require('../../../common/services/single-request')
 
 async function setResultsSingleRequests(req, res, next) {
   try {
-    const singleRequests = await singleRequestService.getAll(req.body)
+    const singleRequests = await singleRequestService.getAll(req.body.requested)
 
     req.results = {
       active: singleRequests,

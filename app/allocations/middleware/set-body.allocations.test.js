@@ -1,7 +1,7 @@
-const middleware = require('./set-body.single-requests')
+const middleware = require('./set-body.allocations')
 
-describe('Moves middleware', function() {
-  describe('#setBodySingleRequests()', function() {
+describe('Allocations middleware', function() {
+  describe('#setBodyAllocations()', function() {
     let mockRes, mockReq, nextSpy
 
     beforeEach(function() {
@@ -21,9 +21,9 @@ describe('Moves middleware', function() {
     })
 
     it('should assign req.body correctly', function() {
-      expect(mockReq.body.requested).to.deep.equal({
+      expect(mockReq.body.allocations).to.deep.equal({
         status: 'pending',
-        createdAtDate: ['2020-10-10', '2020-10-10'],
+        moveDate: ['2020-10-10', '2020-10-10'],
         fromLocationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
       })
     })

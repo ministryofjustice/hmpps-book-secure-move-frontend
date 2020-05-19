@@ -4,6 +4,10 @@ const viewRouter = require('express').Router({ mergeParams: true })
 
 // Local dependencies
 const { setDateRange } = require('../../common/middleware')
+const {
+  redirectDefaultQuery,
+  redirectView,
+} = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const {
@@ -11,13 +15,12 @@ const {
   COLLECTION_BASE_PATH,
   COLLECTION_VIEW_PATH,
   DEFAULTS,
+  FILTERS,
   MOUNTPATH,
 } = require('./constants')
 const { download, listAsCards, listAsTable } = require('./controllers')
 const {
   redirectBaseUrl,
-  redirectDefaultQuery,
-  redirectView,
   saveUrl,
   setFromLocation,
   setBodySingleRequests,
@@ -39,7 +42,11 @@ viewRouter.get(
   '/:view(requested)',
   protectRoute('moves:view:proposed'),
   COLLECTION_MIDDLEWARE,
-  [setBodySingleRequests, setFilterSingleRequests(), setResultsSingleRequests],
+  [
+    setBodySingleRequests,
+    setFilterSingleRequests(FILTERS.requested),
+    setResultsSingleRequests,
+  ],
   listAsTable
 )
 viewRouter.get(

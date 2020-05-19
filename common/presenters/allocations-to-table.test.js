@@ -78,12 +78,12 @@ describe('#allocationsToTable', function() {
     output = presenter([])
   })
   it('returns an object with allocationsHeads', function() {
-    expect(output.headerForAllocationTable).to.exist
-    expect(output.headerForAllocationTable).to.be.an('array')
+    expect(output.head).to.exist
+    expect(output.head).to.be.an('array')
   })
   it('returns an object with allocations', function() {
-    expect(output.rowsForAllocationTable).to.exist
-    expect(output.rowsForAllocationTable).to.be.an('array')
+    expect(output.rows).to.exist
+    expect(output.rows).to.be.an('array')
   })
   describe('its behaviour', function() {
     let output
@@ -91,7 +91,7 @@ describe('#allocationsToTable', function() {
       output = presenter(mockAllocations)
     })
     it('returns the total moves count on the first cell', function() {
-      expect(output.rowsForAllocationTable[0][0]).to.deep.equal({
+      expect(output.rows[0][0]).to.deep.equal({
         html:
           '<a href="/allocation/8567f1a5-2201-4bc2-b655-f6526401303a">3 people</a>',
         attributes: {
@@ -100,27 +100,27 @@ describe('#allocationsToTable', function() {
       })
     })
     it('returns the created date on the second cell', function() {
-      expect(output.rowsForAllocationTable[0][1]).to.deep.equal({
+      expect(output.rows[0][1]).to.deep.equal({
         text: '20 Apr 2020',
       })
     })
     it('returns location_from on the third cell', function() {
-      expect(output.rowsForAllocationTable[0][2]).to.deep.equal({
+      expect(output.rows[0][2]).to.deep.equal({
         text: 'HOLME HOUSE (HMP)',
       })
     })
     it('returns location_to on the fourth cell', function() {
-      expect(output.rowsForAllocationTable[0][3]).to.deep.equal({
+      expect(output.rows[0][3]).to.deep.equal({
         text: 'HMP Ashfield',
       })
     })
     it('returns move date on the fifth cell', function() {
-      expect(output.rowsForAllocationTable[0][4]).to.deep.equal({
+      expect(output.rows[0][4]).to.deep.equal({
         text: '3 May 2020',
       })
     })
     it('returns one head row with all the cells', function() {
-      expect(output.headerForAllocationTable).to.deep.equal([
+      expect(output.head).to.deep.equal([
         {
           text: 'allocations::move_size',
         },
