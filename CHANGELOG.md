@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.23.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.22.0...v2.23.0) (2020-05-19)
+
+
+### Features
+
+* **allocations:** Display status of allocation in view ([dcfa7a5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dcfa7a5428d5cf559926ec4253ee228f749e9883))
+* **allocations:** Journey to cancel an allocation and related moves ([9e3ce5d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9e3ce5db19007dfbf2deb5e2442b6f50a3c37eb4))
+
+
+### Bug Fixes
+
+* **allocations:** Avoid formatting a person if  move has none associated ([66c8d7c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/66c8d7c0ae390571496883e779db4ed0948e6f4c))
+* **allocations:** Display correct links in the confirmation page ([0254270](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/025427096ba9a87486e79425ca5c31f9d52597a1))
+
 ## [2.22.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.21.1...v2.22.0) (2020-05-18)
 
 
