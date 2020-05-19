@@ -1,3 +1,4 @@
+const ParentController = require('../../../common/controllers/form-wizard')
 const allocationService = require('../../../common/services/allocation')
 
 const CancelController = require('./cancel')
@@ -7,6 +8,52 @@ const mockAllocation = {
   id: '123',
 }
 describe('Cancel controller', function() {
+  describe('middlewareLocals', function() {
+    const use = sinon.stub()
+    const cancelUrlStub = sinon.stub()
+    beforeEach(function() {
+      sinon.stub(ParentController.prototype, 'middlewareLocals')
+      controller.middlewareLocals.call({
+        use,
+        router: {},
+        setCancelUrl: cancelUrlStub,
+      })
+    })
+    afterEach(function() {
+      use.resetHistory()
+    })
+    it('calls the parent middlewareLocals', function() {
+      expect(ParentController.prototype.middlewareLocals).to.have.been
+        .calledOnce
+    })
+    it('adds setCancelUrl to the middleware stack', function() {
+      expect(use).to.have.been.calledOnceWith(cancelUrlStub)
+    })
+  })
+  describe('setCancelUrl', function() {
+    let locals
+    const next = sinon.stub()
+    beforeEach(function() {
+      locals = {
+        allocation: {
+          id: '123',
+        },
+      }
+      next.resetHistory()
+      controller.setCancelUrl({}, { locals }, next)
+    })
+    it('sets the cancelUrl on locals', function() {
+      expect(locals).to.deep.equal({
+        allocation: {
+          id: '123',
+        },
+        cancelUrl: '/allocation/123',
+      })
+    })
+    it('calls next', function() {
+      expect(next).to.have.been.calledOnce
+    })
+  })
   describe('#successHandler()', function() {
     let req, res, nextSpy
 

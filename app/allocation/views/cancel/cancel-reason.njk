@@ -1,0 +1,10 @@
+{% extends "form-wizard.njk" %}
+
+{% block cancelAction %}
+  {% if cancelUrl %}
+    <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+      {{ t("actions::back_to_allocation") }}
+    </a>
+  {% endif %}
+{% endblock %}
+
