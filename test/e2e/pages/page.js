@@ -48,9 +48,35 @@ export default class Page {
    * @returns {Promise}
    */
   async chooseLocation() {
+    await t
+      .expect(this.getCurrentUrl())
+      .contains('/locations')
+      .expect(this.nodes.locationsList.count)
+      .notEql(0)
+
     const count = await this.nodes.locationsList.count
     const randomItem = Math.floor(Math.random() * count)
-    return t.click(this.nodes.locationsList.nth(randomItem))
+
+    return t
+      .click(this.nodes.locationsList.nth(randomItem))
+      .expect(this.getCurrentUrl())
+      .notContains('/locations')
+  }
+
+  /**
+   * Sign in using the auth service
+   *
+   * @returns {Promise}
+   */
+  signIn(role) {
+    return t
+      .expect(this.getCurrentUrl())
+      .contains('/auth/login')
+      .typeText('#username', role.username)
+      .typeText('#password', role.password)
+      .click(Selector('#submit'))
+      .expect(this.getCurrentUrl())
+      .notContains('/auth/login')
   }
 
   /**
