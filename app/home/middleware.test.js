@@ -24,6 +24,12 @@ describe('Home middleware', function() {
             createdAtDate: ['2020-10-10', '2020-10-16'],
             fromLocationId: '12345',
           },
+          allocations: {
+            foo: 'bar',
+            fizz: 'buzz',
+            moveDate: ['2020-10-10', '2020-10-16'],
+            fromLocationId: '12345',
+          },
         },
       }
     })
@@ -33,13 +39,20 @@ describe('Home middleware', function() {
         middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
       })
 
-      it('should override values correctly', function() {
-        middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
-
+      it('should override requested values correctly', function() {
         expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
           createdAtDate: ['2017-08-07', '2017-08-13'],
+          fromLocationId: undefined,
+        })
+      })
+
+      it('should override allocation values correctly', function() {
+        expect(mockReq.body.allocations).to.deep.equal({
+          foo: 'bar',
+          fizz: 'buzz',
+          moveDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: undefined,
         })
       })
@@ -55,13 +68,20 @@ describe('Home middleware', function() {
         middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
       })
 
-      it('should override values correctly', function() {
-        middleware.overrideBodySingleRequests(mockReq, mockRes, nextSpy)
-
+      it('should override requested values correctly', function() {
         expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
           createdAtDate: ['2017-08-07', '2017-08-13'],
+          fromLocationId: '67890',
+        })
+      })
+
+      it('should override allocation values correctly', function() {
+        expect(mockReq.body.allocations).to.deep.equal({
+          foo: 'bar',
+          fizz: 'buzz',
+          moveDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: '67890',
         })
       })

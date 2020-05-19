@@ -23,6 +23,12 @@ function overrideBodySingleRequests(req, res, next) {
     fromLocationId: get(req.session, 'currentLocation.id'),
   }
 
+  req.body.allocations = {
+    ...req.body.allocations,
+    moveDate: [startDate, endDate],
+    fromLocationId: get(req.session, 'currentLocation.id'),
+  }
+
   next()
 }
 
