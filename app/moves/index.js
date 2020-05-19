@@ -4,6 +4,10 @@ const viewRouter = require('express').Router({ mergeParams: true })
 
 // Local dependencies
 const { setDateRange } = require('../../common/middleware')
+const {
+  redirectDefaultQuery,
+  redirectView,
+} = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const {
@@ -17,8 +21,6 @@ const {
 const { download, listAsCards, listAsTable } = require('./controllers')
 const {
   redirectBaseUrl,
-  redirectDefaultQuery,
-  redirectView,
   saveUrl,
   setFromLocation,
   setBodySingleRequests,
