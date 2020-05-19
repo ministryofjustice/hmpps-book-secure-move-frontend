@@ -19,6 +19,7 @@
 
       <p>
         {{ t("allocations::confirmation.detail", {
+          href: '/allocation/' + allocation.id,
           moves_count: allocation.moves_count,
           from_location: allocation.from_location.title,
           to_location: allocation.to_location.title,
@@ -28,14 +29,8 @@
       </p>
 
       <p>
-        <a href="{{ ALLOCATIONS_URL }}">
+        <a href="/allocations">
           {{ t("allocations::confirmation.view_all") }}
-        </a>
-        <span> {{t("or")}} </span>
-        <a href="{{ ALLOCATIONS_URL }}">
-          {{ t("allocations::confirmation.view_by_from_location", {
-            from_location: allocation.from_location.title
-          }) }}
         </a>
       </p>
     </div>
