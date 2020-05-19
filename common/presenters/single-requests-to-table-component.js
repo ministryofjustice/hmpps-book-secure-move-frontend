@@ -40,6 +40,14 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
+        text: i18n.t('moves::dashboard.move_from'),
+      },
+      row: {
+        text: 'from_location.title',
+      },
+    },
+    {
+      head: {
         text: i18n.t('moves::dashboard.move_to'),
       },
       row: {

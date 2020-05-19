@@ -109,16 +109,11 @@
     "single_moves_no_results_pending": "No single requests pending review",
     "single_moves_no_results_approved": "No single requests have been approved",
     "single_moves_no_results_rejected": "No single requests have been rejected",
+    "move_from": "Move from",
     "move_to": "Move to",
     "earliest_move_date": "Earliest date of travel",
     "created_at": "Sent on",
-    "move_type": "Move type",
-    "filter": {
-      "proposed": "pending review",
-      "approved": "approved",
-      "rejected": "rejected",
-      "total": "sent for review"
-    }
+    "move_type": "Move type"
   },
   "detail": {
     "page_title": "Move details for {{name}}",
