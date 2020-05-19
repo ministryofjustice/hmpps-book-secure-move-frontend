@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.23.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.23.0...v2.23.1) (2020-05-19)
+
+
+### Bug Fixes
+
+* **allocations:** Allow the user to call off the cancellation ([9c0dc6d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9c0dc6d4941b71562714a1cf7ce3430bad3a9239))
+* **moves:** Cater for moves without a person in CSV download ([1d1cd43](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1d1cd4328f25dde31aabea74fa4a177ad1a03999))
+
 ## [2.23.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.22.0...v2.23.0) (2020-05-19)
 
 
