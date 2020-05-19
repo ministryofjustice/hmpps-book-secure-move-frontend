@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import faker from 'faker'
 import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
@@ -291,7 +292,7 @@ class CreateMovePage extends Page {
     return fillInForm({
       dateFrom: {
         selector: this.fields.dateFrom,
-        value: faker.date.future().toLocaleDateString(),
+        value: format(faker.date.future(), 'd/M/yyyy'),
       },
       hasDateTo: {
         selector: this.fields.hasDateTo,
