@@ -71,6 +71,19 @@ export default class Page {
   }
 
   /**
+   * Select "all locations"
+   *
+   * @returns {Promise}
+   */
+  async chooseAllLocations() {
+    const allLocationsLink = Selector('a').withAttribute(
+      'href',
+      '/locations/all'
+    )
+    return t.click(allLocationsLink)
+  }
+
+  /**
    * Get definition list item value by key text
    *
    * @param {Selector} dl - definition list selector

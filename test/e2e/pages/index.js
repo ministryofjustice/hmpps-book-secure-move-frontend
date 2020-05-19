@@ -1,3 +1,4 @@
+import AllocationJourney from './allocation-journey'
 import CancelMovePage from './cancel-move'
 import CreateMovePage from './create-move'
 import DashboardPage from './dashboard'
@@ -7,6 +8,7 @@ import Page from './page'
 import UpdateMovePage from './update-move'
 
 const page = new Page()
+const allocationJourney = new AllocationJourney()
 const moveDetailPage = new MoveDetailPage()
 const movesDashboardPage = new MovesDashboardPage()
 const createMovePage = new CreateMovePage()
@@ -15,6 +17,7 @@ const dashboardPage = new DashboardPage()
 
 export {
   page,
+  allocationJourney,
   moveDetailPage,
   movesDashboardPage,
   createMovePage,

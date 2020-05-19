@@ -26,3 +26,8 @@ export const prisonUser = Role(home, async t => {
 export const ocaUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.OCA)
 })
+
+export const pmuUser = Role(home, async t => {
+  await page.signIn(E2E.ROLES.PMU)
+  await page.chooseAllLocations()
+})
