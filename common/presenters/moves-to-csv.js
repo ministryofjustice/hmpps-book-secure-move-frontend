@@ -1,5 +1,5 @@
 const json2csv = require('json2csv')
-const { find, flatten, some } = require('lodash')
+const { find, flatten, get, some } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const referenceDataHelpers = require('../helpers/reference-data')
@@ -28,7 +28,7 @@ function mapAnswer({ title, key } = {}) {
         },
       ],
       value: row => {
-        const personAnswers = row.person.assessment_answers
+        const personAnswers = get(row, 'person.assessment_answers', [])
           .filter(referenceDataHelpers.filterExpired)
           .filter(item => item.key === key)
           .map(item => {
