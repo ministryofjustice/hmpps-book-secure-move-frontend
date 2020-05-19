@@ -9,6 +9,7 @@
   "back": "Back",
   "back_to_dashboard": "$t(actions::back) to dashboard",
   "back_to_move": "$t(actions::back) to move",
+  "back_to_allocation": "$t(actions::back) to allocation",
   "request_move": "Request move",
   "send_for_review": "Send for review",
   "search": "Search",
