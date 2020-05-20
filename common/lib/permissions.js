@@ -50,6 +50,7 @@ const prisonPermissions = [
 ]
 const ocaPermissions = [
   'dashboard:view',
+  'allocations:view',
   'moves:view:proposed',
   'moves:download',
   'move:view',
@@ -60,6 +61,7 @@ const ocaPermissions = [
 const pmuPermissions = [
   'allocations:view',
   'allocation:create',
+  'allocation:cancel',
   'dashboard:view',
   'locations:all',
   'moves:view:proposed',

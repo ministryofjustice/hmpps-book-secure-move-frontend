@@ -46,7 +46,7 @@ const cancelConfig = {
 }
 router.use(
   '/:allocationId/cancel',
-  protectRoute('allocation:create'),
+  protectRoute('allocation:cancel'),
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
 
