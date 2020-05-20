@@ -122,19 +122,38 @@ describe('#allocationsToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.head).to.deep.equal([
         {
-          text: 'collections::labels.move_size',
+          text: {
+            text: 'collections::labels.move_size',
+            attributes: {
+              width: '120',
+            },
+          },
         },
         {
-          text: 'collections::labels.requested',
+          text: {
+            text: 'collections::labels.requested',
+            attributes: {
+              width: '160',
+            },
+          },
         },
         {
-          text: 'collections::labels.move_from',
+          text: {
+            text: 'collections::labels.move_from',
+          },
         },
         {
-          text: 'collections::labels.move_to',
+          text: {
+            text: 'collections::labels.move_to',
+          },
         },
         {
-          text: 'date',
+          text: {
+            text: 'date',
+            attributes: {
+              width: '120',
+            },
+          },
         },
       ])
     })
