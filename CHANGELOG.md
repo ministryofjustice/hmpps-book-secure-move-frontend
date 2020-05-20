@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.24.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.24.0...v2.24.1) (2020-05-20)
+
+
+### Bug Fixes
+
+* **single requests:** Remove allocations from single requests results ([f5e8a6e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f5e8a6eb7d6ed4cc654cbe559fdf4095ff5191ea))
+
 ## [2.24.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.23.1...v2.24.0) (2020-05-20)
 
 
