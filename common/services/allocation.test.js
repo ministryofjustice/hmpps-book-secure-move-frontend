@@ -559,6 +559,45 @@ describe('Allocation service', function() {
     })
   })
 
+  describe('#getActiveAllocations', function() {
+    beforeEach(function() {
+      sinon.stub(allocationService, 'getByDateAndLocation')
+      allocationService.getActiveAllocations({
+        additionalParams: {},
+      })
+    })
+    afterEach(function() {
+      allocationService.getByDateAndLocation.restore()
+    })
+    it('invokes getByDateAndLocation passing a proposed status', function() {
+      expect(
+        allocationService.getByDateAndLocation
+      ).to.have.been.calledWithExactly({
+        additionalParams: {},
+        status: ['filled', 'unfilled'],
+      })
+    })
+  })
+  describe('#getCancelledAllocations', function() {
+    beforeEach(function() {
+      sinon.stub(allocationService, 'getByDateAndLocation')
+      allocationService.getCancelledAllocations({
+        additionalParams: {},
+      })
+    })
+    afterEach(function() {
+      allocationService.getByDateAndLocation.restore()
+    })
+    it('invokes getByDateAndLocation passing a cancelled status', function() {
+      expect(
+        allocationService.getByDateAndLocation
+      ).to.have.been.calledWithExactly({
+        additionalParams: {},
+        status: 'cancelled',
+      })
+    })
+  })
+
   describe('#getById', function() {
     let output, transformStub
 

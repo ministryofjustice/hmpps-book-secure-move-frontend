@@ -3,17 +3,20 @@ const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
   try {
-    const allocations = await allocationService.getByDateAndLocation(
-      req.body.allocations
-    )
+    const [activeAllocations, cancelledAllocations] = (
+      await Promise.all([
+        allocationService.getActiveAllocations(req.body.allocations),
+        allocationService.getCancelledAllocations(req.body.allocations),
+      ])
+    ).map(response => response.flat())
 
     req.results = {
-      active: allocations,
-      cancelled: [],
+      active: activeAllocations,
+      cancelled: cancelledAllocations,
     }
     req.resultsAsTable = {
-      active: presenters.allocationsToTable(allocations),
-      cancelled: [],
+      active: presenters.allocationsToTable(activeAllocations),
+      cancelled: presenters.allocationsToTable(cancelledAllocations),
     }
 
     next()
