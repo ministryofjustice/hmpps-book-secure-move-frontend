@@ -1,4 +1,4 @@
-const { pickBy } = require('lodash')
+const { isNil, omitBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -45,18 +45,22 @@ const singleRequestService = {
 
     return moveService.getAll({
       isAggregation,
-      filter: pickBy({
-        ...statusFilter,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-        'filter[date_from]': moveDateFrom,
-        'filter[date_to]': moveDateTo,
-        'filter[created_at_from]': createdAtFrom,
-        'filter[created_at_to]': createdAtTo,
-        'filter[move_type]': 'prison_transfer',
-        'sort[by]': sortBy,
-        'sort[direction]': sortDirection,
-      }),
+      filter: omitBy(
+        {
+          ...statusFilter,
+          'filter[has_relationship_to_allocation]': false,
+          'filter[from_location_id]': fromLocationId,
+          'filter[to_location_id]': toLocationId,
+          'filter[date_from]': moveDateFrom,
+          'filter[date_to]': moveDateTo,
+          'filter[created_at_from]': createdAtFrom,
+          'filter[created_at_to]': createdAtTo,
+          'filter[move_type]': 'prison_transfer',
+          'sort[by]': sortBy,
+          'sort[direction]': sortDirection,
+        },
+        isNil
+      ),
     })
   },
 

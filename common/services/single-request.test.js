@@ -46,6 +46,7 @@ describe('Single request service', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           filter: {
+            'filter[has_relationship_to_allocation]': false,
             'filter[move_type]': 'prison_transfer',
             'sort[by]': 'created_at',
             'sort[direction]': 'desc',
@@ -80,6 +81,7 @@ describe('Single request service', function() {
             isAggregation: false,
             filter: {
               'filter[status]': 'proposed',
+              'filter[has_relationship_to_allocation]': false,
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
               'filter[created_at_from]': mockCreatedDateRange[0],
@@ -110,6 +112,7 @@ describe('Single request service', function() {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             filter: {
+              'filter[has_relationship_to_allocation]': false,
               'filter[created_at_from]': mockCreatedDateRange[0],
               'filter[created_at_to]': mockCreatedDateRange[1],
               'filter[from_location_id]': mockFromLocationId,
@@ -136,6 +139,7 @@ describe('Single request service', function() {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             filter: {
+              'filter[has_relationship_to_allocation]': false,
               'filter[move_type]': 'prison_transfer',
               'sort[by]': 'date_from',
               'sort[direction]': 'desc',
@@ -160,6 +164,7 @@ describe('Single request service', function() {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             filter: {
+              'filter[has_relationship_to_allocation]': false,
               'filter[move_type]': 'prison_transfer',
               'sort[by]': 'created_at',
               'sort[direction]': 'asc',
@@ -184,6 +189,7 @@ describe('Single request service', function() {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             filter: {
+              'filter[has_relationship_to_allocation]': false,
               'filter[from_location_id]': mockFromLocationId,
               'filter[move_type]': 'prison_transfer',
               'sort[by]': 'created_at',
@@ -207,6 +213,7 @@ describe('Single request service', function() {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
+                'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',
                 'sort[direction]': 'desc',
@@ -231,6 +238,7 @@ describe('Single request service', function() {
               isAggregation: false,
               filter: {
                 'filter[status]': 'proposed',
+                'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',
                 'sort[direction]': 'desc',
@@ -255,6 +263,7 @@ describe('Single request service', function() {
               isAggregation: false,
               filter: {
                 'filter[status]': 'requested,accepted,completed',
+                'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',
                 'sort[direction]': 'desc',
@@ -279,6 +288,7 @@ describe('Single request service', function() {
               isAggregation: false,
               filter: {
                 'filter[status]': 'cancelled',
+                'filter[has_relationship_to_allocation]': false,
                 'filter[cancellation_reason]': 'rejected',
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',
@@ -304,6 +314,7 @@ describe('Single request service', function() {
               isAggregation: false,
               filter: {
                 'filter[status]': 'other',
+                'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',
                 'sort[direction]': 'desc',
