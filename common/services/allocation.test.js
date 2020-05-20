@@ -312,10 +312,12 @@ describe('Allocation service', function() {
       const mockMoveDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockStatus = 'cancelled'
 
       context('with all arguments', function() {
         beforeEach(async function() {
           results = await allocationService.getByDateAndLocation({
+            status: mockStatus,
             moveDate: mockMoveDateRange,
             fromLocationId: mockFromLocationId,
             toLocationId: mockToLocationId,
@@ -328,6 +330,7 @@ describe('Allocation service', function() {
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
+              'filter[status]': mockStatus,
               'filter[from_locations]': mockFromLocationId,
               'filter[to_locations]': mockToLocationId,
             },

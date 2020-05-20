@@ -41,12 +41,14 @@ const allocationService = {
     fromLocationId,
     toLocationId,
     isAggregation = false,
+    status,
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
 
     return allocationService.getAll({
       isAggregation,
       filter: pickBy({
+        'filter[status]': status,
         'filter[from_locations]': fromLocationId,
         'filter[to_locations]': toLocationId,
         'filter[date_from]': moveDateFrom,
