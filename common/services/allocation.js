@@ -36,7 +36,7 @@ const allocationService = {
       .create('allocation', allocationService.format(data))
       .then(response => response.data)
   },
-  getByDateAndLocation({
+  getByDateLocationAndStatus({
     moveDate = [],
     fromLocationId,
     toLocationId,

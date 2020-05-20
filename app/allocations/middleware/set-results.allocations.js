@@ -3,7 +3,7 @@ const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
   try {
-    const allocations = await allocationService.getByDateAndLocation(
+    const allocations = await allocationService.getByDateLocationAndStatus(
       req.body.allocations
     )
 

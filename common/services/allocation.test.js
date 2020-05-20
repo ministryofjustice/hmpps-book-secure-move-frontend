@@ -284,7 +284,7 @@ describe('Allocation service', function() {
     })
   })
 
-  describe('#getByDateAndLocation()', function() {
+  describe('#getByDateLocationAndStatus()', function() {
     let results
 
     beforeEach(async function() {
@@ -293,7 +293,7 @@ describe('Allocation service', function() {
 
     context('without arguments', function() {
       beforeEach(async function() {
-        results = await allocationService.getByDateAndLocation()
+        results = await allocationService.getByDateLocationAndStatus()
       })
 
       it('should call getAll with default filter', function() {
@@ -316,7 +316,7 @@ describe('Allocation service', function() {
 
       context('with all arguments', function() {
         beforeEach(async function() {
-          results = await allocationService.getByDateAndLocation({
+          results = await allocationService.getByDateLocationAndStatus({
             status: mockStatus,
             moveDate: mockMoveDateRange,
             fromLocationId: mockFromLocationId,
@@ -344,7 +344,7 @@ describe('Allocation service', function() {
 
       context('with some arguments', function() {
         beforeEach(async function() {
-          results = await allocationService.getByDateAndLocation({
+          results = await allocationService.getByDateLocationAndStatus({
             fromLocationId: mockFromLocationId,
           })
         })
@@ -365,7 +365,7 @@ describe('Allocation service', function() {
 
       context('with aggregation', function() {
         beforeEach(async function() {
-          results = await allocationService.getByDateAndLocation({
+          results = await allocationService.getByDateLocationAndStatus({
             isAggregation: true,
             fromLocationId: mockFromLocationId,
           })

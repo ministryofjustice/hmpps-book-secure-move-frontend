@@ -17,7 +17,7 @@ describe('Allocations middleware', function() {
     let next
 
     beforeEach(function() {
-      sinon.stub(allocationService, 'getByDateAndLocation')
+      sinon.stub(allocationService, 'getByDateLocationAndStatus')
       sinon.stub(presenters, 'allocationsToTable').returnsArg(0)
       next = sinon.stub()
       res = {}
@@ -34,13 +34,13 @@ describe('Allocations middleware', function() {
 
     context('when service resolves', function() {
       beforeEach(async function() {
-        allocationService.getByDateAndLocation.resolves(mockActiveMoves)
+        allocationService.getByDateLocationAndStatus.resolves(mockActiveMoves)
         await middleware(req, res, next)
       })
 
       it('should call the data service with request body', function() {
         expect(
-          allocationService.getByDateAndLocation
+          allocationService.getByDateLocationAndStatus
         ).to.have.been.calledOnceWithExactly({
           status: 'proposed',
           moveDate: ['2019-01-01', '2019-01-07'],
@@ -79,7 +79,7 @@ describe('Allocations middleware', function() {
       const mockError = new Error('Error!')
 
       beforeEach(async function() {
-        allocationService.getByDateAndLocation.rejects(mockError)
+        allocationService.getByDateLocationAndStatus.rejects(mockError)
         await middleware(req, res, next)
       })
 
