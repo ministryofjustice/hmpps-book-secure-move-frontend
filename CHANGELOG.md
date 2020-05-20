@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.24.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.23.1...v2.24.0) (2020-05-20)
+
+
+### Features
+
+* **allocations:** Add allocation to primary navigation ([38f346e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/38f346e6666c8fabcfb3f4a3821b374c7cc0b92d))
+* **allocations:** Add allocations panel to dashboard ([e8216a9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e8216a949124b48225ecd2801b7e9eed5995d124))
+
+
+### Bug Fixes
+
+* **allocations:** Update content around allocation dashboards ([6d3382e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6d3382ec742e92cb22a5b6b1a3070fe4f5ec027e))
+
 ### [2.23.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.23.0...v2.23.1) (2020-05-19)
 
 
