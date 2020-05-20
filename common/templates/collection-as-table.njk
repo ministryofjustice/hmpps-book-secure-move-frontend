@@ -1,4 +1,4 @@
-{% extends "layouts/list.njk" %}
+{% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
   {% if totalResults > 0 %}
@@ -13,8 +13,8 @@
         classes: "app-message--muted govuk-!-margin-top-7",
         allowDismiss: false,
         content: {
-          html: t("moves::dashboard.single_moves_no_results", {
-            context: activeContext
+          html: t("collections::no_results", {
+            context: context + ("_" + activeStatus if activeStatus)
           })
         }
       }) }}
@@ -24,7 +24,9 @@
       classes: "app-message--muted govuk-!-margin-top-7",
       allowDismiss: false,
       content: {
-        html: t("moves::dashboard.single_moves_no_results")
+        html: t("collections::no_results", {
+          context: context
+        })
       }
     }) }}
   {% endif %}

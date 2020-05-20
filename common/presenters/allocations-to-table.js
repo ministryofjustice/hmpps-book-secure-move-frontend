@@ -4,7 +4,7 @@ const tablePresenters = require('./table')
 
 const tableConfig = [
   {
-    head: 'allocations::move_size',
+    head: 'collections::labels.move_size',
     row: {
       attributes: {
         scope: 'row',
@@ -19,19 +19,19 @@ const tableConfig = [
     },
   },
   {
-    head: 'allocations::requested',
+    head: 'collections::labels.requested',
     row: {
       text: data => filters.formatDate(data.created_at),
     },
   },
   {
-    head: 'allocations::move_from',
+    head: 'collections::labels.move_from',
     row: {
       text: 'from_location.title',
     },
   },
   {
-    head: 'allocations::move_to',
+    head: 'collections::labels.move_to',
     row: {
       text: 'to_location.title',
     },

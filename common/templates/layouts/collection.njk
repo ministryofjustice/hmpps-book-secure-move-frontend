@@ -1,7 +1,9 @@
 {% extends "layouts/base.njk" %}
 
 {% block customGtagConfig %}
-  gtag('set', {'page_title': '{{ t(pageTitle) }}'});
+  gtag('set', {'page_title': '{{ t("collections::page_title", {
+    context: context
+  }) }}'});
 {% endblock %}
 
 {% if period === 'day' %}
@@ -13,9 +15,9 @@
 {% endif %}
 
 {% block pageTitle %}
-  {{ t(pageTitle, {
-    context: "with_date",
-    date: displayDate
+  {{ t("collections::page_title_with_date", {
+    context: context,
+    date: displayDate | lower
   }) }}
 {% endblock %}
 
@@ -25,8 +27,8 @@
     <header class="govuk-grid-row govuk-!-margin-bottom-7">
       <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-xl">
-          {{ t(pageTitle, {
-            context: "with_date"
+          {{ t("collections::subheading", {
+            context: context
           }) }}
         </span>
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
@@ -57,14 +59,16 @@
         {% endblock %}
 
         {% block headerActions %}
-          {% if canAccess('move:create') %}
-            {{ govukButton({
-              isStartButton: true,
-              text: t("actions::create_move"),
-              href: "/move/new",
-              classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-0 app-print--hide"
-            }) }}
-          {% endif %}
+          {% for action in actions %}
+            {% if canAccess(action.permission) %}
+              {{ govukButton({
+                isStartButton: true,
+                text: t(action.text),
+                href: action.href,
+                classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-0 app-print--hide"
+              }) }}
+            {% endif %}
+          {% endfor %}
         {% endblock %}
       </div>
 
@@ -74,14 +78,18 @@
             {% if canAccess('moves:download') %}
               <li>
                 <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
-                  {{ t("actions::download_csv") }}
+                  {{ t("actions::download_csv", {
+                    context: context
+                  }) }}
                 </a>
               </li>
             {% endif %}
 
             <li>
               <a href="javascript:window.print()" class="app-icon app-icon--print">
-                {{ t("actions::print") }}
+                {{ t("actions::print_collection", {
+                    context: context
+                  }) }}
               </a>
             </li>
           </ul>

@@ -1,16 +1,7 @@
 {
-  "dashboard": {
-    "heading": "Allocations for",
-    "no_results": "No allocations found"
-  },
   "complete": "complete",
   "incomplete": "incomplete",
   "total": "total",
-  "move_size": "Move size",
-  "move_from": "Move from",
-  "move_to": "Move to",
-  "requested": "Requested",
-  "progress": "Progress",
   "confirmation": {
     "page_title": "Allocation requested",
     "detail": "The request for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}} has been sent",

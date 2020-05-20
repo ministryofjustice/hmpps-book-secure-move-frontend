@@ -29,7 +29,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('moves::dashboard.created_at'),
+        text: i18n.t('collections::labels.created_at'),
         attributes: {
           width: '120',
         },
@@ -40,7 +40,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('moves::dashboard.move_from'),
+        text: i18n.t('collections::labels.move_from'),
       },
       row: {
         text: 'from_location.title',
@@ -48,7 +48,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('moves::dashboard.move_to'),
+        text: i18n.t('collections::labels.move_to'),
       },
       row: {
         text: 'to_location.title',
@@ -56,7 +56,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('moves::dashboard.earliest_move_date'),
+        text: i18n.t('collections::labels.earliest_move_date'),
         attributes: {
           width: '120',
         },
@@ -67,7 +67,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('moves::dashboard.move_type'),
+        text: i18n.t('collections::labels.move_type'),
       },
       row: {
         text: 'prison_transfer_reason.title',

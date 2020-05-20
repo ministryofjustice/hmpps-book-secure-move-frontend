@@ -1,15 +1,23 @@
 const router = require('express').Router()
 
+const { renderAsTable } = require('../../common/controllers/collection')
 const { setDateRange } = require('../../common/middleware')
 const {
   redirectDefaultQuery,
   redirectView,
+  setActions,
+  setContext,
   setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
-const { COLLECTION_PATH, DEFAULTS, FILTERS, MOUNTPATH } = require('./constants')
-const { list } = require('./controllers')
+const {
+  ACTIONS,
+  COLLECTION_PATH,
+  DEFAULTS,
+  FILTERS,
+  MOUNTPATH,
+} = require('./constants')
 const {
   setBodyAllocations,
   setResultsAllocations,
@@ -26,13 +34,15 @@ router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
 
 router.get(
   COLLECTION_PATH,
+  setActions(ACTIONS),
+  setContext('allocations'),
   setPagination(MOUNTPATH + COLLECTION_PATH),
   [
     setBodyAllocations,
     setResultsAllocations,
     setFilterAllocations(FILTERS.outgoing),
   ],
-  list
+  renderAsTable
 )
 
 module.exports = {

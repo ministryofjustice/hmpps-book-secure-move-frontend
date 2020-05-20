@@ -195,25 +195,25 @@ describe('#singleRequestsToTableComponent()', function() {
           },
         },
         {
-          text: 'moves::dashboard.created_at',
+          text: 'collections::labels.created_at',
           attributes: {
             width: '120',
           },
         },
         {
-          text: 'moves::dashboard.move_from',
+          text: 'collections::labels.move_from',
         },
         {
-          text: 'moves::dashboard.move_to',
+          text: 'collections::labels.move_to',
         },
         {
-          text: 'moves::dashboard.earliest_move_date',
+          text: 'collections::labels.earliest_move_date',
           attributes: {
             width: '120',
           },
         },
         {
-          text: 'moves::dashboard.move_type',
+          text: 'collections::labels.move_type',
         },
       ])
     })
