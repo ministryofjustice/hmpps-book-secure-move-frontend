@@ -94,7 +94,7 @@
   {% endfor %}
 
 
-  {% if allocation.status != "cancelled" %}
+  {% if canAccess("allocation:cancel") and allocation.status != "cancelled" %}
     <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
       <a href="{{ allocation.id }}/cancel" class="app-link--destructive">
         {{ t("actions::cancel_allocation") }}
