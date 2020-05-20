@@ -4,6 +4,7 @@ module.exports = function view(req, res) {
   const { allocation } = res.locals
   const { moves } = allocation
   const bannerStatuses = ['cancelled']
+  const personToCard = presenters.personToCardComponent()
   const locals = {
     dashboardUrl: '/allocations',
     /* eslint-disable indent */
@@ -23,9 +24,14 @@ module.exports = function view(req, res) {
           if (!person.fullname) {
             person.fullname = `${person.first_names} ${person.last_name}`
           }
-          return person
+          return { move, person }
         })
-        .map(presenters.personToCardComponent()),
+        .map(slot => {
+          return {
+            ...slot,
+            card: personToCard(slot.person),
+          }
+        }),
     },
   }
   res.render('allocation/views/view', locals)

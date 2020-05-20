@@ -37,7 +37,10 @@ const assessmentKeys = [
 const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const personService = {
-  transform(person = {}) {
+  transform(person) {
+    if (!person) {
+      return {}
+    }
     return {
       ...person,
       image_url: `/person/${person.id}/image`,

@@ -1,0 +1,26 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_allocation"),
+    href: "/allocation/" + allocation.id
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block contentMain %}
+  <p class="govuk-lede">
+    {{ t("allocation::person_unassign.detail", {
+      person: person,
+      move: move,
+      href: '/allocation/' + allocation.id,
+      moves_count: allocation.moves_count,
+      from_location: allocation.from_location.title,
+      to_location: allocation.to_location.title,
+      date: allocation.date | formatDateWithDay,
+      people: "person" | pluralize(allocation.moves_count)
+    }) | safe }}
+  </p>
+  {{ super() }}
+{% endblock %}

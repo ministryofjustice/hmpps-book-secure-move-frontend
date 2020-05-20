@@ -21,6 +21,7 @@
   "cancel_allocation": "Cancel allocation",
   "cancel_move": "Cancel this move",
   "cancel_move_confirmation": "Cancel move",
+  "person_unassign_confirmation": "Remove from allocation",
   "download": "Download",
   "download_csv": "Download (.csv)",
   "download_csv_allocations": "Download allocations (.csv)",

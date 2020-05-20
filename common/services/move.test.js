@@ -396,14 +396,20 @@ describe('Move Service', function() {
       ]
       let moves
       beforeEach(async function() {
+        personService.transform.restore()
+        sinon.stub(personService, 'transform').returns({})
+
         apiClient.findAll.resolves({
           data: mockMoves,
           links: {},
         })
         moves = await moveService.getAll()
       })
-      it('does not call format', function() {
-        expect(personService.transform).to.not.have.been.called
+      it('calls format', function() {
+        expect(personService.transform).to.have.been.calledTwice
+        expect(personService.transform).to.have.been.calledWithExactly(
+          undefined
+        )
       })
       it('returns an empty object instead of person', function() {
         expect(moves[0].person).to.deep.equal({})

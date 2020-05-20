@@ -36,6 +36,12 @@
       "heading": "People for allocation",
       "empty_slot": "Person to be allocated"
     },
+    "people_assign": {
+      "slots_empty": "{{slots_empty}} {{person_or_people}} to add",
+      "heading": "People for allocation",
+      "empty_slot": "Person to be allocated"
+    },
+    "person_unassign": "Remove <span class=\"govuk-visually-hidden\">{{ name }}</span>",
     "cancel_allocation": "Cancel allocation",
     "allocation_details": "Allocation details",
     "sidebar": {

@@ -74,7 +74,7 @@ describe('Person Service', function() {
 
     context('with no first name or last name', function() {
       beforeEach(async function() {
-        transformed = await personService.transform()
+        transformed = await personService.transform({})
       })
 
       it('should return only last name for full name', function() {

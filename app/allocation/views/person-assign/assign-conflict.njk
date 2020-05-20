@@ -1,0 +1,72 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block pageTitle %}
+  {{ t("validation::page_title_prefix") }}: {{ t("validation::assign_conflict.heading") }}
+{% endblock %}
+
+{% block contentHeader %}
+  {% set errorMsg %}
+    <p class="govuk-!-margin-top-4">
+      {{ t("validation::assign_conflict.message", {
+        href: "/move/" + existingMoveId,
+        name: person.fullname | upper,
+        location: allocation.to_location.title,
+        date: allocation.date | formatDateWithDay
+      }) | safe }}
+    </p>
+
+    <p class="govuk-!-margin-top-2">
+      {{ t("validation::assign_conflict.instructions", {
+        allocation_href: cancelUrl + '/assign'
+      }) | safe }}
+    </p>
+  {% endset %}
+
+  {{ appMessage({
+    focusOnload: true,
+    classes: "app-message--error",
+    title: {
+      text: t("validation::assign_conflict.heading")
+    },
+    content: {
+      html: errorMsg
+    }
+  }) }}
+{% endblock %}
+
+{# {% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Person assigned to allocation'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("allocation::confirmation.page_title") }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <p>
+        {{ t("allocation::confirmation.detail", {
+          person: person,
+          move: move,
+          href: '/allocation/' + allocation.id,
+          moves_count: allocation.moves_count,
+          from_location: allocation.from_location.title,
+          to_location: allocation.to_location.title,
+          date: allocation.date | formatDateWithDay,
+          people: "person" | pluralize(allocation.moves_count)
+        }) | safe }}
+      </p>
+
+      <p>
+      <a href="{{ cancelUrl }}/assign">Try adding another person to this allocation</a> or
+        <a href="/allocations">
+        return to dashboard
+        </a>
+      </p>
+    </div>
+  </div>
+{% endblock %} #}

@@ -215,6 +215,19 @@
   "special_vehicle": {
     "label": "Special vehicle details"
   },
+  "special_vehicle_check": {
+    "label": "$t(fields::special_vehicle__explicit.label)",
+    "label_with_error": "$t(fields::special_vehicle__explicit.label_with_error)",
+    "hint": "$t(fields::special_vehicle__explicit.hint)",
+    "items": {
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
   "special_vehicle__explicit": {
     "label": "Does this person need to travel in a special vehicle?",
     "label_with_error": "Special vehicle needs",

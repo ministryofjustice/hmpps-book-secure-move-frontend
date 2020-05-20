@@ -47,6 +47,18 @@
   </header>
 {% endblock %}
 
+{% macro emptySlot(content) %}
+  <div class="app-border-top-1">
+    {{ appMessage({
+      classes: "app-message--muted govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-padding-right-8",
+      allowDismiss: false,
+      content: {
+        html: content
+      }
+    }) }}
+  </div>
+{% endmacro %}
+
 {% block contentMain %}
   <section>
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.criteria_for_allocation") }}</h2>
@@ -66,7 +78,32 @@
     {% endif %}
   </section>
 
-  <section class="govuk-!-margin-top-8">
+
+
+  {% if canAccess('allocation:person:assign') %}
+    <section class="govuk-!-margin-top-8">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people_assign.heading") }}</h2>
+    {% set slotsEmpty = allocation.moves_count - allocationPeople.filledSlots.length %}
+    {% if slotsEmpty %}
+    <p>You can’t add people who require a special vehicle to an allocation - you need to <a href="/move/new">create a single request</a> instead</p>
+
+    <h3 class="govuk-heading-s">{{ t("allocations::view.people_assign.slots_empty", {
+      slots_empty: slotsEmpty,
+      person_or_people: t('person', {
+        count: slotsEmpty
+      })
+    }) }}</h3>
+      <p>{{ govukButton({
+        html: "Add person",
+        href: "/allocation/" + allocation.id + "/assign"
+      }) }}</p>
+    {% endif %}
+    {% if allocationPeople.filledSlots.length === 0 %}
+      {{ emptySlot('No prisoners added to allocation') }}
+    {% endif %}
+  </section>
+  {% else %}
+    <section class="govuk-!-margin-top-8">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people.heading") }}</h2>
     <h3 class="govuk-heading-s">{{ t("allocations::view.people.slots_filled", {
       slots_filled: allocationPeople.filledSlots.length,
@@ -78,19 +115,20 @@
   </section>
 
   {% for i in range(0, allocationPeople.emptySlots) -%}
-    <div class="app-border-top-1">
-      {{ appMessage({
-        classes: "app-message--muted govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-padding-right-8",
-        allowDismiss: false,
-        content: {
-          html: t("allocations::view.people.empty_slot")
-        }
-      }) }}
-    </div>
-  {%- endfor %}
+      {{ emptySlot(t("allocations::view.people.empty_slot")) }}
+    {%- endfor %}
+  {% endif %}
 
   {% for slot in allocationPeople.filledSlots %}
-    {{ appCard(slot) }}
+  <section class="app-!-position-relative">
+    {{ appCard(slot.card) }}
+    <p class="app-!-position-top-right govuk-!-margin-top-3">
+      {{ govukButton({
+        href: allocation.id + "/unassign/" + slot.move.id + "/" + slot.person.id,
+        html: t("allocations::view.person_unassign", {name: slot.person.fullname}),
+        classes: "govuk-button--secondary"
+      })}}
+  </section>
   {% endfor %}
 
 
