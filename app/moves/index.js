@@ -3,10 +3,15 @@ const router = require('express').Router()
 const viewRouter = require('express').Router({ mergeParams: true })
 
 // Local dependencies
+const {
+  renderAsCards,
+  renderAsTable,
+} = require('../../common/controllers/collection')
 const { setDateRange } = require('../../common/middleware')
 const {
   redirectDefaultQuery,
   redirectView,
+  setContext,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
@@ -18,7 +23,7 @@ const {
   FILTERS,
   MOUNTPATH,
 } = require('./constants')
-const { download, listAsCards, listAsTable } = require('./controllers')
+const { download } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -41,13 +46,14 @@ router.use('^([^.]+)$', saveUrl)
 viewRouter.get(
   '/:view(requested)',
   protectRoute('moves:view:proposed'),
+  setContext('single_requests'),
   COLLECTION_MIDDLEWARE,
   [
     setBodySingleRequests,
     setFilterSingleRequests(FILTERS.requested),
     setResultsSingleRequests,
   ],
-  listAsTable
+  renderAsTable
 )
 viewRouter.get(
   '/:view(requested)/download.:extension(csv|json)',
@@ -59,9 +65,10 @@ viewRouter.get(
 viewRouter.get(
   '/:view(outgoing)',
   protectRoute('moves:view:outgoing'),
+  setContext('outgoing_moves'),
   COLLECTION_MIDDLEWARE,
   [setResultsOutgoing],
-  listAsCards
+  renderAsCards
 )
 viewRouter.get(
   '/:view(outgoing)/download.:extension(csv|json)',

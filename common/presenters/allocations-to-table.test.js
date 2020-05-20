@@ -122,16 +122,16 @@ describe('#allocationsToTable', function() {
     it('returns one head row with all the cells', function() {
       expect(output.head).to.deep.equal([
         {
-          text: 'allocations::move_size',
+          text: 'collections::labels.move_size',
         },
         {
-          text: 'allocations::requested',
+          text: 'collections::labels.requested',
         },
         {
-          text: 'allocations::move_from',
+          text: 'collections::labels.move_from',
         },
         {
-          text: 'allocations::move_to',
+          text: 'collections::labels.move_to',
         },
         {
           text: 'date',

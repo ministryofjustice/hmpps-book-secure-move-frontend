@@ -7,6 +7,7 @@ describe('Home controllers', function() {
     beforeEach(function() {
       req = {
         filterSingleRequests: ['foo', 'bar'],
+        filterAllocations: ['fizz', 'buzz'],
         session: {
           user: {
             permissions: [],
@@ -47,6 +48,11 @@ describe('Home controllers', function() {
               permission: 'moves:view:proposed',
               heading: 'dashboard::sections.single_requests.heading',
               filter: req.filterSingleRequests,
+            },
+            allocations: {
+              permission: 'allocations:view',
+              heading: 'dashboard::sections.allocations.heading',
+              filter: req.filterAllocations,
             },
           },
         })

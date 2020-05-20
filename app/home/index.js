@@ -3,6 +3,10 @@ const router = require('express').Router()
 
 // Local dependencies
 const {
+  setFilterAllocations,
+  setBodyAllocations,
+} = require('../allocations/middleware')
+const {
   setFilterSingleRequests,
   setBodySingleRequests,
 } = require('../moves/middleware')
@@ -14,9 +18,11 @@ const { overrideBodySingleRequests } = require('./middleware')
 // Define routes
 router.get(
   '/',
+  setBodyAllocations,
   setBodySingleRequests,
   overrideBodySingleRequests,
   setFilterSingleRequests(FILTERS.requested),
+  setFilterAllocations(FILTERS.allocations),
   dashboard
 )
 

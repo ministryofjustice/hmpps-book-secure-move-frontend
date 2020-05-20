@@ -1,4 +1,4 @@
-{% extends "layouts/list.njk" %}
+{% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
   {% for destination in resultsAsCards.active %}
@@ -11,7 +11,7 @@
         {{ appData({
           inverted: true,
           classes: "app-data--s",
-          label: t("moves::dashboard.move_to"),
+          label: t("collections::labels.move_to"),
           value: destination.location
         }) }}
       </div>
@@ -25,7 +25,9 @@
       classes: "app-message--muted govuk-!-margin-top-7",
       allowDismiss: false,
       content: {
-        html: t("moves::dashboard.no_results")
+        html: t("collections::no_results", {
+          context: context
+        })
       }
     }) }}
   {% endfor %}
@@ -40,7 +42,8 @@
 
       {{ govukDetails({
         html: html,
-        summaryText: t("moves::dashboard.cancelled_moves", {
+        summaryText: t("collections::cancelled", {
+          context: context,
           count: resultsAsCards.cancelled.length
         })
       }) }}

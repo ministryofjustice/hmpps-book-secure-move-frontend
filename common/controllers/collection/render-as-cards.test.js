@@ -1,6 +1,6 @@
-const permissions = require('../../../common/middleware/permissions')
+const permissions = require('../../middleware/permissions')
 
-const controller = require('./list-as-cards')
+const controller = require('./render-as-cards')
 
 const mockActiveMovesByDate = [
   { foo: 'bar', status: 'requested' },
@@ -15,12 +15,14 @@ const mockPagination = {
   prev: '/prev',
 }
 
-describe('Moves controllers', function() {
-  describe('#listAsCards()', function() {
+describe('Collection controllers', function() {
+  describe('#renderAsCards()', function() {
     let req, res
 
     beforeEach(function() {
       req = {
+        actions: ['1', '2'],
+        context: 'listContext',
         pagination: mockPagination,
         params: {},
         resultsAsCards: {
@@ -39,8 +41,16 @@ describe('Moves controllers', function() {
         controller(req, res)
       })
 
-      it('should contain a page title', function() {
-        expect(res.render.args[0][1]).to.have.property('pageTitle')
+      it('should contain actions property', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('actions')
+        expect(params.actions).to.deep.equal(['1', '2'])
+      })
+
+      it('should contain context property', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('context')
+        expect(params.context).to.equal('listContext')
       })
 
       it('should contain resultsAsCards property', function() {
@@ -60,7 +70,7 @@ describe('Moves controllers', function() {
 
       it('should contain correct number of properties', function() {
         const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(3)
+        expect(Object.keys(params)).to.have.length(4)
       })
     })
 
@@ -90,7 +100,7 @@ describe('Moves controllers', function() {
             const template = res.render.args[0][0]
 
             expect(res.render).to.be.calledOnce
-            expect(template).to.equal('moves/views/list-as-cards')
+            expect(template).to.equal('collection-as-cards')
           })
         }
       )

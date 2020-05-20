@@ -18,7 +18,16 @@ function setPrimaryNavigation(req, res, next) {
     items.push({
       text: req.t('primary_navigation.single_requests'),
       href: '/moves/requested',
-      active: req.path.endsWith('/requested'),
+      active: req.path.startsWith('/moves') && req.path.endsWith('/requested'),
+    })
+  }
+
+  if (permissions.check('allocations:view', userPermissions)) {
+    items.push({
+      text: req.t('primary_navigation.allocations'),
+      href: '/allocations',
+      active:
+        req.path.startsWith('/allocations') && req.path.endsWith('/outgoing'),
     })
   }
 
@@ -26,7 +35,7 @@ function setPrimaryNavigation(req, res, next) {
     items.push({
       text: req.t('primary_navigation.outgoing'),
       href: '/moves/outgoing',
-      active: req.path.endsWith('/outgoing'),
+      active: req.path.startsWith('/moves') && req.path.endsWith('/outgoing'),
     })
   }
 

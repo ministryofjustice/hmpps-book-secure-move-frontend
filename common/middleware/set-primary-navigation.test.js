@@ -37,6 +37,7 @@ describe('#setPrimaryNavigation()', function() {
     beforeEach(function() {
       req.session.user.permissions = [
         'dashboard:view',
+        'allocations:view',
         'moves:view:proposed',
         'moves:view:outgoing',
       ]
@@ -58,6 +59,11 @@ describe('#setPrimaryNavigation()', function() {
             active: false,
             href: '/moves/requested',
             text: 'primary_navigation.single_requests',
+          },
+          {
+            active: false,
+            href: '/allocations',
+            text: 'primary_navigation.allocations',
           },
           {
             active: false,
@@ -89,6 +95,11 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
+              href: '/allocations',
+              text: 'primary_navigation.allocations',
+            },
+            {
+              active: false,
               href: '/moves/outgoing',
               text: 'primary_navigation.outgoing',
             },
@@ -116,6 +127,43 @@ describe('#setPrimaryNavigation()', function() {
             },
             {
               active: false,
+              href: '/allocations',
+              text: 'primary_navigation.allocations',
+            },
+            {
+              active: false,
+              href: '/moves/outgoing',
+              text: 'primary_navigation.outgoing',
+            },
+          ])
+        })
+      })
+
+      context('on allocations page', function() {
+        beforeEach(function() {
+          req.path = '/allocations/week/2020-04-16/outgoing'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set active state', function() {
+          expect(res.locals.primaryNavigation).to.deep.equal([
+            {
+              active: false,
+              href: '/',
+              text: 'primary_navigation.home',
+            },
+            {
+              active: false,
+              href: '/moves/requested',
+              text: 'primary_navigation.single_requests',
+            },
+            {
+              active: true,
+              href: '/allocations',
+              text: 'primary_navigation.allocations',
+            },
+            {
+              active: false,
               href: '/moves/outgoing',
               text: 'primary_navigation.outgoing',
             },
@@ -140,6 +188,11 @@ describe('#setPrimaryNavigation()', function() {
               active: false,
               href: '/moves/requested',
               text: 'primary_navigation.single_requests',
+            },
+            {
+              active: false,
+              href: '/allocations',
+              text: 'primary_navigation.allocations',
             },
             {
               active: true,

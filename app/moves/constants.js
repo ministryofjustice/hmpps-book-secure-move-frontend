@@ -1,12 +1,28 @@
 const { dateRegex, uuidRegex } = require('../../common/helpers/url')
-const { setPagination } = require('../../common/middleware/collection')
+const {
+  setActions,
+  setPagination,
+} = require('../../common/middleware/collection')
+
+const actions = [
+  {
+    permission: 'move:create',
+    text: 'actions::create_move',
+    href: '/move/new',
+  },
+]
 
 const MOUNTPATH = '/moves'
+
 const COLLECTION_BASE_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?`
+
 const COLLECTION_VIEW_PATH = '/:view(outgoing|requested)'
+
 const COLLECTION_MIDDLEWARE = [
+  setActions(actions),
   setPagination(MOUNTPATH + COLLECTION_BASE_PATH + COLLECTION_VIEW_PATH),
 ]
+
 const DEFAULTS = {
   QUERY: {
     requested: { status: 'pending' },
@@ -17,6 +33,7 @@ const DEFAULTS = {
     outgoing: 'day',
   },
 }
+
 const FILTERS = {
   requested: [
     {

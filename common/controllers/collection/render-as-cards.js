@@ -1,19 +1,20 @@
 const { get } = require('lodash')
 
-const permissions = require('../../../common/middleware/permissions')
+const permissions = require('../../middleware/permissions')
 
 module.exports = function listAsCards(req, res) {
-  const { pagination, params, resultsAsCards, session } = req
+  const { actions, context, pagination, params, resultsAsCards, session } = req
   const userPermissions = get(session, 'user.permissions')
   const canViewMove = permissions.check('move:view', userPermissions)
   const template =
     canViewMove && params.locationId
-      ? 'moves/views/list-as-cards'
+      ? 'collection-as-cards'
       : 'moves/views/download'
   const locals = {
+    actions,
+    context,
     pagination,
     resultsAsCards,
-    pageTitle: 'moves::dashboard.outgoing_moves',
   }
 
   res.render(template, locals)

@@ -10,6 +10,7 @@ i18next.use(Backend).init({
   ns: [
     'allocations',
     'assessment',
+    'collections',
     'dashboard',
     'default',
     'actions',
