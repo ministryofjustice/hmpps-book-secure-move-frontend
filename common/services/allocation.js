@@ -2,6 +2,7 @@ const dateFunctions = require('date-fns')
 const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
+const personService = require('../services/person')
 
 const allocationService = {
   cancel(allocationId) {
@@ -31,10 +32,26 @@ const allocationService = {
       return value
     })
   },
+  transform({ includeCancelled = false } = {}) {
+    return function transformAllocation(result) {
+      return {
+        ...result,
+        moves: result.moves
+          .filter(
+            move => includeCancelled || !['cancelled'].includes(move.status)
+          )
+          .map(move => ({
+            ...move,
+            person: personService.transform(move.person),
+          })),
+      }
+    }
+  },
   create(data) {
     return apiClient
       .create('allocation', allocationService.format(data))
       .then(response => response.data)
+      .then(allocationService.transform())
   },
   getByDateAndLocation({
     moveDate = [],
@@ -75,7 +92,7 @@ const allocationService = {
         }
 
         if (!links.next) {
-          return results
+          return results.map(allocationService.transform())
         }
 
         return allocationService.getAll({
@@ -86,7 +103,10 @@ const allocationService = {
       })
   },
   getById(id) {
-    return apiClient.find('allocation', id).then(response => response.data)
+    return apiClient
+      .find('allocation', id)
+      .then(response => response.data)
+      .then(allocationService.transform())
   },
 }
 

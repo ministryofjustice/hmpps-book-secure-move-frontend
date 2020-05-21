@@ -18,14 +18,7 @@ module.exports = function view(req, res) {
       emptySlots: moves.filter(move => !move.person).length,
       filledSlots: moves
         .filter(move => move.person)
-        .map(move => {
-          const { person } = move
-          if (!person.fullname) {
-            person.fullname = `${person.first_names} ${person.last_name}`
-          }
-          return person
-        })
-        .map(presenters.personToCardComponent()),
+        .map(presenters.moveToCardComponent()),
     },
   }
   res.render('allocation/views/view', locals)
