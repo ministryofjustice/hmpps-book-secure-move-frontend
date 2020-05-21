@@ -4,11 +4,12 @@ const wizard = require('hmpo-form-wizard')
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 
+const assign = require('./controllers/assign')
 const confirmation = require('./controllers/create/confirmation')
 const view = require('./controllers/view')
-const { cancelFields, createFields } = require('./fields')
+const { cancelFields, createFields, assignFields } = require('./fields')
 const { setAllocation } = require('./middleware')
-const { cancelSteps, createSteps } = require('./steps')
+const { cancelSteps, createSteps, assignSteps } = require('./steps')
 
 const wizardConfig = {
   controller: FormWizardController,
@@ -24,10 +25,27 @@ const createConfig = {
   journeyPageTitle: 'actions::create_allocation',
 }
 router.param('allocationId', setAllocation)
+
+const personAsssignConfig = {
+  ...wizardConfig,
+  controller: assign.Base,
+  name: 'allocation:person:assign',
+  templatePath: 'move/views/create/',
+  template: '../../../form-wizard',
+  journeyName: 'allocation:person:assign',
+  journeyPageTitle: 'allocation::person:assign',
+}
+
 router.use(
   '/new',
   protectRoute('allocation:create'),
   wizard(createSteps, createFields, createConfig)
+)
+
+router.use(
+  '/:allocationId/assign',
+  protectRoute('allocation:person:assign'),
+  wizard(assignSteps, assignFields, personAsssignConfig)
 )
 router.get(
   '/:allocationId/confirmation',

@@ -12,5 +12,11 @@
   "pending_review": {
     "heading": "Pending review",
     "content": "This request needs to be reviewed by a member of the Population Management Unit (PMU) before it can be requested with the supplier."
+  },
+  "assign_allocation": {
+    "success": {
+      "heading": "Move requested",
+      "content": "Move reference<br><strong>{{moveReference}}</strong>"
+    }
   }
 }

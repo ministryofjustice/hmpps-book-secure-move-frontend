@@ -36,6 +36,11 @@
       "heading": "People for allocation",
       "empty_slot": "Person to be allocated"
     },
+    "people_assign": {
+      "slots_empty": "{{slots_empty}} {{person_or_people}} to add",
+      "heading": "People for allocation",
+      "empty_slot": "Person to be allocated"
+    },
     "cancel_allocation": "Cancel allocation",
     "allocation_details": "Allocation details",
     "sidebar": {

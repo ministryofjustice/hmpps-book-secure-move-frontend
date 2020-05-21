@@ -25,6 +25,11 @@
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
     "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>."
   },
+  "assign_conflict": {
+    "heading": "This person cannot be assigned to the allocation",
+    "message": "A move already exists for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
+    "instructions": "Try <a href=\"{{allocation_href}}\">adding a different person</a>."
+  },
   "LIMIT_FILE_SIZE": "must be smaller than 50MB",
   "LIMIT_PART_COUNT": "has too many parts",
   "LIMIT_FILE_COUNT": "has too mamy files",

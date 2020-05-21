@@ -1,3 +1,5 @@
+const { createFields: moveCreateFields } = require('../../move/fields')
+
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
@@ -22,6 +24,31 @@ const createFields = {
   to_location: toLocation,
 }
 
+const assignFields = { ...moveCreateFields }
+
+assignFields.special_vehicle_check = {
+  validate: 'required',
+  component: 'govukRadios',
+  name: 'special_vehicle_check',
+  fieldset: {
+    legend: {
+      text: 'fields::special_vehicle_check.label',
+      classes: 'govuk-fieldset__legend--m',
+    },
+  },
+  items: [
+    {
+      value: 'true',
+      text: 'fields::special_vehicle_check.items.yes.label',
+    },
+    {
+      value: 'false',
+      text: 'fields::special_vehicle_check.items.no.label',
+    },
+  ],
+}
+
 module.exports = {
   createFields,
+  assignFields,
 }

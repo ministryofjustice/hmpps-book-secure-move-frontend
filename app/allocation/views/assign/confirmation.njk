@@ -1,0 +1,50 @@
+{% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Person assigned to allocation'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("allocation::confirmation.page_title") }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        classes: "govuk-!-margin-bottom-7",
+        titleText: t("messages::assign_allocation.success.heading"),
+        html: t("messages::assign_allocation.success.content", {
+          moveReference: move.reference
+        })
+      }) }}
+
+      <p>
+        {{ t("allocation::confirmation.detail", {
+          person: person,
+          move: move,
+          href: '/allocation/' + allocation.id,
+          moves_count: allocation.moves_count,
+          from_location: allocation.from_location.title,
+          to_location: allocation.to_location.title,
+          date: allocation.date | formatDateWithDay,
+          people: "person" | pluralize(allocation.moves_count)
+        }) | safe }}
+      </p>
+
+      <p>
+      {% if addAnother %}
+      <a href="{{ cancelUrl }}/assign">Add another person to this allocation</a> or
+        <a href="/allocations">
+        return to dashboard
+        </a>
+      {% else %}
+        <a href="/allocations">
+          Return to dashboard
+        </a>
+      {% endif %}
+      </p>
+    </div>
+  </div>
+{% endblock %}

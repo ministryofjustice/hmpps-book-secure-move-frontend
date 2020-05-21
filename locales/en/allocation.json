@@ -1,0 +1,14 @@
+{
+  "confirmation": {
+    "page_title": "Person assigned",
+    "detail": "The move for <a href=\"/move/{{move.id}}\">{{person.fullname}}</a> has been added to allocation for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}}",
+    "view_all": "View all allocations",
+    "view_by_from_location": "View {{from_location}} overview"
+  },
+  "no_special_vehicle": {
+    "page_title": "You can’t add this person to an allocation",
+    "heading": "You can’t add this person to an allocation",
+    "content": "<p>As this person needs a special vehicle they cannot be part of this allocation.</p>\n<p>If you would still like to move this person you can create a single request for them to move to another prison.",
+    "return_link_text": "Return to allocation"
+  }
+}
