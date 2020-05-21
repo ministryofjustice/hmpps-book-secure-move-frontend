@@ -51,7 +51,7 @@ const moveService = {
         if (!links.next) {
           return moves.map(move => ({
             ...move,
-            person: move.person ? personService.transform(move.person) : {},
+            person: personService.transform(move.person),
           }))
         }
 
