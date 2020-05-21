@@ -1,0 +1,35 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block pageTitle %}
+  {{ t("validation::page_title_prefix") }}: {{ t("validation::assign_conflict.heading") }}
+{% endblock %}
+
+{% block contentHeader %}
+  {% set errorMsg %}
+    <p class="govuk-!-margin-top-4">
+      {{ t("validation::assign_conflict.message", {
+        href: "/move/" + existingMoveId,
+        name: person.fullname | upper,
+        location: allocation.to_location.title,
+        date: allocation.date | formatDateWithDay
+      }) | safe }}
+    </p>
+
+    <p class="govuk-!-margin-top-2">
+      {{ t("validation::assign_conflict.instructions", {
+        allocation_href: cancelUrl + '/assign'
+      }) | safe }}
+    </p>
+  {% endset %}
+
+  {{ appMessage({
+    focusOnload: true,
+    classes: "app-message--error",
+    title: {
+      text: t("validation::assign_conflict.heading")
+    },
+    content: {
+      html: errorMsg
+    }
+  }) }}
+{% endblock %}
