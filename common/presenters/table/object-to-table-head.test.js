@@ -3,125 +3,130 @@ const i18n = require('../../../config/i18n')
 const objectToTableHead = require('./object-to-table-head')
 
 describe('table head presenter', function() {
+  let output
+
   beforeEach(function() {
     sinon.stub(i18n, 't').returnsArg(0)
   })
+
+  context('with no args', function() {
+    beforeEach(function() {
+      output = objectToTableHead()
+    })
+
+    it('should return undefined', function() {
+      expect(output).to.be.undefined
+    })
+
+    it('should not translate anything', function() {
+      expect(i18n.t).not.to.be.called
+    })
+  })
+
   context('with html', function() {
-    const schema = [
-      {
+    beforeEach(function() {
+      output = objectToTableHead({
         head: {
           html: 'move_type::label',
         },
-      },
-      {
-        head: { html: 'fields::age' },
-      },
-    ]
-    it('returns the correct header', function() {
-      const output = schema.map(objectToTableHead)
-      expect(output).to.deep.equal([
-        {
-          html: 'move_type::label',
-        },
-        {
-          html: 'fields::age',
-        },
-      ])
+      })
+    })
+
+    it('should return correct header', function() {
+      expect(output).to.deep.equal({
+        html: 'move_type::label',
+      })
+    })
+
+    it('should translate label', function() {
+      expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
+
   context('with text', function() {
-    const schema = [
-      {
+    beforeEach(function() {
+      output = objectToTableHead({
         head: {
           text: 'move_type::label',
         },
-      },
-      {
-        head: { text: 'fields::age' },
-      },
-    ]
-    it('returns the correct header', function() {
-      const output = schema.map(objectToTableHead)
-      expect(output).to.deep.equal([
-        {
-          text: 'move_type::label',
-        },
-        {
-          text: 'fields::age',
-        },
-      ])
+      })
+    })
+
+    it('should return correct header', function() {
+      expect(output).to.deep.equal({
+        text: 'move_type::label',
+      })
+    })
+
+    it('should translate label', function() {
+      expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
+
   context('with attributes', function() {
-    const schema = [
-      {
+    beforeEach(function() {
+      output = objectToTableHead({
         head: {
           html: 'move_type::label',
           attributes: {
             width: 1,
           },
         },
-      },
-      {
-        head: { html: 'fields::age' },
-      },
-    ]
-    it('returns the correct header', function() {
-      const output = schema.map(objectToTableHead)
-      expect(output).to.deep.equal([
-        {
-          attributes: {
-            width: 1,
-          },
-          html: 'move_type::label',
+      })
+    })
+
+    it('should return correct header', function() {
+      expect(output).to.deep.equal({
+        html: 'move_type::label',
+        attributes: {
+          width: 1,
         },
-        {
-          html: 'fields::age',
-        },
-      ])
+      })
+    })
+
+    it('should translate label', function() {
+      expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
+
   context('with neither html nor test', function() {
-    const schema = [
-      {
-        head: {},
-      },
-      {
-        head: {},
-      },
-    ]
-    it('returns the correct header', function() {
-      const output = schema.map(objectToTableHead)
-      expect(output).to.deep.equal([{}, {}])
+    beforeEach(function() {
+      output = objectToTableHead({})
+    })
+
+    it('should return undefined', function() {
+      expect(output).to.be.undefined
+    })
+
+    it('should not translate anything', function() {
+      expect(i18n.t).not.to.be.called
     })
   })
+
   context('with both html and text', function() {
-    const schema = [
-      {
+    beforeEach(function() {
+      output = objectToTableHead({
         head: {
           html: 'move_type::label-html',
           text: 'move_type::label-text',
         },
-      },
-      {
-        head: {
-          html: 'fields::age-html',
-          text: 'fields::age-text',
-        },
-      },
-    ]
-    it('returns the correct headers', function() {
-      const output = schema.map(objectToTableHead)
-      expect(output).to.deep.equal([
-        {
-          html: 'move_type::label-html',
-          text: 'move_type::label-text',
-        },
-        {
-          html: 'fields::age-html',
-          text: 'fields::age-text',
-        },
-      ])
+      })
+    })
+
+    it('should return correct header', function() {
+      expect(output).to.deep.equal({
+        html: 'move_type::label-html',
+        text: 'move_type::label-text',
+      })
+    })
+
+    it('should translate boths label', function() {
+      expect(i18n.t).to.be.calledWithExactly('move_type::label-html')
+      expect(i18n.t).to.be.calledWithExactly('move_type::label-text')
+    })
+
+    it('should translate correct number of times', function() {
+      expect(i18n.t.callCount).to.equal(2)
     })
   })
 })
