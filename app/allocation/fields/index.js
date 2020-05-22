@@ -1,3 +1,5 @@
+const { cloneDeep } = require('lodash')
+
 const { createFields: moveCreateFields } = require('../../move/fields')
 
 const completeInFull = require('./complete_in_full')
@@ -26,7 +28,7 @@ const createFields = {
 }
 
 const assignFields = {
-  ...moveCreateFields,
+  ...cloneDeep(moveCreateFields),
   special_vehicle_check: specialVehicleCheck,
 }
 
