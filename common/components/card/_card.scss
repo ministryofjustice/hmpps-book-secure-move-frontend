@@ -1,7 +1,7 @@
+$_image-width: 80px;
+
 .app-card {
   @include govuk-clearfix;
-  display: flex;
-  align-items: flex-start;
   border-top: 1px solid $govuk-border-colour;
   padding-top: govuk-spacing(3);
   padding-bottom: govuk-spacing(3);
@@ -21,12 +21,12 @@
 }
 
 .app-card__aside {
-  margin-right: govuk-spacing(4);
+  float: left;
 }
 
 .app-card__image {
   display: block;
-  width: 80px;
+  width: $_image-width;
 }
 
 .app-card__badge {
@@ -41,7 +41,6 @@
 }
 
 .app-card__caption {
-  @include govuk-clearfix;
   @include govuk-font($size: 16);
   color: govuk-colour("dark-grey");
 }
@@ -57,7 +56,7 @@
 }
 
 .app-card__content {
-  flex-grow: 1;
+  margin-left: $_image-width + govuk-spacing(3);
 }
 
 .app-card__meta-list {
