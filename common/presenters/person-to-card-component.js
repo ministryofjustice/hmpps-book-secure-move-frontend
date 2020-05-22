@@ -11,18 +11,23 @@ function personToCardComponent({
   showTags = true,
 } = {}) {
   return function item({
+    id,
     href,
     gender,
-    fullname = '',
+    fullname = i18n.t('awaiting_person'),
     image_url: imageUrl,
     date_of_birth: dateOfBirth,
     assessment_answers: assessmentAnswers,
-  }) {
+  } = {}) {
     const card = {
       href,
       title: {
         text: fullname.toUpperCase(),
       },
+    }
+
+    if (!id) {
+      card.classes = 'app-card--placeholder'
     }
 
     if (showMeta) {

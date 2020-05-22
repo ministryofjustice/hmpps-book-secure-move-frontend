@@ -15,6 +15,7 @@
   "supplier_fallback": "the supplier",
   "opens_new_window": "Opens in a new window",
   "created_on": "Created on",
+  "awaiting_person": "Awaiting person",
   "primary_navigation": {
     "home": "Home",
     "outgoing": "Outgoing",

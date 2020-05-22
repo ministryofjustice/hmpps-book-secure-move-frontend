@@ -141,5 +141,30 @@ describe('Presenters', function() {
         expect(Object.keys(transformedResponse[1].answers)).to.have.length(0)
       })
     })
+
+    context('when called with no arguments', function() {
+      let transformedResponse
+
+      beforeEach(function() {
+        transformedResponse = assessmentAnswersByCategory()
+      })
+
+      it('should return the correct number of categories', function() {
+        expect(transformedResponse.length).to.equal(2)
+      })
+
+      it('should correctly order categories', function() {
+        expect(transformedResponse[0].key).to.equal('risk')
+      })
+
+      it('should correctly order categories', function() {
+        expect(transformedResponse[1].key).to.equal('health')
+      })
+
+      it('should contain correct number of types', function() {
+        expect(Object.keys(transformedResponse[0].answers)).to.have.length(0)
+        expect(Object.keys(transformedResponse[1].answers)).to.have.length(0)
+      })
+    })
   })
 })

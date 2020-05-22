@@ -56,9 +56,14 @@ describe('view allocation', function() {
     let locals
     let render
     let output
+    let moveToCardComponentStub
     beforeEach(function() {
+      moveToCardComponentStub = sinon.stub().returnsArg(0)
       sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
       sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
+      sinon
+        .stub(presenters, 'moveToCardComponent')
+        .callsFake(() => moveToCardComponentStub)
       render = sinon.stub()
       locals = { allocation: { ...allocationExample } }
       handler(
@@ -72,21 +77,25 @@ describe('view allocation', function() {
       )
       output = render.firstCall.lastArg
     })
+
     it('creates allocationDetails on locals with the result of the correct presenter', function() {
       expect(output.allocationDetails).to.exist
       expect(
         presenters.allocationToMetaListComponent
       ).to.have.been.calledOnceWithExactly(locals.allocation)
     })
+
     it('creates allocationSummary on locals with the result of the correct presenter', function() {
       expect(output.allocationSummary).to.exist
       expect(
         presenters.allocationToSummaryListComponent
       ).to.have.been.calledOnceWithExactly(locals.allocation)
     })
+
     it('does not create a message banner if the status is not cancelled', function() {
       expect(output.messageTitle).to.be.undefined
     })
+
     it('calls render with the template', function() {
       expect(render).to.have.been.calledWithExactly('allocation/views/view', {
         allocationDetails: {},
@@ -95,12 +104,10 @@ describe('view allocation', function() {
           emptySlots: 2,
           filledSlots: [
             {
-              href: undefined,
-              image_alt: 'JOHN DOE',
-              image_path: undefined,
-              meta: { items: [] },
-              tags: { items: [] },
-              title: { text: 'JOHN DOE' },
+              person: {
+                first_names: 'John',
+                last_name: 'Doe',
+              },
             },
           ],
         },
@@ -110,6 +117,7 @@ describe('view allocation', function() {
       })
     })
   })
+
   context('Cancelled allocation', function() {
     let locals
     let render

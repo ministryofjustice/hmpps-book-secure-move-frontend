@@ -28,7 +28,9 @@ function moveToCardComponent({
     return {
       ...personCardComponent,
       status: statusBadge,
-      classes: isCompact ? 'app-card--compact' : '',
+      classes: isCompact
+        ? `app-card--compact ${personCardComponent.classes || ''}`
+        : personCardComponent.classes || '',
       caption: {
         text: i18n.t('moves::move_reference', {
           reference,

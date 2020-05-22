@@ -1,6 +1,7 @@
 {% extends "layouts/two-column.njk" %}
 
 {% set additionalContainerClass = "sticky-sidebar-container" %}
+{% set name = (move.person.fullname or t("awaiting_person")) | upper %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
@@ -8,7 +9,7 @@
 
 {% block pageTitle %}
   {{ t("moves::detail.page_title", {
-    name: move.person.fullname | upper
+    name: name
   }) }}
 {% endblock %}
 
@@ -74,7 +75,7 @@
     {% endif %}
 
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
-      {{ move.person.fullname | upper }}
+      {{ name }}
     </h1>
     <span class="govuk-caption-xl">
       {{ t("moves::move_reference", {
@@ -170,12 +171,12 @@
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
         <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-          {{ move.person.fullname | upper }}
+          {{ name }}
         </h3>
 
         {% if move.person.image_url %}
           <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
-            <img src="{{ move.person.image_url }}" alt="{{ move.person.fullname | upper }}">
+            <img src="{{ move.person.image_url }}" alt="{{ name }}">
           </div>
         {% endif %}
 

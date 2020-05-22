@@ -1,4 +1,5 @@
 const apiClient = require('../lib/api-client')()
+const personService = require('../services/person')
 
 const allocationService = require('./allocation')
 
@@ -8,8 +9,31 @@ const mockAllocations = [
     status: 'requested',
     moves: [
       {
+        status: 'cancelled',
         person: {
           name: 'Tom Jones',
+        },
+      },
+      {
+        person: {
+          name: 'James Stephens',
+        },
+      },
+      {
+        status: 'requested',
+        person: {
+          name: 'Hugh Jack',
+        },
+      },
+      {
+        status: 'cancelled',
+        person: {
+          name: 'Beth Hacket',
+        },
+      },
+      {
+        person: {
+          name: 'Steve Adams',
         },
       },
     ],
@@ -84,6 +108,147 @@ describe('Allocation service', function() {
     })
   })
 
+  describe('#transform()', function() {
+    let output
+
+    beforeEach(function() {
+      sinon.stub(personService, 'transform').returnsArg(0)
+    })
+
+    context('with no arguments', function() {
+      beforeEach(function() {
+        output = allocationService.transform()(mockAllocations[0])
+      })
+
+      it('should filter out cancelled moves', function() {
+        expect(output.moves).to.have.length(3)
+      })
+
+      it('should call the person transform method on remaining moves', function() {
+        expect(personService.transform.callCount).to.equal(3)
+      })
+
+      it('should return correct output', function() {
+        expect(output).to.deep.equal({
+          id: '12345',
+          status: 'requested',
+          moves: [
+            {
+              person: {
+                name: 'James Stephens',
+              },
+            },
+            {
+              status: 'requested',
+              person: {
+                name: 'Hugh Jack',
+              },
+            },
+            {
+              person: {
+                name: 'Steve Adams',
+              },
+            },
+          ],
+        })
+      })
+    })
+
+    context('with excluding cancelled moves set to `false`', function() {
+      beforeEach(function() {
+        output = allocationService.transform({ includeCancelled: false })(
+          mockAllocations[0]
+        )
+      })
+
+      it('should filter out cancelled moves', function() {
+        expect(output.moves).to.have.length(3)
+      })
+
+      it('should call the person transform method on remaining moves', function() {
+        expect(personService.transform.callCount).to.equal(3)
+      })
+
+      it('should return correct output', function() {
+        expect(output).to.deep.equal({
+          id: '12345',
+          status: 'requested',
+          moves: [
+            {
+              person: {
+                name: 'James Stephens',
+              },
+            },
+            {
+              status: 'requested',
+              person: {
+                name: 'Hugh Jack',
+              },
+            },
+            {
+              person: {
+                name: 'Steve Adams',
+              },
+            },
+          ],
+        })
+      })
+    })
+
+    context('with including cancelled moves set to `true`', function() {
+      beforeEach(function() {
+        output = allocationService.transform({ includeCancelled: true })(
+          mockAllocations[0]
+        )
+      })
+
+      it('should not filter out cancelled moves', function() {
+        expect(output.moves).to.have.length(5)
+      })
+
+      it('should call the person transform method on all moves', function() {
+        expect(personService.transform.callCount).to.equal(5)
+      })
+
+      it('should return correct output', function() {
+        expect(output).to.deep.equal({
+          id: '12345',
+          status: 'requested',
+          moves: [
+            {
+              status: 'cancelled',
+              person: {
+                name: 'Tom Jones',
+              },
+            },
+            {
+              person: {
+                name: 'James Stephens',
+              },
+            },
+            {
+              status: 'requested',
+              person: {
+                name: 'Hugh Jack',
+              },
+            },
+            {
+              status: 'cancelled',
+              person: {
+                name: 'Beth Hacket',
+              },
+            },
+            {
+              person: {
+                name: 'Steve Adams',
+              },
+            },
+          ],
+        })
+      })
+    })
+  })
+
   describe('#getAll()', function() {
     const mockResponse = {
       data: mockAllocations,
@@ -108,9 +273,11 @@ describe('Allocation service', function() {
     const mockFilter = {
       filterOne: 'foo',
     }
-    let moves
+    let moves, transformStub
 
     beforeEach(function() {
+      transformStub = sinon.stub().returnsArg(0)
+      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'findAll')
     })
 
@@ -136,6 +303,10 @@ describe('Allocation service', function() {
               per_page: 100,
             }
           )
+        })
+
+        it('should transform each person object', function() {
+          expect(transformStub.callCount).to.equal(mockAllocations.length)
         })
 
         it('should return moves', function() {
@@ -224,6 +395,10 @@ describe('Allocation service', function() {
               per_page: 100,
             }
           )
+        })
+
+        it('should transform each person object', function() {
+          expect(transformStub.callCount).to.equal(mockAllocations.length * 2)
         })
 
         it('should return moves', function() {
@@ -385,61 +560,70 @@ describe('Allocation service', function() {
   })
 
   describe('#getById', function() {
-    let output
-    const mockResponse = {
-      id: '8567f1a5-2201-4bc2-b655-f6526401303a',
-      type: 'allocations',
-    }
+    let output, transformStub
+
     beforeEach(async function() {
+      transformStub = sinon.stub().returnsArg(0)
+      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'find').resolves({
-        data: mockResponse,
+        data: mockAllocations[0],
       })
       output = await allocationService.getById(
         '8567f1a5-2201-4bc2-b655-f6526401303a'
       )
     })
+
     it('calls the api service', function() {
       expect(apiClient.find).to.have.been.calledOnceWith(
         'allocation',
         '8567f1a5-2201-4bc2-b655-f6526401303a'
       )
     })
+
+    it('should transform person object', function() {
+      expect(transformStub.callCount).to.equal(1)
+    })
+
     it('returns the data from the api service', function() {
-      expect(output).to.deep.equal(mockResponse)
+      expect(output).to.deep.equal(mockAllocations[0])
     })
   })
 
   describe('#create', function() {
-    let output
-    const mockResponse = {
-      id: '8567f1a5-2201-4bc2-b655-f6526401303a',
-      type: 'allocations',
+    let output, transformStub
+    const mockData = {
+      count: 5,
+      category: 'C',
     }
+
     beforeEach(async function() {
+      transformStub = sinon.stub().returnsArg(0)
+      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'create').resolves({
-        data: {
-          success: true,
-        },
+        data: mockAllocations[0],
       })
       sinon.stub(allocationService, 'format').returns({
         formattedData: {},
       })
-      output = await allocationService.create(mockResponse)
+      output = await allocationService.create(mockData)
     })
-    it('formattes the data', function() {
-      expect(allocationService.format).to.have.been.calledWithExactly(
-        mockResponse
-      )
+
+    it('formats the data', function() {
+      expect(allocationService.format).to.have.been.calledWithExactly(mockData)
     })
+
     it('sends the data to the api', function() {
       expect(apiClient.create).to.have.been.calledWithExactly('allocation', {
         formattedData: {},
       })
     })
+
+    it('should transform person object', function() {
+      expect(transformStub.callCount).to.equal(1)
+    })
+
     it('returns the response', function() {
-      expect(output).to.deep.equal({
-        success: true,
-      })
+      expect(output).to.deep.equal(mockAllocations[0])
     })
   })
 })

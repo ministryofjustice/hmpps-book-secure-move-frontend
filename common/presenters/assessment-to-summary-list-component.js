@@ -19,7 +19,7 @@ function _filterAnswer(category) {
 }
 
 module.exports = function assessmentToSummaryListComponent(
-  answers,
+  answers = [],
   filterCategory
 ) {
   const rows = answers.filter(_filterAnswer(filterCategory)).map(_mapAnswer)
