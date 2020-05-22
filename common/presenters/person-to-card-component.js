@@ -13,11 +13,11 @@ function personToCardComponent({
   return function item({
     href,
     gender,
-    fullname = '',
+    fullname = i18n.t('awaiting_person'),
     image_url: imageUrl,
     date_of_birth: dateOfBirth,
     assessment_answers: assessmentAnswers,
-  }) {
+  } = {}) {
     const card = {
       href,
       title: {

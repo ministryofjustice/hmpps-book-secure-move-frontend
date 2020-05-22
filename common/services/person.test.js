@@ -82,6 +82,16 @@ describe('Person Service', function() {
         expect(transformed.fullname).to.equal('')
       })
     })
+
+    context('with no arguments', function() {
+      beforeEach(async function() {
+        transformed = await personService.transform()
+      })
+
+      it('should return only last name for full name', function() {
+        expect(transformed).to.be.undefined
+      })
+    })
   })
 
   describe('#format()', function() {

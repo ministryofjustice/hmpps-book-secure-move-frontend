@@ -4,6 +4,7 @@ const filters = require('../../config/nunjucks/filters')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 
 const mockPerson = {
+  id: '12345',
   date_of_birth: '1948-04-24',
   gender_additional_information: 'Additional gender information',
   identifiers: [
@@ -143,7 +144,9 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        transformedResponse = personToSummaryListComponent({})
+        transformedResponse = personToSummaryListComponent({
+          id: '12345',
+        })
       })
 
       describe('response', function() {
@@ -181,6 +184,7 @@ describe('Presenters', function() {
 
       beforeEach(function() {
         transformedResponse = personToSummaryListComponent({
+          id: '12345',
           gender: {
             title: 'Male',
           },
@@ -195,6 +199,20 @@ describe('Presenters', function() {
             key: { text: '__translated__' },
             value: { text: 'Male' },
           })
+        })
+      })
+    })
+
+    context('when provided with no arguments', function() {
+      let transformedResponse
+
+      beforeEach(function() {
+        transformedResponse = personToSummaryListComponent()
+      })
+
+      describe('response', function() {
+        it('should return undefined', function() {
+          expect(transformedResponse).to.be.undefined
         })
       })
     })

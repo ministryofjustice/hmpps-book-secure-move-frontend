@@ -294,5 +294,56 @@ describe('Move controllers', function() {
         expect(params.messageContent).to.equal('statuses::description')
       })
     })
+
+    context('when move doesn’t have a person', function() {
+      let params
+
+      beforeEach(function() {
+        res.locals.move = {
+          ...mockMove,
+          person: undefined,
+        }
+
+        controller(req, res)
+        params = res.render.args[0][1]
+      })
+
+      it('should call personToSummaryListComponent presenter with undefined', function() {
+        expect(
+          presenters.personToSummaryListComponent
+        ).to.be.calledOnceWithExactly(undefined)
+      })
+
+      it('should contain undefined personal details summary param', function() {
+        expect(params).to.have.property('personalDetailsSummary')
+        expect(params.personalDetailsSummary).to.equal(undefined)
+      })
+
+      it('should call assessmentToTagList presenter with empty array', function() {
+        expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly([])
+      })
+
+      it('should contain tag list param', function() {
+        expect(params).to.have.property('tagList')
+        expect(params.tagList).to.deep.equal([])
+      })
+
+      it('should call assessmentAnswersByCategory presenter with empty array', function() {
+        expect(
+          presenters.assessmentAnswersByCategory
+        ).to.be.calledOnceWithExactly([])
+      })
+
+      it('should contain assessment param as empty array', function() {
+        expect(params).to.have.property('assessment')
+        expect(params.assessment).to.deep.equal([])
+      })
+
+      it('should call assessmentToSummaryListComponent presenter with empty array', function() {
+        expect(
+          presenters.assessmentToSummaryListComponent
+        ).to.be.calledOnceWithExactly([], 'court')
+      })
+    })
   })
 })

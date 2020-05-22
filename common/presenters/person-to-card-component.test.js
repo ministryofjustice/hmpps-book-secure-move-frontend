@@ -410,5 +410,22 @@ describe('Presenters', function() {
         expect(transformedResponse.meta.items.length).to.equal(2)
       })
     })
+
+    context('with no arguments', function() {
+      beforeEach(function() {
+        transformedResponse = personToCardComponent()()
+      })
+
+      it('should use fallback values', function() {
+        expect(transformedResponse).to.deep.equal({
+          href: undefined,
+          title: { text: '__TRANSLATED__' },
+          meta: { items: [] },
+          tags: { items: [] },
+          image_path: undefined,
+          image_alt: '__TRANSLATED__',
+        })
+      })
+    })
   })
 })

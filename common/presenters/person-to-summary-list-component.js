@@ -12,13 +12,18 @@ function mapIdentifier({ value, identifier_type: type }) {
   }
 }
 
-module.exports = function personToSummaryListComponent({
-  gender,
-  ethnicity,
-  identifiers = [],
-  date_of_birth: dateOfBirth,
-  gender_additional_information: genderAdditionalInformation,
-}) {
+module.exports = function personToSummaryListComponent(props) {
+  if (!props) {
+    return undefined
+  }
+
+  const {
+    gender,
+    ethnicity,
+    identifiers = [],
+    date_of_birth: dateOfBirth,
+    gender_additional_information: genderAdditionalInformation,
+  } = props
   const age = `(${i18n.t('age')} ${filters.calculateAge(dateOfBirth)})`
   const genderExtra = genderAdditionalInformation
     ? ` — ${genderAdditionalInformation}`

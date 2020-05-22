@@ -7,7 +7,7 @@ const referenceDataService = require('../services/reference-data')
 
 function getIdentifier(identifier) {
   return function(row) {
-    const item = find(row.person.identifiers, {
+    const item = find(get(row, 'person.identifiers'), {
       identifier_type: identifier,
     })
     return item ? item.value : null
@@ -18,7 +18,13 @@ function mapAnswer({ title, key } = {}) {
   return [
     {
       label: title,
-      value: row => some(row.person.assessment_answers, { key }),
+      value: row => {
+        if (!row.person) {
+          return null
+        }
+
+        return some(get(row, 'person.assessment_answers'), { key })
+      },
     },
     {
       label: [

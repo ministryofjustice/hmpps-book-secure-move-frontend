@@ -18,6 +18,7 @@ module.exports = function view(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
+  const assessmentAnswers = get(person, 'assessment_answers', [])
 
   const urls = {
     update: updateUrls,
@@ -26,9 +27,9 @@ module.exports = function view(req, res) {
   const locals = {
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
-    tagList: presenters.assessmentToTagList(person.assessment_answers),
+    tagList: presenters.assessmentToTagList(assessmentAnswers),
     assessment: presenters
-      .assessmentAnswersByCategory(person.assessment_answers)
+      .assessmentAnswersByCategory(assessmentAnswers)
       .map(presenters.assessmentCategoryToPanelComponent),
     courtHearings: sortBy(move.court_hearings, 'start_time').map(
       courtHearing => {
@@ -41,7 +42,7 @@ module.exports = function view(req, res) {
       }
     ),
     courtSummary: presenters.assessmentToSummaryListComponent(
-      person.assessment_answers,
+      assessmentAnswers,
       'court'
     ),
     messageTitle: bannerStatuses.includes(status)

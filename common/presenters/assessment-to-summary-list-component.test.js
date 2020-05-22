@@ -92,5 +92,26 @@ describe('Presenters', function() {
         })
       })
     })
+
+    context('when called with empty arguments', function() {
+      let transformedResponse
+
+      beforeEach(function() {
+        transformedResponse = assessmentToSummaryListComponent()
+      })
+
+      describe('response', function() {
+        describe('response', function() {
+          it('should return empty rows', function() {
+            expect(transformedResponse).to.have.property('rows')
+            expect(transformedResponse.rows.length).to.equal(0)
+          })
+
+          it('should return empty array', function() {
+            expect(transformedResponse.rows).to.deep.equal([])
+          })
+        })
+      })
+    })
   })
 })
