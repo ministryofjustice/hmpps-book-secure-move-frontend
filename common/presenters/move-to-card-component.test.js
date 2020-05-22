@@ -22,16 +22,16 @@ const personToCardComponentStub = sinon
   .stub()
   .callsFake(() => personToCardComponentItemStub)
 
-const moveToCardComponent = proxyquire('./move-to-card-component', {
-  './person-to-card-component': personToCardComponentStub,
-})
-
 describe('Presenters', function() {
   describe('#moveToCardComponent()', function() {
     let transformedResponse
+    let moveToCardComponent
 
     beforeEach(function() {
       sinon.stub(i18n, 't').returns('__translated__')
+      moveToCardComponent = proxyquire('./move-to-card-component', {
+        './person-to-card-component': personToCardComponentStub,
+      })
     })
 
     context('with default options', function() {
@@ -189,7 +189,7 @@ describe('Presenters', function() {
       it('should contain correct output', function() {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: 'app-card--compact',
+          classes: 'app-card--compact ',
           status: undefined,
           caption: {
             text: '__translated__',
@@ -223,7 +223,7 @@ describe('Presenters', function() {
       it('should contain correct output', function() {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: 'app-card--compact',
+          classes: 'app-card--compact ',
           status: undefined,
           caption: {
             text: '__translated__',
@@ -260,6 +260,59 @@ describe('Presenters', function() {
           })
         })
       }
+    })
+
+    context('with card component classes', function() {
+      const mockClasses = 'mock classes'
+
+      beforeEach(function() {
+        moveToCardComponent = proxyquire('./move-to-card-component', {
+          './person-to-card-component': sinon.stub().callsFake(() =>
+            sinon.stub().returns({
+              ...mockPersonCardComponent,
+              classes: mockClasses,
+            })
+          ),
+        })
+      })
+
+      context('with compact design', function() {
+        beforeEach(function() {
+          transformedResponse = moveToCardComponent({ isCompact: true })(
+            mockMove
+          )
+        })
+
+        it('should combine with card classes', function() {
+          expect(transformedResponse).to.deep.equal({
+            ...mockPersonCardComponent,
+            classes: `app-card--compact ${mockClasses}`,
+            status: undefined,
+            caption: {
+              text: '__translated__',
+            },
+          })
+        })
+      })
+
+      context('without compact design', function() {
+        beforeEach(function() {
+          transformedResponse = moveToCardComponent()(mockMove)
+        })
+
+        it('should return card classes', function() {
+          expect(transformedResponse).to.deep.equal({
+            ...mockPersonCardComponent,
+            classes: mockClasses,
+            status: {
+              text: '__translated__',
+            },
+            caption: {
+              text: '__translated__',
+            },
+          })
+        })
+      })
     })
   })
 })

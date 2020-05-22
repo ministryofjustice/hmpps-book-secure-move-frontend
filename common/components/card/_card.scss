@@ -20,8 +20,17 @@ $_image-width: 80px;
   padding: 0;
 }
 
+.app-card--placeholder {
+  padding-top: govuk-spacing(2);
+  padding-bottom: govuk-spacing(2);
+}
+
 .app-card__aside {
   float: left;
+
+  .app-card--placeholder & {
+    display: none;
+  }
 }
 
 .app-card__image {
@@ -37,6 +46,7 @@ $_image-width: 80px;
     float: right;
     margin-bottom: 0;
     margin-left: govuk-spacing(3);
+    margin-right: govuk-spacing(3);
   }
 }
 
@@ -49,6 +59,10 @@ $_image-width: 80px;
   @include govuk-font($size: 19, $weight: bold);
   margin: 0;
 
+  .app-card--placeholder & {
+    font-weight: normal;
+  }
+
   .govuk-checkboxes &,
   .govuk-radios & {
     margin-top: 8px;
@@ -57,6 +71,15 @@ $_image-width: 80px;
 
 .app-card__content {
   margin-left: $_image-width + govuk-spacing(3);
+
+  .app-card--placeholder & {
+    background: govuk-colour("light-grey");
+    border-left: 5px solid govuk-colour("dark-grey");
+    padding-bottom: govuk-spacing(3);
+    padding-left: govuk-spacing(3);
+    padding-top: govuk-spacing(3);
+    margin-left: 0;
+  }
 }
 
 .app-card__meta-list {

@@ -4,6 +4,7 @@ const filters = require('../../config/nunjucks/filters')
 const personToCardComponent = require('./person-to-card-component')
 
 const mockPerson = {
+  id: '12345',
   href: '/move/12345',
   fullname: 'Name, Full',
   image_url: '/path/to/image.jpg',
@@ -64,6 +65,10 @@ describe('Presenters', function() {
             })
           })
 
+          it('should not contain classes', function() {
+            expect(transformedResponse).not.to.have.property('classes')
+          })
+
           it('should contain an image path', function() {
             expect(transformedResponse).to.have.property('image_path')
             expect(transformedResponse.image_path).to.equal(
@@ -118,6 +123,10 @@ describe('Presenters', function() {
                 },
               ],
             })
+          })
+
+          it('should contain correct amount of properties', function() {
+            expect(Object.keys(transformedResponse)).to.have.length(6)
           })
         })
 
@@ -393,6 +402,10 @@ describe('Presenters', function() {
         expect(transformedResponse).not.to.have.property('image_path')
       })
 
+      it('should not contain an image path', function() {
+        expect(transformedResponse).not.to.have.property('image_path')
+      })
+
       it('should not contain image alt', function() {
         expect(transformedResponse).not.to.have.property('image_alt')
       })
@@ -419,6 +432,7 @@ describe('Presenters', function() {
       it('should use fallback values', function() {
         expect(transformedResponse).to.deep.equal({
           href: undefined,
+          classes: 'app-card--placeholder',
           title: { text: '__TRANSLATED__' },
           meta: { items: [] },
           tags: { items: [] },

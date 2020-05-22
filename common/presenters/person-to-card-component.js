@@ -11,6 +11,7 @@ function personToCardComponent({
   showTags = true,
 } = {}) {
   return function item({
+    id,
     href,
     gender,
     fullname = i18n.t('awaiting_person'),
@@ -23,6 +24,10 @@ function personToCardComponent({
       title: {
         text: fullname.toUpperCase(),
       },
+    }
+
+    if (!id) {
+      card.classes = 'app-card--placeholder'
     }
 
     if (showMeta) {
