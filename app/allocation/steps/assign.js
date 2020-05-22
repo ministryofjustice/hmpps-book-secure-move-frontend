@@ -21,6 +21,7 @@ const assignSteps = {
   },
   '/agreement-status': {
     ...create['/agreement-status'],
+    controller: controllers.AgreementStatus,
     next: 'release-status',
   },
   '/release-status': {
@@ -55,7 +56,6 @@ const assignSteps = {
   '/confirmation': {
     checkJourney: false,
     checkSession: false,
-    controller: controllers.Confirmation,
     templatePath: 'allocation/views/assign/',
     template: 'confirmation',
   },
