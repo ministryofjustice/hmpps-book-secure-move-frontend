@@ -9,6 +9,7 @@ const movesCount = require('./moves-count')
 const otherCriteria = require('./other-criteria')
 const prisonerCategory = require('./prisoner-category')
 const sentenceLength = require('./sentence-length')
+const specialVehicleCheck = require('./special-vehicle-check')
 const toLocation = require('./to-location')
 
 const createFields = {
@@ -24,28 +25,9 @@ const createFields = {
   to_location: toLocation,
 }
 
-const assignFields = { ...moveCreateFields }
-
-assignFields.special_vehicle_check = {
-  validate: 'required',
-  component: 'govukRadios',
-  name: 'special_vehicle_check',
-  fieldset: {
-    legend: {
-      text: 'fields::special_vehicle_check.label',
-      classes: 'govuk-fieldset__legend--m',
-    },
-  },
-  items: [
-    {
-      value: 'true',
-      text: 'fields::special_vehicle_check.items.yes.label',
-    },
-    {
-      value: 'false',
-      text: 'fields::special_vehicle_check.items.no.label',
-    },
-  ],
+const assignFields = {
+  ...moveCreateFields,
+  special_vehicle_check: specialVehicleCheck,
 }
 
 module.exports = {
