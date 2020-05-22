@@ -55,7 +55,6 @@ const assignSteps = {
   '/confirmation': {
     checkJourney: false,
     checkSession: false,
-    controller: controllers.Confirmation,
     templatePath: 'allocation/views/assign/',
     template: 'confirmation',
   },
