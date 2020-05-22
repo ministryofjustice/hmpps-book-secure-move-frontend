@@ -37,13 +37,37 @@ describe('Assign controllers', function() {
       })
 
       it('should only have the expected methods of its own', function() {
-        const ownMethods = []
+        const ownMethods = ['middlewareLocals']
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
         )
         expect(ownProps).to.deep.equal(ownMethods)
       })
+    })
+  })
+
+  describe('#middlewareLocals()', function() {
+    beforeEach(function() {
+      sinon.stub(AssignBaseController.prototype, 'middlewareLocals')
+      sinon.stub(controller, 'use')
+
+      controller.middlewareLocals()
+    })
+
+    it('should call super method', function() {
+      expect(AssignBaseController.prototype.middlewareLocals).to.have.been
+        .calledOnce
+    })
+
+    it('should call set people method', function() {
+      expect(controller.use.firstCall).to.have.been.calledWithExactly(
+        controller.setPreviousAssessment
+      )
+    })
+
+    it('should call correct number of middleware', function() {
+      expect(controller.use).to.be.callCount(1)
     })
   })
 })

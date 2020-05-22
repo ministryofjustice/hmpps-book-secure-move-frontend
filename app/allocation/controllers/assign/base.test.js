@@ -68,15 +68,15 @@ describe('Assign controllers', function() {
       expect(BaseProto.middlewareLocals).to.have.been.calledOnce
     })
 
-    it('should call set cancel url method', function() {
+    it('should call set move method', function() {
       expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
-        controller.setCancelUrl
+        controller.setMove
       )
     })
 
-    it('should call set move method', function() {
+    it('should call set cancel url method', function() {
       expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
-        controller.setMove
+        controller.setCancelUrl
       )
     })
 
@@ -137,6 +137,7 @@ describe('Assign controllers', function() {
           get: sinon.stub().returnsArg(0),
           set: sinon.stub(),
         },
+        models: {},
       }
       res = {
         locals: {
@@ -151,21 +152,20 @@ describe('Assign controllers', function() {
       beforeEach(function() {
         controller.setMove(req, res, nextSpy)
       })
-      it('should set move object on session model', function() {
-        expect(req.sessionModel.set.getCall(0).args).to.deep.equal([
-          'move',
-          moveUnfilled,
-        ])
-      })
 
       it('should set person object on locals', function() {
-        expect(req.sessionModel.get.getCall(0).args).to.deep.equal(['person'])
+        expect(req.sessionModel.get.getCall(1).args).to.deep.equal(['person'])
         expect(res.locals.person).to.equal('person')
       })
 
       it('should set move object on locals', function() {
-        expect(req.sessionModel.get.getCall(1).args).to.deep.equal(['move'])
+        expect(req.sessionModel.get.getCall(2).args).to.deep.equal(['move'])
         expect(res.locals.move).to.equal('move')
+      })
+
+      it('should set models on req', function() {
+        expect(req.models.move).to.equal('move')
+        expect(req.models.person).to.equal('person')
       })
 
       it('should set addAnother on locals', function() {
@@ -174,6 +174,29 @@ describe('Assign controllers', function() {
 
       it('should call next', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when session', function() {
+      context('already has the move', function() {
+        beforeEach(function() {
+          controller.setMove(req, res, nextSpy)
+        })
+        it('should not set move object on session model', function() {
+          expect(req.sessionModel.set).to.not.be.called
+        })
+      })
+      context('does not have the move', function() {
+        beforeEach(function() {
+          req.sessionModel.get = sinon.stub().returns()
+          controller.setMove(req, res, nextSpy)
+        })
+        it('should set move object on session model', function() {
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+            'move',
+            moveUnfilled
+          )
+        })
       })
     })
 

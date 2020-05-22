@@ -21,6 +21,7 @@ const assignSteps = {
   },
   '/agreement-status': {
     ...create['/agreement-status'],
+    controller: controllers.AgreementStatus,
     next: 'release-status',
   },
   '/release-status': {

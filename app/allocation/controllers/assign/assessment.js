@@ -2,7 +2,12 @@ const MoveCreateAssessmentController = require('../../../move/controllers/create
 
 const PersonAssignBase = require('./base')
 
-class PersonAssessmentController extends PersonAssignBase {}
+class PersonAssessmentController extends PersonAssignBase {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setPreviousAssessment)
+  }
+}
 
 PersonAssignBase.mixin(
   PersonAssessmentController,
