@@ -16,7 +16,9 @@
 
       {{ govukPanel({
         classes: "govuk-!-margin-bottom-7",
-        titleText: t("messages::create_move.success.heading", { context: move.status }),
+        titleText: t("messages::create_move.success.heading", {
+          context: move.status
+        }),
         html: t("messages::create_move.success.content", {
           context: move.status,
           moveReference: move.reference

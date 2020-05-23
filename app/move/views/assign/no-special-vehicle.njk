@@ -10,7 +10,7 @@
       <h1 class="govuk-heading-xl">{{ t("allocation::no_special_vehicle.heading") }}</h1>
       {{ t("allocation::no_special_vehicle.content") | safe }}
 
-      <p><a href="/allocation/{{ allocation.id }}">{{ t("allocation::no_special_vehicle.return_link_text") }}</a></p>
+      <p><a href="/allocation/{{ move.allocation.id }}">{{ t("allocation::no_special_vehicle.return_link_text") }}</a></p>
     </div>
   </div>
 {% endblock %}

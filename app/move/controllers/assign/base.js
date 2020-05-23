@@ -1,4 +1,4 @@
-const CreateBaseController = require('../../../move/controllers/create/base')
+const CreateBaseController = require('../create/base')
 
 class CreateAllocationBaseController extends CreateBaseController {
   middlewareLocals() {
@@ -8,33 +8,24 @@ class CreateAllocationBaseController extends CreateBaseController {
   }
 
   setCancelUrl(req, res, next) {
-    const allocationId = res.locals.allocation.id
+    const allocationId = res.locals.move.allocation.id
     res.locals.cancelUrl = `/allocation/${allocationId}`
     next()
   }
 
   setMove(req, res, next) {
-    const { allocation } = res.locals
+    const { move } = res.locals
+    const person = req.sessionModel.get('person')
 
-    const emptySlotMove = allocation.moves.filter(move => !move.person)[0]
-
-    if (!emptySlotMove) {
-      if (req.form.options.route !== '/confirmation') {
-        return res.redirect(res.locals.cancelUrl)
-      }
-    } else {
-      if (!req.sessionModel.get('move')) {
-        req.sessionModel.set('move', emptySlotMove)
-      }
+    if (!req.sessionModel.get('move')) {
+      req.sessionModel.set('move', move)
     }
 
-    res.locals.person = req.sessionModel.get('person')
-    res.locals.move = req.sessionModel.get('move')
-    res.locals.addAnother = !!emptySlotMove
+    res.locals.person = person
 
     // TODO: when req.getMove et al are removed these can be zapped
-    req.models.move = res.locals.move
-    req.models.person = res.locals.person
+    req.models.move = move
+    req.models.person = person
 
     next()
   }

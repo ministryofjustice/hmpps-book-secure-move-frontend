@@ -1,5 +1,6 @@
-const { create } = require('../../move/steps')
 const controllers = require('../controllers/assign')
+
+const create = require('./create')
 
 const assignSteps = {
   '/': {
@@ -26,6 +27,7 @@ const assignSteps = {
   },
   '/release-status': {
     ...create['/release-status'],
+    fields: [],
     controller: controllers.Assessment,
     next: 'special-vehicle',
   },
@@ -44,19 +46,19 @@ const assignSteps = {
     ],
   },
   '/no-special-vehicle': {
-    templatePath: 'allocation/views/assign/',
+    templatePath: 'move/views/assign/',
     template: 'no-special-vehicle',
     pageTitle: 'moves::steps.person_search.heading',
   },
   '/save': {
-    ...create['/save'],
+    skip: true,
     controller: controllers.Save,
     next: 'confirmation',
   },
   '/confirmation': {
     checkJourney: false,
     checkSession: false,
-    templatePath: 'allocation/views/assign/',
+    templatePath: 'move/views/assign/',
     template: 'confirmation',
   },
 }

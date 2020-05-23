@@ -83,19 +83,18 @@
   {% if canAccess('allocation:person:assign') %}
     <section class="govuk-!-margin-top-8">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people_assign.heading") }}</h2>
-    {% set slotsEmpty = allocation.moves_count - allocationPeople.filledSlots.length %}
-    {% if slotsEmpty %}
+    {% if allocationPeople.emptySlots %}
     <p>You can’t add people who require a special vehicle to an allocation - you need to <a href="/move/new">create a single request</a> instead</p>
 
     <h3 class="govuk-heading-s">{{ t("allocations::view.people_assign.slots_empty", {
-      slots_empty: slotsEmpty,
+      slots_empty: allocationPeople.emptySlots,
       person_or_people: t('person', {
-        count: slotsEmpty
+        count: allocationPeople.emptySlots
       })
     }) }}</h3>
       <p>{{ govukButton({
         html: "Add person",
-        href: "/allocation/" + allocation.id + "/assign"
+        href: "/move/" + unassignedMoveId + "/assign"
       }) }}</p>
     {% endif %}
     {% if allocationPeople.filledSlots.length === 0 %}

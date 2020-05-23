@@ -32,6 +32,7 @@ const policeNationalComputerUpdate = require('./police-national-computer.update'
 const prisonTransferType = require('./prison-transfer-type')
 const reviewFields = require('./review')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
+const specialVehicleCheck = require('./special-vehicle-check')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
@@ -107,8 +108,13 @@ const updateFields = {
   ...cloneDeep(createFields),
   police_national_computer: policeNationalComputerUpdate,
 }
+const assignFields = {
+  ...cloneDeep(createFields),
+  special_vehicle_check: specialVehicleCheck,
+}
 
 module.exports = {
+  assignFields,
   cancelFields,
   createFields,
   reviewFields,
