@@ -24,18 +24,19 @@
         {{ t("allocation::confirmation.detail", {
           person: person,
           move: move,
-          href: '/allocation/' + allocation.id,
-          moves_count: allocation.moves_count,
-          from_location: allocation.from_location.title,
-          to_location: allocation.to_location.title,
-          date: allocation.date | formatDateWithDay,
-          people: "person" | pluralize(allocation.moves_count)
+          href: '/allocation/' + move.allocation.id,
+          moves_count: move.allocation.moves_count,
+          from_location: move.from_location.title,
+          to_location: move.to_location.title,
+          date: move.date | formatDateWithDay,
+          people: "person" | pluralize(move.allocation.moves_count)
         }) | safe }}
       </p>
 
       <p>
       {% if addAnother %}
-      <a href="{{ cancelUrl }}/assign">Add another person to this allocation</a> or
+        {# TODO: Find way to get next empty move #}
+        <a href="{{ cancelUrl }}/assign">Add another person to this allocation</a> or
         <a href="/allocations">
         return to dashboard
         </a>
