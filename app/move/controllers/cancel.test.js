@@ -1,3 +1,4 @@
+const FormWizardController = require('../../../common/controllers/form-wizard')
 const moveService = require('../../../common/services/move')
 
 const CancelController = require('./cancel')
@@ -16,6 +17,78 @@ const mockValues = {
 
 describe('Move controllers', function() {
   describe('Cancel controller', function() {
+    describe('#middlewareChecks()', function() {
+      beforeEach(function() {
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkAllocation')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function() {
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call checkAllocation middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.checkAllocation
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#checkAllocation()', function() {
+      let mockRes, nextSpy
+
+      beforeEach(function() {
+        nextSpy = sinon.spy()
+        mockRes = {
+          locals: {
+            move: {
+              id: '12345',
+            },
+          },
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('with non allocation move', function() {
+        beforeEach(function() {
+          controller.checkAllocation({}, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function() {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function() {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with allocation move', function() {
+        beforeEach(function() {
+          mockRes.locals.move.allocation = {
+            id: '123',
+          }
+          controller.checkAllocation({}, mockRes, nextSpy)
+        })
+
+        it('should redirect to move', function() {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+        })
+
+        it('should not call next', function() {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+    })
+
     describe('#successHandler()', function() {
       let req, res, nextSpy
 

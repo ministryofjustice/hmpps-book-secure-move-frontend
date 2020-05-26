@@ -17,6 +17,9 @@
     "heading": "Awaiting a person to be added",
     "content": "$t(moves::allocation_relationship) and is waiting for a person to be added."
   },
+  "cancel_allocation_move": {
+    "content": "$t(moves::allocation_relationship). It can only be cancelled from the allocations page by a member of the Population Management Unit (PMU)."
+  },
   "assign_allocation": {
     "success": {
       "heading": "Move requested",
