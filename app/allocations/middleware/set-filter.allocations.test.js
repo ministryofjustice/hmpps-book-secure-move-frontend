@@ -30,7 +30,7 @@ describe('Allocations middleware', function() {
 
       beforeEach(function() {
         sinon.stub(i18n, 't').returnsArg(0)
-        sinon.stub(allocationService, 'getByDateAndLocation').resolves(4)
+        sinon.stub(allocationService, 'getActiveAllocations').resolves(4)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -76,7 +76,7 @@ describe('Allocations middleware', function() {
 
         it('calls the servive with correct arguments', async function() {
           expect(
-            allocationService.getByDateAndLocation
+            allocationService.getActiveAllocations
           ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'pending',
@@ -84,7 +84,7 @@ describe('Allocations middleware', function() {
             fromLocationId: mockLocationId,
           })
           expect(
-            allocationService.getByDateAndLocation
+            allocationService.getActiveAllocations
           ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'approved',
@@ -92,7 +92,7 @@ describe('Allocations middleware', function() {
             fromLocationId: mockLocationId,
           })
           expect(
-            allocationService.getByDateAndLocation
+            allocationService.getActiveAllocations
           ).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'rejected',
@@ -102,7 +102,7 @@ describe('Allocations middleware', function() {
         })
 
         it('calls the service on each item', async function() {
-          expect(allocationService.getByDateAndLocation.callCount).to.equal(3)
+          expect(allocationService.getActiveAllocations.callCount).to.equal(3)
         })
 
         it('calls next', function() {
@@ -200,7 +200,7 @@ describe('Allocations middleware', function() {
       const mockError = new Error('Error!')
 
       beforeEach(async function() {
-        sinon.stub(allocationService, 'getByDateAndLocation').rejects(mockError)
+        sinon.stub(allocationService, 'getActiveAllocations').rejects(mockError)
         next = sinon.spy()
         req = {
           body: {},

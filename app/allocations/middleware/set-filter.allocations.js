@@ -8,7 +8,7 @@ function setfilterAllocations(items = []) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
       allocationService
-        .getByDateAndLocation({
+        .getActiveAllocations({
           ...req.body.allocations,
           isAggregation: true,
           status: item.status,
