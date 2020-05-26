@@ -4,7 +4,12 @@ const tablePresenters = require('./table')
 
 const tableConfig = [
   {
-    head: 'collections::labels.move_size',
+    head: {
+      text: 'collections::labels.move_size',
+      attributes: {
+        width: '120',
+      },
+    },
     row: {
       attributes: {
         scope: 'row',
@@ -19,25 +24,39 @@ const tableConfig = [
     },
   },
   {
-    head: 'collections::labels.requested',
+    head: {
+      text: 'collections::labels.requested',
+      attributes: {
+        width: '160',
+      },
+    },
     row: {
       text: data => filters.formatDate(data.created_at),
     },
   },
   {
-    head: 'collections::labels.move_from',
+    head: {
+      text: 'collections::labels.move_from',
+    },
     row: {
       text: 'from_location.title',
     },
   },
   {
-    head: 'collections::labels.move_to',
+    head: {
+      text: 'collections::labels.move_to',
+    },
     row: {
       text: 'to_location.title',
     },
   },
   {
-    head: 'date',
+    head: {
+      text: 'date',
+      attributes: {
+        width: '120',
+      },
+    },
     row: {
       text: data => filters.formatDate(data.date),
     },

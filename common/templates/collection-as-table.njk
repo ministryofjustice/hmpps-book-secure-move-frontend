@@ -30,4 +30,23 @@
       }
     }) }}
   {% endif %}
+
+  {% if resultsAsTable.cancelled.rows.length %}
+    {% set html %}
+        {{ govukTable({
+          rows: resultsAsTable.cancelled.rows,
+          head: resultsAsTable.cancelled.head,
+          classes: "app-secondary-text-colour"
+        }) }}
+    {% endset %}
+
+    {{ govukDetails({
+      html: html,
+      summaryText: t("collections::cancelled", {
+        context: context,
+        count: resultsAsTable.cancelled.rows.length
+      })
+    }) }}
+  {% endif %}
+
 {% endblock %}
