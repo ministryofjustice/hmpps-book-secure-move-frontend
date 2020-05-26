@@ -7,8 +7,9 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { FEATURE_FLAGS } = require('../../config')
 
-const { confirmation, create, update, view } = require('./controllers')
+const { assign, confirmation, create, update, view } = require('./controllers')
 const {
+  assignFields,
   cancelFields,
   createFields,
   reviewFields,
@@ -16,6 +17,7 @@ const {
 } = require('./fields')
 const { setMove } = require('./middleware')
 const {
+  assign: assignSteps,
   cancel: cancelSteps,
   create: createSteps,
   review: reviewSteps,
@@ -52,6 +54,15 @@ const reviewConfig = {
   name: 'review-move',
   journeyName: 'review-move',
 }
+const assignConfig = {
+  ...wizardConfig,
+  controller: assign.Base,
+  name: 'allocation:person:assign',
+  templatePath: 'move/views/create/',
+  template: '../../../form-wizard',
+  journeyName: 'allocation:person:assign',
+  journeyPageTitle: 'allocation::person:assign',
+}
 
 // Define param middleware
 router.param('moveId', setMove)
@@ -74,6 +85,11 @@ router.use(
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
 router.use('/:moveId/review', wizard(reviewSteps, reviewFields, reviewConfig))
+router.use(
+  '/:moveId/assign',
+  protectRoute('allocation:person:assign'),
+  wizard(assignSteps, assignFields, assignConfig)
+)
 
 if (FEATURE_FLAGS.EDITABILITY) {
   updateSteps.forEach(updateJourney => {

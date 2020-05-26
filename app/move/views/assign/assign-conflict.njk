@@ -10,14 +10,14 @@
       {{ t("validation::assign_conflict.message", {
         href: "/move/" + existingMoveId,
         name: person.fullname | upper,
-        location: allocation.to_location.title,
-        date: allocation.date | formatDateWithDay
+        location: move.to_location.title,
+        date: move.date | formatDateWithDay
       }) | safe }}
     </p>
 
     <p class="govuk-!-margin-top-2">
       {{ t("validation::assign_conflict.instructions", {
-        allocation_href: cancelUrl + '/assign'
+        assign_href: "/move/" + move.id + "/assign"
       }) | safe }}
     </p>
   {% endset %}

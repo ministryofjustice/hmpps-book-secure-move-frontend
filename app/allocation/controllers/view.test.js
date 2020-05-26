@@ -41,112 +41,172 @@ describe('view allocation', function() {
       location_type: 'prison',
     },
     moves: [
-      {},
-      {},
+      { id: '123' },
       {
+        id: '456',
         person: {
           first_names: 'John',
           last_name: 'Doe',
         },
       },
+      { id: '789' },
+      {
+        id: '011',
+        person: {
+          first_names: 'Phil',
+          last_name: 'Jones',
+        },
+      },
     ],
   }
+  let moveToCardComponentStub
+  let mockReq
+  let mockRes
 
-  context('Active allocation', function() {
-    let locals
-    let render
-    let output
-    let moveToCardComponentStub
+  beforeEach(function() {
+    moveToCardComponentStub = sinon.stub().returnsArg(0)
+    sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
+    sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
+    sinon
+      .stub(presenters, 'moveToCardComponent')
+      .callsFake(() => moveToCardComponentStub)
+
+    mockReq = {
+      t: sinon.stub().returnsArg(0),
+    }
+    mockRes = {
+      render: sinon.stub(),
+      locals: {
+        allocation: { ...allocationExample },
+      },
+    }
+  })
+
+  context('with active allocation', function() {
     beforeEach(function() {
-      moveToCardComponentStub = sinon.stub().returnsArg(0)
-      sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
-      sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
-      sinon
-        .stub(presenters, 'moveToCardComponent')
-        .callsFake(() => moveToCardComponentStub)
-      render = sinon.stub()
-      locals = { allocation: { ...allocationExample } }
-      handler(
-        {
-          t: sinon.stub().returnsArg(0),
-        },
-        {
-          locals,
-          render,
-        }
-      )
-      output = render.firstCall.lastArg
+      handler(mockReq, mockRes)
     })
 
-    it('creates allocationDetails on locals with the result of the correct presenter', function() {
-      expect(output.allocationDetails).to.exist
-      expect(
-        presenters.allocationToMetaListComponent
-      ).to.have.been.calledOnceWithExactly(locals.allocation)
-    })
+    describe('locals', function() {
+      let locals
 
-    it('creates allocationSummary on locals with the result of the correct presenter', function() {
-      expect(output.allocationSummary).to.exist
-      expect(
-        presenters.allocationToSummaryListComponent
-      ).to.have.been.calledOnceWithExactly(locals.allocation)
-    })
+      beforeEach(function() {
+        locals = mockRes.render.firstCall.lastArg
+      })
 
-    it('does not create a message banner if the status is not cancelled', function() {
-      expect(output.messageTitle).to.be.undefined
+      it('creates allocationDetails with result of the presenter', function() {
+        expect(locals.allocationDetails).to.exist
+        expect(
+          presenters.allocationToMetaListComponent
+        ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
+      })
+
+      it('creates allocationSummary with result of the presenter', function() {
+        expect(locals.allocationSummary).to.exist
+        expect(
+          presenters.allocationToSummaryListComponent
+        ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
+      })
+
+      it('does not create a message banner', function() {
+        expect(locals.messageTitle).to.be.undefined
+      })
+
+      it('should create unassigned move ID', function() {
+        expect(locals.unassignedMoveId).to.equal('123')
+      })
     })
 
     it('calls render with the template', function() {
-      expect(render).to.have.been.calledWithExactly('allocation/views/view', {
-        allocationDetails: {},
-        allocationSummary: {},
-        allocationPeople: {
-          emptySlots: 2,
-          filledSlots: [
-            {
-              person: {
-                first_names: 'John',
-                last_name: 'Doe',
+      expect(mockRes.render).to.have.been.calledWithExactly(
+        'allocation/views/view',
+        {
+          allocationDetails: {},
+          allocationSummary: {},
+          allocationPeople: {
+            emptySlots: 2,
+            filledSlots: [
+              {
+                id: '456',
+                person: {
+                  first_names: 'John',
+                  last_name: 'Doe',
+                },
               },
-            },
-          ],
-        },
-        messageContent: 'allocations::statuses.description',
-        messageTitle: undefined,
-        dashboardUrl: '/allocations',
-      })
+              {
+                id: '011',
+                person: {
+                  first_names: 'Phil',
+                  last_name: 'Jones',
+                },
+              },
+            ],
+          },
+          unassignedMoveId: '123',
+          messageContent: 'allocations::statuses.description',
+          messageTitle: undefined,
+          dashboardUrl: '/allocations',
+        }
+      )
     })
   })
 
-  context('Cancelled allocation', function() {
+  context('with cancelled allocation', function() {
     let locals
-    let render
-    let output
+
     beforeEach(function() {
-      sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
-      sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
-      render = sinon.stub()
-      locals = { allocation: { ...allocationExample } }
-      locals.allocation.status = 'cancelled'
-      handler(
-        {
-          t: sinon.stub().returnsArg(0),
-        },
-        {
-          locals,
-          render,
-        }
-      )
-      output = render.firstCall.lastArg
+      mockRes.locals.allocation.status = 'cancelled'
+
+      handler(mockReq, mockRes)
+      locals = mockRes.render.firstCall.lastArg
     })
-    it('does create a message banner title if the status is cancelled', function() {
-      expect(output.messageTitle).not.to.be.undefined
-      expect(output.messageTitle).to.equal('allocations::statuses.cancelled')
+
+    it('does create a message banner title', function() {
+      expect(locals.messageTitle).not.to.be.undefined
+      expect(locals.messageTitle).to.equal('allocations::statuses.cancelled')
     })
-    it('does create a message banner content if the status is cancelled', function() {
-      expect(output.messageContent).to.equal(
+
+    it('does create a message banner content', function() {
+      expect(locals.messageContent).to.equal(
         'allocations::statuses.description'
       )
+    })
+  })
+
+  context('when all moves have been filled', function() {
+    let locals
+
+    beforeEach(function() {
+      mockRes.locals.allocation.moves = [
+        {
+          id: '123',
+          person: {
+            first_names: 'James',
+            last_name: 'Stevens',
+          },
+        },
+        {
+          id: '456',
+          person: {
+            first_names: 'Andrew',
+            last_name: 'Collins',
+          },
+        },
+        {
+          id: '789',
+          person: {
+            first_names: 'John',
+            last_name: 'Doe',
+          },
+        },
+      ]
+
+      handler(mockReq, mockRes)
+      locals = mockRes.render.firstCall.lastArg
+    })
+
+    it('sould not create an unassigned move ID', function() {
+      expect(locals.unassignedMoveId).to.be.undefined
     })
   })
 })

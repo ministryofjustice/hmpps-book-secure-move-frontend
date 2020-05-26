@@ -2,7 +2,7 @@ const { get, omit } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const MoveCreateSaveController = require('../../../move/controllers/create/save')
+const MoveCreateSaveController = require('../create/save')
 
 const PersonAssignBase = require('./base')
 
@@ -40,7 +40,7 @@ class SaveController extends PersonAssignBase {
     if (err.statusCode === 422 && apiErrorCode === 'taken') {
       const existingMoveId = get(err, 'errors[0].meta.existing_id')
 
-      return res.render('allocation/views/assign/assign-conflict', {
+      return res.render('move/views/assign/assign-conflict', {
         existingMoveId,
       })
     }

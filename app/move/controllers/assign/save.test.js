@@ -1,6 +1,6 @@
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const CreateSave = require('../../../move/controllers/create/save')
+const CreateSave = require('../create/save')
 
 const MixinProto = CreateSave.prototype
 const AssignBaseController = require('./base')
@@ -144,7 +144,7 @@ describe('Assign controllers', function() {
 
       it('should render the conflict page', function() {
         expect(res.render).to.be.calledOnceWithExactly(
-          'allocation/views/assign/assign-conflict',
+          'move/views/assign/assign-conflict',
           {
             existingMoveId: '__existing_id__',
           }

@@ -94,8 +94,10 @@ describe('Assign controllers', function() {
       req = {}
       res = {
         locals: {
-          allocation: {
-            id: '__allocationId__',
+          move: {
+            allocation: {
+              id: '__allocationId__',
+            },
           },
         },
       }
@@ -120,10 +122,6 @@ describe('Assign controllers', function() {
       id: '__filled__',
       person: { id: '__assigned__ ' },
     }
-    const moveUnfilled = {
-      id: '__unfilled__',
-      person: null,
-    }
 
     beforeEach(function() {
       nextSpy = sinon.spy()
@@ -134,42 +132,40 @@ describe('Assign controllers', function() {
           },
         },
         sessionModel: {
-          get: sinon.stub().returnsArg(0),
+          get: sinon.stub(),
           set: sinon.stub(),
         },
         models: {},
       }
       res = {
         locals: {
-          allocation: {
-            moves: [moveFilled, moveUnfilled],
-          },
+          move: moveFilled,
         },
       }
+      req.sessionModel.get.withArgs('person').returnsArg(0)
     })
 
-    context('when allocation has unfilled move', function() {
+    context('without session', function() {
       beforeEach(function() {
         controller.setMove(req, res, nextSpy)
       })
 
       it('should set person object on locals', function() {
-        expect(req.sessionModel.get.getCall(1).args).to.deep.equal(['person'])
+        expect(req.sessionModel.get).to.be.calledWithExactly('person')
         expect(res.locals.person).to.equal('person')
       })
 
+      it('should set move on session model', function() {
+        expect(req.sessionModel.set).to.be.calledWithExactly('move', moveFilled)
+      })
+
       it('should set move object on locals', function() {
-        expect(req.sessionModel.get.getCall(2).args).to.deep.equal(['move'])
-        expect(res.locals.move).to.equal('move')
+        expect(res.locals.move).to.deep.equal(moveFilled)
       })
 
       it('should set models on req', function() {
-        expect(req.models.move).to.equal('move')
+        expect(req.models.move).to.deep.equal(moveFilled)
         expect(req.models.person).to.equal('person')
-      })
-
-      it('should set addAnother on locals', function() {
-        expect(res.locals.addAnother).to.equal(true)
       })
 
       it('should call next', function() {
@@ -177,77 +173,14 @@ describe('Assign controllers', function() {
       })
     })
 
-    context('when session', function() {
-      context('already has the move', function() {
-        beforeEach(function() {
-          controller.setMove(req, res, nextSpy)
-        })
-        it('should not set move object on session model', function() {
-          expect(req.sessionModel.set).to.not.be.called
-        })
-      })
-      context('does not have the move', function() {
-        beforeEach(function() {
-          req.sessionModel.get = sinon.stub().returns()
-          controller.setMove(req, res, nextSpy)
-        })
-        it('should set move object on session model', function() {
-          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
-            'move',
-            moveUnfilled
-          )
-        })
-      })
-    })
-
-    context('when allocation has no unfilled moves', function() {
+    context('when session already has the move', function() {
       beforeEach(function() {
-        res = {
-          redirect: sinon.stub(),
-          locals: {
-            cancelUrl: '__allocation_url__',
-            allocation: {
-              moves: [moveFilled],
-            },
-          },
-        }
+        req.sessionModel.get.withArgs('move').returnsArg(0)
+        controller.setMove(req, res, nextSpy)
       })
 
-      context('and view is not confirmation', function() {
-        beforeEach(function() {
-          controller.setMove(req, res, nextSpy)
-        })
-
-        it('should not set move object on session model', function() {
-          expect(req.sessionModel.set).to.not.be.called
-        })
-
-        it('should redirect back to allocation view', function() {
-          expect(res.redirect).to.be.calledOnceWithExactly('__allocation_url__')
-        })
-
-        it('should not call next', function() {
-          expect(nextSpy).to.not.be.called
-        })
-      })
-
-      context('and view is confirmation', function() {
-        beforeEach(function() {
-          req.form.options.route = '/confirmation'
-          controller.setMove(req, res, nextSpy)
-        })
-
-        it('should not set move object on session model', function() {
-          expect(req.sessionModel.set).to.not.be.called
-        })
-
-        it('should not redirect back to allocation view', function() {
-          expect(res.redirect).to.not.be.called
-        })
-
-        it('should call next', function() {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+      it('should not set move object on session model', function() {
+        expect(req.sessionModel.set).to.not.be.called
       })
     })
   })

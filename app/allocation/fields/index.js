@@ -1,7 +1,3 @@
-const { cloneDeep } = require('lodash')
-
-const { createFields: moveCreateFields } = require('../../move/fields')
-
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
@@ -11,7 +7,6 @@ const movesCount = require('./moves-count')
 const otherCriteria = require('./other-criteria')
 const prisonerCategory = require('./prisoner-category')
 const sentenceLength = require('./sentence-length')
-const specialVehicleCheck = require('./special-vehicle-check')
 const toLocation = require('./to-location')
 
 const createFields = {
@@ -27,12 +22,6 @@ const createFields = {
   to_location: toLocation,
 }
 
-const assignFields = {
-  ...cloneDeep(moveCreateFields),
-  special_vehicle_check: specialVehicleCheck,
-}
-
 module.exports = {
   createFields,
-  assignFields,
 }
