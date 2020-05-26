@@ -62,6 +62,37 @@
       }
     }) }}
   {% endif %}
+
+  {% if not move.person %}
+    {% set html %}
+      <p>
+        {# TODO: Get moves returned as part of an allocation so that we can determine the number #}
+        {{ t("messages::pending_assign.content", {
+          context: "with_link" if canAccess("allocations:view"),
+          count: move.allocation.moves.length or move.allocation.moves_count,
+          href: "/allocation/" + move.allocation.id
+        }) | safe }}
+      </p>
+
+      {% if canAccess("allocation:person:assign") %}
+        {{ govukButton({
+          href: move.id + "/assign",
+          text: t("actions::add_person_to_move")
+        }) }}
+      {% endif %}
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction",
+      title: {
+        text: t("messages::pending_assign.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block contentHeader %}

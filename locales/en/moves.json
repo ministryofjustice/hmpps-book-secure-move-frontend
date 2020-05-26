@@ -213,5 +213,7 @@
       }
     }
   },
-  "redirect_notes": "Requested by {{fullname}} (user_name:{{username}} / user_id:{{userId}})"
+  "redirect_notes": "Requested by {{fullname}} (user_name:{{username}} / user_id:{{userId}})",
+  "allocation_relationship": "This move is part of an allocation for $t(n_person)",
+  "allocation_relationship_with_link": "This move is part of <a href=\"{{href}}\">an allocation for $t(n_person)</a>"
 }
