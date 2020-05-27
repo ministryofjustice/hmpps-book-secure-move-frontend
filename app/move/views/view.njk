@@ -1,7 +1,7 @@
 {% extends "layouts/two-column.njk" %}
 
 {% set additionalContainerClass = "sticky-sidebar-container" %}
-{% set name = (move.person.fullname or t("awaiting_person")) | upper %}
+{% set name = (move.person.fullname | upper) or t("awaiting_person") %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});

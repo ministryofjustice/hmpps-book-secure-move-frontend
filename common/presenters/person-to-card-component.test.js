@@ -433,11 +433,11 @@ describe('Presenters', function() {
         expect(transformedResponse).to.deep.equal({
           href: undefined,
           classes: 'app-card--placeholder',
-          title: { text: '__TRANSLATED__' },
+          title: { text: '__translated__' },
           meta: { items: [] },
           tags: { items: [] },
           image_path: undefined,
-          image_alt: '__TRANSLATED__',
+          image_alt: '__translated__',
         })
       })
     })
