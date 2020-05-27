@@ -166,7 +166,7 @@
     "standard-version": "7.1.0",
     "style-loader": "1.1.4",
     "terser-webpack-plugin": "2.3.5",
-    "testcafe": "1.8.4",
+    "testcafe": "1.8.5",
     "testcafe-reporter-xunit": "2.1.0",
     "timezone-mock": "1.0.18",
     "webpack": "4.43.0",
