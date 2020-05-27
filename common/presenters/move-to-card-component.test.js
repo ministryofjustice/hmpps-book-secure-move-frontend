@@ -167,6 +167,30 @@ describe('Presenters', function() {
       })
     })
 
+    context('with status disabled', function() {
+      beforeEach(function() {
+        transformedResponse = moveToCardComponent({
+          showStatus: false,
+        })(mockMove)
+      })
+
+      it('should call person to card component correctly', function() {
+        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.person,
+          href: '/move/12345',
+        })
+        expect(personToCardComponentStub).to.be.calledWithExactly({
+          showImage: true,
+          showMeta: true,
+          showTags: true,
+        })
+      })
+
+      it('should not set status on move card object', function() {
+        expect(transformedResponse.status).to.be.undefined
+      })
+    })
+
     context('with compact design', function() {
       beforeEach(function() {
         transformedResponse = moveToCardComponent({
