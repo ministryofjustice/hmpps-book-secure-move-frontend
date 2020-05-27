@@ -62,6 +62,37 @@
       }
     }) }}
   {% endif %}
+
+  {% if not move.person %}
+    {% set html %}
+      <p>
+        {# TODO: Get moves returned as part of an allocation so that we can determine the number #}
+        {{ t("messages::pending_assign.content", {
+          context: "with_link" if canAccess("allocations:view"),
+          count: move.allocation.moves.length or move.allocation.moves_count,
+          href: "/allocation/" + move.allocation.id
+        }) | safe }}
+      </p>
+
+      {% if canAccess("allocation:person:assign") %}
+        {{ govukButton({
+          href: move.id + "/assign",
+          text: t("actions::add_person_to_move")
+        }) }}
+      {% endif %}
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction",
+      title: {
+        text: t("messages::pending_assign.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block contentHeader %}
@@ -104,61 +135,77 @@
 {% endmacro %}
 
 {% block contentMain %}
-  <section class="app-!-position-relative">
-    <h2 class="govuk-heading-m">
-      {{ t("moves::steps.personal_details.heading") }}
-    </h2>
+  {% if move.person %}
+    <div class="govuk-!-margin-bottom-9">
+      <section class="app-!-position-relative">
+        <h2 class="govuk-heading-m">
+          {{ t("moves::steps.personal_details.heading") }}
+        </h2>
 
-    {{ govukSummaryList(personalDetailsSummary) }}
+        {{ govukSummaryList(personalDetailsSummary) }}
 
-    {{ updateLink(updateLinks.personal_details) }}
-  </section>
+        {{ updateLink(updateLinks.personal_details) }}
+      </section>
 
-  {% include "move/views/_includes/assessment.njk" %}
+      {% include "move/views/_includes/assessment.njk" %}
 
-  {% if move.from_location.can_upload_documents %}
-    <section class="app-!-position-relative">
-      <h2 class="govuk-heading-m govuk-!-margin-top-7">
-        {{ t("moves::detail.documents.heading", {
-          count: move.documents.length if move.documents.length > 1
-        }) }}
-      </h2>
+      {% if move.from_location.can_upload_documents %}
+        <section class="app-!-position-relative">
+          <h2 class="govuk-heading-m govuk-!-margin-top-7">
+            {{ t("moves::detail.documents.heading", {
+              count: move.documents.length if move.documents.length > 1
+            }) }}
+          </h2>
 
-      {% if move.documents | length %}
-        <ul class="govuk-list">
-          {% for document in move.documents %}
-            <li class="govuk-!-margin-bottom-3">
-              <a href="{{ document.url }}"
-                class="govuk-link"
-                target="_blank"
-                aria-labelledby="document-{{ loop.index }}">
-                {{- document.filename -}}
-              </a>
-              <span class="govuk-body-s">
-                ({{ document.filesize | filesize }})
-              </span>
-              <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0" id="document-{{ loop.index }}">
-                ({{ t("opens_new_window") }})
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        {{ appMessage({
-          classes: "app-message--muted",
-          allowDismiss: false,
-          content: {
-            html: t("moves::detail.documents.empty")
-          }
-        }) }}
+          {% if move.documents | length %}
+            <ul class="govuk-list">
+              {% for document in move.documents %}
+                <li class="govuk-!-margin-bottom-3">
+                  <a href="{{ document.url }}"
+                    class="govuk-link"
+                    target="_blank"
+                    aria-labelledby="document-{{ loop.index }}">
+                    {{- document.filename -}}
+                  </a>
+                  <span class="govuk-body-s">
+                    ({{ document.filesize | filesize }})
+                  </span>
+                  <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0" id="document-{{ loop.index }}">
+                    ({{ t("opens_new_window") }})
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            {{ appMessage({
+              classes: "app-message--muted",
+              allowDismiss: false,
+              content: {
+                html: t("moves::detail.documents.empty")
+              }
+            }) }}
+          {% endif %}
+
+          {{ updateLink(updateLinks.document) }}
+        </section>
       {% endif %}
-
-      {{ updateLink(updateLinks.document) }}
-    </section>
+    </div>
   {% endif %}
 
-  {% if canAccess("move:cancel") and move.status == "requested" %}
-    <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
+  {% if move.allocation %}
+    {# TODO: Get moves returned as part of an allocation so that we can determine the number #}
+    {{ govukInsetText({
+      html: t("messages::cancel_allocation_move.content", {
+        context: "with_link" if canAccess("allocations:view"),
+        count: move.allocation.moves.length or move.allocation.moves_count,
+        href: "/allocation/" + move.allocation.id
+      }),
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+  {% endif %}
+
+  {% if canAccess("move:cancel") and move.status == "requested" and not move.allocation %}
+    <p class="govuk-!-margin-bottom-0">
       <a href="{{ move.id }}/cancel" class="app-link--destructive">
         {{ t("actions::cancel_move") }}
       </a>

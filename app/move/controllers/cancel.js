@@ -4,6 +4,21 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const moveService = require('../../../common/services/move')
 
 class CancelController extends FormWizardController {
+  middlewareChecks() {
+    super.middlewareChecks()
+    this.use(this.checkAllocation)
+  }
+
+  checkAllocation(req, res, next) {
+    const { allocation, id } = res.locals.move
+
+    if (allocation) {
+      return res.redirect(`/move/${id}`)
+    }
+
+    next()
+  }
+
   async successHandler(req, res, next) {
     const { id: moveId } = res.locals.move
 
