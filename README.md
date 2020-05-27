@@ -230,7 +230,6 @@ It will also start a new deployment specific [job on CircleCI](https://app.circl
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
 | E2E_SUPPLIER_PASSWORD | Supplier user password used for acceptance testing | |
 | LOCATIONS_BATCH_SIZE | Maximum number of location IDs to send in one request when requesting moves for all locations | 40 |
-| FEATURE_FLAG_PRISON_COURT_HEARINGS | Whether to display the court hearings step from Prison locations | false |
 | FEATURE_FLAG_EDITABILITY | Whether to enable page views where moves can be updated | |
 
 ### Development specific

@@ -1,4 +1,3 @@
-const { FEATURE_FLAGS } = require('../../../config')
 const {
   Assessment,
   CourtHearings,
@@ -125,12 +124,8 @@ module.exports = {
         value: 'court_appearance',
         next: [
           {
-            // TODO: Remove function call once court hearings are fully released and replace with what is below
-            fn: CourtHearings.prototype.canAccessCourtHearings(
-              FEATURE_FLAGS.PRISON_COURT_HEARINGS
-            ),
-            // field: 'from_location_type',
-            // value: 'prison',
+            field: 'from_location_type',
+            value: 'prison',
             next: 'court-hearings',
           },
           'court-information',

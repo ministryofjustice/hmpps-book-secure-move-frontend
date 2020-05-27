@@ -1,7 +1,5 @@
 import { Selector } from 'testcafe'
 
-import { FEATURE_FLAGS } from '../../config'
-
 import { createPersonFixture } from './_helpers'
 import { ocaUser, prisonUser } from './_roles'
 import { newMove } from './_routes'
@@ -57,13 +55,7 @@ test('With existing person', async t => {
   await page.submitForm()
 
   // Court information
-  // TODO: Remove this logic when we release the journey to all users
-  let courtHearings, courtInformation
-  if (FEATURE_FLAGS.PRISON_COURT_HEARINGS) {
-    courtHearings = await createMovePage.fillInCourtHearings()
-  } else {
-    courtInformation = await createMovePage.fillInCourtInformation()
-  }
+  const courtHearings = await createMovePage.fillInCourtHearings()
   await page.submitForm()
 
   // Risk information
@@ -88,11 +80,7 @@ test('With existing person', async t => {
   await moveDetailPage.checkPersonalDetails(personalDetails)
 
   // Check assessment
-  if (FEATURE_FLAGS.PRISON_COURT_HEARINGS) {
-    await moveDetailPage.checkCourtHearings(courtHearings)
-  } else {
-    await moveDetailPage.checkCourtInformation(courtInformation)
-  }
+  await moveDetailPage.checkCourtHearings(courtHearings)
   await moveDetailPage.checkRiskInformation(riskInformation)
   await moveDetailPage.checkHealthInformation(healthInformation)
 })
