@@ -7,15 +7,18 @@ function moveToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
+  showStatus = true,
   hrefSuffix = '',
 } = {}) {
   return function item({ id, reference, person = {}, status }) {
     const href = `/move/${id}${hrefSuffix}`
     const excludedBadgeStatuses = ['cancelled']
-    const statusBadge =
-      excludedBadgeStatuses.includes(status) || isCompact
-        ? undefined
-        : { text: i18n.t(`statuses::${status}`) }
+
+    const showStatusBadge =
+      showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
+    const statusBadge = showStatusBadge
+      ? { text: i18n.t(`statuses::${status}`) }
+      : undefined
     const personCardComponent = personToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
