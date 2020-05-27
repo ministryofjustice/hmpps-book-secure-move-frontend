@@ -127,9 +127,6 @@ module.exports = {
   },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
   FEATURE_FLAGS: {
-    // TODO: Remove once court hearings are fully released
-    PRISON_COURT_HEARINGS: process.env.FEATURE_FLAG_PRISON_COURT_HEARINGS,
-    PRISON_COURT_TIMETABLE: process.env.FEATURE_FLAG_PRISON_COURT_TIMETABLE,
     EDITABILITY: process.env.FEATURE_FLAG_EDITABILITY,
   },
   E2E: {
