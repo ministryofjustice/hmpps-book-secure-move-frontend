@@ -15,7 +15,7 @@ const {
 const personSearchStep = {
   controller: PersonSearch,
   buttonText: 'actions::search',
-  template: 'person-search',
+  template: '../person-search',
   pageTitle: 'moves::steps.person_search.heading',
   next: [
     {
@@ -83,7 +83,7 @@ module.exports = {
   '/person-lookup-results': {
     hideBackLink: true,
     controller: PersonSearchResults,
-    template: 'person-search-results',
+    template: '../person-search-results',
     pageTitle: 'moves::steps.person_search_results.heading',
     next: [
       {

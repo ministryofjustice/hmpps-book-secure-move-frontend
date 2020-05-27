@@ -1,7 +1,7 @@
 {
   "complete": "complete",
   "incomplete": "incomplete",
-  "total": "total",
+  "total": "total allocations",
   "confirmation": {
     "page_title": "Allocation requested",
     "detail": "The request for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}} has been sent",
@@ -21,7 +21,6 @@
     "criteria_for_allocation": "Criteria for allocation",
     "created_at": "Created {{datetime}}",
     "fields": {
-      "estate_type": "Estate type",
       "category": "Category",
       "complex_cases": "Complex cases for prisons to agree",
       "none_provided": "None provided",
@@ -49,8 +48,7 @@
     "sidebar": {
       "number_of_prisoners": "Number of people",
       "move_from": "Move from",
-      "move_to": "Move to",
-      "date": "Date"
+      "move_to": "Move to"
     }
   },
   "allocation_cancel_reasons": {

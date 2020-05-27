@@ -30,7 +30,7 @@ function allocationToSummaryListComponent(allocation) {
       },
       {
         key: {
-          text: i18n.t('allocations::view.sidebar.date'),
+          text: i18n.t('fields::date_custom.label'),
         },
         value: { text: filters.formatDateAsRelativeDay(date) },
       },

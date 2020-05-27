@@ -12,6 +12,7 @@ const assignSteps = {
   },
   '/person-lookup-prison-number': {
     ...create['/person-lookup-prison-number'],
+    pageTitle: 'moves::steps.person_search.heading_assign',
     controller: controllers.PersonSearch,
     next: 'person-lookup-results',
   },

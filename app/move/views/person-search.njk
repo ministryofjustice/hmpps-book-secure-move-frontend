@@ -2,7 +2,6 @@
 
 {% block fields %}
   {{ super() }}
-
   {% set detailsHTML %}
     {{ t("moves::steps.person_search.unknown_number", {
       context: values.from_location_type,
@@ -15,5 +14,3 @@
     html: detailsHTML
   }) }}
 {% endblock %}
-
-{% block contentSidebar %}{% endblock %}

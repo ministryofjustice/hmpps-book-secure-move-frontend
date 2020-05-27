@@ -1,8 +1,8 @@
 const MoveCreatePersonSearchResultsController = require('../../../move/controllers/create/person-search-results')
 
-const PersonAssignBase = require('./base')
+const AssignBaseController = require('./base')
 
-class PersonSearchResultsController extends PersonAssignBase {
+class PersonSearchResultsController extends AssignBaseController {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setPeople)
@@ -15,7 +15,7 @@ class PersonSearchResultsController extends PersonAssignBase {
   }
 }
 
-PersonAssignBase.mixin(
+AssignBaseController.mixin(
   PersonSearchResultsController,
   MoveCreatePersonSearchResultsController
 )

@@ -1,6 +1,9 @@
+const { pick } = require('lodash')
+
+const presenters = require('../../../../common/presenters')
 const CreateBaseController = require('../create/base')
 
-class CreateAllocationBaseController extends CreateBaseController {
+class AssignBaseController extends CreateBaseController {
   middlewareLocals() {
     this.use(this.setMove)
     CreateBaseController.prototype.middlewareLocals.apply(this)
@@ -10,6 +13,18 @@ class CreateAllocationBaseController extends CreateBaseController {
   setCancelUrl(req, res, next) {
     const allocationId = res.locals.move.allocation.id
     res.locals.cancelUrl = `/allocation/${allocationId}`
+    next()
+  }
+
+  setMoveSummary(req, res, next) {
+    const currentLocation = req.session.currentLocation
+    // TODO remove pick when the api return move_agreed as null
+    // unless of course further unwanted properties have been added in the meantime
+    const moveSubset = pick(res.locals.move, ['to_location', 'date'])
+    res.locals.moveSummary = presenters.moveToMetaListComponent({
+      ...moveSubset,
+      from_location: currentLocation,
+    })
     next()
   }
 
@@ -29,10 +44,7 @@ class CreateAllocationBaseController extends CreateBaseController {
   }
 }
 
-CreateAllocationBaseController.mixin = function mixin(
-  controller,
-  mixinController
-) {
+AssignBaseController.mixin = function mixin(controller, mixinController) {
   const controllerMethods = Object.getOwnPropertyNames(controller.prototype)
   Object.getOwnPropertyNames(mixinController.prototype)
     .filter(key => key !== 'prototype')
@@ -43,4 +55,4 @@ CreateAllocationBaseController.mixin = function mixin(
     })
 }
 
-module.exports = CreateAllocationBaseController
+module.exports = AssignBaseController

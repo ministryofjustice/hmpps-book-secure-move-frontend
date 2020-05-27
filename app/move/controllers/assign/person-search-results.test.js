@@ -84,7 +84,7 @@ describe('Assign controllers', function() {
       })
 
       it('should call correct number of middleware', function() {
-        expect(controller.use).to.be.callCount(2)
+        expect(controller.use).to.have.been.calledTwice
       })
     })
 
