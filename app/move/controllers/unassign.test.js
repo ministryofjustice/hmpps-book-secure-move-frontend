@@ -1,20 +1,8 @@
-const proxyquire = require('proxyquire')
-
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const allocationService = require('../../../common/services/allocation')
+const moveService = require('../../../common/services/move')
 
-const allocationGetByIdStub = sinon.stub()
-allocationGetByIdStub.resolves({ id: '__allocation__' })
-const moveUnassignStub = sinon.stub()
-moveUnassignStub.resolves({})
-
-const UnassignController = proxyquire('./unassign', {
-  '../../../common/services/allocation': {
-    getById: allocationGetByIdStub,
-  },
-  '../../../common/services/move': {
-    unassign: moveUnassignStub,
-  },
-})
+const UnassignController = require('./unassign')
 
 const controller = new UnassignController({ route: '/' })
 
@@ -34,13 +22,9 @@ describe('Move controllers', function() {
       })
 
       it('should call checkAllocation middleware', function() {
-        expect(controller.use.firstCall).to.have.been.calledWith(
+        expect(controller.use).to.have.been.calledOnceWithExactly(
           controller.checkAllocation
         )
-      })
-
-      it('should call correct number of middleware', function() {
-        expect(controller.use.callCount).to.equal(1)
       })
     })
 
@@ -151,28 +135,39 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         next = sinon.stub()
+        sinon.stub(allocationService, 'getById')
+        allocationService.getById.resolves({ id: '__allocation__' })
+        res = {
+          locals: {
+            move: {
+              id: '12345',
+              allocation: { id: '6789' },
+              person: { id: '__person__' },
+            },
+          },
+          redirect: sinon.stub(),
+        }
       })
 
-      context('with allocation and person', async function() {
+      context('When setting the move relationships', async function() {
         beforeEach(function() {
-          allocationGetByIdStub.resetHistory()
-
-          res = {
-            locals: {
-              move: {
-                id: '12345',
-                allocation: { id: '6789' },
-                person: { id: '__person__' },
-              },
-            },
-            redirect: sinon.stub(),
-          }
-
           controller.setMoveRelationships({}, res, next)
         })
 
         it('should fetch allocation', function() {
-          expect(allocationGetByIdStub).to.be.calledOnceWithExactly('6789')
+          expect(allocationService.getById).to.be.calledOnceWithExactly('6789')
+        })
+      })
+
+      context('When allocation service returns an error', async function() {
+        const error = new Error()
+        beforeEach(function() {
+          allocationService.getById.throws(error)
+          controller.setMoveRelationships({}, res, next)
+        })
+
+        it('should call next with the error', function() {
+          expect(next).to.be.calledOnceWithExactly(error)
         })
       })
     })
@@ -188,7 +183,8 @@ describe('Move controllers', function() {
       let next
 
       beforeEach(function() {
-        moveUnassignStub.resetHistory()
+        sinon.stub(moveService, 'unassign')
+        moveService.unassign.resolves({})
         sinon.stub(FormWizardController.prototype, 'saveValues')
         next = sinon.stub()
       })
@@ -199,7 +195,7 @@ describe('Move controllers', function() {
         })
 
         it('should remove person from move', function() {
-          expect(moveUnassignStub).to.be.calledOnceWithExactly('__move__')
+          expect(moveService.unassign).to.be.calledOnceWithExactly('__move__')
         })
 
         it('should call the super method', function() {
@@ -216,7 +212,7 @@ describe('Move controllers', function() {
       context('when the api returns an error', function() {
         const error = new Error()
         beforeEach(async function() {
-          moveUnassignStub.throws(error)
+          moveService.unassign.throws(error)
           await controller.saveValues(req, res, next)
         })
 
@@ -246,8 +242,10 @@ describe('Move controllers', function() {
         res = {
           redirect: sinon.stub(),
           locals: {
-            allocation: {
-              id: '__allocation__',
+            move: {
+              allocation: {
+                id: '__allocation__',
+              },
             },
           },
         }

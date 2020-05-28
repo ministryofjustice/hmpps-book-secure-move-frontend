@@ -1,5 +1,3 @@
-const { expect } = require('chai')
-
 const presenters = require('../../../common/presenters')
 
 const handler = require('./view')
