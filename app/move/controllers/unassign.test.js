@@ -103,7 +103,7 @@ describe('Move controllers', function() {
         })
       })
 
-      context('with allocation and person', async function() {
+      context('with allocation and person', function() {
         beforeEach(function() {
           res = {
             locals: {

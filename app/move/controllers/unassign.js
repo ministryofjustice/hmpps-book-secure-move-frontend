@@ -7,7 +7,7 @@ class UnassignController extends FormWizardController {
     super.middlewareChecks()
   }
 
-  async checkAllocation(req, res, next) {
+  checkAllocation(req, res, next) {
     const { move } = res.locals
 
     if (!move.allocation) {
