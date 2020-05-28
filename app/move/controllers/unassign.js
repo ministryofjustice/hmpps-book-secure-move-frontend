@@ -47,7 +47,7 @@ class UnassignController extends FormWizardController {
     }
   }
 
-  async successHandler(req, res, next) {
+  successHandler(req, res) {
     const { id: allocationId } = res.locals.allocation
 
     req.journeyModel.reset()
