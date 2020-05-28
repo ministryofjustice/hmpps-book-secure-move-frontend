@@ -4,15 +4,15 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 
 const allocationGetByIdStub = sinon.stub()
 allocationGetByIdStub.resolves({ id: '__allocation__' })
-const moveUpdateStub = sinon.stub()
-moveUpdateStub.resolves({})
+const moveUnassignStub = sinon.stub()
+moveUnassignStub.resolves({})
 
 const UnassignController = proxyquire('./unassign', {
   '../../../common/services/allocation': {
     getById: allocationGetByIdStub,
   },
   '../../../common/services/move': {
-    update: moveUpdateStub,
+    unassign: moveUnassignStub,
   },
 })
 
@@ -188,7 +188,7 @@ describe('Move controllers', function() {
       let next
 
       beforeEach(function() {
-        moveUpdateStub.resetHistory()
+        moveUnassignStub.resetHistory()
         sinon.stub(FormWizardController.prototype, 'saveValues')
         next = sinon.stub()
       })
@@ -199,14 +199,7 @@ describe('Move controllers', function() {
         })
 
         it('should remove person from move', function() {
-          expect(moveUpdateStub).to.be.calledOnceWithExactly({
-            id: '__move__',
-            person: {
-              id: null,
-            },
-            move_agreed: false,
-            move_agreed_by: '',
-          })
+          expect(moveUnassignStub).to.be.calledOnceWithExactly('__move__')
         })
 
         it('should call the super method', function() {
@@ -223,7 +216,7 @@ describe('Move controllers', function() {
       context('when the api returns an error', function() {
         const error = new Error()
         beforeEach(async function() {
-          moveUpdateStub.throws(error)
+          moveUnassignStub.throws(error)
           await controller.saveValues(req, res, next)
         })
 

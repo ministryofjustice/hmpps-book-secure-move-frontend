@@ -40,18 +40,11 @@ class UnassignController extends FormWizardController {
   async saveValues(req, res, next) {
     try {
       const { id } = res.locals.move
-      await moveService.update({
-        id,
-        person: {
-          id: null,
-        },
-        move_agreed: false,
-        move_agreed_by: '',
-      })
+      await moveService.unassign(id)
+      super.saveValues(req, res, next)
     } catch (err) {
-      return next(err)
+      next(err)
     }
-    super.saveValues(req, res, next)
   }
 
   async successHandler(req, res, next) {

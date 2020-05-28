@@ -892,6 +892,47 @@ describe('Move Service', function() {
     })
   })
 
+  describe('#unassign()', function() {
+    context('without move ID', function() {
+      it('should reject with error', function() {
+        return expect(moveService.unassign()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function() {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: {
+          ...mockMove,
+          person: null,
+        },
+      }
+
+      beforeEach(async function() {
+        sinon.stub(moveService, 'update').resolves(mockResponse)
+      })
+
+      context('without data args', function() {
+        beforeEach(async function() {
+          await moveService.unassign(mockId)
+        })
+
+        it('should call update method with data', function() {
+          expect(moveService.update).to.be.calledOnceWithExactly({
+            id: mockId,
+            person: {
+              id: null,
+            },
+            move_agreed: false,
+            move_agreed_by: '',
+          })
+        })
+      })
+    })
+  })
+
   describe('#redirect()', function() {
     const mockRedirect = {
       id: '#moveId',
