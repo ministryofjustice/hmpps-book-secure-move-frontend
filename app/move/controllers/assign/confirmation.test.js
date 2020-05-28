@@ -106,6 +106,18 @@ describe('Assign controllers', function() {
           expect(res.locals.assignNext).to.equal('5678')
         })
       })
+
+      describe('When allocation service returns an error', function() {
+        const error = new Error()
+        beforeEach(async function() {
+          allocationGetByIdStub.throws(error)
+          await controller.setAssignNext(req, res, next)
+        })
+
+        it('should call next with the error', function() {
+          expect(next).to.be.calledOnceWithExactly(error)
+        })
+      })
     })
   })
 })

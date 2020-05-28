@@ -9,16 +9,20 @@ class ConfirmationController extends PersonAssignBase {
   }
 
   async setAssignNext(req, res, next) {
-    const allocationId = res.locals.move.allocation.id
+    try {
+      const allocationId = res.locals.move.allocation.id
 
-    const allocation = await allocationService.getById(allocationId)
-    const unfilledMove =
-      allocation.moves.filter(
-        move => !move.person || move.person === null
-      )[0] || {}
+      const allocation = await allocationService.getById(allocationId)
+      const unfilledMove =
+        allocation.moves.filter(
+          move => !move.person || move.person === null
+        )[0] || {}
 
-    res.locals.assignNext = unfilledMove.id
-    next()
+      res.locals.assignNext = unfilledMove.id
+      next()
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
