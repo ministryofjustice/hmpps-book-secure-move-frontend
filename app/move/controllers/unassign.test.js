@@ -1,5 +1,4 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const allocationService = require('../../../common/services/allocation')
 const moveService = require('../../../common/services/move')
 
 const UnassignController = require('./unassign')
@@ -135,40 +134,29 @@ describe('Move controllers', function() {
 
       beforeEach(function() {
         next = sinon.stub()
-        sinon.stub(allocationService, 'getById')
-        allocationService.getById.resolves({ id: '__allocation__' })
         res = {
           locals: {
             move: {
               id: '12345',
-              allocation: { id: '6789' },
+              allocation: { id: '__allocation__' },
               person: { id: '__person__' },
             },
           },
           redirect: sinon.stub(),
         }
+        controller.setMoveRelationships({}, res, next)
       })
 
-      context('When setting the move relationships', async function() {
-        beforeEach(function() {
-          controller.setMoveRelationships({}, res, next)
-        })
-
-        it('should fetch allocation', function() {
-          expect(allocationService.getById).to.be.calledOnceWithExactly('6789')
-        })
+      it('should set allocation on locals', function() {
+        expect(res.locals.allocation).to.deep.equal({ id: '__allocation__' })
       })
 
-      context('When allocation service returns an error', async function() {
-        const error = new Error()
-        beforeEach(function() {
-          allocationService.getById.throws(error)
-          controller.setMoveRelationships({}, res, next)
-        })
+      it('should set person on locals', function() {
+        expect(res.locals.person).to.deep.equal({ id: '__person__' })
+      })
 
-        it('should call next with the error', function() {
-          expect(next).to.be.calledOnceWithExactly(error)
-        })
+      it('should call next', function() {
+        expect(next).to.be.calledOnceWithExactly()
       })
     })
 

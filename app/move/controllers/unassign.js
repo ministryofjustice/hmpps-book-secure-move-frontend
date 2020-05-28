@@ -1,5 +1,4 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const allocationService = require('../../../common/services/allocation')
 const moveService = require('../../../common/services/move')
 
 class UnassignController extends FormWizardController {
@@ -26,19 +25,12 @@ class UnassignController extends FormWizardController {
     this.use(this.setMoveRelationships)
   }
 
-  async setMoveRelationships(req, res, next) {
-    try {
-      const { move } = res.locals
+  setMoveRelationships(req, res, next) {
+    const { move } = res.locals
+    res.locals.person = move.person
+    res.locals.allocation = move.allocation
 
-      const allocation = await allocationService.getById(move.allocation.id)
-      res.locals.allocation = allocation
-
-      res.locals.person = move.person
-
-      next()
-    } catch (err) {
-      next(err)
-    }
+    next()
   }
 
   async saveValues(req, res, next) {
