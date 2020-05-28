@@ -1,3 +1,5 @@
+const { expect } = require('chai')
+
 const presenters = require('../../../common/presenters')
 
 const handler = require('./view')
@@ -118,9 +120,14 @@ describe('view allocation', function() {
     })
 
     it('calls render with the template', function() {
-      expect(mockRes.render).to.have.been.calledWithExactly(
+      expect(
+        JSON.parse(JSON.stringify(mockRes.render.getCall(0).args))
+      ).to.deep.equal([
         'allocation/views/view',
         {
+          dashboardUrl: '/allocations',
+          messageContent: 'allocations::statuses.description',
+          unassignedMoveId: '123',
           allocationDetails: {},
           allocationSummary: {},
           allocationPeople: {
@@ -128,26 +135,16 @@ describe('view allocation', function() {
             filledSlots: [
               {
                 id: '456',
-                person: {
-                  first_names: 'John',
-                  last_name: 'Doe',
-                },
+                person: { first_names: 'John', last_name: 'Doe' },
               },
               {
                 id: '011',
-                person: {
-                  first_names: 'Phil',
-                  last_name: 'Jones',
-                },
+                person: { first_names: 'Phil', last_name: 'Jones' },
               },
             ],
           },
-          unassignedMoveId: '123',
-          messageContent: 'allocations::statuses.description',
-          messageTitle: undefined,
-          dashboardUrl: '/allocations',
-        }
-      )
+        },
+      ])
     })
   })
 
@@ -169,6 +166,33 @@ describe('view allocation', function() {
     it('does create a message banner content', function() {
       expect(locals.messageContent).to.equal(
         'allocations::statuses.description'
+      )
+    })
+
+    it('calls render with the template', function() {
+      expect(mockRes.render).to.be.calledOnceWithExactly(
+        'allocation/views/view',
+        {
+          dashboardUrl: '/allocations',
+          messageTitle: 'allocations::statuses.cancelled',
+          messageContent: 'allocations::statuses.description',
+          unassignedMoveId: '123',
+          allocationDetails: {},
+          allocationSummary: {},
+          allocationPeople: {
+            emptySlots: 2,
+            filledSlots: [
+              {
+                id: '456',
+                person: { first_names: 'John', last_name: 'Doe' },
+              },
+              {
+                id: '011',
+                person: { first_names: 'Phil', last_name: 'Jones' },
+              },
+            ],
+          },
+        }
       )
     })
   })
