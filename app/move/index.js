@@ -21,6 +21,7 @@ const {
   cancel: cancelSteps,
   create: createSteps,
   review: reviewSteps,
+  unassign: unassignSteps,
   update: updateSteps,
 } = require('./steps')
 
@@ -106,6 +107,28 @@ if (FEATURE_FLAGS.EDITABILITY) {
     )
   })
 }
+
+// RESOLVE THESE PATHS PROPERLY
+const unassignConfig = {
+  ...wizardConfig,
+  controller: FormWizardController,
+  name: 'unassign-an-allocation',
+  templatePath: 'move/views/',
+  template: '../../../form-wizard',
+  journeyName: 'unassign-an-allocation',
+  journeyPageTitle: 'actions::cancel_allocation',
+}
+router.use(
+  '/:moveId/unassign',
+  protectRoute('allocation:person:assign'),
+  (req, res, next) => {
+    req.allocationId = req.params.allocationId
+    req.moveId = req.params.moveId
+    req.personId = req.params.personId
+    next()
+  },
+  wizard(unassignSteps, cancelFields, unassignConfig)
+)
 
 // Export
 module.exports = {

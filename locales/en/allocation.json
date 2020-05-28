@@ -10,5 +10,9 @@
     "heading": "You can’t add this person to an allocation",
     "content": "<p>As this person needs a special vehicle they cannot be part of this allocation.</p>\n<p>If you would still like to move this person you can create a single request for them to move to another prison.",
     "return_link_text": "Return to allocation"
+  },
+  "unassign": {
+    "page_title": "Remove person from allocation",
+    "detail": "Remove {{person.fullname}} from the allocation for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}}"
   }
 }
