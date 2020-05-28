@@ -4,7 +4,12 @@ module.exports = function view(req, res) {
   const { allocation } = res.locals
   const { moves } = allocation
   const bannerStatuses = ['cancelled']
+
   const movesWithoutPerson = moves.filter(move => !move.person)
+  const moveToCardComponent = presenters.moveToCardComponent({
+    showStatus: false,
+  })
+
   const locals = {
     dashboardUrl: '/allocations',
     /* eslint-disable indent */
@@ -22,7 +27,11 @@ module.exports = function view(req, res) {
       emptySlots: movesWithoutPerson.length,
       filledSlots: moves
         .filter(move => move.person)
-        .map(presenters.moveToCardComponent()),
+        .map(move => ({
+          id: move.id,
+          fullname: move.person.fullname,
+          card: moveToCardComponent(move),
+        })),
     },
   }
   res.render('allocation/views/view', locals)

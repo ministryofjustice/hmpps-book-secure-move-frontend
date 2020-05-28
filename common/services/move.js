@@ -190,6 +190,17 @@ const moveService = {
       })
   },
 
+  unassign(id) {
+    return moveService.update({
+      id,
+      person: {
+        id: null,
+      },
+      move_agreed: false,
+      move_agreed_by: '',
+    })
+  },
+
   cancel(id, { reason, comment } = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))

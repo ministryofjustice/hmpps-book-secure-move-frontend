@@ -84,7 +84,7 @@
     <section class="govuk-!-margin-top-8">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people_assign.heading") }}</h2>
     {% if allocationPeople.emptySlots %}
-    <p>You can’t add people who require a special vehicle to an allocation - you need to <a href="/move/new">create a single request</a> instead</p>
+    <p>{{ t("allocations::view.people_assign.special_vehicle_instruction", {href:"/move/new"}) | safe }}</p>
 
     <h3 class="govuk-heading-s">{{ t("allocations::view.people_assign.slots_empty", {
       slots_empty: allocationPeople.emptySlots,
@@ -98,7 +98,7 @@
       }) }}</p>
     {% endif %}
     {% if allocationPeople.filledSlots.length === 0 %}
-      {{ emptySlot('No prisoners added to allocation') }}
+      {{ emptySlot(t("allocations::view.people_assign.no_slots_filled")) }}
     {% endif %}
   </section>
   {% else %}
@@ -119,7 +119,20 @@
   {% endif %}
 
   {% for slot in allocationPeople.filledSlots %}
-    {{ appCard(slot) }}
+    <section class="app-!-position-relative">
+      {{ appCard(slot.card) }}
+      {# TODO: consider handling actions within card component #}
+      {# TODO: consider whether long names may cause overlap problems #}
+      {% if canAccess('allocation:person:assign') %}
+        <p class="app-!-position-top-right govuk-!-margin-top-3">
+          {{ govukButton({
+            href: '/move/' + slot.id + "/unassign",
+            html: t("allocations::view.person_unassign", {name: slot.fullname}),
+            classes: "govuk-button--secondary"
+          })}}
+        </p>
+      {% endif %}
+    </section>
   {% endfor %}
 
 
