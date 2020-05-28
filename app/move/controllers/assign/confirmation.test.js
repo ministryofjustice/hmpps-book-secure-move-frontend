@@ -34,7 +34,7 @@ describe('Assign controllers', function() {
 
       it('should call set assign next method', function() {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
-          controller.setAssignNext
+          controller.setUnassignedMove
         )
       })
 
@@ -43,7 +43,7 @@ describe('Assign controllers', function() {
       })
     })
 
-    describe('#setAssignNext()', function() {
+    describe('#setUnassignedMove()', function() {
       const move = { id: '__move__', allocation: { id: '__allocation__' } }
       const req = {}
       const res = {
@@ -59,7 +59,7 @@ describe('Assign controllers', function() {
 
       describe('When setting the next move to assign', function() {
         beforeEach(async function() {
-          await controller.setAssignNext(req, res, next)
+          await controller.setUnassignedMove(req, res, next)
         })
 
         it('should fetch the allocation the move is in', function() {
@@ -75,11 +75,11 @@ describe('Assign controllers', function() {
 
       describe('When no unfilled moves remain', function() {
         beforeEach(async function() {
-          await controller.setAssignNext(req, res, next)
+          await controller.setUnassignedMove(req, res, next)
         })
 
         it('should not set a move to assign next', function() {
-          expect(res.locals.assignNext).to.be.undefined
+          expect(res.locals.unassignedMoveId).to.be.undefined
         })
       })
 
@@ -99,11 +99,11 @@ describe('Assign controllers', function() {
               },
             ],
           })
-          await controller.setAssignNext(req, res, next)
+          await controller.setUnassignedMove(req, res, next)
         })
 
         it('should set a move to assign next', function() {
-          expect(res.locals.assignNext).to.equal('5678')
+          expect(res.locals.unassignedMoveId).to.equal('5678')
         })
       })
 
@@ -111,7 +111,7 @@ describe('Assign controllers', function() {
         const error = new Error()
         beforeEach(async function() {
           allocationGetByIdStub.throws(error)
-          await controller.setAssignNext(req, res, next)
+          await controller.setUnassignedMove(req, res, next)
         })
 
         it('should call next with the error', function() {

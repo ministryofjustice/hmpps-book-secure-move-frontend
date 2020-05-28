@@ -39,8 +39,8 @@
 
       <p>
         {{ t("allocation::confirmation.return_dashboard", {
-              context: "with_assign_next" if assignNext,
-              assignHref: '/move/' + assignNext + '/assign',
+              context: "with_assign_next" if unassignedMoveId,
+              assignHref: '/move/' + unassignedMoveId + '/assign',
               dashboardHref: '/allocations'
             }) | safe
         }}
