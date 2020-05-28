@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.27.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.26.0...v2.27.0) (2020-05-28)
+
+
+### Features
+
+* **allocations:** Display warning that move needs to be added to NOMIS ([ffe23e8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ffe23e8c7ac81c26a2fb0562b9d07194db4921ca))
+* **allocations:** Remove person from an allocation ([43246a1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/43246a11535a98c5570cc18b1b26069c4b08accd))
+
+
+### Bug Fixes
+
+* **allocations:** Ensure cancelled moves are returned correctly ([cdac308](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cdac3084311f96ff752a7721fd6906957ce3c2be))
+
 ## [2.26.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.25.0...v2.26.0) (2020-05-28)
 
 
