@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.26.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.25.0...v2.26.0) (2020-05-28)
+
+
+### Features
+
+* **allocations:** Add progress column to table display ([091a5ad](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/091a5ad796db85c10b6183735209fe67a7cc4f62))
+* Add banner to show status of move without a person ([d63b028](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d63b0284663bdc4e6f0a4105d89b7a539bfd184b))
+* **allocations:** Display cancelled allocations ([c2dd836](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c2dd83633722494abe2c0adf603c589975fb965e))
+
+
+### Bug Fixes
+
+* Ensure card without image doesn't have left margin ([65ee65f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/65ee65f22ff294aebce05533272619a6223cf388))
+* **allocations:** Ensure person is formatted correctly in allocations ([22b118b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/22b118b26a28aec8bf6f135cd1975647254f0ba6))
+* **allocations:** Prevent allocation moves being cancelled from the move ([301b754](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/301b754177332809737879d18533ca265ec31b86))
+* **allocations:** Unescape the heading of allocation view ([83c9528](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/83c9528dd103d44e93b3e0d90bcc77a8cbabc7ae))
+* **components:** Fix image size in card component ([03ac9a7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/03ac9a76153a816fe0c91255148f720e2a3cb529))
+* **moves:** Show placeholder card for moves without a person ([507dfd7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/507dfd7149b3aae336237c3bf195e8a325bcef1f))
+
 ## [2.25.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.24.1...v2.25.0) (2020-05-21)
 
 
