@@ -13,12 +13,13 @@ class ConfirmationController extends PersonAssignBase {
       const allocationId = res.locals.move.allocation.id
 
       const allocation = await allocationService.getById(allocationId)
-      const unassignedMove =
-        allocation.moves.filter(
-          move => !move.person || move.person === null
-        )[0] || {}
 
-      res.locals.unassignedMoveId = unassignedMove.id
+      const unassignedMoves = allocation.moves.filter(move => !move.person)
+      const unassignedMoveId = unassignedMoves.length
+        ? unassignedMoves[0].id
+        : undefined
+
+      res.locals.unassignedMoveId = unassignedMoveId
       next()
     } catch (err) {
       next(err)
