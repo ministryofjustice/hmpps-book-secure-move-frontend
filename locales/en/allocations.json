@@ -37,10 +37,13 @@
       "empty_slot": "Person to be allocated"
     },
     "people_assign": {
+      "special_vehicle_instruction": "You can’t add people who require a special vehicle to an allocation - you need to <a href=\"{{href}}\">create a single request</a> instead",
+      "no_slots_filled": "No prisoners added to allocation",
       "slots_empty": "{{slots_empty}} {{person_or_people}} to add",
       "heading": "People for allocation",
       "empty_slot": "Person to be allocated"
     },
+    "person_unassign": "Remove <span class=\"govuk-visually-hidden\">{{ name }}</span>",
     "cancel_allocation": "Cancel allocation",
     "allocation_details": "Allocation details",
     "sidebar": {
