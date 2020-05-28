@@ -33,6 +33,10 @@
         }) | safe }}
       </p>
 
+      {{ govukWarningText({
+        text: t("allocation::confirmation.saved_to_nomis")
+      }) }}
+
       <p>
         {{ t("allocation::confirmation.return_dashboard", {
               context: "with_assign_next" if assignNext,
