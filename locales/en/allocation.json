@@ -2,8 +2,11 @@
   "confirmation": {
     "page_title": "Person assigned",
     "detail": "The move for <a href=\"/move/{{move.id}}\">{{person.fullname}}</a> has been added to allocation for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}}",
+    "saved_to_nomis": "You need to add this move to NOMIS",
     "view_all": "View all allocations",
-    "view_by_from_location": "View {{from_location}} overview"
+    "view_by_from_location": "View {{from_location}} overview",
+    "return_dashboard": "<a href=\"{{dashboardHref}}\">Return to dashboard</a>",
+    "return_dashboard_with_assign_next": "<a href=\"{{assignHref}}\">Add another person to this allocation</a> or <a href=\"{{dashboardHref}}\">return to dashboard</a>"
   },
   "no_special_vehicle": {
     "page_title": "You can’t add this person to an allocation",
