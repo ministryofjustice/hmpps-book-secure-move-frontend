@@ -1,14 +1,7 @@
-const proxyquire = require('proxyquire')
+const allocationService = require('../../../../common/services/allocation')
 
 const AssignBaseController = require('./base')
-
-const allocationGetByIdStub = sinon.stub().resolves({ moves: [] })
-
-const ConfirmationController = proxyquire('./confirmation', {
-  '../../../../common/services/allocation': {
-    getById: allocationGetByIdStub,
-  },
-})
+const ConfirmationController = require('./confirmation')
 
 const controller = new ConfirmationController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
@@ -54,7 +47,8 @@ describe('Assign controllers', function() {
       let next
       beforeEach(function() {
         next = sinon.stub()
-        allocationGetByIdStub.resetHistory()
+        sinon.stub(allocationService, 'getById')
+        allocationService.getById.resolves({ moves: [] })
       })
 
       describe('When setting the next move to assign', function() {
@@ -63,7 +57,7 @@ describe('Assign controllers', function() {
         })
 
         it('should fetch the allocation the move is in', function() {
-          expect(allocationGetByIdStub).to.be.calledOnceWithExactly(
+          expect(allocationService.getById).to.be.calledOnceWithExactly(
             '__allocation__'
           )
         })
@@ -85,7 +79,7 @@ describe('Assign controllers', function() {
 
       describe('When unfilled moves remain', function() {
         beforeEach(async function() {
-          allocationGetByIdStub.resolves({
+          allocationService.getById.resolves({
             moves: [
               {
                 id: '1234',
@@ -110,7 +104,7 @@ describe('Assign controllers', function() {
       describe('When allocation service returns an error', function() {
         const error = new Error()
         beforeEach(async function() {
-          allocationGetByIdStub.throws(error)
+          allocationService.getById.throws(error)
           await controller.setUnassignedMove(req, res, next)
         })
 
