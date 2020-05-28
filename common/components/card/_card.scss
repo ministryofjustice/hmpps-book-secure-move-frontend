@@ -66,7 +66,9 @@ $_image-width: 80px;
 }
 
 .app-card__content {
-  margin-left: $_image-width + govuk-spacing(3);
+  .app-card--with-aside & {
+    margin-left: $_image-width + govuk-spacing(3);
+  }
 
   .app-card--placeholder & {
     background: govuk-colour("light-grey");
