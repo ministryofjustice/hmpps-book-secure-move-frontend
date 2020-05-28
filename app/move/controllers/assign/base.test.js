@@ -155,7 +155,7 @@ describe('Assign controllers', function() {
         expect(res.locals.person).to.equal('person')
       })
 
-      it('should set move on session model', function() {
+      it('should set move on session model with res.locals.move', function() {
         expect(req.sessionModel.set).to.be.calledWithExactly('move', moveFilled)
       })
 
@@ -179,8 +179,8 @@ describe('Assign controllers', function() {
         controller.setMove(req, res, nextSpy)
       })
 
-      it('should not set move object on session model', function() {
-        expect(req.sessionModel.set).to.not.be.called
+      it('should reset move object with the value in the session', function() {
+        expect(req.sessionModel.set).to.be.calledWithExactly('move', 'move')
       })
     })
   })

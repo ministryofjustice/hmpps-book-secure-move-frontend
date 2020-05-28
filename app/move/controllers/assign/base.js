@@ -14,16 +14,14 @@ class CreateAllocationBaseController extends CreateBaseController {
   }
 
   setMove(req, res, next) {
-    const { move } = res.locals
     const person = req.sessionModel.get('person')
-
-    if (!req.sessionModel.get('move')) {
-      req.sessionModel.set('move', move)
-    }
-
     res.locals.person = person
 
+    const move = req.sessionModel.get('move') || res.locals.move
+    req.sessionModel.set('move', move)
+
     // TODO: when req.getMove et al are removed these can be zapped
+    res.locals.move = move
     req.models.move = move
     req.models.person = person
 
