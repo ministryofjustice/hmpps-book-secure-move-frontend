@@ -309,6 +309,12 @@ describe('Allocation service', function() {
           expect(transformStub.callCount).to.equal(mockAllocations.length)
         })
 
+        it('should transform each person object not including cancelled', function() {
+          expect(allocationService.transform).to.be.calledOnceWithExactly({
+            includeCancelled: false,
+          })
+        })
+
         it('should return moves', function() {
           expect(moves).to.deep.equal(mockAllocations)
         })
@@ -355,6 +361,38 @@ describe('Allocation service', function() {
 
         it('should return a count', function() {
           expect(moves).to.equal(10)
+        })
+      })
+
+      context('with including cancelled moves', function() {
+        beforeEach(async function() {
+          moves = await allocationService.getAll({
+            includeCancelled: true,
+          })
+        })
+
+        it('should call the API client with default options', function() {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              page: 1,
+              per_page: 100,
+            }
+          )
+        })
+
+        it('should transform each person object', function() {
+          expect(transformStub.callCount).to.equal(mockAllocations.length)
+        })
+
+        it('should transform each person object and include cancelled', function() {
+          expect(allocationService.transform).to.be.calledOnceWithExactly({
+            includeCancelled: true,
+          })
+        })
+
+        it('should return moves', function() {
+          expect(moves).to.deep.equal(mockAllocations)
         })
       })
     })
@@ -474,6 +512,7 @@ describe('Allocation service', function() {
       it('should call getAll with default filter', function() {
         expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          includeCancelled: false,
           filter: {},
         })
       })
@@ -500,6 +539,7 @@ describe('Allocation service', function() {
         it('should call moves.getAll with correct args', function() {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
+            includeCancelled: false,
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
@@ -524,6 +564,7 @@ describe('Allocation service', function() {
         it('should call moves.getAll with correct args', function() {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
+            includeCancelled: false,
             filter: {
               'filter[from_locations]': mockFromLocationId,
             },
@@ -546,6 +587,30 @@ describe('Allocation service', function() {
         it('should call moves.getAll with correct args', function() {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
+            includeCancelled: false,
+            filter: {
+              'filter[from_locations]': mockFromLocationId,
+            },
+          })
+        })
+
+        it('should return results', function() {
+          expect(results).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with including cancelled moves', function() {
+        beforeEach(async function() {
+          results = await allocationService.getByDateAndLocation({
+            includeCancelled: true,
+            fromLocationId: mockFromLocationId,
+          })
+        })
+
+        it('should call moves.getAll with correct args', function() {
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
+            includeCancelled: true,
             filter: {
               'filter[from_locations]': mockFromLocationId,
             },
@@ -566,18 +631,17 @@ describe('Allocation service', function() {
         additionalParams: {},
       })
     })
-    afterEach(function() {
-      allocationService.getByDateAndLocation.restore()
-    })
+
     it('invokes getByDateAndLocation passing a proposed status', function() {
       expect(
         allocationService.getByDateAndLocation
       ).to.have.been.calledWithExactly({
         additionalParams: {},
-        status: ['filled', 'unfilled'],
+        status: 'filled,unfilled',
       })
     })
   })
+
   describe('#getCancelledAllocations', function() {
     beforeEach(function() {
       sinon.stub(allocationService, 'getByDateAndLocation')
@@ -585,14 +649,13 @@ describe('Allocation service', function() {
         additionalParams: {},
       })
     })
-    afterEach(function() {
-      allocationService.getByDateAndLocation.restore()
-    })
+
     it('invokes getByDateAndLocation passing a cancelled status', function() {
       expect(
         allocationService.getByDateAndLocation
       ).to.have.been.calledWithExactly({
         additionalParams: {},
+        includeCancelled: true,
         status: 'cancelled',
       })
     })

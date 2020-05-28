@@ -57,6 +57,7 @@ const allocationService = {
     moveDate = [],
     fromLocationId,
     toLocationId,
+    includeCancelled = false,
     isAggregation = false,
     status,
   } = {}) {
@@ -64,6 +65,7 @@ const allocationService = {
 
     return allocationService.getAll({
       isAggregation,
+      includeCancelled,
       filter: pickBy({
         'filter[status]': status,
         'filter[from_locations]': fromLocationId,
@@ -73,15 +75,16 @@ const allocationService = {
       }),
     })
   },
-  getActiveAllocations(allocationsParams) {
+  getActiveAllocations(args) {
     return allocationService.getByDateAndLocation({
-      ...allocationsParams,
-      status: ['filled', 'unfilled'],
+      ...args,
+      status: 'filled,unfilled',
     })
   },
-  getCancelledAllocations(allocationsParams) {
+  getCancelledAllocations(args) {
     return allocationService.getByDateAndLocation({
-      ...allocationsParams,
+      ...args,
+      includeCancelled: true,
       status: 'cancelled',
     })
   },
@@ -89,6 +92,7 @@ const allocationService = {
     filter = {},
     combinedData = [],
     page = 1,
+    includeCancelled = false,
     isAggregation = false,
   } = {}) {
     return apiClient
@@ -106,7 +110,7 @@ const allocationService = {
         }
 
         if (!links.next) {
-          return results.map(allocationService.transform())
+          return results.map(allocationService.transform({ includeCancelled }))
         }
 
         return allocationService.getAll({
