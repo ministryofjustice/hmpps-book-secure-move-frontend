@@ -108,7 +108,6 @@ if (FEATURE_FLAGS.EDITABILITY) {
   })
 }
 
-// RESOLVE THESE PATHS PROPERLY
 const unassignConfig = {
   ...wizardConfig,
   controller: FormWizardController,
@@ -121,12 +120,6 @@ const unassignConfig = {
 router.use(
   '/:moveId/unassign',
   protectRoute('allocation:person:assign'),
-  (req, res, next) => {
-    req.allocationId = req.params.allocationId
-    req.moveId = req.params.moveId
-    req.personId = req.params.personId
-    next()
-  },
   wizard(unassignSteps, cancelFields, unassignConfig)
 )
 
