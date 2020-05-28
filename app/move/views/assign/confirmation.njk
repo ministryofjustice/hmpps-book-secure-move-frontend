@@ -34,9 +34,9 @@
       </p>
 
       <p>
-      {% if addAnother %}
+      {% if assignNext %}
         {# TODO: Find way to get next empty move #}
-        <a href="{{ cancelUrl }}/assign">Add another person to this allocation</a> or
+        <a href="/move/{{ assignNext }}/assign">Add another person to this allocation</a> or
         <a href="/allocations">
         return to dashboard
         </a>
