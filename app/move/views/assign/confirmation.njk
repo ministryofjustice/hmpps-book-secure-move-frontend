@@ -34,17 +34,12 @@
       </p>
 
       <p>
-      {% if assignNext %}
-        {# TODO: Find way to get next empty move #}
-        <a href="/move/{{ assignNext }}/assign">Add another person to this allocation</a> or
-        <a href="/allocations">
-        return to dashboard
-        </a>
-      {% else %}
-        <a href="/allocations">
-          Return to dashboard
-        </a>
-      {% endif %}
+        {{ t("allocation::confirmation.return_dashboard", {
+              context: "with_assign_next" if assignNext,
+              assignHref: '/move/' + assignNext + '/assign',
+              dashboardHref: '/allocations'
+            }) | safe
+        }}
       </p>
     </div>
   </div>
