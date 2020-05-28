@@ -45,16 +45,23 @@ function _componentNameToMacroName(componentName) {
  * @param {string} componentName
  * @param {string} params parameters that are used in the component macro
  * @param {any} children any child components or text, pass the children to the macro
+ * @param {string} explicitMacroName Explicit macro name to use
  * @returns {function} returns cheerio (jQuery) instance of the macro for easy DOM querying
  */
-function renderComponentHtmlToCheerio(componentName, params, children = false) {
+function renderComponentHtmlToCheerio(
+  componentName,
+  params,
+  children = false,
+  explicitMacroName
+) {
   if (typeof params === 'undefined') {
     throw new Error(
       'Parameters passed to `render` should be an object but are undefined'
     )
   }
 
-  const macroName = _componentNameToMacroName(componentName)
+  const macroName =
+    explicitMacroName || _componentNameToMacroName(componentName)
   const macroParams = JSON.stringify(params, null, 2)
 
   let macroString = `{%- from "${componentName}/macro.njk" import ${macroName} -%}`
