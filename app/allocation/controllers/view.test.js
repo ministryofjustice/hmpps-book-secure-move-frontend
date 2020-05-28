@@ -49,6 +49,7 @@ describe('view allocation', function() {
         person: {
           first_names: 'John',
           last_name: 'Doe',
+          fullname: 'John Doe',
         },
       },
       { id: '789' },
@@ -57,6 +58,7 @@ describe('view allocation', function() {
         person: {
           first_names: 'Phil',
           last_name: 'Jones',
+          fullname: 'Phil Jones',
         },
       },
     ],
@@ -135,11 +137,27 @@ describe('view allocation', function() {
             filledSlots: [
               {
                 id: '456',
-                person: { first_names: 'John', last_name: 'Doe' },
+                fullname: 'John Doe',
+                card: {
+                  id: '456',
+                  person: {
+                    first_names: 'John',
+                    last_name: 'Doe',
+                    fullname: 'John Doe',
+                  },
+                },
               },
               {
                 id: '011',
-                person: { first_names: 'Phil', last_name: 'Jones' },
+                fullname: 'Phil Jones',
+                card: {
+                  id: '011',
+                  person: {
+                    first_names: 'Phil',
+                    last_name: 'Jones',
+                    fullname: 'Phil Jones',
+                  },
+                },
               },
             ],
           },
@@ -184,11 +202,27 @@ describe('view allocation', function() {
             filledSlots: [
               {
                 id: '456',
-                person: { first_names: 'John', last_name: 'Doe' },
+                fullname: 'John Doe',
+                card: {
+                  id: '456',
+                  person: {
+                    first_names: 'John',
+                    last_name: 'Doe',
+                    fullname: 'John Doe',
+                  },
+                },
               },
               {
                 id: '011',
-                person: { first_names: 'Phil', last_name: 'Jones' },
+                fullname: 'Phil Jones',
+                card: {
+                  id: '011',
+                  person: {
+                    first_names: 'Phil',
+                    last_name: 'Jones',
+                    fullname: 'Phil Jones',
+                  },
+                },
               },
             ],
           },

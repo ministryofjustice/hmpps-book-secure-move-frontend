@@ -27,7 +27,11 @@ module.exports = function view(req, res) {
       emptySlots: movesWithoutPerson.length,
       filledSlots: moves
         .filter(move => move.person)
-        .map(move => ({ ...move, ...moveToCardComponent(move) })),
+        .map(move => ({
+          id: move.id,
+          fullname: move.person.fullname,
+          card: moveToCardComponent(move),
+        })),
     },
   }
   res.render('allocation/views/view', locals)

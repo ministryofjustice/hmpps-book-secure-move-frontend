@@ -119,18 +119,20 @@
   {% endif %}
 
   {% for slot in allocationPeople.filledSlots %}
-  <section class="app-!-position-relative">
-    {{ appCard(slot) }}
-    {% if canAccess('allocation:person:assign') %}
-      <p class="app-!-position-top-right govuk-!-margin-top-3">
-        {{ govukButton({
-          href: '/move/' + slot.id + "/unassign",
-          html: t("allocations::view.person_unassign", {name: slot.person.fullname}),
-          classes: "govuk-button--secondary"
-        })}}
-      </p>
-    {% endif %}
-  </section>
+    <section class="app-!-position-relative">
+      {{ appCard(slot.card) }}
+      {# TODO: consider handling actions within card component #}
+      {# TODO: consider whether long names may cause overlap problems #}
+      {% if canAccess('allocation:person:assign') %}
+        <p class="app-!-position-top-right govuk-!-margin-top-3">
+          {{ govukButton({
+            href: '/move/' + slot.id + "/unassign",
+            html: t("allocations::view.person_unassign", {name: slot.fullname}),
+            classes: "govuk-button--secondary"
+          })}}
+        </p>
+      {% endif %}
+    </section>
   {% endfor %}
 
 
