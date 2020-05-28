@@ -3,9 +3,9 @@ const allocationService = require('../../../common/services/allocation')
 const moveService = require('../../../common/services/move')
 
 class UnassignController extends FormWizardController {
-  middlewareLocals() {
+  middlewareChecks() {
     this.use(this.checkAllocation)
-    super.middlewareLocals()
+    super.middlewareChecks()
   }
 
   async checkAllocation(req, res, next) {
@@ -17,6 +17,17 @@ class UnassignController extends FormWizardController {
     if (!move.person) {
       return res.redirect(`/allocation/${move.allocation.id}`)
     }
+
+    next()
+  }
+
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setMoveRelationships)
+  }
+
+  async setMoveRelationships(req, res, next) {
+    const { move } = res.locals
 
     const allocation = await allocationService.getById(move.allocation.id)
     res.locals.allocation = allocation

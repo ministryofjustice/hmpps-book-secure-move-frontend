@@ -20,6 +20,30 @@ const controller = new UnassignController({ route: '/' })
 
 describe('Move controllers', function() {
   describe('Unassign controller', function() {
+    describe('#middlewareChecks()', function() {
+      beforeEach(function() {
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function() {
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call checkAllocation middleware', function() {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.checkAllocation
+        )
+      })
+
+      it('should call correct number of middleware', function() {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
     describe('#middlewareLocals()', function() {
       beforeEach(function() {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
@@ -33,9 +57,9 @@ describe('Move controllers', function() {
           .calledOnce
       })
 
-      it('should call checkAllocation middleware', function() {
+      it('should call setMoveRelationships middleware', function() {
         expect(controller.use.firstCall).to.have.been.calledWith(
-          controller.checkAllocation
+          controller.setMoveRelationships
         )
       })
 
@@ -98,8 +122,6 @@ describe('Move controllers', function() {
 
       context('with allocation and person', async function() {
         beforeEach(function() {
-          allocationGetByIdStub.resetHistory()
-
           res = {
             locals: {
               move: {
@@ -118,12 +140,39 @@ describe('Move controllers', function() {
           expect(res.redirect).to.not.be.called
         })
 
-        it('should fetch allocation', function() {
-          expect(allocationGetByIdStub).to.be.calledOnceWithExactly('6789')
+        it('should call next', function() {
+          expect(next).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setMoveRelationships()', function() {
+      let res, next
+
+      beforeEach(function() {
+        next = sinon.stub()
+      })
+
+      context('with allocation and person', async function() {
+        beforeEach(function() {
+          allocationGetByIdStub.resetHistory()
+
+          res = {
+            locals: {
+              move: {
+                id: '12345',
+                allocation: { id: '6789' },
+                person: { id: '__person__' },
+              },
+            },
+            redirect: sinon.stub(),
+          }
+
+          controller.setMoveRelationships({}, res, next)
         })
 
-        it('should call next', function() {
-          expect(next).to.not.be.calledOnceWithExactly()
+        it('should fetch allocation', function() {
+          expect(allocationGetByIdStub).to.be.calledOnceWithExactly('6789')
         })
       })
     })
