@@ -182,9 +182,8 @@ const moveService = {
     const timestamp = dateFunctions.formatISO(new Date())
     return apiClient
       .one('move', data.id)
-      .all('event')
+      .all('redirect')
       .post({
-        event_name: 'redirect',
         timestamp,
         ...data,
       })

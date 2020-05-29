@@ -13,6 +13,19 @@ test/fixtures/api-client/{model name (snakecase)}/{devour method (camelcase)}.js
 
 The one purpose of this is to ensure the models are defined correctly.
 
+## Empty responses
+
+Fixtures for methods that return `204` and an empty body should look like so:
+
+```json
+{
+  "response": ""
+}
+```
+
+
+## Nested models
+
 In the case of a nested model such as posting a move event:
 
 ```js
@@ -33,6 +46,7 @@ event: [
     method: 'create',
     httpMock: 'post',
     args: {},
+    statusCode: 200,
   },
 ]
 ```

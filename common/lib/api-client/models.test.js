@@ -25,10 +25,12 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   person: [
@@ -36,6 +38,7 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 200,
     },
   ],
   image: [
@@ -44,6 +47,7 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   court_case: [
@@ -52,10 +56,12 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   court_hearing: [
@@ -63,67 +69,78 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 200,
     },
   ],
   timetable_entry: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   gender: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   ethnicity: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   assessment_question: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   location: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
     {
       method: 'find',
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   supplier: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
     {
       method: 'find',
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   allocation: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
-  event: [
+  redirect: [
     {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 204,
     },
   ],
 }
@@ -136,33 +153,57 @@ const client = proxyquire('./', {
   },
 })()
 
+const getResponse = ({ modelName, model, testCase } = {}) => {
+  const { statusCode = 200 } = testCase
+  const apiPath = get(model, 'options.collectionPath') || pluralize(modelName)
+  const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
+
+  const nockedResponse =
+    fixture.response !== undefined ? fixture.response : fixture
+
+  nock(mockConfig.API.BASE_URL)
+    .intercept(`/${apiPath}${testCase.mockPath || ''}`, testCase.httpMock)
+    .reply(statusCode, nockedResponse)
+
+  return client[testCase.method](modelName, testCase.args)
+}
+
 describe('API client models', function() {
   forEach(models, (model, modelName) => {
     describe(`${startCase(modelName)} model`, function() {
       forEach(testCases[modelName], testCase => {
-        describe(`#${testCase.method}()`, function() {
-          beforeEach(function() {
-            const apiPath =
-              get(model, 'options.collectionPath') || pluralize(modelName)
-            const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
+        describe(`#${testCase.method}() with 200 response`, function() {
+          if (testCase.statusCode !== 200) {
+            return
+          }
 
-            nock(mockConfig.API.BASE_URL)
-              .intercept(
-                `/${apiPath}${testCase.mockPath || ''}`,
-                testCase.httpMock
-              )
-              .reply(200, fixture)
+          let response
+
+          beforeEach(async function() {
+            response = await getResponse({ modelName, model, testCase })
           })
 
           it('should contain correct attributes', async function() {
-            const response = await client[testCase.method](
-              modelName,
-              testCase.args
-            )
-
             flatten([response.data]).forEach(item =>
               checkProperties(item, model.attributes)
             )
+          })
+        })
+      })
+      forEach(testCases[modelName], testCase => {
+        describe(`#${testCase.method}() with 204 response`, function() {
+          if (testCase.statusCode !== 204) {
+            return
+          }
+
+          let response
+
+          beforeEach(async function() {
+            response = await getResponse({ modelName, model, testCase })
+          })
+
+          it('should return no data', async function() {
+            expect(response.data).to.be.null
           })
         })
       })

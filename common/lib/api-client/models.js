@@ -39,10 +39,6 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'court_hearings',
       },
-      events: {
-        jsonApi: 'hasMany',
-        type: 'events',
-      },
       allocation: {
         jsonApi: 'hasOne',
         type: 'allocations',
@@ -244,9 +240,8 @@ module.exports = {
       collectionPath: 'reference/allocation_complex_cases',
     },
   },
-  event: {
+  redirect: {
     attributes: {
-      event_name: '',
       timestamp: '',
       notes: '',
       to_location: {
