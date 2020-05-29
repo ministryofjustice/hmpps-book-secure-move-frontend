@@ -38,7 +38,7 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
-      statusCode: 200,
+      statusCode: 201,
     },
   ],
   image: [
@@ -69,7 +69,7 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
-      statusCode: 200,
+      statusCode: 201,
     },
   ],
   timetable_entry: [
@@ -154,7 +154,8 @@ const client = proxyquire('./', {
 })()
 
 const getResponse = ({ modelName, model, testCase } = {}) => {
-  const { statusCode = 200 } = testCase
+  const { statusCode } = testCase
+
   const apiPath = get(model, 'options.collectionPath') || pluralize(modelName)
   const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
 
@@ -168,45 +169,58 @@ const getResponse = ({ modelName, model, testCase } = {}) => {
   return client[testCase.method](modelName, testCase.args)
 }
 
+const getStatusMethods = (modelName, statusCode) => {
+  const testCaseMethods = (testCases[modelName] || []).filter(
+    method => method.statusCode === statusCode
+  )
+  return testCaseMethods
+}
+
+const expectProperties = ({ model, response }) => {
+  flatten([response.data]).forEach(item =>
+    checkProperties(item, model.attributes)
+  )
+}
+
+const expectNoData = ({ response }) => {
+  expect(response.data).to.be.null
+}
+
 describe('API client models', function() {
   forEach(models, (model, modelName) => {
     describe(`${startCase(modelName)} model`, function() {
-      forEach(testCases[modelName], testCase => {
-        describe(`#${testCase.method}() with 200 response`, function() {
-          if (testCase.statusCode !== 200) {
-            return
-          }
+      // ensure all methods have a statusCode defined
+      const noStatusMethods = getStatusMethods(modelName, undefined)
+      if (noStatusMethods[0]) {
+        throw new Error(
+          `${modelName}.${noStatusMethods[0].method} has no statusCode`
+        )
+      }
+      const runStatusMethodTests = (
+        statusCode,
+        expectFn = expectProperties,
+        expectStr = 'should contain correct attributes'
+      ) => {
+        describe(`${statusCode} status code`, function() {
+          forEach(getStatusMethods(modelName, statusCode), testCase => {
+            describe(`#${testCase.method}()`, function() {
+              let response
 
-          let response
+              beforeEach(async function() {
+                response = await getResponse({ modelName, model, testCase })
+              })
 
-          beforeEach(async function() {
-            response = await getResponse({ modelName, model, testCase })
-          })
-
-          it('should contain correct attributes', async function() {
-            flatten([response.data]).forEach(item =>
-              checkProperties(item, model.attributes)
-            )
-          })
-        })
-      })
-      forEach(testCases[modelName], testCase => {
-        describe(`#${testCase.method}() with 204 response`, function() {
-          if (testCase.statusCode !== 204) {
-            return
-          }
-
-          let response
-
-          beforeEach(async function() {
-            response = await getResponse({ modelName, model, testCase })
-          })
-
-          it('should return no data', async function() {
-            expect(response.data).to.be.null
+              it(expectStr, function() {
+                expectFn({ model, response })
+              })
+            })
           })
         })
-      })
+      }
+
+      runStatusMethodTests(200)
+      runStatusMethodTests(201)
+      runStatusMethodTests(204, expectNoData, 'should return no data')
     })
   })
 })
