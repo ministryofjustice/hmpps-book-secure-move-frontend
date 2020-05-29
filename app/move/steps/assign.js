@@ -23,6 +23,7 @@ const assignSteps = {
   '/agreement-status': {
     ...create['/agreement-status'],
     controller: controllers.AgreementStatus,
+    fields: ['move_agreed', 'move_agreed_by', 'move_not_agreed_instruction'],
     next: 'release-status',
   },
   '/release-status': {

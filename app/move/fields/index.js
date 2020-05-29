@@ -24,7 +24,9 @@ const hasCourtCase = require('./has-court-case')
 const hasDateTo = require('./has-date-to')
 const lastName = require('./last-name')
 const moveAgreed = require('./move-agreed')
+const moveAgreedAssign = require('./move-agreed-assign')
 const moveAgreedBy = require('./move-agreed-by')
+const moveNotAgreedInstruction = require('./move-not-agreed-instruction')
 const moveType = require('./move-type')
 const people = require('./people')
 const policeNationalComputer = require('./police-national-computer')
@@ -41,6 +43,7 @@ const cancelFields = {
   cancellation_reason: cancellationReason,
   cancellation_reason_comment: cancellationReasonComment,
 }
+
 const createFields = {
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
@@ -104,12 +107,16 @@ const createFields = {
   wheelchair: assessmentAnswer(),
   violent: assessmentAnswer(),
 }
+
 const updateFields = {
   ...cloneDeep(createFields),
   police_national_computer: policeNationalComputerUpdate,
 }
+
 const assignFields = {
   ...cloneDeep(createFields),
+  move_agreed: moveAgreedAssign,
+  move_not_agreed_instruction: moveNotAgreedInstruction,
   special_vehicle_check: specialVehicleCheck,
 }
 
