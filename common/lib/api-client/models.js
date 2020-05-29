@@ -240,6 +240,17 @@ module.exports = {
       collectionPath: 'reference/allocation_complex_cases',
     },
   },
+  event: {
+    attributes: {
+      event_name: '',
+      timestamp: '',
+      notes: '',
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+    },
+  },
   redirect: {
     attributes: {
       timestamp: '',

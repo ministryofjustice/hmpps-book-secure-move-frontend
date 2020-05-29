@@ -135,6 +135,14 @@ const testCases = {
       statusCode: 200,
     },
   ],
+  event: [
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+      statusCode: 201,
+    },
+  ],
   redirect: [
     {
       method: 'create',

@@ -1,0 +1,18 @@
+{
+  "data": {
+    "id": "a1e3ac02-2284-4d58-8f74-0ca55d2c2ea2",
+    "type": "events",
+    "attributes": {
+      "event_name": "redirect",
+      "timestamp": "2020-05-01T11:33:00+01:00",
+      "notes": "requested by Alex",
+      "cancel_reason": ""
+    },
+    "relationships": {
+      "to_location": {
+        "data": null
+      }
+    }
+  },
+  "included": []
+}
