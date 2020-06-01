@@ -125,6 +125,10 @@ const person = [
     value: getIdentifier('police_national_computer'),
   },
   {
+    label: 'fields::prison_number.label',
+    value: getIdentifier('prison_number'),
+  },
+  {
     label: 'fields::last_name.label',
     value: 'person.last_name',
   },
