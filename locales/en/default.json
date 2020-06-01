@@ -18,6 +18,8 @@
   "opens_new_window": "Opens in a new window",
   "created_on": "Created on",
   "awaiting_person": "Person to be added",
+  "sort_ascending": "Sort {{label}} ascending",
+  "sort_descending": "Sort {{label}} descending",
   "primary_navigation": {
     "home": "Home",
     "outgoing": "Outgoing",

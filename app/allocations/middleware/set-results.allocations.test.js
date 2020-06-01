@@ -38,6 +38,9 @@ describe('Allocations middleware', function() {
       res = {}
       req = {
         session: {},
+        query: {
+          status: 'approved',
+        },
         body: {
           allocations: {
             status: 'proposed',
@@ -103,6 +106,7 @@ describe('Allocations middleware', function() {
           expect(
             presenters.allocationsToTableComponent
           ).to.be.calledWithExactly({
+            query: { status: 'approved' },
             showRemaining: false,
             showFromLocation: true,
           })
@@ -137,6 +141,7 @@ describe('Allocations middleware', function() {
           expect(
             presenters.allocationsToTableComponent
           ).to.be.calledWithExactly({
+            query: { status: 'approved' },
             showRemaining: false,
             showFromLocation: false,
           })
@@ -157,6 +162,7 @@ describe('Allocations middleware', function() {
             expect(
               presenters.allocationsToTableComponent
             ).to.be.calledWithExactly({
+              query: { status: 'approved' },
               showRemaining: true,
               showFromLocation: true,
             })

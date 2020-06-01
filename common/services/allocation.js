@@ -62,6 +62,8 @@ const allocationService = {
     includeCancelled = false,
     isAggregation = false,
     status,
+    sortBy,
+    sortDirection,
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
 
@@ -74,6 +76,8 @@ const allocationService = {
         'filter[to_locations]': toLocationId,
         'filter[date_from]': moveDateFrom,
         'filter[date_to]': moveDateTo,
+        'sort[by]': sortBy,
+        'sort[direction]': sortDirection,
       }),
     })
   },

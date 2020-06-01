@@ -1,0 +1,69 @@
+.sortable-table__button {
+  display: inline-block;
+}
+
+[aria-sort] .sortable-table__button,
+[aria-sort] .sortable-table__button:hover {
+  background-color: transparent;
+  border-width: 0;
+  -webkit-box-shadow: 0 0 0 0;
+  -moz-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
+  color: #005ea5;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  position: relative;
+  text-align: inherit;
+  font-size: 1em;
+  margin: 0;
+}
+
+[aria-sort] .sortable-table__button:focus {
+  background-color: $govuk-focus-colour;
+  color: $govuk-focus-text-colour;
+  box-shadow: 0 -2px $govuk-focus-colour, 0 4px $govuk-focus-text-colour;
+  outline: none;
+}
+
+[aria-sort]:first-child .sortable-table__button {
+  right: auto;
+}
+
+[aria-sort] .sortable-table__button:before {
+  content: " \25bc";
+  position: absolute;
+  right: -20px;
+  top: 12px;
+  font-size: 0.5em;
+}
+
+[aria-sort] .sortable-table__button:after {
+  content: " \25b2";
+  position: absolute;
+  right: -20px;
+  top: 4px;
+  font-size: 0.5em;
+}
+
+[aria-sort="ascending"] .sortable-table__button:before,
+[aria-sort="descending"] .sortable-table__button:before {
+  content: none;
+}
+
+[aria-sort="ascending"] .sortable-table__button:after {
+  content: " \25b2";
+  font-size: .8em;
+  position: absolute;
+  right: -22px;
+  top: 4px;
+}
+
+[aria-sort="descending"] .sortable-table__button:after {
+  content: " \25bc";
+  font-size: .8em;
+  position: absolute;
+  right: -22px;
+  top: 4px;
+}
