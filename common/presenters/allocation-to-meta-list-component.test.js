@@ -49,21 +49,10 @@ describe('allocation to meta list component', function() {
   it('outputs an array', function() {
     expect(output.rows).to.exist
     expect(output.rows).to.be.an('array')
-    expect(output.rows.length).to.equal(5)
+    expect(output.rows.length).to.equal(4)
   })
-  it('has the estate type as first item', function() {
+  it('has the prisoner category as first item', function() {
     expect(output.rows[0]).to.deep.equal({
-      key: {
-        text: 'allocations::view.fields.estate_type',
-      },
-      value: {
-        text: 'prison',
-      },
-    })
-    expect(filters.startCase).to.have.been.calledWithExactly('prison')
-  })
-  it('has the prisoner category as second item', function() {
-    expect(output.rows[1]).to.deep.equal({
       key: {
         text: 'allocations::view.fields.category',
       },
@@ -73,8 +62,8 @@ describe('allocation to meta list component', function() {
     })
     expect(filters.startCase).to.have.been.calledWithExactly('c')
   })
-  it('has the sentence length as third item', function() {
-    expect(output.rows[2]).to.deep.equal({
+  it('has the sentence length as second item', function() {
+    expect(output.rows[1]).to.deep.equal({
       key: {
         text: 'allocations::view.fields.sentence_length.label',
       },
@@ -87,8 +76,8 @@ describe('allocation to meta list component', function() {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the complex cases as fourth item, filtering those whose answer is false', function() {
-    expect(output.rows[3]).to.deep.equal({
+  it('has the complex cases as third item, filtering those whose answer is false', function() {
+    expect(output.rows[2]).to.deep.equal({
       key: {
         text: 'allocations::view.fields.complex_cases',
       },
@@ -101,8 +90,8 @@ describe('allocation to meta list component', function() {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the other criteria as fifth item', function() {
-    expect(output.rows[4]).to.deep.equal({
+  it('has the other criteria as fourth item', function() {
+    expect(output.rows[3]).to.deep.equal({
       key: {
         text: 'allocations::view.fields.other_criteria',
       },

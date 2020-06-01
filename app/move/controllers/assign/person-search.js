@@ -1,9 +1,12 @@
 const MoveCreatePersonSearchController = require('../../../move/controllers/create/person-search')
 
-const PersonAssignBase = require('./base')
+const AssignBaseController = require('./base')
 
-class PersonSearchController extends PersonAssignBase {}
+class PersonSearchController extends AssignBaseController {}
 
-PersonAssignBase.mixin(PersonSearchController, MoveCreatePersonSearchController)
+AssignBaseController.mixin(
+  PersonSearchController,
+  MoveCreatePersonSearchController
+)
 
 module.exports = PersonSearchController

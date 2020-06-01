@@ -3,7 +3,6 @@ const filters = require('../../config/nunjucks/filters')
 
 function allocationToMetaListComponent(allocation) {
   const {
-    to_location: toLocation,
     prisoner_category: prisonerCategory,
     complex_cases: complexCases,
     other_criteria: otherCriteria,
@@ -11,15 +10,6 @@ function allocationToMetaListComponent(allocation) {
   } = allocation
   return {
     rows: [
-      {
-        key: {
-          text: i18n.t('allocations::view.fields.estate_type'),
-        },
-        value: {
-          // TODO replace with region when we have it
-          text: filters.startCase(toLocation.location_type),
-        },
-      },
       {
         key: {
           text: i18n.t('allocations::view.fields.category'),

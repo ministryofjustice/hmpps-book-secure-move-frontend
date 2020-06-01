@@ -5,6 +5,7 @@
   "steps": {
     "person_search": {
       "heading": "Who is being moved?",
+      "heading_assign": "Who do you want to add to this allocation?",
       "no_number": "I don’t have this number",
       "unknown_number": "<p>Book a secure move uses the PNC number to ensure moves are linked to the correct person.</p><p>If you don’t have this number you can <a href=\"{{href}}\">move a person without a PNC number</a>.</p>",
       "unknown_number_prison": "<p>Book a secure move uses the prison number to ensures moves are linked to the correct person.</p><p>Ensure the person you are looking for is in NOMIS.</p>"

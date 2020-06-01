@@ -83,7 +83,7 @@ describe('allocation to meta list component', function() {
   it('has the date as fourth item', function() {
     expect(output.items[3]).to.deep.equal({
       key: {
-        text: 'allocations::view.sidebar.date',
+        text: 'fields::date_custom.label',
       },
       value: {
         text: '2020-05-06',

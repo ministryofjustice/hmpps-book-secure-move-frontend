@@ -87,12 +87,12 @@
 {% endblock %}
 
 {% block contentSidebar %}
-  {% if person %}
+  {% if person.id or move.id %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
         {% block summaryPanelContent %}
           <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-            {{ person.fullname | upper }}
+            {{ person.fullname | upper or t("awaiting_person") }}
           </h3>
 
           {% if person.image_url %}

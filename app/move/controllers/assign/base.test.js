@@ -1,4 +1,6 @@
+const presenters = require('../../../../common/presenters')
 const CreateBaseController = require('../../../move/controllers/create/base')
+
 const BaseProto = CreateBaseController.prototype
 
 const UpdateBaseController = require('./base')
@@ -32,10 +34,42 @@ describe('Assign controllers', function() {
     })
 
     describe('#setMoveSummary()', function() {
-      it('should inherit setMoveSummary from CreateBaseController', function() {
-        expect(controller.setMoveSummary).to.exist.and.equal(
-          BaseProto.setMoveSummary
+      let locals
+      let next
+      beforeEach(function() {
+        next = sinon.stub()
+        sinon
+          .stub(presenters, 'moveToMetaListComponent')
+          .returns({ summary: {} })
+        locals = {
+          move: {
+            to_location: 'b',
+            other_prop: 'c',
+          },
+        }
+        controller.setMoveSummary(
+          {
+            session: {
+              currentLocation: 'a',
+            },
+          },
+          {
+            locals,
+          },
+          next
         )
+      })
+      it('creates moveSummary on the locals', function() {
+        expect(locals.moveSummary).to.exist
+        expect(locals.moveSummary).to.deep.equal({ summary: {} })
+      })
+      it('invokes moveToMetaListComponent with a subset of properties', function() {
+        expect(
+          presenters.moveToMetaListComponent
+        ).to.have.been.calledWithExactly({
+          from_location: 'a',
+          to_location: 'b',
+        })
       })
     })
 
@@ -81,7 +115,7 @@ describe('Assign controllers', function() {
     })
 
     it('should call correct number of additional middleware', function() {
-      expect(controller.use).to.be.callCount(2)
+      expect(controller.use).to.have.been.calledTwice
     })
   })
 
