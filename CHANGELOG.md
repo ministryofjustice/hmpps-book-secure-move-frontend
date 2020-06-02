@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.28.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.27.0...v2.28.0) (2020-06-02)
+
+
+### Features
+
+* **allocations:** Display info when no agreement for allocation move ([e779728](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e779728eb3cb89cc756e729588da096315f9e9ab))
+* **downloads:** Add prison number column to csv downloads ([214e91c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/214e91ccc8bea30fde92cb52ab3bacdc41d644ca))
+
+
+### Bug Fixes
+
+* Update logo fallback image to use revisioned asset ([e0d2f2f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e0d2f2fc64286c6fc866eea80a6a14c4df230926))
+* **allocations:** Added sidebar to assign journey, plus minor tweaks ([acf0891](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/acf0891e805d516d5630a36981db73295d446929))
+
 ## [2.27.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.26.0...v2.27.0) (2020-05-28)
 
 
