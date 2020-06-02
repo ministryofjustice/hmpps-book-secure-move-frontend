@@ -3,10 +3,10 @@ params:
   type: string
   required: false
   description: The url of the homepage. Defaults to /
-- name: assetsPath
+- name: fallbackImagePath
   type: string
   required: false
-  description: The public path for the assets folder. If not provided it defaults to /assets/images
+  description: The path for the fallback image
 - name: siteName
   type: string
   required: false
