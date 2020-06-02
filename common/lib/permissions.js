@@ -2,6 +2,7 @@ const { FEATURE_FLAGS } = require('../../config')
 
 const policePermissions = [
   'moves:view:outgoing',
+  'moves:view:incoming',
   'moves:download',
   'move:view',
   'move:create',
@@ -16,6 +17,7 @@ if (FEATURE_FLAGS.EDITABILITY) {
 
 const secureChildrensHomePermissions = [
   'moves:view:outgoing',
+  'moves:view:incoming',
   'moves:download',
   'move:view',
   'move:create',
@@ -24,6 +26,7 @@ const secureChildrensHomePermissions = [
 ]
 const secureTrainingCentrePermissions = [
   'moves:view:outgoing',
+  'moves:view:incoming',
   'moves:download',
   'move:view',
   'move:create',
@@ -37,11 +40,13 @@ if (FEATURE_FLAGS.EDITABILITY) {
 const supplierPermissions = [
   'locations:all',
   'moves:view:outgoing',
+  'moves:view:incoming',
   'moves:download',
   'move:view',
 ]
 const prisonPermissions = [
   'moves:view:outgoing',
+  'moves:view:incoming',
   'moves:download',
   'move:view',
   'move:create',
