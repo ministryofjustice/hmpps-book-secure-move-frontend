@@ -17,7 +17,19 @@ const mockPerson = {
   last_name: 'Bloggs',
 }
 
+const mockDefaultInclude = ['default']
+
 describe('Person Service', function() {
+  it('should have the correct default include', function() {
+    expect(personService.defaultInclude).deep.equal(['ethnicity', 'gender'])
+  })
+})
+
+describe('Person Service', function() {
+  beforeEach(function() {
+    personService.defaultInclude = mockDefaultInclude
+  })
+
   describe('#transform()', function() {
     let transformed
 
@@ -816,7 +828,9 @@ describe('Person Service', function() {
       })
 
       it('should call findAll method with empty object', function() {
-        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {})
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
+          include: mockDefaultInclude,
+        })
       })
 
       it('should transform response data', function() {
@@ -840,6 +854,7 @@ describe('Person Service', function() {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
           'filter[filterOne]': 'filter-one-value',
           'filter[filterTwo]': 'filter-two-value',
+          include: mockDefaultInclude,
         })
       })
 
@@ -849,6 +864,21 @@ describe('Person Service', function() {
 
       it('should return data property', function() {
         expect(person).to.deep.equal(mockResponse.data)
+      })
+    })
+
+    context('with include parameter', function() {
+      beforeEach(async function() {
+        person = await personService.getByIdentifiers(
+          {},
+          { include: ['foo', 'bar'] }
+        )
+      })
+
+      it('should pass include parameter to api client', function() {
+        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
+          include: ['foo', 'bar'],
+        })
       })
     })
   })
