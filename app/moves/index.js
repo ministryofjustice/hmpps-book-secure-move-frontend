@@ -28,10 +28,11 @@ const {
   redirectBaseUrl,
   saveUrl,
   setFromLocation,
+  setBodyMoves,
   setBodySingleRequests,
   setFilterSingleRequests,
   setResultsSingleRequests,
-  setResultsOutgoing,
+  setResultsMoves,
 } = require('./middleware')
 
 // Define param middleware
@@ -67,14 +68,14 @@ viewRouter.get(
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   COLLECTION_MIDDLEWARE,
-  [setResultsOutgoing],
+  [setBodyMoves('outgoing', 'fromLocationId'), setResultsMoves('outgoing')],
   renderAsCards
 )
 viewRouter.get(
   '/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
-  [setResultsOutgoing],
+  [setBodyMoves('outgoing', 'fromLocationId'), setResultsMoves('outgoing')],
   download
 )
 
