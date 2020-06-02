@@ -201,10 +201,10 @@ describe('#singleRequestsToTableComponent()', function() {
           },
         },
         {
-          text: 'collections::labels.move_from',
+          text: 'collections::labels.from_location',
         },
         {
-          text: 'collections::labels.move_to',
+          text: 'collections::labels.to_location',
         },
         {
           text: 'collections::labels.earliest_move_date',

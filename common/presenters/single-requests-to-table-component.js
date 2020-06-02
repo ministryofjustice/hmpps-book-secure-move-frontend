@@ -40,7 +40,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('collections::labels.move_from'),
+        text: i18n.t('collections::labels.from_location'),
       },
       row: {
         text: 'from_location.title',
@@ -48,7 +48,7 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('collections::labels.move_to'),
+        text: i18n.t('collections::labels.to_location'),
       },
       row: {
         text: 'to_location.title',

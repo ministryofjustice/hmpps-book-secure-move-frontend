@@ -24,7 +24,7 @@ describe('Moves middleware', function() {
       sinon.stub(moveService, 'getActive')
       sinon.stub(moveService, 'getCancelled')
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
-      sinon.stub(presenters, 'movesByToLocation').returnsArg(0)
+      sinon.stub(presenters, 'movesByLocation').returnsArg(0)
       sinon
         .stub(presenters, 'moveToCardComponent')
         .callsFake(() => moveToCardComponentMapStub)
@@ -131,8 +131,8 @@ describe('Moves middleware', function() {
               })
             })
 
-            it('should call movesByToLocation presenter', function() {
-              expect(presenters.movesByToLocation).to.be.calledOnceWithExactly([
+            it('should call movesByLocation presenter', function() {
+              expect(presenters.movesByLocation).to.be.calledOnceWithExactly([
                 ...mockActiveMoves,
                 ...mockActiveMoves,
               ])
@@ -217,8 +217,8 @@ describe('Moves middleware', function() {
               })
             })
 
-            it('should call movesByToLocation presenter', function() {
-              expect(presenters.movesByToLocation).to.be.calledOnceWithExactly(
+            it('should call movesByLocation presenter', function() {
+              expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
                 mockActiveMoves
               )
             })

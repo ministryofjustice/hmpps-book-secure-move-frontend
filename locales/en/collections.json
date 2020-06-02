@@ -26,8 +26,8 @@
   "cancelled_single_requests": "{{count}} cancelled single request",
   "cancelled_single_requests_plural": "{{count}} cancelled single requests",
   "labels": {
-    "move_from": "Move from",
-    "move_to": "Move to",
+    "from_location": "Move from",
+    "to_location": "Move to",
     "earliest_move_date": "Earliest date of travel",
     "created_at": "Sent on",
     "move_type": "Move type",

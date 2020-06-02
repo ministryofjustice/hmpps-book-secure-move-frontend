@@ -79,7 +79,7 @@ function allocationsToTableComponent({
     {
       /* eslint-disable indent */
       head: showFromLocation
-        ? { text: 'collections::labels.move_from' }
+        ? { text: 'collections::labels.from_location' }
         : undefined,
       /* eslint-enable indent */
       row: {
@@ -88,7 +88,7 @@ function allocationsToTableComponent({
     },
     {
       head: {
-        text: 'collections::labels.move_to',
+        text: 'collections::labels.to_location',
       },
       row: {
         text: 'to_location.title',

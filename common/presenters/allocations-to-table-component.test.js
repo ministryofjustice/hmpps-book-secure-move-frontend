@@ -115,7 +115,7 @@ describe('#allocationsToTableComponent', function() {
             },
           },
           {
-            text: 'collections::labels.move_to',
+            text: 'collections::labels.to_location',
           },
           {
             text: 'fields::date_custom.label',
@@ -284,10 +284,10 @@ describe('#allocationsToTableComponent', function() {
             },
           },
           {
-            text: 'collections::labels.move_from',
+            text: 'collections::labels.from_location',
           },
           {
-            text: 'collections::labels.move_to',
+            text: 'collections::labels.to_location',
           },
           {
             text: 'fields::date_custom.label',

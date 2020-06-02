@@ -11,7 +11,7 @@ const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-l
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
-const movesByToLocation = require('./moves-by-to-location')
+const movesByLocation = require('./moves-by-location')
 const movesToCSV = require('./moves-to-csv')
 const personToCardComponent = require('./person-to-card-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
@@ -34,7 +34,7 @@ module.exports = {
   moveToMetaListComponent,
   personToCardComponent,
   personToSummaryListComponent,
-  movesByToLocation,
+  movesByLocation,
   movesToCSV,
   moveTypesToFilterComponent,
   singleRequestsToTableComponent,

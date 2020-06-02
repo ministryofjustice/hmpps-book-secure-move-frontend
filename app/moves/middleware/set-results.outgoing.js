@@ -44,7 +44,7 @@ async function setResultsOutgoing(req, res, next) {
       cancelled: cancelledMoves,
     }
     req.resultsAsCards = {
-      active: presenters.movesByToLocation(activeMoves),
+      active: presenters.movesByLocation(activeMoves),
       cancelled: cancelledMoves.map(
         presenters.moveToCardComponent({
           showMeta: false,

@@ -1,7 +1,7 @@
 {% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
-  {% for destination in resultsAsCards.active %}
+  {% for group in resultsAsCards.active %}
     <div class="
       govuk-!-margin-top-7
       app-border-top-2
@@ -11,12 +11,12 @@
         {{ appData({
           inverted: true,
           classes: "app-data--s",
-          label: t("collections::labels.move_to"),
-          value: destination.location
+          label: group.label,
+          value: group.location
         }) }}
       </div>
 
-      {% for item in destination.items %}
+      {% for item in group.items %}
         {{ appCard(item) }}
       {% endfor %}
     </div>
