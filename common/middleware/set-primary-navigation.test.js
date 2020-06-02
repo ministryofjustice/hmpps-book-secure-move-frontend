@@ -1,3 +1,4 @@
+const permissions = require('./permissions')
 const middleware = require('./set-primary-navigation')
 
 describe('#setPrimaryNavigation()', function() {
@@ -9,7 +10,12 @@ describe('#setPrimaryNavigation()', function() {
       path: '',
       session: {
         user: {
-          permissions: [],
+          permissions: [
+            'dashboard:view',
+            'allocations:view',
+            'moves:view:proposed',
+            'moves:view:outgoing',
+          ],
         },
       },
       t: sinon.stub().returnsArg(0),
@@ -21,6 +27,7 @@ describe('#setPrimaryNavigation()', function() {
 
   context('with no permissions', function() {
     beforeEach(function() {
+      sinon.stub(permissions, 'check').returns(false)
       middleware(req, res, nextSpy)
     })
 
@@ -33,14 +40,9 @@ describe('#setPrimaryNavigation()', function() {
     })
   })
 
-  context('with permissions', function() {
+  context('with all permissions', function() {
     beforeEach(function() {
-      req.session.user.permissions = [
-        'dashboard:view',
-        'allocations:view',
-        'moves:view:proposed',
-        'moves:view:outgoing',
-      ]
+      sinon.stub(permissions, 'check').returns(true)
     })
 
     describe('navigation items', function() {
@@ -70,6 +72,11 @@ describe('#setPrimaryNavigation()', function() {
             href: '/moves/outgoing',
             text: 'primary_navigation.outgoing',
           },
+          {
+            active: false,
+            href: '/moves/incoming',
+            text: 'primary_navigation.incoming',
+          },
         ])
       })
     })
@@ -81,27 +88,24 @@ describe('#setPrimaryNavigation()', function() {
           middleware(req, res, nextSpy)
         })
 
-        it('should set active state', function() {
-          expect(res.locals.primaryNavigation).to.deep.equal([
+        it('should only set one active state', function() {
+          const inactive = res.locals.primaryNavigation.filter(
+            item => !item.active
+          )
+          expect(inactive).to.have.length(
+            res.locals.primaryNavigation.length - 1
+          )
+        })
+
+        it('should set correct active state', function() {
+          const active = res.locals.primaryNavigation.filter(
+            item => item.active
+          )
+          expect(active).to.deep.equal([
             {
               active: true,
               href: '/',
               text: 'primary_navigation.home',
-            },
-            {
-              active: false,
-              href: '/moves/requested',
-              text: 'primary_navigation.single_requests',
-            },
-            {
-              active: false,
-              href: '/allocations',
-              text: 'primary_navigation.allocations',
-            },
-            {
-              active: false,
-              href: '/moves/outgoing',
-              text: 'primary_navigation.outgoing',
             },
           ])
         })
@@ -113,27 +117,24 @@ describe('#setPrimaryNavigation()', function() {
           middleware(req, res, nextSpy)
         })
 
-        it('should set active state', function() {
-          expect(res.locals.primaryNavigation).to.deep.equal([
-            {
-              active: false,
-              href: '/',
-              text: 'primary_navigation.home',
-            },
+        it('should only set one active state', function() {
+          const inactive = res.locals.primaryNavigation.filter(
+            item => !item.active
+          )
+          expect(inactive).to.have.length(
+            res.locals.primaryNavigation.length - 1
+          )
+        })
+
+        it('should set correct active state', function() {
+          const active = res.locals.primaryNavigation.filter(
+            item => item.active
+          )
+          expect(active).to.deep.equal([
             {
               active: true,
               href: '/moves/requested',
               text: 'primary_navigation.single_requests',
-            },
-            {
-              active: false,
-              href: '/allocations',
-              text: 'primary_navigation.allocations',
-            },
-            {
-              active: false,
-              href: '/moves/outgoing',
-              text: 'primary_navigation.outgoing',
             },
           ])
         })
@@ -145,27 +146,24 @@ describe('#setPrimaryNavigation()', function() {
           middleware(req, res, nextSpy)
         })
 
-        it('should set active state', function() {
-          expect(res.locals.primaryNavigation).to.deep.equal([
-            {
-              active: false,
-              href: '/',
-              text: 'primary_navigation.home',
-            },
-            {
-              active: false,
-              href: '/moves/requested',
-              text: 'primary_navigation.single_requests',
-            },
+        it('should only set one active state', function() {
+          const inactive = res.locals.primaryNavigation.filter(
+            item => !item.active
+          )
+          expect(inactive).to.have.length(
+            res.locals.primaryNavigation.length - 1
+          )
+        })
+
+        it('should set correct active state', function() {
+          const active = res.locals.primaryNavigation.filter(
+            item => item.active
+          )
+          expect(active).to.deep.equal([
             {
               active: true,
               href: '/allocations',
               text: 'primary_navigation.allocations',
-            },
-            {
-              active: false,
-              href: '/moves/outgoing',
-              text: 'primary_navigation.outgoing',
             },
           ])
         })
@@ -177,27 +175,53 @@ describe('#setPrimaryNavigation()', function() {
           middleware(req, res, nextSpy)
         })
 
-        it('should set active state', function() {
-          expect(res.locals.primaryNavigation).to.deep.equal([
-            {
-              active: false,
-              href: '/',
-              text: 'primary_navigation.home',
-            },
-            {
-              active: false,
-              href: '/moves/requested',
-              text: 'primary_navigation.single_requests',
-            },
-            {
-              active: false,
-              href: '/allocations',
-              text: 'primary_navigation.allocations',
-            },
+        it('should only set one active state', function() {
+          const inactive = res.locals.primaryNavigation.filter(
+            item => !item.active
+          )
+          expect(inactive).to.have.length(
+            res.locals.primaryNavigation.length - 1
+          )
+        })
+
+        it('should set correct active state', function() {
+          const active = res.locals.primaryNavigation.filter(
+            item => item.active
+          )
+          expect(active).to.deep.equal([
             {
               active: true,
               href: '/moves/outgoing',
               text: 'primary_navigation.outgoing',
+            },
+          ])
+        })
+      })
+
+      context('on incoming page', function() {
+        beforeEach(function() {
+          req.path = '/moves/day/2020-04-16/incoming'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should only set one active state', function() {
+          const inactive = res.locals.primaryNavigation.filter(
+            item => !item.active
+          )
+          expect(inactive).to.have.length(
+            res.locals.primaryNavigation.length - 1
+          )
+        })
+
+        it('should set correct active state', function() {
+          const active = res.locals.primaryNavigation.filter(
+            item => item.active
+          )
+          expect(active).to.deep.equal([
+            {
+              active: true,
+              href: '/moves/incoming',
+              text: 'primary_navigation.incoming',
             },
           ])
         })
@@ -207,6 +231,52 @@ describe('#setPrimaryNavigation()', function() {
     it('should call next', function() {
       middleware(req, res, nextSpy)
       expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+  })
+
+  describe('permissions', function() {
+    beforeEach(function() {
+      sinon.stub(permissions, 'check').returns(true)
+      middleware(req, res, nextSpy)
+    })
+
+    it('should check for dashboard permission', function() {
+      expect(permissions.check).to.be.calledWithExactly(
+        'dashboard:view',
+        req.session.user.permissions
+      )
+    })
+
+    it('should check for single request permission', function() {
+      expect(permissions.check).to.be.calledWithExactly(
+        'moves:view:proposed',
+        req.session.user.permissions
+      )
+    })
+
+    it('should check for allocation permission', function() {
+      expect(permissions.check).to.be.calledWithExactly(
+        'allocations:view',
+        req.session.user.permissions
+      )
+    })
+
+    it('should check for outgoing moves permission', function() {
+      expect(permissions.check).to.be.calledWithExactly(
+        'moves:view:outgoing',
+        req.session.user.permissions
+      )
+    })
+
+    it('should check for incoming moves permission', function() {
+      expect(permissions.check).to.be.calledWithExactly(
+        'moves:view:incoming',
+        req.session.user.permissions
+      )
+    })
+
+    it('should check for permissions correct number of times', function() {
+      expect(permissions.check.callCount).to.equal(5)
     })
   })
 })

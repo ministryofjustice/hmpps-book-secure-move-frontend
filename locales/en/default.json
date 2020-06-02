@@ -21,6 +21,7 @@
   "primary_navigation": {
     "home": "Home",
     "outgoing": "Outgoing",
+    "incoming": "Incoming",
     "allocations": "Allocations",
     "single_requests": "Single requests"
   }
