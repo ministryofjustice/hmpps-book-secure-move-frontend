@@ -976,9 +976,8 @@ describe('Move Service', function() {
 
       it('should call redirect method with data', function() {
         expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
-        expect(apiClient.all).to.be.calledOnceWithExactly('event')
+        expect(apiClient.all).to.be.calledOnceWithExactly('redirect')
         expect(apiClient.post).to.be.calledOnceWithExactly({
-          event_name: 'redirect',
           timestamp: '#timestamp',
           ...mockRedirect,
         })

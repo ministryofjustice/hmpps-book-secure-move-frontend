@@ -25,10 +25,12 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   person: [
@@ -36,6 +38,7 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 201,
     },
   ],
   image: [
@@ -44,6 +47,7 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   court_case: [
@@ -52,10 +56,12 @@ const testCases = {
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   court_hearing: [
@@ -63,60 +69,70 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 201,
     },
   ],
   timetable_entry: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   gender: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   ethnicity: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   assessment_question: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   location: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
     {
       method: 'find',
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   supplier: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
     {
       method: 'find',
       httpMock: 'get',
       mockPath: '/1',
       args: '1',
+      statusCode: 200,
     },
   ],
   allocation: [
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
     },
   ],
   event: [
@@ -124,6 +140,15 @@ const testCases = {
       method: 'create',
       httpMock: 'post',
       args: {},
+      statusCode: 201,
+    },
+  ],
+  redirect: [
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+      statusCode: 204,
     },
   ],
 }
@@ -136,36 +161,74 @@ const client = proxyquire('./', {
   },
 })()
 
+const getResponse = ({ modelName, model, testCase } = {}) => {
+  const { statusCode } = testCase
+
+  const apiPath = get(model, 'options.collectionPath') || pluralize(modelName)
+  const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
+
+  const nockedResponse =
+    fixture.response !== undefined ? fixture.response : fixture
+
+  nock(mockConfig.API.BASE_URL)
+    .intercept(`/${apiPath}${testCase.mockPath || ''}`, testCase.httpMock)
+    .reply(statusCode, nockedResponse)
+
+  return client[testCase.method](modelName, testCase.args)
+}
+
+const getStatusMethods = (modelName, statusCode) => {
+  const testCaseMethods = (testCases[modelName] || []).filter(
+    method => method.statusCode === statusCode
+  )
+  return testCaseMethods
+}
+
+const expectProperties = ({ model, response }) => {
+  flatten([response.data]).forEach(item =>
+    checkProperties(item, model.attributes)
+  )
+}
+
+const expectNoData = ({ response }) => {
+  expect(response.data).to.be.null
+}
+
 describe('API client models', function() {
   forEach(models, (model, modelName) => {
     describe(`${startCase(modelName)} model`, function() {
-      forEach(testCases[modelName], testCase => {
-        describe(`#${testCase.method}()`, function() {
-          beforeEach(function() {
-            const apiPath =
-              get(model, 'options.collectionPath') || pluralize(modelName)
-            const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
+      // ensure all methods have a statusCode defined
+      const noStatusMethods = getStatusMethods(modelName, undefined)
+      if (noStatusMethods[0]) {
+        throw new Error(
+          `${modelName}.${noStatusMethods[0].method} has no statusCode`
+        )
+      }
+      const runStatusMethodTests = (
+        statusCode,
+        expectFn = expectProperties,
+        expectStr = 'should contain correct attributes'
+      ) => {
+        describe(`${statusCode} status code`, function() {
+          forEach(getStatusMethods(modelName, statusCode), testCase => {
+            describe(`#${testCase.method}()`, function() {
+              let response
 
-            nock(mockConfig.API.BASE_URL)
-              .intercept(
-                `/${apiPath}${testCase.mockPath || ''}`,
-                testCase.httpMock
-              )
-              .reply(200, fixture)
-          })
+              beforeEach(async function() {
+                response = await getResponse({ modelName, model, testCase })
+              })
 
-          it('should contain correct attributes', async function() {
-            const response = await client[testCase.method](
-              modelName,
-              testCase.args
-            )
-
-            flatten([response.data]).forEach(item =>
-              checkProperties(item, model.attributes)
-            )
+              it(expectStr, function() {
+                expectFn({ model, response })
+              })
+            })
           })
         })
-      })
+      }
+
+      runStatusMethodTests(200)
+      runStatusMethodTests(201)
+      runStatusMethodTests(204, expectNoData, 'should return no data')
     })
   })
 })
