@@ -158,27 +158,56 @@ describe('Internal header component', function() {
   })
 
   describe('SVG logo', function() {
-    const $ = renderComponentHtmlToCheerio('internal-header', {})
-    const $svg = $('.app-header__logotype-crest')
+    describe('by default', function() {
+      const $ = renderComponentHtmlToCheerio('internal-header', {})
+      const $svg = $('.app-header__logotype-crest')
 
-    it('sets focusable="false" so that IE does not treat it as an interactive element', function() {
-      expect($svg.attr('focusable')).to.equal('false')
-    })
-
-    it('sets role="presentation" so that it is ignored by assistive technologies', function() {
-      expect($svg.attr('focusable')).to.equal('false')
-    })
-
-    describe('fallback PNG', function() {
-      const $fallbackImage = $('.app-header__logotype-crest-fallback-image')
-
-      it('uses the <image> tag which is a valid SVG element', function() {
-        expect($fallbackImage[0].tagName).to.equal('image')
+      it('sets focusable="false" so that IE does not treat it as an interactive element', function() {
+        expect($svg.attr('focusable')).to.equal('false')
       })
 
-      it('sets a blank xlink:href to prevent IE from downloading both the SVG and the PNG', function() {
-        // Cheerio converts xhref to href - https://github.com/cheeriojs/cheerio/issues/1101
-        expect($fallbackImage.attr('href')).to.equal('')
+      it('sets role="presentation" so that it is ignored by assistive technologies', function() {
+        expect($svg.attr('focusable')).to.equal('false')
+      })
+
+      describe('fallback PNG', function() {
+        const $fallbackImage = $('.app-header__logotype-crest-fallback-image')
+
+        it('does not render fallback image', function() {
+          expect($fallbackImage.length).to.equal(0)
+        })
+      })
+    })
+
+    describe('with fallback image path', function() {
+      const $ = renderComponentHtmlToCheerio('internal-header', {
+        fallbackImagePath: '/fallback-image.png',
+      })
+      const $svg = $('.app-header__logotype-crest')
+
+      it('sets focusable="false" so that IE does not treat it as an interactive element', function() {
+        expect($svg.attr('focusable')).to.equal('false')
+      })
+
+      it('sets role="presentation" so that it is ignored by assistive technologies', function() {
+        expect($svg.attr('focusable')).to.equal('false')
+      })
+
+      describe('fallback PNG', function() {
+        const $fallbackImage = $('.app-header__logotype-crest-fallback-image')
+
+        it('uses the <image> tag which is a valid SVG element', function() {
+          expect($fallbackImage[0].tagName).to.equal('image')
+        })
+
+        it('uses fallback image path', function() {
+          expect($fallbackImage.attr('src')).to.equal('/fallback-image.png')
+        })
+
+        it('sets a blank xlink:href to prevent IE from downloading both the SVG and the PNG', function() {
+          // Cheerio converts xhref to href - https://github.com/cheeriojs/cheerio/issues/1101
+          expect($fallbackImage.attr('href')).to.equal('')
+        })
       })
     })
   })
