@@ -22,8 +22,8 @@ module.exports = function timetableToTableComponent(timetable) {
   )
 
   return {
+    classes: 'govuk-!-margin-bottom-2',
     head,
     rows,
-    classes: 'govuk-!-margin-bottom-2',
   }
 }

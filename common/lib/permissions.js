@@ -71,13 +71,13 @@ const pmuPermissions = [
 ]
 
 const permissionsByRole = {
-  ROLE_PECS_POLICE: policePermissions,
-  ROLE_PECS_SCH: secureChildrensHomePermissions,
-  ROLE_PECS_STC: secureTrainingCentrePermissions,
-  ROLE_PECS_PRISON: prisonPermissions,
   ROLE_PECS_HMYOI: prisonPermissions,
   ROLE_PECS_OCA: ocaPermissions,
   ROLE_PECS_PMU: pmuPermissions,
+  ROLE_PECS_POLICE: policePermissions,
+  ROLE_PECS_PRISON: prisonPermissions,
+  ROLE_PECS_SCH: secureChildrensHomePermissions,
+  ROLE_PECS_STC: secureTrainingCentrePermissions,
   ROLE_PECS_SUPPLIER: supplierPermissions,
 }
 

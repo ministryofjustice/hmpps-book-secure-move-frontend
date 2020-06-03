@@ -4,13 +4,11 @@ function explicitAssessmentAnswer({ name, value, conditional } = {}) {
   }
 
   return {
-    name,
-    validate: 'required',
     component: 'govukRadios',
     fieldset: {
       legend: {
-        text: `fields::${name}.label`,
         classes: 'govuk-fieldset__legend--m',
+        text: `fields::${name}.label`,
       },
     },
     hint: {
@@ -18,15 +16,17 @@ function explicitAssessmentAnswer({ name, value, conditional } = {}) {
     },
     items: [
       {
-        value,
         conditional,
         text: 'Yes',
+        value,
       },
       {
-        value: 'false',
         text: 'No',
+        value: 'false',
       },
     ],
+    name,
+    validate: 'required',
   }
 }
 

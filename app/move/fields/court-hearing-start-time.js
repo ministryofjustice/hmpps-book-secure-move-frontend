@@ -2,25 +2,25 @@ const { time: timeFormatter } = require('../../../common/formatters')
 const { datetime: datetimeValidator, after } = require('../validators')
 
 const courtHearingStartTime = {
-  id: 'court_hearing__start_time',
-  name: 'court_hearing__start_time',
-  validate: ['required', datetimeValidator, after],
-  formatter: [timeFormatter],
-  component: 'govukInput',
-  classes: 'govuk-input--width-10',
   autocomplete: 'off',
-  skip: true,
-  label: {
-    html: 'fields::court_hearing__start_time.label',
-    classes: 'govuk-label--s',
-  },
-  hint: {
-    text: 'fields::court_hearing__start_time.hint',
-  },
+  classes: 'govuk-input--width-10',
+  component: 'govukInput',
   dependent: {
     field: 'has_court_case',
     value: 'true',
   },
+  formatter: [timeFormatter],
+  hint: {
+    text: 'fields::court_hearing__start_time.hint',
+  },
+  id: 'court_hearing__start_time',
+  label: {
+    classes: 'govuk-label--s',
+    html: 'fields::court_hearing__start_time.label',
+  },
+  name: 'court_hearing__start_time',
+  skip: true,
+  validate: ['required', datetimeValidator, after],
 }
 
 module.exports = courtHearingStartTime

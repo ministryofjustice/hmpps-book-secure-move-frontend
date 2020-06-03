@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 const controllers = require('../controllers/assign')
 
 const create = require('./create')
@@ -5,16 +6,16 @@ const create = require('./create')
 const assignSteps = {
   '/': {
     entryPoint: true,
+    next: 'person-lookup-prison-number',
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'person-lookup-prison-number',
   },
   '/person-lookup-prison-number': {
     ...create['/person-lookup-prison-number'],
-    pageTitle: 'moves::steps.person_search.heading_assign',
     controller: controllers.PersonSearch,
     next: 'person-lookup-results',
+    pageTitle: 'moves::steps.person_search.heading_assign',
   },
   '/person-lookup-results': {
     ...create['/person-lookup-results'],
@@ -29,40 +30,40 @@ const assignSteps = {
   },
   '/release-status': {
     ...create['/release-status'],
-    fields: [],
     controller: controllers.Assessment,
+    fields: [],
     next: 'special-vehicle',
   },
   '/special-vehicle': {
     ...create['/special-vehicle'],
     controller: controllers.Assessment,
-    pageTitle: 'moves::steps.health_information.heading',
     fields: ['special_vehicle_check'],
     next: [
       {
         field: 'special_vehicle_check',
-        value: 'true',
         next: 'no-special-vehicle',
+        value: 'true',
       },
       'save',
     ],
+    pageTitle: 'moves::steps.health_information.heading',
   },
   '/no-special-vehicle': {
-    templatePath: 'move/views/assign/',
-    template: 'no-special-vehicle',
     pageTitle: 'moves::steps.person_search.heading',
+    template: 'no-special-vehicle',
+    templatePath: 'move/views/assign/',
   },
   '/save': {
-    skip: true,
     controller: controllers.Save,
     next: 'confirmation',
+    skip: true,
   },
   '/confirmation': {
     checkJourney: false,
     checkSession: false,
     controller: controllers.Confirmation,
-    templatePath: 'move/views/assign/',
     template: 'confirmation',
+    templatePath: 'move/views/assign/',
   },
 }
 

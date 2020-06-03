@@ -8,12 +8,12 @@ const update = require('./update')
 const view = require('./view')
 
 module.exports = {
-  assign,
   Cancel,
-  confirmation,
-  create,
   Review,
   Unassign,
+  assign,
+  confirmation,
+  create,
   update,
   view,
 }

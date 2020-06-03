@@ -4,6 +4,6 @@ const reviewDecision = require('./review-decision')
 
 module.exports = {
   move_date: moveDate,
-  review_decision: reviewDecision,
   rejection_reason_comment: rejectionReasonComment,
+  review_decision: reviewDecision,
 }

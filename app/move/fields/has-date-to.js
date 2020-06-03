@@ -1,24 +1,24 @@
 const hasDateTo = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'has_date_to',
   fieldset: {
     legend: {
-      text: 'fields::has_date_to.label',
       classes: 'govuk-label--m',
+      text: 'fields::has_date_to.label',
     },
   },
   items: [
     {
-      value: 'yes',
-      text: 'Yes',
       conditional: 'date_to',
+      text: 'Yes',
+      value: 'yes',
     },
     {
-      value: 'no',
       text: 'No',
+      value: 'no',
     },
   ],
+  name: 'has_date_to',
+  validate: 'required',
 }
 
 module.exports = hasDateTo

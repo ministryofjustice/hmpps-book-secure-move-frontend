@@ -4,13 +4,13 @@ const commonDateField = require('./common.date')
 
 const dateOfBirth = {
   ...cloneDeep(commonDateField),
-  validate: [...commonDateField.validate, 'required', 'before'],
-  label: {
-    text: 'fields::date_of_birth.label',
-    classes: 'govuk-label--s',
-  },
   id: 'date_of_birth',
+  label: {
+    classes: 'govuk-label--s',
+    text: 'fields::date_of_birth.label',
+  },
   name: 'date_of_birth',
+  validate: [...commonDateField.validate, 'required', 'before'],
 }
 
 module.exports = dateOfBirth

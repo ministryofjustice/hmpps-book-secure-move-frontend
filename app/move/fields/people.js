@@ -1,20 +1,20 @@
 const people = {
-  validate: 'required',
   component: 'govukRadios',
-  items: [],
-  name: 'people',
-  formGroup: {
-    classes: 'govuk-!-margin-bottom-2',
-  },
   fieldset: {
     legend: {
-      text: 'fields::people.label',
       classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+      text: 'fields::people.label',
     },
+  },
+  formGroup: {
+    classes: 'govuk-!-margin-bottom-2',
   },
   hint: {
     text: 'fields::people.hint',
   },
+  items: [],
+  name: 'people',
+  validate: 'required',
 }
 
 module.exports = people

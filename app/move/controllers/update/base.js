@@ -127,10 +127,10 @@ class UpdateBaseController extends CreateBaseController {
     const supplier = filters.oxfordJoin(supplierNames)
     category = category || this.flashKey || req.form.options.key
     req.flash('success', {
-      title: req.t(`moves::update_flash.categories.${category}.heading`),
       content: req.t(`moves::update_flash.categories.${category}.message`, {
         supplier,
       }),
+      title: req.t(`moves::update_flash.categories.${category}.heading`),
     })
   }
 }

@@ -62,8 +62,8 @@ class UpdateMoveDetailsController extends UpdateBase {
         })
       } else if (additionalInformation !== move.additional_information) {
         await moveService.update({
-          id: moveId,
           additional_information: additionalInformation,
+          id: moveId,
         })
       }
 

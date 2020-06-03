@@ -1,11 +1,11 @@
 const filter = {
-  validate: 'required',
+  autocomplete: 'off',
+  classes: 'govuk-input--width-10',
   component: 'govukInput',
   formGroup: {
     classes: 'govuk-!-margin-bottom-2',
   },
-  classes: 'govuk-input--width-10',
-  autocomplete: 'off',
+  validate: 'required',
 }
 
 module.exports = filter

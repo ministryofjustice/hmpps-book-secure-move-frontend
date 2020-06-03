@@ -1,36 +1,36 @@
 const cancellationReason = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'cancellation_reason',
   fieldset: {
     legend: {
-      text: 'fields::cancellation_reason.label',
       classes: 'govuk-fieldset__legend--m',
+      text: 'fields::cancellation_reason.label',
     },
   },
   items: [
     {
-      id: 'cancellation_reason',
-      value: 'made_in_error',
-      text: 'fields::cancellation_reason.items.made_in_error.label',
       hint: {
         text: 'fields::cancellation_reason.items.made_in_error.hint',
       },
+      id: 'cancellation_reason',
+      text: 'fields::cancellation_reason.items.made_in_error.label',
+      value: 'made_in_error',
     },
     {
-      value: 'supplier_declined_to_move',
-      text: 'fields::cancellation_reason.items.supplier_declined_to_move.label',
       hint: {
         text:
           'fields::cancellation_reason.items.supplier_declined_to_move.hint',
       },
+      text: 'fields::cancellation_reason.items.supplier_declined_to_move.label',
+      value: 'supplier_declined_to_move',
     },
     {
-      value: 'other',
-      text: 'fields::cancellation_reason.items.other.label',
       conditional: 'cancellation_reason_comment',
+      text: 'fields::cancellation_reason.items.other.label',
+      value: 'other',
     },
   ],
+  name: 'cancellation_reason',
+  validate: 'required',
 }
 
 module.exports = cancellationReason

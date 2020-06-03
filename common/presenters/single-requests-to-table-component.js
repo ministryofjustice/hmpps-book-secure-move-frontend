@@ -9,30 +9,30 @@ function singleRequestsToTable(moves) {
   const tableConfig = [
     {
       head: {
-        text: i18n.t('name'),
         attributes: {
           width: '220',
         },
+        text: i18n.t('name'),
       },
       row: {
-        html: data => {
-          const card = moveToCardComponent({
-            isCompact: true,
-            hrefSuffix: '/review',
-          })(data)
-          return componentService.getComponent('appCard', card)
-        },
         attributes: {
           scope: 'row',
+        },
+        html: data => {
+          const card = moveToCardComponent({
+            hrefSuffix: '/review',
+            isCompact: true,
+          })(data)
+          return componentService.getComponent('appCard', card)
         },
       },
     },
     {
       head: {
-        text: i18n.t('collections::labels.created_at'),
         attributes: {
           width: '120',
         },
+        text: i18n.t('collections::labels.created_at'),
       },
       row: {
         text: data => filters.formatDate(data.created_at),
@@ -56,10 +56,10 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('collections::labels.earliest_move_date'),
         attributes: {
           width: '120',
         },
+        text: i18n.t('collections::labels.earliest_move_date'),
       },
       row: {
         text: data => filters.formatDate(data.date_from),

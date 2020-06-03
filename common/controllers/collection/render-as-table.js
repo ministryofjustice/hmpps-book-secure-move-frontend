@@ -5,11 +5,11 @@ module.exports = function listAsTable(req, res) {
 
   res.render('collection-as-table', {
     actions,
+    activeStatus: req.query.status,
     context,
     filter,
     pagination,
     resultsAsTable,
-    activeStatus: req.query.status,
     totalResults: sumBy(filter, 'value'),
   })
 }

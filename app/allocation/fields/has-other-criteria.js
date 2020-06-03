@@ -1,27 +1,27 @@
 const hasOtherCriteria = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'has_other_criteria',
-  label: {
-    text: 'fields::has_other_criteria.label',
-  },
   fieldset: {
     legend: {
-      text: 'fields::has_other_criteria.label',
       classes: 'govuk-fieldset__legend--m',
+      text: 'fields::has_other_criteria.label',
     },
   },
   items: [
     {
-      value: 'true',
-      text: 'Yes',
       conditional: 'other_criteria',
+      text: 'Yes',
+      value: 'true',
     },
     {
-      value: 'false',
       text: 'No',
+      value: 'false',
     },
   ],
+  label: {
+    text: 'fields::has_other_criteria.label',
+  },
+  name: 'has_other_criteria',
+  validate: 'required',
 }
 
 module.exports = hasOtherCriteria

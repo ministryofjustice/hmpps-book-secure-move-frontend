@@ -11,28 +11,28 @@ module.exports = function view(req, res) {
   })
 
   const locals = {
-    dashboardUrl: '/allocations',
-    /* eslint-disable indent */
-    messageTitle: bannerStatuses.includes(allocation.status)
-      ? req.t(`allocations::statuses.${allocation.status}`)
-      : undefined,
-    /* eslint-enable indent */
-    messageContent: req.t('allocations::statuses.description'),
-    unassignedMoveId: movesWithoutPerson.length
-      ? movesWithoutPerson[0].id
-      : undefined,
     allocationDetails: presenters.allocationToMetaListComponent(allocation),
-    allocationSummary: presenters.allocationToSummaryListComponent(allocation),
     allocationPeople: {
       emptySlots: movesWithoutPerson.length,
       filledSlots: moves
         .filter(move => move.person)
         .map(move => ({
-          id: move.id,
-          fullname: move.person.fullname,
           card: moveToCardComponent(move),
+          fullname: move.person.fullname,
+          id: move.id,
         })),
     },
+    allocationSummary: presenters.allocationToSummaryListComponent(allocation),
+    dashboardUrl: '/allocations',
+    messageContent: req.t('allocations::statuses.description'),
+    /* eslint-disable indent */
+    messageTitle: bannerStatuses.includes(allocation.status)
+      ? req.t(`allocations::statuses.${allocation.status}`)
+      : undefined,
+    /* eslint-enable indent */
+    unassignedMoveId: movesWithoutPerson.length
+      ? movesWithoutPerson[0].id
+      : undefined,
   }
   res.render('allocation/views/view', locals)
 }

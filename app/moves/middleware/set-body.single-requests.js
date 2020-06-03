@@ -5,9 +5,9 @@ function setBodySingleRequests(req, res, next) {
   const { dateRange, locationId } = req.params
 
   set(req, 'body.requested', {
-    status,
     createdAtDate: dateRange,
     fromLocationId: locationId,
+    status,
   })
 
   next()

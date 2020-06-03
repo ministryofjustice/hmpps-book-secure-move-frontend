@@ -6,6 +6,20 @@ const moveService = require('./move')
 
 const noMoveIdMessage = 'No move ID supplied'
 const singleRequestService = {
+  approve(id, { date } = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    return apiClient
+      .update('move', {
+        date,
+        id,
+        status: 'requested',
+      })
+      .then(response => response.data)
+  },
+
   getAll({
     status,
     moveDate = [],
@@ -33,8 +47,8 @@ const singleRequestService = {
         break
       case 'rejected':
         statusFilter = {
-          'filter[status]': 'cancelled',
           'filter[cancellation_reason]': 'rejected',
+          'filter[status]': 'cancelled',
         }
         break
       default:
@@ -44,38 +58,24 @@ const singleRequestService = {
     }
 
     return moveService.getAll({
-      isAggregation,
       filter: omitBy(
         {
           ...statusFilter,
-          'filter[has_relationship_to_allocation]': false,
-          'filter[from_location_id]': fromLocationId,
-          'filter[to_location_id]': toLocationId,
-          'filter[date_from]': moveDateFrom,
-          'filter[date_to]': moveDateTo,
           'filter[created_at_from]': createdAtFrom,
           'filter[created_at_to]': createdAtTo,
+          'filter[date_from]': moveDateFrom,
+          'filter[date_to]': moveDateTo,
+          'filter[from_location_id]': fromLocationId,
+          'filter[has_relationship_to_allocation]': false,
           'filter[move_type]': 'prison_transfer',
+          'filter[to_location_id]': toLocationId,
           'sort[by]': sortBy,
           'sort[direction]': sortDirection,
         },
         isNil
       ),
+      isAggregation,
     })
-  },
-
-  approve(id, { date } = {}) {
-    if (!id) {
-      return Promise.reject(new Error(noMoveIdMessage))
-    }
-
-    return apiClient
-      .update('move', {
-        id,
-        date,
-        status: 'requested',
-      })
-      .then(response => response.data)
   },
 
   reject(id, { comment } = {}) {
@@ -85,10 +85,10 @@ const singleRequestService = {
 
     return apiClient
       .update('move', {
-        id,
-        status: 'cancelled',
         cancellation_reason: 'rejected',
         cancellation_reason_comment: comment,
+        id,
+        status: 'cancelled',
       })
       .then(response => response.data)
   },

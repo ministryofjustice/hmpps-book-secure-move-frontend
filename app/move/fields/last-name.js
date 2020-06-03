@@ -1,14 +1,14 @@
 const lastName = {
-  validate: 'required',
-  component: 'govukInput',
-  label: {
-    text: 'fields::last_name.label',
-    classes: 'govuk-label--s',
-  },
-  id: 'last_name',
-  name: 'last_name',
-  classes: 'govuk-input--width-20',
   autocomplete: 'off',
+  classes: 'govuk-input--width-20',
+  component: 'govukInput',
+  id: 'last_name',
+  label: {
+    classes: 'govuk-label--s',
+    text: 'fields::last_name.label',
+  },
+  name: 'last_name',
+  validate: 'required',
 }
 
 module.exports = lastName

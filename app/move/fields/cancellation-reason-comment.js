@@ -1,17 +1,17 @@
 const cancellationReasonComment = {
-  validate: 'required',
-  skip: true,
-  rows: 3,
-  component: 'govukTextarea',
   classes: 'govuk-input--width-20',
-  label: {
-    text: 'fields::cancellation_reason_comment.label',
-    classes: 'govuk-label--s',
-  },
+  component: 'govukTextarea',
   dependent: {
     field: 'cancellation_reason',
     value: 'other',
   },
+  label: {
+    classes: 'govuk-label--s',
+    text: 'fields::cancellation_reason_comment.label',
+  },
+  rows: 3,
+  skip: true,
+  validate: 'required',
 }
 
 module.exports = cancellationReasonComment

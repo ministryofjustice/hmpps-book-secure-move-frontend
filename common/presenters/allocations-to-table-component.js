@@ -31,10 +31,10 @@ function allocationsToTableComponent({
   const tableConfig = [
     {
       head: {
-        text: 'collections::labels.move_size',
         attributes: {
           width: '120',
         },
+        text: 'collections::labels.move_size',
       },
       row: {
         attributes: {
@@ -50,19 +50,19 @@ function allocationsToTableComponent({
     },
     {
       head: {
-        text: 'collections::labels.progress',
         attributes: {
           width: '150',
         },
+        text: 'collections::labels.progress',
       },
       row: {
         html: data => {
           const totalSlots = data.moves.length
           const unfilledSlots = data.moves.filter(move => !move.person).length
           const classes = {
-            complete: 'govuk-tag--green',
-            by_remaining: 'govuk-tag--yellow',
             by_added: 'govuk-tag--yellow',
+            by_remaining: 'govuk-tag--yellow',
+            complete: 'govuk-tag--green',
             default: 'govuk-tag--red',
           }
           const opts = showRemaining
@@ -70,8 +70,8 @@ function allocationsToTableComponent({
             : _byAdded(totalSlots, unfilledSlots)
 
           return componentService.getComponent('govukTag', {
-            text: i18n.t('collections::labels.progress_status', opts),
             classes: classes[opts.context] || classes.default,
+            text: i18n.t('collections::labels.progress_status', opts),
           })
         },
       },
@@ -96,10 +96,10 @@ function allocationsToTableComponent({
     },
     {
       head: {
-        text: 'fields::date_custom.label',
         attributes: {
           width: '135',
         },
+        text: 'fields::date_custom.label',
       },
       row: {
         text: data => filters.formatDate(data.date),

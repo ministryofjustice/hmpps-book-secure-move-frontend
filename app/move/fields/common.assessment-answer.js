@@ -1,21 +1,21 @@
 function assessmentAnswer({ isRequired = false, isExplicit = false } = {}) {
   let params = {
-    skip: true,
-    rows: 3,
-    component: 'govukTextarea',
     classes: 'govuk-input--width-20',
+    component: 'govukTextarea',
     label: {
-      text: 'fields::assessment_comment.optional',
       classes: 'govuk-label--s',
+      text: 'fields::assessment_comment.optional',
     },
+    rows: 3,
+    skip: true,
   }
 
   if (isRequired) {
     params = {
       ...params,
       label: {
-        text: 'fields::assessment_comment.required',
         classes: 'govuk-label--s',
+        text: 'fields::assessment_comment.required',
       },
       validate: 'required',
     }

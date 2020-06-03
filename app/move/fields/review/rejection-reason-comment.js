@@ -1,17 +1,17 @@
 const rejectionReasonComment = {
-  name: 'rejection_reason_comment',
-  skip: true,
-  rows: 3,
-  component: 'govukTextarea',
   classes: 'govuk-input--width-20',
-  label: {
-    text: 'fields::rejection_reason_comment.label',
-    classes: 'govuk-label--s',
-  },
+  component: 'govukTextarea',
   dependent: {
     field: 'review_decision',
     value: 'reject',
   },
+  label: {
+    classes: 'govuk-label--s',
+    text: 'fields::rejection_reason_comment.label',
+  },
+  name: 'rejection_reason_comment',
+  rows: 3,
+  skip: true,
 }
 
 module.exports = rejectionReasonComment

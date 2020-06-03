@@ -5,7 +5,7 @@ module.exports = {
     node: true,
   },
   extends: ['prettier', 'standard'],
-  plugins: ['prettier', 'import'],
+  plugins: ['prettier', 'import', 'sort-keys-fix'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -46,10 +46,9 @@ module.exports = {
         'index',
       ]
     }],
-    'sort-keys': ['error', 'asc', {
+    'sort-keys-fix/sort-keys-fix': ['error', 'asc', {
       caseSensitive: true,
       natural: true,
-      minKeys: 2
     }],
   },
   overrides: [
@@ -69,7 +68,7 @@ module.exports = {
         'no-unused-expressions': 'off',
         'mocha/no-exclusive-tests': 'error',
         'mocha/no-mocha-arrows': 'error',
-        'sort-keys': 'off',
+        'sort-keys-fix/sort-keys-fix': 'off',
       },
       plugins: ['mocha'],
     },
@@ -79,7 +78,7 @@ module.exports = {
       rules: {
         'mocha/no-mocha-arrows': 'off',
         'comma-dangle': 'off',
-        'sort-keys': 'off',
+        'sort-keys-fix/sort-keys-fix': 'off',
       },
     },
   ],

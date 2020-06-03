@@ -1,26 +1,26 @@
 const completeInFull = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'complete_in_full',
-  label: {
-    text: 'fields::complete_in_full.label',
-  },
   fieldset: {
     legend: {
-      text: 'fields::complete_in_full.label',
       classes: 'govuk-fieldset__legend--m',
+      text: 'fields::complete_in_full.label',
     },
   },
   items: [
     {
-      value: 'true',
       text: 'Yes',
+      value: 'true',
     },
     {
-      value: 'false',
       text: 'No',
+      value: 'false',
     },
   ],
+  label: {
+    text: 'fields::complete_in_full.label',
+  },
+  name: 'complete_in_full',
+  validate: 'required',
 }
 
 module.exports = completeInFull

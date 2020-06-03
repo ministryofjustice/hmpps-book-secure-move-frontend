@@ -14,9 +14,9 @@ function setPagination(route) {
     const nextDate = dateHelpers.getRelativeDate(date, interval)
 
     req.pagination = {
-      todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
       nextUrl: urlHelpers.compileFromRoute(route, req, { date: nextDate }),
       prevUrl: urlHelpers.compileFromRoute(route, req, { date: prevDate }),
+      todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
     }
 
     next()

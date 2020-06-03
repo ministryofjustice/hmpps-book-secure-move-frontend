@@ -13,64 +13,65 @@ const {
 } = require('../controllers/create')
 
 const personSearchStep = {
-  controller: PersonSearch,
   buttonText: 'actions::search',
-  template: '../person-search',
-  pageTitle: 'moves::steps.person_search.heading',
+  controller: PersonSearch,
   next: [
     {
       field: 'is_manual_person_creation',
-      value: true,
       next: 'personal-details',
+      value: true,
     },
     'person-lookup-results',
   ],
+  pageTitle: 'moves::steps.person_search.heading',
+  template: '../person-search',
 }
 
 const riskStep = {
-  controller: Assessment,
   assessmentCategory: 'risk',
-  template: 'assessment',
-  pageTitle: 'moves::steps.risk_information.heading',
+  controller: Assessment,
   next: [
     {
       field: 'from_location_type',
-      value: 'prison',
       next: 'special-vehicle',
+      value: 'prison',
     },
     'health-information',
   ],
+  pageTitle: 'moves::steps.risk_information.heading',
+  template: 'assessment',
 }
 
 const healthStep = {
-  controller: Assessment,
   assessmentCategory: 'health',
-  template: 'assessment',
-  pageTitle: 'moves::steps.health_information.heading',
+  controller: Assessment,
   next: [
     {
       field: 'can_upload_documents',
-      value: true,
       next: 'document',
+      value: true,
     },
     'save',
   ],
+  pageTitle: 'moves::steps.health_information.heading',
+  template: 'assessment',
 }
 
+/* eslint-disable sort-keys-fix/sort-keys-fix */
 module.exports = {
   '/': {
     entryPoint: true,
-    reset: true,
-    resetJourney: true,
-    skip: true,
     next: [
       {
         field: 'from_location_type',
-        value: 'prison',
         next: 'person-lookup-prison-number',
+        value: 'prison',
       },
       'person-lookup-pnc',
     ],
+    reset: true,
+    resetJourney: true,
+    skip: true,
   },
   '/person-lookup-prison-number': {
     ...personSearchStep,
@@ -81,24 +82,22 @@ module.exports = {
     fields: ['filter.police_national_computer'],
   },
   '/person-lookup-results': {
-    hideBackLink: true,
     controller: PersonSearchResults,
-    template: '../person-search-results',
-    pageTitle: 'moves::steps.person_search_results.heading',
+    fields: ['people'],
+    hideBackLink: true,
     next: [
       {
         field: 'is_manual_person_creation',
-        value: true,
         next: 'personal-details',
+        value: true,
       },
       'move-details',
     ],
-    fields: ['people'],
+    pageTitle: 'moves::steps.person_search_results.heading',
+    template: '../person-search-results',
   },
   '/personal-details': {
     controller: PersonalDetails,
-    pageTitle: 'moves::steps.personal_details.heading',
-    next: 'move-details',
     fields: [
       'police_national_computer',
       'last_name',
@@ -108,72 +107,57 @@ module.exports = {
       'gender',
       'gender_additional_information',
     ],
+    next: 'move-details',
+    pageTitle: 'moves::steps.personal_details.heading',
   },
   // OCA journey
   '/move-date-range': {
-    pageTitle: 'moves::steps.move_date.heading',
     fields: ['date_from', 'has_date_to', 'date_to'],
     next: 'prison-transfer-reason',
+    pageTitle: 'moves::steps.move_date.heading',
   },
   '/move-date': {
+    controller: MoveDate,
     editable: true,
-    pageTitle: 'moves::steps.move_date.heading',
+    fields: ['date', 'date_type', 'date_custom'],
     next: [
       {
         field: 'move_type',
-        value: 'court_appearance',
         next: [
           {
             field: 'from_location_type',
-            value: 'prison',
             next: 'court-hearings',
+            value: 'prison',
           },
           'court-information',
         ],
+        value: 'court_appearance',
       },
       {
         field: 'from_location_type',
-        value: 'prison',
         next: [
           {
             field: 'to_location_type',
-            value: 'prison',
             next: 'prison-transfer-reason',
+            value: 'prison',
           },
           'release-status',
         ],
+        value: 'prison',
       },
       'risk-information',
     ],
-    controller: MoveDate,
-    fields: ['date', 'date_type', 'date_custom'],
+    pageTitle: 'moves::steps.move_date.heading',
   },
   '/prison-transfer-reason': {
     controller: PrisonTransferReason,
-    pageTitle: 'moves::steps.prison_transfer_reason.heading',
     fields: ['prison_transfer_type', 'prison_transfer_comments'],
     next: 'agreement-status',
+    pageTitle: 'moves::steps.prison_transfer_reason.heading',
   },
   '/move-details': {
-    editable: true,
     controller: MoveDetails,
-    template: 'move-details',
-    pageTitle: 'moves::steps.move_details.heading',
-    next: [
-      {
-        field: 'from_location_type',
-        value: 'prison',
-        next: [
-          {
-            field: 'to_location_type',
-            value: 'prison',
-            next: 'move-date-range',
-          },
-          'move-date',
-        ],
-      },
-      'move-date',
-    ],
+    editable: true,
     fields: [
       'move_type',
       'to_location',
@@ -181,51 +165,68 @@ module.exports = {
       'to_location_prison_transfer',
       'prison_recall_comments',
     ],
-  },
-  '/agreement-status': {
-    pageTitle: 'moves::agreement_status.heading',
-    fields: ['move_agreed', 'move_agreed_by'],
-    next: 'special-vehicle',
-  },
-  '/court-information': {
-    controller: Assessment,
-    assessmentCategory: 'court',
-    template: 'assessment',
-    pageTitle: 'moves::steps.court_information.heading',
     next: [
       {
         field: 'from_location_type',
+        next: [
+          {
+            field: 'to_location_type',
+            next: 'move-date-range',
+            value: 'prison',
+          },
+          'move-date',
+        ],
         value: 'prison',
+      },
+      'move-date',
+    ],
+    pageTitle: 'moves::steps.move_details.heading',
+    template: 'move-details',
+  },
+  '/agreement-status': {
+    fields: ['move_agreed', 'move_agreed_by'],
+    next: 'special-vehicle',
+    pageTitle: 'moves::agreement_status.heading',
+  },
+  '/court-information': {
+    assessmentCategory: 'court',
+    controller: Assessment,
+    fields: ['solicitor', 'interpreter', 'other_court'],
+    next: [
+      {
+        field: 'from_location_type',
         next: 'release-status',
+        value: 'prison',
       },
       'risk-information',
     ],
-    fields: ['solicitor', 'interpreter', 'other_court'],
+    pageTitle: 'moves::steps.court_information.heading',
+    template: 'assessment',
   },
   '/court-hearings': {
     controller: CourtHearings,
-    pageTitle: 'moves::steps.hearing_details.heading',
-    next: [
-      {
-        field: 'has_court_case',
-        value: 'true',
-        next: 'timetable',
-      },
-      'release-status',
-    ],
     fields: [
       'has_court_case',
       'court_hearing__start_time',
       'court_hearing__court_case',
       'court_hearing__comments',
     ],
+    next: [
+      {
+        field: 'has_court_case',
+        next: 'timetable',
+        value: 'true',
+      },
+      'release-status',
+    ],
+    pageTitle: 'moves::steps.hearing_details.heading',
   },
   '/timetable': {
     controller: Timetable,
-    pageTitle: 'moves::steps.timetable.heading',
-    next: 'release-status',
-    template: 'timetable',
     fields: ['should_save_court_hearings'],
+    next: 'release-status',
+    pageTitle: 'moves::steps.timetable.heading',
+    template: 'timetable',
   },
   '/risk-information': {
     ...riskStep,
@@ -240,15 +241,15 @@ module.exports = {
   },
   '/release-status': {
     ...riskStep,
-    showPreviousAssessment: true,
     customAssessmentGroupings: [
       {
         i18nContext: 'release_status',
         keys: ['not_to_be_released'],
       },
     ],
-    pageTitle: 'moves::steps.release_status.heading',
     fields: ['not_to_be_released'],
+    pageTitle: 'moves::steps.release_status.heading',
+    showPreviousAssessment: true,
   },
   '/health-information': {
     ...healthStep,
@@ -264,19 +265,20 @@ module.exports = {
   },
   '/special-vehicle': {
     ...healthStep,
-    showPreviousAssessment: true,
-    pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
+    pageTitle: 'moves::steps.special_vehicle.heading',
+    showPreviousAssessment: true,
   },
   '/document': {
-    enctype: 'multipart/form-data',
     controller: Document,
+    enctype: 'multipart/form-data',
+    fields: ['documents'],
     next: 'save',
     pageTitle: 'moves::steps.document.heading',
-    fields: ['documents'],
   },
   '/save': {
-    skip: true,
     controller: Save,
+    skip: true,
   },
 }
+/* eslint-enable sort-keys-fix/sort-keys-fix */

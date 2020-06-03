@@ -12,10 +12,10 @@ const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
 const SESSION = {
+  DB: process.env.SESSION_DB_INDEX || 0,
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
-  DB: process.env.SESSION_DB_INDEX || 0,
 }
 
 function _authUrl(path) {
@@ -23,63 +23,42 @@ function _authUrl(path) {
 }
 
 module.exports = {
-  IS_DEV,
-  IS_PRODUCTION,
-  SESSION,
-  AUTH_EXPIRY_MARGIN: process.env.AUTH_EXPIRY_MARGIN || 5 * 60, // 5 minutes
-  SERVER_HOST,
-  PORT: process.env.PORT || 3000,
-  LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
-  NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
-  FEEDBACK_URL: process.env.FEEDBACK_URL,
-  SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
-  BUILD_DATE: process.env.APP_BUILD_DATE,
-  BUILD_BRANCH: process.env.APP_BUILD_TAG,
-  GIT_SHA: process.env.APP_GIT_COMMIT,
+  ANALYTICS: {
+    GA_ID: process.env.GOOGLE_ANALYTICS_ID,
+  },
   API: {
-    BASE_URL: API_BASE_URL + process.env.API_PATH,
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
-    HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
+    BASE_URL: API_BASE_URL + process.env.API_PATH,
+    CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
     CLIENT_ID: process.env.API_CLIENT_ID,
+    DISABLE_CACHE: process.env.API_DISABLE_CACHE,
+    HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
     SECRET: process.env.API_SECRET,
     TIMEOUT: 30000, // in milliseconds
-    CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
-    DISABLE_CACHE: process.env.API_DISABLE_CACHE,
-  },
-  PLACEHOLDER_IMAGES: {
-    PERSON: 'images/person-fallback.png',
-  },
-  DATE_FORMATS: {
-    SHORT: 'd M yyyy',
-    LONG: 'd MMM yyyy',
-    WITH_DAY: 'EEEE d MMM yyyy',
-    URL_PARAM: 'yyyy-MM-dd',
-    WEEK_STARTS_ON: 1,
-  },
-  FILE_UPLOADS: {
-    UPLOAD_DIR: '.tmp/uploads/',
-    MAX_FILE_SIZE: 50 * 1024 * 1024, // 50mb
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
-  SENTRY: {
-    DSN: process.env.SENTRY_DSN,
-    ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
-  },
-  REDIS: {
-    SESSION: {
-      url: process.env.REDIS_URL,
-      host: process.env.REDIS_HOST,
-      auth_pass: process.env.REDIS_AUTH_TOKEN,
-      db: SESSION.DB,
-      tls: process.env.REDIS_AUTH_TOKEN
-        ? { checkServerIdentity: () => undefined }
-        : null,
-      ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
+  AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
+  AUTH_EXPIRY_MARGIN: process.env.AUTH_EXPIRY_MARGIN || 5 * 60, // 5 minutes
+  AUTH_PROVIDERS: {
+    hmpps: {
+      access_url: _authUrl('/auth/oauth/token'),
+      authorize_url: _authUrl('/auth/oauth/authorize'),
+      groups_url: userName => {
+        return _authUrl(`/auth/api/authuser/${userName}/groups`)
+      },
+      healthcheck_url: _authUrl('/auth/ping'),
+      key: AUTH_KEY,
+      logout_url: _authUrl(
+        `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
+      ),
+      oauth: 2,
+      response: ['tokens', 'jwt'],
+      scope: ['read'],
+      secret: process.env.AUTH_PROVIDER_SECRET,
+      token_endpoint_auth_method: 'client_secret_basic',
+      user_url: _authUrl('/auth/api/user/me'),
     },
   },
-  USER_PERMISSIONS: process.env.USER_PERMISSIONS,
-  USER_LOCATIONS: process.env.USER_LOCATIONS,
-  AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
   AUTH_WHITELIST_URLS: [
     '/auth',
     '/auth/callback',
@@ -87,71 +66,92 @@ module.exports = {
     '/healthcheck',
     '/healthcheck/ping',
   ],
-  AUTH_PROVIDERS: {
-    hmpps: {
-      oauth: 2,
-      scope: ['read'],
-      response: ['tokens', 'jwt'],
-      token_endpoint_auth_method: 'client_secret_basic',
-      authorize_url: _authUrl('/auth/oauth/authorize'),
-      access_url: _authUrl('/auth/oauth/token'),
-      healthcheck_url: _authUrl('/auth/ping'),
-      logout_url: _authUrl(
-        `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
-      ),
-      groups_url: userName => {
-        return _authUrl(`/auth/api/authuser/${userName}/groups`)
-      },
-      user_url: _authUrl('/auth/api/user/me'),
-      key: AUTH_KEY,
-      secret: process.env.AUTH_PROVIDER_SECRET,
-    },
+  BUILD_BRANCH: process.env.APP_BUILD_TAG,
+  BUILD_DATE: process.env.APP_BUILD_DATE,
+  DATE_FORMATS: {
+    LONG: 'd MMM yyyy',
+    SHORT: 'd M yyyy',
+    URL_PARAM: 'yyyy-MM-dd',
+    WEEK_STARTS_ON: 1,
+    WITH_DAY: 'EEEE d MMM yyyy',
   },
   DEFAULT_AUTH_PROVIDER: 'hmpps',
-  NOMIS_ELITE2_API: {
-    user_caseloads_url: `${NOMIS_ELITE2_API_BASE_URL}/api/users/me/caseLoads`,
-    healthcheck_url: `${NOMIS_ELITE2_API_BASE_URL}/ping`,
-  },
-  ANALYTICS: {
-    GA_ID: process.env.GOOGLE_ANALYTICS_ID,
-  },
-  TAG_CATEGORY_WHITELIST: {
-    risk: {
-      tagClass: 'app-tag--destructive',
-      sortOrder: 1,
-    },
-    health: {
-      tagClass: '',
-      sortOrder: 2,
-    },
-  },
-  LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
-  FEATURE_FLAGS: {
-    EDITABILITY: process.env.FEATURE_FLAG_EDITABILITY,
-  },
   E2E: {
     BASE_URL: process.env.E2E_BASE_URL || BASE_URL,
     ROLES: {
-      POLICE: {
-        username: process.env.E2E_POLICE_USERNAME,
-        password: process.env.E2E_POLICE_PASSWORD,
+      OCA: {
+        password: process.env.E2E_OCA_PASSWORD,
+        username: process.env.E2E_OCA_USERNAME,
       },
-      STC: {
-        username: process.env.E2E_STC_USERNAME,
-        password: process.env.E2E_STC_PASSWORD,
+      POLICE: {
+        password: process.env.E2E_POLICE_PASSWORD,
+        username: process.env.E2E_POLICE_USERNAME,
       },
       PRISON: {
-        username: process.env.E2E_PRISON_USERNAME,
         password: process.env.E2E_PRISON_PASSWORD,
+        username: process.env.E2E_PRISON_USERNAME,
+      },
+      STC: {
+        password: process.env.E2E_STC_PASSWORD,
+        username: process.env.E2E_STC_USERNAME,
       },
       SUPPLIER: {
-        username: process.env.E2E_SUPPLIER_USERNAME,
         password: process.env.E2E_SUPPLIER_PASSWORD,
-      },
-      OCA: {
-        username: process.env.E2E_OCA_USERNAME,
-        password: process.env.E2E_OCA_PASSWORD,
+        username: process.env.E2E_SUPPLIER_USERNAME,
       },
     },
   },
+  FEATURE_FLAGS: {
+    EDITABILITY: process.env.FEATURE_FLAG_EDITABILITY,
+  },
+  FEEDBACK_URL: process.env.FEEDBACK_URL,
+  FILE_UPLOADS: {
+    MAX_FILE_SIZE: 50 * 1024 * 1024, // 50mb
+    UPLOAD_DIR: '.tmp/uploads/',
+  },
+  GIT_SHA: process.env.APP_GIT_COMMIT,
+  IS_DEV,
+  IS_PRODUCTION,
+  LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
+  LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
+  NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
+  NOMIS_ELITE2_API: {
+    healthcheck_url: `${NOMIS_ELITE2_API_BASE_URL}/ping`,
+    user_caseloads_url: `${NOMIS_ELITE2_API_BASE_URL}/api/users/me/caseLoads`,
+  },
+  PLACEHOLDER_IMAGES: {
+    PERSON: 'images/person-fallback.png',
+  },
+  PORT: process.env.PORT || 3000,
+  REDIS: {
+    SESSION: {
+      auth_pass: process.env.REDIS_AUTH_TOKEN,
+      db: SESSION.DB,
+      host: process.env.REDIS_HOST,
+      tls: process.env.REDIS_AUTH_TOKEN
+        ? { checkServerIdentity: () => undefined }
+        : null,
+      ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
+      url: process.env.REDIS_URL,
+    },
+  },
+  SENTRY: {
+    DSN: process.env.SENTRY_DSN,
+    ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
+  },
+  SERVER_HOST,
+  SESSION,
+  SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+  TAG_CATEGORY_WHITELIST: {
+    health: {
+      sortOrder: 2,
+      tagClass: '',
+    },
+    risk: {
+      sortOrder: 1,
+      tagClass: 'app-tag--destructive',
+    },
+  },
+  USER_LOCATIONS: process.env.USER_LOCATIONS,
+  USER_PERMISSIONS: process.env.USER_PERMISSIONS,
 }

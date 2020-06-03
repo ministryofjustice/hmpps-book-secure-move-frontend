@@ -17,20 +17,20 @@ const wizardConfig = {
 const createConfig = {
   ...wizardConfig,
   controller: FormWizardController,
-  name: 'create-an-allocation',
-  templatePath: 'allocation/views/create/',
-  template: '../../../form-wizard',
   journeyName: 'create-an-allocation',
   journeyPageTitle: 'actions::create_allocation',
+  name: 'create-an-allocation',
+  template: '../../../form-wizard',
+  templatePath: 'allocation/views/create/',
 }
 const cancelConfig = {
   ...wizardConfig,
   controller: FormWizardController,
-  name: 'cancel-an-allocation',
-  templatePath: 'allocation/views/cancel/',
-  template: '../../../form-wizard',
   journeyName: 'cancel-an-allocation',
   journeyPageTitle: 'actions::cancel_allocation',
+  name: 'cancel-an-allocation',
+  template: '../../../form-wizard',
+  templatePath: 'allocation/views/cancel/',
 }
 
 router.param('allocationId', setAllocation)
@@ -57,6 +57,6 @@ router.get('/:allocationId', protectRoute('allocations:view'), view)
 
 // Export
 module.exports = {
-  router,
   mountpath: '/allocation',
+  router,
 }

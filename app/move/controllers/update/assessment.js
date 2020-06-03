@@ -54,8 +54,8 @@ class UpdateAssessmentController extends UpdateBase {
       if (!isEqual(oldKeys, newKeys)) {
         const personId = req.getPersonId()
         await personService.update({
-          id: personId,
           assessment_answers: updatedAssessments,
+          id: personId,
         })
 
         this.setFlash(req)

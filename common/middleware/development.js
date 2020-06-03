@@ -37,6 +37,6 @@ function setUserLocations(locations) {
 
 module.exports = {
   bypassAuth,
-  setUserPermissions,
   setUserLocations,
+  setUserPermissions,
 }

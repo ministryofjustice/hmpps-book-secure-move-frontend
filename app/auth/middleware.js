@@ -33,8 +33,8 @@ function processAuthResponse() {
           fullname,
           locations,
           roles: decodedAccessToken.authorities,
-          username,
           userId,
+          username,
         })
 
         // copy any previous session properties ignoring grant or any that already exist

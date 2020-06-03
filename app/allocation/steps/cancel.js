@@ -3,16 +3,16 @@ const { cancelControllers } = require('../controllers')
 module.exports = {
   '/': {
     entryPoint: true,
+    next: 'reason',
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'reason',
   },
   '/reason': {
-    template: 'cancel-reason',
+    buttonClasses: 'govuk-button--warning',
+    buttonText: 'actions::cancel_move_confirmation',
     controller: cancelControllers.CancelController,
     pageTitle: 'allocations::allocation_cancel_reasons.page_title',
-    buttonText: 'actions::cancel_move_confirmation',
-    buttonClasses: 'govuk-button--warning',
+    template: 'cancel-reason',
   },
 }

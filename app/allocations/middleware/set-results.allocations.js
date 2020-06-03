@@ -8,11 +8,11 @@ async function setResultsAllocations(req, res, next) {
   const currentLocationId = get(req.session, 'currentLocation.id')
   const userPermissions = get(req.session, 'user.permissions')
   const displayConfig = {
+    showFromLocation: !currentLocationId,
     showRemaining: permissions.check(
       'allocation:person:assign',
       userPermissions
     ),
-    showFromLocation: !currentLocationId,
   }
 
   try {

@@ -47,9 +47,9 @@ async function setResultsOutgoing(req, res, next) {
       active: presenters.movesByToLocation(activeMoves),
       cancelled: cancelledMoves.map(
         presenters.moveToCardComponent({
+          showImage: false,
           showMeta: false,
           showTags: false,
-          showImage: false,
         })
       ),
     }

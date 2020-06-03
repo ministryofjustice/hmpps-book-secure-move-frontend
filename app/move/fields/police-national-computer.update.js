@@ -4,13 +4,13 @@ const policeNationalComputerUpdate = {
   ...policeNationalComputer,
   readOnly: true,
   updateComponent: {
-    component: 'appReadOnlyField',
     classes: '',
+    component: 'appReadOnlyField',
     items: [
       {
         component: 'govukDetails',
-        summaryHtml: 'fields::police_national_computer.details.summaryHtml',
         html: 'fields::police_national_computer.details.html',
+        summaryHtml: 'fields::police_national_computer.details.summaryHtml',
       },
     ],
   },

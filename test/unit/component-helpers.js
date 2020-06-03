@@ -15,8 +15,8 @@ const views = [
 ]
 
 const nunjucksEnvironment = nunjucks.configure(views, {
-  trimBlocks: true,
   lstripBlocks: true,
+  trimBlocks: true,
 })
 
 // Global variables
@@ -101,6 +101,6 @@ function getExamples(componentPath) {
 }
 
 module.exports = {
-  renderComponentHtmlToCheerio,
   getExamples,
+  renderComponentHtmlToCheerio,
 }

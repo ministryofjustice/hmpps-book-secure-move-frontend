@@ -1,22 +1,22 @@
 const courtHearingCourtCase = {
-  name: 'court_hearing__court_case',
-  validate: 'required',
   component: 'govukRadios',
-  items: [],
-  skip: true,
+  dependent: {
+    field: 'has_court_case',
+    value: 'true',
+  },
   fieldset: {
     legend: {
-      text: 'fields::court_hearing__court_case.label',
       classes: 'govuk-fieldset__legend--s',
+      text: 'fields::court_hearing__court_case.label',
     },
   },
   hint: {
     text: 'fields::court_hearing__court_case.hint',
   },
-  dependent: {
-    field: 'has_court_case',
-    value: 'true',
-  },
+  items: [],
+  name: 'court_hearing__court_case',
+  skip: true,
+  validate: 'required',
 }
 
 module.exports = courtHearingCourtCase

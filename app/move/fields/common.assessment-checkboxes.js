@@ -4,19 +4,19 @@ function assessmentCheckboxes(name) {
   }
 
   return {
-    name,
     component: 'govukCheckboxes',
-    multiple: true,
-    items: [],
     fieldset: {
       legend: {
-        text: `fields::${name}.label`,
         classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+        text: `fields::${name}.label`,
       },
     },
     hint: {
       text: `fields::${name}.hint`,
     },
+    items: [],
+    multiple: true,
+    name,
   }
 }
 

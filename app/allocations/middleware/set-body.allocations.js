@@ -5,9 +5,9 @@ function setBodyAllocations(req, res, next) {
   const { dateRange, locationId } = req.params
 
   set(req, 'body.allocations', {
-    status,
-    moveDate: dateRange,
     fromLocationId: locationId,
+    moveDate: dateRange,
+    status,
   })
 
   next()

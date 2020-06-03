@@ -10,10 +10,10 @@ const {
 const createSteps = require('./create')
 
 const updateStepPropOverrides = {
-  entryPoint: true,
   backLink: null,
-  next: undefined,
   buttonText: 'actions::save_and_continue',
+  entryPoint: true,
+  next: undefined,
 }
 
 const updateSteps = [

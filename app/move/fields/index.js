@@ -74,8 +74,8 @@ const createFields = {
   move_agreed_by: moveAgreedBy,
   move_type: moveType,
   not_to_be_released: assessmentAnswer({
-    isRequired: true,
     isExplicit: true,
+    isRequired: true,
   }),
   other_court: assessmentAnswer({ isRequired: true }),
   other_health: assessmentAnswer({ isRequired: true }),
@@ -87,25 +87,25 @@ const createFields = {
     ...cloneDeep(additionalInformation),
     skip: true,
   },
-  prison_transfer_type: prisonTransferType,
   prison_transfer_comments: {
     ...cloneDeep(additionalInformation),
-    name: 'prison_transfer_comments',
     id: 'prison_transfer_comments',
+    name: 'prison_transfer_comments',
   },
+  prison_transfer_type: prisonTransferType,
   self_harm: assessmentAnswer(),
+  should_save_court_hearings: shouldSaveCourtHearings,
   solicitor: assessmentAnswer(),
   special_diet_or_allergy: assessmentAnswer(),
   special_vehicle: assessmentAnswer({
-    isRequired: true,
     isExplicit: true,
+    isRequired: true,
   }),
-  should_save_court_hearings: shouldSaveCourtHearings,
   to_location: toLocation,
   to_location_court_appearance: toLocationCourtAppearance,
   to_location_prison_transfer: toLocationPrisonTransfer,
-  wheelchair: assessmentAnswer(),
   violent: assessmentAnswer(),
+  wheelchair: assessmentAnswer(),
 }
 
 const updateFields = {

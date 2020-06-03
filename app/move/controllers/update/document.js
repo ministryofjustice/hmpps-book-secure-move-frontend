@@ -44,8 +44,8 @@ class UpdateDocumentUploadController extends UpdateBase {
     }
     try {
       await moveService.update({
-        id: req.getMoveId(),
         documents: req.form.values.documents,
+        id: req.getMoveId(),
       })
       return res.redirect(this.getBaseUrl(req))
     } catch (err) {

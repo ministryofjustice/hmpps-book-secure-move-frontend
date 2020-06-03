@@ -12,15 +12,15 @@ function dashboard(req, res) {
   }
 
   const sections = {
-    singleRequests: {
-      permission: 'moves:view:proposed',
-      heading: 'dashboard::sections.single_requests.heading',
-      filter: req.filterSingleRequests,
-    },
     allocations: {
-      permission: 'allocations:view',
-      heading: 'dashboard::sections.allocations.heading',
       filter: req.filterAllocations,
+      heading: 'dashboard::sections.allocations.heading',
+      permission: 'allocations:view',
+    },
+    singleRequests: {
+      filter: req.filterSingleRequests,
+      heading: 'dashboard::sections.single_requests.heading',
+      permission: 'moves:view:proposed',
     },
   }
 

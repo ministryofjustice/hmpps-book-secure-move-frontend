@@ -10,14 +10,14 @@ const getUpdateLinks = (updateSteps, urls) => {
     const categoryText = i18n.t(`moves::update_link.categories.${category}`)
     if (categoryText) {
       updateLinks[category] = {
-        category,
         attributes: {
           'data-update-link': category,
         },
+        category,
         href: urls[category],
         html: i18n.t('moves::update_link.link_text', {
-          context: 'with_category',
           category: categoryText,
+          context: 'with_category',
         }),
       }
     }

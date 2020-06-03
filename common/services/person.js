@@ -37,18 +37,11 @@ const assessmentKeys = [
 const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const personService = {
-  transform(person) {
-    if (!person) {
-      return undefined
-    }
-
-    return {
-      ...person,
-      image_url: `/person/${person.id}/image`,
-      fullname: [person.last_name, person.first_names]
-        .filter(Boolean)
-        .join(', '),
-    }
+  create(data) {
+    return apiClient
+      .create('person', personService.format(data))
+      .then(response => response.data)
+      .then(person => personService.transform(person))
   },
 
   format(data) {
@@ -60,7 +53,7 @@ const personService = {
         }
 
         if (identifierKeys.includes(key)) {
-          return { value, identifier_type: key }
+          return { identifier_type: key, value }
         }
       }
 
@@ -85,56 +78,6 @@ const personService = {
     )
   },
 
-  unformat(
-    person,
-    fields = [],
-    {
-      identifier = identifierKeys,
-      relationship = relationshipKeys,
-      date = dateKeys,
-      assessment = assessmentKeys,
-      explicitAssessment = explicitAssessmentKeys,
-    } = {}
-  ) {
-    return unformat(person, fields, {
-      identifier,
-      relationship,
-      date,
-      assessment,
-      explicitAssessment,
-    })
-  },
-
-  create(data) {
-    return apiClient
-      .create('person', personService.format(data))
-      .then(response => response.data)
-      .then(person => personService.transform(person))
-  },
-
-  update(data) {
-    if (!data.id) {
-      return
-    }
-
-    return apiClient
-      .update('person', personService.format(data))
-      .then(response => response.data)
-      .then(person => personService.transform(person))
-  },
-
-  getImageUrl(personId) {
-    if (!personId) {
-      return Promise.reject(new Error('No ID supplied'))
-    }
-
-    return apiClient
-      .one('person', personId)
-      .all('image')
-      .get()
-      .then(response => response.data.url)
-  },
-
   getActiveCourtCases(personId) {
     if (!personId) {
       return Promise.reject(new Error('No ID supplied'))
@@ -147,6 +90,27 @@ const personService = {
         'filter[active]': true,
       })
       .then(response => response.data)
+  },
+
+  getByIdentifiers(identifiers) {
+    const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
+
+    return apiClient
+      .findAll('person', filter)
+      .then(response => response.data)
+      .then(data => data.map(person => personService.transform(person)))
+  },
+
+  getImageUrl(personId) {
+    if (!personId) {
+      return Promise.reject(new Error('No ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('image')
+      .get()
+      .then(response => response.data.url)
   },
 
   getTimetableByDate(personId, date) {
@@ -166,13 +130,49 @@ const personService = {
       .then(response => response.data)
   },
 
-  getByIdentifiers(identifiers) {
-    const filter = mapKeys(identifiers, (value, key) => `filter[${key}]`)
+  transform(person) {
+    if (!person) {
+      return undefined
+    }
+
+    return {
+      ...person,
+      fullname: [person.last_name, person.first_names]
+        .filter(Boolean)
+        .join(', '),
+      image_url: `/person/${person.id}/image`,
+    }
+  },
+
+  unformat(
+    person,
+    fields = [],
+    {
+      identifier = identifierKeys,
+      relationship = relationshipKeys,
+      date = dateKeys,
+      assessment = assessmentKeys,
+      explicitAssessment = explicitAssessmentKeys,
+    } = {}
+  ) {
+    return unformat(person, fields, {
+      assessment,
+      date,
+      explicitAssessment,
+      identifier,
+      relationship,
+    })
+  },
+
+  update(data) {
+    if (!data.id) {
+      return
+    }
 
     return apiClient
-      .findAll('person', filter)
+      .update('person', personService.format(data))
       .then(response => response.data)
-      .then(data => data.map(person => personService.transform(person)))
+      .then(person => personService.transform(person))
   },
 }
 

@@ -20,10 +20,10 @@ function setfilterAllocations(items = []) {
           })
 
           return {
-            value,
-            label: i18n.t(item.label).toLowerCase(),
             active: item.status === get(req, 'body.allocations.status'),
             href: `${item.href || req.baseUrl + req.path}?${query}`,
+            label: i18n.t(item.label).toLowerCase(),
+            value,
           }
         })
     )

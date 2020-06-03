@@ -1,17 +1,17 @@
 const documents = {
-  id: 'documents',
-  name: 'documents',
   component: 'appMultiFileUpload',
   heading: {
     text: 'fields::documents.heading',
   },
-  label: {
-    text: 'fields::documents.label',
-    classes: 'govuk-label--m',
-  },
   hint: {
     text: 'fields::documents.hint',
   },
+  id: 'documents',
+  label: {
+    classes: 'govuk-label--m',
+    text: 'fields::documents.label',
+  },
+  name: 'documents',
 }
 
 module.exports = documents

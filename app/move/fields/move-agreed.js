@@ -1,25 +1,25 @@
 const moveAgreed = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'move_agreed',
   fieldset: {
     legend: {
-      text: 'fields::move_agreed.label',
       classes: 'govuk-visually-hidden govuk-fieldset__legend--m',
+      text: 'fields::move_agreed.label',
     },
   },
   items: [
     {
-      id: 'move_agreed',
-      value: 'true',
-      text: 'Yes',
       conditional: 'move_agreed_by',
+      id: 'move_agreed',
+      text: 'Yes',
+      value: 'true',
     },
     {
-      value: 'false',
       text: 'No',
+      value: 'false',
     },
   ],
+  name: 'move_agreed',
+  validate: 'required',
 }
 
 module.exports = moveAgreed

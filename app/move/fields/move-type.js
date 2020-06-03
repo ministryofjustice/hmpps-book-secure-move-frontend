@@ -1,31 +1,31 @@
 const moveType = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'move_type',
   fieldset: {
     legend: {
-      text: 'fields::move_type.label',
       classes: 'govuk-fieldset__legend--m',
+      text: 'fields::move_type.label',
     },
   },
   items: [
     {
-      id: 'move_type',
-      value: 'court_appearance',
-      text: 'fields::move_type.items.court_appearance.label',
       conditional: 'to_location_court_appearance',
+      id: 'move_type',
+      text: 'fields::move_type.items.court_appearance.label',
+      value: 'court_appearance',
     },
     {
-      value: 'prison_transfer',
-      text: 'fields::move_type.items.prison_transfer.label',
       conditional: 'to_location_prison_transfer',
+      text: 'fields::move_type.items.prison_transfer.label',
+      value: 'prison_transfer',
     },
     {
-      value: 'prison_recall',
-      text: 'fields::move_type.items.prison_recall.label',
       conditional: 'prison_recall_comments',
+      text: 'fields::move_type.items.prison_recall.label',
+      value: 'prison_recall',
     },
   ],
+  name: 'move_type',
+  validate: 'required',
 }
 
 module.exports = moveType

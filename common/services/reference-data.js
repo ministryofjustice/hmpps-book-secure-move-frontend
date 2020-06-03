@@ -3,6 +3,12 @@ const { flattenDeep, sortBy } = require('lodash')
 const apiClient = require('../lib/api-client')()
 
 const referenceDataService = {
+  getAllocationComplexCases() {
+    return apiClient.findAll('allocation_complex_case').then(response => {
+      return response.data
+    })
+  },
+
   getAssessmentQuestions(category) {
     return apiClient
       .findAll('assessment_question', {
@@ -111,12 +117,6 @@ const referenceDataService = {
     return Promise.all(locationPromises).then(locations =>
       locations.filter(Boolean)
     )
-  },
-
-  getAllocationComplexCases() {
-    return apiClient.findAll('allocation_complex_case').then(response => {
-      return response.data
-    })
   },
 }
 

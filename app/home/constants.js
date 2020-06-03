@@ -5,19 +5,19 @@ const {
 } = require('../moves/constants')
 
 const FILTERS = {
+  allocations: [
+    {
+      href: allocationsUrl,
+      label: 'dashboard::sections.allocations.summary.total',
+      status: '',
+    },
+  ],
   requested: movesFilters.requested.map(item => {
     return {
       ...item,
       href: `${movesUrl}/requested`,
     }
   }),
-  allocations: [
-    {
-      label: 'dashboard::sections.allocations.summary.total',
-      status: '',
-      href: allocationsUrl,
-    },
-  ],
 }
 
 module.exports = {

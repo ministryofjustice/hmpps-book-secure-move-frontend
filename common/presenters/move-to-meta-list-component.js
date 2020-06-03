@@ -79,22 +79,22 @@ function moveToMetaListComponent(
       },
     },
     {
+      action: actions.move,
       key: {
         text: i18n.t('fields::move_type.short_label'),
       },
       value: {
         text: destinationLabel + destinationSuffix,
       },
-      action: actions.move,
     },
     {
+      action: actions.date,
       key: {
         text: i18n.t('fields::date_type.label'),
       },
       value: {
         text: _formatDate(date),
       },
-      action: actions.date,
     },
     {
       key: {

@@ -36,11 +36,11 @@ module.exports = function assessmentCategoryToPanelListComponent({
       attributes: {
         id: kebabCase(title),
       },
-      tag: {
-        text: title,
-        classes: tagClass,
-      },
       items: answers.map(_mapAnswer),
+      tag: {
+        classes: tagClass,
+        text: title,
+      },
     }
   })
 

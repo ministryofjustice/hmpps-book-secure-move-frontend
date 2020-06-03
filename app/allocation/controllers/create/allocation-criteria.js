@@ -31,10 +31,10 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
     req.form.values.complex_cases = originalFields.map(originalField => {
       const { key, text, value } = originalField
       return {
-        key,
-        title: text,
         allocation_complex_case_id: value,
         answer: complexCases.includes(value),
+        key,
+        title: text,
       }
     })
     super.saveValues(req, res, next)

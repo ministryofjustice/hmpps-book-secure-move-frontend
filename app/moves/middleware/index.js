@@ -10,8 +10,8 @@ module.exports = {
   redirectBaseUrl,
   saveUrl,
   setBodySingleRequests,
-  setFromLocation,
   setFilterSingleRequests,
+  setFromLocation,
   setResultsOutgoing,
   setResultsSingleRequests,
 }

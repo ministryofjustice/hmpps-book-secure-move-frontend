@@ -41,9 +41,9 @@ const createConfig = {
 const updateConfig = {
   ...wizardConfig,
   controller: update.Base,
-  templatePath: 'move/views/create/',
-  template: '../../../form-wizard',
   journeyPageTitle: 'actions::update_move',
+  template: '../../../form-wizard',
+  templatePath: 'move/views/create/',
 }
 const cancelConfig = {
   ...wizardConfig,
@@ -52,17 +52,17 @@ const cancelConfig = {
 }
 const reviewConfig = {
   ...wizardConfig,
-  name: 'review-move',
   journeyName: 'review-move',
+  name: 'review-move',
 }
 const assignConfig = {
   ...wizardConfig,
   controller: assign.Base,
-  name: 'allocation:person:assign',
-  templatePath: 'move/views/create/',
-  template: '../../../form-wizard',
   journeyName: 'allocation:person:assign',
   journeyPageTitle: 'allocation::person:assign',
+  name: 'allocation:person:assign',
+  template: '../../../form-wizard',
+  templatePath: 'move/views/create/',
 }
 
 // Define param middleware
@@ -97,8 +97,8 @@ if (FEATURE_FLAGS.EDITABILITY) {
     const { key, steps } = updateJourney
     const updateStepConfig = {
       ...updateConfig,
-      name: `update-move-${key}`,
       journeyName: `update-move-${key}`,
+      name: `update-move-${key}`,
     }
     router.use(
       '/:moveId/edit',
@@ -111,11 +111,11 @@ if (FEATURE_FLAGS.EDITABILITY) {
 const unassignConfig = {
   ...wizardConfig,
   controller: FormWizardController,
-  name: 'unassign-an-allocation',
-  templatePath: 'move/views/',
-  template: '../../../form-wizard',
   journeyName: 'unassign-an-allocation',
   journeyPageTitle: 'actions::cancel_allocation',
+  name: 'unassign-an-allocation',
+  template: '../../../form-wizard',
+  templatePath: 'move/views/',
 }
 router.use(
   '/:moveId/unassign',

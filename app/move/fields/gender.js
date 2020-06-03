@@ -1,14 +1,14 @@
 const gender = {
-  validate: 'required',
   component: 'govukRadios',
   fieldset: {
     legend: {
-      text: 'fields::gender.label',
       classes: 'govuk-fieldset__legend--s',
+      text: 'fields::gender.label',
     },
   },
-  name: 'gender',
   items: [],
+  name: 'gender',
+  validate: 'required',
 }
 
 module.exports = gender

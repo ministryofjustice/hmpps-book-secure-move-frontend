@@ -10,12 +10,12 @@ const sentenceLength = require('./sentence-length')
 const toLocation = require('./to-location')
 
 const createFields = {
-  date: allocationDate,
-  complex_cases: complexCases,
-  from_location: fromLocation,
   complete_in_full: completeInFull,
-  moves_count: movesCount,
+  complex_cases: complexCases,
+  date: allocationDate,
+  from_location: fromLocation,
   has_other_criteria: hasOtherCriteria,
+  moves_count: movesCount,
   other_criteria: otherCriteria,
   prisoner_category: prisonerCategory,
   sentence_length: sentenceLength,

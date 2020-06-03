@@ -1,30 +1,30 @@
 const prisonerCategory = {
-  validate: 'required',
   component: 'govukRadios',
-  name: 'prisoner_category',
-  label: {
-    text: 'fields::prisoner_category.label',
-  },
   fieldset: {
     legend: {
-      text: 'fields::prisoner_category.label',
       classes: 'govuk-fieldset__legend--m',
+      text: 'fields::prisoner_category.label',
     },
   },
   items: [
     {
-      value: 'B',
       text: 'B',
+      value: 'B',
     },
     {
-      value: 'C',
       text: 'C',
+      value: 'C',
     },
     {
-      value: 'D',
       text: 'D',
+      value: 'D',
     },
   ],
+  label: {
+    text: 'fields::prisoner_category.label',
+  },
+  name: 'prisoner_category',
+  validate: 'required',
 }
 
 module.exports = prisonerCategory

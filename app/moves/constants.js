@@ -6,9 +6,9 @@ const {
 
 const actions = [
   {
+    href: '/move/new',
     permission: 'move:create',
     text: 'actions::create_move',
-    href: '/move/new',
   },
 ]
 
@@ -25,12 +25,12 @@ const COLLECTION_MIDDLEWARE = [
 
 const DEFAULTS = {
   QUERY: {
-    requested: { status: 'pending' },
     outgoing: {},
+    requested: { status: 'pending' },
   },
   TIME_PERIOD: {
-    requested: 'week',
     outgoing: 'day',
+    requested: 'week',
   },
 }
 
