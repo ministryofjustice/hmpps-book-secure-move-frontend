@@ -237,6 +237,7 @@ describe('Move controllers', function() {
                   should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
                 }
               }
+
               await controller.saveValues(req, {}, nextSpy)
             })
 

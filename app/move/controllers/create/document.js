@@ -30,6 +30,7 @@ class DocumentUploadController extends CreateBaseController {
     if (req.body.upload || req.body.delete) {
       req.form.options.next = req.originalUrl
     }
+
     next()
   }
 

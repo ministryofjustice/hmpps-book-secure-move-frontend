@@ -20,6 +20,7 @@ const singleRequestService = {
     const [createdAtFrom, createdAtTo] = createdAtDate
 
     let statusFilter
+
     switch (status) {
       case 'pending':
         statusFilter = {

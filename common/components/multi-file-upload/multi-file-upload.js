@@ -118,9 +118,11 @@ MultiFileUpload.prototype = {
         })
         .catch(error => {
           let errorMessage = 'could not be deleted'
+
           if (error.response && error.response.data) {
             errorMessage = error.response.data
           }
+
           const row = target.closest('.dz-success')
           row.classList.remove('dz-success')
           row.classList.add('dz-error')

@@ -26,9 +26,11 @@ const allocationService = {
           value = JSON.parse(value)
         } catch (e) {}
       }
+
       if (relationships.includes(key) && typeof value === 'string') {
         return { id: value }
       }
+
       return value
     })
   },

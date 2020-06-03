@@ -6,6 +6,7 @@ const getUpdateUrls = (updateSteps, moveId, userPermissions) => {
     if (!check(updateJourney.permission, userPermissions)) {
       return
     }
+
     const steps = updateJourney.steps
     const entryPointUrl = Object.keys(steps).filter(
       step => steps[step].entryPoint

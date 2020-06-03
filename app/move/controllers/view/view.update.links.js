@@ -4,10 +4,13 @@ const getUpdateLinks = (updateSteps, urls) => {
   const updateLinks = {}
   updateSteps.forEach(updateJourney => {
     const category = updateJourney.key
+
     if (!urls[category]) {
       return
     }
+
     const categoryText = i18n.t(`moves::update_link.categories.${category}`)
+
     if (categoryText) {
       updateLinks[category] = {
         category,

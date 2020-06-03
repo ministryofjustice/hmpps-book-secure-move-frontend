@@ -154,6 +154,7 @@ function translateField([key, field]) {
 
   translationPaths.forEach(path => {
     const key = get(translated, path)
+
     if (key) {
       set(translated, path, i18n.t(key))
     }

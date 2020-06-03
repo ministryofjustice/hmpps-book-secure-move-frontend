@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
 function MockFormData() {}
+
 MockFormData.prototype.append = sinon.stub()
 
 const documentService = proxyquire('./document', {

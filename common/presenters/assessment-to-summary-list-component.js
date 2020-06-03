@@ -14,6 +14,7 @@ function _filterAnswer(category) {
     if (!category) {
       return true
     }
+
     return answer.category === category
   }
 }

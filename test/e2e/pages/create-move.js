@@ -193,6 +193,7 @@ class CreateMovePage extends Page {
         type: 'radio',
       },
     }
+
     if (exclude) {
       data = omit(data, exclude)
     } else if (include) {
@@ -261,6 +262,7 @@ class CreateMovePage extends Page {
     let dateCustom
 
     let dateType = dateValue
+
     if (dateType !== 'Today' && dateType !== 'Tomorrow') {
       dateType = 'Another date'
       dateCustom = dateValue
@@ -273,6 +275,7 @@ class CreateMovePage extends Page {
         type: 'radio',
       },
     }
+
     if (dateCustom) {
       data.dateCustom = {
         selector: this.fields.dateCustom,

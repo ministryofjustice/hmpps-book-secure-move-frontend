@@ -28,6 +28,7 @@ module.exports = {
     if (!validDate) {
       return null
     }
+
     return format(parsedDate, DATE_FORMATS.URL_PARAM)
   },
   getDateRange: (date, timePeriod) => {

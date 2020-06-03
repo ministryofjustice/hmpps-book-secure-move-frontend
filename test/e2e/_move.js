@@ -133,6 +133,7 @@ const filterUpdatePages = (pages = updatePages, exclude = false) => {
   if (exclude) {
     ;[show, hide] = [hide, show]
   }
+
   return {
     show,
     hide,
@@ -154,6 +155,7 @@ export async function checkUpdateLinks(pages, exclude) {
   for await (const cat of filteredPages.show) {
     await checkUpdateLink(cat)
   }
+
   for await (const cat of filteredPages.hide) {
     await checkNoUpdateLink(cat)
   }
@@ -208,6 +210,7 @@ export async function checkUpdatePagesAccessible(pages, negated) {
   for await (const page of filteredPages.show) {
     await checkUpdatePageStatus(page, 200)
   }
+
   for await (const page of filteredPages.hide) {
     await checkUpdatePageStatus(page, 404)
   }
@@ -355,6 +358,7 @@ export async function checkUpdateMoveDetails() {
   const { moveType } = t.ctx.move
 
   const data = {}
+
   if (moveType === 'prison_recall') {
     data.additionalInformation = {
       selector: updateMovePage.fields.prisonRecallComments,
@@ -446,6 +450,7 @@ export async function checkUpdateDocuments() {
   await checkDocumentList()
 
   await addDocuments(['a-random-text-file.txt', 'leo-the-cat.png'])
+
   // eslint-disable-next-line no-unmodified-loop-condition
   while (documentCount) {
     await deleteDocument()

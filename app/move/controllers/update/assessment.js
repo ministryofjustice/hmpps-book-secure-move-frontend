@@ -7,13 +7,16 @@ const UpdateBase = require('./base')
 
 const compare = (a, b) => {
   const key = 'assessment_question_id'
+
   if (a[key] < b[key]) {
     return -1
   }
+
   if (a[key] > b[key]) {
     return 1
   }
 }
+
 const getAnswerKeys = answers => {
   return answers
     .map(x => pick(x, ['key', 'assessment_question_id', 'comments']))

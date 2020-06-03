@@ -52,6 +52,7 @@ nodeListForEach($autocompletes, function($autocomplete) {
 })
 
 const $stickySidebars = document.querySelectorAll('.sticky-sidebar')
+
 if ($stickySidebars.length) {
   // eslint-disable-next-line no-new
   new StickySidebar('.sticky-sidebar', {

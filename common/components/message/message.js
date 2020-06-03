@@ -39,6 +39,7 @@ Message.prototype = {
     link.innerHTML = 'Dismiss'
     link.className = 'app-message__close'
     link.href = '#'
+
     link.onclick = e => {
       e.preventDefault()
       this.removeElement($element)

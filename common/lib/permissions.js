@@ -33,6 +33,7 @@ const secureTrainingCentrePermissions = [
   'move:create:court_appearance',
   'move:cancel',
 ]
+
 if (FEATURE_FLAGS.EDITABILITY) {
   secureTrainingCentrePermissions.push('move:update')
 }

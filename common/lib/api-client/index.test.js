@@ -28,6 +28,7 @@ const mockModels = {
     },
   },
 }
+
 function JsonApiStub(opts = {}) {
   this.init(opts)
 }

@@ -290,6 +290,7 @@ describe('Move controllers', function() {
           try {
             await controller.saveValues(req, res, nextSpy)
           } catch (error) {}
+
           expect(nextSpy).to.be.calledOnceWithExactly(err)
         })
       })

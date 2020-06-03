@@ -14,6 +14,7 @@ mapMethods.identifier = (person, field) => {
   const identifier = identifiers.filter(
     identifier => identifier.identifier_type === field
   )[0]
+
   if (identifier) {
     return identifier.value
   }
@@ -21,6 +22,7 @@ mapMethods.identifier = (person, field) => {
 
 mapMethods.relationship = (person, field) => {
   const relationship = person[field]
+
   if (relationship) {
     return relationship.id
   }
@@ -28,6 +30,7 @@ mapMethods.relationship = (person, field) => {
 
 mapMethods.date = (person, field) => {
   const fieldValue = person[field]
+
   if (fieldValue) {
     return filters.formatDate(fieldValue)
   }
@@ -45,6 +48,7 @@ mapMethods.explicitAssessment = (person, field, assessmentCategories) => {
   } else {
     assessmentCategories[explicitKey] = 'false'
   }
+
   return value
 }
 
@@ -59,6 +63,7 @@ mapMethods.assessment = (person, field, assessmentCategories) => {
     assessmentCategories[category] = assessmentCategories[category] || []
     assessmentCategories[category].push(questionId)
   }
+
   return value
 }
 

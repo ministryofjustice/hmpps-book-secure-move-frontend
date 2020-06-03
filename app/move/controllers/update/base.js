@@ -37,14 +37,17 @@ class UpdateBaseController extends CreateBaseController {
   setInitialStep(req, res, next) {
     let initialStep = false
     const referrer = req.get('referrer')
+
     if (!referrer) {
       initialStep = true
     } else {
       const { pathname } = new URL(referrer)
+
       if (pathname === this.getBaseUrl(req)) {
         initialStep = true
       }
     }
+
     req.initialStep = initialStep
     next()
   }
@@ -53,6 +56,7 @@ class UpdateBaseController extends CreateBaseController {
     const fields = req.form.options.fields
     Object.keys(fields).forEach(key => {
       const field = fields[key]
+
       if (field.readOnly && values[key] !== undefined && values[key] !== null) {
         fields[key] = {
           ...field,
@@ -67,6 +71,7 @@ class UpdateBaseController extends CreateBaseController {
     if (req.initialStep) {
       return {}
     }
+
     return super.getErrors(req, res)
   }
 
@@ -78,9 +83,11 @@ class UpdateBaseController extends CreateBaseController {
 
       try {
         const initialValues = this.getUpdateValues(req, res)
+
         if (req.initialStep) {
           values = initialValues
         }
+
         this.protectReadOnlyFields(req, initialValues)
       } catch (error) {
         return callback(error)
@@ -101,6 +108,7 @@ class UpdateBaseController extends CreateBaseController {
       const fields = this.saveFields || Object.keys(req.form.options.fields)
       const newValues = pick(req.form.values, fields)
       const oldValues = pick(req.getMove(), fields)
+
       if (!isEqual(newValues, oldValues)) {
         const id = req.getMoveId()
         const data = {

@@ -127,9 +127,11 @@ describe('User class', function() {
           'move:create:prison_recall',
           'move:cancel',
         ]
+
         if (FEATURE_FLAGS.EDITABILITY) {
           policePermissions.push('move:update')
         }
+
         expect(permissions).to.deep.equal(policePermissions)
       })
     })
@@ -167,9 +169,11 @@ describe('User class', function() {
           'move:create:court_appearance',
           'move:cancel',
         ]
+
         if (FEATURE_FLAGS.EDITABILITY) {
           stcPermissions.push('move:update')
         }
+
         expect(permissions).to.deep.equal(stcPermissions)
       })
     })
@@ -299,9 +303,11 @@ describe('User class', function() {
           'moves:view:proposed',
           'move:create:prison_transfer',
         ]
+
         if (FEATURE_FLAGS.EDITABILITY) {
           allPermissions.push('move:update')
         }
+
         expect(permissions.sort()).to.deep.equal(allPermissions.sort())
       })
     })

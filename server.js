@@ -119,6 +119,7 @@ app.use(
     ...config.AUTH_PROVIDERS,
   })
 )
+
 // Development environment helpers
 if (config.IS_DEV) {
   require('axios-debug-log')
@@ -127,6 +128,7 @@ if (config.IS_DEV) {
   app.use(development.setUserPermissions(config.USER_PERMISSIONS))
   app.use(development.setUserLocations(config.USER_LOCATIONS))
 }
+
 app.use(
   ensureAuthenticated({
     provider: config.DEFAULT_AUTH_PROVIDER,

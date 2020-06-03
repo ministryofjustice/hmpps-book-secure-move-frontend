@@ -13,6 +13,7 @@ class UnassignController extends FormWizardController {
     if (!move.allocation) {
       return res.redirect(`/move/${move.id}`)
     }
+
     if (!move.person) {
       return res.redirect(`/allocation/${move.allocation.id}`)
     }

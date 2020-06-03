@@ -33,11 +33,13 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   if (!value) {
     return value
   }
+
   const date = isDate(value) ? value : parseISO(value)
 
   if (!isValidDate(date)) {
     return value
   }
+
   return format(date, formattedDateStr)
 }
 
@@ -124,6 +126,7 @@ function formatISOWeek(dateRange) {
   if (!Array.isArray(dateRange) || dateRange.length !== 2) {
     return dateRange
   }
+
   const [startDate, endDate] = dateRange
   return startDate === endDate
     ? startDate
@@ -184,6 +187,7 @@ function calculateAge(value) {
   if (!isValidDate(parsedDate)) {
     return value
   }
+
   return differenceInYears(new Date(), parsedDate)
 }
 

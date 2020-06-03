@@ -112,11 +112,13 @@ export async function createPersonFixture(overrides = {}) {
  */
 const getRandomLocation = async locationType => {
   let locations
+
   if (locationType) {
     locations = await referenceDataService.getLocationsByType(locationType)
   } else {
     locations = await referenceDataService.getLocations()
   }
+
   return faker.random.arrayElement(locations.map(({ id }) => id))
 }
 
@@ -208,6 +210,7 @@ async function selectOption({ options, value }) {
   }
 
   let option
+
   if (!isNil(value) && typeof value === 'string') {
     option = await options.withText(value)
   } else if (!isNil(value) && typeof value === 'number') {
@@ -219,6 +222,7 @@ async function selectOption({ options, value }) {
   }
 
   const optionFor = await option.getAttribute('for')
+
   if (optionFor) {
     const idOption = Selector('#' + optionFor)
     await t.click(idOption)
@@ -374,12 +378,15 @@ export function createLogger(baseUrl) {
     if (request.url.match(/\.(js|css|woff|woff2|gif|svg|jpg|png)$/)) {
       return false
     }
+
     if (request.url.startsWith(`${baseUrl}/connect`)) {
       return false
     }
+
     if (request.url.startsWith(`${baseUrl}/browser-sync`)) {
       return false
     }
+
     return request.url.startsWith(baseUrl)
   })
 }
