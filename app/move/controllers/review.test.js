@@ -107,7 +107,7 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('setRebookOptions', function () {
+    describe('#setRebookOptions', function () {
       let req
       let next
       const mockReq = {
@@ -130,24 +130,20 @@ describe('Move controllers', function () {
           },
         },
       }
+
       beforeEach(function () {
         req = cloneDeep(mockReq)
         next = sinon.stub()
       })
+
       context('without a date_to', function () {
         beforeEach(function () {
-          controller.setRebookOptions(
-            req,
-            {
-              locals: {
-                move: {
-                  date_to: null,
-                },
-              },
-            },
-            next
-          )
+          req.move = {
+            date_to: null,
+          }
+          controller.setRebookOptions(req, {}, next)
         })
+
         it('leaves the existing options untouched', function () {
           expect(req.form.options.fields.rebook.items).to.deep.equal([
             {
@@ -160,6 +156,7 @@ describe('Move controllers', function () {
             },
           ])
         })
+
         it('calls next', function () {
           expect(next).to.have.been.calledOnceWithExactly()
         })
@@ -167,18 +164,12 @@ describe('Move controllers', function () {
 
       context('with a date_to farther away than one week', function () {
         beforeEach(function () {
-          controller.setRebookOptions(
-            req,
-            {
-              locals: {
-                move: {
-                  date_to: format(addDays(new Date(), 28), 'yyyy-MM-dd'),
-                },
-              },
-            },
-            next
-          )
+          req.move = {
+            date_to: format(addDays(new Date(), 28), 'yyyy-MM-dd'),
+          }
+          controller.setRebookOptions(req, {}, next)
         })
+
         it('leaves the existing options untouched', function () {
           expect(req.form.options.fields.rebook.items).to.deep.equal([
             {
@@ -191,24 +182,20 @@ describe('Move controllers', function () {
             },
           ])
         })
+
         it('calls next', function () {
           expect(next).to.have.been.calledOnceWithExactly()
         })
       })
+
       context('with a date_to closer than one week', function () {
         beforeEach(function () {
-          controller.setRebookOptions(
-            req,
-            {
-              locals: {
-                move: {
-                  date_to: format(addDays(new Date(), 3), 'yyyy-MM-dd'),
-                },
-              },
-            },
-            next
-          )
+          req.move = {
+            date_to: format(addDays(new Date(), 3), 'yyyy-MM-dd'),
+          }
+          controller.setRebookOptions(req, {}, next)
         })
+
         it('keeps only the "false" options', function () {
           expect(req.form.options.fields.rebook.items).to.deep.equal([
             {
@@ -217,6 +204,7 @@ describe('Move controllers', function () {
             },
           ])
         })
+
         it('calls next', function () {
           expect(next).to.have.been.calledOnceWithExactly()
         })
@@ -224,24 +212,24 @@ describe('Move controllers', function () {
     })
 
     describe('#checkStatus()', function () {
-      let mockRes, nextSpy
+      let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
         nextSpy = sinon.spy()
-        mockRes = {
-          locals: {
-            move: {
-              id: '12345',
-            },
+        mockReq = {
+          move: {
+            id: '12345',
           },
+        }
+        mockRes = {
           redirect: sinon.spy(),
         }
       })
 
       context('with proposed status', function () {
         beforeEach(function () {
-          mockRes.locals.move.status = 'proposed'
-          controller.checkStatus({}, mockRes, nextSpy)
+          mockReq.move.status = 'proposed'
+          controller.checkStatus(mockReq, mockRes, nextSpy)
         })
 
         it('should not redirect', function () {
@@ -257,8 +245,8 @@ describe('Move controllers', function () {
       statuses.forEach(status => {
         context(`with ${status} status`, function () {
           beforeEach(function () {
-            mockRes.locals.move.status = status
-            controller.checkStatus({}, mockRes, nextSpy)
+            mockReq.move.status = status
+            controller.checkStatus(mockReq, mockRes, nextSpy)
           })
 
           it('should redirect to move', function () {
@@ -283,12 +271,12 @@ describe('Move controllers', function () {
               permissions: ['move:view'],
             },
           },
+          move: {
+            id: '12345',
+          },
         }
         mockRes = {
           locals: {
-            move: {
-              id: '12345',
-            },
             canAccess: sinon.stub().returns(false),
           },
           redirect: sinon.spy(),
@@ -364,14 +352,11 @@ describe('Move controllers', function () {
               },
             },
           },
-        }
-        mockRes = {
-          locals: {
-            move: {
-              date_from: '1 Jan',
-            },
+          move: {
+            date_from: '1 Jan',
           },
         }
+        mockRes = {}
       })
 
       context('with only from date', function () {
@@ -406,7 +391,7 @@ describe('Move controllers', function () {
           filters.formatDateRange
             .withArgs(['1 Jan', '2 Feb'], 'and')
             .returns('1 Jan and 2 Feb')
-          mockRes.locals.move.date_to = '2 Feb'
+          mockReq.move.date_to = '2 Feb'
 
           controller.updateDateHint(mockReq, mockRes, nextSpy)
         })
@@ -437,25 +422,28 @@ describe('Move controllers', function () {
     })
 
     describe('#setMoveSummary()', function () {
-      let mockRes, nextSpy
+      let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
-        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+        sinon
+          .stub(presenters, 'moveToMetaListComponent')
+          .returns('__moveToMetaListComponent__')
         nextSpy = sinon.spy()
-        mockRes = {
-          locals: {
-            move: {
-              profile: {
-                person: {
-                  id: '1',
-                },
+        mockReq = {
+          move: {
+            profile: {
+              person: {
+                id: '1',
               },
-              foo: 'bar',
             },
+            foo: 'bar',
           },
         }
+        mockRes = {
+          locals: {},
+        }
 
-        controller.setMoveSummary({}, mockRes, nextSpy)
+        controller.setMoveSummary(mockReq, mockRes, nextSpy)
       })
 
       it('should call presenter', function () {
@@ -464,12 +452,27 @@ describe('Move controllers', function () {
         )
       })
 
-      it('should update locals', function () {
-        expect(mockRes.locals).to.deep.equal({
-          ...mockRes.locals,
-          person: mockRes.locals.move.profile.person,
-          moveSummary: mockRes.locals.move,
+      it('should set person object on locals', function () {
+        expect(mockRes.locals.person).to.deep.equal({
+          id: '1',
         })
+      })
+
+      it('should set move on locals', function () {
+        expect(mockRes.locals.move).to.deep.equal({
+          profile: {
+            person: {
+              id: '1',
+            },
+          },
+          foo: 'bar',
+        })
+      })
+
+      it('should set move summary on locals', function () {
+        expect(mockRes.locals.moveSummary).to.equal(
+          '__moveToMetaListComponent__'
+        )
       })
 
       it('should call next', function () {
@@ -502,12 +505,10 @@ describe('Move controllers', function () {
           journeyModel: {
             reset: sinon.stub(),
           },
+          move: mockMove,
         }
         res = {
           redirect: sinon.stub(),
-          locals: {
-            move: mockMove,
-          },
         }
       })
 

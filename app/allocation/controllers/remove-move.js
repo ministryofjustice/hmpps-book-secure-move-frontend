@@ -22,7 +22,7 @@ class RemoveMoveController extends FormWizardController {
   }
 
   async successHandler(req, res, next) {
-    const { id: moveId } = res.locals.move
+    const { id: moveId } = req.move
     const { id: allocationId } = res.locals.allocation
 
     try {

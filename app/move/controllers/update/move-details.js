@@ -1,4 +1,4 @@
-const { get, pick } = require('lodash')
+const { pick } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const CreateMoveDetailsController = require('../create/move-details')
@@ -26,7 +26,7 @@ class UpdateMoveDetailsController extends UpdateBase {
       values[`${moveType}_comments`] = values.additional_information
     }
 
-    const toLocation = get(move, 'to_location.id')
+    const toLocation = move.to_location?.id
 
     if (toLocation) {
       values[`to_location_${moveType}`] = toLocation
@@ -38,7 +38,7 @@ class UpdateMoveDetailsController extends UpdateBase {
   filterMoveTypes(req, res, next) {
     const move = req.getMove()
     const moveType = move.move_type
-    const moveTypeField = get(req, 'form.options.fields.move_type')
+    const moveTypeField = req.form.options.fields?.move_type
     moveTypeField.items = moveTypeField.items.filter(
       item => item.value === moveType
     )
@@ -54,7 +54,7 @@ class UpdateMoveDetailsController extends UpdateBase {
       const toLocation = values[`to_location_${moveType}`]
       const additionalInformation = values[`${moveType}_comments`]
 
-      if (toLocation !== get(move, 'to_location.id')) {
+      if (toLocation !== move.to_location?.id) {
         const notes = req.t('moves::redirect_notes', req.session.user)
 
         await moveService.redirect({

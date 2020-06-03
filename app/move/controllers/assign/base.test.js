@@ -34,42 +34,34 @@ describe('Assign controllers', function () {
     })
 
     describe('#setMoveSummary()', function () {
-      let locals
-      let next
+      let req, res, next
 
       beforeEach(function () {
         next = sinon.stub()
         sinon
           .stub(presenters, 'moveToMetaListComponent')
           .returns({ summary: {} })
-        locals = {
+        req = {
           move: {
             to_location: 'b',
             other_prop: 'c',
           },
         }
-        controller.setMoveSummary(
-          {
-            session: {
-              currentLocation: 'a',
-            },
-          },
-          {
-            locals,
-          },
-          next
-        )
+        res = {
+          locals: {},
+        }
+        controller.setMoveSummary(req, res, next)
       })
 
       it('creates moveSummary on the locals', function () {
-        expect(locals.moveSummary).to.exist
-        expect(locals.moveSummary).to.deep.equal({ summary: {} })
+        expect(res.locals.moveSummary).to.exist
+        expect(res.locals.moveSummary).to.deep.equal({ summary: {} })
       })
 
       it('invokes moveToMetaListComponent with move', function () {
         expect(
           presenters.moveToMetaListComponent
-        ).to.have.been.calledWithExactly(locals.move)
+        ).to.have.been.calledWithExactly(req.move)
       })
     })
 
@@ -125,15 +117,15 @@ describe('Assign controllers', function () {
 
     beforeEach(function () {
       nextSpy = sinon.spy()
-      req = {}
-      res = {
-        locals: {
-          move: {
-            allocation: {
-              id: '__allocationId__',
-            },
+      req = {
+        move: {
+          allocation: {
+            id: '__allocationId__',
           },
         },
+      }
+      res = {
+        locals: {},
       }
       controller.setCancelUrl(req, res, nextSpy)
     })
@@ -170,11 +162,10 @@ describe('Assign controllers', function () {
           set: sinon.stub(),
         },
         models: {},
+        move: moveFilled,
       }
       res = {
-        locals: {
-          move: moveFilled,
-        },
+        locals: {},
       }
       req.sessionModel.get.withArgs('person').returnsArg(0)
     })

@@ -1,12 +1,9 @@
-const { get } = require('lodash')
-
 const AssessmentController = require('./assessment')
 
 class UpdateCourtController extends AssessmentController {
   // TODO: replace this with a centralised more form-wizard-based protection
   configure(req, res, next) {
-    const isCourt =
-      get(res, 'locals.move.to_location.location_type') === 'court'
+    const isCourt = req.move?.to_location?.location_type === 'court'
 
     if (!isCourt) {
       const error = new Error(

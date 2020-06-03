@@ -234,11 +234,7 @@ describe('Move controllers', function () {
       beforeEach(function () {
         req = {
           models: {},
-          res: {
-            locals: {
-              move: mockSession,
-            },
-          },
+          move: mockSession,
         }
         controller._setModels(req)
       })
@@ -711,7 +707,7 @@ describe('Move controllers', function () {
 
     context('when the supplier is not known', function () {
       beforeEach(async function () {
-        req.getMove = sinon.stub().returns({})
+        req.getMove = sinon.stub().returns()
         await controller.setFlash(req, 'categoryKey')
       })
 

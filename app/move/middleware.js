@@ -8,12 +8,7 @@ module.exports = {
     }
 
     try {
-      const move = await moveService.getById(moveId)
-
-      // TODO: Remove `res.locals` in favour of `req.move`. See issue #451
-      res.locals.move = move
-      req.move = move
-
+      req.move = await moveService.getById(moveId)
       next()
     } catch (error) {
       next(error)
@@ -31,7 +26,7 @@ module.exports = {
   },
 
   setAllocation: async (req, res, next) => {
-    const { allocation } = res.locals.move || {}
+    const { allocation } = req.move || {}
 
     if (!allocation) {
       return next()

@@ -1,23 +1,21 @@
-const handler = require('./confirmation')
+const controller = require('./confirmation')
 
-describe('the confirmation handler', function () {
-  const render = sinon.stub()
-  const locals = {
-    local1: 123,
-  }
-  beforeEach(function () {
-    handler(
-      {},
-      {
-        render,
-        locals,
+describe('Allocation controllers', function () {
+  describe('confirmation controller', function () {
+    let mockRes
+
+    beforeEach(function () {
+      mockRes = {
+        render: sinon.stub(),
       }
-    )
-  })
-  it('renders the confirmation template with the locals', function () {
-    expect(render).to.have.been.calledOnceWithExactly(
-      'allocation/views/confirmation',
-      locals
-    )
+
+      controller({}, mockRes)
+    })
+
+    it('renders the confirmation template', function () {
+      expect(mockRes.render).to.have.been.calledOnceWithExactly(
+        'allocation/views/confirmation'
+      )
+    })
   })
 })

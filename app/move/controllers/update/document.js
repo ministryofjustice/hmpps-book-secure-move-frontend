@@ -1,4 +1,4 @@
-const { get, pick } = require('lodash')
+const { pick } = require('lodash')
 
 const profileService = require('../../../../common/services/profile')
 const DocumentUploadController = require('../create/document')
@@ -7,10 +7,8 @@ const UpdateBase = require('./base')
 
 class UpdateDocumentUploadController extends UpdateBase {
   configure(req, res, next) {
-    const canUploadDocuments = get(
-      req,
-      'session.currentLocation.can_upload_documents'
-    )
+    const canUploadDocuments =
+      req.session?.currentLocation?.can_upload_documents
 
     if (!canUploadDocuments) {
       const error = new Error(

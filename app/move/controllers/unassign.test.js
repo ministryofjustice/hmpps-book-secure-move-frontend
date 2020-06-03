@@ -52,23 +52,24 @@ describe('Move controllers', function () {
     })
 
     describe('#checkAllocation()', function () {
-      let res, next
+      let req, res, next
 
       beforeEach(function () {
         next = sinon.stub()
+        req = {
+          move: {},
+        }
+        res = {
+          redirect: sinon.stub(),
+        }
       })
 
       context('with no allocation', function () {
         beforeEach(function () {
-          res = {
-            locals: {
-              move: {
-                id: '12345',
-              },
-            },
-            redirect: sinon.stub(),
+          req.move = {
+            id: '12345',
           }
-          controller.checkAllocation({}, res, next)
+          controller.checkAllocation(req, res, next)
         })
 
         it('should redirect to allocation', function () {
@@ -82,16 +83,11 @@ describe('Move controllers', function () {
 
       context('with allocation but not person', function () {
         beforeEach(function () {
-          res = {
-            locals: {
-              move: {
-                id: '12345',
-                allocation: { id: '6789' },
-              },
-            },
-            redirect: sinon.stub(),
+          req.move = {
+            id: '12345',
+            allocation: { id: '6789' },
           }
-          controller.checkAllocation({}, res, next)
+          controller.checkAllocation(req, res, next)
         })
 
         it('should redirect to allocation', function () {
@@ -105,18 +101,13 @@ describe('Move controllers', function () {
 
       context('with allocation and person', function () {
         beforeEach(function () {
-          res = {
-            locals: {
-              move: {
-                id: '12345',
-                allocation: { id: '6789' },
-                profile: { person: { id: '__person__' } },
-              },
-            },
-            redirect: sinon.stub(),
+          req.move = {
+            id: '12345',
+            allocation: { id: '6789' },
+            profile: { person: { id: '__person__' } },
           }
 
-          controller.checkAllocation({}, res, next)
+          controller.checkAllocation(req, res, next)
         })
 
         it('should not redirect', function () {
@@ -130,21 +121,30 @@ describe('Move controllers', function () {
     })
 
     describe('#setMoveRelationships()', function () {
-      let res, next
+      let req, res, next
 
       beforeEach(function () {
         next = sinon.stub()
-        res = {
-          locals: {
-            move: {
-              id: '12345',
-              allocation: { id: '__allocation__' },
-              profile: { person: { id: '__person__' } },
-            },
+        req = {
+          move: {
+            id: '12345',
+            allocation: { id: '__allocation__' },
+            profile: { person: { id: '__person__' } },
           },
+        }
+        res = {
+          locals: {},
           redirect: sinon.stub(),
         }
-        controller.setMoveRelationships({}, res, next)
+        controller.setMoveRelationships(req, res, next)
+      })
+
+      it('should set move on locals', function () {
+        expect(res.locals.move).to.deep.equal({
+          id: '12345',
+          allocation: { id: '__allocation__' },
+          profile: { person: { id: '__person__' } },
+        })
       })
 
       it('should set allocation on locals', function () {
@@ -162,12 +162,10 @@ describe('Move controllers', function () {
 
     describe('#saveValues()', function () {
       const move = { id: '__move__' }
-      const req = {}
-      const res = {
-        locals: {
-          move,
-        },
+      const req = {
+        move,
       }
+      const res = {}
       let next
 
       beforeEach(function () {
@@ -226,16 +224,14 @@ describe('Move controllers', function () {
           journeyModel: {
             reset: sinon.stub(),
           },
+          move: {
+            allocation: {
+              id: '__allocation__',
+            },
+          },
         }
         res = {
           redirect: sinon.stub(),
-          locals: {
-            move: {
-              allocation: {
-                id: '__allocation__',
-              },
-            },
-          },
         }
       })
 

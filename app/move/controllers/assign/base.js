@@ -9,13 +9,13 @@ class AssignBaseController extends CreateBaseController {
   }
 
   setCancelUrl(req, res, next) {
-    const allocationId = res.locals.move.allocation.id
+    const allocationId = req.move.allocation.id
     res.locals.cancelUrl = `/allocation/${allocationId}`
     next()
   }
 
   setMoveSummary(req, res, next) {
-    res.locals.moveSummary = presenters.moveToMetaListComponent(res.locals.move)
+    res.locals.moveSummary = presenters.moveToMetaListComponent(req.move)
     next()
   }
 
@@ -23,7 +23,7 @@ class AssignBaseController extends CreateBaseController {
     const person = req.sessionModel.get('person')
     res.locals.person = person
 
-    const move = req.sessionModel.get('move') || res.locals.move
+    const move = req.sessionModel.get('move') || req.move
     req.sessionModel.set('move', move)
 
     // TODO: when req.getMove et al are removed these can be zapped

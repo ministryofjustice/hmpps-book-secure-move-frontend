@@ -5,11 +5,11 @@ const controller = new CourtController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
 describe('Move controllers', function () {
-  const req = {}
-  let res
+  const res = {}
+  let req
   let nextSpy
   beforeEach(function () {
-    res = {}
+    req = {}
     nextSpy = sinon.spy()
     sinon.stub(AssessmentController.prototype, 'configure')
   })
@@ -53,12 +53,10 @@ describe('Move controllers', function () {
 
       context('when the move is to a court', function () {
         beforeEach(function () {
-          res = {
-            locals: {
-              move: {
-                to_location: {
-                  location_type: 'court',
-                },
+          req = {
+            move: {
+              to_location: {
+                location_type: 'court',
               },
             },
           }

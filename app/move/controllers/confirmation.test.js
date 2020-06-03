@@ -14,12 +14,10 @@ describe('Move controllers', function () {
     beforeEach(function () {
       req = {
         t: sinon.stub().returnsArg(0),
+        move: mockMove,
       }
       res = {
         render: sinon.spy(),
-        locals: {
-          move: mockMove,
-        },
       }
     })
 
@@ -33,6 +31,12 @@ describe('Move controllers', function () {
 
         expect(res.render.calledOnce).to.be.true
         expect(template).to.equal('move/views/confirmation')
+      })
+
+      it('should pass move to template locals', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('move')
+        expect(params.move).to.deep.equal(mockMove)
       })
 
       it('should use to location title as location', function () {
@@ -71,13 +75,13 @@ describe('Move controllers', function () {
 
       it('should contain correct number of locals', function () {
         const locals = res.render.args[0][1]
-        expect(Object.keys(locals)).to.have.length(5)
+        expect(Object.keys(locals)).to.have.length(6)
       })
     })
 
     describe('with move_type "prison_recall"', function () {
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           move_type: 'prison_recall',
         }
@@ -99,7 +103,7 @@ describe('Move controllers', function () {
 
     describe('with empty supplier', function () {
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           from_location: {
             suppliers: [],
@@ -122,7 +126,7 @@ describe('Move controllers', function () {
 
     describe('with one supplier', function () {
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           from_location: {
             suppliers: [
@@ -145,7 +149,7 @@ describe('Move controllers', function () {
 
     describe('with multiple suppliers', function () {
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           from_location: {
             suppliers: [
@@ -174,7 +178,7 @@ describe('Move controllers', function () {
 
     describe('with hearings', function () {
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           court_hearings: [
             {

@@ -8,7 +8,7 @@ class UnassignController extends FormWizardController {
   }
 
   checkAllocation(req, res, next) {
-    const { move } = res.locals
+    const { move } = req
 
     if (!move.allocation) {
       return res.redirect(`/move/${move.id}`)
@@ -27,17 +27,20 @@ class UnassignController extends FormWizardController {
   }
 
   setMoveRelationships(req, res, next) {
-    const { move } = res.locals
-    res.locals.person = move.profile.person
-    res.locals.allocation = move.allocation
+    const { allocation, profile } = req.move
+    res.locals.move = req.move
+    res.locals.person = profile.person
+    res.locals.allocation = allocation
 
     next()
   }
 
   async saveValues(req, res, next) {
     try {
-      const { id } = res.locals.move
-      await moveService.unassign(id)
+      const { id: moveId } = req.move
+
+      await moveService.unassign(moveId)
+
       super.saveValues(req, res, next)
     } catch (err) {
       next(err)
@@ -45,7 +48,7 @@ class UnassignController extends FormWizardController {
   }
 
   successHandler(req, res) {
-    const { id: allocationId } = res.locals.move.allocation
+    const { id: allocationId } = req.move.allocation
 
     req.journeyModel.reset()
     req.sessionModel.reset()
