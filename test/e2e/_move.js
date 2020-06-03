@@ -2,14 +2,7 @@ import faker from 'faker'
 import { Selector, t } from 'testcafe'
 
 import { createMoveFixture, fillInForm, expectStatusCode } from './_helpers'
-import {
-  ocaUser,
-  policeUser,
-  prisonUser,
-  stcUser,
-  supplierUser,
-} from './_roles'
-import { home, getMove, getUpdateMove } from './_routes'
+import { getMove, getUpdateMove } from './_routes'
 import { page, moveDetailPage } from './pages'
 import UpdateMovePage from './pages/update-move'
 
@@ -27,24 +20,23 @@ import UpdateMovePage from './pages/update-move'
  * @param {object} [options.moveOptions] - config for move creation
  * See createMoveFixture for more details
  *
- * @returns {undefined} Creates person and move, checking that move has all expected values
+ * @returns {object} - created move object containing person data returned from createMoveFixture
  */
 export async function createMove(options = {}) {
-  await t.useRole(options.user)
-
   if (
     !options.moveOverrides ||
     (options.moveOverrides && !options.moveOverrides.from_location)
   ) {
-    await t.navigateTo(home)
+    await t
+      .expect(page.nodes.locationMeta.getAttribute('content'))
+      .ok('should contain a current location')
 
-    const currentLocation = await page.nodes.locationMeta.getAttribute(
+    const currentLocationId = await page.nodes.locationMeta.getAttribute(
       'content'
     )
-    t.ctx.from_location = currentLocation
 
     options.moveOverrides = {
-      from_location: currentLocation,
+      from_location: currentLocationId,
       ...options.moveOverrides,
     }
   }
@@ -58,25 +50,14 @@ export async function createMove(options = {}) {
 
   const move = await createMoveFixture(options)
   t.ctx.move = move
-  const { person } = move
-  t.ctx.person = person
+
   await t.navigateTo(getMove(move.id))
 
-  // double check that all move and person data is as expected
-  await moveDetailPage.checkPersonalDetails(person)
-  await moveDetailPage.checkRiskInformation(person)
-  await moveDetailPage.checkHealthInformation(person)
-  if (
-    move.moveType !== 'prison_recall' &&
-    move.from_location.location_type !== 'prison'
-  ) {
-    await moveDetailPage.checkCourtInformation(person)
-  }
-  await moveDetailPage.checkMoveDetails(move)
+  return move
 }
 
 /**
- * Create a move as a police user
+ * Create a move to court
  *
  * @param {object} options
  *
@@ -89,7 +70,7 @@ export async function createMove(options = {}) {
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-function createNonPrisonMove(user, options = {}) {
+export function createCourtMove(options = {}) {
   options.personOverrides = {
     prisonNumber: undefined,
     criminalRecordsOffice: undefined,
@@ -99,98 +80,10 @@ function createNonPrisonMove(user, options = {}) {
   }
 
   return createMove({
-    user,
     defaultMoveOptions: {
       to_location_type: 'court',
       move_type: 'court_appearance',
     },
-    ...options,
-  })
-}
-
-/**
- * Create a move as a police user
- *
- * @param {object} options
- * See createNonPrisonMove for more details
- *
- * @returns {undefined} Creates person and move, checking that move has all expected values
- */
-export async function createPoliceMove(options = {}) {
-  return createNonPrisonMove(policeUser, options)
-}
-
-/**
- * Create a move as a stc user
- *
- * @param {object} options
- * See createNonPrisonMove for more details
- *
- * @returns {undefined} Creates person and move, checking that move has all expected values
- */
-export async function createStcMove(options) {
-  return createNonPrisonMove(stcUser, options)
-}
-
-/**
- * Create a move as a prison user
- *
- * @param {object} options
- *
- * @param {object} [options.personOverrides] - override values for person
- *
- * @param {object} [options.moveOverrides] - override values for move
- *
- * @param {object} [options.moveOptions] - config for move creation
- * See createMoveFixture for more details
- *
- * @returns {undefined} Creates person and move, checking that move has all expected values
- */
-export async function createPrisonMove(options) {
-  return createMove({
-    user: prisonUser,
-    ...options,
-  })
-}
-
-/**
- * Create a move as a oca user
- *
- * @param {object} options
- *
- * @param {object} [options.personOverrides] - override values for person
- *
- * @param {object} [options.moveOverrides] - override values for move
- *
- * @param {object} [options.moveOptions] - config for move creation
- * See createMoveFixture for more details
- *
- * @returns {undefined} Creates person and move, checking that move has all expected values
- */
-export async function createOcaMove(options) {
-  return createMove({
-    user: ocaUser,
-    ...options,
-  })
-}
-
-/**
- * Create a move as a supplier user
- *
- * @param {object} options
- *
- * @param {object} [options.personOverrides] - override values for person
- *
- * @param {object} [options.moveOverrides] - override values for move
- *
- * @param {object} [options.moveOptions] - config for move creation
- * See createMoveFixture for more details
- *
- * @returns {undefined} Creates person and move, checking that move has all expected values
- */
-export async function createSupplierMove(options) {
-  return createMove({
-    user: supplierUser,
     ...options,
   })
 }
@@ -353,7 +246,7 @@ export async function clickUpdateLink(page) {
  * @returns {undefined}
  */
 export async function checkUpdatePersonalDetails(options) {
-  const { person } = t.ctx
+  const { person } = t.ctx.move
   const updateMovePage = await clickUpdateLink('personal_details')
   const gender = person.gender === 'Female' ? 'Male' : 'Female'
   const updatedFields = await updateMovePage.fillInPersonalDetails(
@@ -390,7 +283,7 @@ export async function checkUpdatePage(
   checkMethod,
   { selectAll = true, fillInOptional = true } = {}
 ) {
-  const { person } = t.ctx
+  const { person } = t.ctx.move
   const updateMovePage = await clickUpdateLink(page)
   const updatedFields = await updateMovePage[fillInMethod]({
     selectAll,
@@ -565,7 +458,7 @@ export async function checkUpdateDocuments() {
  * @returns {undefined}
  */
 export async function checkPoliceNationalComputerReadOnly() {
-  const { person } = t.ctx
+  const { person } = t.ctx.move
   const personalDetailsPage = await clickUpdateLink('personal_details')
 
   const {

@@ -1,18 +1,23 @@
 import { FEATURE_FLAGS } from '../../config'
 
 import {
-  createStcMove,
+  createCourtMove,
   checkUpdateLinks,
   checkUpdatePagesAccessible,
   checkUpdateDocuments,
 } from './_move'
+import { stcUser } from './_roles'
+import { home } from './_routes'
 
 if (FEATURE_FLAGS.EDITABILITY) {
-  fixture('Existing move - STC User').beforeEach(async () => {
-    await createStcMove()
+  fixture(
+    'Existing move from Secure Training Centre (STC) to Court'
+  ).beforeEach(async t => {
+    await t.useRole(stcUser).navigateTo(home)
+    await createCourtMove()
   })
 
-  test('User should see expected update links on move page', async () => {
+  test('User should be able to update move', async () => {
     await checkUpdateLinks([
       'personal_details',
       'risk',
@@ -22,9 +27,9 @@ if (FEATURE_FLAGS.EDITABILITY) {
       'date',
       'document',
     ])
-  })
 
-  test('User should see be able to access update pages', async () => {
+    await checkUpdateDocuments()
+
     await checkUpdatePagesAccessible([
       'personal_details',
       'risk',
@@ -34,9 +39,5 @@ if (FEATURE_FLAGS.EDITABILITY) {
       'date',
       'document',
     ])
-  })
-
-  test('User should be able to update documents', async t => {
-    await checkUpdateDocuments()
   })
 }
