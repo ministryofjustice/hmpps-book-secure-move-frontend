@@ -1,11 +1,11 @@
 const { format } = require('date-fns')
 const { get } = require('lodash')
 
-const { dateFormat } = require('../../../common/helpers/date-utils')
 const permissions = require('../../../common/middleware/permissions')
+const { DATE_FORMATS } = require('../../../config/index')
 
 function redirectBaseUrl(req, res) {
-  const today = format(new Date(), dateFormat)
+  const today = format(new Date(), DATE_FORMATS.URL_PARAM)
   const currentLocation = get(req.session, 'currentLocation')
 
   if (currentLocation) {

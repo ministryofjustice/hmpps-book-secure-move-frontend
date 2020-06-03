@@ -1,10 +1,10 @@
-const dateUtil = require('./date-utils')
+const date = require('./date')
 const field = require('./field')
 const referenceData = require('./reference-data')
 const url = require('./url')
 
 module.exports = {
-  dateUtil,
+  date,
   field,
   referenceData,
   url,

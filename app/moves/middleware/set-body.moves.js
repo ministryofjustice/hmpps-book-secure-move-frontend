@@ -1,6 +1,6 @@
 const { get, set } = require('lodash')
 
-const { getCurrentDayAsRange } = require('../../../common/helpers/date-utils')
+const { getCurrentDayAsRange } = require('../../../common/helpers/date')
 
 function setBodyMoves(property, locationProperty) {
   return function handleBody(req, res, next) {

@@ -1,4 +1,4 @@
-const dateHelpers = require('../../common/helpers/date-utils')
+const dateHelpers = require('../../helpers/date')
 
 const setDateRange = require('./set-date-range')
 

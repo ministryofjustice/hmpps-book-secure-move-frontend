@@ -1,22 +1,13 @@
 const {
-  dateFormat,
   getCurrentWeekAsRange,
   getCurrentDayAsRange,
   getRelativeDate,
-  getDateFromParams,
   getDateRange,
-} = require('./date-utils')
+} = require('./date')
 
 const mockTimerDate = '2017-08-10'
 
 describe('Date helpers', function() {
-  describe('dateFormat', function() {
-    it('exposes dateFormat for convenience', function() {
-      expect(dateFormat).to.exist
-      expect(dateFormat).to.equal('yyyy-MM-dd')
-    })
-  })
-
   describe('#getCurrentWeekAsRange()', function() {
     let dateRange
 
@@ -57,25 +48,6 @@ describe('Date helpers', function() {
     })
     it('invoked with a positive number, returns the date plus the days specified', function() {
       expect(getRelativeDate('2010-01-02', 7)).to.equal('2010-01-09')
-    })
-  })
-  describe('#getDateFromParams', function() {
-    let req
-    beforeEach(function() {
-      req = {
-        params: {},
-      }
-    })
-    it('returns null if there is no date', function() {
-      expect(getDateFromParams(req)).to.be.null
-    })
-    it('returns null if the date is invalid', function() {
-      req.params.date = 'invalid date'
-      expect(getDateFromParams(req)).to.be.null
-    })
-    it('extracts the date from the params', function() {
-      req.params.date = '2010-01-01'
-      expect(getDateFromParams(req)).to.equal('2010-01-01')
     })
   })
 

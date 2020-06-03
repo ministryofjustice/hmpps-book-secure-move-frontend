@@ -1,7 +1,7 @@
 const { format } = require('date-fns')
 
 const { DATE_FORMATS } = require('../../../config')
-const dateHelpers = require('../../helpers/date-utils')
+const dateHelpers = require('../../helpers/date')
 const urlHelpers = require('../../helpers/url')
 
 function setPagination(route) {

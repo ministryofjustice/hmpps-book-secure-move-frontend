@@ -1,4 +1,4 @@
-const dateHelpers = require('../../common/helpers/date-utils')
+const dateHelpers = require('../../helpers/date')
 
 function setDateRange(req, res, next, date) {
   const { period } = req.params
