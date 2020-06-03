@@ -24,7 +24,10 @@ describe('Collection controllers', function() {
         actions: ['1', '2'],
         context: 'listContext',
         pagination: mockPagination,
-        params: {},
+        params: {
+          dateRange: ['2020-10-01', '2020-10-10'],
+          period: 'day',
+        },
         resultsAsCards: {
           active: mockActiveMovesByDate,
           cancelled: mockCancelledMovesByDate,
@@ -62,15 +65,21 @@ describe('Collection controllers', function() {
         })
       })
 
-      it('should contain pagination property', function() {
+      it('should contain dateRange property', function() {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('pagination')
-        expect(params.pagination).to.deep.equal(mockPagination)
+        expect(params).to.have.property('dateRange')
+        expect(params.dateRange).to.deep.equal(req.params.dateRange)
+      })
+
+      it('should contain period property', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('period')
+        expect(params.period).to.deep.equal(req.params.period)
       })
 
       it('should contain correct number of properties', function() {
         const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(4)
+        expect(Object.keys(params)).to.have.length(6)
       })
     })
 

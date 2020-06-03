@@ -13,11 +13,6 @@ function setDateRange(req, res, next, date) {
 
   req.params.dateRange = dateRange
 
-  // TODO: Move these to the controller to move away
-  // from setting `res.locals` in middleware
-  res.locals.dateRange = dateRange
-  res.locals.period = period
-
   next()
 }
 

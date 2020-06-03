@@ -6,12 +6,12 @@
   }) }}'});
 {% endblock %}
 
-{% if period === 'day' %}
-  {% set datetime = dateRange | first %}
-  {% set displayDate = datetime | formatDateAsRelativeDay %}
-{% else %}
+{% if period === 'week' %}
   {% set datetime = dateRange | formatISOWeek %}
   {% set displayDate = dateRange | formatDateRangeAsRelativeWeek %}
+{% else %}
+  {% set datetime = dateRange | first %}
+  {% set displayDate = datetime | formatDateAsRelativeDay %}
 {% endif %}
 
 {% block pageTitle %}
