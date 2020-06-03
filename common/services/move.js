@@ -1,8 +1,56 @@
 const dateFunctions = require('date-fns')
-const { mapValues, pickBy } = require('lodash')
+const { chunk, get, mapValues, pickBy, set } = require('lodash')
 
+const { LOCATIONS_BATCH_SIZE } = require('../../config')
 const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
+
+function splitRequests(props, propPath) {
+  const split = get(props, propPath, '').split(',')
+  const chunks = chunk(split, LOCATIONS_BATCH_SIZE).map(id => id.join(','))
+
+  return Promise.all(
+    chunks.map(chunk => {
+      set(props, propPath, chunk)
+      return getAll(props)
+    })
+  ).then(response => response.flat())
+}
+
+function getAll({
+  filter = {},
+  combinedData = [],
+  page = 1,
+  isAggregation = false,
+} = {}) {
+  return apiClient
+    .findAll('move', {
+      ...filter,
+      page,
+      per_page: isAggregation ? 1 : 100,
+    })
+    .then(response => {
+      const { data, links, meta } = response
+      const moves = [...combinedData, ...data]
+
+      if (isAggregation) {
+        return meta.pagination.total_objects
+      }
+
+      if (!links.next) {
+        return moves.map(move => ({
+          ...move,
+          person: personService.transform(move.person),
+        }))
+      }
+
+      return getAll({
+        filter,
+        combinedData: moves,
+        page: page + 1,
+      })
+    })
+}
 
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
@@ -28,39 +76,23 @@ const moveService = {
     })
   },
 
-  getAll({
-    filter = {},
-    combinedData = [],
-    page = 1,
-    isAggregation = false,
-  } = {}) {
-    return apiClient
-      .findAll('move', {
-        ...filter,
-        page,
-        per_page: isAggregation ? 1 : 100,
-      })
-      .then(response => {
-        const { data, links, meta } = response
-        const moves = [...combinedData, ...data]
+  getAll(props = {}) {
+    // TODO: This is more of a temporary solution to solve the problem where
+    // the API doesn't have a concept of what locations a user has access to
+    //
+    // Once Auth is moved to the API we would be able to remove this as the API
+    // would know to only return moves that a user has access to
+    const fromPath = 'filter["filter[from_location_id]"]'
+    if (get(props, fromPath)) {
+      return splitRequests(props, fromPath)
+    }
 
-        if (isAggregation) {
-          return meta.pagination.total_objects
-        }
+    const toPath = 'filter["filter[to_location_id]"]'
+    if (get(props, toPath)) {
+      return splitRequests(props, toPath)
+    }
 
-        if (!links.next) {
-          return moves.map(move => ({
-            ...move,
-            person: personService.transform(move.person),
-          }))
-        }
-
-        return moveService.getAll({
-          filter,
-          combinedData: moves,
-          page: page + 1,
-        })
-      })
+    return getAll(props)
   },
 
   getMovesByDateRangeAndStatus({

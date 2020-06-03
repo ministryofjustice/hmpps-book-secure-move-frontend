@@ -16,7 +16,7 @@ const MOUNTPATH = '/moves'
 
 const COLLECTION_BASE_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?`
 
-const COLLECTION_VIEW_PATH = '/:view(outgoing|requested)'
+const COLLECTION_VIEW_PATH = '/:view(outgoing|incoming|requested)'
 
 const COLLECTION_MIDDLEWARE = [
   setActions(actions),
@@ -27,10 +27,12 @@ const DEFAULTS = {
   QUERY: {
     requested: { status: 'pending' },
     outgoing: {},
+    incoming: {},
   },
   TIME_PERIOD: {
     requested: 'week',
     outgoing: 'day',
+    incoming: 'day',
   },
 }
 

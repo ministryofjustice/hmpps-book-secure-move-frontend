@@ -78,7 +78,7 @@
             {% if canAccess('moves:download') %}
               <li>
                 <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
-                  {{ t("actions::download_csv", {
+                  {{ t("collections::download_csv", {
                     context: context
                   }) }}
                 </a>
@@ -87,7 +87,7 @@
 
             <li>
               <a href="javascript:window.print()" class="app-icon app-icon--print">
-                {{ t("actions::print_collection", {
+                {{ t("collections::print_collection", {
                     context: context
                   }) }}
               </a>

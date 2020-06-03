@@ -119,6 +119,7 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         const policePermissions = [
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
           'move:create',
@@ -141,6 +142,7 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
           'move:create',
@@ -158,6 +160,7 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         const stcPermissions = [
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
           'move:create',
@@ -179,6 +182,7 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
           'move:create',
@@ -196,6 +200,7 @@ describe('User class', function() {
       it('should contain correct permission', function() {
         expect(permissions).to.deep.equal([
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
           'move:create',
@@ -253,6 +258,7 @@ describe('User class', function() {
         expect(permissions).to.deep.equal([
           'locations:all',
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:view',
         ])
@@ -280,6 +286,7 @@ describe('User class', function() {
           'allocation:person:assign',
           'allocation:cancel',
           'moves:view:outgoing',
+          'moves:view:incoming',
           'moves:download',
           'move:review',
           'move:view',

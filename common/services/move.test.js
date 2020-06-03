@@ -5,10 +5,14 @@ const apiClient = require('../lib/api-client')()
 const personService = require('./person')
 
 const formatISOStub = sinon.stub().returns('#timestamp')
+const mockBatchSize = 30
 
 const moveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
+  },
+  '../../config': {
+    LOCATIONS_BATCH_SIZE: mockBatchSize,
   },
 })
 
@@ -383,37 +387,41 @@ describe('Move Service', function() {
       })
     })
 
-    context('with moves without associated person', function() {
-      const mockMoves = [
-        {
-          id: '12345',
-          status: 'requested',
-        },
-        {
-          id: '67890',
-          status: 'cancelled',
-        },
-      ]
-      let moves
-      beforeEach(async function() {
-        personService.transform.restore()
-        sinon.stub(personService, 'transform').returns({})
+    const filters = ['filter[from_location_id]', 'filter[to_location_id]']
+    filters.forEach(function(filter) {
+      context(`when '${filter}' exceeds batch limit`, function() {
+        const mockLocations = Array(150)
+          .fill()
+          .map((v, i) => i)
+        const numberOfBatches = mockLocations.length / mockBatchSize
 
-        apiClient.findAll.resolves({
-          data: mockMoves,
-          links: {},
+        beforeEach(async function() {
+          apiClient.findAll.resolves(mockResponse)
+          moves = await moveService.getAll({
+            filter: {
+              [filter]: mockLocations.join(','),
+            },
+          })
         })
-        moves = await moveService.getAll()
-      })
-      it('calls format', function() {
-        expect(personService.transform).to.have.been.calledTwice
-        expect(personService.transform).to.have.been.calledWithExactly(
-          undefined
-        )
-      })
-      it('returns an empty object instead of person', function() {
-        expect(moves[0].person).to.deep.equal({})
-        expect(moves[1].person).to.deep.equal({})
+
+        it('should split into correct amount of calls', function() {
+          expect(apiClient.findAll).to.have.callCount(numberOfBatches)
+        })
+
+        for (let index = 0; index < numberOfBatches; index++) {
+          it(`should call batch ${index + 1}`, function() {
+            expect(apiClient.findAll).to.be.calledWithExactly('move', {
+              [filter]: mockLocations
+                .slice(
+                  index * mockBatchSize,
+                  index * mockBatchSize + mockBatchSize
+                )
+                .join(','),
+              page: 1,
+              per_page: 100,
+            })
+          })
+        }
       })
     })
   })
