@@ -12,6 +12,18 @@ function setPrimaryNavigation(req, res, next) {
       active: req.path === '/',
     },
     {
+      permission: 'moves:view:outgoing',
+      text: req.t('primary_navigation.outgoing'),
+      href: '/moves/outgoing',
+      active: req.path.startsWith('/moves') && req.path.endsWith('/outgoing'),
+    },
+    {
+      permission: 'moves:view:incoming',
+      text: req.t('primary_navigation.incoming'),
+      href: '/moves/incoming',
+      active: req.path.startsWith('/moves') && req.path.endsWith('/incoming'),
+    },
+    {
       permission: 'moves:view:proposed',
       text: req.t('primary_navigation.single_requests'),
       href: '/moves/requested',
@@ -23,18 +35,6 @@ function setPrimaryNavigation(req, res, next) {
       href: '/allocations',
       active:
         req.path.startsWith('/allocations') && req.path.endsWith('/outgoing'),
-    },
-    {
-      permission: 'moves:view:outgoing',
-      text: req.t('primary_navigation.outgoing'),
-      href: '/moves/outgoing',
-      active: req.path.startsWith('/moves') && req.path.endsWith('/outgoing'),
-    },
-    {
-      permission: 'moves:view:incoming',
-      text: req.t('primary_navigation.incoming'),
-      href: '/moves/incoming',
-      active: req.path.startsWith('/moves') && req.path.endsWith('/incoming'),
     },
   ]
 
