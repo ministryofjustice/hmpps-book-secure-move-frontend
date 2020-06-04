@@ -12,6 +12,16 @@ function dashboard(req, res) {
   }
 
   const sections = {
+    outgoing: {
+      permission: 'moves:view:outgoing',
+      heading: 'dashboard::sections.outgoing.heading',
+      filter: req.filterOutgoing,
+    },
+    incoming: {
+      permission: 'moves:view:incoming',
+      heading: 'dashboard::sections.incoming.heading',
+      filter: req.filterIncoming,
+    },
     singleRequests: {
       permission: 'moves:view:proposed',
       heading: 'dashboard::sections.single_requests.heading',

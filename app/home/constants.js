@@ -5,6 +5,18 @@ const {
 } = require('../moves/constants')
 
 const FILTERS = {
+  outgoing: [
+    {
+      label: 'dashboard::sections.outgoing.summary.total',
+      href: `${movesUrl}/outgoing`,
+    },
+  ],
+  incoming: [
+    {
+      label: 'dashboard::sections.incoming.summary.total',
+      href: `${movesUrl}/incoming`,
+    },
+  ],
   requested: movesFilters.requested.map(item => {
     return {
       ...item,

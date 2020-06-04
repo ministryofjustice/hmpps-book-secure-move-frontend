@@ -7,8 +7,10 @@ const {
   setBodyAllocations,
 } = require('../allocations/middleware')
 const {
-  setFilterSingleRequests,
+  setBodyMoves,
   setBodySingleRequests,
+  setFilterMoves,
+  setFilterSingleRequests,
 } = require('../moves/middleware')
 
 const { FILTERS } = require('./constants')
@@ -19,8 +21,12 @@ const { overrideLocationId } = require('./middleware')
 router.get(
   '/',
   overrideLocationId,
+  setBodyMoves('outgoing', 'fromLocationId'),
+  setBodyMoves('incoming', 'toLocationId'),
   setBodyAllocations,
   setBodySingleRequests,
+  setFilterMoves(FILTERS.outgoing, 'outgoing'),
+  setFilterMoves(FILTERS.incoming, 'incoming'),
   setFilterSingleRequests(FILTERS.requested),
   setFilterAllocations(FILTERS.allocations),
   dashboard
