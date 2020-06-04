@@ -18,8 +18,8 @@ async function setResultsAllocations(req, res, next) {
   try {
     const [activeAllocations, cancelledAllocations] = (
       await Promise.all([
-        allocationService.getActiveAllocations(req.body.allocations),
-        allocationService.getCancelledAllocations(req.body.allocations),
+        allocationService.getActive(req.body.allocations),
+        allocationService.getCancelled(req.body.allocations),
       ])
     ).map(response => response.flat())
 
