@@ -8,7 +8,7 @@ function setfilterAllocations(items = []) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
       allocationService
-        .getActiveAllocations({
+        .getActive({
           ...req.body.allocations,
           isAggregation: true,
           status: item.status,
@@ -21,7 +21,7 @@ function setfilterAllocations(items = []) {
 
           return {
             value,
-            label: i18n.t(item.label).toLowerCase(),
+            label: i18n.t(item.label, { count: value }).toLowerCase(),
             active: item.status === get(req, 'body.allocations.status'),
             href: `${item.href || req.baseUrl + req.path}?${query}`,
           }

@@ -24,8 +24,8 @@ describe('Allocations middleware', function() {
 
     beforeEach(function() {
       allocationsToTableStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'getActiveAllocations')
-      sinon.stub(allocationService, 'getCancelledAllocations')
+      sinon.stub(allocationService, 'getActive')
+      sinon.stub(allocationService, 'getCancelled')
       sinon
         .stub(permissions, 'check')
         .returns(false)
@@ -50,8 +50,8 @@ describe('Allocations middleware', function() {
 
     context('when services resolve', function() {
       beforeEach(function() {
-        allocationService.getActiveAllocations.resolves(mockActiveMoves)
-        allocationService.getCancelledAllocations.resolves(mockCancelledMoves)
+        allocationService.getActive.resolves(mockActiveMoves)
+        allocationService.getCancelled.resolves(mockCancelledMoves)
       })
 
       context('by default', function() {
@@ -61,7 +61,7 @@ describe('Allocations middleware', function() {
 
         it('should call the data service with request body', function() {
           expect(
-            allocationService.getActiveAllocations
+            allocationService.getActive
           ).to.have.been.calledOnceWithExactly({
             fromLocationId: '123',
             moveDate: ['2019-01-01', '2019-01-07'],
@@ -71,7 +71,7 @@ describe('Allocations middleware', function() {
 
         it('should call the data service with request body', function() {
           expect(
-            allocationService.getCancelledAllocations
+            allocationService.getCancelled
           ).to.have.been.calledOnceWithExactly({
             fromLocationId: '123',
             moveDate: ['2019-01-01', '2019-01-07'],
@@ -169,7 +169,7 @@ describe('Allocations middleware', function() {
       const mockError = new Error('Error!')
 
       beforeEach(async function() {
-        allocationService.getActiveAllocations.rejects(mockError)
+        allocationService.getActive.rejects(mockError)
         await middleware(req, res, next)
       })
 

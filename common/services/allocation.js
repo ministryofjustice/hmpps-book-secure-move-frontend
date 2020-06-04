@@ -77,13 +77,13 @@ const allocationService = {
       }),
     })
   },
-  getActiveAllocations(args) {
+  getActive(args) {
     return allocationService.getByDateAndLocation({
       ...args,
-      status: 'filled,unfilled',
+      status: args.status || 'filled,unfilled',
     })
   },
-  getCancelledAllocations(args) {
+  getCancelled(args) {
     return allocationService.getByDateAndLocation({
       ...args,
       includeCancelled: true,

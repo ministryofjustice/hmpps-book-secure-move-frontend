@@ -624,28 +624,51 @@ describe('Allocation service', function() {
     })
   })
 
-  describe('#getActiveAllocations', function() {
+  describe('#getActive', function() {
     beforeEach(function() {
       sinon.stub(allocationService, 'getByDateAndLocation')
-      allocationService.getActiveAllocations({
-        additionalParams: {},
+    })
+
+    context('with custom status', function() {
+      beforeEach(function() {
+        allocationService.getActive({
+          additionalParams: {},
+          status: 'custom',
+        })
+      })
+
+      it('invokes getByDateAndLocation passing a proposed status', function() {
+        expect(
+          allocationService.getByDateAndLocation
+        ).to.have.been.calledWithExactly({
+          additionalParams: {},
+          status: 'custom',
+        })
       })
     })
 
-    it('invokes getByDateAndLocation passing a proposed status', function() {
-      expect(
-        allocationService.getByDateAndLocation
-      ).to.have.been.calledWithExactly({
-        additionalParams: {},
-        status: 'filled,unfilled',
+    context('without custom status', function() {
+      beforeEach(function() {
+        allocationService.getActive({
+          additionalParams: {},
+        })
+      })
+
+      it('invokes getByDateAndLocation passing a proposed status', function() {
+        expect(
+          allocationService.getByDateAndLocation
+        ).to.have.been.calledWithExactly({
+          additionalParams: {},
+          status: 'filled,unfilled',
+        })
       })
     })
   })
 
-  describe('#getCancelledAllocations', function() {
+  describe('#getCancelled', function() {
     beforeEach(function() {
       sinon.stub(allocationService, 'getByDateAndLocation')
-      allocationService.getCancelledAllocations({
+      allocationService.getCancelled({
         additionalParams: {},
       })
     })
