@@ -13,14 +13,14 @@ const {
 
 const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
-const { overrideBodySingleRequests } = require('./middleware')
+const { overrideLocationId } = require('./middleware')
 
 // Define routes
 router.get(
   '/',
+  overrideLocationId,
   setBodyAllocations,
   setBodySingleRequests,
-  overrideBodySingleRequests,
   setFilterSingleRequests(FILTERS.requested),
   setFilterAllocations(FILTERS.allocations),
   dashboard
