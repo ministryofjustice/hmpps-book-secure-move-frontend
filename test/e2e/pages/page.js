@@ -5,6 +5,7 @@ import { E2E } from '../../../config'
 export default class Page {
   constructor() {
     this.baseUrl = E2E.BASE_URL
+    this.uuidRegex = /[\w]{8}(-[\w]{4}){3}-[\w]{12}/
     this.nodes = {
       locationMeta: Selector('meta').withAttribute('name', 'location'),
       appHeader: Selector('.app-header__logo').withExactText(
@@ -71,6 +72,19 @@ export default class Page {
   }
 
   /**
+   * Select "all locations"
+   *
+   * @returns {Promise}
+   */
+  async chooseAllLocations() {
+    const allLocationsLink = Selector('a').withAttribute(
+      'href',
+      '/locations/all'
+    )
+    return t.click(allLocationsLink)
+  }
+
+  /**
    * Get definition list item value by key text
    *
    * @param {Selector} dl - definition list selector
@@ -82,5 +96,11 @@ export default class Page {
       .find('dt')
       .withText(key)
       .sibling('dd').innerText
+  }
+
+  scrollToBottom() {
+    return ClientFunction(function() {
+      window.scrollBy(0, 1000)
+    })
   }
 }

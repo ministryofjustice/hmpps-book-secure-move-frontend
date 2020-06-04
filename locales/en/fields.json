@@ -1,6 +1,7 @@
 {
   "date": {
-    "hint": "For example 28/10/1990 or 28 October 1990"
+    "hint": "For example 28/10/1990 or 28 October 1990",
+    "label_with_error": "Date"
   },
   "filter": {
     "police_national_computer": {

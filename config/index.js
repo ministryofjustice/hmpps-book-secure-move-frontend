@@ -152,6 +152,10 @@ module.exports = {
         username: process.env.E2E_OCA_USERNAME,
         password: process.env.E2E_OCA_PASSWORD,
       },
+      PMU: {
+        username: process.env.E2E_PMU_USERNAME,
+        password: process.env.E2E_PMU_PASSWORD,
+      },
     },
   },
 }
