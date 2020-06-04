@@ -21,7 +21,7 @@ function setfilterAllocations(items = []) {
 
           return {
             value,
-            label: i18n.t(item.label).toLowerCase(),
+            label: i18n.t(item.label, { count: value }).toLowerCase(),
             active: item.status === get(req, 'body.allocations.status'),
             href: `${item.href || req.baseUrl + req.path}?${query}`,
           }

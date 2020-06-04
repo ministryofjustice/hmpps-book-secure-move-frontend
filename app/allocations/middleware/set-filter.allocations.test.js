@@ -99,6 +99,22 @@ describe('Allocations middleware', function() {
           expect(allocationService.getActive.callCount).to.equal(3)
         })
 
+        it('translate each item', async function() {
+          expect(i18n.t.callCount).to.equal(3)
+        })
+
+        it('translates with count', async function() {
+          expect(i18n.t).to.be.calledWithExactly('statuses::pending', {
+            count: 4,
+          })
+          expect(i18n.t).to.be.calledWithExactly('statuses::approved', {
+            count: 4,
+          })
+          expect(i18n.t).to.be.calledWithExactly('statuses::rejected', {
+            count: 4,
+          })
+        })
+
         it('calls next', function() {
           expect(next).to.have.been.calledWithExactly()
         })

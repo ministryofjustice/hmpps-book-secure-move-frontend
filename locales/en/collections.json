@@ -15,6 +15,8 @@
   "subheading_single_requests": "Single requests sent",
   "no_results": "No results",
   "no_results_allocations": "No allocations",
+  "no_results_allocations_filled": "No filled allocations",
+  "no_results_allocations_unfilled": "No unfilled allocations",
   "no_results_outgoing_moves": "No moves",
   "no_results_incoming_moves": "No moves",
   "no_results_single_requests": "No single requests",

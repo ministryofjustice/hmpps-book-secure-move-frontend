@@ -1,4 +1,7 @@
-const { MOUNTPATH: allocationsUrl } = require('../allocations/constants')
+const {
+  FILTERS: allocationsFilters,
+  MOUNTPATH: allocationsUrl,
+} = require('../allocations/constants')
 const {
   FILTERS: movesFilters,
   MOUNTPATH: movesUrl,
@@ -23,13 +26,12 @@ const FILTERS = {
       href: `${movesUrl}/requested`,
     }
   }),
-  allocations: [
-    {
-      label: 'dashboard::sections.allocations.summary.total',
-      status: '',
-      href: allocationsUrl,
-    },
-  ],
+  allocations: allocationsFilters.outgoing.map(item => {
+    return {
+      ...item,
+      href: `${allocationsUrl}/outgoing`,
+    }
+  }),
 }
 
 module.exports = {

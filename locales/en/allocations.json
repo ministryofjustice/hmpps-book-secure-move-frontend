@@ -1,7 +1,6 @@
 {
-  "complete": "complete",
-  "incomplete": "incomplete",
-  "total": "total allocations",
+  "total": "total allocation",
+  "total_plural": "total allocations",
   "confirmation": {
     "page_title": "Allocation requested",
     "detail": "The request for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}} has been sent",

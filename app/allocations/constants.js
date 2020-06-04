@@ -27,6 +27,14 @@ const FILTERS = {
       label: 'allocations::total',
       status: '',
     },
+    {
+      label: 'statuses::filled',
+      status: 'filled',
+    },
+    {
+      label: 'statuses::unfilled',
+      status: 'unfilled',
+    },
   ],
 }
 
