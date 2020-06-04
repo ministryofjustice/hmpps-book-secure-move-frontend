@@ -60,9 +60,11 @@ function getAuthLocations(token) {
         if (error.statusCode === 404) {
           return Promise.resolve([])
         }
+
         return Promise.reject(error)
       }
     }
+
     return getLocationsByNomisAgencyId(groups)
   })
 }

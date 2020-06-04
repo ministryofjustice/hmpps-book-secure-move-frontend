@@ -37,4 +37,5 @@ function allocationToSummaryListComponent(allocation) {
     ],
   }
 }
+
 module.exports = allocationToSummaryListComponent

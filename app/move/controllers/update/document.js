@@ -11,6 +11,7 @@ class UpdateDocumentUploadController extends UpdateBase {
       req,
       'session.currentLocation.can_upload_documents'
     )
+
     if (!canUploadDocuments) {
       const error = new Error(
         'Document upload is not possible for this location'
@@ -18,18 +19,23 @@ class UpdateDocumentUploadController extends UpdateBase {
       error.statusCode = 404
       return next(error)
     }
+
     DocumentUploadController.prototype.configure.apply(this, [req, res, next])
   }
 
   getUpdateValues(req, res) {
     const move = req.getMove()
+
     if (!move) {
       return {}
     }
+
     const values = {}
+
     if (req.initialStep) {
       req.sessionModel.set('documents', move.documents)
     }
+
     values.documents = req.sessionModel.get('documents')
     return values
   }
@@ -42,6 +48,7 @@ class UpdateDocumentUploadController extends UpdateBase {
         next,
       ])
     }
+
     try {
       await moveService.update({
         id: req.getMoveId(),

@@ -4,6 +4,7 @@ function check(permissions, userPermissions = []) {
   if (!Array.isArray(permissions)) {
     permissions = [permissions]
   }
+
   return permissions.some(permission => userPermissions.includes(permission))
 }
 

@@ -24,6 +24,7 @@ class SaveController extends CreateAllocationBaseController {
 
   async successHandler(req, res, next) {
     const { id } = req.sessionModel.get('allocation')
+
     try {
       req.journeyModel.reset()
       req.sessionModel.reset()

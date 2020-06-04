@@ -28,6 +28,7 @@ function processAuthResponse() {
         if (error) {
           return next(error)
         }
+
         req.session.authExpiry = decodedAccessToken.exp
         req.session.user = new User({
           fullname,
@@ -42,9 +43,11 @@ function processAuthResponse() {
           if (req.session[key]) {
             return
           }
+
           if (key === 'grant') {
             return
           }
+
           req.session[key] = previousSession[key]
         })
 

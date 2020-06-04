@@ -4,4 +4,5 @@ function setActions(actions) {
     next()
   }
 }
+
 module.exports = setActions

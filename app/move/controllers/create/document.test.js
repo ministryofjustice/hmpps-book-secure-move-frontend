@@ -4,11 +4,13 @@ const multer = require('multer')
 const proxyquire = require('proxyquire').noCallThru()
 
 function MulterStub() {}
+
 MulterStub.prototype.array = sinon.stub()
 
 function multerStub() {
   return new MulterStub()
 }
+
 multerStub.MulterError = multer.MulterError
 
 const BaseController = require('./base')

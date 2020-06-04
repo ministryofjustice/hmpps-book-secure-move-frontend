@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
 function MockAuth() {}
+
 MockAuth.prototype.getAccessToken = sinon.stub()
 
 const authMiddleware = proxyquire('./auth', {

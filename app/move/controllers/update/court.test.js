@@ -28,6 +28,7 @@ describe('Move controllers', function() {
           args = []
           error = {}
           controller.configure(req, res, nextSpy)
+
           try {
             args = nextSpy.getCall(0).args
             error = args[0]

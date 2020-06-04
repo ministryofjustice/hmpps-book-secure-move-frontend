@@ -56,4 +56,5 @@ function allocationToMetaListComponent(allocation) {
     ],
   }
 }
+
 module.exports = allocationToMetaListComponent

@@ -13,6 +13,7 @@ class UpdateMoveDetailsController extends UpdateBase {
 
   getUpdateValues(req, res) {
     const move = req.getMove()
+
     if (!move) {
       return {}
     }
@@ -20,10 +21,13 @@ class UpdateMoveDetailsController extends UpdateBase {
     const values = pick(move, ['move_type', 'additional_information'])
 
     const moveType = move.move_type
+
     if (values.additional_information) {
       values[`${moveType}_comments`] = values.additional_information
     }
+
     const toLocation = get(move, 'to_location.id')
+
     if (toLocation) {
       values[`to_location_${moveType}`] = toLocation
     }

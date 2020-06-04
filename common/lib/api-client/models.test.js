@@ -199,11 +199,13 @@ describe('API client models', function() {
     describe(`${startCase(modelName)} model`, function() {
       // ensure all methods have a statusCode defined
       const noStatusMethods = getStatusMethods(modelName, undefined)
+
       if (noStatusMethods[0]) {
         throw new Error(
           `${modelName}.${noStatusMethods[0].method} has no statusCode`
         )
       }
+
       const runStatusMethodTests = (
         statusCode,
         expectFn = expectProperties,

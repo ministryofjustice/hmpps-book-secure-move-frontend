@@ -5,6 +5,7 @@ function MockRedisStore(opts = {}) {
   this.isStore = true
   this.init(opts)
 }
+
 MockRedisStore.prototype.init = opts => this
 
 const mockRedisClient = {

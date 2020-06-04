@@ -11,6 +11,7 @@ class UpdateMoveDetailsController extends UpdateBase {
 
   getUpdateValues(req, res) {
     const move = req.getMove()
+
     if (!move) {
       return {}
     }
@@ -22,9 +23,11 @@ class UpdateMoveDetailsController extends UpdateBase {
       [formatDate(res.locals.TODAY, dateFormat)]: 'today',
       [formatDate(res.locals.TOMORROW, dateFormat)]: 'tomorrow',
     }
+
     if (dates[move.date]) {
       values.date_type = dates[move.date]
     }
+
     if (values.date_type === 'custom') {
       values.date_custom = formatDate(move.date)
     }

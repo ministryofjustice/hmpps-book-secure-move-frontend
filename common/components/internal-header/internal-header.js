@@ -5,12 +5,14 @@ function Header($module) {
 Header.prototype.init = function() {
   // Check for module
   var $module = this.$module
+
   if (!$module) {
     return
   }
 
   // Check for button
   var $toggleButton = $module.querySelector('.js-header-toggle')
+
   if (!$toggleButton) {
     return
   }

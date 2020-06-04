@@ -90,6 +90,7 @@ describe('Move controllers', function() {
           error = {}
           req.session.currentLocation.can_upload_documents = false
           controller.configure(req, res, nextSpy)
+
           try {
             args = nextSpy.getCall(0).args
             error = args[0]

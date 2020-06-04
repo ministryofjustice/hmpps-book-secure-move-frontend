@@ -41,6 +41,7 @@ describe('Move controllers', function() {
           if (args) {
             return `Update ${args.category}`
           }
+
           return key.replace(/moves::update_link.categories./, '')
         })
         updateLinks = getUpdateLinks(updateSteps, urls)

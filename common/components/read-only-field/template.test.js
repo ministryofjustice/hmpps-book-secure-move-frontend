@@ -4,6 +4,7 @@ const {
 } = require('../../../test/unit/component-helpers')
 
 const examples = getExamples('read-only-field')
+
 const getComponent = example => {
   const $ = renderComponentHtmlToCheerio('read-only-field', examples[example])
   return $('.app-read-only-field')

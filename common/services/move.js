@@ -69,9 +69,11 @@ const moveService = {
           value = JSON.parse(value)
         } catch (e) {}
       }
+
       if (relationships.includes(key) && typeof value === 'string') {
         return { id: value }
       }
+
       return value
     })
   },
@@ -83,11 +85,12 @@ const moveService = {
     // Once Auth is moved to the API we would be able to remove this as the API
     // would know to only return moves that a user has access to
     const fromPath = 'filter["filter[from_location_id]"]'
+    const toPath = 'filter["filter[to_location_id]"]'
+
     if (get(props, fromPath)) {
       return splitRequests(props, fromPath)
     }
 
-    const toPath = 'filter["filter[to_location_id]"]'
     if (get(props, toPath)) {
       return splitRequests(props, toPath)
     }
@@ -211,6 +214,7 @@ const moveService = {
     if (!data.id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
+
     const timestamp = dateFunctions.formatISO(new Date())
     return apiClient
       .one('move', data.id)

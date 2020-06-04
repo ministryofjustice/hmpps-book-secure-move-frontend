@@ -13,9 +13,11 @@ module.exports = function ensureAuthenticated({
 } = {}) {
   return (req, res, next) => {
     let authExpiry = req.session.authExpiry
+
     if (req.method === 'GET' && expiryMargin) {
       authExpiry -= expiryMargin
     }
+
     if (whitelist.includes(req.url) || !_isExpired(authExpiry)) {
       return next()
     }
@@ -25,6 +27,7 @@ module.exports = function ensureAuthenticated({
     if (req.method === 'POST') {
       const contentType = req.get('content-type') || ''
       const isMultipart = contentType.startsWith('multipart/form-data;')
+
       if (isMultipart || req.xhr) {
         const error = new Error(
           req.t('validation::AUTH_EXPIRED', {
@@ -37,6 +40,7 @@ module.exports = function ensureAuthenticated({
 
       req.session.originalRequestBody = req.body
     }
+
     res.redirect(`/connect/${provider}`)
   }
 }

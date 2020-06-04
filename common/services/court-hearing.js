@@ -10,6 +10,7 @@ const courtHearingService = {
       if (relationships.includes(key) && typeof value === 'string') {
         return { id: value }
       }
+
       return value
     })
   },

@@ -28,4 +28,5 @@ function objectToTableRow(schema) {
       .filter(row => row)
   }
 }
+
 module.exports = objectToTableRow
