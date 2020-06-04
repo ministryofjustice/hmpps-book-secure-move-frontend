@@ -78,7 +78,9 @@ describe('#allocationsToTableComponent', function() {
     sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(componentService, 'getComponent').returnsArg(0)
     sinon.stub(filters, 'formatDate').returnsArg(0)
-    sinon.stub(tablePresenters, 'objectToTableHead').callsFake(arg => arg.head)
+    sinon
+      .stub(tablePresenters, 'objectToTableHead')
+      .returns(sinon.stub().callsFake(arg => arg.head))
     output = presenter()([])
   })
 
@@ -103,7 +105,9 @@ describe('#allocationsToTableComponent', function() {
       it('returns the table head correctly ordered', function() {
         expect(output.head).to.deep.equal([
           {
-            text: 'collections::labels.move_size',
+            html: 'collections::labels.move_size',
+            isSortable: true,
+            sortKey: 'moves_count',
             attributes: {
               width: '120',
             },
@@ -115,10 +119,14 @@ describe('#allocationsToTableComponent', function() {
             },
           },
           {
-            text: 'collections::labels.to_location',
+            html: 'collections::labels.to_location',
+            isSortable: true,
+            sortKey: 'to_location',
           },
           {
-            text: 'fields::date_custom.label',
+            html: 'fields::date_custom.label',
+            isSortable: true,
+            sortKey: 'date',
             attributes: {
               width: '135',
             },
@@ -272,7 +280,9 @@ describe('#allocationsToTableComponent', function() {
       it('returns the table head correctly ordered', function() {
         expect(output.head).to.deep.equal([
           {
-            text: 'collections::labels.move_size',
+            html: 'collections::labels.move_size',
+            isSortable: true,
+            sortKey: 'moves_count',
             attributes: {
               width: '120',
             },
@@ -284,13 +294,19 @@ describe('#allocationsToTableComponent', function() {
             },
           },
           {
-            text: 'collections::labels.from_location',
+            html: 'collections::labels.from_location',
+            isSortable: true,
+            sortKey: 'from_location',
           },
           {
-            text: 'collections::labels.to_location',
+            html: 'collections::labels.to_location',
+            isSortable: true,
+            sortKey: 'to_location',
           },
           {
-            text: 'fields::date_custom.label',
+            html: 'fields::date_custom.label',
+            isSortable: true,
+            sortKey: 'date',
             attributes: {
               width: '135',
             },
@@ -439,6 +455,64 @@ describe('#allocationsToTableComponent', function() {
             )
           })
         })
+      })
+    })
+
+    context('with query', function() {
+      beforeEach(function() {
+        output = presenter({
+          query: {
+            sortBy: 'date',
+            status: 'approved',
+          },
+        })(mockAllocations)
+      })
+      it('passes the query to objectToTableHead', function() {
+        expect(
+          tablePresenters.objectToTableHead
+        ).to.have.been.calledWithExactly({
+          sortBy: 'date',
+          status: 'approved',
+        })
+      })
+    })
+
+    context('with isSortable set to false', function() {
+      beforeEach(function() {
+        output = presenter({
+          isSortable: false,
+        })(mockAllocations)
+      })
+      it('should return allocations without sorting flag', function() {
+        expect(output.head).to.deep.equal([
+          {
+            attributes: {
+              width: '120',
+            },
+            html: 'collections::labels.move_size',
+            isSortable: false,
+            sortKey: 'moves_count',
+          },
+          {
+            attributes: {
+              width: '150',
+            },
+            text: 'collections::labels.progress',
+          },
+          {
+            html: 'collections::labels.to_location',
+            isSortable: false,
+            sortKey: 'to_location',
+          },
+          {
+            attributes: {
+              width: '135',
+            },
+            html: 'fields::date_custom.label',
+            isSortable: false,
+            sortKey: 'date',
+          },
+        ])
       })
     })
   })

@@ -18,6 +18,8 @@ describe('Allocations middleware', function() {
         },
         query: {
           status: 'pending',
+          sortBy: 'moves_count',
+          sortDirection: 'asc',
         },
       }
     })
@@ -32,6 +34,8 @@ describe('Allocations middleware', function() {
           status: 'pending',
           moveDate: ['2010-10-10', '2010-10-07'],
           fromLocationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
+          sortBy: 'moves_count',
+          sortDirection: 'asc',
         })
       })
 
@@ -51,6 +55,8 @@ describe('Allocations middleware', function() {
           status: 'pending',
           moveDate: ['2020-10-10', '2020-10-10'],
           fromLocationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
+          sortBy: 'moves_count',
+          sortDirection: 'asc',
         })
       })
 

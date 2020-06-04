@@ -7,12 +7,14 @@ const allocationService = require('../../../common/services/allocation')
 async function setResultsAllocations(req, res, next) {
   const currentLocationId = get(req.session, 'currentLocation.id')
   const userPermissions = get(req.session, 'user.permissions')
+  const query = req.query
   const displayConfig = {
     showRemaining: permissions.check(
       'allocation:person:assign',
       userPermissions
     ),
     showFromLocation: !currentLocationId,
+    query,
   }
 
   try {
@@ -31,9 +33,10 @@ async function setResultsAllocations(req, res, next) {
       active: presenters.allocationsToTableComponent(displayConfig)(
         activeAllocations
       ),
-      cancelled: presenters.allocationsToTableComponent(displayConfig)(
-        cancelledAllocations
-      ),
+      cancelled: presenters.allocationsToTableComponent({
+        ...displayConfig,
+        isSortable: false,
+      })(cancelledAllocations),
     }
 
     next()

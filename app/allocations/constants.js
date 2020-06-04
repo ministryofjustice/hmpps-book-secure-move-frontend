@@ -14,7 +14,7 @@ const COLLECTION_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uu
 
 const DEFAULTS = {
   QUERY: {
-    outgoing: { status: '' },
+    outgoing: { status: '', sortBy: 'date', sortDirection: 'asc' },
   },
   TIME_PERIOD: {
     outgoing: 'week',

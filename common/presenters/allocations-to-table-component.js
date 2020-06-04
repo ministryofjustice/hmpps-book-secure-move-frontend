@@ -27,11 +27,15 @@ function _byAdded(totalSlots, unfilledSlots) {
 function allocationsToTableComponent({
   showFromLocation = false,
   showRemaining = false,
+  query,
+  isSortable = true,
 } = {}) {
   const tableConfig = [
     {
       head: {
-        text: 'collections::labels.move_size',
+        isSortable,
+        sortKey: 'moves_count',
+        html: 'collections::labels.move_size',
         attributes: {
           width: '120',
         },
@@ -79,7 +83,11 @@ function allocationsToTableComponent({
     {
       /* eslint-disable indent */
       head: showFromLocation
-        ? { text: 'collections::labels.from_location' }
+        ? {
+            sortKey: 'from_location',
+            html: 'collections::labels.from_location',
+            isSortable,
+          }
         : undefined,
       /* eslint-enable indent */
       row: {
@@ -88,7 +96,9 @@ function allocationsToTableComponent({
     },
     {
       head: {
-        text: 'collections::labels.to_location',
+        isSortable,
+        sortKey: 'to_location',
+        html: 'collections::labels.to_location',
       },
       row: {
         text: 'to_location.title',
@@ -96,7 +106,9 @@ function allocationsToTableComponent({
     },
     {
       head: {
-        text: 'fields::date_custom.label',
+        isSortable,
+        sortKey: 'date',
+        html: 'fields::date_custom.label',
         attributes: {
           width: '135',
         },
@@ -110,7 +122,7 @@ function allocationsToTableComponent({
   return function buildTable(allocations) {
     return {
       head: tableConfig
-        .map(tablePresenters.objectToTableHead)
+        .map(tablePresenters.objectToTableHead(query))
         .filter(column => column),
       rows: allocations.map(tablePresenters.objectToTableRow(tableConfig)),
     }
