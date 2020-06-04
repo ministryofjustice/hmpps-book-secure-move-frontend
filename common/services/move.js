@@ -146,9 +146,15 @@ const moveService = {
     })
   },
 
-  getActive({ dateRange = [], fromLocationId, toLocationId } = {}) {
+  getActive({
+    dateRange = [],
+    fromLocationId,
+    toLocationId,
+    isAggregation = false,
+  } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
+      isAggregation,
       filter: {
         'filter[status]': 'requested,accepted,completed',
         'filter[date_from]': startDate,
@@ -159,9 +165,15 @@ const moveService = {
     })
   },
 
-  getCancelled({ dateRange = [], fromLocationId, toLocationId } = {}) {
+  getCancelled({
+    dateRange = [],
+    fromLocationId,
+    toLocationId,
+    isAggregation = false,
+  } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
+      isAggregation,
       filter: {
         'filter[status]': 'cancelled',
         'filter[date_from]': startDate,
