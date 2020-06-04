@@ -14,7 +14,7 @@
   <div class="govuk-grid-row">
     {% for key, section in sections %}
       {% if canAccess(section.permission) %}
-        <section class="govuk-grid-column-one-half">
+        <section class="govuk-grid-column-one-half govuk-!-margin-bottom-6">
           <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
             {{ t(section.heading) }}
           </h2>

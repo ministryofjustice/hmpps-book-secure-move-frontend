@@ -59,16 +59,6 @@ describe('#setPrimaryNavigation()', function() {
           },
           {
             active: false,
-            href: '/moves/requested',
-            text: 'primary_navigation.single_requests',
-          },
-          {
-            active: false,
-            href: '/allocations',
-            text: 'primary_navigation.allocations',
-          },
-          {
-            active: false,
             href: '/moves/outgoing',
             text: 'primary_navigation.outgoing',
           },
@@ -76,6 +66,16 @@ describe('#setPrimaryNavigation()', function() {
             active: false,
             href: '/moves/incoming',
             text: 'primary_navigation.incoming',
+          },
+          {
+            active: false,
+            href: '/moves/requested',
+            text: 'primary_navigation.single_requests',
+          },
+          {
+            active: false,
+            href: '/allocations',
+            text: 'primary_navigation.allocations',
           },
         ])
       })

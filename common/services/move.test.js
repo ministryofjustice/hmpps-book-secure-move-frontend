@@ -501,6 +501,7 @@ describe('Move Service', function() {
 
       it('should call getAll with active statuses', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: false,
           filter: {
             'filter[status]': 'requested,accepted,completed',
             'filter[date_from]': undefined,
@@ -531,11 +532,40 @@ describe('Move Service', function() {
 
       it('should call getAll with active statuses', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: false,
           filter: {
             'filter[status]': 'requested,accepted,completed',
             'filter[date_from]': mockDateRange[0],
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
+        })
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+
+    context('with aggregation', function() {
+      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+
+      beforeEach(async function() {
+        moves = await moveService.getActive({
+          toLocationId: mockToLocationId,
+          isAggregation: true,
+        })
+      })
+
+      it('should call getAll with active statuses', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: true,
+          filter: {
+            'filter[status]': 'requested,accepted,completed',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })
@@ -562,6 +592,7 @@ describe('Move Service', function() {
 
       it('should call getAll methods', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: false,
           filter: {
             'filter[status]': 'cancelled',
             'filter[date_from]': undefined,
@@ -592,11 +623,40 @@ describe('Move Service', function() {
 
       it('should call getAll methods', function() {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: false,
           filter: {
             'filter[status]': 'cancelled',
             'filter[date_from]': mockDateRange[0],
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
+        })
+      })
+
+      it('should return moves', function() {
+        expect(moves).to.deep.equal(mockResponse)
+      })
+    })
+
+    context('with aggregation', function() {
+      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+
+      beforeEach(async function() {
+        moves = await moveService.getCancelled({
+          toLocationId: mockToLocationId,
+          isAggregation: true,
+        })
+      })
+
+      it('should call getAll with active statuses', function() {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          isAggregation: true,
+          filter: {
+            'filter[status]': 'cancelled',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })

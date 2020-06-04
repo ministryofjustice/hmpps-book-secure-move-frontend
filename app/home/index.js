@@ -7,20 +7,26 @@ const {
   setBodyAllocations,
 } = require('../allocations/middleware')
 const {
-  setFilterSingleRequests,
+  setBodyMoves,
   setBodySingleRequests,
+  setFilterMoves,
+  setFilterSingleRequests,
 } = require('../moves/middleware')
 
 const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
-const { overrideBodySingleRequests } = require('./middleware')
+const { overrideLocationId } = require('./middleware')
 
 // Define routes
 router.get(
   '/',
+  overrideLocationId,
+  setBodyMoves('outgoing', 'fromLocationId'),
+  setBodyMoves('incoming', 'toLocationId'),
   setBodyAllocations,
   setBodySingleRequests,
-  overrideBodySingleRequests,
+  setFilterMoves(FILTERS.outgoing, 'outgoing'),
+  setFilterMoves(FILTERS.incoming, 'incoming'),
   setFilterSingleRequests(FILTERS.requested),
   setFilterAllocations(FILTERS.allocations),
   dashboard

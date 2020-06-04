@@ -13,6 +13,28 @@ const { DATE_FORMATS } = require('../../config/index')
 
 module.exports = {
   dateFormat: DATE_FORMATS.URL_PARAM,
+  getCurrentWeekAsRange: () => {
+    const today = new Date()
+    const startDate = format(
+      startOfWeek(today, {
+        weekStartsOn: DATE_FORMATS.WEEK_STARTS_ON,
+      }),
+      DATE_FORMATS.URL_PARAM
+    )
+    const endDate = format(
+      endOfWeek(today, {
+        weekStartsOn: DATE_FORMATS.WEEK_STARTS_ON,
+      }),
+      DATE_FORMATS.URL_PARAM
+    )
+
+    return [startDate, endDate]
+  },
+  getCurrentDayAsRange: () => {
+    const today = format(new Date(), DATE_FORMATS.URL_PARAM)
+
+    return [today, today]
+  },
   getRelativeDate: (date, interval) => {
     const method = interval >= 0 ? addDays : subDays
     return format(

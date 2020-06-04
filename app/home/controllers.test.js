@@ -8,6 +8,8 @@ describe('Home controllers', function() {
       req = {
         filterSingleRequests: ['foo', 'bar'],
         filterAllocations: ['fizz', 'buzz'],
+        filterIncoming: ['fuzz', 'bang'],
+        filterOutgoing: ['jon', 'doe'],
         session: {
           user: {
             permissions: [],
@@ -44,6 +46,16 @@ describe('Home controllers', function() {
         expect(params).to.deep.equal({
           pageTitle: 'dashboard::page_title',
           sections: {
+            outgoing: {
+              permission: 'moves:view:outgoing',
+              heading: 'dashboard::sections.outgoing.heading',
+              filter: req.filterOutgoing,
+            },
+            incoming: {
+              permission: 'moves:view:incoming',
+              heading: 'dashboard::sections.incoming.heading',
+              filter: req.filterIncoming,
+            },
             singleRequests: {
               permission: 'moves:view:proposed',
               heading: 'dashboard::sections.single_requests.heading',

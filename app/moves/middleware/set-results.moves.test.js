@@ -18,7 +18,7 @@ const mockLocationKey = 'from_location'
 const errorStub = new Error('Problem')
 
 describe('Moves middleware', function() {
-  describe('#setResultsOutgoing()', function() {
+  describe('#setResultsMoves()', function() {
     let req, res, nextSpy, moveToCardComponentMapStub
 
     beforeEach(async function() {
