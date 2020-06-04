@@ -1,9 +1,13 @@
 const {
   dateFormat,
+  getCurrentWeekAsRange,
+  getCurrentDayAsRange,
   getRelativeDate,
   getDateFromParams,
   getDateRange,
 } = require('./date-utils')
+
+const mockTimerDate = '2017-08-10'
 
 describe('Date helpers', function() {
   describe('dateFormat', function() {
@@ -12,6 +16,41 @@ describe('Date helpers', function() {
       expect(dateFormat).to.equal('yyyy-MM-dd')
     })
   })
+
+  describe('#getCurrentWeekAsRange()', function() {
+    let dateRange
+
+    beforeEach(function() {
+      this.clock = sinon.useFakeTimers(new Date(mockTimerDate).getTime())
+      dateRange = getCurrentWeekAsRange()
+    })
+
+    afterEach(function() {
+      this.clock.restore()
+    })
+
+    it('should return current week as array', function() {
+      expect(dateRange).to.deep.equal(['2017-08-07', '2017-08-13'])
+    })
+  })
+
+  describe('#getCurrentDayAsRange()', function() {
+    let dateRange
+
+    beforeEach(function() {
+      this.clock = sinon.useFakeTimers(new Date(mockTimerDate).getTime())
+      dateRange = getCurrentDayAsRange()
+    })
+
+    afterEach(function() {
+      this.clock.restore()
+    })
+
+    it('should return current day as array', function() {
+      expect(dateRange).to.deep.equal(['2017-08-10', '2017-08-10'])
+    })
+  })
+
   describe('#getRelativeDate', function() {
     it('invoked with a negative number, returns the date minus the days specified', function() {
       expect(getRelativeDate('2010-01-02', -7)).to.equal('2009-12-26')

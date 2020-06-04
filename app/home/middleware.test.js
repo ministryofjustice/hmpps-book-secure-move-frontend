@@ -2,16 +2,7 @@ const middleware = require('./middleware')
 
 describe('Home middleware', function() {
   describe('#overrideBodySingleRequests()', function() {
-    const mockDate = '2017-08-10'
     let mockRes, mockReq, nextSpy
-
-    beforeEach(function() {
-      this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
-    })
-
-    afterEach(function() {
-      this.clock.restore()
-    })
 
     beforeEach(function() {
       nextSpy = sinon.spy()
@@ -21,13 +12,11 @@ describe('Home middleware', function() {
           requested: {
             foo: 'bar',
             fizz: 'buzz',
-            createdAtDate: ['2020-10-10', '2020-10-16'],
             fromLocationId: '12345',
           },
           allocations: {
             foo: 'bar',
             fizz: 'buzz',
-            moveDate: ['2020-10-10', '2020-10-16'],
             fromLocationId: '12345',
           },
         },
@@ -43,7 +32,6 @@ describe('Home middleware', function() {
         expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
-          createdAtDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: undefined,
         })
       })
@@ -52,7 +40,6 @@ describe('Home middleware', function() {
         expect(mockReq.body.allocations).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
-          moveDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: undefined,
         })
       })
@@ -72,7 +59,6 @@ describe('Home middleware', function() {
         expect(mockReq.body.requested).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
-          createdAtDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: '67890',
         })
       })
@@ -81,7 +67,6 @@ describe('Home middleware', function() {
         expect(mockReq.body.allocations).to.deep.equal({
           foo: 'bar',
           fizz: 'buzz',
-          moveDate: ['2017-08-07', '2017-08-13'],
           fromLocationId: '67890',
         })
       })

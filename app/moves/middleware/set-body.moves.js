@@ -1,5 +1,7 @@
 const { get, set } = require('lodash')
 
+const { getCurrentDayAsRange } = require('../../../common/helpers/date-utils')
+
 function setBodyMoves(property, locationProperty) {
   return function handleBody(req, res, next) {
     const { dateRange, locationId } = req.params
@@ -10,7 +12,7 @@ function setBodyMoves(property, locationProperty) {
         .join(',')
 
     set(req, `body.${property}`, {
-      dateRange,
+      dateRange: dateRange || getCurrentDayAsRange(),
       [locationProperty]: locations,
     })
 
