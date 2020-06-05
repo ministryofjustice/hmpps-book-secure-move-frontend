@@ -28,7 +28,7 @@ const users = [
 
 fixture('Download moves')
 
-for (const user of users) {
+users.forEach(user => {
   test.before(async t => {
     deleteCsvDownloads()
     await t.useRole(user.role).navigateTo(movesByDay)
@@ -46,4 +46,4 @@ for (const user of users) {
       throw new Error(err)
     }
   })
-}
+})

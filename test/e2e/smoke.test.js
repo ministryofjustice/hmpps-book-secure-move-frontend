@@ -50,7 +50,7 @@ fixture('Smoke tests')
 
 const timeout = 10000
 
-for (const user of users) {
+users.forEach(user => {
   test.before(async t => {
     await t.useRole(user.role).navigateTo(movesByDay)
   })(`As ${user.name}`, async t => {
@@ -78,9 +78,9 @@ for (const user of users) {
       .expect(page.nodes.signInHeader.exists)
       .ok({ timeout })
   })
-}
+})
 
-for (const user of usersWhoHaveADashboard) {
+usersWhoHaveADashboard.forEach(user => {
   test.before(async t => {
     await t.useRole(user.role).navigateTo(home)
   })(`As ${user.name}`, async t => {
@@ -104,4 +104,4 @@ for (const user of usersWhoHaveADashboard) {
       .expect(page.nodes.signInHeader.exists)
       .ok()
   })
-}
+})
