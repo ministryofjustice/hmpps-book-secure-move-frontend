@@ -22,6 +22,7 @@
   "cancel_move": "Cancel this move",
   "cancel_move_confirmation": "Cancel move",
   "add_person": "Add person",
+  "add_person_another": "Add another person",
   "add_person_to_move": "Add person to this move",
   "remove_person": "Remove <span class=\"govuk-visually-hidden\">{{name}}</span>",
   "person_unassign_confirmation": "Remove from allocation",

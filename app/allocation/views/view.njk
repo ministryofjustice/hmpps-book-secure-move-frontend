@@ -103,10 +103,13 @@
         context: "remaining"
       }) }}
     </h3>
-      <p>{{ govukButton({
-        html: "Add person",
-        href: "/move/" + unassignedMoveId + "/assign"
-      }) }}</p>
+
+    {{ govukButton({
+      href: "/move/" + unassignedMoveId + "/assign",
+      html: t("actions::add_person", {
+        context: "another" if allocationPeople.filledSlots.length !== 0
+      })
+    }) }}
     {% endif %}
     {% if allocationPeople.filledSlots.length === 0 %}
       {{ emptySlot(t("allocation::view.people.no_results")) }}
