@@ -2,6 +2,8 @@ import { ClientFunction, Selector, t } from 'testcafe'
 
 import { E2E } from '../../../config'
 
+const timeout = 150000
+
 export default class Page {
   constructor() {
     this.baseUrl = E2E.BASE_URL
@@ -42,17 +44,17 @@ export default class Page {
    */
   async chooseLocation() {
     await t
-      .expect(this.getCurrentUrl())
+      .expect(this.getCurrentUrl({ timeout }))
       .contains('/locations')
       .expect(this.nodes.locationsList.count)
-      .notEql(0, { timeout: 15000 })
+      .notEql(0, { timeout })
 
     const count = await this.nodes.locationsList.count
     const randomItem = Math.floor(Math.random() * count)
 
     await t.click(this.nodes.locationsList.nth(randomItem))
 
-    await t.expect(this.getCurrentUrl()).notContains('/locations')
+    await t.expect(this.getCurrentUrl({ timeout })).notContains('/locations')
   }
 
   /**
@@ -62,12 +64,12 @@ export default class Page {
    */
   signIn(role) {
     return t
-      .expect(this.getCurrentUrl())
+      .expect(this.getCurrentUrl({ timeout }))
       .contains('/auth/login')
       .typeText('#username', role.username)
       .typeText('#password', role.password)
       .click(Selector('#submit'))
-      .expect(this.getCurrentUrl())
+      .expect(this.getCurrentUrl({ timeout }))
       .notContains('/auth/login')
   }
 
