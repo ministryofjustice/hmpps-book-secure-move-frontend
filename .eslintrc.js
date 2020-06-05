@@ -32,27 +32,30 @@ module.exports = {
     'no-process-env': 'error',
     'no-console': 'error',
     'import/no-unresolved': ['error', { commonjs: true }],
-    'import/order': ['error', {
-      alphabetize: {
-        order: 'asc',
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          order: 'asc',
+        },
+        'newlines-between': 'always',
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+        ],
       },
-      'newlines-between': 'always',
-      'groups': [
-        'builtin',
-        'external',
-        'internal',
-        'parent',
-        'sibling',
-        'index',
-      ]
-    }],
+    ],
     'padding-line-between-statements': [
       'warn',
       { blankLine: 'always', prev: '*', next: 'block' },
       { blankLine: 'always', prev: 'block', next: '*' },
       { blankLine: 'always', prev: '*', next: 'block-like' },
       { blankLine: 'always', prev: 'block-like', next: '*' },
-    ]
+    ],
   },
   overrides: [
     {

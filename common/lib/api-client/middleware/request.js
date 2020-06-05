@@ -26,6 +26,7 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
       if (Array.isArray(req.params.include)) {
         req.params.include = req.params.include.sort().join(',')
       }
+
       if (!req.params.include) {
         delete req.params.include
       }

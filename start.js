@@ -21,6 +21,11 @@ server.listen(PORT)
 server.on('error', onError)
 server.on('listening', onListening)
 
+const logMessage = {
+  EACCES: 'requires elevated privileges',
+  EADDRINUSE: 'is already in use',
+}
+
 /**
  * Event listener for HTTP server "error" event.
  */
@@ -29,19 +34,15 @@ function onError(error) {
     throw error
   }
 
-  const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT
-
   // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      logger.error(bind + ' requires elevated privileges')
-      process.exit(1)
-    case 'EADDRINUSE':
-      logger.error(bind + ' is already in use')
-      process.exit(1)
-    default:
-      throw error
+
+  if (logMessage[error.code]) {
+    const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT
+    logger.error(`${bind} ${logMessage[error.code]}`)
+    process.exit(1)
   }
+
+  throw error
 }
 
 /**
