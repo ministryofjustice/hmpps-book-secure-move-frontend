@@ -46,7 +46,7 @@ const usersWhoHaveADashboard = [
   },
 ]
 
-fixture.only('Smoke tests')
+fixture('Smoke tests')
 
 const timeout = 10000
 
