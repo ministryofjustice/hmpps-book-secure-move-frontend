@@ -79,6 +79,9 @@ describe('view allocation', function() {
 
     mockReq = {
       t: sinon.stub().returnsArg(0),
+      session: {
+        user: { permissions: [] },
+      },
     }
     mockRes = {
       render: sinon.stub(),
@@ -121,6 +124,19 @@ describe('view allocation', function() {
       it('should create unassigned move ID', function() {
         expect(locals.unassignedMoveId).to.equal('123')
       })
+
+      it('should order moves without person first', function() {
+        const ordered = locals.moves.map(move => move.id)
+        expect(ordered).to.deep.equal(['789', '123', '011', '456'])
+      })
+
+      it('should include moves without a person', function() {
+        expect(locals.moves).to.have.length(4)
+      })
+
+      it('should contain correct number of locals', function() {
+        expect(Object.keys(locals)).to.have.length(10)
+      })
     })
 
     it('calls render with the template', function() {
@@ -139,26 +155,46 @@ describe('view allocation', function() {
           summary: 'allocationToMetaListComponent',
           moves: [
             {
-              id: '456',
-              fullname: 'John Doe',
+              id: '789',
               card: {
-                id: '456',
-                person: {
-                  first_names: 'John',
-                  last_name: 'Doe',
-                  fullname: 'John Doe',
-                },
+                id: '789',
+              },
+            },
+            {
+              id: '123',
+              card: {
+                id: '123',
               },
             },
             {
               id: '011',
-              fullname: 'Phil Jones',
+              person: {
+                first_names: 'Phil',
+                last_name: 'Jones',
+                fullname: 'Phil Jones',
+              },
               card: {
                 id: '011',
                 person: {
                   first_names: 'Phil',
                   last_name: 'Jones',
                   fullname: 'Phil Jones',
+                },
+              },
+            },
+            {
+              id: '456',
+              person: {
+                first_names: 'John',
+                last_name: 'Doe',
+                fullname: 'John Doe',
+              },
+              card: {
+                id: '456',
+                person: {
+                  first_names: 'John',
+                  last_name: 'Doe',
+                  fullname: 'John Doe',
                 },
               },
             },
@@ -198,49 +234,6 @@ describe('view allocation', function() {
         context: 'allocation',
       })
     })
-
-    it('calls render with the template', function() {
-      expect(mockRes.render).to.be.calledOnceWithExactly(
-        'allocation/views/view',
-        {
-          dashboardUrl: '/allocations',
-          messageTitle: 'statuses::cancelled',
-          messageContent: 'statuses::description',
-          unassignedMoveId: '123',
-          totalCount: 4,
-          remainingCount: 2,
-          addedCount: 2,
-          criteria: 'allocationToSummaryListComponent',
-          summary: 'allocationToMetaListComponent',
-          moves: [
-            {
-              id: '456',
-              fullname: 'John Doe',
-              card: {
-                id: '456',
-                person: {
-                  first_names: 'John',
-                  last_name: 'Doe',
-                  fullname: 'John Doe',
-                },
-              },
-            },
-            {
-              id: '011',
-              fullname: 'Phil Jones',
-              card: {
-                id: '011',
-                person: {
-                  first_names: 'Phil',
-                  last_name: 'Jones',
-                  fullname: 'Phil Jones',
-                },
-              },
-            },
-          ],
-        }
-      )
-    })
   })
 
   context('when all moves have been filled', function() {
@@ -275,8 +268,56 @@ describe('view allocation', function() {
       locals = mockRes.render.firstCall.lastArg
     })
 
-    it('sould not create an unassigned move ID', function() {
+    it('should not create an unassigned move ID', function() {
       expect(locals.unassignedMoveId).to.be.undefined
+    })
+  })
+
+  context('when user has permission to assign', function() {
+    let locals
+
+    beforeEach(function() {
+      mockReq.session.user.permissions = ['allocation:person:assign']
+
+      handler(mockReq, mockRes)
+      locals = mockRes.render.firstCall.lastArg
+    })
+
+    it('should filter out moves without a person', function() {
+      expect(locals.moves).to.deep.equal([
+        {
+          id: '011',
+          person: {
+            first_names: 'Phil',
+            last_name: 'Jones',
+            fullname: 'Phil Jones',
+          },
+          card: {
+            id: '011',
+            person: {
+              first_names: 'Phil',
+              last_name: 'Jones',
+              fullname: 'Phil Jones',
+            },
+          },
+        },
+        {
+          id: '456',
+          person: {
+            first_names: 'John',
+            last_name: 'Doe',
+            fullname: 'John Doe',
+          },
+          card: {
+            id: '456',
+            person: {
+              first_names: 'John',
+              last_name: 'Doe',
+              fullname: 'John Doe',
+            },
+          },
+        },
+      ])
     })
   })
 })
