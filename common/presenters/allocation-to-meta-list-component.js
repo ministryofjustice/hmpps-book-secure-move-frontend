@@ -3,56 +3,36 @@ const filters = require('../../config/nunjucks/filters')
 
 function allocationToMetaListComponent(allocation) {
   const {
-    prisoner_category: prisonerCategory,
-    complex_cases: complexCases,
-    other_criteria: otherCriteria,
-    sentence_length: sentenceLength,
+    moves,
+    from_location: fromLocation,
+    to_location: toLocation,
+    date,
   } = allocation
   return {
-    rows: [
+    items: [
       {
         key: {
-          text: i18n.t('fields::prisoner_category.label'),
+          text: i18n.t('fields::moves_count.label'),
         },
-        value: {
-          text: filters.startCase(prisonerCategory),
-        },
+        value: { text: moves.length },
       },
       {
         key: {
-          text: i18n.t('fields::sentence_length.label'),
+          text: i18n.t('fields::from_location.short_label'),
         },
-        value: {
-          text: i18n.t('fields::sentence_length.items.length', {
-            context: sentenceLength,
-          }),
-        },
+        value: { text: fromLocation.title },
       },
       {
         key: {
-          text: i18n.t('fields::complex_cases.label', { context: 'with_data' }),
+          text: i18n.t('fields::move_type.short_label'),
         },
-        value: {
-          /* eslint-disable indent */
-          text: complexCases.length
-            ? filters.oxfordJoin(
-                complexCases
-                  .filter(complexCase => complexCase.answer)
-                  .map(complexCase => complexCase.title)
-              )
-            : i18n.t('none_provided'),
-          /* eslint-enable indent */
-        },
+        value: { text: toLocation.title },
       },
       {
         key: {
-          text: i18n.t('fields::other_criteria.label', {
-            context: 'with_data',
-          }),
+          text: i18n.t('fields::date_type.label'),
         },
-        value: {
-          text: otherCriteria || i18n.t('none_provided'),
-        },
+        value: { text: filters.formatDateAsRelativeDay(date) },
       },
     ],
   }

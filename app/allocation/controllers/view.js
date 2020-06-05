@@ -13,6 +13,8 @@ module.exports = function view(req, res) {
 
   const locals = {
     dashboardUrl: '/allocations',
+    criteria: presenters.allocationToSummaryListComponent(allocation),
+    summary: presenters.allocationToMetaListComponent(allocation),
     messageTitle: bannerStatuses.includes(status)
       ? req.t(`statuses::${status}`, { context: 'allocation' })
       : undefined,
@@ -22,8 +24,6 @@ module.exports = function view(req, res) {
     unassignedMoveId: movesWithoutPerson.length
       ? movesWithoutPerson[0].id
       : undefined,
-    allocationDetails: presenters.allocationToMetaListComponent(allocation),
-    allocationSummary: presenters.allocationToSummaryListComponent(allocation),
     totalCount: moves.length,
     remainingCount: movesWithoutPerson.length,
     addedCount: movesWithPerson.length,

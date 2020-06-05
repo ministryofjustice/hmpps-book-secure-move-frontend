@@ -79,7 +79,7 @@
       {{ allocation.created_at | formatTime }}
     </span>
 
-    {{ govukSummaryList(allocationDetails) }}
+    {{ govukSummaryList(criteria) }}
 
     {% if allocation.complete_in_full %}
       {{ govukWarningText({
@@ -166,7 +166,7 @@
         {{ t("allocation::view.summary.heading") }}
       </h3>
 
-      {{ appMetaList(allocationSummary) }}
+      {{ appMetaList(summary) }}
     </div>
   </div>
 {% endblock %}

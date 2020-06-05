@@ -67,8 +67,12 @@ describe('view allocation', function() {
 
   beforeEach(function() {
     moveToCardComponentStub = sinon.stub().returnsArg(0)
-    sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
-    sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
+    sinon
+      .stub(presenters, 'allocationToMetaListComponent')
+      .returns('allocationToMetaListComponent')
+    sinon
+      .stub(presenters, 'allocationToSummaryListComponent')
+      .returns('allocationToSummaryListComponent')
     sinon
       .stub(presenters, 'moveToCardComponent')
       .callsFake(() => moveToCardComponentStub)
@@ -96,17 +100,17 @@ describe('view allocation', function() {
         locals = mockRes.render.firstCall.lastArg
       })
 
-      it('creates allocationDetails with result of the presenter', function() {
-        expect(locals.allocationDetails).to.exist
+      it('creates `criteria` with result of the presenter', function() {
+        expect(locals.criteria).to.equal('allocationToSummaryListComponent')
         expect(
-          presenters.allocationToMetaListComponent
+          presenters.allocationToSummaryListComponent
         ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
       })
 
-      it('creates allocationSummary with result of the presenter', function() {
-        expect(locals.allocationSummary).to.exist
+      it('creates `summary` with result of the presenter', function() {
+        expect(locals.summary).to.equal('allocationToMetaListComponent')
         expect(
-          presenters.allocationToSummaryListComponent
+          presenters.allocationToMetaListComponent
         ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
       })
 
@@ -131,8 +135,8 @@ describe('view allocation', function() {
           totalCount: 4,
           remainingCount: 2,
           addedCount: 2,
-          allocationDetails: {},
-          allocationSummary: {},
+          criteria: 'allocationToSummaryListComponent',
+          summary: 'allocationToMetaListComponent',
           moves: [
             {
               id: '456',
@@ -206,8 +210,8 @@ describe('view allocation', function() {
           totalCount: 4,
           remainingCount: 2,
           addedCount: 2,
-          allocationDetails: {},
-          allocationSummary: {},
+          criteria: 'allocationToSummaryListComponent',
+          summary: 'allocationToMetaListComponent',
           moves: [
             {
               id: '456',
