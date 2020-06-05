@@ -5,6 +5,8 @@ const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 
 const allocationService = {
+  defaultInclude: ['from_location', 'moves', 'to_location'],
+
   cancel(allocationId) {
     const timestamp = dateFunctions.formatISO(new Date())
     return apiClient
@@ -100,12 +102,14 @@ const allocationService = {
     page = 1,
     includeCancelled = false,
     isAggregation = false,
+    include = this.defaultInclude,
   } = {}) {
     return apiClient
       .findAll('allocation', {
         ...filter,
         page,
         per_page: isAggregation ? 1 : 100,
+        include,
       })
       .then(response => {
         const { data, links, meta } = response
@@ -123,12 +127,13 @@ const allocationService = {
           filter,
           combinedData: results,
           page: page + 1,
+          include,
         })
       })
   },
-  getById(id) {
+  getById(id, { include = this.defaultInclude } = {}) {
     return apiClient
-      .find('allocation', id)
+      .find('allocation', id, { include })
       .then(response => response.data)
       .then(allocationService.transform())
   },
