@@ -53,7 +53,7 @@ describe('allocation to meta list component', function() {
   it('has the number of prisoners as first item', function() {
     expect(output.items[0]).to.deep.equal({
       key: {
-        text: 'allocations::view.sidebar.number_of_prisoners',
+        text: 'fields::moves_count.label',
       },
       value: {
         text: 3,
@@ -63,7 +63,7 @@ describe('allocation to meta list component', function() {
   it('has the move from as second item', function() {
     expect(output.items[1]).to.deep.equal({
       key: {
-        text: 'allocations::view.sidebar.move_from',
+        text: 'fields::from_location.short_label',
       },
       value: {
         text: 'BERWYN (HMP)',
@@ -73,7 +73,7 @@ describe('allocation to meta list component', function() {
   it('has the move to as third item', function() {
     expect(output.items[2]).to.deep.equal({
       key: {
-        text: 'allocations::view.sidebar.move_to',
+        text: 'fields::move_type.short_label',
       },
       value: {
         text: 'GARTREE (HMP)',
@@ -83,7 +83,7 @@ describe('allocation to meta list component', function() {
   it('has the date as fourth item', function() {
     expect(output.items[3]).to.deep.equal({
       key: {
-        text: 'fields::date_custom.label',
+        text: 'fields::date_type.label',
       },
       value: {
         text: '2020-05-06',

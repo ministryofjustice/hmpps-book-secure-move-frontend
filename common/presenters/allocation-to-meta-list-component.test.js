@@ -54,7 +54,7 @@ describe('allocation to meta list component', function() {
   it('has the prisoner category as first item', function() {
     expect(output.rows[0]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.category',
+        text: 'fields::prisoner_category.label',
       },
       value: {
         text: 'c',
@@ -65,7 +65,7 @@ describe('allocation to meta list component', function() {
   it('has the sentence length as second item', function() {
     expect(output.rows[1]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.sentence_length.label',
+        text: 'fields::sentence_length.label',
       },
       value: {
         text: 'fields::sentence_length.items.length',
@@ -79,7 +79,7 @@ describe('allocation to meta list component', function() {
   it('has the complex cases as third item, filtering those whose answer is false', function() {
     expect(output.rows[2]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.complex_cases',
+        text: 'fields::complex_cases.label',
       },
       value: {
         text: ['Segregated prisoners', 'Self harm / prisoners on ACCT'],
@@ -93,7 +93,7 @@ describe('allocation to meta list component', function() {
   it('has the other criteria as fourth item', function() {
     expect(output.rows[3]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.other_criteria',
+        text: 'fields::other_criteria.label',
       },
       value: {
         text: 'Other criteria',

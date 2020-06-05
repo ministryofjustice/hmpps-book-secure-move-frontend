@@ -12,7 +12,7 @@ function allocationToMetaListComponent(allocation) {
     rows: [
       {
         key: {
-          text: i18n.t('allocations::view.fields.category'),
+          text: i18n.t('fields::prisoner_category.label'),
         },
         value: {
           text: filters.startCase(prisonerCategory),
@@ -20,7 +20,7 @@ function allocationToMetaListComponent(allocation) {
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.sentence_length.label'),
+          text: i18n.t('fields::sentence_length.label'),
         },
         value: {
           text: i18n.t('fields::sentence_length.items.length', {
@@ -30,7 +30,7 @@ function allocationToMetaListComponent(allocation) {
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.complex_cases'),
+          text: i18n.t('fields::complex_cases.label', { context: 'with_data' }),
         },
         value: {
           /* eslint-disable indent */
@@ -40,17 +40,18 @@ function allocationToMetaListComponent(allocation) {
                   .filter(complexCase => complexCase.answer)
                   .map(complexCase => complexCase.title)
               )
-            : i18n.t('allocations::view.fields.none_provided'),
+            : i18n.t('none_provided'),
           /* eslint-enable indent */
         },
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.other_criteria'),
+          text: i18n.t('fields::other_criteria.label', {
+            context: 'with_data',
+          }),
         },
         value: {
-          text:
-            otherCriteria || i18n.t('allocations::view.fields.none_provided'),
+          text: otherCriteria || i18n.t('none_provided'),
         },
       },
     ],

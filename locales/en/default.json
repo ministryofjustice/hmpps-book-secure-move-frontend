@@ -7,6 +7,7 @@
   "time": "Time",
   "type": "Type",
   "or": "or",
+  "none_provided": "None provided",
   "reason": "Reason",
   "location": "Location",
   "person": "person",

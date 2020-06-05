@@ -13,48 +13,7 @@
   "allocation_criteria": {
     "page_title": "Allocation criteria"
   },
-  "view": {
-    "page_title": "View allocation",
-    "heading": "{{count}} person from {{from_location}} to {{to_location}}, {{date}}",
-    "heading_plural": "{{count}} people from {{from_location}} to {{to_location}}, {{date}}",
-    "criteria_for_allocation": "Criteria for allocation",
-    "created_at": "Created {{datetime}}",
-    "fields": {
-      "category": "Category",
-      "complex_cases": "Complex cases for prisons to agree",
-      "none_provided": "None provided",
-      "other_criteria": "Other criteria",
-      "sentence_length": {
-        "label": "Time left to serve"
-      }
-    },
-    "complete_in_full": "This allocation should be filled in full - consider prisoners that are the next best for this allocation",
-    "people": {
-      "slots_filled": "{{slots_filled}} of {{total_slots}} {{person_or_people}} allocated",
-      "heading": "People for allocation",
-      "empty_slot": "Person to be allocated"
-    },
-    "people_assign": {
-      "special_vehicle_instruction": "You can’t add people who require a special vehicle to an allocation - you need to <a href=\"{{href}}\">create a single request</a> instead",
-      "no_slots_filled": "No prisoners added to allocation",
-      "slots_empty": "{{slots_empty}} {{person_or_people}} to add",
-      "heading": "People for allocation",
-      "empty_slot": "Person to be allocated"
-    },
-    "person_unassign": "Remove <span class=\"govuk-visually-hidden\">{{ name }}</span>",
-    "cancel_allocation": "Cancel allocation",
-    "allocation_details": "Allocation details",
-    "sidebar": {
-      "number_of_prisoners": "Number of people",
-      "move_from": "Move from",
-      "move_to": "Move to"
-    }
-  },
   "allocation_cancel_reasons": {
     "page_title": "Are you sure you want to cancel this allocation?"
-  },
-  "statuses": {
-    "cancelled": "Allocation cancelled",
-    "description": "Reason — Allocation was cancelled"
   }
 }

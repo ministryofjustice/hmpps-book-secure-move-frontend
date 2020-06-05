@@ -2,7 +2,7 @@ const presenters = require('../../../common/presenters')
 
 module.exports = function view(req, res) {
   const { allocation } = res.locals
-  const { moves } = allocation
+  const { moves, status } = allocation
   const bannerStatuses = ['cancelled']
 
   const movesWithoutPerson = moves.filter(move => !move.person)
@@ -12,12 +12,12 @@ module.exports = function view(req, res) {
 
   const locals = {
     dashboardUrl: '/allocations',
-    /* eslint-disable indent */
-    messageTitle: bannerStatuses.includes(allocation.status)
-      ? req.t(`allocations::statuses.${allocation.status}`)
+    messageTitle: bannerStatuses.includes(status)
+      ? req.t(`statuses::${status}`, { context: 'allocation' })
       : undefined,
-    /* eslint-enable indent */
-    messageContent: req.t('allocations::statuses.description'),
+    messageContent: req.t('statuses::description', {
+      context: 'allocation',
+    }),
     unassignedMoveId: movesWithoutPerson.length
       ? movesWithoutPerson[0].id
       : undefined,

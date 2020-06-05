@@ -126,7 +126,7 @@ describe('view allocation', function() {
         'allocation/views/view',
         {
           dashboardUrl: '/allocations',
-          messageContent: 'allocations::statuses.description',
+          messageContent: 'statuses::description',
           unassignedMoveId: '123',
           allocationDetails: {},
           allocationSummary: {},
@@ -176,13 +176,23 @@ describe('view allocation', function() {
 
     it('does create a message banner title', function() {
       expect(locals.messageTitle).not.to.be.undefined
-      expect(locals.messageTitle).to.equal('allocations::statuses.cancelled')
+      expect(locals.messageTitle).to.equal('statuses::cancelled')
+    })
+
+    it('should translate message banner title', function() {
+      expect(mockReq.t).to.be.calledWithExactly('statuses::cancelled', {
+        context: 'allocation',
+      })
     })
 
     it('does create a message banner content', function() {
-      expect(locals.messageContent).to.equal(
-        'allocations::statuses.description'
-      )
+      expect(locals.messageContent).to.equal('statuses::description')
+    })
+
+    it('should translate message banner content', function() {
+      expect(mockReq.t).to.be.calledWithExactly('statuses::description', {
+        context: 'allocation',
+      })
     })
 
     it('calls render with the template', function() {
@@ -190,8 +200,8 @@ describe('view allocation', function() {
         'allocation/views/view',
         {
           dashboardUrl: '/allocations',
-          messageTitle: 'allocations::statuses.cancelled',
-          messageContent: 'allocations::statuses.description',
+          messageTitle: 'statuses::cancelled',
+          messageContent: 'statuses::description',
           unassignedMoveId: '123',
           allocationDetails: {},
           allocationSummary: {},
