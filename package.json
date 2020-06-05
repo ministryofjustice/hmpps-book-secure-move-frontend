@@ -108,7 +108,6 @@
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
     "stream-mock": "2.0.5",
-    "testcafe-browser-provider-browserstack": "1.13.0",
     "uuid": "7.0.3",
     "winston": "3.2.1"
   },
@@ -199,8 +198,7 @@
     "start": "node start.js",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js'",
     "test-e2e:chrome": "testcafe chrome test/e2e/*.test.js",
-    "test-e2e:ci": "npm run test-e2e:ie && npm run test-e2e:chrome -- --color --reporter spec,xunit:reports/testcafe/results-chrome.xml",
-    "test-e2e:ie": "testcafe 'browserstack:Chrome@53.0:Windows 10' test/e2e/*.test.js",
+    "test-e2e:ci": "npm run test-e2e:chrome -- --color --reporter spec,xunit:reports/testcafe/results-chrome.xml",
     "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e:chrome -- --debug-on-fail",
     "update": "ncu -u",
     "update:check": "ncu -- --error-level 2",
