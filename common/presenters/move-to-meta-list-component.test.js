@@ -1,6 +1,3 @@
-const { subDays, addDays } = require('date-fns')
-const timezoneMock = require('timezone-mock')
-
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -21,12 +18,8 @@ const mockMove = {
 describe('Presenters', function() {
   describe('#moveToMetaListComponent()', function() {
     beforeEach(function() {
-      timezoneMock.register('UTC')
+      sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returns('__translated__')
-    })
-
-    afterEach(function() {
-      timezoneMock.unregister()
     })
 
     context('when provided with a mock move object', function() {
@@ -68,9 +61,13 @@ describe('Presenters', function() {
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
-            value: { text: 'Sunday 9 Jun 2019' },
+            value: { text: mockMove.date },
             action: undefined,
           })
+        })
+
+        it('should call date filter correct number of times', function() {
+          expect(filters.formatDateWithRelativeDay).to.have.callCount(1)
         })
 
         it('should contain empty date from as forth item', function() {
@@ -164,103 +161,14 @@ describe('Presenters', function() {
       })
     })
 
-    context('when date is today', function() {
-      let transformedResponse
-
-      beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(mockMove.date).getTime())
-
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
-      })
-
-      describe('response', function() {
-        it('should contain today in date value', function() {
-          const item = transformedResponse.items[2]
-
-          expect(item).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: 'Sunday 9 Jun 2019 (Today)' },
-            action: undefined,
-          })
-        })
-      })
-    })
-
-    context('when date is yesterday', function() {
-      let transformedResponse
-
-      beforeEach(function() {
-        this.clock = sinon.useFakeTimers(
-          subDays(new Date(mockMove.date), 1).getTime()
-        )
-
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
-      })
-
-      describe('response', function() {
-        it('should contain tomorrow in date value', function() {
-          const item = transformedResponse.items[2]
-
-          expect(item).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: 'Sunday 9 Jun 2019 (Tomorrow)' },
-            action: undefined,
-          })
-        })
-      })
-    })
-
-    context('when date is tomorrow', function() {
-      let transformedResponse
-
-      beforeEach(function() {
-        this.clock = sinon.useFakeTimers(
-          addDays(new Date(mockMove.date), 1).getTime()
-        )
-
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
-      })
-
-      describe('response', function() {
-        it('should contain yesterday in date value', function() {
-          const item = transformedResponse.items[2]
-
-          expect(item).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: 'Sunday 9 Jun 2019 (Yesterday)' },
-            action: undefined,
-          })
-        })
-      })
-    })
-
     context('with only `date from`', function() {
-      const presentDate = '2010-04-14'
       const mockMove = {
         date_from: '2020-05-01',
       }
       let transformedResponse
 
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
-        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
       })
 
       describe('response', function() {
@@ -293,19 +201,14 @@ describe('Presenters', function() {
         })
 
         it('should format date from', function() {
-          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+          expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_from
           )
-        })
-
-        it('should format correct number of date', function() {
-          expect(filters.formatDateWithDay.callCount).to.equal(1)
         })
       })
     })
 
     context('with both `date from` and `date to`', function() {
-      const presentDate = '2010-04-14'
       const mockMove = {
         date_from: '2020-05-01',
         date_to: '2020-05-10',
@@ -313,13 +216,7 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
-        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
       })
 
       describe('response', function() {
@@ -352,25 +249,20 @@ describe('Presenters', function() {
         })
 
         it('should format date from', function() {
-          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+          expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_from
           )
         })
 
         it('should format date to', function() {
-          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+          expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_to
           )
-        })
-
-        it('should format correct number of date', function() {
-          expect(filters.formatDateWithDay.callCount).to.equal(2)
         })
       })
     })
 
     context('with all dates', function() {
-      const presentDate = '2010-04-14'
       const mockMove = {
         date_from: '2020-05-01',
         date_to: '2020-05-10',
@@ -379,13 +271,7 @@ describe('Presenters', function() {
       let transformedResponse
 
       beforeEach(function() {
-        this.clock = sinon.useFakeTimers(new Date(presentDate).getTime())
-        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      afterEach(function() {
-        this.clock.restore()
       })
 
       describe('response', function() {
@@ -418,13 +304,9 @@ describe('Presenters', function() {
         })
 
         it('should format date', function() {
-          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+          expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date
           )
-        })
-
-        it('should format correct number of date', function() {
-          expect(filters.formatDateWithDay.callCount).to.equal(1)
         })
       })
     })

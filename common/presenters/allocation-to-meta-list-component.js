@@ -32,7 +32,7 @@ function allocationToMetaListComponent(allocation) {
         key: {
           text: i18n.t('fields::date_type.label'),
         },
-        value: { text: filters.formatDateAsRelativeDay(date) },
+        value: { text: filters.formatDateWithRelativeDay(date) },
       },
     ],
   }

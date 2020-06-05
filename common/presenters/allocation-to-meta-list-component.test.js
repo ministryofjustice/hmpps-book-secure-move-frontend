@@ -42,7 +42,7 @@ describe('allocation to meta list component', function() {
   let output
   beforeEach(function() {
     sinon.stub(i18n, 't').returnsArg(0)
-    sinon.stub(filters, 'formatDateAsRelativeDay').returnsArg(0)
+    sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
     output = presenter(mockParams)
   })
   it('outputs an array', function() {
@@ -89,6 +89,6 @@ describe('allocation to meta list component', function() {
         text: '2020-05-06',
       },
     })
-    expect(filters.formatDateAsRelativeDay).to.calledWithExactly('2020-05-06')
+    expect(filters.formatDateWithRelativeDay).to.calledWithExactly('2020-05-06')
   })
 })

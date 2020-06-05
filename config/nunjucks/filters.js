@@ -19,6 +19,14 @@ const pluralize = require('pluralize')
 const i18n = require('../i18n')
 const { DATE_FORMATS } = require('../index')
 
+function _isRelativeDate(date) {
+  const parsedDate = parseISO(date)
+
+  return (
+    isToday(parsedDate) || isTomorrow(parsedDate) || isYesterday(parsedDate)
+  )
+}
+
 /**
  * Formats a date into the desired string format
  *
@@ -176,6 +184,26 @@ function formatDateAsRelativeDay(
 }
 
 /**
+ * Returns current date formatted with day along with
+ * today, tomorrow or yesterday in brackets if they match
+ *
+ * @param  {Any} a any type
+ *
+ * @example {{ "2019-02-21" | formatDateWithRelativeDay }}
+ */
+function formatDateWithRelativeDay(value) {
+  if (!value) {
+    return value
+  }
+
+  const dateWithDay = formatDateWithDay(value)
+
+  return _isRelativeDate(value)
+    ? `${dateWithDay} (${formatDateAsRelativeDay(value)})`
+    : dateWithDay
+}
+
+/**
  * Returns an age based on a date
  * @param  {Any} a any type
  * @return {String} an age as a string
@@ -256,6 +284,7 @@ module.exports = {
   formatDateRange,
   formatDateRangeAsRelativeWeek,
   formatDateWithDay,
+  formatDateWithRelativeDay,
   formatDateAsRelativeDay,
   formatISOWeek,
   calculateAge,

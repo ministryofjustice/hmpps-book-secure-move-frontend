@@ -1,29 +1,8 @@
-const { isToday, isTomorrow, isYesterday, parseISO } = require('date-fns')
 const { get, isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/fields/move-agreed')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
-
-function isRelativeDate(date) {
-  const parsedDate = parseISO(date)
-
-  return (
-    isToday(parsedDate) || isTomorrow(parsedDate) || isYesterday(parsedDate)
-  )
-}
-
-function _formatDate(date) {
-  if (!date) {
-    return
-  }
-
-  const dateWithDay = filters.formatDateWithDay(date)
-
-  return isRelativeDate(date)
-    ? `${dateWithDay} (${filters.formatDateAsRelativeDay(date)})`
-    : dateWithDay
-}
 
 function moveToMetaListComponent(
   {
@@ -92,7 +71,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: _formatDate(date),
+        text: filters.formatDateWithRelativeDay(date),
       },
       action: actions.date,
     },
@@ -101,7 +80,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::date_from.label'),
       },
       value: {
-        text: date ? undefined : _formatDate(dateFrom),
+        text: date ? undefined : filters.formatDateWithRelativeDay(dateFrom),
       },
     },
     {
@@ -109,7 +88,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::date_to.label'),
       },
       value: {
-        text: date ? undefined : _formatDate(dateTo),
+        text: date ? undefined : filters.formatDateWithRelativeDay(dateTo),
       },
     },
     {
