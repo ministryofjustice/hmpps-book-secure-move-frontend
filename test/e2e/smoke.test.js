@@ -46,39 +46,41 @@ const usersWhoHaveADashboard = [
   },
 ]
 
-fixture('Smoke tests')
+fixture.only('Smoke tests')
 
-users.forEach(user => {
+const timeout = 10000
+
+for (const user of users) {
   test.before(async t => {
     await t.useRole(user.role).navigateTo(movesByDay)
   })(`As ${user.name}`, async t => {
     await t
       .expect(page.nodes.appHeader.exists)
-      .ok()
+      .ok({ timeout })
       .expect(page.nodes.username.innerText)
       .eql(user.username)
       .expect(user.homeButton.exists)
-      .ok()
+      .ok({ timeout })
       // Navigate
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Today')
+      .eql('Today', { timeout })
       .click(movesDashboardPage.nodes.pagination.previousLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Yesterday')
+      .eql('Yesterday', { timeout })
       .click(movesDashboardPage.nodes.pagination.todayLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Today')
+      .eql('Today', { timeout })
       .click(movesDashboardPage.nodes.pagination.nextLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Tomorrow')
+      .eql('Tomorrow', { timeout })
       // Sign out
       .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)
-      .ok()
+      .ok({ timeout })
   })
-})
+}
 
-usersWhoHaveADashboard.forEach(user => {
+for (const user of usersWhoHaveADashboard) {
   test.before(async t => {
     await t.useRole(user.role).navigateTo(home)
   })(`As ${user.name}`, async t => {
@@ -102,4 +104,4 @@ usersWhoHaveADashboard.forEach(user => {
       .expect(page.nodes.signInHeader.exists)
       .ok()
   })
-})
+}

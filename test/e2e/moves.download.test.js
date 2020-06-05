@@ -28,14 +28,13 @@ const users = [
 
 fixture('Download moves')
 
-users.forEach(user => {
+for (const user of users) {
   test.before(async t => {
     deleteCsvDownloads()
     await t.useRole(user.role).navigateTo(movesByDay)
   })(`As ${user.name}`, async t => {
     await t.click(movesDashboardPage.nodes.downloadMovesLink)
-    const csvDownloads = await waitForCsvDownloadFilePaths()
-
+    const csvDownloads = await waitForCsvDownloadFilePaths(3000)
     try {
       const csvContents = readFileSync(csvDownloads[0], 'utf8')
       const lineLengths = csvContents
@@ -47,4 +46,4 @@ users.forEach(user => {
       throw new Error(err)
     }
   })
-})
+}
