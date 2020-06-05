@@ -128,37 +128,37 @@ describe('view allocation', function() {
           dashboardUrl: '/allocations',
           messageContent: 'statuses::description',
           unassignedMoveId: '123',
+          totalCount: 4,
+          remainingCount: 2,
+          addedCount: 2,
           allocationDetails: {},
           allocationSummary: {},
-          allocationPeople: {
-            emptySlots: 2,
-            filledSlots: [
-              {
+          moves: [
+            {
+              id: '456',
+              fullname: 'John Doe',
+              card: {
                 id: '456',
-                fullname: 'John Doe',
-                card: {
-                  id: '456',
-                  person: {
-                    first_names: 'John',
-                    last_name: 'Doe',
-                    fullname: 'John Doe',
-                  },
+                person: {
+                  first_names: 'John',
+                  last_name: 'Doe',
+                  fullname: 'John Doe',
                 },
               },
-              {
+            },
+            {
+              id: '011',
+              fullname: 'Phil Jones',
+              card: {
                 id: '011',
-                fullname: 'Phil Jones',
-                card: {
-                  id: '011',
-                  person: {
-                    first_names: 'Phil',
-                    last_name: 'Jones',
-                    fullname: 'Phil Jones',
-                  },
+                person: {
+                  first_names: 'Phil',
+                  last_name: 'Jones',
+                  fullname: 'Phil Jones',
                 },
               },
-            ],
-          },
+            },
+          ],
         },
       ])
     })
@@ -203,37 +203,37 @@ describe('view allocation', function() {
           messageTitle: 'statuses::cancelled',
           messageContent: 'statuses::description',
           unassignedMoveId: '123',
+          totalCount: 4,
+          remainingCount: 2,
+          addedCount: 2,
           allocationDetails: {},
           allocationSummary: {},
-          allocationPeople: {
-            emptySlots: 2,
-            filledSlots: [
-              {
+          moves: [
+            {
+              id: '456',
+              fullname: 'John Doe',
+              card: {
                 id: '456',
-                fullname: 'John Doe',
-                card: {
-                  id: '456',
-                  person: {
-                    first_names: 'John',
-                    last_name: 'Doe',
-                    fullname: 'John Doe',
-                  },
+                person: {
+                  first_names: 'John',
+                  last_name: 'Doe',
+                  fullname: 'John Doe',
                 },
               },
-              {
+            },
+            {
+              id: '011',
+              fullname: 'Phil Jones',
+              card: {
                 id: '011',
-                fullname: 'Phil Jones',
-                card: {
-                  id: '011',
-                  person: {
-                    first_names: 'Phil',
-                    last_name: 'Jones',
-                    fullname: 'Phil Jones',
-                  },
+                person: {
+                  first_names: 'Phil',
+                  last_name: 'Jones',
+                  fullname: 'Phil Jones',
                 },
               },
-            ],
-          },
+            },
+          ],
         }
       )
     })

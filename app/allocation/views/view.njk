@@ -46,7 +46,7 @@
   <header class="govuk-!-margin-bottom-8 govuk-!-padding-left-0 govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l govuk-!-margin-bottom-1">
       {{ t("allocation::view.heading", {
-        count: allocation.moves_count,
+        count: totalCount,
         from_location: allocation.from_location.title,
         to_location: allocation.to_location.title,
         date: allocation.date | formatDate
@@ -81,7 +81,7 @@
 
     {{ govukSummaryList(allocationDetails) }}
 
-    {% if allocation.complete_in_full and allocationPeople.emptySlots %}
+    {% if allocation.complete_in_full %}
       {{ govukWarningText({
         text: t("allocation::view.criteria.complete_in_full"),
         iconFallbackText: "Warning"
@@ -94,12 +94,12 @@
   {% if canAccess('allocation:person:assign') %}
     <section class="govuk-!-margin-top-8">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocation::view.people.heading") }}</h2>
-    {% if allocationPeople.emptySlots %}
+    {% if remainingCount %}
     <p>{{ t("allocation::view.people.special_vehicle_instruction", {href:"/move/new"}) | safe }}</p>
 
     <h3 class="govuk-heading-s">
       {{ t("allocation::view.people.progress", {
-        count: allocationPeople.emptySlots,
+        count: remainingCount,
         context: "remaining"
       }) }}
     </h3>
@@ -107,11 +107,11 @@
     {{ govukButton({
       href: "/move/" + unassignedMoveId + "/assign",
       html: t("actions::add_person", {
-        context: "another" if allocationPeople.filledSlots.length !== 0
+        context: "another" if addedCount !== 0
       })
     }) }}
     {% endif %}
-    {% if allocationPeople.filledSlots.length === 0 %}
+    {% if addedCount === 0 %}
       {{ emptySlot(t("allocation::view.people.no_results")) }}
     {% endif %}
   </section>
@@ -120,18 +120,18 @@
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocation::view.people.heading") }}</h2>
     <h3 class="govuk-heading-s">
       {{ t("allocation::view.people.progress", {
-        count: allocation.moves_count,
-        addedCount: allocationPeople.filledSlots.length
+        count: totalCount,
+        addedCount: addedCount
       }) }}
     </h3>
   </section>
 
-  {% for i in range(0, allocationPeople.emptySlots) -%}
+  {% for i in range(0, remainingCount) -%}
       {{ emptySlot(t("awaiting_person")) }}
     {%- endfor %}
   {% endif %}
 
-  {% for slot in allocationPeople.filledSlots %}
+  {% for slot in moves %}
     <section class="app-!-position-relative">
       {{ appCard(slot.card) }}
       {# TODO: consider handling actions within card component #}

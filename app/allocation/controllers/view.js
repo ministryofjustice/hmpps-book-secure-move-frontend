@@ -6,6 +6,7 @@ module.exports = function view(req, res) {
   const bannerStatuses = ['cancelled']
 
   const movesWithoutPerson = moves.filter(move => !move.person)
+  const movesWithPerson = moves.filter(move => move.person)
   const moveToCardComponent = presenters.moveToCardComponent({
     showStatus: false,
   })
@@ -23,16 +24,16 @@ module.exports = function view(req, res) {
       : undefined,
     allocationDetails: presenters.allocationToMetaListComponent(allocation),
     allocationSummary: presenters.allocationToSummaryListComponent(allocation),
-    allocationPeople: {
-      emptySlots: movesWithoutPerson.length,
-      filledSlots: moves
-        .filter(move => move.person)
-        .map(move => ({
-          id: move.id,
-          fullname: move.person.fullname,
-          card: moveToCardComponent(move),
-        })),
-    },
+    totalCount: moves.length,
+    remainingCount: movesWithoutPerson.length,
+    addedCount: movesWithPerson.length,
+    moves: moves
+      .filter(move => move.person)
+      .map(move => ({
+        id: move.id,
+        fullname: move.person.fullname,
+        card: moveToCardComponent(move),
+      })),
   }
   res.render('allocation/views/view', locals)
 }
