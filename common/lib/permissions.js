@@ -62,7 +62,6 @@ const ocaPermissions = [
   'moves:download',
   'move:view',
   'move:create',
-  'move:create:court_appearance',
   'move:create:prison_transfer',
 ]
 const pmuPermissions = [
