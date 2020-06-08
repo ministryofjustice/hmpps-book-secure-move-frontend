@@ -13,7 +13,7 @@
   "allocation_criteria": {
     "page_title": "Allocation criteria"
   },
-  "allocation_cancel_reasons": {
+  "allocation_cancellation_reason": {
     "page_title": "Are you sure you want to cancel this allocation?"
   }
 }

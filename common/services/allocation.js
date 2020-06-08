@@ -5,16 +5,20 @@ const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 
 const allocationService = {
-  cancel(allocationId) {
+  cancel(id, data) {
+    if (!id) {
+      return Promise.reject(new Error('No allocation id supplied'))
+    }
+
     const timestamp = dateFunctions.formatISO(new Date())
+
     return apiClient
-      .one('allocation', allocationId)
-      .all('event')
+      .one('allocation', id)
+      .all('cancel')
       .post({
-        event_name: 'cancel',
         timestamp,
+        ...data,
       })
-      .then(response => response.data)
   },
   format(data) {
     const booleansAndNulls = ['complete_in_full', 'sentence_length']

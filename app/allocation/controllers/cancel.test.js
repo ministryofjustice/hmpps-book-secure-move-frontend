@@ -20,7 +20,13 @@ describe('Cancel controller', function() {
         },
         sessionModel: {
           reset: sinon.stub(),
-          toJSON: () => {},
+          toJSON: () => ({
+            'csrf-secret': '123',
+            errors: {},
+            errorValues: {},
+            cancellation_reason: 'other',
+            cancellation_reason_comment: 'Comment',
+          }),
         },
         journeyModel: {
           reset: sinon.stub(),
@@ -41,8 +47,12 @@ describe('Cancel controller', function() {
       })
 
       it('should cancel the allocation', function() {
-        expect(allocationService.cancel).to.be.calledWithExactly(
-          mockAllocation.id
+        expect(allocationService.cancel).to.have.been.calledWithExactly(
+          mockAllocation.id,
+          {
+            cancellation_reason: 'other',
+            cancellation_reason_comment: 'Comment',
+          }
         )
       })
 
@@ -59,7 +69,6 @@ describe('Cancel controller', function() {
         expect(res.redirect).to.have.been.calledWith('/allocation/123')
       })
     })
-
     context('unhappy path', function() {
       const errorMock = new Error('500!')
 

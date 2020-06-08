@@ -237,6 +237,8 @@ module.exports = {
       created_at: '',
       updated_at: '',
       status: '',
+      cancellation_reason: '',
+      cancellation_reason_comment: '',
       moves: {
         jsonApi: 'hasMany',
         type: 'moves',
@@ -287,6 +289,19 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'locations',
       },
+    },
+  },
+  // the endpoint for cancelling allocations is /cancel,
+  // In order to have a POST to /cancel, it needs to be an entity
+  cancel: {
+    fields: {
+      timestamp: '',
+      notes: '',
+      cancellation_reason: '',
+      cancellation_reason_comment: '',
+    },
+    options: {
+      collectionPath: 'cancel',
     },
   },
 }

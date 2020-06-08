@@ -146,7 +146,7 @@ describe('view allocation', function() {
         'allocation/views/view',
         {
           dashboardUrl: '/allocations',
-          messageContent: 'statuses::description',
+          messageContent: 'statuses::description_allocation',
           unassignedMoveId: '123',
           totalCount: 4,
           remainingCount: 2,
@@ -226,11 +226,11 @@ describe('view allocation', function() {
     })
 
     it('does create a message banner content', function() {
-      expect(locals.messageContent).to.equal('statuses::description')
+      expect(locals.messageContent).to.equal('statuses::description_allocation')
     })
 
     it('should translate message banner content', function() {
-      expect(mockReq.t).to.be.calledWithExactly('statuses::description', {
+      expect(mockReq.t).to.be.calledWithExactly('statuses::cancelled', {
         context: 'allocation',
       })
     })

@@ -9,9 +9,9 @@ module.exports = {
     next: 'reason',
   },
   '/reason': {
-    template: 'cancel-reason',
     controller: cancelControllers.CancelController,
-    pageTitle: 'allocations::allocation_cancel_reasons.page_title',
+    pageTitle: 'allocations::allocation_cancellation_reason.page_title',
+    fields: ['cancellation_reason', 'cancellation_reason_comment'],
     buttonText: 'actions::cancel_move_confirmation',
     buttonClasses: 'govuk-button--warning',
   },
