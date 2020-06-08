@@ -1,5 +1,5 @@
 const movesCount = {
-  validate: 'required',
+  validate: ['required', 'numeric'],
   component: 'govukInput',
   label: {
     text: 'fields::moves_count.label',
