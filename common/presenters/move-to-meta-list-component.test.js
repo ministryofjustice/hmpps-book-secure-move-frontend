@@ -585,7 +585,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: true,
             })
           })
@@ -614,7 +613,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: true,
               move_agreed_by: 'Jon Doe',
             })
@@ -637,24 +635,6 @@ describe('Presenters', function() {
                 name: 'Jon Doe',
               }
             )
-          })
-        })
-
-        context('when not a prison transfer', function() {
-          beforeEach(function() {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: true,
-            })
-          })
-
-          it('should not set move agreed item', function() {
-            expect(transformedResponse.items[7]).to.deep.equal({
-              key: { text: 'fields::move_agreed.label' },
-              value: {
-                text: undefined,
-              },
-            })
           })
         })
       })
@@ -664,7 +644,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: false,
             })
           })
@@ -693,7 +672,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: false,
               move_agreed_by: 'Jon Doe',
             })
@@ -716,24 +694,6 @@ describe('Presenters', function() {
                 name: 'Jon Doe',
               }
             )
-          })
-        })
-
-        context('when not a prison transfer', function() {
-          beforeEach(function() {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: false,
-            })
-          })
-
-          it('should not set move agreed item', function() {
-            expect(transformedResponse.items[7]).to.deep.equal({
-              key: { text: 'fields::move_agreed.label' },
-              value: {
-                text: undefined,
-              },
-            })
           })
         })
       })
@@ -743,7 +703,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: 'true',
             })
           })
@@ -772,7 +731,6 @@ describe('Presenters', function() {
           beforeEach(function() {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
-              move_type: 'prison_transfer',
               move_agreed: 'true',
               move_agreed_by: 'Jon Doe',
             })
@@ -795,25 +753,6 @@ describe('Presenters', function() {
                 name: 'Jon Doe',
               }
             )
-          })
-        })
-
-        context('when not a prison transfer', function() {
-          beforeEach(function() {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: 'true',
-              move_agreed_by: 'Jon Doe',
-            })
-          })
-
-          it('should not set move agreed item', function() {
-            expect(transformedResponse.items[7]).to.deep.equal({
-              key: { text: 'fields::move_agreed.label' },
-              value: {
-                text: undefined,
-              },
-            })
           })
         })
       })

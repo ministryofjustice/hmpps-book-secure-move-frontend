@@ -36,6 +36,7 @@ describe('Assign controllers', function() {
     describe('#setMoveSummary()', function() {
       let locals
       let next
+
       beforeEach(function() {
         next = sinon.stub()
         sinon
@@ -59,17 +60,16 @@ describe('Assign controllers', function() {
           next
         )
       })
+
       it('creates moveSummary on the locals', function() {
         expect(locals.moveSummary).to.exist
         expect(locals.moveSummary).to.deep.equal({ summary: {} })
       })
-      it('invokes moveToMetaListComponent with a subset of properties', function() {
+
+      it('invokes moveToMetaListComponent with move', function() {
         expect(
           presenters.moveToMetaListComponent
-        ).to.have.been.calledWithExactly({
-          from_location: 'a',
-          to_location: 'b',
-        })
+        ).to.have.been.calledWithExactly(locals.move)
       })
     })
 

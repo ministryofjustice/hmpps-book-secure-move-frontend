@@ -135,10 +135,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::move_agreed.label'),
       },
       value: {
-        text:
-          !isNil(moveAgreed) && moveType === 'prison_transfer'
-            ? agreementLabel
-            : undefined,
+        text: !isNil(moveAgreed) ? agreementLabel : undefined,
       },
     },
   ]
