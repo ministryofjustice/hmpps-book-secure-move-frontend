@@ -9,12 +9,19 @@ test('Create allocation and verify the result', async t => {
   const allocationId = await allocationJourney.createAllocation()
   await t.navigateTo(`/allocation/${allocationId}`)
   ;['summary', 'meta'].forEach(async section => {
-    for (const o of allocationJourney.allocationViewPage.nodes[section].keys) {
-      const textExists = allocationJourney.allocationViewPage.getDlDefinitionByKey(
-        allocationJourney.allocationViewPage.nodes[section].selector,
-        o
-      )
-      await t.expect(textExists).ok()
+    for (const key of allocationJourney.allocationViewPage.nodes[section]
+      .keys) {
+      const selector =
+        allocationJourney.allocationViewPage.nodes[section].selector
+
+      await t
+        .expect(
+          allocationJourney.allocationViewPage.getDlDefinitionByKey(
+            selector,
+            key
+          )
+        )
+        .ok()
     }
   })
 })
