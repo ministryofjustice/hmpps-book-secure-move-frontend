@@ -1,6 +1,6 @@
 module.exports = {
   move: {
-    attributes: {
+    fields: {
       reference: '',
       status: '',
       move_type: '',
@@ -46,12 +46,12 @@ module.exports = {
     },
   },
   image: {
-    attributes: {
+    fields: {
       url: '',
     },
   },
   person: {
-    attributes: {
+    fields: {
       first_names: '',
       last_name: '',
       date_of_birth: '',
@@ -69,7 +69,7 @@ module.exports = {
     },
   },
   court_case: {
-    attributes: {
+    fields: {
       nomis_case_id: '',
       nomis_case_status: '',
       case_start_date: '',
@@ -82,7 +82,7 @@ module.exports = {
     },
   },
   court_hearing: {
-    attributes: {
+    fields: {
       start_time: '',
       case_number: '',
       case_type: '',
@@ -98,7 +98,7 @@ module.exports = {
     },
   },
   timetable_entry: {
-    attributes: {
+    fields: {
       start_time: '',
       nomis_type: '',
       reason: '',
@@ -112,7 +112,7 @@ module.exports = {
     },
   },
   gender: {
-    attributes: {
+    fields: {
       key: '',
       title: '',
       description: '',
@@ -125,7 +125,7 @@ module.exports = {
     },
   },
   ethnicity: {
-    attributes: {
+    fields: {
       key: '',
       title: '',
       description: '',
@@ -138,7 +138,7 @@ module.exports = {
     },
   },
   assessment_question: {
-    attributes: {
+    fields: {
       disabled_at: '',
       key: '',
       title: '',
@@ -152,7 +152,7 @@ module.exports = {
     },
   },
   location: {
-    attributes: {
+    fields: {
       key: '',
       title: '',
       location_type: '',
@@ -170,7 +170,7 @@ module.exports = {
     },
   },
   supplier: {
-    attributes: {
+    fields: {
       key: '',
       name: '',
     },
@@ -180,7 +180,7 @@ module.exports = {
     },
   },
   prison_transfer_reason: {
-    attributes: {
+    fields: {
       disabled_at: '',
       key: '',
       title: '',
@@ -191,7 +191,7 @@ module.exports = {
     },
   },
   document: {
-    attributes: {
+    fields: {
       file: '',
       filename: '',
       content_type: '',
@@ -200,7 +200,7 @@ module.exports = {
     },
   },
   allocation: {
-    attributes: {
+    fields: {
       from_location: {
         jsonApi: 'hasOne',
         type: 'locations',
@@ -230,7 +230,7 @@ module.exports = {
     },
   },
   allocation_complex_case: {
-    attributes: {
+    fields: {
       disabled_at: '',
       key: '',
       title: '',
@@ -241,7 +241,7 @@ module.exports = {
     },
   },
   event: {
-    attributes: {
+    fields: {
       event_name: '',
       timestamp: '',
       notes: '',
@@ -252,7 +252,7 @@ module.exports = {
     },
   },
   redirect: {
-    attributes: {
+    fields: {
       timestamp: '',
       notes: '',
       to_location: {

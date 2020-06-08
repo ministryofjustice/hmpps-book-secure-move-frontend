@@ -15,12 +15,12 @@ const mockConfig = {
 }
 const mockModels = {
   withoutOptions: {
-    attributes: {
+    fields: {
       reference: '',
     },
   },
   withOptions: {
-    attributes: {
+    fields: {
       name: '',
     },
     options: {
@@ -135,7 +135,7 @@ describe('Back-end API client', function() {
               JsonApiStub.prototype.define.firstCall
             ).to.be.calledWithExactly(
               'withoutOptions',
-              mockModels.withoutOptions.attributes,
+              mockModels.withoutOptions.fields,
               undefined
             )
           })
@@ -147,7 +147,7 @@ describe('Back-end API client', function() {
               JsonApiStub.prototype.define.secondCall
             ).to.be.calledWithExactly(
               'withOptions',
-              mockModels.withOptions.attributes,
+              mockModels.withOptions.fields,
               mockModels.withOptions.options
             )
           })

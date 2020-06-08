@@ -185,9 +185,7 @@ const getStatusMethods = (modelName, statusCode) => {
 }
 
 const expectProperties = ({ model, response }) => {
-  flatten([response.data]).forEach(item =>
-    checkProperties(item, model.attributes)
-  )
+  flatten([response.data]).forEach(item => checkProperties(item, model.fields))
 }
 
 const expectNoData = ({ response }) => {
@@ -209,7 +207,7 @@ describe('API client models', function() {
       const runStatusMethodTests = (
         statusCode,
         expectFn = expectProperties,
-        expectStr = 'should contain correct attributes'
+        expectStr = 'should contain correct fields'
       ) => {
         describe(`${statusCode} status code`, function() {
           forEach(getStatusMethods(modelName, statusCode), testCase => {

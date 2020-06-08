@@ -31,7 +31,7 @@ module.exports = function() {
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {
-    instance.define(modelName, model.attributes, model.options)
+    instance.define(modelName, model.fields, model.options)
   })
 
   return instance
