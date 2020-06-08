@@ -8,6 +8,7 @@ import glob from 'glob'
 import { find, get, isArray, isNil } from 'lodash'
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
+import referenceDataHelpers from '../../common/helpers/reference-data'
 import moveService from '../../common/services/move'
 import personService from '../../common/services/person'
 import referenceDataService from '../../common/services/reference-data'
@@ -17,14 +18,41 @@ export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
 })
 
+const filterDisabled = referenceDataHelpers.filterDisabled()
+
+const getGenders = async () => {
+  let genders = await referenceDataService.getGenders()
+  genders = genders.filter(filterDisabled)
+  return genders
+}
+
+const getEthnicities = async () => {
+  let ethnicities = await referenceDataService.getEthnicities()
+  ethnicities = ethnicities.filter(filterDisabled)
+  return ethnicities
+}
+
+const getLocations = async () => {
+  let locations = await referenceDataService.getLocations()
+  locations = locations.filter(filterDisabled)
+  return locations
+}
+
+const getLocationsByType = async locationType => {
+  let locations = await referenceDataService.getLocationsByType(locationType)
+  locations = locations.filter(filterDisabled)
+  return locations
+}
+
 export async function generatePerson(overrides = {}) {
   const firstNames = faker.name.firstName()
   const lastName = faker.name.lastName()
 
-  let genders = await referenceDataService.getGenders()
-  // TODO: implement proper test to render this filter unnecessary
+  let genders = await getGenders()
+  // TODO: implement proper test to render male/female filter unnecessary
   genders = genders.filter(gender => gender.title.match(/^(Male|Female)$/i))
-  const ethnicities = await referenceDataService.getEthnicities()
+  let ethnicities = await getEthnicities()
+  ethnicities = ethnicities.filter(filterDisabled)
 
   const gender = faker.random.arrayElement(genders.map(({ title }) => title))
   const ethnicity = faker.random.arrayElement(
@@ -57,8 +85,8 @@ export async function generatePerson(overrides = {}) {
 export async function createPersonFixture(overrides = {}) {
   const fixture = await generatePerson(overrides)
 
-  const genders = await referenceDataService.getGenders()
-  const ethnicities = await referenceDataService.getEthnicities()
+  const genders = await getGenders()
+  const ethnicities = await getEthnicities()
 
   const gender = genders.filter(gen => gen.title === fixture.gender)[0].id
   const ethnicity = ethnicities.filter(
@@ -114,9 +142,9 @@ const getRandomLocation = async locationType => {
   let locations
 
   if (locationType) {
-    locations = await referenceDataService.getLocationsByType(locationType)
+    locations = await getLocationsByType(locationType)
   } else {
-    locations = await referenceDataService.getLocations()
+    locations = await getLocations()
   }
 
   return faker.random.arrayElement(locations.map(({ id }) => id))
