@@ -3,6 +3,7 @@
     "success": {
       "heading": "Move requested",
       "heading_proposed": "Move sent for review",
+      "heading_assign": "Person added",
       "content": "Move reference<br><strong>{{moveReference}}</strong>"
     }
   },

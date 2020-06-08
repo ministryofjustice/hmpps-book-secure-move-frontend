@@ -147,13 +147,17 @@
   },
   "confirmation": {
     "page_title": "Move requested for {{name}}",
+    "page_title_assign": "{{name}} added to allocation",
     "page_title_proposed": "Move sent for {{name}}",
     "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been requested with {{supplier}}.",
     "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review.",
+    "detail_assign": "<strong><a href=\"{{href}}\">{{name}}</a></strong> has been added to an allocation for <strong><a href=\"{{allocationHref}}\">$t(n_person) to {{location}}</a></strong> on <strong>{{date}}</strong>.",
     "saved_to_nomis": "<p>One court date for case number <strong>{{cases}}</strong> on <strong>{{date}}</strong> has been added to NOMIS.</p><p>Add additional court dates for {{date}} in NOMIS.</p>",
     "saved_to_nomis_plural": "<p>Court dates for case numbers <strong>{{cases}}</strong> on <strong>{{date}}</strong> have been added to NOMIS.</p>",
     "saved_to_nomis_failed": "You need to add this court date to NOMIS as it could not be added.",
-    "saved_to_nomis_failed_plural": "You need to add court dates to NOMIS for {{cases}} as they could not be added."
+    "saved_to_nomis_failed_plural": "You need to add court dates to NOMIS for {{cases}} as they could not be added.",
+    "saved_to_nomis_failed_assign": "You need to add this move to NOMIS as it could not be added.",
+    "add_another": "Add another person to this allocation"
   },
   "agreement_status": {
     "heading": "Has this move been agreed with receiving prison?"
