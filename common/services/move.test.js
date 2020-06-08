@@ -1068,8 +1068,8 @@ describe('Move Service', function() {
             person: {
               id: null,
             },
-            move_agreed: false,
-            move_agreed_by: '',
+            move_agreed: null,
+            move_agreed_by: null,
           })
         })
       })

@@ -1,5 +1,3 @@
-const { pick } = require('lodash')
-
 const presenters = require('../../../../common/presenters')
 const CreateBaseController = require('../create/base')
 
@@ -17,14 +15,7 @@ class AssignBaseController extends CreateBaseController {
   }
 
   setMoveSummary(req, res, next) {
-    const currentLocation = req.session.currentLocation
-    // TODO remove pick when the api return move_agreed as null
-    // unless of course further unwanted properties have been added in the meantime
-    const moveSubset = pick(res.locals.move, ['to_location', 'date'])
-    res.locals.moveSummary = presenters.moveToMetaListComponent({
-      ...moveSubset,
-      from_location: currentLocation,
-    })
+    res.locals.moveSummary = presenters.moveToMetaListComponent(res.locals.move)
     next()
   }
 
