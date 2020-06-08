@@ -5,10 +5,12 @@ import { allocationJourney } from './pages/'
 fixture('New PMU allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
 })
+
 test('Create allocation and verify the result', async t => {
   const allocationId = await allocationJourney.createAllocation()
   await t.navigateTo(`/allocation/${allocationId}`)
-  ;['summary', 'meta'].forEach(async section => {
+
+  for (const section of ['summary', 'meta']) {
     for (const key of allocationJourney.allocationViewPage.nodes[section]
       .keys) {
       const selector =
@@ -23,8 +25,9 @@ test('Create allocation and verify the result', async t => {
         )
         .ok()
     }
-  })
+  }
 })
+
 test('Check validation errors on allocation details page', async t => {
   await allocationJourney.submitForm()
 
@@ -33,6 +36,7 @@ test('Check validation errors on allocation details page', async t => {
     await t.expect(error).ok()
   }
 })
+
 test('Check validation errors on allocation criteria page', async t => {
   await allocationJourney.triggerValidationOnAllocationCriteriaPage()
 
