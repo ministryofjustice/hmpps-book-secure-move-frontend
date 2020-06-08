@@ -1,4 +1,22 @@
 {
+  "view": {
+    "page_title": "Allocation for $t(allocation::view.heading)",
+    "heading": "$t(n_person) from {{- from_location}} to {{- to_location}} on {{date}}",
+    "criteria": {
+      "heading": "Criteria for allocation",
+      "complete_in_full": "This allocation should be filled in full — consider prisoners that are the next best for this allocation"
+    },
+    "people": {
+      "heading": "People for allocation",
+      "progress": "{{addedCount}} of $t(n_person) added",
+      "progress_remaining": "$t(n_person) remaining to add",
+      "no_results": "No prisoners added to allocation",
+      "special_vehicle_instruction": "You can’t add people who require a special vehicle to an allocation — you need to <a href=\"{{- href}}\">create a single request</a> instead"
+    },
+    "summary": {
+      "heading": "Allocation details"
+    }
+  },
   "confirmation": {
     "page_title": "Person assigned",
     "detail": "The move for <a href=\"/move/{{move.id}}\">{{person.fullname}}</a> has been added to allocation for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}}",

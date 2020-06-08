@@ -3,36 +3,56 @@ const filters = require('../../config/nunjucks/filters')
 
 function allocationToSummaryListComponent(allocation) {
   const {
-    moves,
-    from_location: fromLocation,
-    to_location: toLocation,
-    date,
+    prisoner_category: prisonerCategory,
+    complex_cases: complexCases,
+    other_criteria: otherCriteria,
+    sentence_length: sentenceLength,
   } = allocation
   return {
-    items: [
+    rows: [
       {
         key: {
-          text: i18n.t('allocations::view.sidebar.number_of_prisoners'),
+          text: i18n.t('fields::prisoner_category.label'),
         },
-        value: { text: moves.length },
+        value: {
+          text: filters.startCase(prisonerCategory),
+        },
       },
       {
         key: {
-          text: i18n.t('allocations::view.sidebar.move_from'),
+          text: i18n.t('fields::sentence_length.label'),
         },
-        value: { text: fromLocation.title },
+        value: {
+          text: i18n.t('fields::sentence_length.items.length', {
+            context: sentenceLength,
+          }),
+        },
       },
       {
         key: {
-          text: i18n.t('allocations::view.sidebar.move_to'),
+          text: i18n.t('fields::complex_cases.label', { context: 'with_data' }),
         },
-        value: { text: toLocation.title },
+        value: {
+          /* eslint-disable indent */
+          text: complexCases.length
+            ? filters.oxfordJoin(
+                complexCases
+                  .filter(complexCase => complexCase.answer)
+                  .map(complexCase => complexCase.title)
+              )
+            : i18n.t('none_provided'),
+          /* eslint-enable indent */
+        },
       },
       {
         key: {
-          text: i18n.t('fields::date_custom.label'),
+          text: i18n.t('fields::other_criteria.label', {
+            context: 'with_data',
+          }),
         },
-        value: { text: filters.formatDateAsRelativeDay(date) },
+        value: {
+          text: otherCriteria || i18n.t('none_provided'),
+        },
       },
     ],
   }

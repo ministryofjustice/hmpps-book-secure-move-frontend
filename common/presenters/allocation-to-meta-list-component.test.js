@@ -5,99 +5,90 @@ const presenter = require('./allocation-to-meta-list-component')
 
 describe('allocation to meta list component', function() {
   const mockParams = {
+    from_location: {
+      id: 'ed286eb6-7bd6-4cb8-aaf6-02406fb42b88',
+      type: 'locations',
+      key: 'bwi',
+      title: 'BERWYN (HMP)',
+      location_type: 'prison',
+      nomis_agency_id: 'BWI',
+      can_upload_documents: false,
+      disabled_at: null,
+      suppliers: [],
+    },
     to_location: {
       id: '31c262ba-1bab-4b6e-8c53-f0032eeaea0b',
+      type: 'locations',
+      key: 'gti',
       title: 'GARTREE (HMP)',
       location_type: 'prison',
+      nomis_agency_id: 'GTI',
+      can_upload_documents: false,
+      disabled_at: null,
+      suppliers: [],
     },
-    prisoner_category: 'c',
-    complex_cases: [
+    date: '2020-05-06',
+    moves: [
+      {},
+      {},
       {
-        key: 'hold_separately',
-        title: 'Segregated prisoners',
-        answer: true,
-        allocation_complex_case_id: 'afa79a37-7c2f-4363-bed6-e1ccf2576901',
-      },
-      {
-        key: 'self_harm',
-        title: 'Self harm / prisoners on ACCT',
-        answer: true,
-        allocation_complex_case_id: 'e8e8af77-198c-4b64-adb1-4aca6af469a7',
-      },
-      {
-        key: 'mental_health_issue',
-        title: 'Mental health issues',
-        answer: false,
-        allocation_complex_case_id: 'c0d196aa-a96d-4296-8349-f52b9909a2b8',
-      },
-      {
-        key: 'under_drug_treatment',
-        title: 'Integrated Drug Treatment System',
-        answer: false,
-        allocation_complex_case_id: '6f35f300-e3ed-4536-8f19-5954fc8b9963',
+        person: {
+          first_names: 'John',
+          last_name: 'Doe',
+        },
       },
     ],
-    other_criteria: 'Other criteria',
   }
   let output
   beforeEach(function() {
     sinon.stub(i18n, 't').returnsArg(0)
-    sinon.stub(filters, 'startCase').returnsArg(0)
-    sinon.stub(filters, 'oxfordJoin').returnsArg(0)
+    sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
     output = presenter(mockParams)
   })
   it('outputs an array', function() {
-    expect(output.rows).to.exist
-    expect(output.rows).to.be.an('array')
-    expect(output.rows.length).to.equal(4)
+    expect(output.items).to.exist
+    expect(output.items).to.be.an('array')
+    expect(output.items.length).to.equal(4)
   })
-  it('has the prisoner category as first item', function() {
-    expect(output.rows[0]).to.deep.equal({
+  it('has the number of prisoners as first item', function() {
+    expect(output.items[0]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.category',
+        text: 'fields::moves_count.label',
       },
       value: {
-        text: 'c',
+        text: 3,
       },
     })
-    expect(filters.startCase).to.have.been.calledWithExactly('c')
   })
-  it('has the sentence length as second item', function() {
-    expect(output.rows[1]).to.deep.equal({
+  it('has the move from as second item', function() {
+    expect(output.items[1]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.sentence_length.label',
+        text: 'fields::from_location.short_label',
       },
       value: {
-        text: 'fields::sentence_length.items.length',
+        text: 'BERWYN (HMP)',
       },
     })
-    expect(filters.oxfordJoin).to.have.been.calledWithExactly([
-      'Segregated prisoners',
-      'Self harm / prisoners on ACCT',
-    ])
   })
-  it('has the complex cases as third item, filtering those whose answer is false', function() {
-    expect(output.rows[2]).to.deep.equal({
+  it('has the move to as third item', function() {
+    expect(output.items[2]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.complex_cases',
+        text: 'fields::move_type.short_label',
       },
       value: {
-        text: ['Segregated prisoners', 'Self harm / prisoners on ACCT'],
+        text: 'GARTREE (HMP)',
       },
     })
-    expect(filters.oxfordJoin).to.have.been.calledWithExactly([
-      'Segregated prisoners',
-      'Self harm / prisoners on ACCT',
-    ])
   })
-  it('has the other criteria as fourth item', function() {
-    expect(output.rows[3]).to.deep.equal({
+  it('has the date as fourth item', function() {
+    expect(output.items[3]).to.deep.equal({
       key: {
-        text: 'allocations::view.fields.other_criteria',
+        text: 'fields::date_type.label',
       },
       value: {
-        text: 'Other criteria',
+        text: '2020-05-06',
       },
     })
+    expect(filters.formatDateWithRelativeDay).to.calledWithExactly('2020-05-06')
   })
 })

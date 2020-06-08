@@ -286,10 +286,12 @@
     "label": "Is there any other criteria you need to add?"
   },
   "other_criteria": {
-    "label": "Give details"
+    "label": "Give details",
+    "label_with_data": "Other criteria"
   },
   "complex_cases": {
     "label": "Prisoners with complex cases",
+    "label_with_data": "Complex cases for prisons to agree",
     "hint": "Complex cases must be discussed with the receiving prison. This includes:"
   },
   "cancel_allocation_reason": {

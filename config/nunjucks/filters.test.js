@@ -142,6 +142,56 @@ describe('Nunjucks filters', function() {
     })
   })
 
+  describe('#formatDateWithRelativeDay()', function() {
+    beforeEach(function() {
+      const mockDate = new Date('2017-08-10')
+      this.clock = sinon.useFakeTimers(mockDate.getTime())
+    })
+
+    afterEach(function() {
+      this.clock.restore()
+    })
+
+    context('with falsy values', function() {
+      const values = ['', null, undefined, false]
+
+      values.forEach(value => {
+        it('should return input value', function() {
+          const formattedDate = filters.formatDateWithRelativeDay(value)
+          expect(formattedDate).to.equal(value)
+        })
+      })
+    })
+
+    context('when current date is today', function() {
+      it('should return date along with `Today`', function() {
+        const formattedDate = filters.formatDateWithRelativeDay('2017-08-10')
+        expect(formattedDate).to.equal('Thursday 10 Aug 2017 (Today)')
+      })
+    })
+
+    context('when current date is tomorrow', function() {
+      it('should return date along with `Tomorrow`', function() {
+        const formattedDate = filters.formatDateWithRelativeDay('2017-08-11')
+        expect(formattedDate).to.equal('Friday 11 Aug 2017 (Tomorrow)')
+      })
+    })
+
+    context('when current date is yesterday', function() {
+      it('should return date along with `Yesterday`', function() {
+        const formattedDate = filters.formatDateWithRelativeDay('2017-08-09')
+        expect(formattedDate).to.equal('Wednesday 9 Aug 2017 (Yesterday)')
+      })
+    })
+
+    context('when date is another date', function() {
+      it('should return date in default format', function() {
+        const formattedDate = filters.formatDateWithRelativeDay('2017-08-01')
+        expect(formattedDate).to.equal('Tuesday 1 Aug 2017')
+      })
+    })
+  })
+
   describe('#formatDateRange', function() {
     const formatDateRange = filters.formatDateRange
 

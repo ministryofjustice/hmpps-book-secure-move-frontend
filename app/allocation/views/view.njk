@@ -2,8 +2,17 @@
 
 {% set additionalContainerClass = "sticky-sidebar-container" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Allocation details'});
+{% endblock %}
+
 {% block pageTitle %}
-  {{ t("allocations::view.page_title") }}
+  {{ t("allocation::view.page_title", {
+    count: totalCount,
+    from_location: allocation.from_location.title,
+    to_location: allocation.to_location.title,
+    date: allocation.date | formatDate
+  }) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -31,110 +40,99 @@
       }
     }) }}
   {% endif %}
-
 {% endblock %}
 
 {% block contentHeader %}
   <header class="govuk-!-margin-bottom-8 govuk-!-padding-left-0 govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l govuk-!-margin-bottom-1">
-      {{ t("allocations::view.heading", {
-        count: allocation.moves_count,
+      {{ t("allocation::view.heading", {
+        count: totalCount,
         from_location: allocation.from_location.title,
         to_location: allocation.to_location.title,
         date: allocation.date | formatDate
-      }) | safe }}
+      }) }}
     </h1>
   </header>
 {% endblock %}
 
-{% macro emptySlot(content) %}
-  <div class="app-border-top-1">
-    {{ appMessage({
-      classes: "app-message--muted govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-padding-right-8",
-      allowDismiss: false,
-      content: {
-        html: content
-      }
-    }) }}
-  </div>
-{% endmacro %}
-
 {% block contentMain %}
   <section>
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.criteria_for_allocation") }}</h2>
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+      {{ t("allocation::view.criteria.heading") }}
+    </h2>
+
     <span class="govuk-caption-m govuk-!-margin-bottom-4">
-      {{ t("allocations::view.created_at") }}
+      {{ t("created_on") }}
       {{ allocation.created_at | formatDateAsRelativeDay }}
       {{ allocation.created_at | formatTime }}
     </span>
 
-    {{ govukSummaryList(allocationDetails) }}
+    {{ govukSummaryList(criteria) }}
 
-    {% if allocation.complete_in_full and allocationPeople.emptySlots %}
+    {% if allocation.complete_in_full %}
       {{ govukWarningText({
-        text: t("allocations::view.complete_in_full"),
+        text: t("allocation::view.criteria.complete_in_full"),
         iconFallbackText: "Warning"
       }) }}
     {% endif %}
   </section>
 
+  <section class="govuk-!-margin-top-8">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+      {{ t("allocation::view.people.heading") }}
+    </h2>
 
+    <h3 class="govuk-heading-s">
+      {{ t("allocation::view.people.progress", {
+        count: remainingCount if canAccess('allocation:person:assign') else totalCount,
+        addedCount: addedCount,
+        context: "remaining" if canAccess('allocation:person:assign')
+      }) }}
+    </h3>
 
-  {% if canAccess('allocation:person:assign') %}
-    <section class="govuk-!-margin-top-8">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people_assign.heading") }}</h2>
-    {% if allocationPeople.emptySlots %}
-    <p>{{ t("allocations::view.people_assign.special_vehicle_instruction", {href:"/move/new"}) | safe }}</p>
+    {% if canAccess('allocation:person:assign') and remainingCount %}
+      <p>
+        {{ t("allocation::view.people.special_vehicle_instruction", {
+          href:"/move/new"
+        }) | safe }}
+      </p>
 
-    <h3 class="govuk-heading-s">{{ t("allocations::view.people_assign.slots_empty", {
-      slots_empty: allocationPeople.emptySlots,
-      person_or_people: t('person', {
-        count: allocationPeople.emptySlots
-      })
-    }) }}</h3>
-      <p>{{ govukButton({
-        html: "Add person",
-        href: "/move/" + unassignedMoveId + "/assign"
-      }) }}</p>
-    {% endif %}
-    {% if allocationPeople.filledSlots.length === 0 %}
-      {{ emptySlot(t("allocations::view.people_assign.no_slots_filled")) }}
+      {{ govukButton({
+        href: "/move/" + unassignedMoveId + "/assign",
+        html: t("actions::add_person", {
+          context: "another" if addedCount !== 0
+        })
+      }) }}
     {% endif %}
   </section>
-  {% else %}
-    <section class="govuk-!-margin-top-8">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t("allocations::view.people.heading") }}</h2>
-    <h3 class="govuk-heading-s">{{ t("allocations::view.people.slots_filled", {
-      slots_filled: allocationPeople.filledSlots.length,
-      total_slots: allocation.moves_count,
-      person_or_people: t('person', {
-        count: allocation.moves_count
-      })
-    }) }}</h3>
-  </section>
 
-  {% for i in range(0, allocationPeople.emptySlots) -%}
-      {{ emptySlot(t("allocations::view.people.empty_slot")) }}
-    {%- endfor %}
-  {% endif %}
+  {% for move in moves %}
+    <div class="app-!-position-relative">
+      {{ appCard(move.card) }}
 
-  {% for slot in allocationPeople.filledSlots %}
-    <section class="app-!-position-relative">
-      {{ appCard(slot.card) }}
       {# TODO: consider handling actions within card component #}
       {# TODO: consider whether long names may cause overlap problems #}
-      {% if canAccess('allocation:person:assign') %}
+      {% if move.person and canAccess('allocation:person:assign') %}
         <p class="app-!-position-top-right govuk-!-margin-top-3">
           {{ govukButton({
-            href: '/move/' + slot.id + "/unassign",
-            html: t("allocations::view.person_unassign", {name: slot.fullname}),
+            href: "/move/" + move.id + "/unassign",
+            html: t("actions::remove_person", {
+              name: move.person.fullname
+            }),
             classes: "govuk-button--secondary"
           })}}
         </p>
       {% endif %}
-    </section>
+    </div>
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted",
+      allowDismiss: false,
+      content: {
+        html: t("allocation::view.people.no_results")
+      }
+    }) }}
   {% endfor %}
-
 
   {% if canAccess("allocation:cancel") and allocation.status != "cancelled" %}
     <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
@@ -149,9 +147,10 @@
   <div class="sticky-sidebar">
     <div class="sticky-sidebar__inner">
       <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-        {{ t("allocations::view.allocation_details") }}
+        {{ t("allocation::view.summary.heading") }}
       </h3>
-      {{ appMetaList(allocationSummary) }}
+
+      {{ appMetaList(summary) }}
     </div>
   </div>
 {% endblock %}

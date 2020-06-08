@@ -67,14 +67,21 @@ describe('view allocation', function() {
 
   beforeEach(function() {
     moveToCardComponentStub = sinon.stub().returnsArg(0)
-    sinon.stub(presenters, 'allocationToMetaListComponent').returns({})
-    sinon.stub(presenters, 'allocationToSummaryListComponent').returns({})
+    sinon
+      .stub(presenters, 'allocationToMetaListComponent')
+      .returns('allocationToMetaListComponent')
+    sinon
+      .stub(presenters, 'allocationToSummaryListComponent')
+      .returns('allocationToSummaryListComponent')
     sinon
       .stub(presenters, 'moveToCardComponent')
       .callsFake(() => moveToCardComponentStub)
 
     mockReq = {
       t: sinon.stub().returnsArg(0),
+      session: {
+        user: { permissions: [] },
+      },
     }
     mockRes = {
       render: sinon.stub(),
@@ -96,17 +103,17 @@ describe('view allocation', function() {
         locals = mockRes.render.firstCall.lastArg
       })
 
-      it('creates allocationDetails with result of the presenter', function() {
-        expect(locals.allocationDetails).to.exist
+      it('creates `criteria` with result of the presenter', function() {
+        expect(locals.criteria).to.equal('allocationToSummaryListComponent')
         expect(
-          presenters.allocationToMetaListComponent
+          presenters.allocationToSummaryListComponent
         ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
       })
 
-      it('creates allocationSummary with result of the presenter', function() {
-        expect(locals.allocationSummary).to.exist
+      it('creates `summary` with result of the presenter', function() {
+        expect(locals.summary).to.equal('allocationToMetaListComponent')
         expect(
-          presenters.allocationToSummaryListComponent
+          presenters.allocationToMetaListComponent
         ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
       })
 
@@ -117,6 +124,19 @@ describe('view allocation', function() {
       it('should create unassigned move ID', function() {
         expect(locals.unassignedMoveId).to.equal('123')
       })
+
+      it('should order moves without person first', function() {
+        const ordered = locals.moves.map(move => move.id)
+        expect(ordered).to.deep.equal(['789', '123', '011', '456'])
+      })
+
+      it('should include moves without a person', function() {
+        expect(locals.moves).to.have.length(4)
+      })
+
+      it('should contain correct number of locals', function() {
+        expect(Object.keys(locals)).to.have.length(10)
+      })
     })
 
     it('calls render with the template', function() {
@@ -126,39 +146,59 @@ describe('view allocation', function() {
         'allocation/views/view',
         {
           dashboardUrl: '/allocations',
-          messageContent: 'allocations::statuses.description',
+          messageContent: 'statuses::description',
           unassignedMoveId: '123',
-          allocationDetails: {},
-          allocationSummary: {},
-          allocationPeople: {
-            emptySlots: 2,
-            filledSlots: [
-              {
-                id: '456',
-                fullname: 'John Doe',
-                card: {
-                  id: '456',
-                  person: {
-                    first_names: 'John',
-                    last_name: 'Doe',
-                    fullname: 'John Doe',
-                  },
-                },
+          totalCount: 4,
+          remainingCount: 2,
+          addedCount: 2,
+          criteria: 'allocationToSummaryListComponent',
+          summary: 'allocationToMetaListComponent',
+          moves: [
+            {
+              id: '789',
+              card: {
+                id: '789',
               },
-              {
-                id: '011',
+            },
+            {
+              id: '123',
+              card: {
+                id: '123',
+              },
+            },
+            {
+              id: '011',
+              person: {
+                first_names: 'Phil',
+                last_name: 'Jones',
                 fullname: 'Phil Jones',
-                card: {
-                  id: '011',
-                  person: {
-                    first_names: 'Phil',
-                    last_name: 'Jones',
-                    fullname: 'Phil Jones',
-                  },
+              },
+              card: {
+                id: '011',
+                person: {
+                  first_names: 'Phil',
+                  last_name: 'Jones',
+                  fullname: 'Phil Jones',
                 },
               },
-            ],
-          },
+            },
+            {
+              id: '456',
+              person: {
+                first_names: 'John',
+                last_name: 'Doe',
+                fullname: 'John Doe',
+              },
+              card: {
+                id: '456',
+                person: {
+                  first_names: 'John',
+                  last_name: 'Doe',
+                  fullname: 'John Doe',
+                },
+              },
+            },
+          ],
         },
       ])
     })
@@ -176,56 +216,23 @@ describe('view allocation', function() {
 
     it('does create a message banner title', function() {
       expect(locals.messageTitle).not.to.be.undefined
-      expect(locals.messageTitle).to.equal('allocations::statuses.cancelled')
+      expect(locals.messageTitle).to.equal('statuses::cancelled')
+    })
+
+    it('should translate message banner title', function() {
+      expect(mockReq.t).to.be.calledWithExactly('statuses::cancelled', {
+        context: 'allocation',
+      })
     })
 
     it('does create a message banner content', function() {
-      expect(locals.messageContent).to.equal(
-        'allocations::statuses.description'
-      )
+      expect(locals.messageContent).to.equal('statuses::description')
     })
 
-    it('calls render with the template', function() {
-      expect(mockRes.render).to.be.calledOnceWithExactly(
-        'allocation/views/view',
-        {
-          dashboardUrl: '/allocations',
-          messageTitle: 'allocations::statuses.cancelled',
-          messageContent: 'allocations::statuses.description',
-          unassignedMoveId: '123',
-          allocationDetails: {},
-          allocationSummary: {},
-          allocationPeople: {
-            emptySlots: 2,
-            filledSlots: [
-              {
-                id: '456',
-                fullname: 'John Doe',
-                card: {
-                  id: '456',
-                  person: {
-                    first_names: 'John',
-                    last_name: 'Doe',
-                    fullname: 'John Doe',
-                  },
-                },
-              },
-              {
-                id: '011',
-                fullname: 'Phil Jones',
-                card: {
-                  id: '011',
-                  person: {
-                    first_names: 'Phil',
-                    last_name: 'Jones',
-                    fullname: 'Phil Jones',
-                  },
-                },
-              },
-            ],
-          },
-        }
-      )
+    it('should translate message banner content', function() {
+      expect(mockReq.t).to.be.calledWithExactly('statuses::description', {
+        context: 'allocation',
+      })
     })
   })
 
@@ -261,8 +268,56 @@ describe('view allocation', function() {
       locals = mockRes.render.firstCall.lastArg
     })
 
-    it('sould not create an unassigned move ID', function() {
+    it('should not create an unassigned move ID', function() {
       expect(locals.unassignedMoveId).to.be.undefined
+    })
+  })
+
+  context('when user has permission to assign', function() {
+    let locals
+
+    beforeEach(function() {
+      mockReq.session.user.permissions = ['allocation:person:assign']
+
+      handler(mockReq, mockRes)
+      locals = mockRes.render.firstCall.lastArg
+    })
+
+    it('should filter out moves without a person', function() {
+      expect(locals.moves).to.deep.equal([
+        {
+          id: '011',
+          person: {
+            first_names: 'Phil',
+            last_name: 'Jones',
+            fullname: 'Phil Jones',
+          },
+          card: {
+            id: '011',
+            person: {
+              first_names: 'Phil',
+              last_name: 'Jones',
+              fullname: 'Phil Jones',
+            },
+          },
+        },
+        {
+          id: '456',
+          person: {
+            first_names: 'John',
+            last_name: 'Doe',
+            fullname: 'John Doe',
+          },
+          card: {
+            id: '456',
+            person: {
+              first_names: 'John',
+              last_name: 'Doe',
+              fullname: 'John Doe',
+            },
+          },
+        },
+      ])
     })
   })
 })

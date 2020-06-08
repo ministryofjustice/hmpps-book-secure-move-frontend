@@ -3,55 +3,36 @@ const filters = require('../../config/nunjucks/filters')
 
 function allocationToMetaListComponent(allocation) {
   const {
-    prisoner_category: prisonerCategory,
-    complex_cases: complexCases,
-    other_criteria: otherCriteria,
-    sentence_length: sentenceLength,
+    moves,
+    from_location: fromLocation,
+    to_location: toLocation,
+    date,
   } = allocation
   return {
-    rows: [
+    items: [
       {
         key: {
-          text: i18n.t('allocations::view.fields.category'),
+          text: i18n.t('fields::moves_count.label'),
         },
-        value: {
-          text: filters.startCase(prisonerCategory),
-        },
+        value: { text: moves.length },
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.sentence_length.label'),
+          text: i18n.t('fields::from_location.short_label'),
         },
-        value: {
-          text: i18n.t('fields::sentence_length.items.length', {
-            context: sentenceLength,
-          }),
-        },
+        value: { text: fromLocation.title },
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.complex_cases'),
+          text: i18n.t('fields::move_type.short_label'),
         },
-        value: {
-          /* eslint-disable indent */
-          text: complexCases.length
-            ? filters.oxfordJoin(
-                complexCases
-                  .filter(complexCase => complexCase.answer)
-                  .map(complexCase => complexCase.title)
-              )
-            : i18n.t('allocations::view.fields.none_provided'),
-          /* eslint-enable indent */
-        },
+        value: { text: toLocation.title },
       },
       {
         key: {
-          text: i18n.t('allocations::view.fields.other_criteria'),
+          text: i18n.t('fields::date_type.label'),
         },
-        value: {
-          text:
-            otherCriteria || i18n.t('allocations::view.fields.none_provided'),
-        },
+        value: { text: filters.formatDateWithRelativeDay(date) },
       },
     ],
   }
