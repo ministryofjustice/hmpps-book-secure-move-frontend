@@ -55,14 +55,6 @@ const assignSteps = {
   '/save': {
     skip: true,
     controller: controllers.Save,
-    next: 'confirmation',
-  },
-  '/confirmation': {
-    checkJourney: false,
-    checkSession: false,
-    controller: controllers.Confirmation,
-    templatePath: 'move/views/assign/',
-    template: 'confirmation',
   },
 }
 

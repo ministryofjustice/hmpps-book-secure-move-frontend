@@ -26,7 +26,7 @@ class SaveController extends PersonAssignBase {
         assessment_answers: data.assessment,
       })
 
-      req.sessionModel.set('move', move)
+      req.sessionModel.set('moveId', move.id)
 
       next()
     } catch (err) {
@@ -48,8 +48,13 @@ class SaveController extends PersonAssignBase {
     super.errorHandler(err, req, res, next)
   }
 
-  successHandler(req, res, next) {
-    super.successHandler(req, res, next)
+  successHandler(req, res) {
+    const moveId = req.sessionModel.get('moveId')
+
+    req.journeyModel.reset()
+    req.sessionModel.reset()
+
+    res.redirect(`/move/${moveId}/confirmation`)
   }
 }
 
