@@ -272,7 +272,7 @@
     "label": "Prisoner category"
   },
   "sentence_length": {
-    "label": "Sentence length",
+    "label": "Time left to serve",
     "items": {
       "length_long": "Over 16 months",
       "length_short": "16 months or less",
