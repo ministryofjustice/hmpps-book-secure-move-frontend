@@ -109,6 +109,7 @@ describe('Move controllers', function() {
             },
           },
           session: {},
+          getMove: sinon.stub().returns({}),
           sessionModel: {
             get: sinon.stub(),
           },
@@ -153,16 +154,16 @@ describe('Move controllers', function() {
         context('when step is penultimate step', function() {
           beforeEach(function() {
             FormController.prototype.getNextStep.returns('/last-step')
-            req.session.currentLocation = {
-              location_type: 'prison',
-            }
+            req.sessionModel.get
+              .withArgs('from_location_type')
+              .returns('prison')
           })
 
-          context('with single requests', function() {
+          context('with prison transfers', function() {
             beforeEach(function() {
-              req.sessionModel.get.withArgs('to_location').returns({
-                location_type: 'prison',
-              })
+              req.sessionModel.get
+                .withArgs('to_location_type')
+                .returns('prison')
 
               controller.setButtonText(req, {}, nextSpy)
             })
@@ -178,11 +179,9 @@ describe('Move controllers', function() {
             })
           })
 
-          context('with single requests', function() {
+          context('with court appearance', function() {
             beforeEach(function() {
-              req.sessionModel.get.withArgs('to_location').returns({
-                location_type: 'court',
-              })
+              req.sessionModel.get.withArgs('to_location_type').returns('court')
 
               controller.setButtonText(req, {}, nextSpy)
             })
@@ -190,6 +189,26 @@ describe('Move controllers', function() {
             it('should set button text correctly', function() {
               expect(req.form.options.buttonText).to.equal(
                 'actions::request_move'
+              )
+            })
+
+            it('should call next', function() {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+
+          context('with allocation move', function() {
+            beforeEach(function() {
+              req.getMove.returns({
+                allocation: { id: '1' },
+              })
+
+              controller.setButtonText(req, {}, nextSpy)
+            })
+
+            it('should set button text correctly', function() {
+              expect(req.form.options.buttonText).to.equal(
+                'actions::add_person'
               )
             })
 

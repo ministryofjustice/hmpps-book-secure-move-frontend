@@ -40,19 +40,25 @@ class CreateBaseController extends FormWizardController {
   }
 
   setButtonText(req, res, next) {
-    const toLocation = req.sessionModel.get('to_location') || {}
-    const fromLocation = req.session.currentLocation || {}
+    const toLocationType = req.sessionModel.get('to_location_type')
+    const fromLocationType = req.sessionModel.get('from_location_type')
+    const { allocation: isAllocationMove } = req.getMove()
     const nextStep = this.getNextStep(req, res)
     const steps = Object.keys(req.form.options.steps)
     const lastStep = steps[steps.length - 1]
-    const saveButtonText =
-      toLocation.location_type === 'prison' &&
-      fromLocation.location_type === 'prison'
+    const isPrisonTransfer =
+      toLocationType === 'prison' && fromLocationType === 'prison'
+    /* eslint-disable */
+    const saveButtonText = isAllocationMove
+      ? 'actions::add_person'
+      : isPrisonTransfer
         ? 'actions::send_for_review'
         : 'actions::request_move'
+    /* eslint-enable */
     const buttonText = nextStep.includes(lastStep)
       ? saveButtonText
       : 'actions::continue'
+
     req.form.options.buttonText = req.form.options.buttonText || buttonText
 
     next()
