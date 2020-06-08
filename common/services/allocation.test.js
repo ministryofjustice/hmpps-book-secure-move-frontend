@@ -58,6 +58,9 @@ describe('Allocation service', function() {
     expect(allocationService.defaultInclude).deep.equal([
       'from_location',
       'moves',
+      'moves.person',
+      'moves.person.ethnicity',
+      'moves.person.gender',
       'to_location',
     ])
   })
