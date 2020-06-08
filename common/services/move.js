@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { chunk, get, mapValues, pickBy, set } = require('lodash')
+const { chunk, get, mapValues, omitBy, isUndefined, set } = require('lodash')
 
 const { LOCATIONS_BATCH_SIZE } = require('../../config')
 const apiClient = require('../lib/api-client')()
@@ -79,7 +79,7 @@ const moveService = {
       'prison_transfer_reason',
     ]
 
-    return mapValues(pickBy(data), (value, key) => {
+    return mapValues(omitBy(data, isUndefined), (value, key) => {
       if (booleansAndNulls.includes(key)) {
         try {
           value = JSON.parse(value)

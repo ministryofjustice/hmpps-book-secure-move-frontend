@@ -177,11 +177,12 @@ describe('Move Service', function() {
           empty_string: '',
           false: false,
           undefined: undefined,
+          null: null,
           empty_array: [],
         })
       })
 
-      it('should remove falsey values', function() {
+      it('should remove undefined values', function() {
         expect(formatted).to.deep.equal({
           date: '2010-10-10',
           to_location: {
@@ -196,24 +197,34 @@ describe('Move Service', function() {
           prison_transfer_reason: {
             id: mockPrisonTransferReasonId,
           },
+          empty_string: '',
+          false: false,
+          null: null,
           empty_array: [],
         })
       })
     })
 
     context('with strings that be booleans', function() {
-      it('should `false` string as boolean', function() {
+      it('should treat `false` string as boolean', function() {
         const formatted = moveService.format({
           move_agreed: 'false',
         })
         expect(formatted.move_agreed).to.equal(false)
       })
 
-      it('should `true` string as boolean', function() {
+      it('should treat `true` string as boolean', function() {
         const formatted = moveService.format({
           move_agreed: 'true',
         })
         expect(formatted.move_agreed).to.equal(true)
+      })
+
+      it('should treat `null` string as null', function() {
+        const formatted = moveService.format({
+          move_agreed: null,
+        })
+        expect(formatted.move_agreed).to.equal(null)
       })
     })
   })
