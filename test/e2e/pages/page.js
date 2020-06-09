@@ -104,4 +104,12 @@ export default class Page {
       window.scrollBy(0, 1000)
     })
   }
+
+  async checkSummaryList(selector, labelMap) {
+    for (const [key, value] of Object.entries(labelMap)) {
+      if (value) {
+        await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
+      }
+    }
+  }
 }

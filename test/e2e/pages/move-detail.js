@@ -196,14 +196,6 @@ class MoveDetailPage extends Page {
     })
   }
 
-  async checkSummaryList(selector, labelMap) {
-    for (const [key, value] of Object.entries(labelMap)) {
-      if (value) {
-        await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
-      }
-    }
-  }
-
   async checkAssessment(selector, selectedItems, labelMap) {
     for (const key of selectedItems) {
       const tag = this.nodes.tags.withText(key.toUpperCase())
