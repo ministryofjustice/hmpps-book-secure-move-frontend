@@ -244,9 +244,9 @@ async function selectOption({ options, value }) {
   } else if (!isNil(value) && typeof value === 'number') {
     option = await options.nth(value)
   } else {
-    option = await options.nth(
-      Math.floor(Math.random() * (await options.count))
-    )
+    const count = await options.count
+    const randomItem = Math.floor(Math.random() * count)
+    option = await options.nth(randomItem)
   }
 
   const optionFor = await option.getAttribute('for')
@@ -271,10 +271,15 @@ async function selectOption({ options, value }) {
  * @returns {string} - value of the selected item
  */
 export async function fillAutocomplete({ selector, value }) {
-  await t.click(selector).pressKey('ctrl+a delete')
+  await t
+    .click(selector)
+    .selectText(selector)
+    .pressKey('delete')
 
   const optionsSelector = '.autocomplete__menu .autocomplete__option'
-  const autocompleteMenuOptions = await selector.parent().find(optionsSelector)
+  const autocompleteMenuOptions = await selector
+    .parent('.govuk-form-group')
+    .find(optionsSelector)
 
   return selectOption({
     value,

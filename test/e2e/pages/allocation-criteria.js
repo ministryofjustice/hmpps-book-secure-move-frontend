@@ -16,9 +16,7 @@ class AllocationCriteriaPage extends Page {
       completeInFull: Selector('#complete_in_full'),
       hasOtherCriteria: Selector('#has_other_criteria'),
       otherCriteria: Selector('#other_criteria'),
-      errorSummary: Selector('.govuk-error-summary'),
     }
-    this.errorSummary = Selector('.govuk-error-summary ul')
     this.errorLinks = [
       '#prisoner_category',
       '#sentence_length',
@@ -28,34 +26,48 @@ class AllocationCriteriaPage extends Page {
   }
 
   fill() {
-    const fieldsToFill = [
-      {
+    const hasOtherCriteriaAnswer = faker.random.arrayElement(['Yes', 'No'])
+    const fieldsToFill = {
+      prisonerCategory: {
         selector: this.fields.prisonerCategory,
-        value: 'C',
         type: 'radio',
       },
-      {
+      sentenceLength: {
         selector: this.fields.sentenceLength,
         type: 'radio',
       },
-      {
+      // As the UI pattern has all options checked by default we need to
+      // uncheck the options first before we can get the checked values
+      complexCasesUncheck: {
         selector: this.fields.complexCases,
         type: 'checkbox',
+        value: [0, 1, 2, 3],
       },
-      {
+      complexCases: {
+        selector: this.fields.complexCases,
+        type: 'checkbox',
+        value: Array(faker.random.number(4))
+          .fill()
+          .map((v, i) => i),
+      },
+      completeInFull: {
         selector: this.fields.completeInFull,
         type: 'radio',
       },
-      {
+      hasOtherCriteria: {
         selector: this.fields.hasOtherCriteria,
         type: 'radio',
-        value: 'Yes',
+        value: hasOtherCriteriaAnswer,
       },
-      {
+    }
+
+    if (hasOtherCriteriaAnswer === 'Yes') {
+      fieldsToFill.otherCriteria = {
         selector: this.fields.otherCriteria,
         value: faker.lorem.sentence(6),
-      },
-    ]
+      }
+    }
+
     return fillInForm(fieldsToFill)
   }
 }

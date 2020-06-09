@@ -14,6 +14,7 @@ export default class Page {
       signInHeader: Selector('.govuk-header__logo').withExactText(
         'HMPPS Digital Services'
       ),
+      errorSummary: Selector('.govuk-error-summary__list'),
       pageHeading: Selector('.govuk-heading-xl'),
       username: Selector('#navigation li:nth-child(1)'),
       signOutLink: Selector('#navigation li a').withExactText('Sign out'),
@@ -102,5 +103,13 @@ export default class Page {
     return ClientFunction(function() {
       window.scrollBy(0, 1000)
     })
+  }
+
+  async checkSummaryList(selector, labelMap) {
+    for (const [key, value] of Object.entries(labelMap)) {
+      if (value) {
+        await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
+      }
+    }
   }
 }

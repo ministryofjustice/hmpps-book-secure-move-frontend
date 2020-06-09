@@ -1,4 +1,9 @@
-import { Selector } from 'testcafe'
+import { Selector, t } from 'testcafe'
+
+import {
+  formatDateWithRelativeDay,
+  oxfordJoin,
+} from '../../../config/nunjucks/filters'
 
 import Page from './page'
 
@@ -7,22 +12,49 @@ class AllocationViewPage extends Page {
     super()
     this.nodes = {
       heading: Selector('h1.govuk-heading-l'),
-      listElements: {
-        category: 'Category',
-      },
-      summary: {
-        selector: Selector('.govuk-summary-list'),
-        keys: [
-          'Time left to serve',
-          'Complex cases for prisons to agree',
-          'Other criteria',
-        ],
-      },
-      meta: {
-        selector: Selector('.app-meta-list'),
-        keys: ['Number of people', 'Move from', 'Move to', 'Date'],
-      },
+      completeInFullWarning: Selector('.govuk-warning-text').withText(
+        'This allocation should be filled in full'
+      ),
+      criteriaDetails: Selector('#main-content h2')
+        .withText('Criteria for allocation')
+        .sibling('dl'),
+      summaryPanel: Selector('#main-content h3')
+        .withText('Allocation details')
+        .sibling('dl'),
     }
   }
+
+  async checkCriteria({
+    prisonerCategory,
+    sentenceLength,
+    complexCases,
+    completeInFull,
+    hasOtherCriteria,
+    otherCriterias,
+  } = {}) {
+    if (completeInFull === 'Yes') {
+      await t.expect(this.nodes.completeInFullWarning.exists).ok()
+    } else {
+      await t.expect(this.nodes.completeInFullWarning.exists).notOk()
+    }
+
+    return this.checkSummaryList(this.nodes.criteriaDetails, {
+      'Prisoner category': prisonerCategory,
+      'Time left to serve': sentenceLength,
+      'Complex cases for prisons to agree': oxfordJoin(complexCases),
+      'Other criteria':
+        hasOtherCriteria === 'Yes' ? otherCriterias : 'None provided',
+    })
+  }
+
+  checkSummary({ movesCount, fromLocation, toLocation, date } = {}) {
+    return this.checkSummaryList(this.nodes.summaryPanel, {
+      'Number of prisoners': movesCount,
+      From: fromLocation,
+      To: toLocation,
+      Date: formatDateWithRelativeDay(date),
+    })
+  }
 }
+
 export default AllocationViewPage

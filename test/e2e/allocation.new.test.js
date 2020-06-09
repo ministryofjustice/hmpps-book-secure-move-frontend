@@ -7,38 +7,28 @@ fixture('New PMU allocation').beforeEach(async t => {
 })
 
 test('Create allocation and verify the result', async t => {
-  const allocationId = await allocationJourney.createAllocation()
-  await t.navigateTo(`/allocation/${allocationId}`)
+  const allocation = await allocationJourney.createAllocation()
+  await t.navigateTo(`/allocation/${allocation.id}`)
 
-  for (const section of ['summary', 'meta']) {
-    for (const key of allocationJourney.allocationViewPage.nodes[section]
-      .keys) {
-      const selector =
-        allocationJourney.allocationViewPage.nodes[section].selector
-
-      await t
-        .expect(
-          allocationJourney.allocationViewPage.getDlDefinitionByKey(
-            selector,
-            key
-          )
-        )
-        .ok()
-    }
-  }
+  await allocationJourney.allocationViewPage.checkCriteria(allocation)
+  await allocationJourney.allocationViewPage.checkSummary(allocation)
 })
 
 test('Check validation errors on allocation details page', async t => {
+  // submit details page without values
   await allocationJourney.submitForm()
 
   for (const item of allocationJourney.allocationDetailsPage.errorLinks) {
     const error = allocationJourney.findErrorInList(item)
     await t.expect(error).ok()
   }
-})
 
-test('Check validation errors on allocation criteria page', async t => {
-  await allocationJourney.triggerValidationOnAllocationCriteriaPage()
+  // fill in and submit details page
+  await allocationJourney.allocationDetailsPage.fill()
+  await allocationJourney.submitForm()
+
+  // submit criteria page without values
+  await allocationJourney.submitForm()
 
   for (const item of allocationJourney.allocationCriteriaPage.errorLinks) {
     const error = allocationJourney.findErrorInList(item)
