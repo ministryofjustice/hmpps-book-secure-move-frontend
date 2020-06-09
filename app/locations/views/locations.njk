@@ -30,7 +30,7 @@
           {% for location in locations %}
             <li>
               <a href="/locations/{{ location.id }}">
-                {{ location.title | lower | startCase }}
+                {{ location.title }}
               </a>
             </li>
           {% endfor %}
