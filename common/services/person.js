@@ -37,8 +37,6 @@ const assessmentKeys = [
 const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const personService = {
-  defaultInclude: ['ethnicity', 'gender'],
-
   transform(person) {
     if (!person) {
       return undefined
@@ -168,7 +166,7 @@ const personService = {
       .then(response => response.data)
   },
 
-  getByIdentifiers(identifiers, { include = this.defaultInclude } = {}) {
+  getByIdentifiers(identifiers, { include } = {}) {
     const filter = {
       ...mapKeys(identifiers, (value, key) => `filter[${key}]`),
       include,

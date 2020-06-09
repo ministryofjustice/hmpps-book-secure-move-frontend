@@ -169,9 +169,14 @@ const getResponse = ({ modelName, model, testCase } = {}) => {
 
   const nockedResponse =
     fixture.response !== undefined ? fixture.response : fixture
+  const defaultInclude = get(model, 'options.defaultInclude')
+  const include = defaultInclude ? `?include=${defaultInclude.join(',')}` : ''
 
   nock(mockConfig.API.BASE_URL)
-    .intercept(`/${apiPath}${testCase.mockPath || ''}`, testCase.httpMock)
+    .intercept(
+      `/${apiPath}${testCase.mockPath || ''}${include}`,
+      testCase.httpMock
+    )
     .reply(statusCode, nockedResponse)
 
   return client[testCase.method](modelName, testCase.args)
@@ -185,9 +190,7 @@ const getStatusMethods = (modelName, statusCode) => {
 }
 
 const expectProperties = ({ model, response }) => {
-  flatten([response.data]).forEach(item =>
-    checkProperties(item, model.attributes)
-  )
+  flatten([response.data]).forEach(item => checkProperties(item, model.fields))
 }
 
 const expectNoData = ({ response }) => {
@@ -209,7 +212,7 @@ describe('API client models', function() {
       const runStatusMethodTests = (
         statusCode,
         expectFn = expectProperties,
-        expectStr = 'should contain correct attributes'
+        expectStr = 'should contain correct fields'
       ) => {
         describe(`${statusCode} status code`, function() {
           forEach(getStatusMethods(modelName, statusCode), testCase => {

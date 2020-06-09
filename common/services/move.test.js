@@ -42,28 +42,8 @@ const mockMoves = [
   },
 ]
 
-const mockDefaultInclude = ['default']
-
-describe('Move Service', function() {
-  it('should have the correct default include', function() {
-    expect(moveService.defaultInclude).deep.equal([
-      'allocation',
-      'court_hearings',
-      'documents',
-      'from_location',
-      'from_location.suppliers',
-      'person',
-      'person.ethnicity',
-      'person.gender',
-      'prison_transfer_reason',
-      'to_location',
-    ])
-  })
-})
-
 describe('Move Service', function() {
   beforeEach(function() {
-    moveService.defaultInclude = mockDefaultInclude
     sinon.stub(personService, 'transform').returnsArg(0)
   })
 
@@ -277,7 +257,7 @@ describe('Move Service', function() {
           expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
             page: 1,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -302,7 +282,7 @@ describe('Move Service', function() {
             ...mockFilter,
             page: 1,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -324,7 +304,7 @@ describe('Move Service', function() {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -356,7 +336,7 @@ describe('Move Service', function() {
           expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
             page: 1,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -364,7 +344,7 @@ describe('Move Service', function() {
           expect(apiClient.findAll.secondCall).to.be.calledWithExactly('move', {
             page: 2,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -389,7 +369,7 @@ describe('Move Service', function() {
             ...mockFilter,
             page: 1,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -398,7 +378,7 @@ describe('Move Service', function() {
             ...mockFilter,
             page: 2,
             per_page: 100,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
       })
@@ -416,7 +396,7 @@ describe('Move Service', function() {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -458,7 +438,7 @@ describe('Move Service', function() {
                 .join(','),
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             })
           })
         }
@@ -856,13 +836,13 @@ describe('Move Service', function() {
         sinon.stub(apiClient, 'find').resolves(mockResponse)
       })
 
-      context('', function() {
+      context('when called without include parameter', function() {
         beforeEach(async function() {
           move = await moveService.getById(mockId)
         })
         it('should call find method with data', function() {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 

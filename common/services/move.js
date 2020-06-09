@@ -22,14 +22,14 @@ function getAll({
   combinedData = [],
   page = 1,
   isAggregation = false,
-  include = {},
+  include,
 } = {}) {
   return apiClient
     .findAll('move', {
       ...filter,
+      include,
       page,
       per_page: isAggregation ? 1 : 100,
-      include,
     })
     .then(response => {
       const { data, links, meta } = response
@@ -57,19 +57,6 @@ function getAll({
 
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
-  defaultInclude: [
-    'allocation',
-    'court_hearings',
-    'documents',
-    'from_location',
-    'from_location.suppliers',
-    'person',
-    'person.ethnicity',
-    'person.gender',
-    'prison_transfer_reason',
-    'to_location',
-  ],
-
   format(data) {
     const booleansAndNulls = ['move_agreed']
     const relationships = [
@@ -102,8 +89,6 @@ const moveService = {
     // would know to only return moves that a user has access to
     const fromPath = 'filter["filter[from_location_id]"]'
     const toPath = 'filter["filter[to_location_id]"]'
-
-    props.include = props.include || this.defaultInclude
 
     if (get(props, fromPath)) {
       return splitRequests(props, fromPath)
@@ -202,7 +187,7 @@ const moveService = {
     })
   },
 
-  getById(id, { include = this.defaultInclude } = {}) {
+  getById(id, { include } = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }

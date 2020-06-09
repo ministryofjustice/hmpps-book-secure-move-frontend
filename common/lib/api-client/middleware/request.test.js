@@ -184,52 +184,6 @@ describe('API Client', function() {
         })
       })
 
-      context('when request contains include param', function() {
-        beforeEach(function() {
-          getAsyncStub.resolves(null)
-          payload.req.params = {}
-        })
-
-        context('and passed as a string', function() {
-          beforeEach(async function() {
-            payload.req.params.include = 'foo,bar'
-            await requestMiddleware().req(payload)
-          })
-          it('should append include param as is to query', function() {
-            expect(payload.req.params.include).to.equal('foo,bar')
-            expect(getAsyncStub).to.be.calledOnceWithExactly(
-              'cache:GET./path/to/endpoint?include=foo%2Cbar'
-            )
-          })
-        })
-
-        context('and passed as a an array', function() {
-          beforeEach(async function() {
-            payload.req.params.include = ['foo', 'bar']
-            await requestMiddleware().req(payload)
-          })
-          it('should sort include params and append to query', function() {
-            expect(payload.req.params.include).to.equal('bar,foo')
-            expect(getAsyncStub).to.be.calledOnceWithExactly(
-              'cache:GET./path/to/endpoint?include=bar%2Cfoo'
-            )
-          })
-        })
-
-        context('and passed as a an empty array', function() {
-          beforeEach(async function() {
-            payload.req.params.include = []
-            await requestMiddleware().req(payload)
-          })
-          it('should not append include param to query', function() {
-            expect(payload.req.params.include).to.be.undefined
-            expect(getAsyncStub).to.be.calledOnceWithExactly(
-              'cache:GET./path/to/endpoint'
-            )
-          })
-        })
-      })
-
       describe('options', function() {
         beforeEach(async function() {
           getAsyncStub.resolves(null)

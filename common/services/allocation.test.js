@@ -51,26 +51,7 @@ const mockAllocations = [
   },
 ]
 
-const mockDefaultInclude = ['default']
-
 describe('Allocation service', function() {
-  it('should have the correct default include', function() {
-    expect(allocationService.defaultInclude).deep.equal([
-      'from_location',
-      'moves',
-      'moves.person',
-      'moves.person.ethnicity',
-      'moves.person.gender',
-      'to_location',
-    ])
-  })
-})
-
-describe('Allocation service', function() {
-  beforeEach(function() {
-    allocationService.defaultInclude = mockDefaultInclude
-  })
-
   describe('cancel', function() {
     let outcome
     beforeEach(async function() {
@@ -320,7 +301,7 @@ describe('Allocation service', function() {
             {
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -354,7 +335,7 @@ describe('Allocation service', function() {
               ...mockFilter,
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -377,7 +358,7 @@ describe('Allocation service', function() {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -399,7 +380,7 @@ describe('Allocation service', function() {
             {
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -444,7 +425,7 @@ describe('Allocation service', function() {
             {
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -455,7 +436,7 @@ describe('Allocation service', function() {
             {
               page: 2,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -483,7 +464,7 @@ describe('Allocation service', function() {
               ...mockFilter,
               page: 1,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -495,7 +476,7 @@ describe('Allocation service', function() {
               ...mockFilter,
               page: 2,
               per_page: 100,
-              include: mockDefaultInclude,
+              include: undefined,
             }
           )
         })
@@ -514,7 +495,7 @@ describe('Allocation service', function() {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: mockDefaultInclude,
+            include: undefined,
           })
         })
 
@@ -743,16 +724,19 @@ describe('Allocation service', function() {
       })
     })
 
-    context('', function() {
+    context('when called without include parameter', function() {
       beforeEach(async function() {
         output = await allocationService.getById(
           '8567f1a5-2201-4bc2-b655-f6526401303a'
         )
       })
       it('calls the api service', function() {
-        expect(apiClient.find).to.have.been.calledOnceWith(
+        expect(apiClient.find).to.have.been.calledOnceWithExactly(
           'allocation',
-          '8567f1a5-2201-4bc2-b655-f6526401303a'
+          '8567f1a5-2201-4bc2-b655-f6526401303a',
+          {
+            include: undefined,
+          }
         )
       })
 

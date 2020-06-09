@@ -55,17 +55,8 @@ const mockLocations = [
   },
 ]
 
-const mockLocationsInclude = ['default']
-
 describe('Reference Data Service', function() {
-  it('should have the correct default include', function() {
-    expect(referenceDataService.locationsInclude).deep.equal(['suppliers'])
-  })
   context('', function() {
-    beforeEach(function() {
-      referenceDataService.locationsInclude = mockLocationsInclude
-    })
-
     describe('#getGenders()', function() {
       const mockResponse = {
         data: mockGenders,
@@ -231,7 +222,7 @@ describe('Reference Data Service', function() {
               {
                 page: 1,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -255,7 +246,7 @@ describe('Reference Data Service', function() {
                 ...mockFilter,
                 page: 1,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -286,7 +277,7 @@ describe('Reference Data Service', function() {
               {
                 page: 1,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -297,7 +288,7 @@ describe('Reference Data Service', function() {
               {
                 page: 2,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -323,7 +314,7 @@ describe('Reference Data Service', function() {
                 ...mockFilter,
                 page: 1,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -335,7 +326,7 @@ describe('Reference Data Service', function() {
                 ...mockFilter,
                 page: 2,
                 per_page: 100,
-                include: mockLocationsInclude,
+                include: undefined,
               }
             )
           })
@@ -384,7 +375,7 @@ describe('Reference Data Service', function() {
           expect(apiClient.find).to.be.calledOnceWithExactly(
             'location',
             mockId,
-            { include: mockLocationsInclude }
+            { include: undefined }
           )
         })
 

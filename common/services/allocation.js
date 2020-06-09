@@ -5,15 +5,6 @@ const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 
 const allocationService = {
-  defaultInclude: [
-    'from_location',
-    'moves',
-    'moves.person',
-    'moves.person.ethnicity',
-    'moves.person.gender',
-    'to_location',
-  ],
-
   cancel(allocationId) {
     const timestamp = dateFunctions.formatISO(new Date())
     return apiClient
@@ -109,7 +100,7 @@ const allocationService = {
     page = 1,
     includeCancelled = false,
     isAggregation = false,
-    include = this.defaultInclude,
+    include,
   } = {}) {
     return apiClient
       .findAll('allocation', {
@@ -138,7 +129,7 @@ const allocationService = {
         })
       })
   },
-  getById(id, { include = this.defaultInclude } = {}) {
+  getById(id, { include } = {}) {
     return apiClient
       .find('allocation', id, { include })
       .then(response => response.data)
