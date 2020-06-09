@@ -15,16 +15,20 @@ test('Create allocation and verify the result', async t => {
 })
 
 test('Check validation errors on allocation details page', async t => {
+  // submit details page without values
   await allocationJourney.submitForm()
 
   for (const item of allocationJourney.allocationDetailsPage.errorLinks) {
     const error = allocationJourney.findErrorInList(item)
     await t.expect(error).ok()
   }
-})
 
-test('Check validation errors on allocation criteria page', async t => {
-  await allocationJourney.triggerValidationOnAllocationCriteriaPage()
+  // fill in and submit details page
+  await allocationJourney.allocationDetailsPage.fill()
+  await allocationJourney.submitForm()
+
+  // submit criteria page without values
+  await allocationJourney.submitForm()
 
   for (const item of allocationJourney.allocationCriteriaPage.errorLinks) {
     const error = allocationJourney.findErrorInList(item)

@@ -43,12 +43,6 @@ class AllocationJourney extends Page {
     }
   }
 
-  async triggerValidationOnAllocationCriteriaPage() {
-    await allocationDetailsPage.fill()
-    await this.submitForm()
-    await this.submitForm()
-  }
-
   findErrorInList(hrefAttribute) {
     return this.nodes.errorSummary
       .child('a')
