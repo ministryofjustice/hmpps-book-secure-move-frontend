@@ -20,9 +20,10 @@ class AllocationViewPage extends Page {
       },
       meta: {
         selector: Selector('.app-meta-list'),
-        keys: ['Number of people', 'Move from', 'Move to', 'Date'],
+        keys: ['Number of prisoners', 'From', 'To', 'Date'],
       },
     }
   }
 }
+
 export default AllocationViewPage
