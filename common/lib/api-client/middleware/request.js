@@ -23,14 +23,6 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
       const { req, jsonApi } = payload
       const pathname = new URL(req.url).pathname
 
-      if (Array.isArray(req.params.include)) {
-        req.params.include = req.params.include.sort().join(',')
-      }
-
-      if (!req.params.include) {
-        delete req.params.include
-      }
-
       const searchString = new URLSearchParams(req.params).toString()
       const key = `cache:${req.method}.${pathname}${
         searchString ? `?${searchString}` : ''

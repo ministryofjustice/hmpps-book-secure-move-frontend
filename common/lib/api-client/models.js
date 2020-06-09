@@ -44,6 +44,20 @@ module.exports = {
         type: 'allocations',
       },
     },
+    options: {
+      defaultInclude: [
+        'allocation',
+        'court_hearings',
+        'documents',
+        'from_location',
+        'from_location.suppliers',
+        'person',
+        'person.ethnicity',
+        'person.gender',
+        'prison_transfer_reason',
+        'to_location',
+      ],
+    },
   },
   image: {
     fields: {
@@ -66,6 +80,9 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'ethnicities',
       },
+    },
+    options: {
+      defaultInclude: ['ethnicity', 'gender'],
     },
   },
   court_case: {
@@ -167,6 +184,7 @@ module.exports = {
     options: {
       cache: true,
       collectionPath: 'reference/locations',
+      defaultInclude: ['suppliers'],
     },
   },
   supplier: {
@@ -227,6 +245,16 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'events',
       },
+    },
+    options: {
+      defaultInclude: [
+        'from_location',
+        'moves',
+        'moves.person',
+        'moves.person.ethnicity',
+        'moves.person.gender',
+        'to_location',
+      ],
     },
   },
   allocation_complex_case: {

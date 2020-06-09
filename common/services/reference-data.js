@@ -3,8 +3,6 @@ const { flattenDeep, sortBy } = require('lodash')
 const apiClient = require('../lib/api-client')()
 
 const referenceDataService = {
-  locationsInclude: ['suppliers'],
-
   getGenders() {
     return apiClient.findAll('gender').then(response => response.data)
   },
@@ -21,12 +19,7 @@ const referenceDataService = {
       .then(response => response.data)
   },
 
-  getLocations({
-    filter,
-    combinedData,
-    page = 1,
-    include = this.locationsInclude,
-  } = {}) {
+  getLocations({ filter, combinedData, page = 1, include } = {}) {
     return apiClient
       .findAll('location', {
         ...filter,
@@ -53,7 +46,7 @@ const referenceDataService = {
       })
   },
 
-  getLocationById(id, { include = this.locationsInclude } = {}) {
+  getLocationById(id, { include } = {}) {
     if (!id) {
       return Promise.reject(new Error('No location ID supplied'))
     }
