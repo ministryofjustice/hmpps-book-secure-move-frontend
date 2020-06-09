@@ -85,10 +85,10 @@ describe('Assign controllers', function() {
           })
         })
 
-        it('should call set move on session model', function() {
+        it('should call set move ID on session model', function() {
           expect(req.sessionModel.set).to.be.calledOnceWithExactly(
-            'move',
-            updatedMove
+            'moveId',
+            updatedMove.id
           )
         })
 
@@ -109,120 +109,144 @@ describe('Assign controllers', function() {
         })
       })
     })
-  })
 
-  describe('#errorHandler()', function() {
-    let err
-    let res = {}
-    const req = {}
-    let next
-    beforeEach(function() {
-      res = {
-        render: sinon.stub(),
-      }
-      sinon.stub(AssignBaseController.prototype, 'errorHandler')
-      next = sinon.stub()
-    })
-    describe('When a move conflict error is thrown', function() {
-      beforeEach(function() {
-        err = {
-          statusCode: 422,
-          errors: [
-            {
-              code: 'taken',
-              meta: {
-                existing_id: '__existing_id__',
-              },
-            },
-          ],
+    describe('#successHandler()', function() {
+      const mockMoveId = '12345'
+      let req, res, nextSpy
+
+      beforeEach(async function() {
+        req = {
+          sessionModel: {
+            get: sinon
+              .stub()
+              .withArgs('moveId')
+              .returns(mockMoveId),
+            reset: sinon.stub(),
+          },
+          journeyModel: {
+            reset: sinon.stub(),
+          },
         }
-        controller.errorHandler(err, req, res, next)
-      })
-      it('should not invoke super', function() {
-        expect(AssignBaseController.prototype.errorHandler).to.not.be.called
+        res = {
+          redirect: sinon.stub(),
+        }
+        nextSpy = sinon.stub()
+
+        await controller.successHandler(req, res, nextSpy)
       })
 
-      it('should render the conflict page', function() {
-        expect(res.render).to.be.calledOnceWithExactly(
-          'move/views/assign/assign-conflict',
-          {
-            existingMoveId: '__existing_id__',
-          }
+      it('should reset the journey', function() {
+        expect(req.journeyModel.reset).to.have.been.calledOnce
+      })
+
+      it('should reset the session', function() {
+        expect(req.sessionModel.reset).to.have.been.calledOnce
+      })
+
+      it('should redirect correctly', function() {
+        expect(res.redirect).to.have.been.calledOnce
+        expect(res.redirect).to.have.been.calledWith(
+          `/move/${mockMoveId}/confirmation`
         )
       })
+
+      it('should not call next', function() {
+        expect(nextSpy).not.to.have.been.called
+      })
     })
 
-    describe('When a 422 is thrown without the taken code', function() {
+    describe('#errorHandler()', function() {
+      let err
+      let res = {}
+      const req = {}
+      let next
       beforeEach(function() {
-        err = {
-          statusCode: 422,
-          errors: [
-            {
-              code: 'anotherCode',
-              meta: {
-                existing_id: '__existing_id__',
-              },
-            },
-          ],
+        res = {
+          render: sinon.stub(),
         }
-        controller.errorHandler(err, req, res, next)
+        sinon.stub(AssignBaseController.prototype, 'errorHandler')
+        next = sinon.stub()
       })
-      it('should invoke super', function() {
-        expect(
-          AssignBaseController.prototype.errorHandler
-        ).to.be.calledOnceWithExactly(err, req, res, next)
-      })
-
-      it('should not render the conflict page', function() {
-        expect(res.render).to.not.be.called
-      })
-    })
-
-    describe('When any other kind of error is thrown', function() {
-      beforeEach(function() {
-        err = {
-          statusCode: 400,
-          errors: [
-            {
-              code: 'taken',
-              meta: {
-                existing_id: '__existing_id__',
+      describe('When a move conflict error is thrown', function() {
+        beforeEach(function() {
+          err = {
+            statusCode: 422,
+            errors: [
+              {
+                code: 'taken',
+                meta: {
+                  existing_id: '__existing_id__',
+                },
               },
-            },
-          ],
-        }
-        controller.errorHandler(err, req, res, next)
+            ],
+          }
+          controller.errorHandler(err, req, res, next)
+        })
+        it('should not invoke super', function() {
+          expect(AssignBaseController.prototype.errorHandler).to.not.be.called
+        })
+
+        it('should render the conflict page', function() {
+          expect(res.render).to.be.calledOnceWithExactly(
+            'move/views/assign/assign-conflict',
+            {
+              existingMoveId: '__existing_id__',
+            }
+          )
+        })
       })
-      it('should invoke super', function() {
-        expect(
-          AssignBaseController.prototype.errorHandler
-        ).to.be.calledOnceWithExactly(err, req, res, next)
+
+      describe('When a 422 is thrown without the taken code', function() {
+        beforeEach(function() {
+          err = {
+            statusCode: 422,
+            errors: [
+              {
+                code: 'anotherCode',
+                meta: {
+                  existing_id: '__existing_id__',
+                },
+              },
+            ],
+          }
+          controller.errorHandler(err, req, res, next)
+        })
+        it('should invoke super', function() {
+          expect(
+            AssignBaseController.prototype.errorHandler
+          ).to.be.calledOnceWithExactly(err, req, res, next)
+        })
+
+        it('should not render the conflict page', function() {
+          expect(res.render).to.not.be.called
+        })
       })
 
-      it('should not render the conflict page', function() {
-        expect(res.render).to.not.be.called
+      describe('When any other kind of error is thrown', function() {
+        beforeEach(function() {
+          err = {
+            statusCode: 400,
+            errors: [
+              {
+                code: 'taken',
+                meta: {
+                  existing_id: '__existing_id__',
+                },
+              },
+            ],
+          }
+          controller.errorHandler(err, req, res, next)
+        })
+        it('should invoke super', function() {
+          expect(
+            AssignBaseController.prototype.errorHandler
+          ).to.be.calledOnceWithExactly(err, req, res, next)
+        })
+
+        it('should not render the conflict page', function() {
+          expect(res.render).to.not.be.called
+        })
       })
-    })
-  })
-
-  describe('#successHandler()', function() {
-    const res = {}
-    const req = {}
-    let next
-    beforeEach(function() {
-      sinon.stub(AssignBaseController.prototype, 'successHandler')
-      next = sinon.stub()
-      controller.successHandler(req, res, next)
-    })
-
-    it('should invoke super', function() {
-      expect(
-        AssignBaseController.prototype.successHandler
-      ).to.be.calledOnceWithExactly(req, res, next)
-    })
-
-    it('should not call next', function() {
-      expect(next).to.not.be.called
     })
   })
 })

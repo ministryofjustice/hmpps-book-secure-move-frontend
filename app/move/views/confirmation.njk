@@ -1,13 +1,14 @@
 {% extends "layouts/base.njk" %}
 
 {% block customGtagConfig %}
-  gtag('set', {'page_title': 'Move requested'});
+  gtag('set', {'page_title': '{{ "Person added to allocation" if move.allocation else "Move " + move.status }}' });
 {% endblock %}
 
 {% block pageTitle %}
   {{ t("moves::confirmation.page_title", {
-    context: move.status,
-    name: move.person.fullname | upper }) }}
+    context: "assign" if move.allocation else move.status,
+    name: move.person.fullname | upper
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -17,24 +18,35 @@
       {{ govukPanel({
         classes: "govuk-!-margin-bottom-7",
         titleText: t("messages::create_move.success.heading", {
-          context: move.status
+          context: "assign" if move.allocation else move.status
         }),
         html: t("messages::create_move.success.content", {
-          context: move.status,
+          context: "assign" if move.allocation else move.status,
           moveReference: move.reference
         })
       }) }}
 
       <p>
         {{ t("moves::confirmation.detail", {
-          context: move.status,
+          context: "assign" if move.allocation else move.status,
+          count: move.allocation.moves_count,
           href: "/move/" + move.id,
+          allocationHref: "/allocation/" + move.allocation.id,
           name: move.person.fullname | upper,
           location: location,
           date: move.date | formatDateWithDay,
           supplier: supplierNames | oxfordJoin
         }) | safe }}
       </p>
+
+      {% if move.allocation %}
+        {{ govukWarningText({
+          text: t("moves::confirmation.saved_to_nomis", {
+            context: "failed_assign"
+          }),
+          iconFallbackText: "Warning"
+        }) }}
+      {% endif %}
 
       {% if savedHearings|length %}
         {{ govukInsetText({
@@ -68,11 +80,21 @@
         }) }}
       {% endif %}
 
-      <p>
-        <a href="{{ MOVES_URL }}">
-          {{ t("actions::back_to_dashboard") }}
-        </a>
-      </p>
+      <ul class="govuk-list">
+        {% if unassignedMoveId %}
+          <li>
+            <a href="/move/{{ unassignedMoveId }}/assign">
+              {{ t("moves::confirmation.add_another") }}
+            </a>
+          </li>
+        {% endif %}
+
+        <li>
+          <a href="{{ "/allocations" if move.allocation else MOVES_URL }}">
+            {{ t("actions::back_to_dashboard") }}
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 {% endblock %}

@@ -15,7 +15,7 @@ const {
   reviewFields,
   updateFields,
 } = require('./fields')
-const { setMove } = require('./middleware')
+const { setMove, setAllocation } = require('./middleware')
 const {
   assign: assignSteps,
   cancel: cancelSteps,
@@ -78,6 +78,7 @@ router.get('/:moveId', protectRoute('move:view'), view)
 router.get(
   '/:moveId/confirmation',
   protectRoute(['move:create', 'move:review']),
+  setAllocation,
   confirmation
 )
 router.use(

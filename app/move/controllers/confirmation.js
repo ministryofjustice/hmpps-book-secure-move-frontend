@@ -6,6 +6,7 @@ function confirmation(req, res) {
     move_type: moveType,
     to_location: toLocation,
   } = res.locals.move
+  const { moves: allocationMoves = [] } = req.allocation || {}
   const suppliers = get(res.locals, 'move.from_location.suppliers')
   const supplierNames =
     suppliers && suppliers.length
@@ -19,8 +20,13 @@ function confirmation(req, res) {
     reject(courtHearings, 'saved_to_nomis'),
     'case_number'
   )
+  const unassignedMoves = allocationMoves.filter(move => !move.person)
+  const unassignedMoveId = unassignedMoves.length
+    ? unassignedMoves[0].id
+    : undefined
 
   const locals = {
+    unassignedMoveId,
     supplierNames,
     savedHearings,
     unsavedHearings,

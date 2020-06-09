@@ -62,6 +62,17 @@ describe('Move controllers', function() {
         expect(params).to.have.property('unsavedHearings')
         expect(params.unsavedHearings).to.deep.equal([])
       })
+
+      it('should have undefined unassignedMoveId', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('unassignedMoveId')
+        expect(params.unassignedMoveId).to.be.undefined
+      })
+
+      it('should contain correct number of locals', function() {
+        const locals = res.render.args[0][1]
+        expect(Object.keys(locals)).to.have.length(5)
+      })
     })
 
     describe('with move_type "prison_recall"', function() {
@@ -223,6 +234,38 @@ describe('Move controllers', function() {
           'T45483',
           'T30532',
         ])
+      })
+    })
+
+    describe('with allocation', function() {
+      beforeEach(function() {
+        req.allocation = {
+          moves: [
+            {
+              id: '1',
+              person: {},
+            },
+            {
+              id: '2',
+              person: {},
+            },
+            {
+              id: '__unassigned__',
+            },
+            {
+              id: '4',
+              person: {},
+            },
+          ],
+        }
+
+        controller(req, res)
+      })
+
+      it('should set unassignedMoveId to next move without a person', function() {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('unassignedMoveId')
+        expect(params.unassignedMoveId).to.equal('__unassigned__')
       })
     })
   })
