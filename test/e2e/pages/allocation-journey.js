@@ -23,17 +23,24 @@ class AllocationJourney extends Page {
   }
 
   async createAllocation() {
-    await allocationDetailsPage.fill()
+    const details = await allocationDetailsPage.fill()
     await this.submitForm()
-    await allocationCriteriaPage.fill()
+
+    const criteria = await allocationCriteriaPage.fill()
     await this.submitForm()
+
     const currentUrl = await allocationJourney.getCurrentUrl()
     await t
       .expect(currentUrl)
       .match(
         new RegExp('/allocation/' + this.uuidRegex.source + '/confirmation')
       )
-    return currentUrl.match(new RegExp(allocationJourney.uuidRegex))[0]
+
+    return {
+      id: currentUrl.match(new RegExp(allocationJourney.uuidRegex))[0],
+      ...details,
+      ...criteria,
+    }
   }
 
   async triggerValidationOnAllocationCriteriaPage() {
@@ -43,7 +50,7 @@ class AllocationJourney extends Page {
   }
 
   findErrorInList(hrefAttribute) {
-    return allocationDetailsPage.errorSummary
+    return this.nodes.errorSummary
       .child('a')
       .withAttribute('href', hrefAttribute)
   }

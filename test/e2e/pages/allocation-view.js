@@ -6,13 +6,12 @@ class AllocationViewPage extends Page {
   constructor() {
     super()
     this.nodes = {
+      ...this.nodes,
       heading: Selector('h1.govuk-heading-l'),
-      listElements: {
-        category: 'Category',
-      },
       summary: {
         selector: Selector('.govuk-summary-list'),
         keys: [
+          'Prisoner category',
           'Time left to serve',
           'Complex cases for prisons to agree',
           'Other criteria',

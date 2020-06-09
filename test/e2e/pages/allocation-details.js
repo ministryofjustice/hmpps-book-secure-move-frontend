@@ -1,4 +1,5 @@
-import { endOfWeek, format } from 'date-fns'
+import { format } from 'date-fns'
+import faker from 'faker'
 import { Selector } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
@@ -9,13 +10,12 @@ class AllocationDetailsPage extends Page {
   constructor() {
     super()
     this.url = '/allocation/new/allocation-details'
-    this.nodes = {
+    this.fields = {
       movesCount: Selector('#moves_count'),
       fromLocation: Selector('#from_location'),
       toLocation: Selector('#to_location'),
       date: Selector('#date'),
     }
-    this.errorSummary = Selector('.govuk-error-summary__list')
     this.errorLinks = [
       '#moves_count',
       '#to_location',
@@ -25,24 +25,25 @@ class AllocationDetailsPage extends Page {
   }
 
   fill() {
-    const fieldsToFill = [
-      {
-        selector: this.nodes.movesCount,
-        value: '3',
+    const fieldsToFill = {
+      movesCount: {
+        selector: this.fields.movesCount,
+        value: faker.random.number({ min: 1, max: 10 }).toString(),
       },
-      {
-        selector: this.nodes.fromLocation,
+      fromLocation: {
+        selector: this.fields.fromLocation,
         type: 'autocomplete',
       },
-      {
-        selector: this.nodes.toLocation,
+      toLocation: {
+        selector: this.fields.toLocation,
         type: 'autocomplete',
       },
-      {
-        selector: this.nodes.date,
-        value: format(endOfWeek(new Date()), 'dd/MM/yyyy'),
+      date: {
+        selector: this.fields.date,
+        value: format(faker.date.future(), 'yyyy-MM-dd'),
       },
-    ]
+    }
+
     return fillInForm(fieldsToFill)
   }
 }

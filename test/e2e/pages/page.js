@@ -14,6 +14,7 @@ export default class Page {
       signInHeader: Selector('.govuk-header__logo').withExactText(
         'HMPPS Digital Services'
       ),
+      errorSummary: Selector('.govuk-error-summary__list'),
       pageHeading: Selector('.govuk-heading-xl'),
       username: Selector('#navigation li:nth-child(1)'),
       signOutLink: Selector('#navigation li a').withExactText('Sign out'),

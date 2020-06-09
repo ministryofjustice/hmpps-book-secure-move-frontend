@@ -7,8 +7,8 @@ fixture('New PMU allocation').beforeEach(async t => {
 })
 
 test('Create allocation and verify the result', async t => {
-  const allocationId = await allocationJourney.createAllocation()
-  await t.navigateTo(`/allocation/${allocationId}`)
+  const allocation = await allocationJourney.createAllocation()
+  await t.navigateTo(`/allocation/${allocation.id}`)
 
   for (const section of ['summary', 'meta']) {
     for (const key of allocationJourney.allocationViewPage.nodes[section]
