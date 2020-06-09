@@ -30,18 +30,13 @@ class AllocationDetailsPage extends Page {
         selector: this.nodes.movesCount,
         value: '3',
       },
-      // TODO it would be better to let the value blank here, so a random one would be used.
-      // However, it currently makes the test fail when the chosen option is not in the visible
-      // portion of the list. This clearly needs to be addressed.
       {
         selector: this.nodes.fromLocation,
         type: 'autocomplete',
-        value: 0,
       },
       {
         selector: this.nodes.toLocation,
         type: 'autocomplete',
-        value: 1,
       },
       {
         selector: this.nodes.date,
