@@ -4,7 +4,7 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 function courtCaseToCardComponent({
-  location = {},
+  location,
   case_start_date: startDate,
   case_type: caseType,
   case_number: caseNumber,

@@ -10,15 +10,16 @@ function personToCardComponent({
   showMeta = true,
   showTags = true,
 } = {}) {
-  return function item({
-    id,
-    href,
-    gender,
-    fullname,
-    image_url: imageUrl,
-    date_of_birth: dateOfBirth,
-    assessment_answers: assessmentAnswers,
-  } = {}) {
+  return function item(person) {
+    const {
+      id,
+      href,
+      gender,
+      fullname,
+      image_url: imageUrl,
+      date_of_birth: dateOfBirth,
+      assessment_answers: assessmentAnswers,
+    } = person || {}
     const card = {
       href,
       title: {

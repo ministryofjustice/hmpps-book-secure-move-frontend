@@ -424,21 +424,33 @@ describe('Presenters', function() {
       })
     })
 
+    const noPersonResponse = {
+      href: undefined,
+      classes: 'app-card--placeholder',
+      title: { text: '__translated__' },
+      meta: { items: [] },
+      tags: { items: [] },
+      image_path: undefined,
+      image_alt: '__translated__',
+    }
+
     context('with no arguments', function() {
       beforeEach(function() {
         transformedResponse = personToCardComponent()()
       })
 
       it('should use fallback values', function() {
-        expect(transformedResponse).to.deep.equal({
-          href: undefined,
-          classes: 'app-card--placeholder',
-          title: { text: '__translated__' },
-          meta: { items: [] },
-          tags: { items: [] },
-          image_path: undefined,
-          image_alt: '__translated__',
-        })
+        expect(transformedResponse).to.deep.equal(noPersonResponse)
+      })
+    })
+
+    context('with null', function() {
+      beforeEach(function() {
+        transformedResponse = personToCardComponent()(null)
+      })
+
+      it('should use fallback values', function() {
+        expect(transformedResponse).to.deep.equal(noPersonResponse)
       })
     })
   })
