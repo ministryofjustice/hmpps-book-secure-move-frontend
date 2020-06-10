@@ -53,26 +53,37 @@ const mockAllocations = [
 
 describe('Allocation service', function() {
   describe('cancel', function() {
-    let outcome
-    beforeEach(async function() {
-      sinon.stub(apiClient, 'post').resolves({
-        data: {
-          events: [],
-        },
+    context('with correct data supplied', function() {
+      let outcome
+      beforeEach(async function() {
+        sinon.stub(apiClient, 'post').resolves({
+          data: {},
+        })
+        sinon.spy(apiClient, 'one')
+        sinon.spy(apiClient, 'all')
+        outcome = await allocationService.cancel(123, {
+          cancellation_reason: 'other',
+          cancellation_reason_comment: 'Flood at receiving establishment',
+        })
       })
-      sinon.spy(apiClient, 'one')
-      sinon.spy(apiClient, 'all')
-      outcome = await allocationService.cancel('123')
-    })
-    it('calls the service to post an event', function() {
-      expect(apiClient.post).to.have.been.calledOnceWithExactly({
-        event_name: 'cancel',
-        timestamp: sinon.match.string,
+      it('calls the service to post a cancel', function() {
+        expect(apiClient.post).to.have.been.calledOnceWithExactly({
+          cancellation_reason: 'other',
+          cancellation_reason_comment: 'Flood at receiving establishment',
+          timestamp: sinon.match.string,
+        })
+      })
+      it('returns the data', function() {
+        expect(outcome).to.deep.equal({
+          data: {},
+        })
       })
     })
-    it('returns the data', function() {
-      expect(outcome).to.deep.equal({
-        events: [],
+    context('without id supplied', function() {
+      it('should reject with error', function() {
+        return expect(allocationService.cancel()).to.be.rejectedWith(
+          'No allocation id supplied'
+        )
       })
     })
   })

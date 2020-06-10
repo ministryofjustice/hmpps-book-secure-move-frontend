@@ -29,8 +29,9 @@ module.exports = function view(req, res) {
     messageTitle: bannerStatuses.includes(status)
       ? req.t(`statuses::${status}`, { context: 'allocation' })
       : undefined,
-    messageContent: req.t('statuses::description', {
-      context: 'allocation',
+    messageContent: req.t('statuses::description_allocation', {
+      context: allocation.cancellation_reason,
+      comment: allocation.cancellation_reason_comment,
     }),
     unassignedMoveId: movesWithoutPerson.length
       ? movesWithoutPerson[0].id

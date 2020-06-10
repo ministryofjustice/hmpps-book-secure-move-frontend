@@ -1,3 +1,5 @@
+const cancellationReason = require('./cancellation_reason')
+const cancellationReasonComment = require('./cancellation_reason_comment')
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
@@ -22,6 +24,12 @@ const createFields = {
   to_location: toLocation,
 }
 
+const cancelFields = {
+  cancellation_reason: cancellationReason,
+  cancellation_reason_comment: cancellationReasonComment,
+}
+
 module.exports = {
+  cancelFields,
   createFields,
 }
