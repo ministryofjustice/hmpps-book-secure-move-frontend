@@ -220,5 +220,10 @@
   },
   "redirect_notes": "Requested by {{fullname}} (user_name:{{username}} / user_id:{{userId}})",
   "allocation_relationship": "This move is part of an allocation for $t(n_person)",
-  "allocation_relationship_with_link": "This move is part of <a href=\"{{href}}\">an allocation for $t(n_person)</a>"
+  "allocation_relationship_with_link": "This move is part of <a href=\"{{href}}\">an allocation for $t(n_person)</a>",
+  "remove_from_allocation": {
+    "heading": "Remove this empty spot from this allocation",
+    "message": "This will reduce the number of prisoners for this allocation from {{movesCount}} to {{newMovesCount}}",
+    "button": "Remove this spot"
+  }
 }

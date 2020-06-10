@@ -1,3 +1,6 @@
+const { cloneDeep } = require('lodash')
+
+const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 const handler = require('./view')
@@ -90,6 +93,60 @@ describe('view allocation', function() {
       },
     }
   })
+
+  context(
+    'the creation of the link to remove a move from an allocation',
+    function() {
+      let mockResCopy
+      beforeEach(function() {
+        sinon
+          .stub(permissions, 'check')
+          .withArgs('allocation:cancel')
+          .returns(true)
+          .withArgs('allocation:person:assign')
+          .returns(false)
+        moveToCardComponentStub = sinon.stub()
+        mockResCopy = cloneDeep(mockRes)
+      })
+      it('does not create removeMoveHref if the move has a person', function() {
+        handler(mockReq, mockResCopy)
+        const { moves } = mockResCopy.render.firstCall.lastArg
+        expect(moves[2].removeMoveHref).to.be.undefined
+        expect(moves[3].removeMoveHref).to.be.undefined
+      })
+      it('does not create removeMoveHref if the user has no permission to cancel allocations', function() {
+        permissions.check.restore()
+        sinon
+          .stub(permissions, 'check')
+          .withArgs('allocation:cancel')
+          .returns(false)
+          .withArgs('allocation:person:assign')
+          .returns(false)
+        handler(mockReq, mockResCopy)
+        const { moves } = mockResCopy.render.firstCall.lastArg
+
+        for (const move of moves) {
+          expect(move.removeMoveHref).to.be.undefined
+        }
+      })
+      it('does not create removeMoveHref if there is just one move left', function() {
+        mockResCopy.locals.allocation.moves = [{ id: 1 }]
+        handler(mockReq, mockResCopy)
+        const { moves } = mockResCopy.render.firstCall.lastArg
+        expect(moves[0].removeMoveHref).to.be.undefined
+      })
+      it('does otherwise create removeMoveHref', function() {
+        handler(mockReq, mockRes)
+        const { moves } = mockResCopy.render.firstCall.lastArg
+        expect(moves[0].removeMoveHref).to.equal(
+          '/allocation/06464fbd-b78a-4e47-b65c-8ab3c3867196/789/remove'
+        )
+        expect(moves[1].removeMoveHref).to.equal(
+          '/allocation/06464fbd-b78a-4e47-b65c-8ab3c3867196/123/remove'
+        )
+      })
+    }
+  )
 
   context('with active allocation', function() {
     beforeEach(function() {
@@ -292,6 +349,7 @@ describe('view allocation', function() {
             last_name: 'Jones',
             fullname: 'Phil Jones',
           },
+          removeMoveHref: undefined,
           card: {
             id: '011',
             person: {
@@ -308,6 +366,7 @@ describe('view allocation', function() {
             last_name: 'Doe',
             fullname: 'John Doe',
           },
+          removeMoveHref: undefined,
           card: {
             id: '456',
             person: {

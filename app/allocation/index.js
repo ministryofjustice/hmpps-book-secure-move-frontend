@@ -3,12 +3,13 @@ const wizard = require('hmpo-form-wizard')
 
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { setMove } = require('../move/middleware')
 
 const confirmation = require('./controllers/create/confirmation')
 const view = require('./controllers/view')
 const { cancelFields, createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
-const { cancelSteps, createSteps } = require('./steps')
+const { cancelSteps, removeMoveSteps, createSteps } = require('./steps')
 
 const wizardConfig = {
   controller: FormWizardController,
@@ -32,8 +33,18 @@ const cancelConfig = {
   journeyName: 'cancel-an-allocation',
   journeyPageTitle: 'actions::cancel_allocation',
 }
+const removeMoveConfig = {
+  ...wizardConfig,
+  controller: FormWizardController,
+  name: 'remove-a-move-from-an-allocation',
+  templatePath: 'allocation/views/cancel/',
+  template: '../../../form-wizard',
+  journeyName: 'remove-a-move-from-an-allocation',
+  journeyPageTitle: 'actions::cancel_move',
+}
 
 router.param('allocationId', setAllocation)
+router.param('moveId', setMove)
 
 router.use(
   '/new',
@@ -45,6 +56,12 @@ router.get(
   '/:allocationId/confirmation',
   protectRoute('allocation:create'),
   confirmation
+)
+
+router.use(
+  '/:allocationId/:moveId/remove',
+  protectRoute('allocation:cancel'),
+  wizard(removeMoveSteps, {}, removeMoveConfig)
 )
 
 router.use(
