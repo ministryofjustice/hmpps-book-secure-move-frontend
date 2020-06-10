@@ -7,7 +7,7 @@ aliases:
   # Shared containers
   - &circle_container
     docker:
-      - image: circleci/node:12-browsers
+      - image: circleci/node:14.4-browsers
   - &cloud_container
     docker:
       - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
