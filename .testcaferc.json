@@ -1,5 +1,6 @@
 {
-  "pageLoadTimeout": 10000,
+  "timeout": 15000,
+  "pageLoadTimeout": 15000,
   "videoPath": "artifacts/videos",
   "videoOptions": {
     "failedOnly": true,
