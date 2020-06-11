@@ -14,7 +14,7 @@ function moveToMetaListComponent(
     from_location: fromLocation,
     to_location: toLocation,
     additional_information: additionalInfo,
-    prison_transfer_reason: prisonTransferReason = {},
+    prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
     move_agreed_by: moveAgreedBy,
   } = {},
@@ -27,8 +27,11 @@ function moveToMetaListComponent(
       : destination
   const destinationSuffix =
     additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
+  const prisonTransferReasonTitle = prisonTransferReason
+    ? prisonTransferReason.title
+    : ''
   const showPrisonTransferReason =
-    prisonTransferReason.title && moveType === 'prison_transfer'
+    prisonTransferReasonTitle && moveType === 'prison_transfer'
   const prisonTransferReasonSuffix = additionalInfo
     ? ` — ${additionalInfo}`
     : ''
@@ -105,7 +108,7 @@ function moveToMetaListComponent(
       },
       value: {
         text: showPrisonTransferReason
-          ? prisonTransferReason.title + prisonTransferReasonSuffix
+          ? prisonTransferReasonTitle + prisonTransferReasonSuffix
           : undefined,
       },
     },

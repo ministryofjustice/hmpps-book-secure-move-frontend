@@ -39,7 +39,7 @@ const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 const personService = {
   transform(person) {
     if (!person) {
-      return undefined
+      return person
     }
 
     return {

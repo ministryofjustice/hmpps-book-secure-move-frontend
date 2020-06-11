@@ -10,7 +10,7 @@ function moveToCardComponent({
   showStatus = true,
   hrefSuffix = '',
 } = {}) {
-  return function item({ id, reference, person = {}, status }) {
+  return function item({ id, reference, person, status }) {
     const href = `/move/${id}${hrefSuffix}`
     const excludedBadgeStatuses = ['cancelled']
 
