@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.29.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.28.0...v2.29.0) (2020-06-11)
+
+
+### Features
+
+* **allocations:** Add reason for cancellation ([0030b05](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0030b058dae48b61059a75de2c33749a30462eaf))
+* **allocations:** Added sorting to allocation tables ([1624cf9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1624cf9f3252f416aee16f10caeaa0b525e500d6))
+* **allocations:** Provide filtering for allocations listings ([f57ff81](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f57ff816a05835b9d56198d1bfb359a024fa4d6b))
+* **moves:** Add incoming and outgoing panels to the dashboard ([1cf658e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1cf658e68db9c11128542d2b5cef7995ac5f9d34))
+* **moves:** Add list for incoming moves ([698f403](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/698f4033abeed5dae93113bf0f4076053f9b28d6))
+
+
+### Bug Fixes
+
+* Ensure end-to-end test assertions are called with a promise ([c837e75](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c837e750526b25376a1e07f5f0ec7ef8ab5e0951))
+* Ensure end-to-end tests run against correct deployment ([ebd0321](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ebd0321e357ffa94189209c04346d998b8ac97a1))
+* Only filter undefined values from move create/updates ([62c2120](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/62c212039e52e17bba83a8e57a31271ec9c870cc))
+* Remove `move_agreed` filter from allocation assign ([148e861](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/148e86147495604dbc9b436725566cfc837a5ad2))
+* Remove case transformation on locations page ([557efaf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/557efafe9ba20e6b627b586a03e6a9104c6dc9e5))
+* Update button text for assigning a person ([45fc3ce](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/45fc3ce726c52c99606180e5548adf3676397d7b))
+* **allocations:** Change label of sentence length ([be77e71](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/be77e71ea759edbd5419fbcb510d73ec87613e1e))
+* **allocations:** Label for date field error ([780b089](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/780b0894047c649db39b76223ab894a342a81e57))
+* **allocations:** Removed spurious apostrophe from page title ([5b4d2a5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5b4d2a52b319e5718cf6f4f62807908b1f3ce557))
+* **allocations:** Validation of  prisoners num to allow only numbers ([230701d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/230701dd21a9a1d73bac9eda9ab91c517a63eaa2))
+* **moves:** Remove ability of OCA users to create court transfer moves ([dd79200](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dd7920099d26c738bb44dd4189f6cda51d4ae822))
+
 ## [2.28.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.27.0...v2.28.0) (2020-06-02)
 
 
