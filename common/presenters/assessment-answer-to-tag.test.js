@@ -16,10 +16,10 @@ const assessmentAnswerToTag = proxyquire('./assessment-answer-to-tag', {
   },
 })
 
-describe('Presenters', function() {
-  describe('#assessmentAnswerToTag()', function() {
-    context('when category is in whitelist', function() {
-      it('should return correct properties', function() {
+describe('Presenters', function () {
+  describe('#assessmentAnswerToTag()', function () {
+    context('when category is in whitelist', function () {
+      it('should return correct properties', function () {
         const mockAnswer = {
           title: 'Concealed items',
           category: 'risk',
@@ -34,7 +34,7 @@ describe('Presenters', function() {
         })
       })
 
-      it('should return correct properties', function() {
+      it('should return correct properties', function () {
         const mockAnswer = {
           title: 'Health issue',
           category: 'health',
@@ -50,10 +50,10 @@ describe('Presenters', function() {
       })
     })
 
-    context('when category is not whitelist', function() {
+    context('when category is not whitelist', function () {
       let transformedResponse, mockAnswer
 
-      beforeEach(function() {
+      beforeEach(function () {
         mockAnswer = {
           title: 'Food allergy',
           category: 'invalid',
@@ -62,7 +62,7 @@ describe('Presenters', function() {
         transformedResponse = assessmentAnswerToTag()(mockAnswer)
       })
 
-      it('should return property defaults', function() {
+      it('should return property defaults', function () {
         expect(transformedResponse).to.deep.equal({
           href: `#${kebabCase(mockAnswer.title)}`,
           text: mockAnswer.title,
@@ -72,10 +72,10 @@ describe('Presenters', function() {
       })
     })
 
-    context('with no href prefix', function() {
+    context('with no href prefix', function () {
       let transformedResponse, mockAnswer
 
-      beforeEach(function() {
+      beforeEach(function () {
         mockAnswer = {
           title: 'Food allergy',
           category: 'invalid',
@@ -84,17 +84,17 @@ describe('Presenters', function() {
         transformedResponse = assessmentAnswerToTag()(mockAnswer)
       })
 
-      it('should not return a href prefix', function() {
+      it('should not return a href prefix', function () {
         expect(transformedResponse.href).to.equal(
           `#${kebabCase(mockAnswer.title)}`
         )
       })
     })
 
-    context('with href prefix', function() {
+    context('with href prefix', function () {
       let transformedResponse, mockAnswer, mockPrefix
 
-      beforeEach(function() {
+      beforeEach(function () {
         mockPrefix = '/move/123456789'
         mockAnswer = {
           title: 'Food allergy',
@@ -104,7 +104,7 @@ describe('Presenters', function() {
         transformedResponse = assessmentAnswerToTag(mockPrefix)(mockAnswer)
       })
 
-      it('should return a href prefix', function() {
+      it('should return a href prefix', function () {
         expect(transformedResponse.href).to.equal(
           `${mockPrefix}#${kebabCase(mockAnswer.title)}`
         )

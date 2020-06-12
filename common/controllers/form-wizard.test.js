@@ -7,11 +7,11 @@ const Controller = require('./form-wizard')
 
 const controller = new Controller({ route: '/' })
 
-describe('Form wizard', function() {
-  describe('#getErrors()', function() {
+describe('Form wizard', function () {
+  describe('#getErrors()', function () {
     let errors
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon
         .stub(fieldHelpers, 'getFieldErrorMessage')
         .callsFake((key, type) => {
@@ -20,18 +20,18 @@ describe('Form wizard', function() {
       sinon.stub(FormController.prototype, 'getErrors')
     })
 
-    context('when parent returns empty errors object', function() {
-      beforeEach(function() {
+    context('when parent returns empty errors object', function () {
+      beforeEach(function () {
         FormController.prototype.getErrors.returns({})
         errors = controller.getErrors({}, {})
       })
 
-      it('should set an empty error list property', function() {
+      it('should set an empty error list property', function () {
         expect(errors.errorList.length).to.equal(0)
       })
     })
 
-    context('when parent returns an errors object', function() {
+    context('when parent returns an errors object', function () {
       const mockErrors = {
         fieldOne: {
           key: 'fieldOne',
@@ -44,7 +44,7 @@ describe('Form wizard', function() {
           url: '/step-url',
         },
       }
-      beforeEach(function() {
+      beforeEach(function () {
         FormController.prototype.getErrors.returns(mockErrors)
         const reqMock = {
           t: sinon.stub().returnsArg(0),
@@ -52,11 +52,11 @@ describe('Form wizard', function() {
         errors = controller.getErrors(reqMock, {})
       })
 
-      it('should contain correct number of errors', function() {
+      it('should contain correct number of errors', function () {
         expect(errors.errorList.length).to.equal(2)
       })
 
-      it('should get error messages', function() {
+      it('should get error messages', function () {
         expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
           mockErrors.fieldOne.key,
           mockErrors.fieldOne.type
@@ -67,11 +67,11 @@ describe('Form wizard', function() {
         )
       })
 
-      it('should get error messages correct number of times', function() {
+      it('should get error messages correct number of times', function () {
         expect(fieldHelpers.getFieldErrorMessage.callCount).to.equal(2)
       })
 
-      it('should transform and append messages property', function() {
+      it('should transform and append messages property', function () {
         expect(errors).to.deep.equal({
           fieldOne: {
             key: 'fieldOne',
@@ -98,10 +98,10 @@ describe('Form wizard', function() {
     })
   })
 
-  describe('#errorHandler()', function() {
+  describe('#errorHandler()', function () {
     let errorMock, resMock
 
-    beforeEach(function() {
+    beforeEach(function () {
       errorMock = new Error()
       resMock = {
         redirect: sinon.spy(),
@@ -110,27 +110,27 @@ describe('Form wizard', function() {
       sinon.spy(FormController.prototype, 'errorHandler')
     })
 
-    context('when a redirect property is set', function() {
-      beforeEach(function() {
+    context('when a redirect property is set', function () {
+      beforeEach(function () {
         errorMock.code = 'MISSING_PREREQ'
         errorMock.redirect = '/error-redirect-path/'
 
         controller.errorHandler(errorMock, {}, resMock)
       })
 
-      it('redirect to specified value', function() {
+      it('redirect to specified value', function () {
         expect(resMock.redirect).to.be.calledWith(errorMock.redirect)
       })
 
-      it('should not call parent error handler', function() {
+      it('should not call parent error handler', function () {
         expect(FormController.prototype.errorHandler).not.to.be.called
       })
     })
 
-    context('when it returns session timeout error', function() {
+    context('when it returns session timeout error', function () {
       let reqMock
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.code = 'SESSION_TIMEOUT'
         reqMock = {
           baseUrl: '/journey-base-url',
@@ -144,11 +144,11 @@ describe('Form wizard', function() {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
-      it('should render the timeout template', function() {
+      it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
 
-      it('should pass the correct data to the view', function() {
+      it('should pass the correct data to the view', function () {
         expect(resMock.render.args[0][1]).to.deep.equal({
           journeyBaseUrl: reqMock.baseUrl,
           errorKey: errorMock.code.toLowerCase(),
@@ -156,15 +156,15 @@ describe('Form wizard', function() {
         })
       })
 
-      it('should not call parent error handler', function() {
+      it('should not call parent error handler', function () {
         expect(FormController.prototype.errorHandler).not.to.be.called
       })
     })
 
-    context('when it returns missing prereq error', function() {
+    context('when it returns missing prereq error', function () {
       let reqMock
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.code = 'MISSING_PREREQ'
         reqMock = {
           baseUrl: '/journey-base-url-other',
@@ -178,11 +178,11 @@ describe('Form wizard', function() {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
-      it('should render the timeout template', function() {
+      it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
 
-      it('should pass the correct data to the view', function() {
+      it('should pass the correct data to the view', function () {
         expect(resMock.render.args[0][1]).to.deep.equal({
           journeyBaseUrl: reqMock.baseUrl,
           errorKey: errorMock.code.toLowerCase(),
@@ -190,15 +190,15 @@ describe('Form wizard', function() {
         })
       })
 
-      it('should not call parent error handler', function() {
+      it('should not call parent error handler', function () {
         expect(FormController.prototype.errorHandler).not.to.be.called
       })
     })
 
-    context('when it returns missing location error', function() {
+    context('when it returns missing location error', function () {
       let reqMock
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.code = 'MISSING_LOCATION'
         reqMock = {
           baseUrl: '/journey-base-url-other',
@@ -212,11 +212,11 @@ describe('Form wizard', function() {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
-      it('should render the timeout template', function() {
+      it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
 
-      it('should pass the correct data to the view', function() {
+      it('should pass the correct data to the view', function () {
         expect(resMock.render.args[0][1]).to.deep.equal({
           journeyBaseUrl: reqMock.baseUrl,
           errorKey: errorMock.code.toLowerCase(),
@@ -224,15 +224,15 @@ describe('Form wizard', function() {
         })
       })
 
-      it('should not call parent error handler', function() {
+      it('should not call parent error handler', function () {
         expect(FormController.prototype.errorHandler).not.to.be.called
       })
     })
 
-    context('when it returns a CSRF error', function() {
+    context('when it returns a CSRF error', function () {
       let reqMock
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.code = 'CSRF_ERROR'
         reqMock = {
           baseUrl: '/journey-base-url-other',
@@ -246,11 +246,11 @@ describe('Form wizard', function() {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
-      it('should render the timeout template', function() {
+      it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
 
-      it('should pass the correct data to the view', function() {
+      it('should pass the correct data to the view', function () {
         expect(resMock.render.args[0][1]).to.deep.equal({
           journeyBaseUrl: reqMock.baseUrl,
           errorKey: errorMock.code.toLowerCase(),
@@ -258,15 +258,15 @@ describe('Form wizard', function() {
         })
       })
 
-      it('should not call parent error handler', function() {
+      it('should not call parent error handler', function () {
         expect(FormController.prototype.errorHandler).not.to.be.called
       })
     })
 
-    context('when it returns validation error', function() {
+    context('when it returns validation error', function () {
       let nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.statusCode = 422
 
         nextSpy = sinon.spy()
@@ -276,15 +276,15 @@ describe('Form wizard', function() {
         controller.errorHandler(errorMock, {}, {}, nextSpy)
       })
 
-      it('should call sentry with scope', function() {
+      it('should call sentry with scope', function () {
         expect(Sentry.withScope).to.be.calledOnce
       })
 
-      it('should send error to sentry', function() {
+      it('should send error to sentry', function () {
         expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
       })
 
-      it('should call parent error handler', function() {
+      it('should call parent error handler', function () {
         expect(FormController.prototype.errorHandler).to.be.calledWith(
           errorMock,
           {},
@@ -294,15 +294,15 @@ describe('Form wizard', function() {
       })
     })
 
-    context('when any other errors are triggered', function() {
+    context('when any other errors are triggered', function () {
       let nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         errorMock.code = 'OTHER_ERROR'
         nextSpy = sinon.spy()
       })
 
-      it('should call parent error handler', function() {
+      it('should call parent error handler', function () {
         controller.errorHandler(errorMock, {}, {}, nextSpy)
 
         expect(FormController.prototype.errorHandler).to.be.calledWith(
@@ -315,10 +315,10 @@ describe('Form wizard', function() {
     })
   })
 
-  describe('#render()', function() {
+  describe('#render()', function () {
     let reqMock, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       nextSpy = sinon.spy()
       sinon.spy(FormController.prototype, 'render')
       sinon
@@ -361,23 +361,23 @@ describe('Form wizard', function() {
       controller.render(reqMock, {}, nextSpy)
     })
 
-    it('should call renderConditionalFields on each field', function() {
+    it('should call renderConditionalFields on each field', function () {
       expect(fieldHelpers.renderConditionalFields).to.be.calledThrice
     })
 
-    it('should call setFieldValue', function() {
+    it('should call setFieldValue', function () {
       expect(fieldHelpers.setFieldValue).to.be.calledOnce
     })
 
-    it('should call setFieldError', function() {
+    it('should call setFieldError', function () {
       expect(fieldHelpers.setFieldError).to.be.calledOnce
     })
 
-    it('should call translateField', function() {
+    it('should call translateField', function () {
       expect(fieldHelpers.setFieldValue).to.be.calledOnce
     })
 
-    it('should mutate fields object', function() {
+    it('should mutate fields object', function () {
       expect(reqMock.form.options.fields).to.deep.equal({
         field_1: {
           renderConditionalFields: true,
@@ -403,7 +403,7 @@ describe('Form wizard', function() {
       })
     })
 
-    it('should call parent render method', function() {
+    it('should call parent render method', function () {
       expect(FormController.prototype.render).to.be.calledOnceWithExactly(
         reqMock,
         {},

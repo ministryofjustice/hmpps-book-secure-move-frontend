@@ -7,70 +7,70 @@ const {
 
 const mockTimerDate = '2017-08-10'
 
-describe('Date helpers', function() {
-  describe('#getCurrentWeekAsRange()', function() {
+describe('Date helpers', function () {
+  describe('#getCurrentWeekAsRange()', function () {
     let dateRange
 
-    beforeEach(function() {
+    beforeEach(function () {
       this.clock = sinon.useFakeTimers(new Date(mockTimerDate).getTime())
       dateRange = getCurrentWeekAsRange()
     })
 
-    afterEach(function() {
+    afterEach(function () {
       this.clock.restore()
     })
 
-    it('should return current week as array', function() {
+    it('should return current week as array', function () {
       expect(dateRange).to.deep.equal(['2017-08-07', '2017-08-13'])
     })
   })
 
-  describe('#getCurrentDayAsRange()', function() {
+  describe('#getCurrentDayAsRange()', function () {
     let dateRange
 
-    beforeEach(function() {
+    beforeEach(function () {
       this.clock = sinon.useFakeTimers(new Date(mockTimerDate).getTime())
       dateRange = getCurrentDayAsRange()
     })
 
-    afterEach(function() {
+    afterEach(function () {
       this.clock.restore()
     })
 
-    it('should return current day as array', function() {
+    it('should return current day as array', function () {
       expect(dateRange).to.deep.equal(['2017-08-10', '2017-08-10'])
     })
   })
 
-  describe('#getRelativeDate', function() {
-    it('invoked with a negative number, returns the date minus the days specified', function() {
+  describe('#getRelativeDate', function () {
+    it('invoked with a negative number, returns the date minus the days specified', function () {
       expect(getRelativeDate('2010-01-02', -7)).to.equal('2009-12-26')
     })
-    it('invoked with a positive number, returns the date plus the days specified', function() {
+    it('invoked with a positive number, returns the date plus the days specified', function () {
       expect(getRelativeDate('2010-01-02', 7)).to.equal('2010-01-09')
     })
   })
 
-  describe('#getDateRange', function() {
+  describe('#getDateRange', function () {
     const mockDate = '2017-08-10'
 
-    beforeEach(function() {
+    beforeEach(function () {
       this.clock = sinon.useFakeTimers(new Date(mockDate).getTime())
     })
 
-    afterEach(function() {
+    afterEach(function () {
       this.clock.restore()
     })
 
-    context('without time period', function() {
-      context('without date', function() {
-        it('should return undefined', function() {
+    context('without time period', function () {
+      context('without date', function () {
+        it('should return undefined', function () {
           expect(getDateRange()).to.deep.equal([undefined, undefined])
         })
       })
 
-      context('with date', function() {
-        it('should return given date for both dates', function() {
+      context('with date', function () {
+        it('should return given date for both dates', function () {
           expect(getDateRange(new Date(2020, 3, 20), undefined)).to.deep.equal([
             '2020-04-20',
             '2020-04-20',
@@ -79,9 +79,9 @@ describe('Date helpers', function() {
       })
     })
 
-    context('with time period of `day`', function() {
-      context('without date', function() {
-        it('should return undefined', function() {
+    context('with time period of `day`', function () {
+      context('without date', function () {
+        it('should return undefined', function () {
           expect(getDateRange(undefined, 'day')).to.deep.equal([
             undefined,
             undefined,
@@ -89,9 +89,9 @@ describe('Date helpers', function() {
         })
       })
 
-      context('with date', function() {
-        context('with a Monday', function() {
-          it('should return given date for both dates', function() {
+      context('with date', function () {
+        context('with a Monday', function () {
+          it('should return given date for both dates', function () {
             expect(getDateRange(new Date(2020, 2, 9), 'day')).to.deep.equal([
               '2020-03-09',
               '2020-03-09',
@@ -99,8 +99,8 @@ describe('Date helpers', function() {
           })
         })
 
-        context('with another day of the week', function() {
-          it('should return given date for both dates', function() {
+        context('with another day of the week', function () {
+          it('should return given date for both dates', function () {
             expect(getDateRange(new Date(2020, 2, 6), 'day')).to.deep.equal([
               '2020-03-06',
               '2020-03-06',
@@ -110,9 +110,9 @@ describe('Date helpers', function() {
       })
     })
 
-    context('with time period of `week`', function() {
-      context('without date', function() {
-        it('should return dates for this week', function() {
+    context('with time period of `week`', function () {
+      context('without date', function () {
+        it('should return dates for this week', function () {
           expect(getDateRange(undefined, 'week')).to.deep.equal([
             undefined,
             undefined,
@@ -120,9 +120,9 @@ describe('Date helpers', function() {
         })
       })
 
-      context('with date', function() {
-        context('with a Monday', function() {
-          it('should return Monday and end of week', function() {
+      context('with date', function () {
+        context('with a Monday', function () {
+          it('should return Monday and end of week', function () {
             expect(getDateRange(new Date(2020, 2, 9), 'week')).to.deep.equal([
               '2020-03-09',
               '2020-03-15',
@@ -130,8 +130,8 @@ describe('Date helpers', function() {
           })
         })
 
-        context('with another day of the week', function() {
-          it('should return start and end of that week', function() {
+        context('with another day of the week', function () {
+          it('should return start and end of that week', function () {
             expect(getDateRange(new Date(2020, 2, 6), 'week')).to.deep.equal([
               '2020-03-02',
               '2020-03-08',
@@ -141,21 +141,21 @@ describe('Date helpers', function() {
       })
     })
 
-    context('with an invalid date', function() {
+    context('with an invalid date', function () {
       const inputs = ['foo', '2020-20-10', false, null]
 
       inputs.forEach(input => {
-        context(`with "${input}"`, function() {
-          it('should return undefined dates', function() {
+        context(`with "${input}"`, function () {
+          it('should return undefined dates', function () {
             expect(getDateRange(input)).to.deep.equal([undefined, undefined])
           })
         })
       })
     })
 
-    context('with different date formats', function() {
-      context('with date string', function() {
-        it('should return correct dates', function() {
+    context('with different date formats', function () {
+      context('with date string', function () {
+        it('should return correct dates', function () {
           expect(getDateRange('2014-11-05')).to.deep.equal([
             '2014-11-05',
             '2014-11-05',
@@ -163,8 +163,8 @@ describe('Date helpers', function() {
         })
       })
 
-      context('with date object', function() {
-        it('should return correct dates', function() {
+      context('with date object', function () {
+        it('should return correct dates', function () {
           expect(getDateRange(new Date(2020, 2, 9), undefined)).to.deep.equal([
             '2020-03-09',
             '2020-03-09',

@@ -5,61 +5,61 @@ const UnassignController = require('./unassign')
 
 const controller = new UnassignController({ route: '/' })
 
-describe('Move controllers', function() {
-  describe('Unassign controller', function() {
-    describe('#middlewareChecks()', function() {
-      beforeEach(function() {
+describe('Move controllers', function () {
+  describe('Unassign controller', function () {
+    describe('#middlewareChecks()', function () {
+      beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
 
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormWizardController.prototype.middlewareChecks).to.have.been
           .calledOnce
       })
 
-      it('should call checkAllocation middleware', function() {
+      it('should call checkAllocation middleware', function () {
         expect(controller.use).to.have.been.calledOnceWithExactly(
           controller.checkAllocation
         )
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      beforeEach(function() {
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormWizardController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 
-      it('should call setMoveRelationships middleware', function() {
+      it('should call setMoveRelationships middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.setMoveRelationships
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(1)
       })
     })
 
-    describe('#checkAllocation()', function() {
+    describe('#checkAllocation()', function () {
       let res, next
 
-      beforeEach(function() {
+      beforeEach(function () {
         next = sinon.stub()
       })
 
-      context('with no allocation', function() {
-        beforeEach(function() {
+      context('with no allocation', function () {
+        beforeEach(function () {
           res = {
             locals: {
               move: {
@@ -71,17 +71,17 @@ describe('Move controllers', function() {
           controller.checkAllocation({}, res, next)
         })
 
-        it('should redirect to allocation', function() {
+        it('should redirect to allocation', function () {
           expect(res.redirect).to.be.calledOnceWithExactly('/move/12345')
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(next).to.not.be.called
         })
       })
 
-      context('with allocation but not person', function() {
-        beforeEach(function() {
+      context('with allocation but not person', function () {
+        beforeEach(function () {
           res = {
             locals: {
               move: {
@@ -94,17 +94,17 @@ describe('Move controllers', function() {
           controller.checkAllocation({}, res, next)
         })
 
-        it('should redirect to allocation', function() {
+        it('should redirect to allocation', function () {
           expect(res.redirect).to.be.calledOnceWithExactly('/allocation/6789')
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(next).to.not.be.called
         })
       })
 
-      context('with allocation and person', function() {
-        beforeEach(function() {
+      context('with allocation and person', function () {
+        beforeEach(function () {
           res = {
             locals: {
               move: {
@@ -119,20 +119,20 @@ describe('Move controllers', function() {
           controller.checkAllocation({}, res, next)
         })
 
-        it('should not redirect', function() {
+        it('should not redirect', function () {
           expect(res.redirect).to.not.be.called
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(next).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#setMoveRelationships()', function() {
+    describe('#setMoveRelationships()', function () {
       let res, next
 
-      beforeEach(function() {
+      beforeEach(function () {
         next = sinon.stub()
         res = {
           locals: {
@@ -147,20 +147,20 @@ describe('Move controllers', function() {
         controller.setMoveRelationships({}, res, next)
       })
 
-      it('should set allocation on locals', function() {
+      it('should set allocation on locals', function () {
         expect(res.locals.allocation).to.deep.equal({ id: '__allocation__' })
       })
 
-      it('should set person on locals', function() {
+      it('should set person on locals', function () {
         expect(res.locals.person).to.deep.equal({ id: '__person__' })
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(next).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       const move = { id: '__move__' }
       const req = {}
       const res = {
@@ -170,54 +170,54 @@ describe('Move controllers', function() {
       }
       let next
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(moveService, 'unassign')
         moveService.unassign.resolves({})
         sinon.stub(FormWizardController.prototype, 'saveValues')
         next = sinon.stub()
       })
 
-      context('when person is unassigned', function() {
-        beforeEach(async function() {
+      context('when person is unassigned', function () {
+        beforeEach(async function () {
           await controller.saveValues(req, res, next)
         })
 
-        it('should remove person from move', function() {
+        it('should remove person from move', function () {
           expect(moveService.unassign).to.be.calledOnceWithExactly('__move__')
         })
 
-        it('should call the super method', function() {
+        it('should call the super method', function () {
           expect(
             FormWizardController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, next)
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(next).to.not.be.called
         })
       })
 
-      context('when the api returns an error', function() {
+      context('when the api returns an error', function () {
         const error = new Error()
-        beforeEach(async function() {
+        beforeEach(async function () {
           moveService.unassign.throws(error)
           await controller.saveValues(req, res, next)
         })
 
-        it('should not call the super method', function() {
+        it('should not call the super method', function () {
           expect(FormWizardController.prototype.saveValues).to.not.be.called
         })
 
-        it('should call next with the error', function() {
+        it('should call next with the error', function () {
           expect(next).to.be.calledOnceWithExactly(error)
         })
       })
     })
 
-    describe('#successHandler()', function() {
+    describe('#successHandler()', function () {
       let req, res, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
           sessionModel: {
@@ -239,20 +239,20 @@ describe('Move controllers', function() {
         }
       })
 
-      context('when person unassign is successful', function() {
-        beforeEach(async function() {
+      context('when person unassign is successful', function () {
+        beforeEach(async function () {
           await controller.successHandler(req, res, nextSpy)
         })
 
-        it('should reset the journey', function() {
+        it('should reset the journey', function () {
           expect(req.journeyModel.reset).to.have.been.calledOnce
         })
 
-        it('should reset the session', function() {
+        it('should reset the session', function () {
           expect(req.sessionModel.reset).to.have.been.calledOnce
         })
 
-        it('should redirect to allocation correctly', function() {
+        it('should redirect to allocation correctly', function () {
           expect(res.redirect).to.have.been.calledOnceWithExactly(
             '/allocation/__allocation__'
           )

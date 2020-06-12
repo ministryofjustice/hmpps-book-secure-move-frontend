@@ -16,17 +16,17 @@ const mockConfig = [
   },
 ]
 
-describe('Moves middleware', function() {
-  describe('#setFilterMoves()', function() {
+describe('Moves middleware', function () {
+  describe('#setFilterMoves()', function () {
     let next
     let req
     let res
 
-    context('when service resolves', function() {
+    context('when service resolves', function () {
       const mockDateRange = ['2010-09-03', '2010-09-10']
       const mockLocationId = '123'
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(i18n, 't').returnsArg(0)
         sinon.stub(moveService, 'getActive').resolves(4)
         next = sinon.spy()
@@ -43,12 +43,12 @@ describe('Moves middleware', function() {
         res = {}
       })
 
-      context('without custom href', function() {
-        beforeEach(async function() {
+      context('without custom href', function () {
+        beforeEach(async function () {
           await middleware(mockConfig, mockBodyKey)(req, res, next)
         })
 
-        it('sets req.filter', function() {
+        it('sets req.filter', function () {
           const filter = [
             {
               label: 'statuses::pending',
@@ -70,7 +70,7 @@ describe('Moves middleware', function() {
           expect(req.filterBodyKey).to.deep.equal(filter)
         })
 
-        it('calls the servive with correct arguments', async function() {
+        it('calls the servive with correct arguments', async function () {
           expect(moveService.getActive).to.have.been.calledWithExactly({
             ...req.body[mockBodyKey],
             isAggregation: true,
@@ -85,17 +85,17 @@ describe('Moves middleware', function() {
           })
         })
 
-        it('calls the service on each item', async function() {
+        it('calls the service on each item', async function () {
           expect(moveService.getActive.callCount).to.equal(3)
         })
 
-        it('calls next', function() {
+        it('calls next', function () {
           expect(next).to.have.been.calledWithExactly()
         })
       })
 
-      context('with custom href', function() {
-        beforeEach(async function() {
+      context('with custom href', function () {
+        beforeEach(async function () {
           await middleware(
             [
               {
@@ -115,7 +115,7 @@ describe('Moves middleware', function() {
           )(req, res, next)
         })
 
-        it('should use custom path in URLs req.filter', function() {
+        it('should use custom path in URLs req.filter', function () {
           const filter = [
             {
               label: 'statuses::pending',
@@ -137,20 +137,20 @@ describe('Moves middleware', function() {
           expect(req.filterBodyKey).to.deep.equal(filter)
         })
 
-        it('calls next', function() {
+        it('calls next', function () {
           expect(next).to.have.been.calledWithExactly()
         })
       })
 
-      context('with existing query', function() {
-        beforeEach(async function() {
+      context('with existing query', function () {
+        beforeEach(async function () {
           req.query = {
             foo: 'bar',
           }
           await middleware(mockConfig, mockBodyKey)(req, res, next)
         })
 
-        it('should combine query in URLs', function() {
+        it('should combine query in URLs', function () {
           const filter = [
             {
               label: 'statuses::pending',
@@ -172,16 +172,16 @@ describe('Moves middleware', function() {
           expect(req.filterBodyKey).to.deep.equal(filter)
         })
 
-        it('calls next', function() {
+        it('calls next', function () {
           expect(next).to.have.been.calledWithExactly()
         })
       })
     })
 
-    context('when service fails', function() {
+    context('when service fails', function () {
       const mockError = new Error('Error!')
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.stub(moveService, 'getActive').rejects(mockError)
         next = sinon.spy()
         req = {
@@ -191,7 +191,7 @@ describe('Moves middleware', function() {
         await middleware(mockConfig)(req, {}, next)
       })
 
-      it('calls next with error', function() {
+      it('calls next with error', function () {
         expect(next).to.have.been.calledOnceWithExactly(mockError)
       })
     })

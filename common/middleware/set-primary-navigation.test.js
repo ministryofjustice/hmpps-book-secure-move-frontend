@@ -1,10 +1,10 @@
 const permissions = require('./permissions')
 const middleware = require('./set-primary-navigation')
 
-describe('#setPrimaryNavigation()', function() {
+describe('#setPrimaryNavigation()', function () {
   let req, res, nextSpy
 
-  beforeEach(function() {
+  beforeEach(function () {
     nextSpy = sinon.spy()
     req = {
       path: '',
@@ -25,32 +25,32 @@ describe('#setPrimaryNavigation()', function() {
     }
   })
 
-  context('with no permissions', function() {
-    beforeEach(function() {
+  context('with no permissions', function () {
+    beforeEach(function () {
       sinon.stub(permissions, 'check').returns(false)
       middleware(req, res, nextSpy)
     })
 
-    it('should set navigation to empty array', function() {
+    it('should set navigation to empty array', function () {
       expect(res.locals.primaryNavigation).to.deep.equal([])
     })
 
-    it('should call next', function() {
+    it('should call next', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 
-  context('with all permissions', function() {
-    beforeEach(function() {
+  context('with all permissions', function () {
+    beforeEach(function () {
       sinon.stub(permissions, 'check').returns(true)
     })
 
-    describe('navigation items', function() {
-      beforeEach(function() {
+    describe('navigation items', function () {
+      beforeEach(function () {
         middleware(req, res, nextSpy)
       })
 
-      it('should set items correctly', function() {
+      it('should set items correctly', function () {
         expect(res.locals.primaryNavigation).to.deep.equal([
           {
             active: false,
@@ -81,14 +81,14 @@ describe('#setPrimaryNavigation()', function() {
       })
     })
 
-    describe('active state', function() {
-      context('on home page', function() {
-        beforeEach(function() {
+    describe('active state', function () {
+      context('on home page', function () {
+        beforeEach(function () {
           req.path = '/'
           middleware(req, res, nextSpy)
         })
 
-        it('should only set one active state', function() {
+        it('should only set one active state', function () {
           const inactive = res.locals.primaryNavigation.filter(
             item => !item.active
           )
@@ -97,7 +97,7 @@ describe('#setPrimaryNavigation()', function() {
           )
         })
 
-        it('should set correct active state', function() {
+        it('should set correct active state', function () {
           const active = res.locals.primaryNavigation.filter(
             item => item.active
           )
@@ -111,13 +111,13 @@ describe('#setPrimaryNavigation()', function() {
         })
       })
 
-      context('on requested page', function() {
-        beforeEach(function() {
+      context('on requested page', function () {
+        beforeEach(function () {
           req.path = '/moves/day/2020-04-16/requested'
           middleware(req, res, nextSpy)
         })
 
-        it('should only set one active state', function() {
+        it('should only set one active state', function () {
           const inactive = res.locals.primaryNavigation.filter(
             item => !item.active
           )
@@ -126,7 +126,7 @@ describe('#setPrimaryNavigation()', function() {
           )
         })
 
-        it('should set correct active state', function() {
+        it('should set correct active state', function () {
           const active = res.locals.primaryNavigation.filter(
             item => item.active
           )
@@ -140,13 +140,13 @@ describe('#setPrimaryNavigation()', function() {
         })
       })
 
-      context('on allocations page', function() {
-        beforeEach(function() {
+      context('on allocations page', function () {
+        beforeEach(function () {
           req.path = '/allocations/week/2020-04-16/outgoing'
           middleware(req, res, nextSpy)
         })
 
-        it('should only set one active state', function() {
+        it('should only set one active state', function () {
           const inactive = res.locals.primaryNavigation.filter(
             item => !item.active
           )
@@ -155,7 +155,7 @@ describe('#setPrimaryNavigation()', function() {
           )
         })
 
-        it('should set correct active state', function() {
+        it('should set correct active state', function () {
           const active = res.locals.primaryNavigation.filter(
             item => item.active
           )
@@ -169,13 +169,13 @@ describe('#setPrimaryNavigation()', function() {
         })
       })
 
-      context('on outgoing page', function() {
-        beforeEach(function() {
+      context('on outgoing page', function () {
+        beforeEach(function () {
           req.path = '/moves/day/2020-04-16/outgoing'
           middleware(req, res, nextSpy)
         })
 
-        it('should only set one active state', function() {
+        it('should only set one active state', function () {
           const inactive = res.locals.primaryNavigation.filter(
             item => !item.active
           )
@@ -184,7 +184,7 @@ describe('#setPrimaryNavigation()', function() {
           )
         })
 
-        it('should set correct active state', function() {
+        it('should set correct active state', function () {
           const active = res.locals.primaryNavigation.filter(
             item => item.active
           )
@@ -198,13 +198,13 @@ describe('#setPrimaryNavigation()', function() {
         })
       })
 
-      context('on incoming page', function() {
-        beforeEach(function() {
+      context('on incoming page', function () {
+        beforeEach(function () {
           req.path = '/moves/day/2020-04-16/incoming'
           middleware(req, res, nextSpy)
         })
 
-        it('should only set one active state', function() {
+        it('should only set one active state', function () {
           const inactive = res.locals.primaryNavigation.filter(
             item => !item.active
           )
@@ -213,7 +213,7 @@ describe('#setPrimaryNavigation()', function() {
           )
         })
 
-        it('should set correct active state', function() {
+        it('should set correct active state', function () {
           const active = res.locals.primaryNavigation.filter(
             item => item.active
           )
@@ -228,54 +228,54 @@ describe('#setPrimaryNavigation()', function() {
       })
     })
 
-    it('should call next', function() {
+    it('should call next', function () {
       middleware(req, res, nextSpy)
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 
-  describe('permissions', function() {
-    beforeEach(function() {
+  describe('permissions', function () {
+    beforeEach(function () {
       sinon.stub(permissions, 'check').returns(true)
       middleware(req, res, nextSpy)
     })
 
-    it('should check for dashboard permission', function() {
+    it('should check for dashboard permission', function () {
       expect(permissions.check).to.be.calledWithExactly(
         'dashboard:view',
         req.session.user.permissions
       )
     })
 
-    it('should check for single request permission', function() {
+    it('should check for single request permission', function () {
       expect(permissions.check).to.be.calledWithExactly(
         'moves:view:proposed',
         req.session.user.permissions
       )
     })
 
-    it('should check for allocation permission', function() {
+    it('should check for allocation permission', function () {
       expect(permissions.check).to.be.calledWithExactly(
         'allocations:view',
         req.session.user.permissions
       )
     })
 
-    it('should check for outgoing moves permission', function() {
+    it('should check for outgoing moves permission', function () {
       expect(permissions.check).to.be.calledWithExactly(
         'moves:view:outgoing',
         req.session.user.permissions
       )
     })
 
-    it('should check for incoming moves permission', function() {
+    it('should check for incoming moves permission', function () {
       expect(permissions.check).to.be.calledWithExactly(
         'moves:view:incoming',
         req.session.user.permissions
       )
     })
 
-    it('should check for permissions correct number of times', function() {
+    it('should check for permissions correct number of times', function () {
       expect(permissions.check.callCount).to.equal(5)
     })
   })

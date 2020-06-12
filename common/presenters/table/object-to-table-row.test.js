@@ -10,9 +10,9 @@ const dataExample = [
 ]
 const presenter = require('./object-to-table-row')
 
-describe('the presenter for the table rows', function() {
-  context('when the property passed to it is described by a path', function() {
-    it('returns a non nested path', function() {
+describe('the presenter for the table rows', function () {
+  context('when the property passed to it is described by a path', function () {
+    it('returns a non nested path', function () {
       const output = dataExample.map(
         presenter([
           {
@@ -34,7 +34,7 @@ describe('the presenter for the table rows', function() {
       ])
     })
 
-    it('returns a nested path', function() {
+    it('returns a nested path', function () {
       const output = dataExample.map(
         presenter([
           {
@@ -59,8 +59,8 @@ describe('the presenter for the table rows', function() {
 
   context(
     'when the property passed to it is described by an array',
-    function() {
-      it('concatenates the various elements', function() {
+    function () {
+      it('concatenates the various elements', function () {
         const output = dataExample.map(
           presenter([
             {
@@ -86,8 +86,8 @@ describe('the presenter for the table rows', function() {
 
   context(
     'when the property passed to it is described by a function',
-    function() {
-      it('returns the output of the function', function() {
+    function () {
+      it('returns the output of the function', function () {
         const output = dataExample.map(
           presenter([
             {
@@ -113,8 +113,8 @@ describe('the presenter for the table rows', function() {
     }
   )
 
-  context('with multiple cells', function() {
-    it('returns an object with all the data for the cells', function() {
+  context('with multiple cells', function () {
+    it('returns an object with all the data for the cells', function () {
       const output = dataExample.map(
         presenter([
           {
@@ -148,8 +148,8 @@ describe('the presenter for the table rows', function() {
     })
   })
 
-  context('with attributes', function() {
-    it('returns an object with attributes', function() {
+  context('with attributes', function () {
+    it('returns an object with attributes', function () {
       const output = dataExample.map(
         presenter([
           {
@@ -178,10 +178,10 @@ describe('the presenter for the table rows', function() {
     })
   })
 
-  context('with falsy `head` values', function() {
+  context('with falsy `head` values', function () {
     let output
 
-    beforeEach(function() {
+    beforeEach(function () {
       output = dataExample.map(
         presenter([
           {
@@ -220,11 +220,11 @@ describe('the presenter for the table rows', function() {
       )
     })
 
-    it('should return correct row count', function() {
+    it('should return correct row count', function () {
       expect(output.length).to.equal(1)
     })
 
-    it('should remove rows', function() {
+    it('should remove rows', function () {
       expect(output).to.deep.equal([
         [
           {

@@ -2,15 +2,15 @@ const urlHelpers = require('../../helpers/url')
 
 const middleware = require('./set-pagination')
 
-describe('Moves middleware', function() {
-  describe('#setPagination()', function() {
+describe('Moves middleware', function () {
+  describe('#setPagination()', function () {
     const mockToday = '2020-10-10'
     const mockDate = '2019-10-10'
     const mockRoute = '/moves/:date/:locationId?'
 
     let req, res, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(urlHelpers, 'compileFromRoute').returnsArg(0)
       this.clock = sinon.useFakeTimers(new Date(mockToday).getTime())
       res = {}
@@ -25,19 +25,19 @@ describe('Moves middleware', function() {
       nextSpy = sinon.spy()
     })
 
-    afterEach(function() {
+    afterEach(function () {
       this.clock.restore()
     })
 
-    context('when matching route is found', function() {
-      context('by default', function() {
-        beforeEach(function() {
+    context('when matching route is found', function () {
+      context('by default', function () {
+        beforeEach(function () {
           middleware(mockRoute)(req, res, nextSpy)
         })
-        it('should contain pagination on req', function() {
+        it('should contain pagination on req', function () {
           expect(req).to.have.property('pagination')
         })
-        it('should set today link', function() {
+        it('should set today link', function () {
           expect(req.pagination.todayUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -47,7 +47,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set next link', function() {
+        it('should set next link', function () {
           expect(req.pagination.nextUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -57,7 +57,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set previous link', function() {
+        it('should set previous link', function () {
           expect(req.pagination.prevUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -67,20 +67,20 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with day', function() {
-        beforeEach(function() {
+      context('with day', function () {
+        beforeEach(function () {
           req.params.period = 'day'
           middleware(mockRoute)(req, res, nextSpy)
         })
-        it('should contain pagination on req', function() {
+        it('should contain pagination on req', function () {
           expect(req).to.have.property('pagination')
         })
-        it('should set today link', function() {
+        it('should set today link', function () {
           expect(req.pagination.todayUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -90,7 +90,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set next link', function() {
+        it('should set next link', function () {
           expect(req.pagination.nextUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -100,7 +100,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set previous link', function() {
+        it('should set previous link', function () {
           expect(req.pagination.prevUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -110,20 +110,20 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with week', function() {
-        beforeEach(function() {
+      context('with week', function () {
+        beforeEach(function () {
           req.params.period = 'week'
           middleware(mockRoute)(req, res, nextSpy)
         })
-        it('should contain pagination on req', function() {
+        it('should contain pagination on req', function () {
           expect(req).to.have.property('pagination')
         })
-        it('should set today link', function() {
+        it('should set today link', function () {
           expect(req.pagination.todayUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -133,7 +133,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set next link', function() {
+        it('should set next link', function () {
           expect(req.pagination.nextUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -143,7 +143,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should set previous link', function() {
+        it('should set previous link', function () {
           expect(req.pagination.prevUrl).to.equal(mockRoute)
           expect(urlHelpers.compileFromRoute).to.be.calledWithExactly(
             mockRoute,
@@ -153,7 +153,7 @@ describe('Moves middleware', function() {
             }
           )
         })
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })

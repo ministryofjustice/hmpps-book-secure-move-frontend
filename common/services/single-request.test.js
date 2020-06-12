@@ -29,20 +29,20 @@ const mockMoves = [
   },
 ]
 
-describe('Single request service', function() {
-  describe('#getAll()', function() {
+describe('Single request service', function () {
+  describe('#getAll()', function () {
     let moves
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       sinon.stub(moveService, 'getAll').resolves(mockMoves)
     })
 
-    context('without arguments', function() {
-      beforeEach(async function() {
+    context('without arguments', function () {
+      beforeEach(async function () {
         moves = await singleRequestService.getAll()
       })
 
-      it('should call moves.getAll with default filter', function() {
+      it('should call moves.getAll with default filter', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           filter: {
@@ -54,19 +54,19 @@ describe('Single request service', function() {
         })
       })
 
-      it('should return moves', function() {
+      it('should return moves', function () {
         expect(moves).to.deep.equal(mockMoves)
       })
     })
 
-    describe('arguments', function() {
+    describe('arguments', function () {
       const mockMoveDateRange = ['2019-10-10', '2019-10-11']
       const mockCreatedDateRange = ['2020-10-10', '2020-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
-      context('with all arguments', function() {
-        beforeEach(async function() {
+      context('with all arguments', function () {
+        beforeEach(async function () {
           moves = await singleRequestService.getAll({
             status: 'pending',
             moveDate: mockMoveDateRange,
@@ -76,7 +76,7 @@ describe('Single request service', function() {
           })
         })
 
-        it('should call moves.getAll with correct args', function() {
+        it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             filter: {
@@ -95,20 +95,20 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return moves', function() {
+        it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
       })
 
-      context('with some arguments', function() {
-        beforeEach(async function() {
+      context('with some arguments', function () {
+        beforeEach(async function () {
           moves = await singleRequestService.getAll({
             createdAtDate: mockCreatedDateRange,
             fromLocationId: mockFromLocationId,
           })
         })
 
-        it('should call moves.getAll with correct args', function() {
+        it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             filter: {
@@ -123,19 +123,19 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return moves', function() {
+        it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
       })
 
-      context('with sort by', function() {
-        beforeEach(async function() {
+      context('with sort by', function () {
+        beforeEach(async function () {
           moves = await singleRequestService.getAll({
             sortBy: 'date_from',
           })
         })
 
-        it('should call moves.getAll with correct args', function() {
+        it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             filter: {
@@ -147,20 +147,20 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return moves', function() {
+        it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
       })
 
-      context('with sort direction', function() {
-        beforeEach(async function() {
+      context('with sort direction', function () {
+        beforeEach(async function () {
           moves = await singleRequestService.getAll({
             isAggregation: true,
             sortDirection: 'asc',
           })
         })
 
-        it('should call moves.getAll with correct args', function() {
+        it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             filter: {
@@ -172,20 +172,20 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return moves', function() {
+        it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
       })
 
-      context('with aggregation', function() {
-        beforeEach(async function() {
+      context('with aggregation', function () {
+        beforeEach(async function () {
           moves = await singleRequestService.getAll({
             isAggregation: true,
             fromLocationId: mockFromLocationId,
           })
         })
 
-        it('should call moves.getAll with correct args', function() {
+        it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             filter: {
@@ -198,18 +198,18 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return moves', function() {
+        it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
       })
 
-      describe('statuses', function() {
-        context('with no status', function() {
-          beforeEach(async function() {
+      describe('statuses', function () {
+        context('with no status', function () {
+          beforeEach(async function () {
             moves = await singleRequestService.getAll()
           })
 
-          it('should call moves.getAll without status', function() {
+          it('should call moves.getAll without status', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
@@ -221,19 +221,19 @@ describe('Single request service', function() {
             })
           })
 
-          it('should return moves', function() {
+          it('should return moves', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
 
-        context('with pending status', function() {
-          beforeEach(async function() {
+        context('with pending status', function () {
+          beforeEach(async function () {
             moves = await singleRequestService.getAll({
               status: 'pending',
             })
           })
 
-          it('should call moves.getAll with correct statuses', function() {
+          it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
@@ -246,19 +246,19 @@ describe('Single request service', function() {
             })
           })
 
-          it('should return moves', function() {
+          it('should return moves', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
 
-        context('with approved status', function() {
-          beforeEach(async function() {
+        context('with approved status', function () {
+          beforeEach(async function () {
             moves = await singleRequestService.getAll({
               status: 'approved',
             })
           })
 
-          it('should call moves.getAll with correct statuses', function() {
+          it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
@@ -271,19 +271,19 @@ describe('Single request service', function() {
             })
           })
 
-          it('should return moves', function() {
+          it('should return moves', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
 
-        context('with rejected status', function() {
-          beforeEach(async function() {
+        context('with rejected status', function () {
+          beforeEach(async function () {
             moves = await singleRequestService.getAll({
               status: 'rejected',
             })
           })
 
-          it('should call moves.getAll with correct statuses', function() {
+          it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
@@ -297,19 +297,19 @@ describe('Single request service', function() {
             })
           })
 
-          it('should return moves', function() {
+          it('should return moves', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
 
-        context('with any other status', function() {
-          beforeEach(async function() {
+        context('with any other status', function () {
+          beforeEach(async function () {
             moves = await singleRequestService.getAll({
               status: 'other',
             })
           })
 
-          it('should call moves.getAll with correct filter', function() {
+          it('should call moves.getAll with correct filter', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
@@ -322,7 +322,7 @@ describe('Single request service', function() {
             })
           })
 
-          it('should return moves', function() {
+          it('should return moves', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
@@ -330,16 +330,16 @@ describe('Single request service', function() {
     })
   })
 
-  describe('#approve()', function() {
-    context('without move ID', function() {
-      it('should reject with error', function() {
+  describe('#approve()', function () {
+    context('without move ID', function () {
+      it('should reject with error', function () {
         return expect(singleRequestService.approve()).to.be.rejectedWith(
           'No move ID supplied'
         )
       })
     })
 
-    context('with move ID', function() {
+    context('with move ID', function () {
       const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockResponse = {
         data: {
@@ -349,16 +349,16 @@ describe('Single request service', function() {
       }
       let move
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'update').resolves(mockResponse)
       })
 
-      context('without data args', function() {
-        beforeEach(async function() {
+      context('without data args', function () {
+        beforeEach(async function () {
           move = await singleRequestService.approve(mockId)
         })
 
-        it('should call update method with data', function() {
+        it('should call update method with data', function () {
           expect(apiClient.update).to.be.calledOnceWithExactly('move', {
             id: mockId,
             date: undefined,
@@ -366,19 +366,19 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return move', function() {
+        it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
         })
       })
 
-      context('with data args', function() {
-        beforeEach(async function() {
+      context('with data args', function () {
+        beforeEach(async function () {
           move = await singleRequestService.approve(mockId, {
             date: '2020-10-10',
           })
         })
 
-        it('should call update method with data', function() {
+        it('should call update method with data', function () {
           expect(apiClient.update).to.be.calledOnceWithExactly('move', {
             id: mockId,
             date: '2020-10-10',
@@ -386,23 +386,23 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return move', function() {
+        it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
         })
       })
     })
   })
 
-  describe('#reject()', function() {
-    context('without move ID', function() {
-      it('should reject with error', function() {
+  describe('#reject()', function () {
+    context('without move ID', function () {
+      it('should reject with error', function () {
         return expect(singleRequestService.reject()).to.be.rejectedWith(
           'No move ID supplied'
         )
       })
     })
 
-    context('with move ID', function() {
+    context('with move ID', function () {
       const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockResponse = {
         data: {
@@ -412,16 +412,16 @@ describe('Single request service', function() {
       }
       let move
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.stub(apiClient, 'update').resolves(mockResponse)
       })
 
-      context('without data args', function() {
-        beforeEach(async function() {
+      context('without data args', function () {
+        beforeEach(async function () {
           move = await singleRequestService.reject(mockId)
         })
 
-        it('should call update method with data', function() {
+        it('should call update method with data', function () {
           expect(apiClient.update).to.be.calledOnceWithExactly('move', {
             id: mockId,
             status: 'cancelled',
@@ -430,19 +430,19 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return move', function() {
+        it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
         })
       })
 
-      context('with data args', function() {
-        beforeEach(async function() {
+      context('with data args', function () {
+        beforeEach(async function () {
           move = await singleRequestService.reject(mockId, {
             comment: 'Reason for rejecting',
           })
         })
 
-        it('should call update method with data', function() {
+        it('should call update method with data', function () {
           expect(apiClient.update).to.be.calledOnceWithExactly('move', {
             id: mockId,
             status: 'cancelled',
@@ -451,7 +451,7 @@ describe('Single request service', function() {
           })
         })
 
-        it('should return move', function() {
+        it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
         })
       })

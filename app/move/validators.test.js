@@ -1,19 +1,19 @@
 const validators = require('./validators')
 
-describe('Validators', function() {
+describe('Validators', function () {
   let clock
 
-  beforeEach(function() {
+  beforeEach(function () {
     const now = new Date('2014-11-05T15:09:00Z')
     clock = sinon.useFakeTimers(now.getTime())
   })
 
-  afterEach(function() {
+  afterEach(function () {
     clock.restore()
   })
 
-  describe('#time()', function() {
-    describe('invalid values', function() {
+  describe('#time()', function () {
+    describe('invalid values', function () {
       const inputs = [
         10,
         null,
@@ -30,13 +30,13 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           expect(validators.time(i)).not.to.be.ok
         })
       })
     })
 
-    describe('valid values', function() {
+    describe('valid values', function () {
       const inputs = [
         '',
         '9:00am',
@@ -50,15 +50,15 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           expect(validators.time(i)).to.be.ok
         })
       })
     })
   })
 
-  describe('#datetime()', function() {
-    describe('invalid values', function() {
+  describe('#datetime()', function () {
+    describe('invalid values', function () {
       const inputs = [
         10,
         null,
@@ -75,13 +75,13 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           expect(validators.datetime(i)).not.to.be.ok
         })
       })
     })
 
-    describe('valid values', function() {
+    describe('valid values', function () {
       const inputs = [
         '',
         '2010-10-10T10:00Z',
@@ -90,17 +90,17 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           expect(validators.datetime(i)).to.be.ok
         })
       })
     })
   })
 
-  describe('after', function() {
+  describe('after', function () {
     // note date is set to 2014-11-05T15:09:00Z in all tests
 
-    describe('invalid values', function() {
+    describe('invalid values', function () {
       const inputs = [
         '2014-11-05',
         ['2014-12-16', '2014-12-16'],
@@ -108,7 +108,7 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           if (typeof i === 'string') {
             expect(validators.after(i)).not.to.be.ok
           } else {
@@ -118,7 +118,7 @@ describe('Validators', function() {
       })
     })
 
-    describe('valid inputs', function() {
+    describe('valid inputs', function () {
       const inputs = [
         ['', '2014-12-15'],
         ['2014-12-16', '2014-12-15'],
@@ -127,7 +127,7 @@ describe('Validators', function() {
       ]
 
       inputs.forEach(i => {
-        it(`test for: "${i}"`, function() {
+        it(`test for: "${i}"`, function () {
           expect(validators.after.apply(null, i)).to.be.ok
         })
       })

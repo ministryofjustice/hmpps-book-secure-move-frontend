@@ -38,7 +38,7 @@ MultiFileUpload.prototype = {
     this.render()
   },
 
-  cacheEls: function() {
+  cacheEls: function () {
     this.$previewNode = this.$module.querySelector('[data-dz-preview-template]')
     this.$previewNode.classList.remove('app-hidden')
     this.$previewNode.removeAttribute('data-dz-preview-template')

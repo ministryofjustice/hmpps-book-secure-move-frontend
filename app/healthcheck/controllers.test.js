@@ -13,11 +13,11 @@ const controllers = proxyquire('./controllers', {
   '../../package.json': mockManifest,
 })
 
-describe('Healthcheck controllers', function() {
-  describe('#get()', function() {
+describe('Healthcheck controllers', function () {
+  describe('#get()', function () {
     let res
 
-    beforeEach(function() {
+    beforeEach(function () {
       res = {
         setHeader: sinon.stub(),
         json: sinon.stub(),
@@ -25,7 +25,7 @@ describe('Healthcheck controllers', function() {
       }
     })
 
-    it('should set cache control header', function() {
+    it('should set cache control header', function () {
       controllers.get({}, res)
       expect(res.setHeader).to.be.calledOnceWithExactly(
         'Cache-Control',
@@ -33,8 +33,8 @@ describe('Healthcheck controllers', function() {
       )
     })
 
-    context('when all services are OK', function() {
-      beforeEach(function() {
+    context('when all services are OK', function () {
+      beforeEach(function () {
         res.dependencies = [
           {
             name: 'Foo',
@@ -48,16 +48,16 @@ describe('Healthcheck controllers', function() {
         controllers.get({}, res)
       })
 
-      it('should set 200 status code', function() {
+      it('should set 200 status code', function () {
         expect(res.status).to.be.calledOnceWithExactly(200)
       })
 
-      it('should return `OK` status', function() {
+      it('should return `OK` status', function () {
         expect(res.json.args[0][0]).to.contain.property('status')
         expect(res.json.args[0][0].status).to.equal('OK')
       })
 
-      it('should render JSON', function() {
+      it('should render JSON', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'OK',
           version: mockManifest.version,
@@ -69,8 +69,8 @@ describe('Healthcheck controllers', function() {
       })
     })
 
-    context('when any service is not OK', function() {
-      beforeEach(function() {
+    context('when any service is not OK', function () {
+      beforeEach(function () {
         res.dependencies = [
           {
             name: 'Foo',
@@ -84,16 +84,16 @@ describe('Healthcheck controllers', function() {
         controllers.get({}, res)
       })
 
-      it('should set 503 status code', function() {
+      it('should set 503 status code', function () {
         expect(res.status).to.be.calledOnceWithExactly(503)
       })
 
-      it('should return `Service unavailable` status', function() {
+      it('should return `Service unavailable` status', function () {
         expect(res.json.args[0][0]).to.contain.property('status')
         expect(res.json.args[0][0].status).to.equal('Service unavailable')
       })
 
-      it('should render JSON', function() {
+      it('should render JSON', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'Service unavailable',
           version: mockManifest.version,
@@ -106,10 +106,10 @@ describe('Healthcheck controllers', function() {
     })
   })
 
-  describe('#ping()', function() {
+  describe('#ping()', function () {
     let res
 
-    beforeEach(function() {
+    beforeEach(function () {
       res = {
         setHeader: sinon.stub(),
         status: sinon.stub().returnsThis(),
@@ -118,18 +118,18 @@ describe('Healthcheck controllers', function() {
       controllers.ping({}, res)
     })
 
-    it('should set cache control header', function() {
+    it('should set cache control header', function () {
       expect(res.setHeader).to.be.calledOnceWithExactly(
         'Cache-Control',
         'no-cache, no-store, must-revalidate'
       )
     })
 
-    it('should set 200 status code', function() {
+    it('should set 200 status code', function () {
       expect(res.status).to.be.calledOnceWithExactly(200)
     })
 
-    it('should render JSON', function() {
+    it('should render JSON', function () {
       expect(res.send).to.be.calledOnceWithExactly('OK')
     })
   })

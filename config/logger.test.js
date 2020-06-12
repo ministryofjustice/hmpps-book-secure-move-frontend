@@ -1,15 +1,15 @@
 const proxyquire = require('proxyquire').noCallThru()
 const winston = require('winston')
 
-describe('Logger', function() {
+describe('Logger', function () {
   let logger
 
-  beforeEach(function() {
+  beforeEach(function () {
     sinon.spy(winston, 'createLogger')
   })
 
-  context('In development environment', function() {
-    beforeEach(function() {
+  context('In development environment', function () {
+    beforeEach(function () {
       logger = proxyquire('./logger', {
         './': {
           IS_DEV: true,
@@ -18,25 +18,25 @@ describe('Logger', function() {
       })
     })
 
-    it('should create a logger', function() {
+    it('should create a logger', function () {
       expect(winston.createLogger).to.be.calledOnce
     })
 
-    it('should set log level', function() {
+    it('should set log level', function () {
       const config = winston.createLogger.args[0][0]
 
       expect(config).to.contain.property('level')
       expect(config.level).to.equal('debug')
     })
 
-    it('should set one transport', function() {
+    it('should set one transport', function () {
       const config = winston.createLogger.args[0][0]
 
       expect(config).to.contain.property('transports')
       expect(config.transports.length).to.equal(1)
     })
 
-    it('should export logger', function() {
+    it('should export logger', function () {
       expect(logger).to.be.an('object')
       expect(logger.log).to.be.a('function')
       expect(logger.warn).to.be.a('function')
@@ -44,8 +44,8 @@ describe('Logger', function() {
     })
   })
 
-  context('In production environment', function() {
-    beforeEach(function() {
+  context('In production environment', function () {
+    beforeEach(function () {
       logger = proxyquire('./logger', {
         './': {
           IS_DEV: false,
@@ -54,25 +54,25 @@ describe('Logger', function() {
       })
     })
 
-    it('should create a logger', function() {
+    it('should create a logger', function () {
       expect(winston.createLogger).to.be.calledOnce
     })
 
-    it('should set log level', function() {
+    it('should set log level', function () {
       const config = winston.createLogger.args[0][0]
 
       expect(config).to.contain.property('level')
       expect(config.level).to.equal('silent')
     })
 
-    it('should set three transports', function() {
+    it('should set three transports', function () {
       const config = winston.createLogger.args[0][0]
 
       expect(config).to.contain.property('transports')
       expect(config.transports.length).to.equal(3)
     })
 
-    it('should export logger', function() {
+    it('should export logger', function () {
       expect(logger).to.be.an('object')
       expect(logger.log).to.be.a('function')
       expect(logger.warn).to.be.a('function')

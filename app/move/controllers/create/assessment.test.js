@@ -6,20 +6,20 @@ const Controller = require('./assessment')
 const BaseController = require('./base')
 const controller = new Controller({ route: '/' })
 
-describe('Move controllers', function() {
-  describe('Assessment controller', function() {
-    describe('#configure()', function() {
+describe('Move controllers', function () {
+  describe('Assessment controller', function () {
+    describe('#configure()', function () {
       let nextSpy
       let req
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'configure')
         sinon.stub(referenceDataService, 'getAssessmentQuestions')
         sinon.stub(fieldHelpers, 'populateAssessmentFields')
         nextSpy = sinon.spy()
       })
 
-      context('when getAssessmentQuestions resolves', function() {
+      context('when getAssessmentQuestions resolves', function () {
         const mockQuestionsResponse = [
           {
             id: 'af8cfc67-757c-4019-9d5e-618017de1617',
@@ -59,7 +59,7 @@ describe('Move controllers', function() {
           },
         }
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           fieldHelpers.populateAssessmentFields.returns(
             mockPopulateAssessmentFieldsResponse
           )
@@ -78,36 +78,36 @@ describe('Move controllers', function() {
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('invokes getAssessmentQuestions', function() {
+        it('invokes getAssessmentQuestions', function () {
           expect(
             referenceDataService.getAssessmentQuestions
           ).to.be.calledOnceWithExactly('risk')
         })
 
-        it('should call populateAssessmentFields', function() {
+        it('should call populateAssessmentFields', function () {
           expect(
             fieldHelpers.populateAssessmentFields
           ).to.be.calledOnceWithExactly(mockFields, mockQuestionsResponse)
         })
 
-        it('should set fields to populateAssessmentFields reponse', function() {
+        it('should set fields to populateAssessmentFields reponse', function () {
           expect(req.form.options.fields).to.deep.equal(
             mockPopulateAssessmentFieldsResponse
           )
         })
 
-        it('should set questions on request', function() {
+        it('should set questions on request', function () {
           expect(req.questions).to.deep.equal(mockQuestionsResponse)
         })
 
-        it('should call parent configure method', function() {
+        it('should call parent configure method', function () {
           expect(
             BaseController.prototype.configure
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
 
-      context('when getAssessmentQuestions returns an error', function() {
+      context('when getAssessmentQuestions returns an error', function () {
         const errorMock = new Error('Problem')
         const req = {
           form: {
@@ -122,55 +122,55 @@ describe('Move controllers', function() {
           },
         }
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           referenceDataService.getAssessmentQuestions.throws(errorMock)
 
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function() {
+        it('should call next with the error', function () {
           expect(nextSpy).to.be.calledWith(errorMock)
         })
 
-        it('should call next once', function() {
+        it('should call next once', function () {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not mutate request object', function() {
+        it('should not mutate request object', function () {
           expect(req).to.deep.equal(req)
         })
 
-        it('should not call parent configure method', function() {
+        it('should not call parent configure method', function () {
           expect(BaseController.prototype.configure).not.to.be.called
         })
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      beforeEach(function() {
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(BaseController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 
-      it('should call set previous assessment method', function() {
+      it('should call set previous assessment method', function () {
         expect(controller.use.firstCall).to.have.been.calledWithExactly(
           controller.setPreviousAssessment
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(1)
       })
     })
 
-    describe('#setPreviousAssessment', function() {
+    describe('#setPreviousAssessment', function () {
       let req, res, nextSpy
       const mockPerson = {
         assessment_answers: [
@@ -202,7 +202,7 @@ describe('Move controllers', function() {
         ],
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(presenters, 'assessmentAnswersByCategory').returns([
           {
             key: 'health',
@@ -235,17 +235,17 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('when the step should show previous assessment', function() {
-        beforeEach(function() {
+      context('when the step should show previous assessment', function () {
+        beforeEach(function () {
           req.form.options.showPreviousAssessment = true
         })
 
-        context('with no custom groupings', function() {
-          beforeEach(function() {
+        context('with no custom groupings', function () {
+          beforeEach(function () {
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
-          it('should set previous assessment on local', function() {
+          it('should set previous assessment on local', function () {
             expect(res.locals).to.contain.property('previousAnswers')
             expect(res.locals.previousAnswers).to.deep.equal({
               key: 'risk',
@@ -253,12 +253,12 @@ describe('Move controllers', function() {
             })
           })
 
-          it('should set empty custom groupings on local', function() {
+          it('should set empty custom groupings on local', function () {
             expect(res.locals).to.contain.property('customAnswerGroupings')
             expect(res.locals.customAnswerGroupings).to.deep.equal([])
           })
 
-          it('should call presenter with filtered assessment', function() {
+          it('should call presenter with filtered assessment', function () {
             expect(
               presenters.assessmentAnswersByCategory
             ).to.be.calledOnceWithExactly([
@@ -280,13 +280,13 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call next', function() {
+          it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('with custom groupings', function() {
-          beforeEach(function() {
+        context('with custom groupings', function () {
+          beforeEach(function () {
             req.form.options.customAssessmentGroupings = [
               {
                 i18nContext: 'escape',
@@ -296,7 +296,7 @@ describe('Move controllers', function() {
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
-          it('should call presenter with filtered assessment', function() {
+          it('should call presenter with filtered assessment', function () {
             expect(
               presenters.assessmentAnswersByCategory
             ).to.be.calledWithExactly([
@@ -313,7 +313,7 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call presenter with custom assessment', function() {
+          it('should call presenter with custom assessment', function () {
             expect(
               presenters.assessmentAnswersByCategory
             ).to.be.calledWithExactly([
@@ -325,11 +325,11 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call presenter custom number of times', function() {
+          it('should call presenter custom number of times', function () {
             expect(presenters.assessmentAnswersByCategory.callCount).to.equal(2)
           })
 
-          it('should set previous assessment on local', function() {
+          it('should set previous assessment on local', function () {
             expect(res.locals).to.contain.property('previousAnswers')
             expect(res.locals.previousAnswers).to.deep.equal({
               key: 'risk',
@@ -337,7 +337,7 @@ describe('Move controllers', function() {
             })
           })
 
-          it('should set empty custom groupings on local', function() {
+          it('should set empty custom groupings on local', function () {
             expect(res.locals).to.contain.property('customAnswerGroupings')
             expect(res.locals.customAnswerGroupings).to.deep.equal([
               {
@@ -347,13 +347,13 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call next', function() {
+          it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('with non imported answers', function() {
-          beforeEach(function() {
+        context('with non imported answers', function () {
+          beforeEach(function () {
             req.getPerson.returns({
               assessment_answers: [
                 {
@@ -374,7 +374,7 @@ describe('Move controllers', function() {
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
-          it('should call presenter with filtered assessment', function() {
+          it('should call presenter with filtered assessment', function () {
             expect(
               presenters.assessmentAnswersByCategory
             ).to.be.calledOnceWithExactly([
@@ -390,30 +390,30 @@ describe('Move controllers', function() {
 
       context(
         'when the step should not include previous assessment',
-        function() {
-          beforeEach(function() {
+        function () {
+          beforeEach(function () {
             controller.setPreviousAssessment(req, res, nextSpy)
           })
 
-          it('should not set previous assessment on locals', function() {
+          it('should not set previous assessment on locals', function () {
             expect(res.locals).not.to.contain.property('previousAnswers')
             expect(res.locals).not.to.contain.property('customAnswerGroupings')
           })
 
-          it('should not call presenters', function() {
+          it('should not call presenters', function () {
             expect(presenters.assessmentAnswersByCategory).not.to.be.called
             expect(presenters.assessmentCategoryToPanelComponent).not.to.be
               .called
           })
 
-          it('should call next', function() {
+          it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         }
       )
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       let nextSpy
       const mockFields = {
         risk: {
@@ -438,15 +438,15 @@ describe('Move controllers', function() {
         },
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'saveValues')
         nextSpy = sinon.spy()
       })
 
-      context('with no previous session values', function() {
+      context('with no previous session values', function () {
         let req
 
-        beforeEach(function() {
+        beforeEach(function () {
           req = {
             questions: [
               {
@@ -477,7 +477,7 @@ describe('Move controllers', function() {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should save values on assessment property', function() {
+        it('should save values on assessment property', function () {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {
@@ -489,17 +489,17 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should call parent configure method', function() {
+        it('should call parent configure method', function () {
           expect(
             BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
 
-      context('with previous session values', function() {
+      context('with previous session values', function () {
         let req, sessionGetStub
 
-        beforeEach(function() {
+        beforeEach(function () {
           sessionGetStub = sinon.stub()
           req = {
             questions: [
@@ -550,7 +550,7 @@ describe('Move controllers', function() {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should overwrite values for current field', function() {
+        it('should overwrite values for current field', function () {
           expect(req.form.values.assessment.risk).to.deep.equal([
             {
               comments: 'Additional comments',
@@ -560,7 +560,7 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should not mutate other assessment fields', function() {
+        it('should not mutate other assessment fields', function () {
           expect(req.form.values.assessment.health).to.deep.equal([
             {
               comments: '',
@@ -569,17 +569,17 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should call parent configure method', function() {
+        it('should call parent configure method', function () {
           expect(
             BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
 
-      context('with empty values in form', function() {
+      context('with empty values in form', function () {
         let req
 
-        beforeEach(function() {
+        beforeEach(function () {
           req = {
             questions: [
               {
@@ -610,7 +610,7 @@ describe('Move controllers', function() {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should remove empty values', function() {
+        it('should remove empty values', function () {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {
@@ -623,10 +623,10 @@ describe('Move controllers', function() {
         })
       })
 
-      context('with multiple values in form', function() {
+      context('with multiple values in form', function () {
         let req
 
-        beforeEach(function() {
+        beforeEach(function () {
           req = {
             questions: [
               {
@@ -683,7 +683,7 @@ describe('Move controllers', function() {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should include all values', function() {
+        it('should include all values', function () {
           expect(req.form.values.assessment).to.deep.equal({
             risk: [
               {

@@ -2,11 +2,11 @@ const dateHelpers = require('../../helpers/date')
 
 const setDateRange = require('./set-date-range')
 
-describe('Moves middleware', function() {
-  describe('#setDateRange()', function() {
+describe('Moves middleware', function () {
+  describe('#setDateRange()', function () {
     let req, res, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(dateHelpers, 'getDateRange').callsFake(date => [date, date])
       req = {
         params: {
@@ -20,23 +20,23 @@ describe('Moves middleware', function() {
       nextSpy = sinon.spy()
     })
 
-    context('with valid move date', function() {
-      beforeEach(function() {
+    context('with valid move date', function () {
+      beforeEach(function () {
         setDateRange(req, res, nextSpy, '2019-10-10')
       })
 
-      it('should set move date on req', function() {
+      it('should set move date on req', function () {
         expect(req.params).to.have.property('dateRange')
         expect(req.params.dateRange).to.deep.equal(['2019-10-10', '2019-10-10'])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('with invalid move date', function() {
-      beforeEach(function() {
+    context('with invalid move date', function () {
+      beforeEach(function () {
         dateHelpers.getDateRange.returns([undefined, undefined])
         req = {
           baseUrl: '/req-base',
@@ -46,11 +46,11 @@ describe('Moves middleware', function() {
         setDateRange(req, res, nextSpy, 'Invalid date')
       })
 
-      it('should not set req.params', function() {
+      it('should not set req.params', function () {
         expect(req.params).not.to.have.property('dateRange')
       })
 
-      it('should call next with 404 error', function() {
+      it('should call next with 404 error', function () {
         const error = nextSpy.args[0][0]
 
         expect(nextSpy).to.be.calledOnce

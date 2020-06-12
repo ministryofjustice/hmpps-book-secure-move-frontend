@@ -1,17 +1,17 @@
 const assessmentCheckboxes = require('./common.assessment-checkboxes')
 
-describe('Move fields', function() {
-  describe('#assessmentCheckboxes()', function() {
+describe('Move fields', function () {
+  describe('#assessmentCheckboxes()', function () {
     let field
 
-    context('with name', function() {
+    context('with name', function () {
       const mockName = 'foo'
 
-      beforeEach(function() {
+      beforeEach(function () {
         field = assessmentCheckboxes(mockName)
       })
 
-      it('should return correct object', function() {
+      it('should return correct object', function () {
         expect(field).to.deep.equal({
           name: mockName,
           component: 'govukCheckboxes',
@@ -30,12 +30,12 @@ describe('Move fields', function() {
       })
     })
 
-    context('with no arguments', function() {
-      beforeEach(function() {
+    context('with no arguments', function () {
+      beforeEach(function () {
         field = assessmentCheckboxes()
       })
 
-      it('should return an empty object', function() {
+      it('should return an empty object', function () {
         expect(field).to.deep.equal({})
       })
     })

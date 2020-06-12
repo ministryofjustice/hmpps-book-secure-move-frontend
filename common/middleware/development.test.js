@@ -2,62 +2,62 @@ const referenceDataService = require('../services/reference-data')
 
 const middleware = require('./development')
 
-describe('Development specific middleware', function() {
+describe('Development specific middleware', function () {
   let nextSpy
 
-  beforeEach(function() {
+  beforeEach(function () {
     nextSpy = sinon.spy()
   })
 
-  describe('#bypassAuth()', function() {
+  describe('#bypassAuth()', function () {
     let req
 
-    beforeEach(function() {
+    beforeEach(function () {
       req = {
         session: {},
       }
     })
 
-    context('when should not bypass', function() {
-      beforeEach(function() {
+    context('when should not bypass', function () {
+      beforeEach(function () {
         middleware.bypassAuth(false)(req, {}, nextSpy)
       })
 
-      it('should not set auth expiry', function() {
+      it('should not set auth expiry', function () {
         expect(req.session).not.to.have.property('authExpiry')
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when should bypass', function() {
-      beforeEach(function() {
+    context('when should bypass', function () {
+      beforeEach(function () {
         this.clock = sinon.useFakeTimers(new Date('2017-08-10').getTime())
 
         middleware.bypassAuth(true)(req, {}, nextSpy)
       })
 
-      afterEach(function() {
+      afterEach(function () {
         this.clock.restore()
       })
 
-      it('should not set auth expiry 30 days in future', function() {
+      it('should not set auth expiry 30 days in future', function () {
         expect(req.session).to.have.property('authExpiry')
         expect(req.session.authExpiry).to.equal(1504915200)
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
   })
 
-  describe('#setUserPermissions()', function() {
+  describe('#setUserPermissions()', function () {
     let req
 
-    beforeEach(function() {
+    beforeEach(function () {
       req = {
         session: {
           user: {
@@ -67,12 +67,12 @@ describe('Development specific middleware', function() {
       }
     })
 
-    context('with permissions', function() {
-      beforeEach(function() {
+    context('with permissions', function () {
+      beforeEach(function () {
         middleware.setUserPermissions('one,two,three')(req, {}, nextSpy)
       })
 
-      it('should update permissions', function() {
+      it('should update permissions', function () {
         expect(req.session.user.permissions).to.deep.equal([
           'one',
           'two',
@@ -80,36 +80,36 @@ describe('Development specific middleware', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('without permissions', function() {
-      beforeEach(function() {
+    context('without permissions', function () {
+      beforeEach(function () {
         middleware.setUserPermissions()(req, {}, nextSpy)
       })
 
-      it('should not update permissions', function() {
+      it('should not update permissions', function () {
         expect(req.session.user.permissions).to.deep.equal([])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when no user exists', function() {
-      beforeEach(function() {
+    context('when no user exists', function () {
+      beforeEach(function () {
         req.session = {}
         middleware.setUserPermissions('one,two,three')(req, {}, nextSpy)
       })
 
-      it('should create a user', function() {
+      it('should create a user', function () {
         expect(req.session).to.have.property('user')
       })
 
-      it('should set permissions', function() {
+      it('should set permissions', function () {
         expect(req.session.user.permissions).to.deep.equal([
           'one',
           'two',
@@ -117,16 +117,16 @@ describe('Development specific middleware', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
   })
 
-  describe('#setUserLocations()', function() {
+  describe('#setUserLocations()', function () {
     let req
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon
         .stub(referenceDataService, 'getLocationsByNomisAgencyId')
         .resolvesArg(0)
@@ -137,12 +137,12 @@ describe('Development specific middleware', function() {
       }
     })
 
-    context('with locations', function() {
-      beforeEach(async function() {
+    context('with locations', function () {
+      beforeEach(async function () {
         await middleware.setUserLocations('one,two,three')(req, {}, nextSpy)
       })
 
-      it('should set locations', function() {
+      it('should set locations', function () {
         expect(req.session.user.locations).to.deep.equal([
           'one',
           'two',
@@ -150,36 +150,36 @@ describe('Development specific middleware', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('without locations', function() {
-      beforeEach(async function() {
+    context('without locations', function () {
+      beforeEach(async function () {
         await middleware.setUserLocations()(req, {}, nextSpy)
       })
 
-      it('should not set locations', function() {
+      it('should not set locations', function () {
         expect(req.session.user).not.to.have.property('locations')
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when no user exists', function() {
-      beforeEach(async function() {
+    context('when no user exists', function () {
+      beforeEach(async function () {
         req.session = {}
         await middleware.setUserLocations('one,two,three')(req, {}, nextSpy)
       })
 
-      it('should create a user', function() {
+      it('should create a user', function () {
         expect(req.session).to.have.property('user')
       })
 
-      it('should set locations', function() {
+      it('should set locations', function () {
         expect(req.session.user.locations).to.deep.equal([
           'one',
           'two',
@@ -187,18 +187,18 @@ describe('Development specific middleware', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when locations already exist', function() {
-      beforeEach(async function() {
+    context('when locations already exist', function () {
+      beforeEach(async function () {
         req.session.user.locations = ['four', 'five', 'six']
         await middleware.setUserLocations('one,two,three')(req, {}, nextSpy)
       })
 
-      it('should not change locations', function() {
+      it('should not change locations', function () {
         expect(req.session.user.locations).to.deep.equal([
           'four',
           'five',
@@ -206,7 +206,7 @@ describe('Development specific middleware', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })

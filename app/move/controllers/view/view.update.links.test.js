@@ -30,12 +30,12 @@ const expectedUpdateLinks = {
   },
 }
 
-describe('Move controllers', function() {
-  describe('#view()', function() {
-    describe('#getUpdateLinks', function() {
+describe('Move controllers', function () {
+  describe('#view()', function () {
+    describe('#getUpdateLinks', function () {
       let updateLinks
       const t = i18n.t
-      beforeEach(function() {
+      beforeEach(function () {
         t.resetHistory()
         t.callsFake((key, args) => {
           if (args) {
@@ -47,17 +47,17 @@ describe('Move controllers', function() {
         updateLinks = getUpdateLinks(updateSteps, urls)
       })
 
-      it('should invoke t twice', function() {
+      it('should invoke t twice', function () {
         expect(t.callCount).to.equal(2)
       })
 
-      it('should invoke t first time with expected args', function() {
+      it('should invoke t first time with expected args', function () {
         expect(t.getCall(0).args).to.deep.equal([
           'moves::update_link.categories.foo',
         ])
       })
 
-      it('should invoke t second time with expected args', function() {
+      it('should invoke t second time with expected args', function () {
         expect(t.getCall(1).args).to.deep.equal([
           'moves::update_link.link_text',
           {
@@ -67,11 +67,11 @@ describe('Move controllers', function() {
         ])
       })
 
-      it('should get expected value for key', function() {
+      it('should get expected value for key', function () {
         expect(updateLinks.foo).to.deep.equal(expectedUpdateLinks.foo)
       })
 
-      it('should return undefined if the route has no url', function() {
+      it('should return undefined if the route has no url', function () {
         expect(updateLinks.bar).to.be.undefined
       })
     })

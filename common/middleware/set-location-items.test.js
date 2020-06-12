@@ -13,10 +13,10 @@ const courtsMock = [
   },
 ]
 
-describe('#setLocationItems()', function() {
+describe('#setLocationItems()', function () {
   let req, res, nextSpy
 
-  beforeEach(function() {
+  beforeEach(function () {
     req = {
       form: {
         options: {
@@ -35,12 +35,12 @@ describe('#setLocationItems()', function() {
     sinon.stub(referenceDataService, 'getLocationsByType')
   })
 
-  context('when field exists', function() {
+  context('when field exists', function () {
     const mockFieldName = 'to_location_court'
     const mockLocationType = 'court'
 
-    context('when service resolves', function() {
-      beforeEach(async function() {
+    context('when service resolves', function () {
+      beforeEach(async function () {
         referenceDataService.getLocationsByType.resolves(courtsMock)
 
         await setLocationItems(mockLocationType, mockFieldName)(
@@ -50,13 +50,13 @@ describe('#setLocationItems()', function() {
         )
       })
 
-      it('should call reference data service', function() {
+      it('should call reference data service', function () {
         expect(
           referenceDataService.getLocationsByType
         ).to.be.calledOnceWithExactly(mockLocationType)
       })
 
-      it('populates the move type items', function() {
+      it('populates the move type items', function () {
         expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
           {
             text: `--- Choose ${mockLocationType} ---`,
@@ -72,15 +72,15 @@ describe('#setLocationItems()', function() {
         ])
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when service rejects', function() {
+    context('when service rejects', function () {
       const errorMock = new Error('Problem')
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         referenceDataService.getLocationsByType.throws(errorMock)
 
         await setLocationItems(mockLocationType, mockFieldName)(
@@ -90,11 +90,11 @@ describe('#setLocationItems()', function() {
         )
       })
 
-      it('should call next with the error', function() {
+      it('should call next with the error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
       })
 
-      it('should not mutate request object', function() {
+      it('should not mutate request object', function () {
         expect(req).to.deep.equal({
           form: {
             options: {
@@ -108,16 +108,16 @@ describe('#setLocationItems()', function() {
     })
   })
 
-  context('when field does not exist', function() {
-    beforeEach(async function() {
+  context('when field does not exist', function () {
+    beforeEach(async function () {
       await setLocationItems('court', 'non_existent')(req, res, nextSpy)
     })
 
-    it('should not call reference service', function() {
+    it('should not call reference service', function () {
       expect(referenceDataService.getLocationsByType).not.to.be.called
     })
 
-    it('should call next', function() {
+    it('should call next', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })

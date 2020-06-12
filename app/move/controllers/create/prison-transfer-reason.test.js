@@ -7,16 +7,16 @@ const Controller = require('./prison-transfer-reason')
 
 const controller = new Controller({ route: '/' })
 
-describe('Move controllers', function() {
-  describe('Prison transfer reason controller', function() {
+describe('Move controllers', function () {
+  describe('Prison transfer reason controller', function () {
     let mockReq, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       nextSpy = sinon.spy()
     })
 
-    describe('#middlewareSetup()', function() {
-      beforeEach(function() {
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'getPrisonTransferReason')
@@ -25,28 +25,28 @@ describe('Move controllers', function() {
         controller.middlewareSetup()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(BaseController.prototype.middlewareSetup).to.have.been.calledOnce
       })
 
-      it('should call getPrisonTransferReason middleware', function() {
+      it('should call getPrisonTransferReason middleware', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           controller.getPrisonTransferReason
         )
       })
 
-      it('should call setTransferReasonItems middleware', function() {
+      it('should call setTransferReasonItems middleware', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           controller.setTransferReasonItems
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(2)
       })
     })
 
-    describe('#getPrisonTransferReason()', function() {
+    describe('#getPrisonTransferReason()', function () {
       const mockReasons = [
         {
           id: '12345',
@@ -62,59 +62,59 @@ describe('Move controllers', function() {
         },
       ]
 
-      beforeEach(function() {
+      beforeEach(function () {
         mockReq = {}
         sinon.stub(referenceDataService, 'getPrisonTransferReasons')
       })
 
-      context('when service rejects', function() {
+      context('when service rejects', function () {
         const mockError = new Error('Mock error')
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           referenceDataService.getPrisonTransferReasons.rejects(mockError)
           await controller.getPrisonTransferReason(mockReq, {}, nextSpy)
         })
 
-        it('should call person service', function() {
+        it('should call person service', function () {
           expect(
             referenceDataService.getPrisonTransferReasons
           ).to.be.calledOnceWithExactly()
         })
 
-        it('should not set reasons', function() {
+        it('should not set reasons', function () {
           expect(mockReq).not.to.contain.property('prisonTransferReasons')
         })
 
-        it('should call next with error', function() {
+        it('should call next with error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(mockError)
         })
       })
 
-      context('when service resolves', function() {
-        beforeEach(async function() {
+      context('when service resolves', function () {
+        beforeEach(async function () {
           referenceDataService.getPrisonTransferReasons.resolves(mockReasons)
           await controller.getPrisonTransferReason(mockReq, {}, nextSpy)
         })
 
-        it('should call reference data service', function() {
+        it('should call reference data service', function () {
           expect(
             referenceDataService.getPrisonTransferReasons
           ).to.be.calledOnceWithExactly()
         })
 
-        it('should set reasons', function() {
+        it('should set reasons', function () {
           expect(mockReq).to.contain.property('prisonTransferReasons')
           expect(mockReq.prisonTransferReasons).to.deep.equal(mockReasons)
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#setTransferReasonItems()', function() {
-      beforeEach(function() {
+    describe('#setTransferReasonItems()', function () {
+      beforeEach(function () {
         mockReq = {
           prisonTransferReasons: ['1', '2', '3'],
           form: {
@@ -133,28 +133,28 @@ describe('Move controllers', function() {
         controller.setTransferReasonItems(mockReq, {}, nextSpy)
       })
 
-      it('should call presenter', function() {
+      it('should call presenter', function () {
         expect(fieldHelpers.mapReferenceDataToOption.callCount).to.equal(
           mockReq.prisonTransferReasons.length
         )
       })
 
-      it('should set items', function() {
+      it('should set items', function () {
         expect(
           mockReq.form.options.fields.prison_transfer_type.items
         ).to.deep.equal(mockReq.prisonTransferReasons)
       })
 
-      it('should call next without error', function() {
+      it('should call next without error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#process()', function() {
+    describe('#process()', function () {
       const mockComments = 'Additional prison transfer comments'
       const mockTransferTypeId = '2'
 
-      beforeEach(function() {
+      beforeEach(function () {
         mockReq = {
           prisonTransferReasons: [
             {
@@ -180,20 +180,20 @@ describe('Move controllers', function() {
         controller.process(mockReq, {}, nextSpy)
       })
 
-      it('should set prison_transfer_reason', function() {
+      it('should set prison_transfer_reason', function () {
         expect(mockReq.form.values.prison_transfer_reason).to.deep.equal({
           id: '2',
           title: 'Two',
         })
       })
 
-      it('should set additional_information', function() {
+      it('should set additional_information', function () {
         expect(mockReq.form.values.additional_information).to.equal(
           mockComments
         )
       })
 
-      it('should call next without error', function() {
+      it('should call next without error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
