@@ -86,7 +86,7 @@
     "filesize": "6.1.0",
     "form-data": "3.0.0",
     "govuk-frontend": "3.6.0",
-    "grant-express": "5.0.0",
+    "grant-express": "5.0.1",
     "helmet": "3.22.0",
     "hmpo-form-wizard": "11.6.0",
     "i18next": "19.4.4",
