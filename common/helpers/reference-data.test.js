@@ -5,10 +5,10 @@ const { filterDisabled, filterExpired } = require('./reference-data')
 const nextMonth = addMonths(new Date(), 1)
 const lastMonth = subMonths(new Date(), 1)
 
-describe('Reference data helpers', function() {
-  describe('#filterDisabled', function() {
-    context('when an option was disabled in the past', function() {
-      beforeEach(function() {
+describe('Reference data helpers', function () {
+  describe('#filterDisabled', function () {
+    context('when an option was disabled in the past', function () {
+      beforeEach(function () {
         this.options = [
           {
             id: '1234',
@@ -18,8 +18,8 @@ describe('Reference data helpers', function() {
         ]
       })
 
-      context('when the option is not the current field value', function() {
-        beforeEach(function() {
+      context('when the option is not the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '3',
@@ -28,13 +28,13 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should not include the option', function() {
+        it('should not include the option', function () {
           expect(this.filteredOptions).to.have.length(0)
         })
       })
 
-      context('when the option is the current field value', function() {
-        beforeEach(function() {
+      context('when the option is the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '1234',
@@ -43,24 +43,24 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
 
-      context('when there is no current value', function() {
-        beforeEach(function() {
+      context('when there is no current value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(filterDisabled())
         })
 
-        it('should not include the option', function() {
+        it('should not include the option', function () {
           expect(this.filteredOptions).to.have.length(0)
         })
       })
     })
 
-    context('when an option is disabled in the future', function() {
-      beforeEach(function() {
+    context('when an option is disabled in the future', function () {
+      beforeEach(function () {
         this.options = [
           {
             id: '1234',
@@ -70,8 +70,8 @@ describe('Reference data helpers', function() {
         ]
       })
 
-      context('when the option is not the current field value', function() {
-        beforeEach(function() {
+      context('when the option is not the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '3',
@@ -80,13 +80,13 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
 
-      context('when the option is the current field value', function() {
-        beforeEach(function() {
+      context('when the option is the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '1234',
@@ -95,24 +95,24 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
 
-      context('when there is no current value', function() {
-        beforeEach(function() {
+      context('when there is no current value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(filterDisabled())
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
     })
 
-    context('when an option is not disabled', function() {
-      beforeEach(function() {
+    context('when an option is not disabled', function () {
+      beforeEach(function () {
         this.options = [
           {
             id: '1234',
@@ -122,8 +122,8 @@ describe('Reference data helpers', function() {
         ]
       })
 
-      context('when the option is not the current field value', function() {
-        beforeEach(function() {
+      context('when the option is not the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '3',
@@ -132,13 +132,13 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
 
-      context('when the option is the current field value', function() {
-        beforeEach(function() {
+      context('when the option is the current field value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(
             filterDisabled({
               currentValue: '1234',
@@ -147,36 +147,36 @@ describe('Reference data helpers', function() {
           )
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
 
-      context('when there is no current value', function() {
-        beforeEach(function() {
+      context('when there is no current value', function () {
+        beforeEach(function () {
           this.filteredOptions = this.options.filter(filterDisabled())
         })
 
-        it('should include the option', function() {
+        it('should include the option', function () {
           expect(this.filteredOptions).to.have.length(1)
         })
       })
     })
   })
 
-  context('#filterExpired', function() {
-    context('without expired property', function() {
-      it('should return true', function() {
+  context('#filterExpired', function () {
+    context('without expired property', function () {
+      it('should return true', function () {
         expect(filterExpired({})).to.be.true
       })
     })
 
-    context('with expired property', function() {
-      context('with falsy values', function() {
+    context('with expired property', function () {
+      context('with falsy values', function () {
         const falsyValues = [undefined, null, false, '', NaN, 0]
 
-        falsyValues.forEach(function(value) {
-          it('should return true', function() {
+        falsyValues.forEach(function (value) {
+          it('should return true', function () {
             expect(
               filterExpired({
                 expires_at: value,
@@ -186,8 +186,8 @@ describe('Reference data helpers', function() {
         })
       })
 
-      context('when not expired', function() {
-        it('should return true', function() {
+      context('when not expired', function () {
+        it('should return true', function () {
           expect(
             filterExpired({
               expires_at: nextMonth,
@@ -196,8 +196,8 @@ describe('Reference data helpers', function() {
         })
       })
 
-      context('when is expired', function() {
-        it('should return false', function() {
+      context('when is expired', function () {
+        it('should return false', function () {
           expect(
             filterExpired({
               expires_at: lastMonth,

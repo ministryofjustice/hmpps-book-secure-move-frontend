@@ -3,7 +3,7 @@ const filters = require('../../config/nunjucks/filters')
 
 const presenter = require('./allocation-to-summary-list-component')
 
-describe('allocation to summary list component', function() {
+describe('allocation to summary list component', function () {
   const mockParams = {
     to_location: {
       id: '31c262ba-1bab-4b6e-8c53-f0032eeaea0b',
@@ -40,18 +40,18 @@ describe('allocation to summary list component', function() {
     other_criteria: 'Other criteria',
   }
   let output
-  beforeEach(function() {
+  beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(filters, 'startCase').returnsArg(0)
     sinon.stub(filters, 'oxfordJoin').returnsArg(0)
     output = presenter(mockParams)
   })
-  it('outputs an array', function() {
+  it('outputs an array', function () {
     expect(output.rows).to.exist
     expect(output.rows).to.be.an('array')
     expect(output.rows.length).to.equal(4)
   })
-  it('has the prisoner category as first item', function() {
+  it('has the prisoner category as first item', function () {
     expect(output.rows[0]).to.deep.equal({
       key: {
         text: 'fields::prisoner_category.label',
@@ -62,7 +62,7 @@ describe('allocation to summary list component', function() {
     })
     expect(filters.startCase).to.have.been.calledWithExactly('c')
   })
-  it('has the sentence length as second item', function() {
+  it('has the sentence length as second item', function () {
     expect(output.rows[1]).to.deep.equal({
       key: {
         text: 'fields::sentence_length.label',
@@ -76,7 +76,7 @@ describe('allocation to summary list component', function() {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the complex cases as third item, filtering those whose answer is false', function() {
+  it('has the complex cases as third item, filtering those whose answer is false', function () {
     expect(output.rows[2]).to.deep.equal({
       key: {
         text: 'fields::complex_cases.label',
@@ -90,7 +90,7 @@ describe('allocation to summary list component', function() {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the other criteria as fourth item', function() {
+  it('has the other criteria as fourth item', function () {
     expect(output.rows[3]).to.deep.equal({
       key: {
         text: 'fields::other_criteria.label',

@@ -20,12 +20,12 @@ const Controller = proxyquire('./document', {
 
 const controller = new Controller({ route: '/' })
 
-describe('Move controllers', function() {
-  describe('Create document upload controller', function() {
-    describe('#configure()', function() {
+describe('Move controllers', function () {
+  describe('Create document upload controller', function () {
+    describe('#configure()', function () {
       let req, nextSpy
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.spy(FormController.prototype, 'configure')
         nextSpy = sinon.spy()
         req = {
@@ -42,11 +42,11 @@ describe('Move controllers', function() {
         await controller.configure(req, {}, nextSpy)
       })
 
-      it('should set xhrUrl', function() {
+      it('should set xhrUrl', function () {
         expect(req.form.options.fields.documents.xhrUrl).to.equal('/xhr-url')
       })
 
-      it('should call parent configure method', function() {
+      it('should call parent configure method', function () {
         expect(FormController.prototype.configure).to.be.calledOnceWithExactly(
           req,
           {},
@@ -54,13 +54,13 @@ describe('Move controllers', function() {
         )
       })
 
-      it('should not throw an error', function() {
+      it('should not throw an error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#middlewareSetup()', function() {
-      beforeEach(function() {
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
         sinon.stub(FormController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setNextStep')
@@ -68,29 +68,29 @@ describe('Move controllers', function() {
         controller.middlewareSetup()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
       })
 
-      it('should setup multer middleware', function() {
+      it('should setup multer middleware', function () {
         expect(MulterStub.prototype.array).to.have.been.calledWith('documents')
       })
 
-      it('should call setNextStep middleware', function() {
+      it('should call setNextStep middleware', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWith(
           controller.setNextStep
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(3)
       })
     })
 
-    describe('#setNextStep()', function() {
+    describe('#setNextStep()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
           originalUrl: '/original-url',
@@ -103,55 +103,55 @@ describe('Move controllers', function() {
         }
       })
 
-      context('when request body is empty', function() {
-        beforeEach(function() {
+      context('when request body is empty', function () {
+        beforeEach(function () {
           controller.setNextStep(req, {}, nextSpy)
         })
-        it('should keep original next value', function() {
+        it('should keep original next value', function () {
           expect(req.form.options.next).to.equal('/next-url')
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when request body contains upload field', function() {
-        beforeEach(function() {
+      context('when request body contains upload field', function () {
+        beforeEach(function () {
           req.body = {
             upload: 'true',
           }
           controller.setNextStep(req, {}, nextSpy)
         })
 
-        it('should keep original next value', function() {
+        it('should keep original next value', function () {
           expect(req.form.options.next).to.equal('/original-url')
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when request body contains delete field', function() {
-        beforeEach(function() {
+      context('when request body contains delete field', function () {
+        beforeEach(function () {
           req.body = {
             delete: 'true',
           }
           controller.setNextStep(req, {}, nextSpy)
         })
 
-        it('should keep original next value', function() {
+        it('should keep original next value', function () {
           expect(req.form.options.next).to.equal('/original-url')
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       let req, res, nextSpy
       const mockDocuments = [
         { id: '12345' },
@@ -160,7 +160,7 @@ describe('Move controllers', function() {
         { id: '445566' },
       ]
 
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           sessionModel: {
             get: sinon.stub(),
@@ -175,8 +175,8 @@ describe('Move controllers', function() {
         sinon.stub(BaseController.prototype, 'saveValues')
       })
 
-      context('with uploaded files', function() {
-        beforeEach(async function() {
+      context('with uploaded files', function () {
+        beforeEach(async function () {
           req.files = [
             { id: 'uploaded-file-id-1' },
             { id: 'uploaded-file-id-2' },
@@ -186,7 +186,7 @@ describe('Move controllers', function() {
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should delete document', function() {
+        it('should delete document', function () {
           expect(req.form.values.documents).to.deep.equal([
             { id: '12345' },
             { id: '67890' },
@@ -197,22 +197,22 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should call parent method', function() {
+        it('should call parent method', function () {
           expect(
             BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
 
-      context('with deleted file', function() {
-        beforeEach(async function() {
+      context('with deleted file', function () {
+        beforeEach(async function () {
           req.body.delete = '12345'
           req.sessionModel.get.returns(mockDocuments)
 
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should delete document', function() {
+        it('should delete document', function () {
           expect(req.form.values.documents).to.deep.equal([
             { id: '67890' },
             { id: '112233' },
@@ -220,23 +220,23 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should call parent method', function() {
+        it('should call parent method', function () {
           expect(
             BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
 
-      context('by default', function() {
-        beforeEach(async function() {
+      context('by default', function () {
+        beforeEach(async function () {
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should set documents', function() {
+        it('should set documents', function () {
           expect(req.form.values.documents).to.deep.equal([])
         })
 
-        it('should call parent method', function() {
+        it('should call parent method', function () {
           expect(
             BaseController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
@@ -244,10 +244,10 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#errorHandler()', function() {
+    describe('#errorHandler()', function () {
       let req, res, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           t: sinon.stub().returnsArg(0),
         }
@@ -259,64 +259,64 @@ describe('Move controllers', function() {
         sinon.stub(FormController.prototype, 'errorHandler')
       })
 
-      context('with standard error', function() {
+      context('with standard error', function () {
         const err = new Error('Standard error')
 
-        beforeEach(function() {
+        beforeEach(function () {
           controller.errorHandler(err, req, res, nextSpy)
         })
 
-        it('should not send XHR response', function() {
+        it('should not send XHR response', function () {
           expect(res.send).not.to.have.been.called
         })
 
-        it('should call parent error handler', function() {
+        it('should call parent error handler', function () {
           expect(
             FormController.prototype.errorHandler
           ).to.be.calledOnceWithExactly(err, req, res, nextSpy)
         })
       })
 
-      context('with upload error', function() {
+      context('with upload error', function () {
         const err = new multer.MulterError('UPLOAD_ERROR')
         err.field = 'documents'
         const uploadErr = {
           [err.field]: new FormError(err.field, { type: err.code }, req, res),
         }
 
-        context('with normal request', function() {
-          beforeEach(function() {
+        context('with normal request', function () {
+          beforeEach(function () {
             controller.errorHandler(err, req, res, nextSpy)
           })
 
-          it('should not send XHR response', function() {
+          it('should not send XHR response', function () {
             expect(res.send).not.to.have.been.called
           })
 
-          it('should call parent error handler', function() {
+          it('should call parent error handler', function () {
             expect(
               FormController.prototype.errorHandler
             ).to.be.calledOnceWithExactly(uploadErr, req, res, nextSpy)
           })
         })
 
-        context('with XHR request ', function() {
-          beforeEach(function() {
+        context('with XHR request ', function () {
+          beforeEach(function () {
             req.xhr = true
             controller.errorHandler(err, req, res, nextSpy)
           })
 
-          it('should set XHR status', function() {
+          it('should set XHR status', function () {
             expect(res.status).to.be.calledOnceWithExactly(500)
           })
 
-          it('should send error JSON response', function() {
+          it('should send error JSON response', function () {
             expect(res.send).to.be.calledOnceWithExactly(
               `validation::${err.code}`
             )
           })
 
-          it('should not call parent error handler', function() {
+          it('should not call parent error handler', function () {
             expect(
               FormController.prototype.errorHandler
             ).not.to.have.been.called
@@ -325,11 +325,11 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#successHandler', function() {
+    describe('#successHandler', function () {
       let req, res, nextSpy
       const mockDocs = [{ id: 1 }, { id: 2 }]
 
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           sessionModel: {
             get: sinon.stub(),
@@ -343,84 +343,84 @@ describe('Move controllers', function() {
         sinon.stub(FormController.prototype, 'successHandler')
       })
 
-      context('when request is not XHR', function() {
-        beforeEach(function() {
+      context('when request is not XHR', function () {
+        beforeEach(function () {
           controller.successHandler(req, res, nextSpy)
         })
 
-        it('should not send XHR response', function() {
+        it('should not send XHR response', function () {
           expect(res.json).not.to.have.been.called
         })
 
-        it('should call parent success handler', function() {
+        it('should call parent success handler', function () {
           expect(
             FormController.prototype.successHandler
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
 
-      context('when request is XHR', function() {
-        beforeEach(function() {
+      context('when request is XHR', function () {
+        beforeEach(function () {
           req.xhr = true
         })
 
-        context('with no uploaded documents', function() {
-          beforeEach(function() {
+        context('with no uploaded documents', function () {
+          beforeEach(function () {
             controller.successHandler(req, res, nextSpy)
           })
 
-          it('should set XHR status', function() {
+          it('should set XHR status', function () {
             expect(res.status).to.be.calledOnceWithExactly(200)
           })
 
-          it('should send empty array as JSON response', function() {
+          it('should send empty array as JSON response', function () {
             expect(res.json).to.be.calledOnceWithExactly([])
           })
 
-          it('should not call parent success handler', function() {
+          it('should not call parent success handler', function () {
             expect(
               FormController.prototype.successHandler
             ).not.to.have.been.called
           })
         })
 
-        context('with uploaded documents', function() {
-          context('with one documents', function() {
-            beforeEach(function() {
+        context('with uploaded documents', function () {
+          context('with one documents', function () {
+            beforeEach(function () {
               req.files = mockDocs[0]
               controller.successHandler(req, res, nextSpy)
             })
 
-            it('should set XHR status', function() {
+            it('should set XHR status', function () {
               expect(res.status).to.be.calledOnceWithExactly(200)
             })
 
-            it('should send documents as JSON response', function() {
+            it('should send documents as JSON response', function () {
               expect(res.json).to.be.calledOnceWithExactly(mockDocs[0])
             })
 
-            it('should not call parent success handler', function() {
+            it('should not call parent success handler', function () {
               expect(
                 FormController.prototype.successHandler
               ).not.to.have.been.called
             })
           })
 
-          context('with multiple documents', function() {
-            beforeEach(function() {
+          context('with multiple documents', function () {
+            beforeEach(function () {
               req.files = mockDocs
               controller.successHandler(req, res, nextSpy)
             })
 
-            it('should set XHR status', function() {
+            it('should set XHR status', function () {
               expect(res.status).to.be.calledOnceWithExactly(200)
             })
 
-            it('should send documents as JSON response', function() {
+            it('should send documents as JSON response', function () {
               expect(res.json).to.be.calledOnceWithExactly(mockDocs)
             })
 
-            it('should not call parent success handler', function() {
+            it('should not call parent success handler', function () {
               expect(
                 FormController.prototype.successHandler
               ).not.to.have.been.called

@@ -7,37 +7,37 @@ const UpdateBaseController = require('./base')
 
 const controller = new UpdateBaseController({ route: '/' })
 
-describe('Assign controllers', function() {
-  describe('Assign base controller', function() {
-    describe('#middlewareChecks()', function() {
-      it('should inherit middlewareChecks from CreateBaseController', function() {
+describe('Assign controllers', function () {
+  describe('Assign base controller', function () {
+    describe('#middlewareChecks()', function () {
+      it('should inherit middlewareChecks from CreateBaseController', function () {
         expect(controller.middlewareChecks).to.exist.and.equal(
           BaseProto.middlewareChecks
         )
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      it('should not inherit middlewareLocals from CreateBaseController', function() {
+    describe('#middlewareLocals()', function () {
+      it('should not inherit middlewareLocals from CreateBaseController', function () {
         expect(controller.middlewareLocals).to.exist.and.not.equal(
           BaseProto.middlewareLocals
         )
       })
     })
 
-    describe('#setButtonText()', function() {
-      it('should inherit setButtonText from CreateBaseController', function() {
+    describe('#setButtonText()', function () {
+      it('should inherit setButtonText from CreateBaseController', function () {
         expect(controller.setButtonText).to.exist.and.equal(
           BaseProto.setButtonText
         )
       })
     })
 
-    describe('#setMoveSummary()', function() {
+    describe('#setMoveSummary()', function () {
       let locals
       let next
 
-      beforeEach(function() {
+      beforeEach(function () {
         next = sinon.stub()
         sinon
           .stub(presenters, 'moveToMetaListComponent')
@@ -61,28 +61,28 @@ describe('Assign controllers', function() {
         )
       })
 
-      it('creates moveSummary on the locals', function() {
+      it('creates moveSummary on the locals', function () {
         expect(locals.moveSummary).to.exist
         expect(locals.moveSummary).to.deep.equal({ summary: {} })
       })
 
-      it('invokes moveToMetaListComponent with move', function() {
+      it('invokes moveToMetaListComponent with move', function () {
         expect(
           presenters.moveToMetaListComponent
         ).to.have.been.calledWithExactly(locals.move)
       })
     })
 
-    describe('#setJourneyTimer()', function() {
-      it('should inherit setJourneyTimer from CreateBaseController', function() {
+    describe('#setJourneyTimer()', function () {
+      it('should inherit setJourneyTimer from CreateBaseController', function () {
         expect(controller.setJourneyTimer).to.exist.and.equal(
           BaseProto.setJourneyTimer
         )
       })
     })
 
-    describe('#checkCurrentLocation()', function() {
-      it('should inherit checkCurrentLocation from CreateBaseController', function() {
+    describe('#checkCurrentLocation()', function () {
+      it('should inherit checkCurrentLocation from CreateBaseController', function () {
         expect(controller.checkCurrentLocation).to.exist.and.equal(
           BaseProto.checkCurrentLocation
         )
@@ -90,40 +90,40 @@ describe('Assign controllers', function() {
     })
   })
 
-  describe('#middlewareLocals()', function() {
-    beforeEach(function() {
+  describe('#middlewareLocals()', function () {
+    beforeEach(function () {
       sinon.stub(BaseProto, 'middlewareLocals')
       sinon.stub(controller, 'use')
 
       controller.middlewareLocals()
     })
 
-    it('should call parent method', function() {
+    it('should call parent method', function () {
       expect(BaseProto.middlewareLocals).to.have.been.calledOnce
     })
 
-    it('should call set move method', function() {
+    it('should call set move method', function () {
       expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
         controller.setMove
       )
     })
 
-    it('should call set cancel url method', function() {
+    it('should call set cancel url method', function () {
       expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
         controller.setCancelUrl
       )
     })
 
-    it('should call correct number of additional middleware', function() {
+    it('should call correct number of additional middleware', function () {
       expect(controller.use).to.have.been.calledTwice
     })
   })
 
-  describe('#setCancelUrl()', function() {
+  describe('#setCancelUrl()', function () {
     let req = {}
     let res, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       nextSpy = sinon.spy()
       req = {}
       res = {
@@ -138,16 +138,16 @@ describe('Assign controllers', function() {
       controller.setCancelUrl(req, res, nextSpy)
     })
 
-    it('should set cancel url correctly', function() {
+    it('should set cancel url correctly', function () {
       expect(res.locals.cancelUrl).to.equal('/allocation/__allocationId__')
     })
 
-    it('should call next', function() {
+    it('should call next', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 
-  describe('#setMove()', function() {
+  describe('#setMove()', function () {
     let req
     let nextSpy
     let res = {}
@@ -157,7 +157,7 @@ describe('Assign controllers', function() {
       person: { id: '__assigned__ ' },
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       nextSpy = sinon.spy()
       req = {
         form: {
@@ -179,41 +179,41 @@ describe('Assign controllers', function() {
       req.sessionModel.get.withArgs('person').returnsArg(0)
     })
 
-    context('without session', function() {
-      beforeEach(function() {
+    context('without session', function () {
+      beforeEach(function () {
         controller.setMove(req, res, nextSpy)
       })
 
-      it('should set person object on locals', function() {
+      it('should set person object on locals', function () {
         expect(req.sessionModel.get).to.be.calledWithExactly('person')
         expect(res.locals.person).to.equal('person')
       })
 
-      it('should set move on session model with res.locals.move', function() {
+      it('should set move on session model with res.locals.move', function () {
         expect(req.sessionModel.set).to.be.calledWithExactly('move', moveFilled)
       })
 
-      it('should set move object on locals', function() {
+      it('should set move object on locals', function () {
         expect(res.locals.move).to.deep.equal(moveFilled)
       })
 
-      it('should set models on req', function() {
+      it('should set models on req', function () {
         expect(req.models.move).to.deep.equal(moveFilled)
         expect(req.models.person).to.equal('person')
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('when session already has the move', function() {
-      beforeEach(function() {
+    context('when session already has the move', function () {
+      beforeEach(function () {
         req.sessionModel.get.withArgs('move').returnsArg(0)
         controller.setMove(req, res, nextSpy)
       })
 
-      it('should reset move object with the value in the session', function() {
+      it('should reset move object with the value in the session', function () {
         expect(req.sessionModel.set).to.be.calledWithExactly('move', 'move')
       })
     })

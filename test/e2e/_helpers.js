@@ -271,10 +271,7 @@ async function selectOption({ options, value }) {
  * @returns {string} - value of the selected item
  */
 export async function fillAutocomplete({ selector, value }) {
-  await t
-    .click(selector)
-    .selectText(selector)
-    .pressKey('delete')
+  await t.click(selector).selectText(selector).pressKey('delete')
 
   const optionsSelector = '.autocomplete__menu .autocomplete__option'
   const autocompleteMenuOptions = await selector

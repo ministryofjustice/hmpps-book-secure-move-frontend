@@ -14,7 +14,7 @@ const models = require('./models')
 
 let instance
 
-module.exports = function() {
+module.exports = function () {
   if (instance) {
     return instance
   }

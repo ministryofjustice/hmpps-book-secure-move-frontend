@@ -4,24 +4,24 @@ const {
 
 const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
 
-describe('Presenters', function() {
-  describe('#assessmentToSummaryListComponent()', function() {
-    context('when provided with a mock person object', function() {
+describe('Presenters', function () {
+  describe('#assessmentToSummaryListComponent()', function () {
+    context('when provided with a mock person object', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentToSummaryListComponent(
           mockPerson.attributes.assessment_answers
         )
       })
 
-      describe('response', function() {
-        it('should contain rows property', function() {
+      describe('response', function () {
+        it('should contain rows property', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(8)
         })
 
-        it('should format rows correctly', function() {
+        it('should format rows correctly', function () {
           expect(transformedResponse.rows).to.deep.equal([
             {
               key: { text: 'Violent' },
@@ -60,24 +60,24 @@ describe('Presenters', function() {
       })
     })
 
-    context('when filter category is specific', function() {
+    context('when filter category is specific', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentToSummaryListComponent(
           mockPerson.attributes.assessment_answers,
           'court'
         )
       })
 
-      describe('response', function() {
-        describe('response', function() {
-          it('should only return filtered categories', function() {
+      describe('response', function () {
+        describe('response', function () {
+          it('should only return filtered categories', function () {
             expect(transformedResponse).to.have.property('rows')
             expect(transformedResponse.rows.length).to.equal(2)
           })
 
-          it('should format filtered rows correctly', function() {
+          it('should format filtered rows correctly', function () {
             expect(transformedResponse.rows).to.deep.equal([
               {
                 key: { text: 'Solicitor or other legal representation' },
@@ -93,21 +93,21 @@ describe('Presenters', function() {
       })
     })
 
-    context('when called with empty arguments', function() {
+    context('when called with empty arguments', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentToSummaryListComponent()
       })
 
-      describe('response', function() {
-        describe('response', function() {
-          it('should return empty rows', function() {
+      describe('response', function () {
+        describe('response', function () {
+          it('should return empty rows', function () {
             expect(transformedResponse).to.have.property('rows')
             expect(transformedResponse.rows.length).to.equal(0)
           })
 
-          it('should return empty array', function() {
+          it('should return empty array', function () {
             expect(transformedResponse.rows).to.deep.equal([])
           })
         })

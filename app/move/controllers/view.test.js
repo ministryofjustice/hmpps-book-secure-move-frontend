@@ -66,12 +66,12 @@ const mockUpdateLinks = {
 getUpdateUrls.returns(mockUrls)
 getUpdateLinks.returns(mockUpdateLinks)
 
-describe('Move controllers', function() {
-  describe('#view()', function() {
+describe('Move controllers', function () {
+  describe('#view()', function () {
     let req, res
     const userPermissions = ['permA']
 
-    beforeEach(function() {
+    beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
       sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
@@ -100,59 +100,59 @@ describe('Move controllers', function() {
       }
     })
 
-    context('by default', function() {
-      beforeEach(function() {
+    context('by default', function () {
+      beforeEach(function () {
         controller(req, res)
       })
 
-      it('should render a template', function() {
+      it('should render a template', function () {
         expect(res.render.calledOnce).to.be.true
       })
 
-      it('should call moveToMetaListComponent presenter with correct args', function() {
+      it('should call moveToMetaListComponent presenter with correct args', function () {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
           mockMove,
           mockUpdateLinks
         )
       })
 
-      it('should contain a move summary param', function() {
+      it('should contain a move summary param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('moveSummary')
         expect(params.moveSummary).to.equal(mockMove)
       })
 
-      it('should call personToSummaryListComponent presenter with correct args', function() {
+      it('should call personToSummaryListComponent presenter with correct args', function () {
         expect(
           presenters.personToSummaryListComponent
         ).to.be.calledOnceWithExactly(mockMove.person)
       })
 
-      it('should contain personal details summary param', function() {
+      it('should contain personal details summary param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('personalDetailsSummary')
         expect(params.personalDetailsSummary).to.equal(mockMove.person)
       })
 
-      it('should call assessmentToTagList presenter with correct args', function() {
+      it('should call assessmentToTagList presenter with correct args', function () {
         expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(
           mockMove.person.assessment_answers
         )
       })
 
-      it('should contain tag list param', function() {
+      it('should contain tag list param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('tagList')
         expect(params.tagList).to.equal(mockMove.person.assessment_answers)
       })
 
-      it('should call assessmentAnswersByCategory presenter with correct args', function() {
+      it('should call assessmentAnswersByCategory presenter with correct args', function () {
         expect(
           presenters.assessmentAnswersByCategory
         ).to.be.calledOnceWithExactly(mockMove.person.assessment_answers)
       })
 
-      it('should contain assessment param', function() {
+      it('should contain assessment param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('assessment')
         expect(params.assessment).to.deep.equal(
@@ -160,7 +160,7 @@ describe('Move controllers', function() {
         )
       })
 
-      it('should call assessmentToSummaryListComponent presenter with correct args', function() {
+      it('should call assessmentToSummaryListComponent presenter with correct args', function () {
         expect(
           presenters.assessmentToSummaryListComponent
         ).to.be.calledOnceWithExactly(
@@ -169,12 +169,12 @@ describe('Move controllers', function() {
         )
       })
 
-      it('should contain court hearings param', function() {
+      it('should contain court hearings param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('courtHearings')
       })
 
-      it('should order court hearings by start time', function() {
+      it('should order court hearings by start time', function () {
         const params = res.render.args[0][1]
         expect(params.courtHearings).to.deep.equal([
           {
@@ -210,32 +210,32 @@ describe('Move controllers', function() {
         ])
       })
 
-      it('should call courtHearingToSummaryListComponent for each hearing', function() {
+      it('should call courtHearingToSummaryListComponent for each hearing', function () {
         expect(presenters.courtHearingToSummaryListComponent).to.be.callCount(
           mockMove.court_hearings.length
         )
       })
 
-      it('should contain court summary param', function() {
+      it('should contain court summary param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('courtSummary')
         expect(params.courtSummary).to.equal(mockMove.person.assessment_answers)
       })
 
-      it('should contain message title param', function() {
+      it('should contain message title param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('messageTitle')
         expect(params.messageTitle).to.equal(undefined)
       })
 
-      it('should contain message content param', function() {
+      it('should contain message content param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
       })
 
-      describe('update urls and links', function() {
-        it('should call getUpdateUrls with expected args', function() {
+      describe('update urls and links', function () {
+        it('should call getUpdateUrls with expected args', function () {
           expect(getUpdateUrls).to.be.calledOnceWithExactly(
             updateSteps,
             'moveId',
@@ -243,29 +243,29 @@ describe('Move controllers', function() {
           )
         })
 
-        it('should call getUpdateLinks with expected args', function() {
+        it('should call getUpdateLinks with expected args', function () {
           expect(getUpdateLinks).to.be.calledOnceWithExactly(
             updateSteps,
             mockUrls
           )
         })
 
-        it('should pass update urls in locals to render', function() {
+        it('should pass update urls in locals to render', function () {
           const urls = res.render.args[0][1].urls
           expect(urls).to.have.property('update')
         })
 
-        it('should pass update links in locals to render', function() {
+        it('should pass update links in locals to render', function () {
           const updateLinks = res.render.args[0][1].updateLinks
           expect(updateLinks).to.deep.equal(mockUpdateLinks)
         })
       })
     })
 
-    context('when move is cancelled', function() {
+    context('when move is cancelled', function () {
       let params
 
-      beforeEach(function() {
+      beforeEach(function () {
         req.t.returns('__translated__')
         res.locals.move = {
           ...mockMove,
@@ -278,27 +278,27 @@ describe('Move controllers', function() {
         params = res.render.args[0][1]
       })
 
-      it('should contain a message title param', function() {
+      it('should contain a message title param', function () {
         expect(params).to.have.property('messageTitle')
       })
 
-      it('should call correct translation', function() {
+      it('should call correct translation', function () {
         expect(req.t).to.be.calledWithExactly('statuses::description', {
           context: 'made_in_error',
           comment: 'Reason for cancelling comments',
         })
       })
 
-      it('should contain a message content param', function() {
+      it('should contain a message content param', function () {
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
       })
     })
 
-    context('when move doesn’t have a person', function() {
+    context('when move doesn’t have a person', function () {
       let params
 
-      beforeEach(function() {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           person: undefined,
@@ -308,38 +308,38 @@ describe('Move controllers', function() {
         params = res.render.args[0][1]
       })
 
-      it('should call personToSummaryListComponent presenter with undefined', function() {
+      it('should call personToSummaryListComponent presenter with undefined', function () {
         expect(
           presenters.personToSummaryListComponent
         ).to.be.calledOnceWithExactly(undefined)
       })
 
-      it('should contain undefined personal details summary param', function() {
+      it('should contain undefined personal details summary param', function () {
         expect(params).to.have.property('personalDetailsSummary')
         expect(params.personalDetailsSummary).to.equal(undefined)
       })
 
-      it('should call assessmentToTagList presenter with empty array', function() {
+      it('should call assessmentToTagList presenter with empty array', function () {
         expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly([])
       })
 
-      it('should contain tag list param', function() {
+      it('should contain tag list param', function () {
         expect(params).to.have.property('tagList')
         expect(params.tagList).to.deep.equal([])
       })
 
-      it('should call assessmentAnswersByCategory presenter with empty array', function() {
+      it('should call assessmentAnswersByCategory presenter with empty array', function () {
         expect(
           presenters.assessmentAnswersByCategory
         ).to.be.calledOnceWithExactly([])
       })
 
-      it('should contain assessment param as empty array', function() {
+      it('should contain assessment param as empty array', function () {
         expect(params).to.have.property('assessment')
         expect(params.assessment).to.deep.equal([])
       })
 
-      it('should call assessmentToSummaryListComponent presenter with empty array', function() {
+      it('should call assessmentToSummaryListComponent presenter with empty array', function () {
         expect(
           presenters.assessmentToSummaryListComponent
         ).to.be.calledOnceWithExactly([], 'court')

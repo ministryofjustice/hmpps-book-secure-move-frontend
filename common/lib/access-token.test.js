@@ -1,9 +1,9 @@
 const { decodeAccessToken } = require('./access-token')
 
-describe('Access token library', function() {
-  describe('#decodeAccessToken', function() {
-    context('supplied with a properly encoded token', function() {
-      it('returns a Javascript object of the token payload', function() {
+describe('Access token library', function () {
+  describe('#decodeAccessToken', function () {
+    context('supplied with a properly encoded token', function () {
+      it('returns a Javascript object of the token payload', function () {
         const payload = { test: 'test' }
         const encodedPayload = Buffer.from(JSON.stringify(payload)).toString(
           'base64'
@@ -14,8 +14,8 @@ describe('Access token library', function() {
       })
     })
 
-    context('with undefined token', function() {
-      it('should return an empty object', function() {
+    context('with undefined token', function () {
+      it('should return an empty object', function () {
         expect(decodeAccessToken()).to.deep.equal({})
       })
     })

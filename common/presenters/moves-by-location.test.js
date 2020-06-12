@@ -8,25 +8,25 @@ const movesByLocation = proxyquire('./moves-by-location', {
 })
 const mockMoves = require('../../test/fixtures/moves.json')
 
-describe('Presenters', function() {
-  describe('#movesByLocation()', function() {
-    beforeEach(function() {
+describe('Presenters', function () {
+  describe('#movesByLocation()', function () {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
     })
 
-    context('when provided with mock moves response', function() {
+    context('when provided with mock moves response', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = movesByLocation(mockMoves)
       })
 
-      it('should contain correct number of locations', function() {
+      it('should contain correct number of locations', function () {
         expect(transformedResponse.length).to.equal(3)
       })
 
-      describe('location order', function() {
-        it('should order correctly', function() {
+      describe('location order', function () {
+        it('should order correctly', function () {
           const keys = transformedResponse.map(group => group.location)
           expect(keys).to.deep.equal([
             'Axminster Crown Court',
@@ -36,19 +36,19 @@ describe('Presenters', function() {
         })
       })
 
-      describe('location count', function() {
-        it('should contain correct number of moves', function() {
+      describe('location count', function () {
+        it('should contain correct number of moves', function () {
           const keys = transformedResponse.map(group => group.items.length)
           expect(keys).to.deep.equal([10, 5, 5])
         })
       })
 
-      describe('labels', function() {
-        it('should translate correct amount of times', function() {
+      describe('labels', function () {
+        it('should translate correct amount of times', function () {
           expect(i18n.t).to.be.callCount(transformedResponse.length)
         })
 
-        it('should contain correct label', function() {
+        it('should contain correct label', function () {
           const labels = transformedResponse.map(group => group.label)
           labels.forEach(label => {
             expect(label).to.equal('collections::labels.to_location')
@@ -57,10 +57,10 @@ describe('Presenters', function() {
       })
     })
 
-    context('when to_location is missing', function() {
+    context('when to_location is missing', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = movesByLocation([
           {
             id: '1',
@@ -111,12 +111,12 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should contain correct number of locations', function() {
+      it('should contain correct number of locations', function () {
         expect(transformedResponse.length).to.equal(5)
       })
 
-      describe('location order', function() {
-        it('should order correctly', function() {
+      describe('location order', function () {
+        it('should order correctly', function () {
           const keys = transformedResponse.map(group => group.location)
           expect(keys).to.deep.equal([
             'Barrow in Furness County Court',
@@ -128,15 +128,15 @@ describe('Presenters', function() {
         })
       })
 
-      describe('location count', function() {
-        it('should contain correct number of moves', function() {
+      describe('location count', function () {
+        it('should contain correct number of moves', function () {
           const keys = transformedResponse.map(group => group.items.length)
           expect(keys).to.deep.equal([1, 1, 3, 2, 1])
         })
       })
 
-      describe('labels', function() {
-        it('should contain correct label', function() {
+      describe('labels', function () {
+        it('should contain correct label', function () {
           const labels = transformedResponse.map(group => group.label)
           labels.forEach(label => {
             expect(label).to.equal('collections::labels.to_location')
@@ -144,12 +144,12 @@ describe('Presenters', function() {
         })
       })
 
-      describe('translations', function() {
-        it('should translate correct number of times', function() {
+      describe('translations', function () {
+        it('should translate correct number of times', function () {
           expect(i18n.t).to.be.callCount(11)
         })
 
-        it('should translate titles correctly', function() {
+        it('should translate titles correctly', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.items.unknown.label'
           )
@@ -172,19 +172,19 @@ describe('Presenters', function() {
       })
     })
 
-    context('when grouped by `from_location`', function() {
+    context('when grouped by `from_location`', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = movesByLocation(mockMoves, 'from_location')
       })
 
-      it('should contain correct number of locations', function() {
+      it('should contain correct number of locations', function () {
         expect(transformedResponse.length).to.equal(19)
       })
 
-      describe('location order', function() {
-        it('should order correctly', function() {
+      describe('location order', function () {
+        it('should order correctly', function () {
           const keys = transformedResponse.map(group => group.location)
           expect(keys).to.deep.equal([
             'HMIRC The Verne',
@@ -210,8 +210,8 @@ describe('Presenters', function() {
         })
       })
 
-      describe('location count', function() {
-        it('should contain correct number of moves', function() {
+      describe('location count', function () {
+        it('should contain correct number of moves', function () {
           const keys = transformedResponse.map(group => group.items.length)
           expect(keys).to.deep.equal([
             1,
@@ -237,12 +237,12 @@ describe('Presenters', function() {
         })
       })
 
-      describe('labels', function() {
-        it('should translate correct amount of times', function() {
+      describe('labels', function () {
+        it('should translate correct amount of times', function () {
           expect(i18n.t).to.be.callCount(transformedResponse.length)
         })
 
-        it('should contain correct label', function() {
+        it('should contain correct label', function () {
           const labels = transformedResponse.map(group => group.label)
           labels.forEach(label => {
             expect(label).to.equal('collections::labels.from_location')

@@ -1,9 +1,9 @@
 const middleware = require('./save-url')
 
-describe('Moves middleware', function() {
-  describe('#saveUrl()', function() {
+describe('Moves middleware', function () {
+  describe('#saveUrl()', function () {
     let req, nextSpy
-    beforeEach(function() {
+    beforeEach(function () {
       req = {
         originalUrl: '/moves/original/url',
         session: {},
@@ -13,12 +13,12 @@ describe('Moves middleware', function() {
       middleware(req, {}, nextSpy)
     })
 
-    it('should save url to session', function() {
+    it('should save url to session', function () {
       expect(req.session).to.have.property('movesUrl')
       expect(req.session.movesUrl).to.equal(req.originalUrl)
     })
 
-    it('should call next', function() {
+    it('should call next', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })

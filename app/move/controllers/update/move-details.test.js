@@ -9,36 +9,36 @@ const MixinProto = CreateMoveDetails.prototype
 const controller = new MoveDetailsController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
-describe('Move controllers', function() {
-  describe('Update move details controller', function() {
-    it('should extend UpdateBaseController', function() {
+describe('Move controllers', function () {
+  describe('Update move details controller', function () {
+    it('should extend UpdateBaseController', function () {
       expect(Object.getPrototypeOf(ownProto)).to.equal(
         UpdateBaseController.prototype
       )
     })
 
-    describe('When mixing in create controller', function() {
-      it('should copy configure from CreateMoveDetails', function() {
+    describe('When mixing in create controller', function () {
+      it('should copy configure from CreateMoveDetails', function () {
         expect(controller.configure).to.exist.and.equal(MixinProto.configure)
       })
 
-      it('should copy setMoveTypes from CreateMoveDetails', function() {
+      it('should copy setMoveTypes from CreateMoveDetails', function () {
         expect(controller.setMoveTypes).to.exist.and.equal(
           MixinProto.setMoveTypes
         )
       })
 
-      it('should copy process from CreateMoveDetails', function() {
+      it('should copy process from CreateMoveDetails', function () {
         expect(controller.process).to.exist.and.equal(MixinProto.process)
       })
 
-      it('should copy successHandler from CreateMoveDetails', function() {
+      it('should copy successHandler from CreateMoveDetails', function () {
         expect(controller.successHandler).to.exist.and.equal(
           MixinProto.successHandler
         )
       })
 
-      it('should only have the expected methods of its own', function() {
+      it('should only have the expected methods of its own', function () {
         const ownMethods = [
           'middlewareSetup',
           'getUpdateValues',
@@ -53,22 +53,22 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#middlewareSetup', function() {
-      beforeEach(function() {
+    describe('#middlewareSetup', function () {
+      beforeEach(function () {
         sinon.stub(MixinProto, 'middlewareSetup')
         sinon.stub(controller, 'use')
         controller.middlewareSetup()
       })
 
-      context('When middlewareSetup is called', function() {
-        it('should invoke the mixin controller’s middlewareSetup with the correct context', function() {
+      context('When middlewareSetup is called', function () {
+        it('should invoke the mixin controller’s middlewareSetup with the correct context', function () {
           expect(MixinProto.middlewareSetup).to.be.calledOnceWithExactly()
           expect(MixinProto.middlewareSetup.getCall(0).thisValue).to.equal(
             controller
           )
         })
 
-        it('should use the filterMoveTypes middleware', function() {
+        it('should use the filterMoveTypes middleware', function () {
           expect(controller.use).to.be.calledOnceWithExactly(
             controller.filterMoveTypes
           )
@@ -76,44 +76,44 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#getUpdateValues', function() {
+    describe('#getUpdateValues', function () {
       let req = {}
       const res = {}
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           getMove: sinon.stub(),
         }
       })
 
-      context('When no move exists', function() {
-        it('should return an empty object', function() {
+      context('When no move exists', function () {
+        it('should return an empty object', function () {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({})
         })
       })
 
-      context('When a move exists without a location id', function() {
+      context('When a move exists without a location id', function () {
         const move = { move_type: '#move_type' }
-        beforeEach(function() {
+        beforeEach(function () {
           req.getMove.returns(move)
         })
-        it('should return just the move type', function() {
+        it('should return just the move type', function () {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({
             move_type: '#move_type',
           })
         })
       })
 
-      context('When a move exists with a location id', function() {
+      context('When a move exists with a location id', function () {
         const move = {
           move_type: '#move_type',
           to_location: {
             id: '#to_location_id',
           },
         }
-        beforeEach(function() {
+        beforeEach(function () {
           req.getMove.returns(move)
         })
-        it('should return the move type and to_location', function() {
+        it('should return the move type and to_location', function () {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({
             move_type: '#move_type',
             'to_location_#move_type': '#to_location_id',
@@ -121,15 +121,15 @@ describe('Move controllers', function() {
         })
       })
 
-      context('When a move exists with additonal information', function() {
+      context('When a move exists with additonal information', function () {
         const move = {
           move_type: '#move_type',
           additional_information: '#additionalInfo',
         }
-        beforeEach(function() {
+        beforeEach(function () {
           req.getMove.returns(move)
         })
-        it('should return the move type and the comments for that move type', function() {
+        it('should return the move type and the comments for that move type', function () {
           expect(controller.getUpdateValues(req, res)).to.deep.equal({
             move_type: '#move_type',
             additional_information: '#additionalInfo',
@@ -139,11 +139,11 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#filterMoveTypes', function() {
+    describe('#filterMoveTypes', function () {
       let req = {}
       const res = {}
       let nextSpy
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           getMove: sinon.stub().returns({ move_type: '#moveType' }),
           form: {
@@ -170,25 +170,25 @@ describe('Move controllers', function() {
         controller.filterMoveTypes(req, res, nextSpy)
       })
 
-      context('When filterMoveTypes is called', function() {
-        it('should remove the irrelevant options from move type', function() {
+      context('When filterMoveTypes is called', function () {
+        it('should remove the irrelevant options from move type', function () {
           expect(req.form.options.fields.move_type.items).to.deep.equal([
             {
               value: '#moveType',
             },
           ])
         })
-        it('should call the next method', function() {
+        it('should call the next method', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#saveValues', function() {
+    describe('#saveValues', function () {
       let req = {}
       const res = {}
       let nextSpy
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.stub(moveService, 'redirect')
         sinon.stub(moveService, 'update')
         req = {
@@ -214,9 +214,9 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('When the move_type is not prison_recall', function() {
-        context('and the to location has changed', function() {
-          beforeEach(async function() {
+      context('When the move_type is not prison_recall', function () {
+        context('and the to location has changed', function () {
+          beforeEach(async function () {
             req.getMove.returns({
               move_type: 'faraway',
               to_location: {
@@ -226,14 +226,14 @@ describe('Move controllers', function() {
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should call set the notes property', async function() {
+          it('should call set the notes property', async function () {
             expect(req.t).to.be.calledOnceWithExactly(
               'moves::redirect_notes',
               req.session.user
             )
           })
 
-          it('should call move service’s redirect method', async function() {
+          it('should call move service’s redirect method', async function () {
             expect(moveService.redirect).to.be.calledOnceWithExactly({
               id: '#moveId',
               notes: 'moves::redirect_notes',
@@ -243,13 +243,13 @@ describe('Move controllers', function() {
             })
           })
 
-          it('should invoke next', async function() {
+          it('should invoke next', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('and the to location has not changed', function() {
-          beforeEach(async function() {
+        context('and the to location has not changed', function () {
+          beforeEach(async function () {
             req.getMove.returns({
               move_type: 'faraway',
               to_location: {
@@ -259,31 +259,31 @@ describe('Move controllers', function() {
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should not call move service’s redirect method', async function() {
+          it('should not call move service’s redirect method', async function () {
             expect(moveService.redirect).to.not.be.called
           })
 
-          it('should invoke next', async function() {
+          it('should invoke next', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('and the move service errors', function() {
+        context('and the move service errors', function () {
           const error = new Error()
-          beforeEach(async function() {
+          beforeEach(async function () {
             moveService.redirect.throws(error)
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should invoke next with error', async function() {
+          it('should invoke next with error', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly(error)
           })
         })
       })
 
-      context('When the move_type is prison_recall', function() {
-        context('and the comments has changed', function() {
-          beforeEach(async function() {
+      context('When the move_type is prison_recall', function () {
+        context('and the comments has changed', function () {
+          beforeEach(async function () {
             req.getMove.returns({
               move_type: 'prison_recall',
               additional_information: '#oldInfo',
@@ -291,20 +291,20 @@ describe('Move controllers', function() {
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should call move service’s update method', async function() {
+          it('should call move service’s update method', async function () {
             expect(moveService.update).to.be.calledOnceWithExactly({
               id: '#moveId',
               additional_information: '#additionalInformation',
             })
           })
 
-          it('should invoke next', async function() {
+          it('should invoke next', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('and the additional comments have not changed', function() {
-          beforeEach(async function() {
+        context('and the additional comments have not changed', function () {
+          beforeEach(async function () {
             req.getMove.returns({
               move_type: 'prison_recall',
               additional_information: '#additionalInformation',
@@ -312,18 +312,18 @@ describe('Move controllers', function() {
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should not call move service’s update method', async function() {
+          it('should not call move service’s update method', async function () {
             expect(moveService.update).to.not.be.called
           })
 
-          it('should invoke next', async function() {
+          it('should invoke next', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('and the move service errors', function() {
+        context('and the move service errors', function () {
           const error = new Error()
-          beforeEach(async function() {
+          beforeEach(async function () {
             req.getMove.returns({
               move_type: 'prison_recall',
               additional_information: '#oldInformation',
@@ -332,7 +332,7 @@ describe('Move controllers', function() {
             await controller.saveValues(req, res, nextSpy)
           })
 
-          it('should invoke next with error', async function() {
+          it('should invoke next with error', async function () {
             expect(nextSpy).to.be.calledOnceWithExactly(error)
           })
         })

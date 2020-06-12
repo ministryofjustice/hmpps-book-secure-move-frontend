@@ -6,97 +6,97 @@ const CreateBaseController = require('./base')
 
 const controller = new CreateBaseController({ route: '/' })
 
-describe('Move controllers', function() {
-  describe('Create base controller', function() {
-    describe('#middlewareChecks()', function() {
-      beforeEach(function() {
+describe('Move controllers', function () {
+  describe('Create base controller', function () {
+    describe('#middlewareChecks()', function () {
+      beforeEach(function () {
         sinon.stub(FormController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
 
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormController.prototype.middlewareChecks).to.have.been
           .calledOnce
       })
 
-      it('should call check current location method', function() {
+      it('should call check current location method', function () {
         expect(controller.use).to.have.been.calledWith(
           controller.checkCurrentLocation
         )
       })
     })
 
-    describe('#middlewareSetup()', function() {
-      beforeEach(function() {
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
         sinon.stub(FormController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
 
         controller.middlewareSetup()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
       })
 
-      it('should call set models method', function() {
+      it('should call set models method', function () {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
           controller.setModels
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(1)
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      beforeEach(function() {
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
         sinon.stub(FormController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 
-      it('should call set button text method', function() {
+      it('should call set button text method', function () {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
-      it('should call set cancel url method', function() {
+      it('should call set cancel url method', function () {
         expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
           controller.setCancelUrl
         )
       })
 
-      it('should call set move summary method', function() {
+      it('should call set move summary method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
           controller.setMoveSummary
         )
       })
 
-      it('should call set journey timer method', function() {
+      it('should call set journey timer method', function () {
         expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setJourneyTimer
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(4)
       })
     })
 
-    describe('#setButtonText()', function() {
+    describe('#setButtonText()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
           form: {
@@ -117,50 +117,50 @@ describe('Move controllers', function() {
         sinon.stub(FormController.prototype, 'getNextStep')
       })
 
-      context('with buttonText option', function() {
-        beforeEach(function() {
+      context('with buttonText option', function () {
+        beforeEach(function () {
           req.form.options.buttonText = 'Override button text'
           FormController.prototype.getNextStep.returns('/')
 
           controller.setButtonText(req, {}, nextSpy)
         })
 
-        it('should set button text correctly', function() {
+        it('should set button text correctly', function () {
           expect(req.form.options.buttonText).to.equal('Override button text')
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with no buttonText option', function() {
-        context('when step is not penultimate step', function() {
-          beforeEach(function() {
+      context('with no buttonText option', function () {
+        context('when step is not penultimate step', function () {
+          beforeEach(function () {
             FormController.prototype.getNextStep.returns('/step-one')
 
             controller.setButtonText(req, {}, nextSpy)
           })
 
-          it('should set button text correctly', function() {
+          it('should set button text correctly', function () {
             expect(req.form.options.buttonText).to.equal('actions::continue')
           })
 
-          it('should call next', function() {
+          it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('when step is penultimate step', function() {
-          beforeEach(function() {
+        context('when step is penultimate step', function () {
+          beforeEach(function () {
             FormController.prototype.getNextStep.returns('/last-step')
             req.sessionModel.get
               .withArgs('from_location_type')
               .returns('prison')
           })
 
-          context('with prison transfers', function() {
-            beforeEach(function() {
+          context('with prison transfers', function () {
+            beforeEach(function () {
               req.sessionModel.get
                 .withArgs('to_location_type')
                 .returns('prison')
@@ -168,37 +168,37 @@ describe('Move controllers', function() {
               controller.setButtonText(req, {}, nextSpy)
             })
 
-            it('should set button text correctly', function() {
+            it('should set button text correctly', function () {
               expect(req.form.options.buttonText).to.equal(
                 'actions::send_for_review'
               )
             })
 
-            it('should call next', function() {
+            it('should call next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
 
-          context('with court appearance', function() {
-            beforeEach(function() {
+          context('with court appearance', function () {
+            beforeEach(function () {
               req.sessionModel.get.withArgs('to_location_type').returns('court')
 
               controller.setButtonText(req, {}, nextSpy)
             })
 
-            it('should set button text correctly', function() {
+            it('should set button text correctly', function () {
               expect(req.form.options.buttonText).to.equal(
                 'actions::request_move'
               )
             })
 
-            it('should call next', function() {
+            it('should call next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
 
-          context('with allocation move', function() {
-            beforeEach(function() {
+          context('with allocation move', function () {
+            beforeEach(function () {
               req.getMove.returns({
                 allocation: { id: '1' },
               })
@@ -206,13 +206,13 @@ describe('Move controllers', function() {
               controller.setButtonText(req, {}, nextSpy)
             })
 
-            it('should set button text correctly', function() {
+            it('should set button text correctly', function () {
               expect(req.form.options.buttonText).to.equal(
                 'actions::add_person'
               )
             })
 
-            it('should call next', function() {
+            it('should call next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
@@ -220,77 +220,77 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#setCancelUrl()', function() {
+    describe('#setCancelUrl()', function () {
       let res, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         res = {
           locals: {},
         }
       })
 
-      context('with no moves url local', function() {
-        beforeEach(function() {
+      context('with no moves url local', function () {
+        beforeEach(function () {
           controller.setCancelUrl({}, res, nextSpy)
         })
 
-        it('should set cancel url correctly', function() {
+        it('should set cancel url correctly', function () {
           expect(res.locals).to.have.property('cancelUrl')
           expect(res.locals.cancelUrl).to.be.undefined
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with moves url local', function() {
-        beforeEach(function() {
+      context('with moves url local', function () {
+        beforeEach(function () {
           res.locals.MOVES_URL = '/moves?move-date=2019-10-10'
           controller.setCancelUrl({}, res, nextSpy)
         })
 
-        it('should set cancel url moves url', function() {
+        it('should set cancel url moves url', function () {
           expect(res.locals).to.have.property('cancelUrl')
           expect(res.locals.cancelUrl).to.equal('/moves?move-date=2019-10-10')
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#checkCurrentLocation()', function() {
+    describe('#checkCurrentLocation()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
           session: {},
         }
       })
 
-      context('when current location exists', function() {
-        beforeEach(function() {
+      context('when current location exists', function () {
+        beforeEach(function () {
           req.session = {
             currentLocation: {},
           }
           controller.checkCurrentLocation(req, {}, nextSpy)
         })
 
-        it('should call next without error', function() {
+        it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('when no current location exists', function() {
-        beforeEach(function() {
+      context('when no current location exists', function () {
+        beforeEach(function () {
           controller.checkCurrentLocation(req, {}, nextSpy)
         })
 
-        it('should call next with error', function() {
+        it('should call next with error', function () {
           expect(nextSpy).to.be.calledOnce
           expect(nextSpy.args[0][0]).to.be.an('error')
           expect(nextSpy.args[0][0].message).to.equal(
@@ -301,11 +301,11 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#setModels()', function() {
+    describe('#setModels()', function () {
       let res
       let req
       let nextSpy
-      beforeEach(function() {
+      beforeEach(function () {
         res = {
           locals: {},
         }
@@ -316,21 +316,21 @@ describe('Move controllers', function() {
         controller.setModels(req, res, nextSpy)
       })
 
-      it('should set the models', function() {
+      it('should set the models', function () {
         expect(req.models).to.deep.equal({})
         expect(controller._setModels).to.be.calledOnceWithExactly(req)
       })
 
-      it('should add model methods', function() {
+      it('should add model methods', function () {
         expect(controller._addModelMethods).to.be.calledOnceWithExactly(req)
       })
 
-      it('invoke next', function() {
+      it('invoke next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#_setModels()', function() {
+    describe('#_setModels()', function () {
       let req
       const mockSession = {
         id: '#move',
@@ -338,83 +338,80 @@ describe('Move controllers', function() {
           id: '#person',
         },
       }
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           models: {},
           sessionModel: {
             toJSON: sinon.stub().returns(mockSession),
-            get: sinon
-              .stub()
-              .withArgs('person')
-              .returns(mockSession.person),
+            get: sinon.stub().withArgs('person').returns(mockSession.person),
           },
         }
         controller._setModels(req)
       })
 
-      it('should add move model to req', function() {
+      it('should add move model to req', function () {
         expect(req.models.move).to.deep.equal(mockSession)
       })
 
-      it('should add person model to req', function() {
+      it('should add person model to req', function () {
         expect(req.models.person).to.deep.equal(mockSession.person)
       })
     })
 
-    describe('#_addModelMethods()', function() {
+    describe('#_addModelMethods()', function () {
       let req
-      beforeEach(function() {
+      beforeEach(function () {
         req = {}
         controller._addModelMethods(req)
       })
 
-      it('should add getMove method to req', function() {
+      it('should add getMove method to req', function () {
         expect(typeof req.getMove).to.equal('function')
       })
 
-      it('should add getMoveId method to req', function() {
+      it('should add getMoveId method to req', function () {
         expect(typeof req.getMoveId).to.equal('function')
       })
 
-      it('should add getPerson method to req', function() {
+      it('should add getPerson method to req', function () {
         expect(typeof req.getPerson).to.equal('function')
       })
 
-      it('should add getPersonId method to req', function() {
+      it('should add getPersonId method to req', function () {
         expect(typeof req.getPersonId).to.equal('function')
       })
     })
 
-    describe('#request methods', function() {
+    describe('#request methods', function () {
       let req
 
-      context('when models do not exist', function() {
-        beforeEach(function() {
+      context('when models do not exist', function () {
+        beforeEach(function () {
           req = {
             models: {},
           }
           controller._addModelMethods(req)
         })
 
-        it('req.getMove should return empty object', function() {
+        it('req.getMove should return empty object', function () {
           expect(req.getMove()).to.deep.equal({})
         })
 
-        it('req.getMoveId should return', function() {
+        it('req.getMoveId should return', function () {
           expect(req.getMoveId()).to.be.undefined
         })
 
-        it('req.getPerson should return empty object', function() {
+        it('req.getPerson should return empty object', function () {
           expect(req.getPerson()).to.deep.equal({})
         })
 
-        it('req.getPersonId should return', function() {
+        it('req.getPersonId should return', function () {
           expect(req.getPersonId()).to.be.undefined
         })
       })
 
-      context('when models do exist', function() {
-        beforeEach(function() {
+      context('when models do exist', function () {
+        beforeEach(function () {
           req = {
             models: {
               move: {
@@ -428,25 +425,25 @@ describe('Move controllers', function() {
           controller._addModelMethods(req)
         })
 
-        it('req.getMove should move object', function() {
+        it('req.getMove should move object', function () {
           expect(req.getMove()).to.deep.equal(req.models.move)
         })
 
-        it('req.getMoveId should return move id', function() {
+        it('req.getMoveId should return move id', function () {
           expect(req.getMoveId()).to.equal('#moveId')
         })
 
-        it('req.getPerson should return person object', function() {
+        it('req.getPerson should return person object', function () {
           expect(req.getPerson()).to.deep.equal(req.models.person)
         })
 
-        it('req.getPersonId should return person id', function() {
+        it('req.getPersonId should return person id', function () {
           expect(req.getPersonId()).to.equal('#personId')
         })
       })
     })
 
-    describe('#setMoveSummary()', function() {
+    describe('#setMoveSummary()', function () {
       let req, res, nextSpy
       const mockSessionModel = {
         date: '2019-06-09',
@@ -462,7 +459,7 @@ describe('Move controllers', function() {
         },
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         nextSpy = sinon.spy()
         req = {
@@ -481,8 +478,8 @@ describe('Move controllers', function() {
         }
       })
 
-      context('with move_type', function() {
-        beforeEach(function() {
+      context('with move_type', function () {
+        beforeEach(function () {
           req.getMove.returns({
             ...mockSessionModel,
             move_type: 'court_appearance',
@@ -491,7 +488,7 @@ describe('Move controllers', function() {
           controller.setMoveSummary(req, res, nextSpy)
         })
 
-        it('should call presenter correctly', function() {
+        it('should call presenter correctly', function () {
           expect(
             presenters.moveToMetaListComponent
           ).to.be.calledOnceWithExactly({
@@ -503,7 +500,7 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should set locals as expected', function() {
+        it('should set locals as expected', function () {
           expect(res.locals).to.deep.equal({
             existing_key: 'foo',
             person: mockSessionModel.person,
@@ -517,17 +514,17 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should call next without error', function() {
+        it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('without move_type', function() {
-        beforeEach(function() {
+      context('without move_type', function () {
+        beforeEach(function () {
           controller.setMoveSummary(req, res, nextSpy)
         })
 
-        it('should call presenter correctly', function() {
+        it('should call presenter correctly', function () {
           expect(
             presenters.moveToMetaListComponent
           ).to.be.calledOnceWithExactly({
@@ -538,7 +535,7 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should set locals as expected', function() {
+        it('should set locals as expected', function () {
           expect(res.locals).to.deep.equal({
             existing_key: 'foo',
             person: mockSessionModel.person,
@@ -546,16 +543,16 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should call next without error', function() {
+        it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#setJourneyTimer()', function() {
+    describe('#setJourneyTimer()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         this.clock = sinon.useFakeTimers(new Date('2017-08-10').getTime())
         req = {
           sessionModel: {
@@ -566,45 +563,45 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('with no timestamp in the session', function() {
-        beforeEach(function() {
+      context('with no timestamp in the session', function () {
+        beforeEach(function () {
           req.sessionModel.get.withArgs('journeyTimestamp').returns(undefined)
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
-        it('should set timestamp', function() {
+        it('should set timestamp', function () {
           expect(req.sessionModel.set).to.be.calledOnceWithExactly(
             'journeyTimestamp',
             1502323200000
           )
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with timestamp in the session', function() {
+      context('with timestamp in the session', function () {
         const mockTimestamp = 11212121212
 
-        beforeEach(function() {
+        beforeEach(function () {
           req.sessionModel.get
             .withArgs('journeyTimestamp')
             .returns(mockTimestamp)
           controller.setJourneyTimer(req, {}, nextSpy)
         })
 
-        it('should not set timestamp', function() {
+        it('should not set timestamp', function () {
           expect(req.sessionModel.set).not.to.be.called
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       let req, nextSpy
       const currentLocationMock = {
         id: '12345',
@@ -612,7 +609,7 @@ describe('Move controllers', function() {
         can_upload_documents: true,
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(FormController.prototype, 'saveValues')
         req = {
           form: {
@@ -626,23 +623,23 @@ describe('Move controllers', function() {
         controller.saveValues(req, {}, nextSpy)
       })
 
-      it('should set current location ID', function() {
+      it('should set current location ID', function () {
         expect(req.form.values.from_location).to.equal(currentLocationMock.id)
       })
 
-      it('should set from location type', function() {
+      it('should set from location type', function () {
         expect(req.form.values.from_location_type).to.equal(
           currentLocationMock.location_type
         )
       })
 
-      it('should set can upload documents values', function() {
+      it('should set can upload documents values', function () {
         expect(req.form.values.can_upload_documents).to.equal(
           currentLocationMock.can_upload_documents
         )
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormController.prototype.saveValues).to.be.calledOnceWithExactly(
           req,
           {},

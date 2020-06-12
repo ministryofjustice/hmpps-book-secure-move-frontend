@@ -10,15 +10,15 @@ function Message($module) {
 }
 
 Message.prototype = {
-  init: function() {
+  init: function () {
     this.render()
   },
 
-  cacheEls: function($module) {
+  cacheEls: function ($module) {
     this.$module = $module
   },
 
-  render: function() {
+  render: function () {
     this.appendClose(this.$module)
 
     if (this.settings.isFocused) {
@@ -26,7 +26,7 @@ Message.prototype = {
     }
   },
 
-  appendClose: function($element) {
+  appendClose: function ($element) {
     if (
       $element.className.indexOf('error') !== -1 ||
       !this.settings.isDismissable
@@ -48,7 +48,7 @@ Message.prototype = {
     $element.appendChild(link)
   },
 
-  removeElement: function(element) {
+  removeElement: function (element) {
     const parent = element.parentNode
 
     parent.removeChild(element)

@@ -6,7 +6,7 @@ const referenceDataHelpers = require('../helpers/reference-data')
 const referenceDataService = require('../services/reference-data')
 
 function getIdentifier(identifier) {
-  return function(row) {
+  return function (row) {
     const item = find(get(row, 'person.identifiers'), {
       identifier_type: identifier,
     })

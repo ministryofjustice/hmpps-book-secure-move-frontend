@@ -6,7 +6,7 @@ const controller = new Controller({
   route: '/',
 })
 
-describe('the save controller', function() {
+describe('the save controller', function () {
   let sessionModel
   let next
   const mockData = {
@@ -15,9 +15,9 @@ describe('the save controller', function() {
     answer1: 'yes',
     answer2: 34,
   }
-  describe('#saveValues', function() {
-    context('happy path', function() {
-      beforeEach(async function() {
+  describe('#saveValues', function () {
+    context('happy path', function () {
+      beforeEach(async function () {
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
           set: sinon.stub(),
@@ -35,28 +35,28 @@ describe('the save controller', function() {
           next
         )
       })
-      it('calls allocationService.create', function() {
+      it('calls allocationService.create', function () {
         expect(allocationService.create).to.have.been.calledOnce
       })
-      it('ignores the errors and csrf from session model', function() {
+      it('ignores the errors and csrf from session model', function () {
         expect(allocationService.create).to.have.been.calledWithExactly({
           answer1: 'yes',
           answer2: 34,
         })
       })
-      it('sets the resulting allocation on the session model', function() {
+      it('sets the resulting allocation on the session model', function () {
         expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
           allocationCreated: true,
           id: 9,
         })
       })
-      it('calls next', function() {
+      it('calls next', function () {
         expect(next).to.have.been.calledOnce
       })
     })
-    context('unhappy path', function() {
+    context('unhappy path', function () {
       const error = new Error('bad!')
-      beforeEach(async function() {
+      beforeEach(async function () {
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
         }
@@ -70,17 +70,17 @@ describe('the save controller', function() {
           next
         )
       })
-      it('calls next with the error', function() {
+      it('calls next with the error', function () {
         expect(next).to.be.calledOnceWithExactly(error)
       })
     })
   })
-  describe('#successHandler', function() {
+  describe('#successHandler', function () {
     let sessionModel
     let journeyModel
     let redirect
-    context('happy path', function() {
-      beforeEach(async function() {
+    context('happy path', function () {
+      beforeEach(async function () {
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
           get: sinon.stub().returns(123),
@@ -99,19 +99,19 @@ describe('the save controller', function() {
           next
         )
       })
-      it('resets the journey model', function() {
+      it('resets the journey model', function () {
         expect(journeyModel.reset).to.have.been.calledOnce
       })
-      it('resets the session model', function() {
+      it('resets the session model', function () {
         expect(sessionModel.reset).to.have.been.calledOnce
       })
-      it('calls redirect', function() {
+      it('calls redirect', function () {
         expect(redirect).to.have.been.calledOnce
       })
     })
-    context('unhappy path', function() {
+    context('unhappy path', function () {
       const error = new Error('error')
-      beforeEach(async function() {
+      beforeEach(async function () {
         next = sinon.stub()
         sessionModel = {
           get: sinon.stub().returns({
@@ -129,7 +129,7 @@ describe('the save controller', function() {
           next
         )
       })
-      it('calls next with an error', function() {
+      it('calls next with an error', function () {
         expect(next).to.have.been.calledWithExactly(error)
       })
     })

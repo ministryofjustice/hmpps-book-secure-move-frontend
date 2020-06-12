@@ -66,13 +66,13 @@ const { getLocations, getFullname } = proxyquire('./user', {
   '../../config': configStub,
 })
 
-describe('User service', function() {
-  describe('#getFullname()', function() {
+describe('User service', function () {
+  describe('#getFullname()', function () {
     let result
 
-    context('with valid bearer token', function() {
-      context('User authenticated from HMPPS SSO', function() {
-        beforeEach(async function() {
+    context('with valid bearer token', function () {
+      context('User authenticated from HMPPS SSO', function () {
+        beforeEach(async function () {
           const mockToken = '12345678910'
 
           nock('http://test.com')
@@ -82,32 +82,32 @@ describe('User service', function() {
           result = await getFullname(mockToken)
         })
 
-        it('requests the user’s details from HMPPS SSO', function() {
+        it('requests the user’s details from HMPPS SSO', function () {
           expect(nock.isDone()).to.be.true
         })
 
-        it('returns an object of user details', function() {
+        it('returns an object of user details', function () {
           expect(result).to.deep.equal(mockFullNameResponse.name)
         })
       })
     })
   })
 
-  describe('#getLocations()', function() {
+  describe('#getLocations()', function () {
     let tokenData, token, result
 
-    context('with valid bearer token', function() {
-      context('User authenticated from HMPPS SSO', function() {
-        beforeEach(function() {
+    context('with valid bearer token', function () {
+      context('User authenticated from HMPPS SSO', function () {
+        beforeEach(function () {
           tokenData = {
             user_name: 'test',
             auth_source: 'auth',
           }
         })
 
-        context('with supplier role', function() {
-          context('with no groups', function() {
-            beforeEach(async function() {
+        context('with supplier role', function () {
+          context('with no groups', function () {
+            beforeEach(async function () {
               nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
                 .get('/')
                 .reply(200, JSON.stringify([]))
@@ -117,18 +117,18 @@ describe('User service', function() {
               result = await getLocations(encodeToken(tokenData))
             })
 
-            it('requests the user’s groups from HMPPS SSO', function() {
+            it('requests the user’s groups from HMPPS SSO', function () {
               expect(nock.isDone()).to.be.true
             })
 
-            it('returns an empty Array', function() {
+            it('returns an empty Array', function () {
               expect(result).to.deep.equal([])
             })
           })
 
-          context('with groups', function() {
-            context('when supplier exists', function() {
-              beforeEach(async function() {
+          context('with groups', function () {
+            context('when supplier exists', function () {
+              beforeEach(async function () {
                 nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
                   .get('/')
                   .reply(200, JSON.stringify(authGroups))
@@ -138,23 +138,23 @@ describe('User service', function() {
                 result = await getLocations(encodeToken(tokenData))
               })
 
-              it('requests the user’s groups from HMPPS SSO', function() {
+              it('requests the user’s groups from HMPPS SSO', function () {
                 expect(nock.isDone()).to.be.true
               })
 
-              it('calls reference with supplier key', function() {
+              it('calls reference with supplier key', function () {
                 expect(
                   referenceDataStub.getLocationsBySupplierId
                 ).to.be.calledWithExactly(supplierStub.id)
               })
 
-              it('returns an Array of location objects', function() {
+              it('returns an Array of location objects', function () {
                 expect(result).to.deep.equal([{ id: 'test' }])
               })
             })
 
-            context('when supplier does not exist', function() {
-              beforeEach(async function() {
+            context('when supplier does not exist', function () {
+              beforeEach(async function () {
                 nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
                   .get('/')
                   .reply(
@@ -171,17 +171,17 @@ describe('User service', function() {
                 result = await getLocations(encodeToken(tokenData))
               })
 
-              it('requests the user’s groups from HMPPS SSO', function() {
+              it('requests the user’s groups from HMPPS SSO', function () {
                 expect(nock.isDone()).to.be.true
               })
 
-              it('returns an Array of location objects', function() {
+              it('returns an Array of location objects', function () {
                 expect(result).to.deep.equal([])
               })
             })
 
-            context('when supplier call errors', function() {
-              beforeEach(async function() {
+            context('when supplier call errors', function () {
+              beforeEach(async function () {
                 nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
                   .get('/')
                   .reply(
@@ -196,7 +196,7 @@ describe('User service', function() {
                 tokenData.authorities = ['ROLE_PECS_SUPPLIER']
               })
 
-              it('returns an error', function() {
+              it('returns an error', function () {
                 return expect(
                   getLocations(encodeToken(tokenData))
                 ).to.be.rejectedWith('Error')
@@ -205,8 +205,8 @@ describe('User service', function() {
           })
         })
 
-        context('with other roles', function() {
-          beforeEach(async function() {
+        context('with other roles', function () {
+          beforeEach(async function () {
             nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
               .get('/')
               .reply(200, JSON.stringify(authGroups))
@@ -214,18 +214,18 @@ describe('User service', function() {
             result = await getLocations(encodeToken(tokenData))
           })
 
-          it('requests the user’s groups from HMPPS SSO', function() {
+          it('requests the user’s groups from HMPPS SSO', function () {
             expect(nock.isDone()).to.be.true
           })
 
-          it('returns an Array of location objects', function() {
+          it('returns an Array of location objects', function () {
             expect(result).to.deep.equal([{ id: 'test' }])
           })
         })
       })
 
-      context('User authenticated from NOMIS', function() {
-        beforeEach(async function() {
+      context('User authenticated from NOMIS', function () {
+        beforeEach(async function () {
           tokenData = {
             user_name: 'test',
             auth_source: 'nomis',
@@ -240,17 +240,17 @@ describe('User service', function() {
           result = await getLocations(token)
         })
 
-        it('requests the user’s caseloads from the NOMIS Elite 2 API', function() {
+        it('requests the user’s caseloads from the NOMIS Elite 2 API', function () {
           expect(nock.isDone()).to.be.true
         })
 
-        it('returns an Array of location objects', function() {
+        it('returns an Array of location objects', function () {
           expect(result).to.deep.equal([{ id: 'test' }])
         })
       })
 
-      context('User authentication source indeterminate', function() {
-        beforeEach(async function() {
+      context('User authentication source indeterminate', function () {
+        beforeEach(async function () {
           tokenData = {
             user_name: 'test',
           }
@@ -260,7 +260,7 @@ describe('User service', function() {
           result = await getLocations(token)
         })
 
-        it('defaults to an empty list of locations', function() {
+        it('defaults to an empty list of locations', function () {
           expect(result).to.be.an('array').that.is.empty
         })
       })

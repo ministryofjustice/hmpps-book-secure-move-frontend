@@ -36,54 +36,54 @@ const mockPerson = {
   ],
 }
 
-describe('Presenters', function() {
-  describe('#personToCardComponent()', function() {
+describe('Presenters', function () {
+  describe('#personToCardComponent()', function () {
     let transformedResponse
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returns('__translated__')
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
     })
 
-    context('with default options', function() {
-      context('with mock person', function() {
-        beforeEach(function() {
+    context('with default options', function () {
+      context('with mock person', function () {
+        beforeEach(function () {
           transformedResponse = personToCardComponent()(mockPerson)
         })
 
-        describe('response', function() {
-          it('should contain a href', function() {
+        describe('response', function () {
+          it('should contain a href', function () {
             expect(transformedResponse).to.have.property('href')
             expect(transformedResponse.href).to.equal(mockPerson.href)
           })
 
-          it('should contain a title', function() {
+          it('should contain a title', function () {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
               text: mockPerson.fullname.toUpperCase(),
             })
           })
 
-          it('should not contain classes', function() {
+          it('should not contain classes', function () {
             expect(transformedResponse).not.to.have.property('classes')
           })
 
-          it('should contain an image path', function() {
+          it('should contain an image path', function () {
             expect(transformedResponse).to.have.property('image_path')
             expect(transformedResponse.image_path).to.equal(
               mockPerson.image_url
             )
           })
 
-          it('should contain image alt', function() {
+          it('should contain image alt', function () {
             expect(transformedResponse).to.have.property('image_alt')
             expect(transformedResponse.image_alt).to.equal(
               mockPerson.fullname.toUpperCase()
             )
           })
 
-          it('should contain correct meta data', function() {
+          it('should contain correct meta data', function () {
             expect(transformedResponse).to.have.property('meta')
             expect(transformedResponse.meta).to.deep.equal({
               items: [
@@ -99,7 +99,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should contain correct tags', function() {
+          it('should contain correct tags', function () {
             expect(transformedResponse).to.have.property('tags')
             expect(transformedResponse.tags).to.deep.equal({
               items: [
@@ -125,13 +125,13 @@ describe('Presenters', function() {
             })
           })
 
-          it('should contain correct amount of properties', function() {
+          it('should contain correct amount of properties', function () {
             expect(Object.keys(transformedResponse)).to.have.length(6)
           })
         })
 
-        describe('translations', function() {
-          it('should translate age label', function() {
+        describe('translations', function () {
+          it('should translate age label', function () {
             expect(i18n.t.getCall(0)).to.be.calledWithExactly('age', {
               context: 'with_date_of_birth',
               age: 50,
@@ -139,26 +139,26 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate date of birth label', function() {
+          it('should translate date of birth label', function () {
             expect(i18n.t.getCall(1)).to.be.calledWithExactly(
               'fields::date_of_birth.label'
             )
           })
 
-          it('should translate gender label', function() {
+          it('should translate gender label', function () {
             expect(i18n.t.getCall(2)).to.be.calledWithExactly(
               'fields::gender.label'
             )
           })
 
-          it('should translate correct number of times', function() {
+          it('should translate correct number of times', function () {
             expect(i18n.t).to.be.callCount(3)
           })
         })
       })
 
-      context('when meta contains falsey values', function() {
-        it('should correctly remove false items', function() {
+      context('when meta contains falsey values', function () {
+        it('should correctly remove false items', function () {
           const transformedResponse = personToCardComponent()({
             date_of_birth: '',
             gender: '',
@@ -169,7 +169,7 @@ describe('Presenters', function() {
           expect(transformedResponse.meta.items.length).to.equal(0)
         })
 
-        it('should correctly remove false items', function() {
+        it('should correctly remove false items', function () {
           const transformedResponse = personToCardComponent()({
             date_of_birth: null,
             gender: null,
@@ -180,7 +180,7 @@ describe('Presenters', function() {
           expect(transformedResponse.meta.items.length).to.equal(0)
         })
 
-        it('should correctly remove false items', function() {
+        it('should correctly remove false items', function () {
           const transformedResponse = personToCardComponent()({
             date_of_birth: undefined,
             gender: undefined,
@@ -192,10 +192,10 @@ describe('Presenters', function() {
         })
       })
 
-      context('when meta contains some falsey values', function() {
+      context('when meta contains some falsey values', function () {
         let transformedResponse
 
-        beforeEach(function() {
+        beforeEach(function () {
           transformedResponse = personToCardComponent()({
             last_name: 'Jones',
             first_names: 'Steve',
@@ -206,7 +206,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should correctly remove false items', function() {
+        it('should correctly remove false items', function () {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta.items.length).to.equal(1)
           expect(transformedResponse.meta).to.deep.equal({
@@ -220,10 +220,10 @@ describe('Presenters', function() {
         })
       })
 
-      context('with assessment answers', function() {
+      context('with assessment answers', function () {
         let transformedResponse, mockPersonWithAnswers
 
-        beforeEach(function() {
+        beforeEach(function () {
           mockPersonWithAnswers = {
             href: '/move/12345',
             last_name: 'Jones',
@@ -299,12 +299,12 @@ describe('Presenters', function() {
           transformedResponse = personToCardComponent()(mockPersonWithAnswers)
         })
 
-        it('should correctly filter', function() {
+        it('should correctly filter', function () {
           expect(transformedResponse).to.have.property('tags')
           expect(transformedResponse.tags.items.length).to.equal(5)
         })
 
-        it('should correctly map and sort', function() {
+        it('should correctly map and sort', function () {
           expect(transformedResponse.tags.items).to.deep.equal([
             {
               href: `${mockPersonWithAnswers.href}#concealed-items`,
@@ -341,84 +341,84 @@ describe('Presenters', function() {
       })
     })
 
-    context('with meta disabled', function() {
-      beforeEach(function() {
+    context('with meta disabled', function () {
+      beforeEach(function () {
         transformedResponse = personToCardComponent({
           showMeta: false,
         })(mockPerson)
       })
 
-      it('should not contain meta items', function() {
+      it('should not contain meta items', function () {
         expect(transformedResponse).not.to.have.property('meta')
       })
 
-      it('should contain href', function() {
+      it('should contain href', function () {
         expect(transformedResponse).to.have.property('href')
       })
 
-      it('should contain title', function() {
+      it('should contain title', function () {
         expect(transformedResponse).to.have.property('title')
       })
 
-      it('should contain tags', function() {
+      it('should contain tags', function () {
         expect(transformedResponse).to.have.property('tags')
         expect(transformedResponse.tags.items.length).to.equal(3)
       })
     })
 
-    context('with tag disabled', function() {
-      beforeEach(function() {
+    context('with tag disabled', function () {
+      beforeEach(function () {
         transformedResponse = personToCardComponent({
           showTags: false,
         })(mockPerson)
       })
 
-      it('should not contain tags items', function() {
+      it('should not contain tags items', function () {
         expect(transformedResponse).not.to.have.property('tags')
       })
 
-      it('should contain href', function() {
+      it('should contain href', function () {
         expect(transformedResponse).to.have.property('href')
       })
 
-      it('should contain title', function() {
+      it('should contain title', function () {
         expect(transformedResponse).to.have.property('title')
       })
 
-      it('should contain meta', function() {
+      it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
         expect(transformedResponse.meta.items.length).to.equal(2)
       })
     })
 
-    context('with image disabled', function() {
-      beforeEach(function() {
+    context('with image disabled', function () {
+      beforeEach(function () {
         transformedResponse = personToCardComponent({
           showImage: false,
         })(mockPerson)
       })
 
-      it('should not contain an image path', function() {
+      it('should not contain an image path', function () {
         expect(transformedResponse).not.to.have.property('image_path')
       })
 
-      it('should not contain an image path', function() {
+      it('should not contain an image path', function () {
         expect(transformedResponse).not.to.have.property('image_path')
       })
 
-      it('should not contain image alt', function() {
+      it('should not contain image alt', function () {
         expect(transformedResponse).not.to.have.property('image_alt')
       })
 
-      it('should contain href', function() {
+      it('should contain href', function () {
         expect(transformedResponse).to.have.property('href')
       })
 
-      it('should contain title', function() {
+      it('should contain title', function () {
         expect(transformedResponse).to.have.property('title')
       })
 
-      it('should contain meta', function() {
+      it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
         expect(transformedResponse.meta.items.length).to.equal(2)
       })
@@ -434,22 +434,22 @@ describe('Presenters', function() {
       image_alt: '__translated__',
     }
 
-    context('with no arguments', function() {
-      beforeEach(function() {
+    context('with no arguments', function () {
+      beforeEach(function () {
         transformedResponse = personToCardComponent()()
       })
 
-      it('should use fallback values', function() {
+      it('should use fallback values', function () {
         expect(transformedResponse).to.deep.equal(noPersonResponse)
       })
     })
 
-    context('with null', function() {
-      beforeEach(function() {
+    context('with null', function () {
+      beforeEach(function () {
         transformedResponse = personToCardComponent()(null)
       })
 
-      it('should use fallback values', function() {
+      it('should use fallback values', function () {
         expect(transformedResponse).to.deep.equal(noPersonResponse)
       })
     })

@@ -5,32 +5,32 @@ const {
 
 const examples = getExamples('meta-list')
 
-describe('Meta list component', function() {
-  context('default', function() {
+describe('Meta list component', function () {
+  context('default', function () {
     let $, $component, $items, $action
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', examples.default)
       $component = $('.app-meta-list')
       $items = $component.find('.app-meta-list__item')
       $action = $component.find('.app-meta-list__action')
     })
 
-    it('should render', function() {
+    it('should render', function () {
       expect($component.length).to.equal(1)
     })
 
-    it('should render correct number of items', function() {
+    it('should render correct number of items', function () {
       expect($items.length).to.equal(2)
     })
 
-    it('should render no actions', function() {
+    it('should render no actions', function () {
       expect($action.length).to.equal(0)
     })
   })
 
-  context('with classes', function() {
-    it('should render classes', function() {
+  context('with classes', function () {
+    it('should render classes', function () {
       const $ = renderComponentHtmlToCheerio('meta-list', {
         classes: 'app-meta-list--custom-class',
       })
@@ -40,10 +40,10 @@ describe('Meta list component', function() {
     })
   })
 
-  context('items with text', function() {
+  context('items with text', function () {
     let $, $items
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
@@ -67,7 +67,7 @@ describe('Meta list component', function() {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should render text', function() {
+    it('should render text', function () {
       const $item1 = $($items[0])
       const $key = $item1.find('.app-meta-list__key')
       const $value = $item1.find('.app-meta-list__value')
@@ -76,7 +76,7 @@ describe('Meta list component', function() {
       expect($value.html().trim()).to.equal('Home')
     })
 
-    it('should escape HTML', function() {
+    it('should escape HTML', function () {
       const $item2 = $($items[1])
       const $key = $item2.find('.app-meta-list__key')
       const $value = $item2.find('.app-meta-list__value')
@@ -86,10 +86,10 @@ describe('Meta list component', function() {
     })
   })
 
-  context('items with html', function() {
+  context('items with html', function () {
     let $, $items
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
@@ -105,7 +105,7 @@ describe('Meta list component', function() {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should render HTML', function() {
+    it('should render HTML', function () {
       const $item1 = $($items[0])
       const $key = $item1.find('.app-meta-list__key')
       const $value = $item1.find('.app-meta-list__value')
@@ -115,10 +115,10 @@ describe('Meta list component', function() {
     })
   })
 
-  context('items with no key', function() {
+  context('items with no key', function () {
     let $, $items
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
@@ -131,14 +131,14 @@ describe('Meta list component', function() {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should not render the key', function() {
+    it('should not render the key', function () {
       const $item1 = $($items[0])
       const $key = $item1.find('.app-meta-list__key')
 
       expect($key.length).to.equal(0)
     })
 
-    it('should render the value', function() {
+    it('should render the value', function () {
       const $item1 = $($items[0])
       const $value = $item1.find('.app-meta-list__value')
 
@@ -146,10 +146,10 @@ describe('Meta list component', function() {
     })
   })
 
-  context('items with no value', function() {
+  context('items with no value', function () {
     let $, $items
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', {
         items: [
           {
@@ -162,42 +162,42 @@ describe('Meta list component', function() {
       $items = $('.app-meta-list').find('.app-meta-list__item')
     })
 
-    it('should not render item', function() {
+    it('should not render item', function () {
       expect($items.length).to.equal(0)
     })
   })
 
-  context('with action', function() {
+  context('with action', function () {
     let $, $component, $action, $link
 
-    beforeEach(function() {
+    beforeEach(function () {
       $ = renderComponentHtmlToCheerio('meta-list', examples['with action'])
       $component = $('.app-meta-list')
       $action = $component.find('.app-meta-list__action')
       $link = $action.find('.govuk-link')
     })
 
-    it('should render action', function() {
+    it('should render action', function () {
       expect($action.length).to.equal(1)
     })
 
-    it('should set correct class on action', function() {
+    it('should set correct class on action', function () {
       expect($action.hasClass('action-class')).to.be.true
     })
 
-    it('should render action link', function() {
+    it('should render action link', function () {
       expect($link.length).to.equal(1)
     })
 
-    it('should set correct text for link', function() {
+    it('should set correct text for link', function () {
       expect($link.text().trim()).to.equal('Action text')
     })
 
-    it('should set correct href on link', function() {
+    it('should set correct href on link', function () {
       expect($link.attr('href')).to.equal('/action')
     })
 
-    it('should set correct attributes on link', function() {
+    it('should set correct attributes on link', function () {
       expect($link.attr('foo')).to.equal('bar')
     })
   })

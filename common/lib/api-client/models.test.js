@@ -197,9 +197,9 @@ const expectNoData = ({ response }) => {
   expect(response.data).to.be.null
 }
 
-describe('API client models', function() {
+describe('API client models', function () {
   forEach(models, (model, modelName) => {
-    describe(`${startCase(modelName)} model`, function() {
+    describe(`${startCase(modelName)} model`, function () {
       // ensure all methods have a statusCode defined
       const noStatusMethods = getStatusMethods(modelName, undefined)
 
@@ -214,16 +214,16 @@ describe('API client models', function() {
         expectFn = expectProperties,
         expectStr = 'should contain correct fields'
       ) => {
-        describe(`${statusCode} status code`, function() {
+        describe(`${statusCode} status code`, function () {
           forEach(getStatusMethods(modelName, statusCode), testCase => {
-            describe(`#${testCase.method}()`, function() {
+            describe(`#${testCase.method}()`, function () {
               let response
 
-              beforeEach(async function() {
+              beforeEach(async function () {
                 response = await getResponse({ modelName, model, testCase })
               })
 
-              it(expectStr, function() {
+              it(expectStr, function () {
                 expectFn({ model, response })
               })
             })

@@ -7,11 +7,11 @@ const mockMove = {
   },
 }
 
-describe('Move controllers', function() {
-  describe('#confirmation()', function() {
+describe('Move controllers', function () {
+  describe('#confirmation()', function () {
     let req, res
 
-    beforeEach(function() {
+    beforeEach(function () {
       req = {
         t: sinon.stub().returnsArg(0),
       }
@@ -23,60 +23,60 @@ describe('Move controllers', function() {
       }
     })
 
-    context('by default', function() {
-      beforeEach(function() {
+    context('by default', function () {
+      beforeEach(function () {
         controller(req, res)
       })
 
-      it('should render confirmation template', function() {
+      it('should render confirmation template', function () {
         const template = res.render.args[0][0]
 
         expect(res.render.calledOnce).to.be.true
         expect(template).to.equal('move/views/confirmation')
       })
 
-      it('should use to location title as location', function() {
+      it('should use to location title as location', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('location')
         expect(params.location).to.equal(mockMove.to_location.title)
       })
 
-      it('should use supplier fallback as supplier name', function() {
+      it('should use supplier fallback as supplier name', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('supplierNames')
         expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
       })
 
-      it('should translate supplier fallback key', function() {
+      it('should translate supplier fallback key', function () {
         expect(req.t).to.have.been.calledOnceWithExactly('supplier_fallback')
       })
 
-      it('should use empty array for saved hearings', function() {
+      it('should use empty array for saved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('savedHearings')
         expect(params.savedHearings).to.deep.equal([])
       })
 
-      it('should use empty array for unsaved hearings', function() {
+      it('should use empty array for unsaved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('unsavedHearings')
         expect(params.unsavedHearings).to.deep.equal([])
       })
 
-      it('should have undefined unassignedMoveId', function() {
+      it('should have undefined unassignedMoveId', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('unassignedMoveId')
         expect(params.unassignedMoveId).to.be.undefined
       })
 
-      it('should contain correct number of locals', function() {
+      it('should contain correct number of locals', function () {
         const locals = res.render.args[0][1]
         expect(Object.keys(locals)).to.have.length(5)
       })
     })
 
-    describe('with move_type "prison_recall"', function() {
-      beforeEach(function() {
+    describe('with move_type "prison_recall"', function () {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           move_type: 'prison_recall',
@@ -85,7 +85,7 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should use translation key as location', function() {
+      it('should use translation key as location', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('location')
         expect(params.location).to.equal(
@@ -97,8 +97,8 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('with empty supplier', function() {
-      beforeEach(function() {
+    describe('with empty supplier', function () {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           from_location: {
@@ -109,19 +109,19 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should use supplier fallback as supplier name', function() {
+      it('should use supplier fallback as supplier name', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('supplierNames')
         expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
       })
 
-      it('should translate supplier fallback key', function() {
+      it('should translate supplier fallback key', function () {
         expect(req.t).to.have.been.calledOnceWithExactly('supplier_fallback')
       })
     })
 
-    describe('with one supplier', function() {
-      beforeEach(function() {
+    describe('with one supplier', function () {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           from_location: {
@@ -136,15 +136,15 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should only contain first supplier in supplier param', function() {
+      it('should only contain first supplier in supplier param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('supplierNames')
         expect(params.supplierNames).to.deep.equal(['Supplier one'])
       })
     })
 
-    describe('with multiple suppliers', function() {
-      beforeEach(function() {
+    describe('with multiple suppliers', function () {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           from_location: {
@@ -162,7 +162,7 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should contain all supplier names as supplier param', function() {
+      it('should contain all supplier names as supplier param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('supplierNames')
         expect(params.supplierNames).to.deep.equal([
@@ -172,8 +172,8 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('with hearings', function() {
-      beforeEach(function() {
+    describe('with hearings', function () {
+      beforeEach(function () {
         res.locals.move = {
           ...mockMove,
           court_hearings: [
@@ -207,25 +207,25 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should contain correct number of saved hearings', function() {
+      it('should contain correct number of saved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('savedHearings')
         expect(params.savedHearings.length).to.equal(2)
       })
 
-      it('should contain correct case numbers in saved hearings', function() {
+      it('should contain correct case numbers in saved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('savedHearings')
         expect(params.savedHearings).to.deep.equal(['S72525', 'T15222'])
       })
 
-      it('should contain correct number of unsaved hearings', function() {
+      it('should contain correct number of unsaved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('unsavedHearings')
         expect(params.unsavedHearings.length).to.equal(4)
       })
 
-      it('should contain correct case numbers in unsaved hearings', function() {
+      it('should contain correct case numbers in unsaved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('unsavedHearings')
         expect(params.unsavedHearings).to.deep.equal([
@@ -237,8 +237,8 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('with allocation', function() {
-      beforeEach(function() {
+    describe('with allocation', function () {
+      beforeEach(function () {
         req.allocation = {
           moves: [
             {
@@ -262,7 +262,7 @@ describe('Move controllers', function() {
         controller(req, res)
       })
 
-      it('should set unassignedMoveId to next move without a person', function() {
+      it('should set unassignedMoveId to next move without a person', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('unassignedMoveId')
         expect(params.unassignedMoveId).to.equal('__unassigned__')

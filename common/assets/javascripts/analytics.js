@@ -5,20 +5,20 @@ function Analytics($module) {
 }
 
 Analytics.prototype = {
-  init: function() {
+  init: function () {
     this.cacheEls()
     this.render()
   },
 
-  cacheEls: function() {
+  cacheEls: function () {
     this.$errors = document.querySelectorAll('.govuk-error-summary__list li a')
   },
 
-  render: function() {
+  render: function () {
     nodeListForEach(this.$errors, this.trackError.bind(this))
   },
 
-  trackError: function(error) {
+  trackError: function (error) {
     const fieldId = error.href.substring(error.href.indexOf('#') + 1)
     const errorMessage = error.text
 
@@ -29,7 +29,7 @@ Analytics.prototype = {
     })
   },
 
-  sendEvent: function({ action, category, label }) {
+  sendEvent: function ({ action, category, label }) {
     if (window.gtag) {
       window.gtag('event', action, {
         event_category: category,

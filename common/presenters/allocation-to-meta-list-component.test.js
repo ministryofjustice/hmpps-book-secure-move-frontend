@@ -3,7 +3,7 @@ const filters = require('../../config/nunjucks/filters')
 
 const presenter = require('./allocation-to-meta-list-component')
 
-describe('allocation to meta list component', function() {
+describe('allocation to meta list component', function () {
   const mockParams = {
     from_location: {
       id: 'ed286eb6-7bd6-4cb8-aaf6-02406fb42b88',
@@ -40,17 +40,17 @@ describe('allocation to meta list component', function() {
     ],
   }
   let output
-  beforeEach(function() {
+  beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
     output = presenter(mockParams)
   })
-  it('outputs an array', function() {
+  it('outputs an array', function () {
     expect(output.items).to.exist
     expect(output.items).to.be.an('array')
     expect(output.items.length).to.equal(4)
   })
-  it('has the number of prisoners as first item', function() {
+  it('has the number of prisoners as first item', function () {
     expect(output.items[0]).to.deep.equal({
       key: {
         text: 'fields::moves_count.label',
@@ -60,7 +60,7 @@ describe('allocation to meta list component', function() {
       },
     })
   })
-  it('has the move from as second item', function() {
+  it('has the move from as second item', function () {
     expect(output.items[1]).to.deep.equal({
       key: {
         text: 'fields::from_location.short_label',
@@ -70,7 +70,7 @@ describe('allocation to meta list component', function() {
       },
     })
   })
-  it('has the move to as third item', function() {
+  it('has the move to as third item', function () {
     expect(output.items[2]).to.deep.equal({
       key: {
         text: 'fields::move_type.short_label',
@@ -80,7 +80,7 @@ describe('allocation to meta list component', function() {
       },
     })
   })
-  it('has the date as fourth item', function() {
+  it('has the date as fourth item', function () {
     expect(output.items[3]).to.deep.equal({
       key: {
         text: 'fields::date_type.label',

@@ -1,7 +1,7 @@
 const { get, isFunction, pickBy } = require('lodash')
 
 function objectToTableRow(schema) {
-  return function(data) {
+  return function (data) {
     return schema
       .map(({ head, row }) => {
         if (!head) {

@@ -2,11 +2,11 @@ const dateHelpers = require('../../../common/helpers/date')
 
 const middleware = require('./set-body.single-requests')
 
-describe('Moves middleware', function() {
-  describe('#setBodySingleRequests()', function() {
+describe('Moves middleware', function () {
+  describe('#setBodySingleRequests()', function () {
     let mockRes, mockReq, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon
         .stub(dateHelpers, 'getCurrentWeekAsRange')
         .returns(['2010-10-10', '2010-10-07'])
@@ -22,12 +22,12 @@ describe('Moves middleware', function() {
       }
     })
 
-    context('without date range', function() {
-      beforeEach(function() {
+    context('without date range', function () {
+      beforeEach(function () {
         middleware(mockReq, mockRes, nextSpy)
       })
 
-      it('should assign req.body correctly', function() {
+      it('should assign req.body correctly', function () {
         expect(mockReq.body.requested).to.deep.equal({
           status: 'pending',
           createdAtDate: ['2010-10-10', '2010-10-07'],
@@ -35,18 +35,18 @@ describe('Moves middleware', function() {
         })
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    context('with date range', function() {
-      beforeEach(function() {
+    context('with date range', function () {
+      beforeEach(function () {
         mockReq.params.dateRange = ['2020-10-10', '2020-10-10']
         middleware(mockReq, mockRes, nextSpy)
       })
 
-      it('should assign req.body correctly', function() {
+      it('should assign req.body correctly', function () {
         expect(mockReq.body.requested).to.deep.equal({
           status: 'pending',
           createdAtDate: ['2020-10-10', '2020-10-10'],
@@ -54,7 +54,7 @@ describe('Moves middleware', function() {
         })
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
