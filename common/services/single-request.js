@@ -1,4 +1,5 @@
-const { isNil, omitBy } = require('lodash')
+const dateFunctions = require('date-fns')
+const { isNil, mapValues, omitBy, pick } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -79,17 +80,32 @@ const singleRequestService = {
       .then(response => response.data)
   },
 
-  reject(id, { comment } = {}) {
+  reject(id, data = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
+    const booleansAndNulls = ['rebook']
+    const fields = ['rejection_reason', 'cancellation_reason_comment', 'rebook']
+
+    const mappedData = mapValues(pick(data, fields), (value, key) => {
+      if (booleansAndNulls.includes(key)) {
+        try {
+          value = JSON.parse(value)
+        } catch (e) {}
+      }
+
+      return value
+    })
+
+    const timestamp = dateFunctions.formatISO(new Date())
+
     return apiClient
-      .update('move', {
-        id,
-        status: 'cancelled',
-        cancellation_reason: 'rejected',
-        cancellation_reason_comment: comment,
+      .one('move', id)
+      .all('reject')
+      .post({
+        timestamp,
+        ...mappedData,
       })
       .then(response => response.data)
   },

@@ -1,4 +1,5 @@
-const { pick } = require('lodash')
+const { differenceInCalendarDays, parseISO } = require('date-fns')
+const { pick, set } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
@@ -8,6 +9,7 @@ const filters = require('../../../config/nunjucks/filters')
 class ReviewController extends FormWizardController {
   middlewareSetup() {
     super.middlewareSetup()
+    this.use(this.setRebookOptions)
     this.use(this.updateDateHint)
   }
 
@@ -20,6 +22,26 @@ class ReviewController extends FormWizardController {
     super.middlewareChecks()
     this.use(this.checkStatus)
     this.use(this.canAccess)
+  }
+
+  setRebookOptions(req, res, next) {
+    const existingItems = req.form.options.fields.rebook.items
+    const maxDate = res.locals.move.date_to
+    const isAboutToExpire =
+      maxDate && differenceInCalendarDays(parseISO(maxDate), new Date()) <= 7
+
+    if (isAboutToExpire) {
+      set(
+        req,
+        'form.options.fields.rebook.items',
+        existingItems.filter(item => {
+          // intentionally a string -- the field stores it as such
+          return item.value === 'false'
+        })
+      )
+    }
+
+    next()
   }
 
   checkStatus(req, res, next) {
@@ -72,9 +94,7 @@ class ReviewController extends FormWizardController {
 
     try {
       if (data.review_decision === 'reject') {
-        await singleRequestService.reject(moveId, {
-          comment: data.rejection_reason_comment,
-        })
+        await singleRequestService.reject(moveId, data)
       }
 
       if (data.review_decision === 'approve') {

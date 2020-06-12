@@ -1,3 +1,6 @@
+const { addDays, format } = require('date-fns')
+const { cloneDeep } = require('lodash')
+
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
@@ -30,14 +33,20 @@ describe('Move controllers', function () {
           .calledOnce
       })
 
-      it('should call updateDateHint middleware', function () {
+      it('should call setRebookOptions middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.setRebookOptions
+        )
+      })
+
+      it('should call updateDateHint middleware', function () {
+        expect(controller.use.secondCall).to.have.been.calledWith(
           controller.updateDateHint
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
@@ -95,6 +104,122 @@ describe('Move controllers', function () {
 
       it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
+    describe('setRebookOptions', function () {
+      let req
+      let next
+      const mockReq = {
+        form: {
+          options: {
+            fields: {
+              rebook: {
+                items: [
+                  {
+                    value: 'false',
+                    label: 'Do not rebook',
+                  },
+                  {
+                    value: 'true',
+                    label: 'Rebook in 7 days',
+                  },
+                ],
+              },
+            },
+          },
+        },
+      }
+      beforeEach(function () {
+        req = cloneDeep(mockReq)
+        next = sinon.stub()
+      })
+      context('without a date_to', function () {
+        beforeEach(function () {
+          controller.setRebookOptions(
+            req,
+            {
+              locals: {
+                move: {
+                  date_to: null,
+                },
+              },
+            },
+            next
+          )
+        })
+        it('leaves the existing options untouched', function () {
+          expect(req.form.options.fields.rebook.items).to.deep.equal([
+            {
+              label: 'Do not rebook',
+              value: 'false',
+            },
+            {
+              label: 'Rebook in 7 days',
+              value: 'true',
+            },
+          ])
+        })
+        it('calls next', function () {
+          expect(next).to.have.been.calledOnceWithExactly()
+        })
+      })
+
+      context('with a date_to farther away than one week', function () {
+        beforeEach(function () {
+          controller.setRebookOptions(
+            req,
+            {
+              locals: {
+                move: {
+                  date_to: format(addDays(new Date(), 28), 'yyyy-MM-dd'),
+                },
+              },
+            },
+            next
+          )
+        })
+        it('leaves the existing options untouched', function () {
+          expect(req.form.options.fields.rebook.items).to.deep.equal([
+            {
+              label: 'Do not rebook',
+              value: 'false',
+            },
+            {
+              label: 'Rebook in 7 days',
+              value: 'true',
+            },
+          ])
+        })
+        it('calls next', function () {
+          expect(next).to.have.been.calledOnceWithExactly()
+        })
+      })
+      context('with a date_to closer than one week', function () {
+        beforeEach(function () {
+          controller.setRebookOptions(
+            req,
+            {
+              locals: {
+                move: {
+                  date_to: format(addDays(new Date(), 3), 'yyyy-MM-dd'),
+                },
+              },
+            },
+            next
+          )
+        })
+        it('keeps only the "false" options', function () {
+          expect(req.form.options.fields.rebook.items).to.deep.equal([
+            {
+              label: 'Do not rebook',
+              value: 'false',
+            },
+          ])
+        })
+        it('calls next', function () {
+          expect(next).to.have.been.calledOnceWithExactly()
+        })
       })
     })
 
@@ -362,8 +487,10 @@ describe('Move controllers', function () {
             options: {
               allFields: {
                 move_date: {},
+                rebook: {},
                 review_decision: {},
-                rejection_reason_comment: {},
+                rejection_reason: {},
+                cancellation_reason_comment: {},
               },
             },
           },
@@ -448,7 +575,9 @@ describe('Move controllers', function () {
       context('with rejection', function () {
         const mockValues = {
           review_decision: 'reject',
-          rejection_reason_comment: 'No space at prison',
+          rejection_reason: 'no_space_at_receiving_prison',
+          cancellation_reason_comment: 'No further comments',
+          rebook: 'false',
         }
 
         beforeEach(function () {
@@ -462,12 +591,14 @@ describe('Move controllers', function () {
           })
 
           it('should approve move', function () {
-            expect(singleRequestService.reject).to.be.calledOnceWithExactly(
-              mockMove.id,
-              {
-                comment: mockValues.rejection_reason_comment,
-              }
-            )
+            expect(
+              singleRequestService.reject
+            ).to.have.been.calledOnceWithExactly(mockMove.id, {
+              review_decision: 'reject',
+              rejection_reason: 'no_space_at_receiving_prison',
+              cancellation_reason_comment: 'No further comments',
+              rebook: 'false',
+            })
           })
 
           it('should not reject move', function () {
