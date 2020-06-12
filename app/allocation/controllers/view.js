@@ -21,6 +21,18 @@ module.exports = function view(req, res) {
     )
   }
 
+  const removeMoveLink = move => {
+    if (
+      move.person ||
+      !permissions.check('allocation:cancel', userPermissions) ||
+      moves.length === 1
+    ) {
+      return
+    }
+
+    return `/allocation/${allocation.id}/${move.id}/remove`
+  }
+
   const locals = {
     // TODO: Find way to store the actual URL they came from: See similar solution within moves app
     dashboardUrl: '/allocations',
@@ -44,6 +56,7 @@ module.exports = function view(req, res) {
       .map(move => ({
         id: move.id,
         person: move.person,
+        removeMoveHref: removeMoveLink(move),
         card: moveToCardComponent(move),
       })),
   }

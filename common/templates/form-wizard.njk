@@ -86,13 +86,15 @@
   </form>
 {% endblock %}
 
+{% set sidebarHeading = sidebarHeading or (move.person.fullname | upper) or t("awaiting_person") %}
+
 {% block contentSidebar %}
   {% if person.id or move.id %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
         {% block summaryPanelContent %}
           <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-            {{ person.fullname | upper or t("awaiting_person") }}
+            {{ sidebarHeading }}
           </h3>
 
           {% if person.image_url %}
