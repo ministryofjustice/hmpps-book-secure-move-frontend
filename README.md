@@ -12,8 +12,8 @@ Service (PECS) programme.
 
 ## Dependencies
 
-- [Node.js](https://nodejs.org/en/) (>= 12)
-- [NPM](https://www.npmjs.com/) (>= 6.7.0)
+- [Node.js](https://nodejs.org/en/) (>= 14)
+- [NPM](https://www.npmjs.com/) (>= 6.14)
 - [Redis](https://redis.io/) (>= 5.0.5)
 
 ## Installation

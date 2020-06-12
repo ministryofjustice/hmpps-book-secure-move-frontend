@@ -1,4 +1,4 @@
-FROM node:12.10-alpine as build-stage
+FROM node:14.4-alpine as build-stage
 
 WORKDIR /home/node/app
 
@@ -14,7 +14,7 @@ COPY --chown=node:node . .
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM node:12.10-alpine
+FROM node:14.4-alpine
 
 ARG APP_BUILD_DATE
 ENV APP_BUILD_DATE ${APP_BUILD_DATE}
