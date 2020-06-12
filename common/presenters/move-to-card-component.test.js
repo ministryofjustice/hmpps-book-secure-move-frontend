@@ -85,6 +85,21 @@ describe('Presenters', function() {
           })
         })
       })
+      context('when no person is associated to the move', function() {
+        beforeEach(function() {
+          transformedResponse = moveToCardComponent()({
+            id: '12345',
+            reference: 'AB12FG',
+            status: 'proposed',
+            person: null,
+          })
+        })
+        it('does not create the link on the card', function() {
+          expect(personToCardComponentItemStub).to.be.calledWithExactly({
+            href: '',
+          })
+        })
+      })
     })
 
     context('with href suffix', function() {
