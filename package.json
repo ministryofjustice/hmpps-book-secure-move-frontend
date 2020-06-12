@@ -88,7 +88,7 @@
     "govuk-frontend": "3.6.0",
     "grant-express": "5.0.1",
     "helmet": "3.22.0",
-    "hmpo-form-wizard": "11.6.0",
+    "hmpo-form-wizard": "11.6.1",
     "i18next": "19.4.4",
     "i18next-express-middleware": "2.0.0",
     "i18next-sync-fs-backend": "1.1.1",
