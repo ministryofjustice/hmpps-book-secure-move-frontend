@@ -1,12 +1,12 @@
 const router = require('express').Router()
 
 const { renderAsTable } = require('../../common/controllers/collection')
-const { setDateRange } = require('../../common/middleware')
 const {
   redirectDefaultQuery,
   redirectView,
   setActions,
   setContext,
+  setDateRange,
   setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')

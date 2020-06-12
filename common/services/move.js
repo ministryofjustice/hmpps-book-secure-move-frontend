@@ -101,54 +101,6 @@ const moveService = {
     return getAll(props)
   },
 
-  getMovesByDateRangeAndStatus({
-    dateRange = [],
-    status,
-    fromLocationId,
-  } = {}) {
-    const [createdAtFrom, createdAtTo] = dateRange
-    return moveService.getAll({
-      filter: {
-        'filter[status]': status,
-        'filter[created_at_from]': createdAtFrom,
-        'filter[created_at_to]': createdAtTo,
-        'filter[from_location_id]': fromLocationId,
-        'sort[by]': 'created_at',
-        'sort[direction]': 'desc',
-      },
-    })
-  },
-
-  getMovesCount({ dateRange = [], status, locationId } = {}) {
-    const [createdAtFrom, createdAtTo] = dateRange
-    const filter = {
-      'filter[status]': status,
-      'filter[created_at_from]': createdAtFrom,
-      'filter[created_at_to]': createdAtTo,
-      'filter[from_location_id]': locationId,
-    }
-    return apiClient
-      .findAll('move', {
-        ...filter,
-        page: 1,
-        per_page: 1,
-      })
-      .then(response => response.meta.pagination.total_objects)
-  },
-
-  getRequested({ dateRange = [], fromLocationId, toLocationId } = {}) {
-    const [startDate, endDate] = dateRange
-    return moveService.getAll({
-      filter: {
-        'filter[status]': 'requested',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-      },
-    })
-  },
-
   getActive({
     dateRange = [],
     fromLocationId,

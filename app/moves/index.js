@@ -7,11 +7,11 @@ const {
   renderAsCards,
   renderAsTable,
 } = require('../../common/controllers/collection')
-const { setDateRange } = require('../../common/middleware')
 const {
   redirectDefaultQuery,
   redirectView,
   setContext,
+  setDateRange,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 

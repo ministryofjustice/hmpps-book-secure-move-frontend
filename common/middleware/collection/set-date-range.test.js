@@ -1,4 +1,4 @@
-const dateHelpers = require('../../common/helpers/date-utils')
+const dateHelpers = require('../../helpers/date')
 
 const setDateRange = require('./set-date-range')
 
@@ -30,16 +30,6 @@ describe('Moves middleware', function() {
         expect(req.params.dateRange).to.deep.equal(['2019-10-10', '2019-10-10'])
       })
 
-      it('should set move date on locals', function() {
-        expect(res.locals).to.have.property('dateRange')
-        expect(res.locals.dateRange).to.deep.equal(['2019-10-10', '2019-10-10'])
-      })
-
-      it('should set time period on locals', function() {
-        expect(res.locals).to.have.property('period')
-        expect(res.locals.period).to.equal('day')
-      })
-
       it('should call next', function() {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
@@ -58,11 +48,6 @@ describe('Moves middleware', function() {
 
       it('should not set req.params', function() {
         expect(req.params).not.to.have.property('dateRange')
-      })
-
-      it('should not set locals', function() {
-        expect(res.locals).not.to.have.property('dateRange')
-        expect(res.locals).not.to.have.property('period')
       })
 
       it('should call next with 404 error', function() {

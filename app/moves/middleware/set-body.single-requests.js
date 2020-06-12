@@ -1,6 +1,6 @@
 const { set } = require('lodash')
 
-const dateHelpers = require('../../../common/helpers/date-utils')
+const dateHelpers = require('../../../common/helpers/date')
 
 function setBodySingleRequests(req, res, next) {
   const { status } = req.query

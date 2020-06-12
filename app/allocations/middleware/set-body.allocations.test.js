@@ -1,4 +1,4 @@
-const dateHelpers = require('../../../common/helpers/date-utils')
+const dateHelpers = require('../../../common/helpers/date')
 
 const middleware = require('./set-body.allocations')
 
