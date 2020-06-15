@@ -193,6 +193,12 @@ describe('Reference Data Service', function () {
           next: 'http://next-page.com',
         },
       }
+      const mockEmptyPageResponse = {
+        data: [],
+        links: {
+          next: 'http://next-page.com',
+        },
+      }
       const mockFilter = {
         filterOne: 'foo',
       }
@@ -330,6 +336,21 @@ describe('Reference Data Service', function () {
               }
             )
           })
+        })
+      })
+
+      context('with next but no data', function () {
+        beforeEach(async function () {
+          apiClient.findAll.resolves(mockEmptyPageResponse)
+          locations = await referenceDataService.getLocations()
+        })
+
+        it('should call the API client once', function () {
+          expect(apiClient.findAll).to.be.calledOnce
+        })
+
+        it('should return no moves', function () {
+          expect(locations).to.deep.equal([])
         })
       })
 
