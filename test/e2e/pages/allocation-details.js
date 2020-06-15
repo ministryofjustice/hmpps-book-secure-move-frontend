@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { endOfWeek, format } from 'date-fns'
 import faker from 'faker'
 import { Selector } from 'testcafe'
 
@@ -40,7 +40,7 @@ class AllocationDetailsPage extends Page {
       },
       date: {
         selector: this.fields.date,
-        value: format(faker.date.future(), 'yyyy-MM-dd'),
+        value: format(endOfWeek(new Date()), 'yyyy-MM-dd'),
       },
     }
 
