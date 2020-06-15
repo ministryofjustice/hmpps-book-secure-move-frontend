@@ -39,7 +39,9 @@ function getAll({
         return meta.pagination.total_objects
       }
 
-      if (!links.next) {
+      const hasNext = links.next && data.length !== 0
+
+      if (!hasNext) {
         return moves.map(move => ({
           ...move,
           person: personService.transform(move.person),

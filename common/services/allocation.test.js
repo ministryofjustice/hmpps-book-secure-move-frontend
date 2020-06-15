@@ -281,6 +281,17 @@ describe('Allocation service', function () {
         },
       },
     }
+    const mockEmptyPageResponse = {
+      data: [],
+      links: {
+        next: 'http://next-page.com',
+      },
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
+      },
+    }
     const mockFilter = {
       filterOne: 'foo',
     }
@@ -513,6 +524,21 @@ describe('Allocation service', function () {
         it('should return a count', function () {
           expect(moves).to.equal(10)
         })
+      })
+    })
+
+    context('with next but no data', function () {
+      beforeEach(async function () {
+        apiClient.findAll.resolves(mockEmptyPageResponse)
+        moves = await allocationService.getAll()
+      })
+
+      it('should call the API client once', function () {
+        expect(apiClient.findAll).to.be.calledOnce
+      })
+
+      it('should return no moves', function () {
+        expect(moves).to.deep.equal([])
       })
     })
 

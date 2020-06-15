@@ -33,7 +33,9 @@ const referenceDataService = {
           ? flattenDeep([combinedData, ...response.data])
           : data
 
-        if (!links.next) {
+        const hasNext = links.next && data.length !== 0
+
+        if (!hasNext) {
           return sortBy(locations, 'title')
         }
 

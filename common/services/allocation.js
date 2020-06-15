@@ -121,7 +121,9 @@ const allocationService = {
           return meta.pagination.total_objects
         }
 
-        if (!links.next) {
+        const hasNext = links.next && data.length !== 0
+
+        if (!hasNext) {
           return results.map(allocationService.transform({ includeCancelled }))
         }
 
