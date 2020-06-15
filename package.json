@@ -194,7 +194,7 @@
     "lint-staged": "lint-staged",
     "postrelease": "npm run release:tags",
     "prerelease": "npm run update:check && npm run contributors",
-    "release": "standard-version -a",
+    "release": "standard-version --no-verify -a",
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin HEAD:master",
     "start": "node start.js",
