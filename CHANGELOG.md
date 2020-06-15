@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.30.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.29.0...v2.30.0) (2020-06-15)
+
+
+### Features
+
+* **allocations:** Remove single move from allocation ([7e24067](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7e24067facd65a96532963cec64a21a62f5f78e4))
+
+
+### Bug Fixes
+
+* Prevent infinite calls to moves endpoint ([d12781e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d12781e3fbfc209bbead47d244c94b8dd74c4024))
+* **allocations:** Fix the cancel allocation e2e tests ([40c71c5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/40c71c59aaac118e2197e5b5ad938351b91fdffa))
+* Add python to image so node-sass can be built from source ([29f700d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/29f700d5bb432f82181030aeb644393c6265af3a))
+* upgrade @sentry/node from 5.15.4 to 5.15.5 ([1f0ff28](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1f0ff281d31fab115f9468eeb77195f0fe88e3b0))
+* upgrade chrono-node from 1.4.5 to 1.4.6 ([7a35f79](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7a35f791f9e37725125ab8722db8868b3e645300))
+* upgrade date-fns from 2.12.0 to 2.14.0 ([1ff33de](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1ff33de4d6d0c19f0a4785891d03e11ea2eace22))
+* upgrade debug from 4.1.1 to 4.2.0 ([0c2e55d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0c2e55d06942984ffed802675c3482ee70c55921))
+* upgrade grant-express from 5.0.0 to 5.0.1 ([0929b64](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0929b64e83d3598e530eab59fb01ec73950451c1))
+* upgrade hmpo-form-wizard from 11.6.0 to 11.6.1 ([d0f55d1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d0f55d1b578f2008680a998bc61aec8985b5484b))
+* upgrade i18next from 19.4.3 to 19.4.4 ([81e0665](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/81e066563f82adef05eb82698ff270e278105f64))
+* upgrade json2csv from 5.0.0 to 5.0.1 ([afeb144](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/afeb144c65985e046ae58e6f552e9b22746a4b19))
+* **allocations:** Remove link from card with unallocated slot ([7e0b856](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7e0b856690038a72eaf0059387e39cdfda37ae20))
+
 ## [2.29.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.28.0...v2.29.0) (2020-06-11)
 
 
