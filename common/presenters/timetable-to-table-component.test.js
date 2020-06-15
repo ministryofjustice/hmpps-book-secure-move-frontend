@@ -3,36 +3,36 @@ const filters = require('../../config/nunjucks/filters')
 
 const timetableToTableComponent = require('./timetable-to-table-component')
 
-describe('Presenters', function() {
-  describe('#timetableToTableComponent()', function() {
+describe('Presenters', function () {
+  describe('#timetableToTableComponent()', function () {
     let transformedResponse
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(filters, 'formatTime').returnsArg(0)
     })
 
-    context('with empty timetable', function() {
-      beforeEach(function() {
+    context('with empty timetable', function () {
+      beforeEach(function () {
         transformedResponse = timetableToTableComponent()
       })
 
-      it('should translate head', function() {
+      it('should translate head', function () {
         expect(i18n.t).to.be.calledWithExactly('time')
         expect(i18n.t).to.be.calledWithExactly('type')
         expect(i18n.t).to.be.calledWithExactly('reason')
         expect(i18n.t).to.be.calledWithExactly('location')
       })
 
-      it('should translate correct number of times', function() {
+      it('should translate correct number of times', function () {
         expect(i18n.t.callCount).to.equal(4)
       })
 
-      it('should not format time', function() {
+      it('should not format time', function () {
         expect(filters.formatTime).not.to.be.called
       })
 
-      it('should return a table with no rows', function() {
+      it('should return a table with no rows', function () {
         expect(transformedResponse).to.deep.equal({
           head: [
             { text: 'time' },
@@ -46,7 +46,7 @@ describe('Presenters', function() {
       })
     })
 
-    context('with timetable', function() {
+    context('with timetable', function () {
       const mockTimetable = [
         {
           id: '12345',
@@ -77,23 +77,23 @@ describe('Presenters', function() {
         },
       ]
 
-      context('with multiple items', function() {
-        beforeEach(function() {
+      context('with multiple items', function () {
+        beforeEach(function () {
           transformedResponse = timetableToTableComponent(mockTimetable)
         })
 
-        it('should translate head', function() {
+        it('should translate head', function () {
           expect(i18n.t).to.be.calledWithExactly('time')
           expect(i18n.t).to.be.calledWithExactly('type')
           expect(i18n.t).to.be.calledWithExactly('reason')
           expect(i18n.t).to.be.calledWithExactly('location')
         })
 
-        it('should translate correct number of times', function() {
+        it('should translate correct number of times', function () {
           expect(i18n.t.callCount).to.equal(4)
         })
 
-        it('should format time', function() {
+        it('should format time', function () {
           expect(filters.formatTime).to.be.calledWithExactly(
             mockTimetable[0].start_time
           )
@@ -106,7 +106,7 @@ describe('Presenters', function() {
           expect(filters.formatTime.callCount).to.equal(mockTimetable.length)
         })
 
-        it('should return a table with no rows', function() {
+        it('should return a table with no rows', function () {
           expect(transformedResponse).to.deep.equal({
             head: [
               { text: 'time' },
@@ -139,8 +139,8 @@ describe('Presenters', function() {
         })
       })
 
-      context('with empty values', function() {
-        beforeEach(function() {
+      context('with empty values', function () {
+        beforeEach(function () {
           transformedResponse = timetableToTableComponent([
             {
               id: '12345',
@@ -151,18 +151,18 @@ describe('Presenters', function() {
           ])
         })
 
-        it('should not format time', function() {
+        it('should not format time', function () {
           expect(filters.formatTime).not.to.be.called
         })
 
-        it('should return fallbacks', function() {
+        it('should return fallbacks', function () {
           expect(transformedResponse.rows).to.deep.equal([
             [{ text: '' }, { text: '' }, { text: '' }, { text: '' }],
           ])
         })
       })
 
-      context('with varied times', function() {
+      context('with varied times', function () {
         const mockTimetableWithTimes = [
           {
             start_time: '2020-10-10T15:00Z',
@@ -190,13 +190,13 @@ describe('Presenters', function() {
           },
         ]
 
-        beforeEach(function() {
+        beforeEach(function () {
           transformedResponse = timetableToTableComponent(
             mockTimetableWithTimes
           )
         })
 
-        it('should sort items by time', function() {
+        it('should sort items by time', function () {
           expect(transformedResponse.rows).to.deep.equal([
             [
               { text: mockTimetableWithTimes[4].start_time },

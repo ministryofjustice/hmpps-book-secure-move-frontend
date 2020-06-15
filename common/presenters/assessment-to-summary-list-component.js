@@ -10,7 +10,7 @@ function _mapAnswer({ title, comments }) {
 }
 
 function _filterAnswer(category) {
-  return function(answer) {
+  return function (answer) {
     if (!category) {
       return true
     }

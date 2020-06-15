@@ -6,12 +6,12 @@ const controller = new Controller({
   route: '/',
 })
 
-describe('Allocation criteria controller', function() {
-  describe('#configure', function() {
+describe('Allocation criteria controller', function () {
+  describe('#configure', function () {
     let req
     let next
-    context('happy path', function() {
-      beforeEach(async function() {
+    context('happy path', function () {
+      beforeEach(async function () {
         req = {
           form: {
             options: {
@@ -56,18 +56,18 @@ describe('Allocation criteria controller', function() {
         ])
         await controller.configure(req, {}, next)
       })
-      it('calls the reference service', function() {
+      it('calls the reference service', function () {
         expect(
           referenceDataService.getAllocationComplexCases
         ).to.have.been.calledOnce
       })
-      it('sets the items as items on the complex cases field', function() {
+      it('sets the items as items on the complex cases field', function () {
         expect(req.form.options.fields.complex_cases.items).to.exist
       })
-      it('filters the disabled items', function() {
+      it('filters the disabled items', function () {
         expect(req.form.options.fields.complex_cases.items.length).to.equal(4)
       })
-      it('sets as checked every item', function() {
+      it('sets as checked every item', function () {
         expect(req.form.options.fields.complex_cases.items).to.deep.equal([
           {
             value: 'afa79a37-7c2f-4363-bed6-e1ccf2576901',
@@ -95,31 +95,31 @@ describe('Allocation criteria controller', function() {
           },
         ])
       })
-      it('calls next', function() {
+      it('calls next', function () {
         expect(next).to.have.been.calledOnce
       })
     })
-    context('unhappy path', function() {
+    context('unhappy path', function () {
       let next
       const error = new Error('error')
-      beforeEach(async function() {
+      beforeEach(async function () {
         next = sinon.stub()
         sinon
           .stub(referenceDataService, 'getAllocationComplexCases')
           .throws(error)
         await controller.configure(req, {}, next)
       })
-      it('calls next with an error', function() {
+      it('calls next with an error', function () {
         expect(next).to.have.been.calledWithExactly(error)
       })
     })
   })
-  describe('#saveValues', function() {
+  describe('#saveValues', function () {
     let req
     let mockValues
     let mockComplexCaseFields
     let transformedValues
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(ParentController.prototype, 'saveValues')
       mockValues = {
         complex_cases: [
@@ -191,13 +191,13 @@ describe('Allocation criteria controller', function() {
       }
       controller.saveValues(req, {}, () => {})
     })
-    it('transforms the values of complex_cases in the format expected by the backend', function() {
+    it('transforms the values of complex_cases in the format expected by the backend', function () {
       expect(req.form.values.complex_cases).to.deep.equal(transformedValues)
     })
-    it('does pass other values unchanged', function() {
+    it('does pass other values unchanged', function () {
       expect(req.form.values.complete_in_full).to.equal('false')
     })
-    it('calls the parent save values', function() {
+    it('calls the parent save values', function () {
       expect(ParentController.prototype.saveValues).to.have.been.called
     })
   })

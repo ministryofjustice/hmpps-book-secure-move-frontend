@@ -29,28 +29,28 @@ const mockPerson = {
   },
 }
 
-describe('Presenters', function() {
-  describe('#personToSummaryListComponent()', function() {
-    beforeEach(function() {
+describe('Presenters', function () {
+  describe('#personToSummaryListComponent()', function () {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returns('__translated__')
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
     })
 
-    context('when provided with a mock person object', function() {
+    context('when provided with a mock person object', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = personToSummaryListComponent(mockPerson)
       })
 
-      describe('response', function() {
-        it('should contain rows property', function() {
+      describe('response', function () {
+        it('should contain rows property', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(6)
         })
 
-        it('should contain identifiers first', function() {
+        it('should contain identifiers first', function () {
           const row1 = transformedResponse.rows[0]
           const row2 = transformedResponse.rows[1]
           const row3 = transformedResponse.rows[2]
@@ -69,7 +69,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain date of birth', function() {
+        it('should contain date of birth', function () {
           const row = transformedResponse.rows[3]
 
           expect(row).to.deep.equal({
@@ -78,7 +78,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain gender', function() {
+        it('should contain gender', function () {
           const row = transformedResponse.rows[4]
 
           expect(row).to.deep.equal({
@@ -89,7 +89,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain ethnicity', function() {
+        it('should contain ethnicity', function () {
           const row = transformedResponse.rows[5]
 
           expect(row).to.deep.equal({
@@ -99,12 +99,12 @@ describe('Presenters', function() {
         })
       })
 
-      describe('translations', function() {
-        it('should translate age label', function() {
+      describe('translations', function () {
+        it('should translate age label', function () {
           expect(i18n.t.firstCall).to.be.calledWithExactly('age')
         })
 
-        it('should translate identifiers', function() {
+        it('should translate identifiers', function () {
           expect(i18n.t.getCall(1)).to.be.calledWithExactly(
             'fields::police_national_computer.label'
           )
@@ -116,41 +116,41 @@ describe('Presenters', function() {
           )
         })
 
-        it('should translate date of birth label', function() {
+        it('should translate date of birth label', function () {
           expect(i18n.t.getCall(4)).to.be.calledWithExactly(
             'fields::date_of_birth.label'
           )
         })
 
-        it('should translate gender label', function() {
+        it('should translate gender label', function () {
           expect(i18n.t.getCall(5)).to.be.calledWithExactly(
             'fields::gender.label'
           )
         })
 
-        it('should translate ethnicity label', function() {
+        it('should translate ethnicity label', function () {
           expect(i18n.t.getCall(6)).to.be.calledWithExactly(
             'fields::ethnicity.label'
           )
         })
 
-        it('should translate correct number of times', function() {
+        it('should translate correct number of times', function () {
           expect(i18n.t).to.be.callCount(7)
         })
       })
     })
 
-    context('when input values are not present', function() {
+    context('when input values are not present', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = personToSummaryListComponent({
           id: '12345',
         })
       })
 
-      describe('response', function() {
-        it('should return an empty string for date of birth', function() {
+      describe('response', function () {
+        it('should return an empty string for date of birth', function () {
           const row = transformedResponse.rows[0]
 
           expect(row).to.deep.equal({
@@ -159,7 +159,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should return an empty string for gender', function() {
+        it('should return an empty string for gender', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
@@ -168,7 +168,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should return an empty string for ethnicity', function() {
+        it('should return an empty string for ethnicity', function () {
           const row = transformedResponse.rows[2]
 
           expect(row).to.deep.equal({
@@ -179,10 +179,10 @@ describe('Presenters', function() {
       })
     })
 
-    context('when no additional gender information', function() {
+    context('when no additional gender information', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = personToSummaryListComponent({
           id: '12345',
           gender: {
@@ -191,8 +191,8 @@ describe('Presenters', function() {
         })
       })
 
-      describe('response', function() {
-        it('should return only gender name', function() {
+      describe('response', function () {
+        it('should return only gender name', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
@@ -203,15 +203,15 @@ describe('Presenters', function() {
       })
     })
 
-    context('when provided with no arguments', function() {
+    context('when provided with no arguments', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = personToSummaryListComponent()
       })
 
-      describe('response', function() {
-        it('should return undefined', function() {
+      describe('response', function () {
+        it('should return undefined', function () {
           expect(transformedResponse).to.be.undefined
         })
       })

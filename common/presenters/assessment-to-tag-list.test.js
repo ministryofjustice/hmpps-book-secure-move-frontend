@@ -11,11 +11,11 @@ const mockWhitelist = {
   },
 }
 
-describe('Presenters', function() {
-  describe('#assessmentToTagList()', function() {
+describe('Presenters', function () {
+  describe('#assessmentToTagList()', function () {
     let assessmentToTagList, answerToTagStub, filterExpiredStub, mapStub
 
-    beforeEach(function() {
+    beforeEach(function () {
       answerToTagStub = sinon.stub()
       filterExpiredStub = sinon.stub()
       mapStub = sinon.stub().returnsArg(0)
@@ -30,8 +30,8 @@ describe('Presenters', function() {
       })
     })
 
-    context('when category is in whitelist', function() {
-      it('should not filter it out', function() {
+    context('when category is in whitelist', function () {
+      it('should not filter it out', function () {
         const mockAnswers = [
           {
             key: 'health_issue',
@@ -45,7 +45,7 @@ describe('Presenters', function() {
         expect(response).to.deep.equal(mockAnswers)
       })
 
-      it('should not filter it out', function() {
+      it('should not filter it out', function () {
         const mockAnswers = [
           {
             key: 'escape',
@@ -59,7 +59,7 @@ describe('Presenters', function() {
         expect(response).to.deep.equal(mockAnswers)
       })
 
-      it('should remove duplicate titles', function() {
+      it('should remove duplicate titles', function () {
         const mockAnswers = [
           {
             key: 'escape',
@@ -104,7 +104,7 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should call expired filter', function() {
+      it('should call expired filter', function () {
         const mockAnswers = [
           {
             key: 'escape',
@@ -119,8 +119,8 @@ describe('Presenters', function() {
       })
     })
 
-    context('when category is not whitelist', function() {
-      it('should filter it out', function() {
+    context('when category is not whitelist', function () {
+      it('should filter it out', function () {
         const mockAnswers = [
           {
             key: 'escape',
@@ -135,15 +135,15 @@ describe('Presenters', function() {
       })
     })
 
-    context('when href prefix is not included', function() {
-      it('should call assessmentAnswerToTag with default value', function() {
+    context('when href prefix is not included', function () {
+      it('should call assessmentAnswerToTag with default value', function () {
         assessmentToTagList([])
         expect(answerToTagStub).to.be.calledWith('')
       })
     })
 
-    context('when href prefix is included', function() {
-      it('should call assessmentAnswerToTag with default value', function() {
+    context('when href prefix is included', function () {
+      it('should call assessmentAnswerToTag with default value', function () {
         const mockPrefix = '/prefix'
         assessmentToTagList([], mockPrefix)
 

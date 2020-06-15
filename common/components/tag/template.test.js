@@ -5,26 +5,26 @@ const {
 
 const examples = getExamples('tag')
 
-describe('Tag component', function() {
-  context('by default', function() {
+describe('Tag component', function () {
+  context('by default', function () {
     let $component
 
-    beforeEach(function() {
+    beforeEach(function () {
       const $ = renderComponentHtmlToCheerio('tag', examples.default)
       $component = $('.app-tag')
     })
 
-    it('should render with strong element', function() {
+    it('should render with strong element', function () {
       expect($component.get(0).tagName).to.equal('strong')
     })
 
-    it('should render text', function() {
+    it('should render text', function () {
       expect($component.text()).to.contain('alpha')
     })
   })
 
-  context('with classes param', function() {
-    it('should render classes', function() {
+  context('with classes param', function () {
+    it('should render classes', function () {
       const $ = renderComponentHtmlToCheerio('tag', {
         classes: 'app-tag--inactive',
         text: 'alpha',
@@ -35,10 +35,10 @@ describe('Tag component', function() {
     })
   })
 
-  context('with href param', function() {
+  context('with href param', function () {
     let $component
 
-    beforeEach(function() {
+    beforeEach(function () {
       const $ = renderComponentHtmlToCheerio('tag', {
         text: 'alpha',
         href: '/a-link',
@@ -46,17 +46,17 @@ describe('Tag component', function() {
       $component = $('.app-tag')
     })
 
-    it('should render with anchor element', function() {
+    it('should render with anchor element', function () {
       expect($component.get(0).tagName).to.equal('a')
     })
 
-    it('should render href attribute', function() {
+    it('should render href attribute', function () {
       expect($component.attr('href')).to.equal('/a-link')
     })
   })
 
-  context('when html is passed to text', function() {
-    it('should render escaped html', function() {
+  context('when html is passed to text', function () {
+    it('should render escaped html', function () {
       const $ = renderComponentHtmlToCheerio('tag', {
         text: '<span>alpha</span>',
       })
@@ -66,8 +66,8 @@ describe('Tag component', function() {
     })
   })
 
-  context('when html is passed to html', function() {
-    it('should render unescaped html', function() {
+  context('when html is passed to html', function () {
+    it('should render unescaped html', function () {
       const $ = renderComponentHtmlToCheerio('tag', {
         html: '<span>alpha</span>',
       })
@@ -77,8 +77,8 @@ describe('Tag component', function() {
     })
   })
 
-  context('when both html and text params are used', function() {
-    it('should render unescaped html', function() {
+  context('when both html and text params are used', function () {
+    it('should render unescaped html', function () {
       const $ = renderComponentHtmlToCheerio('tag', {
         html: '<span>alpha</span>',
         text: '<span>alpha</span>',

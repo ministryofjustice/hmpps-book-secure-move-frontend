@@ -14,10 +14,10 @@ const mockMove = {
   },
 }
 
-describe('Move controllers', function() {
-  describe('Review controller', function() {
-    describe('#middlewareSetup()', function() {
-      beforeEach(function() {
+describe('Move controllers', function () {
+  describe('Review controller', function () {
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'updateDateHint')
@@ -25,24 +25,24 @@ describe('Move controllers', function() {
         controller.middlewareSetup()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormWizardController.prototype.middlewareSetup).to.have.been
           .calledOnce
       })
 
-      it('should call updateDateHint middleware', function() {
+      it('should call updateDateHint middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.updateDateHint
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(1)
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      beforeEach(function() {
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setMoveSummary')
@@ -50,24 +50,24 @@ describe('Move controllers', function() {
         controller.middlewareLocals()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormWizardController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 
-      it('should call setMoveSummary middleware', function() {
+      it('should call setMoveSummary middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.setMoveSummary
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(1)
       })
     })
 
-    describe('#middlewareChecks()', function() {
-      beforeEach(function() {
+    describe('#middlewareChecks()', function () {
+      beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'checkStatus')
@@ -76,32 +76,32 @@ describe('Move controllers', function() {
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(FormWizardController.prototype.middlewareChecks).to.have.been
           .calledOnce
       })
 
-      it('should call checkStatus middleware', function() {
+      it('should call checkStatus middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.checkStatus
         )
       })
 
-      it('should call canAccess middleware', function() {
+      it('should call canAccess middleware', function () {
         expect(controller.use.secondCall).to.have.been.calledWith(
           controller.canAccess
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(2)
       })
     })
 
-    describe('#checkStatus()', function() {
+    describe('#checkStatus()', function () {
       let mockRes, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         mockRes = {
           locals: {
@@ -113,44 +113,44 @@ describe('Move controllers', function() {
         }
       })
 
-      context('with proposed status', function() {
-        beforeEach(function() {
+      context('with proposed status', function () {
+        beforeEach(function () {
           mockRes.locals.move.status = 'proposed'
           controller.checkStatus({}, mockRes, nextSpy)
         })
 
-        it('should not redirect', function() {
+        it('should not redirect', function () {
           expect(mockRes.redirect).not.to.be.called
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
       const statuses = ['requested', 'cancelled', 'accepted']
       statuses.forEach(status => {
-        context(`with ${status} status`, function() {
-          beforeEach(function() {
+        context(`with ${status} status`, function () {
+          beforeEach(function () {
             mockRes.locals.move.status = status
             controller.checkStatus({}, mockRes, nextSpy)
           })
 
-          it('should redirect to move', function() {
+          it('should redirect to move', function () {
             expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
           })
 
-          it('should not call next', function() {
+          it('should not call next', function () {
             expect(nextSpy).not.to.be.called
           })
         })
       })
     })
 
-    describe('#canAccess()', function() {
+    describe('#canAccess()', function () {
       let mockReq, mockRes, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
           session: {
@@ -174,13 +174,13 @@ describe('Move controllers', function() {
           .returns(true)
       })
 
-      context('with correct permission', function() {
-        beforeEach(function() {
+      context('with correct permission', function () {
+        beforeEach(function () {
           mockReq.session.user.permissions = ['move:review', 'move:view']
           controller.canAccess(mockReq, mockRes, nextSpy)
         })
 
-        it('should check permissions', function() {
+        it('should check permissions', function () {
           expect(
             mockRes.locals.canAccess
           ).to.be.calledOnceWithExactly('move:review', [
@@ -189,40 +189,40 @@ describe('Move controllers', function() {
           ])
         })
 
-        it('should not redirect', function() {
+        it('should not redirect', function () {
           expect(mockRes.redirect).not.to.be.called
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with incorrect permission', function() {
-        beforeEach(function() {
+      context('with incorrect permission', function () {
+        beforeEach(function () {
           controller.canAccess(mockReq, mockRes, nextSpy)
         })
 
-        it('should check permissions', function() {
+        it('should check permissions', function () {
           expect(
             mockRes.locals.canAccess
           ).to.be.calledOnceWithExactly('move:review', ['move:view'])
         })
 
-        it('should redirect', function() {
+        it('should redirect', function () {
           expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(nextSpy).not.to.be.called
         })
       })
     })
 
-    describe('#updateDateHint()', function() {
+    describe('#updateDateHint()', function () {
       let mockReq, mockRes, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(filters, 'formatDateRange')
         nextSpy = sinon.spy()
 
@@ -249,15 +249,15 @@ describe('Move controllers', function() {
         }
       })
 
-      context('with only from date', function() {
-        beforeEach(function() {
+      context('with only from date', function () {
+        beforeEach(function () {
           filters.formatDateRange
             .withArgs(['1 Jan', undefined], 'and')
             .returns('1 Jan')
           controller.updateDateHint(mockReq, mockRes, nextSpy)
         })
 
-        it('should translate new hint text', function() {
+        it('should translate new hint text', function () {
           expect(mockReq.t).to.be.calledOnceWithExactly(
             'original.translation.key',
             {
@@ -267,7 +267,7 @@ describe('Move controllers', function() {
           )
         })
 
-        it('should update field hint', function() {
+        it('should update field hint', function () {
           expect(mockReq.form.options.fields.move_date).to.deep.equal({
             hint: {
               text: 'new.translation.key',
@@ -276,8 +276,8 @@ describe('Move controllers', function() {
         })
       })
 
-      context('with from and to date', function() {
-        beforeEach(function() {
+      context('with from and to date', function () {
+        beforeEach(function () {
           filters.formatDateRange
             .withArgs(['1 Jan', '2 Feb'], 'and')
             .returns('1 Jan and 2 Feb')
@@ -286,7 +286,7 @@ describe('Move controllers', function() {
           controller.updateDateHint(mockReq, mockRes, nextSpy)
         })
 
-        it('should translate new hint text', function() {
+        it('should translate new hint text', function () {
           expect(mockReq.t).to.be.calledOnceWithExactly(
             'original.translation.key',
             {
@@ -296,7 +296,7 @@ describe('Move controllers', function() {
           )
         })
 
-        it('should update field hint', function() {
+        it('should update field hint', function () {
           expect(mockReq.form.options.fields.move_date).to.deep.equal({
             hint: {
               text: 'new.translation.key',
@@ -305,16 +305,16 @@ describe('Move controllers', function() {
         })
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         controller.updateDateHint(mockReq, mockRes, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#setMoveSummary()', function() {
+    describe('#setMoveSummary()', function () {
       let mockRes, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         nextSpy = sinon.spy()
         mockRes = {
@@ -331,13 +331,13 @@ describe('Move controllers', function() {
         controller.setMoveSummary({}, mockRes, nextSpy)
       })
 
-      it('should call presenter', function() {
+      it('should call presenter', function () {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
           mockRes.locals.move
         )
       })
 
-      it('should update locals', function() {
+      it('should update locals', function () {
         expect(mockRes.locals).to.deep.equal({
           ...mockRes.locals,
           person: mockRes.locals.move.person,
@@ -345,15 +345,15 @@ describe('Move controllers', function() {
         })
       })
 
-      it('should call next', function() {
+      it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
-    describe('#successHandler()', function() {
+    describe('#successHandler()', function () {
       let req, res, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(singleRequestService, 'approve')
         sinon.stub(singleRequestService, 'reject')
         nextSpy = sinon.spy()
@@ -382,23 +382,23 @@ describe('Move controllers', function() {
         }
       })
 
-      context('with approval', function() {
+      context('with approval', function () {
         const mockValues = {
           move_date: '2020-10-10',
           review_decision: 'approve',
         }
 
-        beforeEach(function() {
+        beforeEach(function () {
           req.sessionModel.toJSON = () => mockValues
         })
 
-        context('when service resolves', function() {
-          beforeEach(async function() {
+        context('when service resolves', function () {
+          beforeEach(async function () {
             singleRequestService.approve.resolves({})
             await controller.successHandler(req, res, nextSpy)
           })
 
-          it('should approve move', function() {
+          it('should approve move', function () {
             expect(singleRequestService.approve).to.be.calledOnceWithExactly(
               mockMove.id,
               {
@@ -407,19 +407,19 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should not reject move', function() {
+          it('should not reject move', function () {
             expect(singleRequestService.reject).not.to.be.called
           })
 
-          it('should reset the journey', function() {
+          it('should reset the journey', function () {
             expect(req.journeyModel.reset).to.have.been.calledOnce
           })
 
-          it('should reset the session', function() {
+          it('should reset the session', function () {
             expect(req.sessionModel.reset).to.have.been.calledOnce
           })
 
-          it('should redirect correctly', function() {
+          it('should redirect correctly', function () {
             expect(res.redirect).to.have.been.calledOnce
             expect(res.redirect).to.have.been.calledWith(
               '/move/123456789/confirmation'
@@ -427,41 +427,41 @@ describe('Move controllers', function() {
           })
         })
 
-        context('when service rejects', function() {
+        context('when service rejects', function () {
           const errorMock = new Error('Problem')
 
-          beforeEach(async function() {
+          beforeEach(async function () {
             singleRequestService.approve.throws(errorMock)
             await controller.successHandler(req, res, nextSpy)
           })
 
-          it('should call next with the error', function() {
+          it('should call next with the error', function () {
             expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
           })
 
-          it('should not redirect', function() {
+          it('should not redirect', function () {
             expect(res.redirect).not.to.have.been.called
           })
         })
       })
 
-      context('with rejection', function() {
+      context('with rejection', function () {
         const mockValues = {
           review_decision: 'reject',
           rejection_reason_comment: 'No space at prison',
         }
 
-        beforeEach(function() {
+        beforeEach(function () {
           req.sessionModel.toJSON = () => mockValues
         })
 
-        context('when service resolves', function() {
-          beforeEach(async function() {
+        context('when service resolves', function () {
+          beforeEach(async function () {
             singleRequestService.reject.resolves({})
             await controller.successHandler(req, res, nextSpy)
           })
 
-          it('should approve move', function() {
+          it('should approve move', function () {
             expect(singleRequestService.reject).to.be.calledOnceWithExactly(
               mockMove.id,
               {
@@ -470,37 +470,37 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should not reject move', function() {
+          it('should not reject move', function () {
             expect(singleRequestService.approve).not.to.be.called
           })
 
-          it('should reset the journey', function() {
+          it('should reset the journey', function () {
             expect(req.journeyModel.reset).to.have.been.calledOnce
           })
 
-          it('should reset the session', function() {
+          it('should reset the session', function () {
             expect(req.sessionModel.reset).to.have.been.calledOnce
           })
 
-          it('should redirect correctly', function() {
+          it('should redirect correctly', function () {
             expect(res.redirect).to.have.been.calledOnce
             expect(res.redirect).to.have.been.calledWith('/move/123456789')
           })
         })
 
-        context('when service rejects', function() {
+        context('when service rejects', function () {
           const errorMock = new Error('Problem')
 
-          beforeEach(async function() {
+          beforeEach(async function () {
             singleRequestService.reject.throws(errorMock)
             await controller.successHandler(req, res, nextSpy)
           })
 
-          it('should call next with the error', function() {
+          it('should call next with the error', function () {
             expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
           })
 
-          it('should not redirect', function() {
+          it('should not redirect', function () {
             expect(res.redirect).not.to.have.been.called
           })
         })

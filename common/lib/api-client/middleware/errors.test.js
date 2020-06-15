@@ -1,11 +1,11 @@
 const errorMiddleware = require('./errors')
 
-describe('API Client', function() {
-  describe('Error middleware', function() {
-    describe('#error()', function() {
-      context('when payload does not include a response', function() {
-        context('when payload is an Error', function() {
-          it('should return error', function() {
+describe('API Client', function () {
+  describe('Error middleware', function () {
+    describe('#error()', function () {
+      context('when payload does not include a response', function () {
+        context('when payload is an Error', function () {
+          it('should return error', function () {
             const error = errorMiddleware.error(new Error('Payload error'))
 
             expect(error).to.be.an.instanceOf(Error)
@@ -13,24 +13,24 @@ describe('API Client', function() {
           })
         })
 
-        context('when payload is not an Error', function() {
-          it('should return null', function() {
+        context('when payload is not an Error', function () {
+          it('should return null', function () {
             expect(errorMiddleware.error()).to.equal(null)
           })
         })
       })
 
-      context('when payload contains a response', function() {
+      context('when payload contains a response', function () {
         let response
 
-        before(function() {
+        before(function () {
           response = {
             statusText: 'API Error',
           }
         })
 
-        context('without error description', function() {
-          it('should set message to statusText', function() {
+        context('without error description', function () {
+          it('should set message to statusText', function () {
             const error = errorMiddleware.error({ response })
 
             expect(error).to.be.an.instanceOf(Error)
@@ -38,8 +38,8 @@ describe('API Client', function() {
           })
         })
 
-        context('with error description', function() {
-          it('should set message to error description', function() {
+        context('with error description', function () {
+          it('should set message to error description', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,
@@ -54,8 +54,8 @@ describe('API Client', function() {
           })
         })
 
-        context('without response status', function() {
-          it('should set status to 500', function() {
+        context('without response status', function () {
+          it('should set status to 500', function () {
             const error = errorMiddleware.error({ response })
 
             expect(error).to.be.an.instanceOf(Error)
@@ -63,8 +63,8 @@ describe('API Client', function() {
           })
         })
 
-        context('with response status', function() {
-          it('should set status to response status', function() {
+        context('with response status', function () {
+          it('should set status to response status', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,
@@ -77,8 +77,8 @@ describe('API Client', function() {
           })
         })
 
-        context('without data errors', function() {
-          it('should set errors to undefined', function() {
+        context('without data errors', function () {
+          it('should set errors to undefined', function () {
             const error = errorMiddleware.error({ response })
 
             expect(error).to.be.an.instanceOf(Error)
@@ -86,8 +86,8 @@ describe('API Client', function() {
           })
         })
 
-        context('with data errors', function() {
-          it('should append errors to error class', function() {
+        context('with data errors', function () {
+          it('should append errors to error class', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,

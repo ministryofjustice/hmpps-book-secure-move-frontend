@@ -14,35 +14,35 @@ const mockCourtCase = {
   },
 }
 
-describe('Presenters', function() {
-  describe('#courtCaseToCardComponent()', function() {
+describe('Presenters', function () {
+  describe('#courtCaseToCardComponent()', function () {
     let transformedResponse
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(filters, 'formatDate').returnsArg(0)
     })
 
-    context('with mock court case', function() {
-      beforeEach(function() {
+    context('with mock court case', function () {
+      beforeEach(function () {
         transformedResponse = courtCaseToCardComponent(mockCourtCase)
       })
 
-      describe('response', function() {
-        it('should contain a title', function() {
+      describe('response', function () {
+        it('should contain a title', function () {
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
             text: 'T20167984 at Snaresbrook Crown Court',
           })
         })
 
-        it('should format date', function() {
+        it('should format date', function () {
           expect(filters.formatDate).to.be.calledOnceWithExactly(
             mockCourtCase.case_start_date
           )
         })
 
-        it('should contain correct meta data', function() {
+        it('should contain correct meta data', function () {
           expect(transformedResponse).to.have.property('meta')
           expect(transformedResponse.meta).to.deep.equal({
             items: [
@@ -59,14 +59,14 @@ describe('Presenters', function() {
         })
       })
 
-      describe('translations', function() {
-        it('should translate age label', function() {
+      describe('translations', function () {
+        it('should translate age label', function () {
           expect(i18n.t.getCall(0)).to.be.calledWithExactly(
             'moves::court_case.items.start_date.label'
           )
         })
 
-        it('should translate date of birth label', function() {
+        it('should translate date of birth label', function () {
           expect(i18n.t.getCall(1)).to.be.calledWithExactly(
             'moves::court_case.items.case_type.label'
           )
@@ -74,8 +74,8 @@ describe('Presenters', function() {
       })
     })
 
-    context('without location', function() {
-      beforeEach(function() {
+    context('without location', function () {
+      beforeEach(function () {
         const mockCourtCaseWithoutLocation = {
           ...mockCourtCase,
         }
@@ -86,8 +86,8 @@ describe('Presenters', function() {
         )
       })
 
-      describe('response', function() {
-        it('title should only contain case number', function() {
+      describe('response', function () {
+        it('title should only contain case number', function () {
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
             text: 'T20167984',
@@ -96,8 +96,8 @@ describe('Presenters', function() {
       })
     })
 
-    context('without null location', function() {
-      beforeEach(function() {
+    context('without null location', function () {
+      beforeEach(function () {
         const mockCourtCaseWithoutLocation = {
           ...mockCourtCase,
           location: null,
@@ -107,8 +107,8 @@ describe('Presenters', function() {
         )
       })
 
-      describe('response', function() {
-        it('title should only contain case number', function() {
+      describe('response', function () {
+        it('title should only contain case number', function () {
           expect(transformedResponse).to.have.property('title')
           expect(transformedResponse.title).to.deep.equal({
             text: 'T20167984',

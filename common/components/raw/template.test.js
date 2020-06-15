@@ -5,11 +5,11 @@ const {
 
 const examples = getExamples('raw')
 
-describe('Raw component', function() {
-  context('by default', function() {
+describe('Raw component', function () {
+  context('by default', function () {
     let $component
 
-    beforeEach(function() {
+    beforeEach(function () {
       const $ = renderComponentHtmlToCheerio(
         'raw',
         examples.default,
@@ -19,7 +19,7 @@ describe('Raw component', function() {
       $component = $('body')
     })
 
-    it('should render', function() {
+    it('should render', function () {
       expect($component.html().trim()).to.equal('<p class="foo-bar">Hello</p>')
     })
   })

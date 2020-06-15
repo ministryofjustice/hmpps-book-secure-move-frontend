@@ -33,15 +33,15 @@ function JsonApiStub(opts = {}) {
   this.init(opts)
 }
 
-describe('Back-end API client', function() {
-  context('Singleton', function() {
+describe('Back-end API client', function () {
+  context('Singleton', function () {
     let jsonApi
     let postStub
     let errorsStub
     let requestStub
     let requestTimeoutStub
 
-    beforeEach(function() {
+    beforeEach(function () {
       postStub = sinon.stub()
       errorsStub = sinon.stub()
       requestStub = sinon.stub()
@@ -64,33 +64,33 @@ describe('Back-end API client', function() {
       })
     })
 
-    context('on first call', function() {
+    context('on first call', function () {
       let client
 
-      beforeEach(function() {
+      beforeEach(function () {
         client = jsonApi()
       })
 
-      it('should create a new client', function() {
+      it('should create a new client', function () {
         expect(JsonApiStub.prototype.init).to.be.calledOnceWithExactly({
           apiUrl: mockConfig.API.BASE_URL,
           logger: mockConfig.IS_DEV,
         })
       })
 
-      it('should return an client API', function() {
+      it('should return an client API', function () {
         expect(client).to.be.a('object')
         expect(client).to.deep.equal(new JsonApiStub())
       })
 
-      describe('middleware', function() {
-        it('should replace error middleware', function() {
+      describe('middleware', function () {
+        it('should replace error middleware', function () {
           expect(
             JsonApiStub.prototype.replaceMiddleware.firstCall
           ).to.be.calledWithExactly('errors', errorsStub)
         })
 
-        it('should replace post middleware', function() {
+        it('should replace post middleware', function () {
           expect(
             JsonApiStub.prototype.replaceMiddleware.secondCall
           ).to.be.calledWithExactly(
@@ -99,7 +99,7 @@ describe('Back-end API client', function() {
           )
         })
 
-        it('should insert request cache', function() {
+        it('should insert request cache', function () {
           expect(
             JsonApiStub.prototype.replaceMiddleware.thirdCall
           ).to.be.calledWithExactly(
@@ -108,7 +108,7 @@ describe('Back-end API client', function() {
           )
         })
 
-        it('should insert request timeout', function() {
+        it('should insert request timeout', function () {
           expect(
             JsonApiStub.prototype.insertMiddlewareBefore.firstCall
           ).to.be.calledWithExactly(
@@ -117,20 +117,20 @@ describe('Back-end API client', function() {
           )
         })
 
-        it('should insert auth middleware', function() {
+        it('should insert auth middleware', function () {
           expect(
             JsonApiStub.prototype.insertMiddlewareBefore.secondCall
           ).to.be.calledWithExactly('axios-request', auth.devourAuthMiddleware)
         })
       })
 
-      describe('models', function() {
-        it('should define correct number of models', function() {
+      describe('models', function () {
+        it('should define correct number of models', function () {
           expect(JsonApiStub.prototype.define.callCount).to.equal(2)
         })
 
-        context('when model contains no options', function() {
-          it('should not send options', function() {
+        context('when model contains no options', function () {
+          it('should not send options', function () {
             expect(
               JsonApiStub.prototype.define.firstCall
             ).to.be.calledWithExactly(
@@ -141,8 +141,8 @@ describe('Back-end API client', function() {
           })
         })
 
-        context('when model contains options', function() {
-          it('should send options', function() {
+        context('when model contains options', function () {
+          it('should send options', function () {
             expect(
               JsonApiStub.prototype.define.secondCall
             ).to.be.calledWithExactly(
@@ -155,37 +155,37 @@ describe('Back-end API client', function() {
       })
     })
 
-    context('on subsequent calls', function() {
+    context('on subsequent calls', function () {
       let firstInstance
       let secondInstance
       let thirdInstance
 
-      beforeEach(function() {
+      beforeEach(function () {
         firstInstance = jsonApi()
         secondInstance = jsonApi()
         thirdInstance = jsonApi()
       })
 
-      it('should only create one new client', function() {
+      it('should only create one new client', function () {
         expect(JsonApiStub.prototype.init).to.be.calledOnce
       })
 
-      describe('first instance', function() {
-        it('should return an client API', function() {
+      describe('first instance', function () {
+        it('should return an client API', function () {
           expect(firstInstance).to.be.a('object')
           expect(firstInstance).to.deep.equal(new JsonApiStub())
         })
       })
 
-      describe('third instance', function() {
-        it('should return an client API', function() {
+      describe('third instance', function () {
+        it('should return an client API', function () {
           expect(thirdInstance).to.be.a('object')
           expect(thirdInstance).to.deep.equal(new JsonApiStub())
         })
       })
 
-      describe('second instance', function() {
-        it('should return an client API', function() {
+      describe('second instance', function () {
+        it('should return an client API', function () {
           expect(secondInstance).to.be.a('object')
           expect(secondInstance).to.deep.equal(new JsonApiStub())
         })

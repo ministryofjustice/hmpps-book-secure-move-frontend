@@ -5,85 +5,65 @@ const {
 
 const examples = getExamples('data')
 
-describe('Data component', function() {
-  context('by default', function() {
+describe('Data component', function () {
+  context('by default', function () {
     let $component
 
-    beforeEach(function() {
+    beforeEach(function () {
       const $ = renderComponentHtmlToCheerio('data', examples.default)
       $component = $('.app-data')
     })
 
-    it('should render a div', function() {
+    it('should render a div', function () {
       expect($component.get(0).tagName).to.equal('div')
     })
 
-    it('should render value', function() {
-      expect(
-        $component
-          .find('.app-data__value')
-          .text()
-          .trim()
-      ).to.equal('25')
+    it('should render value', function () {
+      expect($component.find('.app-data__value').text().trim()).to.equal('25')
     })
 
-    it('should render label', function() {
-      expect(
-        $component
-          .find('.app-data__label')
-          .text()
-          .trim()
-      ).to.equal('emails sent')
+    it('should render label', function () {
+      expect($component.find('.app-data__label').text().trim()).to.equal(
+        'emails sent'
+      )
     })
 
-    it('should render value first', function() {
+    it('should render value first', function () {
       expect(
-        $component
-          .children()
-          .first()
-          .hasClass('app-data__value')
+        $component.children().first().hasClass('app-data__value')
       ).to.be.true
     })
 
-    it('should render label second', function() {
+    it('should render label second', function () {
       expect(
-        $component
-          .children()
-          .last()
-          .hasClass('app-data__label')
+        $component.children().last().hasClass('app-data__label')
       ).to.be.true
     })
   })
 
-  context('inverted', function() {
+  context('inverted', function () {
     let $component
 
-    beforeEach(function() {
+    beforeEach(function () {
       const $ = renderComponentHtmlToCheerio('data', examples.inverted)
       $component = $('.app-data')
     })
 
-    it('should render label first', function() {
+    it('should render label first', function () {
       expect(
-        $component
-          .children()
-          .first()
-          .hasClass('app-data__label')
+        $component.children().first().hasClass('app-data__label')
       ).to.be.true
     })
 
-    it('should render value second', function() {
+    it('should render value second', function () {
       expect(
-        $component
-          .children()
-          .last()
-          .hasClass('app-data__value')
+        $component.children().last().hasClass('app-data__value')
       ).to.be.true
     })
   })
 
-  context('with classes', function() {
-    it('should render classes', function() {
+  context('with classes', function () {
+    it('should render classes', function () {
       const $ = renderComponentHtmlToCheerio(
         'data',
         examples['extra large variation']
@@ -94,8 +74,8 @@ describe('Data component', function() {
     })
   })
 
-  context('with custom element', function() {
-    it('should render custom element', function() {
+  context('with custom element', function () {
+    it('should render custom element', function () {
       const $ = renderComponentHtmlToCheerio(
         'data',
         examples['with heading as element']

@@ -14,68 +14,68 @@ const params = {
   fizz: 'buzz',
 }
 
-describe('Component Service', function() {
-  describe('#getComponent()', function() {
-    context('with GOV.UK Design System component', function() {
+describe('Component Service', function () {
+  describe('#getComponent()', function () {
+    context('with GOV.UK Design System component', function () {
       let component
 
-      beforeEach(function() {
+      beforeEach(function () {
         component = componentService.getComponent('govukInput', params)
       })
 
-      it('should use correct filename', function() {
+      it('should use correct filename', function () {
         expect(component).to.contain('from "govuk/components/input/macro.njk"')
       })
 
-      it('should use correct macro name', function() {
+      it('should use correct macro name', function () {
         expect(component).to.contain('import govukInput')
       })
 
-      it('should format params', function() {
+      it('should format params', function () {
         expect(component).to.contain(
           `govukInput(${JSON.stringify(params, null, 2)})`
         )
       })
     })
 
-    context('with app component', function() {
+    context('with app component', function () {
       let component
 
-      beforeEach(function() {
+      beforeEach(function () {
         component = componentService.getComponent('appData', params)
       })
 
-      it('should use correct filename', function() {
+      it('should use correct filename', function () {
         expect(component).to.contain('from "data/macro.njk"')
       })
 
-      it('should use correct macro name', function() {
+      it('should use correct macro name', function () {
         expect(component).to.contain('import appData')
       })
 
-      it('should format params', function() {
+      it('should format params', function () {
         expect(component).to.contain(
           `appData(${JSON.stringify(params, null, 2)})`
         )
       })
     })
 
-    context('with multi word component', function() {
+    context('with multi word component', function () {
       let component
 
-      beforeEach(function() {
+      beforeEach(function () {
         component = componentService.getComponent('appErrorSummary', params)
       })
 
-      it('should use correct filename', function() {
+      it('should use correct filename', function () {
         expect(component).to.contain('from "error-summary/macro.njk"')
       })
 
-      it('should use correct macro name', function() {
+      it('should use correct macro name', function () {
         expect(component).to.contain('import appErrorSummary')
       })
 
-      it('should format params', function() {
+      it('should format params', function () {
         expect(component).to.contain(
           `appErrorSummary(${JSON.stringify(params, null, 2)})`
         )

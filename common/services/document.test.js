@@ -9,8 +9,8 @@ const documentService = proxyquire('./document', {
 })
 const apiClient = require('../lib/api-client')()
 
-describe('Document Service', function() {
-  describe('#create()', function() {
+describe('Document Service', function () {
+  describe('#create()', function () {
     const mockFileData = {
       originalname: 'Original filename',
       size: 100100,
@@ -24,13 +24,13 @@ describe('Document Service', function() {
     }
     let document
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
 
       document = await documentService.create(mockFileData, mockBuffer)
     })
 
-    it('should append file data to form data', function() {
+    it('should append file data to form data', function () {
       const args = MockFormData.prototype.append.args[0]
 
       expect(args[0]).to.equal('data[attributes][file]')
@@ -41,14 +41,14 @@ describe('Document Service', function() {
       })
     })
 
-    it('should call create method with form data', function() {
+    it('should call create method with form data', function () {
       const args = apiClient.create.args[0]
 
       expect(args[0]).to.equal('document')
       expect(args[1]).to.be.an.instanceOf(MockFormData)
     })
 
-    it('should return data property', function() {
+    it('should return data property', function () {
       expect(document).to.deep.equal(mockResponse.data)
     })
   })

@@ -10,35 +10,35 @@ const mockCourtHearing = {
   comments: 'Distinctio accusantium enim libero eligendi est.',
 }
 
-describe('Court Hearing Service', function() {
-  describe('#format()', function() {
+describe('Court Hearing Service', function () {
+  describe('#format()', function () {
     const mockMoveId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
 
-    context('when relationship field is string', function() {
+    context('when relationship field is string', function () {
       let formatted
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         formatted = await courtHearingService.format({
           date: '2010-10-10',
           move: mockMoveId,
         })
       })
 
-      it('should format as relationship object', function() {
+      it('should format as relationship object', function () {
         expect(formatted.move).to.deep.equal({
           id: mockMoveId,
         })
       })
 
-      it('should not affect non relationship fields', function() {
+      it('should not affect non relationship fields', function () {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
 
-    context('when relationship field is not a string', function() {
+    context('when relationship field is not a string', function () {
       let formatted
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         formatted = await courtHearingService.format({
           date: '2010-10-10',
           move: {
@@ -47,21 +47,21 @@ describe('Court Hearing Service', function() {
         })
       })
 
-      it('should return its original value', function() {
+      it('should return its original value', function () {
         expect(formatted.move).to.deep.equal({
           id: mockMoveId,
         })
       })
 
-      it('should not affect non relationship fields', function() {
+      it('should not affect non relationship fields', function () {
         expect(formatted.date).to.equal('2010-10-10')
       })
     })
 
-    context('with falsey values', function() {
+    context('with falsey values', function () {
       let formatted
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         formatted = await courtHearingService.format({
           date: '2010-10-10',
           move: {
@@ -74,7 +74,7 @@ describe('Court Hearing Service', function() {
         })
       })
 
-      it('should remove falsey values', function() {
+      it('should remove falsey values', function () {
         expect(formatted).to.deep.equal({
           date: '2010-10-10',
           move: {
@@ -86,7 +86,7 @@ describe('Court Hearing Service', function() {
     })
   })
 
-  describe('#create()', function() {
+  describe('#create()', function () {
     const mockData = {
       name: 'Steve Bloggs',
     }
@@ -95,16 +95,16 @@ describe('Court Hearing Service', function() {
     }
     let courtHearing
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
     })
 
-    context('by default', function() {
-      beforeEach(async function() {
+    context('by default', function () {
+      beforeEach(async function () {
         courtHearing = await courtHearingService.create(mockData)
       })
 
-      it('should create with empty params', function() {
+      it('should create with empty params', function () {
         expect(apiClient.create).to.be.calledOnceWithExactly(
           'court_hearing',
           mockData,
@@ -112,17 +112,17 @@ describe('Court Hearing Service', function() {
         )
       })
 
-      it('should return court hearing', function() {
+      it('should return court hearing', function () {
         expect(courtHearing).to.deep.equal(mockResponse.data)
       })
     })
 
-    context('with disabled save set to true', function() {
-      beforeEach(async function() {
+    context('with disabled save set to true', function () {
+      beforeEach(async function () {
         courtHearing = await courtHearingService.create(mockData, true)
       })
 
-      it('should create with query string', function() {
+      it('should create with query string', function () {
         expect(apiClient.create).to.be.calledOnceWithExactly(
           'court_hearing',
           mockData,
@@ -132,17 +132,17 @@ describe('Court Hearing Service', function() {
         )
       })
 
-      it('should return court hearing', function() {
+      it('should return court hearing', function () {
         expect(courtHearing).to.deep.equal(mockResponse.data)
       })
     })
 
-    context('with disabled save set to true', function() {
-      beforeEach(async function() {
+    context('with disabled save set to true', function () {
+      beforeEach(async function () {
         courtHearing = await courtHearingService.create(mockData, false)
       })
 
-      it('should create with empty params', function() {
+      it('should create with empty params', function () {
         expect(apiClient.create).to.be.calledOnceWithExactly(
           'court_hearing',
           mockData,
@@ -150,7 +150,7 @@ describe('Court Hearing Service', function() {
         )
       })
 
-      it('should return court hearing', function() {
+      it('should return court hearing', function () {
         expect(courtHearing).to.deep.equal(mockResponse.data)
       })
     })

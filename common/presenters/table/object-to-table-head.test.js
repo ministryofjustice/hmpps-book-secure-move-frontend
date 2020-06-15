@@ -2,31 +2,31 @@ const i18n = require('../../../config/i18n')
 
 const objectToTableHead = require('./object-to-table-head')
 
-describe('table head presenter', function() {
+describe('table head presenter', function () {
   let output
 
-  beforeEach(function() {
+  beforeEach(function () {
     sinon.stub(i18n, 't').callsFake(key => {
       return `${key} (translated)`
     })
   })
 
-  context('with no args', function() {
-    beforeEach(function() {
+  context('with no args', function () {
+    beforeEach(function () {
       output = objectToTableHead({})()
     })
 
-    it('should return undefined', function() {
+    it('should return undefined', function () {
       expect(output).to.be.undefined
     })
 
-    it('should not translate anything', function() {
+    it('should not translate anything', function () {
       expect(i18n.t).not.to.be.called
     })
   })
 
-  context('with html', function() {
-    beforeEach(function() {
+  context('with html', function () {
+    beforeEach(function () {
       output = objectToTableHead()({
         head: {
           html: 'move_type::label',
@@ -34,19 +34,19 @@ describe('table head presenter', function() {
       })
     })
 
-    it('should return correct header', function() {
+    it('should return correct header', function () {
       expect(output).to.deep.equal({
         html: 'move_type::label (translated)',
       })
     })
 
-    it('should translate label', function() {
+    it('should translate label', function () {
       expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
 
-  context('with text', function() {
-    beforeEach(function() {
+  context('with text', function () {
+    beforeEach(function () {
       output = objectToTableHead()({
         head: {
           text: 'move_type::label',
@@ -54,19 +54,19 @@ describe('table head presenter', function() {
       })
     })
 
-    it('should return correct header', function() {
+    it('should return correct header', function () {
       expect(output).to.deep.equal({
         text: 'move_type::label (translated)',
       })
     })
 
-    it('should translate label', function() {
+    it('should translate label', function () {
       expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
 
-  context('with attributes', function() {
-    beforeEach(function() {
+  context('with attributes', function () {
+    beforeEach(function () {
       output = objectToTableHead()({
         head: {
           html: 'move_type::label',
@@ -77,7 +77,7 @@ describe('table head presenter', function() {
       })
     })
 
-    it('should return correct header', function() {
+    it('should return correct header', function () {
       expect(output).to.deep.equal({
         html: 'move_type::label (translated)',
         attributes: {
@@ -86,27 +86,27 @@ describe('table head presenter', function() {
       })
     })
 
-    it('should translate label', function() {
+    it('should translate label', function () {
       expect(i18n.t).to.be.calledOnceWithExactly('move_type::label')
     })
   })
 
-  context('with neither html nor test', function() {
-    beforeEach(function() {
+  context('with neither html nor test', function () {
+    beforeEach(function () {
       output = objectToTableHead()({})
     })
 
-    it('should return undefined', function() {
+    it('should return undefined', function () {
       expect(output).to.be.undefined
     })
 
-    it('should not translate anything', function() {
+    it('should not translate anything', function () {
       expect(i18n.t).not.to.be.called
     })
   })
 
-  context('with both html and text', function() {
-    beforeEach(function() {
+  context('with both html and text', function () {
+    beforeEach(function () {
       output = objectToTableHead()({
         head: {
           html: 'move_type::label-html',
@@ -115,25 +115,25 @@ describe('table head presenter', function() {
       })
     })
 
-    it('should return correct header', function() {
+    it('should return correct header', function () {
       expect(output).to.deep.equal({
         html: 'move_type::label-html (translated)',
         text: 'move_type::label-text (translated)',
       })
     })
 
-    it('should translate both label', function() {
+    it('should translate both label', function () {
       expect(i18n.t).to.be.calledWithExactly('move_type::label-html')
       expect(i18n.t).to.be.calledWithExactly('move_type::label-text')
     })
 
-    it('should translate correct number of times', function() {
+    it('should translate correct number of times', function () {
       expect(i18n.t.callCount).to.equal(2)
     })
   })
-  context('with isSortable', function() {
-    context('with current column sorted', function() {
-      beforeEach(function() {
+  context('with isSortable', function () {
+    context('with current column sorted', function () {
+      beforeEach(function () {
         output = objectToTableHead({
           sortBy: 'moves_count',
           sortDirection: 'desc',
@@ -146,23 +146,23 @@ describe('table head presenter', function() {
           },
         })
       })
-      it('outputs the aria sort attribute set to the current sorting', function() {
+      it('outputs the aria sort attribute set to the current sorting', function () {
         expect(output.attributes).to.deep.equal({
           'aria-sort': 'descending',
         })
       })
-      it('outputs a link', function() {
+      it('outputs a link', function () {
         expect(output.html).to.equal(
           '<a aria-label="sort (translated)" class="sortable-table__button" role="button" href="?sortBy=moves_count&sortDirection=asc&status=proposed">moves_count::label-html (translated)</a>'
         )
       })
-      it('conserves the existing attributes', function() {
+      it('conserves the existing attributes', function () {
         expect(output.isSortable).to.be.true
         expect(output.sortKey).to.equal('moves_count')
       })
     })
-    context('with another column sorted', function() {
-      beforeEach(function() {
+    context('with another column sorted', function () {
+      beforeEach(function () {
         output = objectToTableHead({
           sortBy: 'date',
           sortDirection: 'asc',
@@ -175,20 +175,20 @@ describe('table head presenter', function() {
           },
         })
       })
-      it('outputs the aria sort attribute set to none', function() {
+      it('outputs the aria sort attribute set to none', function () {
         expect(output.attributes).to.deep.equal({
           'aria-sort': 'none',
         })
       })
-      it('outputs a link', function() {
+      it('outputs a link', function () {
         expect(output.html).to.equal(
           '<a aria-label="sort (translated)" class="sortable-table__button" role="button" href="?sortBy=moves_count&sortDirection=desc&status=proposed">moves_count::label-html (translated)</a>'
         )
       })
     })
   })
-  context('with isSortable set to false', function() {
-    beforeEach(function() {
+  context('with isSortable set to false', function () {
+    beforeEach(function () {
       output = objectToTableHead({
         sortBy: 'date',
         sortDirection: 'desc',
@@ -200,10 +200,10 @@ describe('table head presenter', function() {
         },
       })
     })
-    it('outputs the translated html', function() {
+    it('outputs the translated html', function () {
       expect(output.html).to.equal('moves_count::label-html (translated)')
     })
-    it('does not introduce spurious properties', function() {
+    it('does not introduce spurious properties', function () {
       expect(output.isSortable).to.be.undefined
       expect(output.sortKey).to.be.undefined
     })

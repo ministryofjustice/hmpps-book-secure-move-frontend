@@ -17,11 +17,11 @@ const mockBodyKey = 'outgoing'
 const mockLocationKey = 'from_location'
 const errorStub = new Error('Problem')
 
-describe('Moves middleware', function() {
-  describe('#setResultsMoves()', function() {
+describe('Moves middleware', function () {
+  describe('#setResultsMoves()', function () {
     let req, res, nextSpy, moveToCardComponentMapStub
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       sinon.stub(moveService, 'getActive')
       sinon.stub(moveService, 'getCancelled')
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
@@ -41,18 +41,18 @@ describe('Moves middleware', function() {
       }
     })
 
-    context('when API call returns successfully', function() {
-      beforeEach(function() {
+    context('when API call returns successfully', function () {
+      beforeEach(function () {
         moveService.getActive.resolves(mockActiveMoves)
         moveService.getCancelled.resolves(mockCancelledMoves)
       })
 
-      context('without `locationKey`', function() {
-        beforeEach(async function() {
+      context('without `locationKey`', function () {
+        beforeEach(async function () {
           await middleware(mockBodyKey)(req, res, nextSpy)
         })
 
-        it('should call API with move date and location ID', function() {
+        it('should call API with move date and location ID', function () {
           expect(moveService.getActive).to.be.calledOnceWithExactly(
             req.body[mockBodyKey]
           )
@@ -61,7 +61,7 @@ describe('Moves middleware', function() {
           )
         })
 
-        it('should set results on req', function() {
+        it('should set results on req', function () {
           expect(req).to.have.property('results')
           expect(req.results).to.deep.equal({
             active: mockActiveMoves,
@@ -69,7 +69,7 @@ describe('Moves middleware', function() {
           })
         })
 
-        it('should set resultsAsCards on req', function() {
+        it('should set resultsAsCards on req', function () {
           expect(req).to.have.property('resultsAsCards')
           expect(req.resultsAsCards).to.deep.equal({
             active: mockActiveMoves,
@@ -77,14 +77,14 @@ describe('Moves middleware', function() {
           })
         })
 
-        it('should call movesByLocation presenter without locationKey', function() {
+        it('should call movesByLocation presenter without locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
             undefined
           )
         })
 
-        it('should call moveToCardComponent presenter', function() {
+        it('should call moveToCardComponent presenter', function () {
           expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
             showMeta: false,
             showTags: false,
@@ -95,17 +95,17 @@ describe('Moves middleware', function() {
           )
         })
 
-        it('should call next with no argument', function() {
+        it('should call next with no argument', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with `locationKey`', function() {
-        beforeEach(async function() {
+      context('with `locationKey`', function () {
+        beforeEach(async function () {
           await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
         })
 
-        it('should call movesByLocation presenter with locationKey', function() {
+        it('should call movesByLocation presenter with locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
             mockLocationKey
@@ -114,18 +114,18 @@ describe('Moves middleware', function() {
       })
     })
 
-    context('when API call returns an error', function() {
-      beforeEach(async function() {
+    context('when API call returns an error', function () {
+      beforeEach(async function () {
         moveService.getActive.throws(errorStub)
         await middleware(mockBodyKey)(req, res, nextSpy)
       })
 
-      it('should not request properties', function() {
+      it('should not request properties', function () {
         expect(req).not.to.have.property('results')
         expect(req).not.to.have.property('resultsAsCards')
       })
 
-      it('should send error to next function', function() {
+      it('should send error to next function', function () {
         expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
       })
     })

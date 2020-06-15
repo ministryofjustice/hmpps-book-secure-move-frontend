@@ -1,15 +1,15 @@
 const explicitAssessmentAnswer = require('./common.explicit-assessment-answer')
 
-describe('Move fields', function() {
-  describe('#explicitAssessmentAnswer()', function() {
+describe('Move fields', function () {
+  describe('#explicitAssessmentAnswer()', function () {
     let field
 
-    context('with all arguments', function() {
+    context('with all arguments', function () {
       const mockName = 'foo'
       const mockValue = 'bar'
       const mockConditional = 'baz'
 
-      beforeEach(function() {
+      beforeEach(function () {
         field = explicitAssessmentAnswer({
           name: mockName,
           value: mockValue,
@@ -17,7 +17,7 @@ describe('Move fields', function() {
         })
       })
 
-      it('should return correct object', function() {
+      it('should return correct object', function () {
         expect(field).to.deep.equal({
           name: mockName,
           validate: 'required',
@@ -46,22 +46,22 @@ describe('Move fields', function() {
       })
     })
 
-    context('with no arguments', function() {
-      beforeEach(function() {
+    context('with no arguments', function () {
+      beforeEach(function () {
         field = explicitAssessmentAnswer()
       })
 
-      it('should return an empty object', function() {
+      it('should return an empty object', function () {
         expect(field).to.deep.equal({})
       })
     })
 
-    context('with missing arguments', function() {
-      beforeEach(function() {
+    context('with missing arguments', function () {
+      beforeEach(function () {
         field = explicitAssessmentAnswer()
       })
 
-      it('should return an empty object', function() {
+      it('should return an empty object', function () {
         expect(field).to.deep.equal({})
       })
     })

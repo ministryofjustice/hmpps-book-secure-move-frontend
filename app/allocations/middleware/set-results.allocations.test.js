@@ -15,14 +15,14 @@ const mockCancelledMoves = [
   { id: '6', fizz: 'buzz', status: 'cancelled' },
 ]
 
-describe('Allocations middleware', function() {
-  describe('#setResultsAllocations()', function() {
+describe('Allocations middleware', function () {
+  describe('#setResultsAllocations()', function () {
     let res
     let req
     let next
     let allocationsToTableStub
 
-    beforeEach(function() {
+    beforeEach(function () {
       allocationsToTableStub = sinon.stub().returnsArg(0)
       sinon.stub(allocationService, 'getActive')
       sinon.stub(allocationService, 'getCancelled')
@@ -51,18 +51,18 @@ describe('Allocations middleware', function() {
       }
     })
 
-    context('when services resolve', function() {
-      beforeEach(function() {
+    context('when services resolve', function () {
+      beforeEach(function () {
         allocationService.getActive.resolves(mockActiveMoves)
         allocationService.getCancelled.resolves(mockCancelledMoves)
       })
 
-      context('by default', function() {
-        beforeEach(async function() {
+      context('by default', function () {
+        beforeEach(async function () {
           await middleware(req, res, next)
         })
 
-        it('should call the data service with request body', function() {
+        it('should call the data service with request body', function () {
           expect(
             allocationService.getActive
           ).to.have.been.calledOnceWithExactly({
@@ -72,7 +72,7 @@ describe('Allocations middleware', function() {
           })
         })
 
-        it('should call the data service with request body', function() {
+        it('should call the data service with request body', function () {
           expect(
             allocationService.getCancelled
           ).to.have.been.calledOnceWithExactly({
@@ -82,7 +82,7 @@ describe('Allocations middleware', function() {
           })
         })
 
-        it('should set results on req', function() {
+        it('should set results on req', function () {
           expect(req).to.have.property('results')
           expect(req.results).to.deep.equal({
             active: mockActiveMoves,
@@ -90,7 +90,7 @@ describe('Allocations middleware', function() {
           })
         })
 
-        it('should set resultsAsTable on req', function() {
+        it('should set resultsAsTable on req', function () {
           expect(req).to.have.property('resultsAsTable')
           expect(req.resultsAsTable).to.deep.equal({
             active: mockActiveMoves,
@@ -98,11 +98,11 @@ describe('Allocations middleware', function() {
           })
         })
 
-        it('should call presenter correct number of times', function() {
+        it('should call presenter correct number of times', function () {
           expect(presenters.allocationsToTableComponent).to.be.calledTwice
         })
 
-        it('should call presenter with correct config', function() {
+        it('should call presenter with correct config', function () {
           expect(
             presenters.allocationsToTableComponent
           ).to.be.calledWithExactly({
@@ -112,32 +112,32 @@ describe('Allocations middleware', function() {
           })
         })
 
-        it('should call presenter for active moves', function() {
+        it('should call presenter for active moves', function () {
           expect(allocationsToTableStub).to.have.been.calledWithExactly(
             mockActiveMoves
           )
         })
 
-        it('should call presenter for cancelled moves', function() {
+        it('should call presenter for cancelled moves', function () {
           expect(allocationsToTableStub).to.have.been.calledWithExactly(
             mockCancelledMoves
           )
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(next).to.have.been.calledOnceWithExactly()
         })
       })
 
-      context('when single location is selected', function() {
-        beforeEach(async function() {
+      context('when single location is selected', function () {
+        beforeEach(async function () {
           req.session.currentLocation = {
             id: '123',
           }
           await middleware(req, res, next)
         })
 
-        it('should call presenter with correct config', function() {
+        it('should call presenter with correct config', function () {
           expect(
             presenters.allocationsToTableComponent
           ).to.be.calledWithExactly({
@@ -150,15 +150,15 @@ describe('Allocations middleware', function() {
 
       context(
         'when user has permissions to assign a person to a move',
-        function() {
-          beforeEach(async function() {
+        function () {
+          beforeEach(async function () {
             req.session.user = {
               permissions: ['allocation:person:assign'],
             }
             await middleware(req, res, next)
           })
 
-          it('should call presenter with correct config', function() {
+          it('should call presenter with correct config', function () {
             expect(
               presenters.allocationsToTableComponent
             ).to.be.calledWithExactly({
@@ -171,20 +171,20 @@ describe('Allocations middleware', function() {
       )
     })
 
-    context('when service rejects', function() {
+    context('when service rejects', function () {
       const mockError = new Error('Error!')
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         allocationService.getActive.rejects(mockError)
         await middleware(req, res, next)
       })
 
-      it('should not request properties', function() {
+      it('should not request properties', function () {
         expect(req).not.to.have.property('results')
         expect(req).not.to.have.property('resultsAsTable')
       })
 
-      it('should call next with error', function() {
+      it('should call next with error', function () {
         expect(next).to.have.been.calledOnceWithExactly(mockError)
       })
     })

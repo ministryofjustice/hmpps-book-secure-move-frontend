@@ -21,11 +21,11 @@ const mockUserLocations = [
   },
 ]
 
-describe('Locations controllers', function() {
+describe('Locations controllers', function () {
   let req, res
 
-  describe('#locations', function() {
-    beforeEach(function() {
+  describe('#locations', function () {
+    beforeEach(function () {
       req = {
         session: {},
         userLocations: mockUserLocations,
@@ -36,11 +36,11 @@ describe('Locations controllers', function() {
       controllers.locations(req, res)
     })
 
-    it('should render template', function() {
+    it('should render template', function () {
       expect(res.render).to.be.calledOnce
     })
 
-    it('should return locations sorted by title', function() {
+    it('should return locations sorted by title', function () {
       const params = res.render.args[0][1]
       expect(params).to.have.property('locations')
       expect(params.locations).to.deep.equal(sortBy(mockUserLocations, 'title'))

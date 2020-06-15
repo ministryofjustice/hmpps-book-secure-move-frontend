@@ -24,35 +24,35 @@ const assessmentAnswersByCategory = proxyquire(
   }
 )
 
-describe('Presenters', function() {
-  describe('#assessmentAnswersByCategory()', function() {
-    context('when provided with mock moves response', function() {
+describe('Presenters', function () {
+  describe('#assessmentAnswersByCategory()', function () {
+    context('when provided with mock moves response', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentAnswersByCategory(
           mockPerson.attributes.assessment_answers
         )
       })
 
-      it('should return the correct number of categories', function() {
+      it('should return the correct number of categories', function () {
         expect(transformedResponse.length).to.equal(2)
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[0].key).to.equal('risk')
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[1].key).to.equal('health')
       })
 
-      it('should contain correct number of types', function() {
+      it('should contain correct number of types', function () {
         expect(Object.keys(transformedResponse[0].answers)).to.have.length(3)
         expect(Object.keys(transformedResponse[1].answers)).to.have.length(3)
       })
 
-      it('should group risk answers correctly', function() {
+      it('should group risk answers correctly', function () {
         expect(transformedResponse[0].answers).to.deep.equal([
           {
             title: 'Violent',
@@ -84,7 +84,7 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should group health answers correctly', function() {
+      it('should group health answers correctly', function () {
         expect(transformedResponse[1].answers).to.deep.equal([
           {
             title: 'Special diet or allergy',
@@ -117,51 +117,51 @@ describe('Presenters', function() {
       })
     })
 
-    context('when no items exist for whitelisted category', function() {
+    context('when no items exist for whitelisted category', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentAnswersByCategory([])
       })
 
-      it('should return the correct number of categories', function() {
+      it('should return the correct number of categories', function () {
         expect(transformedResponse.length).to.equal(2)
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[0].key).to.equal('risk')
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[1].key).to.equal('health')
       })
 
-      it('should contain correct number of types', function() {
+      it('should contain correct number of types', function () {
         expect(Object.keys(transformedResponse[0].answers)).to.have.length(0)
         expect(Object.keys(transformedResponse[1].answers)).to.have.length(0)
       })
     })
 
-    context('when called with no arguments', function() {
+    context('when called with no arguments', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentAnswersByCategory()
       })
 
-      it('should return the correct number of categories', function() {
+      it('should return the correct number of categories', function () {
         expect(transformedResponse.length).to.equal(2)
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[0].key).to.equal('risk')
       })
 
-      it('should correctly order categories', function() {
+      it('should correctly order categories', function () {
         expect(transformedResponse[1].key).to.equal('health')
       })
 
-      it('should contain correct number of types', function() {
+      it('should contain correct number of types', function () {
         expect(Object.keys(transformedResponse[0].answers)).to.have.length(0)
         expect(Object.keys(transformedResponse[1].answers)).to.have.length(0)
       })

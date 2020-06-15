@@ -1,18 +1,18 @@
 const middleware = require('./request-include')
 
-describe('API Client', function() {
-  describe('Request include middleware', function() {
-    describe('#req-include', function() {
-      context('when payload does not include a request', function() {
-        it('should return default payload', function() {
+describe('API Client', function () {
+  describe('Request include middleware', function () {
+    describe('#req-include', function () {
+      context('when payload does not include a request', function () {
+        it('should return default payload', function () {
           expect(middleware.req()).to.deep.equal({})
         })
       })
 
-      context('when payload contains a request', function() {
+      context('when payload contains a request', function () {
         let request, jsonApi
 
-        beforeEach(function() {
+        beforeEach(function () {
           request = {
             params: {},
           }
@@ -25,9 +25,9 @@ describe('API Client', function() {
           }
         })
 
-        context('with existing include request param', function() {
-          context('with include as a string', function() {
-            it('should retain existing include', function() {
+        context('with existing include request param', function () {
+          context('with include as a string', function () {
+            it('should retain existing include', function () {
               request.params.include = 'authors,comments'
               middleware.req({ req: request })
 
@@ -35,8 +35,8 @@ describe('API Client', function() {
             })
           })
 
-          context('with include as an array', function() {
-            it('should convert include to string', function() {
+          context('with include as an array', function () {
+            it('should convert include to string', function () {
               request.params.include = ['authors', 'comments']
               middleware.req({ req: request })
 
@@ -44,8 +44,8 @@ describe('API Client', function() {
             })
           })
 
-          context('with default include on model', function() {
-            it('should retain existing include', function() {
+          context('with default include on model', function () {
+            it('should retain existing include', function () {
               request.params.include = 'authors,comments'
               jsonApi.models.mockModel.options = {
                 defaultInclude: 'authors',
@@ -58,14 +58,14 @@ describe('API Client', function() {
           })
         })
 
-        context('without existing include request param', function() {
-          context('with default include on model', function() {
-            beforeEach(function() {
+        context('without existing include request param', function () {
+          context('with default include on model', function () {
+            beforeEach(function () {
               request.model = 'mockModel'
             })
 
-            context('with default include as a string', function() {
-              it('should retain existing include', function() {
+            context('with default include as a string', function () {
+              it('should retain existing include', function () {
                 jsonApi.models.mockModel.options = {
                   defaultInclude: 'authors,comments',
                 }
@@ -74,8 +74,8 @@ describe('API Client', function() {
               })
             })
 
-            context('with default include as an array', function() {
-              it('should convert include to string', function() {
+            context('with default include as an array', function () {
+              it('should convert include to string', function () {
                 jsonApi.models.mockModel.options = {
                   defaultInclude: ['authors', 'comments'],
                 }
@@ -85,8 +85,8 @@ describe('API Client', function() {
             })
           })
 
-          context('without default include on model', function() {
-            it('should not set include', function() {
+          context('without default include on model', function () {
+            it('should not set include', function () {
               middleware.req({ req: request, jsonApi })
 
               expect(request.params.include).to.be.undefined

@@ -4,27 +4,27 @@ const CourtController = require('./court')
 const controller = new CourtController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
-describe('Move controllers', function() {
+describe('Move controllers', function () {
   const req = {}
   let res
   let nextSpy
-  beforeEach(function() {
+  beforeEach(function () {
     res = {}
     nextSpy = sinon.spy()
     sinon.stub(AssessmentController.prototype, 'configure')
   })
-  describe('Update court info controller', function() {
-    it('should extend AssessmentController', function() {
+  describe('Update court info controller', function () {
+    it('should extend AssessmentController', function () {
       expect(Object.getPrototypeOf(ownProto)).to.equal(
         AssessmentController.prototype
       )
     })
 
-    context('#configure', function() {
-      context('when the move is not to a court', function() {
+    context('#configure', function () {
+      context('when the move is not to a court', function () {
         let args
         let error
-        beforeEach(function() {
+        beforeEach(function () {
           args = []
           error = {}
           controller.configure(req, res, nextSpy)
@@ -35,24 +35,24 @@ describe('Move controllers', function() {
           } catch (e) {}
         })
 
-        it('should call next once with an error', function() {
+        it('should call next once with an error', function () {
           expect(nextSpy).to.be.calledOnce
           expect(args.length).to.equal(1)
         })
 
-        it('should set the correct error message', function() {
+        it('should set the correct error message', function () {
           expect(error.message).to.equal(
             'Updating court information is not possible for this move'
           )
         })
 
-        it('should set the correct error statusCode', function() {
+        it('should set the correct error statusCode', function () {
           expect(error.statusCode).to.equal(404)
         })
       })
 
-      context('when the move is to a court', function() {
-        beforeEach(function() {
+      context('when the move is to a court', function () {
+        beforeEach(function () {
           res = {
             locals: {
               move: {
@@ -65,11 +65,11 @@ describe('Move controllers', function() {
           controller.configure(req, res, nextSpy)
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(nextSpy).to.not.be.called
         })
 
-        it('should invoke super’s configure', function() {
+        it('should invoke super’s configure', function () {
           expect(
             AssessmentController.prototype.configure
           ).to.be.calledOnceWithExactly(req, res, nextSpy)

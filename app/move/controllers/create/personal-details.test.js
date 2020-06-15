@@ -35,19 +35,19 @@ const personMock = {
 }
 const pncSearchTerm = '7654321'
 
-describe('Move controllers', function() {
-  describe('Personal Details', function() {
-    describe('#configure()', function() {
+describe('Move controllers', function () {
+  describe('Personal Details', function () {
+    describe('#configure()', function () {
       let nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
       })
 
-      context('when getReferenceData returns 200', function() {
+      context('when getReferenceData returns 200', function () {
         let req
 
-        beforeEach(function() {
+        beforeEach(function () {
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(fieldHelpers, 'insertItemConditional').callsFake(() => {
             return item => item
@@ -74,19 +74,19 @@ describe('Move controllers', function() {
           }
         })
 
-        context('without searchTerm', function() {
-          beforeEach(async function() {
+        context('without searchTerm', function () {
+          beforeEach(async function () {
             await controller.configure(req, {}, nextSpy)
           })
 
-          it('should set list of genders dynamically', function() {
+          it('should set list of genders dynamically', function () {
             expect(req.form.options.fields.gender.items).to.deep.equal([
               { value: '8888', text: 'Male' },
               { value: '9999', text: 'Female' },
             ])
           })
 
-          it('should insert trans conditional field', function() {
+          it('should insert trans conditional field', function () {
             expect(
               fieldHelpers.insertItemConditional
             ).to.have.been.calledOnceWithExactly({
@@ -95,7 +95,7 @@ describe('Move controllers', function() {
             })
           })
 
-          it('should set list of ethnicities dynamically', function() {
+          it('should set list of ethnicities dynamically', function () {
             expect(req.form.options.fields.ethnicity.items).to.deep.equal([
               { text: '--- Choose ethnicity ---' },
               { value: '3333', text: 'Foo' },
@@ -103,7 +103,7 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call parent configure method', function() {
+          it('should call parent configure method', function () {
             expect(FormController.prototype.configure).to.be.calledOnce
             expect(FormController.prototype.configure).to.be.calledWith(
               req,
@@ -112,19 +112,19 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should not throw an error', function() {
+          it('should not throw an error', function () {
             expect(nextSpy).to.be.calledOnce
             expect(nextSpy).to.be.calledWith()
           })
         })
 
-        context('with searchTerm', function() {
-          beforeEach(async function() {
+        context('with searchTerm', function () {
+          beforeEach(async function () {
             req.query.police_national_computer_search_term = pncSearchTerm
             await controller.configure(req, {}, nextSpy)
           })
 
-          it('should set PNC form value default', function() {
+          it('should set PNC form value default', function () {
             expect(
               req.form.options.fields.police_national_computer.default
             ).to.equal(pncSearchTerm)
@@ -132,74 +132,74 @@ describe('Move controllers', function() {
         })
       })
 
-      context('when getReferenceData returns an error', function() {
+      context('when getReferenceData returns an error', function () {
         const errorMock = new Error('Problem')
         const req = {}
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           sinon.stub(referenceDataService, 'getGenders').throws(errorMock)
 
           await controller.configure(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function() {
+        it('should call next with the error', function () {
           expect(nextSpy).to.be.calledWith(errorMock)
         })
 
-        it('should call next once', function() {
+        it('should call next once', function () {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not mutate request object', function() {
+        it('should not mutate request object', function () {
           expect(req).to.deep.equal({})
         })
       })
     })
 
-    describe('#savePerson()', function() {
+    describe('#savePerson()', function () {
       const mockId = '1234567'
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(personService, 'create').resolves()
         sinon.stub(personService, 'update').resolves()
       })
 
-      context('without id', function() {
-        beforeEach(function() {
+      context('without id', function () {
+        beforeEach(function () {
           controller.savePerson(undefined, personMock)
         })
 
-        it('should create a person via the personService', function() {
+        it('should create a person via the personService', function () {
           expect(personService.create).to.be.calledOnceWithExactly(personMock)
         })
 
-        it('should not update a person via the personService', function() {
+        it('should not update a person via the personService', function () {
           expect(personService.update).to.not.be.called
         })
       })
 
-      context('with id', function() {
-        beforeEach(function() {
+      context('with id', function () {
+        beforeEach(function () {
           controller.savePerson(mockId, personMock)
         })
 
-        it('should update a person via the personService', function() {
+        it('should update a person via the personService', function () {
           expect(personService.update).to.be.calledOnceWithExactly({
             id: mockId,
             ...personMock,
           })
         })
 
-        it('should not create a person via the personService', function() {
+        it('should not create a person via the personService', function () {
           expect(personService.create).to.not.be.called
         })
       })
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
           form: {
@@ -210,9 +210,9 @@ describe('Move controllers', function() {
         }
       })
 
-      context('when save is successful', function() {
-        context('with a new person', function() {
-          beforeEach(async function() {
+      context('when save is successful', function () {
+        context('with a new person', function () {
+          beforeEach(async function () {
             sinon.stub(controller, 'savePerson').resolves(personMock)
             req.getPerson.returns(personMock)
             req.getPersonId.returns(personMock.id)
@@ -220,68 +220,68 @@ describe('Move controllers', function() {
             await controller.saveValues(req, {}, nextSpy)
           })
 
-          it('should save the persons data', function() {
+          it('should save the persons data', function () {
             expect(controller.savePerson).to.be.calledOnceWithExactly(
               personMock.id,
               req.form.values
             )
           })
 
-          it('should set person response on form values', function() {
+          it('should set person response on form values', function () {
             expect(req.form.values).to.have.property('person')
             expect(req.form.values.person).to.deep.equal(personMock)
           })
 
-          it('should not throw an error', function() {
+          it('should not throw an error', function () {
             expect(nextSpy).to.be.calledOnce
             expect(nextSpy).to.be.calledWith()
           })
         })
 
-        context('with a pre-existing person', function() {
-          beforeEach(async function() {
+        context('with a pre-existing person', function () {
+          beforeEach(async function () {
             sinon.stub(controller, 'savePerson').resolves(personMock)
             req.getPerson.returns(undefined)
 
             await controller.saveValues(req, {}, nextSpy)
           })
 
-          it('should save the persons data', function() {
+          it('should save the persons data', function () {
             expect(controller.savePerson).to.be.calledOnceWithExactly(
               undefined,
               req.form.values
             )
           })
 
-          it('should set person response on form values', function() {
+          it('should set person response on form values', function () {
             expect(req.form.values).to.have.property('person')
             expect(req.form.values.person).to.deep.equal(personMock)
           })
 
-          it('should not throw an error', function() {
+          it('should not throw an error', function () {
             expect(nextSpy).to.be.calledOnce
             expect(nextSpy).to.be.calledWith()
           })
         })
       })
 
-      context('when save fails', function() {
+      context('when save fails', function () {
         const errorMock = new Error('Problem')
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           sinon.stub(personService, 'create').throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function() {
+        it('should call next with the error', function () {
           expect(nextSpy).to.be.calledWith(errorMock)
         })
 
-        it('should call next once', function() {
+        it('should call next once', function () {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not set person response on form values', function() {
+        it('should not set person response on form values', function () {
           expect(req.form.values).not.to.have.property('person')
         })
       })

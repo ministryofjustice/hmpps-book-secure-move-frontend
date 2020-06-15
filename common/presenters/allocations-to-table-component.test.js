@@ -71,10 +71,10 @@ const mockAllocations = [
   },
 ]
 
-describe('#allocationsToTableComponent', function() {
+describe('#allocationsToTableComponent', function () {
   let output
 
-  beforeEach(function() {
+  beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(componentService, 'getComponent').returnsArg(0)
     sinon.stub(filters, 'formatDate').returnsArg(0)
@@ -84,25 +84,25 @@ describe('#allocationsToTableComponent', function() {
     output = presenter()([])
   })
 
-  it('returns an object with allocationsHeads', function() {
+  it('returns an object with allocationsHeads', function () {
     expect(output.head).to.exist
     expect(output.head).to.be.an('array')
   })
 
-  it('returns an object with allocations', function() {
+  it('returns an object with allocations', function () {
     expect(output.rows).to.exist
     expect(output.rows).to.be.an('array')
   })
 
-  describe('its behaviour', function() {
+  describe('its behaviour', function () {
     let output
 
-    context('with no options', function() {
-      beforeEach(function() {
+    context('with no options', function () {
+      beforeEach(function () {
         output = presenter()(mockAllocations)
       })
 
-      it('returns the table head correctly ordered', function() {
+      it('returns the table head correctly ordered', function () {
         expect(output.head).to.deep.equal([
           {
             html: 'collections::labels.move_size',
@@ -134,19 +134,19 @@ describe('#allocationsToTableComponent', function() {
         ])
       })
 
-      describe('rows', function() {
-        it('should return the correct number', function() {
+      describe('rows', function () {
+        it('should return the correct number', function () {
           expect(output.rows).to.have.length(3)
         })
 
-        it('should return correct number of columns', function() {
+        it('should return correct number of columns', function () {
           expect(Object.keys(output.rows[0])).to.have.length(4)
           expect(Object.keys(output.rows[1])).to.have.length(4)
           expect(Object.keys(output.rows[2])).to.have.length(4)
         })
 
-        describe('filled allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('filled allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[0]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[0].id}">3 person</a>`,
@@ -166,7 +166,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(0)
             ).to.be.calledWithExactly('govukTag', {
@@ -175,7 +175,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(1)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -186,8 +186,8 @@ describe('#allocationsToTableComponent', function() {
           })
         })
 
-        describe('unstarted allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('unstarted allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[1]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[1].id}">3 person</a>`,
@@ -207,7 +207,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(1)
             ).to.be.calledWithExactly('govukTag', {
@@ -216,7 +216,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(3)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -227,8 +227,8 @@ describe('#allocationsToTableComponent', function() {
           })
         })
 
-        describe('unfilled allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('unfilled allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[2]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[2].id}">3 person</a>`,
@@ -248,7 +248,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(2)
             ).to.be.calledWithExactly('govukTag', {
@@ -257,7 +257,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(5)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -270,14 +270,14 @@ describe('#allocationsToTableComponent', function() {
       })
     })
 
-    context('with show from location option', function() {
-      beforeEach(function() {
+    context('with show from location option', function () {
+      beforeEach(function () {
         output = presenter({
           showFromLocation: true,
         })(mockAllocations)
       })
 
-      it('returns the table head correctly ordered', function() {
+      it('returns the table head correctly ordered', function () {
         expect(output.head).to.deep.equal([
           {
             html: 'collections::labels.move_size',
@@ -314,27 +314,27 @@ describe('#allocationsToTableComponent', function() {
         ])
       })
 
-      it('should return correct number of columns for rows', function() {
+      it('should return correct number of columns for rows', function () {
         expect(Object.keys(output.rows[0])).to.have.length(5)
         expect(Object.keys(output.rows[1])).to.have.length(5)
         expect(Object.keys(output.rows[2])).to.have.length(5)
       })
     })
 
-    context('with show remaining option', function() {
-      beforeEach(function() {
+    context('with show remaining option', function () {
+      beforeEach(function () {
         output = presenter({
           showRemaining: true,
         })(mockAllocations)
       })
 
-      describe('rows', function() {
-        it('should return the correct number', function() {
+      describe('rows', function () {
+        it('should return the correct number', function () {
           expect(output.rows).to.have.length(3)
         })
 
-        describe('filled allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('filled allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[0]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[0].id}">3 person</a>`,
@@ -354,7 +354,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(0)
             ).to.be.calledWithExactly('govukTag', {
@@ -363,7 +363,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(1)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -374,8 +374,8 @@ describe('#allocationsToTableComponent', function() {
           })
         })
 
-        describe('unstarted allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('unstarted allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[1]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[1].id}">3 person</a>`,
@@ -395,7 +395,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(1)
             ).to.be.calledWithExactly('govukTag', {
@@ -404,7 +404,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(3)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -415,8 +415,8 @@ describe('#allocationsToTableComponent', function() {
           })
         })
 
-        describe('unfilled allocation', function() {
-          it('should return allocation correctly', function() {
+        describe('unfilled allocation', function () {
+          it('should return allocation correctly', function () {
             expect(output.rows[2]).to.deep.equal([
               {
                 html: `<a href="/allocation/${mockAllocations[2].id}">3 person</a>`,
@@ -436,7 +436,7 @@ describe('#allocationsToTableComponent', function() {
             ])
           })
 
-          it('should call tag component correctly', function() {
+          it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(2)
             ).to.be.calledWithExactly('govukTag', {
@@ -445,7 +445,7 @@ describe('#allocationsToTableComponent', function() {
             })
           })
 
-          it('should call i18n with correct data', function() {
+          it('should call i18n with correct data', function () {
             expect(i18n.t.getCall(5)).to.be.calledWithExactly(
               'collections::labels.progress_status',
               {
@@ -458,8 +458,8 @@ describe('#allocationsToTableComponent', function() {
       })
     })
 
-    context('with query', function() {
-      beforeEach(function() {
+    context('with query', function () {
+      beforeEach(function () {
         output = presenter({
           query: {
             sortBy: 'date',
@@ -467,7 +467,7 @@ describe('#allocationsToTableComponent', function() {
           },
         })(mockAllocations)
       })
-      it('passes the query to objectToTableHead', function() {
+      it('passes the query to objectToTableHead', function () {
         expect(
           tablePresenters.objectToTableHead
         ).to.have.been.calledWithExactly({
@@ -477,13 +477,13 @@ describe('#allocationsToTableComponent', function() {
       })
     })
 
-    context('with isSortable set to false', function() {
-      beforeEach(function() {
+    context('with isSortable set to false', function () {
+      beforeEach(function () {
         output = presenter({
           isSortable: false,
         })(mockAllocations)
       })
-      it('should return allocations without sorting flag', function() {
+      it('should return allocations without sorting flag', function () {
         expect(output.head).to.deep.equal([
           {
             attributes: {

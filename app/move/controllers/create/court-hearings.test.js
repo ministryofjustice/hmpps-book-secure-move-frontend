@@ -40,10 +40,10 @@ const mockCourtCases = [
   },
 ]
 
-describe('Move controllers', function() {
-  describe('Hearing details controller', function() {
-    describe('#middlewareSetup()', function() {
-      beforeEach(function() {
+describe('Move controllers', function () {
+  describe('Hearing details controller', function () {
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
         sinon.stub(CreateBaseController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setCourtCaseItems')
@@ -51,26 +51,26 @@ describe('Move controllers', function() {
         controller.middlewareSetup()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(CreateBaseController.prototype.middlewareSetup).to.have.been
           .calledOnce
       })
 
-      it('should call setCourtCaseItems middleware', function() {
+      it('should call setCourtCaseItems middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.setCourtCaseItems
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(1)
       })
     })
 
-    describe('#setCourtCaseItems()', function() {
+    describe('#setCourtCaseItems()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(personService, 'getActiveCourtCases')
         sinon.stub(componentService, 'getComponent').returnsArg(0)
         sinon.stub(presenters, 'courtCaseToCardComponent').returnsArg(0)
@@ -91,57 +91,57 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('without person ID', function() {
-        beforeEach(async function() {
+      context('without person ID', function () {
+        beforeEach(async function () {
           await controller.setCourtCaseItems(req, {}, nextSpy)
         })
 
-        it('should not person service', function() {
+        it('should not person service', function () {
           expect(personService.getActiveCourtCases).not.to.be.called
         })
 
-        it('should not set court case items', function() {
+        it('should not set court case items', function () {
           expect(
             req.form.options.fields.court_hearing__court_case.items
           ).to.deep.equal([])
         })
 
-        it('should call next', function() {
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      context('with person ID', function() {
-        beforeEach(function() {
+      context('with person ID', function () {
+        beforeEach(function () {
           req.sessionModel.get.withArgs('person').returns(mockPerson)
         })
 
-        context('when getActiveCourtCases rejects', function() {
+        context('when getActiveCourtCases rejects', function () {
           const mockError = new Error('Mock error')
 
-          beforeEach(async function() {
+          beforeEach(async function () {
             personService.getActiveCourtCases.rejects(mockError)
             await controller.setCourtCaseItems(req, {}, nextSpy)
           })
 
-          it('should not set court case items', function() {
+          it('should not set court case items', function () {
             expect(
               req.form.options.fields.court_hearing__court_case.items
             ).to.deep.equal([])
           })
 
-          it('should call next without error', function() {
+          it('should call next without error', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
 
-        context('when getActiveCourtCases resolves', function() {
-          beforeEach(async function() {
+        context('when getActiveCourtCases resolves', function () {
+          beforeEach(async function () {
             personService.getActiveCourtCases.resolves(mockCourtCases)
             await controller.setCourtCaseItems(req, {}, nextSpy)
           })
 
-          it('should set people items property', function() {
+          it('should set people items property', function () {
             expect(
               req.form.options.fields.court_hearing__court_case.items
             ).to.deep.equal([
@@ -156,11 +156,11 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call presenter correct number of times', function() {
+          it('should call presenter correct number of times', function () {
             expect(presenters.courtCaseToCardComponent.callCount).to.equal(2)
           })
 
-          it('should call presenter correctly', function() {
+          it('should call presenter correctly', function () {
             expect(
               presenters.courtCaseToCardComponent.firstCall
             ).to.be.calledWithExactly(mockCourtCases[0])
@@ -169,11 +169,11 @@ describe('Move controllers', function() {
             ).to.be.calledWithExactly(mockCourtCases[1])
           })
 
-          it('should call component service correct number of times', function() {
+          it('should call component service correct number of times', function () {
             expect(componentService.getComponent.callCount).to.equal(2)
           })
 
-          it('should call component service correctly', function() {
+          it('should call component service correctly', function () {
             expect(
               componentService.getComponent.firstCall
             ).to.be.calledWithExactly('appCard', mockCourtCases[0])
@@ -182,18 +182,18 @@ describe('Move controllers', function() {
             ).to.be.calledWithExactly('appCard', mockCourtCases[1])
           })
 
-          it('should call next', function() {
+          it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
       })
     })
 
-    describe('#saveValues()', function() {
+    describe('#saveValues()', function () {
       let req, nextSpy
       const mockDate = '2020-05-15'
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(CreateBaseController.prototype, 'saveValues')
         req = {
           courtCases: mockCourtCases,
@@ -205,43 +205,40 @@ describe('Move controllers', function() {
             },
           },
           sessionModel: {
-            get: sinon
-              .stub()
-              .withArgs('date')
-              .returns(mockDate),
+            get: sinon.stub().withArgs('date').returns(mockDate),
           },
         }
         nextSpy = sinon.spy()
       })
 
-      context('when not associated with a court case', function() {
-        beforeEach(function() {
+      context('when not associated with a court case', function () {
+        beforeEach(function () {
           req.form.values.has_court_case = 'false'
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should not set court hearings', function() {
+        it('should not set court hearings', function () {
           expect(req.form.values).not.to.contain.property('court_hearings')
         })
 
-        it('should call parent save values', function() {
+        it('should call parent save values', function () {
           expect(
             CreateBaseController.prototype.saveValues
           ).to.have.been.calledOnceWithExactly(req, {}, nextSpy)
         })
       })
 
-      context('when associated with a court case', function() {
-        context('when court hearing service resolves', function() {
-          beforeEach(function() {
+      context('when associated with a court case', function () {
+        context('when court hearing service resolves', function () {
+          beforeEach(function () {
             controller.saveValues(req, {}, nextSpy)
           })
 
-          it('should add court_hearings to form values', function() {
+          it('should add court_hearings to form values', function () {
             expect(req.form.values).to.contain.property('court_hearings')
           })
 
-          it('should set court hearings service response to form values', function() {
+          it('should set court hearings service response to form values', function () {
             expect(req.form.values.court_hearings).to.deep.equal([
               {
                 nomis_case_id: mockCourtCases[0].nomis_case_id,
@@ -255,7 +252,7 @@ describe('Move controllers', function() {
             ])
           })
 
-          it('should call parent save values', function() {
+          it('should call parent save values', function () {
             expect(
               CreateBaseController.prototype.saveValues
             ).to.have.been.calledOnceWithExactly(req, {}, nextSpy)
@@ -264,10 +261,10 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#process()', function() {
+    describe('#process()', function () {
       let mockReq, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         timezoneMock.register('UTC')
         nextSpy = sinon.spy()
         mockReq = {
@@ -280,31 +277,31 @@ describe('Move controllers', function() {
         }
       })
 
-      afterEach(function() {
+      afterEach(function () {
         timezoneMock.unregister()
       })
 
-      context('with start time', function() {
-        context('with valid time value', function() {
-          beforeEach(function() {
+      context('with start time', function () {
+        context('with valid time value', function () {
+          beforeEach(function () {
             mockReq.form.values.court_hearing__start_time = '10:00'
             controller.process(mockReq, {}, nextSpy)
           })
 
-          it('should format as ISO', function() {
+          it('should format as ISO', function () {
             expect(mockReq.form.values.court_hearing__start_time).to.equal(
               '2020-10-10T10:00:00Z'
             )
           })
         })
 
-        context('with invalid time value', function() {
-          beforeEach(function() {
+        context('with invalid time value', function () {
+          beforeEach(function () {
             mockReq.form.values.court_hearing__start_time = 'foo'
             controller.process(mockReq, {}, nextSpy)
           })
 
-          it('should return start time', function() {
+          it('should return start time', function () {
             expect(mockReq.form.values.court_hearing__start_time).to.equal(
               'foo'
             )
@@ -312,24 +309,24 @@ describe('Move controllers', function() {
         })
       })
 
-      context('without start time', function() {
-        beforeEach(function() {
+      context('without start time', function () {
+        beforeEach(function () {
           mockReq.form.values.court_hearing__start_time = 'foo'
           controller.process(mockReq, {}, nextSpy)
         })
 
-        it('should not change value', function() {
+        it('should not change value', function () {
           expect(mockReq.form.values.court_hearing__start_time).to.equal('foo')
         })
       })
     })
 
-    describe('#getValues()', function() {
+    describe('#getValues()', function () {
       let callback
       const mockUnformattedTime = '10:00'
       const mockFormattedTime = '10pm'
 
-      beforeEach(function() {
+      beforeEach(function () {
         callback = sinon.spy()
         sinon.stub(filters, 'formatTime').returns(mockFormattedTime)
         sinon
@@ -342,18 +339,18 @@ describe('Move controllers', function() {
           })
       })
 
-      context('when parent method does not throw an error', function() {
-        beforeEach(function() {
+      context('when parent method does not throw an error', function () {
+        beforeEach(function () {
           controller.getValues({}, {}, callback)
         })
 
-        it('should format time', function() {
+        it('should format time', function () {
           expect(filters.formatTime).to.be.calledOnceWithExactly(
             mockUnformattedTime
           )
         })
 
-        it('should invoke the callback', function() {
+        it('should invoke the callback', function () {
           expect(callback).to.be.calledOnceWithExactly(null, {
             foo: 'bar',
             court_hearing__start_time: mockFormattedTime,
@@ -361,10 +358,10 @@ describe('Move controllers', function() {
         })
       })
 
-      context('when parent method throws an error', function() {
+      context('when parent method throws an error', function () {
         const mockError = new Error()
 
-        beforeEach(function() {
+        beforeEach(function () {
           CreateBaseController.prototype.getValues.callsFake(
             (req, res, valuesCallback) => {
               valuesCallback(mockError, {
@@ -375,7 +372,7 @@ describe('Move controllers', function() {
           controller.getValues({}, {}, callback)
         })
 
-        it('should invoke the callback with the error', function() {
+        it('should invoke the callback with the error', function () {
           expect(callback).to.be.calledOnceWithExactly(mockError)
         })
       })

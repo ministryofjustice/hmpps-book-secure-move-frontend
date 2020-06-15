@@ -93,14 +93,11 @@ export default class Page {
    * @returns {Promise<string>} - definition list item description text
    */
   getDlDefinitionByKey(dl, key) {
-    return dl
-      .find('dt')
-      .withText(key)
-      .sibling('dd').innerText
+    return dl.find('dt').withText(key).sibling('dd').innerText
   }
 
   scrollToBottom() {
-    return ClientFunction(function() {
+    return ClientFunction(function () {
       window.scrollBy(0, 1000)
     })
   }

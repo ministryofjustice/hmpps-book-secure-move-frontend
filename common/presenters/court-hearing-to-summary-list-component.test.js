@@ -11,13 +11,13 @@ const mockHearing = {
   comments: 'Distinctio accusantium enim libero eligendi est.',
 }
 
-describe('Presenters', function() {
-  describe('#courtHearingsToSummaryListComponent()', function() {
+describe('Presenters', function () {
+  describe('#courtHearingsToSummaryListComponent()', function () {
     const mockDateLong = '18 Jun 1960'
     const mockDateShort = '1960-06-18'
     const mockTime = '9am'
 
-    beforeEach(function() {
+    beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(filters, 'formatDate').returns(mockDateLong)
       sinon.stub(filters, 'formatTime').returns(mockTime)
@@ -26,27 +26,27 @@ describe('Presenters', function() {
         .returns(mockDateShort)
     })
 
-    context('with a mock person object', function() {
+    context('with a mock person object', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent(mockHearing)
       })
 
-      describe('response', function() {
-        it('should contain classes property', function() {
+      describe('response', function () {
+        it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
             'govuk-!-margin-bottom-2'
           )
         })
 
-        it('should contain correct number of rows', function() {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(4)
         })
 
-        it('should contain hearing time', function() {
+        it('should contain hearing time', function () {
           const row = transformedResponse.rows[0]
 
           expect(row).to.deep.equal({
@@ -57,7 +57,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should case number', function() {
+        it('should case number', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
@@ -68,7 +68,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should case type', function() {
+        it('should case type', function () {
           const row = transformedResponse.rows[2]
 
           expect(row).to.deep.equal({
@@ -79,7 +79,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain comments', function() {
+        it('should contain comments', function () {
           const row = transformedResponse.rows[3]
 
           expect(row).to.deep.equal({
@@ -89,8 +89,8 @@ describe('Presenters', function() {
         })
       })
 
-      describe('translation', function() {
-        it('should send correct values to `started on` translation', function() {
+      describe('translation', function () {
+        it('should send correct values to `started on` translation', function () {
           expect(i18n.t).to.be.calledWith(
             'moves::detail.court_hearing.started_on',
             {
@@ -102,54 +102,54 @@ describe('Presenters', function() {
       })
     })
 
-    context('with no input values', function() {
+    context('with no input values', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent()
       })
 
-      describe('response', function() {
-        it('should contain classes property', function() {
+      describe('response', function () {
+        it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
             'govuk-!-margin-bottom-2'
           )
         })
 
-        it('should contain correct number of rows', function() {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(0)
         })
       })
     })
 
-    context('with empty object', function() {
+    context('with empty object', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent({})
       })
 
-      describe('response', function() {
-        it('should contain classes property', function() {
+      describe('response', function () {
+        it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
             'govuk-!-margin-bottom-2'
           )
         })
 
-        it('should contain correct number of rows', function() {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(0)
         })
       })
     })
 
-    context('with no case start date', function() {
+    context('with no case start date', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent({
           start_time: '2020-10-20T13:00:00+00:00',
           case_number: 'T18725',
@@ -158,8 +158,8 @@ describe('Presenters', function() {
         })
       })
 
-      describe('response', function() {
-        it('should return only case number', function() {
+      describe('response', function () {
+        it('should return only case number', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
@@ -168,17 +168,17 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain correct number of rows', function() {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(4)
         })
       })
     })
 
-    context('with no case number but a case start date', function() {
+    context('with no case number but a case start date', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent({
           start_time: '2020-10-20T13:00:00+00:00',
           case_start_date: '2019-10-08T10:30:00+00:00',
@@ -186,13 +186,13 @@ describe('Presenters', function() {
         })
       })
 
-      describe('response', function() {
-        it('should contain correct number of rows', function() {
+      describe('response', function () {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(2)
         })
 
-        it('should not contain case number row', function() {
+        it('should not contain case number row', function () {
           const row1 = transformedResponse.rows[0]
           const row2 = transformedResponse.rows[1]
 
@@ -204,23 +204,23 @@ describe('Presenters', function() {
       })
     })
 
-    context('with no start time', function() {
+    context('with no start time', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = courtHearingsToSummaryListComponent({
           case_number: 'T18725',
           comments: 'Distinctio accusantium enim libero eligendi est.',
         })
       })
 
-      describe('response', function() {
-        it('should contain correct number of rows', function() {
+      describe('response', function () {
+        it('should contain correct number of rows', function () {
           expect(transformedResponse).to.have.property('rows')
           expect(transformedResponse.rows.length).to.equal(2)
         })
 
-        it('should not contain hearing time row', function() {
+        it('should not contain hearing time row', function () {
           const row1 = transformedResponse.rows[0]
           const row2 = transformedResponse.rows[1]
 

@@ -15,27 +15,27 @@ const mockMove = {
   },
 }
 
-describe('Presenters', function() {
-  describe('#moveToMetaListComponent()', function() {
-    beforeEach(function() {
+describe('Presenters', function () {
+  describe('#moveToMetaListComponent()', function () {
+    beforeEach(function () {
       sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returns('__translated__')
     })
 
-    context('when provided with a mock move object', function() {
+    context('when provided with a mock move object', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = moveToMetaListComponent(mockMove)
       })
 
-      describe('response', function() {
-        it('should contain items list', function() {
+      describe('response', function () {
+        it('should contain items list', function () {
           expect(transformedResponse).to.have.property('items')
           expect(transformedResponse.items.length).to.equal(8)
         })
 
-        it('should contain from location as first item', function() {
+        it('should contain from location as first item', function () {
           const item = transformedResponse.items[0]
 
           expect(item).to.deep.equal({
@@ -44,7 +44,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain to location as second item', function() {
+        it('should contain to location as second item', function () {
           const item = transformedResponse.items[1]
 
           expect(item).to.deep.equal({
@@ -56,7 +56,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain date as third item', function() {
+        it('should contain date as third item', function () {
           const item = transformedResponse.items[2]
 
           expect(item).to.deep.equal({
@@ -66,11 +66,11 @@ describe('Presenters', function() {
           })
         })
 
-        it('should call date filter correct number of times', function() {
+        it('should call date filter correct number of times', function () {
           expect(filters.formatDateWithRelativeDay).to.have.callCount(1)
         })
 
-        it('should contain empty date from as forth item', function() {
+        it('should contain empty date from as forth item', function () {
           const item = transformedResponse.items[3]
 
           expect(item).to.deep.equal({
@@ -79,7 +79,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain empty date to as fifth item', function() {
+        it('should contain empty date to as fifth item', function () {
           const item = transformedResponse.items[4]
 
           expect(item).to.deep.equal({
@@ -88,7 +88,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain time due as sixth item', function() {
+        it('should contain time due as sixth item', function () {
           const item = transformedResponse.items[5]
 
           expect(item).to.deep.equal({
@@ -97,7 +97,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain transfer type as seventh item', function() {
+        it('should contain transfer type as seventh item', function () {
           const item = transformedResponse.items[6]
 
           expect(item).to.deep.equal({
@@ -106,7 +106,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should contain agreement status as eigth item', function() {
+        it('should contain agreement status as eigth item', function () {
           const item = transformedResponse.items[7]
 
           expect(item).to.deep.equal({
@@ -116,63 +116,63 @@ describe('Presenters', function() {
         })
       })
 
-      describe('translations', function() {
-        it('should translate from location label', function() {
+      describe('translations', function () {
+        it('should translate from location label', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::from_location.short_label'
           )
         })
 
-        it('should translate to location label', function() {
+        it('should translate to location label', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.short_label'
           )
         })
 
-        it('should translate date label', function() {
+        it('should translate date label', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::date_type.label')
         })
 
-        it('should translate date from label', function() {
+        it('should translate date from label', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::date_from.label')
         })
 
-        it('should translate date to label', function() {
+        it('should translate date to label', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::date_to.label')
         })
 
-        it('should translate time due label', function() {
+        it('should translate time due label', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::time_due.label')
         })
 
-        it('should translate prison transfer type label', function() {
+        it('should translate prison transfer type label', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::prison_transfer_type.label'
           )
         })
 
-        it('should translate agreement status type label', function() {
+        it('should translate agreement status type label', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::move_agreed.label')
         })
 
-        it('should translate correct number of times', function() {
+        it('should translate correct number of times', function () {
           expect(i18n.t).to.be.callCount(10)
         })
       })
     })
 
-    context('with only `date from`', function() {
+    context('with only `date from`', function () {
       const mockMove = {
         date_from: '2020-05-01',
       }
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = moveToMetaListComponent(mockMove)
       })
 
-      describe('response', function() {
-        it('should render `date from` row', function() {
+      describe('response', function () {
+        it('should render `date from` row', function () {
           const item = transformedResponse.items[3]
 
           expect(item).to.deep.equal({
@@ -181,7 +181,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not render `date to` row', function() {
+        it('should not render `date to` row', function () {
           const item = transformedResponse.items[4]
 
           expect(item).to.deep.equal({
@@ -190,7 +190,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not render `date` row', function() {
+        it('should not render `date` row', function () {
           const item = transformedResponse.items[2]
 
           expect(item).to.deep.equal({
@@ -200,7 +200,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should format date from', function() {
+        it('should format date from', function () {
           expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_from
           )
@@ -208,19 +208,19 @@ describe('Presenters', function() {
       })
     })
 
-    context('with both `date from` and `date to`', function() {
+    context('with both `date from` and `date to`', function () {
       const mockMove = {
         date_from: '2020-05-01',
         date_to: '2020-05-10',
       }
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = moveToMetaListComponent(mockMove)
       })
 
-      describe('response', function() {
-        it('should render `date from` row', function() {
+      describe('response', function () {
+        it('should render `date from` row', function () {
           const item = transformedResponse.items[3]
 
           expect(item).to.deep.equal({
@@ -229,7 +229,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should render `date to` row', function() {
+        it('should render `date to` row', function () {
           const item = transformedResponse.items[4]
 
           expect(item).to.deep.equal({
@@ -238,7 +238,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not render `date` row', function() {
+        it('should not render `date` row', function () {
           const item = transformedResponse.items[2]
 
           expect(item).to.deep.equal({
@@ -248,13 +248,13 @@ describe('Presenters', function() {
           })
         })
 
-        it('should format date from', function() {
+        it('should format date from', function () {
           expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_from
           )
         })
 
-        it('should format date to', function() {
+        it('should format date to', function () {
           expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date_to
           )
@@ -262,7 +262,7 @@ describe('Presenters', function() {
       })
     })
 
-    context('with all dates', function() {
+    context('with all dates', function () {
       const mockMove = {
         date_from: '2020-05-01',
         date_to: '2020-05-10',
@@ -270,12 +270,12 @@ describe('Presenters', function() {
       }
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = moveToMetaListComponent(mockMove)
       })
 
-      describe('response', function() {
-        it('should not render `date from` row', function() {
+      describe('response', function () {
+        it('should not render `date from` row', function () {
           const item = transformedResponse.items[3]
 
           expect(item).to.deep.equal({
@@ -284,7 +284,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not render `date to` row', function() {
+        it('should not render `date to` row', function () {
           const item = transformedResponse.items[4]
 
           expect(item).to.deep.equal({
@@ -293,7 +293,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should render `date` row', function() {
+        it('should render `date` row', function () {
           const item = transformedResponse.items[2]
 
           expect(item).to.deep.equal({
@@ -303,7 +303,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should format date', function() {
+        it('should format date', function () {
           expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date
           )
@@ -311,7 +311,7 @@ describe('Presenters', function() {
       })
     })
 
-    context('when provided with an action', function() {
+    context('when provided with an action', function () {
       let transformedResponse
       const moveAction = {
         href: '/move',
@@ -331,7 +331,7 @@ describe('Presenters', function() {
         classes: 'app-meta-list__action--sidebar',
       }
 
-      it('should add actions to move and date items', function() {
+      it('should add actions to move and date items', function () {
         transformedResponse = moveToMetaListComponent(mockMove, {
           move: moveAction,
           date: dateAction,
@@ -342,7 +342,7 @@ describe('Presenters', function() {
         expect(items[2].action).to.deep.equal(expectedDateAction)
       })
 
-      it('should add actions to move and date items', function() {
+      it('should add actions to move and date items', function () {
         transformedResponse = moveToMetaListComponent(mockMove, {
           date: dateAction,
         })
@@ -352,13 +352,13 @@ describe('Presenters', function() {
       })
     })
 
-    context('with additional information', function() {
+    context('with additional information', function () {
       const mockAdditionalInformation =
         'Some additional information about this move'
       let transformedResponse
 
-      context('with prison recall move type', function() {
-        beforeEach(function() {
+      context('with prison recall move type', function () {
+        beforeEach(function () {
           transformedResponse = moveToMetaListComponent({
             ...mockMove,
             move_type: 'prison_recall',
@@ -366,7 +366,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should add additional information to move type', function() {
+        it('should add additional information to move type', function () {
           expect(transformedResponse.items[1]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -376,7 +376,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not add additional information to transfer reason', function() {
+        it('should not add additional information to transfer reason', function () {
           expect(transformedResponse.items[6]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -385,17 +385,17 @@ describe('Presenters', function() {
           })
         })
 
-        it('should translate label', function() {
+        it('should translate label', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.items.prison_recall.label'
           )
         })
       })
 
-      context('with prison transfer move type', function() {
+      context('with prison transfer move type', function () {
         const mockPrisonTransferReason = 'Parole'
 
-        beforeEach(function() {
+        beforeEach(function () {
           transformedResponse = moveToMetaListComponent({
             ...mockMove,
             move_type: 'prison_transfer',
@@ -406,7 +406,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not add additional information to move type', function() {
+        it('should not add additional information to move type', function () {
           expect(transformedResponse.items[1]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -416,7 +416,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should add additional information to transfer reason', function() {
+        it('should add additional information to transfer reason', function () {
           expect(transformedResponse.items[6]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -426,15 +426,15 @@ describe('Presenters', function() {
         })
       })
 
-      context('with other move type', function() {
-        beforeEach(function() {
+      context('with other move type', function () {
+        beforeEach(function () {
           transformedResponse = moveToMetaListComponent({
             ...mockMove,
             additional_information: mockAdditionalInformation,
           })
         })
 
-        it('should not add additional information to move type', function() {
+        it('should not add additional information to move type', function () {
           expect(transformedResponse.items[1]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -444,7 +444,7 @@ describe('Presenters', function() {
           })
         })
 
-        it('should not add additional information to transfer reason', function() {
+        it('should not add additional information to transfer reason', function () {
           expect(transformedResponse.items[6]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
@@ -455,23 +455,23 @@ describe('Presenters', function() {
       })
     })
 
-    context('with agreement status', function() {
+    context('with agreement status', function () {
       let transformedResponse
 
-      beforeEach(function() {
+      beforeEach(function () {
         i18n.t.returnsArg(0)
       })
 
-      context('with `true` value', function() {
-        context('without name', function() {
-          beforeEach(function() {
+      context('with `true` value', function () {
+        context('without name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: true,
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -480,7 +480,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {
@@ -491,8 +491,8 @@ describe('Presenters', function() {
           })
         })
 
-        context('with name', function() {
-          beforeEach(function() {
+        context('with name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: true,
@@ -500,7 +500,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -509,7 +509,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {
@@ -521,16 +521,16 @@ describe('Presenters', function() {
         })
       })
 
-      context('with `false` value', function() {
-        context('without name', function() {
-          beforeEach(function() {
+      context('with `false` value', function () {
+        context('without name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: false,
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -539,7 +539,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {
@@ -550,8 +550,8 @@ describe('Presenters', function() {
           })
         })
 
-        context('with name', function() {
-          beforeEach(function() {
+        context('with name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: false,
@@ -559,7 +559,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -568,7 +568,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {
@@ -580,16 +580,16 @@ describe('Presenters', function() {
         })
       })
 
-      context('with status that matches `yes` from field', function() {
-        context('without name', function() {
-          beforeEach(function() {
+      context('with status that matches `yes` from field', function () {
+        context('without name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: 'true',
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -598,7 +598,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {
@@ -609,8 +609,8 @@ describe('Presenters', function() {
           })
         })
 
-        context('with name', function() {
-          beforeEach(function() {
+        context('with name', function () {
+          beforeEach(function () {
             transformedResponse = moveToMetaListComponent({
               ...mockMove,
               move_agreed: 'true',
@@ -618,7 +618,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should set move agreed item', function() {
+          it('should set move agreed item', function () {
             expect(transformedResponse.items[7]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
@@ -627,7 +627,7 @@ describe('Presenters', function() {
             })
           })
 
-          it('should translate agreed label correctly', function() {
+          it('should translate agreed label correctly', function () {
             expect(i18n.t).to.be.calledWithExactly(
               'moves::detail.agreement_status.agreed',
               {

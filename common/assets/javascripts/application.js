@@ -36,14 +36,14 @@ const $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()
 
 const $messages = document.querySelectorAll('[data-module="app-message"]')
-nodeListForEach($messages, function($message) {
+nodeListForEach($messages, function ($message) {
   new Message($message).init()
 })
 
 const $autocompletes = document.querySelectorAll(
   '[data-module="app-autocomplete"]'
 )
-nodeListForEach($autocompletes, function($autocomplete) {
+nodeListForEach($autocompletes, function ($autocomplete) {
   accessibleAutocomplete.enhanceSelectElement({
     selectElement: $autocomplete,
     showAllValues: true,
@@ -66,6 +66,6 @@ if ($stickySidebars.length) {
 const $multiFileUploads = document.querySelectorAll(
   '[data-module="app-multi-file-upload"]'
 )
-nodeListForEach($multiFileUploads, function($multiFileUpload) {
+nodeListForEach($multiFileUploads, function ($multiFileUpload) {
   new MultiFileUpload($multiFileUpload).init()
 })

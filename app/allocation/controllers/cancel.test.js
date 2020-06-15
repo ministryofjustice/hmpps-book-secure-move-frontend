@@ -6,11 +6,11 @@ const controller = new CancelController({ route: '/' })
 const mockAllocation = {
   id: '123',
 }
-describe('Cancel controller', function() {
-  describe('#successHandler()', function() {
+describe('Cancel controller', function () {
+  describe('#successHandler()', function () {
     let req, res, nextSpy
 
-    beforeEach(function() {
+    beforeEach(function () {
       nextSpy = sinon.spy()
       req = {
         form: {
@@ -40,13 +40,13 @@ describe('Cancel controller', function() {
       }
     })
 
-    context('happy path', function() {
-      beforeEach(async function() {
+    context('happy path', function () {
+      beforeEach(async function () {
         sinon.stub(allocationService, 'cancel').resolves({})
         await controller.successHandler(req, res, nextSpy)
       })
 
-      it('should cancel the allocation', function() {
+      it('should cancel the allocation', function () {
         expect(allocationService.cancel).to.have.been.calledWithExactly(
           mockAllocation.id,
           {
@@ -56,28 +56,28 @@ describe('Cancel controller', function() {
         )
       })
 
-      it('should reset the journey', function() {
+      it('should reset the journey', function () {
         expect(req.journeyModel.reset).to.have.been.calledOnce
       })
 
-      it('should reset the session', function() {
+      it('should reset the session', function () {
         expect(req.sessionModel.reset).to.have.been.calledOnce
       })
 
-      it('should redirect correctly', function() {
+      it('should redirect correctly', function () {
         expect(res.redirect).to.have.been.calledOnce
         expect(res.redirect).to.have.been.calledWith('/allocation/123')
       })
     })
-    context('unhappy path', function() {
+    context('unhappy path', function () {
       const errorMock = new Error('500!')
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         sinon.stub(allocationService, 'cancel').throws(errorMock)
         await controller.successHandler(req, res, nextSpy)
       })
 
-      it('should call next with the error', function() {
+      it('should call next with the error', function () {
         expect(nextSpy).to.be.calledWith(errorMock)
       })
     })

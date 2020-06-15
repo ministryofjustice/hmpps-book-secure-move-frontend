@@ -8,38 +8,38 @@ const UpdateBaseController = require('./base')
 const controller = new AssessmentController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
-describe('Move controllers', function() {
-  describe('Update assessment controller', function() {
-    it('should extend UpdateBaseController', function() {
+describe('Move controllers', function () {
+  describe('Update assessment controller', function () {
+    it('should extend UpdateBaseController', function () {
       expect(Object.getPrototypeOf(ownProto)).to.equal(
         UpdateBaseController.prototype
       )
     })
 
-    describe('When mixing in create controller', function() {
-      it('should copy configure from CreateAssessment', function() {
+    describe('When mixing in create controller', function () {
+      it('should copy configure from CreateAssessment', function () {
         expect(controller.configure).to.exist.and.equal(MixinProto.configure)
       })
 
-      it('should copy setPreviousAssessment from CreateAssessment', function() {
+      it('should copy setPreviousAssessment from CreateAssessment', function () {
         expect(controller.setPreviousAssessment).to.exist.and.equal(
           MixinProto.setPreviousAssessment
         )
       })
 
-      it('should copy getAssessments from CreateAssessment', function() {
+      it('should copy getAssessments from CreateAssessment', function () {
         expect(controller.getAssessments).to.exist.and.equal(
           MixinProto.getAssessments
         )
       })
 
-      it('should not copy saveValues from CreateAssessment', function() {
+      it('should not copy saveValues from CreateAssessment', function () {
         expect(controller.saveValues).to.exist.and.not.be.equal(
           MixinProto.saveValues
         )
       })
 
-      it('should only have the expected methods of its own', function() {
+      it('should only have the expected methods of its own', function () {
         const ownMethods = ['saveValues']
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
@@ -49,35 +49,35 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#middlewareLocals()', function() {
-      beforeEach(function() {
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
         sinon.stub(UpdateBaseController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
       })
 
-      it('should call parent method', function() {
+      it('should call parent method', function () {
         expect(UpdateBaseController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 
-      it('should call set previous assessment method', function() {
+      it('should call set previous assessment method', function () {
         expect(controller.use.firstCall).to.have.been.calledWithExactly(
           controller.setPreviousAssessment
         )
       })
 
-      it('should call correct number of middleware', function() {
+      it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(1)
       })
     })
 
-    describe('#saveValues', function() {
+    describe('#saveValues', function () {
       let req
       const res = {}
       let nextSpy
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(personService, 'update').resolves()
         sinon.stub(controller, 'setFlash')
         req = {
@@ -176,23 +176,23 @@ describe('Move controllers', function() {
         nextSpy = sinon.spy()
       })
 
-      context('When assessment answers are unchanged', function() {
-        it('should not update the person data', async function() {
+      context('When assessment answers are unchanged', function () {
+        it('should not update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.not.be.called
         })
 
-        it('should not set the confirmation message', async function() {
+        it('should not set the confirmation message', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(controller.setFlash).to.not.be.called
         })
       })
 
-      context('When assessment answers have changed', function() {
-        beforeEach(function() {
+      context('When assessment answers have changed', function () {
+        beforeEach(function () {
           req.form.values.violent = '#violent'
         })
-        it('should update the person data', async function() {
+        it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
@@ -206,17 +206,17 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should set the confirmation message', async function() {
+        it('should set the confirmation message', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
       })
 
-      context('When assessment comment has been deleted', function() {
-        beforeEach(function() {
+      context('When assessment comment has been deleted', function () {
+        beforeEach(function () {
           req.form.values.violent = ''
         })
-        it('should remove the comment from the assessment answer', async function() {
+        it('should remove the comment from the assessment answer', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
@@ -231,12 +231,12 @@ describe('Move controllers', function() {
         })
       })
 
-      context('When assessment item is checked', function() {
-        beforeEach(function() {
+      context('When assessment item is checked', function () {
+        beforeEach(function () {
           req.form.values.risk.push('56826f64-da5d-42eb-b360-131e60bcc3d3')
           req.form.values.risk.push('4e7e54b4-a40c-488f-bdff-c6b2268ca4eb')
         })
-        it('should add the assessment answer and order the assessments', async function() {
+        it('should add the assessment answer and order the assessments', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
@@ -261,11 +261,11 @@ describe('Move controllers', function() {
         })
       })
 
-      context('When there were no assessment answers originally', function() {
-        beforeEach(function() {
+      context('When there were no assessment answers originally', function () {
+        beforeEach(function () {
           req.getPerson.returns({ id: '#personId' })
         })
-        it('should update the person data', async function() {
+        it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(personService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
@@ -280,13 +280,13 @@ describe('Move controllers', function() {
         })
       })
 
-      context('When person API fails', function() {
+      context('When person API fails', function () {
         const err = new Error()
-        beforeEach(function() {
+        beforeEach(function () {
           req.form.values.violent = '#changeme'
           personService.update.throws(err)
         })
-        it('should call next with the error thrown', async function() {
+        it('should call next with the error thrown', async function () {
           try {
             await controller.saveValues(req, res, nextSpy)
           } catch (error) {}

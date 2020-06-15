@@ -2,7 +2,7 @@ function Header($module) {
   this.$module = $module
 }
 
-Header.prototype.init = function() {
+Header.prototype.init = function () {
   // Check for module
   var $module = this.$module
 
@@ -26,7 +26,7 @@ Header.prototype.init = function() {
  * @param {object} node element
  * @param {string} className to toggle
  */
-Header.prototype.toggleClass = function(node, className) {
+Header.prototype.toggleClass = function (node, className) {
   if (node.className.indexOf(className) > 0) {
     node.className = node.className.replace(' ' + className, '')
   } else {
@@ -38,7 +38,7 @@ Header.prototype.toggleClass = function(node, className) {
  * An event handler for click event on $toggleButton
  * @param {object} event event
  */
-Header.prototype.handleClick = function(event) {
+Header.prototype.handleClick = function (event) {
   var $module = this.$module
   var $toggleButton = event.target || event.srcElement
   var $target = $module.querySelector(

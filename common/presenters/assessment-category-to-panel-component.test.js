@@ -3,20 +3,17 @@ const filters = require('../../config/nunjucks/filters')
 
 const assessmentCategoryToPanelListComponent = require('./assessment-category-to-panel-component')
 
-describe('Presenters', function() {
-  describe('#assessmentCategorytoPanelComponent()', function() {
+describe('Presenters', function () {
+  describe('#assessmentCategorytoPanelComponent()', function () {
     let transformedResponse
     const mockFormatDateWithDay = 'Mon 10 Aug'
 
-    beforeEach(function() {
-      sinon
-        .stub(i18n, 't')
-        .withArgs('created_on')
-        .returns('Created on')
+    beforeEach(function () {
+      sinon.stub(i18n, 't').withArgs('created_on').returns('Created on')
       sinon.stub(filters, 'formatDateWithDay').returns(mockFormatDateWithDay)
     })
 
-    context('with default assessment answer', function() {
+    context('with default assessment answer', function () {
       const mockAssessmentCategory = {
         key: 'risk',
         sortOrder: 1,
@@ -47,18 +44,18 @@ describe('Presenters', function() {
         ],
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentCategoryToPanelListComponent(
           mockAssessmentCategory
         )
       })
 
-      it('should retain assessment category key', function() {
+      it('should retain assessment category key', function () {
         expect(transformedResponse).to.contain.property('key')
         expect(transformedResponse.key).to.equal(mockAssessmentCategory.key)
       })
 
-      it('correctly format panels', function() {
+      it('correctly format panels', function () {
         expect(transformedResponse).to.contain.property('panels')
         expect(transformedResponse.panels).to.deep.equal([
           {
@@ -102,14 +99,14 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should contain correct number of properties', function() {
+      it('should contain correct number of properties', function () {
         expect(Object.keys(transformedResponse).length).to.equal(2)
       })
     })
 
     context(
       'with assessment answer that has NOMIS alert description',
-      function() {
+      function () {
         const mockAssessmentCategory = {
           key: 'risk',
           sortOrder: 1,
@@ -142,18 +139,18 @@ describe('Presenters', function() {
           ],
         }
 
-        beforeEach(function() {
+        beforeEach(function () {
           transformedResponse = assessmentCategoryToPanelListComponent(
             mockAssessmentCategory
           )
         })
 
-        it('should retain assessment category key', function() {
+        it('should retain assessment category key', function () {
           expect(transformedResponse).to.contain.property('key')
           expect(transformedResponse.key).to.equal(mockAssessmentCategory.key)
         })
 
-        it('correctly format panels', function() {
+        it('correctly format panels', function () {
           expect(transformedResponse).to.contain.property('panels')
           expect(transformedResponse.panels).to.deep.equal([
             {
@@ -199,13 +196,13 @@ describe('Presenters', function() {
           ])
         })
 
-        it('should contain correct number of properties', function() {
+        it('should contain correct number of properties', function () {
           expect(Object.keys(transformedResponse).length).to.equal(2)
         })
       }
     )
 
-    context('with assessment answer that has created at date', function() {
+    context('with assessment answer that has created at date', function () {
       const mockAssessmentCategory = {
         answers: [
           {
@@ -232,18 +229,18 @@ describe('Presenters', function() {
         ],
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentCategoryToPanelListComponent(
           mockAssessmentCategory
         )
       })
 
-      it('should retain assessment category key', function() {
+      it('should retain assessment category key', function () {
         expect(transformedResponse).to.contain.property('key')
         expect(transformedResponse.key).to.equal(mockAssessmentCategory.key)
       })
 
-      it('correctly format panels', function() {
+      it('correctly format panels', function () {
         expect(transformedResponse).to.contain.property('panels')
         expect(transformedResponse.panels).to.deep.equal([
           {
@@ -286,12 +283,12 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should contain correct number of properties', function() {
+      it('should contain correct number of properties', function () {
         expect(Object.keys(transformedResponse).length).to.equal(2)
       })
     })
 
-    context('with assessment answer that has all optional props', function() {
+    context('with assessment answer that has all optional props', function () {
       const mockAssessmentCategory = {
         answers: [
           {
@@ -323,18 +320,18 @@ describe('Presenters', function() {
         ],
       }
 
-      beforeEach(function() {
+      beforeEach(function () {
         transformedResponse = assessmentCategoryToPanelListComponent(
           mockAssessmentCategory
         )
       })
 
-      it('should retain assessment category key', function() {
+      it('should retain assessment category key', function () {
         expect(transformedResponse).to.contain.property('key')
         expect(transformedResponse.key).to.equal(mockAssessmentCategory.key)
       })
 
-      it('correctly format panels', function() {
+      it('correctly format panels', function () {
         expect(transformedResponse).to.contain.property('panels')
         expect(transformedResponse.panels).to.deep.equal([
           {
@@ -377,7 +374,7 @@ describe('Presenters', function() {
         ])
       })
 
-      it('should contain correct number of properties', function() {
+      it('should contain correct number of properties', function () {
         expect(Object.keys(transformedResponse).length).to.equal(2)
       })
     })

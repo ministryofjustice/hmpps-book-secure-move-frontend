@@ -79,12 +79,12 @@ const mockValues = {
   },
 }
 
-describe('Move controllers', function() {
-  describe('Save', function() {
-    describe('#saveValues()', function() {
+describe('Move controllers', function () {
+  describe('Save', function () {
+    describe('#saveValues()', function () {
       let req, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(personService, 'update').resolves(mockPerson)
         sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
@@ -99,17 +99,17 @@ describe('Move controllers', function() {
         }
       })
 
-      context('when move save is successful', function() {
-        beforeEach(async function() {
+      context('when move save is successful', function () {
+        beforeEach(async function () {
           sinon.stub(moveService, 'create').resolves(mockMove)
         })
 
-        context('without court hearings', function() {
-          beforeEach(async function() {
+        context('without court hearings', function () {
+          beforeEach(async function () {
             await controller.saveValues(req, {}, nextSpy)
           })
 
-          it('should filter out correct properties', function() {
+          it('should filter out correct properties', function () {
             expect(moveService.create).to.be.calledWith({
               reference: '',
               to_location: 'Court',
@@ -122,28 +122,28 @@ describe('Move controllers', function() {
             })
           })
 
-          it('should call person update', function() {
+          it('should call person update', function () {
             expect(personService.update).to.be.calledOnceWithExactly({
               ...mockValues.person,
               assessment_answers: mockValues.assessment,
             })
           })
 
-          it('should not call court hearing service', function() {
+          it('should not call court hearing service', function () {
             expect(courtHearingService.create).not.to.called
           })
 
-          it('should set move to session model', function() {
+          it('should set move to session model', function () {
             expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
           })
 
-          it('should not throw an error', function() {
+          it('should not throw an error', function () {
             expect(nextSpy).to.be.calledOnce
             expect(nextSpy).to.be.calledWith()
           })
         })
 
-        context('with court hearings', function() {
+        context('with court hearings', function () {
           const mockValuesWithHearings = {
             ...mockValues,
             court_hearings: [
@@ -166,13 +166,13 @@ describe('Move controllers', function() {
             ],
           }
 
-          context('by default', function() {
-            beforeEach(async function() {
+          context('by default', function () {
+            beforeEach(async function () {
               req.sessionModel.toJSON = () => mockValuesWithHearings
               await controller.saveValues(req, {}, nextSpy)
             })
 
-            it('should filter out correct properties', function() {
+            it('should filter out correct properties', function () {
               expect(moveService.create).to.be.calledWith({
                 reference: '',
                 to_location: 'Court',
@@ -186,20 +186,20 @@ describe('Move controllers', function() {
               })
             })
 
-            it('should call person update', function() {
+            it('should call person update', function () {
               expect(personService.update).to.be.calledOnceWithExactly({
                 ...mockValuesWithHearings.person,
                 assessment_answers: mockValuesWithHearings.assessment,
               })
             })
 
-            it('should call court hearing service correct number of times', function() {
+            it('should call court hearing service correct number of times', function () {
               expect(courtHearingService.create.callCount).to.equal(
                 mockValuesWithHearings.court_hearings.length
               )
             })
 
-            it('should call court hearing service with correct arguments', function() {
+            it('should call court hearing service with correct arguments', function () {
               expect(courtHearingService.create).to.be.calledWithExactly(
                 {
                   ...mockValuesWithHearings.court_hearings[0],
@@ -216,21 +216,21 @@ describe('Move controllers', function() {
               )
             })
 
-            it('should set move to session model', function() {
+            it('should set move to session model', function () {
               expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
             })
 
-            it('should not throw an error', function() {
+            it('should not throw an error', function () {
               expect(nextSpy).to.be.calledOnce
               expect(nextSpy).to.be.calledWith()
             })
           })
 
-          context('when user has selected to NOT save to NOMIS', function() {
+          context('when user has selected to NOT save to NOMIS', function () {
             const shouldSaveCourtHearingsFalseValue =
               shouldSaveCourtHearingsField.items[1].value
 
-            beforeEach(async function() {
+            beforeEach(async function () {
               req.sessionModel.toJSON = () => {
                 return {
                   ...mockValuesWithHearings,
@@ -241,7 +241,7 @@ describe('Move controllers', function() {
               await controller.saveValues(req, {}, nextSpy)
             })
 
-            it('should filter out correct properties', function() {
+            it('should filter out correct properties', function () {
               expect(moveService.create).to.be.calledWith({
                 reference: '',
                 to_location: 'Court',
@@ -256,13 +256,13 @@ describe('Move controllers', function() {
               })
             })
 
-            it('should call court hearing service correct number of times', function() {
+            it('should call court hearing service correct number of times', function () {
               expect(courtHearingService.create.callCount).to.equal(
                 mockValuesWithHearings.court_hearings.length
               )
             })
 
-            it('should call court hearing service with correct arguments', function() {
+            it('should call court hearing service with correct arguments', function () {
               expect(courtHearingService.create).to.be.calledWithExactly(
                 {
                   ...mockValuesWithHearings.court_hearings[0],
@@ -282,33 +282,33 @@ describe('Move controllers', function() {
         })
       })
 
-      context('when save fails', function() {
+      context('when save fails', function () {
         const errorMock = new Error('Problem')
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           sinon.stub(moveService, 'create').throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should call next with the error', function() {
+        it('should call next with the error', function () {
           expect(nextSpy).to.be.calledWith(errorMock)
         })
 
-        it('should call next once', function() {
+        it('should call next once', function () {
           expect(nextSpy).to.be.calledOnce
         })
 
-        it('should not update person', function() {
+        it('should not update person', function () {
           expect(personService.update).not.to.be.called
         })
 
-        it('should not save court hearings', function() {
+        it('should not save court hearings', function () {
           expect(courtHearingService.create).not.to.be.called
         })
       })
     })
 
-    describe('#process()', function() {
+    describe('#process()', function () {
       let req
       const mockCurrentAssessmentWithoutExplicit = {
         court: [
@@ -419,7 +419,7 @@ describe('Move controllers', function() {
         },
       ]
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'process')
         req = {
           form: {
@@ -437,12 +437,12 @@ describe('Move controllers', function() {
         }
       })
 
-      context('when from location is not Prison', function() {
-        beforeEach(function() {
+      context('when from location is not Prison', function () {
+        beforeEach(function () {
           controller.process(req, {}, {})
         })
 
-        it('should save flattened assessment from form values', function() {
+        it('should save flattened assessment from form values', function () {
           expect(req.sessionModel.set).to.be.calledOnceWithExactly(
             'assessment',
             [
@@ -465,28 +465,28 @@ describe('Move controllers', function() {
           )
         })
 
-        it('should call parent process method', function() {
+        it('should call parent process method', function () {
           expect(
             BaseController.prototype.process
           ).to.have.been.calledOnceWithExactly(req, {}, {})
         })
       })
 
-      context('when from location is Prison', function() {
-        beforeEach(function() {
+      context('when from location is Prison', function () {
+        beforeEach(function () {
           req.form.values.from_location_type = 'prison'
         })
 
-        context('without NOMIS imported assessment answers', function() {
+        context('without NOMIS imported assessment answers', function () {
           context(
             'with `not_to_be_released` and `special_vehicle`',
-            function() {
-              beforeEach(function() {
+            function () {
+              beforeEach(function () {
                 req.form.values.assessment = mockCurrentAssessmentWithExplicit
                 controller.process(req, {}, {})
               })
 
-              it('should save assessment', function() {
+              it('should save assessment', function () {
                 expect(req.sessionModel.set).to.be.calledOnceWithExactly(
                   'assessment',
                   [
@@ -524,7 +524,7 @@ describe('Move controllers', function() {
                 )
               })
 
-              it('should call parent process method', function() {
+              it('should call parent process method', function () {
                 expect(
                   BaseController.prototype.process
                 ).to.have.been.calledOnceWithExactly(req, {}, {})
@@ -534,12 +534,12 @@ describe('Move controllers', function() {
 
           context(
             'without `not_to_be_released` and `special_vehicle`',
-            function() {
-              beforeEach(function() {
+            function () {
+              beforeEach(function () {
                 controller.process(req, {}, {})
               })
 
-              it('should save assessment from form values', function() {
+              it('should save assessment from form values', function () {
                 expect(req.sessionModel.set).to.be.calledOnceWithExactly(
                   'assessment',
                   [
@@ -565,7 +565,7 @@ describe('Move controllers', function() {
                 )
               })
 
-              it('should call parent process method', function() {
+              it('should call parent process method', function () {
                 expect(
                   BaseController.prototype.process
                 ).to.have.been.calledOnceWithExactly(req, {}, {})
@@ -574,20 +574,20 @@ describe('Move controllers', function() {
           )
         })
 
-        context('with NOMIS imported assessment answers', function() {
-          beforeEach(function() {
+        context('with NOMIS imported assessment answers', function () {
+          beforeEach(function () {
             req.form.values.person.assessment_answers = mockExistingAssessment
           })
 
           context(
             'with `not_to_be_released` and `special_vehicle`',
-            function() {
-              beforeEach(function() {
+            function () {
+              beforeEach(function () {
                 req.form.values.assessment = mockCurrentAssessmentWithExplicit
                 controller.process(req, {}, {})
               })
 
-              it('should save assessment and retain NOMIS answers', function() {
+              it('should save assessment and retain NOMIS answers', function () {
                 expect(req.sessionModel.set).to.be.calledOnceWithExactly(
                   'assessment',
                   [
@@ -626,7 +626,7 @@ describe('Move controllers', function() {
                 )
               })
 
-              it('should call parent process method', function() {
+              it('should call parent process method', function () {
                 expect(
                   BaseController.prototype.process
                 ).to.have.been.calledOnceWithExactly(req, {}, {})
@@ -636,13 +636,13 @@ describe('Move controllers', function() {
 
           context(
             'without `not_to_be_released` and `special_vehicle`',
-            function() {
-              beforeEach(function() {
+            function () {
+              beforeEach(function () {
                 req.form.values.assessment = mockCurrentAssessmentWithoutExplicit
                 controller.process(req, {}, {})
               })
 
-              it('should save assessment but exclude `not_to_be_released` and `special_vehicle` NOMIS answers', function() {
+              it('should save assessment but exclude `not_to_be_released` and `special_vehicle` NOMIS answers', function () {
                 expect(req.sessionModel.set).to.be.calledOnceWithExactly(
                   'assessment',
                   [
@@ -702,7 +702,7 @@ describe('Move controllers', function() {
                 )
               })
 
-              it('should call parent process method', function() {
+              it('should call parent process method', function () {
                 expect(
                   BaseController.prototype.process
                 ).to.have.been.calledOnceWithExactly(req, {}, {})
@@ -711,12 +711,12 @@ describe('Move controllers', function() {
           )
         })
 
-        context('when to location is also Prison', function() {
-          beforeEach(function() {
+        context('when to location is also Prison', function () {
+          beforeEach(function () {
             req.form.values.to_location_type = 'prison'
             controller.process(req, {}, {})
           })
-          it('will create a status of proposed on the move', function() {
+          it('will create a status of proposed on the move', function () {
             expect(req.sessionModel.set).to.have.been.calledWithExactly(
               'status',
               'proposed'
@@ -726,10 +726,10 @@ describe('Move controllers', function() {
       })
     })
 
-    describe('#successHandler()', function() {
+    describe('#successHandler()', function () {
       let req, res, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         req = {
           form: {
             values: {},
@@ -754,11 +754,11 @@ describe('Move controllers', function() {
         sinon.stub(analytics, 'sendJourneyTime')
       })
 
-      context('by default', function() {
+      context('by default', function () {
         const mockJourneyTimestamp = 12345
         const mockCurrentTimestamp = new Date('2017-08-10').getTime()
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           this.clock = sinon.useFakeTimers(mockCurrentTimestamp)
           analytics.sendJourneyTime.resolves({})
           req.sessionModel.get.withArgs('move').returns(mockMove)
@@ -768,7 +768,7 @@ describe('Move controllers', function() {
           await controller.successHandler(req, res, nextSpy)
         })
 
-        it('should send journey time to analytics', function() {
+        it('should send journey time to analytics', function () {
           expect(analytics.sendJourneyTime).to.be.calledOnceWithExactly({
             utv: capitalize(req.form.options.name),
             utt: mockCurrentTimestamp - mockJourneyTimestamp,
@@ -776,50 +776,50 @@ describe('Move controllers', function() {
           })
         })
 
-        it('should reset the journey', function() {
+        it('should reset the journey', function () {
           expect(req.journeyModel.reset).to.have.been.calledOnce
         })
 
-        it('should reset the session', function() {
+        it('should reset the session', function () {
           expect(req.sessionModel.reset).to.have.been.calledOnce
         })
 
-        it('should redirect correctly', function() {
+        it('should redirect correctly', function () {
           expect(res.redirect).to.have.been.calledOnce
           expect(res.redirect).to.have.been.calledWith(
             `/move/${mockMove.id}/confirmation`
           )
         })
 
-        it('should not call next', function() {
+        it('should not call next', function () {
           expect(nextSpy).not.to.have.been.called
         })
       })
 
-      context('when send journey time fails', function() {
+      context('when send journey time fails', function () {
         const mockError = new Error('Error')
 
-        beforeEach(async function() {
+        beforeEach(async function () {
           analytics.sendJourneyTime.rejects(mockError)
           req.sessionModel.get.withArgs('move').returns(mockMove)
           req.sessionModel.get.withArgs('journeyTimestamp').returns(12345)
           await controller.successHandler(req, res, nextSpy)
         })
 
-        it('should not redirect', function() {
+        it('should not redirect', function () {
           expect(res.redirect).not.to.have.been.called
         })
 
-        it('should call next with error', function() {
+        it('should call next with error', function () {
           expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
         })
       })
     })
 
-    describe('#errorHandler()', function() {
+    describe('#errorHandler()', function () {
       let resMock, errorMock, nextSpy
 
-      beforeEach(function() {
+      beforeEach(function () {
         sinon.stub(BaseController.prototype, 'errorHandler')
         nextSpy = sinon.spy()
         errorMock = new Error()
@@ -828,32 +828,32 @@ describe('Move controllers', function() {
         }
       })
 
-      context('with non validation error', function() {
-        beforeEach(function() {
+      context('with non validation error', function () {
+        beforeEach(function () {
           errorMock.statusCode = 500
           controller.errorHandler(errorMock, {}, resMock, nextSpy)
         })
 
-        it('should call parent error handler', function() {
+        it('should call parent error handler', function () {
           expect(
             BaseController.prototype.errorHandler
           ).to.have.been.calledOnceWithExactly(errorMock, {}, resMock, nextSpy)
         })
 
-        it('should not render a template', function() {
+        it('should not render a template', function () {
           expect(resMock.render).not.to.have.been.called
         })
       })
 
-      context('with validation error', function() {
+      context('with validation error', function () {
         const mockExistingMoveId = '12345'
 
-        beforeEach(function() {
+        beforeEach(function () {
           errorMock.statusCode = 422
         })
 
-        context('with `taken` error code', function() {
-          beforeEach(function() {
+        context('with `taken` error code', function () {
+          beforeEach(function () {
             errorMock.errors = [
               {
                 code: 'taken',
@@ -865,13 +865,13 @@ describe('Move controllers', function() {
             controller.errorHandler(errorMock, {}, resMock, nextSpy)
           })
 
-          it('should not call parent error handler', function() {
+          it('should not call parent error handler', function () {
             expect(
               BaseController.prototype.errorHandler
             ).not.to.have.been.called
           })
 
-          it('should render a template', function() {
+          it('should render a template', function () {
             expect(resMock.render).to.have.been.calledOnceWithExactly(
               'move/views/create/save-conflict',
               {
@@ -881,12 +881,12 @@ describe('Move controllers', function() {
           })
         })
 
-        context('with any other error code', function() {
-          beforeEach(function() {
+        context('with any other error code', function () {
+          beforeEach(function () {
             controller.errorHandler(errorMock, {}, resMock, nextSpy)
           })
 
-          it('should call parent error handler', function() {
+          it('should call parent error handler', function () {
             expect(
               BaseController.prototype.errorHandler
             ).to.have.been.calledOnceWithExactly(
@@ -897,7 +897,7 @@ describe('Move controllers', function() {
             )
           })
 
-          it('should not render a template', function() {
+          it('should not render a template', function () {
             expect(resMock.render).not.to.have.been.called
           })
         })
