@@ -3,15 +3,9 @@ const filters = require('../../config/nunjucks/filters')
 
 const profileToCardComponent = require('./profile-to-card-component')
 
-const mockPerson = {
+const mockProfile = {
   id: '12345',
   href: '/move/12345',
-  fullname: 'Name, Full',
-  image_url: '/path/to/image.jpg',
-  date_of_birth: '2000-10-10',
-  gender: {
-    title: 'Male',
-  },
   assessment_answers: [
     {
       key: 'concealed_items',
@@ -34,6 +28,15 @@ const mockPerson = {
       category: 'court',
     },
   ],
+  person: {
+    id: '12345',
+    fullname: 'Name, Full',
+    image_url: '/path/to/image.jpg',
+    date_of_birth: '2000-10-10',
+    gender: {
+      title: 'Male',
+    },
+  },
 }
 
 describe('Presenters', function () {
@@ -49,19 +52,19 @@ describe('Presenters', function () {
     context('with default options', function () {
       context('with mock person', function () {
         beforeEach(function () {
-          transformedResponse = profileToCardComponent()(mockPerson)
+          transformedResponse = profileToCardComponent()(mockProfile)
         })
 
         describe('response', function () {
           it('should contain a href', function () {
             expect(transformedResponse).to.have.property('href')
-            expect(transformedResponse.href).to.equal(mockPerson.href)
+            expect(transformedResponse.href).to.equal(mockProfile.href)
           })
 
           it('should contain a title', function () {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
-              text: mockPerson.fullname.toUpperCase(),
+              text: mockProfile.person.fullname.toUpperCase(),
             })
           })
 
@@ -72,14 +75,14 @@ describe('Presenters', function () {
           it('should contain an image path', function () {
             expect(transformedResponse).to.have.property('image_path')
             expect(transformedResponse.image_path).to.equal(
-              mockPerson.image_url
+              mockProfile.person.image_url
             )
           })
 
           it('should contain image alt', function () {
             expect(transformedResponse).to.have.property('image_alt')
             expect(transformedResponse.image_alt).to.equal(
-              mockPerson.fullname.toUpperCase()
+              mockProfile.person.fullname.toUpperCase()
             )
           })
 
@@ -93,7 +96,7 @@ describe('Presenters', function () {
                 },
                 {
                   label: '__translated__',
-                  text: mockPerson.gender.title,
+                  text: mockProfile.person.gender.title,
                 },
               ],
             })
@@ -197,11 +200,10 @@ describe('Presenters', function () {
 
         beforeEach(function () {
           transformedResponse = profileToCardComponent()({
-            last_name: 'Jones',
-            first_names: 'Steve',
-            date_of_birth: '',
-            gender: mockPerson.gender,
-            ethnicity: undefined,
+            person: {
+              date_of_birth: '',
+              gender: mockProfile.person.gender,
+            },
             assessment_answers: [],
           })
         })
@@ -213,7 +215,7 @@ describe('Presenters', function () {
             items: [
               {
                 label: '__translated__',
-                text: mockPerson.gender.title,
+                text: mockProfile.person.gender.title,
               },
             ],
           })
@@ -345,7 +347,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showMeta: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain meta items', function () {
@@ -370,7 +372,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showTags: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain tags items', function () {
@@ -395,7 +397,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showImage: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain an image path', function () {

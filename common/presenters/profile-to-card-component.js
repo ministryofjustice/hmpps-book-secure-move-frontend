@@ -10,12 +10,9 @@ function profileToCardComponent({
   showMeta = true,
   showTags = true,
 } = {}) {
-  return function item(profile = {}) {
-    const {
-      href,
-      assessment_answers: assessmentAnswers,
-      person = profile,
-    } = profile
+  return function item(profile) {
+    profile = profile || {}
+    const { href, assessment_answers: assessmentAnswers, person = {} } = profile
     const {
       id,
       gender,
