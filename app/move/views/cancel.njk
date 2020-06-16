@@ -18,12 +18,13 @@
 {% endblock %}
 
 {% block formActions %}
-  {{ govukWarningText({
-    html: t("moves::cancel.warning", {
-      name: move.person.fullname | upper
-    }),
-    iconFallbackText: "Warning"
-  }) }}
-
+  {% if move.status != "proposed" %}
+    {{ govukWarningText({
+      html: t("moves::cancel.warning", {
+        name: move.person.fullname | upper
+      }),
+      iconFallbackText: "Warning"
+    }) }}
+  {% endif %}
   {{ super() }}
 {% endblock %}

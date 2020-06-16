@@ -60,6 +60,7 @@ const ocaPermissions = [
   'allocation:person:assign',
   'moves:view:proposed',
   'moves:download',
+  'move:cancel:proposed',
   'move:view',
   'move:create',
   'move:create:prison_transfer',

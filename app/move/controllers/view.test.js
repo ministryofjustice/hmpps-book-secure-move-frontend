@@ -1,3 +1,4 @@
+const { cloneDeep } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const presenters = require('../../../common/presenters')
@@ -343,6 +344,79 @@ describe('Move controllers', function () {
         expect(
           presenters.assessmentToSummaryListComponent
         ).to.be.calledOnceWithExactly([], 'court')
+      })
+    })
+
+    context('can user cancel a move', function () {
+      const res = {
+        render: sinon.stub(),
+        locals: {
+          move: {
+            ...mockMove,
+            person: undefined,
+          },
+        },
+      }
+      const req = {
+        t: sinon.stub(),
+        session: {
+          user: {
+            permissions: ['permission1', 'move:cancel:proposed'],
+          },
+        },
+      }
+      it('they can when the move is proposed and they can cancel proposed moves', function () {
+        const proposedMoveReq = cloneDeep(req)
+        const proposedMoveRes = cloneDeep(res)
+        proposedMoveRes.locals.move.status = 'proposed'
+        controller(proposedMoveReq, proposedMoveRes)
+        const params = proposedMoveRes.render.args[0][1]
+        expect(params.canCancelMove).to.be.true
+      })
+      it('they can when the move is requested and not in an allocation, and they can cancel moves', function () {
+        const requestedMoveReq = cloneDeep(req)
+        requestedMoveReq.session.user.permissions = ['move:cancel']
+        const requestedMoveRes = cloneDeep(res)
+        requestedMoveRes.locals.move.status = 'requested'
+        controller(requestedMoveReq, requestedMoveRes)
+        const params = requestedMoveRes.render.args[0][1]
+        expect(params.canCancelMove).to.be.true
+      })
+      context('they cannot in all other cases', function () {
+        it('when the permissions do not include cancel for the correct type of move', function () {
+          const proposedMoveReq = cloneDeep(req)
+          proposedMoveReq.session.user.permissions = [
+            'move:cancel',
+            'otherPermission',
+          ]
+          const proposedMoveRes = cloneDeep(res)
+          proposedMoveRes.locals.move.status = 'proposed'
+          proposedMoveRes.render.resetHistory()
+          controller(proposedMoveReq, proposedMoveRes)
+          const params = res.render.args[0][1]
+          expect(params.canCancelMove).to.be.false
+        })
+        it('when the move is part of an allocation', function () {
+          const requestedMoveReq = cloneDeep(req)
+          requestedMoveReq.session.user.permissions = ['move:cancel']
+          const requestedMoveRes = cloneDeep(res)
+          requestedMoveRes.locals.move.status = 'requested'
+          requestedMoveRes.locals.move.allocation = {}
+          requestedMoveRes.render.resetHistory()
+          controller(requestedMoveReq, requestedMoveRes)
+          const params = requestedMoveRes.render.args[0][1]
+          expect(params.canCancelMove).to.be.false
+        })
+        it('when the move has a different status', function () {
+          const requestedMoveReq = cloneDeep(req)
+          requestedMoveReq.session.user.permissions = ['move:cancel']
+          const requestedMoveRes = cloneDeep(res)
+          requestedMoveRes.locals.move.status = 'confirmed'
+          requestedMoveRes.render.resetHistory()
+          controller(requestedMoveReq, requestedMoveRes)
+          const params = requestedMoveRes.render.args[0][1]
+          expect(params.canCancelMove).to.be.false
+        })
       })
     })
   })

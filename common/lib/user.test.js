@@ -226,6 +226,7 @@ describe('User class', function () {
           'allocation:person:assign',
           'moves:view:proposed',
           'moves:download',
+          'move:cancel:proposed',
           'move:view',
           'move:create',
           'move:create:prison_transfer',
@@ -299,6 +300,7 @@ describe('User class', function () {
           'move:cancel',
           'locations:all',
           'dashboard:view',
+          'move:cancel:proposed',
           'moves:view:proposed',
           'move:create:prison_transfer',
         ]
