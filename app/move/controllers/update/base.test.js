@@ -225,8 +225,10 @@ describe('Move controllers', function () {
       let req
       const mockSession = {
         id: '#move',
-        person: {
-          id: '#person',
+        profile: {
+          person: {
+            id: '#person',
+          },
         },
       }
       beforeEach(function () {
@@ -246,7 +248,7 @@ describe('Move controllers', function () {
       })
 
       it('should add person model to req', function () {
-        expect(req.models.person).to.deep.equal(mockSession.person)
+        expect(req.models.person).to.deep.equal(mockSession.profile.person)
       })
     })
 
