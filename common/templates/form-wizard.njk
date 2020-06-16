@@ -86,7 +86,7 @@
   </form>
 {% endblock %}
 
-{% set sidebarHeading = sidebarHeading or (move.person.fullname | upper) or t("awaiting_person") %}
+{% set sidebarHeading = sidebarHeading or (person.fullname | upper) or t("awaiting_person") %}
 
 {% block contentSidebar %}
   {% if person.id or move.id %}
