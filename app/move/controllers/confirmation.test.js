@@ -243,18 +243,18 @@ describe('Move controllers', function () {
           moves: [
             {
               id: '1',
-              person: {},
+              profile: {},
             },
             {
               id: '2',
-              person: {},
+              profile: {},
             },
             {
               id: '__unassigned__',
             },
             {
               id: '4',
-              person: {},
+              profile: {},
             },
           ],
         }
