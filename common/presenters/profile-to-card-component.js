@@ -5,7 +5,7 @@ const filters = require('../../config/nunjucks/filters')
 
 const assessmentToTagList = require('./assessment-to-tag-list')
 
-function personToCardComponent({
+function profileToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
@@ -73,4 +73,4 @@ function personToCardComponent({
   }
 }
 
-module.exports = personToCardComponent
+module.exports = profileToCardComponent

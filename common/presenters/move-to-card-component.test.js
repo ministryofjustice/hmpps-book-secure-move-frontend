@@ -15,12 +15,12 @@ const mockPersonCardComponent = {
   title: 'Name, Full',
 }
 
-const personToCardComponentItemStub = sinon
+const profileToCardComponentItemStub = sinon
   .stub()
   .returns(mockPersonCardComponent)
-const personToCardComponentStub = sinon
+const profileToCardComponentStub = sinon
   .stub()
-  .callsFake(() => personToCardComponentItemStub)
+  .callsFake(() => profileToCardComponentItemStub)
 
 describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
@@ -30,7 +30,7 @@ describe('Presenters', function () {
     beforeEach(function () {
       sinon.stub(i18n, 't').returns('__translated__')
       moveToCardComponent = proxyquire('./move-to-card-component', {
-        './person-to-card-component': personToCardComponentStub,
+        './profile-to-card-component': profileToCardComponentStub,
       })
     })
 
@@ -42,11 +42,11 @@ describe('Presenters', function () {
 
         describe('response', function () {
           it('should call person to card component', function () {
-            expect(personToCardComponentItemStub).to.be.calledWithExactly({
+            expect(profileToCardComponentItemStub).to.be.calledWithExactly({
               ...mockMove.person,
               href: '/move/12345',
             })
-            expect(personToCardComponentStub).to.be.calledWithExactly({
+            expect(profileToCardComponentStub).to.be.calledWithExactly({
               showImage: true,
               showMeta: true,
               showTags: true,
@@ -95,7 +95,7 @@ describe('Presenters', function () {
           })
         })
         it('does not create the link on the card', function () {
-          expect(personToCardComponentItemStub).to.be.calledWithExactly({
+          expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             href: '',
           })
         })
@@ -110,11 +110,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345/path/to/somewhere',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: true,
           showMeta: true,
           showTags: true,
@@ -130,11 +130,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: false,
           showMeta: true,
           showTags: true,
@@ -150,11 +150,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: true,
           showMeta: false,
           showTags: true,
@@ -170,11 +170,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: true,
           showMeta: true,
           showTags: false,
@@ -190,11 +190,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: true,
           showMeta: true,
           showTags: true,
@@ -214,11 +214,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: false,
           showMeta: false,
           showTags: false,
@@ -248,11 +248,11 @@ describe('Presenters', function () {
       })
 
       it('should call person to card component correctly', function () {
-        expect(personToCardComponentItemStub).to.be.calledWithExactly({
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           ...mockMove.person,
           href: '/move/12345',
         })
-        expect(personToCardComponentStub).to.be.calledWithExactly({
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
           showImage: false,
           showMeta: false,
           showTags: false,
@@ -306,7 +306,7 @@ describe('Presenters', function () {
 
       beforeEach(function () {
         moveToCardComponent = proxyquire('./move-to-card-component', {
-          './person-to-card-component': sinon.stub().callsFake(() =>
+          './profile-to-card-component': sinon.stub().callsFake(() =>
             sinon.stub().returns({
               ...mockPersonCardComponent,
               classes: mockClasses,

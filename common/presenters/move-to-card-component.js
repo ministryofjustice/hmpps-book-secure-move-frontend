@@ -1,6 +1,6 @@
 const i18n = require('../../config/i18n')
 
-const personToCardComponent = require('./person-to-card-component')
+const profileToCardComponent = require('./profile-to-card-component')
 
 function moveToCardComponent({
   isCompact = false,
@@ -19,7 +19,7 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
-    const personCardComponent = personToCardComponent({
+    const personCardComponent = profileToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags: isCompact ? false : showTags,
