@@ -14,11 +14,13 @@ const controller = proxyquire('./view', {
   './view/view.update.links': getUpdateLinks,
 })
 
+const mockAssessmentAnswers = []
+
 const mockMove = {
   id: 'moveId',
   status: 'requested',
-  person: {
-    assessment_answers: [],
+  profile: {
+    assessment_answers: mockAssessmentAnswers,
   },
   documents: [],
   court_hearings: [
@@ -137,37 +139,32 @@ describe('Move controllers', function () {
 
       it('should call assessmentToTagList presenter with correct args', function () {
         expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(
-          mockMove.person.assessment_answers
+          mockAssessmentAnswers
         )
       })
 
       it('should contain tag list param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('tagList')
-        expect(params.tagList).to.equal(mockMove.person.assessment_answers)
+        expect(params.tagList).to.equal(mockAssessmentAnswers)
       })
 
       it('should call assessmentAnswersByCategory presenter with correct args', function () {
         expect(
           presenters.assessmentAnswersByCategory
-        ).to.be.calledOnceWithExactly(mockMove.person.assessment_answers)
+        ).to.be.calledOnceWithExactly(mockAssessmentAnswers)
       })
 
       it('should contain assessment param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('assessment')
-        expect(params.assessment).to.deep.equal(
-          mockMove.person.assessment_answers
-        )
+        expect(params.assessment).to.deep.equal(mockAssessmentAnswers)
       })
 
       it('should call assessmentToSummaryListComponent presenter with correct args', function () {
         expect(
           presenters.assessmentToSummaryListComponent
-        ).to.be.calledOnceWithExactly(
-          mockMove.person.assessment_answers,
-          'court'
-        )
+        ).to.be.calledOnceWithExactly(mockAssessmentAnswers, 'court')
       })
 
       it('should contain court hearings param', function () {
@@ -220,7 +217,7 @@ describe('Move controllers', function () {
       it('should contain court summary param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('courtSummary')
-        expect(params.courtSummary).to.equal(mockMove.person.assessment_answers)
+        expect(params.courtSummary).to.equal(mockAssessmentAnswers)
       })
 
       it('should contain message title param', function () {
