@@ -112,12 +112,12 @@
 
       {# TODO: consider handling actions within card component #}
       {# TODO: consider whether long names may cause overlap problems #}
-      {% if move.person and canAccess('allocation:person:assign') %}
+      {% if move.profile and canAccess('allocation:person:assign') %}
         <p class="app-!-position-top-right govuk-!-margin-top-3">
           {{ govukButton({
             href: "/move/" + move.id + "/unassign",
             html: t("actions::remove_person", {
-              name: move.person.fullname
+              name: move.profile.person.fullname
             }),
             classes: "govuk-button--secondary"
           })}}

@@ -37,8 +37,9 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
           'Idempotency-Key': uuid.v4(),
         }
         const response = await jsonApi.axios(req)
-        const data = response.data
-        console.log(JSON.stringify({ data }, null, 2))
+        // TODO: remove this
+        // const data = response.data
+        // console.log(JSON.stringify({ data }, null, 2))
         return response
       }
 

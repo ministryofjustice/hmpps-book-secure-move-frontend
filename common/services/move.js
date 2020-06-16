@@ -65,6 +65,7 @@ function getAll({
 
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
+  transform: transformMoveRelationships,
   format(data) {
     const booleansAndNulls = ['move_agreed']
     const relationships = [
@@ -155,7 +156,7 @@ const moveService = {
     return apiClient
       .find('move', id, { include })
       .then(response => response.data)
-      .then(transformMoveRelationships)
+      .then(this.transform)
   },
 
   create(data) {

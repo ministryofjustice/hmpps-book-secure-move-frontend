@@ -8,8 +8,8 @@ module.exports = function view(req, res) {
   const { moves, status } = allocation
   const userPermissions = get(req.session, 'user.permissions')
   const bannerStatuses = ['cancelled']
-  const movesWithoutPerson = moves.filter(move => !move.person)
-  const movesWithPerson = moves.filter(move => move.person)
+  const movesWithoutProfile = moves.filter(move => !move.profile)
+  const movesWithProfile = moves.filter(move => move.profile)
   const moveToCardComponent = presenters.moveToCardComponent({
     showStatus: false,
   })
@@ -17,13 +17,13 @@ module.exports = function view(req, res) {
   const removeUnassignedMoves = move => {
     return !(
       permissions.check('allocation:person:assign', userPermissions) &&
-      !move.person
+      !move.profile
     )
   }
 
   const removeMoveLink = move => {
     if (
-      move.person ||
+      move.profile ||
       !permissions.check('allocation:cancel', userPermissions) ||
       moves.length === 1
     ) {
@@ -45,17 +45,17 @@ module.exports = function view(req, res) {
       context: allocation.cancellation_reason,
       comment: allocation.cancellation_reason_comment,
     }),
-    unassignedMoveId: movesWithoutPerson.length
-      ? movesWithoutPerson[0].id
+    unassignedMoveId: movesWithoutProfile.length
+      ? movesWithoutProfile[0].id
       : undefined,
     totalCount: moves.length,
-    remainingCount: movesWithoutPerson.length,
-    addedCount: movesWithPerson.length,
+    remainingCount: movesWithoutProfile.length,
+    addedCount: movesWithProfile.length,
     moves: sortBy(moves.filter(removeUnassignedMoves), 'person.fullname')
       .reverse()
       .map(move => ({
         id: move.id,
-        person: move.person,
+        profile: move.profile,
         removeMoveHref: removeMoveLink(move),
         card: moveToCardComponent(move),
       })),

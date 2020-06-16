@@ -14,7 +14,7 @@ class UnassignController extends FormWizardController {
       return res.redirect(`/move/${move.id}`)
     }
 
-    if (!move.person) {
+    if (!move.profile) {
       return res.redirect(`/allocation/${move.allocation.id}`)
     }
 
@@ -28,7 +28,7 @@ class UnassignController extends FormWizardController {
 
   setMoveRelationships(req, res, next) {
     const { move } = res.locals
-    res.locals.person = move.person
+    res.locals.person = move.profile.person
     res.locals.allocation = move.allocation
 
     next()

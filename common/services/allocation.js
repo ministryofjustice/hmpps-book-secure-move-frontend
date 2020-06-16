@@ -2,7 +2,7 @@ const dateFunctions = require('date-fns')
 const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
-const personService = require('../services/person')
+const moveService = require('../services/move')
 
 const allocationService = {
   cancel(id, data) {
@@ -46,10 +46,7 @@ const allocationService = {
           .filter(
             move => includeCancelled || !['cancelled'].includes(move.status)
           )
-          .map(move => ({
-            ...move,
-            person: personService.transform(move.person),
-          })),
+          .map(moveService.transform),
       }
     }
   },

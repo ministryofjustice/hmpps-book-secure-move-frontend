@@ -46,7 +46,7 @@ const mockQuestions = [
   },
 ]
 
-describe.only('Presenters', function () {
+describe('Presenters', function () {
   describe('movesToCSV', function () {
     let transformedResponse
 
