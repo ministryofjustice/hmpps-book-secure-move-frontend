@@ -7,7 +7,7 @@ const referenceDataService = require('../services/reference-data')
 
 function getIdentifier(identifier) {
   return function (row) {
-    const item = find(get(row, 'person.identifiers'), {
+    const item = find(get(row, 'profile.person.identifiers'), {
       identifier_type: identifier,
     })
     return item ? item.value : null
@@ -19,11 +19,11 @@ function mapAnswer({ title, key } = {}) {
     {
       label: title,
       value: row => {
-        if (!row.person) {
+        if (!row.profile) {
           return null
         }
 
-        return some(get(row, 'person.assessment_answers'), { key })
+        return some(get(row, 'profile.assessment_answers'), { key })
       },
     },
     {
@@ -34,7 +34,7 @@ function mapAnswer({ title, key } = {}) {
         },
       ],
       value: row => {
-        const personAnswers = get(row, 'person.assessment_answers', [])
+        const profileAnswers = get(row, 'profile.assessment_answers', [])
           .filter(referenceDataHelpers.filterExpired)
           .filter(item => item.key === key)
           .map(item => {
@@ -45,7 +45,7 @@ function mapAnswer({ title, key } = {}) {
             return item.comments
           })
 
-        return personAnswers.length ? personAnswers.join('\n\n') : null
+        return profileAnswers.length ? profileAnswers.join('\n\n') : null
       },
     },
   ]
@@ -130,27 +130,27 @@ const person = [
   },
   {
     label: 'fields::last_name.label',
-    value: 'person.last_name',
+    value: 'profile.person.last_name',
   },
   {
     label: 'fields::first_names.label',
-    value: 'person.first_names',
+    value: 'profile.person.first_names',
   },
   {
     label: 'fields::date_of_birth.label',
-    value: 'person.date_of_birth',
+    value: 'profile.person.date_of_birth',
   },
   {
     label: 'fields::gender.label',
-    value: 'person.gender.title',
+    value: 'profile.person.gender.title',
   },
   {
     label: 'fields::ethnicity.label',
-    value: 'person.ethnicity.title',
+    value: 'profile.person.ethnicity.title',
   },
   {
     label: 'moves::download.ethnicity_code.label',
-    value: 'person.ethnicity.key',
+    value: 'profile.person.ethnicity.key',
   },
 ]
 

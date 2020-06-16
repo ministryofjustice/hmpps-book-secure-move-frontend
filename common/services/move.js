@@ -4,6 +4,15 @@ const { chunk, get, mapValues, omitBy, isUndefined, set } = require('lodash')
 const { LOCATIONS_BATCH_SIZE } = require('../../config')
 const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
+const profileService = require('../services/profile')
+
+function transformMoveRelationships(move) {
+  return {
+    ...move,
+    profile: profileService.transform(move.profile),
+    person: personService.transform(move.person),
+  }
+}
 
 function splitRequests(props, propPath) {
   const split = get(props, propPath, '').split(',')
@@ -42,10 +51,7 @@ function getAll({
       const hasNext = links.next && data.length !== 0
 
       if (!hasNext) {
-        return moves.map(move => ({
-          ...move,
-          person: personService.transform(move.person),
-        }))
+        return moves.map(transformMoveRelationships)
       }
 
       return getAll({
@@ -149,20 +155,14 @@ const moveService = {
     return apiClient
       .find('move', id, { include })
       .then(response => response.data)
-      .then(move => ({
-        ...move,
-        person: personService.transform(move.person),
-      }))
+      .then(transformMoveRelationships)
   },
 
   create(data) {
     return apiClient
       .create('move', moveService.format(data))
       .then(response => response.data)
-      .then(move => ({
-        ...move,
-        person: personService.transform(move.person),
-      }))
+      .then(transformMoveRelationships)
   },
 
   update(data) {
@@ -173,10 +173,7 @@ const moveService = {
     return apiClient
       .update('move', moveService.format(data))
       .then(response => response.data)
-      .then(move => ({
-        ...move,
-        person: personService.transform(move.person),
-      }))
+      .then(transformMoveRelationships)
   },
 
   redirect(data) {

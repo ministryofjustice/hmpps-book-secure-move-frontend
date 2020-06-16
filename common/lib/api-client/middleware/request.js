@@ -36,7 +36,10 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
           ...req.headers,
           'Idempotency-Key': uuid.v4(),
         }
-        return jsonApi.axios(req)
+        const response = await jsonApi.axios(req)
+        const data = response.data
+        console.log(JSON.stringify({ data }, null, 2))
+        return response
       }
 
       return redisStore()
