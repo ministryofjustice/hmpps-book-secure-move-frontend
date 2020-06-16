@@ -17,6 +17,8 @@
   "description_supplier_declined_to_move": "Reason — $t(fields::cancellation_reason.items.supplier_declined_to_move.label)",
   "description_other": "Reason — {{comment}}",
   "description_rejected": "Comments — {{comment}}",
+  "description_no_transport_available": "Reason - $t(fields::rejection_reason.items.no_transport_available)",
+  "description_no_space_at_receiving_prison": "Reason - $t(fields::rejection_reason.items.no_space_at_receiving_prison)",
   "cancelled_allocation": "Allocation cancelled",
   "description_allocation": "Reason — Allocation was cancelled",
   "description_allocation_supplier_declined_to_move": "Reason — Supplier declined to move",

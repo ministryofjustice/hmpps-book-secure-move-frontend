@@ -13,6 +13,7 @@ module.exports = function view(req, res) {
     status,
     cancellation_reason: cancellationReason,
     cancellation_reason_comment: cancellationComments,
+    rejection_reason: rejectionReason,
   } = move
   const bannerStatuses = ['cancelled']
   const userPermissions = get(req.session, 'user.permissions')
@@ -49,7 +50,7 @@ module.exports = function view(req, res) {
       ? req.t('statuses::' + status, { context: cancellationReason })
       : undefined,
     messageContent: req.t('statuses::description', {
-      context: cancellationReason,
+      context: rejectionReason || cancellationReason,
       comment: cancellationComments,
     }),
     updateLinks: updateActions,
