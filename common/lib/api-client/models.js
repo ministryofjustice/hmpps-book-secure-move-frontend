@@ -271,9 +271,10 @@ module.exports = {
       defaultInclude: [
         'from_location',
         'moves',
-        'moves.person',
-        'moves.person.ethnicity',
-        'moves.person.gender',
+        'moves.profile',
+        'moves.profile.person',
+        'moves.profile.person.ethnicity',
+        'moves.profile.person.gender',
         'to_location',
       ],
     },

@@ -51,7 +51,10 @@ module.exports = function view(req, res) {
     totalCount: moves.length,
     remainingCount: movesWithoutProfile.length,
     addedCount: movesWithProfile.length,
-    moves: sortBy(moves.filter(removeUnassignedMoves), 'person.fullname')
+    moves: sortBy(
+      moves.filter(removeUnassignedMoves),
+      'profile.person.fullname'
+    )
       .reverse()
       .map(move => ({
         id: move.id,
