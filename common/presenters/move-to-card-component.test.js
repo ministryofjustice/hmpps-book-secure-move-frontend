@@ -6,8 +6,10 @@ const mockMove = {
   id: '12345',
   reference: 'AB12FS45',
   status: 'requested',
-  person: {
-    fullname: 'Name, Full',
+  profile: {
+    person: {
+      fullname: 'Name, Full',
+    },
   },
 }
 const mockPersonCardComponent = {
@@ -41,9 +43,9 @@ describe('Presenters', function () {
         })
 
         describe('response', function () {
-          it('should call person to card component', function () {
+          it('should call profile to card component', function () {
             expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-              ...mockMove.person,
+              ...mockMove.profile,
               href: '/move/12345',
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -109,9 +111,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345/path/to/somewhere',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -129,9 +131,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -149,9 +151,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -169,9 +171,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -189,9 +191,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -213,9 +215,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
@@ -247,9 +249,9 @@ describe('Presenters', function () {
         })(mockMove)
       })
 
-      it('should call person to card component correctly', function () {
+      it('should call profile to card component correctly', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.person,
+          ...mockMove.profile,
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
