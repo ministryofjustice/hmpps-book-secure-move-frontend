@@ -1,5 +1,5 @@
 const apiClient = require('../lib/api-client')()
-const personService = require('../services/person')
+const moveService = require('../services/move')
 
 const allocationService = require('./allocation')
 
@@ -10,30 +10,40 @@ const mockAllocations = [
     moves: [
       {
         status: 'cancelled',
-        person: {
-          name: 'Tom Jones',
+        profile: {
+          person: {
+            name: 'Tom Jones',
+          },
         },
       },
       {
-        person: {
-          name: 'James Stephens',
+        profile: {
+          person: {
+            name: 'James Stephens',
+          },
         },
       },
       {
         status: 'requested',
-        person: {
-          name: 'Hugh Jack',
+        profile: {
+          person: {
+            name: 'Hugh Jack',
+          },
         },
       },
       {
         status: 'cancelled',
-        person: {
-          name: 'Beth Hacket',
+        profile: {
+          person: {
+            name: 'Beth Hacket',
+          },
         },
       },
       {
-        person: {
-          name: 'Steve Adams',
+        profile: {
+          person: {
+            name: 'Steve Adams',
+          },
         },
       },
     ],
@@ -43,15 +53,17 @@ const mockAllocations = [
     status: 'cancelled',
     moves: [
       {
-        person: {
-          name: 'Steve Bloggs',
+        profile: {
+          person: {
+            name: 'Steve Bloggs',
+          },
         },
       },
     ],
   },
 ]
 
-describe('Allocation service', function () {
+describe.only('Allocation service', function () {
   describe('cancel', function () {
     context('with correct data supplied', function () {
       let outcome
@@ -123,7 +135,7 @@ describe('Allocation service', function () {
     let output
 
     beforeEach(function () {
-      sinon.stub(personService, 'transform').returnsArg(0)
+      sinon.stub(moveService, 'transform').returnsArg(0)
     })
 
     context('with no arguments', function () {
@@ -136,7 +148,7 @@ describe('Allocation service', function () {
       })
 
       it('should call the person transform method on remaining moves', function () {
-        expect(personService.transform.callCount).to.equal(3)
+        expect(moveService.transform.callCount).to.equal(3)
       })
 
       it('should return correct output', function () {
@@ -145,19 +157,25 @@ describe('Allocation service', function () {
           status: 'requested',
           moves: [
             {
-              person: {
-                name: 'James Stephens',
+              profile: {
+                person: {
+                  name: 'James Stephens',
+                },
               },
             },
             {
               status: 'requested',
-              person: {
-                name: 'Hugh Jack',
+              profile: {
+                person: {
+                  name: 'Hugh Jack',
+                },
               },
             },
             {
-              person: {
-                name: 'Steve Adams',
+              profile: {
+                person: {
+                  name: 'Steve Adams',
+                },
               },
             },
           ],
@@ -177,7 +195,7 @@ describe('Allocation service', function () {
       })
 
       it('should call the person transform method on remaining moves', function () {
-        expect(personService.transform.callCount).to.equal(3)
+        expect(moveService.transform.callCount).to.equal(3)
       })
 
       it('should return correct output', function () {
@@ -186,19 +204,25 @@ describe('Allocation service', function () {
           status: 'requested',
           moves: [
             {
-              person: {
-                name: 'James Stephens',
+              profile: {
+                person: {
+                  name: 'James Stephens',
+                },
               },
             },
             {
               status: 'requested',
-              person: {
-                name: 'Hugh Jack',
+              profile: {
+                person: {
+                  name: 'Hugh Jack',
+                },
               },
             },
             {
-              person: {
-                name: 'Steve Adams',
+              profile: {
+                person: {
+                  name: 'Steve Adams',
+                },
               },
             },
           ],
@@ -218,7 +242,7 @@ describe('Allocation service', function () {
       })
 
       it('should call the person transform method on all moves', function () {
-        expect(personService.transform.callCount).to.equal(5)
+        expect(moveService.transform.callCount).to.equal(5)
       })
 
       it('should return correct output', function () {
@@ -228,30 +252,40 @@ describe('Allocation service', function () {
           moves: [
             {
               status: 'cancelled',
-              person: {
-                name: 'Tom Jones',
+              profile: {
+                person: {
+                  name: 'Tom Jones',
+                },
               },
             },
             {
-              person: {
-                name: 'James Stephens',
+              profile: {
+                person: {
+                  name: 'James Stephens',
+                },
               },
             },
             {
               status: 'requested',
-              person: {
-                name: 'Hugh Jack',
+              profile: {
+                person: {
+                  name: 'Hugh Jack',
+                },
               },
             },
             {
               status: 'cancelled',
-              person: {
-                name: 'Beth Hacket',
+              profile: {
+                person: {
+                  name: 'Beth Hacket',
+                },
               },
             },
             {
-              person: {
-                name: 'Steve Adams',
+              profile: {
+                person: {
+                  name: 'Steve Adams',
+                },
               },
             },
           ],
