@@ -407,52 +407,57 @@ describe('Single request service', function () {
       const mockResponse = {
         data: {
           ...mockMove,
-          status: 'cancelled',
         },
       }
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves(mockResponse)
+        sinon.stub(apiClient, 'all').returns(apiClient)
+        sinon.stub(apiClient, 'one').returns(apiClient)
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
       })
 
-      context('without data args', function () {
-        beforeEach(async function () {
-          move = await singleRequestService.reject(mockId)
-        })
-
-        it('should call update method with data', function () {
-          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
-            id: mockId,
-            status: 'cancelled',
-            cancellation_reason: 'rejected',
-            cancellation_reason_comment: undefined,
-          })
-        })
-
-        it('should return move', function () {
-          expect(move).to.deep.equal(mockResponse.data)
-        })
-      })
-
-      context('with data args', function () {
+      context('without comment', function () {
         beforeEach(async function () {
           move = await singleRequestService.reject(mockId, {
-            comment: 'Reason for rejecting',
+            review_decision: 'reject',
+            rejection_reason: 'no_space',
+            cancellation_reason_comment: undefined,
+            rebook: 'true',
           })
         })
 
         it('should call update method with data', function () {
-          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
-            id: mockId,
-            status: 'cancelled',
-            cancellation_reason: 'rejected',
-            cancellation_reason_comment: 'Reason for rejecting',
+          expect(apiClient.post).to.be.calledOnceWithExactly({
+            rejection_reason: 'no_space',
+            cancellation_reason_comment: undefined,
+            rebook: true,
+            timestamp: sinon.match.string,
           })
         })
 
         it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('with comment', function () {
+        beforeEach(async function () {
+          move = await singleRequestService.reject(mockId, {
+            review_decision: 'reject',
+            rejection_reason: 'no_transport',
+            cancellation_reason_comment: 'No van available',
+            rebook: 'false',
+          })
+        })
+
+        it('should call update method with data', function () {
+          expect(apiClient.post).to.be.calledOnceWithExactly({
+            rejection_reason: 'no_transport',
+            cancellation_reason_comment: 'No van available',
+            rebook: false,
+            timestamp: sinon.match.string,
+          })
         })
       })
     })

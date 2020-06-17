@@ -181,9 +181,24 @@
     "hint_with_date": "Travel has been requested for {{date}}",
     "hint_with_date_range": "Travel has been requested for between {{date}}"
   },
-  "rejection_reason_comment": {
+  "rejection_reason": {
+    "label": "Reason for rejection",
+    "items": {
+      "no_space_at_receiving_prison": "No spaces at receiving prison",
+      "no_transport_available": "No transport available for this move"
+    }
+  },
+  "cancellation_reason_comment": {
     "label": "Additional information (optional)",
     "label_with_error": "Additional information"
+  },
+  "rebook": {
+    "label": "Should they rebook this move?",
+    "items": {
+      "rebook_in_7_days": "Rebook in 7 days",
+      "rebook_in_7_days_only_if_required": "Rebook in 7 days only if still required",
+      "do_not_rebook": "Do not rebook"
+    }
   },
   "cancellation_reason": {
     "label": "Why are you cancelling this move request?",

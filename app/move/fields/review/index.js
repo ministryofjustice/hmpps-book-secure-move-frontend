@@ -1,9 +1,13 @@
+const cancellationReasonComment = require('./cancellation-reason-comment')
 const moveDate = require('./move-date')
-const rejectionReasonComment = require('./rejection-reason-comment')
+const rebook = require('./rebook')
+const rejectionReason = require('./rejection-reason')
 const reviewDecision = require('./review-decision')
 
 module.exports = {
   move_date: moveDate,
   review_decision: reviewDecision,
-  rejection_reason_comment: rejectionReasonComment,
+  rebook,
+  rejection_reason: rejectionReason,
+  cancellation_reason_comment: cancellationReasonComment,
 }

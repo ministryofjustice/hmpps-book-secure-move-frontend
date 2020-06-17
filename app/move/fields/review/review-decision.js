@@ -18,7 +18,11 @@ const reviewDecision = {
     {
       value: 'reject',
       text: 'fields::review_decision.items.reject.label',
-      conditional: ['rejection_reason_comment'],
+      conditional: [
+        'rejection_reason',
+        'rebook',
+        'cancellation_reason_comment',
+      ],
     },
   ],
 }

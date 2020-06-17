@@ -6,6 +6,7 @@ module.exports = {
       move_type: '',
       move_agreed: '',
       move_agreed_by: '',
+      rejection_reason: '',
       cancellation_reason: '',
       cancellation_reason_comment: '',
       additional_information: '',
@@ -302,6 +303,18 @@ module.exports = {
     },
     options: {
       collectionPath: 'cancel',
+    },
+  },
+  reject: {
+    fields: {
+      timestamp: '',
+      notes: '',
+      rejection_reason: '',
+      cancellation_reason_comment: '',
+      rebook: '',
+    },
+    options: {
+      collectionPath: 'reject',
     },
   },
 }

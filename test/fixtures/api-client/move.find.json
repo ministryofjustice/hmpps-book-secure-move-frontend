@@ -6,6 +6,7 @@
       "reference": "KVU1456M",
       "status": "requested",
       "cancellation_reason": "error",
+      "rejection_reason": "no_transport_available",
       "cancellation_reason_comment": "",
       "created_at": "2019-08-26T19:31:43+01:00",
       "updated_at": "2019-10-26T10:13:16+01:00",
