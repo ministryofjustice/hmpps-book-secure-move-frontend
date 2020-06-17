@@ -51,7 +51,7 @@ function getAll({
       const hasNext = links.next && data.length !== 0
 
       if (!hasNext) {
-        return moves.map(transformMoveRelationships)
+        return moves
       }
 
       return getAll({
@@ -65,7 +65,13 @@ function getAll({
 
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
-  transform: transformMoveRelationships,
+  transform(move) {
+    return {
+      ...move,
+      profile: profileService.transform(move.profile),
+      person: personService.transform(move.person),
+    }
+  },
   format(data) {
     const booleansAndNulls = ['move_agreed']
     const relationships = [
@@ -90,7 +96,7 @@ const moveService = {
     })
   },
 
-  getAll(props = {}) {
+  async getAll(props = {}) {
     // TODO: This is more of a temporary solution to solve the problem where
     // the API doesn't have a concept of what locations a user has access to
     //
@@ -99,15 +105,21 @@ const moveService = {
     const fromPath = 'filter["filter[from_location_id]"]'
     const toPath = 'filter["filter[to_location_id]"]'
 
+    let results
+
     if (get(props, fromPath)) {
-      return splitRequests(props, fromPath)
+      results = await splitRequests(props, fromPath)
+    } else if (get(props, toPath)) {
+      results = await splitRequests(props, toPath)
+    } else {
+      results = await getAll(props)
     }
 
-    if (get(props, toPath)) {
-      return splitRequests(props, toPath)
+    if (props.isAggregation) {
+      return results
     }
 
-    return getAll(props)
+    return results.map(this.transform)
   },
 
   getActive({
@@ -163,7 +175,7 @@ const moveService = {
     return apiClient
       .create('move', moveService.format(data))
       .then(response => response.data)
-      .then(transformMoveRelationships)
+      .then(this.transform)
   },
 
   update(data) {
@@ -174,7 +186,7 @@ const moveService = {
     return apiClient
       .update('move', moveService.format(data))
       .then(response => response.data)
-      .then(transformMoveRelationships)
+      .then(this.transform)
   },
 
   redirect(data) {

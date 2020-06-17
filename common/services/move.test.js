@@ -2,8 +2,6 @@ const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
 
-const personService = require('./person')
-
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
 
@@ -19,32 +17,38 @@ const moveService = proxyquire('./move', {
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
   status: 'requested',
-  person: {
-    id: 'f6e1f57c-7d07-41d2-afee-1662f5103e2d',
-    first_names: 'Steve Jones',
-    last_name: 'Bloggs',
+  profile: {
+    person: {
+      id: 'f6e1f57c-7d07-41d2-afee-1662f5103e2d',
+      first_names: 'Steve Jones',
+      last_name: 'Bloggs',
+    },
   },
 }
 const mockMoves = [
   {
     id: '12345',
     status: 'requested',
-    person: {
-      name: 'Tom Jones',
+    profile: {
+      person: {
+        name: 'Tom Jones',
+      },
     },
   },
   {
     id: '67890',
     status: 'cancelled',
-    person: {
-      name: 'Steve Bloggs',
+    profile: {
+      person: {
+        name: 'Steve Bloggs',
+      },
     },
   },
 ]
 
 describe('Move Service', function () {
   beforeEach(function () {
-    sinon.stub(personService, 'transform').returnsArg(0)
+    sinon.stub(moveService, 'transform').returnsArg(0)
   })
 
   describe('#format()', function () {
@@ -273,7 +277,7 @@ describe('Move Service', function () {
         })
 
         it('should transform each person object', function () {
-          expect(personService.transform.callCount).to.equal(mockMoves.length)
+          expect(moveService.transform.callCount).to.equal(mockMoves.length)
         })
 
         it('should return moves', function () {
@@ -360,7 +364,7 @@ describe('Move Service', function () {
         })
 
         it('should transform each person object', function () {
-          expect(personService.transform.callCount).to.equal(4)
+          expect(moveService.transform.callCount).to.equal(4)
         })
 
         it('should return moves', function () {
@@ -700,9 +704,9 @@ describe('Move Service', function () {
           })
         })
 
-        it('should call person transformer with response data', function () {
-          expect(personService.transform).to.be.calledOnceWithExactly(
-            mockResponse.data.person
+        it('should call move transformer with response data', function () {
+          expect(moveService.transform).to.be.calledOnceWithExactly(
+            mockResponse.data
           )
         })
 
@@ -750,9 +754,9 @@ describe('Move Service', function () {
       expect(moveService.format).to.be.calledOnceWithExactly(mockData)
     })
 
-    it('should call person transformer with response data', function () {
-      expect(personService.transform).to.be.calledOnceWithExactly(
-        mockResponse.data.person
+    it('should call move transformer with response data', function () {
+      expect(moveService.transform).to.be.calledOnceWithExactly(
+        mockResponse.data
       )
     })
 
@@ -857,9 +861,9 @@ describe('Move Service', function () {
         expect(moveService.format).to.be.calledOnceWithExactly(mockMove)
       })
 
-      it('should call person transformer with response data', function () {
-        expect(personService.transform).to.be.calledOnceWithExactly(
-          mockResponse.data.person
+      it('should call move transformer with response data', function () {
+        expect(moveService.transform).to.be.calledOnceWithExactly(
+          mockResponse.data
         )
       })
 

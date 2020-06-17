@@ -63,7 +63,7 @@ const mockAllocations = [
   },
 ]
 
-describe.only('Allocation service', function () {
+describe('Allocation service', function () {
   describe('cancel', function () {
     context('with correct data supplied', function () {
       let outcome
