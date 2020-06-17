@@ -12,7 +12,10 @@ class SaveController extends CreateAllocationBaseController {
         'errors',
         'errorValues',
       ])
-      const allocation = await allocationService.create(data)
+      const allocation = await allocationService.create({
+        ...data,
+        requested_by: req.session.user.fullname,
+      })
 
       req.sessionModel.set('allocation', allocation)
 

@@ -4,10 +4,16 @@ const filters = require('../../config/nunjucks/filters')
 function allocationToMetaListComponent(allocation) {
   const {
     moves,
+    requested_by: requestedBy,
     from_location: fromLocation,
     to_location: toLocation,
     date,
   } = allocation
+  const allocationOrigin = requestedBy
+    ? `${fromLocation.title}<br>${i18n.t(
+        'allocation::view.summary.requested_by'
+      )} ${requestedBy}`
+    : fromLocation.title
   return {
     items: [
       {
@@ -20,7 +26,7 @@ function allocationToMetaListComponent(allocation) {
         key: {
           text: i18n.t('fields::from_location.short_label'),
         },
-        value: { text: fromLocation.title },
+        value: { html: allocationOrigin },
       },
       {
         key: {

@@ -30,6 +30,11 @@ describe('the save controller', function () {
         await controller.saveValues(
           {
             sessionModel,
+            session: {
+              user: {
+                fullname: 'John Doe',
+              },
+            },
           },
           {},
           next
@@ -42,6 +47,7 @@ describe('the save controller', function () {
         expect(allocationService.create).to.have.been.calledWithExactly({
           answer1: 'yes',
           answer2: 34,
+          requested_by: 'John Doe',
         })
       })
       it('sets the resulting allocation on the session model', function () {
@@ -65,6 +71,11 @@ describe('the save controller', function () {
         await controller.saveValues(
           {
             sessionModel,
+            session: {
+              user: {
+                fullname: 'John Doe',
+              },
+            },
           },
           {},
           next

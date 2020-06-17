@@ -14,7 +14,8 @@
       "special_vehicle_instruction": "You can’t add people who require a special vehicle to an allocation — you need to <a href=\"{{- href}}\">create a single request</a> instead"
     },
     "summary": {
-      "heading": "Allocation details"
+      "heading": "Allocation details",
+      "requested_by": "Requested by"
     }
   },
   "no_special_vehicle": {

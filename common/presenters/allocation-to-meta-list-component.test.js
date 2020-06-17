@@ -66,7 +66,7 @@ describe('allocation to meta list component', function () {
         text: 'fields::from_location.short_label',
       },
       value: {
-        text: 'BERWYN (HMP)',
+        html: 'BERWYN (HMP)',
       },
     })
   })

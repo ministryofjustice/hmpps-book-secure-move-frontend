@@ -240,6 +240,7 @@ module.exports = {
       status: '',
       cancellation_reason: '',
       cancellation_reason_comment: '',
+      requested_by: '',
       moves: {
         jsonApi: 'hasMany',
         type: 'moves',

@@ -105,7 +105,11 @@ export default class Page {
   async checkSummaryList(selector, labelMap) {
     for (const [key, value] of Object.entries(labelMap)) {
       if (value) {
-        await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
+        if (value instanceof RegExp) {
+          await t.expect(this.getDlDefinitionByKey(selector, key)).match(value)
+        } else {
+          await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
+        }
       }
     }
   }
