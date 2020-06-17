@@ -6,14 +6,6 @@ const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 const profileService = require('../services/profile')
 
-function transformMoveRelationships(move) {
-  return {
-    ...move,
-    profile: profileService.transform(move.profile),
-    person: personService.transform(move.person),
-  }
-}
-
 function splitRequests(props, propPath) {
   const split = get(props, propPath, '').split(',')
   const chunks = chunk(split, LOCATIONS_BATCH_SIZE).map(id => id.join(','))
