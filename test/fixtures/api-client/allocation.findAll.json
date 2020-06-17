@@ -10,6 +10,7 @@
       "complex_cases": [],
       "complete_in_full": false,
       "other_criteria": null,
+      "requested_by": "John Doe",
       "created_at": "2020-05-12T09:59:09+01:00",
       "updated_at": "2020-05-12T09:59:09+01:00",
       "status": "",

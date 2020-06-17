@@ -50,7 +50,10 @@ class AllocationViewPage extends Page {
   checkSummary({ movesCount, fromLocation, toLocation, date } = {}) {
     return this.checkSummaryList(this.nodes.summaryPanel, {
       'Number of prisoners': movesCount,
-      From: fromLocation,
+      From: new RegExp(
+        fromLocation.replace(/([)(])/g, '\\$1') + '\\nRequested by',
+        'g'
+      ),
       To: toLocation,
       Date: formatDateWithRelativeDay(date),
     })
