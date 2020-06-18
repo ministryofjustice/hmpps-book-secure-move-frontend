@@ -20,6 +20,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'prison_transfer_reasons',
       },
+      profile: {
+        jsonApi: 'hasOne',
+        type: 'profiles',
+      },
       person: {
         jsonApi: 'hasOne',
         type: 'people',
@@ -52,10 +56,11 @@ module.exports = {
         'documents',
         'from_location',
         'from_location.suppliers',
-        'person',
-        'person.ethnicity',
-        'person.gender',
         'prison_transfer_reason',
+        'profile',
+        'profile.person',
+        'profile.person.ethnicity',
+        'profile.person.gender',
         'to_location',
       ],
     },
@@ -84,6 +89,18 @@ module.exports = {
     },
     options: {
       defaultInclude: ['ethnicity', 'gender'],
+    },
+  },
+  profile: {
+    fields: {
+      assessment_answers: '',
+      person: {
+        jsonApi: 'hasOne',
+        type: 'people',
+      },
+    },
+    options: {
+      defaultInclude: [],
     },
   },
   court_case: {
@@ -254,9 +271,10 @@ module.exports = {
       defaultInclude: [
         'from_location',
         'moves',
-        'moves.person',
-        'moves.person.ethnicity',
-        'moves.person.gender',
+        'moves.profile',
+        'moves.profile.person',
+        'moves.profile.person.ethnicity',
+        'moves.profile.person.gender',
         'to_location',
       ],
     },
