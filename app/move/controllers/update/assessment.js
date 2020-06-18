@@ -31,8 +31,8 @@ class UpdateAssessmentController extends UpdateBase {
 
   async saveValues(req, res, next) {
     try {
-      const person = req.getPerson()
-      const assessments = person.assessment_answers || []
+      const { profile } = req.getMove()
+      const assessments = profile.assessment_answers || []
       const fieldKeys = Object.keys(req.form.options.fields)
 
       const previousAssessments = assessments.filter(
