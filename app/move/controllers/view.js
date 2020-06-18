@@ -7,9 +7,9 @@ const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
 module.exports = function view(req, res) {
-  const { move } = res.locals
+  const { move = {} } = res.locals
   const {
-    person,
+    profile,
     status,
     cancellation_reason: cancellationReason,
     cancellation_reason_comment: cancellationComments,
@@ -19,7 +19,7 @@ module.exports = function view(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const assessmentAnswers = get(person, 'assessment_answers', [])
+  const { person, assessment_answers: assessmentAnswers = [] } = profile
 
   const urls = {
     update: updateUrls,
