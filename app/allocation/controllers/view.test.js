@@ -47,19 +47,23 @@ describe('view allocation', function () {
       { id: '123' },
       {
         id: '456',
-        person: {
-          first_names: 'John',
-          last_name: 'Doe',
-          fullname: 'John Doe',
+        profile: {
+          person: {
+            first_names: 'John',
+            last_name: 'Doe',
+            fullname: 'John Doe',
+          },
         },
       },
       { id: '789' },
       {
         id: '011',
-        person: {
-          first_names: 'Phil',
-          last_name: 'Jones',
-          fullname: 'Phil Jones',
+        profile: {
+          person: {
+            first_names: 'Phil',
+            last_name: 'Jones',
+            fullname: 'Phil Jones',
+          },
         },
       },
     ],
@@ -225,33 +229,41 @@ describe('view allocation', function () {
             },
             {
               id: '011',
-              person: {
-                first_names: 'Phil',
-                last_name: 'Jones',
-                fullname: 'Phil Jones',
-              },
-              card: {
-                id: '011',
+              profile: {
                 person: {
                   first_names: 'Phil',
                   last_name: 'Jones',
                   fullname: 'Phil Jones',
                 },
               },
+              card: {
+                id: '011',
+                profile: {
+                  person: {
+                    first_names: 'Phil',
+                    last_name: 'Jones',
+                    fullname: 'Phil Jones',
+                  },
+                },
+              },
             },
             {
               id: '456',
-              person: {
-                first_names: 'John',
-                last_name: 'Doe',
-                fullname: 'John Doe',
-              },
-              card: {
-                id: '456',
+              profile: {
                 person: {
                   first_names: 'John',
                   last_name: 'Doe',
                   fullname: 'John Doe',
+                },
+              },
+              card: {
+                id: '456',
+                profile: {
+                  person: {
+                    first_names: 'John',
+                    last_name: 'Doe',
+                    fullname: 'John Doe',
+                  },
                 },
               },
             },
@@ -300,23 +312,29 @@ describe('view allocation', function () {
       mockRes.locals.allocation.moves = [
         {
           id: '123',
-          person: {
-            first_names: 'James',
-            last_name: 'Stevens',
+          profile: {
+            person: {
+              first_names: 'James',
+              last_name: 'Stevens',
+            },
           },
         },
         {
           id: '456',
-          person: {
-            first_names: 'Andrew',
-            last_name: 'Collins',
+          profile: {
+            person: {
+              first_names: 'Andrew',
+              last_name: 'Collins',
+            },
           },
         },
         {
           id: '789',
-          person: {
-            first_names: 'John',
-            last_name: 'Doe',
+          profile: {
+            person: {
+              first_names: 'John',
+              last_name: 'Doe',
+            },
           },
         },
       ]
@@ -344,35 +362,43 @@ describe('view allocation', function () {
       expect(locals.moves).to.deep.equal([
         {
           id: '011',
-          person: {
-            first_names: 'Phil',
-            last_name: 'Jones',
-            fullname: 'Phil Jones',
-          },
-          removeMoveHref: undefined,
-          card: {
-            id: '011',
+          profile: {
             person: {
               first_names: 'Phil',
               last_name: 'Jones',
               fullname: 'Phil Jones',
             },
           },
+          removeMoveHref: undefined,
+          card: {
+            id: '011',
+            profile: {
+              person: {
+                first_names: 'Phil',
+                last_name: 'Jones',
+                fullname: 'Phil Jones',
+              },
+            },
+          },
         },
         {
           id: '456',
-          person: {
-            first_names: 'John',
-            last_name: 'Doe',
-            fullname: 'John Doe',
-          },
-          removeMoveHref: undefined,
-          card: {
-            id: '456',
+          profile: {
             person: {
               first_names: 'John',
               last_name: 'Doe',
               fullname: 'John Doe',
+            },
+          },
+          removeMoveHref: undefined,
+          card: {
+            id: '456',
+            profile: {
+              person: {
+                first_names: 'John',
+                last_name: 'Doe',
+                fullname: 'John Doe',
+              },
             },
           },
         },
