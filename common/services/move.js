@@ -3,6 +3,7 @@ const { chunk, get, mapValues, omitBy, isUndefined, set } = require('lodash')
 
 const { LOCATIONS_BATCH_SIZE } = require('../../config')
 const apiClient = require('../lib/api-client')()
+const personService = require('../services/person')
 const profileService = require('../services/profile')
 
 function splitRequests(props, propPath) {
@@ -57,12 +58,11 @@ function getAll({
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   transform(move) {
-    const transformedMove = {
+    return {
       ...move,
       profile: profileService.transform(move.profile),
+      person: personService.transform(move.person),
     }
-    transformedMove.person = transformedMove.profile.person
-    return transformedMove
   },
   format(data) {
     const booleansAndNulls = ['move_agreed']

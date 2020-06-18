@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
+const personService = require('../services/person')
 const profileService = require('../services/profile')
 
 const formatISOStub = sinon.stub().returns('#timestamp')
@@ -49,11 +50,12 @@ const mockMoves = [
 
 describe('Move Service', function () {
   context('#transform', function () {
+    const mockPerson = {
+      id: '__person__',
+    }
     const mockProfile = {
       id: '__profile__',
-      person: {
-        id: '__person__',
-      },
+      person: mockPerson,
     }
     let move
     beforeEach(function () {
@@ -63,16 +65,29 @@ describe('Move Service', function () {
           person: profile.person,
         }
       })
+      sinon.stub(personService, 'transform').callsFake(person => {
+        return {
+          ...person,
+          foo: 'bar',
+        }
+      })
       move = moveService.transform({
         id: '__move__',
         profile: mockProfile,
+        person: mockPerson,
       })
     })
     it('should transform the move profile', function () {
       expect(profileService.transform).to.be.calledOnceWithExactly(mockProfile)
     })
+    it('should transform the move person', function () {
+      expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
+    })
     it('should add the person object as a direct property of the move', function () {
-      expect(move.person).to.equal(move.profile.person)
+      expect(move.person).to.deep.equal({
+        ...mockPerson,
+        foo: 'bar',
+      })
     })
   })
 })
