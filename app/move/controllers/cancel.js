@@ -14,8 +14,7 @@ class CancelController extends FormWizardController {
   setAdditionalInfo(req, res, next) {
     const { move } = res.locals
     res.locals.moveSummary = presenters.moveToMetaListComponent(move)
-    // TODO: update to use profile
-    res.locals.person = move.person || {}
+    res.locals.person = move.profile.person || {}
 
     next()
   }
