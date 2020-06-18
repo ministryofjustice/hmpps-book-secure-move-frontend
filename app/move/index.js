@@ -83,7 +83,7 @@ router.get(
 )
 router.use(
   '/:moveId/cancel',
-  protectRoute('move:cancel'),
+  protectRoute(['move:cancel', 'move:cancel:proposed']),
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
 router.use('/:moveId/review', wizard(reviewSteps, reviewFields, reviewConfig))

@@ -32,6 +32,12 @@ module.exports = function view(req, res) {
     assessment: presenters
       .assessmentAnswersByCategory(assessmentAnswers)
       .map(presenters.assessmentCategoryToPanelComponent),
+    canCancelMove:
+      (userPermissions.includes('move:cancel') &&
+        move.status === 'requested' &&
+        !move.allocation) ||
+      (userPermissions.includes('move:cancel:proposed') &&
+        move.status === 'proposed'),
     courtHearings: sortBy(move.court_hearings, 'start_time').map(
       courtHearing => {
         return {

@@ -204,7 +204,7 @@
     }) }}
   {% endif %}
 
-  {% if canAccess("move:cancel") and move.status == "requested" and not move.allocation %}
+  {% if canCancelMove %}
     <p class="govuk-!-margin-bottom-0">
       <a href="{{ move.id }}/cancel" class="app-link--destructive">
         {{ t("actions::cancel_move") }}

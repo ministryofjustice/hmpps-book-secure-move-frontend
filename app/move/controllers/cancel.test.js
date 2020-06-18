@@ -1,4 +1,5 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const presenters = require('../../../common/presenters')
 const moveService = require('../../../common/services/move')
 
 const CancelController = require('./cancel')
@@ -22,6 +23,7 @@ describe('Move controllers', function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'checkAllocation')
+        sinon.stub(controller, 'setAdditionalInfo')
 
         controller.middlewareChecks()
       })
@@ -37,8 +39,51 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call checkAllocation middleware', function () {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setAdditionalInfo
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
+    describe('setAdditionalInfo', function () {
+      let res
+      let next
+      beforeEach(function () {
+        res = {
+          locals: {
+            move: { id: 123, person: { name: 'John Doe' } },
+          },
+        }
+        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+        next = sinon.stub()
+        controller.setAdditionalInfo({}, res, next)
+      })
+      it('passes the move to moveToMetaListComponent', function () {
+        expect(
+          presenters.moveToMetaListComponent
+        ).to.have.been.calledWithExactly({
+          id: 123,
+          person: { name: 'John Doe' },
+        })
+      })
+      it('sets moveSummary on the locals', function () {
+        expect(res.locals.moveSummary).to.exist
+        expect(res.locals.moveSummary).to.deep.equal({
+          id: 123,
+          person: { name: 'John Doe' },
+        })
+      })
+      it('sets person on the locals', function () {
+        expect(res.locals.person).to.exist
+        expect(res.locals.person).to.deep.equal({ name: 'John Doe' })
+      })
+      it('calls next', function () {
+        expect(next).to.have.been.calledWithExactly()
       })
     })
 
