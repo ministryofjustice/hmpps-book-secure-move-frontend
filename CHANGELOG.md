@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.31.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.30.0...v2.31.0) (2020-06-18)
+
+
+### Features
+
+* **allocations:** Record & display the user who requests the allocation ([56e2afa](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/56e2afa3a4ca80baf1702e01d2f07ab7bccd7c9b))
+* **moves:** Give OCA users ability to cancel proposed moves ([2f7e4bd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2f7e4bdadcdcba2c6cdcdb94c25768114e0e7d2e))
+* **moves:** Supply reason for rejection ([ac5395e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ac5395ed479b6ade4346f96de54f4b8c750cc00e))
+
+
+### Bug Fixes
+
+* **moves:** Display the reasons for rejection in the move view ([2764e41](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2764e4172f283b2b36733ad7c2a89e80c0ae7005))
+* Ensure selected person shown in sidebar when creating move ([4a7f2e8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4a7f2e8294049285f936573171fe5038937ca913))
+
 ## [2.30.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.29.0...v2.30.0) (2020-06-15)
 
 
