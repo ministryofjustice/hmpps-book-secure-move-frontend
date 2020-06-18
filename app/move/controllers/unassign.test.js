@@ -110,7 +110,7 @@ describe('Move controllers', function () {
               move: {
                 id: '12345',
                 allocation: { id: '6789' },
-                person: { id: '__person__' },
+                profile: { person: { id: '__person__' } },
               },
             },
             redirect: sinon.stub(),
@@ -139,7 +139,7 @@ describe('Move controllers', function () {
             move: {
               id: '12345',
               allocation: { id: '__allocation__' },
-              person: { id: '__person__' },
+              profile: { person: { id: '__person__' } },
             },
           },
           redirect: sinon.stub(),
