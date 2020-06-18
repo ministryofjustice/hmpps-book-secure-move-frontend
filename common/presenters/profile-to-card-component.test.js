@@ -1,17 +1,11 @@
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const personToCardComponent = require('./person-to-card-component')
+const profileToCardComponent = require('./profile-to-card-component')
 
-const mockPerson = {
+const mockProfile = {
   id: '12345',
   href: '/move/12345',
-  fullname: 'Name, Full',
-  image_url: '/path/to/image.jpg',
-  date_of_birth: '2000-10-10',
-  gender: {
-    title: 'Male',
-  },
   assessment_answers: [
     {
       key: 'concealed_items',
@@ -34,10 +28,19 @@ const mockPerson = {
       category: 'court',
     },
   ],
+  person: {
+    id: '12345',
+    fullname: 'Name, Full',
+    image_url: '/path/to/image.jpg',
+    date_of_birth: '2000-10-10',
+    gender: {
+      title: 'Male',
+    },
+  },
 }
 
 describe('Presenters', function () {
-  describe('#personToCardComponent()', function () {
+  describe('#profileToCardComponent()', function () {
     let transformedResponse
 
     beforeEach(function () {
@@ -49,19 +52,19 @@ describe('Presenters', function () {
     context('with default options', function () {
       context('with mock person', function () {
         beforeEach(function () {
-          transformedResponse = personToCardComponent()(mockPerson)
+          transformedResponse = profileToCardComponent()(mockProfile)
         })
 
         describe('response', function () {
           it('should contain a href', function () {
             expect(transformedResponse).to.have.property('href')
-            expect(transformedResponse.href).to.equal(mockPerson.href)
+            expect(transformedResponse.href).to.equal(mockProfile.href)
           })
 
           it('should contain a title', function () {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
-              text: mockPerson.fullname.toUpperCase(),
+              text: mockProfile.person.fullname.toUpperCase(),
             })
           })
 
@@ -72,14 +75,14 @@ describe('Presenters', function () {
           it('should contain an image path', function () {
             expect(transformedResponse).to.have.property('image_path')
             expect(transformedResponse.image_path).to.equal(
-              mockPerson.image_url
+              mockProfile.person.image_url
             )
           })
 
           it('should contain image alt', function () {
             expect(transformedResponse).to.have.property('image_alt')
             expect(transformedResponse.image_alt).to.equal(
-              mockPerson.fullname.toUpperCase()
+              mockProfile.person.fullname.toUpperCase()
             )
           })
 
@@ -93,7 +96,7 @@ describe('Presenters', function () {
                 },
                 {
                   label: '__translated__',
-                  text: mockPerson.gender.title,
+                  text: mockProfile.person.gender.title,
                 },
               ],
             })
@@ -159,7 +162,7 @@ describe('Presenters', function () {
 
       context('when meta contains falsey values', function () {
         it('should correctly remove false items', function () {
-          const transformedResponse = personToCardComponent()({
+          const transformedResponse = profileToCardComponent()({
             date_of_birth: '',
             gender: '',
             ethnicity: '',
@@ -170,7 +173,7 @@ describe('Presenters', function () {
         })
 
         it('should correctly remove false items', function () {
-          const transformedResponse = personToCardComponent()({
+          const transformedResponse = profileToCardComponent()({
             date_of_birth: null,
             gender: null,
             ethnicity: null,
@@ -181,7 +184,7 @@ describe('Presenters', function () {
         })
 
         it('should correctly remove false items', function () {
-          const transformedResponse = personToCardComponent()({
+          const transformedResponse = profileToCardComponent()({
             date_of_birth: undefined,
             gender: undefined,
             ethnicity: undefined,
@@ -196,12 +199,11 @@ describe('Presenters', function () {
         let transformedResponse
 
         beforeEach(function () {
-          transformedResponse = personToCardComponent()({
-            last_name: 'Jones',
-            first_names: 'Steve',
-            date_of_birth: '',
-            gender: mockPerson.gender,
-            ethnicity: undefined,
+          transformedResponse = profileToCardComponent()({
+            person: {
+              date_of_birth: '',
+              gender: mockProfile.person.gender,
+            },
             assessment_answers: [],
           })
         })
@@ -213,7 +215,7 @@ describe('Presenters', function () {
             items: [
               {
                 label: '__translated__',
-                text: mockPerson.gender.title,
+                text: mockProfile.person.gender.title,
               },
             ],
           })
@@ -296,7 +298,7 @@ describe('Presenters', function () {
             ],
           }
 
-          transformedResponse = personToCardComponent()(mockPersonWithAnswers)
+          transformedResponse = profileToCardComponent()(mockPersonWithAnswers)
         })
 
         it('should correctly filter', function () {
@@ -343,9 +345,9 @@ describe('Presenters', function () {
 
     context('with meta disabled', function () {
       beforeEach(function () {
-        transformedResponse = personToCardComponent({
+        transformedResponse = profileToCardComponent({
           showMeta: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain meta items', function () {
@@ -368,9 +370,9 @@ describe('Presenters', function () {
 
     context('with tag disabled', function () {
       beforeEach(function () {
-        transformedResponse = personToCardComponent({
+        transformedResponse = profileToCardComponent({
           showTags: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain tags items', function () {
@@ -393,9 +395,9 @@ describe('Presenters', function () {
 
     context('with image disabled', function () {
       beforeEach(function () {
-        transformedResponse = personToCardComponent({
+        transformedResponse = profileToCardComponent({
           showImage: false,
-        })(mockPerson)
+        })(mockProfile)
       })
 
       it('should not contain an image path', function () {
@@ -436,7 +438,7 @@ describe('Presenters', function () {
 
     context('with no arguments', function () {
       beforeEach(function () {
-        transformedResponse = personToCardComponent()()
+        transformedResponse = profileToCardComponent()()
       })
 
       it('should use fallback values', function () {
@@ -446,7 +448,7 @@ describe('Presenters', function () {
 
     context('with null', function () {
       beforeEach(function () {
-        transformedResponse = personToCardComponent()(null)
+        transformedResponse = profileToCardComponent()(null)
       })
 
       it('should use fallback values', function () {
