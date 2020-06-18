@@ -62,7 +62,7 @@ function allocationsToTableComponent({
       row: {
         html: data => {
           const totalSlots = data.moves.length
-          const unfilledSlots = data.moves.filter(move => !move.person).length
+          const unfilledSlots = data.moves.filter(move => !move.profile).length
           const classes = {
             complete: 'govuk-tag--green',
             by_remaining: 'govuk-tag--yellow',
