@@ -107,10 +107,10 @@
   {% endblock %}
 
   {% block organisationSwitcher %}
-    {% if CURRENT_LOCATION or canAccess("locations:all") %}
+    {% if CURRENT_LOCATION or CURRENT_REGION or canAccess("locations:all") %}
       <div class="govuk-width-container">
         {{ mojOrganisationSwitcher({
-          text: CURRENT_LOCATION.title or t("locations::all_locations"),
+          text: CURRENT_LOCATION.title or CURRENT_REGION.name or t("locations::all_locations"),
           link: {
             text: t("actions::switch_location"),
             href: '/locations'

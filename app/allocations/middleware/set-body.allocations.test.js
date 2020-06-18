@@ -13,9 +13,7 @@ describe('Allocations middleware', function () {
       nextSpy = sinon.spy()
       mockRes = {}
       mockReq = {
-        params: {
-          locationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
-        },
+        params: {},
         query: {
           status: 'pending',
           sortBy: 'moves_count',
@@ -33,7 +31,7 @@ describe('Allocations middleware', function () {
         expect(mockReq.body.allocations).to.deep.equal({
           status: 'pending',
           moveDate: ['2010-10-10', '2010-10-07'],
-          fromLocationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
+          locations: [],
           sortBy: 'moves_count',
           sortDirection: 'asc',
         })
@@ -54,7 +52,7 @@ describe('Allocations middleware', function () {
         expect(mockReq.body.allocations).to.deep.equal({
           status: 'pending',
           moveDate: ['2020-10-10', '2020-10-10'],
-          fromLocationId: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
+          locations: [],
           sortBy: 'moves_count',
           sortDirection: 'asc',
         })

@@ -92,6 +92,10 @@ const referenceDataService = {
     })
   },
 
+  getRegions() {
+    return apiClient.findAll('region').then(response => response.data)
+  },
+
   mapLocationIdsToLocations(ids, callback) {
     const locationPromises = ids.map(id => {
       return callback(id).catch(() => false)

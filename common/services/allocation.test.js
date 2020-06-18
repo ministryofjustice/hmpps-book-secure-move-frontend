@@ -631,8 +631,7 @@ describe('Allocation service', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
             moveDate: mockMoveDateRange,
-            fromLocationId: mockFromLocationId,
-            toLocationId: mockToLocationId,
+            locations: [mockFromLocationId, mockToLocationId],
           })
         })
 
@@ -643,8 +642,7 @@ describe('Allocation service', function () {
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
-              'filter[from_locations]': mockFromLocationId,
-              'filter[to_locations]': mockToLocationId,
+              'filter[locations]': `${mockFromLocationId},${mockToLocationId}`,
             },
           })
         })
@@ -657,7 +655,7 @@ describe('Allocation service', function () {
       context('with some arguments', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
-            fromLocationId: mockFromLocationId,
+            locations: [mockFromLocationId],
           })
         })
 
@@ -666,7 +664,7 @@ describe('Allocation service', function () {
             isAggregation: false,
             includeCancelled: false,
             filter: {
-              'filter[from_locations]': mockFromLocationId,
+              'filter[locations]': mockFromLocationId,
             },
           })
         })
@@ -680,7 +678,7 @@ describe('Allocation service', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
             isAggregation: true,
-            fromLocationId: mockFromLocationId,
+            locations: [mockFromLocationId],
           })
         })
 
@@ -689,7 +687,7 @@ describe('Allocation service', function () {
             isAggregation: true,
             includeCancelled: false,
             filter: {
-              'filter[from_locations]': mockFromLocationId,
+              'filter[locations]': mockFromLocationId,
             },
           })
         })
@@ -703,7 +701,7 @@ describe('Allocation service', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
             includeCancelled: true,
-            fromLocationId: mockFromLocationId,
+            locations: [mockFromLocationId],
           })
         })
 
@@ -712,7 +710,7 @@ describe('Allocation service', function () {
             isAggregation: false,
             includeCancelled: true,
             filter: {
-              'filter[from_locations]': mockFromLocationId,
+              'filter[locations]': mockFromLocationId,
             },
           })
         })

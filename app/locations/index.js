@@ -9,15 +9,18 @@ const {
   setUserLocations,
   checkLocationsLength,
   setLocation,
+  setRegion,
   setAllLocations,
+  setRegions,
 } = require('./middleware')
 
 router.use(setUserLocations)
 
 // Define routes
-router.get('/', checkLocationsLength, locations)
+router.get('/', checkLocationsLength, setRegions, locations)
 router.get('/all', setAllLocations, redirect)
 router.get('/:locationId', setLocation, redirect)
+router.get('/region/prisons/:regionId', setRegion, redirect)
 
 // Export
 module.exports = {

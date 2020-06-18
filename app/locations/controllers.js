@@ -1,7 +1,15 @@
-const { sortBy } = require('lodash')
+const { get, sortBy } = require('lodash')
 
 function locations(req, res) {
-  const locations = sortBy(req.userLocations, 'title')
+  const userPermissions = get(req.session, 'user.permissions', [])
+
+  let locations
+
+  if (userPermissions.includes('allocation:create')) {
+    locations = req.session.regions
+  } else {
+    locations = sortBy(req.userLocations, 'title')
+  }
 
   res.render('locations/views/locations.njk', {
     locations,
