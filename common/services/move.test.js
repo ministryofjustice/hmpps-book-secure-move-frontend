@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
+const profileService = require('../services/profile')
 
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
@@ -45,6 +46,36 @@ const mockMoves = [
     },
   },
 ]
+
+describe('Move Service', function () {
+  context('#transform', function () {
+    const mockProfile = {
+      id: '__profile__',
+      person: {
+        id: '__person__',
+      },
+    }
+    let move
+    beforeEach(function () {
+      sinon.stub(profileService, 'transform').callsFake(profile => {
+        return {
+          ...profile,
+          person: profile.person,
+        }
+      })
+      move = moveService.transform({
+        id: '__move__',
+        profile: mockProfile,
+      })
+    })
+    it('should transform the move profile', function () {
+      expect(profileService.transform).to.be.calledOnceWithExactly(mockProfile)
+    })
+    it('should add the person object as a direct property of the move', function () {
+      expect(move.person).to.equal(move.profile.person)
+    })
+  })
+})
 
 describe('Move Service', function () {
   beforeEach(function () {
