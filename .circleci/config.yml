@@ -193,6 +193,9 @@ jobs:
   build-docker-image:
     <<: *cloud_container
     parameters:
+      uat:
+        type: string
+        default: ""
       staging:
         type: string
         default: ""
@@ -242,6 +245,14 @@ jobs:
                 command: |
                   docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
                   docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
+      - when:
+          condition: <<parameters.uat>>
+          steps:
+            - run:
+                name: Push staging docker image to ECR
+                command: |
+                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:uat.latest"
+                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:uat.latest"
       - when:
           condition: <<parameters.preprod>>
           steps:
@@ -324,6 +335,7 @@ workflows:
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-release
+          uat: 'true'
           preprod: 'true'
           production: 'true'
       # Deployment
@@ -338,6 +350,13 @@ workflows:
           <<: *only_deploy_tags
           name: deploy-preproduction
           env: 'preprod'
+          requires:
+            - build-docker-image-release
+            - lint-and-unit-test
+      - deploy:
+          <<: *only_deploy_tags
+          name: deploy-uat
+          env: 'uat'
           requires:
             - build-docker-image-release
             - lint-and-unit-test
