@@ -445,8 +445,10 @@ describe('Move controllers', function () {
         mockRes = {
           locals: {
             move: {
-              person: {
-                id: '1',
+              profile: {
+                person: {
+                  id: '1',
+                },
               },
               foo: 'bar',
             },
@@ -465,7 +467,7 @@ describe('Move controllers', function () {
       it('should update locals', function () {
         expect(mockRes.locals).to.deep.equal({
           ...mockRes.locals,
-          person: mockRes.locals.move.person,
+          person: mockRes.locals.move.profile.person,
           moveSummary: mockRes.locals.move,
         })
       })

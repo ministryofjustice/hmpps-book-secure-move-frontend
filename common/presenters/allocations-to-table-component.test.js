@@ -22,9 +22,9 @@ const mockAllocations = [
       title: 'HMP Ashfield',
     },
     moves: [
-      { id: '1', person: {} },
-      { id: '2', person: {} },
-      { id: '3', person: {} },
+      { id: '1', profile: {} },
+      { id: '2', profile: {} },
+      { id: '3', profile: {} },
     ],
   },
   {
@@ -43,9 +43,9 @@ const mockAllocations = [
       title: 'HMIRC The Verne',
     },
     moves: [
-      { id: '1', person: null },
-      { id: '2', person: null },
-      { id: '3', person: null },
+      { id: '1', profile: null },
+      { id: '2', profile: null },
+      { id: '3', profile: null },
     ],
   },
   {
@@ -64,9 +64,9 @@ const mockAllocations = [
       title: 'HMP/YOI Parc',
     },
     moves: [
-      { id: '1', person: {} },
-      { id: '2', person: null },
-      { id: '3', person: null },
+      { id: '1', profile: {} },
+      { id: '2', profile: null },
+      { id: '3', profile: null },
     ],
   },
 ]

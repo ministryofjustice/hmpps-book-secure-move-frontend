@@ -79,7 +79,7 @@ class ReviewController extends FormWizardController {
   setMoveSummary(req, res, next) {
     const { move } = res.locals
 
-    res.locals.person = move.person
+    res.locals.person = move.profile.person
     res.locals.moveSummary = presenters.moveToMetaListComponent(move)
 
     next()

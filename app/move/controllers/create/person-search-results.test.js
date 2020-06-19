@@ -154,14 +154,14 @@ describe('Move controllers', function () {
     })
 
     describe('#setPeopleItems()', function () {
-      let req, nextSpy, personToCardComponentStub
+      let req, nextSpy, profileToCardComponentStub
 
       beforeEach(function () {
-        personToCardComponentStub = sinon.stub().returnsArg(0)
+        profileToCardComponentStub = sinon.stub().returnsArg(0)
         sinon.stub(componentService, 'getComponent').returnsArg(0)
         sinon
-          .stub(presenters, 'personToCardComponent')
-          .callsFake(() => personToCardComponentStub)
+          .stub(presenters, 'profileToCardComponent')
+          .callsFake(() => profileToCardComponentStub)
         req = {
           people: [],
           form: {
@@ -206,22 +206,22 @@ describe('Move controllers', function () {
         })
 
         it('should call presenter correct number of times', function () {
-          expect(presenters.personToCardComponent.callCount).to.equal(2)
+          expect(presenters.profileToCardComponent.callCount).to.equal(2)
         })
 
         it('should call presenter correctly', function () {
           expect(
-            presenters.personToCardComponent.firstCall
+            presenters.profileToCardComponent.firstCall
           ).to.be.calledWithExactly({ showTags: false })
-          expect(personToCardComponentStub.firstCall).to.be.calledWithExactly(
-            mockPeople[0]
-          )
+          expect(profileToCardComponentStub.firstCall).to.be.calledWithExactly({
+            person: mockPeople[0],
+          })
           expect(
-            presenters.personToCardComponent.secondCall
+            presenters.profileToCardComponent.secondCall
           ).to.be.calledWithExactly({ showTags: false })
-          expect(personToCardComponentStub.secondCall).to.be.calledWithExactly(
-            mockPeople[1]
-          )
+          expect(
+            profileToCardComponentStub.secondCall
+          ).to.be.calledWithExactly({ person: mockPeople[1] })
         })
 
         it('should call component service correct number of times', function () {
@@ -231,10 +231,10 @@ describe('Move controllers', function () {
         it('should call component service correctly', function () {
           expect(
             componentService.getComponent.firstCall
-          ).to.be.calledWithExactly('appCard', mockPeople[0])
+          ).to.be.calledWithExactly('appCard', { person: mockPeople[0] })
           expect(
             componentService.getComponent.secondCall
-          ).to.be.calledWithExactly('appCard', mockPeople[1])
+          ).to.be.calledWithExactly('appCard', { person: mockPeople[1] })
         })
 
         it('should call next', function () {
@@ -252,7 +252,7 @@ describe('Move controllers', function () {
         })
 
         it('should not call presenter', function () {
-          expect(presenters.personToCardComponent).not.to.be.called
+          expect(presenters.profileToCardComponent).not.to.be.called
         })
 
         it('should not call component service', function () {

@@ -170,7 +170,9 @@ const getResponse = ({ modelName, model, testCase } = {}) => {
   const nockedResponse =
     fixture.response !== undefined ? fixture.response : fixture
   const defaultInclude = get(model, 'options.defaultInclude')
-  const include = defaultInclude ? `?include=${defaultInclude.join(',')}` : ''
+  const include = defaultInclude
+    ? `?include=${defaultInclude.sort().join(',')}`
+    : ''
 
   nock(mockConfig.API.BASE_URL)
     .intercept(

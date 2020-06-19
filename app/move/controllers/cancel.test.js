@@ -7,8 +7,10 @@ const CancelController = require('./cancel')
 const controller = new CancelController({ route: '/' })
 const mockMove = {
   id: '123456789',
-  person: {
-    fullname: 'Full name',
+  profile: {
+    person: {
+      fullname: 'Full name',
+    },
   },
 }
 const mockValues = {
@@ -56,7 +58,7 @@ describe('Move controllers', function () {
       beforeEach(function () {
         res = {
           locals: {
-            move: { id: 123, person: { name: 'John Doe' } },
+            move: { id: 123, profile: { person: { name: 'John Doe' } } },
           },
         }
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
@@ -68,14 +70,14 @@ describe('Move controllers', function () {
           presenters.moveToMetaListComponent
         ).to.have.been.calledWithExactly({
           id: 123,
-          person: { name: 'John Doe' },
+          profile: { person: { name: 'John Doe' } },
         })
       })
       it('sets moveSummary on the locals', function () {
         expect(res.locals.moveSummary).to.exist
         expect(res.locals.moveSummary).to.deep.equal({
           id: 123,
-          person: { name: 'John Doe' },
+          profile: { person: { name: 'John Doe' } },
         })
       })
       it('sets person on the locals', function () {

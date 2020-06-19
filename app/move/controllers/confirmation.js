@@ -20,7 +20,7 @@ function confirmation(req, res) {
     reject(courtHearings, 'saved_to_nomis'),
     'case_number'
   )
-  const unassignedMoves = allocationMoves.filter(move => !move.person)
+  const unassignedMoves = allocationMoves.filter(move => !move.profile)
   const unassignedMoveId = unassignedMoves.length
     ? unassignedMoves[0].id
     : undefined
