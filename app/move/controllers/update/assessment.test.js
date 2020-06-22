@@ -1,4 +1,4 @@
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 const CreateAssessment = require('../create/assessment')
 
 const MixinProto = CreateAssessment.prototype
@@ -78,10 +78,9 @@ describe('Move controllers', function () {
       const res = {}
       let nextSpy
       beforeEach(function () {
-        sinon.stub(personService, 'update').resolves()
+        sinon.stub(profileService, 'update').resolves()
         sinon.stub(controller, 'setFlash')
         req = {
-          getPersonId: sinon.stub().returns('#personId'),
           getMove: sinon.stub().returns({
             profile: {
               id: '#profileId',
@@ -180,9 +179,9 @@ describe('Move controllers', function () {
       })
 
       context('When assessment answers are unchanged', function () {
-        it('should not update the person data', async function () {
+        it('should not update the profile data', async function () {
           await controller.saveValues(req, res, nextSpy)
-          expect(personService.update).to.not.be.called
+          expect(profileService.update).to.not.be.called
         })
 
         it('should not set the confirmation message', async function () {
@@ -192,12 +191,12 @@ describe('Move controllers', function () {
       })
 
       context('When assessment answers have changed', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           req.form.values.violent = '#violent'
-        })
-        it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
-          expect(personService.update).to.be.calledOnceWithExactly({
+        })
+        it('should update the profile data', async function () {
+          expect(profileService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
               {
                 assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
@@ -205,12 +204,11 @@ describe('Move controllers', function () {
                 key: 'violent',
               },
             ],
-            id: '#personId',
+            id: '#profileId',
           })
         })
 
         it('should set the confirmation message', async function () {
-          await controller.saveValues(req, res, nextSpy)
           expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
       })
@@ -221,7 +219,7 @@ describe('Move controllers', function () {
         })
         it('should remove the comment from the assessment answer', async function () {
           await controller.saveValues(req, res, nextSpy)
-          expect(personService.update).to.be.calledOnceWithExactly({
+          expect(profileService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
               {
                 assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
@@ -229,7 +227,7 @@ describe('Move controllers', function () {
                 key: 'violent',
               },
             ],
-            id: '#personId',
+            id: '#profileId',
           })
         })
       })
@@ -241,7 +239,7 @@ describe('Move controllers', function () {
         })
         it('should add the assessment answer and order the assessments', async function () {
           await controller.saveValues(req, res, nextSpy)
-          expect(personService.update).to.be.calledOnceWithExactly({
+          expect(profileService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
               {
                 assessment_question_id: '4e7e54b4-a40c-488f-bdff-c6b2268ca4eb',
@@ -259,7 +257,7 @@ describe('Move controllers', function () {
                 key: 'violent',
               },
             ],
-            id: '#personId',
+            id: '#profileId',
           })
         })
       })
@@ -270,7 +268,7 @@ describe('Move controllers', function () {
         })
         it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
-          expect(personService.update).to.be.calledOnceWithExactly({
+          expect(profileService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
               {
                 assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
@@ -278,7 +276,7 @@ describe('Move controllers', function () {
                 key: 'violent',
               },
             ],
-            id: '#personId',
+            id: '#profileId',
           })
         })
       })
@@ -287,7 +285,7 @@ describe('Move controllers', function () {
         const err = new Error()
         beforeEach(function () {
           req.form.values.violent = '#changeme'
-          personService.update.throws(err)
+          profileService.update.throws(err)
         })
         it('should call next with the error thrown', async function () {
           try {

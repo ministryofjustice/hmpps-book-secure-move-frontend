@@ -84,4 +84,55 @@ describe('Profile Service', function () {
       })
     })
   })
+
+  describe('#update()', function () {
+    const profileData = {
+      id: '#profileId',
+      assessment_answer: [],
+      person: {
+        id: '#personId',
+      },
+    }
+    const mockResponse = {
+      data: {
+        id: '#updatedProfile',
+      },
+    }
+
+    context('without person ID', function () {
+      it('should reject with error', function () {
+        return expect(profileService.update()).to.be.rejectedWith(
+          'No Person ID supplied'
+        )
+      })
+    })
+
+    context('with person ID', function () {
+      beforeEach(async function () {
+        sinon.spy(apiClient, 'one')
+        sinon.stub(apiClient, 'patch').resolves(mockResponse)
+        sinon.stub(profileService, 'transform')
+
+        await profileService.update(profileData)
+      })
+
+      it('should call patch endpoint with data', function () {
+        expect(apiClient.one.firstCall).to.be.calledWithExactly(
+          'person',
+          '#personId'
+        )
+        expect(apiClient.one.secondCall).to.be.calledWithExactly(
+          'profile',
+          '#profileId'
+        )
+        expect(apiClient.patch).to.be.calledOnceWithExactly(profileData)
+      })
+
+      it('should transform profile', function () {
+        expect(profileService.transform).to.be.calledOnceWithExactly({
+          id: '#updatedProfile',
+        })
+      })
+    })
+  })
 })
