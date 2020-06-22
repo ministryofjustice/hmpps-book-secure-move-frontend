@@ -41,6 +41,14 @@ const testCases = {
       statusCode: 201,
     },
   ],
+  profile: [
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+      statusCode: 201,
+    },
+  ],
   image: [
     {
       method: 'find',

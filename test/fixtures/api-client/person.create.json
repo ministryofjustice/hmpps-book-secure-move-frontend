@@ -7,7 +7,8 @@
       "last_name": "Roberts",
       "date_of_birth": "1965-10-24",
       "gender_additional_information": "Additional information",
-      "assessment_answers": [{
+      "assessment_answers": [
+        {
           "title": "Violent",
           "comments": "Karate black belt",
           "date": null,
@@ -80,7 +81,8 @@
           "key": "other_information"
         }
       ],
-      "identifiers": []
+      "identifiers": [],
+      "profiles": []
     },
     "relationships": {
       "ethnicity": {
@@ -97,7 +99,8 @@
       }
     }
   },
-  "included": [{
+  "included": [
+    {
       "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
       "type": "ethnicities",
       "attributes": {
