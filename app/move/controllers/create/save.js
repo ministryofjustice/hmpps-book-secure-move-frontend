@@ -3,7 +3,7 @@ const { get, omit, capitalize, flatten, values, some } = require('lodash')
 const analytics = require('../../../../common/lib/analytics')
 const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 
 const CreateBaseController = require('./base')
 
@@ -18,19 +18,29 @@ function filterAnswer(currentAssessment, searchKey) {
 class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
     try {
-      const data = omit(req.sessionModel.toJSON(), [
+      const sessionData = req.sessionModel.toJSON()
+      const person = sessionData.person
+      const assessment = sessionData.assessment
+      const data = omit(sessionData, [
         'csrf-secret',
         'errors',
         'errorValues',
+        'assessment',
+        'person',
       ])
-      const move = await moveService.create(data)
+
+      const profile = await profileService.create(person.id, {
+        assessment_answers: assessment,
+      })
+
+      const moveData = {
+        ...data,
+        profile,
+      }
+
+      const move = await moveService.create(moveData)
 
       await Promise.all([
-        // update person
-        personService.update({
-          ...data.person,
-          assessment_answers: data.assessment,
-        }),
         // create hearings
         ...(data.court_hearings || []).map(hearing =>
           courtHearingService.create(
