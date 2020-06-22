@@ -1,12 +1,8 @@
 {
   "data": {
     "id": "b695d0f0-af8e-4b97-891e-92020d6820b9",
-    "type": "people",
+    "type": "profiles",
     "attributes": {
-      "first_names": "Bob",
-      "last_name": "Roberts",
-      "date_of_birth": "1965-10-24",
-      "gender_additional_information": "Additional information",
       "assessment_answers": [
         {
           "title": "Violent",
@@ -80,43 +76,16 @@
           "category": "court",
           "key": "other_information"
         }
-      ],
-      "identifiers": [],
-      "profiles": []
+      ]
     },
     "relationships": {
-      "ethnicity": {
+      "person": {
         "data": {
-          "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
-          "type": "ethnicities"
-        }
-      },
-      "gender": {
-        "data": {
-          "id": "d335715f-c9d1-415c-a7c8-06e830158214",
-          "type": "genders"
+          "id": "ffe852c4-493b-9154-9afb-18dde544f2cf",
+          "type": "people"
         }
       }
     }
   },
-  "included": [
-    {
-      "id": "b95bfb7c-18cd-419d-8119-2dee1506726f",
-      "type": "ethnicities",
-      "attributes": {
-        "key": "A1",
-        "title": "Asian or Asian British (Indian)",
-        "description": "A1 - Asian or Asian British (Indian)"
-      }
-    },
-    {
-      "id": "d335715f-c9d1-415c-a7c8-06e830158214",
-      "type": "genders",
-      "attributes": {
-        "key": "male",
-        "title": "Male",
-        "description": null
-      }
-    }
-  ]
+  "included": []
 }

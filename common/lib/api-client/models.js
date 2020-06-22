@@ -86,6 +86,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'ethnicities',
       },
+      profiles: {
+        jsonApi: 'hasMany',
+        type: 'profiles',
+      },
     },
     options: {
       defaultInclude: ['ethnicity', 'gender'],
@@ -100,7 +104,7 @@ module.exports = {
       },
     },
     options: {
-      defaultInclude: [],
+      defaultInclude: ['person'],
     },
   },
   court_case: {

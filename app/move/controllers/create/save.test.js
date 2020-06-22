@@ -4,7 +4,7 @@ const proxyquire = require('proxyquire')
 const analytics = require('../../../../common/lib/analytics')
 const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
 const shouldSaveCourtHearingsField = require('../../fields/should-save-court-hearings')
 
@@ -21,6 +21,9 @@ const controller = new Controller({ route: '/' })
 const mockPerson = {
   id: '3333',
   fullname: 'Full name',
+}
+const mockProfile = {
+  id: '2222',
 }
 const mockMove = {
   id: '4444',
@@ -85,7 +88,7 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(function () {
-        sinon.stub(personService, 'update').resolves(mockPerson)
+        sinon.stub(profileService, 'create').resolves(mockProfile)
         sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
         req = {
@@ -114,19 +117,15 @@ describe('Move controllers', function () {
               reference: '',
               to_location: 'Court',
               from_location: 'Prison',
-              person: {
-                first_names: 'Steve',
-                last_name: 'Smith',
-              },
-              assessment: mockValues.assessment,
+              profile: mockProfile,
             })
           })
 
-          it('should call person update', function () {
-            expect(personService.update).to.be.calledOnceWithExactly({
-              ...mockValues.person,
-              assessment_answers: mockValues.assessment,
-            })
+          it('should create profile', function () {
+            expect(profileService.create).to.be.calledOnceWithExactly(
+              mockValues.person.id,
+              { assessment_answers: mockValues.assessment }
+            )
           })
 
           it('should not call court hearing service', function () {
@@ -177,20 +176,18 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                person: {
-                  first_names: 'Steve',
-                  last_name: 'Smith',
-                },
-                assessment: mockValuesWithHearings.assessment,
+                profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
               })
             })
 
-            it('should call person update', function () {
-              expect(personService.update).to.be.calledOnceWithExactly({
-                ...mockValuesWithHearings.person,
-                assessment_answers: mockValuesWithHearings.assessment,
-              })
+            it('should create profile', function () {
+              expect(profileService.create).to.be.calledOnceWithExactly(
+                mockValuesWithHearings.person.id,
+                {
+                  assessment_answers: mockValuesWithHearings.assessment,
+                }
+              )
             })
 
             it('should call court hearing service correct number of times', function () {
@@ -246,11 +243,7 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                person: {
-                  first_names: 'Steve',
-                  last_name: 'Smith',
-                },
-                assessment: mockValuesWithHearings.assessment,
+                profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
               })
@@ -296,10 +289,6 @@ describe('Move controllers', function () {
 
         it('should call next once', function () {
           expect(nextSpy).to.be.calledOnce
-        })
-
-        it('should not update person', function () {
-          expect(personService.update).not.to.be.called
         })
 
         it('should not save court hearings', function () {
