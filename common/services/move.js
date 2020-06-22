@@ -199,7 +199,7 @@ const moveService = {
   unassign(id) {
     return moveService.update({
       id,
-      person: {
+      profile: {
         id: null,
       },
       move_agreed: null,
