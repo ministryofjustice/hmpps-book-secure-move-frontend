@@ -1,7 +1,7 @@
 const { get, omit } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 const MoveCreateSaveController = require('../create/save')
 
 const PersonAssignBase = require('./base')
@@ -15,15 +15,14 @@ class SaveController extends PersonAssignBase {
         'errorValues',
       ])
 
+      const profile = await profileService.create(data.person.id, {
+        assessment_answers: data.assessment,
+      })
+
       const move = await moveService.update({
         ...data,
         id: data.move.id,
-        person: data.person.id,
-      })
-
-      await personService.update({
-        ...data.person,
-        assessment_answers: data.assessment,
+        profile,
       })
 
       req.sessionModel.set('moveId', move.id)

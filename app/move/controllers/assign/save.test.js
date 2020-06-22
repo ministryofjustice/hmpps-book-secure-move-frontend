@@ -1,5 +1,5 @@
 const moveService = require('../../../../common/services/move')
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 const CreateSave = require('../create/save')
 
 const MixinProto = CreateSave.prototype
@@ -33,6 +33,12 @@ describe('Assign controllers', function () {
     })
 
     describe('#saveValues()', function () {
+      const profile = {
+        id: '__profile__',
+        person: {
+          id: '__person__',
+        },
+      }
       const sessionData = {
         'csrf-secret': '__csrf-secret__',
         errors: '__errors__',
@@ -61,7 +67,8 @@ describe('Assign controllers', function () {
         }
         next = sinon.stub()
         sinon.stub(moveService, 'update').returns(updatedMove)
-        sinon.stub(personService, 'update')
+        sinon.stub(profileService, 'create').resolves(profile)
+        sinon.stub(profileService, 'update')
       })
       describe('When allocating the person to the move', function () {
         beforeEach(async function () {
@@ -70,19 +77,22 @@ describe('Assign controllers', function () {
 
         it('should update the move', function () {
           expect(moveService.update).to.be.calledOnceWithExactly({
-            move: sessionData.move,
-            assessment: sessionData.assessment,
-            id: sessionData.move.id,
-            person: sessionData.person.id,
             foo: 'bar',
+            move: sessionData.move,
+            person: sessionData.person,
+            assessment: sessionData.assessment,
+            id: '__move__',
+            profile,
           })
         })
 
         it('should update the person', function () {
-          expect(personService.update).to.be.calledOnceWithExactly({
-            id: sessionData.person.id,
-            assessment_answers: sessionData.assessment,
-          })
+          expect(profileService.create).to.be.calledOnceWithExactly(
+            '__person__',
+            {
+              assessment_answers: sessionData.assessment,
+            }
+          )
         })
 
         it('should call set move ID on session model', function () {
@@ -100,7 +110,7 @@ describe('Assign controllers', function () {
       describe('When an error is thrown', function () {
         const error = new Error()
         beforeEach(async function () {
-          personService.update.throws(error)
+          profileService.create.throws(error)
           await controller.saveValues(req, res, next)
         })
 
