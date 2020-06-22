@@ -1,3 +1,5 @@
+const apiClient = require('../lib/api-client')()
+
 const personService = require('./person')
 
 const profileService = {
@@ -10,6 +12,19 @@ const profileService = {
       ...profile,
       person: personService.transform(profile.person),
     }
+  },
+
+  create(personId, data) {
+    if (!personId) {
+      return Promise.reject(new Error('No Person ID supplied'))
+    }
+
+    return apiClient
+      .one('person', personId)
+      .all('profile')
+      .post(data)
+      .then(response => response.data)
+      .then(profile => profileService.transform(profile))
   },
 }
 
