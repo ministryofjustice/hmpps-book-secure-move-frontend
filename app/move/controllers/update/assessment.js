@@ -1,6 +1,6 @@
 const { isEqual, pick } = require('lodash')
 
-const personService = require('../../../../common/services/person')
+const profileService = require('../../../../common/services/profile')
 const Assessment = require('../create/assessment')
 
 const UpdateBase = require('./base')
@@ -55,9 +55,8 @@ class UpdateAssessmentController extends UpdateBase {
       const newKeys = getAnswerKeys(updatedAssessments)
 
       if (!isEqual(oldKeys, newKeys)) {
-        const personId = req.getPersonId()
-        await personService.update({
-          id: personId,
+        await profileService.update({
+          ...profile,
           assessment_answers: updatedAssessments,
         })
 
