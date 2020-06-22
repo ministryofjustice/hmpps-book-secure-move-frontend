@@ -933,7 +933,7 @@ describe('Move Service', function () {
       const mockResponse = {
         data: {
           ...mockMove,
-          person: null,
+          profile: null,
         },
       }
 
@@ -949,7 +949,7 @@ describe('Move Service', function () {
         it('should call update method with data', function () {
           expect(moveService.update).to.be.calledOnceWithExactly({
             id: mockId,
-            person: {
+            profile: {
               id: null,
             },
             move_agreed: null,
