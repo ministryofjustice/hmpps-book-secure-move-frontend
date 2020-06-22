@@ -1,8 +1,8 @@
 const proxyquire = require('proxyquire')
 
 const {
-  data: mockPerson,
-} = require('../../test/fixtures/api-client/person.create.json')
+  data: mockProfile,
+} = require('../../test/fixtures/api-client/profile.create.json')
 const assessmentAnswersByCategory = proxyquire(
   './assessment-answers-by-category',
   {
@@ -31,7 +31,7 @@ describe('Presenters', function () {
 
       beforeEach(function () {
         transformedResponse = assessmentAnswersByCategory(
-          mockPerson.attributes.assessment_answers
+          mockProfile.attributes.assessment_answers
         )
       })
 

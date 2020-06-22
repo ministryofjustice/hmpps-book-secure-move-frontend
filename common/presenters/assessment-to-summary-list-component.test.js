@@ -1,17 +1,17 @@
 const {
-  data: mockPerson,
-} = require('../../test/fixtures/api-client/person.create.json')
+  data: mockProfile,
+} = require('../../test/fixtures/api-client/profile.create.json')
 
 const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
 
 describe('Presenters', function () {
   describe('#assessmentToSummaryListComponent()', function () {
-    context('when provided with a mock person object', function () {
+    context('when provided with a mock profile object', function () {
       let transformedResponse
 
       beforeEach(function () {
         transformedResponse = assessmentToSummaryListComponent(
-          mockPerson.attributes.assessment_answers
+          mockProfile.attributes.assessment_answers
         )
       })
 
@@ -65,7 +65,7 @@ describe('Presenters', function () {
 
       beforeEach(function () {
         transformedResponse = assessmentToSummaryListComponent(
-          mockPerson.attributes.assessment_answers,
+          mockProfile.attributes.assessment_answers,
           'court'
         )
       })
