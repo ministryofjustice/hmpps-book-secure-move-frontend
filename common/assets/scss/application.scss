@@ -5,31 +5,29 @@ $govuk-fonts-path: "../fonts/inter/";
 $govuk-font-family: "Inter", system-ui, sans-serif;
 
 // Import GOV.UK Frontend
-@import "govuk-frontend/govuk/settings/all";
-@import "govuk-frontend/govuk/tools/all";
-@import "govuk-frontend/govuk/helpers/all";
+@import "govuk-frontend/govuk/base";
 
 @import "govuk-frontend/govuk/core/all";
 @import "govuk-frontend/govuk/objects/all";
 
-@import "govuk-frontend/govuk/components/back-link/back-link.scss";
-@import "govuk-frontend/govuk/components/button/button.scss";
-@import "govuk-frontend/govuk/components/checkboxes/checkboxes.scss";
-@import "govuk-frontend/govuk/components/details/details.scss";
-@import "govuk-frontend/govuk/components/error-summary/error-summary.scss";
-@import "govuk-frontend/govuk/components/footer/footer.scss";
-@import "govuk-frontend/govuk/components/header/header.scss";
-@import "govuk-frontend/govuk/components/input/input.scss";
-@import "govuk-frontend/govuk/components/inset-text/inset-text.scss";
-@import "govuk-frontend/govuk/components/panel/panel.scss";
-@import "govuk-frontend/govuk/components/radios/radios.scss";
-@import "govuk-frontend/govuk/components/select/select.scss";
-@import "govuk-frontend/govuk/components/skip-link/skip-link.scss";
-@import "govuk-frontend/govuk/components/summary-list/summary-list.scss";
-@import "govuk-frontend/govuk/components/table/table.scss";
-@import "govuk-frontend/govuk/components/tag/tag.scss";
-@import "govuk-frontend/govuk/components/textarea/textarea.scss";
-@import "govuk-frontend/govuk/components/warning-text/warning-text.scss";
+@import "govuk-frontend/govuk/components/back-link/index";
+@import "govuk-frontend/govuk/components/button/index";
+@import "govuk-frontend/govuk/components/checkboxes/index";
+@import "govuk-frontend/govuk/components/details/index";
+@import "govuk-frontend/govuk/components/error-summary/index";
+@import "govuk-frontend/govuk/components/footer/index";
+@import "govuk-frontend/govuk/components/header/index";
+@import "govuk-frontend/govuk/components/input/index";
+@import "govuk-frontend/govuk/components/inset-text/index";
+@import "govuk-frontend/govuk/components/panel/index";
+@import "govuk-frontend/govuk/components/radios/index";
+@import "govuk-frontend/govuk/components/select/index";
+@import "govuk-frontend/govuk/components/skip-link/index";
+@import "govuk-frontend/govuk/components/summary-list/index";
+@import "govuk-frontend/govuk/components/table/index";
+@import "govuk-frontend/govuk/components/tag/index";
+@import "govuk-frontend/govuk/components/textarea/index";
+@import "govuk-frontend/govuk/components/warning-text/index";
 
 @import "govuk-frontend/govuk/utilities/all";
 @import "govuk-frontend/govuk/overrides/all";
