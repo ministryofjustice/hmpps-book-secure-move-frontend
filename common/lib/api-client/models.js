@@ -24,10 +24,6 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'profiles',
       },
-      person: {
-        jsonApi: 'hasOne',
-        type: 'people',
-      },
       from_location: {
         jsonApi: 'hasOne',
         type: 'locations',
