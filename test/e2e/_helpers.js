@@ -11,6 +11,7 @@ import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 import referenceDataHelpers from '../../common/helpers/reference-data'
 import moveService from '../../common/services/move'
 import personService from '../../common/services/person'
+import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
 import { formatDate } from '../../config/nunjucks/filters'
 
@@ -132,6 +133,40 @@ export async function createPersonFixture(overrides = {}) {
 }
 
 /**
+ * Generate profile data
+ *
+ * @param {string} personId - person id to use for profile
+ *
+ * @param {object} [overrides] - explicit values to use for profile
+ *
+ * @returns {object} - profile data
+ */
+export async function generateProfile(personId, overrides = {}) {
+  return {
+    assessment_answers: [],
+    person: {
+      id: personId,
+    },
+    ...overrides,
+  }
+}
+
+/**
+ * Create a profile object
+ *
+ * @param {string} [personId] - person id to use for profile
+ *
+ * @param {object} [overrides] - explicit values to use for profile
+ *
+ * @returns {object} - created profile object
+ */
+export async function createProfileFixture(personId, overrides = {}) {
+  const fixture = await generateProfile(overrides)
+  const profile = await profileService.create(personId, fixture)
+  return profile
+}
+
+/**
  * Get a random location
  *
  * @param {string} [locationType] - type of location
@@ -153,20 +188,20 @@ const getRandomLocation = async locationType => {
 /**
  * Generate move data
  *
- * @param {object} [moveOverrides] - explicit values to use for move
+ * @param {object} profile - config profile to attach to move
  *
- * @param {object} [moveOptions] - config options for move creation
+ * @param {object} [options] - config options for move creation
+ *
+ * @param {object} [overrides] - explicit values to use for move
  *
  * @returns {object} - move data
  */
-export async function generateMove(personId, options = {}, overrides = {}) {
+export async function generateMove(profile, options = {}, overrides = {}) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
 
   const move = {
-    person: {
-      id: personId,
-    },
+    profile,
     from_location: await getRandomLocation(fromLocationType),
     to_location: await getRandomLocation(toLocationType),
     move_type: 'court_appearance',
@@ -190,19 +225,22 @@ export async function generateMove(personId, options = {}, overrides = {}) {
  *
  * @param {object} [moveOptions] - config options for move creation
  *
- * @returns {object} - created move object containing person data retunred from createPersonFixture
+ * @returns {object} - created move object containing person and profile data returned from create fixtures
  */
 export async function createMoveFixture({
   personOverrides = {},
+  profileOverrides = {},
   moveOverrides,
   moveOptions = {},
 } = {}) {
   const person = await createPersonFixture(personOverrides)
-  const moveFixture = await generateMove(person.id, moveOptions, moveOverrides)
+  const profile = await createProfileFixture(person.id, profileOverrides)
+  const moveFixture = await generateMove(profile, moveOptions, moveOverrides)
   let move = await moveService.create(moveFixture)
   move = {
     ...move,
     person,
+    profile,
     moveType: move.move_type,
     additionalInformation: move.additional_information,
     [`${move.move_type}_comments`]: move.additional_information,
