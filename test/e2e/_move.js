@@ -286,13 +286,13 @@ export async function checkUpdatePage(
   checkMethod,
   { selectAll = true, fillInOptional = true } = {}
 ) {
-  const { person } = t.ctx.move
+  const { profile } = t.ctx.move
   const updateMovePage = await clickUpdateLink(page)
   const updatedFields = await updateMovePage[fillInMethod]({
     selectAll,
     fillInOptional,
   })
-  const updatedDetails = { ...person, ...updatedFields }
+  const updatedDetails = { ...profile, ...updatedFields }
 
   await updateMovePage.submitForm()
 
