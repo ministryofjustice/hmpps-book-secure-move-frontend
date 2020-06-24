@@ -11,7 +11,7 @@ module.exports = {
     backLink: null,
     template: 'move/views/cancel',
     pageTitle: 'moves::cancel.steps.reason.heading',
-    buttonText: 'actions::cancel_move_confirmation',
+    buttonText: 'actions::confirm_cancellation',
     buttonClasses: 'govuk-button--warning',
     fields: ['cancellation_reason', 'cancellation_reason_comment'],
     controller: Cancel,

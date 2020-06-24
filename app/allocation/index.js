@@ -28,7 +28,7 @@ const cancelConfig = {
   ...wizardConfig,
   controller: FormWizardController,
   name: 'cancel-an-allocation',
-  templatePath: 'allocation/views/cancel/',
+  templatePath: 'allocation/views/',
   template: '../../../form-wizard',
   journeyName: 'cancel-an-allocation',
   journeyPageTitle: 'actions::cancel_allocation',

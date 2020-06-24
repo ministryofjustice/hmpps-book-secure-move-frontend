@@ -310,15 +310,25 @@
     "hint": "Complex cases must be discussed with the receiving prison. This includes:"
   },
   "cancel_allocation_reason": {
-    "label": "Why do you want to cancel this allocation?",
+    "label": "Why are you cancelling this allocation?",
     "items": {
-      "error": "Made in error",
-      "error_hint": "For example, there’s a mistake or the allocation no longer needs to move",
-      "supplier_declined": "Supplier declined to complete this allocation",
-      "supplier_declined_hint": "For example, the request was made late",
-      "lack_of_space": "Lack of space at receiving establishment",
-      "unfilled": "Sending establishment failed to fill allocation",
-      "other": "Another reason",
+      "made_in_error": {
+        "label": "Made in error",
+        "hint": "For example, there’s a mistake or the allocation no longer needs to happen"
+      },
+      "supplier_declined_to_move": {
+        "label": "Supplier declined to complete this allocation",
+        "hint": "For example, the request was made late"
+      },
+      "lack_of_space": {
+        "label": "Lack of space at receiving establishment"
+      },
+      "unfilled": {
+        "label": "Sending establishment failed to fill allocation"
+      },
+      "other": {
+        "label": "Another reason"
+      },
       "details": "Give details"
     }
   }
