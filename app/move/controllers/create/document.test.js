@@ -3,6 +3,8 @@ const FormError = require('hmpo-form-wizard/lib/error')
 const multer = require('multer')
 const proxyquire = require('proxyquire').noCallThru()
 
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+
 function MulterStub() {}
 
 MulterStub.prototype.array = sinon.stub()
@@ -61,7 +63,7 @@ describe('Move controllers', function () {
 
     describe('#middlewareSetup()', function () {
       beforeEach(function () {
-        sinon.stub(FormController.prototype, 'middlewareSetup')
+        sinon.stub(FormWizardController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setNextStep')
 
@@ -69,7 +71,8 @@ describe('Move controllers', function () {
       })
 
       it('should call parent method', function () {
-        expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
+        expect(FormWizardController.prototype.middlewareSetup).to.have.been
+          .calledOnce
       })
 
       it('should setup multer middleware', function () {

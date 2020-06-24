@@ -1,5 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
 
 const CreateBaseController = require('./base')
@@ -30,14 +31,15 @@ describe('Move controllers', function () {
 
     describe('#middlewareSetup()', function () {
       beforeEach(function () {
-        sinon.stub(FormController.prototype, 'middlewareSetup')
+        sinon.stub(FormWizardController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
 
         controller.middlewareSetup()
       })
 
       it('should call parent method', function () {
-        expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
+        expect(FormWizardController.prototype.middlewareSetup).to.have.been
+          .calledOnce
       })
 
       it('should call set models method', function () {
