@@ -1,7 +1,6 @@
 const moveAgreedBy = {
   id: 'move_agreed_by',
   name: 'move_agreed_by',
-  skip: true,
   component: 'govukInput',
   classes: 'govuk-input--width-20',
   label: {
@@ -9,10 +8,6 @@ const moveAgreedBy = {
     classes: 'govuk-label--s',
   },
   validate: 'required',
-  dependent: {
-    field: 'move_agreed',
-    value: 'true',
-  },
 }
 
 module.exports = moveAgreedBy

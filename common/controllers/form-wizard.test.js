@@ -8,6 +8,402 @@ const Controller = require('./form-wizard')
 const controller = new Controller({ route: '/' })
 
 describe('Form wizard', function () {
+  describe('#middlewareSetup()', function () {
+    beforeEach(function () {
+      sinon.stub(FormController.prototype, 'middlewareSetup')
+      sinon.stub(controller, 'use')
+
+      controller.middlewareSetup()
+    })
+
+    it('should call parent method', function () {
+      expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
+    })
+
+    it('should call set previous assessment method', function () {
+      expect(controller.use.firstCall).to.have.been.calledWithExactly(
+        controller.setupConditionalFields
+      )
+    })
+
+    it('should call correct number of middleware', function () {
+      expect(controller.use).to.be.callCount(1)
+    })
+  })
+
+  describe('#setupConditionalFields()', function () {
+    let mockReq, nextSpy
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockReq = {
+        form: {
+          options: {
+            allFields: {
+              foo: {
+                name: 'foo',
+              },
+              bar: {
+                name: 'bar',
+              },
+            },
+            fields: {},
+          },
+        },
+      }
+    })
+
+    context('when field does not have items', function () {
+      beforeEach(function () {
+        mockReq.form.options.fields.simpleField = {
+          name: 'simple-field',
+        }
+
+        controller.setupConditionalFields(mockReq, {}, nextSpy)
+      })
+
+      it('should not add any dependent fields', function () {
+        expect(mockReq.form.options.fields).to.deep.equal({
+          simpleField: {
+            name: 'simple-field',
+          },
+        })
+      })
+
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when field has items', function () {
+      context('with no conditional values', function () {
+        beforeEach(function () {
+          mockReq.form.options.fields.optionsFields = {
+            name: 'options-field',
+            items: [
+              {
+                label: 'Item one',
+                value: 'item-one',
+              },
+            ],
+          }
+
+          controller.setupConditionalFields(mockReq, {}, nextSpy)
+        })
+
+        it('should not add any dependent fields', function () {
+          expect(mockReq.form.options.fields).to.deep.equal({
+            optionsFields: {
+              name: 'options-field',
+              items: [
+                {
+                  label: 'Item one',
+                  value: 'item-one',
+                },
+              ],
+            },
+          })
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when conditional is a string', function () {
+        beforeEach(function () {
+          mockReq.form.options.fields.optionsFields = {
+            name: 'options-field',
+            items: [
+              {
+                label: 'Item one',
+                value: 'item-one',
+                conditional: 'conditionalField',
+              },
+            ],
+          }
+        })
+
+        context('when conditional field does not exist', function () {
+          beforeEach(function () {
+            controller.setupConditionalFields(mockReq, {}, nextSpy)
+          })
+
+          it('should not add any dependent fields', function () {
+            expect(mockReq.form.options.fields).to.deep.equal({
+              optionsFields: {
+                name: 'options-field',
+                items: [
+                  {
+                    label: 'Item one',
+                    value: 'item-one',
+                    conditional: 'conditionalField',
+                  },
+                ],
+              },
+            })
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when conditional field exists', function () {
+          beforeEach(function () {
+            mockReq.form.options.allFields.conditionalField = {
+              name: 'conditional-field',
+            }
+
+            controller.setupConditionalFields(mockReq, {}, nextSpy)
+          })
+
+          it('should add any dependent field', function () {
+            expect(mockReq.form.options.fields).to.deep.equal({
+              optionsFields: {
+                name: 'options-field',
+                items: [
+                  {
+                    label: 'Item one',
+                    value: 'item-one',
+                    conditional: 'conditionalField',
+                  },
+                ],
+              },
+              conditionalField: {
+                name: 'conditional-field',
+                skip: true,
+                dependent: {
+                  field: 'optionsFields',
+                  value: 'item-one',
+                },
+              },
+            })
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+
+      context('when conditional is an array', function () {
+        beforeEach(function () {
+          mockReq.form.options.fields.optionsFields = {
+            name: 'options-field',
+            items: [
+              {
+                label: 'Item one',
+                value: 'item-one',
+                conditional: ['conditionalField1', 'conditionalField2'],
+              },
+            ],
+          }
+        })
+
+        context('when conditional fields do not exist', function () {
+          beforeEach(function () {
+            controller.setupConditionalFields(mockReq, {}, nextSpy)
+          })
+
+          it('should not add any dependent fields', function () {
+            expect(mockReq.form.options.fields).to.deep.equal({
+              optionsFields: {
+                name: 'options-field',
+                items: [
+                  {
+                    label: 'Item one',
+                    value: 'item-one',
+                    conditional: ['conditionalField1', 'conditionalField2'],
+                  },
+                ],
+              },
+            })
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when conditional field exists', function () {
+          beforeEach(function () {
+            mockReq.form.options.allFields.conditionalField1 = {
+              name: 'conditional-field-1',
+            }
+            mockReq.form.options.allFields.conditionalField2 = {
+              name: 'conditional-field-2',
+            }
+
+            controller.setupConditionalFields(mockReq, {}, nextSpy)
+          })
+
+          it('should add any dependent field', function () {
+            expect(mockReq.form.options.fields).to.deep.equal({
+              optionsFields: {
+                name: 'options-field',
+                items: [
+                  {
+                    label: 'Item one',
+                    value: 'item-one',
+                    conditional: ['conditionalField1', 'conditionalField2'],
+                  },
+                ],
+              },
+              conditionalField1: {
+                name: 'conditional-field-1',
+                skip: true,
+                dependent: {
+                  field: 'optionsFields',
+                  value: 'item-one',
+                },
+              },
+              conditionalField2: {
+                name: 'conditional-field-2',
+                skip: true,
+                dependent: {
+                  field: 'optionsFields',
+                  value: 'item-one',
+                },
+              },
+            })
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+    })
+
+    context('with multiple fields and conditionals', function () {
+      beforeEach(function () {
+        mockReq.form.options.fields = {
+          optionsField1: {
+            name: 'options-field-1',
+            items: [
+              {
+                label: 'Item one',
+                value: 'item-one',
+                conditional: ['conditionalField1', 'conditionalField2'],
+              },
+            ],
+          },
+          optionsField2: {
+            name: 'options-field-2',
+            items: [
+              {
+                label: 'Item one',
+                value: 'item-one',
+                conditional: 'conditionalField3',
+              },
+              {
+                label: 'Item two',
+                value: 'item-two',
+                conditional: ['conditionalField4', 'conditionalField5'],
+              },
+            ],
+          },
+        }
+        mockReq.form.options.allFields = {
+          ...mockReq.form.options.allFields,
+          conditionalField1: {
+            name: 'conditional-field-1',
+          },
+          conditionalField2: {
+            name: 'conditional-field-2',
+          },
+          conditionalField3: {
+            name: 'conditional-field-3',
+          },
+          conditionalField4: {
+            name: 'conditional-field-4',
+          },
+          conditionalField5: {
+            name: 'conditional-field-5',
+          },
+        }
+
+        controller.setupConditionalFields(mockReq, {}, nextSpy)
+      })
+
+      context('when conditional field exists', function () {
+        it('should add any dependent fields', function () {
+          expect(mockReq.form.options.fields).to.deep.equal({
+            optionsField1: {
+              name: 'options-field-1',
+              items: [
+                {
+                  label: 'Item one',
+                  value: 'item-one',
+                  conditional: ['conditionalField1', 'conditionalField2'],
+                },
+              ],
+            },
+            optionsField2: {
+              name: 'options-field-2',
+              items: [
+                {
+                  label: 'Item one',
+                  value: 'item-one',
+                  conditional: 'conditionalField3',
+                },
+                {
+                  label: 'Item two',
+                  value: 'item-two',
+                  conditional: ['conditionalField4', 'conditionalField5'],
+                },
+              ],
+            },
+            conditionalField1: {
+              name: 'conditional-field-1',
+              skip: true,
+              dependent: {
+                field: 'optionsField1',
+                value: 'item-one',
+              },
+            },
+            conditionalField2: {
+              name: 'conditional-field-2',
+              skip: true,
+              dependent: {
+                field: 'optionsField1',
+                value: 'item-one',
+              },
+            },
+            conditionalField3: {
+              name: 'conditional-field-3',
+              skip: true,
+              dependent: {
+                field: 'optionsField2',
+                value: 'item-one',
+              },
+            },
+            conditionalField4: {
+              name: 'conditional-field-4',
+              skip: true,
+              dependent: {
+                field: 'optionsField2',
+                value: 'item-two',
+              },
+            },
+            conditionalField5: {
+              name: 'conditional-field-5',
+              skip: true,
+              dependent: {
+                field: 'optionsField2',
+                value: 'item-two',
+              },
+            },
+          })
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+  })
+
   describe('#getErrors()', function () {
     let errors
 

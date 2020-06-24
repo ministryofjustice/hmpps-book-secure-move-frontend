@@ -5,10 +5,6 @@ const toLocationCourtAppearance = {
   id: 'to_location_court_appearance',
   name: 'to_location_court_appearance',
   validate: 'required',
-  dependent: {
-    field: 'move_type',
-    value: 'court_appearance',
-  },
   label: {
     text: 'fields::to_location_court_appearance.label',
     classes: 'govuk-label--s',

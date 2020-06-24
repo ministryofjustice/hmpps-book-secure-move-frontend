@@ -1,10 +1,57 @@
 const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
-const { map, fromPairs } = require('lodash')
+const { flatten, map, fromPairs, forEach } = require('lodash')
 
 const fieldHelpers = require('../helpers/field')
 
 class FormController extends Controller {
+  middlewareSetup() {
+    super.middlewareSetup()
+    this.use(this.setupConditionalFields)
+  }
+
+  setupConditionalFields(req, res, next) {
+    const allFields = req.form.options.allFields
+    const stepFields = req.form.options.fields
+    const dependentFields = {}
+
+    forEach(stepFields, (field, fieldName) => {
+      if (!field.items) {
+        return
+      }
+
+      field.items.forEach(item => {
+        const conditionalFields = flatten([item.conditional || []])
+
+        conditionalFields.forEach(key => {
+          const conditionalField = allFields[key]
+
+          if (!conditionalField) {
+            return
+          }
+
+          dependentFields[key] = {
+            ...conditionalField,
+            // tell the form wizard to not output field initially as it will be nested
+            skip: true,
+            // set dependent object for validation
+            dependent: {
+              field: fieldName,
+              value: item.value,
+            },
+          }
+        })
+      })
+    })
+
+    req.form.options.fields = {
+      ...stepFields,
+      ...dependentFields,
+    }
+
+    next()
+  }
+
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
     const errorList = map(errors, ({ key, type }) => {

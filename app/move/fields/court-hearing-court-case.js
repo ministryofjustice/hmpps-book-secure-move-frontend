@@ -3,7 +3,6 @@ const courtHearingCourtCase = {
   validate: 'required',
   component: 'govukRadios',
   items: [],
-  skip: true,
   fieldset: {
     legend: {
       text: 'fields::court_hearing__court_case.label',
@@ -12,10 +11,6 @@ const courtHearingCourtCase = {
   },
   hint: {
     text: 'fields::court_hearing__court_case.hint',
-  },
-  dependent: {
-    field: 'has_court_case',
-    value: 'true',
   },
 }
 
