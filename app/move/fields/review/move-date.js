@@ -5,11 +5,6 @@ const commonDateField = require('../common.date')
 const moveDate = {
   ...cloneDeep(commonDateField),
   validate: [...commonDateField.validate, 'required', 'after'],
-  skip: true,
-  dependent: {
-    field: 'review_decision',
-    value: 'approve',
-  },
   id: 'move_date',
   name: 'move_date',
   label: {

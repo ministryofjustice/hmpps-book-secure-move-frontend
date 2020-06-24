@@ -9,17 +9,12 @@ const courtHearingStartTime = {
   component: 'govukInput',
   classes: 'govuk-input--width-10',
   autocomplete: 'off',
-  skip: true,
   label: {
     html: 'fields::court_hearing__start_time.label',
     classes: 'govuk-label--s',
   },
   hint: {
     text: 'fields::court_hearing__start_time.hint',
-  },
-  dependent: {
-    field: 'has_court_case',
-    value: 'true',
   },
 }
 

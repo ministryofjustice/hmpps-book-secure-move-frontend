@@ -5,11 +5,6 @@ const commonDateField = require('./common.date')
 const dateCustom = {
   ...cloneDeep(commonDateField),
   validate: [...commonDateField.validate, 'required', 'after'],
-  skip: true,
-  dependent: {
-    field: 'date_type',
-    value: 'custom',
-  },
   id: 'date_custom',
   name: 'date_custom',
   label: {

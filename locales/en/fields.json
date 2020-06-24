@@ -189,7 +189,8 @@
     }
   },
   "cancellation_reason_comment": {
-    "label": "Additional information (optional)",
+    "label": "Additional information",
+    "label_optional": "Additional information (optional)",
     "label_with_error": "Additional information"
   },
   "rebook": {
@@ -215,9 +216,6 @@
         "label": "Another reason"
       }
     }
-  },
-  "cancellation_reason_comment": {
-    "label": "Give details"
   },
   "other_court": {
     "label": "Any other information details"
