@@ -126,6 +126,12 @@ To debug tests on local server run:
 npm run test-e2e:local
 ```
 
+To debug tests on local server against the API running locally, run:
+
+```
+npm run test-e2e:local:api
+```
+
 And to run test in specific browser run: `test-e2e:chrome` or `test-e2e:firefox`.
 
 The video recording of each test is stored in artifacts/video directory and is stored on CI under artifacts for review.

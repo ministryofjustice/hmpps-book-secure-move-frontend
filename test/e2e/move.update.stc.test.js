@@ -17,27 +17,30 @@ if (FEATURE_FLAGS.EDITABILITY) {
     await createCourtMove()
   })
 
-  test('User should be able to update move', async () => {
-    await checkUpdateLinks([
-      'personal_details',
-      'risk',
-      'health',
-      'court',
-      'move',
-      'date',
-      'document',
-    ])
+  test.meta('hasDocument', 'true')(
+    'User should be able to update move',
+    async () => {
+      await checkUpdateLinks([
+        'personal_details',
+        'risk',
+        'health',
+        'court',
+        'move',
+        'date',
+        'document',
+      ])
 
-    await checkUpdateDocuments()
+      await checkUpdateDocuments()
 
-    await checkUpdatePagesAccessible([
-      'personal_details',
-      'risk',
-      'health',
-      'court',
-      'move',
-      'date',
-      'document',
-    ])
-  })
+      await checkUpdatePagesAccessible([
+        'personal_details',
+        'risk',
+        'health',
+        'court',
+        'move',
+        'date',
+        'document',
+      ])
+    }
+  )
 }
