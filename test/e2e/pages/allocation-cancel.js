@@ -8,7 +8,7 @@ class AllocationCancelPage extends CancelMove {
     this.nodes = {
       ...this.nodes,
       linkToFirstAllocation: Selector('.govuk-table td:first-of-type a'),
-      cancelLink: Selector('a').withText('Cancel allocation'),
+      cancelLink: Selector('a').withText('Cancel this allocation'),
       cancellationReason: Selector('[name="cancellation_reason"]'),
       cancellationReasonComment: Selector('#cancellation_reason_comment'),
       statusHeading: Selector(
