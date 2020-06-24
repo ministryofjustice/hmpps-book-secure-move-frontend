@@ -1,12 +1,5 @@
 const filters = require('../../../config/nunjucks/filters')
 
-const getAnswer = (person, field) => {
-  const assessments = person.assessment_answers || []
-  return assessments.filter(assessment => {
-    return assessment.key === field
-  })[0]
-}
-
 const mapMethods = {}
 
 mapMethods.identifier = (person, field) => {
@@ -34,37 +27,6 @@ mapMethods.date = (person, field) => {
   if (fieldValue) {
     return filters.formatDate(fieldValue)
   }
-}
-
-mapMethods.explicitAssessment = (person, field, assessmentCategories) => {
-  let value
-  const matchedAnswer = getAnswer(person, field)
-  const explicitKey = `${field}__explicit`
-
-  if (matchedAnswer) {
-    const questionId = matchedAnswer.assessment_question_id
-    value = matchedAnswer.comments
-    assessmentCategories[explicitKey] = questionId
-  } else {
-    assessmentCategories[explicitKey] = 'false'
-  }
-
-  return value
-}
-
-mapMethods.assessment = (person, field, assessmentCategories) => {
-  let value
-  const matchedAnswer = getAnswer(person, field)
-
-  if (matchedAnswer) {
-    const questionId = matchedAnswer.assessment_question_id
-    value = matchedAnswer.comments
-    const category = matchedAnswer.category
-    assessmentCategories[category] = assessmentCategories[category] || []
-    assessmentCategories[category].push(questionId)
-  }
-
-  return value
 }
 
 mapMethods.value = (person, field) => person[field]

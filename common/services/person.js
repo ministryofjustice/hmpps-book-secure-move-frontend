@@ -13,28 +13,6 @@ const identifierKeys = [
   'athena_reference',
 ]
 const dateKeys = ['date_of_birth']
-const assessmentKeys = [
-  // court
-  'solicitor',
-  'interpreter',
-  'other_court',
-  // risk
-  'violent',
-  'escape',
-  'hold_separately',
-  'self_harm',
-  'concealed_items',
-  'other_risks',
-  // health
-  'special_diet_or_allergy',
-  'health_issue',
-  'medication',
-  'wheelchair',
-  'pregnant',
-  'other_health',
-  'special_vehicle',
-]
-const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const personService = {
   transform(person) {
@@ -92,16 +70,12 @@ const personService = {
       identifier = identifierKeys,
       relationship = relationshipKeys,
       date = dateKeys,
-      assessment = assessmentKeys,
-      explicitAssessment = explicitAssessmentKeys,
     } = {}
   ) {
     return unformat(person, fields, {
       identifier,
       relationship,
       date,
-      assessment,
-      explicitAssessment,
     })
   },
 

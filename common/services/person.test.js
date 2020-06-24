@@ -467,25 +467,6 @@ describe('Person Service', function () {
       ],
       relationship: ['gender', 'ethnicity'],
       date: ['date_of_birth'],
-      assessment: [
-        'solicitor',
-        'interpreter',
-        'other_court',
-        'violent',
-        'escape',
-        'hold_separately',
-        'self_harm',
-        'concealed_items',
-        'other_risks',
-        'special_diet_or_allergy',
-        'health_issue',
-        'medication',
-        'wheelchair',
-        'pregnant',
-        'other_health',
-        'special_vehicle',
-      ],
-      explicitAssessment: ['special_vehicle', 'not_to_be_released'],
     }
     const person = { id: '#personId' }
     const fields = ['foo']
@@ -530,8 +511,6 @@ describe('Person Service', function () {
           identifier: ['identifierField'],
           relationship: ['relationshipField'],
           date: ['dateField'],
-          assessment: ['assessmentField'],
-          explicitAssessment: ['explicitAssessmentField'],
         }
       })
 
