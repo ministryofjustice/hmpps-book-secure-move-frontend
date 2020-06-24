@@ -10,7 +10,7 @@ fixture('New move from Secure Training Centre (STC) to Court').beforeEach(
   }
 )
 
-test('With a new person', async t => {
+test.meta('hasDocument', 'true')('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
