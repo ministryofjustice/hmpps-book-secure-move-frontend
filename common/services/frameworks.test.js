@@ -1,4 +1,16 @@
-const frameworksService = require('./frameworks')
+const path = require('path')
+
+const mockFs = require('mock-fs')
+const proxyquire = require('proxyquire')
+
+const mockFrameworksFolder = '/dummy/framework/path'
+const frameworksService = proxyquire('./frameworks', {
+  '../../config/paths': {
+    frameworks: {
+      output: mockFrameworksFolder,
+    },
+  },
+})
 
 describe('Frameworks service', function () {
   describe('#transformQuestion', function () {
@@ -531,6 +543,76 @@ describe('Frameworks service', function () {
         it('should set empty values for fields', function () {
           expect(transformed.steps['/step-1'].fields).to.deep.equal([])
           expect(transformed.steps['/step-2'].fields).to.deep.equal([])
+        })
+      })
+    })
+  })
+
+  describe('#getPersonEscortFramework', function () {
+    let framework
+
+    context('with files', function () {
+      beforeEach(function () {
+        const sectionsFolder = path.resolve(
+          mockFrameworksFolder,
+          'person-escort-record',
+          'manifests'
+        )
+        const questionsFolder = path.resolve(
+          mockFrameworksFolder,
+          'person-escort-record',
+          'questions'
+        )
+
+        mockFs({
+          [sectionsFolder]: {
+            'section-one': '{"key": "section-one"}',
+            'section-two': '{"key": "section-two"}',
+          },
+          [questionsFolder]: {
+            'question-one': '{"name": "question-one"}',
+            'question-two': '{"name": "question-two"}',
+          },
+        })
+
+        framework = frameworksService.getPersonEscortFramework()
+      })
+
+      afterEach(function () {
+        mockFs.restore()
+      })
+
+      it('should return the framework', function () {
+        expect(framework).to.deep.equal({
+          sections: {
+            'section-one': {
+              key: 'section-one',
+            },
+            'section-two': {
+              key: 'section-two',
+            },
+          },
+          questions: {
+            'question-one': {
+              name: 'question-one',
+            },
+            'question-two': {
+              name: 'question-two',
+            },
+          },
+        })
+      })
+    })
+
+    context('without files', function () {
+      beforeEach(function () {
+        framework = frameworksService.getPersonEscortFramework()
+      })
+
+      it('should return an empty framework', function () {
+        expect(framework).to.deep.equal({
+          sections: {},
+          questions: {},
         })
       })
     })
