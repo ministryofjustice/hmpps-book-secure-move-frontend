@@ -12,6 +12,7 @@ RUN npm install
 COPY --chown=node:node webpack.config.js .
 COPY --chown=node:node webpack.config.production.js .
 COPY --chown=node:node config config
+COPY --chown=node:node common/services/frameworks.js common/services/frameworks.js
 COPY --chown=node:node common/assets common/assets
 COPY --chown=node:node common/components common/components
 
