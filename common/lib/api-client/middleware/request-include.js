@@ -19,7 +19,11 @@ module.exports = {
       include = include.sort().join(',')
     }
 
-    req.params.include = include
+    if (include) {
+      req.params.include = include
+    } else {
+      delete req.params.include
+    }
 
     return payload
   },
