@@ -54,6 +54,7 @@ module.exports = {
         'from_location.suppliers',
         'prison_transfer_reason',
         'profile',
+        'profile.documents',
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
