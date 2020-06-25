@@ -153,13 +153,13 @@
         <section class="app-!-position-relative">
           <h2 class="govuk-heading-m govuk-!-margin-top-7">
             {{ t("moves::detail.documents.heading", {
-              count: move.documents.length if move.documents.length > 1
+              count: move.profile.documents.length if move.profile.documents.length > 1
             }) }}
           </h2>
 
-          {% if move.documents | length %}
+          {% if move.profile.documents | length %}
             <ul class="govuk-list">
-              {% for document in move.documents %}
+              {% for document in move.profile.documents %}
                 <li class="govuk-!-margin-bottom-3">
                   <a href="{{ document.url }}"
                     class="govuk-link"
