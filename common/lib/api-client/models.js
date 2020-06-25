@@ -115,6 +115,9 @@ module.exports = {
         type: 'locations',
       },
     },
+    options: {
+      defaultInclude: ['location'],
+    },
   },
   court_hearing: {
     fields: {
@@ -144,6 +147,7 @@ module.exports = {
     },
     options: {
       collectionPath: 'timetable',
+      defaultInclude: ['location'],
     },
   },
   gender: {

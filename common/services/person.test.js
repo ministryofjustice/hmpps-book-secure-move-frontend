@@ -704,6 +704,7 @@ describe('Person Service', function () {
         expect(apiClient.all).to.be.calledOnceWithExactly('court_case')
         expect(apiClient.get).to.be.calledOnceWithExactly({
           'filter[active]': true,
+          include: ['location'],
         })
       })
 
@@ -757,6 +758,7 @@ describe('Person Service', function () {
               date_from: mockDate,
               date_to: mockDate,
             },
+            include: ['location'],
           })
         })
 
@@ -778,6 +780,7 @@ describe('Person Service', function () {
               date_from: undefined,
               date_to: undefined,
             },
+            include: ['location'],
           })
         })
 

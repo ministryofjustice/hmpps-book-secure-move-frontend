@@ -44,6 +44,24 @@ describe('API Client', function () {
             })
           })
 
+          context('with include as an empty array', function () {
+            it('should not set the include', function () {
+              request.params.include = []
+              middleware.req({ req: request })
+
+              expect(request.params.include).to.not.exist
+            })
+          })
+
+          context('with include as an empty string', function () {
+            it('should not set the include', function () {
+              request.params.include = ''
+              middleware.req({ req: request })
+
+              expect(request.params.include).to.not.exist
+            })
+          })
+
           context('with default include on model', function () {
             it('should retain existing include', function () {
               request.params.include = 'authors,comments'
@@ -89,7 +107,7 @@ describe('API Client', function () {
             it('should not set include', function () {
               middleware.req({ req: request, jsonApi })
 
-              expect(request.params.include).to.be.undefined
+              expect(request.params.include).to.not.exist
             })
           })
         })

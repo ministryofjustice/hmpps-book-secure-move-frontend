@@ -119,6 +119,8 @@ const personService = {
       .all('court_case')
       .get({
         'filter[active]': true,
+        // TODO: remove if/when devour adds model info to get method
+        include: ['location'],
       })
       .then(response => response.data)
   },
@@ -136,6 +138,8 @@ const personService = {
           date_from: date,
           date_to: date,
         },
+        // TODO: remove if/when devour adds model info to get method
+        include: ['location'],
       })
       .then(response => response.data)
   },
