@@ -98,9 +98,13 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'people',
       },
+      documents: {
+        jsonApi: 'hasMany',
+        type: 'documents',
+      },
     },
     options: {
-      defaultInclude: ['person'],
+      defaultInclude: ['person', 'documents'],
     },
   },
   court_case: {
