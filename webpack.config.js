@@ -1,13 +1,26 @@
 const path = require('path')
 
+const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const merge = require('webpack-merge')
+const YAML = require('yamljs')
 
+const frameworksService = require('./common/services/frameworks')
 const { IS_DEV, IS_PRODUCTION } = require('./config')
 const configPaths = require('./config/paths')
+
+function transformManifestFile(transformMethod) {
+  return (content, absolutePath) => {
+    const yaml = YAML.load(absolutePath)
+    const basename = path.basename(absolutePath, '.yml')
+    const transformed = transformMethod(basename, yaml)
+
+    return JSON.stringify(transformed, null, 2)
+  }
+}
 
 const commonConfig = {
   entry: {
@@ -116,7 +129,29 @@ const commonConfig = {
     },
   },
 
-  plugins: [new WebpackAssetsManifest()],
+  plugins: [
+    new WebpackAssetsManifest(),
+    new CopyPlugin({
+      patterns: [
+        {
+          context: configPaths.frameworks.source,
+          from: '**/questions/**/*.yml',
+          to: path.resolve(configPaths.frameworks.output, '[path][name].json'),
+          toType: 'template',
+          noErrorOnMissing: true,
+          transform: transformManifestFile(frameworksService.transformQuestion),
+        },
+        {
+          context: configPaths.frameworks.source,
+          from: '**/manifests/**/*.yml',
+          to: path.resolve(configPaths.frameworks.output, '[path][name].json'),
+          toType: 'template',
+          noErrorOnMissing: true,
+          transform: transformManifestFile(frameworksService.transformManifest),
+        },
+      ],
+    }),
+  ],
 }
 
 const webpackEnvironment = IS_PRODUCTION ? 'production' : 'develop'
