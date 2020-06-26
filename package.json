@@ -63,7 +63,7 @@
     "ministryofjustice"
   ],
   "dependencies": {
-    "@ministryofjustice/frontend": "0.0.17-alpha",
+    "@ministryofjustice/frontend": "0.0.19-alpha",
     "@sentry/node": "5.18.0",
     "accessible-autocomplete": "2.0.2",
     "axios": "0.19.2",
