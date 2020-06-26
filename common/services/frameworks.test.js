@@ -14,7 +14,12 @@ const frameworksService = proxyquire('./frameworks', {
 
 describe('Frameworks service', function () {
   describe('#transformQuestion', function () {
-    context('with no options', function () {})
+    context('with no options', function () {
+      it('should return an empty object', function () {
+        const transformed = frameworksService.transformQuestion()
+        expect(transformed).to.deep.equal({})
+      })
+    })
 
     context('with options', function () {
       let mockQuestion
@@ -81,10 +86,12 @@ describe('Frameworks service', function () {
             ...mockQuestion,
             validations: [
               {
-                name: 'required',
+                type: 'required',
+                message: 'This field is required',
               },
               {
-                name: 'date',
+                type: 'date',
+                message: 'This must be a date',
               },
             ],
           }
@@ -104,7 +111,16 @@ describe('Frameworks service', function () {
               text: 'Question text',
               classes: 'govuk-label--s',
             },
-            validate: ['required', 'date'],
+            validate: [
+              {
+                type: 'required',
+                message: 'This field is required',
+              },
+              {
+                type: 'date',
+                message: 'This must be a date',
+              },
+            ],
           })
         })
       })
