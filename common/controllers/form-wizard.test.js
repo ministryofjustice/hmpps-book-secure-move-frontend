@@ -410,7 +410,7 @@ describe('Form wizard', function () {
     beforeEach(function () {
       sinon
         .stub(fieldHelpers, 'getFieldErrorMessage')
-        .callsFake((key, type) => {
+        .callsFake(({ key, type }) => {
           return `${key}.${type}`
         })
       sinon.stub(FormController.prototype, 'getErrors')
@@ -440,6 +440,7 @@ describe('Form wizard', function () {
           url: '/step-url',
         },
       }
+
       beforeEach(function () {
         FormController.prototype.getErrors.returns(mockErrors)
         const reqMock = {
@@ -454,12 +455,10 @@ describe('Form wizard', function () {
 
       it('should get error messages', function () {
         expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
-          mockErrors.fieldOne.key,
-          mockErrors.fieldOne.type
+          mockErrors.fieldOne
         )
         expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
-          mockErrors.fieldTwo.key,
-          mockErrors.fieldTwo.type
+          mockErrors.fieldTwo
         )
       })
 
