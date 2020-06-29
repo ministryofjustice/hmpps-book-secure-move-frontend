@@ -1,7 +1,6 @@
 const wizard = require('hmpo-form-wizard')
 
-const FormWizardController = require('../../common/controllers/form-wizard')
-
+const { FrameworksController } = require('./controllers')
 const middleware = require('./middleware')
 
 function defineFormWizards(framework, router) {
@@ -13,12 +12,13 @@ function defineFormWizards(framework, router) {
     const section = sections[sectionKey]
     const wizardConfig = {
       buttonText: 'actions::save_and_continue',
-      controller: FormWizardController,
+      controller: FrameworksController,
       entryPoint: true,
       journeyName: `person-escort-record-${sectionKey}`,
       journeyPageTitle: 'Person escort record',
       name: `person-escort-record-${sectionKey}`,
-      template: 'form-wizard',
+      template: 'form-step',
+      templatePath: 'person-escort-record/views/',
     }
     const steps = {
       '/': {

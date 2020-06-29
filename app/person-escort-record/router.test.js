@@ -1,7 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const FormWizardController = require('../../common/controllers/form-wizard')
-
+const { FrameworksController } = require('./controllers')
 const middleware = require('./middleware')
 
 const wizardReqStub = sinon.stub()
@@ -58,6 +57,11 @@ describe('Person Escort Record router', function () {
       router.defineFormWizards(mockFramework, mockRouter)
     })
 
+    afterEach(function () {
+      wizardStub.resetHistory()
+      wizardReqStub.resetHistory()
+    })
+
     describe('router', function () {
       it('should setup setFramework middleware', function () {
         expect(mockRouter.use).to.be.calledWithExactly(
@@ -81,12 +85,13 @@ describe('Person Escort Record router', function () {
           }
           const config = {
             buttonText: 'actions::save_and_continue',
-            controller: FormWizardController,
+            controller: FrameworksController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',
             name: `person-escort-record-${key}`,
-            template: 'form-wizard',
+            template: 'form-step',
+            templatePath: 'person-escort-record/views/',
           }
 
           expect(mockRouter.use).to.be.calledWithExactly(
@@ -99,6 +104,10 @@ describe('Person Escort Record router', function () {
 
     describe('form wizard', function () {
       const sectionCount = Object.keys(mockFramework.sections).length
+
+      it('should call form wizard correct number of times', function () {
+        expect(wizardStub.callCount).to.equal(sectionCount)
+      })
 
       it('should call form wizard with correct number of arguments', function () {
         for (let index = 0; index < sectionCount.length; index++) {
@@ -117,12 +126,13 @@ describe('Person Escort Record router', function () {
           }
           const config = {
             buttonText: 'actions::save_and_continue',
-            controller: FormWizardController,
+            controller: FrameworksController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',
             name: `person-escort-record-${key}`,
-            template: 'form-wizard',
+            template: 'form-step',
+            templatePath: 'person-escort-record/views/',
           }
 
           expect(wizardStub).to.be.calledWithExactly(
@@ -132,10 +142,6 @@ describe('Person Escort Record router', function () {
           )
         }
       })
-
-      // it('should call form wizard handler', function () {
-      //   expect(wizardReqStub).to.be.calledWithExactly(mockReq, mockRes, nextSpy)
-      // })
     })
   })
 })
