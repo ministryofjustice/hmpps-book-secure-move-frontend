@@ -1,4 +1,4 @@
-const moveService = require('../../../../common/services/move')
+const profileService = require('../../../../common/services/profile')
 const CreateDocument = require('../create/document')
 
 const UpdateBaseController = require('./base')
@@ -139,7 +139,7 @@ describe('Move controllers', function () {
       })
 
       context('When a move exists', function () {
-        const move = { id: '#move', documents }
+        const move = { id: '#move', profile: { id: '#profile', documents } }
         let values
         beforeEach(function () {
           req.getMove.returns(move)
@@ -185,10 +185,11 @@ describe('Move controllers', function () {
       let res = {}
       let nextSpy
       const documents = [{ id: 'foo' }, { id: 'bar' }]
+      const profile = { id: '#profile' }
 
       beforeEach(async function () {
         req = {
-          getMoveId: sinon.stub().returns('__moveId__'),
+          getMove: sinon.stub().returns({ profile }),
           form: {
             values: {
               documents,
@@ -198,7 +199,7 @@ describe('Move controllers', function () {
         res = {
           redirect: sinon.stub(),
         }
-        sinon.stub(moveService, 'update').resolves({})
+        sinon.stub(profileService, 'update').resolves({})
         sinon.stub(controller, 'getBaseUrl').returns('__url__')
         sinon.stub(MixinProto, 'successHandler')
         nextSpy = sinon.spy()
@@ -209,8 +210,8 @@ describe('Move controllers', function () {
           await controller.successHandler(req, res, nextSpy)
         })
         it('should update the move', async function () {
-          expect(moveService.update).to.be.calledOnceWithExactly({
-            id: '__moveId__',
+          expect(profileService.update).to.be.calledOnceWithExactly({
+            ...profile,
             documents,
           })
         })
@@ -232,7 +233,7 @@ describe('Move controllers', function () {
       context('When saving fails', function () {
         const error = new Error('boom')
         beforeEach(async function () {
-          moveService.update.throws(error)
+          profileService.update.throws(error)
           await controller.successHandler(req, res, nextSpy)
         })
 
@@ -248,7 +249,7 @@ describe('Move controllers', function () {
         })
 
         it('should not update the move', async function () {
-          expect(moveService.update).not.to.be.called
+          expect(profileService.update).not.to.be.called
         })
 
         it('should invoke mixin’s successHandler', async function () {
