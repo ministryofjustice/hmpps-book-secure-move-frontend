@@ -52,6 +52,9 @@ const mockValues = {
     first_names: 'Steve',
     last_name: 'Smith',
   },
+  profile: {
+    id: '__profile',
+  },
   assessment: {
     court: [
       {
@@ -80,6 +83,11 @@ const mockValues = {
       },
     ],
   },
+  documents: [
+    {
+      id: 'document_1',
+    },
+  ],
 }
 
 describe('Move controllers', function () {
@@ -124,7 +132,10 @@ describe('Move controllers', function () {
           it('should create profile', function () {
             expect(profileService.create).to.be.calledOnceWithExactly(
               mockValues.person.id,
-              { assessment_answers: mockValues.assessment }
+              {
+                assessment_answers: mockValues.assessment,
+                documents: mockValues.documents,
+              }
             )
           })
 
@@ -186,6 +197,7 @@ describe('Move controllers', function () {
                 mockValuesWithHearings.person.id,
                 {
                   assessment_answers: mockValuesWithHearings.assessment,
+                  documents: mockValuesWithHearings.documents,
                 }
               )
             })
