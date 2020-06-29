@@ -32,8 +32,12 @@ function importFiles(folderPath) {
 
 function transformQuestion(
   key,
-  { question, hint, options, validations = [], type }
+  { question, hint, options, validations = [], type } = {}
 ) {
+  if (!key) {
+    return {}
+  }
+
   const labelPath = labelPathMap[type] || labelPathMap.default
   const component = uiComponentMap[type] || uiComponentMap.default
   const field = {
@@ -41,7 +45,7 @@ function transformQuestion(
     component,
     id: key,
     name: key,
-    validate: validations.map(validation => validation.name),
+    validate: validations,
   }
 
   set(field, labelPath, {

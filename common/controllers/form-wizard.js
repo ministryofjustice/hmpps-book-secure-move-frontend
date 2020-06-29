@@ -54,10 +54,10 @@ class FormController extends Controller {
 
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
-    const errorList = map(errors, ({ key, type }) => {
+    const errorList = map(errors, error => {
       return {
-        html: fieldHelpers.getFieldErrorMessage(key, type),
-        href: `#${key}`,
+        html: fieldHelpers.getFieldErrorMessage(error),
+        href: `#${error.key}`,
       }
     })
 
