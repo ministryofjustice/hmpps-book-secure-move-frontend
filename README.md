@@ -199,6 +199,8 @@ It will also start a new deployment specific [job on CircleCI](https://app.circl
 
 ## Environment variables
 
+The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
+
 | Name | Description | Default |
 |:-----|:------------|:--------|
 | PORT | Port the web server listens on | `3000` |
