@@ -1,4 +1,9 @@
+const fs = require('fs')
+const path = require('path')
+
 const { keyBy, set } = require('lodash')
+
+const { frameworks } = require('../../config/paths')
 
 const labelPathMap = {
   radio: 'fieldset.legend',
@@ -10,6 +15,19 @@ const uiComponentMap = {
   checkbox: 'govukCheckboxes',
   textarea: 'govukTextarea',
   default: 'govukInput',
+}
+
+function importFiles(folderPath) {
+  try {
+    return fs.readdirSync(folderPath).map(filename => {
+      const filepath = path.resolve(folderPath, filename)
+      const contents = fs.readFileSync(filepath, { encoding: 'utf8' })
+
+      return JSON.parse(contents)
+    })
+  } catch (error) {
+    return undefined
+  }
 }
 
 function transformQuestion(
@@ -83,7 +101,28 @@ function transformManifest(key, manifest) {
   }
 }
 
+function getPersonEscortFramework() {
+  const sectionsFolder = path.resolve(
+    frameworks.output,
+    'person-escort-record',
+    'manifests'
+  )
+  const questionsFolder = path.resolve(
+    frameworks.output,
+    'person-escort-record',
+    'questions'
+  )
+  const sections = importFiles(sectionsFolder)
+  const questions = importFiles(questionsFolder)
+
+  return {
+    sections: keyBy(sections, 'key'),
+    questions: keyBy(questions, 'name'),
+  }
+}
+
 module.exports = {
   transformManifest,
   transformQuestion,
+  getPersonEscortFramework,
 }
