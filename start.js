@@ -4,6 +4,9 @@ const { PORT } = require('./config')
 const logger = require('./config/logger')
 const app = require('./server')
 
+// eslint-disable-next-line no-process-env
+process.env.TZ = 'Europe/London'
+
 /**
  * Get port from config and store in Express.
  */
