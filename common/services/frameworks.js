@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const { keyBy, set } = require('lodash')
+const { kebabCase, keyBy, set } = require('lodash')
 
 const { frameworks } = require('../../config/paths')
 
@@ -15,6 +15,31 @@ const uiComponentMap = {
   checkbox: 'govukCheckboxes',
   textarea: 'govukTextarea',
   default: 'govukInput',
+}
+
+function buildCommentField(
+  dependentField,
+  dependentValue,
+  followupComment = {}
+) {
+  const field = {
+    rows: 4,
+    name: `${dependentField}--${kebabCase(dependentValue)}`,
+    id: `${dependentField}--${kebabCase(dependentValue)}`,
+    component: 'govukTextarea',
+    classes: 'govuk-input--width-20',
+    label: {
+      text: followupComment.label,
+      classes: 'govuk-label--s',
+    },
+    validate: followupComment.validations,
+  }
+
+  if (followupComment.hint) {
+    set(field, 'hint.text', followupComment.hint)
+  }
+
+  return field
 }
 
 function importFiles(folderPath) {
@@ -58,13 +83,17 @@ function transformQuestion(
   }
 
   if (options) {
-    field.items = options.map(({ value, label, followup }) => {
-      return {
-        value,
-        text: label,
-        conditional: followup,
+    field.items = options.map(
+      ({ value, label, followup, followup_comment: followupComment }) => {
+        const commentField = buildCommentField(key, value, followupComment)
+
+        return {
+          value,
+          text: label,
+          conditional: followupComment ? commentField : followup,
+        }
       }
-    })
+    )
   }
 
   return field
