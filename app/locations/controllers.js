@@ -1,18 +1,28 @@
 const { get, sortBy } = require('lodash')
 
-function locations(req, res) {
+const referenceDataService = require('../../common/services/reference-data')
+
+async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
 
-  let locations
+  let locations = []
+  let regions = []
 
   if (userPermissions.includes('allocation:create')) {
-    locations = req.session.regions
+    try {
+      regions = await referenceDataService.getRegions()
+      req.session.regions = regions
+    } catch (error) {
+      next(new Error('Failed to retrieve the regions'))
+      return
+    }
   } else {
     locations = sortBy(req.userLocations, 'title')
   }
 
   res.render('locations/views/locations.njk', {
     locations,
+    regions,
   })
 }
 

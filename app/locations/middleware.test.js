@@ -1,5 +1,3 @@
-const proxyquire = require('proxyquire').noCallThru()
-
 const middleware = require('./middleware')
 
 const mockUserLocations = [
@@ -250,41 +248,6 @@ describe('Locations middleware', function () {
 
       it('should call next without args', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-  })
-
-  describe('#setRegions', function () {
-    const mockReferenceData = {}
-    const proxiedMiddleware = proxyquire('./middleware', {
-      '../../common/services/reference-data': mockReferenceData,
-    })
-    let nextSpy
-
-    beforeEach(function () {
-      req = {
-        session: {},
-      }
-      nextSpy = sinon.spy()
-    })
-
-    context('when the API is available', function () {
-      it('should retrieve all regions', async function () {
-        mockReferenceData.getRegions = sinon.fake.returns(Promise.resolve([]))
-        await proxiedMiddleware.setRegions(req, {}, nextSpy)
-        expect(nextSpy).to.be.calledOnceWithExactly()
-        expect(req.session).to.have.property('regions')
-        expect(req.session.regions).to.deep.equal([])
-      })
-    })
-
-    context('when the API is *not* available', function () {
-      it('should fail gracefully', async function () {
-        mockReferenceData.getRegions = sinon.fake.returns(
-          Promise.reject(new Error())
-        )
-        await proxiedMiddleware.setRegions(req, {}, nextSpy)
-        expect(nextSpy).to.be.calledOnce
       })
     })
   })

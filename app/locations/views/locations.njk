@@ -29,16 +29,17 @@
         <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
           {% for location in locations %}
             <li>
-                {% if location.type == "regions" %}
-                  {{ location.key | lower }}.
-                  <a href="/locations/region/{{ location.id }}">
-                    {{ location.name }}
-                  </a>
-                {% else %}
-                  <a href="/locations/{{ location.id }}">
-                    {{ location.title }}
-                  </a>
-                {% endif %}
+              <a href="/locations/{{ location.id }}">
+                {{ location.title }}
+              </a>
+            </li>
+          {% endfor %}
+          {% for region in regions %}
+            <li>
+              {{ region.key | lower }}.
+              <a href="/locations/regions/{{ region.id }}">
+                {{ region.name }}
+              </a>
             </li>
           {% endfor %}
         </ul>
