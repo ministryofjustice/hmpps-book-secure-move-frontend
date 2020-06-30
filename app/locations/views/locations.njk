@@ -31,7 +31,7 @@
             <li>
                 {% if location.type == "regions" %}
                   {{ location.key | lower }}.
-                  <a href="/locations/region/prisons/{{ location.id }}">
+                  <a href="/locations/region/{{ location.id }}">
                     {{ location.name }}
                   </a>
                 {% else %}

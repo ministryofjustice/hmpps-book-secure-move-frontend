@@ -20,7 +20,7 @@ router.use(setUserLocations)
 router.get('/', checkLocationsLength, setRegions, locations)
 router.get('/all', setAllLocations, redirect)
 router.get('/:locationId', setLocation, redirect)
-router.get('/region/prisons/:regionId', setRegion, redirect)
+router.get('/region/:regionId', setRegion, redirect)
 
 // Export
 module.exports = {
