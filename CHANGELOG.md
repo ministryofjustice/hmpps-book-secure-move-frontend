@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.32.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.31.0...v2.32.0) (2020-06-30)
+
+
+### Features
+
+* **formwizard:** Support custom validation messages ([0466993](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/046699308e1615a98fa7ed882703b39560efe8f0))
+* **per:** Add save and return support to step forms ([50331e2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/50331e2f22826468195f5beb68a8b774028067d4))
+* Add importer for Book a secure move frameworks P4-1734 ([7b6f480](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7b6f480568468d94fbc5f0387d50a35143f34a2d))
+* Add route handler to show framework steps ([9ba67d9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9ba67d94280a9985e3fc3df0223688755c64331e))
+
+
+### Bug Fixes
+
+* Set app timezone to be Europe/London explicitly ([c6a9a4e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c6a9a4e3f325b60389414f72a05135225e44a60a))
+* upgrade govuk-frontend from 3.6.0 to 3.7.0 ([2d09406](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2d0940662eaa4ea09f7db8a7094118fb9208e2d1))
+* Use correct copy for cancelling an allocation ([b7a12fe](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b7a12fe7de330e7709f2ab4173c9a905a5972f4d))
+
 ## [2.31.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.30.0...v2.31.0) (2020-06-18)
 
 
