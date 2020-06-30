@@ -54,6 +54,16 @@ const mockLocations = [
     title: 'Axminster Crown Court',
   },
 ]
+const mockRegions = [
+  {
+    id: 'regiona-222b-4522-9d65-4ef429f9081e',
+    title: 'Region A',
+  },
+  {
+    id: 'regionb-f750-4ac3-ac76-fb631445f974',
+    title: 'Region B',
+  },
+]
 
 describe('Reference Data Service', function () {
   context('', function () {
@@ -817,6 +827,121 @@ describe('Reference Data Service', function () {
 
       it('should return response.data', function () {
         expect(response).to.deep.equal(mockResponse.data)
+      })
+    })
+
+    describe('#getRegions()', function () {
+      const mockResponse = {
+        data: mockRegions,
+        links: {},
+      }
+      const mockMultiPageResponse = {
+        data: mockRegions,
+        links: {
+          next: 'http://next-page.com',
+        },
+      }
+      const mockEmptyPageResponse = {
+        data: [],
+        links: {
+          next: 'http://next-page.com',
+        },
+      }
+      let regions
+
+      beforeEach(function () {
+        sinon.stub(apiClient, 'findAll')
+      })
+
+      context('with only one page', function () {
+        beforeEach(function () {
+          apiClient.findAll.resolves(mockResponse)
+        })
+
+        context('by default', function () {
+          beforeEach(async function () {
+            regions = await referenceDataService.getRegions()
+          })
+
+          it('should call the API client once', function () {
+            expect(apiClient.findAll).to.be.calledOnce
+          })
+
+          it('should call the API client with default options', function () {
+            expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+              'region',
+              {
+                page: 1,
+                per_page: 100,
+              }
+            )
+          })
+
+          it('should return regions sorted by title', function () {
+            expect(regions).to.deep.equal(sortBy(mockRegions, 'title'))
+          })
+        })
+      })
+
+      context('with multiple pages', function () {
+        beforeEach(function () {
+          apiClient.findAll
+            .onFirstCall()
+            .resolves(mockMultiPageResponse)
+            .onSecondCall()
+            .resolves(mockResponse)
+        })
+
+        context('by default', function () {
+          beforeEach(async function () {
+            regions = await referenceDataService.getRegions()
+          })
+
+          it('should call the API client twice', function () {
+            expect(apiClient.findAll).to.be.calledTwice
+          })
+
+          it('should call API client with default options on first call', function () {
+            expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+              'region',
+              {
+                page: 1,
+                per_page: 100,
+              }
+            )
+          })
+
+          it('should call API client with second page on second call', function () {
+            expect(apiClient.findAll.secondCall).to.be.calledWithExactly(
+              'region',
+              {
+                page: 2,
+                per_page: 100,
+              }
+            )
+          })
+
+          it('should return regions sorted by title', function () {
+            expect(regions).to.deep.equal(
+              sortBy([...mockRegions, ...mockRegions], 'title')
+            )
+          })
+        })
+      })
+
+      context('with next but no data', function () {
+        beforeEach(async function () {
+          apiClient.findAll.resolves(mockEmptyPageResponse)
+          regions = await referenceDataService.getRegions()
+        })
+
+        it('should call the API client once', function () {
+          expect(apiClient.findAll).to.be.calledOnce
+        })
+
+        it('should return no regions', function () {
+          expect(regions).to.deep.equal([])
+        })
       })
     })
   })
