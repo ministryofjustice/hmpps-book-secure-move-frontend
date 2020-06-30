@@ -1,5 +1,3 @@
-import { FEATURE_FLAGS } from '../../config'
-
 import {
   createCourtMove,
   checkNoUpdateLinks,
@@ -23,19 +21,17 @@ const users = [
   },
 ]
 
-if (FEATURE_FLAGS.EDITABILITY) {
-  users.forEach(user => {
-    fixture(`Existing move (As ${user.name})`).beforeEach(async t => {
-      await t.useRole(user.role).navigateTo(home)
-      await createCourtMove()
-    })
-
-    test('User should not see any update links on move page', async () => {
-      await checkNoUpdateLinks()
-    })
-
-    test('User should not be able to access move update pages', async () => {
-      await checkUpdatePagesForbidden()
-    })
+users.forEach(user => {
+  fixture(`Existing move (As ${user.name})`).beforeEach(async t => {
+    await t.useRole(user.role).navigateTo(home)
+    await createCourtMove()
   })
-}
+
+  test('User should not see any update links on move page', async () => {
+    await checkNoUpdateLinks()
+  })
+
+  test('User should not be able to access move update pages', async () => {
+    await checkUpdatePagesForbidden()
+  })
+})

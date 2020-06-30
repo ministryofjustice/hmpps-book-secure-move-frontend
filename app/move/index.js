@@ -5,7 +5,6 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
-const { FEATURE_FLAGS } = require('../../config')
 
 const { assign, confirmation, create, update, view } = require('./controllers')
 const {
@@ -93,21 +92,19 @@ router.use(
   wizard(assignSteps, assignFields, assignConfig)
 )
 
-if (FEATURE_FLAGS.EDITABILITY) {
-  updateSteps.forEach(updateJourney => {
-    const { key, steps } = updateJourney
-    const updateStepConfig = {
-      ...updateConfig,
-      name: `update-move-${key}`,
-      journeyName: `update-move-${key}`,
-    }
-    router.use(
-      '/:moveId/edit',
-      protectRoute(updateJourney.permission),
-      wizard(steps, updateFields, updateStepConfig)
-    )
-  })
-}
+updateSteps.forEach(updateJourney => {
+  const { key, steps } = updateJourney
+  const updateStepConfig = {
+    ...updateConfig,
+    name: `update-move-${key}`,
+    journeyName: `update-move-${key}`,
+  }
+  router.use(
+    '/:moveId/edit',
+    protectRoute(updateJourney.permission),
+    wizard(steps, updateFields, updateStepConfig)
+  )
+})
 
 const unassignConfig = {
   ...wizardConfig,
