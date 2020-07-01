@@ -126,9 +126,6 @@ module.exports = {
     },
   },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
-  FEATURE_FLAGS: {
-    EDITABILITY: process.env.FEATURE_FLAG_EDITABILITY,
-  },
   E2E: {
     BASE_URL: process.env.E2E_BASE_URL || BASE_URL,
     ROLES: {
