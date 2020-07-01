@@ -6,8 +6,6 @@ const middleware = require('./middleware')
 function defineFormWizards(framework, router) {
   const { questions, sections } = framework
 
-  router.use(middleware.setFramework(framework))
-
   for (const sectionKey in sections) {
     const section = sections[sectionKey]
     const wizardConfig = {
@@ -27,7 +25,11 @@ function defineFormWizards(framework, router) {
       ...section.steps,
     }
 
-    router.use(`/${sectionKey}`, wizard(steps, questions, wizardConfig))
+    router.use(
+      `/${sectionKey}`,
+      middleware.setFrameworkSection(section),
+      wizard(steps, questions, wizardConfig)
+    )
   }
 }
 

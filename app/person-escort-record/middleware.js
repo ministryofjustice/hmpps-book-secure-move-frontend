@@ -5,6 +5,14 @@ function setFramework(framework) {
   }
 }
 
+function setFrameworkSection(frameworkSection) {
+  return (req, res, next) => {
+    req.frameworkSection = frameworkSection
+    next()
+  }
+}
+
 module.exports = {
   setFramework,
+  setFrameworkSection,
 }

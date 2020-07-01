@@ -52,7 +52,7 @@ describe('Person Escort Record router', function () {
       mockRouter = {
         use: sinon.stub(),
       }
-      sinon.stub(middleware, 'setFramework')
+      sinon.stub(middleware, 'setFrameworkSection')
 
       router.defineFormWizards(mockFramework, mockRouter)
     })
@@ -63,15 +63,8 @@ describe('Person Escort Record router', function () {
     })
 
     describe('router', function () {
-      it('should setup setFramework middleware', function () {
-        expect(mockRouter.use).to.be.calledWithExactly(
-          middleware.setFramework()
-        )
-        expect(middleware.setFramework).to.be.calledWithExactly(mockFramework)
-      })
-
       it('should call use correct number of times', function () {
-        expect(mockRouter.use.callCount).to.equal(4)
+        expect(mockRouter.use.callCount).to.equal(3)
       })
 
       it('should setup router with form wizards', function () {
@@ -95,6 +88,7 @@ describe('Person Escort Record router', function () {
 
           expect(mockRouter.use).to.be.calledWithExactly(
             `/${key}`,
+            middleware.setFrameworkSection(value),
             wizardStub(steps, mockFramework.questions, config)
           )
         }

@@ -4,10 +4,15 @@ const router = require('express').Router()
 // Local dependencies
 const frameworksService = require('../../common/services/frameworks')
 
+const { setFramework } = require('./middleware')
 const { defineFormWizards } = require('./router')
 
-// Define routes
 const framework = frameworksService.getPersonEscortFramework()
+
+// Define shared middleware
+router.use(setFramework(framework))
+
+// Define routes
 defineFormWizards(framework, router)
 
 // Export
