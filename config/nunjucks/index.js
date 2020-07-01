@@ -1,5 +1,7 @@
 const nunjucks = require('nunjucks')
 
+const markdown = require('../markdown')
+
 const filters = require('./filters')
 const templateGlobals = require('./globals')
 
@@ -23,6 +25,9 @@ module.exports = (app, { IS_DEV = false }, paths) => {
 
   // Initialise nunjucks environment
   const nunjucksEnvironment = nunjucks.configure(views, nunjucksConfiguration)
+
+  // setup markdown support
+  markdown.init(nunjucksEnvironment)
 
   // Custom filters
   Object.keys(filters).forEach(filter => {

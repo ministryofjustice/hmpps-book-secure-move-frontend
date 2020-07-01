@@ -11,7 +11,6 @@ function defineFormWizards(framework, router) {
   for (const sectionKey in sections) {
     const section = sections[sectionKey]
     const wizardConfig = {
-      buttonText: 'actions::save_and_continue',
       controller: FrameworksController,
       entryPoint: true,
       journeyName: `person-escort-record-${sectionKey}`,

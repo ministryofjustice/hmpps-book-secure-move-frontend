@@ -71,6 +71,8 @@
       {% endfor %}
     {% endblock %}
 
+    {% block afterFields %}{% endblock %}
+
     {% block formActions %}
       {% block submitAction %}
         {{ govukButton({

@@ -1,13 +1,33 @@
 {% extends "form-wizard.njk" %}
 
+{% set mainClasses = "interruption-card" if options.stepType == 'interruption-card' %}
+
 {% block submitAction %}
   {{ super() }}
 
-  {{ govukButton({
-    text: t("actions::save_and_return_to_overview"),
-    name: "save_and_return_to_overview",
-    value: "1",
-    type: "submit",
-    classes: "govuk-button--secondary"
-  }) }}
+  {% if options.stepType != 'interruption-card' %}
+    {{ govukButton({
+      text: t("actions::save_and_return_to_overview"),
+      name: "save_and_return_to_overview",
+      value: "1",
+      type: "submit",
+      classes: "govuk-button--secondary"
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block beforeFields %}
+  {% if options.beforeFieldsContent %}
+    <div class="markdown govuk-!-margin-bottom-6">
+      {% markdown %}{{ options.beforeFieldsContent }}{% endmarkdown %}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block afterFields %}
+  {% if options.afterFieldsContent %}
+    <div class="markdown govuk-!-margin-bottom-6">
+      {% markdown %}{{ options.afterFieldsContent }}{% endmarkdown %}
+    </div>
+  {% endif %}
 {% endblock %}

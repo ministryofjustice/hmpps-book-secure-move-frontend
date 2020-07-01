@@ -6,6 +6,74 @@ describe('Person Escort Record controllers', function () {
   describe('FrameworksController', function () {
     const controller = new controllers.FrameworksController({ route: '/' })
 
+    describe('#middlewareSetup()', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareSetup()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareSetup).to.have.been
+          .calledOnce
+      })
+
+      it('should call set models method', function () {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setButtonText
+        )
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
+    describe('#setButtonText', function () {
+      let mockReq, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          form: {
+            options: {},
+          },
+        }
+      })
+
+      context('by default', function () {
+        beforeEach(function () {
+          controller.setButtonText(mockReq, {}, nextSpy)
+        })
+
+        it('should use save and continue button text', function () {
+          expect(mockReq.form.options.buttonText).to.equal(
+            'actions::save_and_continue'
+          )
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with interruption card step type', function () {
+        beforeEach(function () {
+          mockReq.form.options.stepType = 'interruption-card'
+          controller.setButtonText(mockReq, {}, nextSpy)
+        })
+
+        it('should use continue button text', function () {
+          expect(mockReq.form.options.buttonText).to.equal('actions::continue')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
     describe('#successHandler', function () {
       let mockReq, mockRes, nextSpy
 

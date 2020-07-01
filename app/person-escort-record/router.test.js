@@ -84,7 +84,6 @@ describe('Person Escort Record router', function () {
             ...value.steps,
           }
           const config = {
-            buttonText: 'actions::save_and_continue',
             controller: FrameworksController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,
@@ -125,7 +124,6 @@ describe('Person Escort Record router', function () {
             ...value.steps,
           }
           const config = {
-            buttonText: 'actions::save_and_continue',
             controller: FrameworksController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,

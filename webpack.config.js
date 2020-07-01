@@ -1,12 +1,12 @@
 const path = require('path')
 
 const CopyPlugin = require('copy-webpack-plugin')
+const YAML = require('js-yaml')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const merge = require('webpack-merge')
-const YAML = require('yamljs')
 
 const frameworksService = require('./common/services/frameworks')
 const { IS_DEV, IS_PRODUCTION } = require('./config')
@@ -14,7 +14,7 @@ const configPaths = require('./config/paths')
 
 function transformManifestFile(transformMethod) {
   return (content, absolutePath) => {
-    const yaml = YAML.load(absolutePath)
+    const yaml = YAML.safeLoad(content)
     const basename = path.basename(absolutePath, '.yml')
     const transformed = transformMethod(basename, yaml)
 

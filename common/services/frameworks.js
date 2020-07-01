@@ -105,7 +105,18 @@ function transformManifest(key, manifest) {
   }
 
   const steps = (manifest.steps || []).map(
-    ({ questions = [], slug, name: pageTitle, next_step: nextStep }, index) => {
+    (
+      {
+        questions = [],
+        slug,
+        type: stepType,
+        name: pageTitle,
+        next_step: nextStep,
+        content_before_questions: beforeFieldsContent,
+        content_after_questions: afterFieldsContent,
+      },
+      index
+    ) => {
       let next = manifest.steps[index + 1]?.slug
 
       if (nextStep) {
@@ -119,7 +130,10 @@ function transformManifest(key, manifest) {
       return {
         slug,
         next,
+        stepType,
         pageTitle,
+        beforeFieldsContent,
+        afterFieldsContent,
         key: `/${slug}`,
         fields: questions,
         pageCaption: manifest.name,

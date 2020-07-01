@@ -6,11 +6,10 @@
     "config/",
     "locales/",
     "server.js",
-    "start.js"
+    "start.js",
+    ".build/frameworks/**/*.json"
   ],
-  "ignore": [
-    ".build/"
-  ],
+  "ignore": [],
   "env": {
     "NODE_ENV": "development"
   },
