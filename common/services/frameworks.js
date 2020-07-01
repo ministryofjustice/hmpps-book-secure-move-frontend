@@ -109,6 +109,7 @@ function transformManifest(key, manifest) {
       {
         questions = [],
         slug,
+        type: stepType,
         name: pageTitle,
         next_step: nextStep,
         content_before_questions: beforeFieldsContent,
@@ -129,6 +130,7 @@ function transformManifest(key, manifest) {
       return {
         slug,
         next,
+        stepType,
         pageTitle,
         beforeFieldsContent,
         afterFieldsContent,

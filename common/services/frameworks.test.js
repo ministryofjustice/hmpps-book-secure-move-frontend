@@ -442,6 +442,7 @@ describe('Frameworks service', function () {
               key: '/step-1',
               fields: ['question-1', 'question-2'],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               afterFieldsContent: undefined,
               beforeFieldsContent: undefined,
             },
@@ -452,6 +453,7 @@ describe('Frameworks service', function () {
               key: '/step-2',
               fields: ['question-3', 'question-4'],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               afterFieldsContent: undefined,
               beforeFieldsContent: undefined,
             },
@@ -462,6 +464,7 @@ describe('Frameworks service', function () {
               key: '/step-3',
               fields: ['question-5', 'question-6'],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               afterFieldsContent: undefined,
               beforeFieldsContent: undefined,
             },
@@ -641,6 +644,7 @@ describe('Frameworks service', function () {
               key: '/step-1',
               fields: [],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               afterFieldsContent: undefined,
               beforeFieldsContent: undefined,
             },
@@ -651,6 +655,7 @@ describe('Frameworks service', function () {
               key: '/step-2',
               fields: [],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               afterFieldsContent: undefined,
               beforeFieldsContent: undefined,
             },
@@ -717,6 +722,7 @@ describe('Frameworks service', function () {
               key: '/step-1',
               fields: [],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               beforeFieldsContent: '# Some before content\nContent paragraph',
               afterFieldsContent: undefined,
             },
@@ -727,8 +733,84 @@ describe('Frameworks service', function () {
               key: '/step-2',
               fields: [],
               pageCaption: 'Manifest name',
+              stepType: undefined,
               beforeFieldsContent: undefined,
               afterFieldsContent: '# Some after content\nContent paragraph',
+            },
+          })
+        })
+
+        it('should set empty values for fields', function () {
+          expect(transformed.steps['/step-1'].fields).to.deep.equal([])
+          expect(transformed.steps['/step-2'].fields).to.deep.equal([])
+        })
+      })
+
+      context('with step type', function () {
+        let steps, transformed
+
+        beforeEach(function () {
+          steps = [
+            {
+              name: 'Step 1',
+              slug: 'step-1',
+            },
+            {
+              name: 'Step 2',
+              slug: 'step-2',
+              type: 'interruption-card',
+            },
+          ]
+
+          transformed = frameworksService.transformManifest('key', {
+            steps,
+            name: 'Manifest name',
+          })
+        })
+
+        it('should contain correct number of manifest keys', function () {
+          expect(Object.keys(transformed)).to.have.length(3)
+        })
+
+        it('should contain correct manifest key', function () {
+          expect(Object.keys(transformed)).to.deep.equal([
+            'key',
+            'name',
+            'steps',
+          ])
+        })
+
+        it('should set key', function () {
+          expect(transformed.key).to.equal('key')
+        })
+
+        it('should set name', function () {
+          expect(transformed.name).to.equal('Manifest name')
+        })
+
+        it('should transform content correctly', function () {
+          expect(transformed.steps).to.deep.equal({
+            '/step-1': {
+              slug: 'step-1',
+              next: 'step-2',
+              pageTitle: 'Step 1',
+              key: '/step-1',
+              fields: [],
+              pageCaption: 'Manifest name',
+              stepType: undefined,
+              beforeFieldsContent: undefined,
+              afterFieldsContent: undefined,
+            },
+            '/step-2': {
+              slug: 'step-2',
+              next: undefined,
+              pageTitle: 'Step 2',
+              key: '/step-2',
+              fields: [],
+              pageCaption: 'Manifest name',
+              stepType: 'interruption-card',
+              beforeFieldsContent: undefined,
+              afterFieldsContent: undefined,
             },
           })
         })

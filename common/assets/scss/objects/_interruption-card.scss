@@ -1,0 +1,38 @@
+.interruption-card {
+  background-color: govuk-colour("blue");
+  color: govuk-colour("white");
+  padding: govuk-spacing(7) govuk-spacing(7) govuk-spacing(3);
+  margin: 0 0 govuk-spacing(6);
+
+  h1, h2, h3, h4, h5, h6, p, ul, ol {
+    color: govuk-colour("white");
+  }
+
+  .govuk-caption-xl,
+  .govuk-caption-l,
+  .govuk-caption-m,
+  .govuk-caption-s {
+    color: govuk-tint(govuk-colour('blue'), 75);
+  }
+
+  .govuk-warning-text__text {
+    p {
+      margin-bottom: 0;
+      font-weight: 700;
+    }
+  }
+
+  .govuk-warning-text__icon {
+    background-color: govuk-colour("white");
+    border: govuk-colour("white");
+    color: govuk-colour("black");
+  }
+
+  .govuk-button {
+    margin-bottom: 0;
+
+    background-color: govuk-colour("white");
+    box-shadow: 0 2px 0 govuk-colour("black");
+    color: govuk-colour("black");
+  }
+}
