@@ -20,6 +20,7 @@ i18next.use(Backend).init({
     'locations',
     'messages',
     'moves',
+    'person-escort-record',
     'statuses',
     'validation',
   ],

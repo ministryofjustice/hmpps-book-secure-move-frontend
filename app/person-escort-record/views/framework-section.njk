@@ -1,0 +1,32 @@
+{% extends "layouts/base.njk" %}
+
+{% block content %}
+  <header class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-9">
+        {{ t("person-escort-record::section_overview", {
+          section: sectionTitle
+        }) }}
+      </h1>
+    </div>
+  </header>
+
+  {% for key, step in summarySteps %}
+    <section class="app-!-position-relative govuk-!-margin-bottom-8">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 app-border-bottom-1">
+        {{ step.pageTitle }}
+      </h2>
+
+      <p class="app-!-position-top-right">
+        <a href="{{ step.stepUrl }}" class="govuk-link">
+          <strong>{{ t("actions::change", {
+            context: "with_visually_hidden_text",
+            text: step.pageTitle
+          }) | safe }}</strong>
+        </a>
+      </p>
+
+      {{ govukSummaryList(step.summaryListComponent) }}
+    </section>
+  {% endfor %}
+{% endblock %}

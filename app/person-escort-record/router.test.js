@@ -1,6 +1,9 @@
 const proxyquire = require('proxyquire')
 
-const { FrameworksController } = require('./controllers')
+const {
+  FrameworkSectionController,
+  FrameworksController,
+} = require('./controllers')
 const middleware = require('./middleware')
 
 const wizardReqStub = sinon.stub()
@@ -71,8 +74,10 @@ describe('Person Escort Record router', function () {
         for (const [key, value] of Object.entries(mockFramework.sections)) {
           const steps = {
             '/': {
+              controller: FrameworkSectionController,
               reset: true,
               resetJourney: true,
+              template: 'framework-section',
             },
             ...value.steps,
           }
@@ -82,7 +87,7 @@ describe('Person Escort Record router', function () {
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',
             name: `person-escort-record-${key}`,
-            template: 'form-step',
+            template: 'framework-step',
             templatePath: 'person-escort-record/views/',
           }
 
@@ -112,8 +117,10 @@ describe('Person Escort Record router', function () {
         for (const [key, value] of Object.entries(mockFramework.sections)) {
           const steps = {
             '/': {
+              controller: FrameworkSectionController,
               reset: true,
               resetJourney: true,
+              template: 'framework-section',
             },
             ...value.steps,
           }
@@ -123,7 +130,7 @@ describe('Person Escort Record router', function () {
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',
             name: `person-escort-record-${key}`,
-            template: 'form-step',
+            template: 'framework-step',
             templatePath: 'person-escort-record/views/',
           }
 

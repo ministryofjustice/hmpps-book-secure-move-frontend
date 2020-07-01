@@ -1,14 +1,28 @@
+const { filter } = require('lodash')
+
 const i18n = require('../../config/i18n')
 
-function frameworkStepToSummary(fields, baseUrl) {
+function frameworkStepToSummary(allFields, baseUrl) {
   return ([key, step]) => {
     const stepUrl = `${baseUrl}/${step.slug}`
+    const stepFields = step.fields
     const answerQuestionText = i18n.t('actions::answer_question')
-    const summaryListComponent = step.fields.map(field => {
-      const { id, description, question } = fields[field]
+
+    if (!stepFields.length) {
+      return undefined
+    }
+
+    const summaryListRows = stepFields.map(fieldName => {
+      const { id, description, question } = allFields[fieldName] || {}
+      const rowHeader = description || question
+
+      if (!rowHeader) {
+        return undefined
+      }
+
       return {
         key: {
-          text: description || question,
+          text: rowHeader,
           classes: 'govuk-!-font-weight-regular',
         },
         value: {
@@ -22,7 +36,10 @@ function frameworkStepToSummary(fields, baseUrl) {
       {
         ...step,
         stepUrl,
-        summaryListComponent,
+        summaryListComponent: {
+          classes: 'govuk-!-font-size-16',
+          rows: filter(summaryListRows),
+        },
       },
     ]
   }
