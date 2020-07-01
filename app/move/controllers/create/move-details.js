@@ -51,9 +51,13 @@ class MoveDetailsController extends CreateBaseController {
     if (moveType === 'prison_recall') {
       req.form.values.additional_information =
         req.form.values.prison_recall_comments
-    }
-
-    if (moveType !== 'prison_recall' && existingMoveType === 'prison_recall') {
+    } else if (moveType === 'video_remand') {
+      req.form.values.additional_information =
+        req.form.values.video_remand_comments
+    } else if (
+      existingMoveType === 'prison_recall' ||
+      existingMoveType === 'video_remand'
+    ) {
       req.form.values.additional_information = null
     }
 

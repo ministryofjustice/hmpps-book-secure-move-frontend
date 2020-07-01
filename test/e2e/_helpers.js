@@ -215,7 +215,9 @@ export async function generateMove(profile, options = {}, overrides = {}) {
     ...overrides,
   }
 
-  if (move.move_type === 'prison_recall') {
+  const noToLocation = ['prison_recall', 'video_remand']
+
+  if (noToLocation.includes(move.move_type)) {
     delete move.to_location
   }
 

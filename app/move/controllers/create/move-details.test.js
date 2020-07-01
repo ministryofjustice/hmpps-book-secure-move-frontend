@@ -70,6 +70,10 @@ describe('Move controllers', function () {
                       value: 'prison_recall',
                       conditional: 'additional_information',
                     },
+                    {
+                      value: 'video_remand',
+                      conditional: 'additional_information',
+                    },
                   ],
                 },
                 to_location_court_appearance: {},
@@ -110,13 +114,14 @@ describe('Move controllers', function () {
               'move:create:court_appearance',
               'move:create:prison_transfer',
               'move:create:prison_recall',
+              'move:create:video_remand',
             ],
           }
           controller.setMoveTypes(req, res, nextSpy)
         })
 
         it('should not remove any items from move_type', function () {
-          expect(req.form.options.fields.move_type.items.length).to.equal(3)
+          expect(req.form.options.fields.move_type.items.length).to.equal(4)
         })
 
         it('should keep all conditional fields', function () {
@@ -133,6 +138,10 @@ describe('Move controllers', function () {
                 },
                 {
                   value: 'prison_recall',
+                  conditional: 'additional_information',
+                },
+                {
+                  value: 'video_remand',
                   conditional: 'additional_information',
                 },
               ],
@@ -238,6 +247,32 @@ describe('Move controllers', function () {
         })
       })
 
+      context('when location type is video remand', function () {
+        const mockComments = 'Some prison recall specific information'
+
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'video_remand',
+            video_remand_comments: mockComments,
+            to_location: '',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should not set to_location', function () {
+          expect(req.form.values.to_location).to.be.undefined
+        })
+
+        it('should set additional_information', function () {
+          expect(req.form.values.additional_information).to.equal(mockComments)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
       context('when location type is prison transfer', function () {
         beforeEach(function () {
           req.form.values = {
@@ -289,6 +324,49 @@ describe('Move controllers', function () {
         })
 
         context('when existing move type is not prison recall', function () {
+          beforeEach(function () {
+            controller.process(req, {}, nextSpy)
+          })
+
+          it('should not clear additional_information', function () {
+            expect(req.form.values.additional_information).to.equal(
+              mockComments
+            )
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+      })
+
+      context('when location type is not a video remand', function () {
+        const mockComments = 'Some video remand specific information'
+
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'prison_transfer',
+            additional_information: mockComments,
+            to_location: '',
+          }
+        })
+
+        context('when existing move type is video remand', function () {
+          beforeEach(function () {
+            req.sessionModel.get.returns('video_remand')
+            controller.process(req, {}, nextSpy)
+          })
+
+          it('should clear additional_information', function () {
+            expect(req.form.values.additional_information).to.equal(null)
+          })
+
+          it('should call next without error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('when existing move type is not video remand', function () {
           beforeEach(function () {
             controller.process(req, {}, nextSpy)
           })

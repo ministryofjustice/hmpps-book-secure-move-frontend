@@ -180,6 +180,7 @@ module.exports = {
       'to_location_court_appearance',
       'to_location_prison_transfer',
       'prison_recall_comments',
+      'video_remand_comments',
     ],
   },
   '/agreement-status': {

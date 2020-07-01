@@ -29,6 +29,7 @@ class CreateMovePage extends Page {
       courtLocation: Selector('#to_location_court_appearance'),
       prisonLocation: Selector('#to_location_prison_transfer'),
       prisonRecallComments: Selector('#prison_recall_comments'),
+      videoRemandComments: Selector('#video_remand_comments'),
       dateCustom: Selector('[name="date_custom"]'),
       dateType: Selector('[name="date_type"]'),
       dateFrom: Selector('#date_from'),
@@ -242,6 +243,13 @@ class CreateMovePage extends Page {
     if (moveType === 'Prison recall') {
       fields.prisonRecallComments = {
         selector: this.fields.prisonRecallComments,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    if (moveType === 'Prison remand (Video Remand Hearing)') {
+      fields.videoRemandComments = {
+        selector: this.fields.videoRemandComments,
         value: faker.lorem.sentence(6),
       }
     }

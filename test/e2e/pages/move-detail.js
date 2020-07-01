@@ -93,6 +93,10 @@ class MoveDetailPage extends Page {
       toLocation = 'Prison recall'
     }
 
+    if (moveType === 'video_remand') {
+      toLocation = 'Prison remand (Video Remand Hearing)'
+    }
+
     if (additionalInformation) {
       toLocation += ` — ${additionalInformation}`
     }

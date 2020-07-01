@@ -70,6 +70,9 @@
       "prison_recall": {
         "label": "Prison recall"
       },
+      "video_remand": {
+        "label": "Prison remand (Video Remand Hearing)"
+      },
       "court_appearance": {
         "label": "Court"
       },

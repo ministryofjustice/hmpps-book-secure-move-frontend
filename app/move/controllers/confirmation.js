@@ -25,16 +25,17 @@ function confirmation(req, res) {
   const unassignedMoveId =
     unassignedMoves.length !== 0 ? unassignedMoves[0].id : undefined
 
+  const useLabelForLocationTitle = ['prison_recall', 'video_remand']
+
   const locals = {
     move,
     unassignedMoveId,
     supplierNames,
     savedHearings,
     unsavedHearings,
-    location:
-      moveType === 'prison_recall'
-        ? req.t('fields::move_type.items.prison_recall.label')
-        : toLocation.title,
+    location: useLabelForLocationTitle.includes(moveType)
+      ? req.t(`fields::move_type.items.${moveType}.label`)
+      : toLocation.title,
   }
 
   res.render('move/views/confirmation', locals)

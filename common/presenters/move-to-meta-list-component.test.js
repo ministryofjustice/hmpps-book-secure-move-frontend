@@ -392,6 +392,41 @@ describe('Presenters', function () {
         })
       })
 
+      context('with video remand move type', function () {
+        beforeEach(function () {
+          transformedResponse = moveToMetaListComponent({
+            ...mockMove,
+            move_type: 'video_remand',
+            additional_information: mockAdditionalInformation,
+          })
+        })
+
+        it('should add additional information to move type', function () {
+          expect(transformedResponse.items[1]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: `__translated__ — ${mockAdditionalInformation}`,
+            },
+            action: undefined,
+          })
+        })
+
+        it('should not add additional information to transfer reason', function () {
+          expect(transformedResponse.items[6]).to.deep.equal({
+            key: { text: '__translated__' },
+            value: {
+              text: undefined,
+            },
+          })
+        })
+
+        it('should translate label', function () {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.video_remand.label'
+          )
+        })
+      })
+
       context('with prison transfer move type', function () {
         const mockPrisonTransferReason = 'Parole'
 
