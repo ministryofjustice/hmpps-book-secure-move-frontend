@@ -1,6 +1,7 @@
 const nunjucks = require('nunjucks')
 const proxyquire = require('proxyquire').noCallThru()
 
+const markdownInitStub = sinon.stub().returns()
 const mockFilters = {
   filterOne: () => {},
   filterTwo: () => {},
@@ -24,6 +25,9 @@ const mockPaths = {
 const nunjucksEnv = proxyquire('./', {
   './filters': mockFilters,
   './globals': mockGlobals,
+  '../markdown': {
+    init: markdownInitStub,
+  },
 })
 
 describe('Nunjucks', function () {
@@ -41,6 +45,10 @@ describe('Nunjucks', function () {
     }
 
     sinon.stub(nunjucks, 'configure').returns(mockConfigure)
+  })
+
+  afterEach(function () {
+    markdownInitStub.resetHistory()
   })
 
   describe('Configuration', function () {
@@ -190,6 +198,16 @@ describe('Nunjucks', function () {
         'FIZZ',
         'Buzz'
       )
+    })
+  })
+
+  describe('Markdown', function () {
+    beforeEach(function () {
+      env = nunjucksEnv(mockApp, {}, mockPaths)
+    })
+
+    it('should compile markdown', function () {
+      expect(markdownInitStub).to.be.calledOnceWithExactly(mockConfigure)
     })
   })
 })
