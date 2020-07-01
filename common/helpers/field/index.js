@@ -13,7 +13,9 @@ const explicitAssessmentAnswer = require('../../../app/move/fields/common.explic
 const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
+const flattenConditionalFields = require('./flatten-conditional-fields')
 const getFieldErrorMessage = require('./get-field-error-message')
+const reduceDependentFields = require('./reduce-dependent-fields')
 const setFieldError = require('./set-field-error')
 
 function mapReferenceDataToOption({
@@ -248,4 +250,6 @@ module.exports = {
   insertInitialOption,
   insertItemConditional,
   populateAssessmentFields,
+  flattenConditionalFields,
+  reduceDependentFields,
 }

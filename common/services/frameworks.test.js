@@ -125,7 +125,7 @@ describe('Frameworks service', function () {
         })
       })
 
-      context('with options', function () {
+      context('with followups', function () {
         beforeEach(function () {
           mockQuestion = {
             ...mockQuestion,
@@ -168,6 +168,97 @@ describe('Frameworks service', function () {
                 value: 'No',
                 text: 'No',
                 conditional: ['conditional-field-2'],
+              },
+            ],
+            validate: [],
+          })
+        })
+      })
+
+      context('with follow up comment', function () {
+        beforeEach(function () {
+          mockQuestion = {
+            ...mockQuestion,
+            options: [
+              {
+                value: 'Yes, I agree',
+                label: 'Yes, I agree',
+                followup_comment: {
+                  label: 'Give details',
+                  hint: 'Some hint information',
+                  validations: [
+                    {
+                      type: 'required',
+                      message: 'This field is required',
+                    },
+                  ],
+                },
+              },
+              {
+                value: 'No, I do not agree',
+                label: 'No, I do not agree',
+                followup_comment: {
+                  label: 'Give details',
+                },
+              },
+            ],
+          }
+        })
+
+        it('should format correctly', function () {
+          const transformed = frameworksService.transformQuestion(
+            'question-key',
+            mockQuestion
+          )
+          expect(transformed).to.deep.equal({
+            component: 'govukInput',
+            question: 'Question text',
+            id: 'question-key',
+            name: 'question-key',
+            label: {
+              text: 'Question text',
+              classes: 'govuk-label--s',
+            },
+            items: [
+              {
+                value: 'Yes, I agree',
+                text: 'Yes, I agree',
+                conditional: {
+                  rows: 4,
+                  name: 'question-key--yes-i-agree',
+                  id: 'question-key--yes-i-agree',
+                  component: 'govukTextarea',
+                  classes: 'govuk-input--width-20',
+                  label: {
+                    text: 'Give details',
+                    classes: 'govuk-label--s',
+                  },
+                  hint: {
+                    text: 'Some hint information',
+                  },
+                  validate: [
+                    {
+                      type: 'required',
+                      message: 'This field is required',
+                    },
+                  ],
+                },
+              },
+              {
+                value: 'No, I do not agree',
+                text: 'No, I do not agree',
+                conditional: {
+                  rows: 4,
+                  name: 'question-key--no-i-do-not-agree',
+                  id: 'question-key--no-i-do-not-agree',
+                  component: 'govukTextarea',
+                  classes: 'govuk-input--width-20',
+                  label: {
+                    text: 'Give details',
+                    classes: 'govuk-label--s',
+                  },
+                  validate: undefined,
+                },
               },
             ],
             validate: [],
