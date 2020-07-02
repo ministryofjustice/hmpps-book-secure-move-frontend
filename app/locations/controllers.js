@@ -11,7 +11,6 @@ async function locations(req, res, next) {
   if (userPermissions.includes('allocation:create')) {
     try {
       regions = await referenceDataService.getRegions()
-      req.session.regions = regions
     } catch (error) {
       next(new Error('Failed to retrieve the regions'))
       return

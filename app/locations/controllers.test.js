@@ -60,8 +60,6 @@ describe('Locations controllers', function () {
             )
             await proxiedController.locations(req, res, nextSpy)
             expect(res.render).to.be.calledOnce
-            expect(req.session).to.have.property('regions')
-            expect(req.session.regions).to.deep.equal([])
           })
         })
 

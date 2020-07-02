@@ -1,3 +1,5 @@
+const proxyquire = require('proxyquire').noCallThru()
+
 const middleware = require('./middleware')
 
 const mockUserLocations = [
@@ -253,33 +255,38 @@ describe('Locations middleware', function () {
   })
 
   describe('#setRegion', function () {
+    const mockReferenceData = {}
+    const proxiedMiddleware = proxyquire('./middleware', {
+      '../../common/services/reference-data': mockReferenceData,
+    })
     const currentRegion = { id: '1' }
     let nextSpy
 
     beforeEach(function () {
       req = {
-        session: {
-          regions: [currentRegion],
-        },
+        session: {},
         params: {},
       }
       nextSpy = sinon.spy()
     })
 
-    context('when the region is set', function () {
+    context('when the region is set', async function () {
       it('should select the current region from all regions', async function () {
         req.params.regionId = '1'
-        middleware.setRegion(req, {}, nextSpy)
+        mockReferenceData.getRegions = sinon.fake.returns(
+          Promise.resolve([currentRegion, { id: '2' }])
+        )
+        await proxiedMiddleware.setRegion(req, {}, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()
         expect(req.session.currentRegion).to.deep.equal(currentRegion)
       })
     })
 
-    context('otherwise', function () {
+    context('otherwise', async function () {
       it('should not set the current region', async function () {
-        middleware.setRegion(req, {}, nextSpy)
+        await proxiedMiddleware.setRegion(req, {}, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()
-        expect(req.session.currentRegion).to.equal(undefined)
+        expect(req.session.currentRegion).to.equal(null)
       })
     })
   })
