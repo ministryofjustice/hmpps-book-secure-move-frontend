@@ -83,7 +83,10 @@ app.use(
 
 // ensure i18n is loaded early as needed for error template
 app.use(i18nMiddleware.handle(i18n))
-app.use(morgan('dev'))
+
+const loggingFormat = config.IS_PRODUCTION ? 'combined' : 'dev'
+app.use(morgan(loggingFormat))
+
 app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: '1mb' }))
