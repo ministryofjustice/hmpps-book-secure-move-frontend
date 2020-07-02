@@ -38,4 +38,42 @@ describe('Person escort record middleware', function () {
       })
     })
   })
+
+  describe('#setFrameworkSection()', function () {
+    let mockRes, mockReq, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockRes = {}
+      mockReq = {
+        params: {},
+      }
+    })
+
+    context('without framework', function () {
+      beforeEach(function () {
+        middleware.setFrameworkSection()(mockReq, mockRes, nextSpy)
+      })
+
+      it('should not set framework on request', function () {
+        expect(mockReq.frameworkSection).to.be.undefined
+      })
+    })
+
+    context('without current location', function () {
+      const mockFramework = {
+        sections: {
+          one: 'bar',
+        },
+      }
+
+      beforeEach(function () {
+        middleware.setFrameworkSection(mockFramework)(mockReq, mockRes, nextSpy)
+      })
+
+      it('should set framework on request', function () {
+        expect(mockReq.frameworkSection).to.deep.equal(mockFramework)
+      })
+    })
+  })
 })

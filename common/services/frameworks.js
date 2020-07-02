@@ -57,7 +57,7 @@ function importFiles(folderPath) {
 
 function transformQuestion(
   key,
-  { question, hint, options, validations = [], type } = {}
+  { question, hint, options, validations = [], type, description } = {}
 ) {
   if (!key) {
     return {}
@@ -67,6 +67,7 @@ function transformQuestion(
   const component = uiComponentMap[type] || uiComponentMap.default
   const field = {
     question,
+    description,
     component,
     id: key,
     name: key,

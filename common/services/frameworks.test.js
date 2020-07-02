@@ -39,6 +39,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -66,6 +67,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -74,6 +76,34 @@ describe('Frameworks service', function () {
             },
             hint: {
               text: 'Hint text',
+            },
+            validate: [],
+          })
+        })
+      })
+
+      context('with description', function () {
+        beforeEach(function () {
+          mockQuestion = {
+            ...mockQuestion,
+            description: 'Short field description',
+          }
+        })
+
+        it('should format correctly', function () {
+          const transformed = frameworksService.transformQuestion(
+            'question-key',
+            mockQuestion
+          )
+          expect(transformed).to.deep.equal({
+            component: 'govukInput',
+            question: 'Question text',
+            description: 'Short field description',
+            id: 'question-key',
+            name: 'question-key',
+            label: {
+              text: 'Question text',
+              classes: 'govuk-label--s',
             },
             validate: [],
           })
@@ -105,6 +135,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -152,6 +183,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -213,6 +245,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -282,6 +315,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukRadios',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             fieldset: {
@@ -305,6 +339,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukCheckboxes',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             fieldset: {
@@ -328,6 +363,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukTextarea',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
@@ -349,6 +385,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
+            description: undefined,
             id: 'question-key',
             name: 'question-key',
             label: {
