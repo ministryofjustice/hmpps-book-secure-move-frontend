@@ -185,11 +185,12 @@ describe('Move controllers', function () {
       let res = {}
       let nextSpy
       const documents = [{ id: 'foo' }, { id: 'bar' }]
-      const profile = { id: '#profile' }
+      const profile = { id: '#profile', person: { id: '#person' } }
+      const mockProfile = { ...profile, foo: 'bar' }
 
       beforeEach(async function () {
         req = {
-          getMove: sinon.stub().returns({ profile }),
+          getMove: sinon.stub().returns({ profile: mockProfile }),
           form: {
             values: {
               documents,

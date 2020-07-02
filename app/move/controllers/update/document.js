@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, pick } = require('lodash')
 
 const profileService = require('../../../../common/services/profile')
 const DocumentUploadController = require('../create/document')
@@ -50,7 +50,7 @@ class UpdateDocumentUploadController extends UpdateBase {
     }
 
     try {
-      const profile = req.getMove().profile
+      const profile = pick(req.getMove().profile, ['id', 'person'])
 
       await profileService.update({
         ...profile,
