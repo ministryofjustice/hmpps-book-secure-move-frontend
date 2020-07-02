@@ -37,6 +37,12 @@ const mockMove = {
   },
   person: mockPerson,
 }
+const mockDocuments = [
+  {
+    id: 'document_1',
+  },
+]
+
 const mockValues = {
   'csrf-secret': 'secret',
   errors: null,
@@ -51,6 +57,9 @@ const mockValues = {
   person: {
     first_names: 'Steve',
     last_name: 'Smith',
+  },
+  profile: {
+    id: '__profile',
   },
   assessment: {
     court: [
@@ -80,6 +89,7 @@ const mockValues = {
       },
     ],
   },
+  documents: mockDocuments,
 }
 
 describe('Move controllers', function () {
@@ -118,13 +128,17 @@ describe('Move controllers', function () {
               to_location: 'Court',
               from_location: 'Prison',
               profile: mockProfile,
+              documents: mockDocuments, // TODO: remove when v2
             })
           })
 
           it('should create profile', function () {
             expect(profileService.create).to.be.calledOnceWithExactly(
               mockValues.person.id,
-              { assessment_answers: mockValues.assessment }
+              {
+                assessment_answers: mockValues.assessment,
+                documents: mockDocuments,
+              }
             )
           })
 
@@ -178,6 +192,7 @@ describe('Move controllers', function () {
                 from_location: 'Prison',
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
+                documents: mockDocuments, // TODO: remove when v2
               })
             })
 
@@ -186,6 +201,7 @@ describe('Move controllers', function () {
                 mockValuesWithHearings.person.id,
                 {
                   assessment_answers: mockValuesWithHearings.assessment,
+                  documents: mockValuesWithHearings.documents,
                 }
               )
             })
@@ -246,6 +262,7 @@ describe('Move controllers', function () {
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
+                documents: mockDocuments, // TODO: remove when v2
               })
             })
 

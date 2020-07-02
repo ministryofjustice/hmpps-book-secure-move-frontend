@@ -54,6 +54,7 @@ module.exports = {
         'from_location.suppliers',
         'prison_transfer_reason',
         'profile',
+        'profile.documents',
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
@@ -98,9 +99,13 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'people',
       },
+      documents: {
+        jsonApi: 'hasMany',
+        type: 'documents',
+      },
     },
     options: {
-      defaultInclude: ['person'],
+      defaultInclude: ['person', 'documents'],
     },
   },
   court_case: {

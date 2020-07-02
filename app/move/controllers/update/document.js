@@ -1,6 +1,6 @@
-const { get } = require('lodash')
+const { get, pick } = require('lodash')
 
-const moveService = require('../../../../common/services/move')
+const profileService = require('../../../../common/services/profile')
 const DocumentUploadController = require('../create/document')
 
 const UpdateBase = require('./base')
@@ -33,7 +33,7 @@ class UpdateDocumentUploadController extends UpdateBase {
     const values = {}
 
     if (req.initialStep) {
-      req.sessionModel.set('documents', move.documents)
+      req.sessionModel.set('documents', move.profile.documents)
     }
 
     values.documents = req.sessionModel.get('documents')
@@ -50,8 +50,10 @@ class UpdateDocumentUploadController extends UpdateBase {
     }
 
     try {
-      await moveService.update({
-        id: req.getMoveId(),
+      const profile = pick(req.getMove().profile, ['id', 'person'])
+
+      await profileService.update({
+        ...profile,
         documents: req.form.values.documents,
       })
       return res.redirect(this.getBaseUrl(req))

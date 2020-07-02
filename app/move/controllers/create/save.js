@@ -21,16 +21,19 @@ class SaveController extends CreateBaseController {
       const sessionData = req.sessionModel.toJSON()
       const person = sessionData.person
       const assessment = sessionData.assessment
+      const documents = sessionData.documents
       const data = omit(sessionData, [
         'csrf-secret',
         'errors',
         'errorValues',
         'assessment',
+        // 'documents', // TODO: reinstate when move to v2
         'person',
       ])
 
       const profile = await profileService.create(person.id, {
         assessment_answers: assessment,
+        documents,
       })
 
       const moveData = {
