@@ -37,6 +37,12 @@ const mockMove = {
   },
   person: mockPerson,
 }
+const mockDocuments = [
+  {
+    id: 'document_1',
+  },
+]
+
 const mockValues = {
   'csrf-secret': 'secret',
   errors: null,
@@ -83,11 +89,7 @@ const mockValues = {
       },
     ],
   },
-  documents: [
-    {
-      id: 'document_1',
-    },
-  ],
+  documents: mockDocuments,
 }
 
 describe('Move controllers', function () {
@@ -126,6 +128,7 @@ describe('Move controllers', function () {
               to_location: 'Court',
               from_location: 'Prison',
               profile: mockProfile,
+              documents: mockDocuments, // TODO: remove when v2
             })
           })
 
@@ -134,7 +137,7 @@ describe('Move controllers', function () {
               mockValues.person.id,
               {
                 assessment_answers: mockValues.assessment,
-                documents: mockValues.documents,
+                documents: mockDocuments,
               }
             )
           })
@@ -189,6 +192,7 @@ describe('Move controllers', function () {
                 from_location: 'Prison',
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
+                documents: mockDocuments, // TODO: remove when v2
               })
             })
 
@@ -258,6 +262,7 @@ describe('Move controllers', function () {
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
+                documents: mockDocuments, // TODO: remove when v2
               })
             })
 

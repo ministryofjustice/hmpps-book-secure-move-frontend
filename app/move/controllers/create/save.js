@@ -27,7 +27,7 @@ class SaveController extends CreateBaseController {
         'errors',
         'errorValues',
         'assessment',
-        'documents',
+        // 'documents', // TODO: reinstate when move to v2
         'person',
       ])
 
