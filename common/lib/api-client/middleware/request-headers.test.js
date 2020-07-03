@@ -36,7 +36,7 @@ describe('API Client', function () {
 
         it('should append the `Accept` header with the api version', function () {
           expect(request.headers.Accept).to.equal(
-            `Something; version=${config.API.VERSION}`
+            `application/vnd.api+json; version=${config.API.VERSION}`
           )
         })
 

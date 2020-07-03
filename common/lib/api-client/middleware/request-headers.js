@@ -15,7 +15,7 @@ module.exports = {
 
     req.headers = {
       ...req.headers,
-      Accept: `${req.headers.Accept}; version=${VERSION}`,
+      Accept: `application/vnd.api+json; version=${VERSION}`,
       'Idempotency-Key': uuid.v4(),
     }
     return payload
