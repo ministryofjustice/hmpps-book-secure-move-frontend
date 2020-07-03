@@ -7,6 +7,7 @@ const {
   errors,
   post,
   request,
+  requestHeaders,
   requestInclude,
   requestTimeout,
 } = require('./middleware')
@@ -34,6 +35,7 @@ module.exports = function () {
     })
   )
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
+  instance.insertMiddlewareBefore('axios-request', requestHeaders)
   instance.insertMiddlewareBefore('axios-request', requestInclude)
   instance.insertMiddlewareBefore('axios-request', auth)
 

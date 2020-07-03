@@ -1,7 +1,7 @@
 const debug = require('debug')('app:api-client')
 const { get } = require('lodash')
-const uuid = require('uuid')
 
+const { API } = require('../../../../config')
 const redisStore = require('../../../../config/redis-store')
 const models = require('../models')
 
@@ -24,18 +24,13 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
       const pathname = new URL(req.url).pathname
 
       const searchString = new URLSearchParams(req.params).toString()
-      const key = `cache:${req.method}.${pathname}${
+      const key = `cache:v${API.VERSION}:${req.method}.${pathname}${
         searchString ? `?${searchString}` : ''
       }`
       const cacheModel = get(models, `${req.model}.options.cache`)
 
       if (!cacheModel || req.params.cache === false || disableCache) {
         debug('NO CACHE', key)
-
-        req.headers = {
-          ...req.headers,
-          'Idempotency-Key': uuid.v4(),
-        }
         return jsonApi.axios(req)
       }
 
