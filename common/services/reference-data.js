@@ -92,6 +92,16 @@ const referenceDataService = {
     })
   },
 
+  getRegionById(id, { include } = {}) {
+    if (!id) {
+      return Promise.reject(new Error('No region ID supplied'))
+    }
+
+    return apiClient
+      .find('region', id, { include })
+      .then(response => response.data)
+  },
+
   getRegions({ page = 1, combinedData } = {}) {
     return apiClient
       .findAll('region', { page, per_page: 100 })

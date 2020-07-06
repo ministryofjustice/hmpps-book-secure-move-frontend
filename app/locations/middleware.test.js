@@ -273,8 +273,8 @@ describe('Locations middleware', function () {
     context('when the region is set', async function () {
       it('should select the current region from all regions', async function () {
         req.params.regionId = '1'
-        mockReferenceData.getRegions = sinon.fake.returns(
-          Promise.resolve([currentRegion, { id: '2' }])
+        mockReferenceData.getRegionById = sinon.fake.returns(
+          Promise.resolve(currentRegion)
         )
         await proxiedMiddleware.setRegion(req, {}, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()

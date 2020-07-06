@@ -944,5 +944,60 @@ describe('Reference Data Service', function () {
         })
       })
     })
+
+    describe('#getRegionById()', function () {
+      context('without region ID', function () {
+        it('should reject with error', function () {
+          return expect(
+            referenceDataService.getRegionById()
+          ).to.be.rejectedWith('No region ID supplied')
+        })
+      })
+
+      context('with location ID', function () {
+        const mockId = 'regiona-222b-4522-9d65-4ef429f9081e'
+        const mockResponse = {
+          data: mockRegions[0],
+        }
+        let region
+
+        beforeEach(async function () {
+          sinon.stub(apiClient, 'find').resolves(mockResponse)
+
+          region = await referenceDataService.getRegionById(mockId)
+        })
+
+        it('should call update method with data', function () {
+          expect(apiClient.find).to.be.calledOnceWithExactly('region', mockId, {
+            include: undefined,
+          })
+        })
+
+        it('should return region', function () {
+          expect(region).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('with explict include parameter', function () {
+        const mockId = 'regiona-222b-4522-9d65-4ef429f9081e'
+        const mockResponse = {
+          data: mockRegions[0],
+        }
+
+        beforeEach(async function () {
+          sinon.stub(apiClient, 'find').resolves(mockResponse)
+
+          await referenceDataService.getRegionById(mockId, {
+            include: ['foo', 'bar'],
+          })
+        })
+
+        it('should pass include parameter to api client', function () {
+          expect(apiClient.find).to.be.calledOnceWithExactly('region', mockId, {
+            include: ['foo', 'bar'],
+          })
+        })
+      })
+    })
   })
 })

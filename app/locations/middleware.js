@@ -36,11 +36,11 @@ async function setRegion(req, res, next) {
   }
 
   try {
-    const regions = await referenceDataService.getRegions()
-    req.session.currentRegion = find(regions, { id: regionId }) ?? null
+    const region = await referenceDataService.getRegionById(regionId)
+    req.session.currentRegion = region ?? null
   } catch (error) {
     req.session.currentRegion = null
-    next(new Error('Failed to retrieve the regions'))
+    next(error)
     return
   }
 
