@@ -31,7 +31,7 @@ function defineFormWizards(framework, router) {
     }
 
     router.use(
-      `/${sectionKey}`,
+      `/:personEscortRecordId/${sectionKey}`,
       middleware.setFrameworkSection(section),
       wizard(steps, questions, wizardConfig)
     )

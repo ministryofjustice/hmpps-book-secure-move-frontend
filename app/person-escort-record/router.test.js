@@ -92,7 +92,7 @@ describe('Person Escort Record router', function () {
           }
 
           expect(mockRouter.use).to.be.calledWithExactly(
-            `/${key}`,
+            `/:personEscortRecordId/${key}`,
             middleware.setFrameworkSection(value),
             wizardStub(steps, mockFramework.questions, config)
           )

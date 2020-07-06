@@ -345,4 +345,53 @@ module.exports = {
       collectionPath: 'reject',
     },
   },
+  person_escort_record: {
+    fields: {
+      status: '',
+      profile: {
+        jsonApi: 'hasOne',
+        type: 'profiles',
+      },
+      framework: {
+        jsonApi: 'hasOne',
+        type: 'frameworks',
+      },
+      responses: {
+        jsonApi: 'hasMany',
+        type: 'framework_responses',
+      },
+    },
+    options: {
+      defaultInclude: [
+        'profile',
+        'framework',
+        'responses',
+        'responses.question',
+      ],
+    },
+  },
+  framework: {
+    fields: {
+      version: '',
+    },
+  },
+  framework_question: {
+    fields: {
+      key: '',
+      question_type: '',
+    },
+  },
+  framework_response: {
+    fields: {
+      value: '',
+      value_type: '',
+      question: {
+        jsonApi: 'hasOne',
+        type: 'framework_questions',
+      },
+    },
+    options: {
+      defaultInclude: ['question'],
+    },
+  },
 }

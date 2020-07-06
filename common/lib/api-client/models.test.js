@@ -159,6 +159,15 @@ const testCases = {
       statusCode: 204,
     },
   ],
+  person_escort_record: [
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+      statusCode: 200,
+    },
+  ],
 }
 
 const client = proxyquire('./', {

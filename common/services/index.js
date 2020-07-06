@@ -3,15 +3,17 @@ const courtHearing = require('./court-hearing')
 const frameworks = require('./frameworks')
 const move = require('./move')
 const person = require('./person')
+const personEscortRecord = require('./person-escort-record')
 const referenceData = require('./reference-data')
 const singleRequest = require('./single-request')
 
 module.exports = {
   allocation,
   courtHearing,
+  frameworks,
   move,
   person,
-  frameworks,
+  personEscortRecord,
   referenceData,
   singleRequest,
 }
