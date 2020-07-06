@@ -5,19 +5,16 @@ const referenceDataService = require('../../common/services/reference-data')
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
 
-  let locations = []
   let regions = []
 
   if (userPermissions.includes('allocation:create')) {
     try {
       regions = await referenceDataService.getRegions()
     } catch (error) {
-      next(new Error('Failed to retrieve the regions'))
-      return
+      return next(error)
     }
-  } else {
-    locations = sortBy(req.userLocations, 'title')
   }
+  const locations = sortBy(req.userLocations, 'title')
 
   res.render('locations/views/locations.njk', {
     locations,

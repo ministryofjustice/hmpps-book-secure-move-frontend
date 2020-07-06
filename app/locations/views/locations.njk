@@ -26,19 +26,28 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
+        {% if regions | length %}
+        <h2 class="govuk-heading-l">Regions</h2>
         <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
-          {% for location in locations %}
-            <li>
-              <a href="/locations/{{ location.id }}">
-                {{ location.title }}
-              </a>
-            </li>
-          {% endfor %}
           {% for region in regions %}
             <li>
               {{ region.key | lower }}.
               <a href="/locations/regions/{{ region.id }}">
                 {{ region.name }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if regions | length %}
+        <h2 class="govuk-heading-l">Locations</h2>
+        {% endif %}
+        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
+          {% for location in locations %}
+            <li>
+              <a href="/locations/{{ location.id }}">
+                {{ location.title }}
               </a>
             </li>
           {% endfor %}
