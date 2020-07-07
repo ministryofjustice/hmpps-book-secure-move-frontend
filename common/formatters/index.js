@@ -1,13 +1,14 @@
-const chrono = require('chrono-node')
 const { format: formatDate } = require('date-fns')
+
+const parse = require('../parsers')
 
 const formatters = {
   date(value, format = 'yyyy-MM-dd') {
-    const parsedDate = chrono.en_GB.parseDate(value)
+    const parsedDate = parse.date(value)
     return parsedDate ? formatDate(parsedDate, format) : value
   },
   time(value, format = 'HH:mm') {
-    const parsedDate = chrono.en_GB.parseDate(value)
+    const parsedDate = parse.date(value)
     return parsedDate ? formatDate(parsedDate, format) : value
   },
 }

@@ -1,4 +1,3 @@
-const chrono = require('chrono-node')
 const {
   format,
   isThisWeek,
@@ -16,6 +15,7 @@ const filesizejs = require('filesize')
 const { filter, kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 
+const parse = require('../../common/parsers')
 const i18n = require('../i18n')
 const { DATE_FORMATS } = require('../index')
 
@@ -227,7 +227,7 @@ function calculateAge(value) {
  * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
  */
 function formatTime(value) {
-  const parsedDate = chrono.en_GB.parseDate(value)
+  const parsedDate = parse.date(value)
 
   if (!value || !isValidDate(parsedDate)) {
     return value
