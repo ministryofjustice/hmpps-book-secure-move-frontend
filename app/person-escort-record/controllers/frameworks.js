@@ -1,7 +1,4 @@
-const { filter } = require('lodash')
-
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
 
 class FrameworksController extends FormWizardController {
   middlewareSetup() {
@@ -30,29 +27,4 @@ class FrameworksController extends FormWizardController {
   }
 }
 
-class FrameworkSectionController extends FrameworksController {
-  middlewareLocals() {
-    super.middlewareLocals()
-    this.use(this.setSectionSummary)
-  }
-
-  setSectionSummary(req, res, next) {
-    const { name, steps } = req.frameworkSection
-    const stepSummaries = Object.entries(steps).map(
-      presenters.frameworkStepToSummary(
-        req.form.options.allFields,
-        req.originalUrl
-      )
-    )
-
-    res.locals.sectionTitle = name
-    res.locals.summarySteps = filter(stepSummaries)
-
-    next()
-  }
-}
-
-module.exports = {
-  FrameworksController,
-  FrameworkSectionController,
-}
+module.exports = FrameworksController
