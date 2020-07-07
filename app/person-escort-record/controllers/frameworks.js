@@ -1,3 +1,5 @@
+const { kebabCase } = require('lodash')
+
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const responseService = require('../../../common/services/framework-response')
 
@@ -17,6 +19,48 @@ class FrameworksController extends FormWizardController {
     req.form.options.buttonText = buttonText
 
     next()
+  }
+
+  reduceResponses(accumulator, { value, value_type: valueType, question }) {
+    const field = question.key
+
+    if (valueType === 'object') {
+      accumulator[field] = value.option
+      accumulator[`${field}--${kebabCase(value.option)}`] = value.details
+    }
+
+    if (valueType === 'collection') {
+      accumulator[field] = value.map(item => item.option)
+      value.forEach(item => {
+        accumulator[`${field}--${kebabCase(item.option)}`] = item.details
+      })
+    }
+
+    if (valueType === 'string' || valueType === 'array') {
+      accumulator[field] = value
+    }
+
+    return accumulator
+  }
+
+  getValues(req, res, callback) {
+    const fields = req.form.options.fields
+    const responses = req.personEscortRecord.responses
+    const savedValues = responses
+      .filter(response => fields[response.question.key])
+      .filter(response => response.value)
+      .reduce(this.reduceResponses, {})
+
+    super.getValues(req, res, (err, values) => {
+      if (err) {
+        return callback(err)
+      }
+
+      callback(null, {
+        ...savedValues,
+        ...values,
+      })
+    })
   }
 
   getResponses(formValues, allResponses) {
