@@ -1,12 +1,11 @@
-const { filter } = require('lodash')
+const { filter, find } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const componentService = require('../services/component')
 
-function frameworkStepToSummary(allFields, baseUrl) {
+function frameworkStepToSummary(allFields, responses, baseUrl) {
   return ([key, step]) => {
     const stepUrl = `${baseUrl}/${step.slug}`
     const stepFields = step.fields
-    const answerQuestionText = i18n.t('actions::answer_question')
 
     if (!stepFields.length) {
       return undefined
@@ -15,6 +14,7 @@ function frameworkStepToSummary(allFields, baseUrl) {
     const summaryListRows = stepFields.map(fieldName => {
       const { id, description, question } = allFields[fieldName] || {}
       const rowHeader = description || question
+      const response = find(responses, ['question.key', fieldName]) || {}
 
       if (!rowHeader) {
         return undefined
@@ -26,7 +26,11 @@ function frameworkStepToSummary(allFields, baseUrl) {
           classes: 'govuk-!-font-weight-regular',
         },
         value: {
-          html: `<a href="${stepUrl}#${id}">${answerQuestionText}</a>`,
+          html: componentService.getComponent('appFrameworkResponse', {
+            value: response.value,
+            valueType: response.value_type,
+            questionUrl: `${stepUrl}#${id}`,
+          }),
         },
       }
     })
