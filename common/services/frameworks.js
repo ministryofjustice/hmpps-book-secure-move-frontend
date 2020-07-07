@@ -83,6 +83,10 @@ function transformQuestion(
     set(field, 'hint.text', hint)
   }
 
+  if (type === 'checkbox') {
+    field.multiple = true
+  }
+
   if (options) {
     field.items = options.map(
       ({ value, label, followup, followup_comment: followupComment }) => {
