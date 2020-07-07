@@ -1,0 +1,63 @@
+params:
+  - name: value
+    type: string|object|array|collection
+    required: false
+    description: The response value. It's type is dependent on the `valueType`
+  - name: valueType
+    type: string
+    required: false
+    description: Defines the type of value to render. Can be one of `string`, `object`, `array` or `collection`
+  - name: questionUrl
+    type: string
+    required: false
+    description: The URL to the question. Used in the `href` when no response has been provided yet
+
+examples:
+  - name: string
+    data:
+      value: Example string response
+      valueType: string
+  - name: object
+    data:
+      value:
+        option: "Yes"
+      valueType: object
+  - name: object with details
+    data:
+      value:
+        option: "Yes"
+        details: Example further details for this response
+      valueType: object
+  - name: array
+    data:
+      value:
+        - Item one
+        - Item two
+        - Item three
+      valueType: array
+  - name: collection
+    data:
+      value:
+        -
+          option: Item one
+        -
+          option: Item two
+        -
+          option: Item three
+      valueType: collection
+  - name: collection with details
+    data:
+      value:
+        -
+          option: Item one
+          details: Further details for option one
+        -
+          option: Item two
+          details: Further details for option two
+        -
+          option: Item three
+          details: Further details for option three
+      valueType: collection
+  - name: unanswered
+    data:
+      questionUrl: /step-url#question-id
