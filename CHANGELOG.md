@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.33.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.32.0...v2.33.0) (2020-07-07)
+
+
+### Features
+
+* **per:** Add check your answers style overview page ([a348b67](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a348b679af697a9064f01fc0a4271cd52dd25eb5))
+* **per:** Add support for interruption card step type ([d88d916](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d88d91673dfa516212f171ec9fbd1d11e13465ee))
+* **per:** Add support to import follow up comment fields ([a1c0ff4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a1c0ff46e300bf324373fffc6d64ed8d9c38d745))
+* **per:** Render before and after content from framework ([46026d3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/46026d3fa998a2fbc665b7e6928c1164f05da843))
+
 ## [2.32.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.31.0...v2.32.0) (2020-06-30)
 
 
