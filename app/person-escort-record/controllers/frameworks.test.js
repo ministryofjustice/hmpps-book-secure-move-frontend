@@ -1,7 +1,7 @@
-const FormWizardController = require('../../common/controllers/form-wizard')
-const presenters = require('../../common/presenters')
+const FormWizardController = require('../../../common/controllers/form-wizard')
+const presenters = require('../../../common/presenters')
 
-const controllers = require('./controllers')
+const controllers = require('./')
 
 describe('Person Escort Record controllers', function () {
   describe('FrameworksController', function () {
