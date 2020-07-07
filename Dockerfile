@@ -16,6 +16,9 @@ COPY --chown=node:node common/services/frameworks.js common/services/frameworks.
 COPY --chown=node:node common/assets common/assets
 COPY --chown=node:node common/components common/components
 
+# needed until hard-coded
+ENV API_VERSION default
+
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
