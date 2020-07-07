@@ -1,4 +1,5 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const responseService = require('../../../common/services/framework-response')
 
 const Controller = require('./frameworks')
 
@@ -124,6 +125,143 @@ describe('Person Escort Record controllers', function () {
           expect(
             FormWizardController.prototype.successHandler
           ).to.have.been.calledOnce
+        })
+      })
+    })
+
+    describe('#getResponses', function () {
+      const mockFormValues = {
+        'question-2': 'Yes',
+      }
+      const mockResponses = [
+        {
+          id: '1',
+          question: {
+            key: 'question-1',
+          },
+        },
+        {
+          id: '2',
+          question: {
+            key: 'question-2',
+          },
+        },
+        {
+          id: '3',
+          question: {
+            key: 'question-3',
+          },
+        },
+      ]
+      let responses
+
+      context('with no form values', function () {
+        beforeEach(function () {
+          responses = controller.getResponses({}, mockResponses)
+        })
+
+        it('should not return any responses', function () {
+          expect(responses).to.deep.equal([])
+        })
+      })
+
+      context('with form values', function () {
+        beforeEach(function () {
+          responses = controller.getResponses(mockFormValues, mockResponses)
+        })
+
+        it('should return responses that have value', function () {
+          expect(responses).to.deep.equal([
+            {
+              id: '2',
+              value: 'Yes',
+            },
+          ])
+        })
+      })
+    })
+
+    describe('#saveValues', function () {
+      const mockReq = {
+        form: {
+          values: {
+            foo: 'bar',
+            fizz: 'buzz',
+          },
+        },
+        personEscortRecord: {
+          responses: [{ id: '1' }, { id: '2' }],
+        },
+      }
+      const mockResponses = [
+        { id: '1', value: 'Yes' },
+        { id: '2', value: 'No' },
+        { id: '3', value: 'Yes' },
+        { id: '4', value: 'No' },
+      ]
+      let nextSpy
+
+      beforeEach(function () {
+        sinon.stub(responseService, 'update')
+        sinon.stub(Controller.prototype, 'getResponses').returns(mockResponses)
+        sinon.stub(FormWizardController.prototype, 'saveValues')
+        nextSpy = sinon.spy()
+      })
+
+      context('when promises resolve', function () {
+        beforeEach(async function () {
+          responseService.update.resolves({})
+
+          await controller.saveValues(mockReq, {}, nextSpy)
+        })
+
+        it('should get responses', function () {
+          expect(Controller.prototype.getResponses).to.be.calledOnceWithExactly(
+            mockReq.form.values,
+            mockReq.personEscortRecord.responses
+          )
+        })
+
+        it('should call correct number of updates', function () {
+          expect(responseService.update.callCount).to.equal(
+            mockResponses.length
+          )
+        })
+
+        it('should update each response correct', function () {
+          mockResponses.forEach((response, i) => {
+            expect(responseService.update.getCall(i)).to.be.calledWithExactly(
+              mockResponses[i]
+            )
+          })
+        })
+
+        it('should call the super method', function () {
+          expect(
+            FormWizardController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(mockReq, {}, nextSpy)
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).to.not.be.called
+        })
+      })
+
+      context('when service rejects with error', function () {
+        const error = new Error()
+
+        beforeEach(async function () {
+          responseService.update.rejects(error)
+
+          await controller.saveValues(mockReq, {}, nextSpy)
+        })
+
+        it('should not call the super method', function () {
+          expect(FormWizardController.prototype.saveValues).to.not.be.called
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(error)
         })
       })
     })
