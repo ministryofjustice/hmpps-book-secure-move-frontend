@@ -156,7 +156,7 @@ describe('Frameworks service', function () {
         })
       })
 
-      context('with followups', function () {
+      context('with followup', function () {
         beforeEach(function () {
           mockQuestion = {
             ...mockQuestion,
@@ -169,7 +169,7 @@ describe('Frameworks service', function () {
               {
                 value: 'No',
                 label: 'No',
-                followup: ['conditional-field-2'],
+                followup: ['conditional-field-2', 'conditional-field-3'],
               },
             ],
           }
@@ -194,12 +194,14 @@ describe('Frameworks service', function () {
               {
                 value: 'Yes',
                 text: 'Yes',
-                conditional: 'conditional-field-1',
+                followup: ['conditional-field-1'],
+                conditional: ['conditional-field-1'],
               },
               {
                 value: 'No',
                 text: 'No',
-                conditional: ['conditional-field-2'],
+                followup: ['conditional-field-2', 'conditional-field-3'],
+                conditional: ['conditional-field-2', 'conditional-field-3'],
               },
             ],
             validate: [],

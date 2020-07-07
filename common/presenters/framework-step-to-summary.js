@@ -1,6 +1,8 @@
-const { filter, find } = require('lodash')
+const { filter, flatten } = require('lodash')
 
-const componentService = require('../services/component')
+const frameworksHelpers = require('../helpers/frameworks')
+
+const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 
 function frameworkStepToSummary(allFields, responses, baseUrl) {
   return ([key, step]) => {
@@ -8,32 +10,13 @@ function frameworkStepToSummary(allFields, responses, baseUrl) {
     const stepFields = step.fields
 
     if (!stepFields.length) {
-      return undefined
+      return
     }
 
-    const summaryListRows = stepFields.map(fieldName => {
-      const { id, description, question } = allFields[fieldName] || {}
-      const rowHeader = description || question
-      const response = find(responses, ['question.key', fieldName]) || {}
-
-      if (!rowHeader) {
-        return undefined
-      }
-
-      return {
-        key: {
-          text: rowHeader,
-          classes: 'govuk-!-font-weight-regular',
-        },
-        value: {
-          html: componentService.getComponent('appFrameworkResponse', {
-            value: response.value,
-            valueType: response.value_type,
-            questionUrl: `${stepUrl}#${id}`,
-          }),
-        },
-      }
-    })
+    const summaryListRows = stepFields
+      .map(frameworksHelpers.mapFieldFromName(allFields))
+      .map(frameworksHelpers.appendResponseToField(responses))
+      .map(frameworkFieldToSummaryListRow(stepUrl))
 
     return [
       key,
@@ -42,7 +25,7 @@ function frameworkStepToSummary(allFields, responses, baseUrl) {
         stepUrl,
         summaryListComponent: {
           classes: 'govuk-!-font-size-16',
-          rows: filter(summaryListRows),
+          rows: filter(flatten(summaryListRows)),
         },
       },
     ]
