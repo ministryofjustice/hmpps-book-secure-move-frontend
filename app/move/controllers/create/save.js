@@ -27,13 +27,14 @@ class SaveController extends CreateBaseController {
         'errors',
         'errorValues',
         'assessment',
-        // 'documents', // TODO: reinstate when move to v2
+        'documents',
         'person',
       ])
 
       const profile = await profileService.create(person.id, {
-        assessment_answers: assessment,
-        documents,
+        // TODO: reinstate when move to v2
+        // assessment_answers: assessment,
+        // documents,
       })
 
       const moveData = {
@@ -55,6 +56,14 @@ class SaveController extends CreateBaseController {
           )
         ),
       ])
+
+      // TODO: remove when v2
+      await profileService.update({
+        ...profile,
+        assessment_answers: assessment,
+        documents,
+      })
+      // TODO: end remove when v2
 
       req.sessionModel.set('move', move)
 

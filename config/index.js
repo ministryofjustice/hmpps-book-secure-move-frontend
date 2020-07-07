@@ -1,6 +1,12 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
 
+const API_VERSION = process.env.API_VERSION
+
+if (!API_VERSION) {
+  throw new Error('The API_VERSION environment variable must be set')
+}
+
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const SERVER_HOST = process.env.HEROKU_APP_NAME
@@ -37,6 +43,7 @@ module.exports = {
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
+    VERSION: API_VERSION,
     BASE_URL: API_BASE_URL + process.env.API_PATH,
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,

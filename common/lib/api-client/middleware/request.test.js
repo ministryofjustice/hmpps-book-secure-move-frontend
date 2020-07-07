@@ -1,4 +1,4 @@
-const proxyquire = require('proxyquire')
+const proxyquire = require('proxyquire').noPreserveCache()
 
 const mockModels = {
   cachedModel: {
@@ -40,8 +40,10 @@ describe('API Client', function () {
         },
       }
       requestMiddleware = proxyquire('./request', {
-        uuid: {
-          v4: () => 'uuid-value',
+        '../../../../config': {
+          API: {
+            VERSION: '2000AD',
+          },
         },
         '../../../../config/redis-store': () => {
           return {
@@ -52,15 +54,6 @@ describe('API Client', function () {
           }
         },
         '../models': mockModels,
-      })
-    })
-
-    context('when api-client sends request', function () {
-      beforeEach(async function () {
-        response = await requestMiddleware().req(payload)
-      })
-      it('should add the Idempotency-Key header', function () {
-        expect(payload.req.headers['Idempotency-Key']).to.equal('uuid-value')
       })
     })
 
@@ -119,7 +112,7 @@ describe('API Client', function () {
 
         it('should attempt to get key from redis', function () {
           expect(getAsyncStub).to.be.calledOnceWithExactly(
-            'cache:GET./path/to/endpoint'
+            'cache:v2000AD:GET./path/to/endpoint'
           )
         })
 
@@ -141,7 +134,7 @@ describe('API Client', function () {
 
         it('should attempt to get key from redis', function () {
           expect(getAsyncStub).to.be.calledOnceWithExactly(
-            'cache:GET./path/to/endpoint'
+            'cache:v2000AD:GET./path/to/endpoint'
           )
         })
 
@@ -151,7 +144,7 @@ describe('API Client', function () {
 
         it('should set response data in redis', function () {
           expect(setexAsyncStub).to.be.calledOnceWithExactly(
-            'cache:GET./path/to/endpoint',
+            'cache:v2000AD:GET./path/to/endpoint',
             60,
             JSON.stringify(mockResponse.data)
           )
@@ -175,7 +168,7 @@ describe('API Client', function () {
 
         it('should append search to key', function () {
           expect(getAsyncStub).to.be.calledOnceWithExactly(
-            'cache:GET./path/to/endpoint?name=John&page=5&per_page=100'
+            'cache:v2000AD:GET./path/to/endpoint?name=John&page=5&per_page=100'
           )
         })
 
@@ -226,7 +219,7 @@ describe('API Client', function () {
 
             it('should attempt to get key from redis', function () {
               expect(getAsyncStub).to.be.calledOnceWithExactly(
-                'cache:GET./path/to/endpoint'
+                'cache:v2000AD:GET./path/to/endpoint'
               )
             })
 
@@ -238,7 +231,7 @@ describe('API Client', function () {
 
             it('should set response data in redis', function () {
               expect(setexAsyncStub).to.be.calledOnceWithExactly(
-                'cache:GET./path/to/endpoint',
+                'cache:v2000AD:GET./path/to/endpoint',
                 60,
                 JSON.stringify(mockResponse.data)
               )

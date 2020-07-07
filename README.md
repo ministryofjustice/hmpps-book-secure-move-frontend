@@ -214,7 +214,8 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | REDIS_HOST **(required)** | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
 | REDIS_AUTH_TOKEN | Optional auth token for the Redis instance | |
 | API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000` |
-| API_PATH **(required)** | Base base for the API | `/api/v1` |
+| API_PATH **(required)** | Base path for the API | `/api` |
+| API_VERSION **(required)** | API version to use | |
 | API_HEALTHCHECK_PATH **(required)** | Path to which healthcheck pings are sent | |
 | API_AUTH_PATH **(required)** | Path to which OAuth2 access token requests should be sent | |
 | API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |

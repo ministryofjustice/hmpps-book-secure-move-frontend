@@ -99,6 +99,7 @@ describe('Move controllers', function () {
 
       beforeEach(function () {
         sinon.stub(profileService, 'create').resolves(mockProfile)
+        sinon.stub(profileService, 'update').resolves({})
         sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
         req = {
@@ -128,18 +129,30 @@ describe('Move controllers', function () {
               to_location: 'Court',
               from_location: 'Prison',
               profile: mockProfile,
-              documents: mockDocuments, // TODO: remove when v2
             })
           })
 
-          it('should create profile', function () {
+          // it('should create profile', function () {
+          //   expect(profileService.create).to.be.calledOnceWithExactly(
+          //     mockValues.person.id,
+          //     {
+          //       assessment_answers: mockValues.assessment,
+          //       documents: mockDocuments,
+          //     }
+          //   )
+          // })
+
+          // TODO - post v2, remove this and reinstate previous block
+          it('should create profile - v1', function () {
             expect(profileService.create).to.be.calledOnceWithExactly(
               mockValues.person.id,
-              {
-                assessment_answers: mockValues.assessment,
-                documents: mockDocuments,
-              }
+              {}
             )
+            expect(profileService.update).to.be.calledOnceWithExactly({
+              ...mockProfile,
+              assessment_answers: mockValues.assessment,
+              documents: mockDocuments,
+            })
           })
 
           it('should not call court hearing service', function () {
@@ -192,18 +205,30 @@ describe('Move controllers', function () {
                 from_location: 'Prison',
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
-                documents: mockDocuments, // TODO: remove when v2
               })
             })
 
-            it('should create profile', function () {
+            // it('should create profile', function () {
+            //   expect(profileService.create).to.be.calledOnceWithExactly(
+            //     mockValuesWithHearings.person.id,
+            //     {
+            //       assessment_answers: mockValuesWithHearings.assessment,
+            //       documents: mockValuesWithHearings.documents,
+            //     }
+            //   )
+            // })
+
+            // TODO - post v2, remove this and reinstate previous block
+            it('should create profile - v1', function () {
               expect(profileService.create).to.be.calledOnceWithExactly(
                 mockValuesWithHearings.person.id,
-                {
-                  assessment_answers: mockValuesWithHearings.assessment,
-                  documents: mockValuesWithHearings.documents,
-                }
+                {}
               )
+              expect(profileService.update).to.be.calledOnceWithExactly({
+                ...mockProfile,
+                assessment_answers: mockValuesWithHearings.assessment,
+                documents: mockValuesWithHearings.documents,
+              })
             })
 
             it('should call court hearing service correct number of times', function () {
@@ -262,7 +287,6 @@ describe('Move controllers', function () {
                 profile: mockProfile,
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
-                documents: mockDocuments, // TODO: remove when v2
               })
             })
 

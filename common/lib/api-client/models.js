@@ -49,7 +49,6 @@ module.exports = {
       defaultInclude: [
         'allocation',
         'court_hearings',
-        'documents',
         'from_location',
         'from_location.suppliers',
         'prison_transfer_reason',
