@@ -340,6 +340,7 @@ describe('Frameworks service', function () {
             component: 'govukCheckboxes',
             question: 'Question text',
             description: undefined,
+            multiple: true,
             id: 'question-key',
             name: 'question-key',
             fieldset: {
