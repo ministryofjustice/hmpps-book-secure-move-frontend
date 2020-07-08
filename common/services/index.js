@@ -1,5 +1,6 @@
 const allocation = require('./allocation')
 const courtHearing = require('./court-hearing')
+const frameworkResponse = require('./framework-response')
 const frameworks = require('./frameworks')
 const move = require('./move')
 const person = require('./person')
@@ -15,5 +16,6 @@ module.exports = {
   person,
   personEscortRecord,
   referenceData,
+  frameworkResponse,
   singleRequest,
 }
