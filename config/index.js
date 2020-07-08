@@ -46,6 +46,8 @@ module.exports = {
     VERSION: API_VERSION,
     BASE_URL: API_BASE_URL + process.env.API_PATH,
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
+    AUTH_BASE_URL: API_BASE_URL,
+    AUTH_PATH: process.env.API_AUTH_PATH,
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,

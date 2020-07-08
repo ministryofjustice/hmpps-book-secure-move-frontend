@@ -11,6 +11,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/objects/all";
 
 @import "govuk-frontend/govuk/components/back-link/index";
+@import "govuk-frontend/govuk/components/breadcrumbs/index";
 @import "govuk-frontend/govuk/components/button/index";
 @import "govuk-frontend/govuk/components/checkboxes/index";
 @import "govuk-frontend/govuk/components/details/index";
@@ -38,6 +39,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "@ministryofjustice/frontend/moj/components/organisation-switcher/organisation-switcher";
 @import "@ministryofjustice/frontend/moj/components/primary-navigation/primary-navigation";
 @import "@ministryofjustice/frontend/moj/components/badge/badge";
+@import "@ministryofjustice/frontend/moj/components/task-list/task-list";
 
 // Import app settings/tools/helpers
 @import "helpers/all";

@@ -1,0 +1,62 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Person escort record"
+      }
+    ]
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block contentHeader %}
+  <header class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Person escort record
+      </h1>
+    </div>
+  </header>
+{% endblock %}
+
+{% block contentMain %}
+  <section class="app-!-position-relative govuk-!-margin-bottom-8">
+    <ol class="moj-task-list">
+      <li>
+        <ul class="moj-task-list__items govuk-!-padding-left-0">
+          {% for key, section in framework.sections %}
+            <li class="moj-task-list__item">
+              <a class="moj-task-list__task-name" href="{{ REQUEST_PATH }}/{{ key }}">
+                {{ section.name }}
+              </a>
+              {% if loop.index == 1 %}
+              <strong class="govuk-tag govuk-tag--blue moj-task-list__task-completed">
+                not started
+              </strong>
+              {% endif %}
+              {% if loop.index == 2 %}
+              <strong class="govuk-tag govuk-tag--grey moj-task-list__task-completed">
+                in progress
+              </strong>
+              {% endif %}
+              {% if loop.index == 3 %}
+              <strong class="govuk-tag moj-task-list__task-completed">
+                completed
+              </strong>
+              {% endif %}
+            </li>
+          {% endfor %}
+            <li class="moj-task-list__item">
+              Example blocked section
+              <strong class="govuk-tag govuk-tag--grey moj-task-list__task-completed">
+                cannot start yet
+              </strong>
+            </li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+{% endblock %}

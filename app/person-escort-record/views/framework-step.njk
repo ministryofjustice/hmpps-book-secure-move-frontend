@@ -2,6 +2,26 @@
 
 {% set mainClasses = "interruption-card" if options.stepType == 'interruption-card' %}
 
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Person escort record",
+        href: "/person-escort-record"
+      },
+      {
+        text: t(options.pageCaption),
+        href: "./"
+      },
+      {
+        text: t(options.pageTitle)
+      }
+    ]
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
 {% block submitAction %}
   {{ super() }}
 

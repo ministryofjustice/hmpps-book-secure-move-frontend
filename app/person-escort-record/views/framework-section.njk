@@ -1,5 +1,21 @@
 {% extends "layouts/base.njk" %}
 
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Person escort record",
+        href: "./"
+      },
+      {
+        text: sectionTitle
+      }
+    ]
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
 {% block content %}
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
