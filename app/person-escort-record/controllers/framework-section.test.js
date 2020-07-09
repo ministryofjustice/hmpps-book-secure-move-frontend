@@ -56,6 +56,9 @@ describe('Person Escort Record controllers', function () {
               '/step-3': {},
             },
           },
+          personEscortRecord: {
+            responses: [{ id: '1' }, { id: '2' }, { id: '3' }],
+          },
         }
         mockRes = {
           locals: {},
@@ -80,6 +83,7 @@ describe('Person Escort Record controllers', function () {
       it('should call presenter', function () {
         expect(presenters.frameworkStepToSummary).to.be.calledOnceWithExactly(
           mockReq.form.options.allFields,
+          mockReq.personEscortRecord.responses,
           mockReq.originalUrl
         )
       })

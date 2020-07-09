@@ -1,35 +1,22 @@
-const { filter } = require('lodash')
+const { filter, flatten } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const frameworksHelpers = require('../helpers/frameworks')
 
-function frameworkStepToSummary(allFields, baseUrl) {
+const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
+
+function frameworkStepToSummary(allFields, responses, baseUrl) {
   return ([key, step]) => {
     const stepUrl = `${baseUrl}/${step.slug}`
     const stepFields = step.fields
-    const answerQuestionText = i18n.t('actions::answer_question')
 
     if (!stepFields.length) {
-      return undefined
+      return
     }
 
-    const summaryListRows = stepFields.map(fieldName => {
-      const { id, description, question } = allFields[fieldName] || {}
-      const rowHeader = description || question
-
-      if (!rowHeader) {
-        return undefined
-      }
-
-      return {
-        key: {
-          text: rowHeader,
-          classes: 'govuk-!-font-weight-regular',
-        },
-        value: {
-          html: `<a href="${stepUrl}#${id}">${answerQuestionText}</a>`,
-        },
-      }
-    })
+    const summaryListRows = stepFields
+      .map(frameworksHelpers.mapFieldFromName(allFields))
+      .map(frameworksHelpers.appendResponseToField(responses))
+      .map(frameworkFieldToSummaryListRow(stepUrl))
 
     return [
       key,
@@ -38,7 +25,7 @@ function frameworkStepToSummary(allFields, baseUrl) {
         stepUrl,
         summaryListComponent: {
           classes: 'govuk-!-font-size-16',
-          rows: filter(summaryListRows),
+          rows: filter(flatten(summaryListRows)),
         },
       },
     ]

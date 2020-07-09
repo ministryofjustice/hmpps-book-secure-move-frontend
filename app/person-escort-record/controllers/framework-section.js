@@ -11,11 +11,13 @@ class FrameworkSectionController extends FrameworksController {
   }
 
   setSectionSummary(req, res, next) {
-    const { name, steps } = req.frameworkSection
+    const { frameworkSection, personEscortRecord, originalUrl, form } = req
+    const { name, steps } = frameworkSection
     const stepSummaries = Object.entries(steps).map(
       presenters.frameworkStepToSummary(
-        req.form.options.allFields,
-        req.originalUrl
+        form.options.allFields,
+        personEscortRecord.responses,
+        originalUrl
       )
     )
 

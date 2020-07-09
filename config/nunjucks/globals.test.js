@@ -1,10 +1,30 @@
 const proxyquire = require('proxyquire').noCallThru()
 
+const i18n = require('../i18n')
 const logger = require('../logger')
 
 const mockThis = { ctx: {} }
 
 describe('Nunjucks globals', function () {
+  describe('#t', function () {
+    const { t } = require('./globals')
+    const mockKey = 'translation_key'
+    let translation
+
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returns('__translated__')
+      translation = t(mockKey)
+    })
+
+    it('should call translation with key', function () {
+      expect(i18n.t).to.be.calledOnceWithExactly(mockKey)
+    })
+
+    it('should return translation', function () {
+      expect(translation).to.equal('__translated__')
+    })
+  })
+
   describe('#callAsMacro()', function () {
     const { callAsMacro } = require('./globals')
     let macroName, macro

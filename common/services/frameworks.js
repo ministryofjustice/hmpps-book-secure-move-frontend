@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const { kebabCase, keyBy, set } = require('lodash')
+const { flatten, kebabCase, keyBy, set } = require('lodash')
 
 const { frameworks } = require('../../config/paths')
 
@@ -91,12 +91,19 @@ function transformQuestion(
     field.items = options.map(
       ({ value, label, followup, followup_comment: followupComment }) => {
         const commentField = buildCommentField(key, value, followupComment)
+        const flattenedFollowup = flatten([followup])
 
-        return {
+        const item = {
           value,
           text: label,
-          conditional: followupComment ? commentField : followup,
+          conditional: followupComment ? commentField : flattenedFollowup,
         }
+
+        if (followup) {
+          item.followup = flattenedFollowup
+        }
+
+        return item
       }
     )
   }

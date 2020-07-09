@@ -1,0 +1,31 @@
+{% if params.value and params.valueType %}
+  {% if params.valueType === 'object' %}
+    {{ params.value.option }}{{ " — " + params.value.details if params.value.details }}
+  {% endif %}
+
+  {% if params.valueType === 'array' %}
+    <ul class="govuk-list govuk-list--bullet govuk-list--spaced govuk-!-margin-top-0 govuk-!-font-size-16">
+      {% for option in params.value %}
+        <li>{{ option }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if params.valueType === 'collection' %}
+    <ul class="govuk-list govuk-list--bullet govuk-list--spaced govuk-!-margin-top-0 govuk-!-font-size-16">
+      {% for item in params.value %}
+        <li>
+          {{ item.option }}{{ " — " + item.details if item.details }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if params.valueType === 'string' %}
+    {{ params.value }}
+  {% endif %}
+{% else %}
+  <a href="{{ params.questionUrl }}">
+    {{ t("actions::answer_question") }}
+  </a>
+{% endif %}
