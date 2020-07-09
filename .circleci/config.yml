@@ -155,7 +155,7 @@ jobs:
       use_review_app:
         type: string
         default: ""
-    resource_class: xlarge
+    resource_class: "2xlarge"
     steps:
       - checkout
       - *set_package_version
