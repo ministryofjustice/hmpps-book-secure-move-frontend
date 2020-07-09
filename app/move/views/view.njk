@@ -93,6 +93,36 @@
       }
     }) }}
   {% endif %}
+
+  {% if showPersonEscortRecordBanner %}
+    {% set html %}
+      <p>{{ t("messages::pending_person_escort_record.content") }}</p>
+
+      {% if personEscortRecord %}
+        <p>
+          <a href="{{ personEscortRecordUrl }}">
+            {{ t("actions::continue_person_escort_record") }}
+          </a>
+        </p>
+      {% else %}
+        {{ govukButton({
+          href: personEscortRecordUrl,
+          text: t("actions::start_person_escort_record")
+        }) }}
+      {% endif %}
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction",
+      title: {
+        text: t("messages::pending_person_escort_record.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block contentHeader %}
@@ -125,13 +155,13 @@
 {% endblock %}
 
 {% macro updateLink(link) %}
-    {% if link.href %}
+  {% if link.href %}
     <p class="app-!-position-top-right">
       <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
         {{ link.html | safe }}
       </a>
     </p>
-    {% endif %}
+  {% endif %}
 {% endmacro %}
 
 {% block contentMain %}
@@ -202,6 +232,14 @@
       }),
       classes: "govuk-!-margin-bottom-0"
     }) }}
+  {% endif %}
+
+  {% if personEscortRecordIsComplete %}
+    <p>
+      <a href="{{ personEscortRecordUrl }}">
+        {{ t("actions::view_person_escort_record") }}
+      </a>
+    </p>
   {% endif %}
 
   {% if canCancelMove %}

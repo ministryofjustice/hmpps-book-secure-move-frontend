@@ -70,7 +70,7 @@ getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
   describe('#view()', function () {
-    let req, res
+    let req, res, params
     const userPermissions = ['permA']
 
     beforeEach(function () {
@@ -105,6 +105,7 @@ describe('Move controllers', function () {
     context('by default', function () {
       beforeEach(function () {
         controller(req, res)
+        params = res.render.args[0][1]
       })
 
       it('should render a template', function () {
@@ -112,7 +113,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(12)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -123,13 +124,33 @@ describe('Move controllers', function () {
       })
 
       it('should contain a move param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('move')
         expect(params.move).to.deep.equal(mockMove)
       })
 
+      it('should contain a personEscortRecord param', function () {
+        expect(params).to.have.property('personEscortRecord')
+        expect(params.personEscortRecord).to.be.undefined
+      })
+
+      it('should contain a personEscortRecordIsComplete param', function () {
+        expect(params).to.have.property('personEscortRecordIsComplete')
+        expect(params.personEscortRecordIsComplete).to.be.false
+      })
+
+      it('should contain a personEscortRecordUrl param', function () {
+        expect(params).to.have.property('personEscortRecordUrl')
+        expect(params.personEscortRecordUrl).to.equal(
+          `/person-escort-record/new/${mockMove.id}`
+        )
+      })
+
+      it('should contain a showPersonEscortRecordBanner param', function () {
+        expect(params).to.have.property('showPersonEscortRecordBanner')
+        expect(params.showPersonEscortRecordBanner).to.be.false
+      })
+
       it('should contain a move summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('moveSummary')
         expect(params.moveSummary).to.equal('__moveToMetaListComponent__')
       })
@@ -141,7 +162,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain personal details summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('personalDetailsSummary')
         expect(params.personalDetailsSummary).to.equal(mockMove.person)
       })
@@ -153,7 +173,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain tag list param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('tagList')
         expect(params.tagList).to.equal(mockAssessmentAnswers)
       })
@@ -165,7 +184,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain assessment param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('assessment')
         expect(params.assessment).to.deep.equal(mockAssessmentAnswers)
       })
@@ -177,12 +195,10 @@ describe('Move controllers', function () {
       })
 
       it('should contain court hearings param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('courtHearings')
       })
 
       it('should order court hearings by start time', function () {
-        const params = res.render.args[0][1]
         expect(params.courtHearings).to.deep.equal([
           {
             id: '3',
@@ -224,19 +240,16 @@ describe('Move controllers', function () {
       })
 
       it('should contain court summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('courtSummary')
         expect(params.courtSummary).to.equal(mockAssessmentAnswers)
       })
 
       it('should contain message title param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('messageTitle')
         expect(params.messageTitle).to.equal(undefined)
       })
 
       it('should contain message content param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
       })
@@ -283,7 +296,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(12)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
       })
     })
 
@@ -368,6 +381,90 @@ describe('Move controllers', function () {
         expect(
           presenters.assessmentToSummaryListComponent
         ).to.be.calledOnceWithExactly([], 'court')
+      })
+    })
+
+    context('with Person Escort Record', function () {
+      const mockPersonEscortRecord = {
+        id: '67890',
+        status: 'incomplete',
+      }
+
+      beforeEach(function () {
+        req.move = {
+          ...req.move,
+          profile: {
+            id: '12345',
+            person_escort_record: mockPersonEscortRecord,
+          },
+        }
+      })
+
+      context('when record is incomplete', function () {
+        beforeEach(function () {
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should contain a personEscortRecord', function () {
+          expect(params).to.have.property('personEscortRecord')
+          expect(params.personEscortRecord).to.deep.equal(
+            mockPersonEscortRecord
+          )
+        })
+
+        it('should not show Person Escort Record as complete', function () {
+          expect(params).to.have.property('personEscortRecordIsComplete')
+          expect(params.personEscortRecordIsComplete).to.be.false
+        })
+
+        it('should contain url to Person Escort Record', function () {
+          expect(params).to.have.property('personEscortRecordUrl')
+          expect(params.personEscortRecordUrl).to.equal(
+            `/person-escort-record/${mockPersonEscortRecord.id}`
+          )
+        })
+
+        it('should show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.true
+        })
+      })
+
+      context('when record is complete', function () {
+        beforeEach(function () {
+          req.move.profile.person_escort_record = {
+            ...mockPersonEscortRecord,
+            status: 'complete',
+          }
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should contain a personEscortRecord', function () {
+          expect(params).to.have.property('personEscortRecord')
+          expect(params.personEscortRecord).to.deep.equal({
+            ...mockPersonEscortRecord,
+            status: 'complete',
+          })
+        })
+
+        it('should show Person Escort Record as complete', function () {
+          expect(params).to.have.property('personEscortRecordIsComplete')
+          expect(params.personEscortRecordIsComplete).to.be.true
+        })
+
+        it('should contain url to Person Escort Record', function () {
+          expect(params).to.have.property('personEscortRecordUrl')
+          expect(params.personEscortRecordUrl).to.equal(
+            `/person-escort-record/${mockPersonEscortRecord.id}`
+          )
+        })
+
+        it('should not show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.false
+        })
       })
     })
 

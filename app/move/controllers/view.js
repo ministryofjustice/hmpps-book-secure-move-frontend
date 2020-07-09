@@ -19,14 +19,29 @@ module.exports = function view(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const { person, assessment_answers: assessmentAnswers = [] } = profile || {}
-
+  const {
+    person,
+    assessment_answers: assessmentAnswers = [],
+    person_escort_record: personEscortRecord,
+  } = profile || {}
+  const personEscortRecordIsComplete = personEscortRecord?.status === 'complete'
+  const personEscortRecordUrl = personEscortRecord?.id
+    ? `/person-escort-record/${personEscortRecord.id}`
+    : `/person-escort-record/new/${move.id}`
+  const showPersonEscortRecordBanner =
+    !personEscortRecordIsComplete &&
+    move.status === 'requested' &&
+    move.profile?.id !== undefined
   const urls = {
     update: updateUrls,
   }
 
   const locals = {
     move,
+    personEscortRecord,
+    personEscortRecordIsComplete,
+    personEscortRecordUrl,
+    showPersonEscortRecordBanner,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),

@@ -25,7 +25,9 @@
       }) }}
     {% endfor %}
 
-    {{ updateLink(updateLinks[assessmentCategory.key]) }}
+    {% if not personEscortRecord %}
+      {{ updateLink(updateLinks[assessmentCategory.key]) }}
+    {% endif %}
   </section>
 {% endfor %}
 
