@@ -7,7 +7,7 @@ const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
 module.exports = function view(req, res) {
-  const { move = {} } = res.locals
+  const { move } = req
   const {
     profile,
     status,
@@ -19,13 +19,14 @@ module.exports = function view(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const { person, assessment_answers: assessmentAnswers = [] } = profile
+  const { person, assessment_answers: assessmentAnswers = [] } = profile || {}
 
   const urls = {
     update: updateUrls,
   }
 
   const locals = {
+    move,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),

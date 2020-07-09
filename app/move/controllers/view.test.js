@@ -1,4 +1,3 @@
-const { cloneDeep } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const presenters = require('../../../common/presenters')
@@ -77,7 +76,9 @@ describe('Move controllers', function () {
     beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
-      sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+      sinon
+        .stub(presenters, 'moveToMetaListComponent')
+        .returns('__moveToMetaListComponent__')
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
@@ -94,12 +95,10 @@ describe('Move controllers', function () {
             permissions: userPermissions,
           },
         },
+        move: mockMove,
       }
       res = {
         render: sinon.spy(),
-        locals: {
-          move: mockMove,
-        },
       }
     })
 
@@ -112,6 +111,10 @@ describe('Move controllers', function () {
         expect(res.render.calledOnce).to.be.true
       })
 
+      it('should pass correct number of locals to template', function () {
+        expect(Object.keys(res.render.args[0][1])).to.have.length(12)
+      })
+
       it('should call moveToMetaListComponent presenter with correct args', function () {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
           mockMove,
@@ -119,10 +122,16 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should contain a move param', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('move')
+        expect(params.move).to.deep.equal(mockMove)
+      })
+
       it('should contain a move summary param', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('moveSummary')
-        expect(params.moveSummary).to.equal(mockMove)
+        expect(params.moveSummary).to.equal('__moveToMetaListComponent__')
       })
 
       it('should call personToSummaryListComponent presenter with correct args', function () {
@@ -260,12 +269,30 @@ describe('Move controllers', function () {
       })
     })
 
+    context('with null profile (allocation move)', function () {
+      beforeEach(function () {
+        req.move = {
+          ...mockMove,
+          profile: null,
+        }
+        controller(req, res)
+      })
+
+      it('should render a template', function () {
+        expect(res.render.calledOnce).to.be.true
+      })
+
+      it('should pass correct number of locals to template', function () {
+        expect(Object.keys(res.render.args[0][1])).to.have.length(12)
+      })
+    })
+
     context('when move is cancelled', function () {
       let params
 
       beforeEach(function () {
         req.t.returns('__translated__')
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           status: 'cancelled',
           cancellation_reason: 'made_in_error',
@@ -297,7 +324,7 @@ describe('Move controllers', function () {
       let params
 
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           person: undefined,
         }
@@ -344,75 +371,147 @@ describe('Move controllers', function () {
       })
     })
 
-    context('can user cancel a move', function () {
-      const res = {
-        render: sinon.stub(),
-        locals: {
-          move: {
-            ...mockMove,
-            person: undefined,
-          },
-        },
-      }
-      const req = {
-        t: sinon.stub(),
-        session: {
-          user: {
-            permissions: ['permission1', 'move:cancel:proposed'],
-          },
-        },
-      }
-      it('they can when the move is proposed and they can cancel proposed moves', function () {
-        const proposedMoveReq = cloneDeep(req)
-        const proposedMoveRes = cloneDeep(res)
-        proposedMoveRes.locals.move.status = 'proposed'
-        controller(proposedMoveReq, proposedMoveRes)
-        const params = proposedMoveRes.render.args[0][1]
-        expect(params.canCancelMove).to.be.true
+    describe('cancelling a move', function () {
+      let params
+
+      beforeEach(function () {
+        req.move = {
+          ...mockMove,
+          person: undefined,
+        }
+        req.session.user.permissions = []
       })
-      it('they can when the move is requested and not in an allocation, and they can cancel moves', function () {
-        const requestedMoveReq = cloneDeep(req)
-        requestedMoveReq.session.user.permissions = ['move:cancel']
-        const requestedMoveRes = cloneDeep(res)
-        requestedMoveRes.locals.move.status = 'requested'
-        controller(requestedMoveReq, requestedMoveRes)
-        const params = requestedMoveRes.render.args[0][1]
-        expect(params.canCancelMove).to.be.true
+
+      context('with proposed state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'proposed',
+          }
+        })
+
+        context('without permission to cancel proposed moves', function () {
+          beforeEach(function () {
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
+        })
+
+        context('with permission to cancel proposed moves', function () {
+          beforeEach(function () {
+            req.session.user.permissions = ['move:cancel:proposed']
+
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.true
+          })
+        })
       })
-      context('they cannot in all other cases', function () {
-        it('when the permissions do not include cancel for the correct type of move', function () {
-          const proposedMoveReq = cloneDeep(req)
-          proposedMoveReq.session.user.permissions = [
-            'move:cancel',
-            'otherPermission',
-          ]
-          const proposedMoveRes = cloneDeep(res)
-          proposedMoveRes.locals.move.status = 'proposed'
-          proposedMoveRes.render.resetHistory()
-          controller(proposedMoveReq, proposedMoveRes)
-          const params = res.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+      context('with requested state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'requested',
+          }
         })
-        it('when the move is part of an allocation', function () {
-          const requestedMoveReq = cloneDeep(req)
-          requestedMoveReq.session.user.permissions = ['move:cancel']
-          const requestedMoveRes = cloneDeep(res)
-          requestedMoveRes.locals.move.status = 'requested'
-          requestedMoveRes.locals.move.allocation = {}
-          requestedMoveRes.render.resetHistory()
-          controller(requestedMoveReq, requestedMoveRes)
-          const params = requestedMoveRes.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+        context('allocation move', function () {
+          beforeEach(function () {
+            req.move = {
+              ...req.move,
+              allocation: {
+                id: '123',
+              },
+            }
+          })
+
+          context('without permission to cancel move', function () {
+            beforeEach(function () {
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
+
+          context('with permission to cancel move', function () {
+            beforeEach(function () {
+              req.session.user.permissions = ['move:cancel']
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
         })
-        it('when the move has a different status', function () {
-          const requestedMoveReq = cloneDeep(req)
-          requestedMoveReq.session.user.permissions = ['move:cancel']
-          const requestedMoveRes = cloneDeep(res)
-          requestedMoveRes.locals.move.status = 'confirmed'
-          requestedMoveRes.render.resetHistory()
-          controller(requestedMoveReq, requestedMoveRes)
-          const params = requestedMoveRes.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+        context('non-allocation move', function () {
+          context('without permission to cancel move', function () {
+            beforeEach(function () {
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
+
+          context('with permission to cancel move', function () {
+            beforeEach(function () {
+              req.session.user.permissions = ['move:cancel']
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.true
+            })
+          })
+        })
+      })
+
+      context('with other state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'completed',
+          }
+        })
+
+        context('without permission to cancel move', function () {
+          beforeEach(function () {
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
+        })
+
+        context('with permission to cancel move', function () {
+          beforeEach(function () {
+            req.session.user.permissions = ['move:cancel']
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
         })
       })
     })
