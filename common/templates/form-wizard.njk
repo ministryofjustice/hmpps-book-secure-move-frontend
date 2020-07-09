@@ -96,7 +96,7 @@
 {% set sidebarHeading = sidebarHeading or (person.fullname | upper) or t("awaiting_person") %}
 
 {% block contentSidebar %}
-  {% if person.id or move.id %}
+  {% if person.id or move.id and not options.hideSidebar %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
         {% block summaryPanelContent %}
