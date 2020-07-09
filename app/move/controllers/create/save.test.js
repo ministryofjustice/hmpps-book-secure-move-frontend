@@ -98,11 +98,12 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(function () {
-        sinon.stub(profileService, 'create').resolves(mockProfile)
+        // sinon.stub(profileService, 'create').resolves(mockProfile)
         sinon.stub(profileService, 'update').resolves({})
         sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
         req = {
+          getProfile: sinon.stub().returns(mockProfile),
           form: {
             values: {},
           },
@@ -132,26 +133,15 @@ describe('Move controllers', function () {
             })
           })
 
-          // it('should create profile', function () {
-          //   expect(profileService.create).to.be.calledOnceWithExactly(
-          //     mockValues.person.id,
-          //     {
-          //       assessment_answers: mockValues.assessment,
-          //       documents: mockDocuments,
-          //     }
-          //   )
-          // })
+          it('should fetch profile', function () {
+            expect(req.getProfile).to.be.calledOnceWithExactly()
+          })
 
-          // TODO - post v2, remove this and reinstate previous block
-          it('should create profile - v1', function () {
-            expect(profileService.create).to.be.calledOnceWithExactly(
-              mockValues.person.id,
-              {}
-            )
+          it('should patch profile', function () {
             expect(profileService.update).to.be.calledOnceWithExactly({
               ...mockProfile,
               assessment_answers: mockValues.assessment,
-              documents: mockDocuments,
+              documents: mockValues.documents,
             })
           })
 
@@ -208,22 +198,11 @@ describe('Move controllers', function () {
               })
             })
 
-            // it('should create profile', function () {
-            //   expect(profileService.create).to.be.calledOnceWithExactly(
-            //     mockValuesWithHearings.person.id,
-            //     {
-            //       assessment_answers: mockValuesWithHearings.assessment,
-            //       documents: mockValuesWithHearings.documents,
-            //     }
-            //   )
-            // })
+            it('should fetch profile', function () {
+              expect(req.getProfile).to.be.calledOnceWithExactly()
+            })
 
-            // TODO - post v2, remove this and reinstate previous block
-            it('should create profile - v1', function () {
-              expect(profileService.create).to.be.calledOnceWithExactly(
-                mockValuesWithHearings.person.id,
-                {}
-              )
+            it('should patch profile', function () {
               expect(profileService.update).to.be.calledOnceWithExactly({
                 ...mockProfile,
                 assessment_answers: mockValuesWithHearings.assessment,
@@ -512,6 +491,9 @@ describe('Move controllers', function () {
             'with `not_to_be_released` and `special_vehicle`',
             function () {
               beforeEach(function () {
+                req.getProfile = sinon
+                  .stub()
+                  .returns({ assessment_answers: [] })
                 req.form.values.assessment = mockCurrentAssessmentWithExplicit
                 controller.process(req, {}, {})
               })
@@ -566,6 +548,9 @@ describe('Move controllers', function () {
             'without `not_to_be_released` and `special_vehicle`',
             function () {
               beforeEach(function () {
+                req.getProfile = sinon
+                  .stub()
+                  .returns({ assessment_answers: [] })
                 controller.process(req, {}, {})
               })
 
@@ -613,6 +598,9 @@ describe('Move controllers', function () {
             'with `not_to_be_released` and `special_vehicle`',
             function () {
               beforeEach(function () {
+                req.getProfile = sinon
+                  .stub()
+                  .returns({ assessment_answers: mockExistingAssessment })
                 req.form.values.assessment = mockCurrentAssessmentWithExplicit
                 controller.process(req, {}, {})
               })
@@ -668,6 +656,9 @@ describe('Move controllers', function () {
             'without `not_to_be_released` and `special_vehicle`',
             function () {
               beforeEach(function () {
+                req.getProfile = sinon
+                  .stub()
+                  .returns({ assessment_answers: mockExistingAssessment })
                 req.form.values.assessment = mockCurrentAssessmentWithoutExplicit
                 controller.process(req, {}, {})
               })
@@ -743,6 +734,7 @@ describe('Move controllers', function () {
 
         context('when to location is also Prison', function () {
           beforeEach(function () {
+            req.getProfile = sinon.stub().returns({ assessment_answers: [] })
             req.form.values.to_location_type = 'prison'
             controller.process(req, {}, {})
           })

@@ -23,12 +23,15 @@ class CreateBaseController extends FormWizardController {
   _addModelMethods(req) {
     req.getMove = () => req.models.move || {}
     req.getMoveId = () => req.getMove().id
+    req.getProfile = () => req.models.profile || {}
+    req.getProfileId = () => req.getProfile().id
     req.getPerson = () => req.models.person || {}
     req.getPersonId = () => req.getPerson().id
   }
 
   _setModels(req) {
     req.models.move = req.sessionModel.toJSON()
+    req.models.profile = req.sessionModel.get('profile')
     req.models.person = req.sessionModel.get('person')
   }
 
