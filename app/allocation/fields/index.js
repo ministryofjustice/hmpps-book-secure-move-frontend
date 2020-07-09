@@ -3,11 +3,14 @@ const cancellationReasonComment = require('./cancellation_reason_comment')
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
+const estate = require('./estate')
+const estateOther = require('./estate_other')
 const fromLocation = require('./from-location')
 const hasOtherCriteria = require('./has-other-criteria')
 const movesCount = require('./moves-count')
 const otherCriteria = require('./other-criteria')
-const prisonerCategory = require('./prisoner-category')
+const prisonerMaleCategory = require('./prisoner-male-category')
+const prisonerOtherCategory = require('./prisoner-other-category')
 const sentenceLength = require('./sentence-length')
 const toLocation = require('./to-location')
 
@@ -19,9 +22,12 @@ const createFields = {
   moves_count: movesCount,
   has_other_criteria: hasOtherCriteria,
   other_criteria: otherCriteria,
-  prisoner_category: prisonerCategory,
+  prisoner_male_category: prisonerMaleCategory,
+  prisoner_other_category: prisonerOtherCategory,
   sentence_length: sentenceLength,
   to_location: toLocation,
+  estate,
+  otherEstate: estateOther,
 }
 
 const cancelFields = {

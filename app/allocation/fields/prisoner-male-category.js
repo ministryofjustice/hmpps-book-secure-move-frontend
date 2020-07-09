@@ -1,13 +1,13 @@
 const prisonerCategory = {
   validate: 'required',
   component: 'govukRadios',
-  name: 'prisoner_category',
+  name: 'prisoner_male_category',
   label: {
-    text: 'fields::prisoner_category.label',
+    text: 'fields::prisoner_male_category.label',
   },
   fieldset: {
     legend: {
-      text: 'fields::prisoner_category.label',
+      text: 'fields::prisoner_male_category.label',
       classes: 'govuk-fieldset__legend--m',
     },
   },

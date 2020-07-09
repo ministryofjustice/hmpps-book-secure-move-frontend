@@ -278,6 +278,7 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'locations',
       },
+      estate: '',
       date: '',
       prisoner_category: '',
       sentence_length: '',

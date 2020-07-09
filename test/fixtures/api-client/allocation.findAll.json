@@ -15,7 +15,8 @@
       "updated_at": "2020-05-12T09:59:09+01:00",
       "status": "",
       "cancellation_reason": "",
-      "cancellation_reason_comment": ""
+      "cancellation_reason_comment": "",
+      "estate": "adult_female"
     },
     "relationships": {
       "from_location": {
