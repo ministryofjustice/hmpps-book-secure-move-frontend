@@ -16,7 +16,8 @@
       "status": "",
       "cancellation_reason": "",
       "cancellation_reason_comment": "",
-      "estate": "adult_female"
+      "estate": "adult_female",
+      "sentence_length_comment": ""
     },
     "relationships": {
       "from_location": {

@@ -12,6 +12,7 @@ const otherCriteria = require('./other-criteria')
 const prisonerMaleCategory = require('./prisoner-male-category')
 const prisonerOtherCategory = require('./prisoner-other-category')
 const sentenceLength = require('./sentence-length')
+const sentenceLengthComment = require('./sentence-length-comment')
 const toLocation = require('./to-location')
 
 const createFields = {
@@ -23,11 +24,14 @@ const createFields = {
   has_other_criteria: hasOtherCriteria,
   other_criteria: otherCriteria,
   prisoner_male_category: prisonerMaleCategory,
-  prisoner_other_category: prisonerOtherCategory,
+  prisoner_female_category: prisonerOtherCategory,
+  prisoner_youth_female_category: prisonerOtherCategory,
+  prisoner_youth_male_category: prisonerOtherCategory,
   sentence_length: sentenceLength,
   to_location: toLocation,
   estate,
-  otherEstate: estateOther,
+  estate_other: estateOther,
+  sentence_length_comment: sentenceLengthComment,
 }
 
 const cancelFields = {

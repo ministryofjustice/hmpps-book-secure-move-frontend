@@ -7,15 +7,25 @@ function allocationToSummaryListComponent(allocation) {
     complex_cases: complexCases,
     other_criteria: otherCriteria,
     sentence_length: sentenceLength,
+    sentence_length_comment: sentenceLengthComment,
+    estate,
   } = allocation
   return {
     rows: [
       {
         key: {
+          text: i18n.t('fields::estate.label'),
+        },
+        value: {
+          text: i18n.t(`fields::estate.items.${estate}`),
+        },
+      },
+      {
+        key: {
           text: i18n.t('fields::prisoner_category.label'),
         },
         value: {
-          text: filters.startCase(prisonerCategory),
+          text: i18n.t(`fields::prisoner_category.items.${prisonerCategory}`),
         },
       },
       {
@@ -23,9 +33,11 @@ function allocationToSummaryListComponent(allocation) {
           text: i18n.t('fields::sentence_length.label'),
         },
         value: {
-          text: i18n.t('fields::sentence_length.items.length', {
-            context: sentenceLength,
-          }),
+          text:
+            sentenceLengthComment ||
+            i18n.t('fields::sentence_length.items.length', {
+              context: sentenceLength,
+            }),
         },
       },
       {

@@ -11,6 +11,7 @@ describe('allocation to summary list component', function () {
       location_type: 'prison',
     },
     prisoner_category: 'c',
+    estate: 'adult_male',
     complex_cases: [
       {
         key: 'hold_separately',
@@ -49,21 +50,30 @@ describe('allocation to summary list component', function () {
   it('outputs an array', function () {
     expect(output.rows).to.exist
     expect(output.rows).to.be.an('array')
-    expect(output.rows.length).to.equal(4)
+    expect(output.rows.length).to.equal(5)
   })
-  it('has the prisoner category as first item', function () {
+  it('has the prisoner estate as first item', function () {
     expect(output.rows[0]).to.deep.equal({
+      key: {
+        text: 'fields::estate.label',
+      },
+      value: {
+        text: 'fields::estate.items.adult_male',
+      },
+    })
+  })
+  it('has the prisoner category as second item', function () {
+    expect(output.rows[1]).to.deep.equal({
       key: {
         text: 'fields::prisoner_category.label',
       },
       value: {
-        text: 'c',
+        text: 'fields::prisoner_category.items.c',
       },
     })
-    expect(filters.startCase).to.have.been.calledWithExactly('c')
   })
-  it('has the sentence length as second item', function () {
-    expect(output.rows[1]).to.deep.equal({
+  it('has the sentence length as third item', function () {
+    expect(output.rows[2]).to.deep.equal({
       key: {
         text: 'fields::sentence_length.label',
       },
@@ -76,8 +86,8 @@ describe('allocation to summary list component', function () {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the complex cases as third item, filtering those whose answer is false', function () {
-    expect(output.rows[2]).to.deep.equal({
+  it('has the complex cases as four item, filtering those whose answer is false', function () {
+    expect(output.rows[3]).to.deep.equal({
       key: {
         text: 'fields::complex_cases.label',
       },
@@ -90,8 +100,8 @@ describe('allocation to summary list component', function () {
       'Self harm / prisoners on ACCT',
     ])
   })
-  it('has the other criteria as fourth item', function () {
-    expect(output.rows[3]).to.deep.equal({
+  it('has the other criteria as fifth item', function () {
+    expect(output.rows[4]).to.deep.equal({
       key: {
         text: 'fields::other_criteria.label',
       },

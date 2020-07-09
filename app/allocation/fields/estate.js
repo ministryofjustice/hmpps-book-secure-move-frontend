@@ -3,11 +3,11 @@ const estate = {
   component: 'govukRadios',
   name: 'estate',
   label: {
-    text: 'fields::estate.label',
+    text: 'fields::estate.select_label',
   },
   fieldset: {
     legend: {
-      text: 'fields::estate.label',
+      text: 'fields::estate.select_label',
       classes: 'govuk-fieldset__legend--m',
     },
   },
@@ -15,7 +15,7 @@ const estate = {
     {
       value: 'adult_female',
       text: 'fields::estate.items.adult_female',
-      conditional: 'prisoner_other_category',
+      conditional: 'prisoner_female_category',
     },
     {
       value: 'adult_male',
@@ -33,12 +33,12 @@ const estate = {
     {
       value: 'youth_female',
       text: 'fields::estate.items.youth_female',
-      conditional: 'prisoner_other_category',
+      conditional: 'prisoner_youth_female_category',
     },
     {
       value: 'youth_male',
       text: 'fields::estate.items.youth_male',
-      conditional: 'prisoner_other_category',
+      conditional: 'prisoner_youth_male_category',
     },
     {
       value: 'other',

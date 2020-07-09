@@ -281,21 +281,20 @@
   "date_of_allocation": {
     "label": "Date of allocation"
   },
-  "prisoner_male_category": {
-    "label": "Select category",
-    "items": {
-      "other": "Other"
-    }
-  },
-  "prisoner_other_category": {
-    "label": "Select category",
+  "prisoner_category": {
+    "label": "Prisoner category",
+    "select_label": "Select category",
     "items": {
       "open": "Open",
-      "closed": "Closed"
+      "closed": "Closed",
+      "b": "B",
+      "c": "C",
+      "d": "D"
     }
   },
   "estate": {
-    "label": "Select estate",
+    "label": "Estate",
+    "select_label": "Select estate",
     "items": {
       "adult_female": "Adult female",
       "adult_male": "Adult male",
@@ -314,8 +313,12 @@
     "items": {
       "length_long": "Over 16 months",
       "length_short": "16 months or less",
-      "length": "Any time to serve"
+      "length": "Any time to serve",
+      "other": "Other"
     }
+  },
+  "sentence_length_comment": {
+    "label": "Give details"
   },
   "complete_in_full": {
     "label": "Does this allocation have to be filled in full?"

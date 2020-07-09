@@ -6,7 +6,7 @@ const otherCriteria = {
   component: 'govukTextarea',
   classes: 'govuk-input--width-20',
   label: {
-    text: 'fields::other_estate.label',
+    text: 'fields::estate_other.label',
     classes: 'govuk-label--s',
   },
 }

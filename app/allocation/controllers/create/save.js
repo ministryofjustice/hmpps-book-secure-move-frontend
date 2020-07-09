@@ -7,13 +7,29 @@ const CreateAllocationBaseController = require('./base')
 class SaveController extends CreateAllocationBaseController {
   async saveValues(req, res, next) {
     try {
-      const data = omit(req.sessionModel.toJSON(), [
+      const prisonerCategoryLabels = [
+        'prisoner_female_category',
+        'prisoner_male_category',
+        'prisoner_youth_female_category',
+        'prisoner_youth_male_category',
+      ]
+      const sessionModel = req.sessionModel.toJSON()
+      const data = omit(sessionModel, [
         'csrf-secret',
         'errors',
         'errorValues',
+        ...prisonerCategoryLabels,
       ])
+
+      const prisonerCategoryLabel = prisonerCategoryLabels.find(
+        it => (sessionModel[it] || '').length > 0
+      )
+
       const allocation = await allocationService.create({
         ...data,
+        ...(prisonerCategoryLabel
+          ? { prisoner_category: sessionModel[prisonerCategoryLabel] }
+          : {}),
         requested_by: req.session.user.fullname,
       })
 
