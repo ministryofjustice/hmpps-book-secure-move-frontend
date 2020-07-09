@@ -98,7 +98,6 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(function () {
-        // sinon.stub(profileService, 'create').resolves(mockProfile)
         sinon.stub(profileService, 'update').resolves({})
         sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()

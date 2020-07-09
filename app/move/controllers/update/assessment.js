@@ -1,4 +1,4 @@
-const { isEqual, pick } = require('lodash')
+const { isEqual, pick, keys, get } = require('lodash')
 
 const profileService = require('../../../../common/services/profile')
 const Assessment = require('../create/assessment')
@@ -29,9 +29,15 @@ class UpdateAssessmentController extends UpdateBase {
     this.use(this.setPreviousAssessment)
   }
 
+  getUpdateValues(req, res) {
+    const profile = req.getProfile()
+    const fields = keys(get(req, 'form.options.fields'))
+    return profileService.unformat(profile, fields)
+  }
+
   async saveValues(req, res, next) {
     try {
-      const { profile } = req.getMove()
+      const profile = req.getProfile()
       const assessments = profile.assessment_answers || []
       const fieldKeys = Object.keys(req.form.options.fields)
 

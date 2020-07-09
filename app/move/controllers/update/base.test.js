@@ -247,6 +247,10 @@ describe('Move controllers', function () {
         expect(req.models.move).to.deep.equal(mockSession)
       })
 
+      it('should add profile model to req', function () {
+        expect(req.models.profile).to.deep.equal(mockSession.profile)
+      })
+
       it('should add person model to req', function () {
         expect(req.models.person).to.deep.equal(mockSession.profile.person)
       })
