@@ -23,4 +23,8 @@
   ol {
     @extend .govuk-list--number;
   }
+
+  .govuk-warning-text p {
+    font-weight: $govuk-font-weight-bold;
+  }
 }
