@@ -8,7 +8,12 @@ module.exports = {
     }
 
     try {
-      res.locals.move = await moveService.getById(moveId)
+      const move = await moveService.getById(moveId)
+
+      // TODO: Remove `res.locals` in favour of `req.move`. See issue #451
+      res.locals.move = move
+      req.move = move
+
       next()
     } catch (error) {
       next(error)

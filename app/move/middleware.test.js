@@ -14,16 +14,19 @@ const errorStub = new Error('Problem')
 
 describe('Move middleware', function () {
   describe('#setMove()', function () {
-    context('when no move ID exists', function () {
-      let res, nextSpy
+    let req, res, nextSpy
 
+    beforeEach(function () {
+      req = {}
+      res = { locals: {} }
+      nextSpy = sinon.spy()
+    })
+
+    context('when no move ID exists', function () {
       beforeEach(async function () {
         sinon.stub(moveService, 'getById').resolves(moveStub)
 
-        res = { locals: {} }
-        nextSpy = sinon.spy()
-
-        await middleware.setMove({}, res, nextSpy)
+        await middleware.setMove(req, res, nextSpy)
       })
 
       it('should call next with no argument', function () {
@@ -37,19 +40,18 @@ describe('Move middleware', function () {
       it('should not set response data to locals object', function () {
         expect(res.locals).not.to.have.property('move')
       })
+
+      it('should not set response data to request object', function () {
+        expect(req).not.to.have.property('move')
+      })
     })
 
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
-        let res, nextSpy
-
         beforeEach(async function () {
           sinon.stub(moveService, 'getById').resolves(moveStub)
 
-          res = { locals: {} }
-          nextSpy = sinon.spy()
-
-          await middleware.setMove({}, res, nextSpy, mockMoveId)
+          await middleware.setMove(req, res, nextSpy, mockMoveId)
         })
 
         it('should call API with move ID', function () {
@@ -61,25 +63,29 @@ describe('Move middleware', function () {
           expect(res.locals.move).to.equal(moveStub)
         })
 
+        it('should set response data to request object', function () {
+          expect(req).to.have.property('move')
+          expect(req.move).to.equal(moveStub)
+        })
+
         it('should call next with no argument', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
       context('when API call returns an error', function () {
-        let res, nextSpy
-
         beforeEach(async function () {
           sinon.stub(moveService, 'getById').throws(errorStub)
-
-          res = { locals: {} }
-          nextSpy = sinon.spy()
 
           await middleware.setMove({}, res, nextSpy, mockMoveId)
         })
 
         it('should not set a value on the locals object', function () {
           expect(res.locals).not.to.have.property('move')
+        })
+
+        it('should not set response data to request object', function () {
+          expect(req).not.to.have.property('move')
         })
 
         it('should send error to next function', function () {
