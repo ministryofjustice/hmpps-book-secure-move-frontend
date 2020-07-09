@@ -67,6 +67,13 @@ const pmuPermissions = [
   'move:review',
   'move:view',
 ]
+const courtPermissions = [
+  'dashboard:view',
+  'moves:view:outgoing',
+  'moves:view:incoming',
+  'moves:download',
+  'move:view',
+]
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
@@ -77,6 +84,7 @@ const permissionsByRole = {
   ROLE_PECS_OCA: ocaPermissions,
   ROLE_PECS_PMU: pmuPermissions,
   ROLE_PECS_SUPPLIER: supplierPermissions,
+  ROLE_PECS_COURT: courtPermissions,
 }
 
 module.exports = {

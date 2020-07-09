@@ -261,6 +261,22 @@ describe('User class', function () {
       })
     })
 
+    context('when user has ROLE_PECS_COURT role', function () {
+      beforeEach(function () {
+        permissions = user.getPermissions(['ROLE_PECS_COURT'])
+      })
+
+      it('should contain correct permission', function () {
+        expect(permissions).to.deep.equal([
+          'dashboard:view',
+          'moves:view:outgoing',
+          'moves:view:incoming',
+          'moves:download',
+          'move:view',
+        ])
+      })
+    })
+
     context('when user has all roles', function () {
       beforeEach(function () {
         permissions = user.getPermissions([
@@ -272,6 +288,7 @@ describe('User class', function () {
           'ROLE_PECS_OCA',
           'ROLE_PECS_PMU',
           'ROLE_PECS_HMYOI',
+          'ROLE_PECS_COURT',
         ])
       })
 
