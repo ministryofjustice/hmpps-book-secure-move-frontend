@@ -10,6 +10,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "govuk-frontend/govuk/core/all";
 @import "govuk-frontend/govuk/objects/all";
 
+@import "govuk-frontend/govuk/components/accordion/index";
 @import "govuk-frontend/govuk/components/back-link/index";
 @import "govuk-frontend/govuk/components/button/index";
 @import "govuk-frontend/govuk/components/checkboxes/index";

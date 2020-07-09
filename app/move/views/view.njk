@@ -178,18 +178,189 @@
   </header>
 {% endblock %}
 
-{% macro updateLink(link) %}
+{% macro updateLink(link, new) %}
   {% if link.href %}
+    {# {% if new %} #}
+      <p class="govuk-!-margin-top-5">
+        <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+          {{ link.html | safe }}
+        </a>
+      </p>
+    {# {% else %}
     <p class="app-!-position-top-right">
       <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
         {{ link.html | safe }}
       </a>
     </p>
+  {% endif %} #}
   {% endif %}
 {% endmacro %}
 
 {% block contentMain %}
-  {% if move.profile %}
+
+{% set personDetailsHTML %}
+  <section class="app-!-position-relative">
+    {{ govukSummaryList(personalDetailsSummary) }}
+
+    {{ updateLink(updateLinks.personal_details) }}
+  </section>
+{% endset %}
+
+{% set courtHTML %}
+  <section class="app-!-position-relative">
+    {% if move.from_location.location_type == 'prison' and not courtSummary.rows.length %}
+      {% if courtHearings.length %}
+        {% for courtHearing in courtHearings %}
+          {% if courtHearings.length > 1 %}
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
+              {{ t("moves::detail.court_hearings.subheading", {
+                context: "with_index",
+                index: loop.index
+              }) }}
+            </h3>
+          {% endif %}
+
+          {{ govukSummaryList(courtHearing.summaryList) }}
+
+          {% if not courtHearing.saved_to_nomis %}
+            {{ govukWarningText({
+              text: t("moves::detail.court_hearings.nomis_failed", {
+                context: "with_index" if courtHearings.length > 1,
+                index: loop.index
+              }),
+              iconFallbackText: "Warning"
+            }) }}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted",
+          allowDismiss: false,
+          content: {
+            html: t("moves::detail.court_hearings.empty")
+          }
+        }) }}
+      {% endif %}
+    {% else %}
+      {% if courtSummary.rows | length %}
+        {{ govukSummaryList(courtSummary) }}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted",
+          allowDismiss: false,
+          content: {
+            html: t("assessment::no_items.text", {
+              context: "court"
+            })
+          }
+        }) }}
+      {% endif %}
+    {% endif %}
+
+    {{ updateLink(updateLinks.court) }}
+  </section>
+{% endset %}
+
+{% set riskHTML %}
+  {% set assessmentCategory = assessment[0] %}
+
+  <section class="app-!-position-relative">
+    {% for panel in assessmentCategory.panels %}
+      {% call appPanel(panel) %}
+        {{ appMetaList({
+          classes: "app-meta-list--divider",
+          items: panel.items
+        }) }}
+      {% endcall %}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted govuk-!-margin-top-2",
+        allowDismiss: false,
+        content: {
+          text: t('assessment::no_items.text', {
+            context: assessmentCategory.key
+          })
+        }
+      }) }}
+    {% endfor %}
+
+    {% if not personEscortRecord %}
+      {{ updateLink(updateLinks[assessmentCategory.key]) }}
+    {% endif %}
+  </section>
+{% endset %}
+
+{% set healthHTML %}
+  {% set assessmentCategory = assessment[1] %}
+
+  <section class="app-!-position-relative">
+    {% for panel in assessmentCategory.panels %}
+      {% call appPanel(panel) %}
+        {{ appMetaList({
+          classes: "app-meta-list--divider",
+          items: panel.items
+        }) }}
+      {% endcall %}
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted govuk-!-margin-top-2",
+        allowDismiss: false,
+        content: {
+          text: t('assessment::no_items.text', {
+            context: assessmentCategory.key
+          })
+        }
+      }) }}
+    {% endfor %}
+
+    {% if not personEscortRecord %}
+      {{ updateLink(updateLinks[assessmentCategory.key]) }}
+    {% endif %}
+  </section>
+{% endset %}
+
+{% if move.profile %}
+{{ govukAccordion({
+  id: "accordion-with-summary-sections",
+  items: [
+    {
+      expanded: true,
+      heading: {
+        text: "Personal details"
+      },
+      content: {
+        html: personDetailsHTML
+      }
+    },
+    {
+      heading: {
+        text: "Risk information (" + assessment[0].panels.length + ")"
+      },
+      content: {
+        html: riskHTML
+      }
+    },
+    {
+      heading: {
+        text: "Health affecting transport (" + assessment[1].panels.length + ")"
+      },
+      content: {
+        html: healthHTML
+      }
+    },
+    {
+      heading: {
+        text: "Information for the court"
+      },
+      content: {
+        html: courtHTML
+      }
+    }
+  ]
+}) }}
+{% endif %}
+
+  {# {% if move.profile %}
     <div class="govuk-!-margin-bottom-9">
       <section class="app-!-position-relative">
         <h2 class="govuk-heading-m">
@@ -244,7 +415,7 @@
         </section>
       {% endif %}
     </div>
-  {% endif %}
+  {% endif %} #}
 
   {% if move.allocation %}
     {# TODO: Get moves returned as part of an allocation so that we can determine the number #}
