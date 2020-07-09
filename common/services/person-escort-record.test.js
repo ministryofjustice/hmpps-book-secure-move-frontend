@@ -18,7 +18,36 @@ const mockRecord = {
 }
 
 describe('Services', function () {
-  describe('Person Escort Record', function () {
+  describe('Person Escort Record Service', function () {
+    describe('#create()', function () {
+      const mockProfileId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
+      const mockResponse = {
+        data: mockRecord,
+      }
+      let response
+
+      beforeEach(async function () {
+        sinon.stub(apiClient, 'create').resolves(mockResponse)
+
+        response = await personEscortRecordService.create(mockProfileId)
+      })
+
+      it('should call create method with data', function () {
+        expect(apiClient.create).to.be.calledOnceWithExactly(
+          'person_escort_record',
+          {
+            profile: {
+              id: mockProfileId,
+            },
+          }
+        )
+      })
+
+      it('should return record', function () {
+        expect(response).to.deep.equal(mockResponse.data)
+      })
+    })
+
     describe('#getById', function () {
       let output
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'

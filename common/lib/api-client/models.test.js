@@ -167,6 +167,12 @@ const testCases = {
       args: '1',
       statusCode: 200,
     },
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+      statusCode: 201,
+    },
   ],
 }
 
