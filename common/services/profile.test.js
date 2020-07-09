@@ -1,8 +1,13 @@
+const proxyquire = require('proxyquire')
+
 const apiClient = require('../lib/api-client')()
 
 const personService = require('./person')
-const profileService = require('./profile')
+const unformatStub = sinon.stub()
 
+const profileService = proxyquire('./profile', {
+  './profile/profile.unformat': unformatStub,
+})
 describe('Profile Service', function () {
   context('#transform', function () {
     context('When profile is not a valid object', function () {
@@ -131,6 +136,100 @@ describe('Profile Service', function () {
       it('should transform profile', function () {
         expect(profileService.transform).to.be.calledOnceWithExactly({
           id: '#updatedProfile',
+        })
+      })
+    })
+  })
+
+  describe('#unformat()', function () {
+    const assessmentKeys = [
+      // court
+      'solicitor',
+      'interpreter',
+      'other_court',
+      // risk
+      'violent',
+      'escape',
+      'hold_separately',
+      'self_harm',
+      'concealed_items',
+      'other_risks',
+      // health
+      'special_diet_or_allergy',
+      'health_issue',
+      'medication',
+      'wheelchair',
+      'pregnant',
+      'other_health',
+      'special_vehicle',
+    ]
+    const explicitKeys = ['special_vehicle', 'not_to_be_released']
+    const defaultKeys = {
+      assessment: assessmentKeys,
+      explicitAssessment: explicitKeys,
+    }
+
+    const profile = { id: '#profileId' }
+    const fields = ['foo']
+    let keys
+
+    beforeEach(function () {
+      unformatStub.resetHistory()
+      profileService.unformat(profile, fields, keys)
+    })
+
+    context('when called with no keys', function () {
+      before(function () {
+        keys = undefined
+      })
+
+      it('should call profile.unformat with expected args', function () {
+        expect(unformatStub).to.be.calledOnceWithExactly(
+          profile,
+          fields,
+          defaultKeys
+        )
+      })
+    })
+
+    context('when called with empty keys', function () {
+      before(function () {
+        keys = {}
+      })
+
+      it('should call profile.unformat with expected args', function () {
+        expect(unformatStub).to.be.calledOnceWithExactly(
+          profile,
+          fields,
+          defaultKeys
+        )
+      })
+    })
+
+    context('when called with keys', function () {
+      before(function () {
+        keys = {
+          assessment: ['assessmentField'],
+          explicitAssessment: ['explicitAssessmentField'],
+        }
+      })
+
+      it('should call profile.unformat with expected args', function () {
+        expect(unformatStub).to.be.calledOnceWithExactly(profile, fields, keys)
+      })
+    })
+
+    context('when called with keys with some missing properties', function () {
+      before(function () {
+        keys = {
+          explicitAssessment: ['explicitAssessmentField'],
+        }
+      })
+
+      it('should call profile.unformat with expected args', function () {
+        expect(unformatStub).to.be.calledOnceWithExactly(profile, fields, {
+          ...defaultKeys,
+          ...keys,
         })
       })
     })
