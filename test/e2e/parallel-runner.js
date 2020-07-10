@@ -2,15 +2,33 @@
 const concurrently = require('concurrently')
 const glob = require('glob')
 const args = require('yargs')
-  .help('h')
+  .usage(
+    `e2e test runner
+
+  Usage:
+
+  node $0 [options]
+  npm run test-e2e -- [options]
+  `
+  )
+  .help('help')
+  .alias('help', 'h')
+  .version('version', '1.0.0')
+  .alias('version', 'V')
+  .example('npm run test-e2e', 'Run all the tests')
+  .example('npm run test-e2e -- --test test/e2e/move.new.police.test.js')
+  .example('npm run test-e2e -- --skip test/e2e/move.new.police.test.js')
+  .example('npm run test-e2e -- --max_processes 3')
+  .example('npm run test-e2e -- --debug', 'Debug on fail')
+  .example('npm run test-e2e -- -n', 'Dry run')
   .option('test', {
     alias: 't',
-    type: 'string',
+    type: 'array',
     description: 'Test[s] to run',
   })
   .option('skip', {
     alias: 's',
-    type: 'string',
+    type: 'array',
     description: 'Test[s] to skip',
   })
   .option('agent', {
@@ -22,13 +40,15 @@ const args = require('yargs')
   .option('headless', {
     type: 'boolean',
     default: true,
-    description: 'Whether to run in headless mode',
+    description: `Whether to run in headless mode
+(will be set to false if debug is true)`,
   })
   .option('debug', {
     alias: 'd',
     type: 'boolean',
     default: false,
-    description: 'Whether to debug on fail',
+    description: `Whether to debug on fail
+(will set headless to false if true)`,
   })
   .option('max_processes', {
     alias: 'm',
@@ -55,6 +75,12 @@ const args = require('yargs')
   .option('testcafe', {
     type: 'string',
     description: 'Additonal args for testcafe',
+  })
+  .option('dryrun', {
+    alias: 'n',
+    type: 'boolean',
+    default: false,
+    description: 'Display commands that would be run',
   }).argv
 
 const maxProcesses = args.max_processes
@@ -68,28 +94,37 @@ const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
 const config = args.config ? `--ts-config-path ${args.config}` : ''
 const testcafeArgs = args.testcafe || ''
+const skip = args.skip
 
 let tests = args.test
+const allTests = glob.sync('test/e2e/*.test.js')
 
-if (tests) {
-  if (!Array.isArray(tests)) {
-    tests = [tests]
-  }
-} else {
-  tests = glob.sync('test/e2e/*.test.js').reverse()
+if (!tests) {
+  tests = allTests.reverse()
 }
 
-let skip = args.skip
-
 if (skip) {
-  if (!Array.isArray(skip)) {
-    skip = [skip]
-  }
-
   tests = tests.filter(test => !skip.includes(test))
 }
 
-const npmTests = tests.map(test => {
+const skippedTests = allTests.filter(test => !tests.includes(test))
+
+process.stdout.write(`Running:
+  ${tests.join('\n  ')}
+
+${
+  skippedTests.length
+    ? `Skipping:
+  ${skippedTests.join('\n  ')}
+`
+    : ''
+}
+`)
+
+const envSkip = (process.env.E2E_SKIP || '').split(',')
+tests = tests.filter(test => !envSkip.includes(test))
+
+const testcafeRuns = tests.map(test => {
   const name = test.replace(/.*\//, '').replace(/\.test.js/, '')
   const reporter = args.reporter
     ? `--reporter spec,xunit:reports/testcafe/results-chrome__${name}.xml`
@@ -101,7 +136,17 @@ const npmTests = tests.map(test => {
   }
 })
 
-concurrently(npmTests, {
+if (args.n) {
+  process.stdout.write(
+    `Tests have not been run. Commands that would have been executed:
+
+${testcafeRuns.map(t => t.command).join('\n\n')}
+`
+  )
+  process.exit()
+}
+
+concurrently(testcafeRuns, {
   maxProcesses,
 }).then(
   () => {},

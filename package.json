@@ -211,7 +211,7 @@
     "test-e2e:ci": "npm run test-e2e --",
     "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e -- --debug --reporter false",
     "test-e2e:local:api": "E2E_BASE_URL='' npm run test-e2e -- --reporter false --skip test/e2e/move.new.stc.test.js --skip test/e2e/move.update.stc.test.js",
-    "test-e2e:video": "E2E_BASE_URL='' npm run test-e2e -- --config .testcaferc-with-video.json",
+    "test-e2e:video": "npm run test-e2e -- --config .testcaferc-with-video.json",
     "update": "ncu -u",
     "update:check": "ncu -- --error-level 2",
     "watch:js:client": "webpack --watch --progress",
