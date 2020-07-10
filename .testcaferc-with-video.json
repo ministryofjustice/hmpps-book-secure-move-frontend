@@ -1,0 +1,9 @@
+{
+  "timeout": 30000,
+  "pageLoadTimeout": 30000,
+  "videoPath": "artifacts/videos",
+  "videoOptions": {
+    "failedOnly": true,
+    "pathPattern": "${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4"
+  }
+}
