@@ -16,7 +16,8 @@ const runTests = async () => {
     console.log(`
 Try running the failing tests individually in non-headless mode
 
-node_modules/.bin/testcafe chrome test/e2e/<path>.test.js --debug-on-fail
+npm run test-e2e:local -- -t test/e2e/<path>.test.js
+
 `)
     process.exit(1)
   }

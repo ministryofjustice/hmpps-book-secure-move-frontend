@@ -234,6 +234,8 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | SENTRY_PROJECT | Sentry project ID | |
 | GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
 | E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
+| E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests | 1 |
+| E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
 | E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
 | E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
