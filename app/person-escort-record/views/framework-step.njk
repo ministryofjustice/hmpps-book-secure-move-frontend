@@ -15,19 +15,3 @@
     }) }}
   {% endif %}
 {% endblock %}
-
-{% block beforeFields %}
-  {% if options.beforeFieldsContent %}
-    <div class="markdown govuk-!-margin-bottom-6">
-      {% markdown %}{{ options.beforeFieldsContent }}{% endmarkdown %}
-    </div>
-  {% endif %}
-{% endblock %}
-
-{% block afterFields %}
-  {% if options.afterFieldsContent %}
-    <div class="markdown govuk-!-margin-bottom-6">
-      {% markdown %}{{ options.afterFieldsContent }}{% endmarkdown %}
-    </div>
-  {% endif %}
-{% endblock %}

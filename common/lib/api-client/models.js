@@ -347,6 +347,7 @@ module.exports = {
   person_escort_record: {
     fields: {
       status: '',
+      version: '',
       profile: {
         jsonApi: 'hasOne',
         type: 'profiles',
@@ -358,6 +359,10 @@ module.exports = {
       responses: {
         jsonApi: 'hasMany',
         type: 'framework_responses',
+      },
+      questions: {
+        jsonApi: 'hasMany',
+        type: 'framework_questions',
       },
     },
     options: {
@@ -372,21 +377,31 @@ module.exports = {
   framework: {
     fields: {
       version: '',
+      name: '',
+      questions: {
+        jsonApi: 'hasMany',
+        type: 'framework_questions',
+      },
     },
   },
   framework_question: {
     fields: {
       key: '',
+      section: '',
       question_type: '',
+      framework: {
+        jsonApi: 'hasOne',
+        type: 'frameworks',
+      },
     },
   },
   framework_response: {
     fields: {
       value: '',
       value_type: '',
-      question: {
+      person_escort_record: {
         jsonApi: 'hasOne',
-        type: 'framework_questions',
+        type: 'person_escort_records',
       },
     },
     options: {
