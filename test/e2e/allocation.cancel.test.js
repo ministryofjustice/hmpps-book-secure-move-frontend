@@ -1,19 +1,23 @@
 import faker from 'faker'
+import { Selector } from 'testcafe'
 
 import { pmuUser } from './_roles'
-import { allocations, newAllocation } from './_routes'
+import { newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
 
 fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
-  await allocationJourney.createAllocation()
-  await t.navigateTo(allocations)
+
+  const allocation = await allocationJourney.createAllocation()
+  const confirmationLink = Selector('a').withExactText(
+    `${allocation.movesCount} people`
+  )
+  await t
+    .expect(confirmationLink.exists)
+    .ok('Confirmation should contain allocation link')
+    .click(confirmationLink)
 })
 test('Cancel allocation', async t => {
-  await t.click(
-    allocationJourney.allocationCancelPage.nodes.linkToFirstAllocation
-  )
-  await allocationJourney.scrollToBottom()
   await t.click(allocationJourney.allocationCancelPage.nodes.cancelLink)
   await t
     .expect(allocationJourney.getCurrentUrl())
