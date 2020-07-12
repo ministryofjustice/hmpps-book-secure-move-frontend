@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { Selector } from 'testcafe'
+import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
@@ -25,7 +25,9 @@ class AllocationCriteriaPage extends Page {
     ]
   }
 
-  fill() {
+  async fill() {
+    await t.expect(this.getCurrentUrl()).contains(this.url)
+
     const hasOtherCriteriaAnswer = faker.random.arrayElement(['Yes', 'No'])
     const fieldsToFill = {
       prisonerCategory: {

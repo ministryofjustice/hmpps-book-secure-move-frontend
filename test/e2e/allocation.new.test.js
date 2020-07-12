@@ -1,3 +1,5 @@
+import { Selector } from 'testcafe'
+
 import { pmuUser } from './_roles'
 import { newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
@@ -8,7 +10,14 @@ fixture('New PMU allocation').beforeEach(async t => {
 
 test('Create allocation and verify the result', async t => {
   const allocation = await allocationJourney.createAllocation()
-  await t.navigateTo(`/allocation/${allocation.id}`)
+
+  const confirmationLink = Selector('a').withExactText(
+    `${allocation.movesCount} people`
+  )
+  await t
+    .expect(confirmationLink.exists)
+    .ok('Confirmation should contain allocation link')
+    .click(confirmationLink)
 
   await allocationJourney.allocationViewPage.checkCriteria(allocation)
   await allocationJourney.allocationViewPage.checkSummary(allocation)

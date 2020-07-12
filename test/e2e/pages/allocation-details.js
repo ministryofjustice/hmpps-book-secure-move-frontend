@@ -1,6 +1,6 @@
 import { endOfWeek, format } from 'date-fns'
 import faker from 'faker'
-import { Selector } from 'testcafe'
+import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
@@ -24,11 +24,13 @@ class AllocationDetailsPage extends Page {
     ]
   }
 
-  fill() {
+  async fill() {
+    await t.expect(this.getCurrentUrl()).contains(this.url)
+
     const fieldsToFill = {
       movesCount: {
         selector: this.fields.movesCount,
-        value: faker.random.number({ min: 1, max: 10 }).toString(),
+        value: faker.random.number({ min: 2, max: 10 }).toString(),
       },
       fromLocation: {
         selector: this.fields.fromLocation,
