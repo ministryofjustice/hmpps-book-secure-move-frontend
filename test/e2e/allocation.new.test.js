@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe'
 
 import { pmuUser } from './_roles'
-import { newAllocation } from './_routes'
+import { allocationsWithDate, newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
 
 fixture('New PMU allocation').beforeEach(async t => {
@@ -21,6 +21,15 @@ test('Create allocation and verify the result', async t => {
 
   await allocationJourney.allocationViewPage.checkCriteria(allocation)
   await allocationJourney.allocationViewPage.checkSummary(allocation)
+
+  await t.navigateTo(allocationsWithDate(allocation.date))
+  const allocationDashboardLink = Selector('a').withAttribute(
+    'href',
+    `/allocation/${allocation.id}`
+  )
+  await t
+    .expect(allocationDashboardLink.exists)
+    .ok('Dashboard should contain allocation')
 })
 
 test('Check validation errors on allocation details page', async t => {
