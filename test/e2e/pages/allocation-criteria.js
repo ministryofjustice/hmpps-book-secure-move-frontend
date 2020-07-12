@@ -17,12 +17,14 @@ class AllocationCriteriaPage extends Page {
       hasOtherCriteria: Selector('#has_other_criteria'),
       otherCriteria: Selector('#other_criteria'),
     }
-    this.errorLinks = [
+    this.errorList = [
       '#prisoner_category',
       '#sentence_length',
       '#complete_in_full',
       '#has_other_criteria',
-    ]
+    ].map(error =>
+      this.nodes.errorSummary.find('a').withAttribute('href', error)
+    )
   }
 
   async fill() {

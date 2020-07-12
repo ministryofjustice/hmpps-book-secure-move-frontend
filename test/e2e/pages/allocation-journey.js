@@ -42,11 +42,5 @@ class AllocationJourney extends Page {
       ...criteria,
     }
   }
-
-  findErrorInList(hrefAttribute) {
-    return this.nodes.errorSummary
-      .child('a')
-      .withAttribute('href', hrefAttribute)
-  }
 }
 export default AllocationJourney

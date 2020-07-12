@@ -16,12 +16,14 @@ class AllocationDetailsPage extends Page {
       toLocation: Selector('#to_location'),
       date: Selector('#date'),
     }
-    this.errorLinks = [
+    this.errorList = [
       '#moves_count',
       '#to_location',
       '#from_location',
       '#date',
-    ]
+    ].map(error =>
+      this.nodes.errorSummary.find('a').withAttribute('href', error)
+    )
   }
 
   async fill() {

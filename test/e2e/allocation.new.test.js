@@ -36,10 +36,9 @@ test('Check validation errors on allocation details page', async t => {
   // submit details page without values
   await allocationJourney.submitForm()
 
-  for (const item of allocationJourney.allocationDetailsPage.errorLinks) {
-    const error = allocationJourney.findErrorInList(item)
-    await t.expect(error).ok()
-  }
+  await allocationJourney.checkErrorSummary({
+    errorList: allocationJourney.allocationDetailsPage.errorList,
+  })
 
   // fill in and submit details page
   await allocationJourney.allocationDetailsPage.fill()
@@ -48,8 +47,7 @@ test('Check validation errors on allocation details page', async t => {
   // submit criteria page without values
   await allocationJourney.submitForm()
 
-  for (const item of allocationJourney.allocationCriteriaPage.errorLinks) {
-    const error = allocationJourney.findErrorInList(item)
-    await t.expect(error).ok()
-  }
+  await allocationJourney.checkErrorSummary({
+    errorList: allocationJourney.allocationCriteriaPage.errorList,
+  })
 })

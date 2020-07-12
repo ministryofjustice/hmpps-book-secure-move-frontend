@@ -123,4 +123,10 @@ export default class Page {
       .expect(this.nodes.bannerContent.innerText)
       .contains(content, 'Banner content contains text')
   }
+
+  async checkErrorSummary({ errorList }) {
+    for (const error of errorList) {
+      await t.expect(error.exists).ok()
+    }
+  }
 }
