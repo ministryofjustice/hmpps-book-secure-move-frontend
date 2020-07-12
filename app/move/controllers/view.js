@@ -1,6 +1,7 @@
 const { get, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
@@ -29,6 +30,7 @@ module.exports = function view(req, res) {
     ? `/person-escort-record/${personEscortRecord.id}`
     : `/person-escort-record/new/${move.id}`
   const showPersonEscortRecordBanner =
+    FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
     !personEscortRecordIsComplete &&
     move.status === 'requested' &&
     move.profile?.id !== undefined
