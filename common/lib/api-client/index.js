@@ -37,7 +37,10 @@ module.exports = function () {
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
   instance.insertMiddlewareBefore('axios-request', requestHeaders)
   instance.insertMiddlewareBefore('axios-request', requestInclude)
-  instance.insertMiddlewareBefore('axios-request', auth)
+
+  if (API.CLIENT_ID && API.SECRET) {
+    instance.insertMiddlewareBefore('axios-request', auth)
+  }
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {

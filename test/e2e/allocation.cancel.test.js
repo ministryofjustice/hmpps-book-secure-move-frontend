@@ -1,37 +1,42 @@
-import faker from 'faker'
+import { Selector } from 'testcafe'
 
 import { pmuUser } from './_roles'
-import { allocations, newAllocation } from './_routes'
+import { newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
 
 fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
-  await allocationJourney.createAllocation()
-  await t.navigateTo(allocations)
-})
-test('Cancel allocation', async t => {
-  await t.click(
-    allocationJourney.allocationCancelPage.nodes.linkToFirstAllocation
+
+  const allocation = await allocationJourney.createAllocation()
+  const confirmationLink = Selector('a').withExactText(
+    `${allocation.movesCount} people`
   )
-  await allocationJourney.scrollToBottom()
+  await t
+    .expect(confirmationLink.exists)
+    .ok('Confirmation should contain allocation link')
+    .click(confirmationLink)
+
   await t.click(allocationJourney.allocationCancelPage.nodes.cancelLink)
-  await t
-    .expect(allocationJourney.getCurrentUrl())
-    .match(/\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/cancel\/reason$/)
-  const filledForm = await allocationJourney.allocationCancelPage.selectReason(
-    'other',
-    faker.lorem.sentence(5)
-  )
+})
+
+test('Reason — `Made in error`', async t => {
+  const filledForm = await allocationJourney.allocationCancelPage.fill({
+    reason: 'Made in error',
+  })
   await allocationJourney.allocationCancelPage.submitForm()
-  await t
-    .expect(allocationJourney.getCurrentUrl())
-    .match(/\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}$/)
-  await t
-    .expect(allocationJourney.allocationCancelPage.nodes.statusHeading.exists)
-    .ok()
-  await t
-    .expect(
-      allocationJourney.allocationCancelPage.nodes.statusContent.innerText
-    )
-    .contains(`Reason — ${filledForm.cancellation_reason_comment}`)
+
+  await allocationJourney.allocationCancelPage.checkCancellation({
+    reason: filledForm.cancellationReason,
+  })
+})
+
+test('Reason — `Another reason`', async t => {
+  const filledForm = await allocationJourney.allocationCancelPage.fill({
+    reason: 'Another reason',
+  })
+  await allocationJourney.allocationCancelPage.submitForm()
+
+  await allocationJourney.allocationCancelPage.checkCancellation({
+    reason: filledForm.cancellationReasonComment,
+  })
 })

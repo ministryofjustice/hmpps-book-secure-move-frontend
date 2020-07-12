@@ -1,5 +1,7 @@
+import { Selector } from 'testcafe'
+
 import { pmuUser } from './_roles'
-import { newAllocation } from './_routes'
+import { allocationsWithDate, newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
 
 fixture('New PMU allocation').beforeEach(async t => {
@@ -8,20 +10,35 @@ fixture('New PMU allocation').beforeEach(async t => {
 
 test('Create allocation and verify the result', async t => {
   const allocation = await allocationJourney.createAllocation()
-  await t.navigateTo(`/allocation/${allocation.id}`)
+
+  const confirmationLink = Selector('a').withExactText(
+    `${allocation.movesCount} people`
+  )
+  await t
+    .expect(confirmationLink.exists)
+    .ok('Confirmation should contain allocation link')
+    .click(confirmationLink)
 
   await allocationJourney.allocationViewPage.checkCriteria(allocation)
   await allocationJourney.allocationViewPage.checkSummary(allocation)
+
+  await t.navigateTo(allocationsWithDate(allocation.date))
+  const allocationDashboardLink = Selector('a').withAttribute(
+    'href',
+    `/allocation/${allocation.id}`
+  )
+  await t
+    .expect(allocationDashboardLink.exists)
+    .ok('Dashboard should contain allocation')
 })
 
 test('Check validation errors on allocation details page', async t => {
   // submit details page without values
   await allocationJourney.submitForm()
 
-  for (const item of allocationJourney.allocationDetailsPage.errorLinks) {
-    const error = allocationJourney.findErrorInList(item)
-    await t.expect(error).ok()
-  }
+  await allocationJourney.checkErrorSummary({
+    errorList: allocationJourney.allocationDetailsPage.errorList,
+  })
 
   // fill in and submit details page
   await allocationJourney.allocationDetailsPage.fill()
@@ -30,8 +47,7 @@ test('Check validation errors on allocation details page', async t => {
   // submit criteria page without values
   await allocationJourney.submitForm()
 
-  for (const item of allocationJourney.allocationCriteriaPage.errorLinks) {
-    const error = allocationJourney.findErrorInList(item)
-    await t.expect(error).ok()
-  }
+  await allocationJourney.checkErrorSummary({
+    errorList: allocationJourney.allocationCriteriaPage.errorList,
+  })
 })

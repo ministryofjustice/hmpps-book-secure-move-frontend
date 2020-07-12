@@ -9,6 +9,10 @@
 .app-stack-trace__heading {
   @include govuk-font($size: 24, $weight: bold);
   margin-bottom: govuk-spacing(2);
+
+  .app-stack-trace__details + & {
+    margin-top: govuk-spacing(4);
+  }
 }
 
 .app-stack-trace__details {
@@ -18,4 +22,8 @@
   overflow: auto;
   word-wrap: normal;
   white-space: pre;
+
+  & + & {
+    margin-top: govuk-spacing(4);
+  }
 }

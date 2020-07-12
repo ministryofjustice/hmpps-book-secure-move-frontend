@@ -15,9 +15,23 @@
 
   {% if showStackTrace %}
     <dl class="app-stack-trace">
-      <dt class="app-stack-trace__heading">{{ statusCode }} - {{ error.message }}</dt>
+      <dt class="app-stack-trace__heading">{{ statusCode }} — {{ error.message }}</dt>
       <dd class="app-stack-trace__details">{{ error.stack }}</dd>
     </dl>
+
+    {% if error.errors %}
+      <dl class="app-stack-trace">
+        {% for jsonAPIError in error.errors %}
+          <dt class="app-stack-trace__heading">Detail</dt>
+          <dd class="app-stack-trace__details">{{ jsonAPIError.code + " — " if jsonAPIError.code }}{{ jsonAPIError.detail }}</dd>
+
+          {% if jsonAPIError.source %}
+            <dt class="app-stack-trace__heading">Source</dt>
+            <dd class="app-stack-trace__details">{{ jsonAPIError.source | dump(1) }}</dd>
+          {% endif %}
+        {% endfor %}
+      </dl>
+    {% endif %}
   {% endif %}
 
 {% endblock %}

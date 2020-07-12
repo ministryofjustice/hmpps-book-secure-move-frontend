@@ -10,11 +10,9 @@ class MoveDetailPage extends Page {
     super()
 
     this.nodes = {
+      ...this.nodes,
       title: Selector('#main-content > header > h1'),
       subTitle: Selector('#main-content > header > span'),
-      banner: Selector('.app-message--info'),
-      bannerHeading: Selector('.app-message--temporary .app-message__heading'),
-      bannerContent: Selector('.app-message--temporary .app-message__content'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
@@ -65,14 +63,6 @@ class MoveDetailPage extends Page {
       .eql(fullname, 'Title contains fullname')
       .expect(this.nodes.subTitle.innerText)
       .match(/[A-Z]{3}[0-9]{4}[A-Z]{1}$/, 'Subtitle contains reference number')
-  }
-
-  checkBanner({ heading, content } = {}) {
-    return t
-      .expect(this.nodes.bannerHeading.innerText)
-      .contains(heading, 'Banner contains text')
-      .expect(this.nodes.bannerContent.innerText)
-      .contains(content, 'Content contains text')
   }
 
   async checkPersonalDetails({

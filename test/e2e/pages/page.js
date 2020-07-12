@@ -19,6 +19,8 @@ export default class Page {
       username: Selector('#navigation li:nth-child(1)'),
       signOutLink: Selector('#navigation li a').withExactText('Sign out'),
       submitButton: Selector('button[type="submit"]'),
+      bannerHeading: Selector('.app-message--temporary .app-message__heading'),
+      bannerContent: Selector('.app-message--temporary .app-message__content'),
       locationsList: Selector('ul li a').withAttribute(
         'href',
         /\/locations\/.+/
@@ -111,6 +113,20 @@ export default class Page {
           await t.expect(this.getDlDefinitionByKey(selector, key)).eql(value)
         }
       }
+    }
+  }
+
+  checkBanner({ heading, content } = {}) {
+    return t
+      .expect(this.nodes.bannerHeading.innerText)
+      .contains(heading, 'Banner contains text')
+      .expect(this.nodes.bannerContent.innerText)
+      .contains(content, 'Banner content contains text')
+  }
+
+  async checkErrorSummary({ errorList }) {
+    for (const error of errorList) {
+      await t.expect(error.exists).ok()
     }
   }
 }

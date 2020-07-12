@@ -1,6 +1,6 @@
-import { endOfWeek, format } from 'date-fns'
+import { format } from 'date-fns'
 import faker from 'faker'
-import { Selector } from 'testcafe'
+import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
@@ -16,19 +16,23 @@ class AllocationDetailsPage extends Page {
       toLocation: Selector('#to_location'),
       date: Selector('#date'),
     }
-    this.errorLinks = [
+    this.errorList = [
       '#moves_count',
       '#to_location',
       '#from_location',
       '#date',
-    ]
+    ].map(error =>
+      this.nodes.errorSummary.find('a').withAttribute('href', error)
+    )
   }
 
-  fill() {
+  async fill() {
+    await t.expect(this.getCurrentUrl()).contains(this.url)
+
     const fieldsToFill = {
       movesCount: {
         selector: this.fields.movesCount,
-        value: faker.random.number({ min: 1, max: 10 }).toString(),
+        value: faker.random.number({ min: 2, max: 10 }).toString(),
       },
       fromLocation: {
         selector: this.fields.fromLocation,
@@ -40,7 +44,7 @@ class AllocationDetailsPage extends Page {
       },
       date: {
         selector: this.fields.date,
-        value: format(endOfWeek(new Date()), 'yyyy-MM-dd'),
+        value: format(faker.date.future(), 'yyyy-MM-dd'),
       },
     }
 
