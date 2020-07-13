@@ -96,12 +96,8 @@ const config = args.config ? `--ts-config-path ${args.config}` : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
 
-let tests = args.test
 const allTests = glob.sync('test/e2e/*.test.js')
-
-if (!tests) {
-  tests = allTests.reverse()
-}
+let tests = args.test || allTests
 
 const envSkip = (process.env.E2E_SKIP || '').split(',')
 tests = tests.filter(test => !envSkip.includes(test))
