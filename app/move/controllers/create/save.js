@@ -19,7 +19,6 @@ class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
     try {
       const sessionData = req.sessionModel.toJSON()
-      const person = sessionData.person
       const assessment = sessionData.assessment
       const documents = sessionData.documents
       const data = omit(sessionData, [
@@ -31,11 +30,7 @@ class SaveController extends CreateBaseController {
         'person',
       ])
 
-      const profile = await profileService.create(person.id, {
-        // TODO: reinstate when move to v2
-        // assessment_answers: assessment,
-        // documents,
-      })
+      const profile = req.getProfile()
 
       const moveData = {
         ...data,
@@ -57,13 +52,11 @@ class SaveController extends CreateBaseController {
         ),
       ])
 
-      // TODO: remove when v2
       await profileService.update({
         ...profile,
         assessment_answers: assessment,
         documents,
       })
-      // TODO: end remove when v2
 
       req.sessionModel.set('move', move)
 
@@ -75,7 +68,6 @@ class SaveController extends CreateBaseController {
 
   process(req, res, next) {
     const {
-      person,
       assessment,
       from_location_type: fromLocationType,
       to_location_type: toLocationType,
@@ -91,7 +83,9 @@ class SaveController extends CreateBaseController {
       return super.process(req, res, next)
     }
 
-    const existingAssessment = person.assessment_answers
+    const profile = req.getProfile()
+
+    const existingAssessment = profile.assessment_answers
       // keep all existing NOMIS alerts
       .filter(answer => answer.nomis_alert_code)
       // filter out requested answers

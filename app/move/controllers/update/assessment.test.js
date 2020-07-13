@@ -8,6 +8,26 @@ const UpdateBaseController = require('./base')
 const controller = new AssessmentController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
+const mockProfile = {
+  id: '#profileId',
+  assessment_answers: [
+    {
+      title: 'Violent',
+      comments: '#original_value',
+      created_at: '2020-04-10',
+      expires_at: null,
+      assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+      category: 'risk',
+      key: 'violent',
+      nomis_alert_type: null,
+      nomis_alert_code: null,
+      nomis_alert_type_description: null,
+      nomis_alert_description: null,
+      imported_from_nomis: null,
+    },
+  ],
+}
+
 describe('Move controllers', function () {
   describe('Update assessment controller', function () {
     it('should extend UpdateBaseController', function () {
@@ -40,7 +60,7 @@ describe('Move controllers', function () {
       })
 
       it('should only have the expected methods of its own', function () {
-        const ownMethods = ['saveValues']
+        const ownMethods = ['getUpdateValues', 'saveValues']
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
@@ -73,6 +93,37 @@ describe('Move controllers', function () {
       })
     })
 
+    describe('#getUpdateValues', function () {
+      let req
+      const res = {}
+
+      beforeEach(function () {
+        sinon.stub(profileService, 'update').resolves()
+        sinon.stub(controller, 'setFlash')
+        req = {
+          getProfile: sinon.stub().returns(mockProfile),
+          form: {
+            options: {
+              fields: {
+                violent: {},
+                escape: {},
+              },
+            },
+          },
+        }
+        sinon.stub(profileService, 'unformat')
+      })
+
+      context('When assessment answers are unchanged', function () {
+        it('should not update the profile data', async function () {
+          await controller.getUpdateValues(req, res)
+          expect(
+            profileService.unformat
+          ).to.be.calledOnceWithExactly(mockProfile, ['violent', 'escape'])
+        })
+      })
+    })
+
     describe('#saveValues', function () {
       let req
       const res = {}
@@ -81,28 +132,7 @@ describe('Move controllers', function () {
         sinon.stub(profileService, 'update').resolves()
         sinon.stub(controller, 'setFlash')
         req = {
-          getMove: sinon.stub().returns({
-            profile: {
-              id: '#profileId',
-              assessment_answers: [
-                {
-                  title: 'Violent',
-                  comments: '#original_value',
-                  created_at: '2020-04-10',
-                  expires_at: null,
-                  assessment_question_id:
-                    'af8cfc67-757c-4019-9d5e-618017de1617',
-                  category: 'risk',
-                  key: 'violent',
-                  nomis_alert_type: null,
-                  nomis_alert_code: null,
-                  nomis_alert_type_description: null,
-                  nomis_alert_description: null,
-                  imported_from_nomis: null,
-                },
-              ],
-            },
-          }),
+          getProfile: sinon.stub().returns(mockProfile),
           form: {
             values: {
               violent: '#original_value',
@@ -264,7 +294,7 @@ describe('Move controllers', function () {
 
       context('When there were no assessment answers originally', function () {
         beforeEach(function () {
-          req.getMove.returns({ profile: { id: '#profileId' } })
+          req.getProfile.returns({ id: '#profileId' })
         })
         it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)

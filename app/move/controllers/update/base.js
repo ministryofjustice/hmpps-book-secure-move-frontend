@@ -14,8 +14,10 @@ class UpdateBaseController extends CreateBaseController {
 
   _setModels(req) {
     const res = req.res
-    req.models.move = res.locals.move
-    req.models.person = req.models.move.profile.person
+    const move = res.locals.move
+    req.models.move = move
+    req.models.profile = move.profile
+    req.models.person = move.profile.person
   }
 
   getBaseUrl(req) {

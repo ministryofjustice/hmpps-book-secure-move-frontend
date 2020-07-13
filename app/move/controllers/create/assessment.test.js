@@ -1,5 +1,6 @@
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
+const profileService = require('../../../../common/services/profile')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 const Controller = require('./assessment')
@@ -13,6 +14,12 @@ describe('Move controllers', function () {
       let req
 
       beforeEach(function () {
+        sinon.stub(profileService, 'create').resolves({
+          id: '#profile',
+          person: {
+            id: '#person',
+          },
+        })
         sinon.stub(BaseController.prototype, 'configure')
         sinon.stub(referenceDataService, 'getAssessmentQuestions')
         sinon.stub(fieldHelpers, 'populateAssessmentFields')
@@ -172,7 +179,8 @@ describe('Move controllers', function () {
 
     describe('#setPreviousAssessment', function () {
       let req, res, nextSpy
-      const mockPerson = {
+      const mockProfile = {
+        id: '#profile',
         assessment_answers: [
           {
             category: 'risk',
@@ -217,7 +225,11 @@ describe('Move controllers', function () {
           .stub(presenters, 'assessmentCategoryToPanelComponent')
           .returnsArg(0)
         req = {
-          getPerson: sinon.stub().returns(mockPerson),
+          getPerson: sinon.stub().returns({ id: '#person' }),
+          getProfile: sinon.stub().returns(mockProfile),
+          sessionModel: {
+            set: sinon.stub(),
+          },
           form: {
             options: {
               assessmentCategory: 'risk',
@@ -233,6 +245,28 @@ describe('Move controllers', function () {
           locals: {},
         }
         nextSpy = sinon.spy()
+      })
+
+      context('when no profile exists', function () {
+        beforeEach(async function () {
+          sinon.stub(profileService, 'create').resolves(mockProfile)
+          req.getProfile.returns({})
+          await controller.setPreviousAssessment(req, res, nextSpy)
+        })
+
+        it('should create a profile', function () {
+          expect(profileService.create).to.be.calledOnceWithExactly(
+            '#person',
+            {}
+          )
+        })
+
+        it('should stash the profile on the session', function () {
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+            'profile',
+            mockProfile
+          )
+        })
       })
 
       context('when the step should show previous assessment', function () {
@@ -354,7 +388,8 @@ describe('Move controllers', function () {
 
         context('with non imported answers', function () {
           beforeEach(function () {
-            req.getPerson.returns({
+            req.getProfile.returns({
+              id: '#profile',
               assessment_answers: [
                 {
                   category: 'risk',

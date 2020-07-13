@@ -336,6 +336,9 @@ describe('Move controllers', function () {
       let req
       const mockSession = {
         id: '#move',
+        profile: {
+          id: '#profile',
+        },
         person: {
           id: '#person',
         },
@@ -345,7 +348,7 @@ describe('Move controllers', function () {
           models: {},
           sessionModel: {
             toJSON: sinon.stub().returns(mockSession),
-            get: sinon.stub().withArgs('person').returns(mockSession.person),
+            get: sinon.stub().callsFake(arg => mockSession[arg]),
           },
         }
         controller._setModels(req)
@@ -353,6 +356,10 @@ describe('Move controllers', function () {
 
       it('should add move model to req', function () {
         expect(req.models.move).to.deep.equal(mockSession)
+      })
+
+      it('should add profile model to req', function () {
+        expect(req.models.profile).to.deep.equal(mockSession.profile)
       })
 
       it('should add person model to req', function () {
@@ -373,6 +380,14 @@ describe('Move controllers', function () {
 
       it('should add getMoveId method to req', function () {
         expect(typeof req.getMoveId).to.equal('function')
+      })
+
+      it('should add getProfile method to req', function () {
+        expect(typeof req.getProfile).to.equal('function')
+      })
+
+      it('should add getProfileId method to req', function () {
+        expect(typeof req.getProfileId).to.equal('function')
       })
 
       it('should add getPerson method to req', function () {
@@ -401,6 +416,14 @@ describe('Move controllers', function () {
 
         it('req.getMoveId should return', function () {
           expect(req.getMoveId()).to.be.undefined
+        })
+
+        it('req.getProfile should return empty object', function () {
+          expect(req.getProfile()).to.deep.equal({})
+        })
+
+        it('req.getProfileId should return', function () {
+          expect(req.getProfileId()).to.be.undefined
         })
 
         it('req.getPerson should return empty object', function () {

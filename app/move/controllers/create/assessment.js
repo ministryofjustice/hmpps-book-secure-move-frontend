@@ -2,6 +2,7 @@ const { flatten, get, values } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
+const profileService = require('../../../../common/services/profile')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
@@ -31,19 +32,26 @@ class AssessmentController extends CreateBaseController {
     this.use(this.setPreviousAssessment)
   }
 
-  setPreviousAssessment(req, res, next) {
+  async setPreviousAssessment(req, res, next) {
     const {
       assessmentCategory,
       customAssessmentGroupings = [],
       showPreviousAssessment,
     } = req.form.options
 
-    if (showPreviousAssessment) {
+    let profile = req.getProfile()
+
+    if (!profile.id) {
       const person = req.getPerson()
+      profile = await profileService.create(person.id, {})
+      req.sessionModel.set('profile', profile)
+    }
+
+    if (showPreviousAssessment) {
       const customAssessmentKeys = customAssessmentGroupings
         .map(grouping => grouping.keys)
         .flat()
-      const previousAnswers = person.assessment_answers
+      const previousAnswers = profile.assessment_answers
         .filter(answer => answer.category === assessmentCategory)
         .filter(answer => answer.imported_from_nomis)
       const previousAnswersByCategory = presenters
