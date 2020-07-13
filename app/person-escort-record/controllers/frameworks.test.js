@@ -352,6 +352,30 @@ describe('Person Escort Record controllers', function () {
               })
             })
           })
+
+          context('when response has no question', function () {
+            beforeEach(function () {
+              mockReq.form.options.fields = {
+                'field-one': {},
+                'field-two': {},
+              }
+              mockReq.personEscortRecord.responses = [
+                { id: '1', value: 'Yes' },
+                { id: '2', value: 'No' },
+              ]
+              controller.getValues(mockReq, {}, callback)
+            })
+
+            it('should not call the reducer', function () {
+              expect(Controller.prototype.reduceResponses).not.to.be.called
+            })
+
+            it('should filter out responses', function () {
+              expect(callback).to.be.calledOnceWithExactly(null, {
+                foo: 'bar',
+              })
+            })
+          })
         })
 
         context('existing values', function () {

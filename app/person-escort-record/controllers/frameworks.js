@@ -47,7 +47,7 @@ class FrameworksController extends FormWizardController {
     const fields = req.form.options.fields
     const responses = req.personEscortRecord.responses
     const savedValues = responses
-      .filter(response => fields[response.question.key])
+      .filter(response => fields[response.question?.key])
       .filter(response => response.value)
       .reduce(this.reduceResponses, {})
 
