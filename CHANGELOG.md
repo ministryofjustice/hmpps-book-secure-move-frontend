@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.34.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.33.0...v2.34.0) (2020-07-13)
+
+
+### Features
+
+* **allocations:** Display locations and regions ([07a6c64](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/07a6c64a9ea61176ffd7aea43b9ab0a35d3e3789))
+* **allocations:** Filter allocations by region ([6765025](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/676502521ffc3026e6a70eb98b1bd80ecf083669))
+* **per:** Add application to handle creating a new person escort record ([6a9c1d4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6a9c1d43ca38379f65df760479eff20d1731c472))
+* **per:** Add start/progress banner to move detail ([33c7825](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/33c782581368a45368dc594cb74be58a96397094))
+* **per:** Render different field types from framework on overview ([01317de](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/01317deeaf96d376a4e939f3595e43151ac7a09b))
+* **per:** Replay responses from API in form step ([635bba2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/635bba2e1ea15077e0488dfc1154c60750964deb))
+* **per:** Save Person Escort Record response ([1beb1d4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1beb1d4ed6c3ed32be3079c114c6521daebb1edd))
+* **per:** Support display of followup questions ([a8f0bbe](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a8f0bbe203f9f0ed20174d3e4f1d9612276744f8))
+* Add support for Court users to access the service ([921b26b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/921b26b69f4eba94f22582782b8f21f97926db99))
+
+
+### Bug Fixes
+
+* **allocations:** Assigned regions only to selected users ([3b3053f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3b3053fcd80da68447817ad345e643120cd9d799))
+* **allocations:** Fetch a single region ([7fcb90f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7fcb90f495ac49ee83ee6018f2ec2e998fba3fb7))
+* **allocations:** Fetching paginated regions ([d33d204](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d33d2049183cbb4b968ba45e8dd5fa86cad1cc4d))
+* **allocations:** Simplified route for regions ([3fe3e7f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3fe3e7fcab11826ba19caedac86fff10d6312a0f))
+* **e2e:** Fix allocation validation checks ([40f5ca5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/40f5ca557ee0d8cd56b5b57838095411e84b409d))
+* **e2e:** Prevent allocation tests only running Monday to Friday ([0e330ad](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0e330ad3fb6b1b1527ca0be342a78c7733cc897f))
+* **frameworks:** Add multiple flag to checkbox fields from framework ([062c2bd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/062c2bd20fe07cc464465b9f4077f6f65f0ffb55))
+* **per:** Handle case where question is not present on response ([fa7e17d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fa7e17d7b693a51d16e7056290d5f167d47ae13e))
+* Adjust spacing of list from GOV.UK Design System ([f347e4f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f347e4f46aa64073cf2fa771a66fd3a72f527ccc))
+
 ## [2.33.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.32.0...v2.33.0) (2020-07-07)
 
 
