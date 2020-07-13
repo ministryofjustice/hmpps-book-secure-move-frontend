@@ -103,6 +103,9 @@ if (!tests) {
   tests = allTests.reverse()
 }
 
+const envSkip = (process.env.E2E_SKIP || '').split(',')
+tests = tests.filter(test => !envSkip.includes(test))
+
 if (skip) {
   tests = tests.filter(test => !skip.includes(test))
 }
@@ -121,15 +124,23 @@ ${
 }
 `)
 
-const envSkip = (process.env.E2E_SKIP || '').split(',')
-tests = tests.filter(test => !envSkip.includes(test))
+const testBuckets = tests.reduce((memo, value, index) => {
+  if (index < maxProcesses) {
+    memo.push([])
+  }
 
-const testcafeRuns = tests.map(test => {
-  const name = test.replace(/.*\//, '').replace(/\.test.js/, '')
+  memo[index % maxProcesses].push(value)
+  return memo
+}, [])
+
+const testcafeRuns = testBuckets.map((test, index) => {
+  const name = `run-${index + 1}`
   const reporter = args.reporter
     ? `--reporter spec,xunit:reports/testcafe/results-chrome__${name}.xml`
     : ''
-  const command = `node_modules/.bin/testcafe ${agent} ${test} ${color} ${reporter} ${config} ${debugOnFail} ${testcafeArgs}`
+  const command = `node_modules/.bin/testcafe ${agent} ${test.join(
+    ' '
+  )} ${color} ${reporter} ${config} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
@@ -140,7 +151,7 @@ if (args.n) {
   process.stdout.write(
     `Tests have not been run. Commands that would have been executed:
 
-${testcafeRuns.map(t => t.command).join('\n\n')}
+${testcafeRuns.map(t => `[${t.name}] ${t.command}`).join('\n\n')}
 `
   )
   process.exit()
