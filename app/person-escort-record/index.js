@@ -6,6 +6,7 @@ const frameworksService = require('../../common/services/frameworks')
 const { setMove } = require('../move/middleware')
 
 const newApp = require('./app/new')
+const { frameworkOverviewController } = require('./controllers')
 const { setFramework, setPersonEscortRecord } = require('./middleware')
 const { defineFormWizards } = require('./router')
 
@@ -20,6 +21,7 @@ router.use(setFramework(framework))
 router.use(newApp.mountpath, newApp.router)
 
 // Define routes
+router.get('/:personEscortRecordId', frameworkOverviewController)
 defineFormWizards(framework, router)
 
 // Export

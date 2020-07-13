@@ -1,6 +1,11 @@
 {
   "heading": "Person Escort Record",
   "section_overview": "{{section}} overview",
+  "statuses": {
+    "not_started": "Not started",
+    "incomplete": "Incomplete",
+    "complete": "Complete"
+  },
   "create": {
     "steps": {
       "before_you_start": {
