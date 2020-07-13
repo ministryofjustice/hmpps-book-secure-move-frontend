@@ -1,13 +1,14 @@
 const { get, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
 module.exports = function view(req, res) {
-  const { move = {} } = res.locals
+  const { move } = req
   const {
     profile,
     status,
@@ -19,13 +20,30 @@ module.exports = function view(req, res) {
   const userPermissions = get(req.session, 'user.permissions')
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const { person, assessment_answers: assessmentAnswers = [] } = profile
-
+  const {
+    person,
+    assessment_answers: assessmentAnswers = [],
+    person_escort_record: personEscortRecord,
+  } = profile || {}
+  const personEscortRecordIsComplete = personEscortRecord?.status === 'complete'
+  const personEscortRecordUrl = personEscortRecord?.id
+    ? `/person-escort-record/${personEscortRecord.id}`
+    : `/person-escort-record/new/${move.id}`
+  const showPersonEscortRecordBanner =
+    FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
+    !personEscortRecordIsComplete &&
+    move.status === 'requested' &&
+    move.profile?.id !== undefined
   const urls = {
     update: updateUrls,
   }
 
   const locals = {
+    move,
+    personEscortRecord,
+    personEscortRecordIsComplete,
+    personEscortRecordUrl,
+    showPersonEscortRecordBanner,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),

@@ -18,6 +18,10 @@
     "heading": "Awaiting a person to be added",
     "content": "$t(moves::allocation_relationship) and is waiting for a person to be added."
   },
+  "pending_person_escort_record": {
+    "heading": "Incomplete Person Escort Record",
+    "content": "A Person Escort Record must be completed before this person can be moved."
+  },
   "cancel_allocation_move": {
     "content": "$t(moves::allocation_relationship). It can only be cancelled from the allocations page by a member of the Population Management Unit (PMU)."
   },

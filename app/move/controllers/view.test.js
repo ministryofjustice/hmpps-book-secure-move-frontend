@@ -1,5 +1,4 @@
-const { cloneDeep } = require('lodash')
-const proxyquire = require('proxyquire')
+const proxyquire = require('proxyquire').noCallThru()
 
 const presenters = require('../../../common/presenters')
 
@@ -7,12 +6,17 @@ const getUpdateUrls = sinon.stub()
 const getUpdateLinks = sinon.stub()
 
 const updateSteps = []
-Object.defineProperty(updateSteps, '@noCallThru', { value: true })
-const controller = proxyquire('./view', {
+const pathStubs = {
+  '../../../config': {
+    FEATURE_FLAGS: {
+      PERSON_ESCORT_RECORD: true,
+    },
+  },
   '../steps/update': updateSteps,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
-})
+}
+const controller = proxyquire('./view', pathStubs)
 
 const mockAssessmentAnswers = []
 
@@ -71,13 +75,15 @@ getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
   describe('#view()', function () {
-    let req, res
+    let req, res, params
     const userPermissions = ['permA']
 
     beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
-      sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+      sinon
+        .stub(presenters, 'moveToMetaListComponent')
+        .returns('__moveToMetaListComponent__')
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
@@ -94,22 +100,25 @@ describe('Move controllers', function () {
             permissions: userPermissions,
           },
         },
+        move: mockMove,
       }
       res = {
         render: sinon.spy(),
-        locals: {
-          move: mockMove,
-        },
       }
     })
 
     context('by default', function () {
       beforeEach(function () {
         controller(req, res)
+        params = res.render.args[0][1]
       })
 
       it('should render a template', function () {
         expect(res.render.calledOnce).to.be.true
+      })
+
+      it('should pass correct number of locals to template', function () {
+        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -119,10 +128,36 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should contain a move param', function () {
+        expect(params).to.have.property('move')
+        expect(params.move).to.deep.equal(mockMove)
+      })
+
+      it('should contain a personEscortRecord param', function () {
+        expect(params).to.have.property('personEscortRecord')
+        expect(params.personEscortRecord).to.be.undefined
+      })
+
+      it('should contain a personEscortRecordIsComplete param', function () {
+        expect(params).to.have.property('personEscortRecordIsComplete')
+        expect(params.personEscortRecordIsComplete).to.be.false
+      })
+
+      it('should contain a personEscortRecordUrl param', function () {
+        expect(params).to.have.property('personEscortRecordUrl')
+        expect(params.personEscortRecordUrl).to.equal(
+          `/person-escort-record/new/${mockMove.id}`
+        )
+      })
+
+      it('should contain a showPersonEscortRecordBanner param', function () {
+        expect(params).to.have.property('showPersonEscortRecordBanner')
+        expect(params.showPersonEscortRecordBanner).to.be.false
+      })
+
       it('should contain a move summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('moveSummary')
-        expect(params.moveSummary).to.equal(mockMove)
+        expect(params.moveSummary).to.equal('__moveToMetaListComponent__')
       })
 
       it('should call personToSummaryListComponent presenter with correct args', function () {
@@ -132,7 +167,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain personal details summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('personalDetailsSummary')
         expect(params.personalDetailsSummary).to.equal(mockMove.person)
       })
@@ -144,7 +178,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain tag list param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('tagList')
         expect(params.tagList).to.equal(mockAssessmentAnswers)
       })
@@ -156,7 +189,6 @@ describe('Move controllers', function () {
       })
 
       it('should contain assessment param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('assessment')
         expect(params.assessment).to.deep.equal(mockAssessmentAnswers)
       })
@@ -168,12 +200,10 @@ describe('Move controllers', function () {
       })
 
       it('should contain court hearings param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('courtHearings')
       })
 
       it('should order court hearings by start time', function () {
-        const params = res.render.args[0][1]
         expect(params.courtHearings).to.deep.equal([
           {
             id: '3',
@@ -215,19 +245,16 @@ describe('Move controllers', function () {
       })
 
       it('should contain court summary param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('courtSummary')
         expect(params.courtSummary).to.equal(mockAssessmentAnswers)
       })
 
       it('should contain message title param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('messageTitle')
         expect(params.messageTitle).to.equal(undefined)
       })
 
       it('should contain message content param', function () {
-        const params = res.render.args[0][1]
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
       })
@@ -260,12 +287,30 @@ describe('Move controllers', function () {
       })
     })
 
+    context('with null profile (allocation move)', function () {
+      beforeEach(function () {
+        req.move = {
+          ...mockMove,
+          profile: null,
+        }
+        controller(req, res)
+      })
+
+      it('should render a template', function () {
+        expect(res.render.calledOnce).to.be.true
+      })
+
+      it('should pass correct number of locals to template', function () {
+        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
+      })
+    })
+
     context('when move is cancelled', function () {
       let params
 
       beforeEach(function () {
         req.t.returns('__translated__')
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           status: 'cancelled',
           cancellation_reason: 'made_in_error',
@@ -297,7 +342,7 @@ describe('Move controllers', function () {
       let params
 
       beforeEach(function () {
-        res.locals.move = {
+        req.move = {
           ...mockMove,
           person: undefined,
         }
@@ -344,75 +389,252 @@ describe('Move controllers', function () {
       })
     })
 
-    context('can user cancel a move', function () {
-      const res = {
-        render: sinon.stub(),
-        locals: {
-          move: {
-            ...mockMove,
-            person: undefined,
-          },
-        },
+    context('with Person Escort Record', function () {
+      const mockPersonEscortRecord = {
+        id: '67890',
+        status: 'incomplete',
       }
-      const req = {
-        t: sinon.stub(),
-        session: {
-          user: {
-            permissions: ['permission1', 'move:cancel:proposed'],
+
+      beforeEach(function () {
+        req.move = {
+          ...req.move,
+          profile: {
+            id: '12345',
+            person_escort_record: mockPersonEscortRecord,
           },
-        },
-      }
-      it('they can when the move is proposed and they can cancel proposed moves', function () {
-        const proposedMoveReq = cloneDeep(req)
-        const proposedMoveRes = cloneDeep(res)
-        proposedMoveRes.locals.move.status = 'proposed'
-        controller(proposedMoveReq, proposedMoveRes)
-        const params = proposedMoveRes.render.args[0][1]
-        expect(params.canCancelMove).to.be.true
+        }
       })
-      it('they can when the move is requested and not in an allocation, and they can cancel moves', function () {
-        const requestedMoveReq = cloneDeep(req)
-        requestedMoveReq.session.user.permissions = ['move:cancel']
-        const requestedMoveRes = cloneDeep(res)
-        requestedMoveRes.locals.move.status = 'requested'
-        controller(requestedMoveReq, requestedMoveRes)
-        const params = requestedMoveRes.render.args[0][1]
-        expect(params.canCancelMove).to.be.true
+
+      context('when record is incomplete', function () {
+        beforeEach(function () {
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should contain a personEscortRecord', function () {
+          expect(params).to.have.property('personEscortRecord')
+          expect(params.personEscortRecord).to.deep.equal(
+            mockPersonEscortRecord
+          )
+        })
+
+        it('should not show Person Escort Record as complete', function () {
+          expect(params).to.have.property('personEscortRecordIsComplete')
+          expect(params.personEscortRecordIsComplete).to.be.false
+        })
+
+        it('should contain url to Person Escort Record', function () {
+          expect(params).to.have.property('personEscortRecordUrl')
+          expect(params.personEscortRecordUrl).to.equal(
+            `/person-escort-record/${mockPersonEscortRecord.id}`
+          )
+        })
+
+        it('should show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.true
+        })
       })
-      context('they cannot in all other cases', function () {
-        it('when the permissions do not include cancel for the correct type of move', function () {
-          const proposedMoveReq = cloneDeep(req)
-          proposedMoveReq.session.user.permissions = [
-            'move:cancel',
-            'otherPermission',
-          ]
-          const proposedMoveRes = cloneDeep(res)
-          proposedMoveRes.locals.move.status = 'proposed'
-          proposedMoveRes.render.resetHistory()
-          controller(proposedMoveReq, proposedMoveRes)
-          const params = res.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+      context('when record is complete', function () {
+        beforeEach(function () {
+          req.move.profile.person_escort_record = {
+            ...mockPersonEscortRecord,
+            status: 'complete',
+          }
+          controller(req, res)
+          params = res.render.args[0][1]
         })
-        it('when the move is part of an allocation', function () {
-          const requestedMoveReq = cloneDeep(req)
-          requestedMoveReq.session.user.permissions = ['move:cancel']
-          const requestedMoveRes = cloneDeep(res)
-          requestedMoveRes.locals.move.status = 'requested'
-          requestedMoveRes.locals.move.allocation = {}
-          requestedMoveRes.render.resetHistory()
-          controller(requestedMoveReq, requestedMoveRes)
-          const params = requestedMoveRes.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+        it('should contain a personEscortRecord', function () {
+          expect(params).to.have.property('personEscortRecord')
+          expect(params.personEscortRecord).to.deep.equal({
+            ...mockPersonEscortRecord,
+            status: 'complete',
+          })
         })
-        it('when the move has a different status', function () {
-          const requestedMoveReq = cloneDeep(req)
-          requestedMoveReq.session.user.permissions = ['move:cancel']
-          const requestedMoveRes = cloneDeep(res)
-          requestedMoveRes.locals.move.status = 'confirmed'
-          requestedMoveRes.render.resetHistory()
-          controller(requestedMoveReq, requestedMoveRes)
-          const params = requestedMoveRes.render.args[0][1]
-          expect(params.canCancelMove).to.be.false
+
+        it('should show Person Escort Record as complete', function () {
+          expect(params).to.have.property('personEscortRecordIsComplete')
+          expect(params.personEscortRecordIsComplete).to.be.true
+        })
+
+        it('should contain url to Person Escort Record', function () {
+          expect(params).to.have.property('personEscortRecordUrl')
+          expect(params.personEscortRecordUrl).to.equal(
+            `/person-escort-record/${mockPersonEscortRecord.id}`
+          )
+        })
+
+        it('should not show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.false
+        })
+      })
+
+      context('when feature flag is disabled', function () {
+        const controllerWithoutPER = proxyquire('./view', {
+          ...pathStubs,
+          '../../../config': {
+            FEATURE_FLAGS: {
+              PERSON_ESCORT_RECORD: false,
+            },
+          },
+        })
+
+        beforeEach(function () {
+          controllerWithoutPER(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should not show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.false
+        })
+      })
+    })
+
+    describe('cancelling a move', function () {
+      let params
+
+      beforeEach(function () {
+        req.move = {
+          ...mockMove,
+          person: undefined,
+        }
+        req.session.user.permissions = []
+      })
+
+      context('with proposed state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'proposed',
+          }
+        })
+
+        context('without permission to cancel proposed moves', function () {
+          beforeEach(function () {
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
+        })
+
+        context('with permission to cancel proposed moves', function () {
+          beforeEach(function () {
+            req.session.user.permissions = ['move:cancel:proposed']
+
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.true
+          })
+        })
+      })
+
+      context('with requested state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'requested',
+          }
+        })
+
+        context('allocation move', function () {
+          beforeEach(function () {
+            req.move = {
+              ...req.move,
+              allocation: {
+                id: '123',
+              },
+            }
+          })
+
+          context('without permission to cancel move', function () {
+            beforeEach(function () {
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
+
+          context('with permission to cancel move', function () {
+            beforeEach(function () {
+              req.session.user.permissions = ['move:cancel']
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
+        })
+
+        context('non-allocation move', function () {
+          context('without permission to cancel move', function () {
+            beforeEach(function () {
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should not be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.false
+            })
+          })
+
+          context('with permission to cancel move', function () {
+            beforeEach(function () {
+              req.session.user.permissions = ['move:cancel']
+              controller(req, res)
+              params = res.render.args[0][1]
+            })
+
+            it('should be able to cancel move', function () {
+              expect(params.canCancelMove).to.be.true
+            })
+          })
+        })
+      })
+
+      context('with other state', function () {
+        beforeEach(function () {
+          req.move = {
+            ...req.move,
+            status: 'completed',
+          }
+        })
+
+        context('without permission to cancel move', function () {
+          beforeEach(function () {
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
+        })
+
+        context('with permission to cancel move', function () {
+          beforeEach(function () {
+            req.session.user.permissions = ['move:cancel']
+            controller(req, res)
+            params = res.render.args[0][1]
+          })
+
+          it('should not be able to cancel move', function () {
+            expect(params.canCancelMove).to.be.false
+          })
         })
       })
     })
