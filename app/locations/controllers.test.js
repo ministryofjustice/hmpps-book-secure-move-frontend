@@ -1,4 +1,5 @@
 const { sortBy } = require('lodash')
+const proxyquire = require('proxyquire').noCallThru()
 
 const controllers = require('./controllers')
 
@@ -23,27 +24,74 @@ const mockUserLocations = [
 
 describe('Locations controllers', function () {
   let req, res
+  const mockReferenceData = {}
+  const proxiedController = proxyquire('./controllers', {
+    '../../common/services/reference-data': mockReferenceData,
+  })
+  let nextSpy
 
   describe('#locations', function () {
     beforeEach(function () {
       req = {
-        session: {},
+        session: {
+          user: {
+            permissions: [],
+          },
+        },
         userLocations: mockUserLocations,
       }
       res = {
         render: sinon.spy(),
       }
-      controllers.locations(req, res)
+      nextSpy = sinon.spy()
     })
 
-    it('should render template', function () {
-      expect(res.render).to.be.calledOnce
-    })
+    context(
+      'when the user is assigned a `allocation:create` permission',
+      function () {
+        beforeEach(function () {
+          req.session.user.permissions = ['allocation:create']
+        })
 
-    it('should return locations sorted by title', function () {
-      const params = res.render.args[0][1]
-      expect(params).to.have.property('locations')
-      expect(params.locations).to.deep.equal(sortBy(mockUserLocations, 'title'))
-    })
+        context('when the region API is available', function () {
+          it('should retrieve all regions', async function () {
+            mockReferenceData.getRegions = sinon.fake.returns(
+              Promise.resolve([])
+            )
+            await proxiedController.locations(req, res, nextSpy)
+            expect(res.render).to.be.calledOnce
+          })
+        })
+
+        context('when the region API is *not* available', function () {
+          it('should fail gracefully', async function () {
+            mockReferenceData.getRegions = sinon.fake.returns(
+              Promise.reject(new Error())
+            )
+            await proxiedController.locations(req, res, nextSpy)
+            expect(nextSpy).to.be.calledOnce
+          })
+        })
+      }
+    )
+
+    context(
+      'when the user is not assigned a `allocation:create` permission',
+      function () {
+        it('should render template', function () {
+          controllers.locations(req, res)
+          expect(res.render).to.be.calledOnce
+        })
+
+        it('should return locations sorted by title', function () {
+          controllers.locations(req, res)
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('locations')
+          expect(params.locations).to.deep.equal(
+            sortBy(mockUserLocations, 'title')
+          )
+        })
+      }
+    )
   })
 })

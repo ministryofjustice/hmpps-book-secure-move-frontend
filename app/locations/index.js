@@ -9,6 +9,7 @@ const {
   setUserLocations,
   checkLocationsLength,
   setLocation,
+  setRegion,
   setAllLocations,
 } = require('./middleware')
 
@@ -18,6 +19,7 @@ router.use(setUserLocations)
 router.get('/', checkLocationsLength, locations)
 router.get('/all', setAllLocations, redirect)
 router.get('/:locationId', setLocation, redirect)
+router.get('/regions/:regionId', setRegion, redirect)
 
 // Export
 module.exports = {
