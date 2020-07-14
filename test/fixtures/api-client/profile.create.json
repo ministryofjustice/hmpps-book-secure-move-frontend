@@ -85,10 +85,25 @@
           "type": "people"
         }
       },
+      "person_escort_record": {
+        "data": {
+          "id": "a3854dd9-6b56-49fc-a6d3-f1f19b08bb97",
+          "type": "person_escort_records"
+        }
+      },
       "documents": {
         "data": []
       }
     }
   },
-  "included": []
+  "included": [
+    {
+      "id": "a3854dd9-6b56-49fc-a6d3-f1f19b08bb97",
+      "type": "person_escort_records",
+      "attributes": {
+        "status": "not_started",
+        "version": "1.1"
+      }
+    }
+  ]
 }
