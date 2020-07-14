@@ -10,9 +10,9 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returnsArg(0)
     })
 
-    context('without sections', function () {
+    context('without arguments', function () {
       beforeEach(function () {
-        output = presenter()()
+        output = presenter()
       })
 
       it('should return empty items array', function () {
@@ -22,33 +22,95 @@ describe('Presenters', function () {
       })
     })
 
-    context('with sections', function () {
+    context('with sections that exists', function () {
+      const mockProgress = [
+        {
+          key: 'sectionKey',
+          status: 'in_progress',
+        },
+      ]
       const mockSections = {
-        incompleteSection: {
+        sectionKey: {
           name: 'Incomplete section',
-          key: 'incomplete-section',
-          status: 'incomplete',
-        },
-        completeSection: {
-          name: 'Complete section',
-          key: 'complete-section',
-          status: 'complete',
-        },
-        notStartedSection: {
-          name: 'Not started section',
-          key: 'not-started-section',
-          status: 'not_started',
         },
       }
 
       beforeEach(function () {
-        output = presenter()({
-          sections: mockSections,
+        output = presenter({
+          sectionProgress: mockProgress,
+          frameworkSections: mockSections,
         })
       })
 
       it('should return correct number of keys', function () {
         expect(Object.keys(output)).to.have.length(1)
+      })
+
+      it('should return section', function () {
+        expect(output.items).to.have.length(1)
+      })
+    })
+
+    context('with sections that does not exist', function () {
+      const mockProgress = [
+        {
+          key: 'sectionKey',
+          status: 'in_progress',
+        },
+      ]
+      const mockSections = {}
+
+      beforeEach(function () {
+        output = presenter({
+          sectionProgress: mockProgress,
+          frameworkSections: mockSections,
+        })
+      })
+
+      it('should return correct number of keys', function () {
+        expect(Object.keys(output)).to.have.length(1)
+      })
+
+      it('should not return section', function () {
+        expect(output.items).to.have.length(0)
+      })
+    })
+
+    context('with different statuses', function () {
+      const mockProgress = [
+        {
+          key: 'incompleteSection',
+          status: 'in_progress',
+        },
+        {
+          key: 'completeSection',
+          status: 'completed',
+        },
+        {
+          key: 'notStartedSection',
+          status: 'not_started',
+        },
+      ]
+      const mockSections = {
+        incompleteSection: {
+          name: 'Incomplete section',
+          key: 'incomplete-section',
+        },
+        completeSection: {
+          name: 'Complete section',
+          key: 'complete-section',
+        },
+        notStartedSection: {
+          name: 'Not started section',
+          key: 'not-started-section',
+        },
+      }
+
+      beforeEach(function () {
+        output = presenter({
+          sectionProgress: mockProgress,
+          frameworkSections: mockSections,
+        })
       })
 
       it('should return correct number of items', function () {
@@ -71,13 +133,13 @@ describe('Presenters', function () {
 
           it('should translate status', function () {
             expect(i18n.t).to.be.calledWithExactly(
-              'person-escort-record::statuses.incomplete'
+              'person-escort-record::statuses.in_progress'
             )
           })
 
           it('should return correct tag class', function () {
             expect(output.items[0].tag).to.deep.equal({
-              text: 'person-escort-record::statuses.incomplete',
+              text: 'person-escort-record::statuses.in_progress',
               classes: 'govuk-tag--blue',
             })
           })
@@ -98,13 +160,13 @@ describe('Presenters', function () {
 
           it('should translate status', function () {
             expect(i18n.t).to.be.calledWithExactly(
-              'person-escort-record::statuses.complete'
+              'person-escort-record::statuses.completed'
             )
           })
 
           it('should return correct tag class', function () {
             expect(output.items[1].tag).to.deep.equal({
-              text: 'person-escort-record::statuses.complete',
+              text: 'person-escort-record::statuses.completed',
               classes: '',
             })
           })
@@ -140,17 +202,24 @@ describe('Presenters', function () {
     })
 
     context('with base URL', function () {
+      const mockProgress = [
+        {
+          key: 'sectionKey',
+          status: 'in_progress',
+        },
+      ]
       const mockSections = {
-        incompleteSection: {
+        sectionKey: {
           name: 'Incomplete section',
           key: 'incomplete-section',
-          status: 'incomplete',
         },
       }
 
       beforeEach(function () {
-        output = presenter('/base-url/')({
-          sections: mockSections,
+        output = presenter({
+          baseUrl: '/base-url/',
+          sectionProgress: mockProgress,
+          frameworkSections: mockSections,
         })
       })
 

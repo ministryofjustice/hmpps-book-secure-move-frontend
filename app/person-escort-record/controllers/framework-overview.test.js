@@ -12,13 +12,12 @@ const mockFramework = {
 
 describe('Person Escort Record controllers', function () {
   describe('#frameworkOverview()', function () {
-    let mockReq, mockRes, frameworkToTaskListComponentStub
+    let mockReq, mockRes
 
     beforeEach(function () {
-      frameworkToTaskListComponentStub = sinon.stub().returnsArg(0)
       sinon
         .stub(presenters, 'frameworkToTaskListComponent')
-        .returns(frameworkToTaskListComponentStub)
+        .returns('_taskListCmpt_')
 
       mockReq = {
         originalUrl: '/person-escort-record/1',
@@ -56,7 +55,7 @@ describe('Person Escort Record controllers', function () {
 
         it('should set taskList', function () {
           expect(params).to.have.property('taskList')
-          expect(params.taskList).to.deep.equal(mockFramework)
+          expect(params.taskList).to.equal('_taskListCmpt_')
         })
 
         it('should not set fullname', function () {
@@ -68,19 +67,32 @@ describe('Person Escort Record controllers', function () {
       it('should call task list presenter', function () {
         expect(
           presenters.frameworkToTaskListComponent
-        ).to.have.been.calledOnceWithExactly('/person-escort-record/1/')
-        expect(
-          frameworkToTaskListComponentStub
-        ).to.have.been.calledOnceWithExactly(mockFramework)
+        ).to.have.been.calledOnceWithExactly({
+          baseUrl: '/person-escort-record/1/',
+          sectionProgress: undefined,
+          frameworkSections: mockFramework.sections,
+        })
       })
     })
 
-    context('with profile', function () {
+    context('with person escort record', function () {
       beforeEach(function () {
         controller(
           {
             ...mockReq,
             personEscortRecord: {
+              meta: {
+                section_progress: [
+                  {
+                    key: 'risk-information',
+                    status: 'in_progress',
+                  },
+                  {
+                    key: 'health-information',
+                    status: 'completed',
+                  },
+                ],
+              },
               profile: {
                 person: {
                   fullname: 'John Doe',
@@ -97,6 +109,25 @@ describe('Person Escort Record controllers', function () {
 
         beforeEach(function () {
           params = mockRes.render.args[0][1]
+        })
+
+        it('should call task list presenter with progress', function () {
+          expect(
+            presenters.frameworkToTaskListComponent
+          ).to.have.been.calledOnceWithExactly({
+            baseUrl: '/person-escort-record/1/',
+            frameworkSections: mockFramework.sections,
+            sectionProgress: [
+              {
+                key: 'risk-information',
+                status: 'in_progress',
+              },
+              {
+                key: 'health-information',
+                status: 'completed',
+              },
+            ],
+          })
         })
 
         it('should set fullname', function () {
