@@ -1,8 +1,16 @@
 const apiClient = require('../lib/api-client')()
+const profileService = require('../services/profile')
 
 const noIdMessage = 'No resource ID supplied'
 
 const personEscortRecordService = {
+  transformResponse({ data = {} } = {}) {
+    return {
+      ...data,
+      profile: profileService.transform(data.profile),
+    }
+  },
+
   create(profileId) {
     return apiClient
       .create('person_escort_record', {
@@ -20,7 +28,7 @@ const personEscortRecordService = {
 
     return apiClient
       .find('person_escort_record', id)
-      .then(response => response.data)
+      .then(this.transformResponse)
   },
 }
 
