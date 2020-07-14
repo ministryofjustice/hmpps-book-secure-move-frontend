@@ -1,0 +1,29 @@
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+<ul class="app-task-list">
+  {% for item in params.items %}
+    <li class="app-task-list__item">
+      <span class="app-task-list__task-name">
+        {% if item.href %}
+          <a href="{{ item.href }}" aria-described-by="{{ item.text | urlencode }}-status">
+        {% endif %}
+
+        {{ item.html | safe if item.html else item.text }}
+
+        {% if item.href %}
+          </a>
+        {% endif %}
+      </span>
+
+      {% if item.tag %}
+        {{ govukTag({
+          attributes: {
+            id: item.text | urlencode + "-status"
+          },
+          text: item.tag.text,
+          classes: (item.tag.classes or "") + " app-task-list__tag"
+        }) }}
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

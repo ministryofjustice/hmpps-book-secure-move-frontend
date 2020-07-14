@@ -1,0 +1,20 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block contentHeader %}
+  <header class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-xl">
+        {{ t("person-escort-record::heading") }}
+      </span>
+      <h1 class="govuk-heading-xl">
+        {{ fullname | upper }}
+      </h1>
+    </div>
+  </header>
+{% endblock %}
+
+{% block contentMain %}
+  <section class="app-!-position-relative govuk-!-margin-bottom-8">
+    {{ appTaskList(taskList) }}
+  </section>
+{% endblock %}

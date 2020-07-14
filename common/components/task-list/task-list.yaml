@@ -1,0 +1,60 @@
+params:
+  - name: items
+    type: array
+    required: true
+    description: Array of task items. See items
+    params:
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use within the task item. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use within the task item. If `html` is provided, the `text` argument will be ignored.
+    - name: href
+      type: string
+      required: false
+      description: Link for the task item. If not specified, task item is a normal list item.
+    - name: tag
+      type: object
+      description: See GOV.UK Design System tag component
+
+examples:
+  - name: default
+    data:
+      items:
+        -
+          text: Task one
+          href: '/task-one'
+        -
+          text: Task two
+          href: '/task-two'
+        -
+          text: Task three
+          href: '/task-three'
+  - name: with tags
+    data:
+      items:
+        -
+          text: Your details
+          href: '/your-details'
+          tag:
+            text: Not started
+            classes: 'govuk-tag--grey'
+        -
+          text: Read declaration
+          href: '/declaration'
+          tag:
+            text: Incomplete
+            classes: 'govuk-tag--blue'
+        -
+          text: Company information
+          href: '/company-information'
+          tag:
+            text: Complete
+        -
+          text: Provide financial evidence
+          tag:
+            text: Cannot start yet
+            classes: 'govuk-tag--grey'
