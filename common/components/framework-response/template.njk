@@ -25,7 +25,13 @@
     {{ params.value }}
   {% endif %}
 {% else %}
-  <a href="{{ params.questionUrl }}">
-    {{ t("actions::answer_question") }}
-  </a>
+  {% if params.responded %}
+    <span class="app-secondary-text-colour">
+      {{ t("empty_response") }}
+    </span>
+  {% else %}
+    <a href="{{ params.questionUrl }}">
+      {{ t("actions::answer_question") }}
+    </a>
+  {% endif %}
 {% endif %}

@@ -24,6 +24,7 @@
   "awaiting_person": "Person to be added",
   "sort_ascending": "Sort {{label}} ascending",
   "sort_descending": "Sort {{label}} descending",
+  "empty_response": "Nothing provided",
   "primary_navigation": {
     "home": "Home",
     "outgoing": "Outgoing",

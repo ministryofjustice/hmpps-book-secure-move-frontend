@@ -10,6 +10,7 @@ function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
     const responseHtml = componentService.getComponent('appFrameworkResponse', {
       value: isEmpty(response.value) ? undefined : response.value,
       valueType: response.value_type,
+      responded: response.responded === true,
       questionUrl: `${stepUrl}#${id}`,
     })
 

@@ -31,6 +31,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -65,6 +66,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -114,6 +116,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -173,6 +176,7 @@ describe('Presenters', function () {
               {
                 value: 'Yes',
                 valueType: 'string',
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -181,6 +185,7 @@ describe('Presenters', function () {
               {
                 value: undefined,
                 valueType: undefined,
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
               }
             )
@@ -224,6 +229,7 @@ describe('Presenters', function () {
               {
                 value: 'No',
                 valueType: 'string',
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -298,6 +304,7 @@ describe('Presenters', function () {
                 {
                   value: undefined,
                   valueType: test.valueType,
+                  responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                 }
               )
@@ -323,11 +330,39 @@ describe('Presenters', function () {
                 {
                   value: test.nonEmptyValue,
                   valueType: test.valueType,
+                  responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                 }
               )
             })
           })
+        })
+      })
+
+      context('when response has been answered', function () {
+        const mockResponse = {
+          value: [],
+          value_type: 'array',
+          responded: true,
+        }
+
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)({
+            ...mockField,
+            response: mockResponse,
+          })
+        })
+
+        it('should call component service with undefined value and responded value', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'appFrameworkResponse',
+            {
+              value: undefined,
+              valueType: 'array',
+              responded: true,
+              questionUrl: `${mockStepUrl}#${mockField.id}`,
+            }
+          )
         })
       })
     })
