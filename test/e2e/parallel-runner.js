@@ -1,7 +1,12 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
 const concurrently = require('concurrently')
 const glob = require('glob')
-const args = require('yargs')
+const yargs = require('yargs')
+
+const { E2E_MAX_PROCESSES, E2E_SKIP, E2E_VIDEO } = process.env
+
+const args = yargs
   .usage(
     `e2e test runner
 
@@ -20,6 +25,7 @@ const args = require('yargs')
   .example('npm run test-e2e -- --skip test/e2e/move.new.police.test.js')
   .example('npm run test-e2e -- --max_processes 3')
   .example('npm run test-e2e -- --debug', 'Debug on fail')
+  .example('npm run test-e2e -- --video', 'Capture video when tests fail')
   .example('npm run test-e2e -- -n', 'Dry run')
   .option('test', {
     alias: 't',
@@ -53,12 +59,8 @@ const args = require('yargs')
   .option('max_processes', {
     alias: 'm',
     type: 'number',
-    default: Number(process.env.E2E_MAX_PROCESSES || 1),
+    default: Number(E2E_MAX_PROCESSES || 1),
     description: 'Whether to output reports',
-  })
-  .option('config', {
-    type: 'string',
-    description: 'Path to alternative config',
   })
   .option('reporter', {
     alias: 'r',
@@ -71,6 +73,10 @@ const args = require('yargs')
     type: 'boolean',
     default: true,
     description: 'Whether to colorize output',
+  })
+  .option('video', {
+    type: 'boolean',
+    description: 'Whether to capture video',
   })
   .option('testcafe', {
     type: 'string',
@@ -90,16 +96,28 @@ if (debugOnFail) {
   args.headless = false
 }
 
+if (args.video === undefined) {
+  args.video = E2E_VIDEO
+}
+
+if (args.video) {
+  args.config = '.testcaferc-with-video.json'
+}
+
 const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
-const config = args.config ? `--ts-config-path ${args.config}` : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
+const screenshots =
+  "--screenshots path=artifacts,takeOnFails=true,fullPage=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.png'"
+const video = args.video
+  ? "--video artifacts --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
+  : ''
 
 const allTests = glob.sync('test/e2e/*.test.js')
 let tests = args.test || allTests
 
-const envSkip = (process.env.E2E_SKIP || '').split(',')
+const envSkip = (E2E_SKIP || '').split(',')
 tests = tests.filter(test => !envSkip.includes(test))
 
 if (skip) {
@@ -136,7 +154,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     : ''
   const command = `node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} ${reporter} ${config} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} ${reporter} ${screenshots} ${video} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
