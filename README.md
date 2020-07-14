@@ -132,9 +132,20 @@ To debug tests on local server against the API running locally, run:
 npm run test-e2e:local:api
 ```
 
-And to run test in specific browser run: `test-e2e:chrome` or `test-e2e:firefox`.
+Further options can be passed to all these commands.
 
-The video recording of each test is stored in artifacts/video directory and is stored on CI under artifacts for review.
+Available options can be seen by running the command with the `-h` (help) option.
+
+```
+npm run test-e2e:ci -- -h
+npm run test-e2e:local -- -h
+```
+
+Screenshots are taken whenever a test fails.
+
+Videos are taken when a test fails if enabled (see the `--video` option).
+
+Video and screenshots are stored in `artifacts` directory.
 
 ### Code coverage
 
@@ -235,6 +246,8 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
 | E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
 | E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests | 1 |
+| E2E_FAIL_FAST | Whether to stop all tests if an end-to-end tests fails | false |
+| E2E_VIDEO | Whether to capture video when end-to-end tests fail | false |
 | E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
 | E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
 | E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |

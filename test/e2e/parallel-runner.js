@@ -1,7 +1,19 @@
+/* eslint-disable no-console */
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
 const concurrently = require('concurrently')
 const glob = require('glob')
-const args = require('yargs')
+const yargs = require('yargs')
+
+const { E2E_MAX_PROCESSES, E2E_SKIP, E2E_VIDEO, E2E_FAIL_FAST } = process.env
+console.log(`ENV VARS:
+E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
+E2E_SKIP:          ${E2E_SKIP}
+E2E_VIDEO:         ${E2E_VIDEO}
+E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
+`)
+
+const args = yargs
   .usage(
     `e2e test runner
 
@@ -20,6 +32,7 @@ const args = require('yargs')
   .example('npm run test-e2e -- --skip test/e2e/move.new.police.test.js')
   .example('npm run test-e2e -- --max_processes 3')
   .example('npm run test-e2e -- --debug', 'Debug on fail')
+  .example('npm run test-e2e -- --video', 'Capture video when tests fail')
   .example('npm run test-e2e -- -n', 'Dry run')
   .option('test', {
     alias: 't',
@@ -43,6 +56,11 @@ const args = require('yargs')
     description: `Whether to run in headless mode
 (will be set to false if debug is true)`,
   })
+  .option('stop-on-first-fail', {
+    type: 'boolean',
+    default: false,
+    description: 'Whether to stop on first fail',
+  })
   .option('debug', {
     alias: 'd',
     type: 'boolean',
@@ -53,12 +71,8 @@ const args = require('yargs')
   .option('max_processes', {
     alias: 'm',
     type: 'number',
-    default: Number(process.env.E2E_MAX_PROCESSES || 1),
+    default: Number(E2E_MAX_PROCESSES || 1),
     description: 'Whether to output reports',
-  })
-  .option('config', {
-    type: 'string',
-    description: 'Path to alternative config',
   })
   .option('reporter', {
     alias: 'r',
@@ -71,6 +85,10 @@ const args = require('yargs')
     type: 'boolean',
     default: true,
     description: 'Whether to colorize output',
+  })
+  .option('video', {
+    type: 'boolean',
+    description: 'Whether to capture video',
   })
   .option('testcafe', {
     type: 'string',
@@ -90,18 +108,28 @@ if (debugOnFail) {
   args.headless = false
 }
 
+if (args.video === undefined) {
+  args.video = E2E_VIDEO
+}
+
+const stopOnFirstFail =
+  args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
+const successCondition = stopOnFirstFail ? 'first' : 'all'
 const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
-const config = args.config ? `--ts-config-path ${args.config}` : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
+const screenshots =
+  "--screenshots path=artifacts/screenshots,takeOnFails=true,fullPage=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.png'"
+const video = args.video
+  ? "--video artifacts/videos --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
+  : ''
 
-let tests = args.test
 const allTests = glob.sync('test/e2e/*.test.js')
+let tests = args.test || allTests
 
-if (!tests) {
-  tests = allTests.reverse()
-}
+const envSkip = (E2E_SKIP || '').split(',')
+tests = tests.filter(test => !envSkip.includes(test))
 
 if (skip) {
   tests = tests.filter(test => !skip.includes(test))
@@ -121,33 +149,47 @@ ${
 }
 `)
 
-const envSkip = (process.env.E2E_SKIP || '').split(',')
-tests = tests.filter(test => !envSkip.includes(test))
+const testBuckets = tests.reduce((memo, value, index) => {
+  if (index < maxProcesses) {
+    memo.push([])
+  }
 
-const testcafeRuns = tests.map(test => {
-  const name = test.replace(/.*\//, '').replace(/\.test.js/, '')
+  memo[index % maxProcesses].push(value)
+  return memo
+}, [])
+
+const testcafeRuns = testBuckets.map((test, index) => {
+  const name = `run-${index + 1}`
   const reporter = args.reporter
     ? `--reporter spec,xunit:reports/testcafe/results-chrome__${name}.xml`
     : ''
-  const command = `node_modules/.bin/testcafe ${agent} ${test} ${color} ${reporter} ${config} ${debugOnFail} ${testcafeArgs}`
+  const command = `node_modules/.bin/testcafe ${agent} ${test.join(
+    ' '
+  )} ${color} ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
   }
 })
 
-if (args.n) {
-  process.stdout.write(
-    `Tests have not been run. Commands that would have been executed:
+process.stdout.write(
+  `Commands to be executed:
 
-${testcafeRuns.map(t => t.command).join('\n\n')}
+${testcafeRuns.map(t => `[${t.name}] ${t.command}`).join('\n\n')}
+
+Processes: ${maxProcesses}
+Fail fast: ${stopOnFirstFail ? 'yes' : 'no'}
 `
-  )
+)
+
+if (args.n) {
+  process.stdout.write('\n\nTests have not been run.')
   process.exit()
 }
 
 concurrently(testcafeRuns, {
   maxProcesses,
+  successCondition,
 }).then(
   () => {},
   () => {
