@@ -1,4 +1,4 @@
-const { kebabCase } = require('lodash')
+const { kebabCase, pickBy } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const responseService = require('../../../common/services/framework-response')
@@ -66,11 +66,37 @@ class FrameworksController extends FormWizardController {
   getResponses(formValues, allResponses) {
     return allResponses
       .filter(response => formValues[response.question.key])
-      .reduce((accumulator, { question, id }) => {
+      .reduce((accumulator, { id, question, value_type: valueType }) => {
         const fieldName = question.key
         const value = formValues[fieldName]
 
-        accumulator.push({ id, value })
+        if (valueType === 'object') {
+          accumulator.push({
+            id,
+            value: pickBy({
+              option: value,
+              details: formValues[`${fieldName}--${kebabCase(value)}`],
+            }),
+          })
+        }
+
+        if (valueType === 'collection') {
+          const collection = value.filter(Boolean).map(option => {
+            return {
+              option,
+              details: formValues[`${fieldName}--${kebabCase(option)}`],
+            }
+          })
+
+          accumulator.push({
+            id,
+            value: collection,
+          })
+        }
+
+        if (valueType === 'string' || valueType === 'array') {
+          accumulator.push({ id, value })
+        }
 
         return accumulator
       }, [])
@@ -79,14 +105,13 @@ class FrameworksController extends FormWizardController {
   async saveValues(req, res, next) {
     const formValues = req.form.values
     const allResponses = req.personEscortRecord.responses
-    const responsePromises = this.getResponses(
-      formValues,
-      allResponses
-    ).map(response => responseService.update(response))
+    const responses = this.getResponses(formValues, allResponses)
 
     try {
       // wait for all responses to resolve first
-      await Promise.all(responsePromises)
+      await Promise.all(
+        responses.map(response => responseService.update(response))
+      )
       // call parent saveValues to handle storing new values in the session
       super.saveValues(req, res, next)
     } catch (error) {
