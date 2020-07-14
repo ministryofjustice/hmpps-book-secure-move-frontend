@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
 const concurrently = require('concurrently')
@@ -6,16 +5,11 @@ const glob = require('glob')
 const yargs = require('yargs')
 
 const { E2E_MAX_PROCESSES, E2E_SKIP, E2E_VIDEO, E2E_FAIL_FAST } = process.env
-console.log(`ENV VARS:
-E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
-E2E_SKIP:          ${E2E_SKIP}
-E2E_VIDEO:         ${E2E_VIDEO}
-E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
-`)
 
 const args = yargs
   .usage(
-    `e2e test runner
+    `
+e2e test runner
 
   Usage:
 
@@ -72,7 +66,7 @@ const args = yargs
     alias: 'm',
     type: 'number',
     default: Number(E2E_MAX_PROCESSES || 1),
-    description: 'Whether to output reports',
+    description: 'Number of processes to use',
   })
   .option('reporter', {
     alias: 'r',
@@ -101,6 +95,14 @@ const args = yargs
     description: 'Display commands that would be run',
   }).argv
 
+process.stdout.write(`ENV VARS:
+E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
+E2E_SKIP:          ${E2E_SKIP}
+E2E_VIDEO:         ${E2E_VIDEO}
+E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
+
+`)
+
 const maxProcesses = args.max_processes
 const debugOnFail = args.debug ? '--debug-on-fail' : ''
 
@@ -114,7 +116,7 @@ if (args.video === undefined) {
 
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
-const successCondition = stopOnFirstFail ? 'first' : 'all'
+const killOthers = stopOnFirstFail ? ['failure'] : undefined
 const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
 const testcafeArgs = args.testcafe || ''
@@ -189,7 +191,7 @@ if (args.n) {
 
 concurrently(testcafeRuns, {
   maxProcesses,
-  successCondition,
+  killOthers,
 }).then(
   () => {},
   () => {
