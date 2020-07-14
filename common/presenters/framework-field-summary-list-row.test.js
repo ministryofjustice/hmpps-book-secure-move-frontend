@@ -252,25 +252,83 @@ describe('Presenters', function () {
         id: 'mock-field',
         question: 'What is the answer?',
         description: 'What is the answer?',
-        response: {
-          value: 'Yes',
-          value_type: 'string',
-        },
+        response: {},
       }
+      const valueTypes = [
+        {
+          valueType: 'string',
+          emptyValue: '',
+          nonEmptyValue: 'Yes',
+        },
+        {
+          valueType: 'object',
+          emptyValue: {},
+          nonEmptyValue: { option: 'Yes' },
+        },
+        {
+          valueType: 'array',
+          emptyValue: [],
+          nonEmptyValue: ['Yes'],
+        },
+        {
+          valueType: 'collection',
+          emptyValue: [],
+          nonEmptyValue: [{ option: 'Yes' }],
+        },
+      ]
 
-      beforeEach(function () {
-        response = frameworkFieldToSummaryListRow(mockStepUrl)(mockField)
-      })
+      valueTypes.forEach(test => {
+        context(`with ${test.valueType} value type`, function () {
+          context(`with empty ${test.valueType}`, function () {
+            const mockResponse = {
+              value: test.emptyValue,
+              value_type: test.valueType,
+            }
 
-      it('should call component service with response values', function () {
-        expect(componentService.getComponent).to.be.calledOnceWithExactly(
-          'appFrameworkResponse',
-          {
-            value: 'Yes',
-            valueType: 'string',
-            questionUrl: `${mockStepUrl}#${mockField.id}`,
-          }
-        )
+            beforeEach(function () {
+              response = frameworkFieldToSummaryListRow(mockStepUrl)({
+                ...mockField,
+                response: mockResponse,
+              })
+            })
+
+            it('should call component service with undefined value', function () {
+              expect(componentService.getComponent).to.be.calledOnceWithExactly(
+                'appFrameworkResponse',
+                {
+                  value: undefined,
+                  valueType: test.valueType,
+                  questionUrl: `${mockStepUrl}#${mockField.id}`,
+                }
+              )
+            })
+          })
+
+          context(`with non-empty ${test.valueType}`, function () {
+            const mockResponse = {
+              value: test.nonEmptyValue,
+              value_type: test.valueType,
+            }
+
+            beforeEach(function () {
+              response = frameworkFieldToSummaryListRow(mockStepUrl)({
+                ...mockField,
+                response: mockResponse,
+              })
+            })
+
+            it('should call component service with undefined value', function () {
+              expect(componentService.getComponent).to.be.calledOnceWithExactly(
+                'appFrameworkResponse',
+                {
+                  value: test.nonEmptyValue,
+                  valueType: test.valueType,
+                  questionUrl: `${mockStepUrl}#${mockField.id}`,
+                }
+              )
+            })
+          })
+        })
       })
     })
   })

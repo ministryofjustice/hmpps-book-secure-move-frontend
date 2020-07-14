@@ -1,4 +1,4 @@
-const { filter, flatten } = require('lodash')
+const { filter, flatten, isEmpty } = require('lodash')
 
 const componentService = require('../services/component')
 
@@ -8,7 +8,7 @@ function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
     const headerText = description || question
     const classes = ['govuk-!-font-weight-regular', ...extraClasses].join(' ')
     const responseHtml = componentService.getComponent('appFrameworkResponse', {
-      value: response.value,
+      value: isEmpty(response.value) ? undefined : response.value,
       valueType: response.value_type,
       questionUrl: `${stepUrl}#${id}`,
     })
