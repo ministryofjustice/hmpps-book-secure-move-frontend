@@ -9,6 +9,7 @@ function allocationToSummaryListComponent(allocation) {
     sentence_length: sentenceLength,
     sentence_length_comment: sentenceLengthComment,
     estate,
+    estate_comment: estateComment,
   } = allocation
   return {
     rows: [
@@ -17,7 +18,7 @@ function allocationToSummaryListComponent(allocation) {
           text: i18n.t('fields::estate.label'),
         },
         value: {
-          text: i18n.t(`fields::estate.items.${estate}`),
+          text: estateComment || i18n.t(`fields::estate.items.${estate}`),
         },
       },
       {
@@ -25,7 +26,9 @@ function allocationToSummaryListComponent(allocation) {
           text: i18n.t('fields::prisoner_category.label'),
         },
         value: {
-          text: i18n.t(`fields::prisoner_category.items.${prisonerCategory}`),
+          text: i18n.t(
+            `fields::prisoner_category.items.${prisonerCategory || 'na'}`
+          ),
         },
       },
       {

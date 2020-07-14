@@ -4,7 +4,7 @@ const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
 const estate = require('./estate')
-const estateOther = require('./estate_other')
+const estateComment = require('./estate_comment')
 const fromLocation = require('./from-location')
 const hasOtherCriteria = require('./has-other-criteria')
 const movesCount = require('./moves-count')
@@ -30,7 +30,7 @@ const createFields = {
   sentence_length: sentenceLength,
   to_location: toLocation,
   estate,
-  estate_other: estateOther,
+  estate_comment: estateComment,
   sentence_length_comment: sentenceLengthComment,
 }
 

@@ -1,6 +1,6 @@
 const otherCriteria = {
-  id: 'estate_other',
-  name: 'estate_other',
+  id: 'estate_comment',
+  name: 'estate_comment',
   validate: 'required',
   rows: 3,
   component: 'govukTextarea',

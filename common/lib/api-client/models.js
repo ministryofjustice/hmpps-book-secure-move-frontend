@@ -279,6 +279,7 @@ module.exports = {
         type: 'locations',
       },
       estate: '',
+      estate_comment: '',
       date: '',
       prisoner_category: '',
       sentence_length: '',

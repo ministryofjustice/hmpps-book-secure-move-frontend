@@ -10,12 +10,18 @@ class AllocationCriteriaPage extends Page {
     super()
     this.url = '/allocation/new/allocation-criteria'
     this.fields = {
-      prisonerCategory: Selector('#prisoner_category'),
+      estate: Selector('#estate'),
       sentenceLength: Selector('[name="sentence_length"]'),
       complexCases: Selector('#complex_cases'),
       completeInFull: Selector('#complete_in_full'),
       hasOtherCriteria: Selector('#has_other_criteria'),
       otherCriteria: Selector('#other_criteria'),
+      prisonerCategoryAdultFemale: Selector('#prisoner_female_category'),
+      prisonerCategoryAdultMale: Selector('#prisoner_male_category'),
+      prisonerCategoryYouthFemale: Selector('#prisoner_youth_female_category'),
+      prisonerCategoryYouthMale: Selector('#prisoner_youth_male_category'),
+      otherEstate: Selector('#estate_comment'),
+      sentenceComment: Selector('#sentence_length_comment'),
     }
     this.errorList = [
       '#prisoner_category',
@@ -31,10 +37,30 @@ class AllocationCriteriaPage extends Page {
     await t.expect(this.getCurrentUrl()).contains(this.url)
 
     const hasOtherCriteriaAnswer = faker.random.arrayElement(['Yes', 'No'])
+    // const estateAnswer = faker.random.arrayElement([
+    //   'Adult male',
+    //   'Adult female',
+    //   'Juvenile male',
+    //   'Juvenile female',
+    //   'Youth male',
+    //   'Youth female',
+    //   'Other',
+    // ])
+    const estateAnswer = 'Adult male'
+    const sentenceLength = faker.random.arrayElement([
+      'Any time to serve',
+
+      '16 months or less',
+
+      'Over 16 months',
+
+      'Other',
+    ])
     const fieldsToFill = {
-      prisonerCategory: {
-        selector: this.fields.prisonerCategory,
+      estate: {
+        selector: this.fields.estate,
         type: 'radio',
+        value: estateAnswer,
       },
       sentenceLength: {
         selector: this.fields.sentenceLength,
@@ -70,6 +96,64 @@ class AllocationCriteriaPage extends Page {
         selector: this.fields.otherCriteria,
         value: faker.lorem.sentence(6),
       }
+    }
+
+    if (sentenceLength === 'Other') {
+      fieldsToFill.sentenceComment = {
+        selector: this.fields.sentenceComment,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    switch (estateAnswer) {
+      case 'Adult male': {
+        fieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryAdultMale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Adult female': {
+        fieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryAdultFemale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Youth male': {
+        fieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryYouthMale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Youth female': {
+        fieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryYouthFemale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Other': {
+        fieldsToFill.otherEstate = {
+          selector: this.fields.otherEstate,
+          value: faker.lorem.sentence(6),
+        }
+        break
+      }
+
+      case 'Juvenile male':
+        break
+
+      case 'Juvenile female':
+        break
+
+      default:
+        break
     }
 
     return fillInForm(fieldsToFill)

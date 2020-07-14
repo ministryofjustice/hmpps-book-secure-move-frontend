@@ -31,6 +31,9 @@ class AllocationViewPage extends Page {
     completeInFull,
     hasOtherCriteria,
     otherCriterias,
+    sentenceComment,
+    estate,
+    otherEstate,
   } = {}) {
     if (completeInFull === 'Yes') {
       await t.expect(this.nodes.completeInFullWarning.exists).ok()
@@ -39,8 +42,9 @@ class AllocationViewPage extends Page {
     }
 
     return this.checkSummaryList(this.nodes.criteriaDetails, {
-      'Prisoner category': prisonerCategory,
-      'Time left to serve': sentenceLength,
+      Estate: otherEstate || estate,
+      'Prisoner category': prisonerCategory || 'Not applicable',
+      'Time left to serve': sentenceComment || sentenceLength,
       'Complex cases for prisons to agree': oxfordJoin(complexCases),
       'Other criteria':
         hasOtherCriteria === 'Yes' ? otherCriterias : 'None provided',

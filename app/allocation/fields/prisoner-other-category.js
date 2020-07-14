@@ -13,11 +13,11 @@ const prisonerCategory = {
   },
   items: [
     {
-      value: 'closed',
+      value: 'open',
       text: 'fields::prisoner_category.items.open',
     },
     {
-      value: 'open',
+      value: 'closed',
       text: 'fields::prisoner_category.items.closed',
     },
   ],

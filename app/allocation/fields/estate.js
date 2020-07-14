@@ -43,7 +43,7 @@ const estate = {
     {
       value: 'other',
       text: 'fields::estate.items.other',
-      conditional: 'estate_other',
+      conditional: 'estate_comment',
     },
   ],
 }
