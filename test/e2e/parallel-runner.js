@@ -116,7 +116,7 @@ if (args.video === undefined) {
 
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
-const successCondition = stopOnFirstFail ? 'first' : 'all'
+const killOthers = stopOnFirstFail ? ['failure'] : undefined
 const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
 const testcafeArgs = args.testcafe || ''
@@ -191,7 +191,7 @@ if (args.n) {
 
 concurrently(testcafeRuns, {
   maxProcesses,
-  successCondition,
+  killOthers,
 }).then(
   () => {},
   () => {
