@@ -174,7 +174,7 @@
     "sass-loader": "9.0.2",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
-    "standard-version": "8.0.0",
+    "standard-version": "8.0.1",
     "style-loader": "1.2.1",
     "terser-webpack-plugin": "3.0.6",
     "testcafe": "1.8.8",
