@@ -1,10 +1,17 @@
+/* eslint-disable no-console */
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
 const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
 
-const { E2E_MAX_PROCESSES, E2E_SKIP, E2E_VIDEO } = process.env
+const { E2E_MAX_PROCESSES, E2E_SKIP, E2E_VIDEO, E2E_FAIL_FAST } = process.env
+console.log(`ENV VARS:
+E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
+E2E_SKIP:          ${E2E_SKIP}
+E2E_VIDEO:         ${E2E_VIDEO}
+E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
+`)
 
 const args = yargs
   .usage(
@@ -48,6 +55,11 @@ const args = yargs
     default: true,
     description: `Whether to run in headless mode
 (will be set to false if debug is true)`,
+  })
+  .option('stop-on-first-fail', {
+    type: 'boolean',
+    default: false,
+    description: 'Whether to stop on first fail',
   })
   .option('debug', {
     alias: 'd',
@@ -100,18 +112,17 @@ if (args.video === undefined) {
   args.video = E2E_VIDEO
 }
 
-if (args.video) {
-  args.config = '.testcaferc-with-video.json'
-}
-
+const stopOnFirstFail =
+  args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
+const successCondition = stopOnFirstFail ? 'first' : 'all'
 const agent = `${args.agent}${args.headless ? ':headless' : ''}`
 const color = args.color ? '--color' : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
 const screenshots =
-  "--screenshots path=artifacts,takeOnFails=true,fullPage=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.png'"
+  "--screenshots path=artifacts/screenshots,takeOnFails=true,fullPage=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.png'"
 const video = args.video
-  ? "--video artifacts --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
+  ? "--video artifacts/videos --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
   : ''
 
 const allTests = glob.sync('test/e2e/*.test.js')
@@ -154,25 +165,31 @@ const testcafeRuns = testBuckets.map((test, index) => {
     : ''
   const command = `node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} ${reporter} ${screenshots} ${video} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
   }
 })
 
-if (args.n) {
-  process.stdout.write(
-    `Tests have not been run. Commands that would have been executed:
+process.stdout.write(
+  `Commands to be executed:
 
 ${testcafeRuns.map(t => `[${t.name}] ${t.command}`).join('\n\n')}
+
+Processes: ${maxProcesses}
+Fail fast: ${stopOnFirstFail ? 'yes' : 'no'}
 `
-  )
+)
+
+if (args.n) {
+  process.stdout.write('\n\nTests have not been run.')
   process.exit()
 }
 
 concurrently(testcafeRuns, {
   maxProcesses,
+  successCondition,
 }).then(
   () => {},
   () => {
