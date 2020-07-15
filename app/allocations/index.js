@@ -27,7 +27,7 @@ const {
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-router.use('date', protectRoute('allocations:view'))
+router.use(protectRoute('allocations:view'))
 
 router.get('/', (req, res) => res.redirect(`${MOUNTPATH}/outgoing`))
 router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
