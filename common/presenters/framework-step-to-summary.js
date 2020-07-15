@@ -1,15 +1,26 @@
-const { filter, flatten } = require('lodash')
+const { filter, find, flatten, isArray } = require('lodash')
 
 const frameworksHelpers = require('../helpers/frameworks')
 
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 
 function frameworkStepToSummary(allFields, responses, baseUrl) {
-  return ([key, step]) => {
+  return ([key, step], i, allSteps = []) => {
+    const allNextSteps = allSteps
+      .map(([key, step]) => step.next)
+      .filter(next => isArray(next))
+      .reduce((acc, it) => [...it, ...acc], [])
+    const unmetStepConditions = allNextSteps
+      .filter(condition => condition.next === step.slug)
+      .filter(item => {
+        const response = find(responses, ['question.key', item.field]) || {}
+        return item.value !== response.value
+      })
+
     const stepUrl = `${baseUrl}/${step.slug}`
     const stepFields = step.fields
 
-    if (!stepFields.length) {
+    if (stepFields.length === 0 || unmetStepConditions.length > 0) {
       return
     }
 

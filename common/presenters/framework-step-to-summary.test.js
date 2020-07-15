@@ -104,5 +104,99 @@ describe('Presenters', function () {
         expect(response).to.be.undefined
       })
     })
+
+    context('with conditional steps', function () {
+      const mockFields = {
+        fieldOne: {
+          question: 'Question one?',
+          description: 'Short question one description',
+          id: 'field-one',
+        },
+      }
+      const mockSteps = [
+        [
+          '/step-one',
+          {
+            next: [
+              {
+                field: 'conditionalField',
+                value: 'Yes',
+                next: 'step-two',
+              },
+              'step-three',
+            ],
+            slug: 'step-one',
+            fields: ['fieldOne'],
+          },
+        ],
+        [
+          '/step-two',
+          {
+            next: 'step-three',
+            slug: 'step-two',
+            fields: ['fieldOne'],
+          },
+        ],
+        [
+          '/step-three',
+          {
+            slug: 'step-three',
+            fields: ['fieldOne'],
+          },
+        ],
+      ]
+
+      context('when responses match condition', function () {
+        const mockResponsesWithCondition = [
+          ...mockResponses,
+          {
+            value: 'Yes',
+            question: {
+              key: 'conditionalField',
+            },
+          },
+        ]
+
+        beforeEach(function () {
+          response = mockSteps.map(
+            frameworkStepToSummary(
+              mockFields,
+              mockResponsesWithCondition,
+              mockBaseUrl
+            )
+          )
+        })
+
+        it('should return correct number of steps', function () {
+          expect(response).to.be.an('array')
+          expect(response).to.have.length(3)
+        })
+
+        it('should return array for each step', function () {
+          response.forEach(step => {
+            expect(step).to.be.an('array')
+          })
+        })
+      })
+
+      context('when responses does not match condition', function () {
+        beforeEach(function () {
+          response = mockSteps.map(
+            frameworkStepToSummary(mockFields, mockResponses, mockBaseUrl)
+          )
+        })
+
+        it('should remove conditional steps', function () {
+          expect(response).to.be.an('array')
+          expect(response.filter(Boolean)).to.have.length(2)
+        })
+
+        it('should return non-conditional steps', function () {
+          const steps = response.filter(Boolean).map(item => item[0])
+
+          expect(steps).to.deep.equal(['/step-one', '/step-three'])
+        })
+      })
+    })
   })
 })
