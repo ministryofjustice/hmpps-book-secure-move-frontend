@@ -1,4 +1,4 @@
-const { map, set, get } = require('lodash')
+const { map, set } = require('lodash')
 
 const dateHelpers = require('../../../common/helpers/date')
 
@@ -6,7 +6,15 @@ function setBodyAllocations(req, res, next) {
   const { status, sortBy, sortDirection } = req.query
   const { dateRange } = req.params
 
-  const locations = get(req.session, 'currentRegion.locations', [])
+  let locations = req?.session?.currentRegion?.locations
+
+  if (!locations) {
+    const currentLocation = req?.session?.currentLocation
+
+    if (currentLocation) {
+      locations = [currentLocation]
+    }
+  }
 
   set(req, 'body.allocations', {
     status,
