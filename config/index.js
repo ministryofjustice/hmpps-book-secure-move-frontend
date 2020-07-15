@@ -17,6 +17,8 @@ const API_BASE_URL = process.env.API_BASE_URL
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
+const NOMIS_ELITE2_API_HEALTHCHECK_PATH =
+  process.env.NOMIS_ELITE2_API_HEALTHCHECK_PATH || '/health/ping'
 const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
@@ -117,7 +119,7 @@ module.exports = {
   DEFAULT_AUTH_PROVIDER: 'hmpps',
   NOMIS_ELITE2_API: {
     user_caseloads_url: `${NOMIS_ELITE2_API_BASE_URL}/api/users/me/caseLoads`,
-    healthcheck_url: `${NOMIS_ELITE2_API_BASE_URL}/ping`,
+    healthcheck_url: `${NOMIS_ELITE2_API_BASE_URL}${NOMIS_ELITE2_API_HEALTHCHECK_PATH}`,
   },
   ANALYTICS: {
     GA_ID: process.env.GOOGLE_ANALYTICS_ID,
