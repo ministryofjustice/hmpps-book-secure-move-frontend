@@ -224,8 +224,9 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | REDIS_URL **(required)** | Redis server URL, including port and protocol | |
 | REDIS_HOST **(required)** | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
 | REDIS_AUTH_TOKEN | Optional auth token for the Redis instance | |
-| API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | `http://localhost:3000` |
-| API_PATH **(required)** | Base path for the API | `/api` |
+| API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | |
+| API_PATH **(required)** | Base path for the API | |
+| API_TIMEOUT | TimeAPI request timeout (ms) | 30000 |
 | API_VERSION **(required)** | API version to use | |
 | API_HEALTHCHECK_PATH **(required)** | Path to which healthcheck pings are sent | |
 | API_AUTH_PATH **(required)** | Path to which OAuth2 access token requests should be sent | |
@@ -238,6 +239,7 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | AUTH_PROVIDER_URL **(required)** | Base URL for the auth provider server | |
 | AUTH_EXPIRY_MARGIN | How close the user authentication should be to expiring before refreshing it | `300` (5 minutes) |
 | NOMIS_ELITE2_API_URL **(required)** | Base URL for the NOMIS Elite 2 API, without trailing slash | |
+| NOMIS_ELITE2_API_HEALTHCHECK_PATH | Path to which healthcheck pings for NOMIS Elite 2 API are sent | /health/ping |
 | SERVER_HOST **(required)** | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000` | |
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | SUPPORT_EMAIL | Email address used to contact support or the team in parts of the app where the user may require further help. | |
