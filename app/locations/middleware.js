@@ -20,6 +20,7 @@ function setLocation(req, res, next) {
 
   const location = find(req.userLocations, { id: locationId })
 
+  req.session.currentRegion = null
   req.session.currentLocation = location
   next()
 }
@@ -54,6 +55,7 @@ function setAllLocations(req, res, next) {
     return next()
   }
 
+  req.session.currentRegion = null
   req.session.currentLocation = null
   next()
 }

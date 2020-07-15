@@ -187,6 +187,11 @@ describe('Locations middleware', function () {
         expect(req.session.currentLocation).to.deep.equal(mockUserLocations[0])
       })
 
+      it('should set currentRegion to null', function () {
+        expect(req.session).to.have.property('currentRegion')
+        expect(req.session.currentRegion).to.be.null
+      })
+
       it('should call next without args', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
@@ -243,9 +248,14 @@ describe('Locations middleware', function () {
         middleware.setAllLocations(req, {}, nextSpy)
       })
 
-      it('should set currentLocation', function () {
+      it('should unset currentLocation', function () {
         expect(req.session).to.have.property('currentLocation')
-        expect(req.session.currentLocation).to.equal(null)
+        expect(req.session.currentLocation).to.be.null
+      })
+
+      it('should unset currentRegion', function () {
+        expect(req.session).to.have.property('currentRegion')
+        expect(req.session.currentRegion).to.be.null
       })
 
       it('should call next without args', function () {
@@ -264,7 +274,9 @@ describe('Locations middleware', function () {
 
     beforeEach(function () {
       req = {
-        session: {},
+        session: {
+          currentLocation: { id: '#currentLocation' },
+        },
         params: {},
       }
       nextSpy = sinon.spy()
@@ -278,6 +290,7 @@ describe('Locations middleware', function () {
         )
         await proxiedMiddleware.setRegion(req, {}, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()
+        expect(req.session.currentLocation).to.be.null
         expect(req.session.currentRegion).to.deep.equal(currentRegion)
       })
     })
