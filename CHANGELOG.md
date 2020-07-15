@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.35.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.34.0...v2.35.0) (2020-07-15)
+
+
+### Features
+
+* **per:** Create overview controller to show status of PER ([ec45fdc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ec45fdc14db4423bdae60424d7b99631fe47a2b4))
+
+
+### Bug Fixes
+
+* Ensure correct locations set for allocations ([923b467](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/923b467a37fa0ab183c7290c3913bd68119154e6))
+* Remove dependency check from ping ([a26f030](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a26f030384dfb3e563ed2f5a720c41e09882c544))
+
 ## [2.34.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.33.0...v2.34.0) (2020-07-13)
 
 
