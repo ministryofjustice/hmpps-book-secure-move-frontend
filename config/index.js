@@ -49,7 +49,7 @@ module.exports = {
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
     CLIENT_ID: process.env.API_CLIENT_ID,
     SECRET: process.env.API_SECRET,
-    TIMEOUT: 30000, // in milliseconds
+    TIMEOUT: Number(process.env.API_TIMEOUT || 30000), // in milliseconds
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
     DISABLE_CACHE: process.env.API_DISABLE_CACHE,
   },
