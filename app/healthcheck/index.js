@@ -7,7 +7,7 @@ const { checkDependencies } = require('./middleware')
 
 // Define routes
 router.get('/', checkDependencies, get)
-router.get('/ping', checkDependencies, ping)
+router.get('/ping', ping)
 
 // Export
 module.exports = {
