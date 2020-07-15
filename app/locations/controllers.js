@@ -14,6 +14,7 @@ async function locations(req, res, next) {
       return next(error)
     }
   }
+
   const locations = sortBy(req.userLocations, 'title')
 
   res.render('locations/views/locations.njk', {
