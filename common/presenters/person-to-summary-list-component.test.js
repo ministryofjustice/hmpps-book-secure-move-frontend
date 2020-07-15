@@ -1,3 +1,4 @@
+const { API } = require('../../config')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -7,7 +8,19 @@ const mockPerson = {
   id: '12345',
   date_of_birth: '1948-04-24',
   gender_additional_information: 'Additional gender information',
-  identifiers: [
+  police_national_computer: '11009922',
+  prison_number: 'AA/183716',
+  criminal_records_office: 'JS901873',
+  ethnicity: {
+    title: 'Mixed (White and Black Caribbean)',
+  },
+  gender: {
+    title: 'Transexual',
+  },
+}
+
+if (API.VERSION === 1) {
+  mockPerson.identifiers = [
     {
       identifier_type: 'police_national_computer',
       value: '11009922',
@@ -20,13 +33,7 @@ const mockPerson = {
       identifier_type: 'criminal_records_office',
       value: 'JS901873',
     },
-  ],
-  ethnicity: {
-    title: 'Mixed (White and Black Caribbean)',
-  },
-  gender: {
-    title: 'Transexual',
-  },
+  ]
 }
 
 describe('Presenters', function () {
@@ -55,18 +62,33 @@ describe('Presenters', function () {
           const row2 = transformedResponse.rows[1]
           const row3 = transformedResponse.rows[2]
 
-          expect(row1).to.deep.equal({
-            key: { html: '__translated__' },
-            value: { text: mockPerson.identifiers[0].value },
-          })
-          expect(row2).to.deep.equal({
-            key: { html: '__translated__' },
-            value: { text: mockPerson.identifiers[1].value },
-          })
-          expect(row3).to.deep.equal({
-            key: { html: '__translated__' },
-            value: { text: mockPerson.identifiers[2].value },
-          })
+          if (API.VERSION === 1) {
+            expect(row1).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.identifiers[0].value },
+            })
+            expect(row2).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.identifiers[1].value },
+            })
+            expect(row3).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.identifiers[2].value },
+            })
+          } else {
+            expect(row1).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.police_national_computer },
+            })
+            expect(row2).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.prison_number },
+            })
+            expect(row3).to.deep.equal({
+              key: { html: '__translated__' },
+              value: { text: mockPerson.criminal_records_office },
+            })
+          }
         })
 
         it('should contain date of birth', function () {

@@ -15,6 +15,8 @@ import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
 import { formatDate } from '../../config/nunjucks/filters'
 
+const { API } = require('../../config')
+
 export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
 })
@@ -108,6 +110,10 @@ export async function createPersonFixture(overrides = {}) {
   })
 
   const getIdentifierValue = type => {
+    if (API.VERSION !== 1) {
+      return person[type]
+    }
+
     return get(
       find(person.identifiers, {
         identifier_type: type,

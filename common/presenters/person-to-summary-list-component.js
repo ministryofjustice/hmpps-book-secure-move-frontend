@@ -1,6 +1,8 @@
+const { API } = require('../../config')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
+// TODO: when V2, props will be splatted and no need for identifier_type prop
 function mapIdentifier({ value, identifier_type: type }) {
   return {
     key: {
@@ -20,7 +22,6 @@ module.exports = function personToSummaryListComponent(props) {
   const {
     gender,
     ethnicity,
-    identifiers = [],
     date_of_birth: dateOfBirth,
     gender_additional_information: genderAdditionalInformation,
   } = props
@@ -28,6 +29,21 @@ module.exports = function personToSummaryListComponent(props) {
   const genderExtra = genderAdditionalInformation
     ? ` — ${genderAdditionalInformation}`
     : ''
+
+  let { identifiers = [] } = props
+
+  if (API.VERSION !== 1) {
+    identifiers = [
+      'police_national_computer',
+      'prison_number',
+      'criminal_records_office',
+    ]
+      .filter(identifier => props[identifier])
+      .map(identifier => ({
+        value: props[identifier],
+        identifier_type: identifier,
+      }))
+  }
 
   const rows = [
     ...identifiers.map(mapIdentifier),
