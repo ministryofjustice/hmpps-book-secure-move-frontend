@@ -465,6 +465,24 @@ describe('Move Service', function () {
           expect(moves).to.equal(10)
         })
       })
+
+      context('with aggregation and batched requests', function () {
+        const mockLocations = Array(mockBatchSize * 2)
+          .fill()
+          .map((v, i) => i)
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            filter: {
+              'filter[from_location_id]': mockLocations.join(','),
+            },
+            isAggregation: true,
+          })
+        })
+
+        it('should return an combined count for all the batches', function () {
+          expect(moves).to.equal(mockResponse.meta.pagination.total_objects * 2)
+        })
+      })
     })
 
     context('with next but no data', function () {

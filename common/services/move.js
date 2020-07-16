@@ -6,7 +6,7 @@ const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 const profileService = require('../services/profile')
 
-function splitRequests(props, propPath) {
+function splitRequests(props = {}, propPath) {
   const split = get(props, propPath, '').split(',')
   const chunks = chunk(split, LOCATIONS_BATCH_SIZE).map(id => id.join(','))
 
@@ -15,7 +15,15 @@ function splitRequests(props, propPath) {
       set(props, propPath, chunk)
       return getAll(props)
     })
-  ).then(response => response.flat())
+  ).then(response => {
+    if (props.isAggregation) {
+      return response.reduce(
+        (accumulator, currentValue) => accumulator + currentValue
+      )
+    }
+
+    return response.flat()
+  })
 }
 
 function getAll({
