@@ -58,6 +58,8 @@ const allocationService = {
   },
   getByDateAndLocation({
     moveDate = [],
+    fromLocations = [],
+    toLocations = [],
     locations = [],
     includeCancelled = false,
     isAggregation = false,
@@ -72,6 +74,8 @@ const allocationService = {
       includeCancelled,
       filter: pickBy({
         'filter[status]': status,
+        'filter[from_locations]': fromLocations.join(','),
+        'filter[to_locations]': toLocations.join(','),
         'filter[locations]': locations.join(','),
         'filter[date_from]': moveDateFrom,
         'filter[date_to]': moveDateTo,
