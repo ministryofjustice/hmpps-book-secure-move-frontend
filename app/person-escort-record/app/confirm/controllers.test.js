@@ -30,6 +30,81 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
+    describe('#middlewareChecks', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkStatus')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call checkStatus middleware', function () {
+        expect(controller.use).to.have.been.calledWith(controller.checkStatus)
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#checkStatus', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          move: {
+            id: '12345',
+          },
+          personEscortRecord: {
+            id: '12345',
+          },
+        }
+        mockRes = {
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('with completed status', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.status = 'completed'
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      const statuses = ['incomplete', 'confirmed']
+      statuses.forEach(status => {
+        context(`with ${status} status`, function () {
+          beforeEach(function () {
+            mockReq.personEscortRecord.status = status
+            controller.checkStatus(mockReq, mockRes, nextSpy)
+          })
+
+          it('should redirect to move', function () {
+            expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+          })
+
+          it('should not call next', function () {
+            expect(nextSpy).not.to.be.called
+          })
+        })
+      })
+    })
+
     describe('#setMoveId', function () {
       let req, res, next
 
