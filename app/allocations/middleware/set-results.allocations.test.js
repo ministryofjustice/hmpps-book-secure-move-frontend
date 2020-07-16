@@ -143,7 +143,7 @@ describe('Allocations middleware', function () {
           ).to.be.calledWithExactly({
             query: { status: 'approved' },
             showRemaining: false,
-            showFromLocation: false,
+            showFromLocation: true,
           })
         })
       })
@@ -164,7 +164,7 @@ describe('Allocations middleware', function () {
             ).to.be.calledWithExactly({
               query: { status: 'approved' },
               showRemaining: true,
-              showFromLocation: true,
+              showFromLocation: false,
             })
           })
         }
