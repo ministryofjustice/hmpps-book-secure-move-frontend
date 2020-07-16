@@ -54,6 +54,7 @@ module.exports = {
         'prison_transfer_reason',
         'profile',
         'profile.documents',
+        'profile.person_escort_record',
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
@@ -101,6 +102,10 @@ module.exports = {
       documents: {
         jsonApi: 'hasMany',
         type: 'documents',
+      },
+      person_escort_record: {
+        jsonApi: 'hasOne',
+        type: 'person_escort_records',
       },
     },
     options: {
@@ -377,14 +382,11 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'framework_responses',
       },
-      questions: {
-        jsonApi: 'hasMany',
-        type: 'framework_questions',
-      },
     },
     options: {
       defaultInclude: [
         'profile',
+        'profile.person',
         'framework',
         'responses',
         'responses.question',
@@ -405,6 +407,7 @@ module.exports = {
     fields: {
       key: '',
       section: '',
+      options: '',
       question_type: '',
       framework: {
         jsonApi: 'hasOne',
@@ -416,13 +419,18 @@ module.exports = {
     fields: {
       value: '',
       value_type: '',
+      responded: '',
       person_escort_record: {
         jsonApi: 'hasOne',
         type: 'person_escort_records',
       },
+      question: {
+        jsonApi: 'hasOne',
+        type: 'framework_questions',
+      },
     },
     options: {
-      defaultInclude: ['question'],
+      defaultInclude: ['person_escort_record', 'question'],
     },
   },
 }

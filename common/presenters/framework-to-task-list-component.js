@@ -2,15 +2,22 @@ const i18n = require('../../config/i18n')
 
 const tagClasses = {
   not_started: 'govuk-tag--grey',
-  incomplete: 'govuk-tag--blue',
+  in_progress: 'govuk-tag--blue',
   default: '',
 }
 
-function frameworkToTaskListComponent(baseUrl = '') {
-  return ({ sections = {} } = {}) => {
-    const tasks = Object.entries(sections).map(([k, section]) => {
-      const { key, name, status } = section
-
+function frameworkToTaskListComponent({
+  baseUrl = '',
+  sectionProgress = [],
+  frameworkSections = {},
+} = {}) {
+  const tasks = sectionProgress
+    .filter(section => frameworkSections[section.key])
+    .map(section => ({
+      ...section,
+      ...frameworkSections[section.key],
+    }))
+    .map(({ key, name, status }) => {
       return {
         text: name,
         href: baseUrl + key,
@@ -21,9 +28,8 @@ function frameworkToTaskListComponent(baseUrl = '') {
       }
     })
 
-    return {
-      items: tasks,
-    }
+  return {
+    items: tasks,
   }
 }
 

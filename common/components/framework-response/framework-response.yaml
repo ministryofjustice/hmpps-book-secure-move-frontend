@@ -61,3 +61,7 @@ examples:
   - name: unanswered
     data:
       questionUrl: /step-url#question-id
+  - name: empty answer
+    data:
+      responded: true
+      questionUrl: /step-url#question-id

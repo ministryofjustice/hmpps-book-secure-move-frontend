@@ -31,6 +31,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -65,6 +66,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -114,6 +116,7 @@ describe('Presenters', function () {
             {
               value: undefined,
               valueType: undefined,
+              responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -173,6 +176,7 @@ describe('Presenters', function () {
               {
                 value: 'Yes',
                 valueType: 'string',
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -181,6 +185,7 @@ describe('Presenters', function () {
               {
                 value: undefined,
                 valueType: undefined,
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
               }
             )
@@ -224,6 +229,7 @@ describe('Presenters', function () {
               {
                 value: 'No',
                 valueType: 'string',
+                responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -252,25 +258,112 @@ describe('Presenters', function () {
         id: 'mock-field',
         question: 'What is the answer?',
         description: 'What is the answer?',
-        response: {
-          value: 'Yes',
-          value_type: 'string',
-        },
+        response: {},
       }
+      const valueTypes = [
+        {
+          valueType: 'string',
+          emptyValue: '',
+          nonEmptyValue: 'Yes',
+        },
+        {
+          valueType: 'object',
+          emptyValue: {},
+          nonEmptyValue: { option: 'Yes' },
+        },
+        {
+          valueType: 'array',
+          emptyValue: [],
+          nonEmptyValue: ['Yes'],
+        },
+        {
+          valueType: 'collection',
+          emptyValue: [],
+          nonEmptyValue: [{ option: 'Yes' }],
+        },
+      ]
 
-      beforeEach(function () {
-        response = frameworkFieldToSummaryListRow(mockStepUrl)(mockField)
+      valueTypes.forEach(test => {
+        context(`with ${test.valueType} value type`, function () {
+          context(`with empty ${test.valueType}`, function () {
+            const mockResponse = {
+              value: test.emptyValue,
+              value_type: test.valueType,
+            }
+
+            beforeEach(function () {
+              response = frameworkFieldToSummaryListRow(mockStepUrl)({
+                ...mockField,
+                response: mockResponse,
+              })
+            })
+
+            it('should call component service with undefined value', function () {
+              expect(componentService.getComponent).to.be.calledOnceWithExactly(
+                'appFrameworkResponse',
+                {
+                  value: undefined,
+                  valueType: test.valueType,
+                  responded: false,
+                  questionUrl: `${mockStepUrl}#${mockField.id}`,
+                }
+              )
+            })
+          })
+
+          context(`with non-empty ${test.valueType}`, function () {
+            const mockResponse = {
+              value: test.nonEmptyValue,
+              value_type: test.valueType,
+            }
+
+            beforeEach(function () {
+              response = frameworkFieldToSummaryListRow(mockStepUrl)({
+                ...mockField,
+                response: mockResponse,
+              })
+            })
+
+            it('should call component service with undefined value', function () {
+              expect(componentService.getComponent).to.be.calledOnceWithExactly(
+                'appFrameworkResponse',
+                {
+                  value: test.nonEmptyValue,
+                  valueType: test.valueType,
+                  responded: false,
+                  questionUrl: `${mockStepUrl}#${mockField.id}`,
+                }
+              )
+            })
+          })
+        })
       })
 
-      it('should call component service with response values', function () {
-        expect(componentService.getComponent).to.be.calledOnceWithExactly(
-          'appFrameworkResponse',
-          {
-            value: 'Yes',
-            valueType: 'string',
-            questionUrl: `${mockStepUrl}#${mockField.id}`,
-          }
-        )
+      context('when response has been answered', function () {
+        const mockResponse = {
+          value: [],
+          value_type: 'array',
+          responded: true,
+        }
+
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)({
+            ...mockField,
+            response: mockResponse,
+          })
+        })
+
+        it('should call component service with undefined value and responded value', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'appFrameworkResponse',
+            {
+              value: undefined,
+              valueType: 'array',
+              responded: true,
+              questionUrl: `${mockStepUrl}#${mockField.id}`,
+            }
+          )
+        })
       })
     })
   })

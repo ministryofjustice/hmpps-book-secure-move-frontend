@@ -3,8 +3,8 @@
   "section_overview": "{{section}} overview",
   "statuses": {
     "not_started": "Not started",
-    "incomplete": "Incomplete",
-    "complete": "Complete"
+    "in_progress": "In progress",
+    "completed": "Complete"
   },
   "create": {
     "steps": {
