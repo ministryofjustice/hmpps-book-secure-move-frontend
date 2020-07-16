@@ -36,31 +36,10 @@ class AllocationCriteriaPage extends Page {
   async fill() {
     await t.expect(this.getCurrentUrl()).contains(this.url)
 
-    const hasOtherCriteriaAnswer = faker.random.arrayElement(['Yes', 'No'])
-    // const estateAnswer = faker.random.arrayElement([
-    //   'Adult male',
-    //   'Adult female',
-    //   'Juvenile male',
-    //   'Juvenile female',
-    //   'Youth male',
-    //   'Youth female',
-    //   'Other',
-    // ])
-    const estateAnswer = 'Adult male'
-    const sentenceLength = faker.random.arrayElement([
-      'Any time to serve',
-
-      '16 months or less',
-
-      'Over 16 months',
-
-      'Other',
-    ])
     const fieldsToFill = {
       estate: {
         selector: this.fields.estate,
         type: 'radio',
-        value: estateAnswer,
       },
       sentenceLength: {
         selector: this.fields.sentenceLength,
@@ -87,27 +66,29 @@ class AllocationCriteriaPage extends Page {
       hasOtherCriteria: {
         selector: this.fields.hasOtherCriteria,
         type: 'radio',
-        value: hasOtherCriteriaAnswer,
       },
     }
 
-    if (hasOtherCriteriaAnswer === 'Yes') {
-      fieldsToFill.otherCriteria = {
+    const formAnswers = await fillInForm(fieldsToFill)
+    const conditionalFieldsToFill = {}
+
+    if (formAnswers.hasOtherCriteria === 'Yes') {
+      conditionalFieldsToFill.otherCriteria = {
         selector: this.fields.otherCriteria,
         value: faker.lorem.sentence(6),
       }
     }
 
-    if (sentenceLength === 'Other') {
-      fieldsToFill.sentenceComment = {
+    if (formAnswers.sentenceLength === 'Other') {
+      conditionalFieldsToFill.sentenceComment = {
         selector: this.fields.sentenceComment,
         value: faker.lorem.sentence(6),
       }
     }
 
-    switch (estateAnswer) {
+    switch (formAnswers.estate) {
       case 'Adult male': {
-        fieldsToFill.prisonerCategory = {
+        conditionalFieldsToFill.prisonerCategory = {
           selector: this.fields.prisonerCategoryAdultMale,
           type: 'radio',
         }
@@ -115,7 +96,7 @@ class AllocationCriteriaPage extends Page {
       }
 
       case 'Adult female': {
-        fieldsToFill.prisonerCategory = {
+        conditionalFieldsToFill.prisonerCategory = {
           selector: this.fields.prisonerCategoryAdultFemale,
           type: 'radio',
         }
@@ -123,7 +104,7 @@ class AllocationCriteriaPage extends Page {
       }
 
       case 'Youth male': {
-        fieldsToFill.prisonerCategory = {
+        conditionalFieldsToFill.prisonerCategory = {
           selector: this.fields.prisonerCategoryYouthMale,
           type: 'radio',
         }
@@ -131,7 +112,7 @@ class AllocationCriteriaPage extends Page {
       }
 
       case 'Youth female': {
-        fieldsToFill.prisonerCategory = {
+        conditionalFieldsToFill.prisonerCategory = {
           selector: this.fields.prisonerCategoryYouthFemale,
           type: 'radio',
         }
@@ -139,7 +120,7 @@ class AllocationCriteriaPage extends Page {
       }
 
       case 'Other': {
-        fieldsToFill.otherEstate = {
+        conditionalFieldsToFill.otherEstate = {
           selector: this.fields.otherEstate,
           value: faker.lorem.sentence(6),
         }
@@ -156,7 +137,8 @@ class AllocationCriteriaPage extends Page {
         break
     }
 
-    return fillInForm(fieldsToFill)
+    const formConditionalAnswers = await fillInForm(conditionalFieldsToFill)
+    return { ...formAnswers, ...formConditionalAnswers }
   }
 }
 export default AllocationCriteriaPage
