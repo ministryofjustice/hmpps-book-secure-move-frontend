@@ -5,7 +5,7 @@
   "statuses": {
     "not_started": "Not started",
     "in_progress": "In progress",
-    "completed": "Complete"
+    "completed": "Completed"
   },
   "journeys": {
     "confirm": {
