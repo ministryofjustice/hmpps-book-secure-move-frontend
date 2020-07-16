@@ -8,9 +8,15 @@ const middleware = require('./middleware')
 
 const wizardReqStub = sinon.stub()
 const wizardStub = sinon.stub().returns(wizardReqStub)
+const mockRouter = {
+  use: sinon.stub(),
+}
 
 const router = proxyquire('./router', {
   'hmpo-form-wizard': wizardStub,
+  express: {
+    Router: () => mockRouter,
+  },
 })
 
 const mockFramework = {
@@ -49,18 +55,16 @@ const mockFramework = {
 
 describe('Person Escort Record router', function () {
   describe('#defineFormWizards', function () {
-    let mockRouter
+    let output
 
     beforeEach(function () {
-      mockRouter = {
-        use: sinon.stub(),
-      }
       sinon.stub(middleware, 'setFrameworkSection')
 
-      router.defineFormWizards(mockFramework, mockRouter)
+      output = router.defineFormWizards(mockFramework)
     })
 
     afterEach(function () {
+      mockRouter.use.resetHistory()
       wizardStub.resetHistory()
       wizardReqStub.resetHistory()
     })
@@ -92,7 +96,7 @@ describe('Person Escort Record router', function () {
           }
 
           expect(mockRouter.use).to.be.calledWithExactly(
-            `/:personEscortRecordId/${key}`,
+            `/${key}`,
             middleware.setFrameworkSection(value),
             wizardStub(steps, mockFramework.questions, config)
           )
@@ -141,6 +145,10 @@ describe('Person Escort Record router', function () {
           )
         }
       })
+    })
+
+    it('should return a router', function () {
+      expect(output).to.deep.equal(mockRouter)
     })
   })
 })

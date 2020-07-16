@@ -136,5 +136,36 @@ describe('Person Escort Record controllers', function () {
         })
       })
     })
+
+    context('with move record', function () {
+      beforeEach(function () {
+        controller(
+          {
+            ...mockReq,
+            move: {
+              profile: {
+                person: {
+                  fullname: 'James Stevens',
+                },
+              },
+            },
+          },
+          mockRes
+        )
+      })
+
+      describe('params', function () {
+        let params
+
+        beforeEach(function () {
+          params = mockRes.render.args[0][1]
+        })
+
+        it('should set fullname', function () {
+          expect(params).to.have.property('fullname')
+          expect(params.fullname).to.equal('James Stevens')
+        })
+      })
+    })
   })
 })

@@ -1,9 +1,9 @@
 // NPM dependencies
-const router = require('express').Router()
+const router = require('express').Router({ mergeParams: true })
 
 // Local dependencies
+const { uuidRegex } = require('../../common/helpers/url')
 const frameworksService = require('../../common/services/frameworks')
-const { setMove } = require('../move/middleware')
 
 const newApp = require('./app/new')
 const { frameworkOverviewController } = require('./controllers')
@@ -11,21 +11,21 @@ const { setFramework, setPersonEscortRecord } = require('./middleware')
 const { defineFormWizards } = require('./router')
 
 const framework = frameworksService.getPersonEscortFramework()
+const frameworkWizard = defineFormWizards(framework)
 
 // Define shared middleware
-router.param('personEscortRecordId', setPersonEscortRecord)
-router.param('moveId', setMove)
 router.use(setFramework(framework))
+router.use(setPersonEscortRecord)
+router.use(frameworkWizard)
 
 // Define sub-apps
 router.use(newApp.mountpath, newApp.router)
 
 // Define routes
-router.get('/:personEscortRecordId', frameworkOverviewController)
-defineFormWizards(framework, router)
+router.get('/', frameworkOverviewController)
 
 // Export
 module.exports = {
   router,
-  mountpath: '/person-escort-record',
+  mountpath: `/person-escort-record/:personEscortRecordId(${uuidRegex})?`,
 }

@@ -1,3 +1,4 @@
+const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
 
 const {
@@ -6,7 +7,7 @@ const {
 } = require('./controllers')
 const middleware = require('./middleware')
 
-function defineFormWizards(framework, router) {
+function defineFormWizards(framework) {
   const { questions, sections } = framework
 
   for (const sectionKey in sections) {
@@ -31,11 +32,13 @@ function defineFormWizards(framework, router) {
     }
 
     router.use(
-      `/:personEscortRecordId/${sectionKey}`,
+      `/${sectionKey}`,
       middleware.setFrameworkSection(section),
       wizard(steps, questions, wizardConfig)
     )
   }
+
+  return router
 }
 
 module.exports = {
