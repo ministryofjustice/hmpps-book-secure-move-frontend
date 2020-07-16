@@ -21,6 +21,19 @@ const personEscortRecordService = {
       .then(response => response.data)
   },
 
+  confirm(id) {
+    if (!id) {
+      return Promise.reject(new Error(noIdMessage))
+    }
+
+    return apiClient
+      .update('person_escort_record', {
+        id,
+        status: 'confirmed',
+      })
+      .then(this.transformResponse)
+  },
+
   getById(id) {
     if (!id) {
       return Promise.reject(new Error(noIdMessage))

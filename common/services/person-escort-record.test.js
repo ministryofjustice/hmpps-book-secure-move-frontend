@@ -85,6 +85,56 @@ describe('Services', function () {
       })
     })
 
+    describe('#confirm', function () {
+      let output
+      const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
+
+      beforeEach(async function () {
+        sinon.stub(personEscortRecordService, 'transformResponse').returnsArg(0)
+        sinon.stub(apiClient, 'update').resolves({
+          data: mockRecord,
+        })
+      })
+
+      context('without ID', function () {
+        it('should reject with error', function () {
+          return expect(personEscortRecordService.confirm()).to.be.rejectedWith(
+            'No resource ID supplied'
+          )
+        })
+      })
+
+      context('with ID', function () {
+        beforeEach(async function () {
+          output = await personEscortRecordService.confirm(mockId)
+        })
+
+        it('calls the api service', function () {
+          expect(apiClient.update).to.have.been.calledOnceWithExactly(
+            'person_escort_record',
+            {
+              id: mockId,
+              status: 'confirmed',
+            }
+          )
+        })
+
+        it('should call move transformer with response data', function () {
+          expect(
+            personEscortRecordService.transformResponse
+          ).to.be.calledOnceWithExactly({
+            data: mockRecord,
+          })
+        })
+
+        it('returns the output of transformer', function () {
+          expect(output).to.deep.equal({
+            data: mockRecord,
+          })
+        })
+      })
+    })
+
     describe('#getById', function () {
       let output
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
@@ -96,7 +146,7 @@ describe('Services', function () {
         })
       })
 
-      context('without move ID', function () {
+      context('without ID', function () {
         it('should reject with error', function () {
           return expect(personEscortRecordService.getById()).to.be.rejectedWith(
             'No resource ID supplied'
@@ -104,7 +154,7 @@ describe('Services', function () {
         })
       })
 
-      context('with move ID', function () {
+      context('with ID', function () {
         beforeEach(async function () {
           output = await personEscortRecordService.getById(mockId)
         })
