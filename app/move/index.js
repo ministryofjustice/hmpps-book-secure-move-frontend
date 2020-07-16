@@ -1,10 +1,14 @@
 // NPM dependencies
-const router = require('express').Router()
+const express = require('express')
+const router = express.Router()
+const moveRouter = express.Router()
 const wizard = require('hmpo-form-wizard')
 
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
+const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
+const personEscortRecordApp = require('../person-escort-record')
 
 const { assign, confirmation, create, update, view } = require('./controllers')
 const {
@@ -14,7 +18,11 @@ const {
   reviewFields,
   updateFields,
 } = require('./fields')
-const { setMove, setAllocation } = require('./middleware')
+const {
+  setMove,
+  setPersonEscortRecord,
+  setAllocation,
+} = require('./middleware')
 const {
   assign: assignSteps,
   cancel: cancelSteps,
@@ -63,6 +71,15 @@ const assignConfig = {
   journeyName: 'allocation:person:assign',
   journeyPageTitle: 'allocation::person:assign',
 }
+const unassignConfig = {
+  ...wizardConfig,
+  controller: FormWizardController,
+  name: 'unassign-an-allocation',
+  templatePath: 'move/views/',
+  template: '../../../form-wizard',
+  journeyName: 'unassign-an-allocation',
+  journeyPageTitle: 'actions::cancel_allocation',
+}
 
 // Define param middleware
 router.param('moveId', setMove)
@@ -73,23 +90,35 @@ router.use(
   protectRoute('move:create'),
   wizard(createSteps, createFields, createConfig)
 )
-router.get('/:moveId', protectRoute('move:view'), view)
-router.get(
-  '/:moveId/confirmation',
+router.use(`/:moveId(${uuidRegex})`, moveRouter)
+
+moveRouter.get('/', protectRoute('move:view'), view)
+moveRouter.get(
+  '/confirmation',
   protectRoute(['move:create', 'move:review']),
   setAllocation,
   confirmation
 )
-router.use(
-  '/:moveId/cancel',
+moveRouter.use(
+  personEscortRecordApp.mountpath,
+  setPersonEscortRecord,
+  personEscortRecordApp.router
+)
+moveRouter.use(
+  '/cancel',
   protectRoute(['move:cancel', 'move:cancel:proposed']),
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
-router.use('/:moveId/review', wizard(reviewSteps, reviewFields, reviewConfig))
-router.use(
-  '/:moveId/assign',
+moveRouter.use('/review', wizard(reviewSteps, reviewFields, reviewConfig))
+moveRouter.use(
+  '/assign',
   protectRoute('allocation:person:assign'),
   wizard(assignSteps, assignFields, assignConfig)
+)
+moveRouter.use(
+  '/unassign',
+  protectRoute('allocation:person:assign'),
+  wizard(unassignSteps, cancelFields, unassignConfig)
 )
 
 updateSteps.forEach(updateJourney => {
@@ -99,27 +128,12 @@ updateSteps.forEach(updateJourney => {
     name: `update-move-${key}`,
     journeyName: `update-move-${key}`,
   }
-  router.use(
-    '/:moveId/edit',
+  moveRouter.use(
+    '/edit',
     protectRoute(updateJourney.permission),
     wizard(steps, updateFields, updateStepConfig)
   )
 })
-
-const unassignConfig = {
-  ...wizardConfig,
-  controller: FormWizardController,
-  name: 'unassign-an-allocation',
-  templatePath: 'move/views/',
-  template: '../../../form-wizard',
-  journeyName: 'unassign-an-allocation',
-  journeyPageTitle: 'actions::cancel_allocation',
-}
-router.use(
-  '/:moveId/unassign',
-  protectRoute('allocation:person:assign'),
-  wizard(unassignSteps, cancelFields, unassignConfig)
-)
 
 // Export
 module.exports = {

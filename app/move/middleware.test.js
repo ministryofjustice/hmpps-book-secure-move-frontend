@@ -95,6 +95,55 @@ describe('Move middleware', function () {
     })
   })
 
+  describe('#setPersonEscortRecord()', function () {
+    let mockReq, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockReq = {}
+    })
+
+    context('without Person Escort Record', function () {
+      beforeEach(function () {
+        middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+      })
+
+      it('should not set request property', function () {
+        expect(mockReq).not.to.contain.property('personEscortRecord')
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with Person Escort Record', function () {
+      beforeEach(function () {
+        mockReq = {
+          move: {
+            profile: {
+              person_escort_record: {
+                id: '12345',
+              },
+            },
+          },
+        }
+        middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+      })
+
+      it('should set request property', function () {
+        expect(mockReq).to.contain.property('personEscortRecord')
+        expect(mockReq.personEscortRecord).to.deep.equal({
+          id: '12345',
+        })
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
   describe('#setAllocation()', function () {
     let req, res, nextSpy
 
