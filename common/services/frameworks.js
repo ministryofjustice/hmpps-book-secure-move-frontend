@@ -89,7 +89,13 @@ function transformQuestion(
 
   if (options) {
     field.items = options.map(
-      ({ value, label, followup, followup_comment: followupComment }) => {
+      ({
+        value,
+        label,
+        hint: itemHint,
+        followup,
+        followup_comment: followupComment,
+      }) => {
         const commentField = buildCommentField(key, value, followupComment)
         const flattenedFollowup = flatten([followup])
 
@@ -97,6 +103,10 @@ function transformQuestion(
           value,
           text: label,
           conditional: followupComment ? commentField : flattenedFollowup,
+        }
+
+        if (itemHint) {
+          set(item, 'hint.text', itemHint)
         }
 
         if (followup) {

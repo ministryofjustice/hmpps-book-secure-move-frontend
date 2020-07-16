@@ -311,7 +311,25 @@ describe('Frameworks service', function () {
         it('should format type correctly', function () {
           const transformed = frameworksService.transformQuestion(
             'question-key',
-            { ...mockQuestion, type: 'radio' }
+            {
+              ...mockQuestion,
+              type: 'radio',
+              options: [
+                {
+                  label: 'Option one',
+                  hint: 'Hint text for option one',
+                  value: 'Option one',
+                },
+                {
+                  label: 'Option two',
+                  value: 'Option two',
+                },
+                {
+                  label: 'Option three',
+                  value: 'Option three',
+                },
+              ],
+            }
           )
 
           expect(transformed).to.deep.equal({
@@ -326,6 +344,26 @@ describe('Frameworks service', function () {
                 classes: 'govuk-label--s',
               },
             },
+            items: [
+              {
+                text: 'Option one',
+                value: 'Option one',
+                hint: {
+                  text: 'Hint text for option one',
+                },
+                conditional: [undefined],
+              },
+              {
+                text: 'Option two',
+                value: 'Option two',
+                conditional: [undefined],
+              },
+              {
+                text: 'Option three',
+                value: 'Option three',
+                conditional: [undefined],
+              },
+            ],
             validate: [],
           })
         })
