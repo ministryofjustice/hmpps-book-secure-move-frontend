@@ -119,6 +119,11 @@ describe('#allocationsToTableComponent', function () {
             },
           },
           {
+            html: 'collections::labels.from_location',
+            isSortable: true,
+            sortKey: 'from_location',
+          },
+          {
             html: 'collections::labels.to_location',
             isSortable: true,
             sortKey: 'to_location',
@@ -140,9 +145,9 @@ describe('#allocationsToTableComponent', function () {
         })
 
         it('should return correct number of columns', function () {
-          expect(Object.keys(output.rows[0])).to.have.length(4)
-          expect(Object.keys(output.rows[1])).to.have.length(4)
-          expect(Object.keys(output.rows[2])).to.have.length(4)
+          expect(Object.keys(output.rows[0])).to.have.length(5)
+          expect(Object.keys(output.rows[1])).to.have.length(5)
+          expect(Object.keys(output.rows[2])).to.have.length(5)
         })
 
         describe('filled allocation', function () {
@@ -156,6 +161,9 @@ describe('#allocationsToTableComponent', function () {
               },
               {
                 html: 'govukTag',
+              },
+              {
+                text: mockAllocations[0].from_location.title,
               },
               {
                 text: mockAllocations[0].to_location.title,
@@ -197,6 +205,9 @@ describe('#allocationsToTableComponent', function () {
               },
               {
                 html: 'govukTag',
+              },
+              {
+                text: mockAllocations[1].from_location.title,
               },
               {
                 text: mockAllocations[1].to_location.title,
@@ -240,6 +251,9 @@ describe('#allocationsToTableComponent', function () {
                 html: 'govukTag',
               },
               {
+                text: mockAllocations[2].from_location.title,
+              },
+              {
                 text: mockAllocations[2].to_location.title,
               },
               {
@@ -270,10 +284,10 @@ describe('#allocationsToTableComponent', function () {
       })
     })
 
-    context('with show from location option', function () {
+    context('with show from location option false', function () {
       beforeEach(function () {
         output = presenter({
-          showFromLocation: true,
+          showFromLocation: false,
         })(mockAllocations)
       })
 
@@ -294,11 +308,6 @@ describe('#allocationsToTableComponent', function () {
             },
           },
           {
-            html: 'collections::labels.from_location',
-            isSortable: true,
-            sortKey: 'from_location',
-          },
-          {
             html: 'collections::labels.to_location',
             isSortable: true,
             sortKey: 'to_location',
@@ -315,9 +324,9 @@ describe('#allocationsToTableComponent', function () {
       })
 
       it('should return correct number of columns for rows', function () {
-        expect(Object.keys(output.rows[0])).to.have.length(5)
-        expect(Object.keys(output.rows[1])).to.have.length(5)
-        expect(Object.keys(output.rows[2])).to.have.length(5)
+        expect(Object.keys(output.rows[0])).to.have.length(4)
+        expect(Object.keys(output.rows[1])).to.have.length(4)
+        expect(Object.keys(output.rows[2])).to.have.length(4)
       })
     })
 
@@ -344,6 +353,9 @@ describe('#allocationsToTableComponent', function () {
               },
               {
                 html: 'govukTag',
+              },
+              {
+                text: mockAllocations[0].from_location.title,
               },
               {
                 text: mockAllocations[0].to_location.title,
@@ -387,6 +399,9 @@ describe('#allocationsToTableComponent', function () {
                 html: 'govukTag',
               },
               {
+                text: mockAllocations[1].from_location.title,
+              },
+              {
                 text: mockAllocations[1].to_location.title,
               },
               {
@@ -426,6 +441,9 @@ describe('#allocationsToTableComponent', function () {
               },
               {
                 html: 'govukTag',
+              },
+              {
+                text: mockAllocations[2].from_location.title,
               },
               {
                 text: mockAllocations[2].to_location.title,
@@ -498,6 +516,11 @@ describe('#allocationsToTableComponent', function () {
               width: '150',
             },
             text: 'collections::labels.progress',
+          },
+          {
+            html: 'collections::labels.from_location',
+            isSortable: false,
+            sortKey: 'from_location',
           },
           {
             html: 'collections::labels.to_location',

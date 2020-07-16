@@ -631,6 +631,8 @@ describe('Allocation service', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
             moveDate: mockMoveDateRange,
+            fromLocations: [mockFromLocationId],
+            toLocations: [mockToLocationId],
             locations: [mockFromLocationId, mockToLocationId],
           })
         })
@@ -642,6 +644,8 @@ describe('Allocation service', function () {
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
+              'filter[from_locations]': mockFromLocationId,
+              'filter[to_locations]': mockToLocationId,
               'filter[locations]': `${mockFromLocationId},${mockToLocationId}`,
             },
           })

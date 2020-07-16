@@ -25,7 +25,7 @@ function _byAdded(totalSlots, unfilledSlots) {
 }
 
 function allocationsToTableComponent({
-  showFromLocation = false,
+  showFromLocation = true,
   showRemaining = false,
   query,
   isSortable = true,

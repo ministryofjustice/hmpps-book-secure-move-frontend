@@ -5,15 +5,16 @@ const presenters = require('../../../common/presenters')
 const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
-  const currentLocationId = get(req.session, 'currentLocation.id')
   const userPermissions = get(req.session, 'user.permissions')
+  const hasAssignerPermission = permissions.check(
+    'allocation:person:assign',
+    userPermissions
+  )
   const query = req.query
+
   const displayConfig = {
-    showRemaining: permissions.check(
-      'allocation:person:assign',
-      userPermissions
-    ),
-    showFromLocation: !currentLocationId,
+    showFromLocation: !hasAssignerPermission,
+    showRemaining: hasAssignerPermission,
     query,
   }
 
