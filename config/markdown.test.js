@@ -1,7 +1,7 @@
 const proxyquire = require('proxyquire')
 
 const registerStub = sinon.stub()
-const renderStub = sinon.stub()
+const renderStub = sinon.stub().returnsArg(0)
 const useStub = sinon.stub()
 
 const markdown = proxyquire('./markdown', {
@@ -18,6 +18,7 @@ const markdown = proxyquire('./markdown', {
 
 describe('Markdown config', function () {
   afterEach(function () {
+    renderStub.resetHistory()
     registerStub.resetHistory()
   })
 
@@ -44,6 +45,38 @@ describe('Markdown config', function () {
     it('should render closing tags', function () {
       const response = markdown.renderWarning([{ nesting: 2 }], 0)
       expect(response).to.equal('</strong>\n</div>\n')
+    })
+  })
+
+  describe('#render', function () {
+    let output
+
+    context('without body', function () {
+      beforeEach(function () {
+        output = markdown.render()
+      })
+
+      it('should call md.render method', function () {
+        expect(renderStub).to.be.calledOnceWithExactly(undefined)
+      })
+
+      it('should return rendered markdown', function () {
+        expect(output).to.equal()
+      })
+    })
+
+    context('with body', function () {
+      beforeEach(function () {
+        output = markdown.render('Some markdown content')
+      })
+
+      it('should call md.render method', function () {
+        expect(renderStub).to.be.calledOnceWithExactly('Some markdown content')
+      })
+
+      it('should return rendered markdown', function () {
+        expect(output).to.equal('Some markdown content')
+      })
     })
   })
 

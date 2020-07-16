@@ -3,6 +3,7 @@ const path = require('path')
 
 const { flatten, kebabCase, keyBy, set } = require('lodash')
 
+const markdown = require('../../config/markdown')
 const { frameworks } = require('../../config/paths')
 
 const labelPathMap = {
@@ -36,7 +37,10 @@ function buildCommentField(
   }
 
   if (followupComment.hint) {
-    set(field, 'hint.text', followupComment.hint)
+    field.hint = {
+      html: markdown.render(followupComment.hint),
+      classes: 'markdown',
+    }
   }
 
   return field
@@ -80,7 +84,10 @@ function transformQuestion(
   })
 
   if (hint) {
-    set(field, 'hint.text', hint)
+    field.hint = {
+      html: markdown.render(hint),
+      classes: 'markdown',
+    }
   }
 
   if (type === 'checkbox') {
@@ -106,7 +113,10 @@ function transformQuestion(
         }
 
         if (itemHint) {
-          set(item, 'hint.text', itemHint)
+          item.hint = {
+            html: markdown.render(itemHint),
+            classes: 'markdown',
+          }
         }
 
         if (followup) {
