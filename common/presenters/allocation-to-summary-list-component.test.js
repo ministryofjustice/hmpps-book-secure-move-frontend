@@ -58,7 +58,7 @@ describe('allocation to summary list component', function () {
           text: 'fields::estate.label',
         },
         value: {
-          text: 'fields::estate.items.adult_male',
+          text: ['fields::estate.items.adult_male', ''],
         },
       })
     })
@@ -72,7 +72,7 @@ describe('allocation to summary list component', function () {
           text: 'fields::estate.label',
         },
         value: {
-          text: 'This is a comment',
+          text: ['fields::estate.items.adult_male', 'This is a comment'],
         },
       })
     })
@@ -81,10 +81,14 @@ describe('allocation to summary list component', function () {
     it('has the prisoner category as second item', function () {
       expect(output.rows[1]).to.deep.equal({
         key: {
-          text: 'fields::prisoner_category.label',
+          text: 'fields::prisoner_common_category.label',
         },
         value: {
-          text: 'fields::prisoner_category.items.c',
+          text: [
+            'fields::prisoner_adult_male.items.c',
+            'fields::prisoner_common_category.items.c',
+            'fields::prisoner_common_category.items.na',
+          ],
         },
       })
     })
@@ -92,10 +96,14 @@ describe('allocation to summary list component', function () {
       const output = presenter({ ...mockParams, prisoner_category: undefined })
       expect(output.rows[1]).to.deep.equal({
         key: {
-          text: 'fields::prisoner_category.label',
+          text: 'fields::prisoner_common_category.label',
         },
         value: {
-          text: 'fields::prisoner_category.items.na',
+          text: [
+            'fields::prisoner_adult_male.items.undefined',
+            'fields::prisoner_common_category.items.undefined',
+            'fields::prisoner_common_category.items.na',
+          ],
         },
       })
     })

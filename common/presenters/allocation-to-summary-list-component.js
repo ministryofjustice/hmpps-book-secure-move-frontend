@@ -18,17 +18,19 @@ function allocationToSummaryListComponent(allocation) {
           text: i18n.t('fields::estate.label'),
         },
         value: {
-          text: estateComment || i18n.t(`fields::estate.items.${estate}`),
+          text: i18n.t([`fields::estate.items.${estate}`, estateComment ?? '']),
         },
       },
       {
         key: {
-          text: i18n.t('fields::prisoner_category.label'),
+          text: i18n.t('fields::prisoner_common_category.label'),
         },
         value: {
-          text: i18n.t(
-            `fields::prisoner_category.items.${prisonerCategory || 'na'}`
-          ),
+          text: i18n.t([
+            `fields::prisoner_adult_male.items.${prisonerCategory}`,
+            `fields::prisoner_common_category.items.${prisonerCategory}`,
+            'fields::prisoner_common_category.items.na',
+          ]),
         },
       },
       {

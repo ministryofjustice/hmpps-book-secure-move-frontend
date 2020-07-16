@@ -281,17 +281,35 @@
   "date_of_allocation": {
     "label": "Date of allocation"
   },
-  "prisoner_category": {
+  "prisoner_common_category": {
     "label": "Prisoner category",
     "select_label": "Select category",
     "items": {
       "open": "Open",
       "closed": "Closed",
-      "b": "B",
-      "c": "C",
-      "d": "D",
       "na": "Not applicable"
     }
+  },
+  "prisoner_adult_male": {
+    "label": "Prisoner category",
+    "select_label": "Select category",
+    "items": {
+      "b": "B",
+      "c": "C",
+      "d": "D"
+    }
+  },
+  "prisoner_adult_female": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
+  },
+  "prisoner_youth_male": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
+  },
+  "prisoner_youth_female": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
   },
   "estate": {
     "label": "Estate",

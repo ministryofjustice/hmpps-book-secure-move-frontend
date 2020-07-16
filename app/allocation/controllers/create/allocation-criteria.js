@@ -28,10 +28,10 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
   saveValues(req, res, next) {
     const {
       complex_cases: complexCases,
-      prisoner_male_category: prisonerMaleCategory,
-      prisoner_female_category: prisonerFemaleCategory,
-      prisoner_youth_female_category: prisonerYouthFemaleCategory,
-      prisoner_youth_male_category: prisonerYouthMaleCategory,
+      prisoner_adult_male: prisonerMaleCategory,
+      prisoner_adult_female: prisonerFemaleCategory,
+      prisoner_youth_female: prisonerYouthFemaleCategory,
+      prisoner_youth_male: prisonerYouthMaleCategory,
     } = req.form.values
     const originalFields = req.form.options.fields.complex_cases.items
     req.form.values.complex_cases = originalFields.map(originalField => {

@@ -15,12 +15,12 @@ const estate = {
     {
       value: 'adult_female',
       text: 'fields::estate.items.adult_female',
-      conditional: 'prisoner_female_category',
+      conditional: 'prisoner_adult_female',
     },
     {
       value: 'adult_male',
       text: 'fields::estate.items.adult_male',
-      conditional: 'prisoner_male_category',
+      conditional: 'prisoner_adult_male',
     },
     {
       value: 'juvenile_female',
@@ -33,12 +33,12 @@ const estate = {
     {
       value: 'youth_female',
       text: 'fields::estate.items.youth_female',
-      conditional: 'prisoner_youth_female_category',
+      conditional: 'prisoner_youth_female',
     },
     {
       value: 'youth_male',
       text: 'fields::estate.items.youth_male',
-      conditional: 'prisoner_youth_male_category',
+      conditional: 'prisoner_youth_male',
     },
     {
       value: 'other',

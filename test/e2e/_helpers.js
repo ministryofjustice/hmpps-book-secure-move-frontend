@@ -340,6 +340,9 @@ export async function fillAutocomplete({ selector, value }) {
 export async function fillRadioOrCheckbox({ selector, value }) {
   const options = selector
     .parent('fieldset')
+    .nth(0)
+    .child('.govuk-radios, .govuk-checkboxes')
+    .child('.govuk-radios__item, .govuk-checkboxes__item')
     .find('[type="radio"] ~ label, [type="checkbox"] ~ label')
   return selectOption({
     value,
