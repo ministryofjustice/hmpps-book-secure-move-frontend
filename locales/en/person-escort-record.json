@@ -6,15 +6,5 @@
     "not_started": "Not started",
     "in_progress": "In progress",
     "completed": "Complete"
-  },
-  "create": {
-    "steps": {
-      "before_you_start": {
-        "heading": "Before you start",
-        "content": "The information you provide about risk will help keep the $t(person_noun) safe, as well as everyone who comes into contact with them.\n\nAnswer all questions to the best of your knowledge.",
-        "content_prison": "The information you provide about risk will help keep the $t(person_noun) safe, as well as everyone who comes into contact with them.\n\nYou will be able to add information from case notes, adjudications and other system like Mercury\n\n!!! warning\nAny details that you add here won’t be added to NOMIS\n!!!",
-        "content_police": "The information you provide about risk will help keep the $t(person_noun) safe, as well as everyone who comes into contact with them.\n\nAnswer all questions to the best of your knowledge, and base your answers on the $t(person_noun)’s:\n\n- PNC warnings\n- risk assessment, custody and arrest records\n- behaviour and demeanour while in custody\n- any other risk information including previous offences"
-      }
-    }
   }
 }
