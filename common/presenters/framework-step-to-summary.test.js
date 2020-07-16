@@ -9,7 +9,7 @@ describe('Presenters', function () {
     const frameworkFieldToSummaryListRowStub = sinon
       .stub()
       .callsFake(() => sinon.stub().returnsArg(0))
-    const mockBaseUrl = '/base-url'
+    const mockBaseUrl = '/base-url/'
     const mockResponses = [{ id: '1' }, { id: '2' }, { id: '3' }]
     const mockStep = {
       foo: 'bar',
@@ -77,6 +77,40 @@ describe('Presenters', function () {
         expect(response[1]).to.deep.equal({
           ...mockStep,
           stepUrl: '/base-url/step-slug',
+          summaryListComponent: {
+            classes: 'govuk-!-font-size-16',
+            rows: ['fieldOne'],
+          },
+        })
+      })
+    })
+
+    context('without base URL', function () {
+      const mockFields = {
+        fieldOne: {
+          question: 'Question one?',
+          description: 'Short question one description',
+          id: 'field-one',
+        },
+      }
+
+      beforeEach(function () {
+        response = frameworkStepToSummary(
+          mockFields,
+          mockResponses
+        )(['/step-one', mockStep])
+      })
+
+      it('should render summary list rows', function () {
+        expect(frameworkFieldToSummaryListRowStub).to.be.calledWithExactly(
+          'step-slug'
+        )
+      })
+
+      it('should return summary object', function () {
+        expect(response[1]).to.deep.equal({
+          ...mockStep,
+          stepUrl: 'step-slug',
           summaryListComponent: {
             classes: 'govuk-!-font-size-16',
             rows: ['fieldOne'],

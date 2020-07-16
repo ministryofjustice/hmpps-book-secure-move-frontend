@@ -78,12 +78,18 @@ describe('Person Escort Record router', function () {
         for (const [key, value] of Object.entries(mockFramework.sections)) {
           const steps = {
             '/': {
+              reset: true,
+              resetJourney: true,
+              skip: true,
+              next: Object.values(value.steps)[0].slug,
+            },
+            ...value.steps,
+            '/overview': {
               controller: FrameworkSectionController,
               reset: true,
               resetJourney: true,
               template: 'framework-section',
             },
-            ...value.steps,
           }
           const config = {
             controller: FrameworksController,
@@ -121,12 +127,18 @@ describe('Person Escort Record router', function () {
         for (const [key, value] of Object.entries(mockFramework.sections)) {
           const steps = {
             '/': {
+              reset: true,
+              resetJourney: true,
+              skip: true,
+              next: Object.values(value.steps)[0].slug,
+            },
+            ...value.steps,
+            '/overview': {
               controller: FrameworkSectionController,
               reset: true,
               resetJourney: true,
               template: 'framework-section',
             },
-            ...value.steps,
           }
           const config = {
             controller: FrameworksController,

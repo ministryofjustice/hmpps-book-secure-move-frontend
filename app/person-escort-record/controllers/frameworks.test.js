@@ -428,6 +428,18 @@ describe('Person Escort Record controllers', function () {
         mockReq = {
           body: {},
           baseUrl: '/base-url',
+          form: {
+            options: {
+              steps: {
+                '/': {},
+                '/one': {},
+                '/continued': {},
+                '/two': {},
+                '/two-continued': {},
+                '/overview-step': {},
+              },
+            },
+          },
         }
         mockRes = {
           redirect: sinon.stub(),
@@ -435,6 +447,7 @@ describe('Person Escort Record controllers', function () {
         nextSpy = sinon.stub()
 
         sinon.stub(FormWizardController.prototype, 'successHandler')
+        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
       })
 
       context('with save and return submission', function () {
@@ -445,9 +458,9 @@ describe('Person Escort Record controllers', function () {
           controller.successHandler(mockReq, mockRes, nextSpy)
         })
 
-        it('should redirect to base URL', function () {
+        it('should redirect to base URL with last step path', function () {
           expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-            '/base-url'
+            '/base-url/overview-step'
           )
         })
 
@@ -459,18 +472,85 @@ describe('Person Escort Record controllers', function () {
       })
 
       context('with standard submission', function () {
-        beforeEach(function () {
-          controller.successHandler(mockReq, mockRes, nextSpy)
+        context('with last framework step', function () {
+          beforeEach(function () {
+            mockReq.form.options.route = '/two-continued'
+            FormWizardController.prototype.getNextStep.returns(
+              '/full/path/to/step/two-continued'
+            )
+            controller.successHandler(mockReq, mockRes, nextSpy)
+          })
+
+          it('should redirect to base URL with last step path', function () {
+            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+              '/base-url/overview-step'
+            )
+          })
+
+          it('should not call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).not.to.have.been.called
+          })
         })
 
-        it('should not redirect to base URL', function () {
-          expect(mockRes.redirect).not.to.have.been.called
+        context('with framework step that contains last step', function () {
+          beforeEach(function () {
+            mockReq.form.options.route = '/two'
+            FormWizardController.prototype.getNextStep.returns(
+              '/full/path/to/step/two-continued'
+            )
+            controller.successHandler(mockReq, mockRes, nextSpy)
+          })
+
+          it('should not redirect to base URL', function () {
+            expect(mockRes.redirect).not.to.have.been.called
+          })
+
+          it('should call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).to.have.been.calledOnce
+          })
         })
 
-        it('should call parent success handler', function () {
-          expect(
-            FormWizardController.prototype.successHandler
-          ).to.have.been.calledOnce
+        context(
+          'with framework step that contains same end as last step',
+          function () {
+            beforeEach(function () {
+              mockReq.form.options.route = '/continued'
+              FormWizardController.prototype.getNextStep.returns(
+                '/full/path/to/step/two-continued'
+              )
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should not redirect to base URL', function () {
+              expect(mockRes.redirect).not.to.have.been.called
+            })
+
+            it('should call parent success handler', function () {
+              expect(FormWizardController.prototype.successHandler).to.have.been
+                .calledOnce
+            })
+          }
+        )
+
+        context('with all other steps', function () {
+          beforeEach(function () {
+            FormWizardController.prototype.getNextStep.returns('/two')
+            controller.successHandler(mockReq, mockRes, nextSpy)
+          })
+
+          it('should not redirect to base URL', function () {
+            expect(mockRes.redirect).not.to.have.been.called
+          })
+
+          it('should call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).to.have.been.calledOnce
+          })
         })
       })
     })

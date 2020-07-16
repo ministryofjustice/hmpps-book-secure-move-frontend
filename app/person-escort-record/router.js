@@ -12,6 +12,7 @@ function defineFormWizards(framework) {
 
   for (const sectionKey in sections) {
     const section = sections[sectionKey]
+    const firstStep = Object.values(section.steps)[0]
     const wizardConfig = {
       controller: FrameworksController,
       entryPoint: true,
@@ -23,12 +24,18 @@ function defineFormWizards(framework) {
     }
     const steps = {
       '/': {
+        next: firstStep.slug,
+        reset: true,
+        resetJourney: true,
+        skip: true,
+      },
+      ...section.steps,
+      '/overview': {
         controller: FrameworkSectionController,
         reset: true,
         resetJourney: true,
         template: 'framework-section',
       },
-      ...section.steps,
     }
 
     router.use(
