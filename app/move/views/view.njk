@@ -94,22 +94,14 @@
     }) }}
   {% endif %}
 
-  {% if showPersonEscortRecordBanner %}
+  {% if showPersonEscortRecordBanner and not personEscortRecord %}
     {% set html %}
       <p>{{ t("messages::pending_person_escort_record.content") }}</p>
 
-      {% if personEscortRecord %}
-        <p>
-          <a href="{{ personEscortRecordUrl }}">
-            {{ t("actions::continue_person_escort_record") }}
-          </a>
-        </p>
-      {% else %}
-        {{ govukButton({
-          href: personEscortRecordUrl,
-          text: t("actions::start_person_escort_record")
-        }) }}
-      {% endif %}
+      {{ govukButton({
+        href: personEscortRecordUrl + "/new",
+        text: t("actions::start_person_escort_record")
+      }) }}
     {% endset %}
 
     {{ appMessage({
@@ -117,6 +109,27 @@
       classes: "app-message--instruction",
       title: {
         text: t("messages::pending_person_escort_record.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
+
+  {% if showPersonEscortRecordBanner and personEscortRecord %}
+    {% set html %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {{ appTaskList(personEscortRecordtaskList) }}
+        </div>
+      </div>
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction govuk-!-padding-right-0",
+      title: {
+        text: t("messages::incomplete_person_escort_record.heading")
       },
       content: {
         html: html

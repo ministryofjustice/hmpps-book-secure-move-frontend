@@ -1,14 +1,17 @@
 const { get, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const frameworksService = require('../../../common/services/frameworks')
 const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
+const framework = frameworksService.getPersonEscortFramework()
+
 module.exports = function view(req, res) {
-  const { move } = req
+  const { move, originalUrl } = req
   const {
     profile,
     status,
@@ -26,14 +29,17 @@ module.exports = function view(req, res) {
     person_escort_record: personEscortRecord,
   } = profile || {}
   const personEscortRecordIsComplete = personEscortRecord?.status === 'complete'
-  const personEscortRecordUrl = personEscortRecord?.id
-    ? `/person-escort-record/${personEscortRecord.id}`
-    : `/person-escort-record/new/${move.id}`
+  const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
     !personEscortRecordIsComplete &&
     move.status === 'requested' &&
     move.profile?.id !== undefined
+  const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
+    baseUrl: `${personEscortRecordUrl}/`,
+    frameworkSections: framework.sections,
+    sectionProgress: personEscortRecord?.meta?.section_progress,
+  })
   const urls = {
     update: updateUrls,
   }
@@ -43,6 +49,7 @@ module.exports = function view(req, res) {
     personEscortRecord,
     personEscortRecordIsComplete,
     personEscortRecordUrl,
+    personEscortRecordtaskList,
     showPersonEscortRecordBanner,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),

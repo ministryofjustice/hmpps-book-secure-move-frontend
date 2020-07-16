@@ -6,6 +6,9 @@ const getUpdateUrls = sinon.stub()
 const getUpdateLinks = sinon.stub()
 
 const updateSteps = []
+const frameworkStub = {
+  sections: ['one'],
+}
 const pathStubs = {
   '../../../config': {
     FEATURE_FLAGS: {
@@ -15,6 +18,9 @@ const pathStubs = {
   '../steps/update': updateSteps,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
+  '../../../common/services/frameworks': {
+    getPersonEscortFramework: () => frameworkStub,
+  },
 }
 const controller = proxyquire('./view', pathStubs)
 
@@ -69,6 +75,7 @@ const mockUpdateLinks = {
     url: '/somewhere',
   },
 }
+const mockOriginalUrl = '/url-to-move'
 
 getUpdateUrls.returns(mockUrls)
 getUpdateLinks.returns(mockUpdateLinks)
@@ -84,6 +91,9 @@ describe('Move controllers', function () {
       sinon
         .stub(presenters, 'moveToMetaListComponent')
         .returns('__moveToMetaListComponent__')
+      sinon
+        .stub(presenters, 'frameworkToTaskListComponent')
+        .returns('__frameworkToTaskListComponent__')
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
@@ -101,6 +111,7 @@ describe('Move controllers', function () {
           },
         },
         move: mockMove,
+        originalUrl: mockOriginalUrl,
       }
       res = {
         render: sinon.spy(),
@@ -118,7 +129,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(17)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -126,6 +137,16 @@ describe('Move controllers', function () {
           mockMove,
           mockUpdateLinks
         )
+      })
+
+      it('should call frameworkToTaskListComponent presenter with correct args', function () {
+        expect(
+          presenters.frameworkToTaskListComponent
+        ).to.be.calledOnceWithExactly({
+          baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+          frameworkSections: frameworkStub.sections,
+          sectionProgress: undefined,
+        })
       })
 
       it('should contain a move param', function () {
@@ -146,13 +167,20 @@ describe('Move controllers', function () {
       it('should contain a personEscortRecordUrl param', function () {
         expect(params).to.have.property('personEscortRecordUrl')
         expect(params.personEscortRecordUrl).to.equal(
-          `/person-escort-record/new/${mockMove.id}`
+          `${mockOriginalUrl}/person-escort-record`
         )
       })
 
       it('should contain a showPersonEscortRecordBanner param', function () {
         expect(params).to.have.property('showPersonEscortRecordBanner')
         expect(params.showPersonEscortRecordBanner).to.be.false
+      })
+
+      it('should contain a personEscortRecordtaskList param', function () {
+        expect(params).to.have.property('personEscortRecordtaskList')
+        expect(params.personEscortRecordtaskList).to.equal(
+          '__frameworkToTaskListComponent__'
+        )
       })
 
       it('should contain a move summary param', function () {
@@ -301,7 +329,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(16)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(17)
       })
     })
 
@@ -393,6 +421,12 @@ describe('Move controllers', function () {
       const mockPersonEscortRecord = {
         id: '67890',
         status: 'incomplete',
+        meta: {
+          section_progress: {
+            one: 'in_progress',
+            two: 'complete',
+          },
+        },
       }
 
       beforeEach(function () {
@@ -426,7 +460,24 @@ describe('Move controllers', function () {
         it('should contain url to Person Escort Record', function () {
           expect(params).to.have.property('personEscortRecordUrl')
           expect(params.personEscortRecordUrl).to.equal(
-            `/person-escort-record/${mockPersonEscortRecord.id}`
+            `${mockOriginalUrl}/person-escort-record`
+          )
+        })
+
+        it('should call frameworkToTaskListComponent presenter with correct args', function () {
+          expect(
+            presenters.frameworkToTaskListComponent
+          ).to.be.calledOnceWithExactly({
+            baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            frameworkSections: frameworkStub.sections,
+            sectionProgress: mockPersonEscortRecord.meta.section_progress,
+          })
+        })
+
+        it('should contain Person Escort Record tasklist', function () {
+          expect(params).to.have.property('personEscortRecordtaskList')
+          expect(params.personEscortRecordtaskList).to.equal(
+            '__frameworkToTaskListComponent__'
           )
         })
 
@@ -462,7 +513,24 @@ describe('Move controllers', function () {
         it('should contain url to Person Escort Record', function () {
           expect(params).to.have.property('personEscortRecordUrl')
           expect(params.personEscortRecordUrl).to.equal(
-            `/person-escort-record/${mockPersonEscortRecord.id}`
+            `${mockOriginalUrl}/person-escort-record`
+          )
+        })
+
+        it('should call frameworkToTaskListComponent presenter with correct args', function () {
+          expect(
+            presenters.frameworkToTaskListComponent
+          ).to.be.calledOnceWithExactly({
+            baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            frameworkSections: frameworkStub.sections,
+            sectionProgress: mockPersonEscortRecord.meta.section_progress,
+          })
+        })
+
+        it('should contain Person Escort Record tasklist', function () {
+          expect(params).to.have.property('personEscortRecordtaskList')
+          expect(params.personEscortRecordtaskList).to.equal(
+            '__frameworkToTaskListComponent__'
           )
         })
 
