@@ -1,3 +1,5 @@
+const dateHelpers = require('../../../common/helpers/date')
+
 const middleware = require('./set-body.moves')
 
 const mockBodyProperty = 'bodyProp'
@@ -8,23 +10,20 @@ describe('Moves middleware', function () {
     let mockRes, mockReq, nextSpy
 
     beforeEach(function () {
+      sinon
+        .stub(dateHelpers, 'getCurrentDayAsRange')
+        .returns('#currentDayAsRange')
       nextSpy = sinon.spy()
       mockRes = {}
       mockReq = {
-        params: {
-          dateRange: ['2020-10-10', '2020-10-10'],
-        },
-        session: {
-          user: {
-            locations: [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }],
-          },
-        },
+        locations: ['1', '2', '3'],
+        params: {},
       }
     })
 
-    context('with location ID', function () {
+    context('with dateRange param', function () {
       beforeEach(function () {
-        mockReq.params.locationId = '7ebc8717-ff5b-4be0-8515-3e308e92700f'
+        mockReq.params.dateRange = ['2020-10-10', '2020-10-10']
         middleware(mockBodyProperty, mockLocationProperty)(
           mockReq,
           mockRes,
@@ -35,7 +34,7 @@ describe('Moves middleware', function () {
       it('should assign req.body correctly', function () {
         expect(mockReq.body[mockBodyProperty]).to.deep.equal({
           dateRange: ['2020-10-10', '2020-10-10'],
-          [mockLocationProperty]: '7ebc8717-ff5b-4be0-8515-3e308e92700f',
+          [mockLocationProperty]: mockReq.locations,
         })
       })
 
@@ -44,7 +43,7 @@ describe('Moves middleware', function () {
       })
     })
 
-    context('without location ID', function () {
+    context('without dateRange param', function () {
       beforeEach(function () {
         middleware(mockBodyProperty, mockLocationProperty)(
           mockReq,
@@ -55,8 +54,8 @@ describe('Moves middleware', function () {
 
       it('should assign req.body correctly', function () {
         expect(mockReq.body[mockBodyProperty]).to.deep.equal({
-          dateRange: ['2020-10-10', '2020-10-10'],
-          [mockLocationProperty]: '1,2,3,4',
+          dateRange: '#currentDayAsRange',
+          [mockLocationProperty]: mockReq.locations,
         })
       })
 
