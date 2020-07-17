@@ -96,7 +96,7 @@
 
   {% if showPersonEscortRecordBanner and not personEscortRecord %}
     {% set html %}
-      <p>{{ t("messages::pending_person_escort_record.content") }}</p>
+      <p>{{ t("messages::person_escort_record_pending.content") }}</p>
 
       {{ govukButton({
         href: personEscortRecordUrl + "/new",
@@ -108,7 +108,7 @@
       allowDismiss: false,
       classes: "app-message--instruction",
       title: {
-        text: t("messages::pending_person_escort_record.heading")
+        text: t("messages::person_escort_record_pending.heading")
       },
       content: {
         html: html
@@ -121,6 +121,17 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ appTaskList(personEscortRecordtaskList) }}
+
+          {% if personEscortRecordIsComplete %}
+            <p>
+              {{ t("messages::person_escort_record_complete.content") }}
+            </p>
+
+            {{ govukButton({
+              href: personEscortRecordUrl + "/confirm",
+              text: t("actions::provide_confirmation")
+            }) }}
+          {% endif %}
         </div>
       </div>
     {% endset %}
@@ -129,7 +140,7 @@
       allowDismiss: false,
       classes: "app-message--instruction govuk-!-padding-right-0",
       title: {
-        text: t("messages::incomplete_person_escort_record.heading")
+        text: t("messages::person_escort_record_complete.heading") if personEscortRecordIsComplete else t("messages::person_escort_record_incomplete.heading")
       },
       content: {
         html: html

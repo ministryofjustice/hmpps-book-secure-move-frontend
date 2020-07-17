@@ -1,0 +1,10 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_move"),
+    href: "/move/" + moveId
+  }) }}
+
+  {{ super() }}
+{% endblock %}

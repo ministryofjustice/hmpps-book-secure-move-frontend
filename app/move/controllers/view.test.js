@@ -534,6 +534,22 @@ describe('Move controllers', function () {
           )
         })
 
+        it('should show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.true
+        })
+      })
+
+      context('when record is confirmed', function () {
+        beforeEach(function () {
+          req.move.profile.person_escort_record = {
+            ...mockPersonEscortRecord,
+            status: 'confirmed',
+          }
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
         it('should not show Person Escort Record banner', function () {
           expect(params).to.have.property('showPersonEscortRecordBanner')
           expect(params.showPersonEscortRecordBanner).to.be.false
