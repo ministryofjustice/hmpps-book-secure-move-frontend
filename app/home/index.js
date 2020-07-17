@@ -15,12 +15,10 @@ const {
 
 const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
-const { overrideLocationId } = require('./middleware')
 
 // Define routes
 router.get(
   '/',
-  overrideLocationId,
   setBodyMoves('outgoing', 'fromLocationId'),
   setBodyMoves('incoming', 'toLocationId'),
   setBodyAllocations,
