@@ -1,3 +1,5 @@
+const { sortBy } = require('lodash')
+
 const i18n = require('../../config/i18n')
 
 const tagClasses = {
@@ -13,12 +15,11 @@ function frameworkToTaskListComponent({
 } = {}) {
   const tasks = sectionProgress
     .filter(section => frameworkSections[section.key])
-    .map(section => ({
-      ...section,
-      ...frameworkSections[section.key],
-    }))
-    .map(({ key, name, status }) => {
+    .map(({ key, status }) => {
+      const { name, order } = frameworkSections[key]
+
       return {
+        order,
         text: name,
         href: baseUrl + key,
         tag: {
@@ -29,7 +30,7 @@ function frameworkToTaskListComponent({
     })
 
   return {
-    items: tasks,
+    items: sortBy(tasks, ['order', 'text']),
   }
 }
 
