@@ -9,3 +9,7 @@
 .govuk-summary-list__value .govuk-list--spaced > li:last-child {
   margin-bottom: 0;
 }
+
+.govuk-hint * {
+  color: $govuk-secondary-text-colour;
+}

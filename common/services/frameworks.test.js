@@ -3,6 +3,8 @@ const path = require('path')
 const mockFs = require('mock-fs')
 const proxyquire = require('proxyquire')
 
+const markdown = require('../../config/markdown')
+
 const mockFrameworksFolder = '/dummy/framework/path'
 const frameworksService = proxyquire('./frameworks', {
   '../../config/paths': {
@@ -14,6 +16,10 @@ const frameworksService = proxyquire('./frameworks', {
 
 describe('Frameworks service', function () {
   describe('#transformQuestion', function () {
+    beforeEach(function () {
+      sinon.stub(markdown, 'render').returnsArg(0)
+    })
+
     context('with no options', function () {
       it('should return an empty object', function () {
         const transformed = frameworksService.transformQuestion()
@@ -52,18 +58,24 @@ describe('Frameworks service', function () {
       })
 
       context('with hint text', function () {
+        let transformed
         beforeEach(function () {
           mockQuestion = {
             ...mockQuestion,
             hint: 'Hint text',
           }
-        })
 
-        it('should format correctly', function () {
-          const transformed = frameworksService.transformQuestion(
+          transformed = frameworksService.transformQuestion(
             'question-key',
             mockQuestion
           )
+        })
+
+        it('should render markdown for hint text', function () {
+          expect(markdown.render).to.be.calledOnceWithExactly('Hint text')
+        })
+
+        it('should format correctly', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
@@ -75,7 +87,8 @@ describe('Frameworks service', function () {
               classes: 'govuk-label--s',
             },
             hint: {
-              text: 'Hint text',
+              html: 'Hint text',
+              classes: 'markdown',
             },
             validate: [],
           })
@@ -210,6 +223,8 @@ describe('Frameworks service', function () {
       })
 
       context('with follow up comment', function () {
+        let transformed
+
         beforeEach(function () {
           mockQuestion = {
             ...mockQuestion,
@@ -237,13 +252,20 @@ describe('Frameworks service', function () {
               },
             ],
           }
-        })
 
-        it('should format correctly', function () {
-          const transformed = frameworksService.transformQuestion(
+          transformed = frameworksService.transformQuestion(
             'question-key',
             mockQuestion
           )
+        })
+
+        it('should render markdown for hint text', function () {
+          expect(markdown.render).to.be.calledOnceWithExactly(
+            'Some hint information'
+          )
+        })
+
+        it('should format correctly', function () {
           expect(transformed).to.deep.equal({
             component: 'govukInput',
             question: 'Question text',
@@ -269,7 +291,8 @@ describe('Frameworks service', function () {
                     classes: 'govuk-label--s',
                   },
                   hint: {
-                    text: 'Some hint information',
+                    html: 'Some hint information',
+                    classes: 'markdown',
                   },
                   validate: [
                     {
@@ -308,12 +331,36 @@ describe('Frameworks service', function () {
       }
 
       describe('radio', function () {
-        it('should format type correctly', function () {
-          const transformed = frameworksService.transformQuestion(
-            'question-key',
-            { ...mockQuestion, type: 'radio' }
-          )
+        let transformed
+        beforeEach(function () {
+          transformed = frameworksService.transformQuestion('question-key', {
+            ...mockQuestion,
+            type: 'radio',
+            options: [
+              {
+                label: 'Option one',
+                hint: 'Hint text for option one',
+                value: 'Option one',
+              },
+              {
+                label: 'Option two',
+                value: 'Option two',
+              },
+              {
+                label: 'Option three',
+                value: 'Option three',
+              },
+            ],
+          })
+        })
 
+        it('should render markdown for hint text', function () {
+          expect(markdown.render).to.be.calledOnceWithExactly(
+            'Hint text for option one'
+          )
+        })
+
+        it('should format type correctly', function () {
           expect(transformed).to.deep.equal({
             component: 'govukRadios',
             question: 'Question text',
@@ -326,6 +373,27 @@ describe('Frameworks service', function () {
                 classes: 'govuk-label--s',
               },
             },
+            items: [
+              {
+                text: 'Option one',
+                value: 'Option one',
+                hint: {
+                  html: 'Hint text for option one',
+                  classes: 'markdown',
+                },
+                conditional: [undefined],
+              },
+              {
+                text: 'Option two',
+                value: 'Option two',
+                conditional: [undefined],
+              },
+              {
+                text: 'Option three',
+                value: 'Option three',
+                conditional: [undefined],
+              },
+            ],
             validate: [],
           })
         })

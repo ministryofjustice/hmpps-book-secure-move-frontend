@@ -34,6 +34,7 @@ md.use(markdownItContainer, 'inset', {
 module.exports = {
   renderWarning,
   renderInset,
+  render: body => md.render(body),
   init: nunjucks => {
     if (nunjucks) {
       njkMarkdown.register(nunjucks, body => md.render(body))
