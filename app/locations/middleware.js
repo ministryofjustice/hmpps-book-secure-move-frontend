@@ -15,55 +15,76 @@ function checkLocationsLength(req, res, next) {
   next()
 }
 
+function getError(type) {
+  const error = new Error(`${type} not found`)
+  error.statusCode = 404
+  return error
+}
+
+const locationTypes = ['currentLocation', 'currentRegion']
+
+function setSelectedLocation(req, locationKey, locationValue) {
+  locationTypes.forEach(type => {
+    delete req.session[type]
+  })
+
+  if (locationKey) {
+    req.session[locationKey] = locationValue
+  }
+}
+
 function setLocation(req, res, next) {
   const { locationId } = req.params
 
   const location = find(req.userLocations, { id: locationId })
 
-  req.session.currentRegion = null
-  req.session.currentLocation = location
+  if (!location) {
+    return next(getError('Location'))
+  }
+
+  external.setSelectedLocation(req, 'currentLocation', location)
+
   next()
 }
 
 async function setRegion(req, res, next) {
   const { regionId } = req.params
 
-  req.session.currentLocation = null
-
-  if (!regionId) {
-    req.session.currentRegion = null
-    next()
-    return
-  }
+  let region
 
   try {
-    const region = await referenceDataService.getRegionById(regionId)
-    req.session.currentRegion = region ?? null
+    region = await referenceDataService.getRegionById(regionId)
+
+    if (!region) {
+      throw getError('Region')
+    }
   } catch (error) {
-    req.session.currentRegion = null
-    next(error)
-    return
+    return next(error)
   }
 
+  external.setSelectedLocation(req, 'currentRegion', region)
   next()
 }
 
 function setAllLocations(req, res, next) {
-  const { permissions = [] } = req.session.user || {}
+  external.setSelectedLocation(req)
 
-  if (!permissions.includes('locations:all')) {
-    return next()
-  }
-
-  req.session.currentRegion = null
-  req.session.currentLocation = null
   next()
 }
 
-module.exports = {
+function setHasSelectedLocation(req, res, next) {
+  req.session.hasSelectedLocation = true
+  next()
+}
+
+const external = {
   setUserLocations,
   checkLocationsLength,
   setLocation,
   setRegion,
   setAllLocations,
+  setHasSelectedLocation,
+  setSelectedLocation,
 }
+
+module.exports = external

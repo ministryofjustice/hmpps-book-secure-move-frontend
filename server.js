@@ -22,7 +22,7 @@ const locationsApp = require('./app/locations')
 const router = require('./app/router')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
-const ensureCurrentLocation = require('./common/middleware/ensure-current-location')
+const ensureSelectedLocation = require('./common/middleware/ensure-selected-location')
 const errorHandlers = require('./common/middleware/errors')
 const locals = require('./common/middleware/locals')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
@@ -141,7 +141,7 @@ app.use(
   })
 )
 app.use(
-  ensureCurrentLocation({
+  ensureSelectedLocation({
     locationsMountpath: locationsApp.mountpath,
     whitelist: config.AUTH_WHITELIST_URLS,
   })

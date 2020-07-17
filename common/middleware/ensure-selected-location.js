@@ -1,9 +1,7 @@
-const { isUndefined } = require('lodash')
-
-function ensureCurrentLocation({ locationsMountpath, whitelist = [] } = {}) {
+function ensureSelectedLocation({ locationsMountpath, whitelist = [] } = {}) {
   return (req, res, next) => {
     if (
-      !isUndefined(req.session.currentLocation) ||
+      req.session.hasSelectedLocation ||
       whitelist.includes(req.url) ||
       req.url.includes(locationsMountpath)
     ) {
@@ -15,4 +13,4 @@ function ensureCurrentLocation({ locationsMountpath, whitelist = [] } = {}) {
   }
 }
 
-module.exports = ensureCurrentLocation
+module.exports = ensureSelectedLocation
