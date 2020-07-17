@@ -18,7 +18,8 @@ function splitRequests(props = {}, propPath) {
   ).then(response => {
     if (props.isAggregation) {
       return response.reduce(
-        (accumulator, currentValue) => accumulator + currentValue
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
       )
     }
 
@@ -102,8 +103,20 @@ const moveService = {
     //
     // Once Auth is moved to the API we would be able to remove this as the API
     // would know to only return moves that a user has access to
+    function massagePropPaths(propPaths) {
+      propPaths.forEach(propPath => {
+        const propPathValue = get(props, propPath)
+
+        if (propPathValue && Array.isArray(propPathValue)) {
+          set(props, propPath, propPathValue.join(','))
+        }
+      })
+    }
+
     const fromPath = 'filter["filter[from_location_id]"]'
     const toPath = 'filter["filter[to_location_id]"]'
+
+    massagePropPaths([fromPath, toPath])
 
     let results
 
