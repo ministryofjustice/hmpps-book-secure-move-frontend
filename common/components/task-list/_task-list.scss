@@ -2,14 +2,24 @@
   padding-left: 0;
   margin: 0;
   list-style-type: none;
+
+  .app-message--instruction & {
+    background: govuk-colour('white');
+    padding: govuk-spacing(3);
+  }
 }
 
 .app-task-list__item {
   @include govuk-clearfix;
   @include govuk-font($size: 19);
   padding: govuk-spacing(3) 0;
+  margin: 0;
   position: relative;
   border-bottom: 1px solid $govuk-border-colour;
+
+  .app-message--instruction & {
+    padding: govuk-spacing(2) 0;
+  }
 }
 
 .app-task-list__item:first-child {

@@ -14,12 +14,16 @@ function setFrameworkSection(frameworkSection) {
   }
 }
 
-async function setPersonEscortRecord(req, res, next, recordId) {
+async function setPersonEscortRecord(req, res, next) {
+  const recordId =
+    req.params?.personEscortRecordId || req?.personEscortRecord?.id
+
   if (!recordId) {
     return next()
   }
 
   try {
+    // TODO: Don't call every time. Look to make use of `include` on move to get the record from the move in one call where possible
     req.personEscortRecord = await personEscortRecordService.getById(recordId)
     next()
   } catch (error) {

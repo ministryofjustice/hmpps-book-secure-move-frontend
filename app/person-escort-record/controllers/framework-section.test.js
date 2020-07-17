@@ -39,7 +39,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
-          originalUrl: '/original-url',
+          baseUrl: '/base-url',
           form: {
             options: {
               allFields: {
@@ -84,7 +84,7 @@ describe('Person Escort Record controllers', function () {
         expect(presenters.frameworkStepToSummary).to.be.calledOnceWithExactly(
           mockReq.form.options.allFields,
           mockReq.personEscortRecord.responses,
-          mockReq.originalUrl
+          `${mockReq.baseUrl}/`
         )
       })
 

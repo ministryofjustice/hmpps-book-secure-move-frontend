@@ -1,30 +1,21 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const personEscortRecordService = require('../../../../common/services/person-escort-record')
-const i18n = require('../../../../config/i18n')
 
 class NewPersonEscortRecordController extends FormWizardController {
-  middlewareLocals() {
-    super.middlewareLocals()
-    this.use(this.setMoveId)
-    this.use(this.setBeforeFieldsContent)
+  middlewareChecks() {
+    super.middlewareChecks()
+    this.use(this.checkProfileExists)
   }
 
-  setMoveId(req, res, next) {
-    res.locals.moveId = req.move?.id
-    next()
-  }
+  checkProfileExists(req, res, next) {
+    if (req.move?.profile?.id) {
+      return next()
+    }
 
-  setBeforeFieldsContent(req, res, next) {
-    const locationType = req.move?.from_location?.location_type
+    const error = new Error('Move profile not found')
+    error.statusCode = 404
 
-    req.form.options.beforeFieldsContent = i18n.t(
-      'person-escort-record::create.steps.before_you_start.content',
-      {
-        context: locationType,
-      }
-    )
-
-    next()
+    next(error)
   }
 
   async saveValues(req, res, next) {
@@ -40,7 +31,7 @@ class NewPersonEscortRecordController extends FormWizardController {
     req.journeyModel.reset()
     req.sessionModel.reset()
 
-    res.redirect(`/person-escort-record/${req.record.id}`)
+    res.redirect(`/move/${req.move.id}`)
   }
 }
 

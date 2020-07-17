@@ -87,12 +87,41 @@ describe('Person escort record middleware', function () {
     let mockReq, nextSpy
 
     beforeEach(function () {
-      mockReq = {}
+      mockReq = {
+        params: {},
+      }
       nextSpy = sinon.spy()
 
       sinon
         .stub(personEscortRecordService, 'getById')
         .resolves(personEscortRecordStub)
+    })
+
+    context('with existing `req.personEscortRecord`', function () {
+      beforeEach(async function () {
+        mockReq = {
+          ...mockReq,
+          personEscortRecord: {
+            id: '__movePER__',
+          },
+        }
+        await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+      })
+
+      it('should call API with record ID', function () {
+        expect(personEscortRecordService.getById).to.be.calledWith(
+          '__movePER__'
+        )
+      })
+
+      it('should set response data to request property', function () {
+        expect(mockReq).to.have.property('personEscortRecord')
+        expect(mockReq.personEscortRecord).to.deep.equal(personEscortRecordStub)
+      })
+
+      it('should call next with no argument', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
     })
 
     context('when no record ID exists', function () {
@@ -108,20 +137,21 @@ describe('Person escort record middleware', function () {
         expect(personEscortRecordService.getById).not.to.be.called
       })
 
-      it('should not set response data to locals object', function () {
+      it('should not set request property', function () {
         expect(mockReq).not.to.have.property('personEscortRecord')
       })
     })
 
     context('when record ID exists', function () {
+      beforeEach(async function () {
+        mockReq.params = {
+          personEscortRecordId: mockRecordId,
+        }
+      })
+
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware.setPersonEscortRecord(
-            mockReq,
-            {},
-            nextSpy,
-            mockRecordId
-          )
+          await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
         })
 
         it('should call API with record ID', function () {
@@ -130,9 +160,11 @@ describe('Person escort record middleware', function () {
           )
         })
 
-        it('should set response data to locals object', function () {
+        it('should set response data to request property', function () {
           expect(mockReq).to.have.property('personEscortRecord')
-          expect(mockReq.personEscortRecord).to.equal(personEscortRecordStub)
+          expect(mockReq.personEscortRecord).to.deep.equal(
+            personEscortRecordStub
+          )
         })
 
         it('should call next with no argument', function () {
@@ -144,15 +176,10 @@ describe('Person escort record middleware', function () {
         beforeEach(async function () {
           personEscortRecordService.getById.throws(errorStub)
 
-          await middleware.setPersonEscortRecord(
-            mockReq,
-            {},
-            nextSpy,
-            mockRecordId
-          )
+          await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
         })
 
-        it('should not set a value on the locals object', function () {
+        it('should not set request property', function () {
           expect(mockReq).not.to.have.property('personEscortRecord')
         })
 

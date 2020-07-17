@@ -4,7 +4,7 @@ const frameworksHelpers = require('../helpers/frameworks')
 
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 
-function frameworkStepToSummary(allFields, responses, baseUrl) {
+function frameworkStepToSummary(allFields, responses, baseUrl = '') {
   return ([key, step], i, allSteps = []) => {
     const allNextSteps = allSteps
       .map(([key, step]) => step.next)
@@ -17,7 +17,7 @@ function frameworkStepToSummary(allFields, responses, baseUrl) {
         return item.value !== response.value
       })
 
-    const stepUrl = `${baseUrl}/${step.slug}`
+    const stepUrl = baseUrl + step.slug
     const stepFields = step.fields
 
     if (stepFields.length === 0 || unmetStepConditions.length > 0) {

@@ -1,6 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const personEscortRecordService = require('../../../../common/services/person-escort-record')
-const i18n = require('../../../../config/i18n')
 
 const { NewPersonEscortRecordController } = require('./controllers')
 
@@ -8,127 +7,71 @@ const controller = new NewPersonEscortRecordController({ route: '/' })
 
 describe('Person Escort Record controllers', function () {
   describe('NewPersonEscortRecordController', function () {
-    describe('#middlewareLocals', function () {
+    describe('#middlewareChecks', function () {
       beforeEach(function () {
-        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
-        sinon.stub(controller, 'setMoveId')
+        sinon.stub(controller, 'checkProfileExists')
 
-        controller.middlewareLocals()
+        controller.middlewareChecks()
       })
 
       it('should call parent method', function () {
-        expect(FormWizardController.prototype.middlewareLocals).to.have.been
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
           .calledOnce
       })
 
-      it('should call setMoveId middleware', function () {
-        expect(controller.use).to.have.been.calledWith(controller.setMoveId)
-      })
-
-      it('should call setBeforeFieldsContent middleware', function () {
+      it('should call checkProfileExists middleware', function () {
         expect(controller.use).to.have.been.calledWith(
-          controller.setBeforeFieldsContent
+          controller.checkProfileExists
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(2)
+        expect(controller.use.callCount).to.equal(1)
       })
     })
 
-    describe('#setMoveId', function () {
+    describe('#checkProfileExists', function () {
       let req, res, next
 
       beforeEach(function () {
         next = sinon.stub()
-        req = {
-          move: {
-            id: '12345',
-          },
-        }
-        res = {
-          locals: {},
-        }
-
-        controller.setMoveId(req, res, next)
+        req = {}
+        res = {}
       })
 
-      it('should set moveId on locals', function () {
-        expect(res.locals.moveId).to.equal('12345')
-      })
-
-      it('should call next', function () {
-        expect(next).to.be.calledOnceWithExactly()
-      })
-    })
-
-    describe('#setBeforeFieldsContent', function () {
-      let req, next
-
-      beforeEach(function () {
-        sinon.stub(i18n, 't').returnsArg(0)
-        next = sinon.stub()
-        req = {
-          form: {
-            options: {},
-          },
-        }
-      })
-
-      context('with location type', function () {
+      context('with profile', function () {
         beforeEach(function () {
-          req.move = {
-            id: '12345',
-            from_location: {
-              location_type: 'police',
+          req = {
+            move: {
+              profile: {
+                id: '12345',
+              },
             },
           }
-          controller.setBeforeFieldsContent(req, {}, next)
+
+          controller.checkProfileExists(req, res, next)
         })
 
-        it('should call translation with correct context', function () {
-          expect(i18n.t).to.be.calledOnceWithExactly(
-            'person-escort-record::create.steps.before_you_start.content',
-            {
-              context: 'police',
-            }
-          )
-        })
-
-        it('should set beforeFieldsContent option', function () {
-          expect(req.form.options.beforeFieldsContent).to.equal(
-            'person-escort-record::create.steps.before_you_start.content'
-          )
-        })
-
-        it('should call next', function () {
+        it('should call next without error', function () {
           expect(next).to.be.calledOnceWithExactly()
         })
       })
 
-      context('without location type', function () {
+      context('without profile', function () {
         beforeEach(function () {
-          controller.setBeforeFieldsContent(req, {}, next)
+          controller.checkProfileExists(req, res, next)
         })
 
-        it('should call translation without correct', function () {
-          expect(i18n.t).to.be.calledOnceWithExactly(
-            'person-escort-record::create.steps.before_you_start.content',
-            {
-              context: undefined,
-            }
-          )
-        })
+        it('should call next with 404 error', function () {
+          const error = next.args[0][0]
 
-        it('should set beforeFieldsContent option', function () {
-          expect(req.form.options.beforeFieldsContent).to.equal(
-            'person-escort-record::create.steps.before_you_start.content'
-          )
-        })
+          expect(next).to.be.calledOnce
 
-        it('should call next', function () {
-          expect(next).to.be.calledOnceWithExactly()
+          expect(error).to.be.an('error')
+          expect(error.message).to.equal('Move profile not found')
+          expect(error.statusCode).to.equal(404)
         })
       })
     })
@@ -185,13 +128,13 @@ describe('Person Escort Record controllers', function () {
     })
 
     describe('#successHandler', function () {
-      const mockRecordId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
+      const mockMoveId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
       let req, res
 
       beforeEach(function () {
         req = {
-          record: {
-            id: mockRecordId,
+          move: {
+            id: mockMoveId,
           },
           sessionModel: {
             reset: sinon.stub(),
@@ -217,7 +160,7 @@ describe('Person Escort Record controllers', function () {
 
       it('should redirect correctly', function () {
         expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/person-escort-record/${mockRecordId}`
+          `/move/${mockMoveId}`
         )
       })
     })
