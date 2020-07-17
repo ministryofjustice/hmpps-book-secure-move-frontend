@@ -123,6 +123,25 @@ $_message-border-width: 5px;
     margin-top: govuk-spacing(4);
   }
 
+  a {
+    &:link {
+      color: govuk-shade($govuk-link-colour, 9);
+    }
+
+    &:hover {
+      color: $govuk-link-hover-colour;
+    }
+
+    &:focus,
+    &:active {
+      color: $govuk-link-active-colour;
+    }
+
+    &:visited {
+      color: $govuk-link-visited-colour;
+    }
+  }
+
   * + * {
     margin-top: govuk-spacing(3);
   }
