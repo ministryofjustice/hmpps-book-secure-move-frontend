@@ -176,6 +176,7 @@ function transformManifest(key, manifest) {
   return {
     key,
     name: manifest.name,
+    order: manifest.order,
     steps: keyBy(steps, 'key'),
   }
 }

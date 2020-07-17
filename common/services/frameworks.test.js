@@ -488,6 +488,7 @@ describe('Frameworks service', function () {
           expect(transformed).to.deep.equal({
             key: 'key',
             name: 'Manifest name',
+            order: undefined,
             steps: {},
           })
         })
@@ -522,13 +523,14 @@ describe('Frameworks service', function () {
         })
 
         it('should contain correct number of manifest keys', function () {
-          expect(Object.keys(transformed)).to.have.length(3)
+          expect(Object.keys(transformed)).to.have.length(4)
         })
 
         it('should contain correct manifest key', function () {
           expect(Object.keys(transformed)).to.deep.equal([
             'key',
             'name',
+            'order',
             'steps',
           ])
         })
@@ -539,6 +541,10 @@ describe('Frameworks service', function () {
 
         it('should set name', function () {
           expect(transformed.name).to.equal('Manifest name')
+        })
+
+        it('should not set order', function () {
+          expect(transformed.order).to.equal(undefined)
         })
 
         it('should transform steps correctly', function () {
@@ -724,13 +730,14 @@ describe('Frameworks service', function () {
         })
 
         it('should contain correct number of manifest keys', function () {
-          expect(Object.keys(transformed)).to.have.length(3)
+          expect(Object.keys(transformed)).to.have.length(4)
         })
 
         it('should contain correct manifest key', function () {
           expect(Object.keys(transformed)).to.deep.equal([
             'key',
             'name',
+            'order',
             'steps',
           ])
         })
@@ -802,13 +809,14 @@ describe('Frameworks service', function () {
         })
 
         it('should contain correct number of manifest keys', function () {
-          expect(Object.keys(transformed)).to.have.length(3)
+          expect(Object.keys(transformed)).to.have.length(4)
         })
 
         it('should contain correct manifest key', function () {
           expect(Object.keys(transformed)).to.deep.equal([
             'key',
             'name',
+            'order',
             'steps',
           ])
         })
@@ -877,13 +885,14 @@ describe('Frameworks service', function () {
         })
 
         it('should contain correct number of manifest keys', function () {
-          expect(Object.keys(transformed)).to.have.length(3)
+          expect(Object.keys(transformed)).to.have.length(4)
         })
 
         it('should contain correct manifest key', function () {
           expect(Object.keys(transformed)).to.deep.equal([
             'key',
             'name',
+            'order',
             'steps',
           ])
         })
@@ -926,6 +935,25 @@ describe('Frameworks service', function () {
         it('should set empty values for fields', function () {
           expect(transformed.steps['/step-1'].fields).to.deep.equal([])
           expect(transformed.steps['/step-2'].fields).to.deep.equal([])
+        })
+      })
+
+      context('with order', function () {
+        let transformed
+
+        beforeEach(function () {
+          transformed = frameworksService.transformManifest('key', {
+            name: 'Manifest name',
+            order: 2,
+          })
+        })
+
+        it('should contain correct number of manifest keys', function () {
+          expect(Object.keys(transformed)).to.have.length(4)
+        })
+
+        it('should set order', function () {
+          expect(transformed.order).to.equal(2)
         })
       })
     })
