@@ -32,7 +32,7 @@ module.exports = function view(req, res) {
   const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
-    !personEscortRecordIsComplete &&
+    personEscortRecord?.status !== 'confirmed' &&
     move.status === 'requested' &&
     move.profile?.id !== undefined
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
