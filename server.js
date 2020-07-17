@@ -26,6 +26,7 @@ const ensureSelectedLocation = require('./common/middleware/ensure-selected-loca
 const errorHandlers = require('./common/middleware/errors')
 const locals = require('./common/middleware/locals')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
+const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const config = require('./config')
 const i18n = require('./config/i18n')
@@ -146,6 +147,8 @@ app.use(
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
+app.use(setLocations)
+
 app.use(helmet())
 
 // Ensure body processed after reauthentication
