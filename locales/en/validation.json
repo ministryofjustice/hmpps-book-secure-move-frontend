@@ -30,6 +30,11 @@
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
     "instructions": "Try <a href=\"{{assign_href}}\">adding a different person</a>."
   },
+  "assign_needs_special_vehicle": {
+    "heading": "{{name}} cannot be added to this allocation",
+    "message": "This person needs a special vehicle and cannot be part of an allocation move.",
+    "instructions": "<a href=\"{{allocationhHref}}\">Add a different person</a> or <a href=\"{{moveHref}}\">create a single request</a> if <strong>{{name}}</strong> still needs to move."
+  },
   "LIMIT_FILE_SIZE": "must be smaller than 50MB",
   "LIMIT_PART_COUNT": "has too many parts",
   "LIMIT_FILE_COUNT": "has too mamy files",

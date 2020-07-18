@@ -22,6 +22,10 @@ $_message-border-width: 5px;
     margin-top: 0;
   }
 
+  p {
+    @include app-reading-width;
+  }
+
   * + * {
     margin-top: govuk-spacing(1);
   }
@@ -87,6 +91,10 @@ $_message-border-width: 5px;
 
 .app-message--error {
   border-color: $govuk-error-colour;
+
+  p + p {
+    margin-top: govuk-spacing(2);
+  }
 }
 
 .app-message--muted {

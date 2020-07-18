@@ -11,18 +11,12 @@
       "progress": "{{addedCount}} of $t(n_person) added",
       "progress_remaining": "$t(n_person) remaining to add",
       "no_results": "No prisoners added to allocation",
-      "special_vehicle_instruction": "You can’t add people who require a special vehicle to an allocation — you need to <a href=\"{{- href}}\">create a single request</a> instead"
+      "special_vehicle_instruction": "You cannot add people who require a special vehicle to an allocation — you need to <a href=\"{{- href}}\">create a single request</a> instead"
     },
     "summary": {
       "heading": "Allocation details",
       "requested_by": "Requested by"
     }
-  },
-  "no_special_vehicle": {
-    "page_title": "You can’t add this person to an allocation",
-    "heading": "You can’t add this person to an allocation",
-    "content": "<p>As this person needs a special vehicle they cannot be part of this allocation.</p>\n<p>If you would still like to move this person you can create a single request for them to move to another prison.",
-    "return_link_text": "Return to allocation"
   },
   "unassign": {
     "page_title": "Remove person from allocation",
