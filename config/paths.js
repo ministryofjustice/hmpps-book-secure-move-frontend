@@ -23,8 +23,7 @@ module.exports = {
     source: path.resolve(
       root,
       'node_modules',
-      'hmpps-book-secure-move-frameworks',
-      'frameworks'
+      '@hmpps-book-secure-move-frameworks'
     ),
     output: path.resolve(build, 'frameworks'),
   },

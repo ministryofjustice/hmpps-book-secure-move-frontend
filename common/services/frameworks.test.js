@@ -6,7 +6,13 @@ const proxyquire = require('proxyquire')
 const markdown = require('../../config/markdown')
 
 const mockFrameworksFolder = '/dummy/framework/path'
+const mockFrameworksVersion = '2.5.3'
 const frameworksService = proxyquire('./frameworks', {
+  '../../config': {
+    FRAMEWORKS: {
+      CURRENT_VERSION: mockFrameworksVersion,
+    },
+  },
   '../../config/paths': {
     frameworks: {
       output: mockFrameworksFolder,
@@ -959,72 +965,180 @@ describe('Frameworks service', function () {
     })
   })
 
-  describe('#getPersonEscortFramework', function () {
+  describe('#getFramework', function () {
     let framework
 
     context('with files', function () {
-      beforeEach(function () {
-        const sectionsFolder = path.resolve(
-          mockFrameworksFolder,
-          'person-escort-record',
-          'manifests'
-        )
-        const questionsFolder = path.resolve(
-          mockFrameworksFolder,
-          'person-escort-record',
-          'questions'
-        )
-
-        mockFs({
-          [sectionsFolder]: {
-            'section-one': '{"key": "section-one"}',
-            'section-two': '{"key": "section-two"}',
-          },
-          [questionsFolder]: {
-            'question-one': '{"name": "question-one"}',
-            'question-two': '{"name": "question-two"}',
-          },
-        })
-
-        framework = frameworksService.getPersonEscortFramework()
-      })
-
       afterEach(function () {
         mockFs.restore()
       })
 
-      it('should return the framework', function () {
-        expect(framework).to.deep.equal({
-          sections: {
-            'section-one': {
-              key: 'section-one',
+      context('without framework and version', function () {
+        beforeEach(function () {
+          const sectionsFolder = path.resolve(
+            mockFrameworksFolder,
+            'frameworks',
+            'manifests'
+          )
+          const questionsFolder = path.resolve(
+            mockFrameworksFolder,
+            'frameworks',
+            'questions'
+          )
+
+          mockFs({
+            [sectionsFolder]: {
+              'section-one': '{"key": "section-one"}',
+              'section-two': '{"key": "section-two"}',
             },
-            'section-two': {
-              key: 'section-two',
+            [questionsFolder]: {
+              'question-one': '{"name": "question-one"}',
+              'question-two': '{"name": "question-two"}',
             },
-          },
-          questions: {
-            'question-one': {
-              name: 'question-one',
+          })
+
+          framework = frameworksService.getFramework()
+        })
+
+        it('should return the framework', function () {
+          expect(framework).to.deep.equal({
+            sections: {
+              'section-one': {
+                key: 'section-one',
+              },
+              'section-two': {
+                key: 'section-two',
+              },
             },
-            'question-two': {
-              name: 'question-two',
+            questions: {
+              'question-one': {
+                name: 'question-one',
+              },
+              'question-two': {
+                name: 'question-two',
+              },
             },
-          },
+          })
+        })
+      })
+
+      context('with framework and version', function () {
+        const mockFramework = 'framework-name'
+        const mockVersion = '2.0.1'
+
+        beforeEach(function () {
+          const sectionsFolder = path.resolve(
+            mockFrameworksFolder,
+            mockVersion,
+            'frameworks',
+            mockFramework,
+            'manifests'
+          )
+          const questionsFolder = path.resolve(
+            mockFrameworksFolder,
+            mockVersion,
+            'frameworks',
+            mockFramework,
+            'questions'
+          )
+
+          mockFs({
+            [sectionsFolder]: {
+              'section-one': '{"key": "section-one"}',
+              'section-two': '{"key": "section-two"}',
+            },
+            [questionsFolder]: {
+              'question-one': '{"name": "question-one"}',
+              'question-two': '{"name": "question-two"}',
+            },
+          })
+
+          framework = frameworksService.getFramework({
+            framework: mockFramework,
+            version: mockVersion,
+          })
+        })
+
+        it('should return the framework', function () {
+          expect(framework).to.deep.equal({
+            sections: {
+              'section-one': {
+                key: 'section-one',
+              },
+              'section-two': {
+                key: 'section-two',
+              },
+            },
+            questions: {
+              'question-one': {
+                name: 'question-one',
+              },
+              'question-two': {
+                name: 'question-two',
+              },
+            },
+          })
         })
       })
     })
 
     context('without files', function () {
+      it('should throw an error', function () {
+        expect(() => frameworksService.getFramework())
+          .to.throw(Error, 'This version of the framework is not supported')
+          .with.property('code', 'MISSING_FRAMEWORK')
+      })
+    })
+  })
+
+  describe('#getPersonEscortRecord', function () {
+    let framework
+    const mockFramework = {
+      sections: ['a', 'b'],
+      questions: ['1', '2'],
+    }
+
+    beforeEach(function () {
+      sinon.stub(frameworksService, 'getFramework').returns(mockFramework)
+    })
+
+    context('with version', function () {
+      const mockVersion = '0.1.2'
+
       beforeEach(function () {
-        framework = frameworksService.getPersonEscortFramework()
+        framework = frameworksService.getPersonEscortRecord(mockVersion)
       })
 
-      it('should return an empty framework', function () {
-        expect(framework).to.deep.equal({
-          sections: {},
-          questions: {},
+      it('should call getFramework method with version argument', function () {
+        expect(
+          frameworksService.getFramework
+        ).to.have.been.calledOnceWithExactly({
+          framework: 'person-escort-record',
+          version: mockVersion,
         })
+      })
+
+      it('should return a framework', function () {
+        expect(framework).to.deep.equal(mockFramework)
+      })
+    })
+
+    context('without version', function () {
+      beforeEach(function () {
+        frameworksService.getPersonEscortRecord()
+      })
+
+      it('should call getFramework method with config version', function () {
+        expect(
+          frameworksService.getFramework
+        ).to.have.been.calledOnceWithExactly({
+          framework: 'person-escort-record',
+          version: mockFrameworksVersion,
+        })
+      })
+
+      it('should return a framework', function () {
+        expect(framework).to.deep.equal(mockFramework)
       })
     })
   })

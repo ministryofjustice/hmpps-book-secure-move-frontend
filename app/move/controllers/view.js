@@ -8,7 +8,7 @@ const updateSteps = require('../steps/update')
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
-const framework = frameworksService.getPersonEscortFramework()
+const framework = frameworksService.getPersonEscortRecord()
 
 module.exports = function view(req, res) {
   const { move, originalUrl } = req

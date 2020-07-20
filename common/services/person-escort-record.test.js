@@ -1,7 +1,16 @@
+const proxyquire = require('proxyquire')
+
 const apiClient = require('../lib/api-client')()
 const profileService = require('../services/profile')
 
-const personEscortRecordService = require('./person-escort-record')
+const mockFrameworksVersion = '2.5.3'
+const personEscortRecordService = proxyquire('./person-escort-record', {
+  '../../config': {
+    FRAMEWORKS: {
+      CURRENT_VERSION: mockFrameworksVersion,
+    },
+  },
+})
 
 const mockRecord = {
   id: '12345',
@@ -69,10 +78,11 @@ describe('Services', function () {
         response = await personEscortRecordService.create(mockProfileId)
       })
 
-      it('should call create method with data', function () {
+      it('should call create method with data and current framework version', function () {
         expect(apiClient.create).to.be.calledOnceWithExactly(
           'person_escort_record',
           {
+            version: mockFrameworksVersion,
             profile: {
               id: mockProfileId,
             },
