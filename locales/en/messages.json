@@ -20,7 +20,7 @@
   },
   "person_escort_record_pending": {
     "heading": "Start the Person Escort Record",
-    "content": "Once the Person Escort Record has been started you can’t edit the risk and health information provided below, but you can amend them when you complete the risk and health sections in the Person Escort Record."
+    "content": "Once the Person Escort Record has been started you cannot edit the risk and health information provided below, but you can amend them when you complete the risk and health sections in the Person Escort Record."
   },
   "person_escort_record_incomplete": {
     "heading": "Incomplete Person Escort Record"

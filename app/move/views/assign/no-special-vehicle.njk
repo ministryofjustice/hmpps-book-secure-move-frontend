@@ -1,16 +1,41 @@
 {% extends "layouts/base.njk" %}
 
 {% block pageTitle %}
-{{ t("allocation::no_special_vehicle.page_title") }}
+  {{ t("validation::page_title_prefix") }}: {{ t("validation::assign_needs_special_vehicle.heading", {
+    name: person.fullname
+  }) }}
 {% endblock %}
 
-{% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">{{ t("allocation::no_special_vehicle.heading") }}</h1>
-      {{ t("allocation::no_special_vehicle.content") | safe }}
+{% block contentHeader %}
+  {% set errorMsg %}
+    <div class="govuk-!-margin-top-4">
+      <p>
+        {{ t("validation::assign_needs_special_vehicle.message", {
+          name: person.fullname,
+          href: "/move/new"
+        }) | safe }}
+      </p>
 
-      <p><a href="/allocation/{{ move.allocation.id }}">{{ t("allocation::no_special_vehicle.return_link_text") }}</a></p>
+      <p>
+        {{ t("validation::assign_needs_special_vehicle.instructions", {
+          name: person.fullname,
+          allocationHref: "/move/" + move.id + "/assign",
+          moveHref: "/move/new"
+        }) | safe }}
+      </p>
     </div>
-  </div>
-{% endblock %}
+  {% endset %}
+
+  {{ appMessage({
+    focusOnload: true,
+    classes: "app-message--error",
+    title: {
+      text: t("validation::assign_needs_special_vehicle.heading", {
+        name: person.fullname
+      })
+    },
+    content: {
+      html: errorMsg
+    }
+  }) }}
+{% endblock %}s
