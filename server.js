@@ -11,7 +11,6 @@ const session = require('express-session')
 const grant = require('grant-express')
 const helmet = require('helmet')
 const i18nMiddleware = require('i18next-express-middleware')
-const { omit } = require('lodash')
 const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
@@ -37,9 +36,6 @@ const redisStore = require('./config/redis-store')
 
 if (config.SENTRY.DSN) {
   Sentry.init({
-    beforeSend(event) {
-      return omit(event, 'request.data')
-    },
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.GIT_SHA,
@@ -53,7 +49,12 @@ if (config.IS_PRODUCTION) {
   app.enable('trust proxy')
 }
 
-app.use(Sentry.Handlers.requestHandler())
+app.use(
+  Sentry.Handlers.requestHandler({
+    // Ensure we don't include `data` to avoid sending any PPI
+    request: ['cookies', 'headers', 'method', 'query_string', 'url'],
+  })
+)
 
 app.use(slashify())
 
