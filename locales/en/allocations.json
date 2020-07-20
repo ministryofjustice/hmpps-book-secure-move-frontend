@@ -3,7 +3,7 @@
   "total_plural": "total allocations",
   "confirmation": {
     "page_title": "Allocation requested",
-    "detail": "The request for <a href=\"{{href}}\">{{moves_count}} {{people}}</a> from {{from_location}} to {{to_location}} on {{date}} has been sent",
+    "detail": "The request for <strong><a href=\"{{href}}\">{{moves_count}} {{people}}</a></strong> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong> on <strong>{{date}}</strong> has been sent.",
     "view_all": "View all allocations",
     "view_by_from_location": "View {{from_location}} overview"
   },

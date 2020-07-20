@@ -4,7 +4,7 @@ const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 module.exports = function view(req, res) {
-  const { allocation } = res.locals
+  const { allocation } = req
   const { moves, status } = allocation
   const userPermissions = get(req.session, 'user.permissions')
   const bannerStatuses = ['cancelled']
@@ -34,6 +34,7 @@ module.exports = function view(req, res) {
   }
 
   const locals = {
+    allocation,
     // TODO: Find way to store the actual URL they came from: See similar solution within moves app
     dashboardUrl: '/allocations',
     criteria: presenters.allocationToSummaryListComponent(allocation),

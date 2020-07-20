@@ -6,7 +6,7 @@ async function setAllocation(req, res, next, allocationId) {
   }
 
   try {
-    res.locals.allocation = await allocationService.getById(allocationId)
+    req.allocation = await allocationService.getById(allocationId)
     next()
   } catch (error) {
     next(error)
