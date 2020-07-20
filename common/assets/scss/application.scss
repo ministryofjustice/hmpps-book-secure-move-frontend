@@ -40,6 +40,7 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 @import "@ministryofjustice/frontend/moj/components/badge/badge";
 
 // Import app settings/tools/helpers
+@import "settings/all";
 @import "helpers/all";
 
 @import "core/all";
