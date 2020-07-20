@@ -19,7 +19,7 @@ const pathStubs = {
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
   '../../../common/services/frameworks': {
-    getPersonEscortFramework: () => frameworkStub,
+    getPersonEscortRecord: () => frameworkStub,
   },
 }
 const controller = proxyquire('./view', pathStubs)

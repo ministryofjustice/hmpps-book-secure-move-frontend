@@ -67,6 +67,7 @@
     "ministryofjustice"
   ],
   "dependencies": {
+    "@hmpps-book-secure-move-frameworks/0.1.0": "github:ministryofjustice/hmpps-book-secure-move-frameworks#v0.1.0",
     "@ministryofjustice/frontend": "0.0.19-alpha",
     "@sentry/node": "5.19.2",
     "accessible-autocomplete": "2.0.3",
@@ -94,7 +95,6 @@
     "grant-express": "5.2.0",
     "helmet": "3.23.3",
     "hmpo-form-wizard": "11.7.1",
-    "hmpps-book-secure-move-frameworks": "github:ministryofjustice/hmpps-book-secure-move-frameworks",
     "i18next": "19.6.2",
     "i18next-express-middleware": "2.0.0",
     "i18next-sync-fs-backend": "1.1.1",
