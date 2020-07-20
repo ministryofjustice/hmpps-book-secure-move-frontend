@@ -131,7 +131,7 @@ $_message-border-width: 5px;
     margin-top: govuk-spacing(4);
   }
 
-  a {
+  a:not(.govuk-button) {
     &:link {
       color: govuk-shade($govuk-link-colour, 9);
     }
