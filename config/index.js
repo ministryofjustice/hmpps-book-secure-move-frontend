@@ -1,5 +1,11 @@
 /* eslint no-process-env: "off" */
 require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
+
+const semverSort = require('semver-sort')
+
+const { frameworks: frameworksPaths } = require('./paths')
 
 const API_VERSION = process.env.API_VERSION
 
@@ -25,6 +31,15 @@ const SESSION = {
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
 }
+
+let LATEST_FRAMEWORKS_BUILD
+
+try {
+  const folderPath = path.resolve(frameworksPaths.output)
+  const versions = fs.readdirSync(folderPath)
+
+  LATEST_FRAMEWORKS_BUILD = semverSort.desc(versions)[0]
+} catch (e) {}
 
 function _authUrl(path) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
@@ -168,5 +183,8 @@ module.exports = {
     PERSON_ESCORT_RECORD: /true/i.test(
       process.env.FEATURE_FLAG_PERSON_ESCORT_RECORD
     ),
+  },
+  FRAMEWORKS: {
+    CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
   },
 }

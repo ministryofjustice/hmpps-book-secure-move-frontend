@@ -257,6 +257,7 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | E2E_SUPPLIER_PASSWORD | Supplier user password used for acceptance testing | |
 | LOCATIONS_BATCH_SIZE | Maximum number of location IDs to send in one request when requesting moves for all locations | 40 |
 | FEATURE_FLAG_PERSON_ESCORT_RECORD | Set to `true` to enable display of the Person Escort Record feature | |
+| FRAMEWORKS_VERSION | Current [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks/releases) version that the frontend will use to create new Person Escort Records or any other frameworks being used | latest supported version (see `@hmpps-book-secure-move-frameworks` in package.json) |
 
 ### Development specific
 
@@ -272,3 +273,25 @@ The following environment variables can be set to help development.
 
 See the [components readme](./common/components/README.md) for more detail on how to structure app level components.
 
+## Book a secure move frameworks
+
+The frontend uses the [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks) repo to build and maintain
+certain features like the Person Escort Record.
+
+The frontend maintains a list of versions of the framework that are supported in the package.json manifest under a scope of `@hmpps-book-secure-move-frameworks`. Each version is then maintained as a folder underneath that scope, for example `@hmpps-book-secure-move-frameworks/0.1.0`.
+
+The frontend needs to maintain separate versions so that it can render any previous records created using the framework or allow users to continue
+to edit existing records that have been created using specific versions.
+
+### To support a new version
+
+- Add a new item under the framework scope to the package manifest:
+
+  ```
+  "@hmpps-book-secure-move-frameworks/{semanticVersion}": "github:ministryofjustice/hmpps-book-secure-move-frameworks#v{semanticVersion}"
+  ```
+
+### To override the current version
+
+The current version is used when creating new framework resources. It can be overridden using an environment variable (`FRAMEWORKS_VERSION`),
+for example when adding support for a new version but we want to still create records using an older version.

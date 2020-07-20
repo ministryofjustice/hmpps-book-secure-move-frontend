@@ -1,3 +1,4 @@
+const { FRAMEWORKS } = require('../../config')
 const apiClient = require('../lib/api-client')()
 const profileService = require('../services/profile')
 
@@ -14,6 +15,7 @@ const personEscortRecordService = {
   create(profileId) {
     return apiClient
       .create('person_escort_record', {
+        version: FRAMEWORKS.CURRENT_VERSION,
         profile: {
           id: profileId,
         },

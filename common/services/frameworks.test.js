@@ -6,7 +6,13 @@ const proxyquire = require('proxyquire')
 const markdown = require('../../config/markdown')
 
 const mockFrameworksFolder = '/dummy/framework/path'
+const mockFrameworksVersion = '2.5.3'
 const frameworksService = proxyquire('./frameworks', {
+  '../../config': {
+    FRAMEWORKS: {
+      CURRENT_VERSION: mockFrameworksVersion,
+    },
+  },
   '../../config/paths': {
     frameworks: {
       output: mockFrameworksFolder,
@@ -1103,7 +1109,7 @@ describe('Frameworks service', function () {
         framework = frameworksService.getPersonEscortRecord(mockVersion)
       })
 
-      it('should call getFramework method with correct args', function () {
+      it('should call getFramework method with version argument', function () {
         expect(
           frameworksService.getFramework
         ).to.have.been.calledOnceWithExactly({
@@ -1122,12 +1128,12 @@ describe('Frameworks service', function () {
         frameworksService.getPersonEscortRecord()
       })
 
-      it('should call getFramework method with correct args', function () {
+      it('should call getFramework method with config version', function () {
         expect(
           frameworksService.getFramework
         ).to.have.been.calledOnceWithExactly({
           framework: 'person-escort-record',
-          version: undefined,
+          version: mockFrameworksVersion,
         })
       })
 

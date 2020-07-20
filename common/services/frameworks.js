@@ -3,6 +3,7 @@ const path = require('path')
 
 const { flatten, kebabCase, keyBy, set } = require('lodash')
 
+const { FRAMEWORKS: frameworksConfig } = require('../../config')
 const markdown = require('../../config/markdown')
 const { frameworks } = require('../../config/paths')
 
@@ -209,7 +210,7 @@ const frameworksService = {
     }
   },
 
-  getPersonEscortRecord(version) {
+  getPersonEscortRecord(version = frameworksConfig.CURRENT_VERSION) {
     return frameworksService.getFramework({
       framework: 'person-escort-record',
       version,
