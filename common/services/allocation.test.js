@@ -1,7 +1,20 @@
+const proxyquire = require('proxyquire')
+
 const apiClient = require('../lib/api-client')()
 const moveService = require('../services/move')
 
-const allocationService = require('./allocation')
+const mockBatchSize = 30
+
+const batchRequest = proxyquire('./batch-request', {
+  '../../config': {
+    LOCATIONS_BATCH_SIZE: mockBatchSize,
+  },
+})
+const batchRequestStub = sinon.stub().callsFake(batchRequest)
+
+const allocationService = proxyquire('./allocation', {
+  './batch-request': batchRequestStub,
+})
 
 const mockAllocations = [
   {
@@ -335,6 +348,26 @@ describe('Allocation service', function () {
       transformStub = sinon.stub().returnsArg(0)
       sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'findAll')
+    })
+
+    context('when batching the request', function () {
+      const props = { foo: 'bar' }
+      beforeEach(async function () {
+        apiClient.findAll.resolves(mockResponse)
+        await allocationService.getAll(props)
+      })
+
+      it('should invoke batching correctly', async function () {
+        expect(batchRequestStub).to.be.calledOnce
+        const batchArgs = batchRequestStub.firstCall.args
+        expect(typeof batchArgs[0]).to.equal('function')
+        expect(batchArgs[1]).to.deep.equal(props)
+        expect(batchArgs[2]).to.deep.equal([
+          'from_locations',
+          'to_locations',
+          'locations',
+        ])
+      })
     })
 
     context('with only one page', function () {
