@@ -305,7 +305,7 @@
   "complex_cases": {
     "label": "Prisoners with complex cases",
     "label_with_data": "Complex cases for prisons to agree",
-    "hint": "Complex cases must be discussed with the receiving prison. This includes:"
+    "hint": "Complex cases should be discussed with the receiving prison. This includes:"
   },
   "cancel_allocation_reason": {
     "label": "Why are you cancelling this allocation?",
