@@ -20,10 +20,11 @@ const mockPerson = {
 
 describe('Person Service', function () {
   before(function () {
-    if (API.VERSION === 1) {
+    if (API.VERSION !== 1) {
       this.skip()
     }
   })
+
   describe('#transform()', function () {
     let transformed
 
@@ -178,36 +179,299 @@ describe('Person Service', function () {
         formatted = await personService.format({
           first_names: 'Foo',
           police_national_computer: 'PNC number',
+          athena_reference: 'Athena reference',
           criminal_records_office: 'CRO number',
           prison_number: 'Prison number',
+          niche_reference: 'Niche reference',
         })
       })
 
       it('should format as relationship object', function () {
-        expect(formatted.police_national_computer).to.equal('PNC number')
+        expect(formatted.police_national_computer).to.deep.equal({
+          value: 'PNC number',
+          identifier_type: 'police_national_computer',
+        })
       })
 
       it('should format as relationship object', function () {
-        expect(formatted.criminal_records_office).to.equal('CRO number')
+        expect(formatted.athena_reference).to.deep.equal({
+          value: 'Athena reference',
+          identifier_type: 'athena_reference',
+        })
       })
 
       it('should format as relationship object', function () {
-        expect(formatted.prison_number).to.deep.equal('Prison number')
+        expect(formatted.criminal_records_office).to.deep.equal({
+          value: 'CRO number',
+          identifier_type: 'criminal_records_office',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.prison_number).to.deep.equal({
+          value: 'Prison number',
+          identifier_type: 'prison_number',
+        })
+      })
+
+      it('should format as relationship object', function () {
+        expect(formatted.niche_reference).to.deep.equal({
+          value: 'Niche reference',
+          identifier_type: 'niche_reference',
+        })
       })
 
       it('should not affect non relationship fields', function () {
         expect(formatted.first_names).to.equal('Foo')
       })
 
+      it('should include identifiers property', function () {
+        expect(formatted.identifiers).to.deep.equal([
+          {
+            identifier_type: 'police_national_computer',
+            value: 'PNC number',
+          },
+          {
+            identifier_type: 'criminal_records_office',
+            value: 'CRO number',
+          },
+          {
+            identifier_type: 'prison_number',
+            value: 'Prison number',
+          },
+          {
+            identifier_type: 'niche_reference',
+            value: 'Niche reference',
+          },
+          {
+            identifier_type: 'athena_reference',
+            value: 'Athena reference',
+          },
+        ])
+      })
+    })
+
+    context('when identifiers field is not a string', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          police_national_computer: {
+            value: 'PNC number',
+            identifier_type: 'police_national_computer',
+          },
+        })
+      })
+
+      it('should return its original value', function () {
+        expect(formatted.police_national_computer).to.deep.equal({
+          value: 'PNC number',
+          identifier_type: 'police_national_computer',
+        })
+      })
+
+      it('should include identifiers property', function () {
+        expect(formatted.identifiers).to.deep.equal([
+          {
+            identifier_type: 'police_national_computer',
+            value: 'PNC number',
+          },
+        ])
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
+
+    context('when no identifiers present', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+        })
+      })
+
       it('should not include identifiers property', function () {
-        expect(formatted.identifiers).to.be.undefined
+        expect(formatted).not.to.contain.property('identifiers')
+      })
+
+      it('should not affect non relationship fields', function () {
+        expect(formatted.first_names).to.equal('Foo')
+      })
+    })
+
+    context('when identifiers property exists', function () {
+      let formatted
+
+      context('when new identifiers are present', function () {
+        context('with existing identifiers', function () {
+          beforeEach(async function () {
+            formatted = await personService.format({
+              first_names: 'Foo',
+              police_national_computer: '67890',
+              niche_reference: 'ABCDE',
+              identifiers: [
+                {
+                  value: '12345',
+                  identifier_type: 'police_national_computer',
+                },
+                {
+                  value: 'Athena number',
+                  identifier_type: 'athena_reference',
+                },
+              ],
+            })
+          })
+
+          it('should not create duplicates', function () {
+            expect(formatted.identifiers.length).to.equal(3)
+          })
+
+          it('should merge identifiers correctly', function () {
+            expect(formatted.identifiers).to.deep.equal([
+              {
+                value: '67890',
+                identifier_type: 'police_national_computer',
+              },
+              {
+                value: 'ABCDE',
+                identifier_type: 'niche_reference',
+              },
+              {
+                value: 'Athena number',
+                identifier_type: 'athena_reference',
+              },
+            ])
+          })
+
+          it('should not affect non relationship fields', function () {
+            expect(formatted.first_names).to.equal('Foo')
+          })
+        })
+
+        context('with empty identifiers', function () {
+          beforeEach(async function () {
+            formatted = await personService.format({
+              first_names: 'Foo',
+              police_national_computer: '67890',
+              niche_reference: 'ABCDE',
+              identifiers: [],
+            })
+          })
+
+          it('should not create duplicates', function () {
+            expect(formatted.identifiers.length).to.equal(2)
+          })
+
+          it('should merge identifiers correctly', function () {
+            expect(formatted.identifiers).to.deep.equal([
+              {
+                value: '67890',
+                identifier_type: 'police_national_computer',
+              },
+              {
+                value: 'ABCDE',
+                identifier_type: 'niche_reference',
+              },
+            ])
+          })
+
+          it('should not affect non relationship fields', function () {
+            expect(formatted.first_names).to.equal('Foo')
+          })
+        })
+      })
+
+      context('when no new identifiers are present', function () {
+        context('with existing identifiers', function () {
+          beforeEach(async function () {
+            formatted = await personService.format({
+              first_names: 'Foo',
+              identifiers: [
+                {
+                  value: 'PNC number',
+                  identifier_type: 'police_national_computer',
+                },
+                {
+                  value: 'Athena number',
+                  identifier_type: 'athena_reference',
+                },
+              ],
+            })
+          })
+
+          it('should use original identifiers property', function () {
+            expect(formatted.identifiers).to.deep.equal([
+              {
+                value: 'PNC number',
+                identifier_type: 'police_national_computer',
+              },
+              {
+                value: 'Athena number',
+                identifier_type: 'athena_reference',
+              },
+            ])
+          })
+
+          it('should not affect non relationship fields', function () {
+            expect(formatted.first_names).to.equal('Foo')
+          })
+        })
+
+        context('with empty identifiers', function () {
+          beforeEach(async function () {
+            formatted = await personService.format({
+              first_names: 'Foo',
+              identifiers: [],
+            })
+          })
+
+          it('should use original identifiers property', function () {
+            expect(formatted.identifiers).to.deep.equal([])
+          })
+
+          it('should not affect non relationship fields', function () {
+            expect(formatted.first_names).to.equal('Foo')
+          })
+        })
+      })
+    })
+
+    context('with falsy values', function () {
+      let formatted
+
+      beforeEach(async function () {
+        formatted = await personService.format({
+          first_names: 'Foo',
+          last_name: '',
+          date_of_birth: undefined,
+          gender: null,
+          ethnicity: false,
+        })
+      })
+
+      it('should remove null and undefined', function () {
+        expect(formatted).to.deep.equal({
+          first_names: 'Foo',
+          last_name: '',
+          ethnicity: false,
+        })
       })
     })
   })
 
   describe('#unformat()', function () {
     const defaultKeys = {
-      identifier: [],
+      identifier: [
+        'police_national_computer',
+        'criminal_records_office',
+        'prison_number',
+        'niche_reference',
+        'athena_reference',
+      ],
       relationship: ['gender', 'ethnicity'],
       date: ['date_of_birth'],
     }

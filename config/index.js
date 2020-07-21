@@ -60,7 +60,7 @@ module.exports = {
   BUILD_BRANCH: process.env.APP_BUILD_TAG,
   GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
-    VERSION: API_VERSION,
+    VERSION: Number(API_VERSION),
     BASE_URL: API_BASE_URL + process.env.API_PATH,
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,

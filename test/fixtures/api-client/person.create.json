@@ -7,6 +7,9 @@
       "last_name": "Roberts",
       "date_of_birth": "1965-10-24",
       "gender_additional_information": "Additional information",
+      "prison_number": "AA/BBBBBB",
+      "police_national_computer": "xxxxxx",
+      "criminal_records_office": "ZZZZZZ",
       "assessment_answers": [
         {
           "title": "Violent",

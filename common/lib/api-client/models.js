@@ -83,6 +83,9 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'ethnicities',
       },
+      prison_number: '',
+      criminal_records_office: '',
+      police_national_computer: '',
       profiles: {
         jsonApi: 'hasMany',
         type: 'profiles',
