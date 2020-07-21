@@ -1,5 +1,3 @@
-const { expect } = require('chai')
-
 const setLocations = require('./set-locations')
 
 describe('Set locations middleware', function () {
@@ -18,6 +16,13 @@ describe('Set locations middleware', function () {
     context('when the url contains a locationId param', function () {
       beforeEach(function () {
         req.params.locationId = '#locationId'
+        req.session.currentLocation = { id: '#currentLocation' }
+        req.session.currentRegion = {
+          locations: [{ id: '#currentRegion' }],
+        }
+        req.session.user = {
+          locations: [{ id: '#userLocations' }],
+        }
         setLocations(req, res, next)
       })
 
@@ -29,6 +34,12 @@ describe('Set locations middleware', function () {
     context('when the user has a current location', function () {
       beforeEach(function () {
         req.session.currentLocation = { id: '#currentLocation' }
+        req.session.currentRegion = {
+          locations: [{ id: '#currentRegion' }],
+        }
+        req.session.user = {
+          locations: [{ id: '#userLocations' }],
+        }
         setLocations(req, res, next)
       })
 
@@ -41,6 +52,9 @@ describe('Set locations middleware', function () {
       beforeEach(function () {
         req.session.currentRegion = {
           locations: [{ id: '#currentRegion' }],
+        }
+        req.session.user = {
+          locations: [{ id: '#userLocations' }],
         }
         setLocations(req, res, next)
       })
