@@ -15,6 +15,7 @@ const componentService = require('../../services/component')
 
 const flattenConditionalFields = require('./flatten-conditional-fields')
 const getFieldErrorMessage = require('./get-field-error-message')
+const isAllowedDependent = require('./is-allowed-dependent')
 const reduceDependentFields = require('./reduce-dependent-fields')
 const setFieldError = require('./set-field-error')
 
@@ -244,6 +245,7 @@ module.exports = {
   mapReferenceDataToOption,
   renderConditionalFields,
   getFieldErrorMessage,
+  isAllowedDependent,
   setFieldValue,
   setFieldError,
   translateField,
