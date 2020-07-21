@@ -1,31 +1,11 @@
 const dateFunctions = require('date-fns')
-const { chunk, get, mapValues, omitBy, isUndefined, set } = require('lodash')
+const { mapValues, omitBy, isUndefined } = require('lodash')
 
-const { LOCATIONS_BATCH_SIZE } = require('../../config')
 const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
 const profileService = require('../services/profile')
 
-function splitRequests(props = {}, propPath) {
-  const split = get(props, propPath, '').split(',')
-  const chunks = chunk(split, LOCATIONS_BATCH_SIZE).map(id => id.join(','))
-
-  return Promise.all(
-    chunks.map(chunk => {
-      set(props, propPath, chunk)
-      return getAll(props)
-    })
-  ).then(response => {
-    if (props.isAggregation) {
-      return response.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0
-      )
-    }
-
-    return response.flat()
-  })
-}
+const batchRequest = require('./batch-request')
 
 function getAll({
   filter = {},
@@ -98,35 +78,10 @@ const moveService = {
   },
 
   async getAll(props = {}) {
-    // TODO: This is more of a temporary solution to solve the problem where
-    // the API doesn't have a concept of what locations a user has access to
-    //
-    // Once Auth is moved to the API we would be able to remove this as the API
-    // would know to only return moves that a user has access to
-    function massagePropPaths(propPaths) {
-      propPaths.forEach(propPath => {
-        const propPathValue = get(props, propPath)
-
-        if (propPathValue && Array.isArray(propPathValue)) {
-          set(props, propPath, propPathValue.join(','))
-        }
-      })
-    }
-
-    const fromPath = 'filter["filter[from_location_id]"]'
-    const toPath = 'filter["filter[to_location_id]"]'
-
-    massagePropPaths([fromPath, toPath])
-
-    let results
-
-    if (get(props, fromPath)) {
-      results = await splitRequests(props, fromPath)
-    } else if (get(props, toPath)) {
-      results = await splitRequests(props, toPath)
-    } else {
-      results = await getAll(props)
-    }
+    const results = await batchRequest(getAll, props, [
+      'from_location_id',
+      'to_location_id',
+    ])
 
     if (props.isAggregation) {
       return results
