@@ -29,5 +29,5 @@ export const ocaUser = Role(home, async t => {
 
 export const pmuUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.PMU)
-  await page.chooseAllLocations()
+  await page.chooseLocation()
 })

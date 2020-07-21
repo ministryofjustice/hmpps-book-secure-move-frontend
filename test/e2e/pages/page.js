@@ -21,10 +21,10 @@ export default class Page {
       submitButton: Selector('button[type="submit"]'),
       bannerHeading: Selector('.app-message--temporary .app-message__heading'),
       bannerContent: Selector('.app-message--temporary .app-message__content'),
-      locationsList: Selector('ul li a').withAttribute(
-        'href',
-        /\/locations\/.+/
-      ),
+      locationsList: Selector(
+        'ul[data-location-type="locations"] li a'
+      ).withAttribute('href', /\/locations\/.+/),
+      locationValue: Selector('.moj-organisation-nav__title'),
     }
     this.getCurrentUrl = ClientFunction(() => window.location.href)
   }
