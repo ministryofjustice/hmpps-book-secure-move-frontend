@@ -162,6 +162,10 @@ module.exports = {
         username: process.env.E2E_STC_USERNAME,
         password: process.env.E2E_STC_PASSWORD,
       },
+      SCH: {
+        username: process.env.E2E_SCH_USERNAME,
+        password: process.env.E2E_SCH_PASSWORD,
+      },
       PRISON: {
         username: process.env.E2E_PRISON_USERNAME,
         password: process.env.E2E_PRISON_PASSWORD,

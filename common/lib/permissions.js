@@ -19,6 +19,7 @@ const secureChildrensHomePermissions = [
   'move:create',
   'move:create:court_appearance',
   'move:cancel',
+  'move:update',
 ]
 const secureTrainingCentrePermissions = [
   'moves:view:outgoing',
