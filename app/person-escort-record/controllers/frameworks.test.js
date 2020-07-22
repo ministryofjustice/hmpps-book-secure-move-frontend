@@ -1,4 +1,6 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const fieldHelpers = require('../../../common/helpers/field')
+const frameworksHelpers = require('../../../common/helpers/frameworks')
 const responseService = require('../../../common/services/framework-response')
 
 const Controller = require('./frameworks')
@@ -555,259 +557,42 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
-    describe('#getResponses', function () {
-      const mockResponses = [
-        {
-          id: '1',
-          question: {
-            key: 'question-1',
-          },
-        },
-        {
-          id: '2',
-          question: {
-            key: 'question-2',
-          },
-        },
-        {
-          id: '3',
-          question: {
-            key: 'question-3',
-          },
-        },
-      ]
-      let responses
-
-      context('with no form values', function () {
-        beforeEach(function () {
-          responses = controller.getResponses({}, mockResponses)
-        })
-
-        it('should not return any responses', function () {
-          expect(responses).to.deep.equal([])
-        })
-      })
-
-      context('with form values', function () {
-        const testCases = [
-          {
-            testName: 'with string',
-            formValues: {
-              question: 'Yes',
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'string',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: 'Yes',
-              },
-            ],
-          },
-          {
-            testName: 'with array',
-            formValues: {
-              question: ['Yes', 'No'],
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'array',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: ['Yes', 'No'],
-              },
-            ],
-          },
-          {
-            testName: 'with object without followup comments',
-            formValues: {
-              question: 'Yes',
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'object',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: {
-                  option: 'Yes',
-                },
-              },
-            ],
-          },
-          {
-            testName: 'with object with followup comments',
-            formValues: {
-              question: 'Yes',
-              'question--yes': 'Further yes details',
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'object',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: {
-                  option: 'Yes',
-                  details: 'Further yes details',
-                },
-              },
-            ],
-          },
-          {
-            testName: 'with collection without followup comments',
-            formValues: {
-              question: ['One', 'Two', 'Three'],
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'collection',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: [
-                  {
-                    option: 'One',
-                    details: undefined,
-                  },
-                  {
-                    option: 'Two',
-                    details: undefined,
-                  },
-                  {
-                    option: 'Three',
-                    details: undefined,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            testName: 'with collection without followup comments',
-            formValues: {
-              question: ['One', 'Two', 'Three'],
-              'question--one': 'Further comments about one',
-              'question--three': 'Further comments about three',
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'collection',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [
-              {
-                id: '1',
-                value: [
-                  {
-                    option: 'One',
-                    details: 'Further comments about one',
-                  },
-                  {
-                    option: 'Two',
-                    details: undefined,
-                  },
-                  {
-                    option: 'Three',
-                    details: 'Further comments about three',
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            testName: 'with any unknown type',
-            formValues: {
-              question: 'Unknown',
-            },
-            responses: [
-              {
-                id: '1',
-                value_type: 'unknkown',
-                question: {
-                  key: 'question',
-                },
-              },
-            ],
-            expectedValue: [],
-          },
-        ]
-
-        testCases.forEach(test => {
-          context(test.testName, function () {
-            beforeEach(function () {
-              responses = controller.getResponses(
-                test.formValues,
-                test.responses
-              )
-            })
-
-            it('should format response correctly', function () {
-              expect(responses).to.deep.equal(test.expectedValue)
-            })
-          })
-        })
-      })
-    })
-
     describe('#saveValues', function () {
-      const mockReq = {
-        form: {
-          values: {
-            foo: 'bar',
-            fizz: 'buzz',
-          },
-        },
-        personEscortRecord: {
-          responses: [{ id: '1' }, { id: '2' }],
-        },
-      }
       const mockResponses = [
         { id: '1', value: 'Yes' },
         { id: '2', value: 'No' },
         { id: '3', value: 'Yes' },
         { id: '4', value: 'No' },
       ]
+      const mockReq = {
+        form: {
+          options: {
+            fields: {
+              one: { name: 'one' },
+              two: { name: 'two' },
+              three: { name: 'three' },
+            },
+          },
+          values: {
+            foo: 'bar',
+            fizz: 'buzz',
+          },
+        },
+        personEscortRecord: {
+          responses: mockResponses,
+        },
+      }
       let nextSpy
 
       beforeEach(function () {
         sinon.stub(responseService, 'update')
-        sinon.stub(Controller.prototype, 'getResponses').returns(mockResponses)
+        sinon.stub(fieldHelpers, 'isAllowedDependent').returns(true)
+        sinon
+          .stub(frameworksHelpers, 'responsesToSaveReducer')
+          .returns((acc, value) => {
+            acc.push(value)
+            return acc
+          })
         sinon.stub(FormWizardController.prototype, 'saveValues')
         nextSpy = sinon.spy()
       })
@@ -819,11 +604,10 @@ describe('Person Escort Record controllers', function () {
           await controller.saveValues(mockReq, {}, nextSpy)
         })
 
-        it('should get responses', function () {
-          expect(Controller.prototype.getResponses).to.be.calledOnceWithExactly(
-            mockReq.form.values,
-            mockReq.personEscortRecord.responses
-          )
+        it('should call reducer correctly', function () {
+          expect(
+            frameworksHelpers.responsesToSaveReducer
+          ).to.be.calledOnceWithExactly(mockReq.form.values)
         })
 
         it('should call correct number of updates', function () {
@@ -866,6 +650,89 @@ describe('Person Escort Record controllers', function () {
 
         it('should call next with the error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(error)
+        })
+      })
+
+      describe('dependent field filtering', function () {
+        const mockResponsesWithDependents = [
+          {
+            id: '1',
+            value: 'Yes',
+            question: {
+              key: 'question-1',
+            },
+          },
+          {
+            id: '2',
+            value: 'No',
+            question: {
+              key: 'question-2',
+            },
+          },
+          {
+            id: '3',
+            value: 'Yes',
+            question: {
+              key: 'question-3',
+            },
+          },
+          {
+            id: '4',
+            value: 'No',
+            question: {
+              key: 'question-4',
+            },
+          },
+        ]
+
+        beforeEach(async function () {
+          mockReq.personEscortRecord.responses = mockResponsesWithDependents
+          responseService.update.resolves({})
+
+          fieldHelpers.isAllowedDependent
+            .withArgs(
+              mockReq.form.options.fields,
+              'question-2',
+              mockReq.form.values
+            )
+            .returns(false)
+            .withArgs(
+              mockReq.form.options.fields,
+              'question-4',
+              mockReq.form.values
+            )
+            .returns(false)
+
+          await controller.saveValues(mockReq, {}, nextSpy)
+        })
+
+        it('should call isAllowedDependent filter on responses', function () {
+          expect(fieldHelpers.isAllowedDependent.callCount).to.equal(
+            mockResponsesWithDependents.length
+          )
+        })
+
+        it('should call isAllowedDependent filter correctly', function () {
+          mockResponsesWithDependents.forEach(response => {
+            expect(fieldHelpers.isAllowedDependent).to.be.calledWithExactly(
+              mockReq.form.options.fields,
+              response?.question?.key,
+              mockReq.form.values
+            )
+          })
+        })
+
+        it('should save correct number of responses', function () {
+          expect(responseService.update.callCount).to.equal(2)
+        })
+
+        it('should filter out dependent fields', function () {
+          expect(responseService.update).to.be.calledWithExactly(
+            mockResponsesWithDependents[0]
+          )
+          expect(responseService.update).to.be.calledWithExactly(
+            mockResponsesWithDependents[2]
+          )
         })
       })
     })

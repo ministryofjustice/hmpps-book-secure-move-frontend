@@ -1,6 +1,8 @@
-const { kebabCase, pickBy } = require('lodash')
+const { kebabCase } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const fieldHelpers = require('../../../common/helpers/field')
+const frameworksHelpers = require('../../../common/helpers/frameworks')
 const responseService = require('../../../common/services/framework-response')
 
 class FrameworksController extends FormWizardController {
@@ -63,49 +65,17 @@ class FrameworksController extends FormWizardController {
     })
   }
 
-  getResponses(formValues, allResponses) {
-    return allResponses
-      .filter(response => formValues[response.question.key])
-      .reduce((accumulator, { id, question, value_type: valueType }) => {
-        const fieldName = question.key
-        const value = formValues[fieldName]
-
-        if (valueType === 'object') {
-          accumulator.push({
-            id,
-            value: pickBy({
-              option: value,
-              details: formValues[`${fieldName}--${kebabCase(value)}`],
-            }),
-          })
-        }
-
-        if (valueType === 'collection') {
-          const collection = value.filter(Boolean).map(option => {
-            return {
-              option,
-              details: formValues[`${fieldName}--${kebabCase(option)}`],
-            }
-          })
-
-          accumulator.push({
-            id,
-            value: collection,
-          })
-        }
-
-        if (valueType === 'string' || valueType === 'array') {
-          accumulator.push({ id, value })
-        }
-
-        return accumulator
-      }, [])
-  }
-
   async saveValues(req, res, next) {
-    const formValues = req.form.values
-    const allResponses = req.personEscortRecord.responses
-    const responses = this.getResponses(formValues, allResponses)
+    const { form, personEscortRecord } = req
+    const responses = personEscortRecord.responses
+      .filter(response =>
+        fieldHelpers.isAllowedDependent(
+          form.options.fields,
+          response?.question?.key,
+          form.values
+        )
+      )
+      .reduce(frameworksHelpers.responsesToSaveReducer(form.values), [])
 
     try {
       // wait for all responses to resolve first
