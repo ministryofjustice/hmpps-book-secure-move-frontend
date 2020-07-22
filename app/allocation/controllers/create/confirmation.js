@@ -1,5 +1,9 @@
-function Confirmation(req, res) {
-  res.render('allocation/views/confirmation', res.locals)
+function confirmation(req, res) {
+  const allocation = req.allocation
+
+  res.render('allocation/views/confirmation', {
+    allocation,
+  })
 }
 
-module.exports = Confirmation
+module.exports = confirmation

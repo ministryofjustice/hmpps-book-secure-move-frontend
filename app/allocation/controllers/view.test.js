@@ -1,5 +1,3 @@
-const { cloneDeep } = require('lodash')
-
 const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
@@ -89,19 +87,17 @@ describe('view allocation', function () {
       session: {
         user: { permissions: [] },
       },
+      allocation: { ...allocationExample },
     }
     mockRes = {
       render: sinon.stub(),
-      locals: {
-        allocation: { ...allocationExample },
-      },
+      locals: {},
     }
   })
 
   context(
     'the creation of the link to remove a move from an allocation',
     function () {
-      let mockResCopy
       beforeEach(function () {
         sinon
           .stub(permissions, 'check')
@@ -110,14 +106,15 @@ describe('view allocation', function () {
           .withArgs('allocation:person:assign')
           .returns(false)
         moveToCardComponentStub = sinon.stub()
-        mockResCopy = cloneDeep(mockRes)
       })
+
       it('does not create removeMoveHref if the move has a person', function () {
-        handler(mockReq, mockResCopy)
-        const { moves } = mockResCopy.render.firstCall.lastArg
+        handler(mockReq, mockRes)
+        const { moves } = mockRes.render.firstCall.lastArg
         expect(moves[2].removeMoveHref).to.be.undefined
         expect(moves[3].removeMoveHref).to.be.undefined
       })
+
       it('does not create removeMoveHref if the user has no permission to cancel allocations', function () {
         permissions.check.restore()
         sinon
@@ -126,22 +123,24 @@ describe('view allocation', function () {
           .returns(false)
           .withArgs('allocation:person:assign')
           .returns(false)
-        handler(mockReq, mockResCopy)
-        const { moves } = mockResCopy.render.firstCall.lastArg
+        handler(mockReq, mockRes)
+        const { moves } = mockRes.render.firstCall.lastArg
 
         for (const move of moves) {
           expect(move.removeMoveHref).to.be.undefined
         }
       })
+
       it('does not create removeMoveHref if there is just one move left', function () {
-        mockResCopy.locals.allocation.moves = [{ id: 1 }]
-        handler(mockReq, mockResCopy)
-        const { moves } = mockResCopy.render.firstCall.lastArg
+        mockReq.allocation.moves = [{ id: 1 }]
+        handler(mockReq, mockRes)
+        const { moves } = mockRes.render.firstCall.lastArg
         expect(moves[0].removeMoveHref).to.be.undefined
       })
+
       it('does otherwise create removeMoveHref', function () {
         handler(mockReq, mockRes)
-        const { moves } = mockResCopy.render.firstCall.lastArg
+        const { moves } = mockRes.render.firstCall.lastArg
         expect(moves[0].removeMoveHref).to.equal(
           '/allocation/06464fbd-b78a-4e47-b65c-8ab3c3867196/789/remove'
         )
@@ -168,14 +167,14 @@ describe('view allocation', function () {
         expect(locals.criteria).to.equal('allocationToSummaryListComponent')
         expect(
           presenters.allocationToSummaryListComponent
-        ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
+        ).to.have.been.calledOnceWithExactly(mockReq.allocation)
       })
 
       it('creates `summary` with result of the presenter', function () {
         expect(locals.summary).to.equal('allocationToMetaListComponent')
         expect(
           presenters.allocationToMetaListComponent
-        ).to.have.been.calledOnceWithExactly(mockRes.locals.allocation)
+        ).to.have.been.calledOnceWithExactly(mockReq.allocation)
       })
 
       it('does not create a message banner', function () {
@@ -195,81 +194,18 @@ describe('view allocation', function () {
         expect(locals.moves).to.have.length(4)
       })
 
+      it('should include moves without a person', function () {
+        expect(locals.allocation).to.deep.equal(allocationExample)
+      })
+
       it('should contain correct number of locals', function () {
-        expect(Object.keys(locals)).to.have.length(10)
+        expect(Object.keys(locals)).to.have.length(11)
       })
     })
 
     it('calls render with the template', function () {
-      expect(
-        JSON.parse(JSON.stringify(mockRes.render.getCall(0).args))
-      ).to.deep.equal([
-        'allocation/views/view',
-        {
-          dashboardUrl: '/allocations',
-          messageContent: 'statuses::description_allocation',
-          unassignedMoveId: '123',
-          totalCount: 4,
-          remainingCount: 2,
-          addedCount: 2,
-          criteria: 'allocationToSummaryListComponent',
-          summary: 'allocationToMetaListComponent',
-          moves: [
-            {
-              id: '789',
-              card: {
-                id: '789',
-              },
-            },
-            {
-              id: '123',
-              card: {
-                id: '123',
-              },
-            },
-            {
-              id: '011',
-              profile: {
-                person: {
-                  first_names: 'Phil',
-                  last_name: 'Jones',
-                  fullname: 'Phil Jones',
-                },
-              },
-              card: {
-                id: '011',
-                profile: {
-                  person: {
-                    first_names: 'Phil',
-                    last_name: 'Jones',
-                    fullname: 'Phil Jones',
-                  },
-                },
-              },
-            },
-            {
-              id: '456',
-              profile: {
-                person: {
-                  first_names: 'John',
-                  last_name: 'Doe',
-                  fullname: 'John Doe',
-                },
-              },
-              card: {
-                id: '456',
-                profile: {
-                  person: {
-                    first_names: 'John',
-                    last_name: 'Doe',
-                    fullname: 'John Doe',
-                  },
-                },
-              },
-            },
-          ],
-        },
-      ])
+      expect(mockRes.render).to.have.been.calledOnce
+      expect(mockRes.render.args[0][0]).to.equal('allocation/views/view')
     })
   })
 
@@ -277,7 +213,7 @@ describe('view allocation', function () {
     let locals
 
     beforeEach(function () {
-      mockRes.locals.allocation.status = 'cancelled'
+      mockReq.allocation.status = 'cancelled'
 
       handler(mockReq, mockRes)
       locals = mockRes.render.firstCall.lastArg
@@ -309,7 +245,7 @@ describe('view allocation', function () {
     let locals
 
     beforeEach(function () {
-      mockRes.locals.allocation.moves = [
+      mockReq.allocation.moves = [
         {
           id: '123',
           profile: {

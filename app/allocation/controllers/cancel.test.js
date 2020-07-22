@@ -31,12 +31,10 @@ describe('Cancel controller', function () {
         journeyModel: {
           reset: sinon.stub(),
         },
+        allocation: mockAllocation,
       }
       res = {
         redirect: sinon.stub(),
-        locals: {
-          allocation: mockAllocation,
-        },
       }
     })
 

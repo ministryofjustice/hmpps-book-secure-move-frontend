@@ -18,7 +18,7 @@ describe('Move middleware', function () {
 
     beforeEach(function () {
       req = {}
-      res = { locals: {} }
+      res = {}
       nextSpy = sinon.spy()
     })
 
@@ -35,10 +35,6 @@ describe('Move middleware', function () {
 
       it('should not call API with move ID', function () {
         expect(moveService.getById).not.to.be.called
-      })
-
-      it('should not set response data to locals object', function () {
-        expect(res.locals).not.to.have.property('move')
       })
 
       it('should not set response data to request object', function () {
@@ -58,11 +54,6 @@ describe('Move middleware', function () {
           expect(moveService.getById).to.be.calledWith(mockMoveId)
         })
 
-        it('should set response data to locals object', function () {
-          expect(res.locals).to.have.property('move')
-          expect(res.locals.move).to.equal(moveStub)
-        })
-
         it('should set response data to request object', function () {
           expect(req).to.have.property('move')
           expect(req.move).to.equal(moveStub)
@@ -78,10 +69,6 @@ describe('Move middleware', function () {
           sinon.stub(moveService, 'getById').throws(errorStub)
 
           await middleware.setMove({}, res, nextSpy, mockMoveId)
-        })
-
-        it('should not set a value on the locals object', function () {
-          expect(res.locals).not.to.have.property('move')
         })
 
         it('should not set response data to request object', function () {
@@ -151,7 +138,7 @@ describe('Move middleware', function () {
       sinon.stub(allocationService, 'getById')
 
       req = {}
-      res = { locals: {} }
+      res = {}
       nextSpy = sinon.spy()
     })
 
@@ -175,7 +162,7 @@ describe('Move middleware', function () {
 
     context('when move exists', function () {
       beforeEach(function () {
-        res.locals.move = moveStub
+        req.move = moveStub
       })
 
       context('when move does not contain allocation', function () {
@@ -198,7 +185,7 @@ describe('Move middleware', function () {
 
       context('when move contains allocation', function () {
         beforeEach(function () {
-          res.locals.move = moveWithAllocationStub
+          req.move = moveWithAllocationStub
         })
 
         context('when API call returns succesfully', function () {

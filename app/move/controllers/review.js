@@ -26,7 +26,7 @@ class ReviewController extends FormWizardController {
 
   setRebookOptions(req, res, next) {
     const existingItems = req.form.options.fields.rebook.items
-    const maxDate = res.locals.move.date_to
+    const maxDate = req.move.date_to
     const isAboutToExpire =
       maxDate && differenceInCalendarDays(parseISO(maxDate), new Date()) <= 7
 
@@ -45,7 +45,7 @@ class ReviewController extends FormWizardController {
   }
 
   checkStatus(req, res, next) {
-    const { id, status } = res.locals.move
+    const { id, status } = req.move
 
     if (status !== 'proposed') {
       return res.redirect(`/move/${id}`)
@@ -55,18 +55,19 @@ class ReviewController extends FormWizardController {
   }
 
   canAccess(req, res, next) {
-    const { canAccess, move } = res.locals
+    const { canAccess } = res.locals
+    const { id: moveId } = req.move
 
     if (canAccess('move:review', req.session.user.permissions)) {
       return next()
     }
 
-    res.redirect(`/move/${move.id}`)
+    res.redirect(`/move/${moveId}`)
   }
 
   updateDateHint(req, res, next) {
     const { move_date: moveDate } = req.form.options.fields
-    const { date_to: dateTo, date_from: dateFrom } = res.locals.move
+    const { date_to: dateTo, date_from: dateFrom } = req.move
 
     moveDate.hint.text = req.t(moveDate.hint.text, {
       context: dateTo ? 'with_date_range' : 'with_date',
@@ -77,8 +78,9 @@ class ReviewController extends FormWizardController {
   }
 
   setMoveSummary(req, res, next) {
-    const { move } = res.locals
+    const { move } = req
 
+    res.locals.move = move
     res.locals.person = move.profile.person
     res.locals.moveSummary = presenters.moveToMetaListComponent(move)
 
@@ -86,7 +88,7 @@ class ReviewController extends FormWizardController {
   }
 
   async successHandler(req, res, next) {
-    const { id: moveId } = res.locals.move
+    const { id: moveId } = req.move
     const data = pick(
       req.sessionModel.toJSON(),
       Object.keys(req.form.options.allFields)

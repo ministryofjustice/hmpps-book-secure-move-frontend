@@ -1,4 +1,4 @@
-const { get, isEqual, keys, map, pick } = require('lodash')
+const { isEqual, keys, map, pick } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
@@ -13,8 +13,7 @@ class UpdateBaseController extends CreateBaseController {
   }
 
   _setModels(req) {
-    const res = req.res
-    const move = res.locals.move
+    const move = req.move
     req.models.move = move
     req.models.profile = move.profile
     req.models.person = move.profile.person
@@ -101,7 +100,7 @@ class UpdateBaseController extends CreateBaseController {
 
   getUpdateValues(req, res) {
     const person = req.getPerson()
-    const fields = keys(get(req, 'form.options.fields'))
+    const fields = keys(req.form?.options?.fields)
     return personService.unformat(person, fields)
   }
 
@@ -129,7 +128,8 @@ class UpdateBaseController extends CreateBaseController {
   }
 
   setFlash(req, category) {
-    const suppliers = get(req.getMove(), 'from_location.suppliers')
+    const move = req.getMove()
+    const suppliers = move?.from_location?.suppliers
     const supplierNames =
       suppliers && suppliers.length
         ? map(suppliers, 'name')

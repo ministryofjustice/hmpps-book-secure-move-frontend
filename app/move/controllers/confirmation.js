@@ -1,13 +1,14 @@
-const { filter, get, map, reject } = require('lodash')
+const { filter, map, reject } = require('lodash')
 
 function confirmation(req, res) {
+  const move = req.move
   const {
     court_hearings: courtHearings,
     move_type: moveType,
     to_location: toLocation,
-  } = res.locals.move
+  } = move
   const { moves: allocationMoves = [] } = req.allocation || {}
-  const suppliers = get(res.locals, 'move.from_location.suppliers')
+  const suppliers = move?.from_location?.suppliers
   const supplierNames =
     suppliers && suppliers.length
       ? map(suppliers, 'name')
@@ -21,11 +22,11 @@ function confirmation(req, res) {
     'case_number'
   )
   const unassignedMoves = allocationMoves.filter(move => !move.profile)
-  const unassignedMoveId = unassignedMoves.length
-    ? unassignedMoves[0].id
-    : undefined
+  const unassignedMoveId =
+    unassignedMoves.length !== 0 ? unassignedMoves[0].id : undefined
 
   const locals = {
+    move,
     unassignedMoveId,
     supplierNames,
     savedHearings,

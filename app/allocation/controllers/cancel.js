@@ -5,7 +5,7 @@ const allocationService = require('../../../common/services/allocation')
 
 class CancelController extends FormWizardController {
   async successHandler(req, res, next) {
-    const { id } = res.locals.allocation
+    const { id } = req.allocation
     const data = omit(req.sessionModel.toJSON(), [
       'csrf-secret',
       'errors',

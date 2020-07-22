@@ -12,25 +12,26 @@ class CancelController extends FormWizardController {
   }
 
   setAdditionalInfo(req, res, next) {
-    const { move } = res.locals
+    const { move } = req
     res.locals.moveSummary = presenters.moveToMetaListComponent(move)
     res.locals.person = move.profile.person || {}
+    res.locals.move = move
 
     next()
   }
 
   checkAllocation(req, res, next) {
-    const { allocation, id } = res.locals.move
+    const { allocation, id: moveId } = req.move
 
     if (allocation) {
-      return res.redirect(`/move/${id}`)
+      return res.redirect(`/move/${moveId}`)
     }
 
     next()
   }
 
   async successHandler(req, res, next) {
-    const { id: moveId } = res.locals.move
+    const { id: moveId } = req.move
 
     try {
       const data = pick(

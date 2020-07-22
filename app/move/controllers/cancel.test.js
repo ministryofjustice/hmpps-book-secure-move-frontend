@@ -53,18 +53,20 @@ describe('Move controllers', function () {
     })
 
     describe('setAdditionalInfo', function () {
-      let res
-      let next
+      let req, res, next
+
       beforeEach(function () {
+        req = {
+          move: { id: 123, profile: { person: { name: 'John Doe' } } },
+        }
         res = {
-          locals: {
-            move: { id: 123, profile: { person: { name: 'John Doe' } } },
-          },
+          locals: {},
         }
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         next = sinon.stub()
-        controller.setAdditionalInfo({}, res, next)
+        controller.setAdditionalInfo(req, res, next)
       })
+
       it('passes the move to moveToMetaListComponent', function () {
         expect(
           presenters.moveToMetaListComponent
@@ -73,6 +75,7 @@ describe('Move controllers', function () {
           profile: { person: { name: 'John Doe' } },
         })
       })
+
       it('sets moveSummary on the locals', function () {
         expect(res.locals.moveSummary).to.exist
         expect(res.locals.moveSummary).to.deep.equal({
@@ -80,33 +83,35 @@ describe('Move controllers', function () {
           profile: { person: { name: 'John Doe' } },
         })
       })
+
       it('sets person on the locals', function () {
         expect(res.locals.person).to.exist
         expect(res.locals.person).to.deep.equal({ name: 'John Doe' })
       })
+
       it('calls next', function () {
         expect(next).to.have.been.calledWithExactly()
       })
     })
 
     describe('#checkAllocation()', function () {
-      let mockRes, nextSpy
+      let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
         nextSpy = sinon.spy()
-        mockRes = {
-          locals: {
-            move: {
-              id: '12345',
-            },
+        mockReq = {
+          move: {
+            id: '12345',
           },
+        }
+        mockRes = {
           redirect: sinon.spy(),
         }
       })
 
       context('with non allocation move', function () {
         beforeEach(function () {
-          controller.checkAllocation({}, mockRes, nextSpy)
+          controller.checkAllocation(mockReq, mockRes, nextSpy)
         })
 
         it('should not redirect', function () {
@@ -120,10 +125,10 @@ describe('Move controllers', function () {
 
       context('with allocation move', function () {
         beforeEach(function () {
-          mockRes.locals.move.allocation = {
+          mockReq.move.allocation = {
             id: '123',
           }
-          controller.checkAllocation({}, mockRes, nextSpy)
+          controller.checkAllocation(mockReq, mockRes, nextSpy)
         })
 
         it('should redirect to move', function () {
@@ -157,12 +162,10 @@ describe('Move controllers', function () {
           journeyModel: {
             reset: sinon.stub(),
           },
+          move: mockMove,
         }
         res = {
           redirect: sinon.stub(),
-          locals: {
-            move: mockMove,
-          },
         }
       })
 
