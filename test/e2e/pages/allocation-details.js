@@ -29,12 +29,15 @@ class AllocationDetailsPage extends Page {
   async fill() {
     await t.expect(this.getCurrentUrl()).contains(this.url)
 
+    const locationValue = await this.nodes.locationValue.innerText
+
     const fieldsToFill = {
       movesCount: {
         selector: this.fields.movesCount,
         value: faker.random.number({ min: 2, max: 10 }).toString(),
       },
       fromLocation: {
+        value: locationValue,
         selector: this.fields.fromLocation,
         type: 'autocomplete',
       },

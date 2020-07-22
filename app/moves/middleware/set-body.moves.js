@@ -1,18 +1,14 @@
-const { get, set } = require('lodash')
+const { set } = require('lodash')
 
-const { getCurrentDayAsRange } = require('../../../common/helpers/date')
+const dateHelpers = require('../../../common/helpers/date')
 
 function setBodyMoves(property, locationProperty) {
   return function handleBody(req, res, next) {
-    const { dateRange, locationId } = req.params
-    const locations =
-      locationId ||
-      get(req.session, 'user.locations', [])
-        .map(location => location.id)
-        .join(',')
+    const { dateRange } = req.params
+    const locations = req.locations
 
     set(req, `body.${property}`, {
-      dateRange: dateRange || getCurrentDayAsRange(),
+      dateRange: dateRange || dateHelpers.getCurrentDayAsRange(),
       [locationProperty]: locations,
     })
 

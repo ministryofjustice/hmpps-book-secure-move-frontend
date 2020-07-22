@@ -7,13 +7,18 @@ const profileService = require('../services/profile')
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
 
+const batchRequest = proxyquire('./batch-request', {
+  '../../config': {
+    LOCATIONS_BATCH_SIZE: mockBatchSize,
+  },
+})
+const batchRequestStub = sinon.stub().callsFake(batchRequest)
+
 const moveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
   },
-  '../../config': {
-    LOCATIONS_BATCH_SIZE: mockBatchSize,
-  },
+  './batch-request': batchRequestStub,
 })
 
 const mockMove = {
@@ -300,6 +305,25 @@ describe('Move Service', function () {
       sinon.stub(apiClient, 'findAll')
     })
 
+    context('when batching the request', function () {
+      const props = { foo: 'bar' }
+      beforeEach(async function () {
+        apiClient.findAll.resolves(mockResponse)
+        await moveService.getAll(props)
+      })
+
+      it('should invoke batching correctly', async function () {
+        expect(batchRequestStub).to.be.calledOnce
+        const batchArgs = batchRequestStub.firstCall.args
+        expect(typeof batchArgs[0]).to.equal('function')
+        expect(batchArgs[1]).to.deep.equal(props)
+        expect(batchArgs[2]).to.deep.equal([
+          'from_location_id',
+          'to_location_id',
+        ])
+      })
+    })
+
     context('with only one page', function () {
       beforeEach(function () {
         apiClient.findAll.resolves(mockResponse)
@@ -349,6 +373,44 @@ describe('Move Service', function () {
 
         it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with from_location arguments as arrays', function () {
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            filter: {
+              'filter[from_location_id]': ['a', 'b'],
+            },
+          })
+        })
+
+        it('should call the API client with comma-delimited arguments', function () {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+            'filter[from_location_id]': 'a,b',
+            page: 1,
+            per_page: 100,
+            include: undefined,
+          })
+        })
+      })
+
+      context('with to_location arguments as arrays', function () {
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            filter: {
+              'filter[to_location_id]': ['a', 'b'],
+            },
+          })
+        })
+
+        it('should call the API client with comma-delimited arguments', function () {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
+            'filter[to_location_id]': 'a,b',
+            page: 1,
+            per_page: 100,
+            include: undefined,
+          })
         })
       })
 
@@ -463,6 +525,24 @@ describe('Move Service', function () {
 
         it('should return a count', function () {
           expect(moves).to.equal(10)
+        })
+      })
+
+      context('with aggregation and batched requests', function () {
+        const mockLocations = Array(mockBatchSize * 2)
+          .fill()
+          .map((v, i) => i)
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            filter: {
+              'filter[from_location_id]': mockLocations.join(','),
+            },
+            isAggregation: true,
+          })
+        })
+
+        it('should return an combined count for all the batches', function () {
+          expect(moves).to.equal(mockResponse.meta.pagination.total_objects * 2)
         })
       })
     })

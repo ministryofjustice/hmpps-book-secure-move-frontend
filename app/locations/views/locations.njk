@@ -28,7 +28,7 @@
       <div class="govuk-grid-column-two-thirds">
         {% if regions | length %}
         <h2 class="govuk-heading-l">Regions</h2>
-        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
+        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold" data-location-type="regions">
           {% for region in regions %}
             <li>
               {{ region.key | lower }}.
@@ -43,7 +43,7 @@
         {% if regions | length %}
         <h2 class="govuk-heading-l">Locations</h2>
         {% endif %}
-        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
+        <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold" data-location-type="locations">
           {% for location in locations %}
             <li>
               <a href="/locations/{{ location.id }}">

@@ -14,6 +14,7 @@ describe('Allocations middleware', function () {
       nextSpy = sinon.spy()
       mockRes = {}
       mockReq = {
+        locations: ['1', '2', '3'],
         params: {},
         query: {
           status: 'pending',
@@ -32,7 +33,7 @@ describe('Allocations middleware', function () {
         expect(mockReq.body.allocations).to.deep.equal({
           status: 'pending',
           moveDate: ['2010-10-10', '2010-10-07'],
-          locations: [],
+          locations: mockReq.locations,
           sortBy: 'moves_count',
           sortDirection: 'asc',
         })
@@ -53,61 +54,7 @@ describe('Allocations middleware', function () {
         expect(mockReq.body.allocations).to.deep.equal({
           status: 'pending',
           moveDate: ['2020-10-10', '2020-10-10'],
-          locations: [],
-          sortBy: 'moves_count',
-          sortDirection: 'asc',
-        })
-      })
-
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-
-    context('with current location', function () {
-      beforeEach(function () {
-        mockReq.session = {
-          currentLocation: {
-            id: '#locationId',
-          },
-        }
-        middleware(mockReq, mockRes, nextSpy)
-      })
-
-      it('should assign req.body correctly', function () {
-        expect(mockReq.body.allocations).to.deep.equal({
-          status: 'pending',
-          moveDate: ['2010-10-10', '2010-10-07'],
-          locations: ['#locationId'],
-          sortBy: 'moves_count',
-          sortDirection: 'asc',
-        })
-      })
-
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-
-    context('with current region', function () {
-      beforeEach(function () {
-        mockReq.session = {
-          currentRegion: {
-            locations: [
-              {
-                id: '#locationId',
-              },
-            ],
-          },
-        }
-        middleware(mockReq, mockRes, nextSpy)
-      })
-
-      it('should assign req.body correctly', function () {
-        expect(mockReq.body.allocations).to.deep.equal({
-          status: 'pending',
-          moveDate: ['2010-10-10', '2010-10-07'],
-          locations: ['#locationId'],
+          locations: mockReq.locations,
           sortBy: 'moves_count',
           sortDirection: 'asc',
         })
@@ -128,7 +75,7 @@ describe('Allocations middleware', function () {
         expect(mockReq.body.allocations).to.deep.equal({
           status: 'pending',
           moveDate: ['2010-10-10', '2010-10-07'],
-          fromLocations: [],
+          fromLocations: mockReq.locations,
           sortBy: 'moves_count',
           sortDirection: 'asc',
         })

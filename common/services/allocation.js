@@ -4,6 +4,46 @@ const { mapValues, pickBy } = require('lodash')
 const apiClient = require('../lib/api-client')()
 const moveService = require('../services/move')
 
+const batchRequest = require('./batch-request')
+
+function getAll({
+  filter = {},
+  combinedData = [],
+  page = 1,
+  includeCancelled = false,
+  isAggregation = false,
+  include,
+} = {}) {
+  return apiClient
+    .findAll('allocation', {
+      ...filter,
+      page,
+      per_page: isAggregation ? 1 : 100,
+      include,
+    })
+    .then(response => {
+      const { data, links, meta } = response
+      const results = [...combinedData, ...data]
+
+      if (isAggregation) {
+        return meta.pagination.total_objects
+      }
+
+      const hasNext = links.next && data.length !== 0
+
+      if (!hasNext) {
+        return results.map(allocationService.transform({ includeCancelled }))
+      }
+
+      return allocationService.getAll({
+        filter,
+        combinedData: results,
+        page: page + 1,
+        include,
+      })
+    })
+}
+
 const allocationService = {
   cancel(id, data) {
     if (!id) {
@@ -97,42 +137,12 @@ const allocationService = {
       status: 'cancelled',
     })
   },
-  getAll({
-    filter = {},
-    combinedData = [],
-    page = 1,
-    includeCancelled = false,
-    isAggregation = false,
-    include,
-  } = {}) {
-    return apiClient
-      .findAll('allocation', {
-        ...filter,
-        page,
-        per_page: isAggregation ? 1 : 100,
-        include,
-      })
-      .then(response => {
-        const { data, links, meta } = response
-        const results = [...combinedData, ...data]
-
-        if (isAggregation) {
-          return meta.pagination.total_objects
-        }
-
-        const hasNext = links.next && data.length !== 0
-
-        if (!hasNext) {
-          return results.map(allocationService.transform({ includeCancelled }))
-        }
-
-        return allocationService.getAll({
-          filter,
-          combinedData: results,
-          page: page + 1,
-          include,
-        })
-      })
+  async getAll(props) {
+    return batchRequest(getAll, props, [
+      'from_locations',
+      'to_locations',
+      'locations',
+    ])
   },
   getById(id, { include } = {}) {
     return apiClient

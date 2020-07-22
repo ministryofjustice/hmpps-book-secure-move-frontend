@@ -1,4 +1,4 @@
-const ensureCurrentLocation = require('./ensure-current-location')
+const ensureCurrentLocation = require('./ensure-selected-location')
 
 const locationsMountpath = '/locations'
 
@@ -18,25 +18,7 @@ describe('Ensure current location middleware', function () {
 
   context('when current is a string', function () {
     beforeEach(function () {
-      req.session.currentLocation = 'current-location'
-
-      ensureCurrentLocation({
-        locationsMountpath,
-      })(req, res, nextSpy)
-    })
-
-    it('should call next', function () {
-      expect(nextSpy).to.be.calledOnceWithExactly()
-    })
-
-    it('should not redirect', function () {
-      expect(res.redirect).not.to.be.called
-    })
-  })
-
-  context('when current location is null', function () {
-    beforeEach(function () {
-      req.session.currentLocation = null
+      req.session.hasSelectedLocation = true
 
       ensureCurrentLocation({
         locationsMountpath,
@@ -101,6 +83,24 @@ describe('Ensure current location middleware', function () {
     })
 
     it('should redirect to locations mountpath', function () {
+      expect(res.redirect).to.be.calledOnceWithExactly(locationsMountpath)
+    })
+  })
+
+  context('when current location is null', function () {
+    beforeEach(function () {
+      req.session.hasSelectedLocation = null
+
+      ensureCurrentLocation({
+        locationsMountpath,
+      })(req, res, nextSpy)
+    })
+
+    it('should call next', function () {
+      expect(nextSpy).not.to.be.called
+    })
+
+    it('should not redirect', function () {
       expect(res.redirect).to.be.calledOnceWithExactly(locationsMountpath)
     })
   })
