@@ -7,7 +7,7 @@ const semverSort = require('semver-sort')
 
 const { frameworks: frameworksPaths } = require('./paths')
 
-const API_VERSION = process.env.API_VERSION
+const API_VERSION = 2 // process.env.API_VERSION
 
 if (!API_VERSION) {
   throw new Error('The API_VERSION environment variable must be set')
