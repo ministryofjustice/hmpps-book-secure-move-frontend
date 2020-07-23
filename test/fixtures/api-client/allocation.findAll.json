@@ -15,7 +15,10 @@
       "updated_at": "2020-05-12T09:59:09+01:00",
       "status": "",
       "cancellation_reason": "",
-      "cancellation_reason_comment": ""
+      "cancellation_reason_comment": "",
+      "estate": "adult_female",
+      "estate_comment": "",
+      "sentence_length_comment": ""
     },
     "relationships": {
       "from_location": {

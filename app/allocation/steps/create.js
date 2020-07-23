@@ -18,7 +18,7 @@ module.exports = {
     controller: createControllers.AllocationCriteriaController,
     pageTitle: 'allocations::allocation_criteria.page_title',
     fields: [
-      'prisoner_category',
+      'estate',
       'sentence_length',
       'complex_cases',
       'complete_in_full',

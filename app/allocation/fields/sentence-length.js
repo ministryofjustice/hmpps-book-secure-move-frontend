@@ -24,6 +24,11 @@ const sentenceLength = {
       value: 'long',
       text: 'fields::sentence_length.items.length_long',
     },
+    {
+      value: 'other',
+      text: 'fields::sentence_length.items.other',
+      conditional: 'sentence_length_comment',
+    },
   ],
 }
 

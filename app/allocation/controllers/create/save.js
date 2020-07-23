@@ -7,11 +7,9 @@ const CreateAllocationBaseController = require('./base')
 class SaveController extends CreateAllocationBaseController {
   async saveValues(req, res, next) {
     try {
-      const data = omit(req.sessionModel.toJSON(), [
-        'csrf-secret',
-        'errors',
-        'errorValues',
-      ])
+      const sessionModel = req.sessionModel.toJSON()
+      const data = omit(sessionModel, ['csrf-secret', 'errors', 'errorValues'])
+
       const allocation = await allocationService.create({
         ...data,
         requested_by: req.session.user.fullname,

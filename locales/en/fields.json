@@ -281,16 +281,63 @@
   "date_of_allocation": {
     "label": "Date of allocation"
   },
-  "prisoner_category": {
-    "label": "Prisoner category"
+  "prisoner_common_category": {
+    "label": "Prisoner category",
+    "select_label": "Select category",
+    "items": {
+      "open": "Open",
+      "closed": "Closed",
+      "na": "Not applicable"
+    }
+  },
+  "prisoner_adult_male": {
+    "label": "Prisoner category",
+    "select_label": "Select category",
+    "items": {
+      "b": "B",
+      "c": "C",
+      "d": "D"
+    }
+  },
+  "prisoner_adult_female": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
+  },
+  "prisoner_youth_male": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
+  },
+  "prisoner_youth_female": {
+    "label": "Prisoner category",
+    "select_label": "Select category"
+  },
+  "estate": {
+    "label": "Estate type",
+    "select_label": "Select estate",
+    "items": {
+      "adult_female": "Adult female",
+      "adult_male": "Adult male",
+      "juvenile_female": "Juvenile female (age under 18)",
+      "juvenile_male": "Juvenile male (age under 18)",
+      "youth_female": "Youth offender female (age 18-21)",
+      "youth_male": "Youth offender male (age 18-21)",
+      "other": "Other"
+    }
+  },
+  "estate_other": {
+    "label": "Give details"
   },
   "sentence_length": {
     "label": "Time left to serve",
     "items": {
       "length_long": "Over 16 months",
       "length_short": "16 months or less",
-      "length": "Any time to serve"
+      "length": "Any time to serve",
+      "other": "Other"
     }
+  },
+  "sentence_length_comment": {
+    "label": "Give details"
   },
   "complete_in_full": {
     "label": "Does this allocation have to be filled in full?"

@@ -278,9 +278,12 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'locations',
       },
+      estate: '',
+      estate_comment: '',
       date: '',
       prisoner_category: '',
       sentence_length: '',
+      sentence_length_comment: '',
       complex_cases: [],
       moves_count: 0,
       complete_in_full: false, // boolean

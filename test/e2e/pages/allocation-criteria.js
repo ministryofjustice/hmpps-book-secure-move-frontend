@@ -10,15 +10,21 @@ class AllocationCriteriaPage extends Page {
     super()
     this.url = '/allocation/new/allocation-criteria'
     this.fields = {
-      prisonerCategory: Selector('#prisoner_category'),
+      estate: Selector('#estate'),
       sentenceLength: Selector('[name="sentence_length"]'),
       complexCases: Selector('#complex_cases'),
       completeInFull: Selector('#complete_in_full'),
       hasOtherCriteria: Selector('#has_other_criteria'),
       otherCriteria: Selector('#other_criteria'),
+      prisonerCategoryAdultFemale: Selector('#prisoner_adult_female'),
+      prisonerCategoryAdultMale: Selector('#prisoner_adult_male'),
+      prisonerCategoryYouthFemale: Selector('#prisoner_youth_female'),
+      prisonerCategoryYouthMale: Selector('#prisoner_youth_male'),
+      otherEstate: Selector('#estate_comment'),
+      sentenceComment: Selector('#sentence_length_comment'),
     }
     this.errorList = [
-      '#prisoner_category',
+      '#estate',
       '#sentence_length',
       '#complete_in_full',
       '#has_other_criteria',
@@ -30,10 +36,9 @@ class AllocationCriteriaPage extends Page {
   async fill() {
     await t.expect(this.getCurrentUrl()).contains(this.url)
 
-    const hasOtherCriteriaAnswer = faker.random.arrayElement(['Yes', 'No'])
     const fieldsToFill = {
-      prisonerCategory: {
-        selector: this.fields.prisonerCategory,
+      estate: {
+        selector: this.fields.estate,
         type: 'radio',
       },
       sentenceLength: {
@@ -61,18 +66,79 @@ class AllocationCriteriaPage extends Page {
       hasOtherCriteria: {
         selector: this.fields.hasOtherCriteria,
         type: 'radio',
-        value: hasOtherCriteriaAnswer,
       },
     }
 
-    if (hasOtherCriteriaAnswer === 'Yes') {
-      fieldsToFill.otherCriteria = {
+    const formAnswers = await fillInForm(fieldsToFill)
+    const conditionalFieldsToFill = {}
+
+    if (formAnswers.hasOtherCriteria === 'Yes') {
+      conditionalFieldsToFill.otherCriteria = {
         selector: this.fields.otherCriteria,
         value: faker.lorem.sentence(6),
       }
     }
 
-    return fillInForm(fieldsToFill)
+    if (formAnswers.sentenceLength === 'Other') {
+      conditionalFieldsToFill.sentenceComment = {
+        selector: this.fields.sentenceComment,
+        value: faker.lorem.sentence(6),
+      }
+    }
+
+    switch (formAnswers.estate) {
+      case 'Adult male': {
+        conditionalFieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryAdultMale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Adult female': {
+        conditionalFieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryAdultFemale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Youth male': {
+        conditionalFieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryYouthMale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Youth female': {
+        conditionalFieldsToFill.prisonerCategory = {
+          selector: this.fields.prisonerCategoryYouthFemale,
+          type: 'radio',
+        }
+        break
+      }
+
+      case 'Other': {
+        conditionalFieldsToFill.otherEstate = {
+          selector: this.fields.otherEstate,
+          value: faker.lorem.sentence(6),
+        }
+        break
+      }
+
+      case 'Juvenile male':
+        break
+
+      case 'Juvenile female':
+        break
+
+      default:
+        break
+    }
+
+    const formConditionalAnswers = await fillInForm(conditionalFieldsToFill)
+    return { ...formAnswers, ...formConditionalAnswers }
   }
 }
 export default AllocationCriteriaPage

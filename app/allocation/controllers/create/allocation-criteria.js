@@ -26,7 +26,13 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
   }
 
   saveValues(req, res, next) {
-    const { complex_cases: complexCases } = req.form.values
+    const {
+      complex_cases: complexCases,
+      prisoner_adult_male: prisonerMaleCategory,
+      prisoner_adult_female: prisonerFemaleCategory,
+      prisoner_youth_female: prisonerYouthFemaleCategory,
+      prisoner_youth_male: prisonerYouthMaleCategory,
+    } = req.form.values
     const originalFields = req.form.options.fields.complex_cases.items
     req.form.values.complex_cases = originalFields.map(originalField => {
       const { key, text, value } = originalField
@@ -37,6 +43,12 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
         answer: complexCases.includes(value),
       }
     })
+    req.form.values.prisoner_category =
+      prisonerMaleCategory ||
+      prisonerFemaleCategory ||
+      prisonerYouthFemaleCategory ||
+      prisonerYouthMaleCategory ||
+      undefined
     super.saveValues(req, res, next)
   }
 }

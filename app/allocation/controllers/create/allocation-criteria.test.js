@@ -127,6 +127,10 @@ describe('Allocation criteria controller', function () {
           'e8e8af77-198c-4b64-adb1-4aca6af469a7',
         ],
         complete_in_full: 'false',
+        prisoner_adult_female: undefined,
+        prisoner_adult_male: undefined,
+        prisoner_youth_female: undefined,
+        prisoner_youth_male: 'open',
       }
       mockComplexCaseFields = [
         {
@@ -193,6 +197,9 @@ describe('Allocation criteria controller', function () {
     })
     it('transforms the values of complex_cases in the format expected by the backend', function () {
       expect(req.form.values.complex_cases).to.deep.equal(transformedValues)
+    })
+    it('transforms the values of prison_category in the format expected by the backend', function () {
+      expect(req.form.values.prisoner_category).to.be.equal('open')
     })
     it('does pass other values unchanged', function () {
       expect(req.form.values.complete_in_full).to.equal('false')
