@@ -105,6 +105,10 @@ const createFields = {
   to_location_court_appearance: toLocationCourtAppearance,
   to_location_prison_transfer: toLocationPrisonTransfer,
   wheelchair: assessmentAnswer(),
+  video_remand_comments: {
+    ...cloneDeep(additionalInformation),
+    skip: true,
+  },
   violent: assessmentAnswer(),
 }
 

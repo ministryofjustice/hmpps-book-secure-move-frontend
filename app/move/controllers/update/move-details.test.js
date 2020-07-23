@@ -206,6 +206,7 @@ describe('Move controllers', function () {
           form: {
             values: {
               prison_recall_comments: '#additionalInformation',
+              video_remand_comments: '#additionalInformation',
               to_location_faraway: '#toLocation',
             },
           },
@@ -214,129 +215,137 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
       })
 
-      context('When the move_type is not prison_recall', function () {
-        context('and the to location has changed', function () {
-          beforeEach(async function () {
-            req.getMove.returns({
-              move_type: 'faraway',
-              to_location: {
-                id: '#originalLocation',
-              },
+      context(
+        'When the move_type is not prison_recall or video_remand',
+        function () {
+          context('and the to location has changed', function () {
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: 'faraway',
+                to_location: {
+                  id: '#originalLocation',
+                },
+              })
+              await controller.saveValues(req, res, nextSpy)
             })
-            await controller.saveValues(req, res, nextSpy)
-          })
 
-          it('should call set the notes property', async function () {
-            expect(req.t).to.be.calledOnceWithExactly(
-              'moves::redirect_notes',
-              req.session.user
-            )
-          })
+            it('should call set the notes property', async function () {
+              expect(req.t).to.be.calledOnceWithExactly(
+                'moves::redirect_notes',
+                req.session.user
+              )
+            })
 
-          it('should call move service’s redirect method', async function () {
-            expect(moveService.redirect).to.be.calledOnceWithExactly({
-              id: '#moveId',
-              notes: 'moves::redirect_notes',
-              to_location: {
-                id: '#toLocation',
-              },
+            it('should call move service’s redirect method', async function () {
+              expect(moveService.redirect).to.be.calledOnceWithExactly({
+                id: '#moveId',
+                notes: 'moves::redirect_notes',
+                to_location: {
+                  id: '#toLocation',
+                },
+              })
+            })
+
+            it('should invoke next', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
 
-          it('should invoke next', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
+          context('and the to location has not changed', function () {
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: 'faraway',
+                to_location: {
+                  id: '#toLocation',
+                },
+              })
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should not call move service’s redirect method', async function () {
+              expect(moveService.redirect).to.not.be.called
+            })
+
+            it('should invoke next', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+
+          context('and the move service errors', function () {
+            const error = new Error()
+            beforeEach(async function () {
+              moveService.redirect.throws(error)
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should invoke next with error', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly(error)
+            })
+          })
+        }
+      )
+
+      const checkMoveTypeWithAdditionalInfo = moveType => {
+        context(`When the move_type is ${moveType}`, function () {
+          context('and the comments has changed', function () {
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: moveType,
+                additional_information: '#oldInfo',
+              })
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should call move service’s update method', async function () {
+              expect(moveService.update).to.be.calledOnceWithExactly({
+                id: '#moveId',
+                additional_information: '#additionalInformation',
+              })
+            })
+
+            it('should invoke next', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+
+          context('and the additional comments have not changed', function () {
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: moveType,
+                additional_information: '#additionalInformation',
+              })
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should not call move service’s update method', async function () {
+              expect(moveService.update).to.not.be.called
+            })
+
+            it('should invoke next', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+
+          context('and the move service errors', function () {
+            const error = new Error()
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: moveType,
+                additional_information: '#oldInformation',
+              })
+              moveService.update.throws(error)
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should invoke next with error', async function () {
+              expect(nextSpy).to.be.calledOnceWithExactly(error)
+            })
           })
         })
+      }
 
-        context('and the to location has not changed', function () {
-          beforeEach(async function () {
-            req.getMove.returns({
-              move_type: 'faraway',
-              to_location: {
-                id: '#toLocation',
-              },
-            })
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should not call move service’s redirect method', async function () {
-            expect(moveService.redirect).to.not.be.called
-          })
-
-          it('should invoke next', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
-
-        context('and the move service errors', function () {
-          const error = new Error()
-          beforeEach(async function () {
-            moveService.redirect.throws(error)
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should invoke next with error', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly(error)
-          })
-        })
-      })
-
-      context('When the move_type is prison_recall', function () {
-        context('and the comments has changed', function () {
-          beforeEach(async function () {
-            req.getMove.returns({
-              move_type: 'prison_recall',
-              additional_information: '#oldInfo',
-            })
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should call move service’s update method', async function () {
-            expect(moveService.update).to.be.calledOnceWithExactly({
-              id: '#moveId',
-              additional_information: '#additionalInformation',
-            })
-          })
-
-          it('should invoke next', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
-
-        context('and the additional comments have not changed', function () {
-          beforeEach(async function () {
-            req.getMove.returns({
-              move_type: 'prison_recall',
-              additional_information: '#additionalInformation',
-            })
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should not call move service’s update method', async function () {
-            expect(moveService.update).to.not.be.called
-          })
-
-          it('should invoke next', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
-
-        context('and the move service errors', function () {
-          const error = new Error()
-          beforeEach(async function () {
-            req.getMove.returns({
-              move_type: 'prison_recall',
-              additional_information: '#oldInformation',
-            })
-            moveService.update.throws(error)
-            await controller.saveValues(req, res, nextSpy)
-          })
-
-          it('should invoke next with error', async function () {
-            expect(nextSpy).to.be.calledOnceWithExactly(error)
-          })
-        })
-      })
+      checkMoveTypeWithAdditionalInfo('prison_recall')
+      checkMoveTypeWithAdditionalInfo('video_remand')
     })
   })
 })

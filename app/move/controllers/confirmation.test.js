@@ -101,6 +101,28 @@ describe('Move controllers', function () {
       })
     })
 
+    describe('with move_type "video_remand"', function () {
+      beforeEach(function () {
+        req.move = {
+          ...mockMove,
+          move_type: 'video_remand',
+        }
+
+        controller(req, res)
+      })
+
+      it('should use translation key as location', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('location')
+        expect(params.location).to.equal(
+          'fields::move_type.items.video_remand.label'
+        )
+        expect(req.t.secondCall).to.have.been.calledWithExactly(
+          'fields::move_type.items.video_remand.label'
+        )
+      })
+    })
+
     describe('with empty supplier', function () {
       beforeEach(function () {
         req.move = {

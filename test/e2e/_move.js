@@ -364,6 +364,11 @@ export async function checkUpdateMoveDetails() {
       selector: updateMovePage.fields.prisonRecallComments,
       value: faker.lorem.sentence(6),
     }
+  } else if (moveType === 'video_remand') {
+    data.additionalInformation = {
+      selector: updateMovePage.fields.videoRemandComments,
+      value: faker.lorem.sentence(6),
+    }
   } else {
     const locationSelectors = {
       court_appearance: updateMovePage.fields.courtLocation,

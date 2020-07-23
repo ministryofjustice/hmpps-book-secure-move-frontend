@@ -108,11 +108,26 @@ describe('Presenters', function () {
             id: '8',
             move_type: 'unknown_type',
           },
+          {
+            id: '9',
+            move_type: 'video_remand',
+            to_location: {
+              id: 'a9760a3c-5bc0-47fb-8841-b5d8d991bd34',
+              type: 'locations',
+              key: 'hmp_long_lartin',
+              title: 'HMP Long Lartin',
+              location_type: 'prison',
+            },
+          },
+          {
+            id: '10',
+            move_type: 'video_remand',
+          },
         ])
       })
 
       it('should contain correct number of locations', function () {
-        expect(transformedResponse.length).to.equal(5)
+        expect(transformedResponse.length).to.equal(6)
       })
 
       describe('location order', function () {
@@ -124,6 +139,7 @@ describe('Presenters', function () {
             'fields::move_type.items.prison_recall.label',
             'fields::move_type.items.unknown.label',
             'fields::move_type.items.unknown.label',
+            'fields::move_type.items.video_remand.label',
           ])
         })
       })
@@ -131,7 +147,7 @@ describe('Presenters', function () {
       describe('location count', function () {
         it('should contain correct number of moves', function () {
           const keys = transformedResponse.map(group => group.items.length)
-          expect(keys).to.deep.equal([1, 1, 3, 2, 1])
+          expect(keys).to.deep.equal([1, 2, 3, 2, 1, 1])
         })
       })
 
@@ -146,7 +162,7 @@ describe('Presenters', function () {
 
       describe('translations', function () {
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(11)
+          expect(i18n.t).to.be.callCount(13)
         })
 
         it('should translate titles correctly', function () {
@@ -164,6 +180,9 @@ describe('Presenters', function () {
           )
           expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.items.prison_recall.label'
+          )
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.video_remand.label'
           )
           expect(i18n.t).to.be.calledWithExactly(
             'fields::move_type.items.unknown.label'

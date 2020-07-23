@@ -21,12 +21,15 @@ function moveToMetaListComponent(
   actions = {}
 ) {
   const destination = get(toLocation, 'title', 'Unknown')
-  const destinationLabel =
-    moveType === 'prison_recall'
-      ? i18n.t('fields::move_type.items.prison_recall.label')
-      : destination
+  const useLabel = ['prison_recall', 'video_remand']
+  const hasAdditionalInfo = useLabel
+  const destinationLabel = useLabel.includes(moveType)
+    ? i18n.t(`fields::move_type.items.${moveType}.label`)
+    : destination
   const destinationSuffix =
-    additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
+    additionalInfo && hasAdditionalInfo.includes(moveType)
+      ? ` — ${additionalInfo}`
+      : ''
   const prisonTransferReasonTitle = prisonTransferReason
     ? prisonTransferReason.title
     : ''

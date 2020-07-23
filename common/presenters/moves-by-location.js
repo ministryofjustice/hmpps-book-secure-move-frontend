@@ -9,14 +9,15 @@ function _emptyToLocation(move) {
     return move
   }
 
+  const hasOwnLabel = ['prison_recall', 'video_remand']
+
   return {
     ...move,
     to_location: {
       key: `unknown__${move.move_type}`,
-      title:
-        move.move_type === 'prison_recall'
-          ? i18n.t('fields::move_type.items.prison_recall.label')
-          : i18n.t('fields::move_type.items.unknown.label'),
+      title: hasOwnLabel.includes(move.move_type)
+        ? i18n.t(`fields::move_type.items.${move.move_type}.label`)
+        : i18n.t('fields::move_type.items.unknown.label'),
     },
   }
 }
