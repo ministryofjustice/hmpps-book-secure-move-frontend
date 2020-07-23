@@ -312,15 +312,15 @@
     "select_label": "Select category"
   },
   "estate": {
-    "label": "Estate",
+    "label": "Estate type",
     "select_label": "Select estate",
     "items": {
       "adult_female": "Adult female",
       "adult_male": "Adult male",
-      "juvenile_female": "Juvenile female",
-      "juvenile_male": "Juvenile male",
-      "youth_female": "Youth female",
-      "youth_male": "Youth male",
+      "juvenile_female": "Juvenile female (age under 18)",
+      "juvenile_male": "Juvenile male (age under 18)",
+      "youth_female": "Youth offender female (age 18-21)",
+      "youth_male": "Youth offender male (age 18-21)",
       "other": "Other"
     }
   },
