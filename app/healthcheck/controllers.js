@@ -1,7 +1,23 @@
 const { some } = require('lodash')
 
-const { BUILD_DATE, BUILD_BRANCH, GIT_SHA } = require('../../config')
+const {
+  API,
+  APP_BUILD_DATE,
+  APP_BUILD_TAG,
+  APP_BUILD_BRANCH,
+  APP_GIT_SHA,
+} = require('../../config')
 const { version } = require('../../package.json')
+
+// https://github.com/ministryofjustice/ping.json
+const buildDetails = {
+  build_date: APP_BUILD_DATE,
+  build_tag: APP_BUILD_TAG,
+  commit_id: APP_GIT_SHA,
+  version_number: version,
+  branch: APP_BUILD_BRANCH,
+  api_version: API.VERSION,
+}
 
 module.exports = {
   get: (req, res) => {
@@ -12,15 +28,12 @@ module.exports = {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.status(errors ? 503 : 200).json({
       status,
-      version,
       dependencies,
-      buildDate: BUILD_DATE,
-      buildTag: BUILD_BRANCH,
-      gitSha: GIT_SHA,
+      ...buildDetails,
     })
   },
   ping: (req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-    res.status(200).send('OK')
+    res.status(200).json(buildDetails)
   },
 }

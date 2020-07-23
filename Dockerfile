@@ -38,6 +38,9 @@ ENV APP_BUILD_TAG ${APP_BUILD_TAG}
 ARG APP_GIT_COMMIT
 ENV APP_GIT_COMMIT ${APP_GIT_COMMIT}
 
+ARG APP_BUILD_BRANCH
+ENV APP_BUILD_BRANCH ${APP_BUILD_BRANCH}
+
 COPY --chown=node:node start.js .
 COPY --chown=node:node server.js .
 COPY --chown=node:node locales locales

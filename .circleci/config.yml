@@ -226,8 +226,9 @@ jobs:
               --label build.git.branch=${CIRCLE_BRANCH} \
               --label build.date=${BUILD_DATE} \
               --build-arg APP_BUILD_DATE=${BUILD_DATE} \
-              --build-arg APP_BUILD_TAG=${CIRCLE_BRANCH} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BUILD_NUM} \
               --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg APP_BUILD_BRANCH=${CIRCLE_BRANCH} \
               -t app .
       - run:
           name: Login to ECR

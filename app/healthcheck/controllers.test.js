@@ -1,12 +1,16 @@
 const proxyquire = require('proxyquire').noCallThru()
 
 const mockConfig = {
-  BUILD_DATE: '2019-10-10',
-  BUILD_BRANCH: 'master',
-  GIT_SHA: 'gbe34155ae5edfade5107bd5629d0c159dc37d19',
+  API: {
+    VERSION: 7,
+  },
+  APP_BUILD_DATE: '2019-10-10',
+  APP_BUILD_TAG: '5226',
+  APP_BUILD_BRANCH: 'master',
+  APP_GIT_SHA: 'gbe34155ae5edfade5107bd5629d0c159dc37d19',
 }
 const mockManifest = {
-  version: '1.0.0',
+  version_number: '1.0.0',
 }
 const controllers = proxyquire('./controllers', {
   '../../config': mockConfig,
@@ -60,10 +64,12 @@ describe('Healthcheck controllers', function () {
       it('should render JSON', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'OK',
-          version: mockManifest.version,
-          buildDate: mockConfig.BUILD_DATE,
-          buildTag: mockConfig.BUILD_BRANCH,
-          gitSha: mockConfig.GIT_SHA,
+          api_version: 7,
+          version_number: mockManifest.version,
+          build_date: mockConfig.APP_BUILD_DATE,
+          build_tag: mockConfig.APP_BUILD_TAG,
+          commit_id: mockConfig.APP_GIT_SHA,
+          branch: mockConfig.APP_BUILD_BRANCH,
           dependencies: res.dependencies,
         })
       })
@@ -96,10 +102,12 @@ describe('Healthcheck controllers', function () {
       it('should render JSON', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'Service unavailable',
-          version: mockManifest.version,
-          buildDate: mockConfig.BUILD_DATE,
-          buildTag: mockConfig.BUILD_BRANCH,
-          gitSha: mockConfig.GIT_SHA,
+          api_version: 7,
+          version_number: mockManifest.version,
+          build_date: mockConfig.APP_BUILD_DATE,
+          build_tag: mockConfig.APP_BUILD_TAG,
+          commit_id: mockConfig.APP_GIT_SHA,
+          branch: mockConfig.APP_BUILD_BRANCH,
           dependencies: res.dependencies,
         })
       })
@@ -113,7 +121,7 @@ describe('Healthcheck controllers', function () {
       res = {
         setHeader: sinon.stub(),
         status: sinon.stub().returnsThis(),
-        send: sinon.stub(),
+        json: sinon.stub(),
       }
       controllers.ping({}, res)
     })
@@ -130,7 +138,14 @@ describe('Healthcheck controllers', function () {
     })
 
     it('should render JSON', function () {
-      expect(res.send).to.be.calledOnceWithExactly('OK')
+      expect(res.json).to.be.calledOnceWithExactly({
+        api_version: 7,
+        version_number: mockManifest.version,
+        build_date: mockConfig.APP_BUILD_DATE,
+        build_tag: mockConfig.APP_BUILD_TAG,
+        commit_id: mockConfig.APP_GIT_SHA,
+        branch: mockConfig.APP_BUILD_BRANCH,
+      })
     })
   })
 })
