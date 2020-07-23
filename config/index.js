@@ -56,9 +56,10 @@ module.exports = {
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
-  BUILD_DATE: process.env.APP_BUILD_DATE,
-  BUILD_BRANCH: process.env.APP_BUILD_TAG,
-  GIT_SHA: process.env.APP_GIT_COMMIT,
+  APP_BUILD_DATE: process.env.APP_BUILD_DATE,
+  APP_BUILD_BRANCH: process.env.APP_BUILD_BRANCH,
+  APP_BUILD_TAG: process.env.APP_BUILD_TAG,
+  APP_GIT_SHA: process.env.APP_GIT_COMMIT,
   API: {
     VERSION: Number(API_VERSION),
     BASE_URL: API_BASE_URL + process.env.API_PATH,
