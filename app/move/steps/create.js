@@ -179,6 +179,7 @@ module.exports = {
       'to_location',
       'to_location_court_appearance',
       'to_location_prison_transfer',
+      'to_location_police_transfer',
       'prison_recall_comments',
       'video_remand_comments',
     ],

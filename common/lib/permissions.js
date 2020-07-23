@@ -6,6 +6,7 @@ const policePermissions = [
   'move:create',
   'move:create:court_appearance',
   'move:create:prison_recall',
+  'move:create:police_transfer',
   'move:create:video_remand',
   'move:cancel',
   'move:update',
