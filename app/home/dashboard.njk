@@ -15,8 +15,26 @@
     {% for key, section in sections %}
       {% if canAccess(section.permission) %}
         <section class="govuk-grid-column-one-half govuk-!-margin-bottom-6">
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-3">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
             {{ t(section.heading) }}
+
+            <span class="govuk-!-display-block">
+            {% if section.period === 'week' %}
+              {{ dateRange | formatDateRange }}
+              {{ appTime({
+                datetime: dateRange | formatISOWeek,
+                text: '(' + dateRange | formatDateRangeAsRelativeWeek | lower + ')',
+                classes: 'app-secondary-text-colour'
+                }) }}
+            {% else %}
+              {{ today | formatDateWithDay }}
+              {{ appTime({
+                datetime: today,
+                text: '(' + today | formatDateAsRelativeDay | lower + ')',
+                classes: 'app-secondary-text-colour'
+                }) }}
+            {% endif %}
+            </span>
           </h2>
 
           {{ appFilter({

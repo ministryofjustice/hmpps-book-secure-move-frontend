@@ -43,30 +43,27 @@ describe('Home controllers', function () {
 
       it('should return locations sorted by title', function () {
         const params = res.render.args[0][1]
-        expect(params).to.deep.equal({
-          pageTitle: 'dashboard::page_title',
-          sections: {
-            outgoing: {
-              permission: 'moves:view:outgoing',
-              heading: 'dashboard::sections.outgoing.heading',
-              filter: req.filterOutgoing,
-            },
-            incoming: {
-              permission: 'moves:view:incoming',
-              heading: 'dashboard::sections.incoming.heading',
-              filter: req.filterIncoming,
-            },
-            singleRequests: {
-              permission: 'moves:view:proposed',
-              heading: 'dashboard::sections.single_requests.heading',
-              filter: req.filterSingleRequests,
-            },
-            allocations: {
-              permission: 'allocations:view',
-              heading: 'dashboard::sections.allocations.heading',
-              filter: req.filterAllocations,
-            },
-          },
+        const sections = [
+          'outgoing',
+          'incoming',
+          'singleRequests',
+          'allocations',
+        ]
+        expect(params).to.have.all.keys(
+          'pageTitle',
+          'sections',
+          'dateRange',
+          'today'
+        )
+        expect(params.pageTitle).to.equal('dashboard::page_title')
+        expect(params.sections).to.have.all.keys(sections)
+        sections.forEach(section => {
+          const fields = ['permission', 'heading', 'filter', 'period']
+          expect(params.sections[section]).to.have.all.keys(fields)
+          expect(params.sections[section].permission).to.be.a('string')
+          expect(params.sections[section].heading).to.be.a('string')
+          expect(params.sections[section].filter).to.be.an('array')
+          expect(params.sections[section].period).to.be.a('string')
         })
       })
     })

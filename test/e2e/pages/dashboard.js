@@ -8,7 +8,7 @@ class DashboardPage extends Page {
 
     this.nodes = {
       singleRequestsSection: Selector('h2')
-        .withText('Single requests sent this week')
+        .withText('Single requests sent')
         .parent('section'),
       singleRequestsLink: Selector('a').withText('pending review'),
     }

@@ -2,24 +2,24 @@
   "page_title": "Your overview",
   "sections": {
     "outgoing": {
-      "heading": "$t(primary_navigation.outgoing) for today",
+      "heading": "$t(primary_navigation.outgoing) for",
       "summary": {
         "total": "outgoing move",
         "total_plural": "outgoing moves"
       }
     },
     "incoming": {
-      "heading": "$t(primary_navigation.incoming) for today",
+      "heading": "$t(primary_navigation.incoming) for",
       "summary": {
         "total": "incoming move",
         "total_plural": "incoming moves"
       }
     },
     "single_requests": {
-      "heading": "$t(primary_navigation.single_requests) sent this week"
+      "heading": "$t(primary_navigation.single_requests) sent"
     },
     "allocations": {
-      "heading": "$t(primary_navigation.allocations) for this week"
+      "heading": "$t(primary_navigation.allocations) for"
     }
   }
 }
