@@ -19,6 +19,10 @@ export const stcUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.STC)
 })
 
+export const schUser = Role(home, async t => {
+  await page.signIn(E2E.ROLES.SCH)
+})
+
 export const prisonUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.PRISON)
 })

@@ -185,6 +185,7 @@ describe('User class', function () {
           'move:create',
           'move:create:court_appearance',
           'move:cancel',
+          'move:update',
         ])
       })
     })
