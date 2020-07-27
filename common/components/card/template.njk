@@ -1,5 +1,6 @@
 {% from "tag/macro.njk" import appTag %}
 {% from "moj/components/badge/macro.njk" import mojBadge %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% set headingLevel = params.headingLevel if params.headingLevel else 2 %}
 
@@ -60,6 +61,10 @@
           </li>
         {% endfor %}
       </ul>
+    {% endif %}
+
+    {% if params.insetText %}
+      {{ govukInsetText(params.insetText) }}
     {% endif %}
   </div>
 </div>
