@@ -86,55 +86,42 @@ class AllocationCriteriaPage extends Page {
       }
     }
 
-    switch (formAnswers.estate) {
-      case 'Adult male': {
-        conditionalFieldsToFill.prisonerCategory = {
-          selector: this.fields.prisonerCategoryAdultMale,
-          type: 'radio',
-        }
-        break
-      }
+    const fields = this.fields
+    const conditionalEstateTypeFields = [
+      {
+        prefix: 'Adult male',
+        selector: fields.prisonerCategoryAdultMale,
+        type: 'radio',
+      },
+      {
+        prefix: 'Adult female',
+        selector: fields.prisonerCategoryAdultFemale,
+        type: 'radio',
+      },
+      {
+        prefix: 'Youth offender male',
+        selector: fields.prisonerCategoryYouthMale,
+        type: 'radio',
+      },
+      {
+        prefix: 'Youth offender female',
+        selector: fields.prisonerCategoryYouthFemale,
+        type: 'radio',
+      },
+      {
+        prefix: 'Other',
+        selector: fields.otherEstate,
+        value: faker.lorem.sentence(6),
+      },
+    ]
 
-      case 'Adult female': {
-        conditionalFieldsToFill.prisonerCategory = {
-          selector: this.fields.prisonerCategoryAdultFemale,
-          type: 'radio',
-        }
-        break
-      }
+    const conditionalEstateType = conditionalEstateTypeFields.find(it =>
+      formAnswers.estate.startsWith(it.prefix)
+    )
 
-      case 'Youth male': {
-        conditionalFieldsToFill.prisonerCategory = {
-          selector: this.fields.prisonerCategoryYouthMale,
-          type: 'radio',
-        }
-        break
-      }
-
-      case 'Youth female': {
-        conditionalFieldsToFill.prisonerCategory = {
-          selector: this.fields.prisonerCategoryYouthFemale,
-          type: 'radio',
-        }
-        break
-      }
-
-      case 'Other': {
-        conditionalFieldsToFill.otherEstate = {
-          selector: this.fields.otherEstate,
-          value: faker.lorem.sentence(6),
-        }
-        break
-      }
-
-      case 'Juvenile male':
-        break
-
-      case 'Juvenile female':
-        break
-
-      default:
-        break
+    if (conditionalEstateType) {
+      const { prefix: omit, ...rest } = conditionalEstateType
+      conditionalFieldsToFill.prisonerCategory = rest
     }
 
     const formConditionalAnswers = await fillInForm(conditionalFieldsToFill)
