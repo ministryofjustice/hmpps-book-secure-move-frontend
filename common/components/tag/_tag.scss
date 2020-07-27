@@ -81,3 +81,27 @@ a.app-tag {
     border-color: govuk-colour("red");
   }
 }
+
+.app-tag--warning {
+  background-color: govuk-colour("yellow");
+  color: govuk-colour("black");
+
+  &:focus {
+    background-color: govuk-colour("yellow");
+    color: govuk-colour("black");
+  }
+
+  @include govuk-media-query($media-type: print) {
+    border-color: govuk-colour("yellow");
+  }
+}
+
+a.app-tag--warning {
+  &:active,
+  &:link,
+  &:hover,
+  &:visited,
+  &:focus {
+    color: govuk-colour("black");
+  }
+}

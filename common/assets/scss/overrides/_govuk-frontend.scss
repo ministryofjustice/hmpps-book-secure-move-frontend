@@ -13,3 +13,10 @@
 .govuk-hint * {
   color: $govuk-secondary-text-colour;
 }
+
+.govuk-inset-text--compact {
+  @include govuk-font($size: 16);
+  border-left-width: 4px;
+  color: $govuk-secondary-text-colour;
+  padding: govuk-spacing(1) govuk-spacing(2);
+}
