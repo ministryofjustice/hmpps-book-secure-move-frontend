@@ -1,9 +1,11 @@
 const { filter } = require('lodash')
 
+const { FEATURE_FLAGS } = require('../../config')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
 const assessmentToTagList = require('./assessment-to-tag-list')
+const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 
 function profileToCardComponent({
   showImage = true,
@@ -11,8 +13,12 @@ function profileToCardComponent({
   showTags = true,
 } = {}) {
   return function item(profile) {
-    profile = profile || {}
-    const { href, assessment_answers: assessmentAnswers, person = {} } = profile
+    const {
+      assessment_answers: assessmentAnswers,
+      href,
+      person = {},
+      person_escort_record: personEscortRecord,
+    } = profile || {}
     const {
       id,
       gender,
@@ -54,8 +60,26 @@ function profileToCardComponent({
     }
 
     if (showTags) {
-      card.tags = {
-        items: assessmentToTagList(assessmentAnswers, href),
+      // TODO: Remove feature flag condition once PER is enabled everywhere
+      if (FEATURE_FLAGS.PERSON_ESCORT_RECORD) {
+        const { flags, status } = personEscortRecord || {}
+        const isComplete =
+          personEscortRecord && !['not_started', 'in_progress'].includes(status)
+
+        if (isComplete) {
+          card.tags = {
+            items: frameworkFlagsToTagList(flags, href),
+          }
+        } else {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact',
+            text: i18n.t('person-escort-record::flags.incomplete'),
+          }
+        }
+      } else {
+        card.tags = {
+          items: assessmentToTagList(assessmentAnswers, href),
+        }
       }
     }
 
