@@ -1,3 +1,5 @@
+const timezoneMock = require('timezone-mock')
+
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -18,6 +20,7 @@ const mockMove = {
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
     beforeEach(function () {
+      timezoneMock.register('UTC')
       sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returns('__translated__')
     })
