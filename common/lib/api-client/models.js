@@ -55,6 +55,7 @@ module.exports = {
         'profile',
         'profile.documents',
         'profile.person_escort_record',
+        'profile.person_escort_record.flags',
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
@@ -388,6 +389,10 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'framework_responses',
       },
+      flags: {
+        jsonApi: 'hasMany',
+        type: 'framework_flags',
+      },
     },
     options: {
       defaultInclude: [
@@ -396,6 +401,7 @@ module.exports = {
         'framework',
         'responses',
         'responses.question',
+        'flags',
       ],
     },
   },
@@ -405,6 +411,17 @@ module.exports = {
       name: '',
       questions: {
         jsonApi: 'hasMany',
+        type: 'framework_questions',
+      },
+    },
+  },
+  framework_flag: {
+    fields: {
+      title: '',
+      flag_type: '',
+      question_value: '',
+      question: {
+        jsonApi: 'hasOne',
         type: 'framework_questions',
       },
     },
@@ -433,6 +450,10 @@ module.exports = {
       question: {
         jsonApi: 'hasOne',
         type: 'framework_questions',
+      },
+      flags: {
+        jsonApi: 'hasMany',
+        type: 'framework_flags',
       },
     },
     options: {
