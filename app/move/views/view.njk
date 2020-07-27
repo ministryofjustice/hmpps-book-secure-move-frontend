@@ -168,12 +168,28 @@
       }) }}
     </span>
 
-    {% if tagList | length %}
+    {% if personEscortRecordIsEnabled %}
+      <div class="govuk-!-margin-top-2">
+        {% if not personEscortRecordIsComplete %}
+          {{ govukInsetText({
+            classes: "govuk-inset-text--compact govuk-!-margin-0",
+            text: t("person-escort-record::flags.incomplete")
+          }) }}
+        {% endif %}
+
+        {% if personEscortRecordIsComplete and personEscortRecordTagList | length %}
+          {% for tag in personEscortRecordTagList %}
+            {{ appTag(tag) }}
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% elif tagList | length %}
+      {# TODO: Remove surrounding conditional once PER is fully enabled #}
       <div class="govuk-!-margin-top-2">
         {% for tag in tagList %}
           {{ appTag(tag) }}
         {% endfor %}
-      <div>
+      </div>
     {% endif %}
   </header>
 {% endblock %}

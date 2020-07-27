@@ -94,6 +94,9 @@ describe('Move controllers', function () {
       sinon
         .stub(presenters, 'frameworkToTaskListComponent')
         .returns('__frameworkToTaskListComponent__')
+      sinon
+        .stub(presenters, 'frameworkFlagsToTagList')
+        .returns('__frameworkFlagsToTagList__')
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
@@ -129,7 +132,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(17)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(19)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -159,6 +162,11 @@ describe('Move controllers', function () {
         expect(params.personEscortRecord).to.be.undefined
       })
 
+      it('should contain a personEscortRecordIsEnabled param', function () {
+        expect(params).to.have.property('personEscortRecordIsEnabled')
+        expect(params.personEscortRecordIsEnabled).to.be.true
+      })
+
       it('should contain a personEscortRecordIsComplete param', function () {
         expect(params).to.have.property('personEscortRecordIsComplete')
         expect(params.personEscortRecordIsComplete).to.be.false
@@ -180,6 +188,13 @@ describe('Move controllers', function () {
         expect(params).to.have.property('personEscortRecordtaskList')
         expect(params.personEscortRecordtaskList).to.equal(
           '__frameworkToTaskListComponent__'
+        )
+      })
+
+      it('should contain a personEscortRecordTagList param', function () {
+        expect(params).to.have.property('personEscortRecordTagList')
+        expect(params.personEscortRecordTagList).to.equal(
+          '__frameworkFlagsToTagList__'
         )
       })
 
@@ -329,7 +344,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(17)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(19)
       })
     })
 
@@ -420,13 +435,30 @@ describe('Move controllers', function () {
     context('with Person Escort Record', function () {
       const mockPersonEscortRecord = {
         id: '67890',
-        status: 'incomplete',
+        status: 'not_started',
         meta: {
           section_progress: {
             one: 'in_progress',
-            two: 'complete',
+            two: 'completed',
           },
         },
+        flags: [
+          {
+            id: '12345',
+            type: 'framework_flags',
+            title: 'Flag 1',
+          },
+          {
+            id: '67890',
+            type: 'framework_flags',
+            title: 'Flag 2',
+          },
+          {
+            id: 'abcde',
+            type: 'framework_flags',
+            title: 'Flag 3',
+          },
+        ],
       }
 
       beforeEach(function () {
@@ -439,7 +471,7 @@ describe('Move controllers', function () {
         }
       })
 
-      context('when record is incomplete', function () {
+      context('when record is not_started', function () {
         beforeEach(function () {
           controller(req, res)
           params = res.render.args[0][1]
@@ -487,11 +519,27 @@ describe('Move controllers', function () {
         })
       })
 
-      context('when record is complete', function () {
+      context('when record is in_progress', function () {
         beforeEach(function () {
           req.move.profile.person_escort_record = {
             ...mockPersonEscortRecord,
-            status: 'complete',
+            status: 'in_progress',
+          }
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should show Person Escort Record as incomplete', function () {
+          expect(params).to.have.property('personEscortRecordIsComplete')
+          expect(params.personEscortRecordIsComplete).to.be.false
+        })
+      })
+
+      context('when record is completed', function () {
+        beforeEach(function () {
+          req.move.profile.person_escort_record = {
+            ...mockPersonEscortRecord,
+            status: 'completed',
           }
           controller(req, res)
           params = res.render.args[0][1]
@@ -501,11 +549,11 @@ describe('Move controllers', function () {
           expect(params).to.have.property('personEscortRecord')
           expect(params.personEscortRecord).to.deep.equal({
             ...mockPersonEscortRecord,
-            status: 'complete',
+            status: 'completed',
           })
         })
 
-        it('should show Person Escort Record as complete', function () {
+        it('should show Person Escort Record as completed', function () {
           expect(params).to.have.property('personEscortRecordIsComplete')
           expect(params.personEscortRecordIsComplete).to.be.true
         })
@@ -525,6 +573,12 @@ describe('Move controllers', function () {
             frameworkSections: frameworkStub.sections,
             sectionProgress: mockPersonEscortRecord.meta.section_progress,
           })
+        })
+
+        it('should call frameworkFlagsToTagList presenter with correct args', function () {
+          expect(
+            presenters.frameworkFlagsToTagList
+          ).to.be.calledOnceWithExactly(mockPersonEscortRecord.flags)
         })
 
         it('should contain Person Escort Record tasklist', function () {
@@ -569,6 +623,11 @@ describe('Move controllers', function () {
         beforeEach(function () {
           controllerWithoutPER(req, res)
           params = res.render.args[0][1]
+        })
+
+        it('should set personEscortRecordIsEnabled to false', function () {
+          expect(params).to.have.property('personEscortRecordIsEnabled')
+          expect(params.personEscortRecordIsEnabled).to.be.false
         })
 
         it('should not show Person Escort Record banner', function () {

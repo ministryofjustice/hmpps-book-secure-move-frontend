@@ -12,5 +12,8 @@
       "heading":"Confirm and complete this Person Escort Record",
       "content":"Once you are confident the information below is correct and won’t change, provide your confirmation that this record is correct in order to complete it.\n\n!!! warning\nOnce you confirm and complete the Person Escort Record you will no longer be able to update the information.\n!!!"
     }
+  },
+  "flags": {
+    "incomplete": "Warnings will display once a Person Escort Record has been completed"
   }
 }
