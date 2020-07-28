@@ -53,10 +53,15 @@ module.exports = function view(req, res) {
     .assessmentAnswersByCategory(assessmentAnswers)
     .filter(category => category.key !== 'court')
     .map(presenters.assessmentCategoryToPanelComponent)
+  const courtSummary = presenters
+    .assessmentAnswersByCategory(assessmentAnswers)
+    .filter(category => category.key === 'court')
+    .map(presenters.assessmentCategoryToSummaryListComponent)[0]
 
   const locals = {
     move,
     assessment,
+    courtSummary,
     personEscortRecord,
     personEscortRecordIsEnabled,
     personEscortRecordIsComplete,
@@ -82,10 +87,6 @@ module.exports = function view(req, res) {
           ),
         }
       }
-    ),
-    courtSummary: presenters.assessmentToSummaryListComponent(
-      assessmentAnswers,
-      'court'
     ),
     messageTitle: bannerStatuses.includes(status)
       ? req.t('statuses::' + status, { context: cancellationReason })

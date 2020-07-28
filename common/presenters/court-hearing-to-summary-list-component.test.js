@@ -37,7 +37,7 @@ describe('Presenters', function () {
         it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
-            'govuk-!-margin-bottom-2'
+            'govuk-!-margin-bottom-2 govuk-!-font-size-16'
           )
         })
 
@@ -113,7 +113,7 @@ describe('Presenters', function () {
         it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
-            'govuk-!-margin-bottom-2'
+            'govuk-!-margin-bottom-2 govuk-!-font-size-16'
           )
         })
 
@@ -135,7 +135,7 @@ describe('Presenters', function () {
         it('should contain classes property', function () {
           expect(transformedResponse).to.have.property('classes')
           expect(transformedResponse.classes).to.equal(
-            'govuk-!-margin-bottom-2'
+            'govuk-!-margin-bottom-2 govuk-!-font-size-16'
           )
         })
 

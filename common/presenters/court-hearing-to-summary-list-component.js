@@ -54,7 +54,7 @@ module.exports = function courtHearingsToSummaryListComponent({
   ]
 
   return {
-    classes: 'govuk-!-margin-bottom-2',
+    classes: 'govuk-!-margin-bottom-2 govuk-!-font-size-16',
     rows: rows.filter(row => row.value.text || row.value.html),
   }
 }

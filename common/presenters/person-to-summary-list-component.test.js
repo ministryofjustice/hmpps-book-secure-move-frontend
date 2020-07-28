@@ -52,8 +52,18 @@ describe('Presenters', function () {
       })
 
       describe('response', function () {
-        it('should contain rows property', function () {
-          expect(transformedResponse).to.have.property('rows')
+        it('should contain correct properties', function () {
+          expect(Object.keys(transformedResponse)).to.deep.equal([
+            'classes',
+            'rows',
+          ])
+        })
+
+        it('should set component classes', function () {
+          expect(transformedResponse.classes).to.equal('govuk-!-font-size-16')
+        })
+
+        it('should contain correct number of rows', function () {
           expect(transformedResponse.rows.length).to.equal(6)
         })
 
