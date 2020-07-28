@@ -18,8 +18,12 @@ class AllocationCriteriaPage extends Page {
       otherCriteria: Selector('#other_criteria'),
       prisonerCategoryAdultFemale: Selector('#prisoner_adult_female'),
       prisonerCategoryAdultMale: Selector('#prisoner_adult_male'),
-      prisonerCategoryYouthFemale: Selector('#prisoner_youth_female'),
-      prisonerCategoryYouthMale: Selector('#prisoner_youth_male'),
+      prisonerCategoryYoungOffenderFemale: Selector(
+        '#prisoner_young_offender_female'
+      ),
+      prisonerCategoryYoungOffenderMale: Selector(
+        '#prisoner_young_offender_male'
+      ),
       otherEstate: Selector('#estate_comment'),
       sentenceComment: Selector('#sentence_length_comment'),
     }
@@ -100,12 +104,12 @@ class AllocationCriteriaPage extends Page {
       },
       {
         prefix: 'Youth offender male',
-        selector: fields.prisonerCategoryYouthMale,
+        selector: fields.prisonerCategoryYoungOffenderMale,
         type: 'radio',
       },
       {
         prefix: 'Youth offender female',
-        selector: fields.prisonerCategoryYouthFemale,
+        selector: fields.prisonerCategoryYoungOffenderFemale,
         type: 'radio',
       },
       {

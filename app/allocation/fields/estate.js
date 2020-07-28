@@ -31,14 +31,14 @@ const estate = {
       text: 'fields::estate.items.juvenile_male',
     },
     {
-      value: 'youth_female',
-      text: 'fields::estate.items.youth_female',
-      conditional: 'prisoner_youth_female',
+      value: 'young_offender_female',
+      text: 'fields::estate.items.young_offender_female',
+      conditional: 'prisoner_young_offender_female',
     },
     {
-      value: 'youth_male',
-      text: 'fields::estate.items.youth_male',
-      conditional: 'prisoner_youth_male',
+      value: 'young_offender_male',
+      text: 'fields::estate.items.young_offender_male',
+      conditional: 'prisoner_young_offender_male',
     },
     {
       value: 'other',

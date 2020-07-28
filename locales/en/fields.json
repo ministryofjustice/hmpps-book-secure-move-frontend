@@ -306,11 +306,11 @@
     "label": "Prisoner category",
     "select_label": "Select category"
   },
-  "prisoner_youth_male": {
+  "prisoner_young_offender_male": {
     "label": "Prisoner category",
     "select_label": "Select category"
   },
-  "prisoner_youth_female": {
+  "prisoner_young_offender_female": {
     "label": "Prisoner category",
     "select_label": "Select category"
   },
@@ -322,8 +322,8 @@
       "adult_male": "Adult male",
       "juvenile_female": "Juvenile female (age under 18)",
       "juvenile_male": "Juvenile male (age under 18)",
-      "youth_female": "Youth offender female (age 18-21)",
-      "youth_male": "Youth offender male (age 18-21)",
+      "young_offender_female": "Youth offender female (age 18-21)",
+      "young_offender_male": "Youth offender male (age 18-21)",
       "other": "Other"
     }
   },
