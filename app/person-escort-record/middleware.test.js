@@ -103,20 +103,22 @@ describe('Person escort record middleware', function () {
           ...mockReq,
           personEscortRecord: {
             id: '__movePER__',
+            status: 'not_started',
           },
         }
         await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
       })
 
-      it('should call API with record ID', function () {
-        expect(personEscortRecordService.getById).to.be.calledWith(
-          '__movePER__'
-        )
+      it('should not call API', function () {
+        expect(personEscortRecordService.getById).not.to.be.called
       })
 
-      it('should set response data to request property', function () {
+      it('should set request property to existing property', function () {
         expect(mockReq).to.have.property('personEscortRecord')
-        expect(mockReq.personEscortRecord).to.deep.equal(personEscortRecordStub)
+        expect(mockReq.personEscortRecord).to.deep.equal({
+          id: '__movePER__',
+          status: 'not_started',
+        })
       })
 
       it('should call next with no argument', function () {
