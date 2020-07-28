@@ -9,6 +9,7 @@ const assessmentToTagList = require('./assessment-to-tag-list')
 const courtCaseToCardComponent = require('./court-case-to-card-component')
 const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
+const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkStepToSummary = require('./framework-step-to-summary')
 const frameworkToTaskListComponent = require('./framework-to-task-list-component')
 const moveToCardComponent = require('./move-to-card-component')
@@ -34,6 +35,7 @@ module.exports = {
   courtCaseToCardComponent,
   courtHearingToSummaryListComponent,
   frameworkFieldToSummaryListRow,
+  frameworkFlagsToTagList,
   frameworkStepToSummary,
   frameworkToTaskListComponent,
   moveToCardComponent,

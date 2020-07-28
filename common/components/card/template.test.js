@@ -217,4 +217,17 @@ describe('Card component', function () {
       })
     })
   })
+
+  context('with inset text', function () {
+    it('should render inset text component', function () {
+      const $ = renderComponentHtmlToCheerio(
+        'card',
+        examples['with inset text']
+      )
+      const $insetText = $('.govuk-inset-text')
+
+      expect($insetText.length).to.equal(1)
+      expect($insetText.text()).to.contain('A message about this card')
+    })
+  })
 })

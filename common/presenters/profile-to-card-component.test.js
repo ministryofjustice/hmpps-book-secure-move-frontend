@@ -1,7 +1,15 @@
+const proxyquire = require('proxyquire').noCallThru()
+
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const profileToCardComponent = require('./profile-to-card-component')
+const profileToCardComponent = proxyquire('./profile-to-card-component', {
+  '../../config': {
+    FEATURE_FLAGS: {
+      PERSON_ESCORT_RECORD: false,
+    },
+  },
+})
 
 const mockProfile = {
   id: '12345',
@@ -339,6 +347,136 @@ describe('Presenters', function () {
               sortOrder: 2,
             },
           ])
+        })
+      })
+
+      context('with Person Escort Record feature flag', function () {
+        const frameworkFlagsToTagListStub = sinon
+          .stub()
+          .returns(['1', '2', '3'])
+        const profileToCardComponentWithPER = proxyquire(
+          './profile-to-card-component',
+          {
+            '../../config': {
+              FEATURE_FLAGS: {
+                PERSON_ESCORT_RECORD: true,
+              },
+            },
+            './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
+          }
+        )
+
+        context('with no Person Escort Record', function () {
+          beforeEach(function () {
+            transformedResponse = profileToCardComponentWithPER()(mockProfile)
+          })
+
+          it('should not contain tags', function () {
+            expect(transformedResponse).not.to.have.property('tags')
+          })
+
+          it('should not contain inset text message', function () {
+            expect(transformedResponse).to.have.property('insetText')
+            expect(transformedResponse.insetText).to.deep.equal({
+              classes: 'govuk-inset-text--compact',
+              text: '__translated__',
+            })
+          })
+
+          it('should translate inset text message', function () {
+            expect(i18n.t).to.have.been.calledWithExactly(
+              'person-escort-record::flags.incomplete'
+            )
+          })
+        })
+
+        context('with Person Escort Record', function () {
+          context('with `not_started` PER', function () {
+            beforeEach(function () {
+              transformedResponse = profileToCardComponentWithPER()({
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'not_started',
+                },
+              })
+            })
+
+            it('should not contain tags', function () {
+              expect(transformedResponse).not.to.have.property('tags')
+            })
+
+            it('should not contain inset text message', function () {
+              expect(transformedResponse).to.have.property('insetText')
+              expect(transformedResponse.insetText).to.deep.equal({
+                classes: 'govuk-inset-text--compact',
+                text: '__translated__',
+              })
+            })
+
+            it('should translate inset text message', function () {
+              expect(i18n.t).to.have.been.calledWithExactly(
+                'person-escort-record::flags.incomplete'
+              )
+            })
+          })
+
+          context('with `in_progress` PER', function () {
+            beforeEach(function () {
+              transformedResponse = profileToCardComponentWithPER()({
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'in_progress',
+                },
+              })
+            })
+
+            it('should not contain tags', function () {
+              expect(transformedResponse).not.to.have.property('tags')
+            })
+
+            it('should not contain inset text message', function () {
+              expect(transformedResponse).to.have.property('insetText')
+              expect(transformedResponse.insetText).to.deep.equal({
+                classes: 'govuk-inset-text--compact',
+                text: '__translated__',
+              })
+            })
+
+            it('should translate inset text message', function () {
+              expect(i18n.t).to.have.been.calledWithExactly(
+                'person-escort-record::flags.incomplete'
+              )
+            })
+          })
+
+          context('with `completed` PER', function () {
+            beforeEach(function () {
+              transformedResponse = profileToCardComponentWithPER()({
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'completed',
+                  flags: ['foo', 'bar'],
+                },
+              })
+            })
+
+            it('should contain tags', function () {
+              expect(transformedResponse).to.have.property('tags')
+              expect(transformedResponse.tags).to.deep.equal({
+                items: ['1', '2', '3'],
+              })
+            })
+
+            it('should call frameworkFlagsToTagList presenter', function () {
+              expect(
+                frameworkFlagsToTagListStub
+              ).to.have.been.calledWithExactly(['foo', 'bar'], '/move/12345')
+            })
+
+            it('should not contain inset text message', function () {
+              expect(transformedResponse).not.to.have.property('insetText')
+            })
+          })
         })
       })
     })

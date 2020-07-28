@@ -191,5 +191,23 @@ module.exports = {
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
+    FLAG_SETTINGS: {
+      alert: {
+        tagClass: 'app-tag--destructive',
+        sortOrder: 1,
+      },
+      warning: {
+        tagClass: 'app-tag--warning',
+        sortOrder: 2,
+      },
+      attention: {
+        tagClass: '',
+        sortOrder: 3,
+      },
+      information: {
+        tagClass: 'app-tag--inactive',
+        sortOrder: 4,
+      },
+    },
   },
 }

@@ -1,6 +1,6 @@
 {
   "data": {
-    "id": "8b1e8c77-6e39-44b0-898b-1d5f0ad20833",
+    "id": "d972125c-1c11-4e03-bd15-b0fb30651349",
     "type": "person_escort_records",
     "attributes": {
       "status": "not_started",
@@ -9,207 +9,363 @@
     "relationships": {
       "profile": {
         "data": {
-          "id": "ccbccc3e-f377-4bbe-bd46-5d1bf798ba91",
+          "id": "2d47fc09-a0ce-48b9-b629-3d2de80e9240",
           "type": "profiles"
         }
       },
       "framework": {
         "data": {
-          "id": "50818d2f-8030-41c4-83e6-b77800148806",
+          "id": "76594a53-119a-40f3-aa47-b69ce9356f81",
           "type": "frameworks"
         }
       },
       "responses": {
         "data": [{
-          "id": "e0c746ce-53e8-4a26-a8f5-2b20ebe8e16f",
+          "id": "06c4d049-012f-4cda-878a-81cc85fac789",
           "type": "framework_responses"
         }, {
-          "id": "b26fa859-4887-4424-9531-94e04b049d7c",
+          "id": "5a2ce3a0-20a3-488c-b367-8b8ce50ea060",
           "type": "framework_responses"
         }, {
-          "id": "c0d7e658-8571-41f0-bd80-07e506d8b5e7",
+          "id": "05e58452-1bb2-41b8-93c0-f4f1a91998b0",
           "type": "framework_responses"
         }, {
-          "id": "22bcf3ce-a3a0-4ea3-8671-45b3cfe39105",
+          "id": "9f937f4a-1a43-4cf5-923b-85a6856a19b1",
           "type": "framework_responses"
         }, {
-          "id": "e7f8a81a-2680-4027-b721-2804727412ec",
+          "id": "ff0803bb-eb5f-4c87-b786-166a9c5ac7bd",
           "type": "framework_responses"
         }, {
-          "id": "37d2941a-caa3-43b9-ae6e-dde128b6dbfc",
+          "id": "86f94dab-9c14-4d93-8268-03e97768ef99",
           "type": "framework_responses"
         }, {
-          "id": "2e1a084a-ac7b-4756-a0ba-beb071c47242",
+          "id": "fe6b34dc-6558-437a-917d-ea225a9ac914",
           "type": "framework_responses"
         }, {
-          "id": "718f4340-d26f-4beb-a6a6-f205e2df3d4c",
+          "id": "28ea6e36-b94b-4166-a4df-be17671ab626",
           "type": "framework_responses"
         }, {
-          "id": "b5bb1043-1c7c-4f64-8afe-125b34d74319",
+          "id": "8001c28c-4caa-4975-a81c-700e9686a012",
           "type": "framework_responses"
         }, {
-          "id": "0bca5f57-387d-4859-99b4-7df5fc7bdc69",
+          "id": "377eb9c0-d73a-4ebf-8797-5c3bb73c8c29",
           "type": "framework_responses"
         }, {
-          "id": "a96d8024-a523-4188-a6fa-ca3fc7a85ceb",
+          "id": "6c6d6629-8d17-413b-9e2f-1336947f96c9",
           "type": "framework_responses"
         }, {
-          "id": "71a4a47d-06f8-45b8-8789-682e3cd154d6",
+          "id": "50e9f154-e248-42af-8183-16e74c6ded06",
           "type": "framework_responses"
         }, {
-          "id": "b8a26b6d-9a49-4e19-b122-96c7fc5f9a69",
+          "id": "fc58799b-b5fc-4f8a-8517-5d025ec29168",
           "type": "framework_responses"
         }, {
-          "id": "b950eb1b-d405-4ec2-a8f7-8f11d7281436",
+          "id": "1431ff1d-fe0f-4d05-9346-e4aee91eb24f",
           "type": "framework_responses"
         }, {
-          "id": "bef0ba74-cf1b-47f1-8288-43455b44dc37",
+          "id": "450983a5-b8b2-4c47-9864-9ce118b47eaf",
           "type": "framework_responses"
         }, {
-          "id": "307196ae-1e7a-4fd4-8113-ef356011f4c9",
+          "id": "d0551fbd-06bf-449d-8e97-5ce6d773686b",
           "type": "framework_responses"
         }, {
-          "id": "8fa011c7-6119-49dd-8d3e-9b11f312e376",
+          "id": "0861097c-4c49-4a1a-9e35-addd74a9a272",
           "type": "framework_responses"
         }, {
-          "id": "e33a5a79-b021-463e-a82e-7909661aa50f",
+          "id": "0ddd3382-f6f5-4148-b25b-45e15f2353b5",
           "type": "framework_responses"
         }, {
-          "id": "68f61c48-3e82-4a91-9939-6c50115578e4",
+          "id": "9b92cf80-dd46-4599-857d-e9831d6a91bd",
           "type": "framework_responses"
         }, {
-          "id": "89b7588e-a79d-44ce-9ad8-645d258605d4",
+          "id": "a70d2ece-6b6f-4317-9ca6-8e113be345be",
           "type": "framework_responses"
         }, {
-          "id": "8f2e87b4-296b-4fdf-b849-835233fe7039",
+          "id": "9c906009-85e2-4680-80ac-43bf0e747092",
           "type": "framework_responses"
         }, {
-          "id": "0003f9db-36f8-4654-92ad-2e6221891c38",
+          "id": "a737f30d-f0a4-4b63-bd47-19d8804b8e03",
           "type": "framework_responses"
         }, {
-          "id": "5e02d7c1-ee82-4814-bcfd-fd2819518cea",
+          "id": "df55cfc4-4087-48e4-acf8-353d7ea61fcb",
           "type": "framework_responses"
         }, {
-          "id": "1ec02fd1-b46c-468c-9ca8-f167606a658a",
+          "id": "887e02ca-f28e-4d02-aa90-65034ac9f072",
           "type": "framework_responses"
         }, {
-          "id": "bca02c1f-82e2-436e-93a0-a1c50b0d5a45",
+          "id": "3b9031ac-d467-4444-bc61-64c1f2e62184",
           "type": "framework_responses"
         }, {
-          "id": "bfa37c5c-a0e0-4632-8823-21bb8913c93b",
+          "id": "dee351e4-199d-4ffe-be4f-589754d64a5c",
           "type": "framework_responses"
         }, {
-          "id": "44c786b2-5d16-4cd4-b2ef-074e4d9c0954",
+          "id": "56af8959-1881-402c-9c18-01c3de2deb2c",
           "type": "framework_responses"
         }, {
-          "id": "342f406c-a660-4f47-9146-3ecab9914bed",
+          "id": "32ab04ec-adad-4375-a599-30aa6a80f86c",
           "type": "framework_responses"
         }, {
-          "id": "6f2fe005-5342-4a0d-ac6b-2ba909bd1225",
+          "id": "8f73deb9-84fb-4c98-abba-05cf86f85521",
           "type": "framework_responses"
         }, {
-          "id": "fe2a048a-6b5f-48ef-8da2-0ccdbe61b5d6",
+          "id": "024242b0-25c8-4793-993e-42c202e8a1df",
           "type": "framework_responses"
         }, {
-          "id": "fea1661e-0e96-4340-a6cd-90ec971317d3",
+          "id": "40a50529-673a-460c-8097-cf1d1ec3af97",
           "type": "framework_responses"
         }, {
-          "id": "b30a8b7a-1145-4b18-8523-baabf5ef3440",
+          "id": "ea140c33-7356-4322-b58f-bb6119067518",
           "type": "framework_responses"
         }, {
-          "id": "b4645b25-8788-4ddb-9775-3da5e7d711d1",
+          "id": "cc0e40e2-f557-470e-a89d-1db9dff702ca",
           "type": "framework_responses"
         }, {
-          "id": "0d89e318-268b-40fd-9979-ad91c8dbde6b",
+          "id": "d5efc91c-af7f-4e78-832e-49bae5bc3b9c",
           "type": "framework_responses"
         }, {
-          "id": "4e257ae2-8a03-4775-a9d6-d171d0582089",
+          "id": "a37cd1f4-2e9b-497d-8274-de1cfd8c4196",
           "type": "framework_responses"
         }, {
-          "id": "ef5bf64e-6bca-467b-b32d-dc5256ac0e78",
+          "id": "b7ef3e6e-0df4-43ca-a758-6ca2d153acc0",
           "type": "framework_responses"
         }, {
-          "id": "637bd21d-a3c1-4dc8-9e45-6ce54092dc30",
+          "id": "061b3a7e-5224-4be5-beaf-2b312ccc017c",
           "type": "framework_responses"
         }, {
-          "id": "f9389a4e-96cf-4168-afd4-f824e08fd452",
+          "id": "1f04e357-1e9d-42cf-b77e-affbc5f428a9",
           "type": "framework_responses"
         }, {
-          "id": "8ec9e861-b02b-40e8-9fce-cc3d7884e9ca",
+          "id": "b1f9352e-9e65-460d-b077-307892ba14e5",
           "type": "framework_responses"
         }, {
-          "id": "101c072b-132b-4fc2-b413-c255224c42ff",
+          "id": "fb0d6ad7-692e-4143-b265-eea77f47a406",
           "type": "framework_responses"
         }, {
-          "id": "c43203d5-da52-42c4-9c96-741cb1a7f607",
+          "id": "6ca85230-e06f-425d-b9f0-2ff52e6c2665",
           "type": "framework_responses"
+        }]
+      },
+      "flags": {
+        "data": [{
+          "id": "c226b9bd-e6e0-450d-8ca4-24137949a837",
+          "type": "framework_flags"
+        }, {
+          "id": "4cf4a37d-53fc-463c-9e1f-a15cdd79c2bd",
+          "type": "framework_flags"
+        }, {
+          "id": "495e36d3-35ac-4782-94d9-668c2f87756e",
+          "type": "framework_flags"
+        }, {
+          "id": "baf6bb99-df1b-4de0-b302-fa79db8c54b7",
+          "type": "framework_flags"
+        }, {
+          "id": "260df7be-adc4-4d2d-8ee8-cc6cfe4add4d",
+          "type": "framework_flags"
+        }, {
+          "id": "b80f8dbe-8ddf-4f7c-8434-0da4df125d2b",
+          "type": "framework_flags"
+        }, {
+          "id": "4f186478-a221-42ad-995c-e8926ac199bb",
+          "type": "framework_flags"
+        }, {
+          "id": "07109331-2c92-45e5-a96c-c9f0d9b861d4",
+          "type": "framework_flags"
+        }, {
+          "id": "45dc419c-602c-4fb5-afda-09cbf6f15baa",
+          "type": "framework_flags"
+        }, {
+          "id": "779a0dc5-46aa-4f37-86cb-d3609fc62ec1",
+          "type": "framework_flags"
+        }, {
+          "id": "957f26be-9c67-44f3-ab43-c9bbcee4d3e4",
+          "type": "framework_flags"
+        }, {
+          "id": "d2b9dca8-a50c-45e5-ab82-c869377c5c78",
+          "type": "framework_flags"
+        }, {
+          "id": "42490f07-1684-4495-bdc2-e9066e00f7a8",
+          "type": "framework_flags"
+        }, {
+          "id": "b3f7cf34-a114-4456-a7b5-a2f8ea0608d1",
+          "type": "framework_flags"
+        }, {
+          "id": "0820827c-9051-4fa0-be40-067da904398e",
+          "type": "framework_flags"
+        }, {
+          "id": "10225ca3-bce8-4de6-965a-a4874acc54ac",
+          "type": "framework_flags"
+        }, {
+          "id": "04704ff2-2d89-42c5-b855-10ee5bf53969",
+          "type": "framework_flags"
+        }, {
+          "id": "d1f36b95-3566-49e6-8ea1-1e86d92146e9",
+          "type": "framework_flags"
+        }, {
+          "id": "99086a66-e36d-4044-b62d-a358e27e84db",
+          "type": "framework_flags"
+        }, {
+          "id": "94145172-f927-4b57-8610-bb56c898c6c2",
+          "type": "framework_flags"
+        }, {
+          "id": "86390a32-b3b8-417e-9504-6ff98838134e",
+          "type": "framework_flags"
+        }, {
+          "id": "780382fb-7486-429b-8742-5b1bad18f694",
+          "type": "framework_flags"
+        }, {
+          "id": "e090a31d-bab1-4e20-b3d1-a1ebde358c7a",
+          "type": "framework_flags"
+        }, {
+          "id": "fd87fa80-2ddc-431b-bed8-7c2ae21c5177",
+          "type": "framework_flags"
+        }, {
+          "id": "0a12fdb6-294e-4109-b53e-1c0d50528b5b",
+          "type": "framework_flags"
+        }, {
+          "id": "b6e62830-1ae7-4185-ba5c-0dfa2b7d4f78",
+          "type": "framework_flags"
+        }, {
+          "id": "2000da23-7340-4294-b9e3-f86a5eea2e6d",
+          "type": "framework_flags"
+        }, {
+          "id": "ec00db28-a0cf-432b-8dec-0523a4bdb010",
+          "type": "framework_flags"
+        }, {
+          "id": "6cec7291-9d3b-4860-b196-74307689c3a3",
+          "type": "framework_flags"
+        }, {
+          "id": "f345e7fc-e183-4e0b-ba62-8106f9174683",
+          "type": "framework_flags"
+        }, {
+          "id": "530d65b4-0027-45fd-bf76-b3acef1e41cf",
+          "type": "framework_flags"
+        }, {
+          "id": "a1f581b1-cbc2-4fd8-a17f-d53df795497a",
+          "type": "framework_flags"
+        }, {
+          "id": "06721faf-bd00-4bc5-99c2-36777a1d4ab5",
+          "type": "framework_flags"
+        }, {
+          "id": "80ff5130-5f32-4930-b529-e2f5d49b43f2",
+          "type": "framework_flags"
+        }, {
+          "id": "e7fafbee-839b-470b-a813-3e95eb2d9484",
+          "type": "framework_flags"
+        }, {
+          "id": "ca021f17-18af-4bd9-9a05-20448cc8f30c",
+          "type": "framework_flags"
+        }, {
+          "id": "3da4f291-648a-4903-90f7-63cffc915d40",
+          "type": "framework_flags"
+        }, {
+          "id": "b5b8af74-8316-437d-9db5-8a4491047bb6",
+          "type": "framework_flags"
+        }, {
+          "id": "93128120-b221-4107-97d3-09d57a79e1df",
+          "type": "framework_flags"
+        }, {
+          "id": "34662d00-a23a-4ed4-acb3-8aed3414522c",
+          "type": "framework_flags"
+        }, {
+          "id": "b9aae996-2246-49ff-8ecd-18fa556dd504",
+          "type": "framework_flags"
         }]
       }
     }
   },
   "included": [{
-    "id": "50818d2f-8030-41c4-83e6-b77800148806",
+    "id": "76594a53-119a-40f3-aa47-b69ce9356f81",
     "type": "frameworks",
     "attributes": {
-      "version": "1.1"
+      "version": "1.1",
+      "name": "person-escort-record"
     }
   }, {
-    "id": "ccbccc3e-f377-4bbe-bd46-5d1bf798ba91",
+    "id": "2d47fc09-a0ce-48b9-b629-3d2de80e9240",
     "type": "profiles",
     "attributes": {},
     "relationships": {
       "person": {
         "data": {
-          "id": "4eca4e9a-9265-4095-9052-a4eaa7756e1b",
+          "id": "d4a2044f-99ef-4c25-802d-ab3d335a163b",
           "type": "people"
         }
       }
     }
   }, {
-    "id": "4eca4e9a-9265-4095-9052-a4eaa7756e1b",
+    "id": "d4a2044f-99ef-4c25-802d-ab3d335a163b",
     "type": "people",
     "attributes": {
       "first_names": "John",
       "last_name": "Doe"
     }
   }, {
-    "id": "e0c746ce-53e8-4a26-a8f5-2b20ebe8e16f",
-    "type": "framework_responses",
+    "id": "06c4d049-012f-4cda-878a-81cc85fac789",
+    "type": "framework_flags",
     "attributes": {
-      "value": [{
-        "option": "Placed them in a cell with others",
-        "details": "At et eius aperiam animi alias natus sunt magnam eaque."
-      }, {
-        "option": "Had a conversation with them",
-        "details": "Molestiae et officia omnis nesciunt rerum nisi ipsa quam."
-      }, {
-        "option": "Placed them on an Assessment, Care in Custody and Teamwork (ACCT) plan",
-        "details": "Sapiente nesciunt ut est dolores."
-      }, {
-        "option": "Provided them with any additional support",
-        "details": "Nihil mollitia aut pariatur possimus voluptatem soluta pariatur nihil dolorem."
-      }],
-      "value_type": "collection",
-      "responded": true
+      "title": "system",
+      "flag_type": "warning",
+      "question_value": "No"
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "171d9e62-e7fa-49a0-bcd4-deacf4c4b3f1",
+          "id": "3fe2c612-8463-4b2f-bd24-6ae49b960c38",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "171d9e62-e7fa-49a0-bcd4-deacf4c4b3f1",
+    "id": "06c4d049-012f-4cda-878a-81cc85fac789",
+    "type": "framework_responses",
+    "attributes": {
+      "value": [{
+        "option": "Placed them in a cell with others",
+        "details": "Qui reiciendis sed aperiam dolorem molestias nostrum ut aliquid quis."
+      }],
+      "value_type": "collection",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3fe2c612-8463-4b2f-bd24-6ae49b960c38",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "c226b9bd-e6e0-450d-8ca4-24137949a837",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "3fe2c612-8463-4b2f-bd24-6ae49b960c38",
     "type": "framework_questions",
     "attributes": {
       "key": "actions-of-self-harm-undertaken",
       "question_type": "collection",
-      "options": ["Placed them in a cell with others", "Had a conversation with them", "Placed them on an Assessment, Care in Custody and Teamwork (ACCT) plan", "Provided them with any additional support", "No action taken", "Referred them to a medical professional to manage risk of suicide or self-harm", "Any other actions"]
+      "options": ["Placed them in a cell with others", "No action taken", "Any other actions", "Referred them to a medical professional to manage risk of suicide or self-harm", "Had a conversation with them", "Provided them with any additional support", "Placed them on an Assessment, Care in Custody and Teamwork (ACCT) plan"]
     }
   }, {
-    "id": "b26fa859-4887-4424-9531-94e04b049d7c",
+    "id": "5a2ce3a0-20a3-488c-b367-8b8ce50ea060",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "system",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "f232a79b-8d58-4676-ac81-168e642f5a7d",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "5a2ce3a0-20a3-488c-b367-8b8ce50ea060",
     "type": "framework_responses",
     "attributes": {
       "value": {
@@ -222,13 +378,19 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "7b795bef-d8d8-4f0e-bc25-4427d8919283",
+          "id": "f232a79b-8d58-4676-ac81-168e642f5a7d",
           "type": "framework_questions"
         }
+      },
+      "flags": {
+        "data": [{
+          "id": "4cf4a37d-53fc-463c-9e1f-a15cdd79c2bd",
+          "type": "framework_flags"
+        }]
       }
     }
   }, {
-    "id": "7b795bef-d8d8-4f0e-bc25-4427d8919283",
+    "id": "f232a79b-8d58-4676-ac81-168e642f5a7d",
     "type": "framework_questions",
     "attributes": {
       "key": "addiction-dependencies",
@@ -236,34 +398,69 @@
       "options": ["Yes", "No"]
     }
   }, {
-    "id": "c0d7e658-8571-41f0-bd80-07e506d8b5e7",
-    "type": "framework_responses",
+    "id": "05e58452-1bb2-41b8-93c0-f4f1a91998b0",
+    "type": "framework_flags",
     "attributes": {
-      "value": {
-        "option": "No",
-        "details": ""
-      },
-      "value_type": "object",
-      "responded": false
+      "title": "microchip",
+      "flag_type": "warning",
+      "question_value": "Yes"
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "e69a5194-cddf-4f60-b556-8de8f393cf6b",
+          "id": "b0d0bfea-08b9-48ae-9e3b-e4b852c577b4",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "e69a5194-cddf-4f60-b556-8de8f393cf6b",
+    "id": "05e58452-1bb2-41b8-93c0-f4f1a91998b0",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "b0d0bfea-08b9-48ae-9e3b-e4b852c577b4",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "495e36d3-35ac-4782-94d9-668c2f87756e",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "b0d0bfea-08b9-48ae-9e3b-e4b852c577b4",
     "type": "framework_questions",
     "attributes": {
       "key": "alcohol-withdrawal",
       "question_type": "object",
-      "options": ["Yes", "No"]
+      "options": ["No", "Yes"]
     }
   }, {
-    "id": "22bcf3ce-a3a0-4ea3-8671-45b3cfe39105",
+    "id": "9f937f4a-1a43-4cf5-923b-85a6856a19b1",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "program",
+      "flag_type": "information",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "528ebb7e-7255-43cb-9355-33c739604e51",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "9f937f4a-1a43-4cf5-923b-85a6856a19b1",
     "type": "framework_responses",
     "attributes": {
       "value": {
@@ -271,18 +468,24 @@
         "details": ""
       },
       "value_type": "object",
-      "responded": false
+      "responded": true
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "fc5a700f-fa1a-4ed6-8ff6-ca7bb4695096",
+          "id": "528ebb7e-7255-43cb-9355-33c739604e51",
           "type": "framework_questions"
         }
+      },
+      "flags": {
+        "data": [{
+          "id": "baf6bb99-df1b-4de0-b302-fa79db8c54b7",
+          "type": "framework_flags"
+        }]
       }
     }
   }, {
-    "id": "fc5a700f-fa1a-4ed6-8ff6-ca7bb4695096",
+    "id": "528ebb7e-7255-43cb-9355-33c739604e51",
     "type": "framework_questions",
     "attributes": {
       "key": "arsonist",
@@ -290,26 +493,45 @@
       "options": ["Yes", "No"]
     }
   }, {
-    "id": "e7f8a81a-2680-4027-b721-2804727412ec",
+    "id": "ff0803bb-eb5f-4c87-b786-166a9c5ac7bd",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "application",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "eeb9fcd7-aef4-46b9-9b6c-dc2795482cad",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "ff0803bb-eb5f-4c87-b786-166a9c5ac7bd",
     "type": "framework_responses",
     "attributes": {
-      "value": {
-        "option": "No",
-        "details": ""
-      },
+      "value": null,
       "value_type": "object",
       "responded": true
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "8b7112d7-3588-413d-9164-311377f7bfa4",
+          "id": "eeb9fcd7-aef4-46b9-9b6c-dc2795482cad",
           "type": "framework_questions"
         }
+      },
+      "flags": {
+        "data": [{
+          "id": "260df7be-adc4-4d2d-8ee8-cc6cfe4add4d",
+          "type": "framework_flags"
+        }]
       }
     }
   }, {
-    "id": "8b7112d7-3588-413d-9164-311377f7bfa4",
+    "id": "eeb9fcd7-aef4-46b9-9b6c-dc2795482cad",
     "type": "framework_questions",
     "attributes": {
       "key": "communication-needs",
@@ -317,513 +539,34 @@
       "options": ["No", "Yes"]
     }
   }, {
-    "id": "37d2941a-caa3-43b9-ae6e-dde128b6dbfc",
-    "type": "framework_responses",
+    "id": "86f94dab-9c14-4d93-8268-03e97768ef99",
+    "type": "framework_flags",
     "attributes": {
-      "value": [],
-      "value_type": "collection",
-      "responded": false
+      "title": "card",
+      "flag_type": "alert",
+      "question_value": "No"
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "5796cf2a-7901-4061-aa3a-81563a301312",
+          "id": "039c00fb-9a0c-46da-87ac-697b577ffe29",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "5796cf2a-7901-4061-aa3a-81563a301312",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "concealed-items",
-      "question_type": "collection",
-      "options": ["Concealed mobiles phones or SIM cards", "Created or used weapons", "Concealed weapons", "Any other items", "Concealed drugs"]
-    }
-  }, {
-    "id": "2e1a084a-ac7b-4756-a0ba-beb071c47242",
-    "type": "framework_responses",
-    "attributes": {
-      "value": "Aliquid iusto odit similique quod aut.",
-      "value_type": "string",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "61a7c665-a23b-4411-a02c-612a2ee5bc1b",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "61a7c665-a23b-4411-a02c-612a2ee5bc1b",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "current-offences",
-      "question_type": "string",
-      "options": []
-    }
-  }, {
-    "id": "718f4340-d26f-4beb-a6a6-f205e2df3d4c",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Est et ducimus modi aperiam a inventore consequatur."
-      },
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "ecfb190d-cb04-4d46-87a0-e268541537ce",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "ecfb190d-cb04-4d46-87a0-e268541537ce",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "current-or-previous-sex-offender",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "b5bb1043-1c7c-4f64-8afe-125b34d74319",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "a3854dd9-6b56-49fc-a6d3-f1f19b08bb97",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "a3854dd9-6b56-49fc-a6d3-f1f19b08bb97",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "escape-risk",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "0bca5f57-387d-4859-99b4-7df5fc7bdc69",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "acc22fe1-84d2-4b36-8f17-be27ad85c6a8",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "acc22fe1-84d2-4b36-8f17-be27ad85c6a8",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "female-hygiene-kit",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "a96d8024-a523-4188-a6fa-ca3fc7a85ceb",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "a1b7987e-e3d6-4ff2-bf59-0d52f72d2dc9",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "a1b7987e-e3d6-4ff2-bf59-0d52f72d2dc9",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "gang-member-or-organised-crime",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "71a4a47d-06f8-45b8-8789-682e3cd154d6",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "string",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "ea9549ab-5ab6-4654-bee1-7765cb4b7d83",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "ea9549ab-5ab6-4654-bee1-7765cb4b7d83",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "has-concealed-items",
-      "question_type": "string",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "b8a26b6d-9a49-4e19-b122-96c7fc5f9a69",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "No",
-        "details": ""
-      },
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "48400ca9-af0a-4511-8a9d-92adebb56284",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "48400ca9-af0a-4511-8a9d-92adebb56284",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "health-contact-details",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "b950eb1b-d405-4ec2-a8f7-8f11d7281436",
-    "type": "framework_responses",
-    "attributes": {
-      "value": "No",
-      "value_type": "string",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "273c3ce4-debd-4b4d-a6ea-c463d4ebbeec",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "273c3ce4-debd-4b4d-a6ea-c463d4ebbeec",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "health-issues",
-      "question_type": "string",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "bef0ba74-cf1b-47f1-8288-43455b44dc37",
-    "type": "framework_responses",
-    "attributes": {
-      "value": "Yes",
-      "value_type": "string",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "793365d0-42c9-4120-b272-206178c3b26b",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "793365d0-42c9-4120-b272-206178c3b26b",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "held-separately",
-      "question_type": "string",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "307196ae-1e7a-4fd4-8113-ef356011f4c9",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "6857e895-5a1a-4af7-bcd0-3961a9c267c6",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "6857e895-5a1a-4af7-bcd0-3961a9c267c6",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "help-with-personal-tasks",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "8fa011c7-6119-49dd-8d3e-9b11f312e376",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "No",
-        "details": ""
-      },
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "d2c2f98f-abab-47d9-a059-1c3914d852f1",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "d2c2f98f-abab-47d9-a059-1c3914d852f1",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "high-public-interest",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "e33a5a79-b021-463e-a82e-7909661aa50f",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "string",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "895c3f73-5bf2-4808-8432-afa7cc548343",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "895c3f73-5bf2-4808-8432-afa7cc548343",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "history-of-self-harm-details",
-      "question_type": "string",
-      "options": []
-    }
-  }, {
-    "id": "68f61c48-3e82-4a91-9939-6c50115578e4",
-    "type": "framework_responses",
-    "attributes": {
-      "value": [],
-      "value_type": "array",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "58cb32ac-ca9e-4b48-8203-902182b4264f",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "58cb32ac-ca9e-4b48-8203-902182b4264f",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "history-of-self-harm-method",
-      "question_type": "array",
-      "options": ["Cutting", "Other methods", "Overdose", "Ligature"]
-    }
-  }, {
-    "id": "89b7588e-a79d-44ce-9ad8-645d258605d4",
-    "type": "framework_responses",
-    "attributes": {
-      "value": "Within the last 6 months",
-      "value_type": "string",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "750d590b-dcd6-4101-8e77-6ca6ea1c309a",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "750d590b-dcd6-4101-8e77-6ca6ea1c309a",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "history-of-self-harm-recency",
-      "question_type": "string",
-      "options": ["More than 5 years ago", "Between 1 and 5 years ago", "Between 6 and 12 months ago", "Within the last 6 months", "Within the last month"]
-    }
-  }, {
-    "id": "8f2e87b4-296b-4fdf-b849-835233fe7039",
-    "type": "framework_responses",
-    "attributes": {
-      "value": "No",
-      "value_type": "string",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "03cd64dd-fb4a-4428-bf71-34242eb0dabf",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "03cd64dd-fb4a-4428-bf71-34242eb0dabf",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "history-of-self-harm",
-      "question_type": "string",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "0003f9db-36f8-4654-92ad-2e6221891c38",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "d6144f64-aa5a-4be3-a624-8b4c2a30e307",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "d6144f64-aa5a-4be3-a624-8b4c2a30e307",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "hostage-taker",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "5e02d7c1-ee82-4814-bcfd-fd2819518cea",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "string",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "790f5b3e-bfd3-4edb-91f7-6241ea345382",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "790f5b3e-bfd3-4edb-91f7-6241ea345382",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "indication-of-self-harm-or-suicide",
-      "question_type": "string",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "1ec02fd1-b46c-468c-9ca8-f167606a658a",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "6fe891cc-ad22-4477-9961-761ff4351fe1",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "6fe891cc-ad22-4477-9961-761ff4351fe1",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "medical-health-professional-referral",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "bca02c1f-82e2-436e-93a0-a1c50b0d5a45",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "No",
-        "details": ""
-      },
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "ae01f0d8-c1dc-4da7-84a8-ff1cf73113c6",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "ae01f0d8-c1dc-4da7-84a8-ff1cf73113c6",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "mental-health-needs",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "bfa37c5c-a0e0-4632-8823-21bb8913c93b",
+    "id": "86f94dab-9c14-4d93-8268-03e97768ef99",
     "type": "framework_responses",
     "attributes": {
       "value": [{
-        "option": "They have reacted to offence, charge, conviction or sentence",
-        "details": "Delectus magnam numquam laboriosam modi totam temporibus et."
+        "option": "Created or used weapons",
+        "details": "Ut debitis sit rerum illo cupiditate."
       }, {
-        "option": "They have harmed or attempted to harm themself in custody",
-        "details": "Maiores ipsa tenetur quia voluptatum eos et."
+        "option": "Concealed weapons",
+        "details": "Repellendus non ut fugiat nobis."
       }, {
-        "option": "A risk of suicide or self-harm has been referenced in a Pre-Sentence Report",
-        "details": "Qui quisquam nobis voluptate in."
-      }, {
-        "option": "They have said they will self-harm or commit suicide",
-        "details": "Inventore eos nihil sint consequatur quia."
+        "option": "Concealed drugs",
+        "details": "Tempore consequatur consectetur architecto rerum officiis occaecati itaque vel."
       }],
       "value_type": "collection",
       "responded": false
@@ -831,204 +574,89 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "f317b5a0-9814-4acd-a2c7-a38cc5ea7be8",
+          "id": "039c00fb-9a0c-46da-87ac-697b577ffe29",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "b80f8dbe-8ddf-4f7c-8434-0da4df125d2b",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "039c00fb-9a0c-46da-87ac-697b577ffe29",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "concealed-items",
+      "question_type": "collection",
+      "options": ["Created or used weapons", "Concealed weapons", "Concealed drugs", "Concealed mobiles phones or SIM cards", "Any other items"]
+    }
+  }, {
+    "id": "fe6b34dc-6558-437a-917d-ea225a9ac914",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "pixel",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "5705a27d-8040-47ca-ba1a-e55bd0c444c9",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "f317b5a0-9814-4acd-a2c7-a38cc5ea7be8",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "nature-of-self-harm",
-      "question_type": "collection",
-      "options": ["They have reacted to offence, charge, conviction or sentence", "They have harmed or attempted to harm themself in custody", "A risk of suicide or self-harm has been referenced in a Pre-Sentence Report", "They have said they will self-harm or commit suicide", "Someone else has said they will self-harm or commit suicide", "They have shown signs of behavioural mental disorder", "Any other concerns"]
-    }
-  }, {
-    "id": "44c786b2-5d16-4cd4-b2ef-074e4d9c0954",
+    "id": "fe6b34dc-6558-437a-917d-ea225a9ac914",
     "type": "framework_responses",
     "attributes": {
-      "value": "Level 1 - check at least hourly",
+      "value": "Perferendis vero qui aut officia placeat corporis.",
       "value_type": "string",
       "responded": false
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "276436e9-0f3d-4738-a275-2ff6bb6814de",
+          "id": "5705a27d-8040-47ca-ba1a-e55bd0c444c9",
           "type": "framework_questions"
         }
+      },
+      "flags": {
+        "data": [{
+          "id": "4f186478-a221-42ad-995c-e8926ac199bb",
+          "type": "framework_flags"
+        }]
       }
     }
   }, {
-    "id": "276436e9-0f3d-4738-a275-2ff6bb6814de",
+    "id": "5705a27d-8040-47ca-ba1a-e55bd0c444c9",
     "type": "framework_questions",
     "attributes": {
-      "key": "observation-level",
+      "key": "current-offences",
       "question_type": "string",
-      "options": ["Level 2 - wake and check at least every 30 minutes", "Level 4 - constant physical watch", "Level 1 - check at least hourly", "Level 3 - constant watch via CCTV"]
+      "options": []
     }
   }, {
-    "id": "342f406c-a660-4f47-9146-3ecab9914bed",
-    "type": "framework_responses",
+    "id": "28ea6e36-b94b-4166-a4df-be17671ab626",
+    "type": "framework_flags",
     "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Aut nemo quia qui."
-      },
-      "value_type": "object",
-      "responded": true
+      "title": "transmitter",
+      "flag_type": "warning",
+      "question_value": "No"
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "26cb07d1-6f05-44a3-8780-207d3dca3b8f",
+          "id": "dce57786-132c-483a-8dcc-bbef08a7e545",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "26cb07d1-6f05-44a3-8780-207d3dca3b8f",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "other-health-information",
-      "question_type": "object",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "6f2fe005-5342-4a0d-ac6b-2ba909bd1225",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Quia tempora consequatur totam expedita minus delectus qui pariatur ut."
-      },
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "1f00e384-fcc8-4ae4-8df2-061d6841f804",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "1f00e384-fcc8-4ae4-8df2-061d6841f804",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "other-risk-information",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "fe2a048a-6b5f-48ef-8da2-0ccdbe61b5d6",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Culpa iste aut accusantium."
-      },
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "8261a923-e759-4685-a8a8-5647d1e5cf04",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "8261a923-e759-4685-a8a8-5647d1e5cf04",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "physical-health-needs",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "fea1661e-0e96-4340-a6cd-90ec971317d3",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Nulla eum corporis."
-      },
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "00cb0ef0-5c24-4a8d-9503-501568838491",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "00cb0ef0-5c24-4a8d-9503-501568838491",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "pregnant",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "b30a8b7a-1145-4b18-8523-baabf5ef3440",
-    "type": "framework_responses",
-    "attributes": {
-      "value": null,
-      "value_type": "object",
-      "responded": true
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "7f4048c4-a18b-4413-a464-184a22e19f64",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "7f4048c4-a18b-4413-a464-184a22e19f64",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "prescribed-medication",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "b4645b25-8788-4ddb-9775-3da5e7d711d1",
-    "type": "framework_responses",
-    "attributes": {
-      "value": {
-        "option": "Yes",
-        "details": "Et cumque quia qui possimus ab fugit."
-      },
-      "value_type": "object",
-      "responded": false
-    },
-    "relationships": {
-      "question": {
-        "data": {
-          "id": "bf97652f-1487-40a6-ac64-9ef6a59cdb2d",
-          "type": "framework_questions"
-        }
-      }
-    }
-  }, {
-    "id": "bf97652f-1487-40a6-ac64-9ef6a59cdb2d",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "release-status",
-      "question_type": "object",
-      "options": ["Not for release", "For release"]
-    }
-  }, {
-    "id": "0d89e318-268b-40fd-9979-ad91c8dbde6b",
+    "id": "28ea6e36-b94b-4166-a4df-be17671ab626",
     "type": "framework_responses",
     "attributes": {
       "value": null,
@@ -1038,21 +666,89 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "9b5722d7-7835-4d7d-9b74-d15ca0d322d6",
+          "id": "dce57786-132c-483a-8dcc-bbef08a7e545",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "07109331-2c92-45e5-a96c-c9f0d9b861d4",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "dce57786-132c-483a-8dcc-bbef08a7e545",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "current-or-previous-sex-offender",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "8001c28c-4caa-4975-a81c-700e9686a012",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "sensor",
+      "flag_type": "attention",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "2bd65b46-b9e4-4906-a59a-8079ed440202",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "9b5722d7-7835-4d7d-9b74-d15ca0d322d6",
-    "type": "framework_questions",
+    "id": "8001c28c-4caa-4975-a81c-700e9686a012",
+    "type": "framework_responses",
     "attributes": {
-      "key": "requires-special-vehicle",
-      "question_type": "object",
-      "options": ["No", "Yes"]
+      "value": null,
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "2bd65b46-b9e4-4906-a59a-8079ed440202",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "45dc419c-602c-4fb5-afda-09cbf6f15baa",
+          "type": "framework_flags"
+        }]
+      }
     }
   }, {
-    "id": "4e257ae2-8a03-4775-a9d6-d171d0582089",
+    "id": "2bd65b46-b9e4-4906-a59a-8079ed440202",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "escape-risk",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "377eb9c0-d73a-4ebf-8797-5c3bb73c8c29",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "transmitter",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cdb16df8-a6ea-4a21-93c8-7e8affdc255c",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "377eb9c0-d73a-4ebf-8797-5c3bb73c8c29",
     "type": "framework_responses",
     "attributes": {
       "value": {
@@ -1065,21 +761,754 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "cc14d0dc-c168-4f5e-853c-3de3424e1fd4",
+          "id": "cdb16df8-a6ea-4a21-93c8-7e8affdc255c",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "779a0dc5-46aa-4f37-86cb-d3609fc62ec1",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "cdb16df8-a6ea-4a21-93c8-7e8affdc255c",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "female-hygiene-kit",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "6c6d6629-8d17-413b-9e2f-1336947f96c9",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "program",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "f1c2ac4a-6564-4c97-94c4-2aeaad47df79",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "cc14d0dc-c168-4f5e-853c-3de3424e1fd4",
+    "id": "6c6d6629-8d17-413b-9e2f-1336947f96c9",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "Yes",
+        "details": "Qui repudiandae nisi pariatur perferendis sit ducimus deserunt."
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "f1c2ac4a-6564-4c97-94c4-2aeaad47df79",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "957f26be-9c67-44f3-ab43-c9bbcee4d3e4",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "f1c2ac4a-6564-4c97-94c4-2aeaad47df79",
     "type": "framework_questions",
     "attributes": {
-      "key": "risk-from-other-people",
+      "key": "gang-member-or-organised-crime",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "50e9f154-e248-42af-8183-16e74c6ded06",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "monitor",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cdfaa5de-d4f1-4e5e-85d6-1b7979af040d",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "50e9f154-e248-42af-8183-16e74c6ded06",
+    "type": "framework_responses",
+    "attributes": {
+      "value": "Yes",
+      "value_type": "string",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cdfaa5de-d4f1-4e5e-85d6-1b7979af040d",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "d2b9dca8-a50c-45e5-ab82-c869377c5c78",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "cdfaa5de-d4f1-4e5e-85d6-1b7979af040d",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "has-concealed-items",
+      "question_type": "string",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "fc58799b-b5fc-4f8a-8517-5d025ec29168",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "interface",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "4394ba7d-688e-4942-95da-ef87dc4e78fc",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "fc58799b-b5fc-4f8a-8517-5d025ec29168",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "Yes",
+        "details": "Ullam dolore culpa tenetur dolor."
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "4394ba7d-688e-4942-95da-ef87dc4e78fc",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "42490f07-1684-4495-bdc2-e9066e00f7a8",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "4394ba7d-688e-4942-95da-ef87dc4e78fc",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "health-contact-details",
       "question_type": "object",
       "options": ["No", "Yes"]
     }
   }, {
-    "id": "ef5bf64e-6bca-467b-b32d-dc5256ac0e78",
+    "id": "1431ff1d-fe0f-4d05-9346-e4aee91eb24f",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "circuit",
+      "flag_type": "alert",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3c0151fb-3687-439b-a4f8-d057b850c7a1",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "1431ff1d-fe0f-4d05-9346-e4aee91eb24f",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "string",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3c0151fb-3687-439b-a4f8-d057b850c7a1",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "b3f7cf34-a114-4456-a7b5-a2f8ea0608d1",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "3c0151fb-3687-439b-a4f8-d057b850c7a1",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "health-issues",
+      "question_type": "string",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "450983a5-b8b2-4c47-9864-9ce118b47eaf",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "sensor",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "f09c3983-39cb-4536-9593-e18119f14010",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "450983a5-b8b2-4c47-9864-9ce118b47eaf",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "string",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "f09c3983-39cb-4536-9593-e18119f14010",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "0820827c-9051-4fa0-be40-067da904398e",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "f09c3983-39cb-4536-9593-e18119f14010",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "held-separately",
+      "question_type": "string",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "d0551fbd-06bf-449d-8e97-5ce6d773686b",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "monitor",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "60c456e0-4307-4b97-b173-24394242a4dc",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "d0551fbd-06bf-449d-8e97-5ce6d773686b",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "No",
+        "details": ""
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "60c456e0-4307-4b97-b173-24394242a4dc",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "10225ca3-bce8-4de6-965a-a4874acc54ac",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "60c456e0-4307-4b97-b173-24394242a4dc",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "help-with-personal-tasks",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "0861097c-4c49-4a1a-9e35-addd74a9a272",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "transmitter",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "8de45f75-492d-4270-ae8d-863bfe6058e1",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "0861097c-4c49-4a1a-9e35-addd74a9a272",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "No",
+        "details": ""
+      },
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "8de45f75-492d-4270-ae8d-863bfe6058e1",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "04704ff2-2d89-42c5-b855-10ee5bf53969",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "8de45f75-492d-4270-ae8d-863bfe6058e1",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "high-public-interest",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "0ddd3382-f6f5-4148-b25b-45e15f2353b5",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "system",
+      "flag_type": "attention",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "b2e3eaba-1f9d-4574-b301-4c7306aa4704",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "0ddd3382-f6f5-4148-b25b-45e15f2353b5",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "string",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "b2e3eaba-1f9d-4574-b301-4c7306aa4704",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "d1f36b95-3566-49e6-8ea1-1e86d92146e9",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "b2e3eaba-1f9d-4574-b301-4c7306aa4704",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "history-of-self-harm-details",
+      "question_type": "string",
+      "options": []
+    }
+  }, {
+    "id": "9b92cf80-dd46-4599-857d-e9831d6a91bd",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "protocol",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "617fffb4-1eb4-466b-a580-f1620ae5264e",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "9b92cf80-dd46-4599-857d-e9831d6a91bd",
+    "type": "framework_responses",
+    "attributes": {
+      "value": ["Another method", "Ligature", "Cutting", "Overdose"],
+      "value_type": "array",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "617fffb4-1eb4-466b-a580-f1620ae5264e",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "99086a66-e36d-4044-b62d-a358e27e84db",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "617fffb4-1eb4-466b-a580-f1620ae5264e",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "history-of-self-harm-method",
+      "question_type": "array",
+      "options": ["Another method", "Ligature", "Cutting", "Overdose", "Unknown method"]
+    }
+  }, {
+    "id": "a70d2ece-6b6f-4317-9ca6-8e113be345be",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "bus",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "89b8ee17-439b-48d4-a34b-2b3cbbbf5260",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "a70d2ece-6b6f-4317-9ca6-8e113be345be",
+    "type": "framework_responses",
+    "attributes": {
+      "value": "Between 6 and 12 months ago",
+      "value_type": "string",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "89b8ee17-439b-48d4-a34b-2b3cbbbf5260",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "94145172-f927-4b57-8610-bb56c898c6c2",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "89b8ee17-439b-48d4-a34b-2b3cbbbf5260",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "history-of-self-harm-recency",
+      "question_type": "string",
+      "options": ["Between 6 and 12 months ago", "Within the last 6 months", "Within the last month", "Between 1 and 5 years ago", "More than 5 years ago"]
+    }
+  }, {
+    "id": "9c906009-85e2-4680-80ac-43bf0e747092",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "driver",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3a08c75c-e313-4609-9ed0-3a5f9738ce60",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "9c906009-85e2-4680-80ac-43bf0e747092",
+    "type": "framework_responses",
+    "attributes": {
+      "value": "No",
+      "value_type": "string",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3a08c75c-e313-4609-9ed0-3a5f9738ce60",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "86390a32-b3b8-417e-9504-6ff98838134e",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "3a08c75c-e313-4609-9ed0-3a5f9738ce60",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "history-of-self-harm",
+      "question_type": "string",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "a737f30d-f0a4-4b63-bd47-19d8804b8e03",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "firewall",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "68939b04-7ec6-4756-bc4d-853604d5216c",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "a737f30d-f0a4-4b63-bd47-19d8804b8e03",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "No",
+        "details": ""
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "68939b04-7ec6-4756-bc4d-853604d5216c",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "780382fb-7486-429b-8742-5b1bad18f694",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "68939b04-7ec6-4756-bc4d-853604d5216c",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "hostage-taker",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "df55cfc4-4087-48e4-acf8-353d7ea61fcb",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "feed",
+      "flag_type": "alert",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "c70f7611-5094-4f07-bcf3-ec0cd358629b",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "df55cfc4-4087-48e4-acf8-353d7ea61fcb",
+    "type": "framework_responses",
+    "attributes": {
+      "value": "No",
+      "value_type": "string",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "c70f7611-5094-4f07-bcf3-ec0cd358629b",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "e090a31d-bab1-4e20-b3d1-a1ebde358c7a",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "c70f7611-5094-4f07-bcf3-ec0cd358629b",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "indication-of-self-harm-or-suicide",
+      "question_type": "string",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "887e02ca-f28e-4d02-aa90-65034ac9f072",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "circuit",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "dedbb4e4-b71c-485b-8c93-a1522bf6b10d",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "887e02ca-f28e-4d02-aa90-65034ac9f072",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "Yes",
+        "details": "In eius qui ducimus consequatur."
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "dedbb4e4-b71c-485b-8c93-a1522bf6b10d",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "fd87fa80-2ddc-431b-bed8-7c2ae21c5177",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "dedbb4e4-b71c-485b-8c93-a1522bf6b10d",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "medical-health-professional-referral",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "3b9031ac-d467-4444-bc61-64c1f2e62184",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "panel",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "c12525f0-1810-48fd-9ea1-be007560df70",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "3b9031ac-d467-4444-bc61-64c1f2e62184",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "No",
+        "details": ""
+      },
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "c12525f0-1810-48fd-9ea1-be007560df70",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "0a12fdb6-294e-4109-b53e-1c0d50528b5b",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "c12525f0-1810-48fd-9ea1-be007560df70",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "mental-health-needs",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "dee351e4-199d-4ffe-be4f-589754d64a5c",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "transmitter",
+      "flag_type": "attention",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "02045208-c1c1-49c7-bed3-00e175d90fb4",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "dee351e4-199d-4ffe-be4f-589754d64a5c",
     "type": "framework_responses",
     "attributes": {
       "value": [],
@@ -1089,45 +1518,89 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "61167af0-8554-4771-b41e-79a68dfe94ac",
+          "id": "02045208-c1c1-49c7-bed3-00e175d90fb4",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "b6e62830-1ae7-4185-ba5c-0dfa2b7d4f78",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "02045208-c1c1-49c7-bed3-00e175d90fb4",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "nature-of-self-harm",
+      "question_type": "collection",
+      "options": ["They have shown signs of behavioural mental disorder", "Someone else has said they will self-harm or commit suicide", "Any other concerns", "They have said they will self-harm or commit suicide", "They have reacted to offence, charge, conviction or sentence", "They have harmed or attempted to harm themself in custody", "A risk of suicide or self-harm has been referenced in a Pre-Sentence Report"]
+    }
+  }, {
+    "id": "56af8959-1881-402c-9c18-01c3de2deb2c",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "program",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "fecaa175-2ba0-4a11-a8fc-89b946a536b8",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "61167af0-8554-4771-b41e-79a68dfe94ac",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "risk-to-other-people",
-      "question_type": "collection",
-      "options": ["Lesbian, gay, or bisexual people", "Females", "Other religions", "Transgender or transexual people", "Other races", "Any other group", "Staff"]
-    }
-  }, {
-    "id": "637bd21d-a3c1-4dc8-9e45-6ce54092dc30",
+    "id": "56af8959-1881-402c-9c18-01c3de2deb2c",
     "type": "framework_responses",
     "attributes": {
-      "value": "No",
+      "value": "Level 4 - constant physical watch",
       "value_type": "string",
       "responded": false
     },
     "relationships": {
       "question": {
         "data": {
-          "id": "a61a63de-5b9f-4d01-866b-2a43190c2159",
+          "id": "fecaa175-2ba0-4a11-a8fc-89b946a536b8",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "2000da23-7340-4294-b9e3-f86a5eea2e6d",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "fecaa175-2ba0-4a11-a8fc-89b946a536b8",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "observation-level",
+      "question_type": "string",
+      "options": ["Level 1 - check at least hourly", "Level 2 - wake and check at least every 30 minutes", "Level 3 - constant watch via CCTV", "Level 4 - constant physical watch"]
+    }
+  }, {
+    "id": "32ab04ec-adad-4375-a599-30aa6a80f86c",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "array",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "2980e092-c271-4cc9-a305-dc1b2187289d",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "a61a63de-5b9f-4d01-866b-2a43190c2159",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "sensitive-medication",
-      "question_type": "string",
-      "options": ["No", "Yes"]
-    }
-  }, {
-    "id": "f9389a4e-96cf-4168-afd4-f824e08fd452",
+    "id": "32ab04ec-adad-4375-a599-30aa6a80f86c",
     "type": "framework_responses",
     "attributes": {
       "value": {
@@ -1140,21 +1613,187 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "0ffb8a5e-dfc9-4efd-b719-51a3fd8441c5",
+          "id": "2980e092-c271-4cc9-a305-dc1b2187289d",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "ec00db28-a0cf-432b-8dec-0523a4bdb010",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "2980e092-c271-4cc9-a305-dc1b2187289d",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "other-health-information",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "8f73deb9-84fb-4c98-abba-05cf86f85521",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "pixel",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cabfb6cd-c6c6-4129-a3c7-de81a5bd75a5",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "0ffb8a5e-dfc9-4efd-b719-51a3fd8441c5",
+    "id": "8f73deb9-84fb-4c98-abba-05cf86f85521",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "Yes",
+        "details": "Consequatur necessitatibus impedit odio in qui et autem est."
+      },
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cabfb6cd-c6c6-4129-a3c7-de81a5bd75a5",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "6cec7291-9d3b-4860-b196-74307689c3a3",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "cabfb6cd-c6c6-4129-a3c7-de81a5bd75a5",
     "type": "framework_questions",
     "attributes": {
-      "key": "special-diet-or-allergies",
+      "key": "other-risk-information",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "024242b0-25c8-4793-993e-42c202e8a1df",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "driver",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "513999cd-5620-4731-9f92-c51d6bebc8fc",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "024242b0-25c8-4793-993e-42c202e8a1df",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "513999cd-5620-4731-9f92-c51d6bebc8fc",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "f345e7fc-e183-4e0b-ba62-8106f9174683",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "513999cd-5620-4731-9f92-c51d6bebc8fc",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "physical-health-needs",
       "question_type": "object",
       "options": ["Yes", "No"]
     }
   }, {
-    "id": "8ec9e861-b02b-40e8-9fce-cc3d7884e9ca",
+    "id": "40a50529-673a-460c-8097-cf1d1ec3af97",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "monitor",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cea3089b-c211-457d-b4b2-9572b4839707",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "40a50529-673a-460c-8097-cf1d1ec3af97",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "No",
+        "details": ""
+      },
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "cea3089b-c211-457d-b4b2-9572b4839707",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "530d65b4-0027-45fd-bf76-b3acef1e41cf",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "cea3089b-c211-457d-b4b2-9572b4839707",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "pregnant",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "ea140c33-7356-4322-b58f-bb6119067518",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "capacitor",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "82f0a21d-5944-4cba-a72f-f4d3eca7fd05",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "ea140c33-7356-4322-b58f-bb6119067518",
     "type": "framework_responses",
     "attributes": {
       "value": null,
@@ -1164,21 +1803,89 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "785abef5-084d-4149-85ba-92ccc1eb29b4",
+          "id": "82f0a21d-5944-4cba-a72f-f4d3eca7fd05",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "a1f581b1-cbc2-4fd8-a17f-d53df795497a",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "82f0a21d-5944-4cba-a72f-f4d3eca7fd05",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "prescribed-medication",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "cc0e40e2-f557-470e-a89d-1db9dff702ca",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "system",
+      "flag_type": "alert",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "8d91cd4f-f5bb-4a16-aa6f-c2f075e94c73",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "785abef5-084d-4149-85ba-92ccc1eb29b4",
-    "type": "framework_questions",
+    "id": "cc0e40e2-f557-470e-a89d-1db9dff702ca",
+    "type": "framework_responses",
     "attributes": {
-      "key": "stalker-harasser-or-intimidator",
-      "question_type": "object",
-      "options": ["Yes", "No"]
+      "value": null,
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "8d91cd4f-f5bb-4a16-aa6f-c2f075e94c73",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "06721faf-bd00-4bc5-99c2-36777a1d4ab5",
+          "type": "framework_flags"
+        }]
+      }
     }
   }, {
-    "id": "101c072b-132b-4fc2-b413-c255224c42ff",
+    "id": "8d91cd4f-f5bb-4a16-aa6f-c2f075e94c73",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "release-status",
+      "question_type": "object",
+      "options": ["For release", "Not for release"]
+    }
+  }, {
+    "id": "d5efc91c-af7f-4e78-832e-49bae5bc3b9c",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "firewall",
+      "flag_type": "attention",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "be712715-9661-4079-93f2-65cf28190ddd",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "d5efc91c-af7f-4e78-832e-49bae5bc3b9c",
     "type": "framework_responses",
     "attributes": {
       "value": {
@@ -1191,26 +1898,48 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "568b1f6e-17c0-426a-ba5a-d4e936c7670c",
+          "id": "be712715-9661-4079-93f2-65cf28190ddd",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "80ff5130-5f32-4930-b529-e2f5d49b43f2",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "be712715-9661-4079-93f2-65cf28190ddd",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "requires-special-vehicle",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "a37cd1f4-2e9b-497d-8274-de1cfd8c4196",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "application",
+      "flag_type": "attention",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "0630a21c-479d-40ac-86b3-1f62475e8874",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "568b1f6e-17c0-426a-ba5a-d4e936c7670c",
-    "type": "framework_questions",
-    "attributes": {
-      "key": "violent-or-dangerous",
-      "question_type": "object",
-      "options": ["Yes", "No"]
-    }
-  }, {
-    "id": "c43203d5-da52-42c4-9c96-741cb1a7f607",
+    "id": "a37cd1f4-2e9b-497d-8274-de1cfd8c4196",
     "type": "framework_responses",
     "attributes": {
       "value": {
         "option": "Yes",
-        "details": "Doloribus libero ipsum sunt repellendus vitae velit."
+        "details": "In inventore quas sit nobis repudiandae asperiores quo laborum vel."
       },
       "value_type": "object",
       "responded": true
@@ -1218,13 +1947,310 @@
     "relationships": {
       "question": {
         "data": {
-          "id": "446e876f-9c0f-4c94-b882-b30b217fab22",
+          "id": "0630a21c-479d-40ac-86b3-1f62475e8874",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "e7fafbee-839b-470b-a813-3e95eb2d9484",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "0630a21c-479d-40ac-86b3-1f62475e8874",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "risk-from-other-people",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "b7ef3e6e-0df4-43ca-a758-6ca2d153acc0",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "feed",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "dea588fa-cd17-4e9c-b3f0-e38f56107d15",
           "type": "framework_questions"
         }
       }
     }
   }, {
-    "id": "446e876f-9c0f-4c94-b882-b30b217fab22",
+    "id": "b7ef3e6e-0df4-43ca-a758-6ca2d153acc0",
+    "type": "framework_responses",
+    "attributes": {
+      "value": [{
+        "option": "Staff",
+        "details": "Cum ipsa consequuntur veritatis."
+      }, {
+        "option": "Females",
+        "details": "Dolor voluptates officia."
+      }, {
+        "option": "Other religions",
+        "details": "At eligendi fugit reiciendis et rerum."
+      }, {
+        "option": "Any other group",
+        "details": "Delectus nesciunt voluptatem et vero id aut qui debitis."
+      }],
+      "value_type": "collection",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "dea588fa-cd17-4e9c-b3f0-e38f56107d15",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "ca021f17-18af-4bd9-9a05-20448cc8f30c",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "dea588fa-cd17-4e9c-b3f0-e38f56107d15",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "risk-to-other-people",
+      "question_type": "collection",
+      "options": ["Staff", "Females", "Other religions", "Any other group", "Transgender or transexual people", "Other races", "Lesbian, gay, or bisexual people"]
+    }
+  }, {
+    "id": "061b3a7e-5224-4be5-beaf-2b312ccc017c",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "protocol",
+      "flag_type": "information",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3013ed12-1330-465c-95e9-54be065c932d",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "061b3a7e-5224-4be5-beaf-2b312ccc017c",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "string",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "3013ed12-1330-465c-95e9-54be065c932d",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "3da4f291-648a-4903-90f7-63cffc915d40",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "3013ed12-1330-465c-95e9-54be065c932d",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "sensitive-medication",
+      "question_type": "string",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "1f04e357-1e9d-42cf-b77e-affbc5f428a9",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "capacitor",
+      "flag_type": "warning",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "26687f43-0989-4af2-9d33-8ba82e2eac2b",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "1f04e357-1e9d-42cf-b77e-affbc5f428a9",
+    "type": "framework_responses",
+    "attributes": {
+      "value": {
+        "option": "Yes",
+        "details": "Quae ipsa est neque enim magni facilis."
+      },
+      "value_type": "object",
+      "responded": true
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "26687f43-0989-4af2-9d33-8ba82e2eac2b",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "b5b8af74-8316-437d-9db5-8a4491047bb6",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "26687f43-0989-4af2-9d33-8ba82e2eac2b",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "special-diet-or-allergies",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "b1f9352e-9e65-460d-b077-307892ba14e5",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "circuit",
+      "flag_type": "warning",
+      "question_value": "Yes"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "5e0275e1-346d-454b-9303-3ba647cb9bc6",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "b1f9352e-9e65-460d-b077-307892ba14e5",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "5e0275e1-346d-454b-9303-3ba647cb9bc6",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "93128120-b221-4107-97d3-09d57a79e1df",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "5e0275e1-346d-454b-9303-3ba647cb9bc6",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "stalker-harasser-or-intimidator",
+      "question_type": "object",
+      "options": ["Yes", "No"]
+    }
+  }, {
+    "id": "fb0d6ad7-692e-4143-b265-eea77f47a406",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "array",
+      "flag_type": "attention",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "0cbe5f0a-6fff-4c10-929a-4f9ee5f7a02e",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "fb0d6ad7-692e-4143-b265-eea77f47a406",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "0cbe5f0a-6fff-4c10-929a-4f9ee5f7a02e",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "34662d00-a23a-4ed4-acb3-8aed3414522c",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "0cbe5f0a-6fff-4c10-929a-4f9ee5f7a02e",
+    "type": "framework_questions",
+    "attributes": {
+      "key": "violent-or-dangerous",
+      "question_type": "object",
+      "options": ["No", "Yes"]
+    }
+  }, {
+    "id": "6ca85230-e06f-425d-b9f0-2ff52e6c2665",
+    "type": "framework_flags",
+    "attributes": {
+      "title": "circuit",
+      "flag_type": "alert",
+      "question_value": "No"
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "ed4eb050-60dd-4c75-b82c-ee7e7423afe8",
+          "type": "framework_questions"
+        }
+      }
+    }
+  }, {
+    "id": "6ca85230-e06f-425d-b9f0-2ff52e6c2665",
+    "type": "framework_responses",
+    "attributes": {
+      "value": null,
+      "value_type": "object",
+      "responded": false
+    },
+    "relationships": {
+      "question": {
+        "data": {
+          "id": "ed4eb050-60dd-4c75-b82c-ee7e7423afe8",
+          "type": "framework_questions"
+        }
+      },
+      "flags": {
+        "data": [{
+          "id": "b9aae996-2246-49ff-8ecd-18fa556dd504",
+          "type": "framework_flags"
+        }]
+      }
+    }
+  }, {
+    "id": "ed4eb050-60dd-4c75-b82c-ee7e7423afe8",
     "type": "framework_questions",
     "attributes": {
       "key": "wheelchair-user",

@@ -1,4 +1,4 @@
-const { get, sortBy } = require('lodash')
+const { isEmpty, get, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
 const frameworksService = require('../../../common/services/frameworks')
@@ -28,10 +28,13 @@ module.exports = function view(req, res) {
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
   } = profile || {}
-  const personEscortRecordIsComplete = personEscortRecord?.status === 'complete'
+  const personEscortRecordIsEnabled = FEATURE_FLAGS.PERSON_ESCORT_RECORD
+  const personEscortRecordIsComplete =
+    !isEmpty(personEscortRecord) &&
+    !['not_started', 'in_progress'].includes(personEscortRecord?.status)
   const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
-    FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
+    personEscortRecordIsEnabled &&
     personEscortRecord?.status !== 'confirmed' &&
     move.status === 'requested' &&
     move.profile?.id !== undefined
@@ -40,6 +43,9 @@ module.exports = function view(req, res) {
     frameworkSections: framework.sections,
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })
+  const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
+    personEscortRecord?.flags
+  )
   const urls = {
     update: updateUrls,
   }
@@ -47,10 +53,12 @@ module.exports = function view(req, res) {
   const locals = {
     move,
     personEscortRecord,
+    personEscortRecordIsEnabled,
     personEscortRecordIsComplete,
     personEscortRecordUrl,
     personEscortRecordtaskList,
     showPersonEscortRecordBanner,
+    personEscortRecordTagList,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),

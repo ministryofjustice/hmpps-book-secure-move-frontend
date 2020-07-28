@@ -126,3 +126,10 @@ examples:
         items:
         - text: Incomplete
         - text: Delayed
+  - name: with inset text
+    data:
+      title:
+        text: Card with inset text
+      insetText:
+        classes: govuk-inset-text--compact
+        text: A message about this card
