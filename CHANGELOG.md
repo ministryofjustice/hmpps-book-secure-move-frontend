@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.36.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.35.1...v2.36.0) (2020-07-28)
+
+
+### Features
+
+* **allocations:** Included estate for allocations ([d26d2dc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d26d2dca846b094aaa7ee5944241dd81a05ec4aa))
+* **allocations:** Included sentence length comment ([c202926](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c20292608539e5d042c9910fcaa1d4888f32e48c))
+* **framework:** Add support for markdown in hint text ([95a36d3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/95a36d393e8057aa28ccd3247db7a8cdfc4edfc6))
+* **move:** Add video remand as move type option for police user ([844c4a1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/844c4a173c876cf621d82a80da14bdbff1f2034d))
+* **move:** Enable move updating for SCH users ([7a7decf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7a7decfc0ec03eb6cb6d50d0e3c7559e4c53ffc8))
+* **per:** Add ability to confirm a Person Escort Record ([64de055](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/64de0553ea799d5c59f0f7b4a7a0e38bcb75eb57))
+* **per:** Support ordering of framework sections ([500c741](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/500c741f9e5edd32c1dfad410aa7e781e576bf55))
+
+
+### Bug Fixes
+
+* Fixed allocations for young offenders ([a69ca7b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a69ca7bdbcfac6fe7c172c00b1e1439f3213f724))
+* Return combined total rather than array when moves request batched ([af2f949](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/af2f9496f6052ab02e6be3d83ba821b1bb33f5b9))
+* **frameworks:** Ensure filter dependent responses correctly ([a3f6f2a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a3f6f2a52c28303374063461f21ffb752697e4ca))
+* Amended wording for complex cases ([697b3e3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/697b3e3e7b29832367132ca83123115a35fc1633))
+* Ensure button styles aren't affected by banner link override ([1f6f331](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1f6f331c3238bc6e1ea053db6d99132de12c740e))
+* **per:** Add hint text for options when importing ([b0a75e2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b0a75e2809413b27540b0d7694fd187d30b572b0))
+* **per:** Remove before you start page when creating a new PER ([960df2b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/960df2b07d2e82a647429376ec7ee72015d660fd))
+* Correct the contrast of links on light blue banner ([7692e8c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7692e8c22dfb92b9485bc6cd230e0bbbbb874df1))
+
 ### [2.35.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.35.0...v2.35.1) (2020-07-16)
 
 
