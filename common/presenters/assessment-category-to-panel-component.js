@@ -1,37 +1,14 @@
-const { kebabCase, groupBy, mapValues, values } = require('lodash')
+const { kebabCase, groupBy, map, sortBy } = require('lodash')
 
-const i18n = require('../../config/i18n')
-const filters = require('../../config/nunjucks/filters')
+const componentService = require('../services/component')
 
-function _mapAnswer(answer) {
-  let html = ''
+const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')
 
-  if (answer.nomis_alert_description) {
-    html = `<h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">${answer.nomis_alert_description}</h4>`
-  }
-
-  html += answer.comments || ''
-
-  if (answer.created_at) {
-    html += `<div class="govuk-!-margin-top-2 govuk-!-font-size-16">${i18n.t(
-      'created_on'
-    )} ${filters.formatDateWithDay(answer.created_at)}</div>`
-  }
-
-  return {
-    value: {
-      html,
-    },
-  }
-}
-
-module.exports = function assessmentCategoryToPanelListComponent({
-  answers,
-  key,
-  tagClass,
-}) {
+function assessmentCategoryToPanelListComponent({ answers, key, tagClass }) {
   const groupedByTitle = groupBy(answers, 'title')
-  const panels = mapValues(groupedByTitle, (answers, title) => {
+  const panels = map(groupedByTitle, (answers, title) => {
+    const metaList = assessmentAnswersToMetaListComponent(answers)
+
     return {
       attributes: {
         id: kebabCase(title),
@@ -40,12 +17,14 @@ module.exports = function assessmentCategoryToPanelListComponent({
         text: title,
         classes: tagClass,
       },
-      items: answers.map(_mapAnswer),
+      html: componentService.getComponent('appMetaList', metaList),
     }
   })
 
   return {
     key,
-    panels: values(panels),
+    panels: sortBy(panels, 'tag.text'),
   }
 }
+
+module.exports = assessmentCategoryToPanelListComponent

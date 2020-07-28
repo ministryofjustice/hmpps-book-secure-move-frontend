@@ -150,6 +150,19 @@ module.exports = {
       sortOrder: 2,
     },
   },
+  ASSESSMENT_ANSWERS_CATEGORY_SETTINGS: {
+    risk: {
+      tagClass: 'app-tag--destructive',
+      sortOrder: 1,
+    },
+    health: {
+      tagClass: '',
+      sortOrder: 2,
+    },
+    court: {
+      sortOrder: 3,
+    },
+  },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
   E2E: {
     BASE_URL: process.env.E2E_BASE_URL || BASE_URL,
