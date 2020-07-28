@@ -4,12 +4,12 @@ const commonPrisonCategory = require('./prisoner-common-category')
 
 const prisonerCategory = {
   ...cloneDeep(commonPrisonCategory),
-  id: 'prisoner_youth_female',
-  name: 'prisoner_youth_female',
+  id: 'prisoner_young_offender_male',
+  name: 'prisoner_young_offender_male',
   validate: 'required',
   component: 'govukRadios',
   label: {
-    text: 'fields::prisoner_youth_female.select_label',
+    text: 'fields::prisoner_young_offender_male.select_label',
   },
 }
 

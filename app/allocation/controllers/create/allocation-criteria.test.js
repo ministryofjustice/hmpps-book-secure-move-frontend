@@ -129,8 +129,8 @@ describe('Allocation criteria controller', function () {
         complete_in_full: 'false',
         prisoner_adult_female: undefined,
         prisoner_adult_male: undefined,
-        prisoner_youth_female: undefined,
-        prisoner_youth_male: 'open',
+        prisoner_young_offender_female: undefined,
+        prisoner_young_offender_male: 'open',
       }
       mockComplexCaseFields = [
         {

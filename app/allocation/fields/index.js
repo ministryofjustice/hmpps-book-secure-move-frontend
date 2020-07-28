@@ -11,8 +11,8 @@ const movesCount = require('./moves-count')
 const otherCriteria = require('./other-criteria')
 const prisonerAdultFemale = require('./prisoner-adult-female')
 const prisonerAdultMale = require('./prisoner-adult-male')
-const prisonerYouthFemale = require('./prisoner-youth-female')
-const prisonerYouthMale = require('./prisoner-youth-male')
+const prisonerYoungOffenderFemale = require('./prisoner-young-offender-female')
+const prisonerYoungOffernderMale = require('./prisoner-young-offender-male')
 const sentenceLength = require('./sentence-length')
 const sentenceLengthComment = require('./sentence-length-comment')
 const toLocation = require('./to-location')
@@ -27,8 +27,8 @@ const createFields = {
   other_criteria: otherCriteria,
   prisoner_adult_male: prisonerAdultMale,
   prisoner_adult_female: prisonerAdultFemale,
-  prisoner_youth_male: prisonerYouthMale,
-  prisoner_youth_female: prisonerYouthFemale,
+  prisoner_young_offender_male: prisonerYoungOffernderMale,
+  prisoner_young_offender_female: prisonerYoungOffenderFemale,
   sentence_length: sentenceLength,
   to_location: toLocation,
   estate,
