@@ -70,6 +70,9 @@
       "prison_recall": {
         "label": "Prison recall"
       },
+      "police_transfer": {
+        "label": "Police custody (In force moves only)"
+      },
       "video_remand": {
         "label": "Prison remand (Video Remand Hearing)"
       },
@@ -83,6 +86,9 @@
   },
   "to_location_court_appearance": {
     "label": "Name of court"
+  },
+  "to_location_police_transfer": {
+    "label": "Name of custody suite"
   },
   "to_location_prison_transfer": {
     "label": "Name of prison"

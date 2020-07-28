@@ -26,6 +26,11 @@ const moveType = {
       conditional: 'prison_recall_comments',
     },
     {
+      value: 'police_transfer',
+      text: 'fields::move_type.items.police_transfer.label',
+      conditional: 'to_location_police_transfer',
+    },
+    {
       value: 'video_remand',
       text: 'fields::move_type.items.video_remand.label',
       conditional: 'video_remand_comments',
