@@ -66,8 +66,18 @@ describe('Presenters', function () {
       it('should include correct keys', function () {
         expect(Object.keys(transformedResponse)).to.deep.equal([
           'key',
+          'sortOrder',
+          'tagClass',
+          'answers',
+          'count',
           'panels',
         ])
+      })
+
+      it('should create count of answers', function () {
+        expect(transformedResponse.count).to.equal(
+          mockAssessmentCategory.answers.length
+        )
       })
 
       it('should transform answers by title', function () {

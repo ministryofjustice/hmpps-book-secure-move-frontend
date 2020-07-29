@@ -4,7 +4,8 @@ const componentService = require('../services/component')
 
 const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')
 
-function assessmentCategoryToPanelListComponent({ answers, key, tagClass }) {
+function assessmentCategoryToPanelListComponent(category) {
+  const { answers, tagClass } = category
   const groupedByTitle = groupBy(answers, 'title')
   const panels = map(groupedByTitle, (answers, title) => {
     const metaList = assessmentAnswersToMetaListComponent(answers)
@@ -22,7 +23,8 @@ function assessmentCategoryToPanelListComponent({ answers, key, tagClass }) {
   })
 
   return {
-    key,
+    ...category,
+    count: answers.length,
     panels: sortBy(panels, 'tag.text'),
   }
 }
