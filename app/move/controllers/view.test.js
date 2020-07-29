@@ -25,6 +25,20 @@ const pathStubs = {
 const controller = proxyquire('./view', pathStubs)
 
 const mockAssessmentAnswers = []
+const mockAssessmentByCategory = [
+  {
+    key: 'risk',
+    answers: [],
+  },
+  {
+    key: 'health',
+    answers: [],
+  },
+  {
+    key: 'court',
+    answers: [],
+  },
+]
 
 const mockMove = {
   id: 'moveId',
@@ -99,9 +113,11 @@ describe('Move controllers', function () {
         .returns('__frameworkFlagsToTagList__')
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
-      sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
+      sinon.stub(presenters, 'assessmentAnswersByCategory').returns([])
       sinon.stub(presenters, 'assessmentCategoryToPanelComponent').returnsArg(0)
-      sinon.stub(presenters, 'assessmentToSummaryListComponent').returnsArg(0)
+      sinon
+        .stub(presenters, 'assessmentCategoryToSummaryListComponent')
+        .returnsArg(0)
       sinon
         .stub(presenters, 'courtHearingToSummaryListComponent')
         .callsFake(hearing => `summaryList__${hearing.id}`)
@@ -123,6 +139,7 @@ describe('Move controllers', function () {
 
     context('by default', function () {
       beforeEach(function () {
+        presenters.assessmentAnswersByCategory.returns(mockAssessmentByCategory)
         controller(req, res)
         params = res.render.args[0][1]
       })
@@ -226,20 +243,64 @@ describe('Move controllers', function () {
       })
 
       it('should call assessmentAnswersByCategory presenter with correct args', function () {
-        expect(
-          presenters.assessmentAnswersByCategory
-        ).to.be.calledOnceWithExactly(mockAssessmentAnswers)
+        expect(presenters.assessmentAnswersByCategory).to.be.calledWithExactly(
+          mockAssessmentAnswers
+        )
+      })
+
+      it('should call assessmentCategoryToPanelComponent presenter with correct categories', function () {
+        expect(presenters.assessmentCategoryToPanelComponent).to.be.calledTwice
+        expect(presenters.assessmentCategoryToPanelComponent).to.be.calledWith(
+          {
+            answers: [],
+            key: 'health',
+          },
+          1
+        )
+        expect(presenters.assessmentCategoryToPanelComponent).to.be.calledWith(
+          {
+            answers: [],
+            key: 'risk',
+          },
+          0
+        )
       })
 
       it('should contain assessment param', function () {
         expect(params).to.have.property('assessment')
-        expect(params.assessment).to.deep.equal(mockAssessmentAnswers)
+        expect(params.assessment).to.deep.equal([
+          {
+            answers: [],
+            key: 'risk',
+          },
+          {
+            answers: [],
+            key: 'health',
+          },
+        ])
       })
 
-      it('should call assessmentToSummaryListComponent presenter with correct args', function () {
+      it('should call assessmentCategoryToSummaryListComponent presenter with correct categories', function () {
         expect(
-          presenters.assessmentToSummaryListComponent
-        ).to.be.calledOnceWithExactly(mockAssessmentAnswers, 'court')
+          presenters.assessmentCategoryToSummaryListComponent
+        ).to.be.calledOnce
+        expect(
+          presenters.assessmentCategoryToSummaryListComponent
+        ).to.be.calledWith(
+          {
+            answers: [],
+            key: 'court',
+          },
+          0
+        )
+      })
+
+      it('should contain court summary param', function () {
+        expect(params).to.have.property('courtSummary')
+        expect(params.courtSummary).to.deep.equal({
+          key: 'court',
+          answers: [],
+        })
       })
 
       it('should contain court hearings param', function () {
@@ -285,11 +346,6 @@ describe('Move controllers', function () {
         expect(presenters.courtHearingToSummaryListComponent).to.be.callCount(
           mockMove.court_hearings.length
         )
-      })
-
-      it('should contain court summary param', function () {
-        expect(params).to.have.property('courtSummary')
-        expect(params.courtSummary).to.equal(mockAssessmentAnswers)
       })
 
       it('should contain message title param', function () {
@@ -415,9 +471,9 @@ describe('Move controllers', function () {
       })
 
       it('should call assessmentAnswersByCategory presenter with empty array', function () {
-        expect(
-          presenters.assessmentAnswersByCategory
-        ).to.be.calledOnceWithExactly([])
+        expect(presenters.assessmentAnswersByCategory).to.be.calledWithExactly(
+          []
+        )
       })
 
       it('should contain assessment param as empty array', function () {
@@ -425,10 +481,9 @@ describe('Move controllers', function () {
         expect(params.assessment).to.deep.equal([])
       })
 
-      it('should call assessmentToSummaryListComponent presenter with empty array', function () {
-        expect(
-          presenters.assessmentToSummaryListComponent
-        ).to.be.calledOnceWithExactly([], 'court')
+      it('should contain courtSummary param as undefined', function () {
+        expect(params).to.have.property('courtSummary')
+        expect(params.courtSummary).to.be.undefined
       })
     })
 

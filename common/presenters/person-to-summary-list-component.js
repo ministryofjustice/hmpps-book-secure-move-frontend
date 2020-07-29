@@ -74,6 +74,7 @@ module.exports = function personToSummaryListComponent(props) {
   ]
 
   return {
+    classes: 'govuk-!-font-size-16',
     rows,
   }
 }

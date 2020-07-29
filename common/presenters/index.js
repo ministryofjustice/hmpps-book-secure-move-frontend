@@ -4,7 +4,7 @@ const allocationsToTableComponent = require('./allocations-to-table-component')
 const assessmentAnswerToTag = require('./assessment-answer-to-tag')
 const assessmentAnswersByCategory = require('./assessment-answers-by-category')
 const assessmentCategoryToPanelComponent = require('./assessment-category-to-panel-component')
-const assessmentToSummaryListComponent = require('./assessment-to-summary-list-component')
+const assessmentCategoryToSummaryListComponent = require('./assessment-category-to-summary-list-component')
 const assessmentToTagList = require('./assessment-to-tag-list')
 const courtCaseToCardComponent = require('./court-case-to-card-component')
 const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
@@ -31,7 +31,7 @@ module.exports = {
   assessmentAnswersByCategory,
   assessmentCategoryToPanelComponent,
   assessmentToTagList,
-  assessmentToSummaryListComponent,
+  assessmentCategoryToSummaryListComponent,
   courtCaseToCardComponent,
   courtHearingToSummaryListComponent,
   frameworkFieldToSummaryListRow,

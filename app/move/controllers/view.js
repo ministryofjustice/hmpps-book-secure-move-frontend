@@ -49,9 +49,19 @@ module.exports = function view(req, res) {
   const urls = {
     update: updateUrls,
   }
+  const assessment = presenters
+    .assessmentAnswersByCategory(assessmentAnswers)
+    .filter(category => category.key !== 'court')
+    .map(presenters.assessmentCategoryToPanelComponent)
+  const courtSummary = presenters
+    .assessmentAnswersByCategory(assessmentAnswers)
+    .filter(category => category.key === 'court')
+    .map(presenters.assessmentCategoryToSummaryListComponent)[0]
 
   const locals = {
     move,
+    assessment,
+    courtSummary,
     personEscortRecord,
     personEscortRecordIsEnabled,
     personEscortRecordIsComplete,
@@ -62,9 +72,6 @@ module.exports = function view(req, res) {
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),
-    assessment: presenters
-      .assessmentAnswersByCategory(assessmentAnswers)
-      .map(presenters.assessmentCategoryToPanelComponent),
     canCancelMove:
       (userPermissions.includes('move:cancel') &&
         move.status === 'requested' &&
@@ -80,10 +87,6 @@ module.exports = function view(req, res) {
           ),
         }
       }
-    ),
-    courtSummary: presenters.assessmentToSummaryListComponent(
-      assessmentAnswers,
-      'court'
     ),
     messageTitle: bannerStatuses.includes(status)
       ? req.t('statuses::' + status, { context: cancellationReason })
