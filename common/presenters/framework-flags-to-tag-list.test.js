@@ -24,7 +24,7 @@ const presenter = proxyquire('./framework-flags-to-tag-list', {
 })
 
 describe('Presenters', function () {
-  describe('#assessmentToTagList()', function () {
+  describe('#frameworkFlagsToTagList()', function () {
     let output
 
     context('without args', function () {
@@ -111,9 +111,15 @@ describe('Presenters', function () {
           expect(order).to.deep.equal([1, 1, 2, 2, 3, null])
         })
 
+        it('should not set sections', function () {
+          output.forEach(item => {
+            expect(item.section).to.be.undefined
+          })
+        })
+
         it('should contain correct number of keys', function () {
           output.forEach(item => {
-            expect(Object.keys(item)).to.have.length(4)
+            expect(Object.keys(item)).to.have.length(5)
           })
         })
       })
@@ -133,6 +139,26 @@ describe('Presenters', function () {
 
         it('href should include prefix', function () {
           expect(output[0].href).to.equal('/prefix#escape-risk')
+        })
+      })
+
+      context('with question', function () {
+        const mockFlags = [
+          {
+            title: 'Escape risk',
+            flag_type: 'alert',
+            question: {
+              section: 'section-one',
+            },
+          },
+        ]
+
+        beforeEach(function () {
+          output = presenter(mockFlags)
+        })
+
+        it('href should include prefix', function () {
+          expect(output[0].section).to.equal('section-one')
         })
       })
     })
