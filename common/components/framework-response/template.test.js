@@ -18,8 +18,14 @@ describe('Framework Response component', function () {
       $component = $('body')
     })
 
-    it('should not render a parent element', function () {
-      expect($component.children().first().get(0)).to.be.undefined
+    it('should render a parent p', function () {
+      expect($component.children().first().get(0).tagName).to.equal('p')
+    })
+
+    it('should contain correct ul classes', function () {
+      expect($component.children().first().attr('class')).to.equal(
+        'govuk-!-font-size-16'
+      )
     })
 
     it('should render value', function () {
@@ -37,8 +43,14 @@ describe('Framework Response component', function () {
         $component = $('body')
       })
 
-      it('should not render a parent element', function () {
-        expect($component.children().first().get(0)).to.be.undefined
+      it('should render a parent p', function () {
+        expect($component.children().first().get(0).tagName).to.equal('p')
+      })
+
+      it('should contain correct ul classes', function () {
+        expect($component.children().first().attr('class')).to.equal(
+          'govuk-!-font-size-16'
+        )
       })
 
       it('should render value', function () {
@@ -55,8 +67,14 @@ describe('Framework Response component', function () {
         $component = $('body')
       })
 
-      it('should not render a parent element', function () {
-        expect($component.children().first().get(0)).to.be.undefined
+      it('should render a parent p', function () {
+        expect($component.children().first().get(0).tagName).to.equal('p')
+      })
+
+      it('should contain correct ul classes', function () {
+        expect($component.children().first().attr('class')).to.equal(
+          'govuk-!-font-size-16'
+        )
       })
 
       it('should render value', function () {

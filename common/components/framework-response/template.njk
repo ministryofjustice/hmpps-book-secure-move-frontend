@@ -1,6 +1,8 @@
 {% if params.value and params.valueType %}
   {% if params.valueType === 'object' %}
-    {{ params.value.option }}{{ " — " + params.value.details if params.value.details }}
+    <p class="govuk-!-font-size-16">
+      {{ params.value.option }}{{ " — " + params.value.details if params.value.details }}
+    </p>
   {% endif %}
 
   {% if params.valueType === 'array' %}
@@ -22,7 +24,9 @@
   {% endif %}
 
   {% if params.valueType === 'string' %}
-    {{ params.value }}
+    <p class="govuk-!-font-size-16">
+      {{ params.value }}
+    </p>
   {% endif %}
 {% else %}
   {% if params.responded %}
