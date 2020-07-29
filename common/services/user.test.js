@@ -61,7 +61,7 @@ const mockUserCaseloads = [
   },
 ]
 
-const { getLocations, getFullname } = proxyquire('./user', {
+const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
   './reference-data': referenceDataStub,
   '../../config': configStub,
 })
@@ -89,6 +89,86 @@ describe('User service', function () {
         it('returns an object of user details', function () {
           expect(result).to.deep.equal(mockFullNameResponse.name)
         })
+      })
+    })
+  })
+
+  describe('#getSupplierId()', function () {
+    let tokenData, result
+
+    context('when supplier exists', function () {
+      beforeEach(async function () {
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+          .get('/')
+          .reply(200, JSON.stringify(authGroups))
+
+        tokenData = { authorities: ['ROLE_PECS_SUPPLIER'] }
+
+        result = await getSupplierId(encodeToken(tokenData))
+      })
+
+      it('requests the user’s groups from HMPPS SSO', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('calls reference with supplier key', function () {
+        expect(referenceDataStub.getSupplierByKey).to.be.calledWithExactly(
+          supplierStub.key
+        )
+      })
+
+      it('returns an Array of location objects', function () {
+        expect(result).to.deep.equal(supplierStub.id)
+      })
+    })
+
+    context('when supplier does not exist', function () {
+      beforeEach(async function () {
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+          .get('/')
+          .reply(
+            200,
+            JSON.stringify([
+              {
+                groupCode: '404',
+              },
+            ])
+          )
+
+        tokenData = { authorities: ['ROLE_PECS_SUPPLIER'] }
+
+        result = await getSupplierId(encodeToken(tokenData))
+      })
+
+      it('requests the user’s groups from HMPPS SSO', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('returns an Array of location objects', function () {
+        expect(result).to.be.undefined
+      })
+    })
+
+    context('when supplier call errors', function () {
+      beforeEach(async function () {
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+          .get('/')
+          .reply(
+            200,
+            JSON.stringify([
+              {
+                groupCode: 'error',
+              },
+            ])
+          )
+
+        tokenData = { authorities: ['ROLE_PECS_SUPPLIER'] }
+      })
+
+      it('returns an error', function () {
+        return expect(getSupplierId(encodeToken(tokenData))).to.be.rejectedWith(
+          'Error'
+        )
       })
     })
   })

@@ -31,6 +31,33 @@ function getLocations(token) {
   }
 }
 
+async function getSupplierId(token) {
+  const { authorities = [] } = decodeAccessToken(token)
+
+  if (!authorities.includes('ROLE_PECS_SUPPLIER')) {
+    return undefined
+  }
+
+  const groups = await getAuthGroups(token)
+
+  if (groups.length === 0) {
+    return undefined
+  }
+
+  const supplierKey = groups[0].toLowerCase()
+
+  try {
+    const supplier = await getSupplierByKey(supplierKey)
+    return supplier.id
+  } catch (error) {
+    if (error.statusCode === 404) {
+      return undefined
+    }
+
+    return Promise.reject(error)
+  }
+}
+
 function getAuthGroups(token) {
   const { user_name: userName } = decodeAccessToken(token)
 
@@ -42,31 +69,31 @@ function getAuthGroups(token) {
     .then(data => data.map(group => group.groupCode.replace(/^PECS_/, '')))
 }
 
-function getAuthLocations(token) {
+async function getAuthLocations(token) {
   const { authorities = [] } = decodeAccessToken(token)
 
-  return getAuthGroups(token).then(async groups => {
-    if (authorities.includes('ROLE_PECS_SUPPLIER')) {
-      if (!groups.length) {
-        return Promise.resolve([])
-      }
+  const groups = await getAuthGroups(token)
 
-      try {
-        const supplierKey = groups[0].toLowerCase()
-        const supplier = await getSupplierByKey(supplierKey)
+  if (!authorities.includes('ROLE_PECS_SUPPLIER')) {
+    return getLocationsByNomisAgencyId(groups)
+  }
 
-        return getLocationsBySupplierId(supplier.id)
-      } catch (error) {
-        if (error.statusCode === 404) {
-          return Promise.resolve([])
-        }
+  if (groups.length === 0) {
+    return []
+  }
 
-        return Promise.reject(error)
-      }
+  try {
+    const supplierKey = groups[0].toLowerCase()
+    const supplier = await getSupplierByKey(supplierKey)
+
+    return getLocationsBySupplierId(supplier.id)
+  } catch (error) {
+    if (error.statusCode === 404) {
+      return []
     }
 
-    return getLocationsByNomisAgencyId(groups)
-  })
+    return Promise.reject(error)
+  }
 }
 
 function getNomisLocations(token) {
@@ -82,4 +109,5 @@ function getNomisLocations(token) {
 module.exports = {
   getLocations,
   getFullname,
+  getSupplierId,
 }
