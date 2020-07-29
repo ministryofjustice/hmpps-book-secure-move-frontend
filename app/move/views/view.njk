@@ -230,6 +230,28 @@
   {% endif %}
 {% endmacro %}
 
+{% macro renderAssessmentComponent(assessment) %}
+  {% if assessment.count > 0 %}
+    {% if assessment.panels %}
+      {% for panel in assessment.panels %}
+        {{ appPanel(panel) }}
+      {% endfor %}
+    {% else %}
+      {{ govukSummaryList(assessment) }}
+    {% endif %}
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted govuk-!-margin-top-2",
+      allowDismiss: false,
+      content: {
+        text: t('assessment::no_items.text', {
+          context: assessment.key
+        })
+      }
+    }) }}
+  {% endif %}
+{% endmacro %}
+
 {% block contentMain %}
   {% if move.profile %}
     <div class="govuk-!-margin-bottom-9">

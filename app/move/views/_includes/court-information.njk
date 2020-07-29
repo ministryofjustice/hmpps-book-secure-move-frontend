@@ -46,19 +46,7 @@
       }) }}
     </h2>
 
-    {% if courtSummary.rows | length %}
-      {{ govukSummaryList(courtSummary) }}
-    {% else %}
-      {{ appMessage({
-        classes: "app-message--muted",
-        allowDismiss: false,
-        content: {
-          html: t("assessment::no_items.text", {
-            context: "court"
-          })
-        }
-      }) }}
-    {% endif %}
+    {{ renderAssessmentComponent(courtSummary) }}
 
     {{ updateLink(updateLinks.court) }}
   {% endif %}
