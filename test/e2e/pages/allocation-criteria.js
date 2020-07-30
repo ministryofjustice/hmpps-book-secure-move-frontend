@@ -116,6 +116,7 @@ class AllocationCriteriaPage extends Page {
         prefix: 'Other',
         selector: fields.otherEstate,
         value: faker.lorem.sentence(6),
+        property: 'otherEstate',
       },
     ]
 
@@ -125,7 +126,8 @@ class AllocationCriteriaPage extends Page {
 
     if (conditionalEstateType) {
       const { prefix: omit, ...rest } = conditionalEstateType
-      conditionalFieldsToFill.prisonerCategory = rest
+      const property = rest.property || 'prisonerCategory'
+      conditionalFieldsToFill[property] = rest
     }
 
     const formConditionalAnswers = await fillInForm(conditionalFieldsToFill)
