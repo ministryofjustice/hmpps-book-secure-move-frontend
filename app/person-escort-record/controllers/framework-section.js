@@ -8,6 +8,16 @@ class FrameworkSectionController extends FrameworksController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setSectionSummary)
+    this.use(this.setMoveId)
+  }
+
+  setMoveId(req, res, next) {
+    const { move } = req
+
+    // TODO: Need to make sure this is available if accessing the PER directly
+    res.locals.moveId = move.id
+
+    next()
   }
 
   setSectionSummary(req, res, next) {

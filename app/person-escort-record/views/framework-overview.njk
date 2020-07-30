@@ -1,5 +1,16 @@
 {% extends "layouts/two-column.njk" %}
 
+{% block beforeContent %}
+  {% if moveId %}
+    {{ govukBackLink({
+      text: t("actions::back_to_move"),
+      href: "/move/" + moveId
+    }) }}
+  {% endif %}
+
+  {{ super() }}
+{% endblock %}
+
 {% block contentHeader %}
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

@@ -22,14 +22,46 @@ describe('Person Escort Record controllers', function () {
           .calledOnce
       })
 
-      it('should call set models method', function () {
+      it('should call set section summary method', function () {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
           controller.setSectionSummary
         )
       })
 
+      it('should call set move ID method', function () {
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+          controller.setMoveId
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(1)
+        expect(controller.use).to.be.callCount(2)
+      })
+    })
+
+    describe('#setMoveId', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          move: {
+            id: '12345',
+          },
+        }
+        mockRes = {
+          locals: {},
+        }
+
+        controller.setMoveId(mockReq, mockRes, nextSpy)
+      })
+
+      it('should set move ID', function () {
+        expect(mockRes.locals.moveId).to.equal('12345')
+      })
+
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
