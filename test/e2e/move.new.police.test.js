@@ -2,14 +2,15 @@ import { Selector } from 'testcafe'
 
 import { generatePerson, createPersonFixture } from './_helpers'
 import { policeUser } from './_roles'
-import { newMove, movesByDay } from './_routes'
-import {
-  page,
-  moveDetailPage,
-  movesDashboardPage,
-  cancelMovePage,
-  createMovePage,
-} from './pages'
+import { newMove } from './_routes'
+import { page, moveDetailPage, cancelMovePage, createMovePage } from './pages'
+
+const createdMoves = []
+
+const registerMoveUrl = async () => {
+  const currentUrl = await page.getCurrentUrl()
+  createdMoves.push(currentUrl)
+}
 
 fixture('New move from Police Custody to Court').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(newMove)
@@ -62,6 +63,8 @@ test('With unfound person', async t => {
     location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
+
+  await registerMoveUrl()
 
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
@@ -117,6 +120,8 @@ test('With existing person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await registerMoveUrl()
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -170,6 +175,8 @@ test('With a new person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await registerMoveUrl()
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -187,14 +194,14 @@ test('With a new person', async t => {
 })
 
 fixture('Cancel move from Police Custody').beforeEach(async t => {
-  await t.useRole(policeUser).navigateTo(movesByDay)
+  const createdMove = createdMoves.shift()
+  await t
+    .useRole(policeUser)
+    .navigateTo(createdMove)
+    .click(moveDetailPage.nodes.cancelLink)
 })
 
 test('Reason - `Made in error`', async t => {
-  await t
-    .click(movesDashboardPage.nodes.movesLinks.nth(0))
-    .click(moveDetailPage.nodes.cancelLink)
-
   await cancelMovePage.selectReason('Made in error')
   await page.submitForm()
 
@@ -205,10 +212,6 @@ test('Reason - `Made in error`', async t => {
 })
 
 test('Reason - `Supplier declined to move this person`', async t => {
-  await t
-    .click(movesDashboardPage.nodes.movesLinks.nth(0))
-    .click(moveDetailPage.nodes.cancelLink)
-
   await cancelMovePage.selectReason('Supplier declined to move this person')
   await page.submitForm()
 
@@ -219,10 +222,6 @@ test('Reason - `Supplier declined to move this person`', async t => {
 })
 
 test('Reason - `Another reason`', async t => {
-  await t
-    .click(movesDashboardPage.nodes.movesLinks.nth(0))
-    .click(moveDetailPage.nodes.cancelLink)
-
   await cancelMovePage.selectReason('Another reason', 'Flat tyre on the van')
   await page.submitForm()
 
