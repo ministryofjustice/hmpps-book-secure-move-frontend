@@ -100,7 +100,7 @@ const moveService = {
     return moveService.getAll({
       isAggregation,
       filter: {
-        'filter[status]': 'requested,accepted,completed',
+        'filter[status]': 'requested,accepted,booked,in_transit,completed',
         'filter[date_from]': startDate,
         'filter[date_to]': endDate,
         'filter[from_location_id]': fromLocationId,

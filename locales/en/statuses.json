@@ -6,6 +6,8 @@
   "requested": "Move requested",
   "accepted": "Move accepted",
   "completed": "Move completed",
+  "booked": "Move booked",
+  "in_transit": "Move in transit",
   "cancelled": "Move cancelled",
   "filled": "Filled allocation",
   "filled_plural": "Filled allocations",

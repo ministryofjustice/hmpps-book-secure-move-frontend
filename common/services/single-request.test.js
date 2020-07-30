@@ -262,7 +262,8 @@ describe('Single request service', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
               filter: {
-                'filter[status]': 'requested,accepted,completed',
+                'filter[status]':
+                  'requested,accepted,booked,in_transit,completed',
                 'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
                 'sort[by]': 'created_at',

@@ -30,7 +30,7 @@ const singleRequestService = {
         break
       case 'approved':
         statusFilter = {
-          'filter[status]': 'requested,accepted,completed',
+          'filter[status]': 'requested,accepted,booked,in_transit,completed',
         }
         break
       case 'rejected':

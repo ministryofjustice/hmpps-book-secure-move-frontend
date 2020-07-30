@@ -635,7 +635,7 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           filter: {
-            'filter[status]': 'requested,accepted,completed',
+            'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': undefined,
             'filter[date_to]': undefined,
             'filter[from_location_id]': undefined,
@@ -666,7 +666,7 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           filter: {
-            'filter[status]': 'requested,accepted,completed',
+            'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': mockDateRange[0],
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
@@ -694,7 +694,7 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: true,
           filter: {
-            'filter[status]': 'requested,accepted,completed',
+            'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': undefined,
             'filter[date_to]': undefined,
             'filter[from_location_id]': undefined,
