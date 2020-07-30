@@ -379,6 +379,7 @@ module.exports = {
   person_escort_record: {
     fields: {
       status: '',
+      confirmed_at: '',
       version: '',
       profile: {
         jsonApi: 'hasOne',
