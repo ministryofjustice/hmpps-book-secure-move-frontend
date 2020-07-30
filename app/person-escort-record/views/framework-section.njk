@@ -1,5 +1,20 @@
 {% extends "layouts/base.njk" %}
 
+{% macro backLink() %}
+  {% if moveId %}
+    {{ govukBackLink({
+      text: t("actions::back_to_move"),
+      href: "/move/" + moveId
+    }) }}
+  {% endif %}
+{% endmacro %}
+
+{% block beforeContent %}
+  {{ backLink() }}
+
+  {{ super() }}
+{% endblock %}
+
 {% block content %}
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -11,22 +26,28 @@
     </div>
   </header>
 
-  {% for key, step in summarySteps %}
-    <section class="app-!-position-relative govuk-!-margin-bottom-8">
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 app-border-bottom-1">
-        {{ step.pageTitle }}
-      </h2>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {% for key, step in summarySteps %}
+        <section class="app-!-position-relative govuk-!-margin-bottom-8">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 govuk-!-padding-right-8 app-border-bottom-1">
+            {{ step.pageTitle }}
+          </h2>
 
-      <p class="app-!-position-top-right">
-        <a href="{{ step.stepUrl }}" class="govuk-link">
-          <strong>{{ t("actions::change", {
-            context: "with_visually_hidden_text",
-            text: step.pageTitle
-          }) | safe }}</strong>
-        </a>
-      </p>
+          <p class="app-!-position-top-right">
+            <a href="{{ step.stepUrl }}" class="govuk-link">
+              <strong>{{ t("actions::change", {
+                context: "with_visually_hidden_text",
+                text: step.pageTitle
+              }) | safe }}</strong>
+            </a>
+          </p>
 
-      {{ govukSummaryList(step.summaryListComponent) }}
-    </section>
-  {% endfor %}
+          {{ govukSummaryList(step.summaryListComponent) }}
+        </section>
+      {% endfor %}
+    </div>
+  </div>
+
+  {{ backLink() }}
 {% endblock %}

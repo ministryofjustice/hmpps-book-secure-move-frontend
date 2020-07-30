@@ -50,7 +50,12 @@ describe('Person Escort Record controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(2)
+          expect(Object.keys(params)).to.have.length(3)
+        })
+
+        it('should set moveId', function () {
+          expect(params).to.have.property('moveId')
+          expect(params.moveId).to.be.undefined
         })
 
         it('should set taskList', function () {
@@ -143,6 +148,7 @@ describe('Person Escort Record controllers', function () {
           {
             ...mockReq,
             move: {
+              id: '12345',
               profile: {
                 person: {
                   fullname: 'James Stevens',
@@ -159,6 +165,11 @@ describe('Person Escort Record controllers', function () {
 
         beforeEach(function () {
           params = mockRes.render.args[0][1]
+        })
+
+        it('should set moveId', function () {
+          expect(params).to.have.property('moveId')
+          expect(params.moveId).to.equal('12345')
         })
 
         it('should set fullname', function () {

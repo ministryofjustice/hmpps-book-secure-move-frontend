@@ -2,6 +2,7 @@ const presenters = require('../../../common/presenters')
 
 function frameworkOverview(req, res) {
   const { originalUrl, framework, personEscortRecord = {}, move } = req
+  const moveId = move?.id
   const profile = move?.profile || personEscortRecord?.profile
   const fullname = profile?.person?.fullname
   const taskList = presenters.frameworkToTaskListComponent({
@@ -11,6 +12,7 @@ function frameworkOverview(req, res) {
   })
 
   res.render('person-escort-record/views/framework-overview', {
+    moveId,
     taskList,
     fullname,
   })
