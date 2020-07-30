@@ -14,6 +14,7 @@ const frameworkStepToSummary = require('./framework-step-to-summary')
 const frameworkToTaskListComponent = require('./framework-to-task-list-component')
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
+const moveToSummaryListComponent = require('./move-to-summary-list-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
 const movesToCSV = require('./moves-to-csv')
@@ -40,6 +41,7 @@ module.exports = {
   frameworkToTaskListComponent,
   moveToCardComponent,
   moveToMetaListComponent,
+  moveToSummaryListComponent,
   profileToCardComponent,
   personToSummaryListComponent,
   movesByLocation,

@@ -6,7 +6,8 @@
     "text_health": "Health affecting transport",
     "text_health_nomis": "This information is currently in NOMIS",
     "text_court": "Information for the court",
-    "text_release_status": "Release status information"
+    "text_release_status": "Release status information",
+    "text_move": "Move information"
   },
   "no_items": {
     "text": "No information",

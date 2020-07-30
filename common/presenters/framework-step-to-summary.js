@@ -35,7 +35,7 @@ function frameworkStepToSummary(allFields, responses, baseUrl = '') {
         ...step,
         stepUrl,
         summaryListComponent: {
-          classes: 'govuk-!-font-size-16',
+          classes: 'govuk-!-margin-bottom-0 govuk-!-font-size-16',
           rows: filter(flatten(summaryListRows)),
         },
       },
