@@ -1,5 +1,6 @@
-const { isEmpty, get, sortBy } = require('lodash')
+const { isEmpty, sortBy } = require('lodash')
 
+const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const frameworksService = require('../../../common/services/frameworks')
 const { FEATURE_FLAGS } = require('../../../config')
@@ -20,7 +21,7 @@ module.exports = function view(req, res) {
     rejection_reason: rejectionReason,
   } = move
   const bannerStatuses = ['cancelled']
-  const userPermissions = get(req.session, 'user.permissions')
+  const userPermissions = req.session?.user?.permissions
   const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
   const {
@@ -28,7 +29,9 @@ module.exports = function view(req, res) {
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
   } = profile || {}
-  const personEscortRecordIsEnabled = FEATURE_FLAGS.PERSON_ESCORT_RECORD
+  const personEscortRecordIsEnabled =
+    FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
+    permissionsMiddleware.check('person_escort_record:view', userPermissions)
   const personEscortRecordIsComplete =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)

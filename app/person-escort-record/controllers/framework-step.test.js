@@ -1,14 +1,46 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
+const permissionsControllers = require('../../../common/middleware/permissions')
 const responseService = require('../../../common/services/framework-response')
 
-const Controller = require('./frameworks')
+const Controller = require('./framework-step')
 
 const controller = new Controller({ route: '/' })
 
 describe('Person Escort Record controllers', function () {
-  describe('FrameworksController', function () {
+  describe('FrameworkStepController', function () {
+    describe('#middlewareChecks()', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(permissionsControllers, 'protectRoute').returnsArg(0)
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareChecks).to.have.been
+          .calledOnce
+      })
+
+      it('should call use with protect route middleware', function () {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          permissionsControllers.protectRoute('person_escort_record:update')
+        )
+      })
+
+      it('should call protect route middleware', function () {
+        expect(
+          permissionsControllers.protectRoute
+        ).to.have.been.calledOnceWithExactly('person_escort_record:update')
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
     describe('#middlewareSetup()', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareSetup')
