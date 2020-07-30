@@ -151,7 +151,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(19)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(20)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -186,9 +186,14 @@ describe('Move controllers', function () {
         expect(params.personEscortRecordIsEnabled).to.be.true
       })
 
-      it('should contain a personEscortRecordIsComplete param', function () {
-        expect(params).to.have.property('personEscortRecordIsComplete')
-        expect(params.personEscortRecordIsComplete).to.be.false
+      it('should contain a personEscortRecordIsConfirmed param', function () {
+        expect(params).to.have.property('personEscortRecordIsConfirmed')
+        expect(params.personEscortRecordIsCompleted).to.be.false
+      })
+
+      it('should contain a personEscortRecordIsCompleted param', function () {
+        expect(params).to.have.property('personEscortRecordIsCompleted')
+        expect(params.personEscortRecordIsCompleted).to.be.false
       })
 
       it('should contain a personEscortRecordUrl param', function () {
@@ -400,10 +405,6 @@ describe('Move controllers', function () {
       it('should render a template', function () {
         expect(res.render.calledOnce).to.be.true
       })
-
-      it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(19)
-      })
     })
 
     context('when move is cancelled', function () {
@@ -541,9 +542,14 @@ describe('Move controllers', function () {
           )
         })
 
+        it('should not show Person Escort Record as confirmed', function () {
+          expect(params).to.have.property('personEscortRecordIsConfirmed')
+          expect(params.personEscortRecordIsConfirmed).to.be.false
+        })
+
         it('should not show Person Escort Record as complete', function () {
-          expect(params).to.have.property('personEscortRecordIsComplete')
-          expect(params.personEscortRecordIsComplete).to.be.false
+          expect(params).to.have.property('personEscortRecordIsCompleted')
+          expect(params.personEscortRecordIsCompleted).to.be.false
         })
 
         it('should contain url to Person Escort Record', function () {
@@ -586,9 +592,14 @@ describe('Move controllers', function () {
           params = res.render.args[0][1]
         })
 
+        it('should show Person Escort Record as not confirmed', function () {
+          expect(params).to.have.property('personEscortRecordIsConfirmed')
+          expect(params.personEscortRecordIsConfirmed).to.be.false
+        })
+
         it('should show Person Escort Record as incomplete', function () {
-          expect(params).to.have.property('personEscortRecordIsComplete')
-          expect(params.personEscortRecordIsComplete).to.be.false
+          expect(params).to.have.property('personEscortRecordIsCompleted')
+          expect(params.personEscortRecordIsCompleted).to.be.false
         })
       })
 
@@ -610,9 +621,14 @@ describe('Move controllers', function () {
           })
         })
 
+        it('should show Person Escort Record as not confirmed', function () {
+          expect(params).to.have.property('personEscortRecordIsConfirmed')
+          expect(params.personEscortRecordIsConfirmed).to.be.false
+        })
+
         it('should show Person Escort Record as completed', function () {
-          expect(params).to.have.property('personEscortRecordIsComplete')
-          expect(params.personEscortRecordIsComplete).to.be.true
+          expect(params).to.have.property('personEscortRecordIsCompleted')
+          expect(params.personEscortRecordIsCompleted).to.be.true
         })
 
         it('should contain url to Person Escort Record', function () {
@@ -661,9 +677,14 @@ describe('Move controllers', function () {
           params = res.render.args[0][1]
         })
 
+        it('should show Person Escort Record as confirmed', function () {
+          expect(params).to.have.property('personEscortRecordIsConfirmed')
+          expect(params.personEscortRecordIsConfirmed).to.be.true
+        })
+
         it('should not show Person Escort Record banner', function () {
           expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.false
+          expect(params.showPersonEscortRecordBanner).to.be.true
         })
       })
 
