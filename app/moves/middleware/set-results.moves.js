@@ -1,3 +1,5 @@
+const { omitBy, isUndefined } = require('lodash')
+
 const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const moveService = require('../../../common/services/move')
@@ -5,9 +7,16 @@ const moveService = require('../../../common/services/move')
 function setResultsMoves(bodyKey, locationKey, personEscortRecordFeature) {
   return async function handleResults(req, res, next) {
     try {
+      const args = omitBy(
+        {
+          ...req.body[bodyKey],
+          supplierId: req.session?.user?.supplierId,
+        },
+        isUndefined
+      )
       const [activeMoves, cancelledMoves] = await Promise.all([
-        moveService.getActive(req.body[bodyKey]),
-        moveService.getCancelled(req.body[bodyKey]),
+        moveService.getActive(args),
+        moveService.getCancelled(args),
       ])
       const userPermissions = req.session?.user?.permissions
       const personEscortRecordIsEnabled =

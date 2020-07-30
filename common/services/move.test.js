@@ -750,10 +750,6 @@ describe('Move Service', function () {
           include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
           },
         })
       })
@@ -811,9 +807,6 @@ describe('Move Service', function () {
           include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })

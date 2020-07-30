@@ -121,18 +121,23 @@ const moveService = {
     fromLocationId,
     toLocationId,
     isAggregation = false,
+    supplierId = undefined,
   } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
       isAggregation,
       include: ['profile.person'],
-      filter: {
-        'filter[status]': 'cancelled',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-      },
+      filter: omitBy(
+        {
+          'filter[status]': 'cancelled',
+          'filter[date_from]': startDate,
+          'filter[date_to]': endDate,
+          'filter[from_location_id]': fromLocationId,
+          'filter[to_location_id]': toLocationId,
+          'filter[supplier_id]': supplierId,
+        },
+        isUndefined
+      ),
     })
   },
 

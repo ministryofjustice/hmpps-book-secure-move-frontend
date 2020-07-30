@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
 const singleRequestService = require('../../../common/services/single-request')
@@ -8,11 +8,17 @@ function setfilterSingleRequests(items = []) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
       singleRequestService
-        .getAll({
-          ...get(req, 'body.requested', {}),
-          isAggregation: true,
-          status: item.status,
-        })
+        .getAll(
+          omitBy(
+            {
+              ...get(req, 'body.requested', {}),
+              isAggregation: true,
+              status: item.status,
+              supplierId: req.session?.user?.supplierId,
+            },
+            isUndefined
+          )
+        )
         .then(value => {
           const query = querystring.stringify({
             ...req.query,
