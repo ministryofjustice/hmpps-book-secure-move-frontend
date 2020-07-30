@@ -74,8 +74,8 @@ module.exports = function view(req, res) {
     tagList: presenters.assessmentToTagList(assessmentAnswers),
     canCancelMove:
       (userPermissions.includes('move:cancel') &&
-        move.status === 'requested' &&
-        !move.allocation) ||
+        !move.allocation &&
+        (move.status === 'requested' || move.status === 'booked')) ||
       (userPermissions.includes('move:cancel:proposed') &&
         move.status === 'proposed'),
     courtHearings: sortBy(move.court_hearings, 'start_time').map(

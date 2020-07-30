@@ -736,69 +736,72 @@ describe('Move controllers', function () {
         })
       })
 
-      context('with requested state', function () {
-        beforeEach(function () {
-          req.move = {
-            ...req.move,
-            status: 'requested',
-          }
-        })
-
-        context('allocation move', function () {
+      const cancellableStates = ['requested', 'booked']
+      cancellableStates.forEach(status => {
+        context(`with ${status} state`, function () {
           beforeEach(function () {
             req.move = {
               ...req.move,
-              allocation: {
-                id: '123',
-              },
+              status,
             }
           })
 
-          context('without permission to cancel move', function () {
+          context('allocation move', function () {
             beforeEach(function () {
-              controller(req, res)
-              params = res.render.args[0][1]
+              req.move = {
+                ...req.move,
+                allocation: {
+                  id: '123',
+                },
+              }
             })
 
-            it('should not be able to cancel move', function () {
-              expect(params.canCancelMove).to.be.false
+            context('without permission to cancel move', function () {
+              beforeEach(function () {
+                controller(req, res)
+                params = res.render.args[0][1]
+              })
+
+              it('should not be able to cancel move', function () {
+                expect(params.canCancelMove).to.be.false
+              })
+            })
+
+            context('with permission to cancel move', function () {
+              beforeEach(function () {
+                req.session.user.permissions = ['move:cancel']
+                controller(req, res)
+                params = res.render.args[0][1]
+              })
+
+              it('should not be able to cancel move', function () {
+                expect(params.canCancelMove).to.be.false
+              })
             })
           })
 
-          context('with permission to cancel move', function () {
-            beforeEach(function () {
-              req.session.user.permissions = ['move:cancel']
-              controller(req, res)
-              params = res.render.args[0][1]
+          context('non-allocation move', function () {
+            context('without permission to cancel move', function () {
+              beforeEach(function () {
+                controller(req, res)
+                params = res.render.args[0][1]
+              })
+
+              it('should not be able to cancel move', function () {
+                expect(params.canCancelMove).to.be.false
+              })
             })
 
-            it('should not be able to cancel move', function () {
-              expect(params.canCancelMove).to.be.false
-            })
-          })
-        })
+            context('with permission to cancel move', function () {
+              beforeEach(function () {
+                req.session.user.permissions = ['move:cancel']
+                controller(req, res)
+                params = res.render.args[0][1]
+              })
 
-        context('non-allocation move', function () {
-          context('without permission to cancel move', function () {
-            beforeEach(function () {
-              controller(req, res)
-              params = res.render.args[0][1]
-            })
-
-            it('should not be able to cancel move', function () {
-              expect(params.canCancelMove).to.be.false
-            })
-          })
-
-          context('with permission to cancel move', function () {
-            beforeEach(function () {
-              req.session.user.permissions = ['move:cancel']
-              controller(req, res)
-              params = res.render.args[0][1]
-            })
-
-            it('should be able to cancel move', function () {
-              expect(params.canCancelMove).to.be.true
+              it('should be able to cancel move', function () {
+                expect(params.canCancelMove).to.be.true
+              })
             })
           })
         })
