@@ -1,7 +1,7 @@
+const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 
 const Controller = require('./framework-section')
-const FrameworksController = require('./frameworks')
 
 const controller = new Controller({
   route: '/',
@@ -11,14 +11,14 @@ describe('Person Escort Record controllers', function () {
   describe('FrameworkSectionController', function () {
     describe('#middlewareLocals()', function () {
       beforeEach(function () {
-        sinon.stub(FrameworksController.prototype, 'middlewareLocals')
+        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
       })
 
       it('should call parent method', function () {
-        expect(FrameworksController.prototype.middlewareLocals).to.have.been
+        expect(FormWizardController.prototype.middlewareLocals).to.have.been
           .calledOnce
       })
 

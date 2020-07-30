@@ -3,9 +3,17 @@ const { kebabCase } = require('lodash')
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
+const permissionsControllers = require('../../../common/middleware/permissions')
 const responseService = require('../../../common/services/framework-response')
 
-class FrameworksController extends FormWizardController {
+class FrameworkStepController extends FormWizardController {
+  middlewareChecks() {
+    super.middlewareChecks()
+    // TODO: Exist this logic to redirect to the overview path if
+    // user does not have permission to update
+    this.use(permissionsControllers.protectRoute('person_escort_record:update'))
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setButtonText)
@@ -108,4 +116,4 @@ class FrameworksController extends FormWizardController {
   }
 }
 
-module.exports = FrameworksController
+module.exports = FrameworkStepController

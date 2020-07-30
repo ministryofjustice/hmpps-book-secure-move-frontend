@@ -3,6 +3,7 @@ const router = require('express').Router({ mergeParams: true })
 
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
+const { protectRoute } = require('../../common/middleware/permissions')
 const frameworksService = require('../../common/services/frameworks')
 
 const confirmApp = require('./app/confirm')
@@ -15,6 +16,7 @@ const framework = frameworksService.getPersonEscortRecord()
 const frameworkWizard = defineFormWizards(framework)
 
 // Define shared middleware
+router.use(protectRoute('person_escort_record:view'))
 router.use(setFramework(framework))
 router.use(setPersonEscortRecord)
 router.use(frameworkWizard)

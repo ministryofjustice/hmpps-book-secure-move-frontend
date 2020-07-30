@@ -98,10 +98,12 @@
     {% set html %}
       <p>{{ t("messages::person_escort_record_pending.content") }}</p>
 
-      {{ govukButton({
-        href: personEscortRecordUrl + "/new",
-        text: t("actions::start_person_escort_record")
-      }) }}
+      {% if canAccess("person_escort_record:create") %}
+        {{ govukButton({
+          href: personEscortRecordUrl + "/new",
+          text: t("actions::start_person_escort_record")
+        }) }}
+      {% endif %}
     {% endset %}
 
     {{ appMessage({
@@ -122,7 +124,7 @@
         <div class="govuk-grid-column-two-thirds">
           {{ appTaskList(personEscortRecordtaskList) }}
 
-          {% if personEscortRecordIsComplete %}
+          {% if personEscortRecordIsComplete and canAccess("person_escort_record:confirm") %}
             <p>
               {{ t("messages::person_escort_record_complete.content") }}
             </p>
@@ -239,14 +241,6 @@
       }),
       classes: "govuk-!-margin-bottom-0"
     }) }}
-  {% endif %}
-
-  {% if personEscortRecordIsComplete %}
-    <p>
-      <a href="{{ personEscortRecordUrl }}">
-        {{ t("actions::view_person_escort_record") }}
-      </a>
-    </p>
   {% endif %}
 
   {% if canCancelMove %}

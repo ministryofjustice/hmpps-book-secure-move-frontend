@@ -1,9 +1,9 @@
 const frameworkOverviewController = require('./framework-overview')
 const FrameworkSectionController = require('./framework-section')
-const FrameworksController = require('./framework-section')
+const FrameworkStepController = require('./framework-step')
 
 module.exports = {
-  FrameworksController,
   frameworkOverviewController,
   FrameworkSectionController,
+  FrameworkStepController,
 }

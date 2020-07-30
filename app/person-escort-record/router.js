@@ -3,7 +3,7 @@ const wizard = require('hmpo-form-wizard')
 
 const {
   FrameworkSectionController,
-  FrameworksController,
+  FrameworkStepController,
 } = require('./controllers')
 const middleware = require('./middleware')
 
@@ -14,7 +14,7 @@ function defineFormWizards(framework) {
     const section = sections[sectionKey]
     const firstStep = Object.values(section.steps)[0]
     const wizardConfig = {
-      controller: FrameworksController,
+      controller: FrameworkStepController,
       entryPoint: true,
       journeyName: `person-escort-record-${sectionKey}`,
       journeyPageTitle: 'Person escort record',

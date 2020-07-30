@@ -280,6 +280,21 @@ describe('User class', function () {
       })
     })
 
+    context('when user has ROLE_PECS_PER_AUTHOR role', function () {
+      beforeEach(function () {
+        permissions = user.getPermissions(['ROLE_PECS_PER_AUTHOR'])
+      })
+
+      it('should contain correct permission', function () {
+        expect(permissions).to.deep.equal([
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
+        ])
+      })
+    })
+
     context('when user has all roles', function () {
       beforeEach(function () {
         permissions = user.getPermissions([
@@ -292,6 +307,7 @@ describe('User class', function () {
           'ROLE_PECS_PMU',
           'ROLE_PECS_HMYOI',
           'ROLE_PECS_COURT',
+          'ROLE_PECS_PER_AUTHOR',
         ])
       })
 
@@ -318,6 +334,10 @@ describe('User class', function () {
           'move:cancel:proposed',
           'moves:view:proposed',
           'move:create:prison_transfer',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
         ]
 
         expect(permissions.sort()).to.deep.equal(allPermissions.sort())

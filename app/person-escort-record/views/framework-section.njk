@@ -34,14 +34,16 @@
             {{ step.pageTitle }}
           </h2>
 
-          <p class="app-!-position-top-right">
-            <a href="{{ step.stepUrl }}" class="govuk-link">
-              <strong>{{ t("actions::change", {
-                context: "with_visually_hidden_text",
-                text: step.pageTitle
-              }) | safe }}</strong>
-            </a>
-          </p>
+          {% if canAccess('person_escort_record:update') %}
+            <p class="app-!-position-top-right">
+              <a href="{{ step.stepUrl }}" class="govuk-link">
+                <strong>{{ t("actions::change", {
+                  context: "with_visually_hidden_text",
+                  text: step.pageTitle
+                }) | safe }}</strong>
+              </a>
+            </p>
+          {% endif %}
 
           {{ govukSummaryList(step.summaryListComponent) }}
         </section>

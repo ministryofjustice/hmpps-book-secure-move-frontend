@@ -1,5 +1,6 @@
 const proxyquire = require('proxyquire').noCallThru()
 
+const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 const getUpdateUrls = sinon.stub()
@@ -102,6 +103,7 @@ describe('Move controllers', function () {
     beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
+      sinon.stub(permissionsMiddleware, 'check').returns(true)
       sinon
         .stub(presenters, 'moveToMetaListComponent')
         .returns('__moveToMetaListComponent__')
@@ -677,6 +679,24 @@ describe('Move controllers', function () {
 
         beforeEach(function () {
           controllerWithoutPER(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should set personEscortRecordIsEnabled to false', function () {
+          expect(params).to.have.property('personEscortRecordIsEnabled')
+          expect(params.personEscortRecordIsEnabled).to.be.false
+        })
+
+        it('should not show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.false
+        })
+      })
+
+      context('when user does not have permission', function () {
+        beforeEach(function () {
+          permissionsMiddleware.check.returns(false)
+          controller(req, res)
           params = res.render.args[0][1]
         })
 

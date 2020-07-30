@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 
 const {
   FrameworkSectionController,
-  FrameworksController,
+  FrameworkStepController,
 } = require('./controllers')
 const middleware = require('./middleware')
 
@@ -92,7 +92,7 @@ describe('Person Escort Record router', function () {
             },
           }
           const config = {
-            controller: FrameworksController,
+            controller: FrameworkStepController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',
@@ -141,7 +141,7 @@ describe('Person Escort Record router', function () {
             },
           }
           const config = {
-            controller: FrameworksController,
+            controller: FrameworkStepController,
             entryPoint: true,
             journeyName: `person-escort-record-${key}`,
             journeyPageTitle: 'Person escort record',

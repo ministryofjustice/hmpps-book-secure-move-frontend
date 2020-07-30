@@ -77,6 +77,12 @@ const courtPermissions = [
   'moves:download',
   'move:view',
 ]
+const personEscortRecordAuthorPermissions = [
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
+]
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
@@ -88,6 +94,7 @@ const permissionsByRole = {
   ROLE_PECS_PMU: pmuPermissions,
   ROLE_PECS_SUPPLIER: supplierPermissions,
   ROLE_PECS_COURT: courtPermissions,
+  ROLE_PECS_PER_AUTHOR: personEscortRecordAuthorPermissions,
 }
 
 module.exports = {
