@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, startOfTomorrow } from 'date-fns'
 import faker from 'faker'
 import { Selector, t } from 'testcafe'
 
@@ -47,7 +47,7 @@ class AllocationDetailsPage extends Page {
       },
       date: {
         selector: this.fields.date,
-        value: format(faker.date.future(), 'yyyy-MM-dd'),
+        value: format(faker.date.future(1, startOfTomorrow()), 'yyyy-MM-dd'),
       },
     }
 
