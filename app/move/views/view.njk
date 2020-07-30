@@ -145,6 +145,34 @@
       }
     }) }}
   {% endif %}
+
+  {% if showPersonEscortRecordBanner and personEscortRecord and personEscortRecordIsConfirmed %}
+    {% set html %}
+      <p>
+        {{ t("messages::person_escort_record_confirmed.content", {
+          date: personEscortRecord.confirmed_at | formatDate,
+          time: personEscortRecord.confirmed_at | formatTime
+        }) | safe }}
+      </p>
+
+      <p>
+        <a href="{{ personEscortRecordUrl + '/print' }}" class="app-icon app-icon--print">
+          {{ t("actions::print_person_escort_record") }}
+        </a>
+      </p>
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction govuk-!-padding-right-0",
+      title: {
+        text: t("messages::person_escort_record_confirmed.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block contentHeader %}

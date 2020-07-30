@@ -29,6 +29,10 @@
     "heading": "Person Escort Record has been completed",
     "content": "Once you are confident the information provided is correct and won’t change, provide your confirmation that this record is correct in order to print it."
   },
+  "person_escort_record_confirmed": {
+    "heading": "Person Escort Record has been confirmed",
+    "content": "All information in this Person Escort Record was confirmed at <strong>{{time}}</strong> on <strong>{{date}}</strong>."
+  },
   "cancel_allocation_move": {
     "content": "$t(moves::allocation_relationship). It can only be cancelled from the allocations page by a member of the Population Management Unit (PMU)."
   },
