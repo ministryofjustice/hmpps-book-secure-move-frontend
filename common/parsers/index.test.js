@@ -45,11 +45,31 @@ describe('Parsers', function () {
       it('should treat dd-MM-yyyy dates as en_GB', function () {
         expect(parse.date('10-3-2019')).to.eql(march2019)
       })
+
+      it('should treat dd-MM dates as en_GB', function () {
+        expect(parse.date('10-3')).to.eql(marchCurrentYear)
+      })
     })
 
     context('When passed an invalid en_GB format', function () {
       it('should not treat dd-MM dates as en_GB', function () {
-        expect(parse.date('10-3')).to.be.null
+        expect(parse.date('10-3-19')).to.be.null
+      })
+    })
+
+    context('When passed an ISO-style format', function () {
+      it('should treat date as ISO', function () {
+        expect(parse.date('2019-3-10')).to.eql(march2019)
+        expect(parse.date('2019-03-10')).to.eql(march2019)
+      })
+    })
+
+    context('When passed an dd MMM format', function () {
+      it('should treat date as dd MMM', function () {
+        expect(parse.date('10 Mar')).to.eql(marchCurrentYear)
+        expect(parse.date('10 March')).to.eql(marchCurrentYear)
+        expect(parse.date('Mar 10')).to.eql(marchCurrentYear)
+        expect(parse.date('March 10th')).to.eql(marchCurrentYear)
       })
     })
   })
