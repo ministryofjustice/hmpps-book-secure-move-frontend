@@ -1,0 +1,49 @@
+{% for assessment in assessmentSections %}
+  <section class="app-!-position-relative govuk-!-margin-top-7">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+      {{ assessment.name }}
+    </h2>
+
+    {% if personEscortRecordIsCompleted %}
+      {% for panel in assessment.panels %}
+        {% call appPanel(panel) %}
+          {{ appMetaList(panel.metaList) }}
+        {% endcall %}
+      {% else %}
+        {{ appMessage({
+          classes: "app-message--muted govuk-!-margin-top-2",
+          allowDismiss: false,
+          content: {
+            html: t("person-escort-record::flags.empty", {
+              name: assessment.name,
+              url: assessment.url
+            })
+          }
+        }) }}
+      {% endfor %}
+    {% else %}
+      {{ govukInsetText({
+        classes: "govuk-inset-text--compact govuk-!-margin-0",
+        text: t("person-escort-record::flags.incomplete")
+      }) }}
+    {% endif %}
+
+    {% if assessment.previousAssessment %}
+      {% set html %}
+        {{ renderAssessmentComponent(assessment.previousAssessment) }}
+      {% endset %}
+
+      {{ govukDetails({
+        html: html,
+        classes: "govuk-!-font-size-16 govuk-!-margin-top-2",
+        summaryText: t("person-escort-record::flags.information_provided_when_requested")
+      }) }}
+    {% endif %}
+
+    <p class="app-!-position-top-right">
+      <a href="{{ assessment.url }}" class="govuk-link">
+        Review
+      </a>
+    </pre>
+  </section>
+{% endfor %}

@@ -8,7 +8,7 @@ const getUpdateLinks = sinon.stub()
 
 const updateSteps = []
 const frameworkStub = {
-  sections: ['one'],
+  sections: [{ id: 'one' }],
 }
 const pathStubs = {
   '../../../config': {
@@ -113,6 +113,9 @@ describe('Move controllers', function () {
       sinon
         .stub(presenters, 'frameworkFlagsToTagList')
         .returns('__frameworkFlagsToTagList__')
+      sinon
+        .stub(presenters, 'frameworkSectionToPanelList')
+        .returns(sinon.stub().returns({}))
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returns([])
@@ -151,7 +154,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(20)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(21)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -220,6 +223,10 @@ describe('Move controllers', function () {
         expect(params.personEscortRecordTagList).to.equal(
           '__frameworkFlagsToTagList__'
         )
+      })
+
+      it('should contain a assessmentSections param', function () {
+        expect(params).to.have.property('assessmentSections')
       })
 
       it('should contain a move summary param', function () {

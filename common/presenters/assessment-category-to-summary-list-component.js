@@ -4,7 +4,8 @@ const componentService = require('../services/component')
 
 const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')
 
-function assessmentCategoryToSummaryListComponent({ answers = [], key } = {}) {
+function assessmentCategoryToSummaryListComponent(category = {}) {
+  const { answers = [] } = category
   const groupedByTitle = groupBy(answers, 'title')
   const rows = map(groupedByTitle, (answers, title) => {
     const metaList = assessmentAnswersToMetaListComponent(answers)
@@ -21,7 +22,8 @@ function assessmentCategoryToSummaryListComponent({ answers = [], key } = {}) {
   })
 
   return {
-    key,
+    ...category,
+    count: answers.length,
     rows: sortBy(rows, 'key.text'),
   }
 }

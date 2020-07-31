@@ -33,6 +33,7 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
+              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -68,6 +69,7 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
+              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -118,6 +120,7 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
+              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -178,6 +181,7 @@ describe('Presenters', function () {
                 valueType: 'string',
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
+                classes: 'govuk-!-font-size-16',
               }
             )
             expect(componentService.getComponent).to.be.calledWithExactly(
@@ -187,6 +191,7 @@ describe('Presenters', function () {
                 valueType: undefined,
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
+                classes: 'govuk-!-font-size-16',
               }
             )
           })
@@ -231,6 +236,7 @@ describe('Presenters', function () {
                 valueType: 'string',
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
+                classes: 'govuk-!-font-size-16',
               }
             )
           })
@@ -306,6 +312,7 @@ describe('Presenters', function () {
                   valueType: test.valueType,
                   responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
+                  classes: 'govuk-!-font-size-16',
                 }
               )
             })
@@ -332,6 +339,7 @@ describe('Presenters', function () {
                   valueType: test.valueType,
                   responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
+                  classes: 'govuk-!-font-size-16',
                 }
               )
             })
@@ -361,6 +369,7 @@ describe('Presenters', function () {
               valueType: 'array',
               responded: true,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
+              classes: 'govuk-!-font-size-16',
             }
           )
         })

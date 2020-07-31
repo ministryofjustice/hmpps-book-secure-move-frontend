@@ -6,19 +6,7 @@
       }) }}
     </h2>
 
-    {% for panel in assessmentCategory.panels %}
-      {{ appPanel(panel) }}
-    {% else %}
-      {{ appMessage({
-        classes: "app-message--muted govuk-!-margin-top-2",
-        allowDismiss: false,
-        content: {
-          text: t('assessment::no_items.text', {
-            context: assessmentCategory.key
-          })
-        }
-      }) }}
-    {% endfor %}
+    {{ renderAssessmentComponent(assessmentCategory) }}
 
     {% if not personEscortRecord %}
       {{ updateLink(updateLinks[assessmentCategory.key]) }}
