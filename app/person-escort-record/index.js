@@ -21,11 +21,12 @@ const frameworkWizard = defineFormWizards(framework)
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
 router.use(setFramework(framework))
-router.use(setPersonEscortRecord)
 router.use(frameworkWizard)
 
 // Define sub-apps
 router.use(newApp.mountpath, newApp.router)
+
+router.use(setPersonEscortRecord)
 router.use(confirmApp.mountpath, confirmApp.router)
 
 // Define routes
