@@ -41,7 +41,7 @@ module.exports = function view(req, res) {
   const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     personEscortRecordIsEnabled &&
-    move.status === 'requested' &&
+    ['requested', 'booked'].includes(move?.status) &&
     move.profile?.id !== undefined
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${personEscortRecordUrl}/`,
