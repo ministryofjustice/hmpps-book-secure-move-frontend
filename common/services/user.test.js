@@ -122,6 +122,46 @@ describe('User service', function () {
       })
     })
 
+    context('when no supplier role', function () {
+      beforeEach(async function () {
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+          .get('/')
+          .reply(200, JSON.stringify(authGroups))
+
+        tokenData = { authorities: ['ANOTHER_ROLE'] }
+
+        result = await getSupplierId(encodeToken(tokenData))
+      })
+
+      it('should not request the user’s groups from HMPPS SSO', function () {
+        expect(nock.isDone()).to.not.be.true
+      })
+
+      it('returns undefined', function () {
+        expect(result).to.be.undefined
+      })
+    })
+
+    context('when no authorities', function () {
+      beforeEach(async function () {
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+          .get('/')
+          .reply(200, [])
+
+        tokenData = { authorities: ['ROLE_PECS_SUPPLIER'] }
+
+        result = await getSupplierId(encodeToken(tokenData))
+      })
+
+      it('requests the user’s groups from HMPPS SSO', function () {
+        expect(nock.isDone()).to.be.true
+      })
+
+      it('returns undefined', function () {
+        expect(result).to.be.undefined
+      })
+    })
+
     context('when supplier does not exist', function () {
       beforeEach(async function () {
         nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
@@ -144,7 +184,7 @@ describe('User service', function () {
         expect(nock.isDone()).to.be.true
       })
 
-      it('returns an Array of location objects', function () {
+      it('returns undefined', function () {
         expect(result).to.be.undefined
       })
     })
