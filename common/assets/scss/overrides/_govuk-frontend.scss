@@ -6,8 +6,11 @@
   display: block;
 }
 
-.govuk-summary-list__value .govuk-list--spaced > li:last-child {
-  margin-bottom: 0;
+.govuk-summary-list__value,
+.app-meta-list__value {
+  .govuk-list--spaced > li:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .govuk-hint * {

@@ -265,7 +265,11 @@
         {{ updateLink(updateLinks.personal_details) }}
       </section>
 
-      {% include "move/views/_includes/assessment.njk" %}
+      {% if personEscortRecord %}
+        {% include "move/views/_includes/person-escort-record-summary.njk" %}
+      {% else %}
+        {% include "move/views/_includes/assessment.njk" %}
+      {% endif %}
 
       {% if move.to_location.location_type == 'court' %}
         {% include "move/views/_includes/court-information.njk" %}

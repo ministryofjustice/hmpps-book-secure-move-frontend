@@ -31,6 +31,10 @@
 
 .app-meta-list__value {
   margin: 0;
+
+  > :last-child {
+    margin: 0;
+  }
 }
 
 .app-meta-list__action {

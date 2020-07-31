@@ -1,4 +1,4 @@
-const { isEmpty, sortBy } = require('lodash')
+const { isEmpty, find, sortBy } = require('lodash')
 
 const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
@@ -62,6 +62,23 @@ module.exports = function view(req, res) {
     .assessmentAnswersByCategory(assessmentAnswers)
     .filter(category => category.key === 'court')
     .map(presenters.assessmentCategoryToSummaryListComponent)[0]
+  const assessmentSections = sortBy(framework.sections, 'order')
+    .map(
+      presenters.frameworkSectionToPanelList({
+        tagList: personEscortRecordTagList,
+        framework,
+        personEscortRecord,
+        personEscortRecordUrl,
+      })
+    )
+    .map(section => {
+      return {
+        ...section,
+        previousAssessment: find(assessment, {
+          frameworksSection: section.key,
+        }),
+      }
+    })
 
   const locals = {
     move,
@@ -75,6 +92,7 @@ module.exports = function view(req, res) {
     personEscortRecordtaskList,
     showPersonEscortRecordBanner,
     personEscortRecordTagList,
+    assessmentSections,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     tagList: presenters.assessmentToTagList(assessmentAnswers),

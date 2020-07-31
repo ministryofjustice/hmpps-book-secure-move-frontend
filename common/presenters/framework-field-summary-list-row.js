@@ -12,6 +12,7 @@ function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
       valueType: response.value_type,
       responded: response.responded === true,
       questionUrl: `${stepUrl}#${id}`,
+      classes: 'govuk-!-font-size-16',
     })
 
     const row = {

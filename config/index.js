@@ -152,10 +152,12 @@ module.exports = {
   },
   ASSESSMENT_ANSWERS_CATEGORY_SETTINGS: {
     risk: {
+      frameworksSection: 'risk-information',
       tagClass: 'app-tag--destructive',
       sortOrder: 1,
     },
     health: {
+      frameworksSection: 'health-information',
       tagClass: '',
       sortOrder: 2,
     },
