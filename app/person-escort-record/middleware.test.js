@@ -131,8 +131,14 @@ describe('Person escort record middleware', function () {
         await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
       })
 
-      it('should call next with no argument', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      it('should call next with 404 error', function () {
+        const error = nextSpy.args[0][0]
+
+        expect(nextSpy).to.be.calledOnce
+
+        expect(error).to.be.an('error')
+        expect(error.message).to.equal('Person Escort Record not found')
+        expect(error.statusCode).to.equal(404)
       })
 
       it('should not call API with record ID', function () {

@@ -20,10 +20,6 @@
     href: MOVES_URL
   }) }}
 
-  <a href="javascript:window.print()" class="app-!-float-right app-print--hide govuk-!-margin-top-3 app-icon app-icon--print">
-    {{ t("actions::print_move") }}
-  </a>
-
   {{ super() }}
 
   {% if messageTitle %}
@@ -118,13 +114,13 @@
     }) }}
   {% endif %}
 
-  {% if showPersonEscortRecordBanner and personEscortRecord %}
+  {% if showPersonEscortRecordBanner and personEscortRecord and not personEscortRecordIsConfirmed %}
     {% set html %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ appTaskList(personEscortRecordtaskList) }}
 
-          {% if personEscortRecordIsComplete and canAccess("person_escort_record:confirm") %}
+          {% if personEscortRecordIsCompleted and canAccess("person_escort_record:confirm") %}
             <p>
               {{ t("messages::person_escort_record_complete.content") }}
             </p>
@@ -142,7 +138,35 @@
       allowDismiss: false,
       classes: "app-message--instruction govuk-!-padding-right-0",
       title: {
-        text: t("messages::person_escort_record_complete.heading") if personEscortRecordIsComplete else t("messages::person_escort_record_incomplete.heading")
+        text: t("messages::person_escort_record_complete.heading") if personEscortRecordIsCompleted else t("messages::person_escort_record_incomplete.heading")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
+
+  {% if showPersonEscortRecordBanner and personEscortRecord and personEscortRecordIsConfirmed %}
+    {% set html %}
+      <p>
+        {{ t("messages::person_escort_record_confirmed.content", {
+          date: personEscortRecord.confirmed_at | formatDate,
+          time: personEscortRecord.confirmed_at | formatTime
+        }) | safe }}
+      </p>
+
+      <p>
+        <a href="{{ personEscortRecordUrl + '/print' }}" class="app-icon app-icon--print">
+          {{ t("actions::print_person_escort_record") }}
+        </a>
+      </p>
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--instruction govuk-!-padding-right-0",
+      title: {
+        text: t("messages::person_escort_record_confirmed.heading")
       },
       content: {
         html: html
@@ -172,14 +196,14 @@
 
     {% if personEscortRecordIsEnabled %}
       <div class="govuk-!-margin-top-2">
-        {% if not personEscortRecordIsComplete %}
+        {% if not personEscortRecordIsCompleted %}
           {{ govukInsetText({
             classes: "govuk-inset-text--compact govuk-!-margin-0",
             text: t("person-escort-record::flags.incomplete")
           }) }}
         {% endif %}
 
-        {% if personEscortRecordIsComplete and personEscortRecordTagList | length %}
+        {% if personEscortRecordIsCompleted and personEscortRecordTagList | length %}
           {% for tag in personEscortRecordTagList %}
             {{ appTag(tag) }}
           {% endfor %}

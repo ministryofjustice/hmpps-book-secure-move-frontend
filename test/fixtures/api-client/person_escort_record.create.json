@@ -4,6 +4,7 @@
     "type": "person_escort_records",
     "attributes": {
       "status": "not_started",
+      "confirmed_at": "2020-06-15T09:52:10+01:00",
       "version": "1.1"
     },
     "relationships": {

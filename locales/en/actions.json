@@ -44,5 +44,6 @@
   "provide_confirmation": "Provide confirmation",
   "confirm_and_complete_record": "Confirm and complete record",
   "continue_person_escort_record": "Continue record",
-  "view_person_escort_record": "View Person Escort Record"
+  "view_person_escort_record": "View Person Escort Record",
+  "print_person_escort_record": "Print Person Escort Record"
 }

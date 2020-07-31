@@ -78,7 +78,7 @@ describe('Presenters', function () {
           ...mockStep,
           stepUrl: '/base-url/step-slug',
           summaryListComponent: {
-            classes: 'govuk-!-font-size-16',
+            classes: 'govuk-!-margin-bottom-0 govuk-!-font-size-16',
             rows: ['fieldOne'],
           },
         })
@@ -112,7 +112,7 @@ describe('Presenters', function () {
           ...mockStep,
           stepUrl: 'step-slug',
           summaryListComponent: {
-            classes: 'govuk-!-font-size-16',
+            classes: 'govuk-!-margin-bottom-0 govuk-!-font-size-16',
             rows: ['fieldOne'],
           },
         })

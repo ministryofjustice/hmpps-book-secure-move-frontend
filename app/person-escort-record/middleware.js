@@ -17,8 +17,14 @@ function setFrameworkSection(frameworkSection) {
 async function setPersonEscortRecord(req, res, next) {
   const recordId = req.params?.personEscortRecordId
 
-  if (req.personEscortRecord || !recordId) {
+  if (req.personEscortRecord) {
     return next()
+  }
+
+  if (!recordId) {
+    const error = new Error('Person Escort Record not found')
+    error.statusCode = 404
+    return next(error)
   }
 
   try {

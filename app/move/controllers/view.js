@@ -32,13 +32,15 @@ module.exports = function view(req, res) {
   const personEscortRecordIsEnabled =
     FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
     permissionsMiddleware.check('person_escort_record:view', userPermissions)
-  const personEscortRecordIsComplete =
+  const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
+  const personEscortRecordIsConfirmed = ['confirmed'].includes(
+    personEscortRecord?.status
+  )
   const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     personEscortRecordIsEnabled &&
-    personEscortRecord?.status !== 'confirmed' &&
     move.status === 'requested' &&
     move.profile?.id !== undefined
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
@@ -67,7 +69,8 @@ module.exports = function view(req, res) {
     courtSummary,
     personEscortRecord,
     personEscortRecordIsEnabled,
-    personEscortRecordIsComplete,
+    personEscortRecordIsCompleted,
+    personEscortRecordIsConfirmed,
     personEscortRecordUrl,
     personEscortRecordtaskList,
     showPersonEscortRecordBanner,
