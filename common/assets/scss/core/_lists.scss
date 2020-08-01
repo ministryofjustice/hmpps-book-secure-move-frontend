@@ -1,0 +1,68 @@
+$govuk-checkboxes-size: 24px;
+$govuk-checkboxes-label-padding-left-right: govuk-spacing(3);
+
+.app-checklist {
+  @include govuk-font($size: 19);
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.app-checklist li {
+  position: relative;
+
+  display: block;
+  position: relative;
+
+  min-height: $govuk-checkboxes-size;
+
+  margin-bottom: govuk-spacing(2);
+  padding: 0 $govuk-checkboxes-label-padding-left-right 0 ($govuk-checkboxes-size + $govuk-checkboxes-label-padding-left-right);
+}
+
+// [ ] Check box
+.app-checklist li::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $govuk-checkboxes-size;
+  height: $govuk-checkboxes-size;
+  border: $govuk-border-width-form-element solid currentColor;
+  background: govuk-colour("white");
+}
+
+// ✔ Check mark
+//
+// The check mark is a box with a border on the left and bottom side (└──),
+// rotated 45 degrees
+.app-checklist li::after {
+  content: "";
+  box-sizing: border-box;
+
+  position: absolute;
+  top: 7px;
+  left: 6px;
+  width: 12px;
+  height: 6.5px;
+
+  transform: rotate(-45deg);
+  border: solid;
+  border-width: 0 0 3px 3px;
+  // Fix bug in IE11 caused by transform rotate (-45deg).
+  // See: alphagov/govuk_elements/issues/518
+  border-top-color: transparent;
+
+  opacity: 0;
+
+  background: transparent;
+}
+
+li.app-checklist__item--checked::after {
+  opacity: 1;
+}
+
+.app-checklist--inline li {
+  display: inline;
+}
