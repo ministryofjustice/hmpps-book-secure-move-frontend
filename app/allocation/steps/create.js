@@ -1,4 +1,8 @@
-const { createControllers } = require('../controllers')
+const {
+  AllocationDetailsController,
+  AllocationCriteriaController,
+  SaveController,
+} = require('../controllers/create')
 
 module.exports = {
   '/': {
@@ -9,13 +13,13 @@ module.exports = {
     next: 'allocation-details',
   },
   '/allocation-details': {
-    controller: createControllers.AllocationDetailsController,
+    controller: AllocationDetailsController,
     pageTitle: 'allocations::allocation_details.page_title',
     fields: ['moves_count', 'from_location', 'to_location', 'date'],
     next: 'allocation-criteria',
   },
   '/allocation-criteria': {
-    controller: createControllers.AllocationCriteriaController,
+    controller: AllocationCriteriaController,
     pageTitle: 'allocations::allocation_criteria.page_title',
     fields: [
       'estate',
@@ -30,6 +34,6 @@ module.exports = {
   '/save': {
     checkJourney: false,
     skip: true,
-    controller: createControllers.Save,
+    controller: SaveController,
   },
 }

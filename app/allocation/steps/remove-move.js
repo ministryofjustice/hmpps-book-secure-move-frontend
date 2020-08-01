@@ -1,4 +1,4 @@
-const { removeMoveControllers } = require('../controllers')
+const { RemoveMoveController } = require('../controllers')
 
 module.exports = {
   '/': {
@@ -10,7 +10,7 @@ module.exports = {
   },
   '/confirm': {
     template: 'cancel-reason',
-    controller: removeMoveControllers.RemoveMoveController,
+    controller: RemoveMoveController,
     pageTitle: 'moves::remove_from_allocation.heading',
     buttonText: 'moves::remove_from_allocation.button',
     buttonClasses: 'govuk-button--warning',
