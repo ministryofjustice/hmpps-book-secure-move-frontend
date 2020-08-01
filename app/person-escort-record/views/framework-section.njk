@@ -1,5 +1,13 @@
 {% extends "layouts/base.njk" %}
 
+{% block pageTitle %}
+  {{ t("person-escort-record::section_overview", {
+    section: sectionTitle
+  }) }}
+  – {{ t("person-escort-record::page_title") }}
+  – {{ SERVICE_NAME }}
+{% endblock %}
+
 {% macro backLink() %}
   {% if moveId %}
     {{ govukBackLink({

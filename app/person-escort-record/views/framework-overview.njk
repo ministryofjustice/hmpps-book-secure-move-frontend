@@ -1,5 +1,16 @@
 {% extends "layouts/two-column.njk" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Person Escort Record'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("person-escort-record::page_title", {
+    context: "with_name",
+    name: fullname | upper
+  }) }} – {{ SERVICE_NAME }}
+{% endblock %}
+
 {% block beforeContent %}
   {% if moveId %}
     {{ govukBackLink({

@@ -8,6 +8,18 @@
   </script>
 {% endblock %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Print Person Escort Record'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("person-escort-record::page_title", {
+    context: "with_name",
+    name: fullname | upper
+  }) }}
+  – {{ SERVICE_NAME }}
+{% endblock %}
+
 {% block skipLink %}
 {% endblock %}
 

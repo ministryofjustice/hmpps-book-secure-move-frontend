@@ -2,6 +2,13 @@
 
 {% set mainClasses = "interruption-card" if options.stepType == 'interruption-card' %}
 
+{% block pageTitle %}
+  {{ t(options.pageTitle) }}
+  – {{ t(frameworkSection) }}
+  – {{ t("person-escort-record::page_title") }}
+  – {{ SERVICE_NAME }}
+{% endblock %}
+
 {% block submitAction %}
   {{ super() }}
 

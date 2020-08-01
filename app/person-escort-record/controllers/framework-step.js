@@ -15,11 +15,6 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.checkEditable)
   }
 
-  middlewareSetup() {
-    super.middlewareSetup()
-    this.use(this.setButtonText)
-  }
-
   checkEditable(req, res, next) {
     const { steps: wizardSteps = {} } = req?.form?.options || {}
     const steps = Object.keys(wizardSteps)
@@ -35,6 +30,11 @@ class FrameworkStepController extends FormWizardController {
     next()
   }
 
+  middlewareSetup() {
+    super.middlewareSetup()
+    this.use(this.setButtonText)
+  }
+
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
     const isInterruptionCard = stepType === 'interruption-card'
@@ -44,6 +44,16 @@ class FrameworkStepController extends FormWizardController {
 
     req.form.options.buttonText = buttonText
 
+    next()
+  }
+
+  middlewareLocals() {
+    super.middlewareSetup()
+    this.use(this.setPageTitleLocals)
+  }
+
+  setPageTitleLocals(req, res, next) {
+    res.locals.frameworkSection = req.frameworkSection.name
     next()
   }
 
