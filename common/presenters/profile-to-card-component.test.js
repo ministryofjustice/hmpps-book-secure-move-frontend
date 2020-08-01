@@ -3,12 +3,9 @@ const proxyquire = require('proxyquire').noCallThru()
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
+const frameworkFlagsToTagListStub = sinon.stub().returns(['1', '2', '3'])
 const profileToCardComponent = proxyquire('./profile-to-card-component', {
-  '../../config': {
-    FEATURE_FLAGS: {
-      PERSON_ESCORT_RECORD: false,
-    },
-  },
+  './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
 })
 
 const mockProfile = {
@@ -350,25 +347,12 @@ describe('Presenters', function () {
         })
       })
 
-      context('with Person Escort Record feature flag', function () {
-        const frameworkFlagsToTagListStub = sinon
-          .stub()
-          .returns(['1', '2', '3'])
-        const profileToCardComponentWithPER = proxyquire(
-          './profile-to-card-component',
-          {
-            '../../config': {
-              FEATURE_FLAGS: {
-                PERSON_ESCORT_RECORD: true,
-              },
-            },
-            './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
-          }
-        )
-
+      context('with Person Escort Record tag source', function () {
         context('with no Person Escort Record', function () {
           beforeEach(function () {
-            transformedResponse = profileToCardComponentWithPER()(mockProfile)
+            transformedResponse = profileToCardComponent({
+              tagSource: 'personEscortRecord',
+            })(mockProfile)
           })
 
           it('should not contain tags', function () {
@@ -393,7 +377,9 @@ describe('Presenters', function () {
         context('with Person Escort Record', function () {
           context('with `not_started` PER', function () {
             beforeEach(function () {
-              transformedResponse = profileToCardComponentWithPER()({
+              transformedResponse = profileToCardComponent({
+                tagSource: 'personEscortRecord',
+              })({
                 ...mockProfile,
                 person_escort_record: {
                   status: 'not_started',
@@ -422,7 +408,9 @@ describe('Presenters', function () {
 
           context('with `in_progress` PER', function () {
             beforeEach(function () {
-              transformedResponse = profileToCardComponentWithPER()({
+              transformedResponse = profileToCardComponent({
+                tagSource: 'personEscortRecord',
+              })({
                 ...mockProfile,
                 person_escort_record: {
                   status: 'in_progress',
@@ -451,7 +439,9 @@ describe('Presenters', function () {
 
           context('with `completed` PER', function () {
             beforeEach(function () {
-              transformedResponse = profileToCardComponentWithPER()({
+              transformedResponse = profileToCardComponent({
+                tagSource: 'personEscortRecord',
+              })({
                 ...mockProfile,
                 person_escort_record: {
                   status: 'completed',
