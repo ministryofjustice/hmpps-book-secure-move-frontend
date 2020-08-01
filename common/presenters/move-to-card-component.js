@@ -7,6 +7,7 @@ function moveToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
+  tagSource,
   showStatus = true,
   hrefSuffix = '',
 } = {}) {
@@ -23,6 +24,7 @@ function moveToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags: isCompact ? false : showTags,
+      tagSource,
     })({
       ...profile,
       href,

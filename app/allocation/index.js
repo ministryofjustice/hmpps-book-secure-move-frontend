@@ -3,10 +3,10 @@ const wizard = require('hmpo-form-wizard')
 
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { FEATURE_FLAGS } = require('../../config')
 const { setMove } = require('../move/middleware')
 
-const confirmation = require('./controllers/create/confirmation')
-const view = require('./controllers/view')
+const { createControllers, viewAllocation } = require('./controllers')
 const { cancelFields, createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
 const { cancelSteps, removeMoveSteps, createSteps } = require('./steps')
@@ -55,7 +55,7 @@ router.use(
 router.get(
   '/:allocationId/confirmation',
   protectRoute('allocation:create'),
-  confirmation
+  createControllers.ConfirmationController
 )
 
 router.use(
@@ -70,7 +70,11 @@ router.use(
   wizard(cancelSteps, cancelFields, cancelConfig)
 )
 
-router.get('/:allocationId', protectRoute('allocations:view'), view)
+router.get(
+  '/:allocationId',
+  protectRoute('allocations:view'),
+  viewAllocation(FEATURE_FLAGS.PERSON_ESCORT_RECORD)
+)
 
 // Export
 module.exports = {

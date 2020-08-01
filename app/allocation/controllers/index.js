@@ -1,24 +1,11 @@
 const CancelController = require('./cancel')
-const AllocationCriteriaController = require('./create/allocation-criteria')
-const AllocationDetailsController = require('./create/allocation-details')
-const Save = require('./create/save')
+const createControllers = require('./create')
 const RemoveMoveController = require('./remove-move')
-
-const createControllers = {
-  AllocationCriteriaController,
-  AllocationDetailsController,
-  Save,
-}
-const cancelControllers = {
-  CancelController,
-}
-
-const removeMoveControllers = {
-  RemoveMoveController,
-}
+const viewAllocation = require('./view')
 
 module.exports = {
-  cancelControllers,
-  removeMoveControllers,
+  CancelController,
   createControllers,
+  RemoveMoveController,
+  viewAllocation,
 }

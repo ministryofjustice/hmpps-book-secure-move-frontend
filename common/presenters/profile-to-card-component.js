@@ -1,6 +1,5 @@
 const { filter } = require('lodash')
 
-const { FEATURE_FLAGS } = require('../../config')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -11,6 +10,7 @@ function profileToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
+  tagSource,
 } = {}) {
   return function item(profile) {
     const {
@@ -60,8 +60,8 @@ function profileToCardComponent({
     }
 
     if (showTags) {
-      // TODO: Remove feature flag condition once PER is enabled everywhere
-      if (FEATURE_FLAGS.PERSON_ESCORT_RECORD) {
+      // TODO: Remove condition once PER is enabled everywhere
+      if (tagSource === 'personEscortRecord') {
         const { flags, status } = personEscortRecord || {}
         const isComplete =
           personEscortRecord && !['not_started', 'in_progress'].includes(status)

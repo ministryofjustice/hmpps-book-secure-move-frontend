@@ -1,10 +1,11 @@
 const proxyquire = require('proxyquire')
 
 const i18n = require('../../config/i18n')
+const moveToCardComponentStub = sinon
+  .stub()
+  .callsFake(() => sinon.stub().returnsArg(0))
 const movesByLocation = proxyquire('./moves-by-location', {
-  './move-to-card-component': sinon
-    .stub()
-    .callsFake(() => sinon.stub().returnsArg(0)),
+  './move-to-card-component': moveToCardComponentStub,
 })
 const mockMoves = require('../../test/fixtures/moves.json')
 
@@ -12,6 +13,7 @@ describe('Presenters', function () {
   describe('#movesByLocation()', function () {
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
+      moveToCardComponentStub.resetHistory()
     })
 
     context('when provided with mock moves response', function () {
@@ -53,6 +55,24 @@ describe('Presenters', function () {
           labels.forEach(label => {
             expect(label).to.equal('collections::labels.to_location')
           })
+        })
+      })
+
+      it('should call card presenter', function () {
+        expect(moveToCardComponentStub).to.be.calledWithExactly({
+          tagSource: undefined,
+        })
+      })
+    })
+
+    context('with cardTagSource', function () {
+      beforeEach(function () {
+        movesByLocation(mockMoves, undefined, 'tagSource')
+      })
+
+      it('should call card presenter with source', function () {
+        expect(moveToCardComponentStub).to.be.calledWithExactly({
+          tagSource: 'tagSource',
         })
       })
     })
