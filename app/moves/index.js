@@ -14,6 +14,7 @@ const {
   setDateRange,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { FEATURE_FLAGS } = require('../../config')
 
 const {
   COLLECTION_MIDDLEWARE,
@@ -68,7 +69,14 @@ viewRouter.get(
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   COLLECTION_MIDDLEWARE,
-  [setBodyMoves('outgoing', 'fromLocationId'), setResultsMoves('outgoing')],
+  [
+    setBodyMoves('outgoing', 'fromLocationId'),
+    setResultsMoves(
+      'outgoing',
+      'to_location',
+      FEATURE_FLAGS.PERSON_ESCORT_RECORD
+    ),
+  ],
   renderAsCards
 )
 viewRouter.get(
@@ -85,7 +93,11 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('incoming', 'toLocationId'),
-    setResultsMoves('incoming', 'from_location'),
+    setResultsMoves(
+      'incoming',
+      'from_location',
+      FEATURE_FLAGS.PERSON_ESCORT_RECORD
+    ),
   ],
   renderAsCards
 )
