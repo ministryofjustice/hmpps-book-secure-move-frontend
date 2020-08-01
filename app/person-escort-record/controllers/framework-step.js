@@ -12,11 +12,27 @@ class FrameworkStepController extends FormWizardController {
     // TODO: Exist this logic to redirect to the overview path if
     // user does not have permission to update
     this.use(permissionsControllers.protectRoute('person_escort_record:update'))
+    this.use(this.checkEditable)
   }
 
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setButtonText)
+  }
+
+  checkEditable(req, res, next) {
+    const { steps: wizardSteps = {} } = req?.form?.options || {}
+    const steps = Object.keys(wizardSteps)
+    const overviewStepPath = steps[steps.length - 1]
+    const personEscortRecordIsConfirmed = ['confirmed'].includes(
+      req.personEscortRecord?.status
+    )
+
+    if (personEscortRecordIsConfirmed) {
+      return res.redirect(req.baseUrl + overviewStepPath)
+    }
+
+    next()
   }
 
   setButtonText(req, res, next) {

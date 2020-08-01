@@ -14,6 +14,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkEditable')
         sinon.stub(permissionsControllers, 'protectRoute').returnsArg(0)
 
         controller.middlewareChecks()
@@ -30,6 +31,12 @@ describe('Person Escort Record controllers', function () {
         )
       })
 
+      it('should call use with protect route middleware', function () {
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+          controller.checkEditable
+        )
+      })
+
       it('should call protect route middleware', function () {
         expect(
           permissionsControllers.protectRoute
@@ -37,7 +44,7 @@ describe('Person Escort Record controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(1)
+        expect(controller.use).to.be.callCount(2)
       })
     })
 
@@ -62,6 +69,69 @@ describe('Person Escort Record controllers', function () {
 
       it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(1)
+      })
+    })
+
+    describe('#checkEditable', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          personEscortRecord: {
+            id: '12345',
+          },
+          baseUrl: '/base-url',
+          form: {
+            options: {
+              steps: {
+                '/': {},
+                '/one': {},
+                '/continued': {},
+                '/two': {},
+                '/two-continued': {},
+                '/overview-step': {},
+              },
+            },
+          },
+        }
+        mockRes = {
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('when Person Escort Record is confirmed', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.status = 'confirmed'
+
+          controller.checkEditable(mockReq, mockRes, nextSpy)
+        })
+
+        it('should redirect', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly(
+            mockReq.baseUrl + '/overview-step'
+          )
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+
+      context('when Person Escort Record is not confirmed', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.status = 'not_started'
+
+          controller.checkEditable(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

@@ -8,12 +8,22 @@ class FrameworkSectionController extends FormWizardController {
     super.middlewareLocals()
     this.use(this.setSectionSummary)
     this.use(this.setMoveId)
+    this.use(this.setEditableStatus)
   }
 
   setMoveId(req, res, next) {
     // TODO: Make available when accessing PER without a move based URLs
     res.locals.moveId = req.move?.id
 
+    next()
+  }
+
+  setEditableStatus(req, res, next) {
+    const personEscortRecordIsConfirmed = ['confirmed'].includes(
+      req.personEscortRecord?.status
+    )
+
+    res.locals.isEditable = !personEscortRecordIsConfirmed
     next()
   }
 
