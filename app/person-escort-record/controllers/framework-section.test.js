@@ -12,6 +12,9 @@ describe('Person Escort Record controllers', function () {
     describe('#middlewareLocals()', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'setSectionSummary')
+        sinon.stub(controller, 'setMoveId')
+        sinon.stub(controller, 'setEditableStatus')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -23,19 +26,25 @@ describe('Person Escort Record controllers', function () {
       })
 
       it('should call set section summary method', function () {
-        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+        expect(controller.use).to.have.been.calledWithExactly(
           controller.setSectionSummary
         )
       })
 
       it('should call set move ID method', function () {
-        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setMoveId
+        )
+      })
+
+      it('should call set editable status', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
           controller.setMoveId
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(2)
+        expect(controller.use).to.be.callCount(3)
       })
     })
 
@@ -44,24 +53,90 @@ describe('Person Escort Record controllers', function () {
 
       beforeEach(function () {
         nextSpy = sinon.spy()
+        mockReq = {}
+        mockRes = {
+          locals: {},
+        }
+      })
+
+      context('without a move', function () {
+        beforeEach(function () {
+          controller.setMoveId(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not set move ID', function () {
+          expect(mockRes.locals.moveId).to.be.undefined
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with a move', function () {
+        beforeEach(function () {
+          mockReq.move = {
+            id: '12345',
+          }
+
+          controller.setMoveId(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set move ID', function () {
+          expect(mockRes.locals.moveId).to.equal('12345')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setEditableStatus', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
         mockReq = {
-          move: {
+          personEscortRecord: {
             id: '12345',
           },
         }
         mockRes = {
           locals: {},
         }
-
-        controller.setMoveId(mockReq, mockRes, nextSpy)
       })
 
-      it('should set move ID', function () {
-        expect(mockRes.locals.moveId).to.equal('12345')
+      context('when Person Escort Record is confirmed', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.status = 'confirmed'
+
+          controller.setEditableStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set isEditable to false', function () {
+          expect(mockRes.locals.isEditable).to.equal(false)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call next without error', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      context('when Person Escort Record is not confirmed', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.status = 'not_started'
+
+          controller.setEditableStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set isEditable to true', function () {
+          expect(mockRes.locals.isEditable).to.equal(true)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
