@@ -17,7 +17,7 @@ function getAll({
   return apiClient
     .findAll('move', {
       ...filter,
-      include,
+      include: isAggregation ? [] : include,
       page,
       per_page: isAggregation ? 1 : 100,
     })
@@ -99,6 +99,13 @@ const moveService = {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
       isAggregation,
+      include: [
+        'profile',
+        'profile.person_escort_record.flags',
+        'profile.person',
+        'profile.person.gender',
+        'to_location',
+      ],
       filter: {
         'filter[status]': 'requested,accepted,booked,in_transit,completed',
         'filter[date_from]': startDate,
@@ -118,6 +125,7 @@ const moveService = {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
       isAggregation,
+      include: ['profile.person'],
       filter: {
         'filter[status]': 'cancelled',
         'filter[date_from]': startDate,

@@ -19,7 +19,7 @@ function getAll({
       ...filter,
       page,
       per_page: isAggregation ? 1 : 100,
-      include,
+      include: isAggregation ? [] : include,
     })
     .then(response => {
       const { data, links, meta } = response
@@ -101,6 +101,7 @@ const allocationService = {
     fromLocations = [],
     toLocations = [],
     locations = [],
+    include,
     includeCancelled = false,
     isAggregation = false,
     status,
@@ -111,6 +112,7 @@ const allocationService = {
 
     return allocationService.getAll({
       isAggregation,
+      include,
       includeCancelled,
       filter: pickBy({
         'filter[status]': status,
@@ -128,12 +130,14 @@ const allocationService = {
     return allocationService.getByDateAndLocation({
       ...args,
       status: args.status || 'filled,unfilled',
+      include: ['from_location', 'moves', 'to_location'],
     })
   },
   getCancelled(args) {
     return allocationService.getByDateAndLocation({
       ...args,
       includeCancelled: true,
+      include: ['from_location', 'moves', 'to_location'],
       status: 'cancelled',
     })
   },

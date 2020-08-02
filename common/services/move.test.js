@@ -427,7 +427,7 @@ describe('Move Service', function () {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: undefined,
+            include: [],
           })
         })
 
@@ -519,7 +519,7 @@ describe('Move Service', function () {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: undefined,
+            include: [],
           })
         })
 
@@ -634,6 +634,13 @@ describe('Move Service', function () {
       it('should call getAll with active statuses', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          include: [
+            'profile',
+            'profile.person_escort_record.flags',
+            'profile.person',
+            'profile.person.gender',
+            'to_location',
+          ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': undefined,
@@ -665,6 +672,13 @@ describe('Move Service', function () {
       it('should call getAll with active statuses', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          include: [
+            'profile',
+            'profile.person_escort_record.flags',
+            'profile.person',
+            'profile.person.gender',
+            'to_location',
+          ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': mockDateRange[0],
@@ -693,6 +707,13 @@ describe('Move Service', function () {
       it('should call getAll with active statuses', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: true,
+          include: [
+            'profile',
+            'profile.person_escort_record.flags',
+            'profile.person',
+            'profile.person.gender',
+            'to_location',
+          ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': undefined,
@@ -725,6 +746,7 @@ describe('Move Service', function () {
       it('should call getAll methods', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
             'filter[date_from]': undefined,
@@ -756,6 +778,7 @@ describe('Move Service', function () {
       it('should call getAll methods', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
             'filter[date_from]': mockDateRange[0],
@@ -784,6 +807,7 @@ describe('Move Service', function () {
       it('should call getAll with active statuses', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: true,
+          include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
             'filter[date_from]': undefined,

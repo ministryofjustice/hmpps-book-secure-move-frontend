@@ -47,6 +47,12 @@ const singleRequestService = {
 
     return moveService.getAll({
       isAggregation,
+      include: [
+        'from_location',
+        'to_location',
+        'profile.person',
+        'prison_transfer_reason',
+      ],
       filter: omitBy(
         {
           ...statusFilter,
