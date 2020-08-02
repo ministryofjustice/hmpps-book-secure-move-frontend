@@ -11,10 +11,8 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setMoveId(req, res, next) {
-    const { move } = req
-
-    // TODO: Need to make sure this is available if accessing the PER directly
-    res.locals.moveId = move.id
+    // TODO: Make available when accessing PER without a move based URLs
+    res.locals.moveId = req.move?.id
 
     next()
   }

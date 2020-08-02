@@ -18,15 +18,18 @@ const { defineFormWizards } = require('./router')
 const framework = frameworksService.getPersonEscortRecord()
 const frameworkWizard = defineFormWizards(framework)
 
+// Define middlewares used by all routes and sub-apps
+router.use(setFramework(framework))
+
+// Define "create" sub-app before ID sepcific middleware
+router.use(newApp.mountpath, newApp.router)
+
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
-router.use(setFramework(framework))
+router.use(setPersonEscortRecord)
 router.use(frameworkWizard)
 
 // Define sub-apps
-router.use(newApp.mountpath, newApp.router)
-
-router.use(setPersonEscortRecord)
 router.use(confirmApp.mountpath, confirmApp.router)
 
 // Define routes

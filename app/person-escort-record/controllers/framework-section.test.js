@@ -44,24 +44,42 @@ describe('Person Escort Record controllers', function () {
 
       beforeEach(function () {
         nextSpy = sinon.spy()
-        mockReq = {
-          move: {
-            id: '12345',
-          },
-        }
+        mockReq = {}
         mockRes = {
           locals: {},
         }
-
-        controller.setMoveId(mockReq, mockRes, nextSpy)
       })
 
-      it('should set move ID', function () {
-        expect(mockRes.locals.moveId).to.equal('12345')
+      context('without a move', function () {
+        beforeEach(function () {
+          controller.setMoveId(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not set move ID', function () {
+          expect(mockRes.locals.moveId).to.be.undefined
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call next without error', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      context('with a move', function () {
+        beforeEach(function () {
+          mockReq.move = {
+            id: '12345',
+          }
+
+          controller.setMoveId(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set move ID', function () {
+          expect(mockRes.locals.moveId).to.equal('12345')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
