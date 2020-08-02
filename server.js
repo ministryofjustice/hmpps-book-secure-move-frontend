@@ -69,6 +69,7 @@ app.set('view engine', 'njk')
 nunjucks(app, config, configPaths)
 
 // Static files
+app.use(compression())
 app.use(
   favicon(path.join(configPaths.build, getAssetPath('images/favicon.ico')))
 )
@@ -89,7 +90,6 @@ app.use(i18nMiddleware.handle(i18n))
 const loggingFormat = config.IS_PRODUCTION ? 'combined' : 'dev'
 app.use(morgan(loggingFormat))
 
-app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true, limit: '1mb' }))
 app.use(cookieParser())
