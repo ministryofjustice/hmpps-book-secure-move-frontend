@@ -265,7 +265,7 @@
         {{ updateLink(updateLinks.personal_details) }}
       </section>
 
-      {% if personEscortRecord %}
+      {% if personEscortRecordIsEnabled and personEscortRecord %}
         {% include "move/views/_includes/person-escort-record-summary.njk" %}
       {% else %}
         {% include "move/views/_includes/assessment.njk" %}
