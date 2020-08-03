@@ -26,82 +26,234 @@
 {% block header %}
 {% endblock %}
 
+{% macro renderSummaryListAtMobile(params) %}
+  {{ govukSummaryList({
+    classes: params.classes + " govuk-summary-list--at-mobile",
+    rows: params.rows
+  }) }}
+{% endmacro %}
+
 {% block main %}
-  <div class="govuk-!-padding-5">
-    <header class="govuk-!-margin-bottom-4">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
-        {{ fullname | upper }}
-      </h1>
-      <span class="govuk-caption-l">
-        {{ t("moves::move_reference", {
-          reference: reference
+  <div class="govuk-!-padding-1">
+    <div class="app-print-page">
+      {% if moveId %}
+        {{ govukBackLink({
+          classes: "app-print--hide",
+          text: t("actions::back_to_move"),
+          href: "/move/" + moveId
         }) }}
-      </span>
-    </header>
+      {% endif %}
 
-    {# TODO: Make this view a bit more dynamic and built from the controller #}
-    <section class="app-!-position-relative govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
-        {{ t("assessment::heading.text", {
-          context: "move"
+      {% if hasSelfHarmWarning %}
+        {% set html %}
+          {{ govukWarningText({
+            text: "See “Health Information” for details",
+            iconFallbackText: "Warning"
+          }) }}
+        {% endset %}
+
+        {{ appMessage({
+          allowDismiss: false,
+          classes: "app-message--info govuk-!-margin-top-4 govuk-!-margin-bottom-4",
+          title: {
+            text: "Medication required during transport"
+          },
+          content: {
+            html: html
+          }
         }) }}
-      </h2>
+      {% endif %}
 
-      {{ govukSummaryList(moveSummary) }}
-    </section>
+      {% if isEscapeRisk %}
+        {% set html %}
+          {{ govukWarningText({
+            text: "See “Risk Information” for details",
+            iconFallbackText: "Warning"
+          }) }}
 
-    {% if courtSummary.rows | length or courtHearings | length %}
+          <p>Tick as required:</p>
+
+          <ul class="app-checklist app-checklist--inline govuk-!-margin-top-2">
+            <li>
+              <strong>
+                Escort
+              </strong>
+            </li>
+            <li>
+              <strong>
+                Standard
+              </strong>
+            </li>
+            <li>
+              <strong>
+                Heightened
+              </strong>
+            </li>
+          </ul>
+        {% endset %}
+
+        {{ appMessage({
+          allowDismiss: false,
+          classes: "app-message--warning govuk-!-margin-top-4 govuk-!-margin-bottom-4",
+          title: {
+            text: "Escape risk"
+          },
+          content: {
+            html: html
+          }
+        }) }}
+      {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="app-!-float-right govuk-grid-column-one-quarter-at-mobile">
+          <div class="image-placeholder">
+            <div class="image-placeholder__text">
+              {{ t("attach_photo") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="app-!-float-left govuk-grid-column-three-quarters-at-mobile">
+          <header class="govuk-!-margin-bottom-4">
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
+              {{ fullname | upper }}
+            </h1>
+            <span class="govuk-caption-l">
+              {{ t("moves::move_reference", {
+                reference: reference
+              }) }}
+            </span>
+          </header>
+
+          {# TODO: Make this view a bit more dynamic and built from the controller #}
+          <section class="app-!-position-relative govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-1 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+              {{ t("assessment::heading.text", {
+                context: "move"
+              }) }}
+            </h2>
+
+            {{ renderSummaryListAtMobile(moveSummary) }}
+          </section>
+        </div>
+      </div>
+
+      {# TODO: Move content to translation files #}
+      {% call appPanel({ classes: "app-border-2 app-border--black" }) %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half-at-mobile">
+            <h3 class="govuk-heading-m">
+              Completed sections
+            </h3>
+
+            <p>Tick as required:</p>
+
+            <ul class="app-checklist govuk-!-margin-bottom-0">
+              <li class="{{ 'app-checklist__item--checked' if hasSelfHarmWarning }}">
+                <strong>
+                  Suicide and self-harm warning
+                </strong>
+              </li>
+              <li>
+                <strong>Red flag</strong>
+              </li>
+              <li>
+                <strong>
+                  Use of force or restraint
+                </strong>
+                <br>
+                See Red Flag Warning page or Medical and Social Care page
+              </li>
+            </ul>
+          </div>
+
+          <div class="govuk-grid-column-one-half-at-mobile">
+            <h3 class="govuk-heading-m">
+              Attached documents
+            </h3>
+
+            <p>Tick as required:</p>
+
+            <ul class="app-checklist govuk-!-margin-bottom-0">
+              <li>
+                <strong>
+                  Medical record
+                </strong>
+              </li>
+              <li>
+                <strong>
+                  Assessment, Care in Custody &amp; Teamwork (HMPPS use)
+                </strong>
+              </li>
+              <li>
+                <strong>
+                  L &amp; D Assessment in Police custody enclosed
+                </strong>
+              </li>
+              <li>................................................</li>
+              <li>................................................</li>
+              <li>................................................</li>
+              <li>................................................</li>
+            </ul>
+          </div>
+        </div>
+      {% endcall %}
+    </div>
+
+    <div class="app-print-page">
       <section class="app-!-position-relative govuk-!-margin-bottom-7">
         <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
-          {{ t("assessment::heading.text", {
-            context: "court"
-          }) }}
+          {{ t("moves::steps.personal_details.heading") }}
         </h2>
 
-        {% if courtSummary.rows | length %}
-          {{ govukSummaryList(courtSummary) }}
-        {% endif %}
+        {{ renderSummaryListAtMobile(personalDetailsSummary) }}
+      </section>
 
-        {% for courtHearing in courtHearings %}
-          {% if courtHearings.length > 1 %}
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
-              {{ t("moves::detail.court_hearings.subheading", {
-                context: "with_index",
-                index: loop.index
-              }) }}
-            </h3>
+      {% for section in personEscortRecordSections %}
+        <section class="app-!-position-relative govuk-!-margin-bottom-7">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+            {{ section.name }}
+          </h2>
+
+          {% for key, step in section.summarySteps %}
+            <section class="app-!-position-relative govuk-!-margin-bottom-3">
+              <h3 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 app-border-bottom-1">
+                {{ step.pageTitle }}
+              </h3>
+
+              {{ renderSummaryListAtMobile(step.summaryListComponent) }}
+            </section>
+          {% endfor %}
+        </section>
+      {% endfor %}
+
+      {% if courtSummary.rows | length or courtHearings | length %}
+        <section class="app-!-position-relative govuk-!-margin-bottom-7">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+            {{ t("assessment::heading.text", {
+              context: "court"
+            }) }}
+          </h2>
+
+          {% if courtSummary.rows | length %}
+            {{ renderSummaryListAtMobile(courtSummary) }}
           {% endif %}
 
-          {{ govukSummaryList(courtHearing.summaryList) }}
-        {% endfor %}
-      </section>
-    {% endif %}
+          {% for courtHearing in courtHearings %}
+            {% if courtHearings.length > 1 %}
+              <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-6">
+                {{ t("moves::detail.court_hearings.subheading", {
+                  context: "with_index",
+                  index: loop.index
+                }) }}
+              </h3>
+            {% endif %}
 
-    <section class="app-!-position-relative govuk-!-margin-bottom-7">
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
-        {{ t("moves::steps.personal_details.heading") }}
-      </h2>
-
-      {{ govukSummaryList(personalDetailsSummary) }}
-    </section>
-
-    {% for section in personEscortRecordSections %}
-      <section class="app-!-position-relative govuk-!-margin-bottom-7">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-padding-top-2 app-border-top-2 app-border--black">
-          {{ section.name }}
-        </h2>
-
-        {% for key, step in section.summarySteps %}
-          <section class="app-!-position-relative govuk-!-margin-bottom-3">
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 app-border-bottom-1">
-              {{ step.pageTitle }}
-            </h3>
-
-            {{ govukSummaryList(step.summaryListComponent) }}
-          </section>
-        {% endfor %}
-      </section>
-    {% endfor %}
+            {{ renderSummaryListAtMobile(courtHearing.summaryList) }}
+          {% endfor %}
+        </section>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
 

@@ -26,6 +26,7 @@
   "sort_descending": "Sort {{label}} descending",
   "empty_response": "Nothing provided",
   "empty_details": "Details not provided",
+  "attach_photo": "Attach photo here",
   "primary_navigation": {
     "home": "Home",
     "outgoing": "Outgoing",

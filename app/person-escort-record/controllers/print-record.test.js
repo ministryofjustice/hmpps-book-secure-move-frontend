@@ -22,13 +22,17 @@ describe('Person Escort Record controllers', function () {
     })
 
     it('should contain correct locals', function () {
-      expect(Object.keys(params)).to.have.length(7)
+      expect(Object.keys(params)).to.have.length(11)
       expect(Object.keys(params)).to.deep.equal([
+        'moveId',
         'fullname',
         'reference',
         'moveSummary',
         'courtSummary',
         'courtHearings',
+        'isEscapeRisk',
+        'hasSelfHarmWarning',
+        'requiresMedicationDuringTransport',
         'personalDetailsSummary',
         'personEscortRecordSections',
       ])
