@@ -2,11 +2,10 @@ const { filter, flatten, isEmpty } = require('lodash')
 
 const componentService = require('../services/component')
 
-function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
+function frameworkFieldToSummaryListRow(stepUrl) {
   return field => {
     const { description, id, response, question } = field
     const headerText = description || question
-    const classes = ['govuk-!-font-weight-regular', ...extraClasses].join(' ')
     const responseHtml = componentService.getComponent('appFrameworkResponse', {
       value: isEmpty(response.value) ? undefined : response.value,
       valueType: response.value_type,
@@ -17,7 +16,7 @@ function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
 
     const row = {
       key: {
-        classes,
+        classes: 'govuk-!-font-weight-regular',
         text: headerText,
       },
       value: {
@@ -32,11 +31,7 @@ function frameworkFieldToSummaryListRow(stepUrl, extraClasses = []) {
     const followupRows = field.items
       .filter(item => item.followup)
       .filter(item => item.value === field.response.value)
-      .map(item =>
-        item.followup.map(
-          frameworkFieldToSummaryListRow(stepUrl, ['govuk-!-padding-left-5'])
-        )
-      )
+      .map(item => item.followup.map(frameworkFieldToSummaryListRow(stepUrl)))
 
     return filter(flatten([row, ...flatten(followupRows)]))
   }
