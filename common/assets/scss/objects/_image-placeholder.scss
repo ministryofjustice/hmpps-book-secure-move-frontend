@@ -1,0 +1,15 @@
+.image-placeholder {
+  border: 1px solid govuk-colour("black");
+  height: 250px;
+  display: block;
+  text-align: center;
+  position: relative;
+}
+
+.image-placeholder__text {
+  @include govuk-font($size: 19, $weight: bold);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
