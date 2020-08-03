@@ -1,4 +1,6 @@
 {
+  "page_title": "Person Escort Record",
+  "page_title_with_name": "Person Escort Record for {{name}}",
   "heading": "Person Escort Record",
   "heading_with_name": "Person Escort Record for",
   "section_overview": "{{section}} overview",

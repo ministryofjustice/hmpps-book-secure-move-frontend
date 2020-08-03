@@ -209,7 +209,7 @@ describe('Presenters', function () {
               },
               {
                 key: {
-                  classes: 'govuk-!-font-weight-regular govuk-!-padding-left-5',
+                  classes: 'govuk-!-font-weight-regular',
                   text: mockFieldWithFollowup.items[0].followup[0].question,
                 },
                 value: {
