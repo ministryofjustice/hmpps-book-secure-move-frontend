@@ -44,6 +44,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'allocations',
       },
+      original_move: {
+        jsonApi: 'hasOne',
+        type: 'moves',
+      },
     },
     options: {
       defaultInclude: [
