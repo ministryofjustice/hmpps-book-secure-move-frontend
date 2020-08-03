@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.37.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.36.0...v2.37.0) (2020-08-03)
+
+
+### Features
+
+* **move:** [P4-1780] Support police custody transfer move ([8366fb8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8366fb8166fece08ceaec1a53cf6419d6a66ee38))
+* **moves:** Add booked and in transit moves to list of active moves ([a349c88](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a349c88a17f71a9fe44cb9e315e22bfe147f520b))
+* **per:** Add journey to print the record once it is confirmed ([d42dfe2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d42dfe2b1c6785c8185477ee310fef4f484d9779))
+* **per:** Add more complex elements to print view ([e7e4f85](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e7e4f8574da5d7f4af5af423da94cd3791a7a153))
+* **per:** Display card tags from Person Escort Record ([43fd58b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/43fd58ba045a39c2c5d5a4efe8754b728e4bf939))
+* **per:** Display flags from Person Escort Record on move detail ([0097c62](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0097c62ce91e75ac01c8bdb183130be0ebc93276))
+* **per:** Enable permissions for Person Escort Record ([151d35f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/151d35f7c94449928ff5176c55306a165dc02863))
+* **per:** Render flags from a Person Escort Record on move detail ([1ccfb75](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1ccfb75d98fe84b5e33ef4f6a65dcf3c6c0dce15))
+* Upgrade govuk-frontend to v3.8.0 ([dd4d976](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dd4d97689ea67d77c453001b80fa2de13839008f))
+
+
+### Bug Fixes
+
+* **framework:** Remove indent from followup questions ([8a9186e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8a9186e9d96ad1613eb9cef550f000822785dfee))
+* **per:** Allow Person Escort Records starts/updates in booked state ([9bbcc2e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9bbcc2e076615734870642ef92d125c84dd5dd31))
+* **per:** Amend card tag display logic in allocations to use permissions ([3bb4815](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3bb48155691d4e4646a5c3a45265b438b957c144))
+* **per:** Amend card tag display logic in allocations to use permissions ([4269aa6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4269aa628632e16005bfe858490fde9d0934f42c))
+* **per:** Ensure missing PERs 404 instead of rending routes ([db1f25a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/db1f25a2356fbfcbc30d6bae8df8d3c89aef7d29))
+* **per:** Ensure move detail logic uses permissions too ([2d85c39](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2d85c39007146e2d0474c9001ab4b244b055a6a3))
+* **per:** Ensure steps can't be accessed once reocrd is confirmed ([a190a69](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a190a699a5a9bb4c410dfe74e32c645335255648))
+* **per:** Only use the set PER middleware for routes that require it ([70aa618](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/70aa61896a92406b498f5977af6198bf5c6ea90a))
+* Ensure assessment answers are rendered correctly ([6a1f8b6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6a1f8b68aa7b85c3740ea36379ee55855d9f8589))
+
 ## [2.36.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.35.1...v2.36.0) (2020-07-28)
 
 
