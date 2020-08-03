@@ -46,6 +46,9 @@
   <!--[if lte IE 8]><link href="{{ getAssetPath('styles-ie8.css') }}" rel="stylesheet" type="text/css" /><![endif]-->
   <!--[if gt IE 8]><!--><link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
 
+  <link rel="preload" href="{{ getAssetPath('fonts/Inter-Bold.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ getAssetPath('fonts/Inter-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+
   {% if GA_ID %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
