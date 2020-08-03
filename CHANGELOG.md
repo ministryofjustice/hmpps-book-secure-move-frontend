@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.37.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.0...v2.37.1) (2020-08-03)
+
+
+### Bug Fixes
+
+* **framework:** Call correct parent method when setting locals ([aa5483e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/aa5483e2acb32f726a4f0f4eca10c173113a23c0))
+
 ## [2.37.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.36.0...v2.37.0) (2020-08-03)
 
 
