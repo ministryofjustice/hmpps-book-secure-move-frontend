@@ -75,8 +75,20 @@
         "first_names": "Raymond",
         "last_name": "Ondricka",
         "date_of_birth": "1959-08-13",
-        "police_national_computer": "11223344",
-        "prison_number": "796507",
+        "identifiers": [
+          {
+            "identifier_type": "police_national_computer",
+            "value": "11223344"
+          },
+          {
+            "identifier_type": "prison_number",
+            "value": "796507"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "763307"
+          }
+        ],
         "ethnicity": {
           "id": "36d16451-f68c-44e3-a2da-e2208ee277ea",
           "type": "ethnicities",
@@ -186,7 +198,16 @@
         "first_names": "Virgina",
         "last_name": "O'Connell",
         "date_of_birth": "1967-02-25",
-        "prison_number": "903763",
+        "identifiers": [
+          {
+            "identifier_type": "prison_number",
+            "value": "903763"
+          },
+          {
+            "identifier_type": "niche_reference",
+            "value": "883577"
+          }
+        ],
         "ethnicity": {
           "id": "d5ee82b8-e510-4e43-8ec5-3d8de20ad123",
           "type": "ethnicities",
@@ -277,8 +298,16 @@
         "first_names": "Enedina",
         "last_name": "Schowalter",
         "date_of_birth": "1993-10-13",
-        "criminal_records_office": "803274",
-        "police_national_computer": "643135",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "803274"
+          },
+          {
+            "identifier_type": "pnc_number",
+            "value": "643135"
+          }
+        ],
         "ethnicity": {
           "id": "d5ee82b8-e510-4e43-8ec5-3d8de20ad123",
           "type": "ethnicities",
@@ -362,7 +391,16 @@
         "first_names": "Antonia",
         "last_name": "Kilback",
         "date_of_birth": "1964-04-27",
-        "criminal_records_office": "332877",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "332877"
+          },
+          {
+            "identifier_type": "niche_reference",
+            "value": "291933"
+          }
+        ],
         "ethnicity": {
           "id": "6ccd61ae-f271-4fec-9d99-b14a66d0d85b",
           "type": "ethnicities",
@@ -459,7 +497,16 @@
         "first_names": "Eliseo",
         "last_name": "Runolfsdottir",
         "date_of_birth": "1992-11-01",
-        "prison_number": "757119",
+        "identifiers": [
+          {
+            "identifier_type": "niche_reference",
+            "value": "884385"
+          },
+          {
+            "identifier_type": "prison_number",
+            "value": "757119"
+          }
+        ],
         "ethnicity": {
           "id": "36d16451-f68c-44e3-a2da-e2208ee277ea",
           "type": "ethnicities",
@@ -543,7 +590,16 @@
         "first_names": "Hilda",
         "last_name": "Bartell",
         "date_of_birth": "1939-07-26",
-        "criminal_records_office": "884005",
+        "identifiers": [
+          {
+            "identifier_type": "niche_reference",
+            "value": "675652"
+          },
+          {
+            "identifier_type": "cro_number",
+            "value": "884005"
+          }
+        ],
         "ethnicity": {
           "id": "36d16451-f68c-44e3-a2da-e2208ee277ea",
           "type": "ethnicities",
@@ -661,7 +717,16 @@
         "first_names": "Carson",
         "last_name": "Kozey",
         "date_of_birth": "1957-03-05",
-        "prison_number": "104645",
+        "identifiers": [
+          {
+            "identifier_type": "prison_number",
+            "value": "104645"
+          },
+          {
+            "identifier_type": "niche_reference",
+            "value": "519038"
+          }
+        ],
         "ethnicity": {
           "id": "d5ee82b8-e510-4e43-8ec5-3d8de20ad123",
           "type": "ethnicities",
@@ -745,7 +810,16 @@
         "first_names": "Dane",
         "last_name": "Ratke",
         "date_of_birth": "1939-08-25",
-        "criminal_records_office": "730878",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "730878"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "215805"
+          }
+        ],
         "ethnicity": {
           "id": "2451f534-5718-4588-91a8-a0acb292e6fc",
           "type": "ethnicities",
@@ -829,8 +903,16 @@
         "first_names": "Kati",
         "last_name": "Schultz",
         "date_of_birth": "1944-12-31",
-        "criminal_records_office": "707302",
-        "police_national_computer": "571238",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "707302"
+          },
+          {
+            "identifier_type": "pnc_number",
+            "value": "571238"
+          }
+        ],
         "ethnicity": {
           "id": "68b4710b-f721-486e-87a6-1c61a38a9f65",
           "type": "ethnicities",
@@ -914,7 +996,16 @@
         "first_names": "Alex",
         "last_name": "Bergnaum",
         "date_of_birth": "1962-08-15",
-        "prison_number": "363329",
+        "identifiers": [
+          {
+            "identifier_type": "prison_number",
+            "value": "363329"
+          },
+          {
+            "identifier_type": "niche_reference",
+            "value": "20677"
+          }
+        ],
         "ethnicity": {
           "id": "2abe628b-8754-4f62-bd55-782508a32f3d",
           "type": "ethnicities",
@@ -1032,6 +1123,16 @@
         "first_names": "Aubrey",
         "last_name": "Sipes",
         "date_of_birth": "1970-05-26",
+        "identifiers": [
+          {
+            "identifier_type": "niche_reference",
+            "value": "996054"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "392460"
+          }
+        ],
         "ethnicity": {
           "id": "6ccd61ae-f271-4fec-9d99-b14a66d0d85b",
           "type": "ethnicities",
@@ -1115,7 +1216,16 @@
         "first_names": "Simone",
         "last_name": "Auer",
         "date_of_birth": "1952-10-07",
-        "criminal_records_office": "84646",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "84646"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "170491"
+          }
+        ],
         "ethnicity": {
           "id": "75ba1a6f-550e-4871-94b9-49bb0f230dfc",
           "type": "ethnicities",
@@ -1199,7 +1309,16 @@
         "first_names": "Simone",
         "last_name": "Auer",
         "date_of_birth": "1952-10-07",
-        "criminal_records_office": "84646",
+        "identifiers": [
+          {
+            "identifier_type": "cro_number",
+            "value": "84646"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "170491"
+          }
+        ],
         "ethnicity": {
           "id": "75ba1a6f-550e-4871-94b9-49bb0f230dfc",
           "type": "ethnicities",
@@ -1283,7 +1402,16 @@
         "first_names": "Eliseo",
         "last_name": "Runolfsdottir",
         "date_of_birth": "1992-11-01",
-        "prison_number": "757119",
+        "identifiers": [
+          {
+            "identifier_type": "niche_reference",
+            "value": "884385"
+          },
+          {
+            "identifier_type": "prison_number",
+            "value": "757119"
+          }
+        ],
         "ethnicity": {
           "id": "36d16451-f68c-44e3-a2da-e2208ee277ea",
           "type": "ethnicities",
@@ -1367,7 +1495,16 @@
         "first_names": "Trent",
         "last_name": "Smitham",
         "date_of_birth": "1962-05-24",
-        "prison_number": "83088",
+        "identifiers": [
+          {
+            "identifier_type": "prison_number",
+            "value": "83088"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "557017"
+          }
+        ],
         "ethnicity": {
           "id": "2abe628b-8754-4f62-bd55-782508a32f3d",
           "type": "ethnicities",
@@ -1485,7 +1622,16 @@
         "first_names": "Russel",
         "last_name": "Kiehn",
         "date_of_birth": "1960-06-09",
-        "police_national_computer": "666413",
+        "identifiers": [
+          {
+            "identifier_type": "niche_reference",
+            "value": "596477"
+          },
+          {
+            "identifier_type": "pnc_number",
+            "value": "666413"
+          }
+        ],
         "ethnicity": {
           "id": "25d2e6ce-6af8-4c1c-88e1-bdd66f9cb5b9",
           "type": "ethnicities",
@@ -1569,7 +1715,16 @@
         "first_names": "Jerrell",
         "last_name": "Price",
         "date_of_birth": "1979-04-24",
-        "police_national_computer": "291140",
+        "identifiers": [
+          {
+            "identifier_type": "pnc_number",
+            "value": "291140"
+          },
+          {
+            "identifier_type": "athena_reference",
+            "value": "656684"
+          }
+        ],
         "ethnicity": {
           "id": "25d2e6ce-6af8-4c1c-88e1-bdd66f9cb5b9",
           "type": "ethnicities",
