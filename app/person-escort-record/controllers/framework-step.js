@@ -48,7 +48,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   middlewareLocals() {
-    super.middlewareSetup()
+    super.middlewareLocals()
     this.use(this.setPageTitleLocals)
   }
 

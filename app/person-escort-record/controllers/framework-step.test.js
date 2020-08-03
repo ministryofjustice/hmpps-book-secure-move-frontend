@@ -72,6 +72,31 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'setPageTitleLocals')
+        sinon.stub(controller, 'use')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set models method', function () {
+        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setPageTitleLocals
+        )
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use).to.be.callCount(1)
+      })
+    })
+
     describe('#checkEditable', function () {
       let mockReq, mockRes, nextSpy
 
@@ -176,6 +201,31 @@ describe('Person Escort Record controllers', function () {
         it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
+      })
+    })
+
+    describe('#setPageTitleLocals', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          frameworkSection: {
+            name: 'Section one',
+          },
+        }
+        mockRes = {
+          locals: {},
+        }
+        controller.setPageTitleLocals(mockReq, mockRes, nextSpy)
+      })
+
+      it('should use save and continue button text', function () {
+        expect(mockRes.locals.frameworkSection).to.equal('Section one')
+      })
+
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
