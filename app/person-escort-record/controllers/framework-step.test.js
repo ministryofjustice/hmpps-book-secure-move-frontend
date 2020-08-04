@@ -10,7 +10,7 @@ const controller = new Controller({ route: '/' })
 
 describe('Person Escort Record controllers', function () {
   describe('FrameworkStepController', function () {
-    describe('#middlewareChecks()', function () {
+    describe('#middlewareChecks', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
@@ -48,7 +48,7 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
-    describe('#middlewareSetup()', function () {
+    describe('#middlewareSetup', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
@@ -72,7 +72,7 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
-    describe('#middlewareLocals()', function () {
+    describe('#middlewareLocals', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'setPageTitleLocals')
@@ -393,13 +393,23 @@ describe('Person Escort Record controllers', function () {
     describe('#getValues', function () {
       let callback
       const mockReq = {
+        path: '/route',
         form: {
           options: {
-            fields: {},
+            fields: {
+              field1: {},
+              field2: {},
+              field3: {},
+              field8: {},
+              field9: {},
+            },
           },
         },
         personEscortRecord: {
           responses: [],
+        },
+        sessionModel: {
+          toJSON: sinon.stub().returns({}),
         },
       }
 
@@ -411,25 +421,76 @@ describe('Person Escort Record controllers', function () {
             acc[question.key] = value
             return acc
           })
-        sinon
-          .stub(FormWizardController.prototype, 'getValues')
-          .callsFake((req, res, valuesCallback) => {
-            valuesCallback(null, {
-              foo: 'bar',
-            })
-          })
       })
 
-      context('when parent method does not throw an error', function () {
+      context(
+        'with session model values and error values of current fields',
+        function () {
+          beforeEach(function () {
+            mockReq.sessionModel.toJSON.returns({
+              field1: 'foo',
+              field2: 'bar',
+              field3: 'boo',
+              field4: 'baz',
+              errorValues: {
+                field2: 'error value 2',
+                __other_step__: 'error value 4',
+              },
+            })
+            controller.getValues(mockReq, {}, callback)
+          })
+
+          it('should call callback with error values', function () {
+            expect(callback).to.have.been.calledWithExactly(null, {
+              field2: 'error value 2',
+            })
+          })
+        }
+      )
+
+      context('with errors from different urls', function () {
+        beforeEach(function () {
+          mockReq.sessionModel.toJSON.returns({
+            field1: 'foo',
+            field2: 'bar',
+            field3: 'boo',
+            field4: 'baz',
+            errors: {
+              field2: {},
+              field8: { url: '/route' },
+              field9: { url: '/another/url' },
+            },
+            errorValues: {
+              field1: 'error value 1',
+              field2: 'error value 2',
+              field8: 'error value 8',
+              field9: 'error value 9',
+            },
+          })
+          controller.getValues(mockReq, {}, callback)
+        })
+
+        it('should call callback without error values that are from a different url', function () {
+          expect(callback).to.have.been.calledWithExactly(null, {
+            field1: 'error value 1',
+            field2: 'error value 2',
+            field8: 'error value 8',
+          })
+        })
+      })
+
+      context('with no errors', function () {
+        beforeEach(function () {
+          mockReq.sessionModel.toJSON.returns({})
+        })
+
         context('with no responses', function () {
           beforeEach(function () {
             controller.getValues(mockReq, {}, callback)
           })
 
           it('should invoke the callback', function () {
-            expect(callback).to.be.calledOnceWithExactly(null, {
-              foo: 'bar',
-            })
+            expect(callback).to.be.calledOnceWithExactly(null, {})
           })
         })
 
@@ -452,7 +513,6 @@ describe('Person Escort Record controllers', function () {
 
           it('should invoke the callback', function () {
             expect(callback).to.be.calledOnceWithExactly(null, {
-              foo: 'bar',
               'field-one': 'Yes',
               'field-two': 'No',
             })
@@ -475,9 +535,7 @@ describe('Person Escort Record controllers', function () {
             })
 
             it('should filter out responses', function () {
-              expect(callback).to.be.calledOnceWithExactly(null, {
-                foo: 'bar',
-              })
+              expect(callback).to.be.calledOnceWithExactly(null, {})
             })
           })
 
@@ -501,9 +559,7 @@ describe('Person Escort Record controllers', function () {
             })
 
             it('should filter out responses', function () {
-              expect(callback).to.be.calledOnceWithExactly(null, {
-                foo: 'bar',
-              })
+              expect(callback).to.be.calledOnceWithExactly(null, {})
             })
           })
 
@@ -525,52 +581,9 @@ describe('Person Escort Record controllers', function () {
             })
 
             it('should filter out responses', function () {
-              expect(callback).to.be.calledOnceWithExactly(null, {
-                foo: 'bar',
-              })
+              expect(callback).to.be.calledOnceWithExactly(null, {})
             })
           })
-        })
-
-        context('existing values', function () {
-          beforeEach(function () {
-            mockReq.form.options.fields = {
-              foo: {},
-            }
-            mockReq.personEscortRecord.responses = [
-              { id: '1', value: 'Saved value', question: { key: 'foo' } },
-            ]
-            controller.getValues(mockReq, {}, callback)
-          })
-
-          it('should call the reducer', function () {
-            expect(Controller.prototype.reduceResponses).to.be.calledOnce
-          })
-
-          it('should not override values from parent controller', function () {
-            expect(callback).to.be.calledOnceWithExactly(null, {
-              foo: 'bar',
-            })
-          })
-        })
-      })
-
-      context('when parent method throws an error', function () {
-        const mockError = new Error()
-
-        beforeEach(function () {
-          FormWizardController.prototype.getValues.callsFake(
-            (req, res, valuesCallback) => {
-              valuesCallback(mockError, {
-                foo: 'bar',
-              })
-            }
-          )
-          controller.getValues(mockReq, {}, callback)
-        })
-
-        it('should invoke the callback with the error', function () {
-          expect(callback).to.be.calledOnceWithExactly(mockError)
         })
       })
     })

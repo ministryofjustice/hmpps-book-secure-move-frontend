@@ -1,4 +1,4 @@
-const { kebabCase } = require('lodash')
+const { kebabCase, pickBy, isEmpty } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -80,6 +80,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   getValues(req, res, callback) {
+    const { errors, errorValues } = req.sessionModel.toJSON()
     const fields = req.form.options.fields
     const responses = req.personEscortRecord.responses
     const savedValues = responses
@@ -87,16 +88,20 @@ class FrameworkStepController extends FormWizardController {
       .filter(response => response.value)
       .reduce(this.reduceResponses, {})
 
-    super.getValues(req, res, (err, values) => {
-      if (err) {
-        return callback(err)
-      }
+    // pick errorValues that are for this step's fields
+    // pick errorValues that were generated on the same url
+    const stepErrorValues = pickBy(
+      errorValues,
+      (e, k) =>
+        Object.prototype.hasOwnProperty.call(fields, k) &&
+        (!errors || !errors[k] || !errors[k].url || errors[k].url === req.path)
+    )
 
-      callback(null, {
-        ...savedValues,
-        ...values,
-      })
-    })
+    if (!isEmpty(stepErrorValues)) {
+      return callback(null, stepErrorValues)
+    }
+
+    callback(null, savedValues)
   }
 
   async saveValues(req, res, next) {
