@@ -2,6 +2,8 @@ const redirectBaseUrl = require('./redirect-base-url')
 const saveUrl = require('./save-url')
 const setBodyMoves = require('./set-body.moves')
 const setBodySingleRequests = require('./set-body.single-requests')
+const setDownloadResultsMoves = require('./set-download-results.moves')
+const setDownloadResultsSingleRequests = require('./set-download-results.single-requests')
 const setFilterMoves = require('./set-filter.moves')
 const setFilterSingleRequests = require('./set-filter.single-requests')
 const setFromLocation = require('./set-from-location')
@@ -13,6 +15,8 @@ module.exports = {
   saveUrl,
   setBodyMoves,
   setBodySingleRequests,
+  setDownloadResultsMoves,
+  setDownloadResultsSingleRequests,
   setFromLocation,
   setFilterMoves,
   setFilterSingleRequests,

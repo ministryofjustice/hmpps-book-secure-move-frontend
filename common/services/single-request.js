@@ -13,6 +13,7 @@ const singleRequestService = {
     createdAtDate = [],
     fromLocationId,
     toLocationId,
+    include,
     isAggregation = false,
     sortBy = 'created_at',
     sortDirection = 'desc',
@@ -47,7 +48,7 @@ const singleRequestService = {
 
     return moveService.getAll({
       isAggregation,
-      include: [
+      include: include || [
         'from_location',
         'to_location',
         'profile.person',
@@ -69,6 +70,22 @@ const singleRequestService = {
         },
         isNil
       ),
+    })
+  },
+
+  getDownload(args) {
+    return singleRequestService.getAll({
+      ...args,
+      include: [
+        'from_location',
+        'prison_transfer_reason',
+        'profile',
+        'profile.documents',
+        'profile.person',
+        'profile.person.ethnicity',
+        'profile.person.gender',
+        'to_location',
+      ],
     })
   },
 

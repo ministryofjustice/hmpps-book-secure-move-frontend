@@ -63,14 +63,6 @@ describe('Moves middleware', function () {
           )
         })
 
-        it('should set results on req', function () {
-          expect(req).to.have.property('results')
-          expect(req.results).to.deep.equal({
-            active: mockActiveMoves,
-            cancelled: mockCancelledMoves,
-          })
-        })
-
         it('should set resultsAsCards on req', function () {
           expect(req).to.have.property('resultsAsCards')
           expect(req.resultsAsCards).to.deep.equal({

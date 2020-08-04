@@ -1,9 +1,8 @@
-const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
 
-const middleware = require('./set-results.single-requests')
+const middleware = require('./set-download-results.single-requests')
 
-const mockActiveMoves = [
+const mockMoves = [
   { id: '1', foo: 'bar', status: 'requested' },
   { id: '2', fizz: 'buzz', status: 'requested' },
   { id: '3', foo: 'bar', status: 'completed' },
@@ -11,14 +10,13 @@ const mockActiveMoves = [
 ]
 
 describe('Moves middleware', function () {
-  describe('#setResultsSingleRequests()', function () {
+  describe('#setDownloadResultsSingleRequests()', function () {
     let res
     let req
     let next
 
     beforeEach(function () {
-      sinon.stub(singleRequestService, 'getAll')
-      sinon.stub(presenters, 'singleRequestsToTableComponent').returnsArg(0)
+      sinon.stub(singleRequestService, 'getDownload')
       next = sinon.stub()
       res = {}
       req = {
@@ -34,30 +32,23 @@ describe('Moves middleware', function () {
 
     context('when service resolves', function () {
       beforeEach(async function () {
-        singleRequestService.getAll.resolves(mockActiveMoves)
+        singleRequestService.getDownload.resolves(mockMoves)
         await middleware(req, res, next)
       })
 
       it('should call the data service with request body', function () {
-        expect(singleRequestService.getAll).to.have.been.calledOnceWithExactly({
+        expect(
+          singleRequestService.getDownload
+        ).to.have.been.calledOnceWithExactly({
           status: 'proposed',
           createdAtDate: ['2019-01-01', '2019-01-07'],
           fromLocationId: '123',
         })
       })
 
-      it('should set resultsAsTable on req', function () {
-        expect(req).to.have.property('resultsAsTable')
-        expect(req.resultsAsTable).to.deep.equal({
-          active: mockActiveMoves,
-          cancelled: [],
-        })
-      })
-
-      it('should call singleRequestsToTableComponent presenter', function () {
-        expect(
-          presenters.singleRequestsToTableComponent
-        ).to.be.calledOnceWithExactly(mockActiveMoves)
+      it('should set results on req', function () {
+        expect(req).to.have.property('results')
+        expect(req.results).to.deep.equal(mockMoves)
       })
 
       it('should call next', function () {
@@ -69,13 +60,12 @@ describe('Moves middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        singleRequestService.getAll.rejects(mockError)
+        singleRequestService.getDownload.rejects(mockError)
         await middleware(req, res, next)
       })
 
       it('should not request properties', function () {
         expect(req).not.to.have.property('results')
-        expect(req).not.to.have.property('resultsAsTable')
       })
 
       it('should call next with error', function () {

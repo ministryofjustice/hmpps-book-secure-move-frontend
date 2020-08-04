@@ -136,6 +136,20 @@ const moveService = {
     })
   },
 
+  getDownload({ dateRange = [], fromLocationId, toLocationId } = {}) {
+    const [startDate, endDate] = dateRange
+    return moveService.getAll({
+      filter: {
+        'filter[status]':
+          'requested,accepted,booked,in_transit,completed,cancelled',
+        'filter[date_from]': startDate,
+        'filter[date_to]': endDate,
+        'filter[from_location_id]': fromLocationId,
+        'filter[to_location_id]': toLocationId,
+      },
+    })
+  },
+
   getById(id, { include } = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))

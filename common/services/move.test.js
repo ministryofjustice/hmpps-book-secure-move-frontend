@@ -54,6 +54,10 @@ const mockMoves = [
 ]
 
 describe('Move Service', function () {
+  beforeEach(function () {
+    sinon.stub(moveService, 'transform').returnsArg(0)
+  })
+
   context('#transform', function () {
     const mockPerson = {
       id: '__person__',
@@ -64,6 +68,9 @@ describe('Move Service', function () {
     }
     let move
     beforeEach(function () {
+      // restore the stub as its stubbed before every test for convenience
+      moveService.transform.restore()
+
       sinon.stub(profileService, 'transform').callsFake(profile => {
         return {
           ...profile,
@@ -94,12 +101,6 @@ describe('Move Service', function () {
         foo: 'bar',
       })
     })
-  })
-})
-
-describe('Move Service', function () {
-  beforeEach(function () {
-    sinon.stub(moveService, 'transform').returnsArg(0)
   })
 
   describe('#format()', function () {
@@ -820,6 +821,68 @@ describe('Move Service', function () {
 
       it('should return moves', function () {
         expect(moves).to.deep.equal(mockResponse)
+      })
+    })
+  })
+
+  describe('#getDownload()', function () {
+    let moves
+
+    beforeEach(async function () {
+      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+    })
+
+    context('without arguments', function () {
+      beforeEach(async function () {
+        moves = await moveService.getDownload()
+      })
+
+      it('should call getAll with all statuses', function () {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]':
+              'requested,accepted,booked,in_transit,completed,cancelled',
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
+            'filter[from_location_id]': undefined,
+            'filter[to_location_id]': undefined,
+          },
+        })
+      })
+
+      it('should return moves', function () {
+        expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+
+    context('with arguments', function () {
+      const mockDateRange = ['2019-10-10', '2019-10-11']
+      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+
+      beforeEach(async function () {
+        moves = await moveService.getDownload({
+          dateRange: mockDateRange,
+          fromLocationId: mockFromLocationId,
+          toLocationId: mockToLocationId,
+        })
+      })
+
+      it('should call getAll with all statuses', function () {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[status]':
+              'requested,accepted,booked,in_transit,completed,cancelled',
+            'filter[date_from]': mockDateRange[0],
+            'filter[date_to]': mockDateRange[1],
+            'filter[from_location_id]': mockFromLocationId,
+            'filter[to_location_id]': mockToLocationId,
+          },
+        })
+      })
+
+      it('should return moves', function () {
+        expect(moves).to.deep.equal(mockMoves)
       })
     })
   })
