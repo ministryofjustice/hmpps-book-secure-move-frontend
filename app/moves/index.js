@@ -29,6 +29,8 @@ const {
   redirectBaseUrl,
   saveUrl,
   setFromLocation,
+  setDownloadResultsMoves,
+  setDownloadResultsSingleRequests,
   setBodyMoves,
   setBodySingleRequests,
   setFilterSingleRequests,
@@ -61,7 +63,7 @@ viewRouter.get(
   '/:view(requested)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
-  [setBodySingleRequests, setResultsSingleRequests],
+  [setBodySingleRequests, setDownloadResultsSingleRequests],
   download
 )
 viewRouter.get(
@@ -83,7 +85,10 @@ viewRouter.get(
   '/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
-  [setBodyMoves('outgoing', 'fromLocationId'), setResultsMoves('outgoing')],
+  [
+    setBodyMoves('outgoing', 'fromLocationId'),
+    setDownloadResultsMoves('outgoing'),
+  ],
   download
 )
 viewRouter.get(
@@ -107,7 +112,7 @@ viewRouter.get(
   protectRoute('moves:view:incoming'),
   [
     setBodyMoves('incoming', 'toLocationId'),
-    setResultsMoves('incoming', 'from_location'),
+    setDownloadResultsMoves('incoming'),
   ],
   download
 )

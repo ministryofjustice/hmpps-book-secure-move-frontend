@@ -5,10 +5,6 @@ async function setResultsSingleRequests(req, res, next) {
   try {
     const singleRequests = await singleRequestService.getAll(req.body.requested)
 
-    req.results = {
-      active: singleRequests,
-      cancelled: [],
-    }
     req.resultsAsTable = {
       active: presenters.singleRequestsToTableComponent(singleRequests),
       cancelled: [],

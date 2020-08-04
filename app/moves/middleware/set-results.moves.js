@@ -17,10 +17,6 @@ function setResultsMoves(bodyKey, locationKey, personEscortRecordFeature) {
         ? 'personEscortRecord'
         : undefined
 
-      req.results = {
-        active: activeMoves,
-        cancelled: cancelledMoves,
-      }
       req.resultsAsCards = {
         active: presenters.movesByLocation(
           activeMoves,

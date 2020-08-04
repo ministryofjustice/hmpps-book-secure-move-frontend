@@ -447,7 +447,7 @@ describe('Allocation service', function () {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: undefined,
+            include: [],
           })
         })
 
@@ -584,7 +584,7 @@ describe('Allocation service', function () {
             ...mockFilter,
             page: 1,
             per_page: 1,
-            include: undefined,
+            include: [],
           })
         })
 
@@ -646,6 +646,7 @@ describe('Allocation service', function () {
         expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           includeCancelled: false,
+          include: undefined,
           filter: {},
         })
       })
@@ -667,6 +668,7 @@ describe('Allocation service', function () {
             fromLocations: [mockFromLocationId],
             toLocations: [mockToLocationId],
             locations: [mockFromLocationId, mockToLocationId],
+            include: ['foo', 'bar'],
           })
         })
 
@@ -674,6 +676,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
+            include: ['foo', 'bar'],
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
@@ -700,6 +703,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
+            include: undefined,
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -723,6 +727,31 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             includeCancelled: false,
+            include: undefined,
+            filter: {
+              'filter[locations]': mockFromLocationId,
+            },
+          })
+        })
+
+        it('should return results', function () {
+          expect(results).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with include ', function () {
+        beforeEach(async function () {
+          results = await allocationService.getByDateAndLocation({
+            include: ['fizz', 'buzz'],
+            locations: [mockFromLocationId],
+          })
+        })
+
+        it('should call moves.getAll with correct args', function () {
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
+            includeCancelled: false,
+            include: ['fizz', 'buzz'],
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -746,6 +775,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: true,
+            include: undefined,
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -777,6 +807,7 @@ describe('Allocation service', function () {
           allocationService.getByDateAndLocation
         ).to.have.been.calledWithExactly({
           additionalParams: {},
+          include: ['from_location', 'moves', 'to_location'],
           status: 'custom',
         })
       })
@@ -794,6 +825,7 @@ describe('Allocation service', function () {
           allocationService.getByDateAndLocation
         ).to.have.been.calledWithExactly({
           additionalParams: {},
+          include: ['from_location', 'moves', 'to_location'],
           status: 'filled,unfilled',
         })
       })
@@ -814,6 +846,7 @@ describe('Allocation service', function () {
       ).to.have.been.calledWithExactly({
         additionalParams: {},
         includeCancelled: true,
+        include: ['from_location', 'moves', 'to_location'],
         status: 'cancelled',
       })
     })

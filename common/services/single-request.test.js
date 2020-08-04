@@ -45,6 +45,12 @@ describe('Single request service', function () {
       it('should call moves.getAll with default filter', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
+          include: [
+            'from_location',
+            'to_location',
+            'profile.person',
+            'prison_transfer_reason',
+          ],
           filter: {
             'filter[has_relationship_to_allocation]': false,
             'filter[move_type]': 'prison_transfer',
@@ -79,6 +85,12 @@ describe('Single request service', function () {
         it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
+            include: [
+              'from_location',
+              'to_location',
+              'profile.person',
+              'prison_transfer_reason',
+            ],
             filter: {
               'filter[status]': 'proposed',
               'filter[has_relationship_to_allocation]': false,
@@ -111,6 +123,12 @@ describe('Single request service', function () {
         it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
+            include: [
+              'from_location',
+              'to_location',
+              'profile.person',
+              'prison_transfer_reason',
+            ],
             filter: {
               'filter[has_relationship_to_allocation]': false,
               'filter[created_at_from]': mockCreatedDateRange[0],
@@ -138,6 +156,12 @@ describe('Single request service', function () {
         it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
+            include: [
+              'from_location',
+              'to_location',
+              'profile.person',
+              'prison_transfer_reason',
+            ],
             filter: {
               'filter[has_relationship_to_allocation]': false,
               'filter[move_type]': 'prison_transfer',
@@ -155,19 +179,49 @@ describe('Single request service', function () {
       context('with sort direction', function () {
         beforeEach(async function () {
           moves = await singleRequestService.getAll({
-            isAggregation: true,
             sortDirection: 'asc',
           })
         })
 
         it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
-            isAggregation: true,
+            isAggregation: false,
+            include: [
+              'from_location',
+              'to_location',
+              'profile.person',
+              'prison_transfer_reason',
+            ],
             filter: {
               'filter[has_relationship_to_allocation]': false,
               'filter[move_type]': 'prison_transfer',
               'sort[by]': 'created_at',
               'sort[direction]': 'asc',
+            },
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with include', function () {
+        beforeEach(async function () {
+          moves = await singleRequestService.getAll({
+            include: ['foo', 'bar'],
+          })
+        })
+
+        it('should call moves.getAll with defined include', function () {
+          expect(moveService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
+            include: ['foo', 'bar'],
+            filter: {
+              'filter[has_relationship_to_allocation]': false,
+              'filter[move_type]': 'prison_transfer',
+              'sort[by]': 'created_at',
+              'sort[direction]': 'desc',
             },
           })
         })
@@ -188,6 +242,12 @@ describe('Single request service', function () {
         it('should call moves.getAll with correct args', function () {
           expect(moveService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
+            include: [
+              'from_location',
+              'to_location',
+              'profile.person',
+              'prison_transfer_reason',
+            ],
             filter: {
               'filter[has_relationship_to_allocation]': false,
               'filter[from_location_id]': mockFromLocationId,
@@ -212,6 +272,12 @@ describe('Single request service', function () {
           it('should call moves.getAll without status', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
               filter: {
                 'filter[has_relationship_to_allocation]': false,
                 'filter[move_type]': 'prison_transfer',
@@ -236,6 +302,12 @@ describe('Single request service', function () {
           it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
               filter: {
                 'filter[status]': 'proposed',
                 'filter[has_relationship_to_allocation]': false,
@@ -261,6 +333,12 @@ describe('Single request service', function () {
           it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
               filter: {
                 'filter[status]':
                   'requested,accepted,booked,in_transit,completed',
@@ -287,6 +365,12 @@ describe('Single request service', function () {
           it('should call moves.getAll with correct statuses', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
               filter: {
                 'filter[status]': 'cancelled',
                 'filter[has_relationship_to_allocation]': false,
@@ -313,6 +397,12 @@ describe('Single request service', function () {
           it('should call moves.getAll with correct filter', function () {
             expect(moveService.getAll).to.be.calledOnceWithExactly({
               isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
               filter: {
                 'filter[status]': 'other',
                 'filter[has_relationship_to_allocation]': false,
@@ -327,6 +417,67 @@ describe('Single request service', function () {
             expect(moves).to.deep.equal(mockMoves)
           })
         })
+      })
+    })
+  })
+
+  describe('#getDownload()', function () {
+    let moves
+
+    beforeEach(async function () {
+      sinon.stub(singleRequestService, 'getAll').resolves(mockMoves)
+    })
+
+    context('without arguments', function () {
+      beforeEach(async function () {
+        moves = await singleRequestService.getDownload()
+      })
+
+      it('should call getAll with include', function () {
+        expect(singleRequestService.getAll).to.be.calledOnceWithExactly({
+          include: [
+            'from_location',
+            'prison_transfer_reason',
+            'profile',
+            'profile.documents',
+            'profile.person',
+            'profile.person.ethnicity',
+            'profile.person.gender',
+            'to_location',
+          ],
+        })
+      })
+
+      it('should return moves', function () {
+        expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+
+    context('with arguments', function () {
+      beforeEach(async function () {
+        moves = await singleRequestService.getDownload({
+          foo: 'bar',
+        })
+      })
+
+      it('should call getAll with existing args and include', function () {
+        expect(singleRequestService.getAll).to.be.calledOnceWithExactly({
+          foo: 'bar',
+          include: [
+            'from_location',
+            'prison_transfer_reason',
+            'profile',
+            'profile.documents',
+            'profile.person',
+            'profile.person.ethnicity',
+            'profile.person.gender',
+            'to_location',
+          ],
+        })
+      })
+
+      it('should return moves', function () {
+        expect(moves).to.deep.equal(mockMoves)
       })
     })
   })
