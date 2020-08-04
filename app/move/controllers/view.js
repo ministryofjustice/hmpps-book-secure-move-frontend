@@ -66,7 +66,7 @@ module.exports = function view(req, res) {
     .map(
       presenters.frameworkSectionToPanelList({
         tagList: personEscortRecordTagList,
-        framework,
+        questions: framework.questions,
         personEscortRecord,
         personEscortRecordUrl,
       })
