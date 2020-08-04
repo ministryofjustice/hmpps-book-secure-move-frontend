@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.37.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.1...v2.37.2) (2020-08-04)
+
+
+### Bug Fixes
+
+* **framework:** Don't use session values in form steps ([69c21c5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/69c21c5c912af913a363706b0e0ec746913fc947))
+
 ### [2.37.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.0...v2.37.1) (2020-08-03)
 
 
