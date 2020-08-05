@@ -807,7 +807,7 @@ describe('Allocation service', function () {
           allocationService.getByDateAndLocation
         ).to.have.been.calledWithExactly({
           additionalParams: {},
-          include: ['from_location', 'moves', 'to_location'],
+          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
           status: 'custom',
         })
       })
@@ -825,7 +825,7 @@ describe('Allocation service', function () {
           allocationService.getByDateAndLocation
         ).to.have.been.calledWithExactly({
           additionalParams: {},
-          include: ['from_location', 'moves', 'to_location'],
+          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
           status: 'filled,unfilled',
         })
       })
@@ -846,7 +846,7 @@ describe('Allocation service', function () {
       ).to.have.been.calledWithExactly({
         additionalParams: {},
         includeCancelled: true,
-        include: ['from_location', 'moves', 'to_location'],
+        include: ['from_location', 'moves', 'moves.profile', 'to_location'],
         status: 'cancelled',
       })
     })

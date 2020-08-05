@@ -130,14 +130,14 @@ const allocationService = {
     return allocationService.getByDateAndLocation({
       ...args,
       status: args.status || 'filled,unfilled',
-      include: ['from_location', 'moves', 'to_location'],
+      include: ['from_location', 'moves', 'moves.profile', 'to_location'],
     })
   },
   getCancelled(args) {
     return allocationService.getByDateAndLocation({
       ...args,
       includeCancelled: true,
-      include: ['from_location', 'moves', 'to_location'],
+      include: ['from_location', 'moves', 'moves.profile', 'to_location'],
       status: 'cancelled',
     })
   },
