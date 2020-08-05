@@ -99,6 +99,9 @@
     },
     "documents": {
       "label": "Uploaded documents"
+    },
+    "time_due": {
+      "label": "Time due"
     }
   },
   "detail": {
