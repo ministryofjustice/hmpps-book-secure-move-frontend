@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.37.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.2...v2.37.3) (2020-08-05)
+
+
+### Bug Fixes
+
+* **allocations:** Add missing include to listing call ([d13cb32](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d13cb320b8693bbc150f85b4e246afbd1e146a05))
+
 ### [2.37.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.1...v2.37.2) (2020-08-04)
 
 
