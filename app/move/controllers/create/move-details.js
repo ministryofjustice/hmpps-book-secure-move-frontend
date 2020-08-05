@@ -18,6 +18,12 @@ class MoveDetailsController extends CreateBaseController {
     this.use(
       commonMiddleware.setLocationItems('police', 'to_location_police_transfer')
     )
+    this.use(
+      commonMiddleware.setLocationItems(
+        'high_security_hospital',
+        'to_location_hospital'
+      )
+    )
   }
 
   setMoveTypes(req, res, next) {

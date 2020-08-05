@@ -1,6 +1,7 @@
 const { cloneDeep } = require('lodash')
 
 const additionalInformation = require('./additional-information')
+const additionalInformationBase = require('./additional-information-base')
 const cancellationReason = require('./cancellation-reason')
 const cancellationReasonComment = require('./cancellation-reason-comment')
 const assessmentAnswer = require('./common.assessment-answer')
@@ -35,8 +36,10 @@ const prisonTransferType = require('./prison-transfer-type')
 const reviewFields = require('./review')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const specialVehicleCheck = require('./special-vehicle-check')
+const timeDue = require('./time-due')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
+const toLocationHospital = require('./to-location-hospital')
 const toLocationPoliceTransfer = require('./to-location-police-transfer')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
 
@@ -46,6 +49,7 @@ const cancelFields = {
 }
 
 const createFields = {
+  additional_information: additionalInformation,
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
   court_hearing__court_case: courtHearingCourtCase,
@@ -85,12 +89,12 @@ const createFields = {
   police_national_computer: policeNationalComputer,
   pregnant: assessmentAnswer(),
   prison_recall_comments: {
-    ...cloneDeep(additionalInformation),
+    ...cloneDeep(additionalInformationBase),
     skip: true,
   },
   prison_transfer_type: prisonTransferType,
   prison_transfer_comments: {
-    ...cloneDeep(additionalInformation),
+    ...cloneDeep(additionalInformationBase),
     name: 'prison_transfer_comments',
     id: 'prison_transfer_comments',
   },
@@ -102,13 +106,15 @@ const createFields = {
     isExplicit: true,
   }),
   should_save_court_hearings: shouldSaveCourtHearings,
+  time_due: timeDue,
   to_location: toLocation,
   to_location_court_appearance: toLocationCourtAppearance,
+  to_location_hospital: toLocationHospital,
   to_location_police_transfer: toLocationPoliceTransfer,
   to_location_prison_transfer: toLocationPrisonTransfer,
   wheelchair: assessmentAnswer(),
   video_remand_comments: {
-    ...cloneDeep(additionalInformation),
+    ...cloneDeep(additionalInformationBase),
     skip: true,
   },
   violent: assessmentAnswer(),

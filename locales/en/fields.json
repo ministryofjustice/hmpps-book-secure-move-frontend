@@ -73,6 +73,9 @@
       "police_transfer": {
         "label": "Police custody (In force moves only)"
       },
+      "hospital": {
+        "label": "Hospital"
+      },
       "video_remand": {
         "label": "Prison remand (Video Remand Hearing)"
       },
@@ -93,8 +96,18 @@
   "to_location_prison_transfer": {
     "label": "Name of prison"
   },
+  "to_location_hospital": {
+    "label": "Name of hospital"
+  },
   "additional_information": {
-    "label": "Additional information (optional)"
+    "label": "Additional information (optional)",
+    "hint": "",
+    "label_hospital": "Details of contact in hospital",
+    "hint_hospital": "Provide name and contact information",
+    "display": {
+      "label": "Additional information",
+      "label_hospital": "Details of contact in hospital"
+    }
   },
   "date_type": {
     "label": "Date",
@@ -118,7 +131,15 @@
     "label": "Date of travel"
   },
   "time_due": {
-    "label": "Time due"
+    "label": "Time due",
+    "label_hospital": "Time of appointment"
+  },
+  "time_due_hospital": {
+    "label": "Time of appointment"
+  },
+  "additional_information_hospital": {
+    "label": "Details of contact in hospital",
+    "hint": "Provide name and contact information"
   },
   "has_court_case": {
     "label": "Associated court case",
