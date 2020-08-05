@@ -20,6 +20,7 @@ const secureChildrensHomePermissions = [
   'move:view',
   'move:create',
   'move:create:court_appearance',
+  'move:create:hospital',
   'move:cancel',
   'move:update',
 ]
