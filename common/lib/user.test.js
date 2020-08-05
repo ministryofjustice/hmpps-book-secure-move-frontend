@@ -122,6 +122,7 @@ describe('User class', function () {
           'move:view',
           'move:create',
           'move:create:court_appearance',
+          'move:create:hospital',
           'move:create:prison_recall',
           'move:create:police_transfer',
           'move:create:video_remand',
