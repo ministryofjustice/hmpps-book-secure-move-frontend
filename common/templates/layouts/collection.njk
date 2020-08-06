@@ -6,19 +6,18 @@
   }) }}'});
 {% endblock %}
 
-{% if period === 'week' %}
-  {% set datetime = dateRange | formatISOWeek %}
-  {% set displayDate = dateRange | formatDateRangeAsRelativeWeek %}
-{% else %}
-  {% set datetime = dateRange | first %}
-  {% set displayDate = datetime | formatDateAsRelativeDay %}
-{% endif %}
-
 {% block pageTitle %}
-  {{ t("collections::page_title_with_date", {
-    context: context,
-    date: displayDate | lower
-  }) }}
+  {% if period === 'week' %}
+    {{ t("collections::page_title_with_date", {
+      context: context,
+      date: dateRange | formatDateRangeAsRelativeWeek
+    }) }}
+  {% else %}
+    {{ t("collections::page_title_with_date", {
+      context: context,
+      date: datetime | formatDateAsRelativeDay
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -26,16 +25,35 @@
   {% block pageHeader %}
     <header class="govuk-grid-row govuk-!-margin-bottom-7">
       <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+          <span class="govuk-caption-xl">
           {{ t("collections::subheading", {
             context: context
           }) }}
-        </span>
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-          {{ appTime({
-            datetime: datetime,
-            text: displayDate
-          }) }}
+          </span>
+
+          <span class="govuk-!-display-block">
+          {% if period === 'week' %}
+            {{ dateRange | formatDateRange }}
+            {% if displayRelativeDate %}
+              {{ appTime({
+                datetime: dateRange | formatISOWeek,
+                text: '(' + dateRange | formatDateRangeAsRelativeWeek | lower + ')',
+                classes: 'app-secondary-text-colour'
+                }) }}
+            {% endif %}
+          {% else %}
+            {% set datetime = dateRange | first %}
+            {{ datetime | formatDateWithDay }}
+            {% if displayRelativeDate %}
+              {{ appTime({
+                datetime: datetime,
+                text: '(' + datetime | formatDateAsRelativeDay(' ') | lower + ')',
+                classes: 'app-secondary-text-colour'
+                }) }}
+            {% endif %}
+          {% endif %}
+          </span>
         </h1>
 
         {% block dateNavigation %}

@@ -77,9 +77,15 @@ describe('Collection controllers', function () {
         expect(params.period).to.deep.equal(req.params.period)
       })
 
+      it('should contain displayRelativeDate property', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('displayRelativeDate')
+        expect(params.displayRelativeDate).to.equal(false)
+      })
+
       it('should contain correct number of properties', function () {
         const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(6)
+        expect(Object.keys(params)).to.have.length(7)
       })
     })
 
@@ -99,6 +105,7 @@ describe('Collection controllers', function () {
             }
             req.params = {
               locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
+              dateRange: ['2020-10-01', '2020-10-10'],
             }
             permissions.check.withArgs('move:view', ['move:view']).returns(true)
 

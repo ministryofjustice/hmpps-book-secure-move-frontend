@@ -1,3 +1,4 @@
+const { isToday, isTomorrow, isYesterday, isThisWeek } = require('date-fns')
 const { sumBy } = require('lodash')
 
 module.exports = function listAsTable(req, res) {
@@ -14,5 +15,11 @@ module.exports = function listAsTable(req, res) {
     resultsAsTable,
     activeStatus: req.query.status,
     totalResults: sumBy(filter, 'value'),
+    displayRelativeDate:
+      isToday(new Date(dateRange[0])) ||
+      isTomorrow(new Date(dateRange[0])) ||
+      isYesterday(new Date(dateRange[0])) ||
+      isThisWeek(new Date(dateRange[0])) ||
+      isThisWeek(new Date(dateRange[1])),
   })
 }
