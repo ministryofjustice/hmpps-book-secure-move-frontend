@@ -7,18 +7,16 @@ function _mapResponse(response) {
     value: isEmpty(response.value) ? undefined : response.value,
     valueType: response.value_type,
   })
+  const description = response.question?.description
 
   return {
     value: {
-      html: `
-        <h4 class="govuk-heading-s govuk-!-margin-0 govuk-!-font-size-16">${response.question.description}</h4>
-        ${responseHtml}
-      `,
+      html: `<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">${description}</h4>${responseHtml}`,
     },
   }
 }
 
-function frameworkResponsesToMetaListComponent(responses) {
+function frameworkResponsesToMetaListComponent(responses = []) {
   return {
     classes: 'app-meta-list--divider',
     items: responses.map(_mapResponse),
