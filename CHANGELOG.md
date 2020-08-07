@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.37.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.3...v2.37.4) (2020-08-07)
+
+
+### Bug Fixes
+
+* Remove circular dependency when loading routers ([d62766a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d62766aee9d46af93971330927bbe337a0c3c7ad))
+* **per:** Group responses correctly under flag summary ([8744cce](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8744cced774f8f711ac273b979c34d4f7dd265ca))
+
 ### [2.37.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.2...v2.37.3) (2020-08-05)
 
 
