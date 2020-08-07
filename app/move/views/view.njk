@@ -276,6 +276,10 @@
         {% include "move/views/_includes/court-information.njk" %}
       {% endif %}
 
+      {% if move.time_due or move.additional_information %}
+        {% include "move/views/_includes/additional-information.njk" %}
+      {% endif %}
+
       {% if move.from_location.can_upload_documents %}
         {% include "move/views/_includes/documents.njk" %}
       {% endif %}

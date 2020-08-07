@@ -99,14 +99,6 @@ function moveToMetaListComponent(
     },
     {
       key: {
-        text: i18n.t('fields::time_due.label'),
-      },
-      value: {
-        text: filters.formatTime(timeDue),
-      },
-    },
-    {
-      key: {
         text: i18n.t('fields::prison_transfer_type.label'),
       },
       value: {
