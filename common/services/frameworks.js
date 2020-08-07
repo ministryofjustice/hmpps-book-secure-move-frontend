@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
+const debug = require('debug')('app:frameworks')
 const { flatten, kebabCase, keyBy, set } = require('lodash')
 
 const { FRAMEWORKS: frameworksConfig } = require('../../config')
@@ -66,13 +67,15 @@ function importFiles(version, ...paths) {
     const error = new Error(
       `Version ${version} of the framework is not supported`
     )
-    error.code = 'MISSING_FRAMEWORK'
+    error.code = 'UNSUPPORTED_FRAMEWORK'
 
     throw error
   }
 }
 
 const frameworksService = {
+  cache: {},
+
   transformQuestion(
     key,
     { question, hint, options, validations = [], type, description } = {}
@@ -196,13 +199,39 @@ const frameworksService = {
   },
 
   getFramework({ framework = '', version = '' } = {}) {
+    if (!framework) {
+      const error = new Error('You must specify a framework name')
+      error.code = 'MISSING_FRAMEWORK'
+
+      throw error
+    }
+
+    if (!version) {
+      const error = new Error('You must specify a framework version')
+      error.code = 'MISSING_FRAMEWORK_VERSION'
+
+      throw error
+    }
+
+    const frameworkKey = `${framework}:v${version}`
     const sections = importFiles(version, framework, 'manifests')
     const questions = importFiles(version, framework, 'questions')
 
-    return {
+    if (frameworksService.cache[frameworkKey]) {
+      debug('Loading framework (CACHED):', frameworkKey)
+      return frameworksService.cache[frameworkKey]
+    }
+
+    const frameworkFromFiles = {
       sections: keyBy(sections, 'key'),
       questions: keyBy(questions, 'name'),
     }
+
+    frameworksService.cache[frameworkKey] = frameworkFromFiles
+
+    debug('Loading framework (UNCACHED):', frameworkKey)
+
+    return frameworkFromFiles
   },
 
   getPersonEscortRecord(version = frameworksConfig.CURRENT_VERSION) {

@@ -7,21 +7,26 @@ const markdown = require('../../config/markdown')
 
 const mockFrameworksFolder = '/dummy/framework/path'
 const mockFrameworksVersion = '2.5.3'
-const frameworksService = proxyquire('./frameworks', {
-  '../../config': {
-    FRAMEWORKS: {
-      CURRENT_VERSION: mockFrameworksVersion,
-    },
-  },
-  '../../config/paths': {
-    frameworks: {
-      output: mockFrameworksFolder,
-    },
-  },
-})
 
 describe('Services', function () {
   describe('Frameworks service', function () {
+    let frameworksService
+
+    beforeEach(function () {
+      frameworksService = proxyquire('./frameworks', {
+        '../../config': {
+          FRAMEWORKS: {
+            CURRENT_VERSION: mockFrameworksVersion,
+          },
+        },
+        '../../config/paths': {
+          frameworks: {
+            output: mockFrameworksFolder,
+          },
+        },
+      })
+    })
+
     describe('#transformQuestion', function () {
       beforeEach(function () {
         sinon.stub(markdown, 'render').returnsArg(0)
@@ -976,72 +981,59 @@ describe('Services', function () {
           mockFs.restore()
         })
 
-        context('without framework and version', function () {
-          beforeEach(function () {
-            const sectionsFolder = path.resolve(
-              mockFrameworksFolder,
-              'frameworks',
-              'manifests'
-            )
-            const questionsFolder = path.resolve(
-              mockFrameworksFolder,
-              'frameworks',
-              'questions'
-            )
-
-            mockFs({
-              [sectionsFolder]: {
-                'section-one': '{"key": "section-one"}',
-                'section-two': '{"key": "section-two"}',
-              },
-              [questionsFolder]: {
-                'question-one': '{"name": "question-one"}',
-                'question-two': '{"name": "question-two"}',
-              },
-            })
-
-            framework = frameworksService.getFramework()
+        context('without framework', function () {
+          it('should throw an error', function () {
+            expect(() => frameworksService.getFramework({ version: '0.1.0' }))
+              .to.throw(Error, 'You must specify a framework name')
+              .with.property('code', 'MISSING_FRAMEWORK')
           })
+        })
 
-          it('should return the framework', function () {
-            expect(framework).to.deep.equal({
-              sections: {
-                'section-one': {
-                  key: 'section-one',
-                },
-                'section-two': {
-                  key: 'section-two',
-                },
-              },
-              questions: {
-                'question-one': {
-                  name: 'question-one',
-                },
-                'question-two': {
-                  name: 'question-two',
-                },
-              },
-            })
+        context('without framework version', function () {
+          it('should throw an error', function () {
+            expect(() =>
+              frameworksService.getFramework({ framework: 'framework-name' })
+            )
+              .to.throw(Error, 'You must specify a framework version')
+              .with.property('code', 'MISSING_FRAMEWORK_VERSION')
           })
         })
 
         context('with framework and version', function () {
-          const mockFramework = 'framework-name'
+          const mockFrameworkName = 'framework-name'
           const mockVersion = '2.0.1'
+          const expectedOutput = {
+            sections: {
+              'section-one': {
+                key: 'section-one',
+              },
+              'section-two': {
+                key: 'section-two',
+              },
+            },
+            questions: {
+              'question-one': {
+                name: 'question-one',
+              },
+              'question-two': {
+                name: 'question-two',
+              },
+            },
+          }
 
           beforeEach(function () {
             const sectionsFolder = path.resolve(
               mockFrameworksFolder,
               mockVersion,
               'frameworks',
-              mockFramework,
+              mockFrameworkName,
               'manifests'
             )
             const questionsFolder = path.resolve(
               mockFrameworksFolder,
               mockVersion,
               'frameworks',
-              mockFramework,
+              mockFrameworkName,
               'questions'
             )
 
@@ -1057,29 +1049,31 @@ describe('Services', function () {
             })
 
             framework = frameworksService.getFramework({
-              framework: mockFramework,
+              framework: mockFrameworkName,
               version: mockVersion,
             })
           })
 
-          it('should return the framework', function () {
-            expect(framework).to.deep.equal({
-              sections: {
-                'section-one': {
-                  key: 'section-one',
-                },
-                'section-two': {
-                  key: 'section-two',
-                },
-              },
-              questions: {
-                'question-one': {
-                  name: 'question-one',
-                },
-                'question-two': {
-                  name: 'question-two',
-                },
-              },
+          describe('on first call', function () {
+            it('should return the framework from files', function () {
+              expect(framework).to.deep.equal(expectedOutput)
+            })
+          })
+
+          describe('on subsequent call', function () {
+            it('should have set framework to cache', function () {
+              expect(frameworksService.cache).to.deep.equal({
+                'framework-name:v2.0.1': expectedOutput,
+              })
+            })
+
+            it('should return the framework from cache', function () {
+              framework = frameworksService.getFramework({
+                framework: mockFrameworkName,
+                version: mockVersion,
+              })
+
+              expect(framework).to.deep.equal(expectedOutput)
             })
           })
         })
@@ -1087,9 +1081,14 @@ describe('Services', function () {
 
       context('without files', function () {
         it('should throw an error', function () {
-          expect(() => frameworksService.getFramework({ version: '0.1.0' }))
+          expect(() =>
+            frameworksService.getFramework({
+              framework: 'framework-name',
+              version: '0.1.0',
+            })
+          )
             .to.throw(Error, 'Version 0.1.0 of the framework is not supported')
-            .with.property('code', 'MISSING_FRAMEWORK')
+            .with.property('code', 'UNSUPPORTED_FRAMEWORK')
         })
       })
     })
