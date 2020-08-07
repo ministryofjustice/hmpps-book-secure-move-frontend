@@ -159,7 +159,7 @@ function translateField([key, field]) {
     const key = get(translated, path)
 
     if (key) {
-      set(translated, path, i18n.t(key))
+      set(translated, path, i18n.t(key, { context: field.context }))
     }
   })
 
