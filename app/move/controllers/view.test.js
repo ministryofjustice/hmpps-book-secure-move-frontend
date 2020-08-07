@@ -19,9 +19,6 @@ const pathStubs = {
   '../steps/update': updateSteps,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
-  '../../../common/services/frameworks': {
-    getPersonEscortRecord: () => frameworkStub,
-  },
 }
 const controller = proxyquire('./view', pathStubs)
 
@@ -169,7 +166,7 @@ describe('Move controllers', function () {
           presenters.frameworkToTaskListComponent
         ).to.be.calledOnceWithExactly({
           baseUrl: `${mockOriginalUrl}/person-escort-record/`,
-          frameworkSections: frameworkStub.sections,
+          frameworkSections: undefined,
           sectionProgress: undefined,
         })
       })
@@ -534,6 +531,7 @@ describe('Move controllers', function () {
             person_escort_record: mockPersonEscortRecord,
           },
         }
+        req.framework = frameworkStub
       })
 
       context('when record is not_started', function () {

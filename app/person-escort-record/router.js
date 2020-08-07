@@ -1,53 +1,40 @@
-const router = require('express').Router()
 const wizard = require('hmpo-form-wizard')
 
-const {
-  FrameworkSectionController,
-  FrameworkStepController,
-} = require('./controllers')
-const middleware = require('./middleware')
+const FrameworkSectionController = require('./controllers/framework-section')
+const FrameworkStepController = require('./controllers/framework-step')
 
-function defineFormWizards(framework) {
-  const { questions, sections } = framework
-
-  for (const sectionKey in sections) {
-    const section = sections[sectionKey]
-    const firstStep = Object.values(section.steps)[0]
-    const wizardConfig = {
-      controller: FrameworkStepController,
-      entryPoint: true,
-      journeyName: `person-escort-record-${sectionKey}`,
-      journeyPageTitle: 'Person escort record',
-      name: `person-escort-record-${sectionKey}`,
-      template: 'framework-step',
-      templatePath: 'person-escort-record/views/',
-    }
-    const steps = {
-      '/': {
-        next: firstStep.slug,
-        reset: true,
-        resetJourney: true,
-        skip: true,
-      },
-      ...section.steps,
-      '/overview': {
-        controller: FrameworkSectionController,
-        reset: true,
-        resetJourney: true,
-        template: 'framework-section',
-      },
-    }
-
-    router.use(
-      `/${sectionKey}`,
-      middleware.setFrameworkSection(section),
-      wizard(steps, questions, wizardConfig)
-    )
+function defineFormWizard(req, res, next) {
+  const { key, steps } = req.frameworkSection
+  const firstStep = Object.values(steps)[0]
+  const wizardFields = req.framework.questions
+  const wizardSteps = {
+    '/': {
+      next: firstStep.slug,
+      reset: true,
+      resetJourney: true,
+      skip: true,
+    },
+    ...steps,
+    '/overview': {
+      controller: FrameworkSectionController,
+      reset: true,
+      resetJourney: true,
+      template: 'framework-section',
+    },
+  }
+  const wizardConfig = {
+    controller: FrameworkStepController,
+    entryPoint: true,
+    journeyName: `person-escort-record-${key}`,
+    journeyPageTitle: 'Person escort record',
+    name: `person-escort-record-${key}`,
+    template: 'framework-step',
+    templatePath: 'person-escort-record/views/',
   }
 
-  return router
+  return wizard(wizardSteps, wizardFields, wizardConfig)(req, res, next)
 }
 
 module.exports = {
-  defineFormWizards,
+  defineFormWizard,
 }

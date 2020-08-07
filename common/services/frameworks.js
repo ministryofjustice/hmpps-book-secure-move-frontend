@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
+const debug = require('debug')('app:frameworks')
 const { flatten, kebabCase, keyBy, set } = require('lodash')
 
 const { FRAMEWORKS: frameworksConfig } = require('../../config')
@@ -47,7 +48,14 @@ function buildCommentField(
   return field
 }
 
-function importFiles(folderPath) {
+function importFiles(version, ...paths) {
+  const folderPath = path.resolve(
+    frameworks.output,
+    version,
+    'frameworks',
+    ...paths
+  )
+
   try {
     return fs.readdirSync(folderPath).map(filename => {
       const filepath = path.resolve(folderPath, filename)
@@ -56,14 +64,18 @@ function importFiles(folderPath) {
       return JSON.parse(contents)
     })
   } catch (e) {
-    const error = new Error('This version of the framework is not supported')
-    error.code = 'MISSING_FRAMEWORK'
+    const error = new Error(
+      `Version ${version} of the framework is not supported`
+    )
+    error.code = 'UNSUPPORTED_FRAMEWORK'
 
     throw error
   }
 }
 
 const frameworksService = {
+  cache: {},
+
   transformQuestion(
     key,
     { question, hint, options, validations = [], type, description } = {}
@@ -187,27 +199,39 @@ const frameworksService = {
   },
 
   getFramework({ framework = '', version = '' } = {}) {
-    const sectionsFolder = path.resolve(
-      frameworks.output,
-      version,
-      'frameworks',
-      framework,
-      'manifests'
-    )
-    const questionsFolder = path.resolve(
-      frameworks.output,
-      version,
-      'frameworks',
-      framework,
-      'questions'
-    )
-    const sections = importFiles(sectionsFolder)
-    const questions = importFiles(questionsFolder)
+    if (!framework) {
+      const error = new Error('You must specify a framework name')
+      error.code = 'MISSING_FRAMEWORK'
 
-    return {
+      throw error
+    }
+
+    if (!version) {
+      const error = new Error('You must specify a framework version')
+      error.code = 'MISSING_FRAMEWORK_VERSION'
+
+      throw error
+    }
+
+    const frameworkKey = `${framework}:v${version}`
+    const sections = importFiles(version, framework, 'manifests')
+    const questions = importFiles(version, framework, 'questions')
+
+    if (frameworksService.cache[frameworkKey]) {
+      debug('Loading framework (CACHED):', frameworkKey)
+      return frameworksService.cache[frameworkKey]
+    }
+
+    const frameworkFromFiles = {
       sections: keyBy(sections, 'key'),
       questions: keyBy(questions, 'name'),
     }
+
+    frameworksService.cache[frameworkKey] = frameworkFromFiles
+
+    debug('Loading framework (UNCACHED):', frameworkKey)
+
+    return frameworkFromFiles
   },
 
   getPersonEscortRecord(version = frameworksConfig.CURRENT_VERSION) {

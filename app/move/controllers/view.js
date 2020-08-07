@@ -2,17 +2,14 @@ const { isEmpty, find, sortBy } = require('lodash')
 
 const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
-const frameworksService = require('../../../common/services/frameworks')
 const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
-const framework = frameworksService.getPersonEscortRecord()
-
 module.exports = function view(req, res) {
-  const { move, originalUrl } = req
+  const { move, originalUrl, framework = {} } = req
   const {
     profile,
     status,
