@@ -39,5 +39,5 @@
     "heading": "We could not process the request",
     "content": "Try again in a few moments."
   },
-  "nomis_status_message": "The problem may be related to NOMIS being unavailable."
+  "nomis_status_message": "The problem may be related to NOMIS being unavailable. NOMIS is scheduled to be offline between 6pm and 9pm on Saturday 8th August."
 }
