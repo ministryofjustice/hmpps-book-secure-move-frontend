@@ -5,6 +5,7 @@ const policePermissions = [
   'move:view',
   'move:create',
   'move:create:court_appearance',
+  'move:create:hospital',
   'move:create:prison_recall',
   'move:create:police_transfer',
   'move:create:video_remand',
@@ -19,6 +20,7 @@ const secureChildrensHomePermissions = [
   'move:view',
   'move:create',
   'move:create:court_appearance',
+  'move:create:hospital',
   'move:cancel',
   'move:update',
 ]
@@ -29,6 +31,7 @@ const secureTrainingCentrePermissions = [
   'move:view',
   'move:create',
   'move:create:court_appearance',
+  'move:create:hospital',
   'move:cancel',
   'move:update',
 ]
@@ -47,6 +50,7 @@ const prisonPermissions = [
   'move:view',
   'move:create',
   'move:create:court_appearance',
+  'move:create:hospital',
   'move:cancel',
 ]
 const ocaPermissions = [

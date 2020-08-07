@@ -2,6 +2,7 @@ const {
   Assessment,
   Court,
   Document,
+  Hospital,
   MoveDate,
   MoveDetails,
   PersonalDetails,
@@ -58,6 +59,17 @@ const updateSteps = [
         ...createSteps['/court-information'],
         ...updateStepPropOverrides,
         controller: Court,
+      },
+    },
+  },
+  {
+    key: 'hospital',
+    permission: 'move:update',
+    steps: {
+      '/hospital': {
+        ...createSteps['/hospital'],
+        ...updateStepPropOverrides,
+        controller: Hospital,
       },
     },
   },

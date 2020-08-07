@@ -8,6 +8,7 @@ class FormController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setupConditionalFields)
+    this.use(this.setFieldContext)
   }
 
   setupConditionalFields(req, res, next) {
@@ -25,6 +26,14 @@ class FormController extends Controller {
       ...fromPairs(stepFields),
       ...dependentFields,
     }
+
+    next()
+  }
+
+  setFieldContext(req, res, next) {
+    Object.keys(req.form.options.fields).forEach(fieldKey => {
+      req.form.options.fields[fieldKey].context = req.form.options.key
+    })
 
     next()
   }

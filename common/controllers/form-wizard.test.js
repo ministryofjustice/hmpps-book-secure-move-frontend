@@ -20,14 +20,20 @@ describe('Form wizard', function () {
       expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
     })
 
-    it('should call set previous assessment method', function () {
+    it('should call set conditional fields method', function () {
       expect(controller.use.firstCall).to.have.been.calledWithExactly(
         controller.setupConditionalFields
       )
     })
 
+    it('should call set field context method', function () {
+      expect(controller.use.secondCall).to.have.been.calledWithExactly(
+        controller.setFieldContext
+      )
+    })
+
     it('should call correct number of middleware', function () {
-      expect(controller.use).to.be.callCount(1)
+      expect(controller.use).to.be.callCount(2)
     })
   })
 
@@ -90,6 +96,48 @@ describe('Form wizard', function () {
         },
         dependentField: {
           name: 'dependent-field',
+        },
+      })
+    })
+
+    it('should call next without error', function () {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+  })
+
+  describe('#setFieldContext()', function () {
+    let mockReq, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockReq = {
+        form: {
+          options: {
+            key: 'foo',
+            fields: {
+              fizz: {
+                name: 'fizz',
+              },
+              buzz: {
+                name: 'buzz',
+              },
+            },
+          },
+        },
+      }
+
+      controller.setFieldContext(mockReq, {}, nextSpy)
+    })
+
+    it('should set fields correctly', function () {
+      expect(mockReq.form.options.fields).to.deep.equal({
+        fizz: {
+          name: 'fizz',
+          context: 'foo',
+        },
+        buzz: {
+          name: 'buzz',
+          context: 'foo',
         },
       })
     })

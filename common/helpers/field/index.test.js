@@ -571,38 +571,42 @@ describe('Form helpers', function () {
         },
       }
 
-      Object.entries(scenarios).forEach(function ([path, properties]) {
-        describe(path, function () {
-          let field, response
+      const fieldContexts = [undefined, 'foo']
+      fieldContexts.forEach(fieldContext => {
+        Object.entries(scenarios).forEach(function ([path, properties]) {
+          describe(path, function () {
+            let field, response
+            const fieldProperties = {
+              ...defaultProperties,
+              ...cloneDeep(properties),
+              context: fieldContext,
+            }
 
-          beforeEach(function () {
-            field = [
-              'field',
-              { ...defaultProperties, ...cloneDeep(properties) },
-            ]
+            beforeEach(function () {
+              field = ['field', fieldProperties]
 
-            response = translateField(field)
-          })
+              response = translateField(field)
+            })
 
-          it('should call translation with correct value', function () {
-            expect(i18n.t).to.be.calledOnceWithExactly(path)
-          })
+            it('should call translation with correct value', function () {
+              expect(i18n.t).to.be.calledOnceWithExactly(path, {
+                context: fieldContext,
+              })
+            })
 
-          it('should return translated field', function () {
-            const translated = cloneDeep(properties)
-            set(translated, path, '__translated__')
+            it('should return translated field', function () {
+              const translated = cloneDeep(fieldProperties)
+              set(translated, path, '__translated__')
 
-            expect(response).to.deep.equal([
-              'field',
-              { ...defaultProperties, ...translated },
-            ])
-          })
+              expect(response).to.deep.equal([
+                'field',
+                { ...fieldProperties, ...translated },
+              ])
+            })
 
-          it('should not mutate original field', function () {
-            expect(field).to.deep.equal([
-              'field',
-              { ...defaultProperties, ...cloneDeep(properties) },
-            ])
+            it('should not mutate original field', function () {
+              expect(field).to.deep.equal(['field', fieldProperties])
+            })
           })
         })
       })

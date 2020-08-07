@@ -13,6 +13,7 @@ const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkSectionToPanelList = require('./framework-section-to-panel-list')
 const frameworkStepToSummary = require('./framework-step-to-summary')
 const frameworkToTaskListComponent = require('./framework-to-task-list-component')
+const moveToAdditionalInfoListComponent = require('./move-to-additional-info-list-component')
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
@@ -44,6 +45,7 @@ module.exports = {
   moveToCardComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
+  moveToAdditionalInfoListComponent,
   profileToCardComponent,
   personToSummaryListComponent,
   movesByLocation,

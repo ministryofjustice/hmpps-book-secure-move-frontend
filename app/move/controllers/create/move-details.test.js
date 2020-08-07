@@ -48,8 +48,14 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call setLocationItems middleware', function () {
+        expect(controller.use.getCall(4)).to.have.been.calledWith(
+          commonMiddleware.setLocationItems()
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(4)
+        expect(controller.use.callCount).to.equal(5)
       })
     })
 
@@ -77,6 +83,10 @@ describe('Move controllers', function () {
                       conditional: 'to_location_police_transfer',
                     },
                     {
+                      value: 'hospital',
+                      conditional: 'to_location_hospital',
+                    },
+                    {
                       value: 'prison_recall',
                       conditional: 'additional_information',
                     },
@@ -89,6 +99,7 @@ describe('Move controllers', function () {
                 to_location_court_appearance: {},
                 to_location_police_transfer: {},
                 to_location_prison_transfer: {},
+                to_location_hospital: {},
                 additional_information: {},
                 unrelated_field: {},
               },
@@ -125,6 +136,7 @@ describe('Move controllers', function () {
               'move:create:court_appearance',
               'move:create:prison_transfer',
               'move:create:police_transfer',
+              'move:create:hospital',
               'move:create:prison_recall',
               'move:create:video_remand',
             ],
@@ -133,7 +145,7 @@ describe('Move controllers', function () {
         })
 
         it('should not remove any items from move_type', function () {
-          expect(req.form.options.fields.move_type.items.length).to.equal(5)
+          expect(req.form.options.fields.move_type.items.length).to.equal(6)
         })
 
         it('should keep all conditional fields', function () {
@@ -153,6 +165,10 @@ describe('Move controllers', function () {
                   conditional: 'to_location_police_transfer',
                 },
                 {
+                  value: 'hospital',
+                  conditional: 'to_location_hospital',
+                },
+                {
                   value: 'prison_recall',
                   conditional: 'additional_information',
                 },
@@ -165,6 +181,7 @@ describe('Move controllers', function () {
             to_location_court_appearance: {},
             to_location_prison_transfer: {},
             to_location_police_transfer: {},
+            to_location_hospital: {},
             additional_information: {},
             unrelated_field: {},
           })
@@ -296,6 +313,30 @@ describe('Move controllers', function () {
             move_type: 'police_transfer',
             to_location: '',
             to_location_police_transfer: '67890',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function () {
+          expect(req.form.values.to_location).to.equal('67890')
+        })
+
+        it('should not set additional_information', function () {
+          expect(req.form.values.additional_information).to.be.undefined
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when location type is hospital', function () {
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'hospital',
+            to_location: '',
+            to_location_hospital: '67890',
           }
 
           controller.process(req, {}, nextSpy)

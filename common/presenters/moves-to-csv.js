@@ -169,7 +169,21 @@ const documents = [
   },
 ]
 
-module.exports = function movesToCSV(moves) {
+const additional = [
+  {
+    label: 'moves::download.time_due.label',
+    value: 'time_due',
+  },
+]
+
+module.exports = function movesToCSV(moves = []) {
+  const csvMoves = moves.map(move => {
+    if (move.move_type !== 'hospital') {
+      delete move.time_due
+    }
+
+    return move
+  })
   return referenceDataService.getAssessmentQuestions().then(questions => {
     const assessmentAnswers = questions.map(mapAnswer)
     const fields = flatten([
@@ -177,11 +191,12 @@ module.exports = function movesToCSV(moves) {
       ...person,
       ...assessmentAnswers,
       ...documents,
+      ...additional,
     ])
       .map(translateField)
       .map(stripTags)
 
-    return json2csv.parse(moves, {
+    return json2csv.parse(csvMoves, {
       fields,
     })
   })

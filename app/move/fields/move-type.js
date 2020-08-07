@@ -21,6 +21,11 @@ const moveType = {
       conditional: 'to_location_prison_transfer',
     },
     {
+      value: 'hospital',
+      text: 'fields::move_type.items.hospital.label',
+      conditional: 'to_location_hospital',
+    },
+    {
       value: 'prison_recall',
       text: 'fields::move_type.items.prison_recall.label',
       conditional: 'prison_recall_comments',

@@ -2,6 +2,7 @@ const Assessment = require('./assessment')
 const Base = require('./base')
 const CourtHearings = require('./court-hearings')
 const Document = require('./document')
+const Hospital = require('./hospital')
 const MoveDate = require('./move-date')
 const MoveDetails = require('./move-details')
 const Person = require('./person')
@@ -17,6 +18,7 @@ module.exports = {
   Base,
   CourtHearings,
   Document,
+  Hospital,
   MoveDate,
   MoveDetails,
   PersonSearchResults,

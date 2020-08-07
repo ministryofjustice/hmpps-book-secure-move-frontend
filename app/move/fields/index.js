@@ -31,14 +31,19 @@ const moveType = require('./move-type')
 const people = require('./people')
 const policeNationalComputer = require('./police-national-computer')
 const policeNationalComputerUpdate = require('./police-national-computer.update')
+const prisonRecallComments = require('./prison-recall-comments')
+const prisonTransferComments = require('./prison-transfer-comments')
 const prisonTransferType = require('./prison-transfer-type')
 const reviewFields = require('./review')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const specialVehicleCheck = require('./special-vehicle-check')
+const timeDue = require('./time-due')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
+const toLocationHospital = require('./to-location-hospital')
 const toLocationPoliceTransfer = require('./to-location-police-transfer')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
+const videoRemandComments = require('./video-remand-comments')
 
 const cancelFields = {
   cancellation_reason: cancellationReason,
@@ -46,6 +51,7 @@ const cancelFields = {
 }
 
 const createFields = {
+  additional_information: additionalInformation,
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
   court_hearing__court_case: courtHearingCourtCase,
@@ -84,16 +90,9 @@ const createFields = {
   people,
   police_national_computer: policeNationalComputer,
   pregnant: assessmentAnswer(),
-  prison_recall_comments: {
-    ...cloneDeep(additionalInformation),
-    skip: true,
-  },
+  prison_recall_comments: prisonRecallComments,
   prison_transfer_type: prisonTransferType,
-  prison_transfer_comments: {
-    ...cloneDeep(additionalInformation),
-    name: 'prison_transfer_comments',
-    id: 'prison_transfer_comments',
-  },
+  prison_transfer_comments: prisonTransferComments,
   self_harm: assessmentAnswer(),
   solicitor: assessmentAnswer(),
   special_diet_or_allergy: assessmentAnswer(),
@@ -102,15 +101,14 @@ const createFields = {
     isExplicit: true,
   }),
   should_save_court_hearings: shouldSaveCourtHearings,
+  time_due: timeDue,
   to_location: toLocation,
   to_location_court_appearance: toLocationCourtAppearance,
+  to_location_hospital: toLocationHospital,
   to_location_police_transfer: toLocationPoliceTransfer,
   to_location_prison_transfer: toLocationPrisonTransfer,
   wheelchair: assessmentAnswer(),
-  video_remand_comments: {
-    ...cloneDeep(additionalInformation),
-    skip: true,
-  },
+  video_remand_comments: videoRemandComments,
   violent: assessmentAnswer(),
 }
 

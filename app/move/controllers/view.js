@@ -92,6 +92,7 @@ module.exports = function view(req, res) {
     assessmentSections,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
+    additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),
     tagList: presenters.assessmentToTagList(assessmentAnswers),
     canCancelMove:
       (userPermissions.includes('move:cancel') &&

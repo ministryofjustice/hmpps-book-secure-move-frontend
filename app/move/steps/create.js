@@ -2,6 +2,7 @@ const {
   Assessment,
   CourtHearings,
   Document,
+  Hospital,
   MoveDate,
   MoveDetails,
   PersonSearch,
@@ -121,6 +122,11 @@ module.exports = {
     next: [
       {
         field: 'move_type',
+        value: 'hospital',
+        next: 'hospital',
+      },
+      {
+        field: 'move_type',
         value: 'court_appearance',
         next: [
           {
@@ -178,6 +184,7 @@ module.exports = {
       'move_type',
       'to_location',
       'to_location_court_appearance',
+      'to_location_hospital',
       'to_location_prison_transfer',
       'to_location_police_transfer',
       'prison_recall_comments',
@@ -228,6 +235,20 @@ module.exports = {
     next: 'release-status',
     template: 'timetable',
     fields: ['should_save_court_hearings'],
+  },
+  '/hospital': {
+    key: 'hospital',
+    controller: Hospital,
+    pageTitle: 'moves::steps.hospital_appointment.heading',
+    next: [
+      {
+        field: 'from_location_type',
+        value: 'prison',
+        next: 'release-status',
+      },
+      'risk-information',
+    ],
+    fields: ['time_due', 'additional_information'],
   },
   '/risk-information': {
     ...riskStep,

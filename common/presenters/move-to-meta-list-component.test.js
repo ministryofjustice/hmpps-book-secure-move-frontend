@@ -35,7 +35,7 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should contain items list', function () {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(8)
+          expect(transformedResponse.items.length).to.equal(7)
         })
 
         it('should contain from location as first item', function () {
@@ -91,17 +91,8 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain time due as sixth item', function () {
+        it('should contain transfer type as sixth item', function () {
           const item = transformedResponse.items[5]
-
-          expect(item).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: '2pm' },
-          })
-        })
-
-        it('should contain transfer type as seventh item', function () {
-          const item = transformedResponse.items[6]
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
@@ -109,8 +100,8 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain agreement status as eigth item', function () {
-          const item = transformedResponse.items[7]
+        it('should contain agreement status as seventh item', function () {
+          const item = transformedResponse.items[6]
 
           expect(item).to.deep.equal({
             key: { text: '__translated__' },
@@ -144,10 +135,6 @@ describe('Presenters', function () {
           expect(i18n.t).to.be.calledWithExactly('fields::date_to.label')
         })
 
-        it('should translate time due label', function () {
-          expect(i18n.t).to.be.calledWithExactly('fields::time_due.label')
-        })
-
         it('should translate prison transfer type label', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'fields::prison_transfer_type.label'
@@ -159,7 +146,7 @@ describe('Presenters', function () {
         })
 
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(10)
+          expect(i18n.t).to.be.callCount(9)
         })
       })
     })
@@ -455,7 +442,7 @@ describe('Presenters', function () {
         })
 
         it('should add additional information to transfer reason', function () {
-          expect(transformedResponse.items[6]).to.deep.equal({
+          expect(transformedResponse.items[5]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
               text: `${mockPrisonTransferReason} — ${mockAdditionalInformation}`,
@@ -483,7 +470,7 @@ describe('Presenters', function () {
         })
 
         it('should not add additional information to transfer reason', function () {
-          expect(transformedResponse.items[6]).to.deep.equal({
+          expect(transformedResponse.items[5]).to.deep.equal({
             key: { text: '__translated__' },
             value: {
               text: undefined,
@@ -510,7 +497,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.agreed',
@@ -539,7 +526,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.agreed',
@@ -569,7 +556,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.not_agreed',
@@ -598,7 +585,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.not_agreed',
@@ -628,7 +615,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.agreed',
@@ -657,7 +644,7 @@ describe('Presenters', function () {
           })
 
           it('should set move agreed item', function () {
-            expect(transformedResponse.items[7]).to.deep.equal({
+            expect(transformedResponse.items[6]).to.deep.equal({
               key: { text: 'fields::move_agreed.label' },
               value: {
                 text: 'moves::detail.agreement_status.agreed',

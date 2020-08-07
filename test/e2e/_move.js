@@ -374,6 +374,7 @@ export async function checkUpdateMoveDetails() {
       court_appearance: updateMovePage.fields.courtLocation,
       prison_transfer: updateMovePage.fields.prisonLocation,
       police_transfer: updateMovePage.fields.policeLocation,
+      hospital: updateMovePage.fields.hospitalLocation,
     }
     const selector =
       locationSelectors[moveType] || Selector(`#to_location_${moveType}`)

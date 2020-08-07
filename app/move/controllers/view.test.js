@@ -151,7 +151,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(21)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(22)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
