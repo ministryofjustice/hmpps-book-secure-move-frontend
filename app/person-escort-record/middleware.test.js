@@ -1,3 +1,4 @@
+const frameworksService = require('../../common/services/frameworks')
 const personEscortRecordService = require('../../common/services/person-escort-record')
 
 const middleware = require('./middleware')
@@ -14,31 +15,72 @@ describe('Person escort record middleware', function () {
       mockReq = {
         params: {},
       }
+      sinon.stub(frameworksService, 'getPersonEscortRecord')
     })
 
-    context('without framework', function () {
+    context('without Person Escort Record', function () {
       beforeEach(function () {
-        middleware.setFramework()(mockReq, mockRes, nextSpy)
+        middleware.setFramework(mockReq, mockRes, nextSpy)
       })
 
       it('should not set framework on request', function () {
         expect(mockReq.framework).to.be.undefined
       })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.called.calledOnceWithExactly()
+      })
     })
 
-    context('without current location', function () {
-      const mockFramework = {
-        sections: {
-          one: 'bar',
-        },
-      }
-
+    context('with Person Escort Record', function () {
       beforeEach(function () {
-        middleware.setFramework(mockFramework)(mockReq, mockRes, nextSpy)
+        mockReq.personEscortRecord = {
+          version: '1.0.1',
+        }
       })
 
-      it('should set framework on request', function () {
-        expect(mockReq.framework).to.deep.equal(mockFramework)
+      context('without framework', function () {
+        const mockError = new Error('No framework')
+
+        beforeEach(function () {
+          frameworksService.getPersonEscortRecord.throws(mockError)
+          middleware.setFramework(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not set framework on request', function () {
+          expect(mockReq.framework).to.be.undefined
+        })
+
+        it('calls next with error', function () {
+          expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
+        })
+      })
+
+      context('with framework', function () {
+        const mockFramework = {
+          sections: {
+            one: 'bar',
+          },
+        }
+
+        beforeEach(function () {
+          frameworksService.getPersonEscortRecord.returns(mockFramework)
+          middleware.setFramework(mockReq, mockRes, nextSpy)
+        })
+
+        it('should ask for correct version', function () {
+          expect(
+            frameworksService.getPersonEscortRecord
+          ).to.be.calledOnceWithExactly('1.0.1')
+        })
+
+        it('should set framework on request', function () {
+          expect(mockReq.framework).to.deep.equal(mockFramework)
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.called.calledOnceWithExactly()
+        })
       })
     })
   })
@@ -56,27 +98,69 @@ describe('Person escort record middleware', function () {
 
     context('without framework', function () {
       beforeEach(function () {
-        middleware.setFrameworkSection()(mockReq, mockRes, nextSpy)
+        middleware.setFrameworkSection(mockReq, mockRes, nextSpy)
       })
 
       it('should not set framework on request', function () {
         expect(mockReq.frameworkSection).to.be.undefined
       })
+
+      it('should call next with 404 error', function () {
+        const error = nextSpy.args[0][0]
+
+        expect(nextSpy).to.be.calledOnce
+
+        expect(error).to.be.an('error')
+        expect(error.message).to.equal('Framework section not found')
+        expect(error.statusCode).to.equal(404)
+      })
     })
 
-    context('without current location', function () {
-      const mockFramework = {
-        sections: {
-          one: 'bar',
-        },
-      }
-
+    context('with framework', function () {
       beforeEach(function () {
-        middleware.setFrameworkSection(mockFramework)(mockReq, mockRes, nextSpy)
+        mockReq.framework = {
+          sections: {
+            foo: {
+              name: 'bar',
+            },
+          },
+        }
       })
 
-      it('should set framework on request', function () {
-        expect(mockReq.frameworkSection).to.deep.equal(mockFramework)
+      context('with section', function () {
+        beforeEach(function () {
+          middleware.setFrameworkSection(mockReq, mockRes, nextSpy, 'foo')
+        })
+
+        it('should set framework on request', function () {
+          expect(mockReq.frameworkSection).to.deep.equal({
+            name: 'bar',
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.called.calledOnceWithExactly()
+        })
+      })
+
+      context('without section', function () {
+        beforeEach(function () {
+          middleware.setFrameworkSection(mockReq, mockRes, nextSpy, 'bar')
+        })
+
+        it('should not set framework on request', function () {
+          expect(mockReq.frameworkSection).to.be.undefined
+        })
+
+        it('should call next with 404 error', function () {
+          const error = nextSpy.args[0][0]
+
+          expect(nextSpy).to.be.calledOnce
+
+          expect(error).to.be.an('error')
+          expect(error.message).to.equal('Framework section not found')
+          expect(error.statusCode).to.equal(404)
+        })
       })
     })
   })

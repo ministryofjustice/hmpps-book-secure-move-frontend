@@ -6,7 +6,7 @@ const mockFrameworkResponse = {
   id: '12345',
 }
 
-describe('Presenters', function () {
+describe('Services', function () {
   describe('Framework Response Service', function () {
     describe('#update()', function () {
       const mockResponse = {

@@ -47,7 +47,14 @@ function buildCommentField(
   return field
 }
 
-function importFiles(folderPath) {
+function importFiles(version, ...paths) {
+  const folderPath = path.resolve(
+    frameworks.output,
+    version,
+    'frameworks',
+    ...paths
+  )
+
   try {
     return fs.readdirSync(folderPath).map(filename => {
       const filepath = path.resolve(folderPath, filename)
@@ -56,7 +63,9 @@ function importFiles(folderPath) {
       return JSON.parse(contents)
     })
   } catch (e) {
-    const error = new Error('This version of the framework is not supported')
+    const error = new Error(
+      `Version ${version} of the framework is not supported`
+    )
     error.code = 'MISSING_FRAMEWORK'
 
     throw error
@@ -187,22 +196,8 @@ const frameworksService = {
   },
 
   getFramework({ framework = '', version = '' } = {}) {
-    const sectionsFolder = path.resolve(
-      frameworks.output,
-      version,
-      'frameworks',
-      framework,
-      'manifests'
-    )
-    const questionsFolder = path.resolve(
-      frameworks.output,
-      version,
-      'frameworks',
-      framework,
-      'questions'
-    )
-    const sections = importFiles(sectionsFolder)
-    const questions = importFiles(questionsFolder)
+    const sections = importFiles(version, framework, 'manifests')
+    const questions = importFiles(version, framework, 'questions')
 
     return {
       sections: keyBy(sections, 'key'),

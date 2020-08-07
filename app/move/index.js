@@ -9,6 +9,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const personEscortRecordApp = require('../person-escort-record')
+const { setFramework } = require('../person-escort-record/middleware')
 
 const { assign, confirmation, create, update, view } = require('./controllers')
 const {
@@ -90,7 +91,12 @@ router.use(
   protectRoute('move:create'),
   wizard(createSteps, createFields, createConfig)
 )
-router.use(`/:moveId(${uuidRegex})`, moveRouter)
+router.use(
+  `/:moveId(${uuidRegex})`,
+  setPersonEscortRecord,
+  setFramework,
+  moveRouter
+)
 
 moveRouter.get('/', protectRoute('move:view'), view)
 moveRouter.get(
@@ -99,11 +105,7 @@ moveRouter.get(
   setAllocation,
   confirmation
 )
-moveRouter.use(
-  personEscortRecordApp.mountpath,
-  setPersonEscortRecord,
-  personEscortRecordApp.router
-)
+moveRouter.use(personEscortRecordApp.mountpath, personEscortRecordApp.router)
 moveRouter.use(
   '/cancel',
   protectRoute(['move:cancel', 'move:cancel:proposed']),
