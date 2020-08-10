@@ -149,7 +149,17 @@ app.use(
 )
 app.use(setLocations)
 
-app.use(helmet())
+// unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  })
+)
 
 // Ensure body processed after reauthentication
 app.use(processOriginalRequestBody())
