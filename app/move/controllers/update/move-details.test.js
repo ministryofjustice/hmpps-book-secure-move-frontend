@@ -346,6 +346,20 @@ describe('Move controllers', function () {
 
       checkMoveTypeWithAdditionalInfo('prison_recall')
       checkMoveTypeWithAdditionalInfo('video_remand')
+
+      context('when no additional_info field is present', function () {
+        beforeEach(async function () {
+          req.getMove.returns({
+            move_type: 'move-type',
+            additional_information: null,
+          })
+          await controller.saveValues(req, res, nextSpy)
+        })
+
+        it('should not call move service’s update method', async function () {
+          expect(moveService.update).to.not.be.called
+        })
+      })
     })
   })
 })

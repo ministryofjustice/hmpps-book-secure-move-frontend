@@ -64,7 +64,12 @@ class UpdateMoveDetailsController extends UpdateBase {
             id: toLocation,
           },
         })
-      } else if (additionalInformation !== move.additional_information) {
+      } else if (
+        // API can return null or string for additional_information
+        // form value can be string or undefined depending on move type
+        additionalInformation !== undefined &&
+        additionalInformation !== move.additional_information
+      ) {
         await moveService.update({
           id: moveId,
           additional_information: additionalInformation,
