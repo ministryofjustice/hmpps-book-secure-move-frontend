@@ -192,6 +192,57 @@ describe('Nunjucks filters', function () {
     })
   })
 
+  describe('#formatDateRangeWithRelativeWeek()', function () {
+    const mockStartDate = new Date('2017-08-14')
+    const mockEndDate = new Date('2017-08-20')
+    const dateRange = [mockStartDate, mockEndDate]
+
+    beforeEach(function () {
+      this.clock = sinon.useFakeTimers(mockStartDate.getTime())
+    })
+
+    afterEach(function () {
+      this.clock.restore()
+    })
+
+    context('with falsy values', function () {
+      const values = ['', null, undefined, false]
+
+      values.forEach(value => {
+        it('should return input value', function () {
+          const formattedDate = filters.formatDateRangeWithRelativeWeek(value)
+          expect(formattedDate).to.equal(value)
+        })
+      })
+    })
+
+    context('when current date is this week', function () {
+      it('should return date along with `This week`', function () {
+        const formattedDate = filters.formatDateRangeWithRelativeWeek(dateRange)
+        expect(formattedDate).to.equal('14 to 20 Aug 2017 (This week)')
+      })
+    })
+
+    context('when current date is next week', function () {
+      it('should return date along with `Tomorrow`', function () {
+        const formattedDate = filters.formatDateRangeWithRelativeWeek([
+          new Date('2017-09-11'),
+          new Date('2017-09-17'),
+        ])
+        expect(formattedDate).to.equal('11 to 17 Sep 2017')
+      })
+    })
+
+    context('when current date is a range with a single date', function () {
+      it('should return the formatted date', function () {
+        const formattedDate = filters.formatDateRangeWithRelativeWeek([
+          '2017-08-09',
+        ])
+        expect(formattedDate).to.equal('9 Aug 2017')
+      })
+    })
+  })
+
   describe('#formatDateRange', function () {
     const formatDateRange = filters.formatDateRange
 

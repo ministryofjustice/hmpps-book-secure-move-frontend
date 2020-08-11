@@ -20,19 +20,9 @@
 
             <span class="govuk-!-display-block">
             {% if section.period === 'week' %}
-              {{ dateRange | formatDateRange }}
-              {{ appTime({
-                datetime: dateRange | formatISOWeek,
-                text: '(' + dateRange | formatDateRangeAsRelativeWeek | lower + ')',
-                classes: 'app-secondary-text-colour'
-                }) }}
+              {{ currentWeek | formatDateRangeWithRelativeWeek }}
             {% else %}
-              {{ today | formatDateWithDay }}
-              {{ appTime({
-                datetime: today,
-                text: '(' + today | formatDateAsRelativeDay | lower + ')',
-                classes: 'app-secondary-text-colour'
-                }) }}
+              {{ today | formatDateWithRelativeDay }}
             {% endif %}
             </span>
           </h2>

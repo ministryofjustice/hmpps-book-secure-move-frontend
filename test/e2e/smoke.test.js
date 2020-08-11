@@ -42,7 +42,7 @@ const usersWhoHaveADashboard = [
     username: 'End-to-end OCA',
     homeSection: dashboardPage.nodes.singleRequestsSection,
     homeButton: dashboardPage.nodes.singleRequestsLink,
-    timePeriod: 'this week',
+    timePeriod: 'This week',
   },
 ]
 
@@ -61,16 +61,16 @@ users.forEach(user => {
       .ok()
       // Navigate
       .expect(page.nodes.pageHeading.innerText)
-      .contains('today')
+      .contains('Today')
       .click(movesDashboardPage.nodes.pagination.previousLink)
       .expect(page.nodes.pageHeading.innerText)
-      .contains('yesterday')
+      .contains('Yesterday')
       .click(movesDashboardPage.nodes.pagination.todayLink)
       .expect(page.nodes.pageHeading.innerText)
-      .contains('today')
+      .contains('Today')
       .click(movesDashboardPage.nodes.pagination.nextLink)
       .expect(page.nodes.pageHeading.innerText)
-      .contains('tomorrow')
+      .contains('Tomorrow')
       // Sign out
       .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)

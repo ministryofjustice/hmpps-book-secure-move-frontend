@@ -1,5 +1,3 @@
-const { isToday, isTomorrow, isYesterday, isThisWeek } = require('date-fns')
-
 const permissions = require('../../middleware/permissions')
 
 module.exports = function listAsCards(req, res) {
@@ -16,12 +14,6 @@ module.exports = function listAsCards(req, res) {
     pagination,
     period,
     resultsAsCards,
-    displayRelativeDate:
-      isToday(new Date(dateRange[0])) ||
-      isTomorrow(new Date(dateRange[0])) ||
-      isYesterday(new Date(dateRange[0])) ||
-      isThisWeek(new Date(dateRange[0])) ||
-      isThisWeek(new Date(dateRange[1])),
   }
 
   res.render(template, locals)

@@ -6,18 +6,18 @@
   }) }}'});
 {% endblock %}
 
+{% if period === 'week' %}
+  {% set displayDate = dateRange | formatDateRangeWithRelativeWeek %}
+{% else %}
+  {% set datetime = dateRange | first %}
+  {% set displayDate = datetime | formatDateWithRelativeDay %}
+{% endif %}
+
 {% block pageTitle %}
-  {% if period === 'week' %}
-    {{ t("collections::page_title_with_date", {
-      context: context,
-      date: dateRange | formatDateRangeAsRelativeWeek
-    }) }}
-  {% else %}
-    {{ t("collections::page_title_with_date", {
-      context: context,
-      date: datetime | formatDateAsRelativeDay
-    }) }}
-  {% endif %}
+  {{ t("collections::page_title_with_date", {
+    context: context,
+    date: displayDate
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -32,28 +32,7 @@
           }) }}
           </span>
 
-          <span class="govuk-!-display-block">
-          {% if period === 'week' %}
-            {{ dateRange | formatDateRange }}
-            {% if displayRelativeDate %}
-              {{ appTime({
-                datetime: dateRange | formatISOWeek,
-                text: '(' + dateRange | formatDateRangeAsRelativeWeek | lower + ')',
-                classes: 'app-secondary-text-colour'
-                }) }}
-            {% endif %}
-          {% else %}
-            {% set datetime = dateRange | first %}
-            {{ datetime | formatDateWithDay }}
-            {% if displayRelativeDate %}
-              {{ appTime({
-                datetime: datetime,
-                text: '(' + datetime | formatDateAsRelativeDay(' ') | lower + ')',
-                classes: 'app-secondary-text-colour'
-                }) }}
-            {% endif %}
-          {% endif %}
-          </span>
+          <span class="govuk-!-display-block">{{ displayDate }}</span>
         </h1>
 
         {% block dateNavigation %}

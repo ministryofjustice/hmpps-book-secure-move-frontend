@@ -12,7 +12,7 @@ function dashboard(req, res) {
     return res.redirect('/moves')
   }
 
-  const dateRange = dateHelpers.getCurrentWeekAsRange()
+  const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
 
   const sections = {
@@ -45,7 +45,7 @@ function dashboard(req, res) {
   res.render('home/dashboard', {
     pageTitle: 'dashboard::page_title',
     sections,
-    dateRange,
+    currentWeek,
     today,
   })
 }

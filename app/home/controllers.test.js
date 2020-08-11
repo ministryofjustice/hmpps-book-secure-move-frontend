@@ -52,7 +52,7 @@ describe('Home controllers', function () {
         expect(params).to.have.all.keys(
           'pageTitle',
           'sections',
-          'dateRange',
+          'currentWeek',
           'today'
         )
         expect(params.pageTitle).to.equal('dashboard::page_title')
