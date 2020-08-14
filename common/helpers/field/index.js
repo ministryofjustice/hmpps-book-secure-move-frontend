@@ -18,6 +18,7 @@ const getFieldErrorMessage = require('./get-field-error-message')
 const isAllowedDependent = require('./is-allowed-dependent')
 const reduceDependentFields = require('./reduce-dependent-fields')
 const setFieldError = require('./set-field-error')
+const setOptionalLabel = require('./set-optional-label')
 
 function mapReferenceDataToOption({
   id,
@@ -248,6 +249,7 @@ module.exports = {
   isAllowedDependent,
   setFieldValue,
   setFieldError,
+  setOptionalLabel,
   translateField,
   insertInitialOption,
   insertItemConditional,
