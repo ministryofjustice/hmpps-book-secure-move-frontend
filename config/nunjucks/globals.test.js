@@ -13,15 +13,42 @@ describe('Nunjucks globals', function () {
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returns('__translated__')
-      translation = t(mockKey)
     })
 
-    it('should call translation with key', function () {
-      expect(i18n.t).to.be.calledOnceWithExactly(mockKey)
+    context('with one argument', function () {
+      beforeEach(function () {
+        translation = t(mockKey)
+      })
+
+      it('should call translation with key', function () {
+        expect(i18n.t).to.be.calledOnceWithExactly(mockKey)
+      })
+
+      it('should return translation', function () {
+        expect(translation).to.equal('__translated__')
+      })
     })
 
-    it('should return translation', function () {
-      expect(translation).to.equal('__translated__')
+    context('with multiple arguments', function () {
+      const args = [
+        mockKey,
+        {
+          context: 'foo',
+        },
+        'bar',
+      ]
+
+      beforeEach(function () {
+        translation = t(...args)
+      })
+
+      it('should call translation with all args', function () {
+        expect(i18n.t).to.be.calledOnceWithExactly(...args)
+      })
+
+      it('should return translation', function () {
+        expect(translation).to.equal('__translated__')
+      })
     })
   })
 
