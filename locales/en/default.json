@@ -2,6 +2,7 @@
   "feedback_link": "Help us improve this service — <a href=\"{{url}}\">give us your feedback</a>",
   "age": "Age",
   "item": "Item",
+  "optional": "optional",
   "name": "Name",
   "from": "From",
   "date": "Date",

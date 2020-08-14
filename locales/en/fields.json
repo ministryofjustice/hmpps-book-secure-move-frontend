@@ -130,7 +130,7 @@
     "label": "Name of Secure Training Centre (STC)"
   },
   "additional_information": {
-    "label": "Additional information (optional)",
+    "label": "Additional information",
     "hint": "",
     "label_hospital": "Details of contact in hospital",
     "hint_hospital": "Provide name and contact information",
@@ -194,7 +194,7 @@
     "hint": "The case must exist in NOMIS to appear here"
   },
   "court_hearing__comments": {
-    "label": "Give details (optional)"
+    "label": "Give details"
   },
   "should_save_court_hearings": {
     "label": "Would you like to add this court date to NOMIS?",
@@ -241,7 +241,7 @@
   },
   "assessment_comment": {
     "required": "Give details",
-    "optional": "Give details (optional)"
+    "optional": "Give details"
   },
   "review_decision": {
     "label": "Can this move be requested with the supplier?",
@@ -343,7 +343,7 @@
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
-    "label": "Upload a file (optional)",
+    "label": "Upload a file",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
   },
   "prison_transfer_type": {

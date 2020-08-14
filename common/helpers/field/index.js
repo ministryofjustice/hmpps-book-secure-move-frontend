@@ -22,6 +22,7 @@ const reduceDependentFields = require('./reduce-dependent-fields')
 const renderAddAnotherFields = require('./render-add-another-fields')
 const setErrors = require('./set-errors')
 const setFieldError = require('./set-field-error')
+const setOptionalLabel = require('./set-optional-label')
 
 function mapReferenceDataToOption({
   id,
@@ -264,6 +265,7 @@ module.exports = {
   addErrorListToErrors,
   setFieldValue,
   setFieldError,
+  setOptionalLabel,
   translateField,
   insertInitialOption,
   insertItemConditional,

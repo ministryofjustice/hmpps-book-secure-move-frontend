@@ -223,6 +223,7 @@ class BaseController extends Controller {
       .map(fieldHelpers.setFieldValue(req.form.values))
       .map(fieldHelpers.setFieldError(req.form.errors))
       .map(fieldHelpers.translateField)
+      .map(fieldHelpers.setOptionalLabel)
       .map(fieldHelpers.renderConditionalFields)
       .map(fieldHelpers.renderAddAnotherFields)
 
