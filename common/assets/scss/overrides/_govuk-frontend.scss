@@ -13,6 +13,14 @@
   }
 }
 
+.govuk-checkboxes__conditional,
+.govuk-radios__conditional {
+  .govuk-textarea,
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
 .govuk-hint * {
   color: $govuk-secondary-text-colour;
 }
