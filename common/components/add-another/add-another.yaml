@@ -1,0 +1,42 @@
+params:
+- name: name
+  type: string
+  required: true
+  description: Field name to use for button values.
+- name: items
+  type: array
+  required: true
+  description: Array of items
+  params:
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the item. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the item. If `html` is provided, the `text` argument will be ignored.
+- name: itemName
+  type: string
+  required: false
+  description: Name to use for each item heading and "Add another {name}" button. Defaults to `item`.
+
+examples:
+  - name: default
+    data:
+      name: add-another-field
+  - name: with items
+    data:
+      name: add-another-field
+      items:
+        -
+          text: Item 1 content
+        -
+          html: Item <strong>2</strong> content
+  - name: with item name
+    data:
+      name: add-another-field
+      itemName: Person
+      items:
+        -
+          text: Person 1 content

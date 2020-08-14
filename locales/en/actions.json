@@ -45,5 +45,8 @@
   "confirm_and_complete_record": "Confirm and complete record",
   "continue_person_escort_record": "Continue record",
   "view_person_escort_record": "View Person Escort Record",
-  "print_person_escort_record": "Print Person Escort Record"
+  "print_person_escort_record": "Print Person Escort Record",
+  "add_item": "Add {{name}}",
+  "add_item_with_items": "Add another {{name}}",
+  "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>"
 }
