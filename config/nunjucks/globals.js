@@ -21,7 +21,7 @@ module.exports = {
   SUPPORT_EMAIL,
   SERVICE_NAME: 'Book a secure move',
   GA_ID: ANALYTICS.GA_ID,
-  t: key => i18n.t(key),
+  t: (...args) => i18n.t(...args),
   callAsMacro(name) {
     const macro = this.ctx[name]
 
