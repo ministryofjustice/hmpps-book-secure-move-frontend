@@ -1,6 +1,7 @@
 const estate = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'estate',
   name: 'estate',
   label: {
     text: 'fields::estate.select_label',

@@ -1,6 +1,7 @@
 const sentenceLength = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'sentence_length',
   name: 'sentence_length',
   label: {
     text: 'fields::sentence_length.label',

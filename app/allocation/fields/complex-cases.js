@@ -1,4 +1,5 @@
 module.exports = {
+  id: 'complex_cases',
   name: 'complex_cases',
   component: 'govukCheckboxes',
   multiple: true,

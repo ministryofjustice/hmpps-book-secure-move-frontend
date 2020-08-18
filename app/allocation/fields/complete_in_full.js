@@ -1,6 +1,7 @@
 const completeInFull = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'complete_in_full',
   name: 'complete_in_full',
   label: {
     text: 'fields::complete_in_full.label',

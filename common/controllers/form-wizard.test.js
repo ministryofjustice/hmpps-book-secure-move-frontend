@@ -157,7 +157,7 @@ describe('Form wizard', function () {
   })
 
   describe('#getErrors()', function () {
-    let errors
+    let errors, reqMock
 
     beforeEach(function () {
       sinon
@@ -166,12 +166,27 @@ describe('Form wizard', function () {
           return `${key}.${type}`
         })
       sinon.stub(FormController.prototype, 'getErrors')
+      reqMock = {
+        form: {
+          options: {
+            fields: {
+              fieldOne: {
+                id: 'field-one',
+              },
+              fieldTwo: {
+                id: 'field-two',
+              },
+            },
+          },
+        },
+        t: sinon.stub().returnsArg(0),
+      }
     })
 
     context('when parent returns empty errors object', function () {
       beforeEach(function () {
         FormController.prototype.getErrors.returns({})
-        errors = controller.getErrors({}, {})
+        errors = controller.getErrors(reqMock, {})
       })
 
       it('should set an empty error list property', function () {
@@ -195,9 +210,6 @@ describe('Form wizard', function () {
 
       beforeEach(function () {
         FormController.prototype.getErrors.returns(mockErrors)
-        const reqMock = {
-          t: sinon.stub().returnsArg(0),
-        }
         errors = controller.getErrors(reqMock, {})
       })
 
@@ -232,11 +244,11 @@ describe('Form wizard', function () {
           },
           errorList: [
             {
-              href: `#${mockErrors.fieldOne.key}`,
+              href: `#${reqMock.form.options.fields.fieldOne.id}`,
               html: `${mockErrors.fieldOne.key}.${mockErrors.fieldOne.type}`,
             },
             {
-              href: `#${mockErrors.fieldTwo.key}`,
+              href: `#${reqMock.form.options.fields.fieldTwo.id}`,
               html: `${mockErrors.fieldTwo.key}.${mockErrors.fieldTwo.type}`,
             },
           ],
