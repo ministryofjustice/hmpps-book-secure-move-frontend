@@ -16,7 +16,9 @@ const componentService = require('../../services/component')
 const flattenConditionalFields = require('./flatten-conditional-fields')
 const getFieldErrorMessage = require('./get-field-error-message')
 const isAllowedDependent = require('./is-allowed-dependent')
+const reduceAddAnotherFields = require('./reduce-add-another-fields')
 const reduceDependentFields = require('./reduce-dependent-fields')
+const renderAddAnotherFields = require('./render-add-another-fields')
 const setFieldError = require('./set-field-error')
 
 function mapReferenceDataToOption({
@@ -254,4 +256,6 @@ module.exports = {
   populateAssessmentFields,
   flattenConditionalFields,
   reduceDependentFields,
+  reduceAddAnotherFields,
+  renderAddAnotherFields,
 }

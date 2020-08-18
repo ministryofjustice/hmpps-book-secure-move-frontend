@@ -1,6 +1,6 @@
 const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
-const { map, fromPairs } = require('lodash')
+const { map, fromPairs, forEach, mapKeys } = require('lodash')
 
 const fieldHelpers = require('../helpers/field')
 
@@ -8,11 +8,28 @@ class FormController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setInitialValues)
+    this.use(this.setupAddMultipleFields)
     this.use(this.setupConditionalFields)
     this.use(this.setFieldContext)
   }
 
   setInitialValues(req, res, next) {
+    next()
+  }
+
+  setupAddMultipleFields(req, res, next) {
+    const allFields = req.form.options.allFields
+    const values = req.sessionModel.toJSON()
+    const itemFields = Object.entries(req.form.options.fields).reduce(
+      fieldHelpers.reduceAddAnotherFields(allFields, values),
+      {}
+    )
+
+    req.form.options.fields = {
+      ...req.form.options.fields,
+      ...itemFields,
+    }
+
     next()
   }
 
@@ -30,6 +47,56 @@ class FormController extends Controller {
     req.form.options.fields = {
       ...fromPairs(stepFields),
       ...dependentFields,
+    }
+
+    next()
+  }
+
+  post(req, res, next) {
+    const isMultipleAction = req.body['multiple-action']
+    const fields = req.form.options.fields
+
+    if (isMultipleAction) {
+      const [action, key, index] = isMultipleAction.split('::')
+      req.body[key] = req.body[key] || []
+
+      if (action === 'add') {
+        // push empty object to create new item group
+        req.body[key].push({})
+      }
+
+      if (action === 'remove') {
+        req.body[key].splice(index, 1)
+      }
+    }
+
+    forEach(fields, (options, key) => {
+      if (options.component === 'appAddAnother') {
+        const itemValues = (req.body[key] || []).reduce((acc, item, index) => {
+          return {
+            ...acc,
+            ...mapKeys(item, (v, k) => `${key}[${index}][${k}]`),
+          }
+        }, {})
+
+        req.body = {
+          ...req.body,
+          ...itemValues,
+        }
+      }
+    })
+
+    super.post(req, res, next)
+  }
+
+  process(req, res, next) {
+    const isMultipleAction = req.body['multiple-action']
+
+    if (isMultipleAction) {
+      // Need to bypass the validation when adding/removing items
+      return super.saveValues(req, res, () =>
+        res.redirect(req.form.options.fullPath)
+      )
     }
 
     next()
@@ -95,6 +162,7 @@ class FormController extends Controller {
       .map(fieldHelpers.setFieldError(req.form.errors))
       .map(fieldHelpers.translateField)
       .map(fieldHelpers.renderConditionalFields)
+      .map(fieldHelpers.renderAddAnotherFields)
 
     req.form.options.fields = fromPairs(fields)
 
