@@ -19,22 +19,26 @@ function reduceDependentFields(allFields = {}) {
       }
 
       conditionals.forEach(conditional => {
-        if (isObject(conditional)) {
-          accumulator[conditional.name] = {
-            ...conditional,
-            ...dependentOptions,
-          }
-        }
-
-        const conditionalField = allFields[conditional]
+        const conditionalField = isObject(conditional)
+          ? conditional
+          : allFields[conditional]
 
         if (!conditionalField) {
           return
         }
 
-        accumulator[conditional] = {
+        const name = field.prefix
+          ? `${field.prefix}[${conditionalField.name || conditional}]`
+          : conditionalField.name || conditional
+        const id = field.prefix
+          ? `${field.id}-${conditionalField.id || conditional}`
+          : conditionalField.id || conditional
+
+        accumulator[name] = {
           ...conditionalField,
           ...dependentOptions,
+          name,
+          id,
         }
       })
     })

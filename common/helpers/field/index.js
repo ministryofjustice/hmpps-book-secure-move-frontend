@@ -83,19 +83,19 @@ function renderConditionalFields([key, field], index, obj) {
       ...field,
       items: field.items.map(item => {
         const conditionalFields = concat([], item.conditional)
-
         const components = conditionalFields.map(conditionalFieldKey => {
-          const conditionalField = fields[conditionalFieldKey]
+          const conditionalField = field.prefix
+            ? fields[`${field.prefix}[${conditionalFieldKey}]`]
+            : fields[conditionalFieldKey]
 
           if (!conditionalField) {
             return
           }
 
-          return componentService.getComponent(conditionalField.component, {
-            ...conditionalField,
-            id: conditionalFieldKey,
-            name: conditionalFieldKey,
-          })
+          return componentService.getComponent(
+            conditionalField.component,
+            conditionalField
+          )
         })
 
         if (!compact(components).length) {
