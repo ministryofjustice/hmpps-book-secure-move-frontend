@@ -1,4 +1,4 @@
-const { find, kebabCase } = require('lodash')
+const { find, kebabCase, forOwn } = require('lodash')
 
 function reduceResponsesToFormValues(
   accumulator,
@@ -16,6 +16,30 @@ function reduceResponsesToFormValues(
     question.options.forEach(option => {
       const item = find(value, { option })
       accumulator[`${field}--${kebabCase(option)}`] = item?.details
+    })
+  }
+
+  if (valueType === 'collection::add_multiple_items') {
+    accumulator[field] = value.map((item, index) => {
+      const values = item.responses
+        .map(response => {
+          const q = find(question.descendants, {
+            id: response.framework_question_id,
+          })
+
+          return {
+            ...response,
+            question: q,
+            value_type: q?.response_type,
+          }
+        })
+        .reduce(reduceResponsesToFormValues, {})
+
+      forOwn(values, (v, k) => {
+        accumulator[`${field}[${index}][${k}]`] = v
+      })
+
+      return values
     })
   }
 

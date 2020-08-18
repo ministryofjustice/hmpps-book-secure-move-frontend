@@ -18,6 +18,7 @@ const uiComponentMap = {
   checkbox: 'govukCheckboxes',
   textarea: 'govukTextarea',
   text: 'govukInput',
+  add_multiple_items: 'appAddAnother',
   default: 'govukInput',
 }
 const inputWidthClasses = {
@@ -93,8 +94,10 @@ const frameworksService = {
       description,
       display = {},
       hint,
+      list_item_name: itemName,
       options,
       question,
+      questions,
       type,
       validations = [],
     } = {}
@@ -109,8 +112,10 @@ const frameworksService = {
       question,
       description,
       component,
+      itemName,
       rows: display.rows,
       classes: inputWidthClasses[display.character_width] || '',
+      descendants: questions,
       id: key,
       name: key,
       validate: validations,
@@ -130,6 +135,15 @@ const frameworksService = {
 
     if (type === 'checkbox') {
       field.multiple = true
+    }
+
+    if (type === 'add_multiple_items') {
+      // allow the form wizard to store the value as an array
+      field.multiple = true
+      // prevent the form wizard processing these fields
+      field['ignore-defaults'] = true
+      // use `default` to start with one empty item
+      field.default = [{}]
     }
 
     if (options) {

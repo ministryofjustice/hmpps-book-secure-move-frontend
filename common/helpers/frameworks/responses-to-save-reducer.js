@@ -1,4 +1,4 @@
-const { kebabCase, pickBy } = require('lodash')
+const { flatten, kebabCase, pickBy } = require('lodash')
 
 function responsesToSaveReducer(values = {}) {
   return (accumulator, { id, question, value_type: valueType }) => {
@@ -12,6 +12,43 @@ function responsesToSaveReducer(values = {}) {
           option: value,
           details: values[`${fieldName}--${kebabCase(value)}`],
         }),
+      })
+    }
+
+    if (valueType === 'collection::add_multiple_items') {
+      const collection = value.filter(Boolean).map((item, index) => {
+        return {
+          item: index,
+          responses: question.descendants.map(que => {
+            let value
+
+            // TODO: Support all value types for child responses
+            if (que.response_type === 'string') {
+              value = item[que.key]
+            }
+
+            if (que.response_type === 'collection') {
+              value = flatten([item[que.key]])
+                .filter(Boolean)
+                .map(option => {
+                  return {
+                    option,
+                    details: item[`${que.key}--${kebabCase(option)}`],
+                  }
+                })
+            }
+
+            return {
+              value: value,
+              framework_question_id: que.id,
+            }
+          }),
+        }
+      })
+
+      accumulator.push({
+        id,
+        value: collection,
       })
     }
 

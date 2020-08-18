@@ -67,6 +67,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -107,6 +109,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -137,6 +141,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -170,6 +176,8 @@ describe('Services', function () {
               validate: [],
               classes: 'govuk-input--width-4',
               rows: 3,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -218,6 +226,8 @@ describe('Services', function () {
               ],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -273,6 +283,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -382,6 +394,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -459,6 +473,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -486,6 +502,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -510,6 +528,8 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
             })
           })
         })
@@ -534,6 +554,42 @@ describe('Services', function () {
               validate: [],
               classes: '',
               rows: undefined,
+              descendants: undefined,
+              itemName: undefined,
+            })
+          })
+        })
+
+        describe('add_multiple_items', function () {
+          it('should format type correctly', function () {
+            const transformed = frameworksService.transformQuestion(
+              'question-key',
+              {
+                ...mockQuestion,
+                type: 'add_multiple_items',
+                list_item_name: 'Bag',
+                questions: ['one', 'two', 'three'],
+              }
+            )
+
+            expect(transformed).to.deep.equal({
+              component: 'appAddAnother',
+              question: 'Question text',
+              description: undefined,
+              id: 'question-key',
+              name: 'question-key',
+              label: {
+                text: 'Question text',
+                classes: 'govuk-label--s',
+              },
+              validate: [],
+              classes: '',
+              rows: undefined,
+              descendants: ['one', 'two', 'three'],
+              itemName: 'Bag',
+              'ignore-defaults': true,
+              multiple: true,
+              default: [{}],
             })
           })
         })
