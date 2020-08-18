@@ -1,4 +1,4 @@
-const { isEmpty, kebabCase } = require('lodash')
+const { isEmpty } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -41,7 +41,7 @@ class FrameworkStepController extends FormWizardController {
     const savedValues = responses
       .filter(response => fields[response.question?.key])
       .filter(response => !isEmpty(response.value))
-      .reduce(this.reduceResponses, {})
+      .reduce(frameworksHelpers.reduceResponsesToFormValues, {})
 
     if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
       req.sessionModel.set(savedValues)
@@ -70,28 +70,6 @@ class FrameworkStepController extends FormWizardController {
   setPageTitleLocals(req, res, next) {
     res.locals.frameworkSection = req.frameworkSection.name
     next()
-  }
-
-  reduceResponses(accumulator, { value, value_type: valueType, question }) {
-    const field = question.key
-
-    if (valueType === 'object') {
-      accumulator[field] = value.option
-      accumulator[`${field}--${kebabCase(value.option)}`] = value.details
-    }
-
-    if (valueType === 'collection') {
-      accumulator[field] = value.map(item => item.option)
-      value.forEach(item => {
-        accumulator[`${field}--${kebabCase(item.option)}`] = item.details
-      })
-    }
-
-    if (valueType === 'string' || valueType === 'array') {
-      accumulator[field] = value
-    }
-
-    return accumulator
   }
 
   async saveValues(req, res, next) {
