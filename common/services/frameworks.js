@@ -17,7 +17,16 @@ const uiComponentMap = {
   radio: 'govukRadios',
   checkbox: 'govukCheckboxes',
   textarea: 'govukTextarea',
+  text: 'govukInput',
   default: 'govukInput',
+}
+const inputWidthClasses = {
+  20: 'govuk-input--width-20',
+  10: 'govuk-input--width-10',
+  5: 'govuk-input--width-5',
+  4: 'govuk-input--width-4',
+  3: 'govuk-input--width-3',
+  2: 'govuk-input--width-2',
 }
 
 function buildCommentField(
@@ -25,12 +34,14 @@ function buildCommentField(
   dependentValue,
   followupComment = {}
 ) {
+  const component = uiComponentMap[followupComment.type] || 'govukTextarea'
+  const { rows = 4, character_width: charWidth } = followupComment.display || {}
   const field = {
-    rows: 4,
+    rows,
+    component,
     name: `${dependentField}--${kebabCase(dependentValue)}`,
     id: `${dependentField}--${kebabCase(dependentValue)}`,
-    component: 'govukTextarea',
-    classes: 'govuk-input--width-20',
+    classes: inputWidthClasses[charWidth] || 'govuk-input--width-20',
     label: {
       text: followupComment.label,
       classes: 'govuk-label--s',
@@ -78,7 +89,15 @@ const frameworksService = {
 
   transformQuestion(
     key,
-    { question, hint, options, validations = [], type, description } = {}
+    {
+      description,
+      display = {},
+      hint,
+      options,
+      question,
+      type,
+      validations = [],
+    } = {}
   ) {
     if (!key) {
       return {}
@@ -90,6 +109,8 @@ const frameworksService = {
       question,
       description,
       component,
+      rows: display.rows,
+      classes: inputWidthClasses[display.character_width] || '',
       id: key,
       name: key,
       validate: validations,

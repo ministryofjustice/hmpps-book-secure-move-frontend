@@ -65,6 +65,8 @@ describe('Services', function () {
                 classes: 'govuk-label--s',
               },
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -103,6 +105,8 @@ describe('Services', function () {
                 classes: 'markdown',
               },
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -131,6 +135,41 @@ describe('Services', function () {
                 classes: 'govuk-label--s',
               },
               validate: [],
+              classes: '',
+              rows: undefined,
+            })
+          })
+        })
+
+        context('with display properties', function () {
+          beforeEach(function () {
+            mockQuestion = {
+              ...mockQuestion,
+              display: {
+                rows: 3,
+                character_width: 4,
+              },
+            }
+          })
+
+          it('should format correctly', function () {
+            const transformed = frameworksService.transformQuestion(
+              'question-key',
+              mockQuestion
+            )
+            expect(transformed).to.deep.equal({
+              component: 'govukInput',
+              question: 'Question text',
+              description: undefined,
+              id: 'question-key',
+              name: 'question-key',
+              label: {
+                text: 'Question text',
+                classes: 'govuk-label--s',
+              },
+              validate: [],
+              classes: 'govuk-input--width-4',
+              rows: 3,
             })
           })
         })
@@ -177,6 +216,8 @@ describe('Services', function () {
                   message: 'This must be a date',
                 },
               ],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -230,6 +271,8 @@ describe('Services', function () {
                 },
               ],
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -247,6 +290,10 @@ describe('Services', function () {
                   followup_comment: {
                     label: 'Give details',
                     hint: 'Some hint information',
+                    display: {
+                      rows: 2,
+                      character_width: 5,
+                    },
                     validations: [
                       {
                         type: 'required',
@@ -260,6 +307,7 @@ describe('Services', function () {
                   label: 'No, I do not agree',
                   followup_comment: {
                     label: 'Give details',
+                    type: 'text',
                   },
                 },
               ],
@@ -293,11 +341,11 @@ describe('Services', function () {
                   value: 'Yes, I agree',
                   text: 'Yes, I agree',
                   conditional: {
-                    rows: 4,
+                    rows: 2,
                     name: 'question-key--yes-i-agree',
                     id: 'question-key--yes-i-agree',
                     component: 'govukTextarea',
-                    classes: 'govuk-input--width-20',
+                    classes: 'govuk-input--width-5',
                     label: {
                       text: 'Give details',
                       classes: 'govuk-label--s',
@@ -321,7 +369,7 @@ describe('Services', function () {
                     rows: 4,
                     name: 'question-key--no-i-do-not-agree',
                     id: 'question-key--no-i-do-not-agree',
-                    component: 'govukTextarea',
+                    component: 'govukInput',
                     classes: 'govuk-input--width-20',
                     label: {
                       text: 'Give details',
@@ -332,6 +380,8 @@ describe('Services', function () {
                 },
               ],
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -407,6 +457,8 @@ describe('Services', function () {
                 },
               ],
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -432,6 +484,8 @@ describe('Services', function () {
                 },
               },
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -454,6 +508,8 @@ describe('Services', function () {
                 classes: 'govuk-label--s',
               },
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
@@ -476,6 +532,8 @@ describe('Services', function () {
                 classes: 'govuk-label--s',
               },
               validate: [],
+              classes: '',
+              rows: undefined,
             })
           })
         })
