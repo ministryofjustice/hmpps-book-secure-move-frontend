@@ -7,8 +7,13 @@ const fieldHelpers = require('../helpers/field')
 class FormController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
+    this.use(this.setInitialValues)
     this.use(this.setupConditionalFields)
     this.use(this.setFieldContext)
+  }
+
+  setInitialValues(req, res, next) {
+    next()
   }
 
   setupConditionalFields(req, res, next) {

@@ -12,6 +12,9 @@ describe('Form wizard', function () {
     beforeEach(function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
       sinon.stub(controller, 'use')
+      sinon.stub(controller, 'setInitialValues')
+      sinon.stub(controller, 'setupConditionalFields')
+      sinon.stub(controller, 'setFieldContext')
 
       controller.middlewareSetup()
     })
@@ -20,20 +23,26 @@ describe('Form wizard', function () {
       expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
     })
 
-    it('should call set conditional fields method', function () {
-      expect(controller.use.firstCall).to.have.been.calledWithExactly(
+    it('should set initial values', function () {
+      expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+        controller.setInitialValues
+      )
+    })
+
+    it('should setup conditional fields', function () {
+      expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
         controller.setupConditionalFields
       )
     })
 
-    it('should call set field context method', function () {
-      expect(controller.use.secondCall).to.have.been.calledWithExactly(
+    it('should set field context', function () {
+      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
         controller.setFieldContext
       )
     })
 
     it('should call correct number of middleware', function () {
-      expect(controller.use).to.be.callCount(2)
+      expect(controller.use).to.be.callCount(3)
     })
   })
 

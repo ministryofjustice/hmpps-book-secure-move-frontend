@@ -1,4 +1,4 @@
-const { kebabCase, pickBy, isEmpty } = require('lodash')
+const { isEmpty, kebabCase } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -33,6 +33,21 @@ class FrameworkStepController extends FormWizardController {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setButtonText)
+  }
+
+  setInitialValues(req, res, next) {
+    const fields = req.form.options.fields
+    const responses = req.personEscortRecord.responses
+    const savedValues = responses
+      .filter(response => fields[response.question?.key])
+      .filter(response => !isEmpty(response.value))
+      .reduce(this.reduceResponses, {})
+
+    if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
+      req.sessionModel.set(savedValues)
+    }
+
+    next()
   }
 
   setButtonText(req, res, next) {
@@ -77,31 +92,6 @@ class FrameworkStepController extends FormWizardController {
     }
 
     return accumulator
-  }
-
-  getValues(req, res, callback) {
-    const { errors, errorValues } = req.sessionModel.toJSON()
-    const fields = req.form.options.fields
-    const responses = req.personEscortRecord.responses
-    const savedValues = responses
-      .filter(response => fields[response.question?.key])
-      .filter(response => response.value)
-      .reduce(this.reduceResponses, {})
-
-    // pick errorValues that are for this step's fields
-    // pick errorValues that were generated on the same url
-    const stepErrorValues = pickBy(
-      errorValues,
-      (e, k) =>
-        Object.prototype.hasOwnProperty.call(fields, k) &&
-        (!errors || !errors[k] || !errors[k].url || errors[k].url === req.path)
-    )
-
-    if (!isEmpty(stepErrorValues)) {
-      return callback(null, stepErrorValues)
-    }
-
-    callback(null, savedValues)
   }
 
   async saveValues(req, res, next) {
