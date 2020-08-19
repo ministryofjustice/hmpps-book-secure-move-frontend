@@ -14,7 +14,9 @@ const {
   setDateRange,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
+const setRequestFilters = require('../../common/middleware/set-request-filters')
 const { FEATURE_FLAGS } = require('../../config')
+const requestFilterFields = require('../filters/fields')
 
 const {
   COLLECTION_MIDDLEWARE,
@@ -33,6 +35,7 @@ const {
   setDownloadResultsSingleRequests,
   setBodyMoves,
   setBodySingleRequests,
+  setBodyRequestFilters,
   setFilterSingleRequests,
   setResultsSingleRequests,
   setResultsMoves,
@@ -54,16 +57,22 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodySingleRequests,
+    setBodyRequestFilters,
     setFilterSingleRequests(FILTERS.requested),
     setResultsSingleRequests,
   ],
+  setRequestFilters(requestFilterFields),
   renderAsTable
 )
 viewRouter.get(
   '/:view(requested)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
-  [setBodySingleRequests, setDownloadResultsSingleRequests],
+  [
+    setBodySingleRequests,
+    setBodyRequestFilters,
+    setDownloadResultsSingleRequests,
+  ],
   download
 )
 viewRouter.get(
