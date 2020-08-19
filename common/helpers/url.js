@@ -1,6 +1,7 @@
 const { isEmpty } = require('lodash')
 const pathToRegexp = require('path-to-regexp')
-const querystring = require('qs')
+
+const { getQueryString } = require('../lib/request')
 
 const uuidRegex =
   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
@@ -15,7 +16,7 @@ function compileFromRoute(route, req = {}, overrides = {}) {
   }
 
   const compileUrl = pathToRegexp.compile(route)
-  const queryInUrl = !isEmpty(query) ? `?${querystring.stringify(query)}` : ''
+  const queryInUrl = !isEmpty(query) ? getQueryString(query) : ''
 
   return compileUrl({ ...matched.params, ...overrides }) + queryInUrl
 }
