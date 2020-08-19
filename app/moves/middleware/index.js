@@ -1,5 +1,6 @@
 const redirectBaseUrl = require('./redirect-base-url')
 const saveUrl = require('./save-url')
+const setBodyRequestFilters = require('./set-body-request-filters')
 const setBodyMoves = require('./set-body.moves')
 const setBodySingleRequests = require('./set-body.single-requests')
 const setDownloadResultsMoves = require('./set-download-results.moves')
@@ -14,6 +15,7 @@ module.exports = {
   redirectBaseUrl,
   saveUrl,
   setBodyMoves,
+  setBodyRequestFilters,
   setBodySingleRequests,
   setDownloadResultsMoves,
   setDownloadResultsSingleRequests,
