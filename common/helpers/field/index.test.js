@@ -3,6 +3,7 @@ const { cloneDeep, set } = require('lodash')
 const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
+const fieldHelpers = require('./')
 const {
   mapReferenceDataToOption,
   renderConditionalFields,
@@ -11,7 +12,7 @@ const {
   insertInitialOption,
   insertItemConditional,
   populateAssessmentFields,
-} = require('./')
+} = fieldHelpers
 
 const mockAssessmentQuestions = [
   {
@@ -1118,6 +1119,78 @@ describe('Form helpers', function () {
 
       it('should return original fields', function () {
         expect(fields).to.deep.equal({})
+      })
+    })
+  })
+
+  describe('#processFields()', function () {
+    context('when method is called', function () {
+      const fields = { foo: { component: 'foo' }, bar: { component: 'bar' } }
+      const values = { foo: 'baz' }
+      const errors = { foo: 'required' }
+      let setFieldValueStub
+      let setFieldErrorStub
+
+      beforeEach(function () {
+        setFieldValueStub = sinon.stub().returnsArg(0)
+        setFieldErrorStub = sinon.stub().returnsArg(0)
+        sinon.stub(fieldHelpers, 'setFieldValue').returns(setFieldValueStub)
+        sinon.stub(fieldHelpers, 'setFieldError').returns(setFieldErrorStub)
+        sinon.stub(fieldHelpers, 'translateField').returnsArg(0)
+        sinon.stub(fieldHelpers, 'renderConditionalFields').returnsArg(0)
+
+        fieldHelpers.processFields(fields, values, errors)
+      })
+
+      it('should create setFieldValue method with values', function () {
+        expect(fieldHelpers.setFieldValue).to.be.calledOnceWithExactly(values)
+      })
+      it('should invoke the initialised setFieldValue method on the fields', function () {
+        expect(setFieldValueStub).to.be.calledTwice
+        expect(setFieldValueStub.firstCall.args[0]).to.deep.equal([
+          'foo',
+          { component: 'foo' },
+        ])
+        expect(setFieldValueStub.secondCall.args[0]).to.deep.equal([
+          'bar',
+          { component: 'bar' },
+        ])
+      })
+      it('should create setFieldError method with errors', function () {
+        expect(fieldHelpers.setFieldError).to.be.calledOnceWithExactly(errors)
+      })
+      it('should invoke the initialised setFieldError method on the fields', function () {
+        expect(setFieldErrorStub).to.be.calledTwice
+        expect(setFieldErrorStub.firstCall.args[0]).to.deep.equal([
+          'foo',
+          { component: 'foo' },
+        ])
+        expect(setFieldErrorStub.secondCall.args[0]).to.deep.equal([
+          'bar',
+          { component: 'bar' },
+        ])
+      })
+
+      it('should invoke the translateField method on the fields', function () {
+        expect(fieldHelpers.translateField).to.be.calledTwice
+        expect(fieldHelpers.translateField.firstCall.args[0]).to.deep.equal([
+          'foo',
+          { component: 'foo' },
+        ])
+        expect(fieldHelpers.translateField.secondCall.args[0]).to.deep.equal([
+          'bar',
+          { component: 'bar' },
+        ])
+      })
+
+      it('should invoke the renderConditionalFields method on the fields', function () {
+        expect(fieldHelpers.renderConditionalFields).to.be.calledTwice
+        expect(
+          fieldHelpers.renderConditionalFields.firstCall.args[0]
+        ).to.deep.equal(['foo', { component: 'foo' }])
+        expect(
+          fieldHelpers.renderConditionalFields.secondCall.args[0]
+        ).to.deep.equal(['bar', { component: 'bar' }])
       })
     })
   })
