@@ -14,11 +14,12 @@ const {
 } = require('../moves/middleware')
 
 const { FILTERS } = require('./constants')
-const { dashboard } = require('./controllers')
+const { movesRedirect, dashboard } = require('./controllers')
 
 // Define routes
 router.get(
   '/',
+  movesRedirect,
   setBodyMoves('outgoing', 'fromLocationId'),
   setBodyMoves('incoming', 'toLocationId'),
   setBodyAllocations,

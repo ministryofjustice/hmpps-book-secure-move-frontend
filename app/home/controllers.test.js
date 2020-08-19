@@ -1,6 +1,54 @@
 const controllers = require('./controllers')
 
 describe('Home controllers', function () {
+  describe('movesRedirect()', function () {
+    let req, res, next
+
+    beforeEach(function () {
+      req = {
+        session: {
+          user: {
+            permissions: [],
+          },
+        },
+      }
+      res = {
+        redirect: sinon.spy(),
+      }
+      next = sinon.spy()
+    })
+
+    context('without correct permission', function () {
+      beforeEach(function () {
+        controllers.movesRedirect(req, res, next)
+      })
+
+      it('should redirect', function () {
+        expect(res.redirect).to.be.calledOnceWithExactly('/moves')
+      })
+
+      it('should not call next', function () {
+        expect(next).to.not.be.called
+      })
+    })
+
+    context('with correct permission', function () {
+      beforeEach(function () {
+        req.session.user.permissions = ['dashboard:view']
+
+        controllers.movesRedirect(req, res, next)
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).to.not.be.called
+      })
+
+      it('should call next', function () {
+        expect(next).to.be.calledOnce
+      })
+    })
+  })
+
   describe('#dashboard()', function () {
     let req, res
 
@@ -24,13 +72,7 @@ describe('Home controllers', function () {
 
     context('with correct permission', function () {
       beforeEach(function () {
-        req.session.user.permissions = ['dashboard:view']
-
         controllers.dashboard(req, res)
-      })
-
-      it('should not redirect', function () {
-        expect(res.redirect).not.to.be.called
       })
 
       it('should render template', function () {
@@ -65,20 +107,6 @@ describe('Home controllers', function () {
           expect(params.sections[section].filter).to.be.an('array')
           expect(params.sections[section].period).to.be.a('string')
         })
-      })
-    })
-
-    context('without correct permission', function () {
-      beforeEach(function () {
-        controllers.dashboard(req, res)
-      })
-
-      it('should redirect to moves', function () {
-        expect(res.redirect).to.be.calledOnceWithExactly('/moves')
-      })
-
-      it('should not render template', function () {
-        expect(res.render).not.to.be.called
       })
     })
   })
