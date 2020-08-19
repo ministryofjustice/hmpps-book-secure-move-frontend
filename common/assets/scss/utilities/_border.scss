@@ -41,8 +41,12 @@ $_border-widths: (
 /// @access private
 
 @mixin _app-generate-border-classes() {
-  @each $direction in $_border-directions {
-    @each $width in $_border-widths {
+  @each $width in $_border-widths {
+    .app-border-#{$width} {
+      border: #{$width}px solid $govuk-border-colour;
+    }
+
+    @each $direction in $_border-directions {
       .app-border-#{$direction}-#{$width} {
         border-#{$direction}: #{$width}px solid $govuk-border-colour;
       }
