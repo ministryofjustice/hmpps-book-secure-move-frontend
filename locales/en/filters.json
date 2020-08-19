@@ -1,1 +1,8 @@
-{}
+{
+  "selected_filters": {
+    "heading": "Selected filters",
+    "clear_link": "Clear filters",
+    "edit_link": "Edit filters"
+  },
+  "edit_link": "Filter requests"
+}

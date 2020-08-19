@@ -1,0 +1,63 @@
+params:
+  - name: links
+    type: object
+    params:
+      - name: editFilters
+        type: string
+        description: url to edit request filters
+      - name: clearFilters
+        type: string
+        description: url to clear all request filters
+  - name: categories
+    type: array
+    description: Array of filter categories
+    params:
+      - name: heading
+        type: object
+        required: true
+        description: heading to display for filter category
+        params:
+          - name: html
+            type: string
+          - name: text
+            type: string
+      - name: items
+        type: array
+        required: true
+        description: Array of filter items.
+        params:
+          - name: href
+            type: string
+            required: true
+            description: url to remove the filter item.
+          - name: text
+            type: string
+            required: true
+            description: the content to display for filter item
+
+examples:
+  - name: default
+    data:
+      links:
+        editFilters: /edit/filters
+        clearFilters: /clear/filters
+      categories:
+        - heading:
+            text: Filter by species
+          items:
+            - href: /monkey/remove
+              text: Monkey
+            - href: /dog/remove
+              text: Dog
+        - heading:
+            html: Filter by colour
+          items:
+            - href: /brown/remove
+              text: Brown
+  - name: no categories
+    data:
+      links:
+        editFilters: /edit/filters
+  - name: skipped
+    data:
+      links:
