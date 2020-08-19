@@ -5,7 +5,11 @@
     {{ appFilter({
       items: filter
     }) }}
+  {% endif %}
 
+  {{ appRequestFilter(requestFilters) }}
+
+  {% if totalResults > 0 %}
     {% if resultsAsTable.active.rows.length %}
       {{ govukTable(resultsAsTable.active) }}
     {% else %}
