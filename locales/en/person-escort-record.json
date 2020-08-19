@@ -15,6 +15,26 @@
       "content":"Once you are confident the information below is correct and won’t change, provide your confirmation that this record is correct in order to complete it.\n\n!!! warning\nOnce you confirm and complete the Person Escort Record you will no longer be able to update the information.\n!!!"
     }
   },
+  "sections": {
+    "handover": {
+      "heading": "Escort handover details",
+      "subheading": "Handover",
+      "fields": {
+        "dispatching_officer": "Dispatching officer",
+        "receiving_officer": "Receiving officer",
+        "time": "Time",
+        "date": "Date",
+        "establishment": "Establishment",
+        "phone": "Phone",
+        "name": "Name",
+        "id": "ID",
+        "signature": "Signature"
+      }
+    },
+    "property_handover": {
+      "heading": "Property and cash handover"
+    }
+  },
   "flags": {
     "incomplete": "Warnings will display once a Person Escort Record has been completed",
     "empty": "No {{name}} warnings. View <a href=\"{{url}}\">all answers</a>.",

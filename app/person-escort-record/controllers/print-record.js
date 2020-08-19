@@ -1,4 +1,4 @@
-const { filter, orderBy, sortBy } = require('lodash')
+const { filter, find, orderBy, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
 
@@ -25,6 +25,8 @@ function printRecord(req, res) {
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
   const moveId = move?.id
+  const destination = move?.to_location?.title
+  const moveType = move?.move_type
   const fullname = profile?.person?.fullname
   const moveSummary = presenters.moveToSummaryListComponent(move)
   const personalDetailsSummary = presenters.personToSummaryListComponent(
@@ -78,9 +80,33 @@ function printRecord(req, res) {
     key: 'escape-risk',
     expectedValue: 'Yes',
   })
+  const propertyBags = find(personEscortRecord?.responses, [
+    'question.key',
+    'property-bags',
+  ])
+  const sealNumberQuestion = find(propertyBags?.question?.descendants, {
+    key: 'property-bag-seal-number',
+  })
+  const propertyBagsQuestion = find(framework?.questions, {
+    name: 'property-bags',
+  })
+  const sealNumberFrameworkQuestion = find(framework?.questions, {
+    name: 'property-bag-seal-number',
+  })
+  const sealNumberDescription = sealNumberFrameworkQuestion?.question
+  const propertyItemName = propertyBagsQuestion?.itemName
+  const propertyToHandover = propertyBags?.value.map(item => {
+    return item.responses
+      .filter(
+        response => response.framework_question_id === sealNumberQuestion.id
+      )
+      .map(response => response.value)
+  })
 
   const locals = {
     moveId,
+    moveType,
+    destination,
     fullname,
     reference,
     moveSummary,
@@ -88,6 +114,9 @@ function printRecord(req, res) {
     courtHearings,
     isEscapeRisk,
     hasSelfHarmWarning,
+    propertyToHandover,
+    propertyItemName,
+    sealNumberDescription,
     requiresMedicationDuringTransport,
     personalDetailsSummary,
     personEscortRecordSections,

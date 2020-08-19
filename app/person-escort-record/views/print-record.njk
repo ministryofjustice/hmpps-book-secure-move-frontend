@@ -254,6 +254,108 @@
         </section>
       {% endif %}
     </div>
+
+    <div class="app-print-page">
+      <section class="app-!-position-relative govuk-!-margin-bottom-7">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+          {{ t("person-escort-record::sections.handover.heading") }}
+        </h2>
+
+        {% for handover in [1, 2, 3, 4, 5] %}
+          {% set estText = destination if loop.first else "..................................." %}
+          <div class="app-border-bottom-1 govuk-!-padding-bottom-4{{ ' govuk-!-margin-bottom-4' if not loop.last }} ">
+            <h3 class="govuk-heading-s govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+              {{ t("person-escort-record::sections.handover.subheading") }} {{ loop.index }}
+            </h3>
+
+            <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
+              {{ t("person-escort-record::sections.handover.fields.time") }}: ........&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: ................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.establishment") }}: {{ estText }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: ................
+            </p>
+
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-one-half-at-mobile">
+                <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                  {{ t("person-escort-record::sections.handover.fields.dispatching_officer") }}
+                </h4>
+
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
+                  {{ t("person-escort-record::sections.handover.fields.name") }}: ........................................&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: ........
+                </p>
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: ..................................................
+                </p>
+              </div>
+
+              <div class="govuk-grid-column-one-half-at-mobile">
+                <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                  {{ t("person-escort-record::sections.handover.fields.receiving_officer") }}
+                </h4>
+
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
+                  {{ t("person-escort-record::sections.handover.fields.name") }}: ........................................&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: ........
+                </p>
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: ..................................................
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </section>
+
+      {% if propertyToHandover.length > 0 %}
+        <section class="app-!-position-relative govuk-!-margin-bottom-7">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+            {{ t("person-escort-record::sections.property_handover.heading") }}
+          </h2>
+
+          {% for item in propertyToHandover %}
+
+            <h3 class="govuk-heading-s govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+              <span class="govuk-caption-m govuk-!-font-size-16">
+                {{ propertyItemName }} {{ loop.index }} {{ sealNumberDescription | lower }}
+              </span>
+              {{ item }}
+            </h3>
+
+            <ul class="app-checklist govuk-!-margin-top-2 govuk-!-font-size-16">
+              <li>
+                <strong>
+                  OUT:
+                </strong>
+                dispatching establishment
+              </li>
+              <li>
+                <strong>
+                  OUT:
+                </strong>
+                escort on collection
+              </li>
+              {% if moveType == "court_appearance" %}
+              <li>
+                <strong>
+                  OUT:
+                </strong>
+                at court
+              </li>
+              <li>
+                <strong>
+                  OUT ESCORT:
+                </strong>
+                escort on collection from court
+              </li>
+              {% endif %}
+              <li>
+                <strong>
+                  IN:
+                </strong>
+                HMP or Police for lockouts
+              </li>
+            </ul>
+          {% endfor %}
+        </section>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
 
