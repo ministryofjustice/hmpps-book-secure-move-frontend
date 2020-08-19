@@ -1,8 +1,32 @@
 {
+  "heading": "Filter requests",
+  "submit": "Apply filters",
+  "filters": {
+    "heading": "Filter"
+  },
   "selected_filters": {
     "heading": "Selected filters",
     "clear_link": "Clear filters",
     "edit_link": "Edit filters"
+  },
+  "age": {
+    "legend": "Filter by age group",
+    "legend_display": "Age group",
+    "all": {
+      "label": "No filter applied"
+    },
+    "over19": {
+      "label": "Over 19 years"
+    },
+    "under19": {
+      "label": "19 years and under"
+    },
+    "17to19": {
+      "label": "17 years and 8 months to 19 years"
+    },
+    "under17": {
+      "label": "Under 17 years and 8 months"
+    }
   },
   "edit_link": "Filter requests"
 }
