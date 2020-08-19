@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.38.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.4...v2.38.0) (2020-08-19)
+
+
+### Features
+
+* **formwizard:** Add support for "Add another" style fields ([b9ff6c5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b9ff6c510e9d87e239850307cb03711202b73a21))
+* **frameworks:** Add support for "Add multiple" questions ([e749d22](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e749d2285aabc2ada090175d0fb00bc510c4263c))
+* **frameworks:** Load framework on runtime so support multiple verisons ([1907887](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1907887cdba11b1fe71b279b7367762816f58af8))
+* **move:** Enable hospital move type for police user [P4-1833] ([073e68f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/073e68f961e809aebf8333ae1d09b49826625285))
+* **move:** Enable hospital move type for prison user [P4-1829] ([afcb9c2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/afcb9c246ecb6e91dc5ec27e499e340c587066ab))
+* **move:** Enable hospital move type for sch user [P4-1838] ([5318966](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/53189668218b0660b57e2c7af66b1c9da289344a))
+* **move:** Enable hospital move type for stc user [P4-1837] ([3991db0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3991db02a960eaedaa5aff478228247b34bfb7ed))
+* **per:** Add handover section to print version ([31fabd9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/31fabd93ceb06f0684eb25151ac343ffc8baf84f))
+
+
+### Bug Fixes
+
+* **framework:** Change condition to cater for conditional last steps ([085cc3f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/085cc3f1cdfe033769c65dc6e3d46a9aafae52a6))
+* Fix spacing of nested conditional form elements from Design System ([e99170b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e99170bfa7887044fb987a93edac0f108ebfe019))
+* **move:** Prevent undefined additional_info being sent to patch move ([ab06a87](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ab06a87528c33c733dae16065839894540f12008))
+
 ### [2.37.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.3...v2.37.4) (2020-08-07)
 
 
