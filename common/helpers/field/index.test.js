@@ -151,8 +151,6 @@ describe('Form helpers', function () {
             ).to.be.calledWithExactly('govukInput', {
               component: 'govukInput',
               classes: 'input-classes',
-              id: 'conditional_field_one',
-              name: 'conditional_field_one',
             })
           })
 
@@ -162,8 +160,6 @@ describe('Form helpers', function () {
             ).to.be.calledWithExactly('govukTextarea', {
               component: 'govukTextarea',
               classes: 'input-classes',
-              id: 'conditional_field_two',
-              name: 'conditional_field_two',
             })
           })
 
@@ -227,6 +223,7 @@ describe('Form helpers', function () {
         const field = [
           'field',
           {
+            id: 'field',
             name: 'field',
             items: [
               {
@@ -266,6 +263,7 @@ describe('Form helpers', function () {
         const field = [
           'field',
           {
+            id: 'field',
             name: 'field',
             items: [
               {
@@ -317,8 +315,6 @@ describe('Form helpers', function () {
           ).to.be.calledWithExactly('govukInput', {
             component: 'govukInput',
             classes: 'input-classes',
-            id: 'conditional_field_one',
-            name: 'conditional_field_one',
           })
         })
 
@@ -328,8 +324,6 @@ describe('Form helpers', function () {
           ).to.be.calledWithExactly('govukTextarea', {
             component: 'govukTextarea',
             classes: 'input-classes',
-            id: 'conditional_field_two',
-            name: 'conditional_field_two',
           })
         })
 

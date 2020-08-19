@@ -1,4 +1,4 @@
-const { kebabCase, pickBy, isEmpty } = require('lodash')
+const { isEmpty } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -35,6 +35,21 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setButtonText)
   }
 
+  setInitialValues(req, res, next) {
+    const fields = req.form.options.fields
+    const responses = req.personEscortRecord.responses
+    const savedValues = responses
+      .filter(response => fields[response.question?.key])
+      .filter(response => !isEmpty(response.value))
+      .reduce(frameworksHelpers.reduceResponsesToFormValues, {})
+
+    if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
+      req.sessionModel.set(savedValues)
+    }
+
+    next()
+  }
+
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
     const isInterruptionCard = stepType === 'interruption-card'
@@ -55,53 +70,6 @@ class FrameworkStepController extends FormWizardController {
   setPageTitleLocals(req, res, next) {
     res.locals.frameworkSection = req.frameworkSection.name
     next()
-  }
-
-  reduceResponses(accumulator, { value, value_type: valueType, question }) {
-    const field = question.key
-
-    if (valueType === 'object') {
-      accumulator[field] = value.option
-      accumulator[`${field}--${kebabCase(value.option)}`] = value.details
-    }
-
-    if (valueType === 'collection') {
-      accumulator[field] = value.map(item => item.option)
-      value.forEach(item => {
-        accumulator[`${field}--${kebabCase(item.option)}`] = item.details
-      })
-    }
-
-    if (valueType === 'string' || valueType === 'array') {
-      accumulator[field] = value
-    }
-
-    return accumulator
-  }
-
-  getValues(req, res, callback) {
-    const { errors, errorValues } = req.sessionModel.toJSON()
-    const fields = req.form.options.fields
-    const responses = req.personEscortRecord.responses
-    const savedValues = responses
-      .filter(response => fields[response.question?.key])
-      .filter(response => response.value)
-      .reduce(this.reduceResponses, {})
-
-    // pick errorValues that are for this step's fields
-    // pick errorValues that were generated on the same url
-    const stepErrorValues = pickBy(
-      errorValues,
-      (e, k) =>
-        Object.prototype.hasOwnProperty.call(fields, k) &&
-        (!errors || !errors[k] || !errors[k].url || errors[k].url === req.path)
-    )
-
-    if (!isEmpty(stepErrorValues)) {
-      return callback(null, stepErrorValues)
-    }
-
-    callback(null, savedValues)
   }
 
   async saveValues(req, res, next) {

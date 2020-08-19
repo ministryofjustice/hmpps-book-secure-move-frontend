@@ -1,6 +1,7 @@
 const cancellationReason = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'cancellation_reason',
   name: 'cancellation_reason',
   fieldset: {
     legend: {

@@ -1,6 +1,7 @@
 const hasOtherCriteria = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'has_other_criteria',
   name: 'has_other_criteria',
   label: {
     text: 'fields::has_other_criteria.label',

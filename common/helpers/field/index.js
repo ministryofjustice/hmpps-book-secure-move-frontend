@@ -16,7 +16,9 @@ const componentService = require('../../services/component')
 const flattenConditionalFields = require('./flatten-conditional-fields')
 const getFieldErrorMessage = require('./get-field-error-message')
 const isAllowedDependent = require('./is-allowed-dependent')
+const reduceAddAnotherFields = require('./reduce-add-another-fields')
 const reduceDependentFields = require('./reduce-dependent-fields')
+const renderAddAnotherFields = require('./render-add-another-fields')
 const setFieldError = require('./set-field-error')
 
 function mapReferenceDataToOption({
@@ -83,19 +85,19 @@ function renderConditionalFields([key, field], index, obj) {
       ...field,
       items: field.items.map(item => {
         const conditionalFields = concat([], item.conditional)
-
         const components = conditionalFields.map(conditionalFieldKey => {
-          const conditionalField = fields[conditionalFieldKey]
+          const conditionalField = field.prefix
+            ? fields[`${field.prefix}[${conditionalFieldKey}]`]
+            : fields[conditionalFieldKey]
 
           if (!conditionalField) {
             return
           }
 
-          return componentService.getComponent(conditionalField.component, {
-            ...conditionalField,
-            id: conditionalFieldKey,
-            name: conditionalFieldKey,
-          })
+          return componentService.getComponent(
+            conditionalField.component,
+            conditionalField
+          )
         })
 
         if (!compact(components).length) {
@@ -254,4 +256,6 @@ module.exports = {
   populateAssessmentFields,
   flattenConditionalFields,
   reduceDependentFields,
+  reduceAddAnotherFields,
+  renderAddAnotherFields,
 }

@@ -17,7 +17,17 @@ const uiComponentMap = {
   radio: 'govukRadios',
   checkbox: 'govukCheckboxes',
   textarea: 'govukTextarea',
+  text: 'govukInput',
+  add_multiple_items: 'appAddAnother',
   default: 'govukInput',
+}
+const inputWidthClasses = {
+  20: 'govuk-input--width-20',
+  10: 'govuk-input--width-10',
+  5: 'govuk-input--width-5',
+  4: 'govuk-input--width-4',
+  3: 'govuk-input--width-3',
+  2: 'govuk-input--width-2',
 }
 
 function buildCommentField(
@@ -25,12 +35,14 @@ function buildCommentField(
   dependentValue,
   followupComment = {}
 ) {
+  const component = uiComponentMap[followupComment.type] || 'govukTextarea'
+  const { rows = 4, character_width: charWidth } = followupComment.display || {}
   const field = {
-    rows: 4,
+    rows,
+    component,
     name: `${dependentField}--${kebabCase(dependentValue)}`,
     id: `${dependentField}--${kebabCase(dependentValue)}`,
-    component: 'govukTextarea',
-    classes: 'govuk-input--width-20',
+    classes: inputWidthClasses[charWidth] || 'govuk-input--width-20',
     label: {
       text: followupComment.label,
       classes: 'govuk-label--s',
@@ -78,7 +90,17 @@ const frameworksService = {
 
   transformQuestion(
     key,
-    { question, hint, options, validations = [], type, description } = {}
+    {
+      description,
+      display = {},
+      hint,
+      list_item_name: itemName,
+      options,
+      question,
+      questions,
+      type,
+      validations = [],
+    } = {}
   ) {
     if (!key) {
       return {}
@@ -90,6 +112,10 @@ const frameworksService = {
       question,
       description,
       component,
+      itemName,
+      rows: display.rows,
+      classes: inputWidthClasses[display.character_width] || '',
+      descendants: questions,
       id: key,
       name: key,
       validate: validations,
@@ -109,6 +135,15 @@ const frameworksService = {
 
     if (type === 'checkbox') {
       field.multiple = true
+    }
+
+    if (type === 'add_multiple_items') {
+      // allow the form wizard to store the value as an array
+      field.multiple = true
+      // prevent the form wizard processing these fields
+      field['ignore-defaults'] = true
+      // use `default` to start with one empty item
+      field.default = [{}]
     }
 
     if (options) {

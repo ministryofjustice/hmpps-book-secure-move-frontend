@@ -9,10 +9,10 @@ describe('Field helpers', function () {
     }
     const mockAllFields = {
       conditionalField1: {
-        name: 'conditional-field-one',
+        name: 'conditionalField1',
       },
       conditionalField2: {
-        name: 'conditional-field-two',
+        name: 'conditionalField2',
       },
     }
 
@@ -79,7 +79,8 @@ describe('Field helpers', function () {
             expect(response).to.deep.equal({
               ...mockAccumulator,
               conditionalField1: {
-                name: 'conditional-field-one',
+                id: 'conditionalField1',
+                name: 'conditionalField1',
                 skip: true,
                 dependent: {
                   field: 'court',
@@ -124,7 +125,8 @@ describe('Field helpers', function () {
             expect(response).to.deep.equal({
               ...mockAccumulator,
               conditionalField1: {
-                name: 'conditional-field-one',
+                id: 'conditionalField1',
+                name: 'conditionalField1',
                 skip: true,
                 dependent: {
                   field: 'court',
@@ -132,7 +134,8 @@ describe('Field helpers', function () {
                 },
               },
               conditionalField2: {
-                name: 'conditional-field-two',
+                id: 'conditionalField2',
+                name: 'conditionalField2',
                 skip: true,
                 dependent: {
                   field: 'court',

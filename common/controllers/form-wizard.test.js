@@ -12,6 +12,10 @@ describe('Form wizard', function () {
     beforeEach(function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
       sinon.stub(controller, 'use')
+      sinon.stub(controller, 'setInitialValues')
+      sinon.stub(controller, 'setupAddMultipleFields')
+      sinon.stub(controller, 'setupConditionalFields')
+      sinon.stub(controller, 'setFieldContext')
 
       controller.middlewareSetup()
     })
@@ -20,20 +24,32 @@ describe('Form wizard', function () {
       expect(FormController.prototype.middlewareSetup).to.have.been.calledOnce
     })
 
-    it('should call set conditional fields method', function () {
-      expect(controller.use.firstCall).to.have.been.calledWithExactly(
+    it('should set initial values', function () {
+      expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+        controller.setInitialValues
+      )
+    })
+
+    it('should setup add multiple fields', function () {
+      expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+        controller.setupAddMultipleFields
+      )
+    })
+
+    it('should setup conditional fields', function () {
+      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
         controller.setupConditionalFields
       )
     })
 
-    it('should call set field context method', function () {
-      expect(controller.use.secondCall).to.have.been.calledWithExactly(
+    it('should set field context', function () {
+      expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
         controller.setFieldContext
       )
     })
 
     it('should call correct number of middleware', function () {
-      expect(controller.use).to.be.callCount(2)
+      expect(controller.use).to.be.callCount(4)
     })
   })
 
@@ -148,7 +164,7 @@ describe('Form wizard', function () {
   })
 
   describe('#getErrors()', function () {
-    let errors
+    let errors, reqMock
 
     beforeEach(function () {
       sinon
@@ -157,12 +173,27 @@ describe('Form wizard', function () {
           return `${key}.${type}`
         })
       sinon.stub(FormController.prototype, 'getErrors')
+      reqMock = {
+        form: {
+          options: {
+            fields: {
+              fieldOne: {
+                id: 'field-one',
+              },
+              fieldTwo: {
+                id: 'field-two',
+              },
+            },
+          },
+        },
+        t: sinon.stub().returnsArg(0),
+      }
     })
 
     context('when parent returns empty errors object', function () {
       beforeEach(function () {
         FormController.prototype.getErrors.returns({})
-        errors = controller.getErrors({}, {})
+        errors = controller.getErrors(reqMock, {})
       })
 
       it('should set an empty error list property', function () {
@@ -186,9 +217,6 @@ describe('Form wizard', function () {
 
       beforeEach(function () {
         FormController.prototype.getErrors.returns(mockErrors)
-        const reqMock = {
-          t: sinon.stub().returnsArg(0),
-        }
         errors = controller.getErrors(reqMock, {})
       })
 
@@ -223,11 +251,11 @@ describe('Form wizard', function () {
           },
           errorList: [
             {
-              href: `#${mockErrors.fieldOne.key}`,
+              href: `#${reqMock.form.options.fields.fieldOne.id}`,
               html: `${mockErrors.fieldOne.key}.${mockErrors.fieldOne.type}`,
             },
             {
-              href: `#${mockErrors.fieldTwo.key}`,
+              href: `#${reqMock.form.options.fields.fieldTwo.id}`,
               html: `${mockErrors.fieldTwo.key}.${mockErrors.fieldTwo.type}`,
             },
           ],
