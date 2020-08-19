@@ -70,6 +70,8 @@ describe('Single request service', function () {
       const mockCreatedDateRange = ['2020-10-10', '2020-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockDOBFrom = '2000-01-01'
+      const mockDOBTo = '2010-01-01'
 
       context('with all arguments', function () {
         beforeEach(async function () {
@@ -79,6 +81,8 @@ describe('Single request service', function () {
             createdAtDate: mockCreatedDateRange,
             fromLocationId: mockFromLocationId,
             toLocationId: mockToLocationId,
+            dateOfBirthFrom: mockDOBFrom,
+            dateOfBirthTo: mockDOBTo,
           })
         })
 
@@ -96,6 +100,8 @@ describe('Single request service', function () {
               'filter[has_relationship_to_allocation]': false,
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
+              'filter[date_of_birth_from]': mockDOBFrom,
+              'filter[date_of_birth_to]': mockDOBTo,
               'filter[created_at_from]': mockCreatedDateRange[0],
               'filter[created_at_to]': mockCreatedDateRange[1],
               'filter[from_location_id]': mockFromLocationId,
