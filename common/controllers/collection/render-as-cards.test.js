@@ -99,6 +99,7 @@ describe('Collection controllers', function () {
             }
             req.params = {
               locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
+              dateRange: ['2020-10-01', '2020-10-10'],
             }
             permissions.check.withArgs('move:view', ['move:view']).returns(true)
 

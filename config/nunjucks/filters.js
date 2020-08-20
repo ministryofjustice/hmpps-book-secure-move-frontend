@@ -27,6 +27,14 @@ function _isRelativeDate(date) {
   )
 }
 
+function _isCurrentWeek(date) {
+  const options = { weekStartsOn: 1 }
+  const [startDate, endDate] = date.map(date =>
+    isDate(date) ? date : parseISO(date)
+  )
+  return isThisWeek(startDate, options) && isThisWeek(endDate, options)
+}
+
 /**
  * Formats a date into the desired string format
  *
@@ -116,14 +124,7 @@ function formatDateRangeAsRelativeWeek(value) {
     return formatDate(dates[0])
   }
 
-  const options = { weekStartsOn: 1 }
-  const [startDate, endDate] = dates.map(date =>
-    isDate(date) ? date : parseISO(date)
-  )
-  const isCurrentWeek =
-    isThisWeek(startDate, options) && isThisWeek(endDate, options)
-
-  if (isCurrentWeek) {
+  if (_isCurrentWeek(dates)) {
     return i18n.t('actions::current_week')
   }
 
@@ -201,6 +202,32 @@ function formatDateWithRelativeDay(value) {
   return _isRelativeDate(value)
     ? `${dateWithDay} (${formatDateAsRelativeDay(value)})`
     : dateWithDay
+}
+
+/**
+ * Returns current date formatted with week along with
+ * this week in brackets (when applicable)
+ *
+ * @param  {Any} a any type
+ *
+ * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRangeWithRelativeWeek }}
+ */
+function formatDateRangeWithRelativeWeek(value) {
+  const dates = filter(value)
+
+  if (!value || !Array.isArray(value) || dates.length === 0) {
+    return value
+  }
+
+  if (dates.length === 1) {
+    return formatDate(dates[0])
+  }
+
+  const dateWithWeek = formatDateRange(value)
+
+  return _isCurrentWeek(dates)
+    ? `${dateWithWeek} (${formatDateRangeAsRelativeWeek(value)})`
+    : dateWithWeek
 }
 
 /**
@@ -283,6 +310,7 @@ module.exports = {
   formatDate,
   formatDateRange,
   formatDateRangeAsRelativeWeek,
+  formatDateRangeWithRelativeWeek,
   formatDateWithDay,
   formatDateWithRelativeDay,
   formatDateAsRelativeDay,

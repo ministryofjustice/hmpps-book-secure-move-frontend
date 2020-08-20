@@ -7,17 +7,16 @@
 {% endblock %}
 
 {% if period === 'week' %}
-  {% set datetime = dateRange | formatISOWeek %}
-  {% set displayDate = dateRange | formatDateRangeAsRelativeWeek %}
+  {% set displayDate = dateRange | formatDateRangeWithRelativeWeek %}
 {% else %}
   {% set datetime = dateRange | first %}
-  {% set displayDate = datetime | formatDateAsRelativeDay %}
+  {% set displayDate = datetime | formatDateWithRelativeDay %}
 {% endif %}
 
 {% block pageTitle %}
   {{ t("collections::page_title_with_date", {
     context: context,
-    date: displayDate | lower
+    date: displayDate
   }) }}
 {% endblock %}
 
@@ -26,16 +25,14 @@
   {% block pageHeader %}
     <header class="govuk-grid-row govuk-!-margin-bottom-7">
       <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-xl">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+          <span class="govuk-caption-xl">
           {{ t("collections::subheading", {
             context: context
           }) }}
-        </span>
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
-          {{ appTime({
-            datetime: datetime,
-            text: displayDate
-          }) }}
+          </span>
+
+          <span class="govuk-!-display-block">{{ displayDate }}</span>
         </h1>
 
         {% block dateNavigation %}

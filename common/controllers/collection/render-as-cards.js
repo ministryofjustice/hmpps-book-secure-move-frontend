@@ -1,11 +1,9 @@
-const { get } = require('lodash')
-
 const permissions = require('../../middleware/permissions')
 
 module.exports = function listAsCards(req, res) {
   const { actions, context, pagination, params, resultsAsCards, session } = req
   const { dateRange, locationId, period } = params
-  const userPermissions = get(session, 'user.permissions')
+  const userPermissions = session?.user?.permissions ?? []
   const canViewMove = permissions.check('move:view', userPermissions)
   const template =
     canViewMove && locationId ? 'collection-as-cards' : 'moves/views/download'

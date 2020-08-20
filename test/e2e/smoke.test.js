@@ -61,16 +61,16 @@ users.forEach(user => {
       .ok()
       // Navigate
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Today')
+      .contains('Today')
       .click(movesDashboardPage.nodes.pagination.previousLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Yesterday')
+      .contains('Yesterday')
       .click(movesDashboardPage.nodes.pagination.todayLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Today')
+      .contains('Today')
       .click(movesDashboardPage.nodes.pagination.nextLink)
       .expect(page.nodes.pageHeading.innerText)
-      .eql('Tomorrow')
+      .contains('Tomorrow')
       // Sign out
       .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)
@@ -96,7 +96,7 @@ usersWhoHaveADashboard.forEach(user => {
       // Navigate
       .click(user.homeButton)
       .expect(page.nodes.pageHeading.innerText)
-      .eql(user.timePeriod)
+      .contains(user.timePeriod)
       // Sign out
       .click(page.nodes.signOutLink)
       .expect(page.nodes.signInHeader.exists)
