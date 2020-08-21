@@ -14,7 +14,6 @@ function setfilterSingleRequests(items = []) {
               ...get(req, 'body.requested', {}),
               isAggregation: true,
               status: item.status,
-              supplierId: req.session?.user?.supplierId,
             },
             isUndefined
           )

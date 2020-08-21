@@ -6,13 +6,7 @@ const singleRequestService = require('../../../common/services/single-request')
 async function setResultsSingleRequests(req, res, next) {
   try {
     const singleRequests = await singleRequestService.getAll(
-      omitBy(
-        {
-          ...req.body.requested,
-          supplierId: req.session?.user?.supplierId,
-        },
-        isUndefined
-      )
+      omitBy(req.body.requested, isUndefined)
     )
 
     req.resultsAsTable = {

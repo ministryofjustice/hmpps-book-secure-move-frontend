@@ -19,7 +19,6 @@ const singleRequestService = {
     isAggregation = false,
     sortBy = 'created_at',
     sortDirection = 'desc',
-    supplierId = undefined,
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
     const [createdAtFrom, createdAtTo] = createdAtDate
@@ -70,7 +69,6 @@ const singleRequestService = {
           'filter[created_at_from]': createdAtFrom,
           'filter[created_at_to]': createdAtTo,
           'filter[move_type]': 'prison_transfer',
-          'filter[supplier_id]': supplierId,
           'sort[by]': sortBy,
           'sort[direction]': sortDirection,
         },
