@@ -35,6 +35,7 @@ describe('Moves middleware', function () {
         expect(mockReq.body[mockBodyProperty]).to.deep.equal({
           dateRange: ['2020-10-10', '2020-10-10'],
           [mockLocationProperty]: mockReq.locations,
+          supplierId: undefined,
         })
       })
 
@@ -56,6 +57,38 @@ describe('Moves middleware', function () {
         expect(mockReq.body[mockBodyProperty]).to.deep.equal({
           dateRange: '#currentDayAsRange',
           [mockLocationProperty]: mockReq.locations,
+          supplierId: undefined,
+        })
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with supplier id', function () {
+      let mockReqWithSupplierId
+      beforeEach(function () {
+        mockReqWithSupplierId = {
+          ...mockReq,
+          session: {
+            user: {
+              supplierId: '#supplier',
+            },
+          },
+        }
+        middleware(mockBodyProperty, mockLocationProperty)(
+          mockReqWithSupplierId,
+          mockRes,
+          nextSpy
+        )
+      })
+
+      it('should assign req.body correctly', function () {
+        expect(mockReqWithSupplierId.body[mockBodyProperty]).to.deep.equal({
+          dateRange: '#currentDayAsRange',
+          [mockLocationProperty]: mockReq.locations,
+          supplierId: '#supplier',
         })
       })
 

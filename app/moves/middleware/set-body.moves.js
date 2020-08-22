@@ -10,6 +10,7 @@ function setBodyMoves(property, locationProperty) {
     set(req, `body.${property}`, {
       dateRange: dateRange || dateHelpers.getCurrentDayAsRange(),
       [locationProperty]: locations,
+      supplierId: req.session?.user?.supplierId,
     })
 
     next()
