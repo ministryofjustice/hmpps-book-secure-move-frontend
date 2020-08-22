@@ -89,5 +89,37 @@ describe('Set locations middleware', function () {
         expect(req.locations).to.deep.equal([])
       })
     })
+
+    context('when a supplier has a current location', function () {
+      beforeEach(function () {
+        req.session.currentLocation = { id: '#currentLocation' }
+        req.session.user = {
+          supplierId: '#supplier',
+          locations: [{ id: '#userLocations' }],
+        }
+        setLocations(req, res, next)
+      })
+
+      it('set the locations to the current location', function () {
+        expect(req.locations).to.deep.equal(['#currentLocation'])
+      })
+    })
+
+    context(
+      'when a supplier has neither current region or location',
+      function () {
+        beforeEach(function () {
+          req.session.user = {
+            supplierId: '#supplier',
+            locations: [{ id: '#userLocations' }],
+          }
+          setLocations(req, res, next)
+        })
+
+        it('set the locations to an empty array', function () {
+          expect(req.locations).to.deep.equal([])
+        })
+      }
+    )
   })
 })
