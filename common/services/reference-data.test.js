@@ -1,8 +1,13 @@
 const { sortBy } = require('lodash')
+const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
 
-const referenceDataService = require('./reference-data')
+const restClient = sinon.stub()
+
+const referenceDataService = proxyquire('./reference-data', {
+  '../lib/api-client/rest-client': restClient,
+})
 
 const mockGenders = [
   {
@@ -647,39 +652,8 @@ describe('Reference Data Service', function () {
       let locations
 
       beforeEach(async function () {
-        sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
-      })
-
-      context('without id', function () {
-        beforeEach(async function () {
-          locations = await referenceDataService.getLocationsBySupplierId()
-        })
-
-        it('should call getMoves methods', function () {
-          expect(referenceDataService.getLocations).to.be.calledOnce
-        })
-
-        it('should return first result', function () {
-          expect(locations).to.deep.equal(mockResponse)
-        })
-
-        describe('filters', function () {
-          let filters
-
-          beforeEach(function () {
-            filters = referenceDataService.getLocations.args[0][0].filter
-          })
-
-          it('should set location_type filter to undefined', function () {
-            expect(filters).to.contain.property('filter[supplier_id]')
-            expect(filters['filter[supplier_id]']).to.equal(undefined)
-          })
-
-          it('should set cache to false', function () {
-            expect(filters).to.contain.property('cache')
-            expect(filters.cache).to.equal(false)
-          })
-        })
+        restClient.resetHistory()
+        restClient.resolves({ data: mockResponse })
       })
 
       context('with id', function () {
@@ -691,30 +665,17 @@ describe('Reference Data Service', function () {
           )
         })
 
-        it('should call getMoves methods', function () {
-          expect(referenceDataService.getLocations).to.be.calledOnce
+        it('should call the supplier location endpoint', function () {
+          expect(restClient).to.be.calledOnceWithExactly(
+            '/suppliers/d335715f-c9d1-415c-a7c8-06e830158214/locations',
+            {
+              per_page: 2000,
+            }
+          )
         })
 
-        it('should return first result', function () {
+        it('should return locations', function () {
           expect(locations).to.deep.equal(mockResponse)
-        })
-
-        describe('filters', function () {
-          let filters
-
-          beforeEach(function () {
-            filters = referenceDataService.getLocations.args[0][0].filter
-          })
-
-          it('should set location_type filter to agency ID', function () {
-            expect(filters).to.contain.property('filter[supplier_id]')
-            expect(filters['filter[supplier_id]']).to.equal(mockId)
-          })
-
-          it('should set cache to false', function () {
-            expect(filters).to.contain.property('cache')
-            expect(filters.cache).to.equal(false)
-          })
         })
       })
     })

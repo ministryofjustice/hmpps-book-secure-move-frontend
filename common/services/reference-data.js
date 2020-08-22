@@ -1,6 +1,7 @@
 const { flattenDeep, sortBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
+const restClient = require('../lib/api-client/rest-client')
 
 const referenceDataService = {
   getGenders() {
@@ -83,13 +84,18 @@ const referenceDataService = {
     })
   },
 
-  getLocationsBySupplierId(supplierId) {
-    return referenceDataService.getLocations({
-      filter: {
-        cache: false,
-        'filter[supplier_id]': supplierId,
-      },
+  async getLocationsBySupplierId(supplierId) {
+    const { data } = await restClient(`/suppliers/${supplierId}/locations`, {
+      per_page: 2000,
     })
+    const locations = data.map(location => {
+      const { attributes, relationships, ...values } = location
+      return {
+        ...values,
+        ...attributes,
+      }
+    })
+    return locations
   },
 
   getRegionById(id, { include } = {}) {
