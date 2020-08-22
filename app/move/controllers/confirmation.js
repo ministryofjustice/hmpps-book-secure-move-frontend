@@ -8,11 +8,6 @@ function confirmation(req, res) {
     to_location: toLocation,
   } = move
   const { moves: allocationMoves = [] } = req.allocation || {}
-  const suppliers = move?.from_location?.suppliers
-  const supplierNames =
-    suppliers && suppliers.length
-      ? map(suppliers, 'name')
-      : [req.t('supplier_fallback')]
   const savedHearings = map(
     filter(courtHearings, 'saved_to_nomis'),
     'case_number'
@@ -30,7 +25,6 @@ function confirmation(req, res) {
   const locals = {
     move,
     unassignedMoveId,
-    supplierNames,
     savedHearings,
     unsavedHearings,
     location: useLabelForLocationTitle.includes(moveType)
