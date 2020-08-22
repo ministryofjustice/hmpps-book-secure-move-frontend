@@ -14,11 +14,14 @@ const batchRequest = proxyquire('./batch-request', {
 })
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
+const restClient = sinon.stub()
+
 const moveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
+  '../lib/api-client/rest-client': restClient,
 })
 
 const mockMove = {
@@ -815,7 +818,8 @@ describe('Move Service', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+      restClient.resetHistory()
+      restClient.resolves('#download')
     })
 
     context('without arguments', function () {
@@ -824,20 +828,20 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          filter: {
+        expect(restClient).to.be.calledOnceWithExactly(
+          '/moves',
+          {
             'filter[status]':
               'requested,accepted,booked,in_transit,completed,cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
           },
-        })
+          {
+            format: 'text/csv',
+          }
+        )
       })
 
       it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
+        expect(moves).to.deep.equal('#download')
       })
     })
 
@@ -855,8 +859,9 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          filter: {
+        expect(restClient).to.be.calledOnceWithExactly(
+          '/moves',
+          {
             'filter[status]':
               'requested,accepted,booked,in_transit,completed,cancelled',
             'filter[date_from]': mockDateRange[0],
@@ -864,11 +869,14 @@ describe('Move Service', function () {
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
           },
-        })
+          {
+            format: 'text/csv',
+          }
+        )
       })
 
       it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
+        expect(moves).to.deep.equal('#download')
       })
     })
   })

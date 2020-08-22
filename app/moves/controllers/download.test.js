@@ -1,7 +1,5 @@
 const { format } = require('date-fns')
 
-const presenters = require('../../../common/presenters')
-
 const controller = require('./download')
 
 const mockDateRange = ['2018-10-10', '2018-10-17']
@@ -37,7 +35,6 @@ describe('Moves controllers', function () {
         locals: {},
       }
       nextSpy = sinon.spy()
-      sinon.stub(presenters, 'movesToCSV')
       this.clock = sinon.useFakeTimers(mockDownloadDate.getTime())
     })
 
@@ -110,8 +107,8 @@ describe('Moves controllers', function () {
     context('when params extension is `csv`', function () {
       context('when movesToCSV returns successfully', function () {
         beforeEach(async function () {
+          req.results = csvStub
           req.params.extension = 'csv'
-          presenters.movesToCSV.resolves(csvStub)
 
           await controller(req, res, nextSpy)
         })
@@ -140,39 +137,12 @@ describe('Moves controllers', function () {
           )
         })
 
-        it('should call CSV presenter with combined moves', function () {
-          expect(presenters.movesToCSV).to.be.calledOnceWithExactly(resultsStub)
-        })
-
         it('should send moves as CSV', function () {
           expect(res.send).to.be.calledOnceWithExactly(csvStub)
         })
 
         it('should not call next', function () {
           expect(nextSpy).not.to.be.called
-        })
-      })
-
-      context('when movesToCSV errors', function () {
-        const errorStub = new Error('Error stub')
-
-        beforeEach(async function () {
-          req.params.extension = 'csv'
-          presenters.movesToCSV.rejects(errorStub)
-
-          await controller(req, res, nextSpy)
-        })
-
-        it('should not set content type', function () {
-          expect(res.setHeader).to.be.calledOnce
-        })
-
-        it('should not call send', function () {
-          expect(res.send).not.to.be.called
-        })
-
-        it('should pass error to next', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
         })
       })
     })

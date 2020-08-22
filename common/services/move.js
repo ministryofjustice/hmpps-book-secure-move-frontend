@@ -2,6 +2,7 @@ const dateFunctions = require('date-fns')
 const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
+const restClient = require('../lib/api-client/rest-client')
 const personService = require('../services/person')
 const profileService = require('../services/profile')
 
@@ -146,18 +147,34 @@ const moveService = {
     })
   },
 
-  getDownload({ dateRange = [], fromLocationId, toLocationId } = {}) {
+  async getDownload({
+    dateRange = [],
+    fromLocationId,
+    toLocationId,
+    supplierId = undefined,
+  } = {}) {
     const [startDate, endDate] = dateRange
-    return moveService.getAll({
-      filter: {
+    const filter = omitBy(
+      {
         'filter[status]':
           'requested,accepted,booked,in_transit,completed,cancelled',
         'filter[date_from]': startDate,
         'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
+        'filter[from_location_id]': Array.isArray(fromLocationId)
+          ? fromLocationId.join(',')
+          : fromLocationId,
+        'filter[to_location_id]': Array.isArray(toLocationId)
+          ? toLocationId.join(',')
+          : toLocationId,
+        'filter[supplier_id]': supplierId,
       },
+      isEmpty
+    )
+
+    const response = await restClient('/moves', filter, {
+      format: 'text/csv',
     })
+    return response
   },
 
   getById(id, { include } = {}) {
