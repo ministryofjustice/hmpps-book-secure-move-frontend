@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 
 function MockAuth() {}
 
-MockAuth.prototype.getAccessToken = sinon.stub()
+MockAuth.prototype.getAuthorizationHeader = sinon.stub()
 
 const authMiddleware = proxyquire('./auth', {
   '../auth': () => new MockAuth(),
@@ -24,26 +24,28 @@ describe('API Client', function () {
       const token = '1234567890'
 
       beforeEach(async function () {
-        MockAuth.prototype.getAccessToken.resolves(token)
+        MockAuth.prototype.getAuthorizationHeader.resolves({
+          mockAuthHeader: token,
+        })
         await authMiddleware.req(payload)
       })
 
       it('should call auth library', function () {
-        expect(MockAuth.prototype.getAccessToken).to.be.calledOnce
+        expect(MockAuth.prototype.getAuthorizationHeader).to.be.calledOnce
       })
 
       it('should contain authorization header', function () {
-        expect(payload.req.headers).to.contain.property('authorization')
+        expect(payload.req.headers).to.contain.property('mockAuthHeader')
       })
 
       it('should set authorization header', function () {
-        expect(payload.req.headers.authorization).to.equal(`Bearer ${token}`)
+        expect(payload.req.headers.mockAuthHeader).to.equal(token)
       })
     })
 
     context('when access token rejects', function () {
       beforeEach(async function () {
-        MockAuth.prototype.getAccessToken.rejects(new Error())
+        MockAuth.prototype.getAuthorizationHeader.rejects(new Error())
       })
 
       it('should reject with error', function () {

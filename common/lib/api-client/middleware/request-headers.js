@@ -1,8 +1,4 @@
-const uuid = require('uuid')
-
-const {
-  API: { VERSION },
-} = require('../../../../config')
+const getRequestHeaders = require('../request-headers')
 
 module.exports = {
   name: 'req-headers',
@@ -15,8 +11,7 @@ module.exports = {
 
     req.headers = {
       ...req.headers,
-      Accept: `application/vnd.api+json; version=${VERSION}`,
-      'Idempotency-Key': uuid.v4(),
+      ...getRequestHeaders(),
     }
     return payload
   },
