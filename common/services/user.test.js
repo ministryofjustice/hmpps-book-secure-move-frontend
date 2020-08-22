@@ -226,102 +226,14 @@ describe('User service', function () {
         })
 
         context('with supplier role', function () {
-          context('with no groups', function () {
-            beforeEach(async function () {
-              nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
-                .get('/')
-                .reply(200, JSON.stringify([]))
+          beforeEach(async function () {
+            tokenData.authorities = ['ROLE_PECS_SUPPLIER']
 
-              tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-
-              result = await getLocations(encodeToken(tokenData))
-            })
-
-            it('requests the user’s groups from HMPPS SSO', function () {
-              expect(nock.isDone()).to.be.true
-            })
-
-            it('returns an empty Array', function () {
-              expect(result).to.deep.equal([])
-            })
+            result = await getLocations(encodeToken(tokenData))
           })
 
-          context('with groups', function () {
-            context('when supplier exists', function () {
-              beforeEach(async function () {
-                nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
-                  .get('/')
-                  .reply(200, JSON.stringify(authGroups))
-
-                tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-
-                result = await getLocations(encodeToken(tokenData))
-              })
-
-              it('requests the user’s groups from HMPPS SSO', function () {
-                expect(nock.isDone()).to.be.true
-              })
-
-              it('calls reference with supplier key', function () {
-                expect(
-                  referenceDataStub.getLocationsBySupplierId
-                ).to.be.calledWithExactly(supplierStub.id)
-              })
-
-              it('returns an Array of location objects', function () {
-                expect(result).to.deep.equal([{ id: 'test' }])
-              })
-            })
-
-            context('when supplier does not exist', function () {
-              beforeEach(async function () {
-                nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
-                  .get('/')
-                  .reply(
-                    200,
-                    JSON.stringify([
-                      {
-                        groupCode: '404',
-                      },
-                    ])
-                  )
-
-                tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-
-                result = await getLocations(encodeToken(tokenData))
-              })
-
-              it('requests the user’s groups from HMPPS SSO', function () {
-                expect(nock.isDone()).to.be.true
-              })
-
-              it('returns an Array of location objects', function () {
-                expect(result).to.deep.equal([])
-              })
-            })
-
-            context('when supplier call errors', function () {
-              beforeEach(async function () {
-                nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
-                  .get('/')
-                  .reply(
-                    200,
-                    JSON.stringify([
-                      {
-                        groupCode: 'error',
-                      },
-                    ])
-                  )
-
-                tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-              })
-
-              it('returns an error', function () {
-                return expect(
-                  getLocations(encodeToken(tokenData))
-                ).to.be.rejectedWith('Error')
-              })
-            })
+          it('returns an empty Array', function () {
+            expect(result).to.deep.equal([])
           })
         })
 

@@ -4,7 +4,6 @@ const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 const { decodeAccessToken } = require('../lib/access-token')
 
 const {
-  getLocationsBySupplierId,
   getLocationsByNomisAgencyId,
   getSupplierByKey,
 } = require('./reference-data')
@@ -72,28 +71,14 @@ function getAuthGroups(token) {
 async function getAuthLocations(token) {
   const { authorities = [] } = decodeAccessToken(token)
 
-  const groups = await getAuthGroups(token)
-
-  if (!authorities.includes('ROLE_PECS_SUPPLIER')) {
-    return getLocationsByNomisAgencyId(groups)
-  }
-
-  if (groups.length === 0) {
+  // supplier locations are dynamic and set in app/locations/controllers.js
+  if (authorities.includes('ROLE_PECS_SUPPLIER')) {
     return []
   }
 
-  try {
-    const supplierKey = groups[0].toLowerCase()
-    const supplier = await getSupplierByKey(supplierKey)
+  const groups = await getAuthGroups(token)
 
-    return getLocationsBySupplierId(supplier.id)
-  } catch (error) {
-    if (error.statusCode === 404) {
-      return []
-    }
-
-    return Promise.reject(error)
-  }
+  return getLocationsByNomisAgencyId(groups)
 }
 
 function getNomisLocations(token) {
