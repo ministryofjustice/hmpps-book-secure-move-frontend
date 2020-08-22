@@ -16,7 +16,6 @@ module.exports = {
       date: '',
       date_from: '',
       date_to: '',
-      supplier_id: '',
       prison_transfer_reason: {
         jsonApi: 'hasOne',
         type: 'prison_transfer_reasons',
@@ -49,6 +48,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'moves',
       },
+      supplier: {
+        jsonApi: 'hasOne',
+        type: 'suppliers',
+      },
     },
     options: {
       defaultInclude: [
@@ -68,6 +71,7 @@ module.exports = {
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
+        'supplier',
         'to_location',
       ],
     },

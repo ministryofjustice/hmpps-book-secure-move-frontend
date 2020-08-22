@@ -22,6 +22,9 @@
         "date_to": null
       },
       "relationships": {
+        "supplier": {
+          "data": null
+        },
         "person": {
           "data": null
         },
@@ -82,6 +85,9 @@
         "date_to": null
       },
       "relationships": {
+        "supplier": {
+          "data": null
+        },
         "person": {
           "data": null
         },
@@ -142,6 +148,9 @@
         "date_to": null
       },
       "relationships": {
+        "supplier": {
+          "data": null
+        },
         "person": {
           "data": null
         },
@@ -202,6 +211,9 @@
         "date_to": null
       },
       "relationships": {
+        "supplier": {
+          "data": null
+        },
         "person": {
           "data": null
         },
@@ -262,6 +274,9 @@
         "date_to": null
       },
       "relationships": {
+        "supplier": {
+          "data": null
+        },
         "person": {
           "data": null
         },

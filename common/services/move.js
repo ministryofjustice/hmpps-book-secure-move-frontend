@@ -61,6 +61,7 @@ const moveService = {
       'from_location',
       'person',
       'prison_transfer_reason',
+      'supplier',
     ]
 
     return mapValues(omitBy(data, isUndefined), (value, key) => {
