@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 const personService = require('../services/person')
@@ -94,6 +94,7 @@ const moveService = {
     dateRange = [],
     fromLocationId,
     toLocationId,
+    supplierId,
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
@@ -106,13 +107,17 @@ const moveService = {
         'profile.person.gender',
         'to_location',
       ],
-      filter: {
-        'filter[status]': 'requested,accepted,booked,in_transit,completed',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-      },
+      filter: omitBy(
+        {
+          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          'filter[date_from]': startDate,
+          'filter[date_to]': endDate,
+          'filter[from_location_id]': fromLocationId,
+          'filter[to_location_id]': toLocationId,
+          'filter[supplier_id]': supplierId,
+        },
+        isEmpty
+      ),
     })
   },
 
@@ -120,8 +125,8 @@ const moveService = {
     dateRange = [],
     fromLocationId,
     toLocationId,
+    supplierId,
     isAggregation = false,
-    supplierId = undefined,
   } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
@@ -136,7 +141,7 @@ const moveService = {
           'filter[to_location_id]': toLocationId,
           'filter[supplier_id]': supplierId,
         },
-        isUndefined
+        isEmpty
       ),
     })
   },

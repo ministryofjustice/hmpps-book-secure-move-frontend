@@ -644,10 +644,6 @@ describe('Move Service', function () {
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
           },
         })
       })
@@ -717,9 +713,6 @@ describe('Move Service', function () {
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })
