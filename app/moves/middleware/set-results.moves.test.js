@@ -40,6 +40,9 @@ describe('Moves middleware', function () {
             locationId: '5555',
           },
         },
+        session: {
+          currentLocation: '#location',
+        },
       }
     })
 
@@ -47,6 +50,29 @@ describe('Moves middleware', function () {
       beforeEach(function () {
         moveService.getActive.resolves(mockActiveMoves)
         moveService.getCancelled.resolves(mockCancelledMoves)
+      })
+
+      context('without current location', function () {
+        beforeEach(async function () {
+          req.session.currentLocation = undefined
+          await middleware(mockBodyKey, mockLocationKey, true)(
+            req,
+            res,
+            nextSpy
+          )
+        })
+
+        it('should not fetch the active moves', function () {
+          expect(moveService.getActive).to.not.be.called
+        })
+
+        it('should not fetch the cancelled moves', function () {
+          expect(moveService.getCancelled).to.not.be.called
+        })
+
+        it('should not call movesByLocation presenter', function () {
+          expect(presenters.movesByLocation).to.not.be.called
+        })
       })
 
       context('without `locationKey`', function () {
@@ -117,10 +143,8 @@ describe('Moves middleware', function () {
                 'person_escort_record:view',
               ])
               .returns(true)
-            req.session = {
-              user: {
-                permissions: ['person_escort_record:view'],
-              },
+            req.session.user = {
+              permissions: ['person_escort_record:view'],
             }
             await middleware(mockBodyKey, mockLocationKey, true)(
               req,

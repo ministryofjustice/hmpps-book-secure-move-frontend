@@ -7,13 +7,11 @@ const moveService = require('../../../common/services/move')
 function setResultsMoves(bodyKey, locationKey, personEscortRecordFeature) {
   return async function handleResults(req, res, next) {
     try {
-      const args = omitBy(
-        {
-          ...req.body[bodyKey],
-          supplierId: req.session?.user?.supplierId,
-        },
-        isUndefined
-      )
+      if (!req.session?.currentLocation) {
+        return next()
+      }
+
+      const args = omitBy(req.body[bodyKey], isUndefined)
       const [activeMoves, cancelledMoves] = await Promise.all([
         moveService.getActive(args),
         moveService.getCancelled(args),
