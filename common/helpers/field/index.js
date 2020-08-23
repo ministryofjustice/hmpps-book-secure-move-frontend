@@ -241,6 +241,16 @@ function populateAssessmentFields(currentFields, questions) {
   return fields
 }
 
+function processFields(fields, values = {}, errors = {}) {
+  return fromPairs(
+    Object.entries(fields)
+      .map(this.setFieldValue(values))
+      .map(this.setFieldError(errors))
+      .map(this.translateField)
+      .map(this.renderConditionalFields)
+  )
+}
+
 module.exports = {
   mapAssessmentQuestionToConditionalField,
   mapAssessmentQuestionToTranslation,
@@ -258,4 +268,5 @@ module.exports = {
   reduceDependentFields,
   reduceAddAnotherFields,
   renderAddAnotherFields,
+  processFields,
 }

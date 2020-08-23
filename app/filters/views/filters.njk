@@ -1,0 +1,44 @@
+{% extends "layouts/base.njk" %}
+
+{% block primaryNavigation %}{% endblock %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% block pageTitle %}
+  {{ t("filters::heading") }}
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      {{ t("filters::heading") }}
+    </h1>
+  </header>
+
+  <form method="POST">
+    <input type="hidden" name="referrer" value="{{filters.referrer.url}}">
+    {% for name, values in filters.referrer.values %}
+      {% for value in values %}
+        <input type="hidden" name="{{name}}" value="{{value}}">
+      {% endfor %}
+    {% endfor %}
+    {% for key, filterComponent in filters.components %}
+      {% if filterComponent.component and not filterComponent.skip %}
+        {{ callAsMacro(filterComponent.component)(filterComponent) }}
+      {% endif %}
+    {% endfor %}
+
+
+    {{ govukButton({
+        text: t("filters::submit"),
+        type: "submit"
+      })
+    }}
+
+    <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
+      {{ t("actions::cancel") }}
+    </a>
+  </form>
+
+
+{% endblock %}

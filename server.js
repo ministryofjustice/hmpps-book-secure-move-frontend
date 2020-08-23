@@ -80,7 +80,7 @@ app.use(
     path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets')
   ),
   express.static(
-    path.join(__dirname, '/node_modules/@ministryofjustice/frontend/assets')
+    path.join(__dirname, '/node_modules/@ministryofjustice/frontend/moj/assets')
   )
 )
 

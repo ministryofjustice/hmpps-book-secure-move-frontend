@@ -1,0 +1,108 @@
+const { expect } = require('chai')
+
+const i18n = require('../../config/i18n')
+
+const filtersToCategoriesListComponent = require('./filters-to-categories-list-component')
+
+describe('Presenters', function () {
+  const pageUrl = '/page'
+  const fields = {
+    foo: {},
+  }
+
+  beforeEach(function () {
+    sinon.stub(i18n, 't').returnsArg(0)
+  })
+  describe('#filtersToCategoriesListComponent()', function () {
+    context('when passed a string value', function () {
+      const values = {
+        foo: 'bar',
+      }
+      let categories
+      beforeEach(function () {
+        categories = filtersToCategoriesListComponent(fields, values, pageUrl)
+      })
+      it('should perform the expected translations', function () {
+        expect(i18n.t).to.be.calledTwice
+        expect(i18n.t.firstCall).to.be.calledWithExactly(
+          'filters::foo.legend',
+          { context: 'display' }
+        )
+        expect(i18n.t.secondCall).to.be.calledWithExactly(
+          'filters::foo.bar.label'
+        )
+      })
+      it('should return the expected categories ', function () {
+        expect(categories).to.deep.equal([
+          {
+            heading: {
+              text: 'filters::foo.legend',
+            },
+            items: [
+              {
+                href: '/page',
+                text: 'filters::foo.bar.label',
+              },
+            ],
+          },
+        ])
+      })
+    })
+  })
+
+  context('when passed an array value', function () {
+    it('should return the expected categories ', function () {
+      const values = {
+        foo: ['bar', 'baz'],
+      }
+      const categories = filtersToCategoriesListComponent(
+        fields,
+        values,
+        pageUrl
+      )
+      expect(categories).to.deep.equal([
+        {
+          heading: {
+            text: 'filters::foo.legend',
+          },
+          items: [
+            {
+              href: '/page?foo=baz',
+              text: 'filters::foo.bar.label',
+            },
+            {
+              href: '/page?foo=bar',
+              text: 'filters::foo.baz.label',
+            },
+          ],
+        },
+      ])
+    })
+  })
+
+  context('when passed an undefined value', function () {
+    it('should return no categories ', function () {
+      const values = {}
+      const categories = filtersToCategoriesListComponent(
+        fields,
+        values,
+        pageUrl
+      )
+      expect(categories).to.deep.equal([])
+    })
+  })
+
+  context('when passed an explicit default value', function () {
+    it('should return no categories ', function () {
+      const values = {
+        foo: 'default',
+      }
+      const categories = filtersToCategoriesListComponent(
+        fields,
+        values,
+        pageUrl
+      )
+      expect(categories).to.deep.equal([])
+    })
+  })
+})
