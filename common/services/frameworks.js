@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const debug = require('debug')('app:frameworks')
-const { flatten, kebabCase, keyBy, set } = require('lodash')
+const { flatten, get, kebabCase, keyBy, set } = require('lodash')
 
 const { FRAMEWORKS: frameworksConfig } = require('../../config')
 const markdown = require('../../config/markdown')
@@ -201,7 +201,7 @@ const frameworksService = {
         },
         index
       ) => {
-        let next = manifest.steps[index + 1]?.slug
+        let next = get(manifest, `steps[${index + 1}].slug`)
 
         if (nextStep) {
           const transformedKeys = JSON.stringify(nextStep)
