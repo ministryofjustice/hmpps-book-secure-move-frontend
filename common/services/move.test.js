@@ -15,6 +15,7 @@ const batchRequest = proxyquire('./batch-request', {
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
 const restClient = sinon.stub()
+restClient.post = sinon.stub()
 
 const moveService = proxyquire('./move', {
   'date-fns': {
@@ -838,8 +839,8 @@ describe('Move Service', function () {
     let moves
 
     beforeEach(async function () {
-      restClient.resetHistory()
-      restClient.resolves('#download')
+      restClient.post.resetHistory()
+      restClient.post.resolves('#download')
     })
 
     context('without arguments', function () {
@@ -848,15 +849,15 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(restClient).to.be.calledOnceWithExactly(
-          '/moves',
+        expect(restClient.post).to.be.calledOnceWithExactly(
+          '/moves/csv',
           {
-            'filter[status]':
-              'requested,accepted,booked,in_transit,completed,cancelled',
+            filter: {
+              status:
+                'requested,accepted,booked,in_transit,completed,cancelled',
+            },
           },
-          {
-            format: 'text/csv',
-          }
+          { format: 'text/csv' }
         )
       })
 
@@ -879,15 +880,17 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(restClient).to.be.calledOnceWithExactly(
-          '/moves',
+        expect(restClient.post).to.be.calledOnceWithExactly(
+          '/moves/csv',
           {
-            'filter[status]':
-              'requested,accepted,booked,in_transit,completed,cancelled',
-            'filter[date_from]': mockDateRange[0],
-            'filter[date_to]': mockDateRange[1],
-            'filter[from_location_id]': mockFromLocationId,
-            'filter[to_location_id]': mockToLocationId,
+            filter: {
+              status:
+                'requested,accepted,booked,in_transit,completed,cancelled',
+              date_from: mockDateRange[0],
+              date_to: mockDateRange[1],
+              from_location_id: mockFromLocationId,
+              to_location_id: mockToLocationId,
+            },
           },
           {
             format: 'text/csv',

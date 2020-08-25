@@ -157,24 +157,27 @@ const moveService = {
     const [startDate, endDate] = dateRange
     const filter = omitBy(
       {
-        'filter[status]':
-          'requested,accepted,booked,in_transit,completed,cancelled',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': Array.isArray(fromLocationId)
+        status: 'requested,accepted,booked,in_transit,completed,cancelled',
+        date_from: startDate,
+        date_to: endDate,
+        from_location_id: Array.isArray(fromLocationId)
           ? fromLocationId.join(',')
           : fromLocationId,
-        'filter[to_location_id]': Array.isArray(toLocationId)
+        to_location_id: Array.isArray(toLocationId)
           ? toLocationId.join(',')
           : toLocationId,
-        'filter[supplier_id]': supplierId,
+        supplier_id: supplierId,
       },
       isEmpty
     )
 
-    const response = await restClient('/moves', filter, {
-      format: 'text/csv',
-    })
+    const response = await restClient.post(
+      '/moves/csv',
+      { filter },
+      {
+        format: 'text/csv',
+      }
+    )
     return response
   },
 
