@@ -48,7 +48,6 @@ describe('API Client', async function () {
         expect(axiosStub).to.be.calledOnceWithExactly(
           'http://localhost:8080/foo',
           {
-            params: undefined,
             headers: {
               Authorization: 'Bearer foo',
               DefaultHeaders: 'header value',
@@ -81,16 +80,35 @@ describe('API Client', async function () {
       })
     })
 
-    context('when calling the API with axios options', async function () {
+    context('when calling the API as a post with no data', async function () {
       beforeEach(async function () {
-        await restClient('/foo', {}, { method: 'post' })
+        await restClient('/foo', null, { method: 'post' })
       })
 
       it('should make the expected request', function () {
         expect(axiosStub).to.be.calledOnceWithExactly(
           'http://localhost:8080/foo',
           {
-            params: {},
+            headers: {
+              Authorization: 'Bearer foo',
+              DefaultHeaders: 'header value',
+            },
+            method: 'post',
+          }
+        )
+      })
+    })
+
+    context('when calling the API as a post with data', async function () {
+      beforeEach(async function () {
+        await restClient('/foo', { bar: 'baz' }, { method: 'post' })
+      })
+
+      it('should make the expected request', function () {
+        expect(axiosStub).to.be.calledOnceWithExactly(
+          'http://localhost:8080/foo',
+          {
+            data: { bar: 'baz' },
             headers: {
               Authorization: 'Bearer foo',
               DefaultHeaders: 'header value',
@@ -103,12 +121,51 @@ describe('API Client', async function () {
 
     context('when calling the API - format', async function () {
       beforeEach(async function () {
-        await restClient('/foo', {}, { format: 'application/foo' })
+        await restClient('/foo', { bar: 'baz' }, { format: 'application/foo' })
       })
 
       it('should pass the expected format to the method that returns the default client headers', function () {
         expect(getRequestHeadersStub).to.be.calledOnceWithExactly(
           'application/foo'
+        )
+      })
+    })
+
+    context('when using get method', async function () {
+      beforeEach(async function () {
+        await restClient.get('/foo', { bar: 'baz' })
+      })
+
+      it('should make the expected request', function () {
+        expect(axiosStub).to.be.calledOnceWithExactly(
+          'http://localhost:8080/foo',
+          {
+            params: { bar: 'baz' },
+            headers: {
+              Authorization: 'Bearer foo',
+              DefaultHeaders: 'header value',
+            },
+          }
+        )
+      })
+    })
+
+    context('when using post method', async function () {
+      beforeEach(async function () {
+        await restClient.post('/foo', { bar: 'baz' })
+      })
+
+      it('should make the expected request', function () {
+        expect(axiosStub).to.be.calledOnceWithExactly(
+          'http://localhost:8080/foo',
+          {
+            data: { bar: 'baz' },
+            headers: {
+              Authorization: 'Bearer foo',
+              DefaultHeaders: 'header value',
+            },
+            method: 'post',
+          }
         )
       })
     })
