@@ -1,4 +1,6 @@
 const cancellationReasonComment = {
+  id: 'cancellation_reason_comment',
+  name: 'cancellation_reason_comment',
   validate: 'required',
   rows: 3,
   component: 'govukTextarea',
