@@ -14,7 +14,8 @@ const {
 } = require('../moves/middleware')
 
 const { FILTERS } = require('./constants')
-const { movesRedirect, dashboard } = require('./controllers')
+const { dashboard } = require('./controllers')
+const { movesRedirect } = require('./middleware')
 
 // Define routes
 router.get(
