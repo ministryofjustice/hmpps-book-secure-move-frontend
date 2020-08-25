@@ -4,7 +4,7 @@
       {{ assessment.name }}
     </h2>
 
-    {% if personEscortRecordIsCompleted %}
+    {% if assessment.isCompleted %}
       {% for panel in assessment.panels %}
         {% call appPanel(panel) %}
           {{ appMetaList(panel.metaList) }}
@@ -24,7 +24,7 @@
     {% else %}
       {{ govukInsetText({
         classes: "govuk-inset-text--compact govuk-!-margin-0",
-        text: t("person-escort-record::flags.incomplete")
+        text: t("person-escort-record::flags.section_incomplete")
       }) }}
     {% endif %}
 

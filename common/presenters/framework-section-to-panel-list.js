@@ -1,4 +1,4 @@
-const { kebabCase, omit } = require('lodash')
+const { find, kebabCase, omit } = require('lodash')
 
 const frameworkResponseToMetaListComponent = require('./framework-responses-to-meta-list-component')
 
@@ -48,11 +48,15 @@ function frameworkSectionToPanelList({
 
         return acc
       }, {})
+    const sectionStatus = find(personEscortRecord?.meta?.section_progress, {
+      key: section.key,
+    })?.status
 
     const output = {
       key: section.key,
       name: section.name,
       url: `${personEscortRecordUrl}/${section.key}/overview`,
+      isCompleted: sectionStatus === 'completed',
       panels: tagList
         // Filter tags to just this section
         .filter(tag => tag.section === section.key)

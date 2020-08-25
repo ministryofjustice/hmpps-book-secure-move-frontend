@@ -37,6 +37,7 @@
   },
   "flags": {
     "incomplete": "Warnings will display once a Person Escort Record has been completed",
+    "section_incomplete": "Warnings will display once this section has been completed",
     "empty": "No {{name}} warnings. View <a href=\"{{url}}\">all answers</a>.",
     "information_provided_when_requested": "View information provided when move was requested"
   }
