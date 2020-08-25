@@ -211,7 +211,7 @@
         "message": "$t(moves::update_flash.supplier_message)"
       },
       "health": {
-        "heading": "Health affecting transport updated",
+        "heading": "Health information updated",
         "message": "$t(moves::update_flash.supplier_message)"
       },
       "hospital": {

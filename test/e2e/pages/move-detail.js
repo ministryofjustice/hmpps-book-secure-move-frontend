@@ -35,15 +35,15 @@ class MoveDetailPage extends Page {
       ),
       riskInformation: Selector('#main-content h2')
         .withText('Risk information')
-        .sibling('.app-panel'),
+        .parent('section'),
       noRiskInformationMessage: Selector('.app-message').withText(
         'No risk information'
       ),
       healthInformation: Selector('#main-content h2')
-        .withText('Health affecting transport')
-        .sibling('.app-panel'),
+        .withText('Health information')
+        .parent('section'),
       noHealthInformationMessage: Selector('.app-message').withText(
-        'No health affecting transport'
+        'No health information'
       ),
       documentList: Selector('#main-content h2')
         .withText('Supporting documents')
