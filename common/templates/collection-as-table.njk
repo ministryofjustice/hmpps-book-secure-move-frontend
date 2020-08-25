@@ -38,11 +38,7 @@
   {% if resultsAsTable.cancelled.rows.length %}
     <div class="govuk-!-margin-top-9">
       {% set html %}
-          {{ govukTable({
-            rows: resultsAsTable.cancelled.rows,
-            head: resultsAsTable.cancelled.head,
-            classes: "app-secondary-text-colour"
-          }) }}
+          {{ govukTable(resultsAsTable.cancelled) }}
       {% endset %}
 
       {{ govukDetails({
@@ -54,5 +50,4 @@
       }) }}
     </div>
   {% endif %}
-
 {% endblock %}

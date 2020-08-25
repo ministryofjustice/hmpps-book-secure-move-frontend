@@ -81,6 +81,37 @@ const singleRequestService = {
     return moveService.getDownload(args)
   },
 
+  getCancelled({
+    createdAtDate = [],
+    fromLocationId,
+    include,
+    sortBy = 'created_at',
+    sortDirection = 'desc',
+  } = {}) {
+    const [createdAtFrom, createdAtTo] = createdAtDate
+    return moveService.getAll({
+      isAggregation: false,
+      include: include || [
+        'from_location',
+        'to_location',
+        'profile.person',
+        'prison_transfer_reason',
+      ],
+      filter: {
+        'filter[has_relationship_to_allocation]': false,
+        'filter[from_location_id]': fromLocationId,
+        'filter[status]': 'cancelled',
+        'filter[allocation]': false,
+        'filter[move_type]': 'prison_transfer',
+        'filter[rejection_reason]': undefined,
+        'sort[by]': sortBy,
+        'sort[direction]': sortDirection,
+        'filter[created_at_from]': createdAtFrom,
+        'filter[created_at_to]': createdAtTo,
+      },
+    })
+  },
+
   approve(id, { date } = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
