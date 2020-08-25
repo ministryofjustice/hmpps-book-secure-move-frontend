@@ -34,6 +34,10 @@ const getCurrentRegion = data => {
 }
 
 const getUserLocations = data => {
+  if (data.req.session?.user?.supplierId) {
+    return data
+  }
+
   data.locations = data.req.session?.user?.locations
   return data
 }
@@ -51,9 +55,7 @@ const setLocations = (req, res, next) => {
     getUserLocations,
   ])({ req })
 
-  const locations = getLocationIds(data)
-
-  req.locations = locations
+  req.locations = getLocationIds(data)
 
   next()
 }

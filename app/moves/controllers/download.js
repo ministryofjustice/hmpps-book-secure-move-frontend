@@ -1,7 +1,5 @@
 const { format } = require('date-fns')
 
-const presenters = require('../../../common/presenters')
-
 module.exports = function download(req, res, next) {
   const { results } = req
   const { dateRange, extension } = req.params
@@ -25,13 +23,8 @@ module.exports = function download(req, res, next) {
   }
 
   if (extension === 'csv') {
-    return presenters
-      .movesToCSV(results)
-      .then(csv => {
-        res.setHeader('Content-Type', 'text/csv')
-        res.send(csv)
-      })
-      .catch(next)
+    res.setHeader('Content-Type', 'text/csv')
+    return res.send(results)
   }
 
   next()

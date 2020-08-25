@@ -2,7 +2,11 @@ const { get } = require('lodash')
 
 const { decodeAccessToken } = require('../../common/lib/access-token')
 const User = require('../../common/lib/user')
-const { getFullname, getLocations } = require('../../common/services/user')
+const {
+  getFullname,
+  getLocations,
+  getSupplierId,
+} = require('../../common/services/user')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
@@ -17,9 +21,10 @@ function processAuthResponse() {
     try {
       const decodedAccessToken = decodeAccessToken(accessToken)
       const { user_name: username, user_id: userId } = decodedAccessToken
-      const [locations, fullname] = await Promise.all([
+      const [locations, fullname, supplierId] = await Promise.all([
         getLocations(accessToken),
         getFullname(accessToken),
+        getSupplierId(accessToken),
       ])
 
       const previousSession = { ...req.session }
@@ -36,6 +41,7 @@ function processAuthResponse() {
           roles: decodedAccessToken.authorities,
           username,
           userId,
+          supplierId,
         })
 
         // copy any previous session properties ignoring grant or any that already exist

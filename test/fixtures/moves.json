@@ -92,7 +92,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "271c95bc-359d-4413-ac63-364c4521a67f",
@@ -202,7 +203,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "2f1ab125-6d5a-4621-affe-c5f1e96e53d6",
@@ -294,7 +296,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "17a7c1cf-e3dd-4d28-8162-d2f54ce477f5",
@@ -378,7 +381,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "417449a3-8ef2-48e4-9379-7fbbf74ceed4",
@@ -475,7 +479,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "20e2495b-e86c-40f1-a066-9fdb79d884e2",
@@ -559,7 +564,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "8fe0a416-4aa9-4b82-ada5-810cec881e42",
@@ -593,7 +599,8 @@
       "id": "362557da-b339-4991-8ba6-9456350b343e",
       "type": "profiles",
       "person": {}
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "81a4d40d-a007-4d3a-beb8-c5334ea42b36",
@@ -677,7 +684,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "d02a534f-96e7-4fae-8818-3b71cb596f21",
@@ -761,7 +769,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "eddc9f3a-4c2f-4853-88ea-b7fa0872fc16",
@@ -846,7 +855,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "3959d016-451b-4acd-8698-e84fcbdd6acb",
@@ -930,7 +940,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "5a1d17af-5204-4d4b-8126-d4fd0b24b700",
@@ -964,7 +975,8 @@
       "id": "43e5a653-b6e0-4171-9504-59eb4993c6a0",
       "type": "profiles",
       "person": {}
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "69eb41e9-3b62-48fb-bd54-e574c0385b25",
@@ -1047,7 +1059,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "f3347cd8-2819-4ed8-a53a-b4464146d35f",
@@ -1131,7 +1144,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "f6bc200d-b9a1-4190-a498-7723cff30f08",
@@ -1215,7 +1229,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "270d105e-c0ae-49be-987d-1eb4d74af201",
@@ -1299,7 +1314,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "9558f9e3-0b5a-40ef-9c10-28c2dbd45b5a",
@@ -1383,7 +1399,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "c5e82247-f176-492b-a048-fb1c4c661887",
@@ -1417,7 +1434,8 @@
       "id": "c01fd338-1413-46b8-aef8-a51bb1c277b0",
       "type": "profiles",
       "person": {}
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "fe9e4207-9938-4ba0-98cd-3a36854c45c7",
@@ -1501,7 +1519,8 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   },
   {
     "id": "7104c76c-78ba-4f9d-a9b1-1fd7736226dc",
@@ -1585,6 +1604,7 @@
           "description": null
         }
       }
-    }
+    },
+    "supplier_id": "1"
   }
 ]

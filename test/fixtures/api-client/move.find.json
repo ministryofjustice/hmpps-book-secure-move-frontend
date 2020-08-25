@@ -9,6 +9,7 @@
       "created_at": "2020-06-09T01:00:40+01:00",
       "time_due": null,
       "date": "2020-06-15",
+      "supplier_id": "1",
       "move_type": "prison_transfer",
       "additional_information": null,
       "rejection_reason": null,
@@ -20,6 +21,9 @@
       "date_to": null
     },
     "relationships": {
+      "supplier": {
+        "data": null
+      },
       "person": {
         "data": null
       },

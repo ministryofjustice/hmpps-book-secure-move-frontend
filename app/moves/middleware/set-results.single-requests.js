@@ -1,9 +1,13 @@
+const { omitBy, isUndefined } = require('lodash')
+
 const presenters = require('../../../common/presenters')
 const singleRequestService = require('../../../common/services/single-request')
 
 async function setResultsSingleRequests(req, res, next) {
   try {
-    const singleRequests = await singleRequestService.getAll(req.body.requested)
+    const singleRequests = await singleRequestService.getAll(
+      omitBy(req.body.requested, isUndefined)
+    )
 
     req.resultsAsTable = {
       active: presenters.singleRequestsToTableComponent(singleRequests),

@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { expect } = require('chai')
 
 describe('API Client', function () {
   describe('Auth library', function () {
@@ -181,6 +182,22 @@ describe('API Client', function () {
           it('should return false', function () {
             expect(authInstance.isExpired()).to.be.false
           })
+        })
+      })
+    })
+
+    describe('#getAuthorizationHeader()', function () {
+      let authorizationHeader
+
+      beforeEach(async function () {
+        authInstance = requireUncached(`${__dirname}/auth`)({})
+        sinon.stub(authInstance, 'getAccessToken').resolves('mockToken')
+        authorizationHeader = await authInstance.getAuthorizationHeader()
+      })
+
+      it('', function () {
+        expect(authorizationHeader).to.deep.equal({
+          Authorization: 'Bearer mockToken',
         })
       })
     })

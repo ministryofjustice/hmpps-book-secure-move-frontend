@@ -14,11 +14,15 @@ const batchRequest = proxyquire('./batch-request', {
 })
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
+const restClient = sinon.stub()
+restClient.post = sinon.stub()
+
 const moveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
+  '../lib/api-client/rest-client': restClient,
 })
 
 const mockMove = {
@@ -107,6 +111,7 @@ describe('Move Service', function () {
     const mockToLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     const mockFromLocationId = 'f6e1f57c-7d07-41d2-afee-1662f5103e2d'
     const mockPersonId = '0e180146-d911-49d8-a62e-63ea5cec7ba5'
+    const mockSupplierId = 'a595d0f0-11e4-3218-6d06-a5cba3ec75ea'
     const mockPrisonTransferReasonId = '8387e205-97d1-4023-83c5-4f16f0c479d0'
     let formatted
 
@@ -118,30 +123,37 @@ describe('Move Service', function () {
           from_location: mockFromLocationId,
           person: mockPersonId,
           prison_transfer_reason: mockPrisonTransferReasonId,
+          supplier: mockSupplierId,
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format to_location as relationship object', function () {
         expect(formatted.to_location).to.deep.equal({
           id: mockToLocationId,
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format from_location as relationship object', function () {
         expect(formatted.from_location).to.deep.equal({
           id: mockFromLocationId,
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format person as relationship object', function () {
         expect(formatted.person).to.deep.equal({
           id: mockPersonId,
         })
       })
 
-      it('should format as relationship object', function () {
+      it('should format prison_transfer_reason as relationship object', function () {
         expect(formatted.prison_transfer_reason).to.deep.equal({
           id: mockPrisonTransferReasonId,
+        })
+      })
+
+      it('should format supplier as relationship object', function () {
+        expect(formatted.supplier).to.deep.equal({
+          id: mockSupplierId,
         })
       })
 
@@ -210,6 +222,9 @@ describe('Move Service', function () {
           prison_transfer_reason: {
             id: mockPrisonTransferReasonId,
           },
+          supplier: {
+            id: mockSupplierId,
+          },
           empty_string: '',
           false: false,
           undefined: undefined,
@@ -232,6 +247,9 @@ describe('Move Service', function () {
           },
           prison_transfer_reason: {
             id: mockPrisonTransferReasonId,
+          },
+          supplier: {
+            id: mockSupplierId,
           },
           empty_string: '',
           false: false,
@@ -644,10 +662,6 @@ describe('Move Service', function () {
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
           },
         })
       })
@@ -661,12 +675,14 @@ describe('Move Service', function () {
       const mockDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockSupplierId = 'a595d0f0-11e4-3218-6d06-a5cba3ec75ea'
 
       beforeEach(async function () {
         moves = await moveService.getActive({
           dateRange: mockDateRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
+          supplierId: mockSupplierId,
         })
       })
 
@@ -686,6 +702,7 @@ describe('Move Service', function () {
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
+            'filter[supplier_id]': mockSupplierId,
           },
         })
       })
@@ -717,9 +734,6 @@ describe('Move Service', function () {
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })
@@ -750,10 +764,6 @@ describe('Move Service', function () {
           include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
           },
         })
       })
@@ -767,12 +777,14 @@ describe('Move Service', function () {
       const mockDateRange = ['2019-10-10', '2019-10-11']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'c195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockSupplierId = 'a595d0f0-11e4-3218-6d06-a5cba3ec75ea'
 
       beforeEach(async function () {
         moves = await moveService.getCancelled({
           dateRange: mockDateRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
+          supplierId: mockSupplierId,
         })
       })
 
@@ -786,6 +798,7 @@ describe('Move Service', function () {
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
             'filter[to_location_id]': mockToLocationId,
+            'filter[supplier_id]': mockSupplierId,
           },
         })
       })
@@ -811,9 +824,6 @@ describe('Move Service', function () {
           include: ['profile.person'],
           filter: {
             'filter[status]': 'cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
             'filter[to_location_id]': mockToLocationId,
           },
         })
@@ -829,7 +839,8 @@ describe('Move Service', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+      restClient.post.resetHistory()
+      restClient.post.resolves('#download')
     })
 
     context('without arguments', function () {
@@ -838,20 +849,20 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          filter: {
-            'filter[status]':
-              'requested,accepted,booked,in_transit,completed,cancelled',
-            'filter[date_from]': undefined,
-            'filter[date_to]': undefined,
-            'filter[from_location_id]': undefined,
-            'filter[to_location_id]': undefined,
+        expect(restClient.post).to.be.calledOnceWithExactly(
+          '/moves/csv',
+          {
+            filter: {
+              status:
+                'requested,accepted,booked,in_transit,completed,cancelled',
+            },
           },
-        })
+          { format: 'text/csv' }
+        )
       })
 
       it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
+        expect(moves).to.deep.equal('#download')
       })
     })
 
@@ -869,20 +880,26 @@ describe('Move Service', function () {
       })
 
       it('should call getAll with all statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          filter: {
-            'filter[status]':
-              'requested,accepted,booked,in_transit,completed,cancelled',
-            'filter[date_from]': mockDateRange[0],
-            'filter[date_to]': mockDateRange[1],
-            'filter[from_location_id]': mockFromLocationId,
-            'filter[to_location_id]': mockToLocationId,
+        expect(restClient.post).to.be.calledOnceWithExactly(
+          '/moves/csv',
+          {
+            filter: {
+              status:
+                'requested,accepted,booked,in_transit,completed,cancelled',
+              date_from: mockDateRange[0],
+              date_to: mockDateRange[1],
+              from_location_id: mockFromLocationId,
+              to_location_id: mockToLocationId,
+            },
           },
-        })
+          {
+            format: 'text/csv',
+          }
+        )
       })
 
       it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
+        expect(moves).to.deep.equal('#download')
       })
     })
   })

@@ -21,6 +21,13 @@ const mockUserLocations = [
     title: 'C location',
   },
 ]
+const mockSupplierLocations = [
+  ...mockUserLocations,
+  {
+    id: '70923762-bc17-4ea1-bae3-4ef429f9081e',
+    title: 'a location',
+  },
+]
 
 describe('Locations controllers', function () {
   let req, res
@@ -93,5 +100,35 @@ describe('Locations controllers', function () {
         })
       }
     )
+
+    context('when the user is a supplier', function () {
+      beforeEach(async function () {
+        mockReferenceData.getLocationsBySupplierId = sinon
+          .stub()
+          .resolves(mockSupplierLocations)
+        req.session.user.supplierId = 'aussiemanandvan'
+        await proxiedController.locations(req, res)
+      })
+      it('should fetch user locations', async function () {
+        expect(
+          mockReferenceData.getLocationsBySupplierId
+        ).to.be.calledOnceWithExactly('aussiemanandvan')
+      })
+      it('should render template', function () {
+        expect(res.render).to.be.calledOnce
+      })
+
+      it('should return locations sorted by title', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('locations')
+        expect(params.locations).to.deep.equal(
+          sortBy(mockSupplierLocations, 'title')
+        )
+      })
+
+      it('should set the location on the user session', function () {
+        expect(req.session.user.locations).to.deep.equal(mockSupplierLocations)
+      })
+    })
   })
 })

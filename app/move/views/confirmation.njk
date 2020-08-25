@@ -35,7 +35,7 @@
           name: move.profile.person.fullname | upper,
           location: location,
           date: move.date | formatDateWithDay,
-          supplier: supplierNames | oxfordJoin
+          supplier: move.supplier.name or t("supplier_fallback")
         }) | safe }}
       </p>
 

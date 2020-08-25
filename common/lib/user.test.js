@@ -90,6 +90,15 @@ describe('User class', function () {
         expect(user.userId).to.deep.equal(userId)
       })
     })
+
+    context('with supplierId', function () {
+      const supplierId = 'uuid'
+
+      it('should set supplierId', function () {
+        user = new User({ name: 'USERNAME', supplierId })
+        expect(user.supplierId).to.deep.equal(supplierId)
+      })
+    })
   })
 
   describe('#getPermissions()', function () {

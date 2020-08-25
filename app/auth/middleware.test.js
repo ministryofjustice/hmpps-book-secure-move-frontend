@@ -4,14 +4,17 @@ const userFailureError = new Error('test')
 const userSuccessStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.resolve('undefined'),
 }
 const userLocationsFailureStub = {
   getLocations: () => Promise.reject(userFailureError),
   getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.resolve('undefined'),
 }
 const userFullNameFailureStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.reject(userFailureError),
+  getSupplierId: () => Promise.resolve('undefined'),
 }
 
 function UserStub({

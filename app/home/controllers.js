@@ -1,17 +1,6 @@
-const { get } = require('lodash')
-
 const dateHelpers = require('../../common/helpers/date')
-const permissions = require('../../common/middleware/permissions')
 
 function dashboard(req, res) {
-  const userPermissions = get(req.session, 'user.permissions')
-
-  if (!permissions.check('dashboard:view', userPermissions)) {
-    // TODO: Remove this once we enable the dashboard for all users
-    // Moves will then likely always redirect to the dashboard
-    return res.redirect('/moves')
-  }
-
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
 

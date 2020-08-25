@@ -1,7 +1,8 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
+const restClient = require('../lib/api-client/rest-client')
 const personService = require('../services/person')
 const profileService = require('../services/profile')
 
@@ -60,6 +61,7 @@ const moveService = {
       'from_location',
       'person',
       'prison_transfer_reason',
+      'supplier',
     ]
 
     return mapValues(omitBy(data, isUndefined), (value, key) => {
@@ -94,6 +96,7 @@ const moveService = {
     dateRange = [],
     fromLocationId,
     toLocationId,
+    supplierId,
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
@@ -106,13 +109,17 @@ const moveService = {
         'profile.person.gender',
         'to_location',
       ],
-      filter: {
-        'filter[status]': 'requested,accepted,booked,in_transit,completed',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-      },
+      filter: omitBy(
+        {
+          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          'filter[date_from]': startDate,
+          'filter[date_to]': endDate,
+          'filter[from_location_id]': fromLocationId,
+          'filter[to_location_id]': toLocationId,
+          'filter[supplier_id]': supplierId,
+        },
+        isEmpty
+      ),
     })
   },
 
@@ -120,34 +127,58 @@ const moveService = {
     dateRange = [],
     fromLocationId,
     toLocationId,
+    supplierId,
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
     return moveService.getAll({
       isAggregation,
       include: ['profile.person'],
-      filter: {
-        'filter[status]': 'cancelled',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
-      },
+      filter: omitBy(
+        {
+          'filter[status]': 'cancelled',
+          'filter[date_from]': startDate,
+          'filter[date_to]': endDate,
+          'filter[from_location_id]': fromLocationId,
+          'filter[to_location_id]': toLocationId,
+          'filter[supplier_id]': supplierId,
+        },
+        isEmpty
+      ),
     })
   },
 
-  getDownload({ dateRange = [], fromLocationId, toLocationId } = {}) {
+  async getDownload({
+    dateRange = [],
+    fromLocationId,
+    toLocationId,
+    supplierId = undefined,
+  } = {}) {
     const [startDate, endDate] = dateRange
-    return moveService.getAll({
-      filter: {
-        'filter[status]':
-          'requested,accepted,booked,in_transit,completed,cancelled',
-        'filter[date_from]': startDate,
-        'filter[date_to]': endDate,
-        'filter[from_location_id]': fromLocationId,
-        'filter[to_location_id]': toLocationId,
+    const filter = omitBy(
+      {
+        status: 'requested,accepted,booked,in_transit,completed,cancelled',
+        date_from: startDate,
+        date_to: endDate,
+        from_location_id: Array.isArray(fromLocationId)
+          ? fromLocationId.join(',')
+          : fromLocationId,
+        to_location_id: Array.isArray(toLocationId)
+          ? toLocationId.join(',')
+          : toLocationId,
+        supplier_id: supplierId,
       },
-    })
+      isEmpty
+    )
+
+    const response = await restClient.post(
+      '/moves/csv',
+      { filter },
+      {
+        format: 'text/csv',
+      }
+    )
+    return response
   },
 
   getById(id, { include } = {}) {

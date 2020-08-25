@@ -15,10 +15,12 @@ const {
 
 const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
+const { movesRedirect } = require('./middleware')
 
 // Define routes
 router.get(
   '/',
+  movesRedirect,
   setBodyMoves('outgoing', 'fromLocationId'),
   setBodyMoves('incoming', 'toLocationId'),
   setBodyAllocations,

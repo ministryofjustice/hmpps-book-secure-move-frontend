@@ -15,7 +15,18 @@ async function locations(req, res, next) {
     }
   }
 
-  const locations = sortBy(req.userLocations, 'title')
+  let userLocations = req.userLocations
+
+  const supplierId = req.session.user.supplierId
+
+  if (supplierId) {
+    userLocations = await referenceDataService.getLocationsBySupplierId(
+      supplierId
+    )
+    req.session.user.locations = userLocations
+  }
+
+  const locations = sortBy(userLocations, 'title')
 
   res.render('locations/views/locations.njk', {
     locations,

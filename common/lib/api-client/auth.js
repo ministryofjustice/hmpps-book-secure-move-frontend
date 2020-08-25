@@ -32,6 +32,11 @@ Auth.prototype = {
     return Promise.resolve(this.accessToken)
   },
 
+  async getAuthorizationHeader() {
+    const token = await this.getAccessToken()
+    return { Authorization: `Bearer ${token}` }
+  },
+
   refreshAccessToken() {
     const data = {
       grant_type: 'client_credentials',

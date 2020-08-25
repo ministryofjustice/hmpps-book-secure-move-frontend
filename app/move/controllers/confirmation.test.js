@@ -45,16 +45,6 @@ describe('Move controllers', function () {
         expect(params.location).to.equal(mockMove.to_location.title)
       })
 
-      it('should use supplier fallback as supplier name', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierNames')
-        expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
-      })
-
-      it('should translate supplier fallback key', function () {
-        expect(req.t).to.have.been.calledOnceWithExactly('supplier_fallback')
-      })
-
       it('should use empty array for saved hearings', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('savedHearings')
@@ -75,7 +65,7 @@ describe('Move controllers', function () {
 
       it('should contain correct number of locals', function () {
         const locals = res.render.args[0][1]
-        expect(Object.keys(locals)).to.have.length(6)
+        expect(Object.keys(locals)).to.have.length(5)
       })
     })
 
@@ -95,7 +85,7 @@ describe('Move controllers', function () {
         expect(params.location).to.equal(
           'fields::move_type.items.prison_recall.label'
         )
-        expect(req.t.secondCall).to.have.been.calledWithExactly(
+        expect(req.t.firstCall).to.have.been.calledWithExactly(
           'fields::move_type.items.prison_recall.label'
         )
       })
@@ -117,84 +107,9 @@ describe('Move controllers', function () {
         expect(params.location).to.equal(
           'fields::move_type.items.video_remand.label'
         )
-        expect(req.t.secondCall).to.have.been.calledWithExactly(
+        expect(req.t.firstCall).to.have.been.calledWithExactly(
           'fields::move_type.items.video_remand.label'
         )
-      })
-    })
-
-    describe('with empty supplier', function () {
-      beforeEach(function () {
-        req.move = {
-          ...mockMove,
-          from_location: {
-            suppliers: [],
-          },
-        }
-
-        controller(req, res)
-      })
-
-      it('should use supplier fallback as supplier name', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierNames')
-        expect(params.supplierNames).to.deep.equal(['supplier_fallback'])
-      })
-
-      it('should translate supplier fallback key', function () {
-        expect(req.t).to.have.been.calledOnceWithExactly('supplier_fallback')
-      })
-    })
-
-    describe('with one supplier', function () {
-      beforeEach(function () {
-        req.move = {
-          ...mockMove,
-          from_location: {
-            suppliers: [
-              {
-                name: 'Supplier one',
-              },
-            ],
-          },
-        }
-
-        controller(req, res)
-      })
-
-      it('should only contain first supplier in supplier param', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierNames')
-        expect(params.supplierNames).to.deep.equal(['Supplier one'])
-      })
-    })
-
-    describe('with multiple suppliers', function () {
-      beforeEach(function () {
-        req.move = {
-          ...mockMove,
-          from_location: {
-            suppliers: [
-              {
-                name: 'Supplier one',
-              },
-              {
-                name: 'Supplier two',
-              },
-            ],
-          },
-        }
-
-        controller(req, res)
-      })
-
-      it('should contain all supplier names as supplier param', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('supplierNames')
-        expect(params.supplierNames).to.deep.equal([
-          'Supplier one',
-          'Supplier two',
-        ])
       })
     })
 

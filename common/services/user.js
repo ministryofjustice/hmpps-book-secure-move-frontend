@@ -4,7 +4,6 @@ const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 const { decodeAccessToken } = require('../lib/access-token')
 
 const {
-  getLocationsBySupplierId,
   getLocationsByNomisAgencyId,
   getSupplierByKey,
 } = require('./reference-data')
@@ -31,6 +30,33 @@ function getLocations(token) {
   }
 }
 
+async function getSupplierId(token) {
+  const { authorities = [] } = decodeAccessToken(token)
+
+  if (!authorities.includes('ROLE_PECS_SUPPLIER')) {
+    return undefined
+  }
+
+  const groups = await getAuthGroups(token)
+
+  if (groups.length === 0) {
+    return undefined
+  }
+
+  const supplierKey = groups[0].toLowerCase()
+
+  try {
+    const supplier = await getSupplierByKey(supplierKey)
+    return supplier.id
+  } catch (error) {
+    if (error.statusCode === 404) {
+      return undefined
+    }
+
+    return Promise.reject(error)
+  }
+}
+
 function getAuthGroups(token) {
   const { user_name: userName } = decodeAccessToken(token)
 
@@ -42,31 +68,17 @@ function getAuthGroups(token) {
     .then(data => data.map(group => group.groupCode.replace(/^PECS_/, '')))
 }
 
-function getAuthLocations(token) {
+async function getAuthLocations(token) {
   const { authorities = [] } = decodeAccessToken(token)
 
-  return getAuthGroups(token).then(async groups => {
-    if (authorities.includes('ROLE_PECS_SUPPLIER')) {
-      if (!groups.length) {
-        return Promise.resolve([])
-      }
+  // supplier locations are dynamic and set in app/locations/controllers.js
+  if (authorities.includes('ROLE_PECS_SUPPLIER')) {
+    return []
+  }
 
-      try {
-        const supplierKey = groups[0].toLowerCase()
-        const supplier = await getSupplierByKey(supplierKey)
+  const groups = await getAuthGroups(token)
 
-        return getLocationsBySupplierId(supplier.id)
-      } catch (error) {
-        if (error.statusCode === 404) {
-          return Promise.resolve([])
-        }
-
-        return Promise.reject(error)
-      }
-    }
-
-    return getLocationsByNomisAgencyId(groups)
-  })
+  return getLocationsByNomisAgencyId(groups)
 }
 
 function getNomisLocations(token) {
@@ -82,4 +94,5 @@ function getNomisLocations(token) {
 module.exports = {
   getLocations,
   getFullname,
+  getSupplierId,
 }

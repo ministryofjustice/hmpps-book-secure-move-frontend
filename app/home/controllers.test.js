@@ -24,13 +24,7 @@ describe('Home controllers', function () {
 
     context('with correct permission', function () {
       beforeEach(function () {
-        req.session.user.permissions = ['dashboard:view']
-
         controllers.dashboard(req, res)
-      })
-
-      it('should not redirect', function () {
-        expect(res.redirect).not.to.be.called
       })
 
       it('should render template', function () {
@@ -65,20 +59,6 @@ describe('Home controllers', function () {
           expect(params.sections[section].filter).to.be.an('array')
           expect(params.sections[section].period).to.be.a('string')
         })
-      })
-    })
-
-    context('without correct permission', function () {
-      beforeEach(function () {
-        controllers.dashboard(req, res)
-      })
-
-      it('should redirect to moves', function () {
-        expect(res.redirect).to.be.calledOnceWithExactly('/moves')
-      })
-
-      it('should not render template', function () {
-        expect(res.render).not.to.be.called
       })
     })
   })

@@ -1,16 +1,11 @@
 const proxyquire = require('proxyquire')
-const uuid = {
-  v4: sinon.stub().returns('#uuid'),
-}
-const config = {
-  API: {
-    VERSION: 'terminator-x',
-  },
-}
+
+const getRequestHeadersStub = sinon
+  .stub()
+  .returns({ mockHeader: 'header value' })
 
 const middleware = proxyquire('./request-headers', {
-  uuid,
-  '../../../../config': config,
+  '../request-headers': getRequestHeadersStub,
 })
 
 describe('API Client', function () {
@@ -34,14 +29,15 @@ describe('API Client', function () {
           middleware.req({ req: request })
         })
 
-        it('should append the `Accept` header with the api version', function () {
-          expect(request.headers.Accept).to.equal(
-            `application/vnd.api+json; version=${config.API.VERSION}`
-          )
+        it('should get the request headers', function () {
+          expect(getRequestHeadersStub).to.be.calledOnceWithExactly()
         })
 
-        it('should add the `Idempotency-Key` header', function () {
-          expect(request.headers['Idempotency-Key']).to.equal('#uuid')
+        it('should add the default request headers', function () {
+          expect(request.headers).to.deep.equal({
+            Accept: 'Something',
+            mockHeader: 'header value',
+          })
         })
       })
     })

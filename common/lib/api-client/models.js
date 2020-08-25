@@ -48,6 +48,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'moves',
       },
+      supplier: {
+        jsonApi: 'hasOne',
+        type: 'suppliers',
+      },
     },
     options: {
       defaultInclude: [
@@ -67,6 +71,7 @@ module.exports = {
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
+        'supplier',
         'to_location',
       ],
     },

@@ -1,4 +1,4 @@
-const { get, camelCase } = require('lodash')
+const { get, camelCase, omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
 const moveService = require('../../../common/services/move')
@@ -8,10 +8,16 @@ function setfilterMoves(items = [], bodyKey) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
       moveService
-        .getActive({
-          ...get(req, `body.${bodyKey}`, {}),
-          isAggregation: true,
-        })
+        .getActive(
+          omitBy(
+            {
+              ...get(req, `body.${bodyKey}`, {}),
+              isAggregation: true,
+              supplierId: req.session?.user?.supplierId,
+            },
+            isUndefined
+          )
+        )
         .then(value => {
           const query = querystring.stringify(req.query)
 
