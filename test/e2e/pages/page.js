@@ -21,6 +21,7 @@ export default class Page {
       submitButton: Selector('button[type="submit"]'),
       bannerHeading: Selector('.app-message--temporary .app-message__heading'),
       bannerContent: Selector('.app-message--temporary .app-message__content'),
+      instructionBanner: Selector('.app-message--instruction'),
       locationsList: Selector(
         'ul[data-location-type="locations"] li a'
       ).withAttribute('href', /\/locations\/.+/),

@@ -197,6 +197,10 @@ module.exports = {
         username: process.env.E2E_PMU_USERNAME,
         password: process.env.E2E_PMU_PASSWORD,
       },
+      PER: {
+        username: process.env.E2E_PER_USERNAME,
+        password: process.env.E2E_PER_PASSWORD,
+      },
     },
   },
   FEATURE_FLAGS: {
