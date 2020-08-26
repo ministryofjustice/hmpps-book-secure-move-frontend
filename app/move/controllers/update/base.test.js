@@ -3,7 +3,6 @@ const { cloneDeep } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
 
@@ -621,8 +620,16 @@ describe('Move controllers', function () {
     })
 
     context('when the values have changed', function () {
+      const updatedMove = { id: '#updated' }
+      let updatedRequest
       beforeEach(async function () {
-        await controller.saveMove(req, res, nextSpy)
+        updatedRequest = {
+          ...req,
+          move: updatedMove,
+        }
+        sinon.stub(controller, '_setModels')
+        moveService.update.resolves(updatedMove)
+        await controller.saveMove({ ...req }, res, nextSpy)
       })
 
       it('should call savePerson with expected data', function () {
@@ -633,8 +640,14 @@ describe('Move controllers', function () {
         })
       })
 
+      it('should update the move models', function () {
+        expect(controller._setModels).to.be.calledOnceWithExactly(
+          updatedRequest
+        )
+      })
+
       it('should set the confirmation message', function () {
-        expect(controller.setFlash).to.be.calledOnceWithExactly(req)
+        expect(controller.setFlash).to.be.calledOnceWithExactly(updatedRequest)
       })
 
       it('should invoke next with no error', function () {
@@ -658,9 +671,6 @@ describe('Move controllers', function () {
   describe('#setFlash', function () {
     let req
     beforeEach(async function () {
-      sinon.stub(filters, 'oxfordJoin').callsFake((...arr) => {
-        return arr.join(',')
-      })
       req = {
         t: sinon.stub().returnsArg(0),
         flash: sinon.spy(),
@@ -670,15 +680,8 @@ describe('Move controllers', function () {
           },
         },
         getMove: sinon.stub().returns({
-          from_location: {
-            suppliers: [
-              {
-                name: 'Supplier A',
-              },
-              {
-                name: 'Supplier B',
-              },
-            ],
+          supplier: {
+            name: 'Supplier A',
           },
         }),
       }
@@ -690,31 +693,24 @@ describe('Move controllers', function () {
       })
 
       it('should output localised strings containing the suppliers', function () {
-        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
-          'Supplier A',
-          'Supplier B',
-        ])
         expect(req.t).to.be.callCount(2)
         expect(req.t.getCall(0).args).to.deep.equal([
           'moves::update_flash.categories.categoryKey.heading',
         ])
         expect(req.t.getCall(1).args).to.deep.equal([
           'moves::update_flash.categories.categoryKey.message',
-          { supplier: 'Supplier A,Supplier B' },
+          { supplier: 'Supplier A' },
         ])
       })
     })
 
     context('when the supplier is not known', function () {
       beforeEach(async function () {
-        req.getMove = sinon.stub().returns()
+        req.getMove = sinon.stub().returns({})
         await controller.setFlash(req, 'categoryKey')
       })
 
       it('should output localised strings containing generic supplier info', function () {
-        expect(filters.oxfordJoin).to.be.calledOnceWithExactly([
-          'supplier_fallback',
-        ])
         expect(req.t).to.be.callCount(3)
         expect(req.t.getCall(0).args).to.deep.equal(['supplier_fallback'])
         expect(req.t.getCall(1).args).to.deep.equal([
