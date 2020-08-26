@@ -1,8 +1,7 @@
-const { isEqual, keys, map, pick } = require('lodash')
+const { isEqual, keys, pick } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
-const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 
 class UpdateBaseController extends CreateBaseController {
@@ -129,12 +128,7 @@ class UpdateBaseController extends CreateBaseController {
 
   setFlash(req, category) {
     const move = req.getMove()
-    const suppliers = move?.from_location?.suppliers
-    const supplierNames =
-      suppliers && suppliers.length
-        ? map(suppliers, 'name')
-        : [req.t('supplier_fallback')]
-    const supplier = filters.oxfordJoin(supplierNames)
+    const supplier = move.supplier?.name || req.t('supplier_fallback')
     category = category || this.flashKey || req.form.options.key
     req.flash('success', {
       title: req.t(`moves::update_flash.categories.${category}.heading`),
