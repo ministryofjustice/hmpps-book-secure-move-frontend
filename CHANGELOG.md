@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.39.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.38.0...v2.39.0) (2020-08-26)
+
+
+### Features
+
+* **moves:** Add age group and filter to single requests [P4-1940] ([605aebb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/605aebb76165338b71e0ff6ad1be126790961498))
+* **moves:** Filter moves by supplier id [P4-1882] ([940afb5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/940afb56a539094bdae4c81e323754016a32d97c))
+* **moves:** Show supplier locations based on moves they own [P4-2044] ([d8419b6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d8419b68896c6f52760380745876ede33db5de4d))
+* Decorated the user with a supplier id (where applicable) ([8cd3493](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8cd3493b3d93b4b8eee96fdcb975b55825633d4a))
+* Displayed the current week in the dashboard ([f33de8d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f33de8d553fe603c2a3c32ba5a05158dcf3f16ff))
+
 ## [2.38.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.37.4...v2.38.0) (2020-08-19)
 
 
