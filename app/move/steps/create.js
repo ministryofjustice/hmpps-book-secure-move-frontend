@@ -39,8 +39,33 @@ const riskStep = {
       value: 'prison',
       next: 'special-vehicle',
     },
+    ...WhenYouthTransferMove({
+      goTo: 'travel-special-vehicle',
+      orElse: 'health-information',
+    }),
     'health-information',
   ],
+}
+
+function createDateRangeStepForLocations({
+  from: fromLocationType,
+  to: toLocationTypes,
+}) {
+  if (!Array.isArray(toLocationTypes)) {
+    toLocationTypes = [toLocationTypes]
+  }
+  return {
+    field: 'from_location_type',
+    value: fromLocationType,
+    next: [
+      ...toLocationTypes.map(it => ({
+        field: 'to_location_type',
+        value: it,
+        next: 'move-date-range',
+      })),
+      'move-date',
+    ],
+  }
 }
 
 const healthStep = {
@@ -49,6 +74,10 @@ const healthStep = {
   template: 'assessment',
   pageTitle: 'moves::steps.health_information.heading',
   next: [
+    ...WhenYouthTransferMove({
+      goTo: 'upload-risk-assessment',
+      orElse: 'save',
+    }),
     {
       field: 'can_upload_documents',
       value: true,
@@ -114,7 +143,7 @@ module.exports = {
   '/move-date-range': {
     pageTitle: 'moves::steps.move_date.heading',
     fields: ['date_from', 'has_date_to', 'date_to'],
-    next: 'prison-transfer-reason',
+    next: 'transfer-reason',
   },
   '/move-date': {
     editable: true,
@@ -144,7 +173,7 @@ module.exports = {
           {
             field: 'to_location_type',
             value: 'prison',
-            next: 'prison-transfer-reason',
+            next: 'transfer-reason',
           },
           'release-status',
         ],
@@ -154,7 +183,7 @@ module.exports = {
     controller: MoveDate,
     fields: ['date', 'date_type', 'date_custom'],
   },
-  '/prison-transfer-reason': {
+  '/transfer-reason': {
     controller: PrisonTransferReason,
     pageTitle: 'moves::steps.prison_transfer_reason.heading',
     fields: ['prison_transfer_type', 'prison_transfer_comments'],
@@ -166,18 +195,18 @@ module.exports = {
     template: 'move-details',
     pageTitle: 'moves::steps.move_details.heading',
     next: [
-      {
-        field: 'from_location_type',
-        value: 'prison',
-        next: [
-          {
-            field: 'to_location_type',
-            value: 'prison',
-            next: 'move-date-range',
-          },
-          'move-date',
-        ],
-      },
+      createDateRangeStepForLocations({
+        from: 'prison',
+        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+      }),
+      createDateRangeStepForLocations({
+        from: 'secure_childrens_home',
+        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+      }),
+      createDateRangeStepForLocations({
+        from: 'secure_training_centre',
+        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+      }),
       'move-date',
     ],
     fields: [
@@ -187,6 +216,8 @@ module.exports = {
       'to_location_hospital',
       'to_location_prison_transfer',
       'to_location_police_transfer',
+      'to_location_secure_training_centre',
+      'to_location_secure_childrens_home',
       'prison_recall_comments',
       'video_remand_comments',
     ],
@@ -194,7 +225,13 @@ module.exports = {
   '/agreement-status': {
     pageTitle: 'moves::agreement_status.heading',
     fields: ['move_agreed', 'move_agreed_by'],
-    next: 'special-vehicle',
+    next: [
+      ...WhenYouthTransferMove({
+        goTo: 'travel-special-vehicle',
+        orElse: 'special-vehicle',
+      }),
+      'special-vehicle',
+    ],
   },
   '/court-information': {
     controller: Assessment,
@@ -291,7 +328,21 @@ module.exports = {
     pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
   },
+  '/travel-special-vehicle': {
+    ...healthStep,
+    showPreviousAssessment: false,
+    pageTitle: 'moves::steps.special_vehicle.heading',
+    fields: ['special_vehicle'],
+  },
   '/document': {
+    enctype: 'multipart/form-data',
+    controller: Document,
+    next: 'save',
+    pageTitle: 'moves::steps.document.heading',
+    fields: ['documents'],
+  },
+  '/upload-risk-assessment': {
+    key: 'upload_risk_assessment',
     enctype: 'multipart/form-data',
     controller: Document,
     next: 'save',
@@ -302,4 +353,36 @@ module.exports = {
     skip: true,
     controller: Save,
   },
+}
+
+function WhenYouthTransferMove({ goTo, orElse }) {
+  return [
+    {
+      field: 'to_location_type',
+      value: 'secure_childrens_home',
+      next: goTo,
+    },
+    {
+      field: 'to_location_type',
+      value: 'secure_training_centre',
+      next: goTo,
+    },
+    {
+      field: 'to_location_type',
+      value: 'prison',
+      next: [
+        {
+          field: 'from_location_type',
+          value: 'secure_childrens_home',
+          next: goTo,
+        },
+        {
+          field: 'from_location_type',
+          value: 'secure_training_centre',
+          next: goTo,
+        },
+        orElse,
+      ],
+    },
+  ]
 }

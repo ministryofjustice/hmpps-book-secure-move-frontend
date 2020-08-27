@@ -82,6 +82,12 @@
       "court_appearance": {
         "label": "Court"
       },
+      "secure_childrens_home": {
+        "label": "Secure Children’s Home (SCH)"
+      },
+      "secure_training_centre": {
+        "label": "Secure Training Centre (STC)"
+      },
       "unknown": {
         "label": "Unknown"
       }
@@ -98,6 +104,12 @@
   },
   "to_location_hospital": {
     "label": "Name of hospital"
+  },
+  "to_location_secure_childrens_home": {
+    "label": "Name of Secure Children’s Home (SCH)"
+  },
+  "to_location_secure_training_centre": {
+    "label": "Name of Secure Training Centre (STC)"
   },
   "additional_information": {
     "label": "Additional information (optional)",
@@ -287,6 +299,7 @@
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
+    "heading_upload_risk_assessment": "Upload the risk assessment document for this person.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
   },

@@ -28,6 +28,12 @@ class CreateMovePage extends Page {
       moveType: Selector('[name="move_type"]'),
       courtLocation: Selector('#to_location_court_appearance'),
       hospitalLocation: Selector('#to_location_hospital'),
+      secureChildrensHomeLocation: Selector(
+        '#to_location_secure_childrens_home'
+      ),
+      secureTrainingCentreLocation: Selector(
+        '#to_location_secure_training_centre'
+      ),
       policeLocation: Selector('#to_location_police_transfer'),
       prisonLocation: Selector('#to_location_prison_transfer'),
       prisonRecallComments: Selector('#prison_recall_comments'),
@@ -474,9 +480,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInPrisonTransferReasons() {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/prison-transfer-reason`)
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/transfer-reason`)
 
     return fillInForm({
       prisonTransferReason: {

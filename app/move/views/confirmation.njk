@@ -26,9 +26,21 @@
         })
       }) }}
 
+      {% if move.allocation %}
+        {% set context = "assign" %}
+      {% else %}
+
+        {% if move.status === "proposed" and (move.move_type === "secure_training_centre" or move.move_type === "secure_childrens_home") %}
+          {% set context = move.move_type %}
+        {% else %}
+          {% set context = move.status %}
+        {% endif %}
+
+      {% endif %}
+
       <p>
         {{ t("moves::confirmation.detail", {
-          context: "assign" if move.allocation else move.status,
+          context: context,
           count: move.allocation.moves_count,
           href: "/move/" + move.id,
           allocationHref: "/allocation/" + move.allocation.id,

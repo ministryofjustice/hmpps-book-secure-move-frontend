@@ -12,7 +12,9 @@
   },
   "pending_review": {
     "heading": "Pending review",
-    "content": "This request needs to be reviewed by a member of the Population Management Unit (PMU) before it can be requested with the supplier."
+    "content": "This request needs to be reviewed by a member of the Population Management Unit (PMU) before it can be requested with the supplier.",
+    "content_secure_childrens_home": "This request needs to be reviewed by a member of the Placement team before it can be requested with the supplier.",
+    "content_secure_training_centre": "This request needs to be reviewed by a member of the Placement team before it can be requested with the supplier."
   },
   "pending_assign": {
     "heading": "Awaiting a person to be added",

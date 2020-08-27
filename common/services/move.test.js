@@ -105,6 +105,23 @@ describe('Move Service', function () {
         foo: 'bar',
       })
     })
+
+    context('with youth-like moves', function () {
+      it('should upgrade the move type', function () {
+        const transformed = moveService.transform({
+          id: '__move__',
+          profile: mockProfile,
+          person: mockPerson,
+          from_location: {
+            location_type: 'secure_childrens_home',
+          },
+          to_location: {
+            location_type: 'secure_childrens_home',
+          },
+        })
+        expect(transformed.move_type).to.equal('secure_childrens_home')
+      })
+    })
   })
 
   describe('#format()', function () {
@@ -279,6 +296,15 @@ describe('Move Service', function () {
           move_agreed: null,
         })
         expect(formatted.move_agreed).to.equal(null)
+      })
+    })
+
+    context('with youth-like moves', function () {
+      it('should downgrade the move type', function () {
+        const formatted = moveService.format({
+          move_type: 'secure_childrens_home',
+        })
+        expect(formatted.move_type).to.equal('prison_transfer')
       })
     })
   })
