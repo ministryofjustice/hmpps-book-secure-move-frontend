@@ -162,6 +162,9 @@ jobs:
       - *restore_cache
       - *install_dependencies
       - *save_cache
+      - run:
+          name: Build the app
+          command: NODE_ENV=production npm run build
       - when:
           condition: <<parameters.use_review_app>>
           steps:

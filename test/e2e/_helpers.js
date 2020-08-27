@@ -9,6 +9,7 @@ import { find, get, isArray, isNil } from 'lodash'
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
 import referenceDataHelpers from '../../common/helpers/reference-data'
+import responseService from '../../common/services/framework-response'
 import moveService from '../../common/services/move'
 import personService from '../../common/services/person'
 import profileService from '../../common/services/profile'
@@ -256,6 +257,54 @@ export async function createMoveFixture({
     toLocation: move.to_location ? move.to_location.title : undefined,
   }
   return move
+}
+
+export async function fillInPersonEscortRecord(moveId) {
+  const move = await moveService.getById(moveId)
+  const personEscortRecord = move.profile.person_escort_record
+  const responses = personEscortRecord.responses.map(response => {
+    const options = response.question.options
+    let value
+
+    if (response.value_type === 'string') {
+      if (options.length > 0) {
+        value = options.includes('No')
+          ? 'No'
+          : faker.random.arrayElement(options)
+      } else {
+        value = faker.lorem.sentence()
+      }
+    }
+
+    if (response.value_type === 'array') {
+      value = [faker.random.arrayElement(options)]
+    }
+
+    if (response.value_type === 'object') {
+      value = {
+        option: faker.random.arrayElement(options),
+        details: faker.lorem.sentence(),
+      }
+    }
+
+    if (response.value_type === 'collection') {
+      value = options.map(option => {
+        return {
+          option,
+          details: faker.lorem.sentence(),
+        }
+      })
+    }
+
+    return {
+      value,
+      id: response.id,
+    }
+  })
+
+  return Promise.all(
+    responses.map(response => responseService.update(response))
+  )
 }
 
 /**

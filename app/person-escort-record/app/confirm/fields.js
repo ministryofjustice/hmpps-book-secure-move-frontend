@@ -1,4 +1,5 @@
 const confirmPersonEscortRecord = {
+  id: 'confirm_person_escort_record',
   name: 'confirm_person_escort_record',
   component: 'govukCheckboxes',
   items: [

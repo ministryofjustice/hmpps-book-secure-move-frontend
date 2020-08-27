@@ -271,6 +271,18 @@ const mockArgs = {
         },
       },
     ],
+    meta: {
+      section_progress: [
+        {
+          key: 'risk-information',
+          status: 'completed',
+        },
+        {
+          key: 'health-information',
+          status: 'not_started',
+        },
+      ],
+    },
   },
 }
 const mockSection = {
@@ -279,6 +291,7 @@ const mockSection = {
 }
 const expectedOutput = {
   key: 'risk-information',
+  isCompleted: true,
   name: 'Risk information',
   url:
     '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information/overview',
@@ -340,6 +353,7 @@ describe('Presenters', function () {
       it('should return no output', function () {
         expect(output).to.deep.equal({
           key: 'risk-information',
+          isCompleted: false,
           name: 'Risk information',
           panels: [],
           url: '/risk-information/overview',

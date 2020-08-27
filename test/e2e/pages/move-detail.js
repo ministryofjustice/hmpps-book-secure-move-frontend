@@ -16,6 +16,7 @@ class MoveDetailPage extends Page {
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
+      tagList: Selector('header [data-tag-list-source]'),
       tags: Selector('header a.app-tag'),
       personalDetails: Selector('#main-content h2')
         .withText('Personal details')
@@ -35,21 +36,43 @@ class MoveDetailPage extends Page {
       ),
       riskInformation: Selector('#main-content h2')
         .withText('Risk information')
-        .sibling('.app-panel'),
+        .parent('section'),
       noRiskInformationMessage: Selector('.app-message').withText(
         'No risk information'
       ),
       healthInformation: Selector('#main-content h2')
-        .withText('Health affecting transport')
-        .sibling('.app-panel'),
+        .withText('Health information')
+        .parent('section'),
       noHealthInformationMessage: Selector('.app-message').withText(
-        'No health affecting transport'
+        'No health information'
       ),
+      offenceInformation: Selector('#main-content h2')
+        .withText('Offence information')
+        .parent('section'),
+      propertyInformation: Selector('#main-content h2')
+        .withText('Property information')
+        .parent('section'),
       documentList: Selector('#main-content h2')
         .withText('Supporting documents')
         .sibling('.govuk-list'),
       noDocumentsMessage: Selector('.app-message').withText(
         'No documents uploaded'
+      ),
+      personEscortRecordSectionStatuses: this.nodes.instructionBanner.find(
+        '.govuk-tag'
+      ),
+      personEscortRecordSectionLinks: Selector('#main-content a').withText(
+        'Review'
+      ),
+      personEscortRecordWarnings: Selector('#main-content strong.app-tag'),
+      personEscortRecordStartButton: this.nodes.instructionBanner
+        .find('.govuk-button')
+        .withText('Start Person Escort Record'),
+      personEscortRecordConfirmationButton: this.nodes.instructionBanner
+        .find('.govuk-button')
+        .withText('Provide confirmation'),
+      personEscortRecordConfirmationCheckbox: Selector(
+        '[name="confirm_person_escort_record"]'
       ),
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
@@ -193,7 +216,10 @@ class MoveDetailPage extends Page {
   async checkAssessment(selector, selectedItems, labelMap) {
     for (const key of selectedItems) {
       const tag = this.nodes.tags.withText(key.toUpperCase())
-      const panel = selector.withText(key.toUpperCase())
+      const panel = selector
+        .find('.app-tag')
+        .withText(key.toUpperCase())
+        .parent('.app-panel')
       const comment = labelMap[key]
 
       // check answer panel exists

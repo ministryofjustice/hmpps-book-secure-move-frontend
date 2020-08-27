@@ -35,3 +35,8 @@ export const pmuUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.PMU)
   await page.chooseLocation()
 })
+
+export const personEscortRecordUser = Role(home, async t => {
+  await page.signIn(E2E.ROLES.PER)
+  await page.chooseLocation()
+})
