@@ -474,9 +474,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInPrisonTransferReasons() {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/prison-transfer-reason`)
+    await t.expect(this.getCurrentUrl()).contains(`${this.url}/transfer-reason`)
 
     return fillInForm({
       prisonTransferReason: {

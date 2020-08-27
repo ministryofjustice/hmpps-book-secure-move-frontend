@@ -114,7 +114,7 @@ module.exports = {
   '/move-date-range': {
     pageTitle: 'moves::steps.move_date.heading',
     fields: ['date_from', 'has_date_to', 'date_to'],
-    next: 'prison-transfer-reason',
+    next: 'transfer-reason',
   },
   '/move-date': {
     editable: true,
@@ -144,7 +144,7 @@ module.exports = {
           {
             field: 'to_location_type',
             value: 'prison',
-            next: 'prison-transfer-reason',
+            next: 'transfer-reason',
           },
           'release-status',
         ],
@@ -154,7 +154,7 @@ module.exports = {
     controller: MoveDate,
     fields: ['date', 'date_type', 'date_custom'],
   },
-  '/prison-transfer-reason': {
+  '/transfer-reason': {
     controller: PrisonTransferReason,
     pageTitle: 'moves::steps.prison_transfer_reason.heading',
     fields: ['prison_transfer_type', 'prison_transfer_comments'],
