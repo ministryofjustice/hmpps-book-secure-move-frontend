@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty, get } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 const restClient = require('../lib/api-client/rest-client')
@@ -48,6 +48,14 @@ function getAll({
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   transform(move) {
+    // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
+    const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
+    const locationType = get(move, 'to_location.location_type')
+
+    if (youthTransfer.includes(locationType)) {
+      move.move_type = locationType
+    }
+
     return {
       ...move,
       profile: profileService.transform(move.profile),
@@ -63,6 +71,13 @@ const moveService = {
       'prison_transfer_reason',
       'supplier',
     ]
+
+    // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
+    const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
+
+    if (youthTransfer.includes(data.move_type)) {
+      data.move_type = 'prison_transfer'
+    }
 
     return mapValues(omitBy(data, isUndefined), (value, key) => {
       if (booleansAndNulls.includes(key)) {
