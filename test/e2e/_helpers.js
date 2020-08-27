@@ -280,14 +280,20 @@ export async function fillInPersonEscortRecord(moveId) {
       value = [faker.random.arrayElement(options)]
     }
 
-    if (response.value_type === 'object') {
+    if (
+      response.value_type === 'object' ||
+      response.value_type === 'object::followup_comment'
+    ) {
       value = {
         option: faker.random.arrayElement(options),
         details: faker.lorem.sentence(),
       }
     }
 
-    if (response.value_type === 'collection') {
+    if (
+      response.value_type === 'collection' ||
+      response.value_type === 'collection::followup_comment'
+    ) {
       value = options.map(option => {
         return {
           option,

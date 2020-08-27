@@ -10,7 +10,7 @@ function _checkResponse({ responses = [], key, expectedValue }) {
           return response.value === expectedValue
         }
 
-        if (response.value_type === 'object') {
+        if (response.value_type.includes('object')) {
           return response.value.option === expectedValue
         }
       }

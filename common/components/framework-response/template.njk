@@ -1,5 +1,5 @@
 {% if params.value and params.valueType %}
-  {% if params.valueType === 'object' %}
+  {% if params.valueType === 'object' or params.valueType === 'object::followup_comment' %}
     <p class="govuk-!-font-size-16">
       {{ params.value.option }}{{ " — " + params.value.details if params.value.details }}
     </p>
@@ -13,7 +13,7 @@
     </ul>
   {% endif %}
 
-  {% if params.valueType === 'collection' %}
+  {% if params.valueType === 'collection' or params.valueType === 'collection::followup_comment' %}
     <ul class="govuk-list govuk-list--bullet govuk-list--spaced govuk-!-margin-top-0 govuk-!-font-size-16">
       {% for item in params.value %}
         <li>
