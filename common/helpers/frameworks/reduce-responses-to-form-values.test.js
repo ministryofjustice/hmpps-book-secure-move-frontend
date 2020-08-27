@@ -5,7 +5,7 @@ describe('Helpers', function () {
     describe('#reduceResponsesToFormValues', function () {
       let response
 
-      context('with `object` value type', function () {
+      context('with `object::followup_comment` value type', function () {
         beforeEach(function () {
           response = reduceResponsesToFormValues(
             {},
@@ -14,7 +14,7 @@ describe('Helpers', function () {
                 option: 'Yes, I do',
                 details: 'Lorem ipsum',
               },
-              value_type: 'object',
+              value_type: 'object::followup_comment',
               question: {
                 key: 'object-response',
               },
@@ -37,7 +37,7 @@ describe('Helpers', function () {
         })
       })
 
-      context('with `collection` value type', function () {
+      context('with `collection::followup_comment` value type', function () {
         beforeEach(function () {
           response = reduceResponsesToFormValues(
             {},
@@ -52,7 +52,7 @@ describe('Helpers', function () {
                   details: 'Lorem ipsum two',
                 },
               ],
-              value_type: 'collection',
+              value_type: 'collection::followup_comment',
               question: {
                 key: 'collection-response',
                 options: [

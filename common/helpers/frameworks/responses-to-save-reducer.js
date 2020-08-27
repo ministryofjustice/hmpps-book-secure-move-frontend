@@ -10,20 +10,14 @@ function responsesToSaveReducer(values = {}) {
       return accumulator
     }
 
-    if (
-      responseType === 'object' ||
-      responseType === 'object::followup_comment'
-    ) {
+    if (responseType === 'object::followup_comment') {
       responseValue = pickBy({
         option: value,
         details: values[`${fieldName}--${kebabCase(value)}`],
       })
     }
 
-    if (
-      responseType === 'collection' ||
-      responseType === 'collection::followup_comment'
-    ) {
+    if (responseType === 'collection::followup_comment') {
       const collection = flatten([value])
         .filter(Boolean)
         .map(option => {

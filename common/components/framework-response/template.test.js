@@ -33,7 +33,7 @@ describe('Framework Response component', function () {
     })
   })
 
-  context('with `object` response', function () {
+  context('with `object::followup_comment` response', function () {
     context('without details', function () {
       beforeEach(function () {
         const $ = renderComponentHtmlToCheerio(
@@ -114,7 +114,7 @@ describe('Framework Response component', function () {
     })
   })
 
-  context('with `collection response', function () {
+  context('with `collection::followup_comment` response', function () {
     context('without details', function () {
       const example = examples.collection
 

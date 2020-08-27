@@ -21,13 +21,13 @@ examples:
     data:
       value:
         option: "Yes"
-      valueType: object
+      valueType: object::followup_comment
   - name: object with details
     data:
       value:
         option: "Yes"
         details: Example further details for this response
-      valueType: object
+      valueType: object::followup_comment
   - name: array
     data:
       value:
@@ -44,7 +44,7 @@ examples:
           option: Item two
         -
           option: Item three
-      valueType: collection
+      valueType: collection::followup_comment
   - name: collection with details
     data:
       value:
@@ -57,7 +57,7 @@ examples:
         -
           option: Item three
           details: Further details for option three
-      valueType: collection
+      valueType: collection::followup_comment
   - name: unanswered
     data:
       questionUrl: /step-url#question-id
