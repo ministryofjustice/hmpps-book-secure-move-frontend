@@ -5,7 +5,7 @@ function responsesToSaveReducer(values = {}) {
     const fieldName = question.key
     const value = values[fieldName]
 
-    if (valueType === 'object') {
+    if (valueType === 'object' || valueType === 'object::followup_comment') {
       accumulator.push({
         id,
         value: pickBy({
@@ -27,7 +27,10 @@ function responsesToSaveReducer(values = {}) {
               value = item[que.key]
             }
 
-            if (que.response_type === 'collection') {
+            if (
+              que.response_type === 'collection' ||
+              que.response_type === 'collection::followup_comment'
+            ) {
               value = flatten([item[que.key]])
                 .filter(Boolean)
                 .map(option => {
@@ -52,7 +55,10 @@ function responsesToSaveReducer(values = {}) {
       })
     }
 
-    if (valueType === 'collection') {
+    if (
+      valueType === 'collection' ||
+      valueType === 'collection::followup_comment'
+    ) {
       const collection = value.filter(Boolean).map(option => {
         return {
           option,
