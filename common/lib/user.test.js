@@ -176,6 +176,9 @@ describe('User class', function () {
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
+          'move:create:prison_transfer',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:cancel',
           'move:update',
         ]
@@ -198,6 +201,9 @@ describe('User class', function () {
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
+          'move:create:prison_transfer',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:cancel',
           'move:update',
         ])
@@ -341,6 +347,8 @@ describe('User class', function () {
           'move:create:prison_recall',
           'move:create:police_transfer',
           'move:create:hospital',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:create:video_remand',
           'move:cancel',
           'move:update',
