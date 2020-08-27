@@ -38,7 +38,9 @@
 
   {% if move.status == "proposed" %}
     {% set html %}
-      <p>{{ t("messages::pending_review.content") }}</p>
+      <p>{{ t("messages::pending_review.content", {
+        context: move.move_type
+      }) }}</p>
 
       {% if canAccess("move:review") %}
         {{ govukButton({

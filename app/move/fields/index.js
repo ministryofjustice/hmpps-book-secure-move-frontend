@@ -43,6 +43,8 @@ const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationHospital = require('./to-location-hospital')
 const toLocationPoliceTransfer = require('./to-location-police-transfer')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
+const toLocationSecureChildrensHomeTransfer = require('./to-location-secure-childrens-home')
+const toLocationSecureTrainingCentreTransfer = require('./to-location-secure-training-centre')
 const videoRemandComments = require('./video-remand-comments')
 
 const cancelFields = {
@@ -107,6 +109,8 @@ const createFields = {
   to_location_hospital: toLocationHospital,
   to_location_police_transfer: toLocationPoliceTransfer,
   to_location_prison_transfer: toLocationPrisonTransfer,
+  to_location_secure_childrens_home: toLocationSecureChildrensHomeTransfer,
+  to_location_secure_training_centre: toLocationSecureTrainingCentreTransfer,
   wheelchair: assessmentAnswer(),
   video_remand_comments: videoRemandComments,
   violent: assessmentAnswer(),

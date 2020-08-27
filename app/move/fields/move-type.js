@@ -40,6 +40,16 @@ const moveType = {
       text: 'fields::move_type.items.video_remand.label',
       conditional: 'video_remand_comments',
     },
+    {
+      value: 'secure_childrens_home',
+      text: 'fields::move_type.items.secure_childrens_home.label',
+      conditional: 'to_location_secure_childrens_home',
+    },
+    {
+      value: 'secure_training_centre',
+      text: 'fields::move_type.items.secure_training_centre.label',
+      conditional: 'to_location_secure_training_centre',
+    },
   ],
 }
 

@@ -54,8 +54,20 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call setLocationItems middleware', function () {
+        expect(controller.use.getCall(5)).to.have.been.calledWith(
+          commonMiddleware.setLocationItems()
+        )
+      })
+
+      it('should call setLocationItems middleware', function () {
+        expect(controller.use.getCall(6)).to.have.been.calledWith(
+          commonMiddleware.setLocationItems()
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(5)
+        expect(controller.use.callCount).to.equal(7)
       })
     })
 

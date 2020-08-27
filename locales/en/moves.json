@@ -133,9 +133,9 @@
       "heading_hospital": "Hospital information"
     },
     "agreement_status": {
-      "agreed": "Agreed with receiving prison",
+      "agreed": "Agreed with receiving location",
       "agreed_with_name": "Agreed by {{name}}",
-      "not_agreed": "Not agreed with receiving prison"
+      "not_agreed": "Not agreed with receiving location"
     }
   },
   "cancel": {
@@ -162,6 +162,8 @@
     "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been requested with {{supplier}}.",
     "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review.",
     "detail_assign": "<strong><a href=\"{{href}}\">{{name}}</a></strong> has been added to an allocation for <strong><a href=\"{{allocationHref}}\">$t(n_person) to {{location}}</a></strong> on <strong>{{date}}</strong>.",
+    "detail_secure_childrens_home": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Placement Team for review.",
+    "detail_secure_training_centre": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Placement Team for review.",
     "saved_to_nomis": "<p>One court date for case number <strong>{{cases}}</strong> on <strong>{{date}}</strong> has been added to NOMIS.</p><p>Add additional court dates for {{date}} in NOMIS.</p>",
     "saved_to_nomis_plural": "<p>Court dates for case numbers <strong>{{cases}}</strong> on <strong>{{date}}</strong> have been added to NOMIS.</p>",
     "saved_to_nomis_failed": "You need to add this court date to NOMIS as it could not be added.",
@@ -170,7 +172,7 @@
     "add_another": "Add another person to this allocation"
   },
   "agreement_status": {
-    "heading": "Has this move been agreed with receiving prison?"
+    "heading": "Has this move been agreed with receiving location?"
   },
   "court_case": {
     "items": {
