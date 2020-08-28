@@ -45,9 +45,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'string',
                 question: {
                   key: 'question',
+                  response_type: 'string',
                 },
               },
             ],
@@ -66,9 +66,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'array',
                 question: {
                   key: 'question',
+                  response_type: 'array',
                 },
               },
             ],
@@ -87,9 +87,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'array',
                 question: {
                   key: 'question',
+                  response_type: 'array',
                 },
               },
             ],
@@ -108,9 +108,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'object::followup_comment',
                 question: {
                   key: 'question',
+                  response_type: 'object::followup_comment',
                 },
               },
             ],
@@ -132,9 +132,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'object::followup_comment',
                 question: {
                   key: 'question',
+                  response_type: 'object::followup_comment',
                 },
               },
             ],
@@ -156,9 +156,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'collection::followup_comment',
                 question: {
                   key: 'question',
+                  response_type: 'collection::followup_comment',
                 },
               },
             ],
@@ -192,9 +192,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'collection::followup_comment',
                 question: {
                   key: 'question',
+                  response_type: 'collection::followup_comment',
                 },
               },
             ],
@@ -243,9 +243,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'collection::add_multiple_items',
                 question: {
                   key: 'question',
+                  response_type: 'collection::add_multiple_items',
                   descendants: [
                     {
                       id: '1.1',
@@ -348,9 +348,9 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'unknkown',
                 question: {
                   key: 'question',
+                  response_type: 'unknkown',
                 },
               },
             ],

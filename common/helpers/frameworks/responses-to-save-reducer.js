@@ -1,8 +1,8 @@
 const { flatten, kebabCase, pickBy } = require('lodash')
 
 function responsesToSaveReducer(values = {}) {
-  return (accumulator, { id, question, value_type: valueType }) => {
-    const fieldName = question.key
+  return (accumulator, { id, question }) => {
+    const { key: fieldName, response_type: responseType } = question
     const value = values[fieldName]
     let responseValue
 
@@ -10,7 +10,10 @@ function responsesToSaveReducer(values = {}) {
       return accumulator
     }
 
-    if (valueType === 'object' || valueType === 'object::followup_comment') {
+    if (
+      responseType === 'object' ||
+      responseType === 'object::followup_comment'
+    ) {
       responseValue = pickBy({
         option: value,
         details: values[`${fieldName}--${kebabCase(value)}`],
@@ -18,8 +21,8 @@ function responsesToSaveReducer(values = {}) {
     }
 
     if (
-      valueType === 'collection' ||
-      valueType === 'collection::followup_comment'
+      responseType === 'collection' ||
+      responseType === 'collection::followup_comment'
     ) {
       const collection = flatten([value])
         .filter(Boolean)
@@ -33,15 +36,10 @@ function responsesToSaveReducer(values = {}) {
       responseValue = collection
     }
 
-    if (valueType === 'collection::add_multiple_items') {
+    if (responseType === 'collection::add_multiple_items') {
       const collection = value.filter(Boolean).map((itemValues, itemIndex) => {
         const itemResponses = question.descendants
-          .map(que => {
-            return {
-              question: que,
-              value_type: que.response_type,
-            }
-          })
+          .map(q => ({ question: q }))
           .reduce(responsesToSaveReducer(itemValues), [])
 
         return {
@@ -53,11 +51,11 @@ function responsesToSaveReducer(values = {}) {
       responseValue = collection
     }
 
-    if (valueType === 'array') {
+    if (responseType === 'array') {
       responseValue = flatten([value]).filter(Boolean)
     }
 
-    if (valueType === 'string') {
+    if (responseType === 'string') {
       responseValue = value
     }
 
