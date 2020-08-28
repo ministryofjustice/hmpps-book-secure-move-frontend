@@ -77,20 +77,8 @@ const singleRequestService = {
     })
   },
 
-  getDownload(args) {
-    return singleRequestService.getAll({
-      ...args,
-      include: [
-        'from_location',
-        'prison_transfer_reason',
-        'profile',
-        'profile.documents',
-        'profile.person',
-        'profile.person.ethnicity',
-        'profile.person.gender',
-        'to_location',
-      ],
-    })
+  async getDownload(args) {
+    return moveService.getDownload(args)
   },
 
   approve(id, { date } = {}) {

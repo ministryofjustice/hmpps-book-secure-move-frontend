@@ -894,12 +894,14 @@ describe('Move Service', function () {
 
     context('with arguments', function () {
       const mockDateRange = ['2019-10-10', '2019-10-11']
+      const mockCreatedRange = ['2019-10-01', '2019-10-21']
       const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function () {
         moves = await moveService.getDownload({
           dateRange: mockDateRange,
+          createdAtDate: mockCreatedRange,
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
         })
@@ -914,6 +916,8 @@ describe('Move Service', function () {
                 'requested,accepted,booked,in_transit,completed,cancelled',
               date_from: mockDateRange[0],
               date_to: mockDateRange[1],
+              created_at_from: mockCreatedRange[0],
+              created_at_to: mockCreatedRange[1],
               from_location_id: mockFromLocationId,
               to_location_id: mockToLocationId,
             },

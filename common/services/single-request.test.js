@@ -431,32 +431,7 @@ describe('Single request service', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(singleRequestService, 'getAll').resolves(mockMoves)
-    })
-
-    context('without arguments', function () {
-      beforeEach(async function () {
-        moves = await singleRequestService.getDownload()
-      })
-
-      it('should call getAll with include', function () {
-        expect(singleRequestService.getAll).to.be.calledOnceWithExactly({
-          include: [
-            'from_location',
-            'prison_transfer_reason',
-            'profile',
-            'profile.documents',
-            'profile.person',
-            'profile.person.ethnicity',
-            'profile.person.gender',
-            'to_location',
-          ],
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
-      })
+      sinon.stub(moveService, 'getDownload').resolves('#download')
     })
 
     context('with arguments', function () {
@@ -467,23 +442,13 @@ describe('Single request service', function () {
       })
 
       it('should call getAll with existing args and include', function () {
-        expect(singleRequestService.getAll).to.be.calledOnceWithExactly({
+        expect(moveService.getDownload).to.be.calledOnceWithExactly({
           foo: 'bar',
-          include: [
-            'from_location',
-            'prison_transfer_reason',
-            'profile',
-            'profile.documents',
-            'profile.person',
-            'profile.person.ethnicity',
-            'profile.person.gender',
-            'to_location',
-          ],
         })
       })
 
       it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
+        expect(moves).to.deep.equal('#download')
       })
     })
   })

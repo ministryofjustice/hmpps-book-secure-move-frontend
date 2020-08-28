@@ -164,17 +164,24 @@ const moveService = {
   },
 
   async getDownload({
+    status = 'requested,accepted,booked,in_transit,completed,cancelled',
     dateRange = [],
+    createdAtDate = [],
     fromLocationId,
     toLocationId,
     supplierId = undefined,
+    dateOfBirthFrom,
+    dateOfBirthTo,
   } = {}) {
     const [startDate, endDate] = dateRange
+    const [createdAtFrom, createdAtTo] = createdAtDate
     const filter = omitBy(
       {
-        status: 'requested,accepted,booked,in_transit,completed,cancelled',
+        status,
         date_from: startDate,
         date_to: endDate,
+        created_at_from: createdAtFrom,
+        created_at_to: createdAtTo,
         from_location_id: Array.isArray(fromLocationId)
           ? fromLocationId.join(',')
           : fromLocationId,
@@ -182,6 +189,8 @@ const moveService = {
           ? toLocationId.join(',')
           : toLocationId,
         supplier_id: supplierId,
+        date_of_birth_from: dateOfBirthFrom,
+        date_of_birth_to: dateOfBirthTo,
       },
       isEmpty
     )
