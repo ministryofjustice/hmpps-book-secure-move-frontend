@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.41.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.40.0...v2.41.0) (2020-08-28)
+
+
+### Features
+
+* **moves:** Disable prison transfer move creation for SCH and STC user ([cc5bca5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cc5bca51d386e4d7a4db45c59bc25cdc7bd17706))
+
 ## [2.40.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.39.0...v2.40.0) (2020-08-28)
 
 
