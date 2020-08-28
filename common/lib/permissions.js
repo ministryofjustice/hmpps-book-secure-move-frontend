@@ -22,8 +22,6 @@ const secureChildrensHomePermissions = [
   'move:create:court_appearance',
   'move:create:hospital',
   'move:create:prison_transfer',
-  'move:create:secure_childrens_home',
-  'move:create:secure_training_centre',
   'move:cancel',
   'move:update',
 ]
@@ -36,8 +34,6 @@ const secureTrainingCentrePermissions = [
   'move:create:court_appearance',
   'move:create:hospital',
   'move:create:prison_transfer',
-  'move:create:secure_childrens_home',
-  'move:create:secure_training_centre',
   'move:cancel',
   'move:update',
 ]
