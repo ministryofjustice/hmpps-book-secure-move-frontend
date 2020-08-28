@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.40.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.39.0...v2.40.0) (2020-08-28)
+
+
+### Features
+
+* Added STC/SHC/YOI move permissions to STC and SHC roles ([cc49117](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cc49117b00269ce45fa89cd929fa8b193d4a6f85))
+* Enable user to select moves from YOI/SCH/STC to YOI/SCH/STC ([d303e0c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d303e0c4300afd57b768fe224ccecfd51c8984f0))
+
+
+### Bug Fixes
+
+* **per:** Show section warnings once a section is complete ([bdfa562](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bdfa562ddfeedd694f1794158e4f89ec652983c8))
+* **single-requests:** Make single request download work again ([994f988](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/994f98847ecfc174df41b2204ccd3b8139b657ae))
+
 ## [2.39.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.38.0...v2.39.0) (2020-08-26)
 
 
