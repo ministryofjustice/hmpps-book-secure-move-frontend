@@ -176,7 +176,6 @@ describe('User class', function () {
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
-          'move:create:prison_transfer',
           'move:cancel',
           'move:update',
         ]
@@ -199,7 +198,6 @@ describe('User class', function () {
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
-          'move:create:prison_transfer',
           'move:cancel',
           'move:update',
         ])
