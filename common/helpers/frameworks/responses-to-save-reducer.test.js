@@ -101,14 +101,14 @@ describe('Helpers', function () {
             ],
           },
           {
-            testName: 'with object without followup comments',
+            testName: 'with object::followup_comment without comments',
             formValues: {
               question: 'Yes',
             },
             responses: [
               {
                 id: '1',
-                value_type: 'object',
+                value_type: 'object::followup_comment',
                 question: {
                   key: 'question',
                 },
@@ -124,7 +124,7 @@ describe('Helpers', function () {
             ],
           },
           {
-            testName: 'with object with followup comments',
+            testName: 'with object::followup_comment with comments',
             formValues: {
               question: 'Yes',
               'question--yes': 'Further yes details',
@@ -132,7 +132,7 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'object',
+                value_type: 'object::followup_comment',
                 question: {
                   key: 'question',
                 },
@@ -149,14 +149,14 @@ describe('Helpers', function () {
             ],
           },
           {
-            testName: 'with collection without followup comments',
+            testName: 'with collection::followup_comment without comments',
             formValues: {
               question: ['One', 'Two', 'Three'],
             },
             responses: [
               {
                 id: '1',
-                value_type: 'collection',
+                value_type: 'collection::followup_comment',
                 question: {
                   key: 'question',
                 },
@@ -183,7 +183,7 @@ describe('Helpers', function () {
             ],
           },
           {
-            testName: 'with collection without followup comments',
+            testName: 'with collection::followup_comment with comments',
             formValues: {
               question: ['One', 'Two', 'Three'],
               'question--one': 'Further comments about one',
@@ -192,7 +192,7 @@ describe('Helpers', function () {
             responses: [
               {
                 id: '1',
-                value_type: 'collection',
+                value_type: 'collection::followup_comment',
                 question: {
                   key: 'question',
                 },
@@ -213,6 +213,128 @@ describe('Helpers', function () {
                   {
                     option: 'Three',
                     details: 'Further comments about three',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            testName: 'with collection::add_multiple_items',
+            formValues: {
+              question: [
+                {
+                  'que-string': 'String value',
+                  'que-array': ['One', 'Two', 'Three'],
+                  'que-object': 'Yes',
+                  'que-object--yes': 'Some more details about yes',
+                  'que-collection': ['One', 'Two'],
+                  'que-collection--one': undefined,
+                  'que-collection--two': 'Some more details about two',
+                },
+                {
+                  'que-string': 'String value',
+                  'que-array': 'Two',
+                  'que-object': 'No',
+                  'que-collection': 'One',
+                  'que-collection--one': 'Some more details about one',
+                },
+              ],
+            },
+            responses: [
+              {
+                id: '1',
+                value_type: 'collection::add_multiple_items',
+                question: {
+                  key: 'question',
+                  descendants: [
+                    {
+                      id: '1.1',
+                      key: 'que-string',
+                      response_type: 'string',
+                    },
+                    {
+                      id: '1.2',
+                      key: 'que-array',
+                      response_type: 'array',
+                    },
+                    {
+                      id: '1.3',
+                      key: 'que-object',
+                      response_type: 'object::followup_comment',
+                    },
+                    {
+                      id: '1.4',
+                      key: 'que-collection',
+                      response_type: 'collection::followup_comment',
+                    },
+                  ],
+                },
+              },
+            ],
+            expectedValue: [
+              {
+                id: '1',
+                value: [
+                  {
+                    item: 0,
+                    responses: [
+                      {
+                        framework_question_id: '1.1',
+                        value: 'String value',
+                      },
+                      {
+                        framework_question_id: '1.2',
+                        value: ['One', 'Two', 'Three'],
+                      },
+                      {
+                        framework_question_id: '1.3',
+                        value: {
+                          option: 'Yes',
+                          details: 'Some more details about yes',
+                        },
+                      },
+                      {
+                        framework_question_id: '1.4',
+                        value: [
+                          {
+                            option: 'One',
+                            details: undefined,
+                          },
+                          {
+                            option: 'Two',
+                            details: 'Some more details about two',
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    item: 1,
+                    responses: [
+                      {
+                        framework_question_id: '1.1',
+                        value: 'String value',
+                      },
+                      {
+                        framework_question_id: '1.2',
+                        value: ['Two'],
+                      },
+                      {
+                        framework_question_id: '1.3',
+                        value: {
+                          option: 'No',
+                        },
+                      },
+                      {
+                        framework_question_id: '1.4',
+                        value: [
+                          {
+                            option: 'One',
+                            details: 'Some more details about one',
+                          },
+                        ],
+                      },
+                    ],
                   },
                 ],
               },
