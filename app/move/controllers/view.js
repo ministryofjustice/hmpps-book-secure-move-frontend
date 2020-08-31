@@ -19,7 +19,7 @@ module.exports = function view(req, res) {
   } = move
   const bannerStatuses = ['cancelled']
   const userPermissions = req.session?.user?.permissions
-  const updateUrls = getUpdateUrls(updateSteps, move.id, userPermissions)
+  const updateUrls = getUpdateUrls(updateSteps, move, userPermissions)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
   const {
     person,

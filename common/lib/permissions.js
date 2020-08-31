@@ -11,6 +11,14 @@ const policePermissions = [
   'move:create:video_remand',
   'move:cancel',
   'move:update',
+  'move:update:court_appearance',
+  'move:update:hospital',
+  'move:update:prison_transfer',
+  'move:update:secure_childrens_home',
+  'move:update:secure_training_centre',
+  'move:update:prison_recall',
+  'move:update:police_transfer',
+  'move:update:video_remand',
 ]
 
 const secureChildrensHomePermissions = [
@@ -26,8 +34,10 @@ const secureChildrensHomePermissions = [
   'move:create:prison_transfer',
   'move:create:secure_childrens_home',
   'move:create:secure_training_centre',
-  'move:cancel',
   'move:update',
+  'move:update:court_appearance',
+  'move:update:hospital',
+  'move:cancel:proposed',
 ]
 const secureTrainingCentrePermissions = [
   'dashboard:view',
@@ -42,8 +52,10 @@ const secureTrainingCentrePermissions = [
   'move:create:prison_transfer',
   'move:create:secure_childrens_home',
   'move:create:secure_training_centre',
-  'move:cancel',
   'move:update',
+  'move:update:court_appearance',
+  'move:update:hospital',
+  'move:cancel:proposed',
 ]
 
 const supplierPermissions = [

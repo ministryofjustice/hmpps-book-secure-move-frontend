@@ -373,7 +373,7 @@ describe('Move controllers', function () {
         it('should call getUpdateUrls with expected args', function () {
           expect(getUpdateUrls).to.be.calledOnceWithExactly(
             updateSteps,
-            'moveId',
+            mockMove,
             userPermissions
           )
         })

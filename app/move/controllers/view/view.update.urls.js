@@ -1,7 +1,12 @@
 const { check } = require('../../../../common/middleware/permissions')
 
-const getUpdateUrls = (updateSteps, moveId, userPermissions) => {
+const getUpdateUrls = (updateSteps, move, userPermissions) => {
   const updateUrls = {}
+
+  if (!check(`move:update:${move.move_type}`, userPermissions)) {
+    return updateUrls
+  }
+
   updateSteps.forEach(updateJourney => {
     if (!check(updateJourney.permission, userPermissions)) {
       return
@@ -12,7 +17,7 @@ const getUpdateUrls = (updateSteps, moveId, userPermissions) => {
       step => steps[step].entryPoint
     )[0]
     const key = updateJourney.key
-    updateUrls[key] = `/move/${moveId}/edit${entryPointUrl}`
+    updateUrls[key] = `/move/${move.id}/edit${entryPointUrl}`
   })
   return updateUrls
 }
