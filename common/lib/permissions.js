@@ -14,8 +14,10 @@ const policePermissions = [
 ]
 
 const secureChildrensHomePermissions = [
+  'dashboard:view',
   'moves:view:outgoing',
   'moves:view:incoming',
+  'moves:view:proposed',
   'moves:download',
   'move:view',
   'move:create',
@@ -28,8 +30,10 @@ const secureChildrensHomePermissions = [
   'move:update',
 ]
 const secureTrainingCentrePermissions = [
+  'dashboard:view',
   'moves:view:outgoing',
   'moves:view:incoming',
+  'moves:view:proposed',
   'moves:download',
   'move:view',
   'move:create',

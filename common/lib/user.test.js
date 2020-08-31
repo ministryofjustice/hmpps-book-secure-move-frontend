@@ -169,8 +169,10 @@ describe('User class', function () {
 
       it('should contain correct permission', function () {
         const stcPermissions = [
+          'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
+          'moves:view:proposed',
           'moves:download',
           'move:view',
           'move:create',
@@ -194,8 +196,10 @@ describe('User class', function () {
 
       it('should contain correct permission', function () {
         expect(permissions).to.deep.equal([
+          'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
+          'moves:view:proposed',
           'moves:download',
           'move:view',
           'move:create',
