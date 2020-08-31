@@ -397,6 +397,32 @@ describe('Move controllers', function () {
       })
     })
 
+    context('with youth transfer moves', function () {
+      ;['secure_childrens_home', 'secure_training_centre'].forEach(function (
+        youthTransferType
+      ) {
+        const youthTransferMove = {
+          to_location: {
+            location_type: 'prison',
+          },
+          from_location: {
+            location_type: youthTransferType,
+          },
+        }
+        it(`should upgrade the move when ${youthTransferType} to prison`, function () {
+          req.move = {
+            ...youthTransferMove,
+          }
+          controller(req, res)
+          expect(getUpdateUrls).to.be.calledOnceWithExactly(
+            updateSteps,
+            { ...youthTransferMove, move_type: youthTransferType },
+            userPermissions
+          )
+        })
+      })
+    })
+
     context('with null profile (allocation move)', function () {
       beforeEach(function () {
         req.move = {
