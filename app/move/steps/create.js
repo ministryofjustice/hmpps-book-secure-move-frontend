@@ -54,6 +54,7 @@ function createDateRangeStepForLocations({
   if (!Array.isArray(toLocationTypes)) {
     toLocationTypes = [toLocationTypes]
   }
+
   return {
     field: 'from_location_type',
     value: fromLocationType,
