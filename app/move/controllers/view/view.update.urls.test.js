@@ -22,9 +22,13 @@ describe('Move controllers', function () {
   describe('#view()', function () {
     describe('#getUpdateUrls', function () {
       let updateUrls
-      const userPermissions = ['move:allowed']
+      const userPermissions = ['move:allowed', 'move:update:prison_transfer']
       beforeEach(function () {
-        updateUrls = getUpdateUrls(updateSteps, 'moveId', userPermissions)
+        updateUrls = getUpdateUrls(
+          updateSteps,
+          { id: 'moveId', move_type: 'prison_transfer' },
+          userPermissions
+        )
       })
 
       it('should get expected value for key', function () {
@@ -37,6 +41,15 @@ describe('Move controllers', function () {
 
       it('should return undefined if the route is inaccessible', function () {
         expect(updateUrls.baz).to.be.undefined
+      })
+
+      it('should not expose url when the permission do not match', function () {
+        updateUrls = getUpdateUrls(
+          updateSteps,
+          { id: 'moveId', move_type: 'hospital' },
+          userPermissions
+        )
+        expect(updateUrls).to.deep.equal({})
       })
     })
   })

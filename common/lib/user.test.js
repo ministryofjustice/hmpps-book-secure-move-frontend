@@ -137,6 +137,14 @@ describe('User class', function () {
           'move:create:video_remand',
           'move:cancel',
           'move:update',
+          'move:update:court_appearance',
+          'move:update:hospital',
+          'move:update:prison_transfer',
+          'move:update:secure_childrens_home',
+          'move:update:secure_training_centre',
+          'move:update:prison_recall',
+          'move:update:police_transfer',
+          'move:update:video_remand',
         ]
 
         expect(permissions).to.deep.equal(policePermissions)
@@ -169,15 +177,22 @@ describe('User class', function () {
 
       it('should contain correct permission', function () {
         const stcPermissions = [
+          'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
+          'moves:view:proposed',
           'moves:download',
           'move:view',
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
-          'move:cancel',
+          'move:create:prison_transfer',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:update',
+          'move:update:court_appearance',
+          'move:update:hospital',
+          'move:cancel:proposed',
         ]
 
         expect(permissions).to.deep.equal(stcPermissions)
@@ -191,15 +206,22 @@ describe('User class', function () {
 
       it('should contain correct permission', function () {
         expect(permissions).to.deep.equal([
+          'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
+          'moves:view:proposed',
           'moves:download',
           'move:view',
           'move:create',
           'move:create:court_appearance',
           'move:create:hospital',
-          'move:cancel',
+          'move:create:prison_transfer',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:update',
+          'move:update:court_appearance',
+          'move:update:hospital',
+          'move:cancel:proposed',
         ])
       })
     })
@@ -341,9 +363,19 @@ describe('User class', function () {
           'move:create:prison_recall',
           'move:create:police_transfer',
           'move:create:hospital',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
           'move:create:video_remand',
           'move:cancel',
           'move:update',
+          'move:update:court_appearance',
+          'move:update:hospital',
+          'move:update:prison_transfer',
+          'move:update:secure_childrens_home',
+          'move:update:secure_training_centre',
+          'move:update:prison_recall',
+          'move:update:police_transfer',
+          'move:update:video_remand',
           'locations:all',
           'dashboard:view',
           'move:cancel:proposed',
