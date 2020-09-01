@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.41.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.41.0...v2.41.1) (2020-09-01)
+
+
+### Bug Fixes
+
+* **framework:** Add support for remaining nested response types ([03240b0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/03240b010cd2d74294f29422b0a951d75199856a))
+
 ## [2.41.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.40.0...v2.41.0) (2020-08-28)
 
 
