@@ -1,83 +1,72 @@
 const { flatten, kebabCase, pickBy } = require('lodash')
 
 function responsesToSaveReducer(values = {}) {
-  return (accumulator, { id, question, value_type: valueType }) => {
-    const fieldName = question.key
+  return (accumulator, { id, question }) => {
+    const { key: fieldName, response_type: responseType } = question
     const value = values[fieldName]
+    let responseValue
 
-    if (valueType === 'object' || valueType === 'object::followup_comment') {
-      accumulator.push({
-        id,
-        value: pickBy({
-          option: value,
-          details: values[`${fieldName}--${kebabCase(value)}`],
-        }),
-      })
+    if (!value) {
+      return accumulator
     }
 
-    if (valueType === 'collection::add_multiple_items') {
-      const collection = value.filter(Boolean).map((item, index) => {
-        return {
-          item: index,
-          responses: question.descendants.map(que => {
-            let value
-
-            // TODO: Support all value types for child responses
-            if (que.response_type === 'string') {
-              value = item[que.key]
-            }
-
-            if (
-              que.response_type === 'collection' ||
-              que.response_type === 'collection::followup_comment'
-            ) {
-              value = flatten([item[que.key]])
-                .filter(Boolean)
-                .map(option => {
-                  return {
-                    option,
-                    details: item[`${que.key}--${kebabCase(option)}`],
-                  }
-                })
-            }
-
-            return {
-              value: value,
-              framework_question_id: que.id,
-            }
-          }),
-        }
-      })
-
-      accumulator.push({
-        id,
-        value: collection,
+    if (
+      responseType === 'object' ||
+      responseType === 'object::followup_comment'
+    ) {
+      responseValue = pickBy({
+        option: value,
+        details: values[`${fieldName}--${kebabCase(value)}`],
       })
     }
 
     if (
-      valueType === 'collection' ||
-      valueType === 'collection::followup_comment'
+      responseType === 'collection' ||
+      responseType === 'collection::followup_comment'
     ) {
-      const collection = value.filter(Boolean).map(option => {
+      const collection = flatten([value])
+        .filter(Boolean)
+        .map(option => {
+          return {
+            option,
+            details: values[`${fieldName}--${kebabCase(option)}`],
+          }
+        })
+
+      responseValue = collection
+    }
+
+    if (responseType === 'collection::add_multiple_items') {
+      const collection = value.filter(Boolean).map((itemValues, itemIndex) => {
+        const itemResponses = question.descendants
+          .map(q => ({ question: q }))
+          .reduce(responsesToSaveReducer(itemValues), [])
+
         return {
-          option,
-          details: values[`${fieldName}--${kebabCase(option)}`],
+          item: itemIndex,
+          responses: itemResponses,
         }
       })
 
-      accumulator.push({
-        id,
-        value: collection,
-      })
+      responseValue = collection
     }
 
-    if (valueType === 'array') {
-      accumulator.push({ id, value: value.filter(Boolean) })
+    if (responseType === 'array') {
+      responseValue = flatten([value]).filter(Boolean)
     }
 
-    if (valueType === 'string') {
-      accumulator.push({ id, value })
+    if (responseType === 'string') {
+      responseValue = value
+    }
+
+    if (responseValue) {
+      accumulator.push(
+        pickBy({
+          id,
+          value: responseValue,
+          framework_question_id: id ? undefined : question.id,
+        })
+      )
     }
 
     return accumulator
