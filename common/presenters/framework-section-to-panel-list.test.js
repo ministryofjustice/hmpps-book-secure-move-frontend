@@ -203,7 +203,7 @@ const mockArgs = {
           option: 'Yes',
           details: 'Lorem',
         },
-        value_type: 'object',
+        value_type: 'object::followup_comment',
         flags: [
           {
             id: '2e7a4e98-ba44-4696-891d-b7e6ef021430',
@@ -230,7 +230,7 @@ const mockArgs = {
             details: 'Lorem',
           },
         ],
-        value_type: 'collection',
+        value_type: 'collection::followup_comment',
         flags: [
           {
             id: 'cf197679-9b48-4b19-a141-996d6b27eb49',
@@ -256,7 +256,7 @@ const mockArgs = {
           option: 'Yes',
           details: 'Lorem',
         },
-        value_type: 'object',
+        value_type: 'object::followup_comment',
         flags: [
           {
             id: '0015ea23-9a37-469b-b7a6-62dd01bac08f',
@@ -418,7 +418,7 @@ describe('Presenters', function () {
               { details: 'Lorem', option: 'Staff' },
               { details: 'Lorem', option: 'Lesbian, gay or bisexual people' },
             ],
-            value_type: 'collection',
+            value_type: 'collection::followup_comment',
           },
           {
             flags: [
@@ -437,7 +437,7 @@ describe('Presenters', function () {
             },
             type: 'framework_responses',
             value: { details: 'Lorem', option: 'Yes' },
-            value_type: 'object',
+            value_type: 'object::followup_comment',
           },
         ])
       })

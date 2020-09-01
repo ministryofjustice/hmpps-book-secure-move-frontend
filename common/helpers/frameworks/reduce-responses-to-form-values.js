@@ -6,15 +6,12 @@ function reduceResponsesToFormValues(
 ) {
   const field = question?.key
 
-  if (valueType === 'object' || valueType === 'object::followup_comment') {
+  if (valueType === 'object::followup_comment') {
     accumulator[field] = value.option
     accumulator[`${field}--${kebabCase(value.option)}`] = value.details
   }
 
-  if (
-    valueType === 'collection' ||
-    valueType === 'collection::followup_comment'
-  ) {
+  if (valueType === 'collection::followup_comment') {
     accumulator[field] = value.map(item => item.option)
     question.options.forEach(option => {
       const item = find(value, { option })

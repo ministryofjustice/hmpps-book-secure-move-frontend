@@ -21,7 +21,6 @@ function frameworkSectionToPanelList({
 
           // handle collections and arrays differently to other types
           if (
-            response.value_type === 'collection' ||
             response.value_type === 'collection::followup_comment' ||
             response.value_type === 'array'
           ) {
