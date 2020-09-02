@@ -1,7 +1,3 @@
-import { readFileSync } from 'fs'
-
-import { every } from 'lodash'
-
 import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
 import { policeUser, prisonUser, stcUser } from './_roles'
 import { movesByDay } from './_routes'
@@ -32,16 +28,6 @@ users.forEach(user => {
   })(`As ${user.name}`, async t => {
     await t.click(movesDashboardPage.nodes.downloadMovesLink)
     const csvDownloads = await waitForCsvDownloadFilePaths()
-
-    try {
-      const csvContents = readFileSync(csvDownloads[0], 'utf8')
-      const lineLengths = csvContents
-        .split('\n')
-        .map(line => line.split(',').length)
-
-      await t.expect(every(lineLengths)).ok()
-    } catch (err) {
-      throw new Error(err)
-    }
+    await t.expect(csvDownloads[0]).ok()
   })
 })

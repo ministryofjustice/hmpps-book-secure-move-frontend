@@ -107,7 +107,7 @@ E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
 E2E_SKIP:          ${E2E_SKIP}
 E2E_VIDEO:         ${E2E_VIDEO}
 E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
-
+E2E_BASE_URL:      ${E2E_BASE_URL}
 `)
 
 const maxProcesses = args.max_processes

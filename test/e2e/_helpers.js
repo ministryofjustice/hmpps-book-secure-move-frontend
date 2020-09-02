@@ -458,7 +458,7 @@ export function getCsvDownloadFilePaths() {
   const globPattern = `${join(
     homedir(),
     'Downloads'
-  )}/Moves on*(Downloaded ${dateStamp}*.csv`
+  )}/Moves on*(Downloaded ${dateStamp}*.csv*`
   return glob.sync(globPattern)
 }
 
@@ -467,9 +467,8 @@ export function getCsvDownloadFilePaths() {
  * @param delay
  * @returns {string[]}
  */
-export async function waitForCsvDownloadFilePaths(delay = 500) {
+export async function waitForCsvDownloadFilePaths(delay = 2000) {
   await t.wait(delay)
-
   const csvDownloadFilePaths = getCsvDownloadFilePaths()
 
   if (csvDownloadFilePaths.length) {
