@@ -67,12 +67,12 @@ export default class Page {
   signIn(role) {
     return t
       .expect(this.getCurrentUrl())
-      .contains('/auth/login')
+      .contains('/auth/')
       .typeText('#username', role.username)
       .typeText('#password', role.password)
       .click(Selector('#submit'))
       .expect(this.getCurrentUrl())
-      .notContains('/auth/login')
+      .notContains('/auth/')
   }
 
   /**
