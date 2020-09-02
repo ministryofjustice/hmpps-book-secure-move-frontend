@@ -251,6 +251,7 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | E2E_FAIL_FAST | Whether to stop all tests if an end-to-end tests fails | false |
 | E2E_VIDEO | Whether to capture video when end-to-end tests fail | false |
 | E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
+| E2E_MOCK_AUTH | Whether to use the mock auth server | false |
 | E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
 | E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
