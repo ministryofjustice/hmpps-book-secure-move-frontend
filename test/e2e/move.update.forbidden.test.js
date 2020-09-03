@@ -3,9 +3,10 @@ import {
   checkNoUpdateLinks,
   checkUpdatePagesForbidden,
 } from './_move'
-import { prisonUser, ocaUser, supplierUser } from './_roles'
+import { prisonUser, ocaUser } from './_roles'
 import { home } from './_routes'
 
+// TODO: Reenable supplier tests
 const users = [
   {
     name: 'prison user',
@@ -14,10 +15,6 @@ const users = [
   {
     name: 'OCA user',
     role: ocaUser,
-  },
-  {
-    name: 'supplier user',
-    role: supplierUser,
   },
 ]
 

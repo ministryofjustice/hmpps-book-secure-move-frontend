@@ -1,13 +1,8 @@
-import {
-  policeUser,
-  stcUser,
-  prisonUser,
-  supplierUser,
-  ocaUser,
-} from './_roles'
+import { policeUser, stcUser, prisonUser, ocaUser } from './_roles'
 import { home, movesByDay } from './_routes'
 import { dashboardPage, page, movesDashboardPage } from './pages'
 
+// TODO: Reenable supplier tests
 const users = [
   {
     name: 'Police user',
@@ -26,12 +21,6 @@ const users = [
     role: prisonUser,
     username: 'End-to-End Test Prison',
     homeButton: movesDashboardPage.nodes.createMoveButton,
-  },
-  {
-    name: 'Supplier user',
-    role: supplierUser,
-    username: 'End-to-End Test Supplier',
-    homeButton: movesDashboardPage.nodes.downloadMovesLink,
   },
 ]
 
