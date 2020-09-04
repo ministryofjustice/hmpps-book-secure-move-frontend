@@ -10,7 +10,7 @@ fixture('New move from Prison to Court').beforeEach(async t => {
 })
 
 test('With unfound person', async t => {
-  const searchTerm = 'UNKNOWN_PRISONER'
+  const searchTerm = 'X9999XX'
 
   // PNC lookup
   await createMovePage.fillInPrisonNumberSearch(searchTerm)
