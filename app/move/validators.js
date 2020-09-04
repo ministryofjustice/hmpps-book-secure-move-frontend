@@ -27,4 +27,10 @@ module.exports = {
       (Controller.validators.date(value) && isAfter(test, comparator))
     )
   },
+  prisonNumber(value) {
+    return (
+      value === '' ||
+      Controller.validators.regex(value, /^[A-Z][0-9]{5}[A-Z]{2}$/)
+    )
+  },
 }
