@@ -1,4 +1,4 @@
-{% extends "layouts/base.njk" %}
+{% extends "layouts/two-column.njk" %}
 
 {% block pageTitle %}
   {{ t("validation::page_title_prefix") }}: {{ t("validation::assign_needs_special_vehicle.heading", {
@@ -38,4 +38,4 @@
       html: errorMsg
     }
   }) }}
-{% endblock %}s
+{% endblock %}
