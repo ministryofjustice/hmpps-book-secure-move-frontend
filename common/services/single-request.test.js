@@ -19,6 +19,7 @@ const mockMoves = [
     person: {
       name: 'Tom Jones',
     },
+    date_from: '2020-08-25',
   },
   {
     id: '67890',
@@ -449,6 +450,51 @@ describe('Single request service', function () {
 
       it('should return moves', function () {
         expect(moves).to.deep.equal('#download')
+      })
+    })
+  })
+
+  describe('#getCancelled()', function () {
+    let moves
+
+    beforeEach(async function () {
+      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+    })
+
+    context('without arguments', function () {
+      beforeEach(async function () {
+        moves = await singleRequestService.getCancelled({
+          fromLocationId: 'fromLocationId',
+          createdAtDate: ['2019-01-01', '2019-01-07'],
+        })
+      })
+
+      it('should call getAll', function () {
+        expect(moveService.getAll).to.be.calledOnceWithExactly({
+          filter: {
+            'filter[has_relationship_to_allocation]': false,
+            'filter[from_location_id]': 'fromLocationId',
+            'filter[allocation]': false,
+            'filter[move_type]': 'prison_transfer',
+            'filter[rejection_reason]': undefined,
+            'filter[status]': 'cancelled',
+            'sort[by]': 'created_at',
+            'sort[direction]': 'desc',
+            'filter[created_at_from]': '2019-01-01',
+            'filter[created_at_to]': '2019-01-07',
+          },
+          include: [
+            'from_location',
+            'to_location',
+            'profile.person',
+            'prison_transfer_reason',
+          ],
+          isAggregation: false,
+        })
+      })
+
+      it('should return moves', function () {
+        expect(moves).to.deep.equal(mockMoves)
       })
     })
   })
