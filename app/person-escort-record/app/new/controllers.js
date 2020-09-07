@@ -1,3 +1,5 @@
+const { get } = require('lodash')
+
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const personEscortRecordService = require('../../../../common/services/person-escort-record')
 
@@ -23,6 +25,12 @@ class NewPersonEscortRecordController extends FormWizardController {
       req.record = await personEscortRecordService.create(req.move.profile.id)
       next()
     } catch (err) {
+      const apiErrorCode = get(err, 'errors[0].code')
+
+      if (err.statusCode === 422 && apiErrorCode === 'taken') {
+        return this.successHandler(req, res)
+      }
+
       next(err)
     }
   }

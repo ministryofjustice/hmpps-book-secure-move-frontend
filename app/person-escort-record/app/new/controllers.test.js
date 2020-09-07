@@ -114,15 +114,46 @@ describe('Person Escort Record controllers', function () {
       })
 
       context('when save fails', function () {
-        const errorMock = new Error('Problem')
+        context('with existing record error', function () {
+          const errorMock = new Error('Existing record')
 
-        beforeEach(async function () {
-          personEscortRecordService.create.throws(errorMock)
-          await controller.saveValues(req, {}, nextSpy)
+          beforeEach(async function () {
+            errorMock.statusCode = 422
+            errorMock.errors = [
+              {
+                code: 'taken',
+              },
+            ]
+
+            sinon.stub(controller, 'successHandler')
+
+            personEscortRecordService.create.throws(errorMock)
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should not call next', function () {
+            expect(nextSpy).not.to.be.called
+          })
+
+          it('should call success handler', function () {
+            expect(controller.successHandler).to.be.calledOnceWithExactly(
+              req,
+              {}
+            )
+          })
         })
 
-        it('should call next with the error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+        context('with any other error', function () {
+          const errorMock = new Error('Problem')
+
+          beforeEach(async function () {
+            personEscortRecordService.create.throws(errorMock)
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('should call next with the error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+          })
         })
       })
     })
