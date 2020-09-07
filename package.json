@@ -22,16 +22,16 @@
       "email": "barbara@kitsch-en.net"
     },
     {
+      "name": "Daniele Polencic",
+      "email": "daniele.polencic@gmail.com"
+    },
+    {
       "name": "Steve Lorek",
       "email": "steve@stevelorek.com"
     },
     {
       "name": "Tyom Semonov",
       "email": "inspiro@gmail.com"
-    },
-    {
-      "name": "Daniele Polencic",
-      "email": "daniele.polencic@gmail.com"
     },
     {
       "name": "Ryan Brooks",
@@ -42,16 +42,20 @@
       "email": "ed@maidavale.org"
     },
     {
-      "name": "Steve Hook",
-      "email": "steve.hook@gmail.com"
-    },
-    {
       "name": "Miguel Afonso",
       "email": "mafonso@gmail.com"
     },
     {
+      "name": "Steve Hook",
+      "email": "steve.hook@gmail.com"
+    },
+    {
       "name": "Andy White",
       "email": "andy@wireworldmedia.co.uk"
+    },
+    {
+      "name": "Robin Harrison",
+      "email": "merlinc@thecourtsofchaos.com"
     }
   ],
   "repository": {
