@@ -100,6 +100,8 @@ const frameworksService = {
       questions,
       type,
       validations = [],
+      minItems = 1,
+      maxItems,
     } = {}
   ) {
     if (!key) {
@@ -144,6 +146,13 @@ const frameworksService = {
       field['ignore-defaults'] = true
       // use `default` to start with one empty item
       field.default = [{}]
+      // default minimum items to 1
+      field.minItems = minItems
+
+      // set maximum items if any
+      if (maxItems) {
+        field.maxItems = maxItems
+      }
     }
 
     if (options) {

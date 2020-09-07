@@ -20,6 +20,13 @@ params:
   type: string
   required: false
   description: Name to use for each item heading and "Add another {name}" button. Defaults to `item`.
+- name: minItems
+  type: number
+  default: 1
+  description: Minimum number of items
+- name: maxItems
+  type: number
+  description: Maximum number of items
 
 examples:
   - name: default
@@ -40,3 +47,29 @@ examples:
       items:
         -
           text: Person 1 content
+  - name: with minItems
+    data:
+      name: add-another-field
+      minItems: 1
+      itemName: Person
+      items:
+        -
+          text: Person 1 content
+  - name: with minItems set to zero
+    data:
+      name: add-another-field
+      minItems: 0
+      itemName: Person
+      items:
+        -
+          text: Person 1 content
+  - name: with maxItems
+    data:
+      name: add-another-field
+      maxItems: 2
+      itemName: Person
+      items:
+        -
+          text: Person 1 content
+        -
+          text: Person 2 content

@@ -590,6 +590,43 @@ describe('Services', function () {
               'ignore-defaults': true,
               multiple: true,
               default: [{}],
+              minItems: 1,
+            })
+          })
+
+          it('should set minItems and maxItems correctly', function () {
+            const transformed = frameworksService.transformQuestion(
+              'question-key',
+              {
+                ...mockQuestion,
+                type: 'add_multiple_items',
+                list_item_name: 'Bag',
+                questions: ['one', 'two', 'three'],
+                minItems: 0,
+                maxItems: 5,
+              }
+            )
+
+            expect(transformed).to.deep.equal({
+              component: 'appAddAnother',
+              question: 'Question text',
+              description: undefined,
+              id: 'question-key',
+              name: 'question-key',
+              label: {
+                text: 'Question text',
+                classes: 'govuk-label--s',
+              },
+              validate: [],
+              classes: '',
+              rows: undefined,
+              descendants: ['one', 'two', 'three'],
+              itemName: 'Bag',
+              'ignore-defaults': true,
+              multiple: true,
+              default: [{}],
+              minItems: 0,
+              maxItems: 5,
             })
           })
         })

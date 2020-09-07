@@ -19,11 +19,11 @@ describe('Add another component', function () {
     })
 
     it('should render a button element last', function () {
-      const $div = $component.children().last()
-      const $button = $div.find('button')
+      const $addItem = $component.find('.app-add-another__add-item')
+      const $button = $addItem.find('button')
 
-      expect($div.get(0).tagName).to.equal('div')
-      expect($div.hasClass('app-border-top-1')).to.be.false
+      expect($addItem.get(0).tagName).to.equal('div')
+      expect($addItem.hasClass('app-border-top-1')).to.be.false
 
       expect($button.text().trim()).to.equal('Add item')
       expect($button.attr('value')).to.equal('add::add-another-field')
@@ -76,11 +76,11 @@ describe('Add another component', function () {
     })
 
     it('should render a button element last', function () {
-      const $div = $component.children().last()
-      const $button = $div.find('button')
+      const $addItem = $component.find('.app-add-another__add-item')
+      const $button = $addItem.find('button')
 
-      expect($div.get(0).tagName).to.equal('div')
-      expect($div.hasClass('app-border-top-1')).to.be.true
+      expect($addItem.get(0).tagName).to.equal('div')
+      expect($addItem.hasClass('app-border-top-1')).to.be.true
 
       expect($button.text().trim()).to.equal('Add another item')
       expect($button.attr('value')).to.equal('add::add-another-field')
@@ -127,10 +127,72 @@ describe('Add another component', function () {
     })
 
     it('should render a button element last', function () {
-      const $div = $component.children().last()
-      const $button = $div.find('button')
+      const $addItem = $component.find('.app-add-another__add-item')
+      const $button = $addItem.find('button')
 
       expect($button.text().trim()).to.equal('Add another person')
+    })
+  })
+
+  context('with minItems', function () {
+    let $, $component
+
+    beforeEach(function () {
+      $ = renderComponentHtmlToCheerio('add-another', examples['with minItems'])
+      $component = $('body')
+    })
+
+    describe('fieldsets', function () {
+      let $fieldsets, $item1
+
+      beforeEach(function () {
+        $fieldsets = $component.find('fieldset')
+        $item1 = $($fieldsets[0])
+      })
+
+      it('should not render remove buttons', function () {
+        expect($item1.find('button').length).to.equal(0)
+      })
+    })
+  })
+
+  context('with minItems set to zero', function () {
+    let $, $component
+
+    beforeEach(function () {
+      $ = renderComponentHtmlToCheerio(
+        'add-another',
+        examples['with minItems set to zero']
+      )
+      $component = $('body')
+    })
+
+    describe('fieldsets', function () {
+      let $fieldsets, $item1
+
+      beforeEach(function () {
+        $fieldsets = $component.find('fieldset')
+        $item1 = $($fieldsets[0])
+      })
+
+      it('should render remove buttons', function () {
+        expect($item1.find('button').length).to.equal(1)
+      })
+    })
+  })
+
+  context('with maxItems', function () {
+    let $, $component
+
+    beforeEach(function () {
+      $ = renderComponentHtmlToCheerio('add-another', examples['with maxItems'])
+      $component = $('body')
+    })
+
+    it('should not render an add item button', function () {
+      const $addItem = $component.find('.app-add-another__add-item')
+
+      expect($addItem.length).to.equal(0)
     })
   })
 })
