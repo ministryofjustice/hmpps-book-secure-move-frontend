@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.42.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.41.1...v2.42.0) (2020-09-07)
+
+
+### Features
+
+* Enabled dashboard for STC/SHC users ([67b4bc8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/67b4bc804b1f2eb39ef15520e40cb9f545ee9d90))
+* Included cancelled moves in singleton dashboard ([6e704fb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6e704fb56eecf1f120c7722f5958b2461a33dc7d))
+* Upgrade govuk-frontend to 3.8.1 ([b5e94a8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b5e94a84b380f9c999d190a4817a7a1585110f20))
+
+
+### Bug Fixes
+
+* **per:** Prevent error when record already exists ([1a79c10](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1a79c10db2ced9cee982c639fbf3bd78ac9ccd6d))
+* Inherit from correct template on special vehicle message step ([cf4e33a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cf4e33a3553907394aa1761a13300e13f6de7335))
+
 ### [2.41.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.41.0...v2.41.1) (2020-09-01)
 
 
