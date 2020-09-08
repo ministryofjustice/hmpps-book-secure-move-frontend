@@ -65,7 +65,7 @@
     "short_label": "To",
     "items": {
       "prison_transfer": {
-        "label": "Prison or Young Offender Institution"
+        "label": "Prison or young offender institution (YOI)"
       },
       "prison_recall": {
         "label": "Prison recall"
@@ -100,7 +100,7 @@
     "label": "Name of custody suite"
   },
   "to_location_prison_transfer": {
-    "label": "Name of prison or young offender institution"
+    "label": "Name of prison or YOI"
   },
   "to_location_hospital": {
     "label": "Name of hospital"
