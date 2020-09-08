@@ -12,6 +12,9 @@ class CancelController extends FormWizardController {
       'errorValues',
     ])
 
+    data.cancellation_reason_comment = data.cancellation_reason_other_comment
+    delete data.cancellation_reason_other_comment
+
     try {
       await allocationService.cancel(id, data)
 

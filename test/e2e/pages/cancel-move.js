@@ -10,7 +10,9 @@ class CancelMovePage extends Page {
 
     this.fields = {
       cancellationReason: Selector('[name="cancellation_reason"]'),
-      cancellationReasonComment: Selector('#cancellation_reason_comment'),
+      cancellationReasonOtherComment: Selector(
+        '#cancellation_reason_other_comment'
+      ),
     }
   }
 
@@ -29,8 +31,8 @@ class CancelMovePage extends Page {
     }
 
     if (comment) {
-      fields.cancellation_reason_comment = {
-        selector: this.fields.cancellationReasonComment,
+      fields.cancellation_reason_other_comment = {
+        selector: this.fields.cancellationReasonOtherComment,
         value: comment,
       }
     }

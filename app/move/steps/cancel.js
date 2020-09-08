@@ -13,7 +13,7 @@ module.exports = {
     pageTitle: 'moves::cancel.steps.reason.heading',
     buttonText: 'actions::confirm_cancellation',
     buttonClasses: 'govuk-button--warning',
-    fields: ['cancellation_reason', 'cancellation_reason_comment'],
+    fields: ['cancellation_reason', 'cancellation_reason_other_comment'],
     controller: Cancel,
   },
 }

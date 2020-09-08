@@ -25,7 +25,7 @@ describe('Cancel controller', function () {
             errors: {},
             errorValues: {},
             cancellation_reason: 'other',
-            cancellation_reason_comment: 'Comment',
+            cancellation_reason_other_comment: 'Comment',
           }),
         },
         journeyModel: {
