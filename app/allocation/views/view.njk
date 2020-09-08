@@ -83,11 +83,17 @@
     </h2>
 
     <h3 class="govuk-heading-s">
-      {{ t("allocation::view.people.progress", {
-        count: remainingCount if canAccess('allocation:person:assign') else totalCount,
-        addedCount: addedCount,
-        context: "remaining" if canAccess('allocation:person:assign')
-      }) }}
+      {% if canAccess('allocation:person:assign') %}
+        {{ t("allocation::view.people.progress", {
+          count: remainingCount,
+          context: "remaining"
+        }) }}
+      {% else %}
+        {{ t("allocation::view.people.progress", {
+          count: totalCount,
+          addedCount: addedCount,
+        }) }}
+      {% endif %}
     </h3>
 
     {% if canAccess('allocation:person:assign') and remainingCount %}
