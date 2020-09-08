@@ -29,6 +29,10 @@ describe('API Client', function () {
           )
         })
 
+        it('should return the `Accept-Encoding` header', function () {
+          expect(headers['Accept-Encoding']).to.equal('gzip')
+        })
+
         it('should return the `Idempotency-Key` header', function () {
           expect(headers['Idempotency-Key']).to.equal('#uuid')
         })
@@ -46,6 +50,10 @@ describe('API Client', function () {
         expect(headers.Accept).to.equal(
           `format/foo; version=${config.API.VERSION}`
         )
+      })
+
+      it('should return the `Accept-Encoding` header', function () {
+        expect(headers['Accept-Encoding']).to.equal('gzip')
       })
 
       it('should return the `Idempotency-Key` header', function () {
