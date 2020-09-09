@@ -8,13 +8,11 @@ const mockConfig = {
   APP_BUILD_TAG: '5226',
   APP_BUILD_BRANCH: 'master',
   APP_GIT_SHA: 'gbe34155ae5edfade5107bd5629d0c159dc37d19',
+  APP_VERSION: '1.0.0',
 }
-const mockManifest = {
-  version_number: '1.0.0',
-}
+
 const controllers = proxyquire('./controllers', {
   '../../config': mockConfig,
-  '../../package.json': mockManifest,
 })
 
 describe('Healthcheck controllers', function () {
@@ -65,7 +63,7 @@ describe('Healthcheck controllers', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'OK',
           api_version: 7,
-          version_number: mockManifest.version,
+          version_number: mockConfig.APP_VERSION,
           build_date: mockConfig.APP_BUILD_DATE,
           build_tag: mockConfig.APP_BUILD_TAG,
           commit_id: mockConfig.APP_GIT_SHA,
@@ -103,7 +101,7 @@ describe('Healthcheck controllers', function () {
         expect(res.json.args[0][0]).to.deep.equal({
           status: 'Service unavailable',
           api_version: 7,
-          version_number: mockManifest.version,
+          version_number: mockConfig.APP_VERSION,
           build_date: mockConfig.APP_BUILD_DATE,
           build_tag: mockConfig.APP_BUILD_TAG,
           commit_id: mockConfig.APP_GIT_SHA,
@@ -140,7 +138,7 @@ describe('Healthcheck controllers', function () {
     it('should render JSON', function () {
       expect(res.json).to.be.calledOnceWithExactly({
         api_version: 7,
-        version_number: mockManifest.version,
+        version_number: mockConfig.APP_VERSION,
         build_date: mockConfig.APP_BUILD_DATE,
         build_tag: mockConfig.APP_BUILD_TAG,
         commit_id: mockConfig.APP_GIT_SHA,
