@@ -15,9 +15,21 @@ const marchCurrentYear = getExpectedDate()
 const octoberCurrentYear = getExpectedDate(undefined, '3 October')
 const march2019 = getExpectedDate(2019)
 const october2019 = getExpectedDate(2019, '3 October')
+const currentYear = new Date(2020, 5, 1)
+let clock
 
 describe('Parsers', function () {
   describe('#date', function () {
+    beforeEach(function () {
+      clock = sinon.useFakeTimers({
+        now: currentYear,
+      })
+    })
+
+    afterEach(function () {
+      clock.restore()
+    })
+
     context('When passed non-string value', function () {
       it('should return undefined values as is', function () {
         expect(parse.date(undefined)).to.be.undefined
