@@ -446,7 +446,7 @@ describe('Move controllers', function () {
           ...mockMove,
           status: 'cancelled',
           cancellation_reason: 'made_in_error',
-          cancellation_reason_other_comment: 'Reason for cancelling comments',
+          cancellation_reason_comment: 'Reason for cancelling comments',
         }
 
         controller(req, res)
