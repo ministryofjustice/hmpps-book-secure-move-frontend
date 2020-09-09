@@ -36,16 +36,14 @@
   {% endcall %}
 {% endfor %}
 
-{% if not params.maxItems or items.length < params.maxItems %}
-  <div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
-    {{ govukButton({
-      text: t("actions::add_item", {
-        context: "with_items" if items.length > 0,
-        name: itemName | lower
-      }),
-      classes: "govuk-button--secondary",
-      name: "multiple-action",
-      value: "add::" + params.name
-    }) }}
-  </div>
-{% endif %}
+<div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
+  {{ govukButton({
+    text: t("actions::add_item", {
+      context: "with_items" if items.length > 0,
+      name: itemName | lower
+    }),
+    classes: "govuk-button--secondary",
+    name: "multiple-action",
+    value: "add::" + params.name
+  }) }}
+</div>

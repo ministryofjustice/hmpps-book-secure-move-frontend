@@ -180,19 +180,4 @@ describe('Add another component', function () {
       })
     })
   })
-
-  context('with maxItems', function () {
-    let $, $component
-
-    beforeEach(function () {
-      $ = renderComponentHtmlToCheerio('add-another', examples['with maxItems'])
-      $component = $('body')
-    })
-
-    it('should not render an add item button', function () {
-      const $addItem = $component.find('.app-add-another__add-item')
-
-      expect($addItem.length).to.equal(0)
-    })
-  })
 })

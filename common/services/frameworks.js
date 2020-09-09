@@ -100,8 +100,6 @@ const frameworksService = {
       questions,
       type,
       validations = [],
-      minItems,
-      maxItems,
     } = {}
   ) {
     if (!key) {
@@ -148,16 +146,7 @@ const frameworksService = {
       field.default = [{}]
 
       // default minimum items based on whether it's required
-      if (minItems === undefined) {
-        minItems = validations.includes('required') ? 1 : 0
-      }
-
-      field.minItems = minItems
-
-      // set maximum items if any
-      if (maxItems) {
-        field.maxItems = maxItems
-      }
+      field.minItems = validations.includes('required') ? 1 : 0
     }
 
     if (options) {

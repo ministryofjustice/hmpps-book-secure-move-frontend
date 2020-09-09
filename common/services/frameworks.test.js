@@ -609,23 +609,6 @@ describe('Services', function () {
               minItems: 1,
             })
           })
-
-          it('should set minItems and maxItems correctly', function () {
-            const transformed = frameworksService.transformQuestion(
-              'question-key',
-              {
-                ...addAnotherMockQuestion,
-                minItems: 0,
-                maxItems: 5,
-              }
-            )
-
-            expect(transformed).to.deep.equal({
-              ...addAnotherMockResult,
-              minItems: 0,
-              maxItems: 5,
-            })
-          })
         })
       })
     })

@@ -63,13 +63,3 @@ examples:
       items:
         -
           text: Person 1 content
-  - name: with maxItems
-    data:
-      name: add-another-field
-      maxItems: 2
-      itemName: Person
-      items:
-        -
-          text: Person 1 content
-        -
-          text: Person 2 content
