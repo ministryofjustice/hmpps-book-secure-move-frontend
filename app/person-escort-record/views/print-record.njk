@@ -123,6 +123,11 @@
                 reference: reference
               }) }}
             </span>
+            <div class="govuk-!-margin-top-2">
+              {% for tag in personEscortRecordTagList %}
+                {{ appTag(tag) }}
+              {% endfor %}
+            </div>
           </header>
 
           {# TODO: Make this view a bit more dynamic and built from the controller #}
