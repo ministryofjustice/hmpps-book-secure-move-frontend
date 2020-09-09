@@ -6,6 +6,7 @@ const config = {
   API: {
     VERSION: 'terminator-x',
   },
+  APP_VERSION: 'chuck-d',
 }
 
 const getRequestHeaders = proxyquire('./request-headers', {
@@ -29,6 +30,12 @@ describe('API Client', function () {
           )
         })
 
+        it('should return the `User-Agent` header', function () {
+          expect(headers['User-Agent']).to.equal(
+            'hmpps-book-secure-move-frontend/chuck-d'
+          )
+        })
+
         it('should return the `Accept-Encoding` header', function () {
           expect(headers['Accept-Encoding']).to.equal('gzip')
         })
@@ -49,6 +56,12 @@ describe('API Client', function () {
       it('should return `Accept` header with specified format and the api version', function () {
         expect(headers.Accept).to.equal(
           `format/foo; version=${config.API.VERSION}`
+        )
+      })
+
+      it('should return the `User-Agent` header', function () {
+        expect(headers['User-Agent']).to.equal(
+          'hmpps-book-secure-move-frontend/chuck-d'
         )
       })
 
