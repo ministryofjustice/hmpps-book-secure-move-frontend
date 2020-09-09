@@ -561,35 +561,52 @@ describe('Services', function () {
         })
 
         describe('add_multiple_items', function () {
-          it('should format type correctly', function () {
+          const addAnotherMockQuestion = {
+            ...mockQuestion,
+            type: 'add_multiple_items',
+            list_item_name: 'Bag',
+            questions: ['one', 'two', 'three'],
+          }
+          const addAnotherMockResult = {
+            component: 'appAddAnother',
+            question: 'Question text',
+            description: undefined,
+            id: 'question-key',
+            name: 'question-key',
+            label: {
+              text: 'Question text',
+              classes: 'govuk-label--s',
+            },
+            validate: [],
+            classes: '',
+            rows: undefined,
+            descendants: ['one', 'two', 'three'],
+            itemName: 'Bag',
+            'ignore-defaults': true,
+            multiple: true,
+            default: [{}],
+            minItems: 0,
+          }
+
+          it('should set default minItems to 0 when not required', function () {
             const transformed = frameworksService.transformQuestion(
               'question-key',
-              {
-                ...mockQuestion,
-                type: 'add_multiple_items',
-                list_item_name: 'Bag',
-                questions: ['one', 'two', 'three'],
-              }
+              addAnotherMockQuestion
+            )
+
+            expect(transformed).to.deep.equal(addAnotherMockResult)
+          })
+
+          it('should set default minItems to 1 when required', function () {
+            const transformed = frameworksService.transformQuestion(
+              'question-key',
+              { ...addAnotherMockQuestion, validations: ['required'] }
             )
 
             expect(transformed).to.deep.equal({
-              component: 'appAddAnother',
-              question: 'Question text',
-              description: undefined,
-              id: 'question-key',
-              name: 'question-key',
-              label: {
-                text: 'Question text',
-                classes: 'govuk-label--s',
-              },
-              validate: [],
-              classes: '',
-              rows: undefined,
-              descendants: ['one', 'two', 'three'],
-              itemName: 'Bag',
-              'ignore-defaults': true,
-              multiple: true,
-              default: [{}],
+              ...addAnotherMockResult,
+              validate: ['required'],
+              minItems: 1,
             })
           })
         })

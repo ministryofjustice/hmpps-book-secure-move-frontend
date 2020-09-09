@@ -144,6 +144,9 @@ const frameworksService = {
       field['ignore-defaults'] = true
       // use `default` to start with one empty item
       field.default = [{}]
+
+      // default minimum items based on whether it's required
+      field.minItems = validations.includes('required') ? 1 : 0
     }
 
     if (options) {

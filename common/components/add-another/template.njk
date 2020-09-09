@@ -18,23 +18,25 @@
       isPageHeading: false
     }
   }) %}
-    <div>
-      {{ govukButton({
-        html: t("actions::remove_item", {
-          name: itemName | lower,
-          index: loop.index
-        }),
-        classes: "govuk-button--secondary app-!-position-top-right",
-        name: "multiple-action",
-        value: "remove::" + params.name + "::" + loop.index0
-      }) }}
-    </div>
+    {% if not params.minItems or items.length > params.minItems %}
+      <div class="app-add-another__remove-item">
+        {{ govukButton({
+          html: t("actions::remove_item", {
+            name: itemName | lower,
+            index: loop.index
+          }),
+          classes: "govuk-button--secondary app-!-position-top-right",
+          name: "multiple-action",
+          value: "remove::" + params.name + "::" + loop.index0
+        }) }}
+      </div>
+    {% endif %}
 
     {{ item.html | safe if item.html else item.text }}
   {% endcall %}
 {% endfor %}
 
-<div class="{{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
+<div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
   {{ govukButton({
     text: t("actions::add_item", {
       context: "with_items" if items.length > 0,
