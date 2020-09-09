@@ -33,7 +33,6 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
-              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -69,7 +68,6 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
-              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -120,7 +118,6 @@ describe('Presenters', function () {
               valueType: undefined,
               responded: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
-              classes: 'govuk-!-font-size-16',
             }
           )
         })
@@ -168,7 +165,10 @@ describe('Presenters', function () {
           beforeEach(function () {
             response = frameworkFieldToSummaryListRow(mockStepUrl)({
               ...mockFieldWithFollowup,
-              response: { value: 'Yes', value_type: 'string' },
+              response: {
+                value: 'Yes',
+                question: { response_type: 'string' },
+              },
             })
           })
 
@@ -181,7 +181,6 @@ describe('Presenters', function () {
                 valueType: 'string',
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
-                classes: 'govuk-!-font-size-16',
               }
             )
             expect(componentService.getComponent).to.be.calledWithExactly(
@@ -191,7 +190,6 @@ describe('Presenters', function () {
                 valueType: undefined,
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
-                classes: 'govuk-!-font-size-16',
               }
             )
           })
@@ -224,7 +222,10 @@ describe('Presenters', function () {
           beforeEach(function () {
             response = frameworkFieldToSummaryListRow(mockStepUrl)({
               ...mockFieldWithFollowup,
-              response: { value: 'No', value_type: 'string' },
+              response: {
+                value: 'No',
+                question: { response_type: 'string' },
+              },
             })
           })
 
@@ -236,7 +237,6 @@ describe('Presenters', function () {
                 valueType: 'string',
                 responded: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
-                classes: 'govuk-!-font-size-16',
               }
             )
           })
@@ -294,7 +294,9 @@ describe('Presenters', function () {
           context(`with empty ${test.valueType}`, function () {
             const mockResponse = {
               value: test.emptyValue,
-              value_type: test.valueType,
+              question: {
+                response_type: test.valueType,
+              },
             }
 
             beforeEach(function () {
@@ -312,7 +314,6 @@ describe('Presenters', function () {
                   valueType: test.valueType,
                   responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
-                  classes: 'govuk-!-font-size-16',
                 }
               )
             })
@@ -321,7 +322,9 @@ describe('Presenters', function () {
           context(`with non-empty ${test.valueType}`, function () {
             const mockResponse = {
               value: test.nonEmptyValue,
-              value_type: test.valueType,
+              question: {
+                response_type: test.valueType,
+              },
             }
 
             beforeEach(function () {
@@ -339,7 +342,6 @@ describe('Presenters', function () {
                   valueType: test.valueType,
                   responded: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
-                  classes: 'govuk-!-font-size-16',
                 }
               )
             })
@@ -350,8 +352,10 @@ describe('Presenters', function () {
       context('when response has been answered', function () {
         const mockResponse = {
           value: [],
-          value_type: 'array',
           responded: true,
+          question: {
+            response_type: 'array',
+          },
         }
 
         beforeEach(function () {
@@ -369,7 +373,163 @@ describe('Presenters', function () {
               valueType: 'array',
               responded: true,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
-              classes: 'govuk-!-font-size-16',
+            }
+          )
+        })
+      })
+    })
+
+    context('with `add_multiple_items`', function () {
+      const mockField = {
+        name: 'mock-field',
+        id: 'mock-field',
+        question: 'What is the answer?',
+        description: 'What is the answer?',
+        descendants: [
+          {
+            name: '__string__',
+            id: '__string__field__',
+          },
+          {
+            name: '__collection__',
+            id: '__collection__field__',
+          },
+        ],
+        response: {
+          value: [],
+          question: {
+            response_type: 'collection::add_multiple_items',
+            descendants: [
+              {
+                id: '__string__1__',
+                key: '__string__',
+                response_type: 'string',
+              },
+              {
+                id: '__collection__2__',
+                key: '__collection__',
+                response_type: 'collection',
+              },
+            ],
+          },
+        },
+      }
+
+      context('with items', function () {
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)({
+            ...mockField,
+            response: {
+              ...mockField.response,
+              value: [
+                {
+                  responses: [
+                    {
+                      framework_question_id: '__collection__2__',
+                      value: [
+                        {
+                          option: 'UK currency',
+                          details: '23.99',
+                        },
+                        {
+                          option: 'Valuables',
+                          details: 'Gold chain',
+                        },
+                      ],
+                    },
+                    {
+                      value: '12345',
+                      framework_question_id: '__string__1__',
+                    },
+                  ],
+                },
+                {
+                  responses: [
+                    {
+                      value: '67890',
+                      framework_question_id: '__string__1__',
+                    },
+                    {
+                      framework_question_id: '__collection__2__',
+                      value: [
+                        {
+                          option: 'UK currency',
+                          details: '50.00',
+                        },
+                        {
+                          option: 'Medication',
+                          details: 'Hayfever tablets',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          })
+        })
+
+        it('should call component service for each nested response', function () {
+          expect(componentService.getComponent.callCount).to.equal(4)
+        })
+
+        const valueTypes = [
+          {
+            id: '__string__field__',
+            valueType: 'string',
+            value: '12345',
+          },
+          {
+            id: '__collection__field__',
+            valueType: 'collection',
+            value: [
+              { details: '23.99', option: 'UK currency' },
+              { details: 'Gold chain', option: 'Valuables' },
+            ],
+          },
+          {
+            id: '__string__field__',
+            valueType: 'string',
+            value: '67890',
+          },
+          {
+            id: '__collection__field__',
+            valueType: 'collection',
+            value: [
+              { details: '50.00', option: 'UK currency' },
+              { details: 'Hayfever tablets', option: 'Medication' },
+            ],
+          },
+        ]
+
+        valueTypes.forEach(test => {
+          it(`should call component service with ${test.valueType} field`, function () {
+            expect(componentService.getComponent).to.be.calledWithExactly(
+              'appFrameworkResponse',
+              {
+                value: test.value,
+                valueType: test.valueType,
+                responded: false,
+                questionUrl: `${mockStepUrl}#${test.id}`,
+              }
+            )
+          })
+        })
+      })
+
+      context('without items', function () {
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)(mockField)
+        })
+
+        it('should call component service with undefined value', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'appFrameworkResponse',
+            {
+              value: undefined,
+              valueType: 'collection::add_multiple_items',
+              responded: false,
+              questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
         })
