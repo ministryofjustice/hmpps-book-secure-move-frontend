@@ -13,6 +13,7 @@ async function setResultsSingleRequests(req, res, next) {
     let cancelledMoves
 
     const status = req?.body?.requested?.status
+
     switch (status) {
       case 'pending': {
         cancelledMoves = cancelledRequests.filter(it => !isString(it.date))

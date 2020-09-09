@@ -18,6 +18,15 @@ const october2019 = getExpectedDate(2019, '3 October')
 
 describe('Parsers', function () {
   describe('#date', function () {
+    beforeEach(function () {
+      const mockDate = new Date('2020-06-01')
+      this.clock = sinon.useFakeTimers(mockDate.getTime())
+    })
+
+    afterEach(function () {
+      this.clock.restore()
+    })
+
     context('When passed non-string value', function () {
       it('should return undefined values as is', function () {
         expect(parse.date(undefined)).to.be.undefined
