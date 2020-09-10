@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.43.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.42.0...v2.43.0) (2020-09-10)
+
+
+### Features
+
+* Display approved single moves by 'Date of travel' ([9e12beb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9e12beb948ccb1c80d8cbf13b870ef86aa17a123))
+* Displaying an allocation as already filled ([b1e5dd0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b1e5dd0df48e208b035db81407cb210c5e15d227))
+* **per:** Prevent last property bag from being removed [P4-2071] ([b5bf93b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b5bf93bb60b8fc716a2754b490dbdf458e178077))
+
+
+### Bug Fixes
+
+* **framework:** Handle empty multiple items response types ([8a0583f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8a0583fa211c3cba673cc2613e0cb05684ccc673))
+
 ## [2.42.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.41.1...v2.42.0) (2020-09-07)
 
 
