@@ -34,6 +34,10 @@
       "email": "inspiro@gmail.com"
     },
     {
+      "name": "Robin Harrison",
+      "email": "merlinc@courts.io"
+    },
+    {
       "name": "Ryan Brooks",
       "email": "ryan@slatehorse.com"
     },
@@ -52,10 +56,6 @@
     {
       "name": "Andy White",
       "email": "andy@wireworldmedia.co.uk"
-    },
-    {
-      "name": "Robin Harrison",
-      "email": "merlinc@thecourtsofchaos.com"
     }
   ],
   "repository": {
