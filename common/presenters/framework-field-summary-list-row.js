@@ -1,4 +1,4 @@
-const { find, filter, flatten, flattenDeep, isEmpty } = require('lodash')
+const { find, filter, flattenDeep, isEmpty } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const componentService = require('../services/component')
@@ -7,24 +7,28 @@ function frameworkFieldToSummaryListRow(stepUrl) {
   return field => {
     const { description, id, response, question, descendants, itemName } = field
     const headerText = description || question
+    const valueType = response.question?.response_type
 
-    if (response.value_type === 'collection::add_multiple_items') {
+    if (
+      valueType === 'collection::add_multiple_items' &&
+      response.value.length > 0
+    ) {
       const rows = response.value.map((item, index) => {
         const responsesHtml = descendants
-          .map(f => {
-            const q =
-              find(response.question.descendants, {
-                key: f.name,
-              }) || {}
-            const r = find(item.responses, { framework_question_id: q.id })
+          .map(descendantField => {
+            const question = find(response.question.descendants, {
+              key: descendantField.name,
+            })
+            const descendantResponse = find(item.responses, {
+              framework_question_id: question.id,
+            })
 
-            return {
-              ...f,
-              response: {
-                ...r,
-                value_type: q.response_type,
-              },
+            descendantField.response = {
+              ...descendantResponse,
+              question,
             }
+
+            return descendantField
           })
           .map(frameworkFieldToSummaryListRow(stepUrl))
 
@@ -44,10 +48,9 @@ function frameworkFieldToSummaryListRow(stepUrl) {
 
     const responseHtml = componentService.getComponent('appFrameworkResponse', {
       value: isEmpty(response.value) ? undefined : response.value,
-      valueType: response.value_type,
+      valueType,
       responded: response.responded === true,
       questionUrl: `${stepUrl}#${id}`,
-      classes: 'govuk-!-font-size-16',
     })
 
     const row = {
@@ -69,7 +72,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       .filter(item => item.value === field.response.value)
       .map(item => item.followup.map(frameworkFieldToSummaryListRow(stepUrl)))
 
-    return filter(flatten([row, ...flatten(followupRows)]))
+    return filter(flattenDeep([row, ...followupRows]))
   }
 }
 
