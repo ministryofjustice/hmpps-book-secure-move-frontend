@@ -33,10 +33,7 @@ async function setResultsSingleRequests(req, res, next) {
 
     req.resultsAsTable = {
       active: presenters.singleRequestsToTableComponent(singleRequests),
-      cancelled:
-        cancelledMoves.length > 0
-          ? presenters.singleRequestsToTableComponent(cancelledMoves)
-          : [],
+      cancelled: presenters.singleRequestsToTableComponent(cancelledMoves),
     }
 
     next()

@@ -46,6 +46,7 @@
     "from_location": "Move from",
     "to_location": "Move to",
     "earliest_move_date": "Earliest date of travel",
+    "move_date": "Date of travel",
     "created_at": "Sent on",
     "move_type": "Move type",
     "move_size": "Move size",

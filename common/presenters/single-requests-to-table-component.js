@@ -1,3 +1,5 @@
+const { isNil } = require('lodash')
+
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const componentService = require('../services/component')
@@ -56,13 +58,17 @@ function singleRequestsToTable(moves) {
     },
     {
       head: {
-        text: i18n.t('collections::labels.earliest_move_date'),
+        text: i18n.t(
+          moves.some(it => !isNil(it.date))
+            ? 'collections::labels.move_date'
+            : 'collections::labels.earliest_move_date'
+        ),
         attributes: {
           width: '120',
         },
       },
       row: {
-        text: data => filters.formatDate(data.date_from),
+        text: data => filters.formatDate(data.date || data.date_from),
       },
     },
     {

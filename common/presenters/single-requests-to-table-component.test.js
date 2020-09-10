@@ -96,6 +96,57 @@ const mockMoves = [
     },
   },
 ]
+
+const mockApprovedMoves = [
+  {
+    id: 'acba3ad5-a8d3-4b95-9e48-121dafb3babe',
+    type: 'moves',
+    reference: 'TEW5896J',
+    status: 'proposed',
+    updated_at: '2020-04-20T11:48:53+01:00',
+    created_at: '2020-04-20T11:48:53+01:00',
+    prison_transfer_reason: {
+      title: 'MAPPA',
+    },
+    time_due: null,
+    date: '2020-08-28',
+    move_type: 'prison_transfer',
+    date_from: '2020-09-28',
+    date_to: '2020-10-28',
+    person: {
+      id: '746ad25b-9d6b-4159-ba45-d4a62936c48d',
+      type: 'people',
+      first_names: 'JOHN',
+      last_name: 'DOE',
+      identifiers: [
+        {
+          identifier_type: 'police_national_computer',
+          value: '17/522710A',
+        },
+        {
+          identifier_type: 'prison_number',
+          value: 'A5075DA',
+        },
+      ],
+      fullname: 'DOE, JOHN',
+    },
+    from_location: {
+      id: '54d1c8c3-699e-4198-9218-f923a7f18149',
+      type: 'locations',
+      key: 'wyi',
+      title: 'WETHERBY (HMPYOI)',
+      location_type: 'prison',
+    },
+    to_location: {
+      id: 'cb0c3a4d-011a-47e5-9dca-05a418047cfd',
+      type: 'locations',
+      key: 'ali',
+      title: 'ALBANY (HMP)',
+      location_type: 'prison',
+    },
+  },
+]
+
 const moveToCardComponentStub = sinon.stub().returnsArg(0)
 const moveToCardComponentOptsStub = sinon
   .stub()
@@ -208,6 +259,50 @@ describe('#singleRequestsToTableComponent()', function () {
         },
         {
           text: 'collections::labels.earliest_move_date',
+          attributes: {
+            width: '120',
+          },
+        },
+        {
+          text: 'collections::labels.move_type',
+        },
+      ])
+    })
+  })
+
+  describe('when the moves are approved', function () {
+    beforeEach(function () {
+      output = presenter(mockApprovedMoves)
+    })
+
+    it('returns the date range on the fifth cell', function () {
+      expect(output.rows[0][4]).to.deep.equal({
+        text: mockApprovedMoves[0].date,
+      })
+    })
+
+    it('returns one head row with all the cells', function () {
+      expect(output.head).to.deep.equal([
+        {
+          text: 'name',
+          attributes: {
+            width: '220',
+          },
+        },
+        {
+          text: 'collections::labels.created_at',
+          attributes: {
+            width: '120',
+          },
+        },
+        {
+          text: 'collections::labels.from_location',
+        },
+        {
+          text: 'collections::labels.to_location',
+        },
+        {
+          text: 'collections::labels.move_date',
           attributes: {
             width: '120',
           },
