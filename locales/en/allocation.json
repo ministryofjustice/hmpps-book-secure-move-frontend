@@ -8,6 +8,7 @@
     },
     "people": {
       "heading": "People for allocation",
+      "complete": "This allocation is filled",
       "progress": "{{addedCount}} of $t(n_person) added",
       "progress_remaining": "$t(n_person) remaining to add",
       "no_results": "No prisoners added to allocation",
