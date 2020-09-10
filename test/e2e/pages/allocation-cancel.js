@@ -12,7 +12,9 @@ class AllocationCancelPage extends CancelMove {
     this.fields = {
       ...this.fields,
       cancellationReason: Selector('[name="cancellation_reason"]'),
-      cancellationReasonComment: Selector('#cancellation_reason_comment'),
+      cancellationReasonOtherComment: Selector(
+        '#cancellation_reason_other_comment'
+      ),
     }
 
     this.nodes = {
@@ -42,8 +44,8 @@ class AllocationCancelPage extends CancelMove {
     }
 
     if (reason === 'Another reason') {
-      fields.cancellationReasonComment = {
-        selector: this.fields.cancellationReasonComment,
+      fields.cancellationReasonOtherComment = {
+        selector: this.fields.cancellationReasonOtherComment,
         value: faker.lorem.sentence(6),
       }
     }

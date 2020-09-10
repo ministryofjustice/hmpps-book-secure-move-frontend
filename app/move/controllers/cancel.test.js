@@ -15,7 +15,7 @@ const mockMove = {
 }
 const mockValues = {
   cancellation_reason: 'error',
-  cancellation_reason_comment: 'Request was made in error',
+  cancellation_reason_other_comment: 'Request was made in error',
 }
 
 describe('Move controllers', function () {
@@ -151,7 +151,7 @@ describe('Move controllers', function () {
             options: {
               allFields: {
                 cancellation_reason: {},
-                cancellation_reason_comment: {},
+                cancellation_reason_other_comment: {},
               },
             },
           },
@@ -178,7 +178,7 @@ describe('Move controllers', function () {
         it('should cancel move', function () {
           expect(moveService.cancel).to.be.calledWith(mockMove.id, {
             reason: mockValues.cancellation_reason,
-            comment: mockValues.cancellation_reason_comment,
+            comment: mockValues.cancellation_reason_other_comment,
           })
         })
 

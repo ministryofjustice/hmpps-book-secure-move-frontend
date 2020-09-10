@@ -15,7 +15,7 @@ module.exports = {
     fields: [
       'move_date',
       'rejection_reason',
-      'cancellation_reason_comment',
+      'cancellation_reason_other_comment',
       'rebook',
       'review_decision',
     ],

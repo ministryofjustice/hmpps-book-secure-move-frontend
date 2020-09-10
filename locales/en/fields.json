@@ -230,11 +230,6 @@
       "no_transport_available": "No transport available for this move"
     }
   },
-  "cancellation_reason_comment": {
-    "label": "Additional information",
-    "label_optional": "Additional information (optional)",
-    "label_with_error": "Additional information"
-  },
   "rebook": {
     "label": "Should they rebook this move?",
     "items": {
@@ -258,6 +253,11 @@
         "label": "Another reason"
       }
     }
+  },
+  "cancellation_reason_other_comment": {
+    "label": "Additional information",
+    "label_optional": "Additional information (optional)",
+    "label_with_error": "Additional information"
   },
   "other_court": {
     "label": "Any other information details"

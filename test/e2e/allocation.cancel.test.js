@@ -37,6 +37,6 @@ test('Reason — `Another reason`', async t => {
   await allocationJourney.allocationCancelPage.submitForm()
 
   await allocationJourney.allocationCancelPage.checkCancellation({
-    reason: filledForm.cancellationReasonComment,
+    reason: filledForm.cancellationReasonOtherComment,
   })
 })

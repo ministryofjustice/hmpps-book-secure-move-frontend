@@ -21,7 +21,7 @@ const reviewDecision = {
       conditional: [
         'rejection_reason',
         'rebook',
-        'cancellation_reason_comment',
+        'cancellation_reason_other_comment',
       ],
     },
   ],

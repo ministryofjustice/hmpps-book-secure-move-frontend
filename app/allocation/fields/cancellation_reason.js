@@ -37,7 +37,7 @@ const cancellationReason = {
     {
       value: 'other',
       text: 'fields::cancel_allocation_reason.items.other.label',
-      conditional: 'cancellation_reason_comment',
+      conditional: 'cancellation_reason_other_comment',
     },
   ],
 }
