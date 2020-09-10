@@ -37,6 +37,10 @@ $_message-border-width: 5px;
   * + & {
     margin-top: govuk-spacing(4);
   }
+
+  @include govuk-media-query($media-type: print) {
+    border: 1px solid govuk-colour("black") !important;
+  }
 }
 
 .app-message__heading {
