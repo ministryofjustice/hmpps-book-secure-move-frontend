@@ -33,7 +33,7 @@ const SESSION = {
 }
 const REDIS = {}
 
-if (process.env.REDIS_URL) {
+if (process.env.REDIS_URL || process.env.REDIS_HOST) {
   REDIS.SESSION = {
     url: process.env.REDIS_URL,
     host: process.env.REDIS_HOST,
@@ -83,7 +83,7 @@ module.exports = {
     SECRET: process.env.API_SECRET,
     TIMEOUT: Number(process.env.API_TIMEOUT || 30000), // in milliseconds
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
-    USE_REDIS_CACHE: !!process.env.REDIS_URL,
+    USE_REDIS_CACHE: !!REDIS.SESSION,
   },
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',
