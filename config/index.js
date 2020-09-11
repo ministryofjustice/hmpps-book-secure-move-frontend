@@ -44,8 +44,6 @@ if (process.env.REDIS_URL) {
       : null,
     ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
   }
-} else {
-  process.env.API_DISABLE_CACHE = true
 }
 
 let LATEST_FRAMEWORKS_BUILD
@@ -85,7 +83,7 @@ module.exports = {
     SECRET: process.env.API_SECRET,
     TIMEOUT: Number(process.env.API_TIMEOUT || 30000), // in milliseconds
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
-    DISABLE_CACHE: process.env.API_DISABLE_CACHE,
+    USE_REDIS_CACHE: !!process.env.REDIS_URL,
   },
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',

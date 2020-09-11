@@ -7,27 +7,27 @@ const models = require('../models')
 
 const inMemoryCache = {}
 
-function getCacheResponse(key, disableCache) {
-  if (disableCache) {
-    return Promise.resolve(inMemoryCache[key])
-  } else {
+function getCacheResponse(key, useRedisCache) {
+  if (useRedisCache) {
     return redisStore().client.getAsync(key)
+  } else {
+    return Promise.resolve(inMemoryCache[key])
   }
 }
 
-async function setCacheResponse(response, key, expiry, inMemory) {
+async function setCacheResponse(response, key, expiry, useRedisCache) {
   const data = JSON.stringify(response.data)
 
-  if (inMemory) {
-    inMemoryCache[key] = data
-  } else {
+  if (useRedisCache) {
     await redisStore().client.setexAsync(key, expiry, data)
+  } else {
+    inMemoryCache[key] = data
   }
 
   return response
 }
 
-function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
+function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
   return {
     name: 'axios-request',
     req: async function req(payload) {
@@ -45,13 +45,13 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
         return jsonApi.axios(req)
       }
 
-      return getCacheResponse(key, disableCache).then(response => {
+      return getCacheResponse(key, useRedisCache).then(response => {
         if (!response) {
           debug('CACHED (first hit)', key)
           return jsonApi
             .axios(req)
             .then(response =>
-              setCacheResponse(response, key, cacheExpiry, disableCache)
+              setCacheResponse(response, key, cacheExpiry, useRedisCache)
             )
         }
 

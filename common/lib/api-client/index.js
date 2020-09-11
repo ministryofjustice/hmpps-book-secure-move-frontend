@@ -31,7 +31,7 @@ module.exports = function () {
     'axios-request',
     request({
       cacheExpiry: API.CACHE_EXPIRY,
-      disableCache: API.DISABLE_CACHE,
+      useRedisCache: API.USE_REDIS_CACHE,
     })
   )
   instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
