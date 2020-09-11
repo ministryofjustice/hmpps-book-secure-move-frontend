@@ -89,6 +89,7 @@ e2e test runner
   })
   .option('video', {
     type: 'boolean',
+    default: !!E2E_VIDEO,
     description: 'Whether to capture video',
   })
   .option('testcafe', {
@@ -102,23 +103,24 @@ e2e test runner
     description: 'Display commands that would be run',
   }).argv
 
-process.stdout.write(`ENV VARS:
+process.stdout.write(`
+ENV VARS:
 E2E_MAX_PROCESSES: ${E2E_MAX_PROCESSES}
 E2E_SKIP:          ${E2E_SKIP}
 E2E_VIDEO:         ${E2E_VIDEO}
 E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
-
+E2E_BASE_URL:      ${E2E_BASE_URL}
 `)
 
-const maxProcesses = args.max_processes
+if (args.video && args.max_processes > 1) {
+  process.stdout.write('⚠️  Max processes set to 1 as video capture enabled\n')
+}
+
+const maxProcesses = args.video ? 1 : args.max_processes
 const debugOnFail = args.debug ? '--debug-on-fail' : ''
 
 if (debugOnFail) {
   args.headless = false
-}
-
-if (args.video === undefined) {
-  args.video = E2E_VIDEO
 }
 
 const stopOnFirstFail =

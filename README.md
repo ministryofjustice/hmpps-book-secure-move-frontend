@@ -221,8 +221,8 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | SESSION_NAME | Name of the session ID cookie to set in the response (and read from in the request) | `book-secure-move.sid` |
 | SESSION_TTL | How long the user session should last (in milliseconds) | `1800000` (30 minutes) |
 | SESSION_DB_INDEX | Redis database index in which to store session data | `0` (Redis' default)|
-| REDIS_URL **(required)** | Redis server URL, including port and protocol | |
-| REDIS_HOST **(required)** | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
+| REDIS_URL | Redis server URL, including port and protocol. If not provided, in-memory cache used instead | |
+| REDIS_HOST | Redis hostname. Can be used instead of `REDIS_URL`. Will override `REDIS_URL` if set | |
 | REDIS_AUTH_TOKEN | Optional auth token for the Redis instance | |
 | API_BASE_URL **(required)** | Base URL for the backend API server for this service without any path | |
 | API_PATH **(required)** | Base path for the API | |
@@ -233,7 +233,6 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | API_CLIENT_ID **(required)** | Client ID used to authenticate with the backend API | |
 | API_SECRET **(required)** | Client secret used to authenticate with the backend API | |
 | API_CACHE_EXPIRY | The expiry time of cached API request (in seconds) | 7 days |
-| API_DISABLE_CACHE | Whether to disable caching of API requests | false |
 | AUTH_PROVIDER_KEY **(required)** | Client key provided by the OAuth2 provider for user authentication | |
 | AUTH_PROVIDER_SECRET **(required)** | Client secret provided by the OAuth2 provider for user authentication | |
 | AUTH_PROVIDER_URL **(required)** | Base URL for the auth provider server | |
@@ -251,6 +250,7 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | E2E_FAIL_FAST | Whether to stop all tests if an end-to-end tests fails | false |
 | E2E_VIDEO | Whether to capture video when end-to-end tests fail | false |
 | E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
+| E2E_MOCK_AUTH | Whether to use the mock auth server | false |
 | E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
 | E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |
 | E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |

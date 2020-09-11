@@ -31,6 +31,20 @@ const SESSION = {
   TTL: process.env.SESSION_TTL || 60 * 30 * 1000, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
 }
+const REDIS = {}
+
+if (process.env.REDIS_URL) {
+  REDIS.SESSION = {
+    url: process.env.REDIS_URL,
+    host: process.env.REDIS_HOST,
+    auth_pass: process.env.REDIS_AUTH_TOKEN,
+    db: SESSION.DB,
+    tls: process.env.REDIS_AUTH_TOKEN
+      ? { checkServerIdentity: () => undefined }
+      : null,
+    ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
+  }
+}
 
 let LATEST_FRAMEWORKS_BUILD
 
@@ -69,7 +83,7 @@ module.exports = {
     SECRET: process.env.API_SECRET,
     TIMEOUT: Number(process.env.API_TIMEOUT || 30000), // in milliseconds
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
-    DISABLE_CACHE: process.env.API_DISABLE_CACHE,
+    USE_REDIS_CACHE: !!process.env.REDIS_URL,
   },
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',
@@ -90,18 +104,7 @@ module.exports = {
     DSN: process.env.SENTRY_DSN,
     ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
   },
-  REDIS: {
-    SESSION: {
-      url: process.env.REDIS_URL,
-      host: process.env.REDIS_HOST,
-      auth_pass: process.env.REDIS_AUTH_TOKEN,
-      db: SESSION.DB,
-      tls: process.env.REDIS_AUTH_TOKEN
-        ? { checkServerIdentity: () => undefined }
-        : null,
-      ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
-    },
-  },
+  REDIS,
   USER_PERMISSIONS: process.env.USER_PERMISSIONS,
   USER_LOCATIONS: process.env.USER_LOCATIONS,
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,

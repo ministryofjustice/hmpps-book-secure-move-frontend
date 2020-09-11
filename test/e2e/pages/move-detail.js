@@ -229,7 +229,8 @@ class MoveDetailPage extends Page {
 
       // if comment was entered, check it is displayed
       if (comment) {
-        await t.expect(panel.innerText).contains(comment)
+        const commentPanel = selector.withText(comment)
+        await t.expect(commentPanel.exists).ok()
       }
     }
   }

@@ -5,18 +5,29 @@ const { API } = require('../../../../config')
 const redisStore = require('../../../../config/redis-store')
 const models = require('../models')
 
-function cacheResponse(key, expiry) {
-  return async response => {
-    await redisStore().client.setexAsync(
-      key,
-      expiry,
-      JSON.stringify(response.data)
-    )
-    return response
+const inMemoryCache = {}
+
+function getCacheResponse(key, useRedisCache) {
+  if (useRedisCache) {
+    return redisStore().client.getAsync(key)
+  } else {
+    return Promise.resolve(inMemoryCache[key])
   }
 }
 
-function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
+async function setCacheResponse(response, key, expiry, useRedisCache) {
+  const data = JSON.stringify(response.data)
+
+  if (useRedisCache) {
+    await redisStore().client.setexAsync(key, expiry, data)
+  } else {
+    inMemoryCache[key] = data
+  }
+
+  return response
+}
+
+function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
   return {
     name: 'axios-request',
     req: async function req(payload) {
@@ -29,24 +40,26 @@ function requestMiddleware({ cacheExpiry = 60, disableCache = false } = {}) {
       }`
       const cacheModel = get(models, `${req.model}.options.cache`)
 
-      if (!cacheModel || req.params.cache === false || disableCache) {
+      if (!cacheModel || req.params.cache === false) {
         debug('NO CACHE', key)
         return jsonApi.axios(req)
       }
 
-      return redisStore()
-        .client.getAsync(key)
-        .then(response => {
-          if (!response) {
-            debug('CACHED (first hit)', key)
-            return jsonApi.axios(req).then(cacheResponse(key, cacheExpiry))
-          }
+      return getCacheResponse(key, useRedisCache).then(response => {
+        if (!response) {
+          debug('CACHED (first hit)', key)
+          return jsonApi
+            .axios(req)
+            .then(response =>
+              setCacheResponse(response, key, cacheExpiry, useRedisCache)
+            )
+        }
 
-          debug('CACHED', key)
-          return {
-            data: JSON.parse(response),
-          }
-        })
+        debug('CACHED', key)
+        return {
+          data: JSON.parse(response),
+        }
+      })
     },
   }
 }

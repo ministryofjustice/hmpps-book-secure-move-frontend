@@ -33,7 +33,12 @@ const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
 const { getAssetPath } = require('./config/nunjucks/globals')
 const configPaths = require('./config/paths')
-const redisStore = require('./config/redis-store')
+
+let redisStore
+
+if (config.REDIS.SESSION) {
+  redisStore = require('./config/redis-store')()
+}
 
 if (config.SENTRY.DSN) {
   Sentry.init({
@@ -96,7 +101,7 @@ app.use(cookieParser())
 app.use(responseTime())
 app.use(
   session({
-    store: redisStore(),
+    store: redisStore,
     secret: config.SESSION.SECRET,
     name: config.SESSION.NAME,
     saveUninitialized: false,

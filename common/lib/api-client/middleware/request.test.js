@@ -60,7 +60,7 @@ describe('API Client', function () {
     context('when model should not be cached', function () {
       beforeEach(async function () {
         payload.req.model = 'nonCachedModel'
-        response = await requestMiddleware().req(payload)
+        response = await requestMiddleware({ useRedisCache: true }).req(payload)
       })
 
       it('should make request using axios library with payload', function () {
@@ -85,7 +85,9 @@ describe('API Client', function () {
       context('when request should not be cached', function () {
         beforeEach(async function () {
           payload.req.params.cache = false
-          response = await requestMiddleware().req(payload)
+          response = await requestMiddleware({ useRedisCache: true }).req(
+            payload
+          )
         })
 
         it('should make request using axios library with payload', function () {
@@ -107,7 +109,9 @@ describe('API Client', function () {
 
         beforeEach(async function () {
           getAsyncStub.resolves(mockRedisResponse)
-          response = await requestMiddleware().req(payload)
+          response = await requestMiddleware({ useRedisCache: true }).req(
+            payload
+          )
         })
 
         it('should attempt to get key from redis', function () {
@@ -129,7 +133,9 @@ describe('API Client', function () {
         beforeEach(async function () {
           getAsyncStub.resolves(null)
           setexAsyncStub.resolves(true)
-          response = await requestMiddleware().req(payload)
+          response = await requestMiddleware({ useRedisCache: true }).req(
+            payload
+          )
         })
 
         it('should attempt to get key from redis', function () {
@@ -163,7 +169,9 @@ describe('API Client', function () {
             page: 5,
             per_page: 100,
           }
-          response = await requestMiddleware().req(payload)
+          response = await requestMiddleware({ useRedisCache: true }).req(
+            payload
+          )
         })
 
         it('should append search to key', function () {
@@ -186,7 +194,9 @@ describe('API Client', function () {
         describe('cache expiry', function () {
           context('without cache expiry argument', function () {
             beforeEach(async function () {
-              response = await requestMiddleware().req(payload)
+              response = await requestMiddleware({ useRedisCache: true }).req(
+                payload
+              )
             })
 
             it('should use default value', function () {
@@ -196,9 +206,10 @@ describe('API Client', function () {
 
           context('with cache expiry argument', function () {
             beforeEach(async function () {
-              response = await requestMiddleware({ cacheExpiry: 1000 }).req(
-                payload
-              )
+              response = await requestMiddleware({
+                useRedisCache: true,
+                cacheExpiry: 1000,
+              }).req(payload)
             })
 
             it('should use argument value', function () {
@@ -214,7 +225,9 @@ describe('API Client', function () {
 
           context('without argument', function () {
             beforeEach(async function () {
-              response = await requestMiddleware().req(payload)
+              response = await requestMiddleware({ useRedisCache: true }).req(
+                payload
+              )
             })
 
             it('should attempt to get key from redis', function () {
@@ -242,11 +255,9 @@ describe('API Client', function () {
             })
           })
 
-          context('with cache disabled', function () {
+          context('with no redis cache', function () {
             beforeEach(async function () {
-              response = await requestMiddleware({ disableCache: true }).req(
-                payload
-              )
+              response = await requestMiddleware().req(payload)
             })
 
             it('should make request using axios library with payload', function () {
