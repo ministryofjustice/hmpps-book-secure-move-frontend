@@ -152,7 +152,7 @@ jobs:
     parameters:
       base_url_env:
         type: string
-      use_review_app:
+      use_same_instance:
         type: string
         default: ""
     resource_class: large
@@ -163,7 +163,7 @@ jobs:
       - *install_dependencies
       - *save_cache
       - when:
-          condition: <<parameters.use_review_app>>
+          condition: <<parameters.use_same_instance>>
           steps:
             - run:
                 name: Check whether to use mock server
@@ -174,7 +174,7 @@ jobs:
                     source $BASH_ENV
                   fi
       - when:
-          condition: <<parameters.use_review_app>>
+          condition: <<parameters.use_same_instance>>
           steps:
             - run:
                 name: Run E2E tests (same instance)
@@ -186,7 +186,7 @@ jobs:
                   npm run test-e2e:ci-pre-flight
                   npm run test-e2e:ci
       - unless:
-          condition: <<parameters.use_review_app>>
+          condition: <<parameters.use_same_instance>>
           steps:
             - run:
                 name: Run E2E tests
@@ -332,7 +332,7 @@ workflows:
       - end-to-end-test:
           <<: *ignore_master
           name: end-to-end-test-pr
-          use_review_app: 'true'
+          use_same_instance: 'true'
           base_url_env: E2E_BASE_URL_REVIEW_APP
       - end-to-end-test:
           <<: *only_master
