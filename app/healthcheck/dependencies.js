@@ -5,8 +5,14 @@ const {
   DEFAULT_AUTH_PROVIDER,
   API,
   NOMIS_ELITE2_API,
+  REDIS,
 } = require('../../config')
-const redisStore = require('../../config/redis-store')
+
+let redisStore
+
+if (REDIS.SESSION) {
+  redisStore = require('../../config/redis-store')
+}
 
 const timeout = 5000
 
@@ -43,15 +49,19 @@ module.exports = [
   {
     name: 'redis',
     healthcheck: () => {
-      return new Promise((resolve, reject) => {
-        const result = redisStore().client.ping()
+      if (redisStore) {
+        return new Promise((resolve, reject) => {
+          const result = redisStore().client.ping()
 
-        if (!result) {
-          reject(new Error('No connection'))
-        }
+          if (!result) {
+            reject(new Error('No connection'))
+          }
 
-        resolve('OK')
-      })
+          resolve('OK')
+        })
+      } else {
+        return Promise.resolve('NOT RUNNING')
+      }
     },
   },
 ]
