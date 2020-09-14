@@ -5,6 +5,9 @@ const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
 
+process.env.E2E_BASE_URL =
+  'https://hmpps-book-secure-move-frontend-staging.apps.live-1.cloud-platform.service.justice.gov.uk'
+
 const {
   E2E_MAX_PROCESSES,
   E2E_SKIP,
