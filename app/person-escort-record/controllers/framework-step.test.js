@@ -245,16 +245,7 @@ describe('Person Escort Record controllers', function () {
           body: {},
           baseUrl: '/base-url',
           form: {
-            options: {
-              steps: {
-                '/': {},
-                '/one': {},
-                '/continued': {},
-                '/two': {},
-                '/two-continued': {},
-                '/overview-step': {},
-              },
-            },
+            options: {},
           },
         }
         mockRes = {
@@ -276,7 +267,7 @@ describe('Person Escort Record controllers', function () {
 
         it('should redirect to base URL with last step path', function () {
           expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-            '/base-url/overview-step'
+            '/base-url'
           )
         })
 
@@ -299,7 +290,7 @@ describe('Person Escort Record controllers', function () {
 
           it('should redirect to base URL with last step path', function () {
             expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/overview-step'
+              '/base-url'
             )
           })
 

@@ -9,18 +9,18 @@ function defineFormWizard(req, res, next) {
   const wizardFields = req.framework.questions
   const wizardSteps = {
     '/': {
+      controller: FrameworkSectionController,
+      reset: true,
+      resetJourney: true,
+      template: 'framework-section',
+    },
+    '/start': {
       next: firstStep.slug,
       reset: true,
       resetJourney: true,
       skip: true,
     },
     ...steps,
-    '/overview': {
-      controller: FrameworkSectionController,
-      reset: true,
-      resetJourney: true,
-      template: 'framework-section',
-    },
   }
   const wizardConfig = {
     controller: FrameworkStepController,

@@ -101,16 +101,14 @@ class FrameworkStepController extends FormWizardController {
   }
 
   successHandler(req, res, next) {
-    const { steps: wizardSteps = {}, route } = req?.form?.options || {}
+    const { route } = req?.form?.options || {}
     const goToOverview = req.body.save_and_return_to_overview
-    const steps = Object.keys(wizardSteps)
-    const overviewStepPath = steps[steps.length - 1]
     const nextStep = this.getNextStep(req, res)
     const currentStep = route
     const isLastStep = nextStep.endsWith(currentStep)
 
     if (isLastStep || goToOverview) {
-      return res.redirect(req.baseUrl + overviewStepPath)
+      return res.redirect(req.baseUrl)
     }
 
     super.successHandler(req, res, next)

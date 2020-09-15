@@ -10,6 +10,7 @@ const tagClasses = {
 
 function frameworkToTaskListComponent({
   baseUrl = '',
+  deepLinkToFirstStep = false,
   sectionProgress = [],
   frameworkSections = {},
 } = {}) {
@@ -21,7 +22,7 @@ function frameworkToTaskListComponent({
       return {
         order,
         text: name,
-        href: baseUrl + key,
+        href: `${baseUrl}${key}${deepLinkToFirstStep ? '/start' : ''}`,
         tag: {
           text: i18n.t(`person-escort-record::statuses.${status}`),
           classes: tagClasses[status] || tagClasses.default,

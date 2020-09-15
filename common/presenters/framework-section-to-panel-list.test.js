@@ -294,7 +294,7 @@ const expectedOutput = {
   isCompleted: true,
   name: 'Risk information',
   url:
-    '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information/overview',
+    '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information',
   panels: [
     {
       tag: {
@@ -356,7 +356,7 @@ describe('Presenters', function () {
           isCompleted: false,
           name: 'Risk information',
           panels: [],
-          url: '/risk-information/overview',
+          url: '/risk-information',
         })
       })
     })
