@@ -167,7 +167,7 @@ jobs:
           command: npm run build
       - run:
           name: Run E2E tests
-          command: E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
+          command: DEBUG=axios* E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
