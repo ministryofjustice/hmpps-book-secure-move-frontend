@@ -5,6 +5,8 @@ const path = require('path')
 
 const semverSort = require('semver-sort')
 
+const { version: APP_VERSION } = require('../package.json')
+
 const { frameworks: frameworksPaths } = require('./paths')
 
 const API_VERSION = process.env.API_VERSION
@@ -70,6 +72,7 @@ module.exports = {
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+  APP_VERSION,
   APP_BUILD_DATE: process.env.APP_BUILD_DATE,
   APP_BUILD_BRANCH: process.env.APP_BUILD_BRANCH,
   APP_BUILD_TAG: process.env.APP_BUILD_TAG,
