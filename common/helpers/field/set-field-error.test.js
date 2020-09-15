@@ -39,9 +39,10 @@ describe('Field helpers', function () {
       })
 
       it('should call getFieldErrorMessage with error object', function () {
-        expect(getFieldErrorMessageStub).to.be.calledOnceWithExactly(
-          errors.error_field
-        )
+        expect(getFieldErrorMessageStub).to.be.calledOnceWithExactly({
+          ...field[1],
+          ...errors.error_field,
+        })
       })
 
       it('should return field with error message', function () {

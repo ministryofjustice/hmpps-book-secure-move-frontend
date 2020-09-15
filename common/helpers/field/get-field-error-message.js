@@ -2,6 +2,8 @@ const i18n = require('../../../config/i18n')
 
 function getFieldErrorMessage({
   message,
+  description = '',
+  question = '',
   key: fieldKey,
   type: errorType,
 } = {}) {
@@ -13,12 +15,13 @@ function getFieldErrorMessage({
     return message
   }
 
-  const errorLabel = i18n.t(`fields::${fieldKey}.label`, {
+  const labelFallback = description || question
+  const errorLabel = i18n.t([`fields::${fieldKey}.label`, labelFallback], {
     context: 'with_error',
   })
   const fallback = i18n.t(`validation::${errorType}`, {
     context: 'with_label',
-    label: errorLabel.toLowerCase(),
+    label: errorLabel,
   })
   return i18n.t([`fields::${fieldKey}.error_message`, fallback], {
     context: errorType,

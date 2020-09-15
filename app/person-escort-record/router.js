@@ -30,6 +30,7 @@ function defineFormWizard(req, res, next) {
     name: `person-escort-record-${key}`,
     template: 'framework-step',
     templatePath: 'person-escort-record/views/',
+    defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
   }
 
   return wizard(wizardSteps, wizardFields, wizardConfig)(req, res, next)

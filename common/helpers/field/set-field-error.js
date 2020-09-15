@@ -13,7 +13,10 @@ function setFieldError(errors) {
       {
         ...field,
         errorMessage: {
-          html: getFieldErrorMessage(fieldError),
+          html: getFieldErrorMessage({
+            ...field,
+            ...fieldError,
+          }),
         },
       },
     ]
