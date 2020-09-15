@@ -6,6 +6,8 @@ const logger = require('./logger')
 
 const { REDIS } = require('./')
 
+process.stdout.write(JSON.stringify({ REDIS }, null, 2))
+
 const defaultOptions = {
   ...REDIS.SESSION,
   logErrors: logger.error,
