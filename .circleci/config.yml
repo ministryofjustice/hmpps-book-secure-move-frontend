@@ -165,35 +165,9 @@ jobs:
       - run:
           name: Build assets and frameworks
           command: npm run build
-      - when:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Check whether to use mock server
-                command: |
-                  if [ -n "$E2E_MOCK_AUTH" ]; then
-                    echo "export AUTH_PROVIDER_URL='http://localhost:3999'" >> $BASH_ENV
-                    echo "export NOMIS_ELITE2_API_URL='http://localhost:3999'" >> $BASH_ENV
-                    source $BASH_ENV
-                  fi
-      - when:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Run E2E tests (same instance)
-                environment:
-                  REDIS_URL: ""
-                  SERVER_HOST: localhost:3000
-                  E2E_BASE_URL: http://localhost:3000
-                command: |
-                  npm run test-e2e:ci-pre-flight
-                  npm run test-e2e:ci
-      - unless:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Run E2E tests
-                command: E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
+      - run:
+          name: Run E2E tests
+          command: E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
@@ -335,8 +309,8 @@ workflows:
       - end-to-end-test:
           <<: *ignore_master
           name: end-to-end-test-pr
-          use_same_instance: 'true'
-          base_url_env: E2E_BASE_URL_REVIEW_APP
+#          use_same_instance: 'true'
+          base_url_env: E2E_BASE_URL_STAGING
       - end-to-end-test:
           <<: *only_master
           name: end-to-end-test-master
