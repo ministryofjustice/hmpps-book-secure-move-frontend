@@ -51,6 +51,7 @@ describe('Person Escort Record controllers', function () {
     describe('#middlewareSetup', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareSetup')
+        sinon.stub(controller, 'setupConditionalFields')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setButtonText')
 
@@ -62,14 +63,20 @@ describe('Person Escort Record controllers', function () {
           .calledOnce
       })
 
-      it('should call set button text method', function () {
+      it('should call set models method', function () {
         expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+          controller.setupConditionalFields
+        )
+      })
+
+      it('should call set button text method', function () {
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(1)
+        expect(controller.use).to.be.callCount(2)
       })
     })
 
@@ -88,7 +95,7 @@ describe('Person Escort Record controllers', function () {
       })
 
       it('should call set models method', function () {
-        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+        expect(controller.use).to.have.been.calledWithExactly(
           controller.setPageTitleLocals
         )
       })
