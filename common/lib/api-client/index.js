@@ -1,4 +1,5 @@
 const JsonApi = require('devour-client')
+require('axios-debug-log')
 
 const { API, IS_DEV, FILE_UPLOADS } = require('../../../config')
 
@@ -22,7 +23,7 @@ module.exports = function () {
 
   instance = new JsonApi({
     apiUrl: API.BASE_URL,
-    logger: IS_DEV,
+    logger: true,
   })
 
   instance.replaceMiddleware('errors', errors)
@@ -46,6 +47,6 @@ module.exports = function () {
   Object.entries(models).forEach(([modelName, model]) => {
     instance.define(modelName, model.fields, model.options)
   })
-
+  
   return instance
 }
