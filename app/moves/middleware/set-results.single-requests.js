@@ -10,6 +10,7 @@ async function setResultsSingleRequests(req, res, next) {
       singleRequestService.getCancelled(req.body.requested),
     ])
 
+    const query = req.query
     let cancelledMoves
 
     const status = req?.body?.requested?.status
@@ -32,8 +33,12 @@ async function setResultsSingleRequests(req, res, next) {
     }
 
     req.resultsAsTable = {
-      active: presenters.singleRequestsToTableComponent(singleRequests),
-      cancelled: presenters.singleRequestsToTableComponent(cancelledMoves),
+      active: presenters.singleRequestsToTableComponent({ query })(
+        singleRequests
+      ),
+      cancelled: presenters.singleRequestsToTableComponent({
+        isSortable: false,
+      })(cancelledMoves),
     }
 
     next()
