@@ -201,16 +201,6 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink)
 })
 
-test('Reason - `Made in error`', async t => {
-  await cancelMovePage.selectReason('Made in error')
-  await page.submitForm()
-
-  await moveDetailPage.checkBanner({
-    heading: 'Move cancelled',
-    content: 'Reason — Made in error',
-  })
-})
-
 test('Reason - `Supplier declined to move this person`', async t => {
   await cancelMovePage.selectReason('Supplier declined to move this person')
   await page.submitForm()
@@ -228,5 +218,15 @@ test('Reason - `Another reason`', async t => {
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
     content: 'Reason — Flat tyre on the van',
+  })
+})
+
+test('Reason - `Cancelled by PMU`', async t => {
+  await cancelMovePage.selectReason('Cancelled by Population Management Unit (PMU)', 'No free space')
+  await page.submitForm()
+
+  await moveDetailPage.checkBanner({
+    heading: 'Move cancelled',
+    content: 'Reason — Cancelled by PMU - No free space',
   })
 })

@@ -13,6 +13,9 @@ class CancelMovePage extends Page {
       cancellationReasonOtherComment: Selector(
         '#cancellation_reason_other_comment'
       ),
+      cancellationReasonCancelledByPMUComment: Selector(
+        '#cancellation_reason_cancelled_by_pmu_comment'
+      ),
     }
   }
 
@@ -31,9 +34,16 @@ class CancelMovePage extends Page {
     }
 
     if (comment) {
-      fields.cancellation_reason_other_comment = {
-        selector: this.fields.cancellationReasonOtherComment,
-        value: comment,
+      if (reason === 'Another Reason') {
+        fields.cancellation_reason_other_comment = {
+          selector: this.fields.cancellationReasonOtherComment,
+          value: comment,
+        }
+      } else if (reason === 'Cancelled by Population Management Unit (PMU)') {
+        fields.cancellation_reason_cancelled_by_pmu_comment = {
+          selector: this.fields.cancellationReasonCancelledByPMUComment,
+          value: comment,
+        }
       }
     }
 

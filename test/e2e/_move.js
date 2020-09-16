@@ -110,6 +110,17 @@ export async function checkNoUpdateLink(page) {
   return moveDetailPage.checkNoUpdateLink(page)
 }
 
+/**
+ * Check whether an update link for page is not present
+ *
+ * @param {string} page - page key
+ *
+ * @returns {undefined}
+ */
+export async function checkCancelLink(page) {
+  return moveDetailPage.checkCancelLink(page)
+}
+
 const updatePages = [
   'personal_details',
   'risk',

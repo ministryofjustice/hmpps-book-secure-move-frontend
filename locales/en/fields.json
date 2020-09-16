@@ -249,10 +249,16 @@
         "label": "Supplier declined to move this person",
         "hint": "For example, the request was made late"
       },
+      "cancelled_by_pmu": {
+        "label": "Cancelled by Population Management Unit (PMU)"
+      },
       "other": {
         "label": "Another reason"
       }
     }
+  },
+  "cancellation_reason_cancelled_by_pmu_comment": {
+    "label": "Additional information"
   },
   "cancellation_reason_other_comment": {
     "label": "Additional information",

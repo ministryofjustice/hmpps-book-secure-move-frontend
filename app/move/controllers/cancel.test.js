@@ -14,8 +14,7 @@ const mockMove = {
   },
 }
 const mockValues = {
-  cancellation_reason: 'error',
-  cancellation_reason_other_comment: 'Request was made in error',
+  cancellation_reason: 'made_in_error',
 }
 
 describe('Move controllers', function () {
@@ -151,7 +150,6 @@ describe('Move controllers', function () {
             options: {
               allFields: {
                 cancellation_reason: {},
-                cancellation_reason_other_comment: {},
               },
             },
           },
@@ -176,9 +174,8 @@ describe('Move controllers', function () {
         })
 
         it('should cancel move', function () {
-          expect(moveService.cancel).to.be.calledWith(mockMove.id, {
+          expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
             reason: mockValues.cancellation_reason,
-            comment: mockValues.cancellation_reason_other_comment,
           })
         })
 
@@ -205,7 +202,7 @@ describe('Move controllers', function () {
         })
 
         it('should call next with the error', function () {
-          expect(nextSpy).to.be.calledWith(errorMock)
+          expect(nextSpy).to.be.calledWithExactly(errorMock)
         })
 
         it('should call next once', function () {
@@ -214,6 +211,38 @@ describe('Move controllers', function () {
 
         it('should not redirect', function () {
           expect(res.redirect).not.to.have.been.called
+        })
+      })
+
+      context('with cancellation comment', function () {
+        it('should use pmu comment when cancellation_reason is cancelled_by_pmu', async function () {
+          mockValues.cancellation_reason = 'cancelled_by_pmu'
+          mockValues.cancellation_reason_cancelled_by_pmu_comment =
+            'cancelled by pmu comment'
+          req.form.options.allFields.cancellation_reason_cancelled_by_pmu_comment = {}
+
+          sinon.stub(moveService, 'cancel').resolves({})
+          await controller.successHandler(req, res, nextSpy)
+
+          expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
+            reason: mockValues.cancellation_reason,
+            comment: mockValues.cancellation_reason_cancelled_by_pmu_comment,
+          })
+        })
+
+        it('should use other comment when cancellation_reason is other', async function () {
+          mockValues.cancellation_reason = 'other'
+          mockValues.cancellation_reason_other_comment =
+            'cancelled for other reason'
+          req.form.options.allFields.cancellation_reason_other_comment = {}
+
+          sinon.stub(moveService, 'cancel').resolves({})
+          await controller.successHandler(req, res, nextSpy)
+
+          expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
+            reason: mockValues.cancellation_reason,
+            comment: mockValues.cancellation_reason_other_comment,
+          })
         })
       })
     })
