@@ -1,4 +1,3 @@
-const { API } = require('../../config')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -30,20 +29,16 @@ module.exports = function personToSummaryListComponent(props) {
     ? ` — ${genderAdditionalInformation}`
     : ''
 
-  let { identifiers = [] } = props
-
-  if (API.VERSION !== 1) {
-    identifiers = [
-      'police_national_computer',
-      'prison_number',
-      'criminal_records_office',
-    ]
-      .filter(identifier => props[identifier])
-      .map(identifier => ({
-        value: props[identifier],
-        identifier_type: identifier,
-      }))
-  }
+  const identifiers = [
+    'police_national_computer',
+    'prison_number',
+    'criminal_records_office',
+  ]
+    .filter(identifier => props[identifier])
+    .map(identifier => ({
+      value: props[identifier],
+      identifier_type: identifier,
+    }))
 
   const rows = [
     ...identifiers.map(mapIdentifier),

@@ -5,7 +5,7 @@ import { join } from 'path'
 import { format } from 'date-fns'
 import faker from 'faker'
 import glob from 'glob'
-import { find, get, isArray, isNil } from 'lodash'
+import { isArray, isNil } from 'lodash'
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
 import referenceDataHelpers from '../../common/helpers/reference-data'
@@ -15,8 +15,6 @@ import personService from '../../common/services/person'
 import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
 import { formatDate } from '../../config/nunjucks/filters'
-
-const { API } = require('../../config')
 
 export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
@@ -110,18 +108,7 @@ export async function createPersonFixture(overrides = {}) {
     gender,
   })
 
-  const getIdentifierValue = type => {
-    if (API.VERSION !== 1) {
-      return person[type]
-    }
-
-    return get(
-      find(person.identifiers, {
-        identifier_type: type,
-      }),
-      'value'
-    )
-  }
+  const getIdentifierValue = type => person[type]
 
   return {
     ...person,

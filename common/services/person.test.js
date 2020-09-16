@@ -1,7 +1,6 @@
 const { forEach } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const { API } = require('../../config')
 const apiClient = require('../lib/api-client')()
 
 const unformatStub = sinon.stub()
@@ -19,11 +18,6 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
-  before(function () {
-    if (API.VERSION === 1) {
-      this.skip()
-    }
-  })
   describe('#transform()', function () {
     let transformed
 

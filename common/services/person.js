@@ -1,21 +1,12 @@
 const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
 
-const { API } = require('../../config')
 const apiClient = require('../lib/api-client')()
 
 const unformat = require('./person/person.unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']
 
-const identifierKeysV1 = [
-  'police_national_computer',
-  'criminal_records_office',
-  'prison_number',
-  'niche_reference',
-  'athena_reference',
-]
-
-const identifierKeys = API.VERSION === 1 ? identifierKeysV1 : []
+const identifierKeys = []
 const dateKeys = ['date_of_birth']
 
 const personService = {
