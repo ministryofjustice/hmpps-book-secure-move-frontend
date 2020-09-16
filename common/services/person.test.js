@@ -201,7 +201,6 @@ describe('Person Service', function () {
 
   describe('#unformat()', function () {
     const defaultKeys = {
-      identifier: [],
       relationship: ['gender', 'ethnicity'],
       date: ['date_of_birth'],
     }
@@ -245,7 +244,6 @@ describe('Person Service', function () {
     context('when called with keys', function () {
       before(function () {
         keys = {
-          identifier: ['identifierField'],
           relationship: ['relationshipField'],
           date: ['dateField'],
         }
@@ -253,21 +251,6 @@ describe('Person Service', function () {
 
       it('should call person.unformat with expected args', function () {
         expect(unformatStub).to.be.calledOnceWithExactly(person, fields, keys)
-      })
-    })
-
-    context('when called with keys with some missing properties', function () {
-      before(function () {
-        keys = {
-          identifier: ['identifierField'],
-        }
-      })
-
-      it('should call person.unformat with expected args', function () {
-        expect(unformatStub).to.be.calledOnceWithExactly(person, fields, {
-          ...defaultKeys,
-          ...keys,
-        })
       })
     })
   })
