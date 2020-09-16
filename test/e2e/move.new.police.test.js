@@ -222,7 +222,10 @@ test('Reason - `Another reason`', async t => {
 })
 
 test('Reason - `Cancelled by PMU`', async t => {
-  await cancelMovePage.selectReason('Cancelled by Population Management Unit (PMU)', 'No free space')
+  await cancelMovePage.selectReason(
+    'Cancelled by Population Management Unit (PMU)',
+    'No free space'
+  )
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
