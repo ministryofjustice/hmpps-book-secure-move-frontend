@@ -600,12 +600,12 @@ describe('Services', function () {
           it('should set default minItems to 1 when required', function () {
             const transformed = frameworksService.transformQuestion(
               'question-key',
-              { ...addAnotherMockQuestion, validations: ['required'] }
+              { ...addAnotherMockQuestion, validations: [{ type: 'required' }] }
             )
 
             expect(transformed).to.deep.equal({
               ...addAnotherMockResult,
-              validate: ['required'],
+              validate: [{ type: 'required' }],
               minItems: 1,
             })
           })

@@ -146,7 +146,7 @@ const frameworksService = {
       field.default = [{}]
 
       // default minimum items based on whether it's required
-      field.minItems = validations.includes('required') ? 1 : 0
+      field.minItems = validations.find(val => val.type === 'required') ? 1 : 0
     }
 
     if (options) {
