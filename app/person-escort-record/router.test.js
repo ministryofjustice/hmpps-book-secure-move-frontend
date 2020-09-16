@@ -100,6 +100,7 @@ describe('Person Escort Record router', function () {
           name: `person-escort-record-${req.frameworkSection.key}`,
           template: 'framework-step',
           templatePath: 'person-escort-record/views/',
+          defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
         }
 
         expect(wizardStub).to.be.calledWithExactly(

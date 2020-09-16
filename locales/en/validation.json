@@ -7,6 +7,8 @@
   "required_with_label": "Enter {{label}}",
   "numeric": "can only contain numbers",
   "numeric_with_label": "{{label}} can only contain numbers",
+  "equal": "must be a valid option",
+  "equal_with_label": "{{label}} must be a valid option",
   "date": "must be a valid date",
   "date_with_label": "{{label}} must be a valid date",
   "time": "must be a valid time, for example 12:00 or 12pm",

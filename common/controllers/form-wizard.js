@@ -115,7 +115,10 @@ class FormController extends Controller {
     const fields = req.form.options.fields
     const errorList = map(errors, error => {
       return {
-        html: fieldHelpers.getFieldErrorMessage(error),
+        html: fieldHelpers.getFieldErrorMessage({
+          ...fields[error.key],
+          ...error,
+        }),
         href: `#${fields[error.key].id}`,
       }
     })

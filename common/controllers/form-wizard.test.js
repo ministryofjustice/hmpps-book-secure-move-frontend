@@ -225,12 +225,14 @@ describe('Form wizard', function () {
       })
 
       it('should get error messages', function () {
-        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
-          mockErrors.fieldOne
-        )
-        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly(
-          mockErrors.fieldTwo
-        )
+        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly({
+          ...reqMock.form.options.fields.fieldOne,
+          ...mockErrors.fieldOne,
+        })
+        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly({
+          ...reqMock.form.options.fields.fieldTwo,
+          ...mockErrors.fieldTwo,
+        })
       })
 
       it('should get error messages correct number of times', function () {
