@@ -79,18 +79,18 @@ describe('Person Escort Record router', function () {
       it('should call form wizard with steps', function () {
         const steps = {
           '/': {
+            controller: FrameworkSectionController,
+            reset: true,
+            resetJourney: true,
+            template: 'framework-section',
+          },
+          '/start': {
             reset: true,
             resetJourney: true,
             skip: true,
             next: Object.values(req.frameworkSection.steps)[0].slug,
           },
           ...req.frameworkSection.steps,
-          '/overview': {
-            controller: FrameworkSectionController,
-            reset: true,
-            resetJourney: true,
-            template: 'framework-section',
-          },
         }
         const config = {
           controller: FrameworkStepController,

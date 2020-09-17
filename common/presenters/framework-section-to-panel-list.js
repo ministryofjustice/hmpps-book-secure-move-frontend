@@ -55,7 +55,7 @@ function frameworkSectionToPanelList({
     const output = {
       key: section.key,
       name: section.name,
-      url: `${personEscortRecordUrl}/${section.key}/overview`,
+      url: `${personEscortRecordUrl}/${section.key}`,
       isCompleted: sectionStatus === 'completed',
       panels: tagList
         // Filter tags to just this section

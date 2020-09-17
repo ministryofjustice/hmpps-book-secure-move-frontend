@@ -52,6 +52,7 @@ module.exports = function view(req, res) {
     move.profile?.id !== undefined
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${personEscortRecordUrl}/`,
+    deepLinkToFirstStep: true,
     frameworkSections: framework.sections,
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })

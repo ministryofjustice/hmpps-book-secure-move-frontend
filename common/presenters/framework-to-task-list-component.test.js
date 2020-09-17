@@ -222,6 +222,35 @@ describe('Presenters', function () {
       })
     })
 
+    context('with deep link option', function () {
+      const mockProgress = [
+        {
+          key: 'incomplete-section',
+          status: 'in_progress',
+        },
+      ]
+      const mockSections = {
+        'incomplete-section': {
+          name: 'Incomplete section',
+          key: 'incomplete-section',
+        },
+      }
+
+      beforeEach(function () {
+        output = presenter({
+          deepLinkToFirstStep: true,
+          sectionProgress: mockProgress,
+          frameworkSections: mockSections,
+        })
+      })
+
+      describe('items', function () {
+        it('should return href with base url', function () {
+          expect(output.items[0].href).to.equal('incomplete-section/start')
+        })
+      })
+    })
+
     describe('item order', function () {
       const mockProgress = [
         {

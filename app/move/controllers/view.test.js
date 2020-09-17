@@ -166,6 +166,7 @@ describe('Move controllers', function () {
           presenters.frameworkToTaskListComponent
         ).to.be.calledOnceWithExactly({
           baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+          deepLinkToFirstStep: true,
           frameworkSections: undefined,
           sectionProgress: undefined,
         })
@@ -595,6 +596,7 @@ describe('Move controllers', function () {
             presenters.frameworkToTaskListComponent
           ).to.be.calledOnceWithExactly({
             baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            deepLinkToFirstStep: true,
             frameworkSections: frameworkStub.sections,
             sectionProgress: mockPersonEscortRecord.meta.section_progress,
           })
@@ -674,6 +676,7 @@ describe('Move controllers', function () {
             presenters.frameworkToTaskListComponent
           ).to.be.calledOnceWithExactly({
             baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            deepLinkToFirstStep: true,
             frameworkSections: frameworkStub.sections,
             sectionProgress: mockPersonEscortRecord.meta.section_progress,
           })
