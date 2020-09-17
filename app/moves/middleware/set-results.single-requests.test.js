@@ -25,11 +25,15 @@ describe('Moves middleware', function () {
     let res
     let req
     let next
+    let singleRequestsToTableStub
 
     beforeEach(function () {
+      singleRequestsToTableStub = sinon.stub().returnsArg(0)
       sinon.stub(singleRequestService, 'getAll')
       sinon.stub(singleRequestService, 'getCancelled')
-      sinon.stub(presenters, 'singleRequestsToTableComponent').returnsArg(0)
+      sinon
+        .stub(presenters, 'singleRequestsToTableComponent')
+        .returns(singleRequestsToTableStub)
       next = sinon.stub()
       res = {}
       req = {
