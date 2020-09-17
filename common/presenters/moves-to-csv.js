@@ -1,22 +1,12 @@
 const json2csv = require('json2csv')
-const { find, flatten, get, some } = require('lodash')
+const { flatten, get, some } = require('lodash')
 
-const { API } = require('../../config')
 const i18n = require('../../config/i18n')
 const referenceDataHelpers = require('../helpers/reference-data')
 const referenceDataService = require('../services/reference-data')
 
 function getIdentifier(identifier) {
-  if (API.VERSION === 1) {
-    return function (row) {
-      const item = find(get(row, 'profile.person.identifiers'), {
-        identifier_type: identifier,
-      })
-      return item ? item.value : null
-    }
-  } else {
-    return row => get(row, `profile.person.${identifier}`)
-  }
+  return row => get(row, `profile.person.${identifier}`)
 }
 
 function mapAnswer({ title, key } = {}) {

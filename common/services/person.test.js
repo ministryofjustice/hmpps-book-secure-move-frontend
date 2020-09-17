@@ -1,7 +1,6 @@
 const { forEach } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const { API } = require('../../config')
 const apiClient = require('../lib/api-client')()
 
 const unformatStub = sinon.stub()
@@ -19,11 +18,6 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
-  before(function () {
-    if (API.VERSION === 1) {
-      this.skip()
-    }
-  })
   describe('#transform()', function () {
     let transformed
 
@@ -207,7 +201,6 @@ describe('Person Service', function () {
 
   describe('#unformat()', function () {
     const defaultKeys = {
-      identifier: [],
       relationship: ['gender', 'ethnicity'],
       date: ['date_of_birth'],
     }
@@ -251,7 +244,6 @@ describe('Person Service', function () {
     context('when called with keys', function () {
       before(function () {
         keys = {
-          identifier: ['identifierField'],
           relationship: ['relationshipField'],
           date: ['dateField'],
         }
@@ -259,21 +251,6 @@ describe('Person Service', function () {
 
       it('should call person.unformat with expected args', function () {
         expect(unformatStub).to.be.calledOnceWithExactly(person, fields, keys)
-      })
-    })
-
-    context('when called with keys with some missing properties', function () {
-      before(function () {
-        keys = {
-          identifier: ['identifierField'],
-        }
-      })
-
-      it('should call person.unformat with expected args', function () {
-        expect(unformatStub).to.be.calledOnceWithExactly(person, fields, {
-          ...defaultKeys,
-          ...keys,
-        })
       })
     })
   })

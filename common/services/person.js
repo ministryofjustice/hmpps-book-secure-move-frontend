@@ -1,21 +1,11 @@
-const { mapKeys, mapValues, uniqBy, omitBy, isNil } = require('lodash')
+const { mapKeys, mapValues, omitBy, isNil } = require('lodash')
 
-const { API } = require('../../config')
 const apiClient = require('../lib/api-client')()
 
 const unformat = require('./person/person.unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']
 
-const identifierKeysV1 = [
-  'police_national_computer',
-  'criminal_records_office',
-  'prison_number',
-  'niche_reference',
-  'athena_reference',
-]
-
-const identifierKeys = API.VERSION === 1 ? identifierKeysV1 : []
 const dateKeys = ['date_of_birth']
 
 const personService = {
@@ -34,50 +24,25 @@ const personService = {
   },
 
   format(data) {
-    const existingIdentifiers = data.identifiers || []
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
         if (relationshipKeys.includes(key)) {
           return { id: value }
-        }
-
-        if (identifierKeys.includes(key)) {
-          return { value, identifier_type: key }
         }
       }
 
       return value
     })
 
-    const identifiers = uniqBy(
-      [
-        ...identifierKeys.map(key => formatted[key]).filter(Boolean),
-        ...existingIdentifiers,
-      ],
-      'identifier_type'
-    )
-
-    return omitBy(
-      {
-        ...formatted,
-        identifiers:
-          identifiers.length || data.identifiers ? identifiers : null,
-      },
-      isNil
-    )
+    return omitBy(formatted, isNil)
   },
 
   unformat(
     person,
     fields = [],
-    {
-      identifier = identifierKeys,
-      relationship = relationshipKeys,
-      date = dateKeys,
-    } = {}
+    { relationship = relationshipKeys, date = dateKeys } = {}
   ) {
     return unformat(person, fields, {
-      identifier,
       relationship,
       date,
     })
