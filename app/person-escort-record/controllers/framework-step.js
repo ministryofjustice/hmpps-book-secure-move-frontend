@@ -31,6 +31,10 @@ class FrameworkStepController extends FormWizardController {
   }
 
   middlewareSetup() {
+    // This also needs to be called before setInitialValues otherwise
+    // the nested conditional fields don't exist and won't get populated
+    // TODO: Find a more efficient way to solve this ordering issue
+    this.use(this.setupConditionalFields)
     super.middlewareSetup()
     this.use(this.setButtonText)
   }
