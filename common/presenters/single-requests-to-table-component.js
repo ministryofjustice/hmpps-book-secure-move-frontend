@@ -8,7 +8,7 @@ const moveToCardComponent = require('./move-to-card-component')
 const tablePresenters = require('./table')
 
 function singleRequestsToTable({ isSortable = true, query } = {}) {
-  return function (moves) {
+  return function (moves = []) {
     const tableConfig = [
       {
         head: {

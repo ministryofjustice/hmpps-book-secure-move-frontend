@@ -4,6 +4,8 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const componentService = require('../services/component')
 
+const tablePresenters = require('./table')
+
 const mockMoves = [
   {
     id: 'acba3ad5-a8d3-4b95-9e48-121dafb3babe',
@@ -147,27 +149,35 @@ const mockApprovedMoves = [
   },
 ]
 
-const moveToCardComponentStub = sinon.stub().returnsArg(0)
-const moveToCardComponentOptsStub = sinon
-  .stub()
-  .callsFake(() => moveToCardComponentStub)
-
-const presenter = proxyquire('./single-requests-to-table-component', {
-  './move-to-card-component': moveToCardComponentOptsStub,
-})
-
 describe('#singleRequestsToTableComponent()', function () {
   let output
+  let moveToCardComponentStub
+  let moveToCardComponentOptsStub
+  let presenter
+
+  before(function () {
+    moveToCardComponentStub = sinon.stub().returnsArg(0)
+    moveToCardComponentOptsStub = sinon
+      .stub()
+      .callsFake(() => moveToCardComponentStub)
+
+    presenter = proxyquire('./single-requests-to-table-component', {
+      './move-to-card-component': moveToCardComponentOptsStub,
+    })
+  })
 
   beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
+    sinon.stub(componentService, 'getComponent').returnsArg(0)
     sinon.stub(filters, 'formatDate').returnsArg(0)
     sinon.stub(filters, 'formatDateRange').returnsArg(0)
-    sinon.stub(componentService, 'getComponent').returnsArg(0)
-    output = presenter([])
+    sinon
+      .stub(tablePresenters, 'objectToTableHead')
+      .returns(sinon.stub().callsFake(arg => arg.head))
+    output = presenter()([])
   })
 
-  it('returns an object with heads', function () {
+  it('returns an object with moves heads', function () {
     expect(output.head).to.exist
     expect(output.head).to.be.an('array')
   })
@@ -179,7 +189,7 @@ describe('#singleRequestsToTableComponent()', function () {
 
   describe('its behaviour', function () {
     beforeEach(function () {
-      output = presenter(mockMoves)
+      output = presenter(mockMoves)(mockMoves)
     })
 
     it('returns html with composite name on the first cell', function () {
@@ -240,22 +250,30 @@ describe('#singleRequestsToTableComponent()', function () {
     it('returns one head row with all the cells', function () {
       expect(output.head).to.deep.equal([
         {
-          text: 'name',
+          html: 'name',
+          isSortable: true,
+          sortKey: 'name',
           attributes: {
             width: '220',
           },
         },
         {
-          text: 'collections::labels.created_at',
+          html: 'collections::labels.created_at',
           attributes: {
             width: '120',
           },
+          isSortable: true,
+          sortKey: 'created_at',
         },
         {
-          text: 'collections::labels.from_location',
+          html: 'collections::labels.from_location',
+          isSortable: true,
+          sortKey: 'from_location',
         },
         {
-          text: 'collections::labels.to_location',
+          html: 'collections::labels.to_location',
+          isSortable: true,
+          sortKey: 'to_location',
         },
         {
           text: 'collections::labels.earliest_move_date',
@@ -264,7 +282,9 @@ describe('#singleRequestsToTableComponent()', function () {
           },
         },
         {
-          text: 'collections::labels.move_type',
+          html: 'collections::labels.move_type',
+          isSortable: true,
+          sortKey: 'prison_transfer_reason',
         },
       ])
     })
@@ -272,7 +292,7 @@ describe('#singleRequestsToTableComponent()', function () {
 
   describe('when the moves are approved', function () {
     beforeEach(function () {
-      output = presenter(mockApprovedMoves)
+      output = presenter(mockApprovedMoves)(mockApprovedMoves)
     })
 
     it('returns the date range on the fifth cell', function () {
@@ -284,22 +304,30 @@ describe('#singleRequestsToTableComponent()', function () {
     it('returns one head row with all the cells', function () {
       expect(output.head).to.deep.equal([
         {
-          text: 'name',
+          html: 'name',
+          isSortable: true,
+          sortKey: 'name',
           attributes: {
             width: '220',
           },
         },
         {
-          text: 'collections::labels.created_at',
+          html: 'collections::labels.created_at',
+          isSortable: true,
+          sortKey: 'created_at',
           attributes: {
             width: '120',
           },
         },
         {
-          text: 'collections::labels.from_location',
+          html: 'collections::labels.from_location',
+          isSortable: true,
+          sortKey: 'from_location',
         },
         {
-          text: 'collections::labels.to_location',
+          html: 'collections::labels.to_location',
+          isSortable: true,
+          sortKey: 'to_location',
         },
         {
           text: 'collections::labels.move_date',
@@ -308,7 +336,9 @@ describe('#singleRequestsToTableComponent()', function () {
           },
         },
         {
-          text: 'collections::labels.move_type',
+          html: 'collections::labels.move_type',
+          isSortable: true,
+          sortKey: 'prison_transfer_reason',
         },
       ])
     })
