@@ -214,8 +214,25 @@ describe('Move controllers', function () {
         })
       })
 
-      context('with cancellation comment', function () {
-        it('should use pmu comment when cancellation_reason is cancelled_by_pmu', async function () {
+      context('with cancellation_reason "other"', function () {
+        it('should cancel with a comment using field "other comment"', async function () {
+          mockValues.cancellation_reason = 'other'
+          mockValues.cancellation_reason_other_comment =
+            'cancelled for other reason'
+          req.form.options.allFields.cancellation_reason_other_comment = {}
+
+          sinon.stub(moveService, 'cancel').resolves({})
+          await controller.successHandler(req, res, nextSpy)
+
+          expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
+            reason: mockValues.cancellation_reason,
+            comment: mockValues.cancellation_reason_other_comment,
+          })
+        })
+      })
+
+      context('with cancellation_reason "cancelled by pmu"', function () {
+        it('should cancel with a comment using field "pmu comment" if provided', async function () {
           mockValues.cancellation_reason = 'cancelled_by_pmu'
           mockValues.cancellation_reason_cancelled_by_pmu_comment =
             'cancelled by pmu comment'
@@ -230,18 +247,14 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should use other comment when cancellation_reason is other', async function () {
-          mockValues.cancellation_reason = 'other'
-          mockValues.cancellation_reason_other_comment =
-            'cancelled for other reason'
-          req.form.options.allFields.cancellation_reason_other_comment = {}
+        it('should cancel without a comment if "pmu comment" not provided', async function () {
+          mockValues.cancellation_reason = 'cancelled_by_pmu'
 
           sinon.stub(moveService, 'cancel').resolves({})
           await controller.successHandler(req, res, nextSpy)
 
           expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
             reason: mockValues.cancellation_reason,
-            comment: mockValues.cancellation_reason_other_comment,
           })
         })
       })

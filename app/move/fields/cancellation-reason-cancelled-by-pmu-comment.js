@@ -1,7 +1,6 @@
 const cancellationReasonCancelledByPMUComment = {
   id: 'cancellation_reason_cancelled_by_pmu_comment',
   name: 'cancellation_reason_cancelled_by_pmu_comment',
-  validate: 'required',
   rows: 3,
   component: 'govukTextarea',
   classes: 'govuk-input--width-20',
