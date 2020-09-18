@@ -209,7 +209,7 @@
     "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
     "develop": "run-p watch:js:*",
     "git:checkbranch": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD); if [ \"$CURRENT_BRANCH\" = \"master\" ]; then echo 'Committing to the master branch is not allowed'; exit 1; fi",
-    "lint": "eslint .",
+    "lint": "eslint . --cache",
     "lint-staged": "lint-staged",
     "postrelease": "npm run release:tags",
     "prerelease": "npm run update:check && npm run contributors",
@@ -252,7 +252,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint",
+    "*.js": "eslint --cache",
     "package.json": "finepack"
   }
 }
