@@ -244,8 +244,9 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | SUPPORT_EMAIL | Email address used to contact support or the team in parts of the app where the user may require further help. | |
 | SENTRY_DSN | Sentry DSN used to log issues in sentry | |
 | SENTRY_ORG | Sentry organisation slug | |
+| SENTRY_PROJECT | Sentry project slug | |
 | SENTRY_ENVIRONMENT | Environment used to distinguish issue location | |
-| SENTRY_AUTH_TOKEN | Sentry auth token used to publish release | |
+| SENTRY_AUTH_TOKEN | Sentry internal integration token used to publish release | |
 | GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
 | E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
 | E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests | 1 |
