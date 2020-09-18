@@ -242,8 +242,10 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | SERVER_HOST **(required)** | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000` | |
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | SUPPORT_EMAIL | Email address used to contact support or the team in parts of the app where the user may require further help. | |
-| SENTRY_KEY | Sentry key | |
-| SENTRY_PROJECT | Sentry project ID | |
+| SENTRY_DSN | Sentry DSN used to log issues in sentry | |
+| SENTRY_ORG | Sentry organisation slug | |
+| SENTRY_ENVIRONMENT | Environment used to distinguish issue location | |
+| SENTRY_AUTH_TOKEN | Sentry auth token used to publish release | |
 | GOOGLE_ANALYTICS_ID | Google analytics tracking ID to use for the environment | |
 | E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
 | E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests | 1 |
