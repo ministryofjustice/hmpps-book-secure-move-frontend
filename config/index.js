@@ -106,6 +106,7 @@ module.exports = {
   SENTRY: {
     DSN: process.env.SENTRY_DSN,
     ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
+    RELEASE: process.env.APP_GIT_COMMIT,
   },
   REDIS,
   USER_PERMISSIONS: process.env.USER_PERMISSIONS,

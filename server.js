@@ -44,7 +44,7 @@ if (config.SENTRY.DSN) {
   Sentry.init({
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
-    release: config.GIT_SHA,
+    release: config.SENTRY.RELEASE,
   })
 }
 
