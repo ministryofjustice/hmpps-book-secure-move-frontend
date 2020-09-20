@@ -16,19 +16,20 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       const rows = response.value.map((item, index) => {
         const responsesHtml = descendants
           .map(descendantField => {
-            const question = find(response.question.descendants, {
+            const frameworkQuestion = find(response.question.descendants, {
               key: descendantField.name,
             })
             const descendantResponse = find(item.responses, {
-              framework_question_id: question.id,
+              framework_question_id: frameworkQuestion.id,
             })
 
-            descendantField.response = {
-              ...descendantResponse,
-              question,
+            return {
+              ...descendantField,
+              response: {
+                ...descendantResponse,
+                question: frameworkQuestion,
+              },
             }
-
-            return descendantField
           })
           .map(frameworkFieldToSummaryListRow(stepUrl))
 
