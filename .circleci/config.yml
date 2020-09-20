@@ -218,9 +218,6 @@ jobs:
         type: string
     steps:
       - checkout
-      - *restore_cache
-      - *install_dependencies
-      - *save_cache
       - run:
           name: Create release and notify Sentry of deploy
           command: |
