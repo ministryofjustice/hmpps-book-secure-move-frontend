@@ -21,6 +21,8 @@ module.exports = function sentryEnrichScope(req, res, next) {
   if (user) {
     Sentry.setUser({
       id: user.userId,
+      username: user.username,
+      permissions: user.permissions,
     })
   }
 

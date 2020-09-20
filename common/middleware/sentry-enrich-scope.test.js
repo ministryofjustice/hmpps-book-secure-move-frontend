@@ -63,6 +63,7 @@ describe('#sentryEnrichScope', function () {
       req.session.user = {
         userId: '12345',
         username: '__username__',
+        permissions: ['edit', 'create', 'delete'],
       }
       sentryEnrichScope(req, res, nextSpy)
     })
@@ -74,6 +75,8 @@ describe('#sentryEnrichScope', function () {
     it('should set user in Sentry', function () {
       expect(Sentry.setUser).to.be.calledOnceWithExactly({
         id: '12345',
+        username: '__username__',
+        permissions: ['edit', 'create', 'delete'],
       })
     })
   })
