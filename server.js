@@ -26,6 +26,8 @@ const ensureSelectedLocation = require('./common/middleware/ensure-selected-loca
 const errorHandlers = require('./common/middleware/errors')
 const locals = require('./common/middleware/locals')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
+const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
+const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const config = require('./config')
@@ -40,14 +42,6 @@ if (config.REDIS.SESSION) {
   redisStore = require('./config/redis-store')()
 }
 
-if (config.SENTRY.DSN) {
-  Sentry.init({
-    dsn: config.SENTRY.DSN,
-    environment: config.SENTRY.ENVIRONMENT,
-    release: config.SENTRY.RELEASE,
-  })
-}
-
 // Global constants
 const app = express()
 
@@ -55,12 +49,21 @@ if (config.IS_PRODUCTION) {
   app.enable('trust proxy')
 }
 
-app.use(
-  Sentry.Handlers.requestHandler({
-    // Ensure we don't include `data` to avoid sending any PPI
-    request: ['cookies', 'headers', 'method', 'query_string', 'url'],
+if (config.SENTRY.DSN) {
+  Sentry.init({
+    dsn: config.SENTRY.DSN,
+    environment: config.SENTRY.ENVIRONMENT,
+    release: config.SENTRY.RELEASE,
   })
-)
+
+  app.use(
+    Sentry.Handlers.requestHandler({
+      // Ensure we don't include `data` to avoid sending any PPI
+      request: ['cookies', 'headers', 'method', 'query_string', 'url'],
+    })
+  )
+  app.use(sentryRequestId)
+}
 
 app.use(slashify())
 
@@ -115,6 +118,7 @@ app.use(
   })
 )
 app.use(checkSession)
+app.use(sentryEnrichScope)
 app.use(flash())
 app.use(locals)
 app.use(
