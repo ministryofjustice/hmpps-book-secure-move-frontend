@@ -1,5 +1,5 @@
 const Sentry = require('@sentry/node')
-const { kebabCase } = require('lodash')
+const { isObject, kebabCase } = require('lodash')
 
 const config = require('../../config')
 const nunjucksConfig = require('../../config/nunjucks')
@@ -30,12 +30,16 @@ function getComponent(macroName, params = {}) {
 
     return nunjucksEnv.renderString(macroString)
   } catch (error) {
+    const debug = {}
+    Object.keys(params).forEach(key => {
+      const val = params[key]
+      debug[key] = isObject(val) ? Object.keys(val) : val
+    })
+
     Sentry.withScope(scope => {
       scope.setExtra('macroName', macroName)
-      scope.setExtra('keys', Object.keys(params))
+      scope.setExtra('keys', debug)
       scope.setExtra('id', params.id)
-      scope.setExtra('type', params.type)
-      scope.setExtra('version', params.version)
       scope.setExtra('name', params.name)
       Sentry.captureException(error)
     })
