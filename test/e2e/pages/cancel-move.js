@@ -39,7 +39,10 @@ class CancelMovePage extends Page {
           selector: this.fields.cancellationReasonOtherComment,
           value: comment,
         }
-      } else if (reason === 'Cancelled by Population Management Unit (PMU)') {
+      } else if (
+        reason === 'Cancelled by Population Management Unit (PMU)' &&
+        comment
+      ) {
         fields.cancellation_reason_cancelled_by_pmu_comment = {
           selector: this.fields.cancellationReasonCancelledByPMUComment,
           value: comment,
