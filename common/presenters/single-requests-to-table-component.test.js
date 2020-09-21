@@ -187,160 +187,180 @@ describe('#singleRequestsToTableComponent()', function () {
     expect(output.rows).to.be.an('array')
   })
 
+  describe('table headers', function () {
+    context('with no table data', function () {
+      beforeEach(function () {
+        output = presenter()()
+      })
+
+      it('returns html with composite name on the first cell', function () {
+        // console.log(JSON.stringify(output, null, 2)
+        // expect(output.rows.length).to.equal(4)
+        expect(output.rows[0][0]).to.deep.equal({
+          html: 'appCard',
+          attributes: {
+            scope: 'row',
+          },
+        })
+      })
+
+      it('should call card component with correct arguments', function () {
+        expect(moveToCardComponentOptsStub).to.be.calledWithExactly({
+          isCompact: true,
+          hrefSuffix: '/review',
+        })
+        expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
+      })
+
+      it('returns html with createdAt on the second cell', function () {
+        expect(output.rows[0][1]).to.deep.equal({
+          text: mockMoves[0].created_at,
+        })
+      })
+
+      it('returns fromLocation on the third cell', function () {
+        expect(output.rows[0][2]).to.deep.equal({
+          text: mockMoves[0].from_location.title,
+        })
+      })
+
+      it('returns toLocation on the forth cell', function () {
+        expect(output.rows[0][3]).to.deep.equal({
+          text: mockMoves[0].to_location.title,
+        })
+      })
+
+      it('returns the date range on the fifth cell', function () {
+        expect(output.rows[0][4]).to.deep.equal({
+          text: mockMoves[0].date_from,
+        })
+      })
+
+      it('returns the move type on the sixth cell', function () {
+        expect(output.rows[0][5]).to.deep.equal({
+          text: mockMoves[0].prison_transfer_reason.title,
+        })
+      })
+
+      it('returns empty object with null prison transfer reason', function () {
+        expect(output.rows[1][5]).to.deep.equal({})
+      })
+
+      it('returns a row per record', function () {
+        expect(output.rows.length).to.equal(2)
+      })
+
+      it('returns one head row with all the cells', function () {
+        expect(output.head).to.deep.equal([
+          {
+            html: 'name',
+            isSortable: true,
+            sortKey: 'name',
+            attributes: {
+              width: '220',
+            },
+          },
+          {
+            html: 'collections::labels.created_at',
+            attributes: {
+              width: '120',
+            },
+            isSortable: true,
+            sortKey: 'created_at',
+          },
+          {
+            html: 'collections::labels.from_location',
+            isSortable: true,
+            sortKey: 'from_location',
+          },
+          {
+            html: 'collections::labels.to_location',
+            isSortable: true,
+            sortKey: 'to_location',
+          },
+          {
+            text: 'collections::labels.earliest_move_date',
+            attributes: {
+              width: '120',
+            },
+          },
+          {
+            html: 'collections::labels.move_type',
+            isSortable: true,
+            sortKey: 'prison_transfer_reason',
+          },
+        ])
+      })
+    })
+
+    context('with only move_date', function () {})
+
+    context('with only date_from', function () {})
+
+    context('with both move_date and date from', function () {
+      beforeEach(function () {
+        output = presenter(mockMoves)(mockMoves)
+      })
+    })
+  })
+
   describe('its behaviour', function () {
     beforeEach(function () {
       output = presenter(mockMoves)(mockMoves)
     })
 
-    it('returns html with composite name on the first cell', function () {
-      expect(output.rows[0][0]).to.deep.equal({
-        html: 'appCard',
-        attributes: {
-          scope: 'row',
-        },
+    describe('when the moves are approved', function () {
+      beforeEach(function () {
+        output = presenter(mockApprovedMoves)(mockApprovedMoves)
       })
-    })
 
-    it('should call card component with correct arguments', function () {
-      expect(moveToCardComponentOptsStub).to.be.calledWithExactly({
-        isCompact: true,
-        hrefSuffix: '/review',
+      it('returns the date range on the fifth cell', function () {
+        expect(output.rows[0][4]).to.deep.equal({
+          text: mockApprovedMoves[0].date,
+        })
       })
-      expect(moveToCardComponentStub).to.be.calledWithExactly(mockMoves[0])
-    })
 
-    it('returns html with createdAt on the second cell', function () {
-      expect(output.rows[0][1]).to.deep.equal({
-        text: mockMoves[0].created_at,
-      })
-    })
-
-    it('returns fromLocation on the third cell', function () {
-      expect(output.rows[0][2]).to.deep.equal({
-        text: mockMoves[0].from_location.title,
-      })
-    })
-
-    it('returns toLocation on the forth cell', function () {
-      expect(output.rows[0][3]).to.deep.equal({
-        text: mockMoves[0].to_location.title,
-      })
-    })
-
-    it('returns the date range on the fifth cell', function () {
-      expect(output.rows[0][4]).to.deep.equal({
-        text: mockMoves[0].date_from,
-      })
-    })
-
-    it('returns the move type on the sixth cell', function () {
-      expect(output.rows[0][5]).to.deep.equal({
-        text: mockMoves[0].prison_transfer_reason.title,
-      })
-    })
-
-    it('returns empty object with null prison transfer reason', function () {
-      expect(output.rows[1][5]).to.deep.equal({})
-    })
-
-    it('returns a row per record', function () {
-      expect(output.rows.length).to.equal(2)
-    })
-
-    it('returns one head row with all the cells', function () {
-      expect(output.head).to.deep.equal([
-        {
-          html: 'name',
-          isSortable: true,
-          sortKey: 'name',
-          attributes: {
-            width: '220',
+      it('returns one head row with all the cells', function () {
+        expect(output.head).to.deep.equal([
+          {
+            html: 'name',
+            isSortable: true,
+            sortKey: 'name',
+            attributes: {
+              width: '220',
+            },
           },
-        },
-        {
-          html: 'collections::labels.created_at',
-          attributes: {
-            width: '120',
+          {
+            html: 'collections::labels.created_at',
+            isSortable: true,
+            sortKey: 'created_at',
+            attributes: {
+              width: '120',
+            },
           },
-          isSortable: true,
-          sortKey: 'created_at',
-        },
-        {
-          html: 'collections::labels.from_location',
-          isSortable: true,
-          sortKey: 'from_location',
-        },
-        {
-          html: 'collections::labels.to_location',
-          isSortable: true,
-          sortKey: 'to_location',
-        },
-        {
-          text: 'collections::labels.earliest_move_date',
-          attributes: {
-            width: '120',
+          {
+            html: 'collections::labels.from_location',
+            isSortable: true,
+            sortKey: 'from_location',
           },
-        },
-        {
-          html: 'collections::labels.move_type',
-          isSortable: true,
-          sortKey: 'prison_transfer_reason',
-        },
-      ])
-    })
-  })
-
-  describe('when the moves are approved', function () {
-    beforeEach(function () {
-      output = presenter(mockApprovedMoves)(mockApprovedMoves)
-    })
-
-    it('returns the date range on the fifth cell', function () {
-      expect(output.rows[0][4]).to.deep.equal({
-        text: mockApprovedMoves[0].date,
+          {
+            html: 'collections::labels.to_location',
+            isSortable: true,
+            sortKey: 'to_location',
+          },
+          {
+            text: 'collections::labels.move_date',
+            attributes: {
+              width: '120',
+            },
+          },
+          {
+            html: 'collections::labels.move_type',
+            isSortable: true,
+            sortKey: 'prison_transfer_reason',
+          },
+        ])
       })
-    })
-
-    it('returns one head row with all the cells', function () {
-      expect(output.head).to.deep.equal([
-        {
-          html: 'name',
-          isSortable: true,
-          sortKey: 'name',
-          attributes: {
-            width: '220',
-          },
-        },
-        {
-          html: 'collections::labels.created_at',
-          isSortable: true,
-          sortKey: 'created_at',
-          attributes: {
-            width: '120',
-          },
-        },
-        {
-          html: 'collections::labels.from_location',
-          isSortable: true,
-          sortKey: 'from_location',
-        },
-        {
-          html: 'collections::labels.to_location',
-          isSortable: true,
-          sortKey: 'to_location',
-        },
-        {
-          text: 'collections::labels.move_date',
-          attributes: {
-            width: '120',
-          },
-        },
-        {
-          html: 'collections::labels.move_type',
-          isSortable: true,
-          sortKey: 'prison_transfer_reason',
-        },
-      ])
     })
   })
 })
