@@ -8,7 +8,6 @@ describe('#sentryEnrichScope', function () {
   beforeEach(function () {
     sinon.stub(Sentry, 'setTag')
     sinon.stub(Sentry, 'setContext')
-    sinon.stub(Sentry, 'setUser')
     nextSpy = sinon.spy()
     req = {
       session: {},
@@ -28,7 +27,6 @@ describe('#sentryEnrichScope', function () {
     it('should not call Sentry', function () {
       expect(Sentry.setTag).not.to.be.called
       expect(Sentry.setContext).not.to.be.called
-      expect(Sentry.setUser).not.to.be.called
     })
   })
 
@@ -37,6 +35,7 @@ describe('#sentryEnrichScope', function () {
       req.session.currentLocation = {
         key: 'aaa001',
         location_type: 'police',
+        title: 'Police station X',
       }
       sentryEnrichScope(req, res, nextSpy)
     })
@@ -52,28 +51,9 @@ describe('#sentryEnrichScope', function () {
 
     it('should set location context in Sentry', function () {
       expect(Sentry.setContext).to.be.calledOnceWithExactly('location', {
+        name: 'Police station X',
         key: 'AAA001',
         location_type: 'police',
-      })
-    })
-  })
-
-  context('with user', function () {
-    beforeEach(function () {
-      req.session.user = {
-        userId: '12345',
-        username: '__username__',
-      }
-      sentryEnrichScope(req, res, nextSpy)
-    })
-
-    it('should call next', function () {
-      expect(nextSpy).to.be.calledOnceWithExactly()
-    })
-
-    it('should set user in Sentry', function () {
-      expect(Sentry.setUser).to.be.calledOnceWithExactly({
-        id: '12345',
       })
     })
   })

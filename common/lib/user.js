@@ -14,7 +14,7 @@ function User({
   this.permissions = this.getPermissions(roles)
   this.locations = locations
   this.username = username
-  this.userId = userId
+  this.id = userId
   this.supplierId = supplierId
 }
 

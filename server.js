@@ -30,6 +30,7 @@ const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
+const setUser = require('./common/middleware/set-user')
 const config = require('./config')
 const i18n = require('./config/i18n')
 const nunjucks = require('./config/nunjucks')
@@ -60,6 +61,7 @@ if (config.SENTRY.DSN) {
     Sentry.Handlers.requestHandler({
       // Ensure we don't include `data` to avoid sending any PPI
       request: ['cookies', 'headers', 'method', 'query_string', 'url'],
+      user: ['id', 'username', 'permissions'],
     })
   )
   app.use(sentryRequestId)
@@ -118,6 +120,7 @@ app.use(
   })
 )
 app.use(checkSession)
+app.use(setUser)
 app.use(sentryEnrichScope)
 app.use(flash())
 app.use(locals)

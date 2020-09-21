@@ -87,7 +87,7 @@ describe('User class', function () {
 
       it('should set userId', function () {
         user = new User({ name: 'USERNAME', userId })
-        expect(user.userId).to.deep.equal(userId)
+        expect(user.id).to.deep.equal(userId)
       })
     })
 
