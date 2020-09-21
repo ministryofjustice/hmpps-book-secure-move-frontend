@@ -111,21 +111,89 @@ describe('Move middleware', function () {
             profile: {
               person_escort_record: {
                 id: '12345',
+                status: 'not_started',
               },
             },
           },
         }
-        middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
       })
 
-      it('should set request property', function () {
-        expect(mockReq).to.contain.property('personEscortRecord')
-        expect(mockReq.personEscortRecord).to.deep.equal({
-          id: '12345',
+      context('with unstarted move', function () {
+        beforeEach(function () {
+          mockReq.move.status = 'requested'
+        })
+
+        context('with unconfirmed Person Escort Record', function () {
+          beforeEach(function () {
+            middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('personEscortRecord')
+            expect(mockReq.personEscortRecord).to.deep.equal({
+              id: '12345',
+              status: 'not_started',
+              isEditable: true,
+            })
+          })
+        })
+
+        context('with confirmed Person Escort Record', function () {
+          beforeEach(function () {
+            mockReq.move.profile.person_escort_record.status = 'confirmed'
+            middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('personEscortRecord')
+            expect(mockReq.personEscortRecord).to.deep.equal({
+              id: '12345',
+              status: 'confirmed',
+              isEditable: false,
+            })
+          })
+        })
+      })
+
+      context('with started move', function () {
+        beforeEach(function () {
+          mockReq.move.status = 'in_transit'
+        })
+
+        context('with unconfirmed Person Escort Record', function () {
+          beforeEach(function () {
+            middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('personEscortRecord')
+            expect(mockReq.personEscortRecord).to.deep.equal({
+              id: '12345',
+              status: 'not_started',
+              isEditable: false,
+            })
+          })
+        })
+
+        context('with confirmed Person Escort Record', function () {
+          beforeEach(function () {
+            mockReq.move.profile.person_escort_record.status = 'confirmed'
+            middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('personEscortRecord')
+            expect(mockReq.personEscortRecord).to.deep.equal({
+              id: '12345',
+              status: 'confirmed',
+              isEditable: false,
+            })
+          })
         })
       })
 
       it('should call next', function () {
+        middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })

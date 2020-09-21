@@ -9,22 +9,19 @@ const responseService = require('../../../common/services/framework-response')
 class FrameworkStepController extends FormWizardController {
   middlewareChecks() {
     super.middlewareChecks()
-    // TODO: Exist this logic to redirect to the overview path if
-    // user does not have permission to update
-    this.use(permissionsControllers.protectRoute('person_escort_record:update'))
     this.use(this.checkEditable)
   }
 
   checkEditable(req, res, next) {
-    const { steps: wizardSteps = {} } = req?.form?.options || {}
-    const steps = Object.keys(wizardSteps)
-    const overviewStepPath = steps[steps.length - 1]
-    const personEscortRecordIsConfirmed = ['confirmed'].includes(
-      req.personEscortRecord?.status
+    const isEditable = req.personEscortRecord?.isEditable
+    const userPermissions = req.user?.permissions
+    const canEdit = permissionsControllers.check(
+      'person_escort_record:update',
+      userPermissions
     )
 
-    if (personEscortRecordIsConfirmed) {
-      return res.redirect(req.baseUrl + overviewStepPath)
+    if (!isEditable || !canEdit) {
+      return res.redirect(req.baseUrl)
     }
 
     next()

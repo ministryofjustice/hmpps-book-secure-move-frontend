@@ -1,7 +1,7 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
-const permissionsControllers = require('../../../common/middleware/permissions')
+const permissionsMiddleware = require('../../../common/middleware/permissions')
 const responseService = require('../../../common/services/framework-response')
 
 const Controller = require('./framework-step')
@@ -15,7 +15,6 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'checkEditable')
-        sinon.stub(permissionsControllers, 'protectRoute').returnsArg(0)
 
         controller.middlewareChecks()
       })
@@ -26,25 +25,13 @@ describe('Person Escort Record controllers', function () {
       })
 
       it('should call use with protect route middleware', function () {
-        expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
-          permissionsControllers.protectRoute('person_escort_record:update')
-        )
-      })
-
-      it('should call use with protect route middleware', function () {
-        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+        expect(controller.use).to.have.been.calledWithExactly(
           controller.checkEditable
         )
       })
 
-      it('should call protect route middleware', function () {
-        expect(
-          permissionsControllers.protectRoute
-        ).to.have.been.calledOnceWithExactly('person_escort_record:update')
-      })
-
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(2)
+        expect(controller.use).to.be.callCount(1)
       })
     })
 
@@ -109,23 +96,16 @@ describe('Person Escort Record controllers', function () {
       let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
+        sinon.stub(permissionsMiddleware, 'check').returns(true)
         nextSpy = sinon.spy()
         mockReq = {
           personEscortRecord: {
             id: '12345',
+            isEditable: true,
           },
           baseUrl: '/base-url',
-          form: {
-            options: {
-              steps: {
-                '/': {},
-                '/one': {},
-                '/continued': {},
-                '/two': {},
-                '/two-continued': {},
-                '/overview-step': {},
-              },
-            },
+          user: {
+            permissions: ['one', 'two'],
           },
         }
         mockRes = {
@@ -133,17 +113,15 @@ describe('Person Escort Record controllers', function () {
         }
       })
 
-      context('when Person Escort Record is confirmed', function () {
+      context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.status = 'confirmed'
+          mockReq.personEscortRecord.isEditable = false
 
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
 
         it('should redirect', function () {
-          expect(mockRes.redirect).to.be.calledOnceWithExactly(
-            mockReq.baseUrl + '/overview-step'
-          )
+          expect(mockRes.redirect).to.be.calledOnceWithExactly(mockReq.baseUrl)
         })
 
         it('should not call next', function () {
@@ -151,10 +129,8 @@ describe('Person Escort Record controllers', function () {
         })
       })
 
-      context('when Person Escort Record is not confirmed', function () {
+      context('when Person Escort Record is editable', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.status = 'not_started'
-
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
 
@@ -164,6 +140,28 @@ describe('Person Escort Record controllers', function () {
 
         it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context("when user doesn't have permission", function () {
+        beforeEach(function () {
+          permissionsMiddleware.check.returns(false)
+          controller.checkEditable(mockReq, mockRes, nextSpy)
+        })
+
+        it('should check permissions correctly', function () {
+          expect(permissionsMiddleware.check).to.be.calledOnceWithExactly(
+            'person_escort_record:update',
+            mockReq.user.permissions
+          )
+        })
+
+        it('should redirect', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly(mockReq.baseUrl)
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
         })
       })
     })

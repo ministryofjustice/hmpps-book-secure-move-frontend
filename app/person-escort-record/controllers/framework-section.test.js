@@ -100,43 +100,22 @@ describe('Person Escort Record controllers', function () {
         mockReq = {
           personEscortRecord: {
             id: '12345',
+            isEditable: true,
           },
         }
         mockRes = {
           locals: {},
         }
+
+        controller.setEditableStatus(mockReq, mockRes, nextSpy)
       })
 
-      context('when Person Escort Record is confirmed', function () {
-        beforeEach(function () {
-          mockReq.personEscortRecord.status = 'confirmed'
-
-          controller.setEditableStatus(mockReq, mockRes, nextSpy)
-        })
-
-        it('should set isEditable to false', function () {
-          expect(mockRes.locals.isEditable).to.equal(false)
-        })
-
-        it('should call next without error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+      it('should set isEditable to false', function () {
+        expect(mockRes.locals.isEditable).to.equal(true)
       })
 
-      context('when Person Escort Record is not confirmed', function () {
-        beforeEach(function () {
-          mockReq.personEscortRecord.status = 'not_started'
-
-          controller.setEditableStatus(mockReq, mockRes, nextSpy)
-        })
-
-        it('should set isEditable to true', function () {
-          expect(mockRes.locals.isEditable).to.equal(true)
-        })
-
-        it('should call next without error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
