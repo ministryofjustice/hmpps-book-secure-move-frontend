@@ -1,5 +1,4 @@
-const Sentry = require('@sentry/node')
-const { isObject, kebabCase } = require('lodash')
+const { kebabCase } = require('lodash')
 
 const config = require('../../config')
 const nunjucksConfig = require('../../config/nunjucks')
@@ -19,33 +18,15 @@ function _macroNameToFilepath(macroName) {
 }
 
 function getComponent(macroName, params = {}) {
-  try {
-    const nunjucksEnv = nunjucksConfig(null, config, configPaths)
-    const macroParams = JSON.stringify(params, null, 2)
-    const filename = _macroNameToFilepath(macroName)
-    const macroString = `
-    {%- from "${filename}/macro.njk" import ${macroName} -%}
-    {{- ${macroName}(${macroParams}) -}}
-  `
+  const nunjucksEnv = nunjucksConfig(null, config, configPaths)
+  const macroParams = JSON.stringify(params, null, 2)
+  const filename = _macroNameToFilepath(macroName)
+  const macroString = `
+  {%- from "${filename}/macro.njk" import ${macroName} -%}
+  {{- ${macroName}(${macroParams}) -}}
+`
 
-    return nunjucksEnv.renderString(macroString)
-  } catch (error) {
-    const debug = {}
-    Object.keys(params).forEach(key => {
-      const val = params[key]
-      debug[key] = isObject(val) ? Object.keys(val) : val
-    })
-
-    Sentry.withScope(scope => {
-      scope.setExtra('macroName', macroName)
-      scope.setExtra('keys', debug)
-      scope.setExtra('id', params.id)
-      scope.setExtra('name', params.name)
-      Sentry.captureException(error)
-    })
-
-    return ''
-  }
+  return nunjucksEnv.renderString(macroString)
 }
 
 module.exports = {
