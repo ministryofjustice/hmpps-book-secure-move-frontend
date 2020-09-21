@@ -10,6 +10,13 @@ describe('API Client', function () {
         })
       })
 
+      context('when payload includes a response', function () {
+        it('should return payload as is', function () {
+          const payload = { res: {} }
+          expect(timeoutMiddleware().req(payload)).to.equal(payload)
+        })
+      })
+
       context('when payload contains a request', function () {
         const timeout = 30000
         let payload

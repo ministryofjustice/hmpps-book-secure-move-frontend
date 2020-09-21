@@ -1,8 +1,12 @@
 const { get } = require('lodash')
 
 module.exports = {
-  name: 'req-include',
+  name: 'request-include',
   req: function req(payload = {}) {
+    if (payload.res) {
+      return payload
+    }
+
     if (!payload.req) {
       return payload
     }

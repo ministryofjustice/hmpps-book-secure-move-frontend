@@ -1,5 +1,7 @@
 const auth = require('./auth')
+const cacheKey = require('./cache-key')
 const errors = require('./errors')
+const getCache = require('./get-cache')
 const post = require('./post')
 const request = require('./request')
 const requestHeaders = require('./request-headers')
@@ -11,6 +13,8 @@ module.exports = {
   errors,
   post,
   request,
+  cacheKey,
+  getCache,
   requestHeaders,
   requestInclude,
   requestTimeout,

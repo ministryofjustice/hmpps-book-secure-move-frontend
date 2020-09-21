@@ -20,6 +20,14 @@ describe('API Client', function () {
       }
     })
 
+    context('when payload includes a response', function () {
+      it('should return payload as is', async function () {
+        const payloadWithRes = { res: {} }
+        const result = await authMiddleware.req(payloadWithRes)
+        expect(result).to.equal(payloadWithRes)
+      })
+    })
+
     context('when access token resolves', function () {
       const token = '1234567890'
 

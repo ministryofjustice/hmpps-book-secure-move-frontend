@@ -1,12 +1,14 @@
 const JsonApi = require('devour-client')
 
-const { API, IS_DEV, FILE_UPLOADS } = require('../../../config')
+const { API, FILE_UPLOADS } = require('../../../config')
 
 const {
   auth,
   errors,
   post,
   request,
+  cacheKey,
+  getCache,
   requestHeaders,
   requestInclude,
   requestTimeout,
@@ -22,7 +24,7 @@ module.exports = function () {
 
   instance = new JsonApi({
     apiUrl: API.BASE_URL,
-    logger: IS_DEV,
+    logger: false,
   })
 
   instance.replaceMiddleware('errors', errors)
@@ -34,13 +36,25 @@ module.exports = function () {
       useRedisCache: API.USE_REDIS_CACHE,
     })
   )
-  instance.insertMiddlewareBefore('axios-request', requestTimeout(API.TIMEOUT))
-  instance.insertMiddlewareBefore('axios-request', requestHeaders)
-  instance.insertMiddlewareBefore('axios-request', requestInclude)
+
+  const insertRequestMiddleware = middleware => {
+    instance.insertMiddlewareBefore('axios-request', middleware)
+  }
+
+  insertRequestMiddleware(cacheKey({ apiVersion: API.VERSION }))
+  insertRequestMiddleware(
+    getCache({
+      useRedisCache: API.USE_REDIS_CACHE,
+    })
+  )
 
   if (API.CLIENT_ID && API.SECRET) {
-    instance.insertMiddlewareBefore('axios-request', auth)
+    insertRequestMiddleware(auth)
   }
+
+  insertRequestMiddleware(requestTimeout(API.TIMEOUT))
+  insertRequestMiddleware(requestHeaders)
+  insertRequestMiddleware(requestInclude)
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {

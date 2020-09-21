@@ -10,10 +10,17 @@ const middleware = proxyquire('./request-headers', {
 
 describe('API Client', function () {
   describe('Request headers middleware', function () {
-    describe('#req-headers', function () {
+    describe('#request-headers', function () {
       context('when payload does not include a request', function () {
         it('should return default payload', function () {
           expect(middleware.req()).to.deep.equal({})
+        })
+      })
+
+      context('when payload includes a response', function () {
+        it('should return payload as is', function () {
+          const payload = { res: {} }
+          expect(middleware.req(payload)).to.equal(payload)
         })
       })
 

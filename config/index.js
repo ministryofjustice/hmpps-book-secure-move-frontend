@@ -80,6 +80,7 @@ module.exports = {
   API: {
     VERSION: Number(API_VERSION),
     BASE_URL: API_BASE_URL + process.env.API_PATH,
+    AUTH_TIMEOUT: Number(process.env.API_AUTH_TIMEOUT || 10000), // in milliseconds
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
     CLIENT_ID: process.env.API_CLIENT_ID,

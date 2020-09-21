@@ -5,6 +5,10 @@ module.exports = function post(maxFileSize) {
   return {
     name: 'POST',
     req: payload => {
+      if (payload.res) {
+        return payload
+      }
+
       const { req, jsonApi } = payload
       const originalMiddleware = find(jsonApi._originalMiddleware, {
         name: 'POST',
