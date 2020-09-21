@@ -48,8 +48,16 @@ module.exports = function view(req, res) {
   const personEscortRecordUrl = `${originalUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     personEscortRecordIsEnabled &&
-    ['requested', 'booked'].includes(move?.status) &&
+    !['proposed'].includes(move?.status) &&
     move.profile?.id !== undefined
+  const canStartPersonEscortRecord =
+    showPersonEscortRecordBanner &&
+    ['requested', 'booked'].includes(move?.status) &&
+    !personEscortRecord
+  const canConfirmPersonEscortRecord =
+    showPersonEscortRecordBanner &&
+    personEscortRecordIsCompleted &&
+    ['requested', 'booked'].includes(move?.status)
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${personEscortRecordUrl}/`,
     deepLinkToFirstStep: true,
@@ -99,6 +107,8 @@ module.exports = function view(req, res) {
     personEscortRecordUrl,
     personEscortRecordtaskList,
     showPersonEscortRecordBanner,
+    canStartPersonEscortRecord,
+    canConfirmPersonEscortRecord,
     personEscortRecordTagList,
     assessmentSections,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),

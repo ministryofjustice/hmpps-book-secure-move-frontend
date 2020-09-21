@@ -36,6 +36,13 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
+      {% if not isEditable %}
+        {{ govukWarningText({
+          text: t("person-escort-record::locked"),
+          iconFallbackText: "Warning"
+        }) }}
+      {% endif %}
+
       {% for key, step in summarySteps %}
         <section class="app-!-position-relative govuk-!-margin-bottom-8">
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 govuk-!-padding-right-8 app-border-bottom-1">

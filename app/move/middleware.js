@@ -19,7 +19,14 @@ module.exports = {
     const personEscortRecord = req.move?.profile?.person_escort_record
 
     if (personEscortRecord) {
-      req.personEscortRecord = personEscortRecord
+      const isEditable =
+        ['requested', 'booked'].includes(req.move?.status) &&
+        !['confirmed'].includes(personEscortRecord.status)
+
+      req.personEscortRecord = {
+        ...personEscortRecord,
+        isEditable,
+      }
     }
 
     next()

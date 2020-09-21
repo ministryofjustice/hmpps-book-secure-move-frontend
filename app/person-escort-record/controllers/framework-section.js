@@ -19,11 +19,7 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setEditableStatus(req, res, next) {
-    const personEscortRecordIsConfirmed = ['confirmed'].includes(
-      req.personEscortRecord?.status
-    )
-
-    res.locals.isEditable = !personEscortRecordIsConfirmed
+    res.locals.isEditable = req.personEscortRecord?.isEditable
     next()
   }
 

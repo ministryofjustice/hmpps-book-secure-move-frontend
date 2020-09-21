@@ -93,7 +93,7 @@
     }) }}
   {% endif %}
 
-  {% if showPersonEscortRecordBanner and not personEscortRecord %}
+  {% if canStartPersonEscortRecord %}
     {% set html %}
       <p>{{ t("messages::person_escort_record_pending.content") }}</p>
 
@@ -130,8 +130,17 @@
 
             {{ govukButton({
               href: personEscortRecordUrl + "/confirm",
-              text: t("actions::provide_confirmation")
+              text: t("actions::provide_confirmation"),
+              disabled: not canConfirmPersonEscortRecord
             }) }}
+
+            {% if not canConfirmPersonEscortRecord %}
+              {{ govukWarningText({
+                text: t("person-escort-record::left_custody"),
+                classes: "govuk-!-padding-top-0 govuk-!-margin-top-5",
+                iconFallbackText: "Warning"
+              }) }}
+            {% endif %}
           {% endif %}
         </div>
       </div>

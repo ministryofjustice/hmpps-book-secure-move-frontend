@@ -151,7 +151,7 @@ describe('Move controllers', function () {
       })
 
       it('should pass correct number of locals to template', function () {
-        expect(Object.keys(res.render.args[0][1])).to.have.length(22)
+        expect(Object.keys(res.render.args[0][1])).to.have.length(24)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -207,6 +207,16 @@ describe('Move controllers', function () {
       it('should contain a showPersonEscortRecordBanner param', function () {
         expect(params).to.have.property('showPersonEscortRecordBanner')
         expect(params.showPersonEscortRecordBanner).to.be.false
+      })
+
+      it('should contain a showPersonEscortRecordBanner param', function () {
+        expect(params).to.have.property('canStartPersonEscortRecord')
+        expect(params.canStartPersonEscortRecord).to.be.false
+      })
+
+      it('should contain a showPersonEscortRecordBanner param', function () {
+        expect(params).to.have.property('canConfirmPersonEscortRecord')
+        expect(params.canConfirmPersonEscortRecord).to.be.false
       })
 
       it('should contain a personEscortRecordtaskList param', function () {
@@ -574,6 +584,11 @@ describe('Move controllers', function () {
           )
         })
 
+        it('should not allow record to be confirmed', function () {
+          expect(params).to.have.property('canConfirmPersonEscortRecord')
+          expect(params.canConfirmPersonEscortRecord).to.be.false
+        })
+
         it('should not show Person Escort Record as confirmed', function () {
           expect(params).to.have.property('personEscortRecordIsConfirmed')
           expect(params.personEscortRecordIsConfirmed).to.be.false
@@ -763,6 +778,29 @@ describe('Move controllers', function () {
         it('should not show Person Escort Record banner', function () {
           expect(params).to.have.property('showPersonEscortRecordBanner')
           expect(params.showPersonEscortRecordBanner).to.be.false
+        })
+      })
+
+      context('when move has started', function () {
+        beforeEach(function () {
+          req.move.status = 'in_transit'
+          controller(req, res)
+          params = res.render.args[0][1]
+        })
+
+        it('should not allow record to be started', function () {
+          expect(params).to.have.property('canStartPersonEscortRecord')
+          expect(params.canStartPersonEscortRecord).to.be.false
+        })
+
+        it('should not allow record to be confirmed', function () {
+          expect(params).to.have.property('canConfirmPersonEscortRecord')
+          expect(params.canConfirmPersonEscortRecord).to.be.false
+        })
+
+        it('should show Person Escort Record banner', function () {
+          expect(params).to.have.property('showPersonEscortRecordBanner')
+          expect(params.showPersonEscortRecordBanner).to.be.true
         })
       })
     })
