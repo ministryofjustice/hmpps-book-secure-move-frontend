@@ -230,6 +230,7 @@ test('Reason - `Cancelled by PMU`', async t => {
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Cancelled by PMU - No free space',
+    content:
+      'Reason — Cancelled by Population Management Unit (PMU) - No free space',
   })
 })
