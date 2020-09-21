@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.44.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.44.3...v2.44.4) (2020-09-21)
+
+
+### Bug Fixes
+
+* **per:** Correctly show banners/edit states with different move states ([69aed12](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/69aed1236512d24c6b7978e9cc2d3766896a8159))
+
 ### [2.44.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.44.2...v2.44.3) (2020-09-20)
 
 
