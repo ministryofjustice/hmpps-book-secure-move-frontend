@@ -1,10 +1,11 @@
 const Sentry = require('@sentry/node')
 
 module.exports = function sentryEnrichScope(req, res, next) {
-  const { currentLocation, user } = req.session
+  const { currentLocation } = req.session
 
   if (currentLocation) {
     const {
+      title,
       key: locationKey = '',
       location_type: locationType,
     } = currentLocation
@@ -13,16 +14,9 @@ module.exports = function sentryEnrichScope(req, res, next) {
     Sentry.setTag('location.type', locationType)
 
     Sentry.setContext('location', {
+      name: title,
       key: locationKey.toUpperCase(),
       location_type: locationType,
-    })
-  }
-
-  if (user) {
-    Sentry.setUser({
-      id: user.userId,
-      username: user.username,
-      permissions: user.permissions,
     })
   }
 

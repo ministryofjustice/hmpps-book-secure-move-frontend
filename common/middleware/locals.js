@@ -13,7 +13,7 @@ module.exports = function setLocals(req, res, next) {
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
     REQUEST_PATH: req.path,
-    USER: req.session.user,
+    USER: req.user,
     CURRENT_LOCATION: req.session.currentLocation,
     CURRENT_REGION: req.session.currentRegion,
     MOVES_URL: req.session.movesUrl || movesApp.mountpath,
