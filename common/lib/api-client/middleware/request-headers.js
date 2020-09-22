@@ -1,13 +1,13 @@
 const getRequestHeaders = require('../request-headers')
 
 module.exports = {
-  name: 'req-headers',
+  name: 'request-headers',
   req: function req(payload = {}) {
-    const { req } = payload
-
-    if (!req) {
+    if (payload.res) {
       return payload
     }
+
+    const { req } = payload
 
     req.headers = {
       ...req.headers,

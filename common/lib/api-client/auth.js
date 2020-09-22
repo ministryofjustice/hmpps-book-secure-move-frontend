@@ -1,4 +1,5 @@
 const axios = require('axios')
+const debug = require('debug')('app:api-client:auth')
 
 const { API } = require('../../../config')
 let authInstance = null
@@ -49,9 +50,14 @@ Auth.prototype = {
       },
     }
 
+    debug('AUTH REQUEST', this.config.authUrl)
     return axios
       .post(this.config.authUrl, data, config)
       .then(response => response.data)
+      .catch(error => {
+        debug('AUTH ERROR', error)
+        throw error
+      })
   },
 
   isExpired() {
@@ -65,7 +71,7 @@ Auth.prototype = {
 
 function getAuthInstance(
   options = {
-    timeout: API.TIMEOUT,
+    timeout: API.AUTH_TIMEOUT,
     authUrl: API.AUTH_URL,
     username: API.CLIENT_ID,
     password: API.SECRET,

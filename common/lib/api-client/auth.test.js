@@ -104,32 +104,54 @@ describe('API Client', function () {
       const mockResponse = {
         data: mockTokenResponse,
       }
-
       beforeEach(async function () {
-        sinon.stub(axios, 'post').resolves(mockResponse)
-
         authInstance = requireUncached(`${__dirname}/auth`)(mockOptions)
-        refreshedToken = await authInstance.refreshAccessToken()
+        sinon.stub(axios, 'post').resolves(mockResponse)
       })
 
-      it('should correctly post to auth token endpoint', function () {
-        expect(axios.post).to.be.calledOnceWithExactly(
-          mockOptions.authUrl,
-          {
-            grant_type: 'client_credentials',
-          },
-          {
-            timeout: mockOptions.timeout,
-            auth: {
-              username: mockOptions.username,
-              password: mockOptions.password,
+      describe('when calling method', function () {
+        beforeEach(async function () {
+          await authInstance.refreshAccessToken()
+        })
+
+        it('should correctly post to auth token endpoint', function () {
+          expect(axios.post).to.be.calledOnceWithExactly(
+            mockOptions.authUrl,
+            {
+              grant_type: 'client_credentials',
             },
-          }
-        )
+            {
+              timeout: mockOptions.timeout,
+              auth: {
+                username: mockOptions.username,
+                password: mockOptions.password,
+              },
+            }
+          )
+        })
       })
 
-      it('should return response data', function () {
-        expect(refreshedToken).to.deep.equal(mockTokenResponse)
+      describe('when endpoint returns successfully', function () {
+        beforeEach(async function () {
+          refreshedToken = await authInstance.refreshAccessToken()
+        })
+
+        it('should return response data', function () {
+          expect(refreshedToken).to.deep.equal(mockTokenResponse)
+        })
+      })
+
+      describe('when endpoint returns an error', function () {
+        const error = new Error()
+        beforeEach(async function () {
+          axios.post.rejects(error)
+        })
+
+        it('should rethrow error', function () {
+          return authInstance
+            .refreshAccessToken()
+            .catch(e => expect(e).to.equal(error))
+        })
       })
     })
 

@@ -1,65 +1,35 @@
-const debug = require('debug')('app:api-client')
-const { get } = require('lodash')
+const debug = require('debug')('app:api-client:axios-request')
 
-const { API } = require('../../../../config')
-const redisStore = require('../../../../config/redis-store')
-const models = require('../models')
-
-const inMemoryCache = {}
-
-function getCacheResponse(key, useRedisCache) {
-  if (useRedisCache) {
-    return redisStore().client.getAsync(key)
-  } else {
-    return Promise.resolve(inMemoryCache[key])
-  }
-}
-
-async function setCacheResponse(response, key, expiry, useRedisCache) {
-  const data = JSON.stringify(response.data)
-
-  if (useRedisCache) {
-    await redisStore().client.setexAsync(key, expiry, data)
-  } else {
-    inMemoryCache[key] = data
-  }
-
-  return response
-}
+const cache = require('../cache')
 
 function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
   return {
     name: 'axios-request',
     req: async function req(payload) {
-      const { req, jsonApi } = payload
-      const pathname = new URL(req.url).pathname
-
-      const searchString = new URLSearchParams(req.params).toString()
-      const key = `cache:v${API.VERSION}:${req.method}.${pathname}${
-        searchString ? `?${searchString}` : ''
-      }`
-      const cacheModel = get(models, `${req.model}.options.cache`)
-
-      if (!cacheModel || req.params.cache === false) {
-        debug('NO CACHE', key)
-        return jsonApi.axios(req)
+      if (payload.res) {
+        return payload.res
       }
 
-      return getCacheResponse(key, useRedisCache).then(response => {
-        if (!response) {
-          debug('CACHED (first hit)', key)
-          return jsonApi
-            .axios(req)
-            .then(response =>
-              setCacheResponse(response, key, cacheExpiry, useRedisCache)
-            )
-        }
+      const { req, jsonApi, cacheKey } = payload
 
-        debug('CACHED', key)
-        return {
-          data: JSON.parse(response),
-        }
-      })
+      debug('API REQUEST', req.url)
+
+      const response = await jsonApi
+        .axios(req)
+        .then(async response => {
+          if (cacheKey) {
+            debug('CACHEING API RESPONSE', cacheKey)
+            await cache.set(cacheKey, response.data, cacheExpiry, useRedisCache)
+          }
+
+          return response
+        })
+        .catch(error => {
+          debug('API ERROR', req.url, error)
+          throw error
+        })
+
+      return response
     },
   }
 }
