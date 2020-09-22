@@ -48,8 +48,8 @@ describe('Cancel controller', function () {
         expect(allocationService.cancel).to.have.been.calledWithExactly(
           mockAllocation.id,
           {
-            cancellation_reason: 'other',
-            cancellation_reason_comment: 'Comment',
+            reason: 'other',
+            comment: 'Comment',
           }
         )
       })

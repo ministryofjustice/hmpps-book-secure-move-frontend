@@ -265,10 +265,13 @@ const moveService = {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
+    const timestamp = dateFunctions.formatISO(new Date())
+
     return apiClient
-      .update('move', {
-        id,
-        status: 'cancelled',
+      .one('move', id)
+      .all('cancel')
+      .post({
+        timestamp,
         cancellation_reason: reason,
         cancellation_reason_comment: comment,
       })

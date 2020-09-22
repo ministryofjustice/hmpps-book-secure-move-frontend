@@ -13,10 +13,12 @@ class CancelController extends FormWizardController {
     ])
 
     data.cancellation_reason_comment = data.cancellation_reason_other_comment
-    delete data.cancellation_reason_other_comment
 
     try {
-      await allocationService.cancel(id, data)
+      await allocationService.cancel(id, {
+        reason: data.cancellation_reason,
+        comment: data.cancellation_reason_comment,
+      })
 
       req.journeyModel.reset()
       req.sessionModel.reset()
