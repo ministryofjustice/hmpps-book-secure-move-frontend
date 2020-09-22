@@ -3,6 +3,7 @@ const proxyquire = require('proxyquire')
 const apiClient = require('../lib/api-client')()
 const moveService = require('../services/move')
 
+const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
 
 const batchRequest = proxyquire('./batch-request', {
@@ -13,6 +14,9 @@ const batchRequest = proxyquire('./batch-request', {
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
 const allocationService = proxyquire('./allocation', {
+  'date-fns': {
+    formatISO: formatISOStub,
+  },
   './batch-request': batchRequestStub,
 })
 
@@ -78,6 +82,26 @@ const mockAllocations = [
 
 describe('Allocation service', function () {
   describe('cancel', function () {
+    context.skip('without data args', function () {
+      let move
+
+      beforeEach(async function () {
+        move = await allocationService.cancel(123)
+      })
+
+      it('should call update method with data', function () {
+        expect(apiClient.post).to.be.calledOnceWithExactly({
+          id: 123,
+          cancellation_reason: undefined,
+          cancellation_reason_comment: undefined,
+        })
+      })
+
+      it('should return move', function () {
+        expect(move).to.deep.equal({})
+      })
+    })
+
     context('with correct data supplied', function () {
       let outcome
       beforeEach(async function () {
@@ -87,8 +111,8 @@ describe('Allocation service', function () {
         sinon.spy(apiClient, 'one')
         sinon.spy(apiClient, 'all')
         outcome = await allocationService.cancel(123, {
-          cancellation_reason: 'other',
-          cancellation_reason_comment: 'Flood at receiving establishment',
+          reason: 'other',
+          comment: 'Flood at receiving establishment',
         })
       })
       it('calls the service to post a cancel', function () {

@@ -45,21 +45,20 @@ function getAll({
 }
 
 const allocationService = {
-  cancel(id, data) {
+  cancel(id, { reason, comment } = {}) {
     if (!id) {
       return Promise.reject(new Error('No allocation id supplied'))
     }
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
-      .one('allocation', id)
-      .all('cancel')
-      .post({
-        timestamp,
-        ...data,
-      })
+    return apiClient.one('allocation', id).all('cancel').post({
+      timestamp,
+      cancellation_reason: reason,
+      cancellation_reason_comment: comment,
+    })
   },
+
   format(data) {
     const booleansAndNulls = ['complete_in_full', 'sentence_length']
     const relationships = ['to_location', 'from_location']
