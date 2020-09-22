@@ -394,6 +394,25 @@ describe('#singleRequestsToTableComponent()', function () {
       })
     })
 
+    context('with query', function () {
+      beforeEach(function () {
+        output = presenter({
+          query: {
+            sortBy: 'date',
+            status: 'approved',
+          },
+        })(mockMoves)
+      })
+      it('passes the query to objectToTableHead', function () {
+        expect(
+          tablePresenters.objectToTableHead
+        ).to.have.been.calledWithExactly({
+          sortBy: 'date',
+          status: 'approved',
+        })
+      })
+    })
+
     context('with isSortable set to false', function () {
       beforeEach(function () {
         output = presenter({
