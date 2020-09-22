@@ -84,7 +84,7 @@ describe('#allocationsToTableComponent', function () {
     output = presenter()([])
   })
 
-  it('returns an object with allocationsHeads', function () {
+  it('returns an object with allocations heads', function () {
     expect(output.head).to.exist
     expect(output.head).to.be.an('array')
   })

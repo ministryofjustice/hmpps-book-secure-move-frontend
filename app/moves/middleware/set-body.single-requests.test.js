@@ -17,6 +17,8 @@ describe('Moves middleware', function () {
         params: {},
         query: {
           status: 'pending',
+          sortBy: 'createdAtDate',
+          sortDirection: 'asc',
         },
       }
     })
@@ -31,6 +33,8 @@ describe('Moves middleware', function () {
           status: 'pending',
           createdAtDate: ['2010-10-10', '2010-10-07'],
           fromLocationId: mockReq.locations,
+          sortBy: 'createdAtDate',
+          sortDirection: 'asc',
         })
       })
 
@@ -50,6 +54,8 @@ describe('Moves middleware', function () {
           status: 'pending',
           createdAtDate: ['2020-10-10', '2020-10-10'],
           fromLocationId: mockReq.locations,
+          sortBy: 'createdAtDate',
+          sortDirection: 'asc',
         })
       })
 
