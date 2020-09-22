@@ -82,26 +82,6 @@ const mockAllocations = [
 
 describe('Allocation service', function () {
   describe('cancel', function () {
-    context.skip('without data args', function () {
-      let move
-
-      beforeEach(async function () {
-        move = await allocationService.cancel(123)
-      })
-
-      it('should call update method with data', function () {
-        expect(apiClient.post).to.be.calledOnceWithExactly({
-          id: 123,
-          cancellation_reason: undefined,
-          cancellation_reason_comment: undefined,
-        })
-      })
-
-      it('should return move', function () {
-        expect(move).to.deep.equal({})
-      })
-    })
-
     context('with correct data supplied', function () {
       let outcome
       beforeEach(async function () {

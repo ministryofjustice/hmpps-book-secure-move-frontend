@@ -1045,31 +1045,12 @@ describe('Move Service', function () {
 
       beforeEach(async function () {
         sinon.stub(apiClient, 'post').resolves(mockResponse)
-      })
-
-      context.skip('without data args', function () {
-        beforeEach(async function () {
-          move = await moveService.cancel(mockId)
-        })
-
-        it('should call update method with data', function () {
-          expect(apiClient.post).to.be.calledOnceWithExactly({
-            id: mockId,
-            timestamp: '#timestamp',
-            cancellation_reason: undefined,
-            cancellation_reason_comment: undefined,
-          })
-        })
-
-        it('should return move', function () {
-          expect(move).to.deep.equal(mockResponse.data)
-        })
+        sinon.spy(apiClient, 'one')
+        sinon.spy(apiClient, 'all')
       })
 
       context('with correct data supplied', function () {
         beforeEach(async function () {
-          sinon.spy(apiClient, 'one')
-          sinon.spy(apiClient, 'all')
           move = await moveService.cancel(mockId, {
             reason: 'other',
             comment: 'Reason for cancelling',
