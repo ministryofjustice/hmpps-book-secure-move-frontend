@@ -52,11 +52,15 @@ const allocationService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient.one('allocation', id).all('cancel').post({
-      timestamp,
-      cancellation_reason: reason,
-      cancellation_reason_comment: comment,
-    })
+    return apiClient
+      .one('allocation', id)
+      .all('cancel')
+      .post({
+        timestamp,
+        cancellation_reason: reason,
+        cancellation_reason_comment: comment,
+      })
+      .then(response => response.data)
   },
 
   format(data) {

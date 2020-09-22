@@ -1062,7 +1062,7 @@ describe('Move Service', function () {
         })
 
         it('should return move', function () {
-          expect(move).to.deep.equal(mockResponse)
+          expect(move).to.deep.equal(mockResponse.data)
         })
       })
 
@@ -1085,7 +1085,7 @@ describe('Move Service', function () {
         })
 
         it('should return move', function () {
-          expect(move).to.deep.equal(mockResponse)
+          expect(move).to.deep.equal(mockResponse.data)
         })
       })
     })

@@ -106,7 +106,7 @@ describe('Allocation service', function () {
       let outcome
       beforeEach(async function () {
         sinon.stub(apiClient, 'post').resolves({
-          data: {},
+          data: mockAllocations[0],
         })
         sinon.spy(apiClient, 'one')
         sinon.spy(apiClient, 'all')
@@ -115,6 +115,7 @@ describe('Allocation service', function () {
           comment: 'Flood at receiving establishment',
         })
       })
+
       it('calls the service to post a cancel', function () {
         expect(apiClient.post).to.have.been.calledOnceWithExactly({
           cancellation_reason: 'other',
@@ -123,9 +124,7 @@ describe('Allocation service', function () {
         })
       })
       it('returns the data', function () {
-        expect(outcome).to.deep.equal({
-          data: {},
-        })
+        expect(outcome).to.deep.equal(mockAllocations[0])
       })
     })
     context('without id supplied', function () {
