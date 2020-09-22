@@ -7,10 +7,6 @@ module.exports = {
       return payload
     }
 
-    if (!payload.req) {
-      return payload
-    }
-
     const { req, jsonApi = {} } = payload
     const defaultInclude = get(
       jsonApi,

@@ -9,10 +9,6 @@ module.exports = {
 
     const { req } = payload
 
-    if (!req) {
-      return payload
-    }
-
     req.headers = {
       ...req.headers,
       ...getRequestHeaders(),

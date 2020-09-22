@@ -3,16 +3,9 @@ const timeoutMiddleware = require('./request-timeout')
 describe('API Client', function () {
   describe('Timeout middleware', function () {
     describe('#timeout()', function () {
-      context('when payload does not contain a request', function () {
-        it('should not set timeout', function () {
-          const payload = timeoutMiddleware().req({})
-          expect(payload).to.deep.equal({})
-        })
-      })
-
       context('when payload includes a response', function () {
         it('should return payload as is', function () {
-          const payload = { res: {} }
+          const payload = { req: {}, res: {} }
           expect(timeoutMiddleware().req(payload)).to.equal(payload)
         })
       })

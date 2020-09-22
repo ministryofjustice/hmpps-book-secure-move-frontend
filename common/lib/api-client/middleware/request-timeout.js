@@ -6,9 +6,7 @@ module.exports = function requestTimeout(timeout) {
         return payload
       }
 
-      if (payload.req) {
-        payload.req.timeout = timeout
-      }
+      payload.req.timeout = timeout
 
       return payload
     },
