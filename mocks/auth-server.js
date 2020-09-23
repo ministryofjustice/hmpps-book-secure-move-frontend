@@ -10,6 +10,11 @@ const {
 } = require('../config')
 
 const roleConfig = {
+  COURT: {
+    locations: ['ABDRCT', 'BDFRCT'],
+    name: 'End-to-End Test Court',
+    authorities: ['ROLE_PECS_COURT'],
+  },
   POLICE: {
     locations: ['SRY016', 'CLP1'],
     name: 'End-to-End Test Police',

@@ -15,6 +15,8 @@ const getUpdatePageStub = page => {
 
 export const home = E2E.BASE_URL
 export const movesByDay = `${E2E.BASE_URL}/moves`
+export const incomingMoves = `${E2E.BASE_URL}/moves/incoming`
+export const outgoingMoves = `${E2E.BASE_URL}/moves/outgoing`
 export const newMove = `${E2E.BASE_URL}/move/new`
 export const getMove = id => `${E2E.BASE_URL}/move/${id}`
 export const getUpdateMove = (id, page) =>

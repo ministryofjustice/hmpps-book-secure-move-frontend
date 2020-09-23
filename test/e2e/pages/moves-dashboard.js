@@ -14,6 +14,7 @@ class MovesDashboardPage extends Page {
         'Create a move'
       ),
       filterContainer: Selector('.app-filter'),
+      locationGroup: title => Selector('[data-location-group]').withText(title),
       pagination: {
         previousLink: Selector('.app-pagination__list-item--prev a'),
         todayLink: Selector('.app-pagination__list-item a').withText('Today'),
