@@ -111,6 +111,9 @@ module.exports = {
     ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
     RELEASE: process.env.APP_GIT_COMMIT,
   },
+  PROMETHEUS: {
+    MOUNTPATH: process.env.PROMETHEUS_MOUNTPATH,
+  },
   REDIS,
   USER_PERMISSIONS: process.env.USER_PERMISSIONS,
   USER_LOCATIONS: process.env.USER_LOCATIONS,

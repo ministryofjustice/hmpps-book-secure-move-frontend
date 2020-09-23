@@ -20,6 +20,7 @@ const slashify = require('slashify')
 const healthcheckApp = require('./app/healthcheck')
 const locationsApp = require('./app/locations')
 const router = require('./app/router')
+const metrics = require('./common/lib/metrics')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
 const ensureSelectedLocation = require('./common/middleware/ensure-selected-location')
@@ -67,6 +68,9 @@ if (config.SENTRY.DSN) {
   )
   app.use(sentryRequestId)
 }
+
+// Configure prometheus to handle metrics
+metrics.init(app, config)
 
 app.use(slashify())
 

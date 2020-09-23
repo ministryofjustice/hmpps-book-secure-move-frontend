@@ -244,6 +244,7 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | FEEDBACK_URL | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed. | |
 | PERSON_ESCORT_RECORD_FEEDBACK_URL | URL for the feedback prompt to collect Person Escort Record feedback. If empty, the link will not be displayed. | |
 | SUPPORT_EMAIL | Email address used to contact support or the team in parts of the app where the user may require further help. | |
+| PROMETHEUS_MOUNTPATH | Mountpath to serve Prometheus metrics. If none, no metrics will be collected | |
 | SENTRY_DSN | Sentry DSN used to log issues in sentry | |
 | SENTRY_ORG | Sentry organisation slug | |
 | SENTRY_PROJECT | Sentry project slug | |
