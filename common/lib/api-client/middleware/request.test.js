@@ -4,8 +4,15 @@ const cache = {
   set: sinon.stub(),
 }
 
+const clientMetrics = {
+  start: sinon.stub(),
+  stop: sinon.stub(),
+  stopWithError: sinon.stub(),
+}
+
 const requestMiddleware = proxyquire('./request', {
   '../cache': cache,
+  '../client-metrics': clientMetrics,
 })
 
 const mockResponse = {
@@ -18,6 +25,7 @@ describe('API Client', function () {
   describe('Request middleware', function () {
     let payload
     let response
+    const clientInstrumentation = {}
 
     beforeEach(function () {
       payload = {
@@ -32,6 +40,10 @@ describe('API Client', function () {
       }
 
       cache.set.resetHistory()
+      clientMetrics.start.resetHistory()
+      clientMetrics.start.returns(clientInstrumentation)
+      clientMetrics.stop.resetHistory()
+      clientMetrics.stopWithError.resetHistory()
     })
 
     context('when calling api endpoint', function () {
@@ -45,6 +57,17 @@ describe('API Client', function () {
 
       it('should return response', function () {
         expect(response).to.deep.equal(mockResponse)
+      })
+
+      it('should start recording metrics for the call', function () {
+        expect(clientMetrics.start).to.be.calledOnceWithExactly(payload.req)
+      })
+
+      it('should stop recording metrics for the call', function () {
+        expect(clientMetrics.stop).to.be.calledOnceWithExactly(
+          clientInstrumentation,
+          mockResponse
+        )
       })
     })
 
@@ -114,18 +137,29 @@ describe('API Client', function () {
           )
         })
       })
+    })
 
-      context('when endpoint returns an error', function () {
-        const error = new Error()
-        beforeEach(async function () {
-          payload.jsonApi.axios.rejects(error)
-        })
+    context('when endpoint returns an error', function () {
+      const error = new Error()
+      let thrownError
+      beforeEach(async function () {
+        payload.jsonApi.axios.rejects(error)
+        await requestMiddleware()
+          .req(payload)
+          .catch(e => {
+            thrownError = e
+          })
+      })
 
-        it('should rethrow error', function () {
-          return requestMiddleware()
-            .req(payload)
-            .catch(e => expect(e).to.equal(error))
-        })
+      it('should stop recording metrics for the call', function () {
+        expect(clientMetrics.stopWithError).to.be.calledOnceWithExactly(
+          clientInstrumentation,
+          error
+        )
+      })
+
+      it('should rethrow error', function () {
+        expect(thrownError).to.equal(error)
       })
     })
   })

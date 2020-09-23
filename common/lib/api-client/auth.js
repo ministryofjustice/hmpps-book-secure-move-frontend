@@ -2,6 +2,8 @@ const axios = require('axios')
 const debug = require('debug')('app:api-client:auth')
 
 const { API } = require('../../../config')
+
+const clientMetrics = require('./client-metrics')
 let authInstance = null
 
 function getTimestamp() {
@@ -50,12 +52,30 @@ Auth.prototype = {
       },
     }
 
-    debug('AUTH REQUEST', this.config.authUrl)
+    const url = this.config.authUrl
+
+    debug('AUTH REQUEST', url)
+
+    // get metrics instrumentation
+    const clientInstrumentation = clientMetrics.start({
+      url,
+      method: 'POST',
+    })
+
     return axios
       .post(this.config.authUrl, data, config)
-      .then(response => response.data)
+      .then(response => {
+        debug('AUTH SUCCESS', url)
+        // record successful request
+        clientMetrics.stop(clientInstrumentation, response)
+
+        return response.data
+      })
       .catch(error => {
-        debug('AUTH ERROR', error)
+        debug('AUTH ERROR', url, error)
+        // record error
+        clientMetrics.stopWithError(clientInstrumentation, error)
+
         throw error
       })
   },

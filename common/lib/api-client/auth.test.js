@@ -1,5 +1,7 @@
 const axios = require('axios')
-const { expect } = require('chai')
+const proxyquire = require('proxyquire')
+
+const clientMetrics = require('./client-metrics')
 
 describe('API Client', function () {
   describe('Auth library', function () {
@@ -105,8 +107,14 @@ describe('API Client', function () {
         data: mockTokenResponse,
       }
       beforeEach(async function () {
-        authInstance = requireUncached(`${__dirname}/auth`)(mockOptions)
         sinon.stub(axios, 'post').resolves(mockResponse)
+        sinon.stub(clientMetrics, 'start').returns('clientInstrumentation')
+        sinon.stub(clientMetrics, 'stop')
+        sinon.stub(clientMetrics, 'stopWithError')
+
+        authInstance = proxyquire('./auth', {
+          './client-metrics': clientMetrics,
+        })(mockOptions)
       })
 
       describe('when calling method', function () {
@@ -129,6 +137,13 @@ describe('API Client', function () {
             }
           )
         })
+
+        it('should start recording metrics for the call', function () {
+          expect(clientMetrics.start).to.be.calledOnceWithExactly({
+            url: mockOptions.authUrl,
+            method: 'POST',
+          })
+        })
       })
 
       describe('when endpoint returns successfully', function () {
@@ -139,18 +154,35 @@ describe('API Client', function () {
         it('should return response data', function () {
           expect(refreshedToken).to.deep.equal(mockTokenResponse)
         })
+
+        it('should stop recording metrics for the call', function () {
+          expect(clientMetrics.stop).to.be.calledOnceWithExactly(
+            'clientInstrumentation',
+            mockResponse
+          )
+        })
       })
 
       describe('when endpoint returns an error', function () {
         const error = new Error()
+        let thrownError
+
         beforeEach(async function () {
           axios.post.rejects(error)
+          await authInstance.refreshAccessToken().catch(e => {
+            thrownError = e
+          })
         })
 
         it('should rethrow error', function () {
-          return authInstance
-            .refreshAccessToken()
-            .catch(e => expect(e).to.equal(error))
+          expect(thrownError).to.equal(error)
+        })
+
+        it('should stop recording metrics for the call', function () {
+          expect(clientMetrics.stopWithError).to.be.calledOnceWithExactly(
+            'clientInstrumentation',
+            error
+          )
         })
       })
     })
