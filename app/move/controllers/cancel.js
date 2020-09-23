@@ -39,11 +39,23 @@ class CancelController extends FormWizardController {
         Object.keys(req.form.options.allFields)
       )
 
-      data.cancellation_reason_comment = data.cancellation_reason_other_comment
+      let cancellationReasonComment
+
+      switch (data.cancellation_reason) {
+        case 'cancelled_by_pmu':
+          cancellationReasonComment =
+            data.cancellation_reason_cancelled_by_pmu_comment
+          break
+        case 'other':
+          cancellationReasonComment = data.cancellation_reason_other_comment
+          break
+      }
 
       await moveService.cancel(moveId, {
         reason: data.cancellation_reason,
-        comment: data.cancellation_reason_other_comment,
+        ...(cancellationReasonComment && {
+          comment: cancellationReasonComment,
+        }),
       })
 
       req.journeyModel.reset()

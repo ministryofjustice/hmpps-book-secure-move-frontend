@@ -74,6 +74,7 @@ class MoveDetailPage extends Page {
       personEscortRecordConfirmationCheckbox: Selector(
         '[name="confirm_person_escort_record"]'
       ),
+      getCancelLink: Selector('.app-link--destructive'),
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
       },
@@ -237,6 +238,15 @@ class MoveDetailPage extends Page {
 
   async checkUpdateLink(category, exists = true) {
     const selector = this.nodes.getUpdateLink(category)
+    await t.expect(selector.exists).eql(exists)
+  }
+
+  async checkNoCancelLink() {
+    await this.checkCancelLink(false)
+  }
+
+  async checkCancelLink(exists = true) {
+    const selector = this.nodes.getCancelLink()
     await t.expect(selector.exists).eql(exists)
   }
 

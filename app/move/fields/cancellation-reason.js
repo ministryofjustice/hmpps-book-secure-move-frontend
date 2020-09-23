@@ -26,6 +26,11 @@ const cancellationReason = {
       },
     },
     {
+      value: 'cancelled_by_pmu',
+      text: 'fields::cancellation_reason.items.cancelled_by_pmu.label',
+      conditional: 'cancellation_reason_cancelled_by_pmu_comment',
+    },
+    {
       value: 'other',
       text: 'fields::cancellation_reason.items.other.label',
       conditional: 'cancellation_reason_other_comment',
