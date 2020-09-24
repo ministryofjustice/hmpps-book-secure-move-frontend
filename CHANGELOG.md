@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.45.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.44.4...v2.45.0) (2020-09-24)
+
+
+### Features
+
+* Add Cancelled by PMU ([a04c1b0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a04c1b0fd726785447fb1e7bbd5c7b258116d319))
+* Add sorting for single requests table ([620332f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/620332f01e7db66102b706761a86814feb8b5313))
+* Make 'cancelled by pmu comment' optional ([fd517ce](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fd517ce82ee8aff3adcf777a2d8b3d021586a381))
+
+
+### Bug Fixes
+
+* **per:** Update content and handover label for handover sheet ([193a1e1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/193a1e191716ca8a62ff886e6cd3841bd531f76b))
+* Allow users with PER editor role to see moves ([862a301](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/862a3015f9cc25dcb5c91b050ecefaca580029a3))
+* Show origin on incoming dashboard ([efe261c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/efe261c055ac2b1a9b8ac71ae1a0a84eb5375a3d))
+
 ### [2.44.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.44.3...v2.44.4) (2020-09-21)
 
 
