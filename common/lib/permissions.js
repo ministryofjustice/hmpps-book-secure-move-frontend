@@ -108,6 +108,9 @@ const personEscortRecordAuthorPermissions = [
   'person_escort_record:create',
   'person_escort_record:update',
   'person_escort_record:confirm',
+  'dashboard:view',
+  'moves:view:outgoing',
+  'move:view',
 ]
 
 const permissionsByRole = {
