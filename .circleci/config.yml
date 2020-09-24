@@ -152,6 +152,7 @@ jobs:
     parameters:
       base_url_env:
         type: string
+        default: ""
       use_same_instance:
         type: string
         default: ""
@@ -355,13 +356,10 @@ workflows:
           <<: *ignore_master
           name: end-to-end-test-pr
           use_same_instance: 'true'
-          base_url_env: E2E_BASE_URL_REVIEW_APP
       - end-to-end-test:
           <<: *only_master
           name: end-to-end-test-master
-          base_url_env: E2E_BASE_URL_STAGING
-          requires:
-            - deploy-staging
+          use_same_instance: 'true'
       - end-to-end-test:
           <<: *only_deploy_tags
           name: end-to-end-test-release
@@ -386,6 +384,7 @@ workflows:
           env: 'staging'
           requires:
             - build-docker-image-master
+            - end-to-end-test-master
             - lint-and-unit-test
       - deploy:
           <<: *only_deploy_tags
