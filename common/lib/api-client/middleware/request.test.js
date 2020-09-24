@@ -46,6 +46,14 @@ describe('API Client', function () {
       clientMetrics.stopWithError.resetHistory()
     })
 
+    context('when payload includes a response', function () {
+      it('should return payload response immediately', async function () {
+        const payload = { req: {}, res: {} }
+        const response = await requestMiddleware().req(payload)
+        expect(response).to.deep.equal(payload.res)
+      })
+    })
+
     context('when calling api endpoint', function () {
       beforeEach(async function () {
         response = await requestMiddleware().req(payload)
