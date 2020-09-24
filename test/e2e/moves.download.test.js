@@ -1,9 +1,8 @@
 import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
-import { policeUser, prisonUser, stcUser } from './_roles'
+import { policeUser, prisonUser, stcUser, supplierUser } from './_roles'
 import { movesByDay } from './_routes'
 import { movesDashboardPage } from './pages'
 
-// TODO: Reenable supplier tests
 const users = [
   {
     name: 'Police user',
@@ -16,6 +15,10 @@ const users = [
   {
     name: 'STC user',
     role: stcUser,
+  },
+  {
+    name: 'Supplier user',
+    role: supplierUser,
   },
 ]
 
