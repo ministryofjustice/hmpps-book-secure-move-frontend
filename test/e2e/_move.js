@@ -25,7 +25,9 @@ import UpdateMovePage from './pages/update-move'
 export async function createMove(options = {}) {
   if (
     !options.moveOverrides ||
-    (options.moveOverrides && !options.moveOverrides.from_location)
+    (options.moveOverrides &&
+      !options.moveOverrides.from_location &&
+      !options.moveOverrides.to_location)
   ) {
     await t
       .expect(page.nodes.locationMeta.getAttribute('content'))

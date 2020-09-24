@@ -685,6 +685,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'to_location',
+            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
@@ -721,6 +722,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'to_location',
+            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
@@ -757,6 +759,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'to_location',
+            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',

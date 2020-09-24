@@ -5,6 +5,11 @@ import { E2E } from '../../config'
 import { home } from './_routes'
 import { page } from './pages'
 
+export const courtUser = Role(home, async t => {
+  await page.signIn(E2E.ROLES.COURT)
+  await page.chooseLocation()
+})
+
 export const policeUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.POLICE)
   await page.chooseLocation()

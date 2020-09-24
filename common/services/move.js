@@ -123,6 +123,7 @@ const moveService = {
         'profile.person',
         'profile.person.gender',
         'to_location',
+        'from_location',
       ],
       filter: omitBy(
         {
