@@ -149,13 +149,6 @@ jobs:
 
   end-to-end-test:
     <<: *circle_container
-    parameters:
-      base_url_env:
-        type: string
-        default: ""
-      use_same_instance:
-        type: string
-        default: ""
     resource_class: large
     steps:
       - checkout
@@ -166,35 +159,23 @@ jobs:
       - run:
           name: Build assets and frameworks
           command: npm run build
-      - when:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Check whether to use mock server
-                command: |
-                  if [ -n "$E2E_MOCK_AUTH" ]; then
-                    echo "export AUTH_PROVIDER_URL='http://localhost:3999'" >> $BASH_ENV
-                    echo "export NOMIS_ELITE2_API_URL='http://localhost:3999'" >> $BASH_ENV
-                    source $BASH_ENV
-                  fi
-      - when:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Run E2E tests (same instance)
-                environment:
-                  REDIS_URL: ""
-                  SERVER_HOST: localhost:3000
-                  E2E_BASE_URL: http://localhost:3000
-                command: |
-                  npm run test-e2e:ci-pre-flight
-                  npm run test-e2e:ci
-      - unless:
-          condition: <<parameters.use_same_instance>>
-          steps:
-            - run:
-                name: Run E2E tests
-                command: E2E_BASE_URL=$<<parameters.base_url_env>> npm run test-e2e:ci
+      - run:
+          name: Check whether to use mock server
+          command: |
+            if [ -n "$E2E_MOCK_AUTH" ]; then
+              echo "export AUTH_PROVIDER_URL='http://localhost:3999'" >> $BASH_ENV
+              echo "export NOMIS_ELITE2_API_URL='http://localhost:3999'" >> $BASH_ENV
+              source $BASH_ENV
+            fi
+      - run:
+          name: Run E2E tests (same instance)
+          environment:
+            REDIS_URL: ""
+            SERVER_HOST: localhost:3000
+            E2E_BASE_URL: http://localhost:3000
+          command: |
+            npm run test-e2e:ci-pre-flight
+            npm run test-e2e:ci
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
@@ -355,17 +336,12 @@ workflows:
       - end-to-end-test:
           <<: *ignore_master
           name: end-to-end-test-pr
-          use_same_instance: 'true'
       - end-to-end-test:
           <<: *only_master
           name: end-to-end-test-master
-          use_same_instance: 'true'
       - end-to-end-test:
           <<: *only_deploy_tags
           name: end-to-end-test-release
-          base_url_env: E2E_BASE_URL_PREPROD
-          requires:
-            - deploy-preproduction
       # Docker builds
       - build-docker-image:
           <<: *only_master
@@ -392,6 +368,7 @@ workflows:
           env: 'preprod'
           requires:
             - build-docker-image-release
+            - end-to-end-test-release
             - lint-and-unit-test
       - deploy:
           <<: *only_deploy_tags
@@ -399,6 +376,7 @@ workflows:
           env: 'uat'
           requires:
             - build-docker-image-release
+            - end-to-end-test-release
             - lint-and-unit-test
       - deploy:
           <<: *only_deploy_tags
@@ -411,11 +389,15 @@ workflows:
           <<: *only_deploy_tags
           type: approval
           requires:
+            - build-docker-image-release
             - end-to-end-test-release
+            - lint-and-unit-test
       - notify-of-approval:
           <<: *only_deploy_tags
           requires:
+            - build-docker-image-release
             - end-to-end-test-release
+            - lint-and-unit-test
       # Post release
       - publish-release-to-github:
           <<: *only_deploy_tags
