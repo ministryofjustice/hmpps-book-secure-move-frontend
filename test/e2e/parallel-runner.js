@@ -1,6 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
-const axios = require('axios')
 const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
@@ -198,37 +197,7 @@ if (args.n) {
   process.exit()
 }
 
-const checkCircleSha = async () => {
-  const { CIRCLECI, CIRCLE_BRANCH, CIRCLE_SHA1 } = process.env
-
-  if (E2E_BASE_URL && CIRCLECI && CIRCLE_BRANCH === 'master') {
-    const sleep = (ms = 0) => new Promise(resolve => setTimeout(resolve, ms))
-
-    let checkPing = true
-    const pingUrl = `${E2E_BASE_URL}/healthcheck/ping`
-    process.stdout.write(
-      `Checking ${pingUrl} for correct commit sha ${CIRCLE_SHA1}`
-    )
-
-    while (checkPing) {
-      try {
-        const { data } = await axios.get(pingUrl)
-
-        if (data.commit_id === CIRCLE_SHA1) {
-          checkPing = false
-          process.stdout.write(`${E2E_BASE_URL} returned correct commit sha`)
-        }
-      } catch (error) {
-        process.stdout.write('.')
-        await sleep(2000)
-      }
-    }
-  }
-}
-
 const runTests = async () => {
-  await checkCircleSha()
-
   try {
     await concurrently(testcafeRuns, {
       maxProcesses,
