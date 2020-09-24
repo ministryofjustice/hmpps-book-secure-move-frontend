@@ -26,7 +26,7 @@ describe('Person Escort Record controllers', function () {
       expect(Object.keys(params)).to.deep.equal([
         'moveId',
         'moveType',
-        'destination',
+        'pickupLocation',
         'fullname',
         'reference',
         'moveSummary',

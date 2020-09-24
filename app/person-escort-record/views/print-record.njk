@@ -261,20 +261,23 @@
     </div>
 
     <div class="app-print-page">
-      <section class="app-!-position-relative govuk-!-margin-bottom-7">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-padding-top-2 app-border-top-2 app-border--black">
+      <section class="app-!-position-relative">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-padding-top-2 app-border-top-2 app-border--black">
           {{ t("person-escort-record::sections.handover.heading") }}
         </h2>
 
+        <p class="govuk-!-margin-bottom-3">
+          {{ t("person-escort-record::sections.handover.fields.from_location") }}: {{ pickupLocation }}
+        </p>
+
         {% for handover in [1, 2, 3, 4, 5] %}
-          {% set estText = destination if loop.first else "..................................." %}
           <div class="app-border-bottom-1 govuk-!-padding-bottom-4{{ ' govuk-!-margin-bottom-4' if not loop.last }} ">
             <h3 class="govuk-heading-s govuk-!-margin-top-2 govuk-!-margin-bottom-2">
               {{ t("person-escort-record::sections.handover.subheading") }} {{ loop.index }}
             </h3>
 
             <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
-              {{ t("person-escort-record::sections.handover.fields.time") }}: ........&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: ................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.establishment") }}: {{ estText }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: ................
+              {{ t("person-escort-record::sections.handover.fields.to") }}: .................................................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.time") }}: ..........&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: ................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: ...................
             </p>
 
             <div class="govuk-grid-row">
