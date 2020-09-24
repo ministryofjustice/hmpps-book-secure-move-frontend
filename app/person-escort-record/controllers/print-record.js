@@ -25,7 +25,7 @@ function printRecord(req, res) {
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
   const moveId = move?.id
-  const destination = move?.to_location?.title
+  const pickupLocation = move?.from_location?.title
   const moveType = move?.move_type
   const fullname = profile?.person?.fullname
   const moveSummary = presenters.moveToSummaryListComponent(move)
@@ -109,7 +109,7 @@ function printRecord(req, res) {
   const locals = {
     moveId,
     moveType,
-    destination,
+    pickupLocation,
     fullname,
     reference,
     moveSummary,
