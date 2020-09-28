@@ -1,0 +1,7 @@
+@include govuk-media-query($from: tablet) {
+  .moj-add-another__remove-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

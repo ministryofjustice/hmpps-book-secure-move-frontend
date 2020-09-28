@@ -9,11 +9,13 @@
 {% set itemName = params.itemName or t("item") %}
 {% set items = params.items %}
 
+<div class="moj-add-another">
+<input type="hidden" name="js-items-property" value="{{ params.name }}">
 {% for item in items %}
   {% call govukFieldset({
-    classes: 'app-!-position-relative',
+    classes: 'moj-add-another__item app-!-position-relative',
     legend: {
-      text: itemName + " " + loop.index,
+      html: itemName + ' <span data-content="index">' + loop.index + '</span>',
       classes: 'govuk-fieldset__legend--m',
       isPageHeading: false
     }
@@ -25,7 +27,7 @@
             name: itemName | lower,
             index: loop.index
           }),
-          classes: "govuk-button--secondary app-!-position-top-right",
+          classes: "moj-add-another__remove-button govuk-button--secondary",
           name: "multiple-action",
           value: "remove::" + params.name + "::" + loop.index0
         }) }}
@@ -36,13 +38,14 @@
   {% endcall %}
 {% endfor %}
 
+
 <div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
   {{ govukButton({
     text: t("actions::add_item", {
       context: "with_items" if items.length > 0,
       name: itemName | lower
     }),
-    classes: "govuk-button--secondary",
+    classes: "moj-add-another__add-button govuk-button--secondary",
     name: "multiple-action",
     value: "add::" + params.name
   }) }}

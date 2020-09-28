@@ -170,6 +170,7 @@ app.use(
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
+          'cdnjs.cloudflare.com',
           'www.googletagmanager.com',
           'www.google-analytics.com',
         ],
