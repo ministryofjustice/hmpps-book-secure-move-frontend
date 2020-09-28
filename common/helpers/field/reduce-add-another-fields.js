@@ -31,6 +31,7 @@ function reduceAddAnotherFields(allFields = {}, values = {}) {
             attributes: {
               'data-name': dataName,
               'data-id': dataId,
+              ...fieldTemplate.attributes,
             },
           }),
         }
@@ -42,6 +43,7 @@ function reduceAddAnotherFields(allFields = {}, values = {}) {
               attributes: {
                 'data-name': `${dataName}${index ? `[${index + 1}]` : ''}`,
                 'data-id': `${dataId}${index ? index + 1 : ''}`,
+                ...item.attributes,
               },
             }
           })
