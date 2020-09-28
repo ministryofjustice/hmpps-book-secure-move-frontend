@@ -8,12 +8,37 @@ class FormController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setInitialValues)
+    this.use(this.setupArbitraryMultipleFields)
     this.use(this.setupAddMultipleFields)
     this.use(this.setupConditionalFields)
     this.use(this.setFieldContext)
   }
 
   setInitialValues(req, res, next) {
+    next()
+  }
+
+  setupArbitraryMultipleFields(req, res, next) {
+    if (req.method === 'POST') {
+      const jsItemsProperty = req.body['js-items-property']
+      const jsItemsLength = req.body['js-items-length']
+
+      if (jsItemsProperty && jsItemsLength !== undefined) {
+        const values = req.sessionModel.toJSON()
+        const itemsLength = Number(jsItemsLength)
+
+        // add items
+        while (values[jsItemsProperty].length < itemsLength) {
+          values[jsItemsProperty].push({})
+        }
+
+        // remove items
+        values[jsItemsProperty].length = itemsLength
+
+        req.sessionModel.set(values)
+      }
+    }
+
     next()
   }
 
@@ -24,7 +49,6 @@ class FormController extends Controller {
       fieldHelpers.reduceAddAnotherFields(allFields, values),
       {}
     )
-
     req.form.options.fields = {
       ...req.form.options.fields,
       ...itemFields,

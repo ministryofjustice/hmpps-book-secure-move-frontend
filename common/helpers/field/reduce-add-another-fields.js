@@ -18,6 +18,8 @@ function reduceAddAnotherFields(allFields = {}, values = {}) {
         const name = `${prefix}[${itemField}]`
         // IDs cannot contain square brackets so they need to be removed
         const id = name.replace(/\[|\]/gi, '-')
+        const dataName = `${field.name}[%index%][${itemField}]`
+        const dataId = dataName.replace(/\[|\]/gi, '-')
         const opts = {
           // tell form wizard to not render field at top level
           skip: true,
@@ -25,6 +27,24 @@ function reduceAddAnotherFields(allFields = {}, values = {}) {
           prefix,
           name,
           id,
+          ...(fieldTemplate.component !== 'govukCheckboxes' && {
+            attributes: {
+              'data-name': dataName,
+              'data-id': dataId,
+            },
+          }),
+        }
+
+        if (fieldTemplate.items) {
+          fieldTemplate.items = fieldTemplate.items.map((item, index) => {
+            return {
+              ...item,
+              attributes: {
+                'data-name': `${dataName}${index ? `[${index + 1}]` : ''}`,
+                'data-id': `${dataId}${index ? index + 1 : ''}`,
+              },
+            }
+          })
         }
 
         accumulator[name] = {

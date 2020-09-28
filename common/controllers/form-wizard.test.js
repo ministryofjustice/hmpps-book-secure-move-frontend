@@ -13,6 +13,7 @@ describe('Form wizard', function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
       sinon.stub(controller, 'use')
       sinon.stub(controller, 'setInitialValues')
+      sinon.stub(controller, 'setupArbitraryMultipleFields')
       sinon.stub(controller, 'setupAddMultipleFields')
       sinon.stub(controller, 'setupConditionalFields')
       sinon.stub(controller, 'setFieldContext')
@@ -30,26 +31,112 @@ describe('Form wizard', function () {
       )
     })
 
-    it('should setup add multiple fields', function () {
+    it('should setup handling of arbitrary multiple fields', function () {
       expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+        controller.setupArbitraryMultipleFields
+      )
+    })
+
+    it('should setup add multiple fields', function () {
+      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
         controller.setupAddMultipleFields
       )
     })
 
     it('should setup conditional fields', function () {
-      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
+      expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
         controller.setupConditionalFields
       )
     })
 
     it('should set field context', function () {
-      expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
+      expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
         controller.setFieldContext
       )
     })
 
     it('should call correct number of middleware', function () {
-      expect(controller.use).to.be.callCount(4)
+      expect(controller.use).to.be.callCount(5)
+    })
+  })
+
+  describe('#setupArbitraryMultipleFields()', function () {
+    let req
+    let next
+    beforeEach(function () {
+      req = {
+        method: 'POST',
+        body: {
+          'js-items-property': 'foo',
+        },
+        sessionModel: {
+          toJSON: sinon.stub().returns({ foo: [{ id: 1 }, { id: 2 }] }),
+          set: sinon.stub(),
+        },
+      }
+      next = sinon.stub()
+    })
+
+    context('When called', function () {
+      it('shoud invoke the next method', function () {
+        controller.setupArbitraryMultipleFields(req, {}, next)
+        expect(next).to.be.calledOnceWithExactly()
+      })
+    })
+    context('When no arbitrary items have been passed', function () {
+      it('shoud not adjust the stored values', function () {
+        controller.setupArbitraryMultipleFields(req, {}, next)
+        expect(req.sessionModel.toJSON).to.not.be.called
+        expect(req.sessionModel.set).to.not.be.called
+      })
+    })
+
+    context('When the method is not POST', function () {
+      beforeEach(function () {
+        req.method = 'GET'
+        req.body['js-items-length'] = 3
+        controller.setupArbitraryMultipleFields(req, {}, next)
+      })
+
+      it('shoud not adjust the stored values', function () {
+        controller.setupArbitraryMultipleFields(req, {}, next)
+        expect(req.sessionModel.toJSON).to.not.be.called
+        expect(req.sessionModel.set).to.not.be.called
+      })
+    })
+
+    context('When more arbitrary items have been passed', function () {
+      beforeEach(function () {
+        req.body['js-items-length'] = 3
+        controller.setupArbitraryMultipleFields(req, {}, next)
+      })
+
+      it('shoud fetch the stored values', function () {
+        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
+      })
+
+      it('shoud adjust the stored values', function () {
+        expect(req.sessionModel.set).to.be.calledOnceWithExactly({
+          foo: [{ id: 1 }, { id: 2 }, {}],
+        })
+      })
+    })
+
+    context('When fewer arbitrary items have been passed', function () {
+      beforeEach(function () {
+        req.body['js-items-length'] = 1
+        controller.setupArbitraryMultipleFields(req, {}, next)
+      })
+
+      it('shoud fetch the stored values', function () {
+        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
+      })
+
+      it('shoud adjust the stored values', function () {
+        expect(req.sessionModel.set).to.be.calledOnceWithExactly({
+          foo: [{ id: 1 }],
+        })
+      })
     })
   })
 
