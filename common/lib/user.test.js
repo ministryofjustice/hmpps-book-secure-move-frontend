@@ -192,6 +192,7 @@ describe('User class', function () {
           'move:update',
           'move:update:court_appearance',
           'move:update:hospital',
+          'move:cancel',
           'move:cancel:proposed',
         ]
 
@@ -221,6 +222,7 @@ describe('User class', function () {
           'move:update',
           'move:update:court_appearance',
           'move:update:hospital',
+          'move:cancel',
           'move:cancel:proposed',
         ])
       })

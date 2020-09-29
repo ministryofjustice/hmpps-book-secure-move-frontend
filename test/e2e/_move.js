@@ -119,8 +119,19 @@ export async function checkNoUpdateLink(page) {
  *
  * @returns {undefined}
  */
-export async function checkCancelLink(page) {
-  return moveDetailPage.checkCancelLink(page)
+export async function checkCancelLink() {
+  return moveDetailPage.checkCancelLink()
+}
+
+/**
+ * Check whether an update link for page is not present
+ *
+ * @param {string} page - page key
+ *
+ * @returns {undefined}
+ */
+export async function checkNoCancelLink() {
+  return moveDetailPage.checkCancelLink(false)
 }
 
 const updatePages = [
@@ -139,9 +150,13 @@ const updatePages = [
  *
  * @returns {undefined}
  */
-const filterUpdatePages = (pages = updatePages, exclude = false) => {
-  let show = updatePages.filter(cat => pages.includes(cat))
-  let hide = updatePages.filter(cat => !pages.includes(cat))
+const filterUpdatePages = (pages = updatePages, exclude = false, drop = []) => {
+  let show = updatePages
+    .filter(cat => !drop.includes(cat))
+    .filter(cat => pages.includes(cat))
+  let hide = updatePages
+    .filter(cat => !drop.includes(cat))
+    .filter(cat => !pages.includes(cat))
 
   if (exclude) {
     ;[show, hide] = [hide, show]
@@ -160,10 +175,13 @@ const filterUpdatePages = (pages = updatePages, exclude = false) => {
  *
  * @param {boolean} [exclude] - whether to use list of pages as a blacklist rather than whitelist
  *
+ * @param {string[]} drop - pages to drop from master list of pages
+ *
+ *
  * @returns {undefined}
  */
-export async function checkUpdateLinks(pages, exclude) {
-  const filteredPages = filterUpdatePages(pages, exclude)
+export async function checkUpdateLinks(pages, exclude, drop = []) {
+  const filteredPages = filterUpdatePages(pages, exclude, drop)
 
   for await (const cat of filteredPages.show) {
     await checkUpdateLink(cat)
@@ -215,10 +233,13 @@ export async function checkUpdatePageStatus(page, statusCode) {
  *
  * @param {boolean} [negated] - whether to negate the assertion
  *
+ * @param {string[]} drop - pages to drop from master list of pages
+
+ *
  * @returns {undefined}
  */
-export async function checkUpdatePagesAccessible(pages, negated) {
-  const filteredPages = filterUpdatePages(pages, negated)
+export async function checkUpdatePagesAccessible(pages, negated, drop = []) {
+  const filteredPages = filterUpdatePages(pages, negated, drop)
 
   for await (const page of filteredPages.show) {
     await checkUpdatePageStatus(page, 200)

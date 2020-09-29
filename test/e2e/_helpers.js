@@ -193,12 +193,13 @@ const getRandomLocation = async locationType => {
 export async function generateMove(profile, options = {}, overrides = {}) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
+  const moveType = options.move_type || 'court_appearance'
 
   const move = {
     profile,
     from_location: await getRandomLocation(fromLocationType),
     to_location: await getRandomLocation(toLocationType),
-    move_type: 'court_appearance',
+    move_type: moveType,
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     ...overrides,
   }

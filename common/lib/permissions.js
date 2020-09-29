@@ -37,6 +37,7 @@ const secureChildrensHomePermissions = [
   'move:update',
   'move:update:court_appearance',
   'move:update:hospital',
+  'move:cancel',
   'move:cancel:proposed',
 ]
 const secureTrainingCentrePermissions = [
@@ -55,6 +56,7 @@ const secureTrainingCentrePermissions = [
   'move:update',
   'move:update:court_appearance',
   'move:update:hospital',
+  'move:cancel',
   'move:cancel:proposed',
 ]
 
