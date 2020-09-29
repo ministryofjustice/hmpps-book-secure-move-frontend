@@ -263,6 +263,8 @@ describe('User class', function () {
           'move:view',
           'move:create',
           'move:create:prison_transfer',
+          'move:create:secure_childrens_home',
+          'move:create:secure_training_centre',
         ])
       })
     })

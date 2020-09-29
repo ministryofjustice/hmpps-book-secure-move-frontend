@@ -87,6 +87,8 @@ const ocaPermissions = [
   'move:view',
   'move:create',
   'move:create:prison_transfer',
+  'move:create:secure_childrens_home',
+  'move:create:secure_training_centre',
 ]
 const pmuPermissions = [
   'allocations:view',
