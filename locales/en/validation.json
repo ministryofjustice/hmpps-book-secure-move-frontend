@@ -22,6 +22,7 @@
   "default": "is required",
   "default_with_label": "{{label}} is required",
   "generic": "something went wrong",
+  "prisonNumber_with_label": "{{label}} must be of the format A1234AB",
   "move_conflict": {
     "heading": "This move cannot be created",
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
