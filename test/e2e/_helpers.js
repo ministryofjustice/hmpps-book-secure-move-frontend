@@ -70,9 +70,7 @@ export async function generatePerson(overrides = {}) {
     policeNationalComputer: faker
       .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
       .toUpperCase(),
-    prisonNumber: faker.fake(
-      '{{helpers.replaceSymbols("?")}}{{random.number}}{{helpers.replaceSymbols("??")}}'
-    ),
+    prisonNumber: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
     criminalRecordsOffice: faker.fake('CRO/{{random.number}}'),
     nicheReference: faker.fake('NI/{{random.number}}'),
     athenaReference: faker.fake('AT/{{random.number}}'),
