@@ -51,50 +51,40 @@ test('User should be able to cancel move', async () => {
   await checkCancelLink()
 })
 
-// fixture(
-//   'Existing move from Secure Training Centre (STC) to Hospital'
-// ).beforeEach(async t => {
-//   await t.useRole(stcUser).navigateTo(home)
-//   await createMove({
-//     defaultMoveOptions: {
-//       to_location_type: 'hospital',
-//       move_type: 'hospital',
-//     },
-//   })
-// })
-//
-// test.meta('hasDocument', 'true')(
-//   'User should be able to update move',
-//   async () => {
-//     // await checkUpdateLinks([
-//     //   'personal_details',
-//     //   'risk',
-//     //   'health',
-//     //   'court',
-//     //   'move',
-//     //   'date',
-//     //   'document',
-//     // ])
-//     //
-//     // await checkUpdateDocuments()
-//     //
-//     // await checkUpdatePagesAccessible([
-//     //   'personal_details',
-//     //   'risk',
-//     //   'health',
-//     //   'court',
-//     //   'move',
-//     //   'date',
-//     //   'document',
-//     // ])
-//
-//     await checkCancelLink()
-//   }
-// )
-//
-// test('User should be able to cancel move', async () => {
-//   await checkCancelLink()
-// })
+fixture(
+  'Existing move from Secure Training Centre (STC) to Hospital'
+).beforeEach(async t => {
+  await t.useRole(stcUser).navigateTo(home)
+  await createMove({
+    defaultMoveOptions: {
+      to_location_type: 'high_security_hospital',
+      move_type: 'hospital',
+    },
+  })
+})
+
+test.meta('hasDocument', 'true')(
+  'User should be able to update move',
+  async () => {
+    await checkUpdateLinks(
+      ['personal_details', 'risk', 'health', 'move', 'date', 'document'],
+      false,
+      ['court']
+    )
+
+    await checkUpdateDocuments()
+
+    await checkUpdatePagesAccessible(
+      ['personal_details', 'risk', 'health', 'move', 'date', 'document'],
+      false,
+      ['court']
+    )
+  }
+)
+
+test('User should be able to cancel move', async () => {
+  await checkCancelLink()
+})
 
 fixture('Existing move from Secure Training Centre (STC) to Prison').beforeEach(
   async t => {
