@@ -77,7 +77,7 @@ describe('Person Escort Record controllers', function () {
     })
 
     describe('#saveValues', function () {
-      const mockProfileId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
+      const mockMoveId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
       let req, nextSpy
 
       beforeEach(function () {
@@ -85,9 +85,7 @@ describe('Person Escort Record controllers', function () {
         nextSpy = sinon.spy()
         req = {
           move: {
-            profile: {
-              id: mockProfileId,
-            },
+            id: mockMoveId,
           },
         }
       })
@@ -100,7 +98,7 @@ describe('Person Escort Record controllers', function () {
 
         it('should create person escort record', function () {
           expect(personEscortRecordService.create).to.be.calledOnceWithExactly(
-            mockProfileId
+            mockMoveId
           )
         })
 

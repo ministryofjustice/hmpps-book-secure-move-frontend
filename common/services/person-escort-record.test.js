@@ -66,7 +66,7 @@ describe('Services', function () {
     })
 
     describe('#create()', function () {
-      const mockProfileId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
+      const mockMoveId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
       const mockResponse = {
         data: mockRecord,
       }
@@ -75,7 +75,7 @@ describe('Services', function () {
       beforeEach(async function () {
         sinon.stub(apiClient, 'create').resolves(mockResponse)
 
-        response = await personEscortRecordService.create(mockProfileId)
+        response = await personEscortRecordService.create(mockMoveId)
       })
 
       it('should call create method with data and current framework version', function () {
@@ -83,8 +83,8 @@ describe('Services', function () {
           'person_escort_record',
           {
             version: mockFrameworksVersion,
-            profile: {
-              id: mockProfileId,
+            move: {
+              id: mockMoveId,
             },
           }
         )
