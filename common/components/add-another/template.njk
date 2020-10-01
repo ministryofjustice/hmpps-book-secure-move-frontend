@@ -10,32 +10,33 @@
 {% set items = params.items %}
 
 <div class="moj-add-another">
-<input type="hidden" name="js-items-property" value="{{ params.name }}">
 {% for item in items %}
-  {% call govukFieldset({
-    classes: 'moj-add-another__item app-!-position-relative',
-    legend: {
-      html: itemName + ' <span data-content="index">' + loop.index + '</span>',
-      classes: 'govuk-fieldset__legend--m',
-      isPageHeading: false
-    }
-  }) %}
-    {% if not params.minItems or items.length > params.minItems %}
-      <div class="app-add-another__remove-item">
-        {{ govukButton({
-          html: t("actions::remove_item", {
-            name: itemName | lower,
-            index: loop.index
-          }),
-          classes: "moj-add-another__remove-button govuk-button--secondary",
-          name: "multiple-action",
-          value: "remove::" + params.name + "::" + loop.index0
-        }) }}
-      </div>
-    {% endif %}
+  {% if item.html or item.text %}
+    {% call govukFieldset({
+      classes: 'moj-add-another__item app-!-position-relative',
+      legend: {
+        html: itemName + ' <span data-content="index">' + loop.index + '</span>',
+        classes: 'govuk-fieldset__legend--m',
+        isPageHeading: false
+      }
+    }) %}
+      {% if not params.minItems or items.length > params.minItems %}
+        <div class="app-add-another__remove-item">
+          {{ govukButton({
+            html: t("actions::remove_item", {
+              name: itemName | lower,
+              index: loop.index
+            }),
+            classes: "moj-add-another__remove-button govuk-button--secondary",
+            name: "multiple-action",
+            value: "remove::" + params.name + "::" + loop.index0
+          }) }}
+        </div>
+      {% endif %}
 
-    {{ item.html | safe if item.html else item.text }}
-  {% endcall %}
+      {{ item.html | safe if item.html else item.text }}
+    {% endcall %}
+  {% endif %}
 {% endfor %}
 
 

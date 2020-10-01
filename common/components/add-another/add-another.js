@@ -1,31 +1,11 @@
 const MOJFrontend = require('@ministryofjustice/frontend/moj/all')
 const { initAll } = require('govuk-frontend')
 
-MOJFrontend.AddAnother.prototype.setItemsLength = function () {
-  let itemsLength = this.container.find('[name="js-items-length"')
-
-  if (!itemsLength.length) {
-    this.container.append('<input type="hidden" name="js-items-length">')
-    itemsLength = this.container.find('[name="js-items-length"')
-  }
-
-  itemsLength.val(this.getItems().length)
-}
-
 const _onAddButtonClick = MOJFrontend.AddAnother.prototype.onAddButtonClick
 
 MOJFrontend.AddAnother.prototype.onAddButtonClick = function (e) {
   _onAddButtonClick.apply(this, [e])
-  this.setItemsLength()
   initAll()
-}
-
-const _onRemoveButtonClick =
-  MOJFrontend.AddAnother.prototype.onRemoveButtonClick
-
-MOJFrontend.AddAnother.prototype.onRemoveButtonClick = function (e) {
-  _onRemoveButtonClick.apply(this, [e])
-  this.setItemsLength()
 }
 
 MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
