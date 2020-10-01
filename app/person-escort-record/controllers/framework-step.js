@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash')
+const { isEmpty, fromPairs } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
@@ -109,6 +109,17 @@ class FrameworkStepController extends FormWizardController {
     }
 
     super.successHandler(req, res, next)
+  }
+
+  render(req, res, next) {
+    const { responses } = req.personEscortRecord || {}
+    const fields = Object.entries(req.form.options.fields).map(
+      frameworksHelpers.renderNomisMappingsToField(responses)
+    )
+
+    req.form.options.fields = fromPairs(fields)
+
+    super.render(req, res, next)
   }
 }
 

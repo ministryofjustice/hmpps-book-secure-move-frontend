@@ -540,5 +540,84 @@ describe('Person Escort Record controllers', function () {
         })
       })
     })
+
+    describe('#render', function () {
+      let reqMock, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        sinon.stub(FormWizardController.prototype, 'render')
+        sinon
+          .stub(frameworksHelpers, 'renderNomisMappingsToField')
+          .callsFake(() => ([key, field]) => {
+            return [key, { ...field, renderNOMISInfo: true }]
+          })
+
+        reqMock = {
+          personEscortRecord: {
+            responses: [
+              {
+                id: '1',
+                value: 'one',
+              },
+              {
+                id: '2',
+                value: 'two',
+              },
+              {
+                id: '3',
+                value: 'three',
+              },
+            ],
+          },
+          form: {
+            options: {
+              fields: {
+                field_1: {
+                  name: 'Field 1',
+                },
+                field_2: {
+                  name: 'Field 2',
+                },
+                field_3: {
+                  name: 'Field 3',
+                },
+              },
+            },
+          },
+        }
+
+        controller.render(reqMock, {}, nextSpy)
+      })
+
+      it('should call renderNomisMappingsToField on each field', function () {
+        expect(
+          frameworksHelpers.renderNomisMappingsToField
+        ).to.be.calledOnceWithExactly(reqMock.personEscortRecord.responses)
+      })
+
+      it('should mutate fields object', function () {
+        expect(reqMock.form.options.fields).to.deep.equal({
+          field_1: {
+            renderNOMISInfo: true,
+            name: 'Field 1',
+          },
+          field_2: {
+            renderNOMISInfo: true,
+            name: 'Field 2',
+          },
+          field_3: {
+            renderNOMISInfo: true,
+            name: 'Field 3',
+          },
+        })
+      })
+
+      it('should call parent render method', function () {
+        expect(
+          FormWizardController.prototype.render
+        ).to.be.calledOnceWithExactly(reqMock, {}, nextSpy)
+      })
+    })
   })
 })
