@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.46.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.45.1...v2.46.0) (2020-10-01)
+
+
+### Features
+
+* **move:** Grant OCA user ability to move from prison to SCH and STC ([c7a0a92](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c7a0a92d4455cec49b3b9e9fe7c5283472656504))
+* Restore cancel moves and proposed moves for STC & SCH roles ([22df00d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/22df00d348d5e7f0e8eadcbf83b5cd1522f716c5))
+
 ### [2.45.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.45.0...v2.45.1) (2020-09-24)
 
 ## [2.45.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.44.4...v2.45.0) (2020-09-24)
