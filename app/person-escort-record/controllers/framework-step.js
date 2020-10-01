@@ -93,10 +93,6 @@ class FrameworkStepController extends FormWizardController {
       // call parent saveValues to handle storing new values in the session
       super.saveValues(req, res, next)
     } catch (error) {
-      if (req.body['js-items-length']) {
-        return res.redirect(req.originalUrl)
-      }
-
       next(error)
     }
   }

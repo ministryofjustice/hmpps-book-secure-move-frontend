@@ -20,23 +20,26 @@ class FormController extends Controller {
 
   setupArbitraryMultipleFields(req, res, next) {
     if (req.method === 'POST') {
-      const jsItemsProperty = req.body['js-items-property']
-      const jsItemsLength = req.body['js-items-length']
+      const addAnotherProps = Object.keys(req.form.options.fields).filter(
+        key => req.form.options.fields[key].component === 'appAddAnother'
+      )
 
-      if (jsItemsProperty && jsItemsLength !== undefined) {
-        const values = req.sessionModel.toJSON()
-        const itemsLength = Number(jsItemsLength)
+      const values = req.sessionModel.toJSON()
+
+      addAnotherProps.forEach(fieldName => {
+        const itemsLength = req.body[fieldName].length
 
         // add items
-        while (values[jsItemsProperty].length < itemsLength) {
-          values[jsItemsProperty].push({})
+        while (values[fieldName].length < itemsLength) {
+          req.multipleFieldAdded = true
+          values[fieldName].push({})
         }
 
         // remove items
-        values[jsItemsProperty].length = itemsLength
+        values[fieldName].length = itemsLength
+      })
 
-        req.sessionModel.set(values)
-      }
+      req.sessionModel.set(values)
     }
 
     next()

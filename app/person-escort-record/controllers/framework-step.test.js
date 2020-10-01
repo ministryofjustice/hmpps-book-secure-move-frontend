@@ -457,42 +457,6 @@ describe('Person Escort Record controllers', function () {
         })
       })
 
-      context(
-        'when service rejects with error but is a js items call',
-        function () {
-          const error = new Error()
-          const mockReqWithJsItems = {
-            ...mockReq,
-            body: {
-              'js-items-length': '2',
-            },
-            originalUrl: '/original/url',
-          }
-          const mockRes = {}
-
-          beforeEach(async function () {
-            responseService.update.rejects(error)
-            mockRes.redirect = sinon.stub()
-
-            await controller.saveValues(mockReqWithJsItems, mockRes, nextSpy)
-          })
-
-          it('should not call the super method', function () {
-            expect(FormWizardController.prototype.saveValues).to.not.be.called
-          })
-
-          it('should not call next with the error', function () {
-            expect(nextSpy).to.not.be.called
-          })
-
-          it('should redirect to self', function () {
-            expect(mockRes.redirect).to.be.calledOnceWithExactly(
-              mockReqWithJsItems.originalUrl
-            )
-          })
-        }
-      )
-
       describe('dependent field filtering', function () {
         const mockResponsesWithDependents = [
           {
