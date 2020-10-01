@@ -15,6 +15,10 @@ describe('Presenters', function () {
         .returns('No details')
         .withArgs('created_on')
         .returns('Created on')
+        .withArgs('started_on')
+        .returns('Started on')
+        .withArgs('and_ended_on')
+        .returns('and ended on')
       sinon.stub(filters, 'formatDateWithDay').returns(mockFormatDateWithDay)
     })
 
@@ -68,18 +72,20 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html: '<div>Lorem ipsum dolor sit amet.</div>',
+              html:
+                '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet.</span></div>',
             },
           },
           {
             value: {
               html:
-                '<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>',
+                '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
             },
           },
           {
             value: {
-              html: '<div>Comments</div>',
+              html:
+                '<div><span class="app-!-text-colour-black">Comments</span></div>',
             },
           },
         ])
@@ -110,7 +116,7 @@ describe('Presenters', function () {
           {
             value: {
               html:
-                '<div>\n      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>',
+                '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
             },
           },
         ])
@@ -148,7 +154,7 @@ describe('Presenters', function () {
           expect(transformedResponse.items).to.deep.equal([
             {
               value: {
-                html: `<div>\n      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    Some details\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+                html: `<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Some details</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
               },
             },
           ])
@@ -230,17 +236,93 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html: `<div>\n      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    Lorem ipsum dolor sit amet.\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+              html: `<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Lorem ipsum dolor sit amet.</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
             },
           },
           {
             value: {
-              html: `<div>\n      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Governors Hold\n      </h4>\n    Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+              html: `<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Governors Hold\n      </h4>\n    <span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
             },
           },
           {
             value: {
-              html: `<div>\n      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to themselves\n      </h4>\n    <span class="app-secondary-text-colour">No details</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+              html: `<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to themselves\n      </h4>\n    <span class="app-secondary-text-colour">No details</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+            },
+          },
+        ])
+      })
+    })
+
+    context('with framework response NOMIS alert', function () {
+      const mockAssessmentAnswers = [
+        {
+          assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+          category: 'risk',
+          comments: 'Some details',
+          code_description: 'Risk to Public - Community',
+          creation_date: '2019-08-08',
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = assessmentAnswersToMetaListComponent(
+          mockAssessmentAnswers
+        )
+      })
+
+      it('should format date', function () {
+        expect(filters.formatDateWithDay).to.have.been.calledOnceWithExactly(
+          '2019-08-08'
+        )
+      })
+
+      it('should include date', function () {
+        expect(transformedResponse).to.contain.property('items')
+        expect(transformedResponse.items).to.deep.equal([
+          {
+            value: {
+              html: `<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Some details</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Created on ${mockFormatDateWithDay}\n      </div>\n    </div>`,
+            },
+          },
+        ])
+      })
+    })
+
+    context('with framework response NOMIS personal care need', function () {
+      const mockAssessmentAnswers = [
+        {
+          assessment_question_id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+          category: 'health',
+          comments: 'Baby boy',
+          code_description: 'Pregnant',
+          start_date: '2019-01-01',
+          end_date: '2019-09-01',
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = assessmentAnswersToMetaListComponent(
+          mockAssessmentAnswers
+        )
+      })
+
+      it('should format dates', function () {
+        expect(filters.formatDateWithDay).to.have.been.calledTwice
+        expect(filters.formatDateWithDay).to.have.been.calledWithExactly(
+          '2019-01-01'
+        )
+        expect(filters.formatDateWithDay).to.have.been.calledWithExactly(
+          '2019-09-01'
+        )
+      })
+
+      it('should include date', function () {
+        expect(transformedResponse).to.contain.property('items')
+        expect(transformedResponse.items).to.deep.equal([
+          {
+            value: {
+              html:
+                '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Pregnant\n      </h4>\n    <span class="app-!-text-colour-black">Baby boy</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Started on Mon 10 Aug\n        and ended on Mon 10 Aug\n      </div>\n    </div>',
             },
           },
         ])

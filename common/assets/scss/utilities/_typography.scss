@@ -1,5 +1,8 @@
 .app-secondary-text-colour {
-  color: $govuk-secondary-text-colour
+  color: $govuk-secondary-text-colour;
+}
+.app-\!-text-colour-black {
+  color: $govuk-text-colour !important;
 }
 .app-font-weight-normal {
   font-weight: normal;
