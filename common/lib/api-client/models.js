@@ -67,6 +67,7 @@ module.exports = {
         'profile.person_escort_record.responses',
         'profile.person_escort_record.responses.question',
         'profile.person_escort_record.responses.question.descendants.**',
+        'profile.person_escort_record.responses.nomis_mappings',
         'profile.person_escort_record.flags',
         'profile.person',
         'profile.person.ethnicity',
@@ -389,8 +390,13 @@ module.exports = {
   person_escort_record: {
     fields: {
       status: '',
+      created_at: '',
       confirmed_at: '',
       version: '',
+      move: {
+        jsonApi: 'hasOne',
+        type: 'moves',
+      },
       profile: {
         jsonApi: 'hasOne',
         type: 'profiles',
@@ -416,6 +422,7 @@ module.exports = {
         'responses',
         'responses.question',
         'responses.question.descendants.**',
+        'responses.nomis_mappings',
         'flags',
       ],
     },
@@ -475,9 +482,25 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'framework_flags',
       },
+      nomis_mappings: {
+        jsonApi: 'hasMany',
+        type: 'framework_nomis_mappings',
+      },
     },
     options: {
       defaultInclude: ['person_escort_record', 'question'],
+    },
+  },
+  framework_nomis_mapping: {
+    fields: {
+      code: '',
+      code_type: '',
+      code_description: '',
+      comments: '',
+      start_date: '',
+      end_date: '',
+      creation_date: '',
+      expiry_date: '',
     },
   },
 }
