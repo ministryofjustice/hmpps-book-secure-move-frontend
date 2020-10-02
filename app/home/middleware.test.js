@@ -1,4 +1,4 @@
-const controllers = require('./index')
+const controllers = require('./middleware')
 
 describe('Home middleware', function () {
   describe('movesRedirect()', function () {

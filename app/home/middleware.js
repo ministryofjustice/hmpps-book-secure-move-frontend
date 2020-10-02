@@ -1,6 +1,4 @@
-const { get } = require('lodash')
-
-const permissions = require('../../../common/middleware/permissions')
+const permissions = require('../../common/middleware/permissions')
 
 function movesRedirect(req, res, next) {
   // TODO: Remove this once we enable the dashboard for all users
@@ -14,12 +12,6 @@ function movesRedirect(req, res, next) {
   next()
 }
 
-function setUserLocations(req, res, next) {
-  req.userLocations = get(req.session, 'user.locations', [])
-  next()
-}
-
 module.exports = {
   movesRedirect,
-  setUserLocations,
 }

@@ -1,6 +1,4 @@
-const { sortBy } = require('lodash')
-
-const dateHelpers = require('../../../common/helpers/date')
+const dateHelpers = require('../../common/helpers/date')
 
 function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
@@ -33,16 +31,9 @@ function dashboard(req, res) {
     },
   }
 
-  const userLocations = req.userLocations
-  const population = sortBy(userLocations, 'title')
-
-  console.log(population)
-  // const population = []
-
   res.render('home/dashboard', {
     pageTitle: 'dashboard::page_title',
     sections,
-    population,
     capacitiesAsTable: req.capacitiesAsTable,
     currentWeek,
     today,
