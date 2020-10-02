@@ -35,4 +35,30 @@
       {% endif %}
     {% endfor %}
   </div>
+
+{#and canAccess("dashboard:pmu")#}
+  {% if population | length  %}
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+        {{ t("dashboard::population.heading") }}
+
+        <span class="govuk-!-display-block">
+            {% if section.period === 'week' %}
+              {{ currentWeek | formatDateRangeWithRelativeWeek }}
+            {% else %}
+              {{ today | formatDateWithRelativeDay }}
+            {% endif %}
+            </span>
+      </h2>
+
+      {{ govukTable(capacitiesAsTable) }}
+
+    </section>
+
+
+  </div>
+
+{% endif %}
+
 {% endblock %}

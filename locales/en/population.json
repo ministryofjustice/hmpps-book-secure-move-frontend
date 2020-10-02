@@ -1,0 +1,13 @@
+{
+  "freespace": {
+    "title": "Free spaces",
+    "blurb": "Projected free paced based on the figures provided in this page, along with transfers in and out",
+    "lastUpdated": "Last updated {day}, {time}",
+    "button": {
+      "update": "Update numbers"
+    }
+  },
+  "transfers": {
+    "title": "Transfers today"
+  }
+}

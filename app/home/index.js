@@ -12,10 +12,11 @@ const {
   setFilterMoves,
   setFilterSingleRequests,
 } = require('../moves/middleware')
+const { setResultsPopulation } = require('../population/middleware')
 
 const { FILTERS } = require('./constants')
 const { dashboard } = require('./controllers')
-const { movesRedirect } = require('./middleware')
+const { movesRedirect, setUserLocations } = require('./middleware')
 
 // Define routes
 router.get(
@@ -29,6 +30,8 @@ router.get(
   setFilterMoves(FILTERS.incoming, 'incoming'),
   setFilterSingleRequests(FILTERS.requested),
   setFilterAllocations(FILTERS.allocations),
+  setUserLocations,
+  setResultsPopulation,
   dashboard
 )
 

@@ -1,0 +1,104 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t(pageTitle) }}
+    </h1>
+  </header>
+
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+        {{ t("dashboard::population.heading") }}
+
+        <span class="govuk-!-display-block">
+                {{ currentWeek | formatDateRangeWithRelativeWeek }}
+              </span>
+      </h2>
+
+      <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold" data-location-type="locations">
+        {% for location in population %}
+          <li>
+            {{ location.title }}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  {#and canAccess("dashboard:pmu")#}
+  {% if capacitiesAsTable | length  %}
+
+    {{ govukTable(capacitiesAsTable) }}
+
+    {#    {% from "govuk/components/table/macro.njk" import govukTable %}#}
+
+    {{ govukTable({
+      caption: "Category C",
+      firstCellIsHeader: true,
+      head: [
+        {
+          text: "Establishment"
+        },
+        {
+          text: "Mon 10"
+        },
+        {
+          text: "Tue 11"
+        },
+        {
+          text: "Wed 12"
+        },
+        {
+          text: "Thu 13"
+        },
+        {
+          text: "Fri 14"
+        }
+      ],
+      rows: [
+        [
+          {
+            text: "Brixton"
+          },
+          {
+            text: "10 spaces"
+          },
+          {
+            text: "1 space"
+          },
+          {
+            text: "-2 spaces"
+          },
+          {
+            text: "Add"
+          },
+          {
+            text: "Add"
+          }
+        ]
+      ]
+    })
+    }}
+
+
+    {{ govukTable({}) }}
+    {% set html %}
+      resultsAsTable
+    {{ govukTable(population) }}
+    {% endset %}
+    {% set html %}
+    {{ govukTable(capacitiesAsTable) }}
+    {% endset %}
+
+  </div>
+
+{#    {%   include "../../common/templates/collection-as-table.njk"%}#}
+{% endif %}
+
+{% endblock %}

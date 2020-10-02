@@ -1,4 +1,4 @@
-const controllers = require('./controllers')
+const controllers = require('./index')
 
 describe('Home controllers', function () {
   describe('#dashboard()', function () {
@@ -47,7 +47,8 @@ describe('Home controllers', function () {
           'pageTitle',
           'sections',
           'currentWeek',
-          'today'
+          'today',
+          'population'
         )
         expect(params.pageTitle).to.equal('dashboard::page_title')
         expect(params.sections).to.have.all.keys(sections)
