@@ -8,7 +8,7 @@ class FormController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setInitialValues)
-    this.use(this.setupArbitraryMultipleFields)
+    this.use(this.setupAddMultipleFieldsValues)
     this.use(this.setupAddMultipleFields)
     this.use(this.setupConditionalFields)
     this.use(this.setFieldContext)
@@ -18,29 +18,21 @@ class FormController extends Controller {
     next()
   }
 
-  setupArbitraryMultipleFields(req, res, next) {
-    if (req.method === 'POST') {
-      const addAnotherProps = Object.keys(req.form.options.fields).filter(
-        key => req.form.options.fields[key].component === 'appAddAnother'
-      )
+  setupAddMultipleFieldsValues(req, res, next) {
+    const values = req.sessionModel.toJSON()
 
-      const values = req.sessionModel.toJSON()
+    const addAnotherProps = Object.keys(req.form.options.fields).filter(
+      key => req.form.options.fields[key].component === 'appAddAnother'
+    )
 
-      addAnotherProps.forEach(fieldName => {
-        const itemsLength = req.body[fieldName].length
+    addAnotherProps.forEach(fieldName => {
+      const fieldValues =
+        req.body?.[fieldName] || values.errorValues?.[fieldName]
 
-        // add items
-        while (values[fieldName].length < itemsLength) {
-          req.multipleFieldAdded = true
-          values[fieldName].push({})
-        }
-
-        // remove items
-        values[fieldName].length = itemsLength
-      })
-
-      req.sessionModel.set(values)
-    }
+      if (fieldValues) {
+        req.sessionModel.set(fieldName, fieldValues)
+      }
+    })
 
     next()
   }

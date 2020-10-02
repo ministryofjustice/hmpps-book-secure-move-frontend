@@ -13,7 +13,7 @@ describe('Form wizard', function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
       sinon.stub(controller, 'use')
       sinon.stub(controller, 'setInitialValues')
-      sinon.stub(controller, 'setupArbitraryMultipleFields')
+      sinon.stub(controller, 'setupAddMultipleFieldsValues')
       sinon.stub(controller, 'setupAddMultipleFields')
       sinon.stub(controller, 'setupConditionalFields')
       sinon.stub(controller, 'setFieldContext')
@@ -33,7 +33,7 @@ describe('Form wizard', function () {
 
     it('should setup handling of arbitrary multiple fields', function () {
       expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
-        controller.setupArbitraryMultipleFields
+        controller.setupAddMultipleFieldsValues
       )
     })
 
@@ -60,7 +60,7 @@ describe('Form wizard', function () {
     })
   })
 
-  describe('#setupArbitraryMultipleFields()', function () {
+  describe('#setupAddMultipleFieldsValues()', function () {
     let req
     let next
     beforeEach(function () {
@@ -74,12 +74,8 @@ describe('Form wizard', function () {
             },
           },
         },
-        method: 'POST',
-        body: {
-          foo: [{}, {}],
-        },
         sessionModel: {
-          toJSON: sinon.stub().returns({ foo: [{ id: 1 }, { id: 2 }] }),
+          toJSON: sinon.stub().returns({}),
           set: sinon.stub(),
         },
       }
@@ -87,63 +83,65 @@ describe('Form wizard', function () {
     })
 
     context('When called', function () {
+      beforeEach(function () {
+        controller.setupAddMultipleFieldsValues(req, {}, next)
+      })
       it('shoud invoke the next method', function () {
-        controller.setupArbitraryMultipleFields(req, {}, next)
         expect(next).to.be.calledOnceWithExactly()
       })
-    })
-    context('When no arbitrary items have been found', function () {
-      it('shoud not adjust the stored values', function () {
-        controller.setupArbitraryMultipleFields(req, {}, next)
-        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
-        // expect(req.sessionModel.set).to.not.be.called
-      })
-    })
 
-    context('When the method is not POST', function () {
-      beforeEach(function () {
-        req.method = 'GET'
-        controller.setupArbitraryMultipleFields(req, {}, next)
-      })
-
-      it('shoud not adjust the stored values', function () {
-        controller.setupArbitraryMultipleFields(req, {}, next)
-        expect(req.sessionModel.toJSON).to.not.be.called
+      it('shoud not update the session model', function () {
         expect(req.sessionModel.set).to.not.be.called
       })
     })
 
-    context('When more arbitrary items have been passed', function () {
+    context('When body contains values for component', function () {
       beforeEach(function () {
-        req.body.foo = [{}, {}, {}]
-        controller.setupArbitraryMultipleFields(req, {}, next)
+        req.body = {
+          foo: [{ id: 1 }],
+        }
+        controller.setupAddMultipleFieldsValues(req, {}, next)
       })
 
-      it('shoud fetch the stored values', function () {
-        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
-      })
-
-      it('shoud adjust the stored values', function () {
-        expect(req.sessionModel.set).to.be.calledOnceWithExactly({
-          foo: [{ id: 1 }, { id: 2 }, {}],
-        })
+      it('shoud update the session model', function () {
+        expect(req.sessionModel.set).to.be.calledOnceWithExactly('foo', [
+          { id: 1 },
+        ])
       })
     })
 
-    context('When fewer arbitrary items have been passed', function () {
-      beforeEach(function () {
-        req.body.foo = [{}]
-        controller.setupArbitraryMultipleFields(req, {}, next)
-      })
-
-      it('shoud fetch the stored values', function () {
-        expect(req.sessionModel.toJSON).to.be.calledOnceWithExactly()
-      })
-
-      it('shoud adjust the stored values', function () {
-        expect(req.sessionModel.set).to.be.calledOnceWithExactly({
-          foo: [{ id: 1 }],
+    context(
+      'When session model’s errorValues contains values for component',
+      function () {
+        beforeEach(function () {
+          req.sessionModel.toJSON.returns({
+            errorValues: { foo: [{ id: 1 }] },
+          })
+          controller.setupAddMultipleFieldsValues(req, {}, next)
         })
+
+        it('shoud update the session model', function () {
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly('foo', [
+            { id: 1 },
+          ])
+        })
+      }
+    )
+
+    context('When component is not of type appAddAnother', function () {
+      beforeEach(function () {
+        req.form.options.fields.foo.component = 'appAnotherComponent'
+        req.body = {
+          foo: [{ id: 1 }],
+        }
+        req.sessionModel.toJSON.returns({
+          errorValues: { foo: [{ id: 1 }] },
+        })
+        controller.setupAddMultipleFieldsValues(req, {}, next)
+      })
+
+      it('shoud not update the session model', function () {
+        expect(req.sessionModel.set).to.not.be.called
       })
     })
   })
