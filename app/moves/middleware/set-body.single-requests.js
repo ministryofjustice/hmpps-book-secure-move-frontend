@@ -7,11 +7,13 @@ function setBodySingleRequests(req, res, next) {
   const { dateRange } = req.params
   const locations = req.locations
 
+  const dateTypeRange = dateRange || dateHelpers.getCurrentWeekAsRange()
+
   set(req, 'body.requested', {
     status,
     sortBy,
     sortDirection,
-    createdAtDate: dateRange || dateHelpers.getCurrentWeekAsRange(),
+    createdAtDate: dateTypeRange,
     fromLocationId: locations,
   })
 
