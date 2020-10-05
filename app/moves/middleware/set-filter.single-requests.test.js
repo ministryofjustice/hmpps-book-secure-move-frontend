@@ -37,6 +37,7 @@ describe('Moves middleware', function () {
           path: '/week/2010-09-07/123',
           body: {
             requested: {
+              dateRange: mockDateRange,
               createdAtDate: mockDateRange,
               fromLocationId: mockLocationId,
               status: 'pending',
@@ -84,7 +85,7 @@ describe('Moves middleware', function () {
           expect(singleRequestService.getAll).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'approved',
-            createdAtDate: mockDateRange,
+            moveDate: mockDateRange,
             fromLocationId: mockLocationId,
           })
           expect(singleRequestService.getAll).to.have.been.calledWithExactly({
