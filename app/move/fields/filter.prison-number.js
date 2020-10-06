@@ -12,6 +12,9 @@ const filterPrisonNumber = {
     html: 'fields::filter.prison_number.label',
     classes: 'govuk-label--s',
   },
+  hint: {
+    text: 'fields::filter.prison_number.hint',
+  },
   validate: ['required', validators.prisonNumber],
 }
 
