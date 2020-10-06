@@ -14,45 +14,50 @@ const getItemFilterHref = (req, status, href) => {
   return `${href}?${query}`
 }
 
+const getItemFilterPromise = (item, req, requested) => {
+  const { status, label } = item
+  const href = getItemFilterHref(req, status, item.href)
+  const { dateRangeType, surplusDateRangeType } = getDateRangeTypeKeys(status)
+  const itemRequested = omitBy(
+    {
+      ...requested,
+      [dateRangeType]: requested.dateRange,
+      [surplusDateRangeType]: undefined,
+      dateRange: undefined,
+      isAggregation: true,
+      status,
+    },
+    isUndefined
+  )
+
+  return singleRequestService.getAll(itemRequested).then(value => ({
+    value,
+    label: i18n.t(label).toLowerCase(),
+    active: status === requested.status,
+    href,
+  }))
+}
+
+const getDateRangeTypeKeys = status => {
+  let dateRangeType = 'createdAtDate'
+  let surplusDateRangeType = 'moveDate'
+
+  if (status === 'approved') {
+    ;[dateRangeType, surplusDateRangeType] = [
+      surplusDateRangeType,
+      dateRangeType,
+    ]
+  }
+
+  return { dateRangeType, surplusDateRangeType }
+}
+
 function setfilterSingleRequests(items = []) {
   return async function buildFilter(req, res, next) {
     const requested = req?.body?.requested || {}
-    const requestedStatus = requested.status
-    const promises = items.map(item => {
-      const { status, label } = item
-      const href = getItemFilterHref(req, status, item.href)
-
-      let dateRangeType = 'createdAtDate'
-      let surplusDateRangeType = 'moveDate'
-
-      if (status === 'approved') {
-        ;[dateRangeType, surplusDateRangeType] = [
-          surplusDateRangeType,
-          dateRangeType,
-        ]
-      }
-
-      const itemRequested = omitBy(
-        {
-          ...requested,
-          [dateRangeType]: requested.dateRange,
-          [surplusDateRangeType]: undefined,
-          dateRange: undefined,
-          isAggregation: true,
-          status,
-        },
-        isUndefined
-      )
-
-      return singleRequestService.getAll(itemRequested).then(value => {
-        return {
-          value,
-          label: i18n.t(label).toLowerCase(),
-          active: status === requestedStatus,
-          href,
-        }
-      })
-    })
+    const promises = items.map(item =>
+      getItemFilterPromise(item, req, requested)
+    )
 
     try {
       const filter = await Promise.all(promises)
