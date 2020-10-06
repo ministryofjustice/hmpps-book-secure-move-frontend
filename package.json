@@ -162,7 +162,7 @@
     "faker": "5.1.0",
     "file-loader": "6.1.0",
     "finepack": "2.10.5",
-    "git-authors-cli": "1.0.28",
+    "git-authors-cli": "1.0.29",
     "glob": "7.1.6",
     "husky": "4.3.0",
     "imagemin-webpack-plugin": "2.4.2",
