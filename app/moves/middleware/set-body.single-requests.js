@@ -3,15 +3,23 @@ const { set } = require('lodash')
 const dateHelpers = require('../../../common/helpers/date')
 
 function setBodySingleRequests(req, res, next) {
-  const { status, sortBy, sortDirection } = req.query
+  const { status } = req.query
+  const useMoveDate = status === 'approved'
+  const {
+    sortBy = useMoveDate ? 'date' : undefined,
+    sortDirection = useMoveDate ? 'asc' : undefined,
+  } = req.query
   const { dateRange } = req.params
   const locations = req.locations
+  const dateType = useMoveDate ? 'moveDate' : 'createdAtDate'
+  const dateTypeRange = dateRange || dateHelpers.getCurrentWeekAsRange()
 
   set(req, 'body.requested', {
     status,
     sortBy,
     sortDirection,
-    createdAtDate: dateRange || dateHelpers.getCurrentWeekAsRange(),
+    [dateType]: dateTypeRange,
+    dateRange: dateTypeRange,
     fromLocationId: locations,
   })
 

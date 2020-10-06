@@ -1,36 +1,62 @@
-const { get, omitBy, isUndefined } = require('lodash')
+const { omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
 const singleRequestService = require('../../../common/services/single-request')
 const i18n = require('../../../config/i18n')
 
+const getItemFilterHref = (req, status, href) => {
+  href = href || `${req.baseUrl}${req.path}`
+  const query = querystring.stringify({
+    ...req.query,
+    status,
+  })
+
+  return `${href}?${query}`
+}
+
+const getItemFilterPromise = (item, req, requested) => {
+  const { status, label } = item
+  const href = getItemFilterHref(req, status, item.href)
+  const { dateRangeType, surplusDateRangeType } = getDateRangeTypeKeys(status)
+  const itemRequested = omitBy(
+    {
+      ...requested,
+      [dateRangeType]: requested.dateRange,
+      [surplusDateRangeType]: undefined,
+      dateRange: undefined,
+      isAggregation: true,
+      status,
+    },
+    isUndefined
+  )
+
+  return singleRequestService.getAll(itemRequested).then(value => ({
+    value,
+    label: i18n.t(label).toLowerCase(),
+    active: status === requested.status,
+    href,
+  }))
+}
+
+const getDateRangeTypeKeys = status => {
+  let dateRangeType = 'createdAtDate'
+  let surplusDateRangeType = 'moveDate'
+
+  if (status === 'approved') {
+    ;[dateRangeType, surplusDateRangeType] = [
+      surplusDateRangeType,
+      dateRangeType,
+    ]
+  }
+
+  return { dateRangeType, surplusDateRangeType }
+}
+
 function setfilterSingleRequests(items = []) {
   return async function buildFilter(req, res, next) {
+    const requested = req?.body?.requested || {}
     const promises = items.map(item =>
-      singleRequestService
-        .getAll(
-          omitBy(
-            {
-              ...get(req, 'body.requested', {}),
-              isAggregation: true,
-              status: item.status,
-            },
-            isUndefined
-          )
-        )
-        .then(value => {
-          const query = querystring.stringify({
-            ...req.query,
-            status: item.status,
-          })
-
-          return {
-            value,
-            label: i18n.t(item.label).toLowerCase(),
-            active: item.status === get(req, 'body.requested.status'),
-            href: `${item.href || req.baseUrl + req.path}?${query}`,
-          }
-        })
+      getItemFilterPromise(item, req, requested)
     )
 
     try {
