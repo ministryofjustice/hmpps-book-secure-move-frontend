@@ -119,7 +119,7 @@
     "path-to-regexp": "6.2.0",
     "pluralize": "8.0.0",
     "qs": "6.9.4",
-    "query-string": "6.13.2",
+    "query-string": "6.13.5",
     "redis": "3.0.2",
     "response-time": "2.3.2",
     "semver-sort": "0.0.4",
