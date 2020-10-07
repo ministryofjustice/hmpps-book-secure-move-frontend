@@ -2,10 +2,17 @@ const MOJFrontend = require('@ministryofjustice/frontend/moj/all')
 const { initAll } = require('govuk-frontend')
 
 const _onAddButtonClick = MOJFrontend.AddAnother.prototype.onAddButtonClick
+const _onRemoveButtonClick =
+  MOJFrontend.AddAnother.prototype.onRemoveButtonClick
 
 MOJFrontend.AddAnother.prototype.onAddButtonClick = function (e) {
   _onAddButtonClick.apply(this, [e])
   initAll()
+}
+
+MOJFrontend.AddAnother.prototype.onRemoveButtonClick = function (e) {
+  $('.govuk-error-summary').remove()
+  _onRemoveButtonClick.apply(this, [e])
 }
 
 MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
@@ -14,7 +21,7 @@ MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
     el.name = $el.attr('data-name').replace(/%index%/, index)
     el.id = $el.attr('data-id').replace(/%index%/, index)
 
-    // Book a secyre move changes to this method from here
+    // Book a secure move changes to this method from here
     var label = $el.siblings('label')[0] || $el.parents('label')[0]
 
     if (label) {
