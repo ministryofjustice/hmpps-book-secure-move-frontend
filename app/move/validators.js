@@ -30,7 +30,7 @@ module.exports = {
   prisonNumber(value) {
     return (
       value === '' ||
-      Controller.validators.regex(value, /^[A-Z][0-9]{4}[A-Z]{2}$/)
+      Controller.validators.regex(value, /^[A-Z][0-9]{4}[A-Z]{2}$/i)
     )
   },
 }

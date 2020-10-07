@@ -9,7 +9,7 @@
     },
     "prison_number": {
       "label": "Prison number",
-      "hint": "For example, 'A1234AB'"
+      "hint": "For example, ‘A1234AB’"
     }
   },
   "people": {
