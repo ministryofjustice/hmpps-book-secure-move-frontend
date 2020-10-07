@@ -134,3 +134,33 @@ describe('Validators', function () {
     })
   })
 })
+
+describe('#prisonNumber()', function () {
+  describe('invalid values', function () {
+    const inputs = [
+      796507,
+      '796507',
+      null,
+      'AA/BBBBBB',
+      'AA/183716',
+      'ABCDEF',
+      'A12345BC',
+    ]
+
+    inputs.forEach(i => {
+      it(`test for: "${i}"`, function () {
+        expect(validators.prisonNumber(i)).not.to.be.ok
+      })
+    })
+  })
+
+  describe('valid values', function () {
+    const inputs = ['', 'A1234BC']
+
+    inputs.forEach(i => {
+      it(`test for: "${i}"`, function () {
+        expect(validators.prisonNumber(i)).to.be.ok
+      })
+    })
+  })
+})

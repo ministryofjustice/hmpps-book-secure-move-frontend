@@ -8,7 +8,8 @@
       "label": "Police National Computer (PNC) number"
     },
     "prison_number": {
-      "label": "Prison number"
+      "label": "Prison number",
+      "hint": "For example, 'A1234AB'"
     }
   },
   "people": {
