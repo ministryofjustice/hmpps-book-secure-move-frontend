@@ -9,41 +9,45 @@
 {% set itemName = params.itemName or t("item") %}
 {% set items = params.items %}
 
-{% for item in items %}
-  {% call govukFieldset({
-    classes: 'app-!-position-relative',
-    legend: {
-      text: itemName + " " + loop.index,
-      classes: 'govuk-fieldset__legend--m',
-      isPageHeading: false
-    }
-  }) %}
-    {% if not params.minItems or items.length > params.minItems %}
-      <div class="app-add-another__remove-item">
-        {{ govukButton({
-          html: t("actions::remove_item", {
-            name: itemName | lower,
-            index: loop.index
-          }),
-          classes: "govuk-button--secondary app-!-position-top-right",
-          name: "multiple-action",
-          value: "remove::" + params.name + "::" + loop.index0
-        }) }}
-      </div>
+<div class="moj-add-another">
+  {% for item in items %}
+    {% if item.html or item.text %}
+      {% call govukFieldset({
+        classes: 'moj-add-another__item app-!-position-relative',
+        legend: {
+          html: itemName + ' <span data-content="index">' + loop.index + '</span>',
+          classes: 'govuk-fieldset__legend--m',
+          isPageHeading: false
+        }
+      }) %}
+        {% if not params.minItems or items.length > params.minItems %}
+          <div class="app-add-another__remove-item">
+            {{ govukButton({
+              html: t("actions::remove_item", {
+                name: itemName | lower,
+                index: loop.index
+              }),
+              classes: "moj-add-another__remove-button govuk-button--secondary",
+              name: "multiple-action",
+              value: "remove::" + params.name + "::" + loop.index0
+            }) }}
+          </div>
+        {% endif %}
+
+        {{ item.html | safe if item.html else item.text }}
+      {% endcall %}
     {% endif %}
+  {% endfor %}
 
-    {{ item.html | safe if item.html else item.text }}
-  {% endcall %}
-{% endfor %}
-
-<div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
-  {{ govukButton({
-    text: t("actions::add_item", {
-      context: "with_items" if items.length > 0,
-      name: itemName | lower
-    }),
-    classes: "govuk-button--secondary",
-    name: "multiple-action",
-    value: "add::" + params.name
-  }) }}
+  <div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
+    {{ govukButton({
+      text: t("actions::add_item", {
+        context: "with_items" if items.length > 0,
+        name: itemName | lower
+      }),
+      classes: "moj-add-another__add-button govuk-button--secondary",
+      name: "multiple-action",
+      value: "add::" + params.name
+    }) }}
+  </div>
 </div>

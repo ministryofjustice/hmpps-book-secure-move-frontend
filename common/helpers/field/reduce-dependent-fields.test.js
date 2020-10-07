@@ -82,6 +82,10 @@ describe('Field helpers', function () {
                 id: 'conditionalField1',
                 name: 'conditionalField1',
                 skip: true,
+                attributes: {
+                  'data-id': 'conditionalField1',
+                  'data-name': 'conditionalField1',
+                },
                 dependent: {
                   field: 'court',
                   value: 'item-one',
@@ -128,6 +132,10 @@ describe('Field helpers', function () {
                 id: 'conditionalField1',
                 name: 'conditionalField1',
                 skip: true,
+                attributes: {
+                  'data-id': 'conditionalField1',
+                  'data-name': 'conditionalField1',
+                },
                 dependent: {
                   field: 'court',
                   value: 'item-one',
@@ -137,6 +145,10 @@ describe('Field helpers', function () {
                 id: 'conditionalField2',
                 name: 'conditionalField2',
                 skip: true,
+                attributes: {
+                  'data-id': 'conditionalField2',
+                  'data-name': 'conditionalField2',
+                },
                 dependent: {
                   field: 'court',
                   value: 'item-one',

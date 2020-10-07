@@ -21,6 +21,7 @@ const accessibleAutocomplete = require('accessible-autocomplete')
 const { initAll } = require('govuk-frontend')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
 
+const AddAnother = require('../../components/add-another/add-another')
 const Header = require('../../components/internal-header/internal-header')
 const Message = require('../../components/message/message')
 const MultiFileUpload = require('../../components/multi-file-upload/multi-file-upload')
@@ -29,6 +30,9 @@ const Analytics = require('./analytics')
 const { nodeListForEach } = require('./utils')
 
 initAll()
+
+// eslint-disable-next-line no-new
+new AddAnother('.moj-add-another')
 
 new Analytics().init()
 

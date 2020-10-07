@@ -368,6 +368,7 @@ describe('Person Escort Record controllers', function () {
         { id: '4', value: 'No' },
       ]
       const mockReq = {
+        body: {},
         form: {
           options: {
             fields: {

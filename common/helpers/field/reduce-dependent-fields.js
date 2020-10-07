@@ -34,11 +34,21 @@ function reduceDependentFields(allFields = {}) {
           ? `${field.id}-${conditionalField.id || conditional}`
           : conditionalField.id || conditional
 
+        const dataName = name.replace(/\[\d+\]/, '[%index%]')
+        const dataId = id.replace(/-\d+--/, '-%index%--')
+
+        const attributes = {
+          'data-name': dataName,
+          'data-id': dataId,
+          ...conditionalField.attributes,
+        }
+
         accumulator[name] = {
           ...conditionalField,
           ...dependentOptions,
           name,
           id,
+          attributes,
         }
       })
     })

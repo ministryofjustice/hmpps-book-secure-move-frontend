@@ -13,6 +13,7 @@ describe('Form wizard', function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
       sinon.stub(controller, 'use')
       sinon.stub(controller, 'setInitialValues')
+      sinon.stub(controller, 'setupAddMultipleFieldsValues')
       sinon.stub(controller, 'setupAddMultipleFields')
       sinon.stub(controller, 'setupConditionalFields')
       sinon.stub(controller, 'setFieldContext')
@@ -30,26 +31,118 @@ describe('Form wizard', function () {
       )
     })
 
-    it('should setup add multiple fields', function () {
+    it('should setup handling of arbitrary multiple fields', function () {
       expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+        controller.setupAddMultipleFieldsValues
+      )
+    })
+
+    it('should setup add multiple fields', function () {
+      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
         controller.setupAddMultipleFields
       )
     })
 
     it('should setup conditional fields', function () {
-      expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
+      expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
         controller.setupConditionalFields
       )
     })
 
     it('should set field context', function () {
-      expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
+      expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
         controller.setFieldContext
       )
     })
 
     it('should call correct number of middleware', function () {
-      expect(controller.use).to.be.callCount(4)
+      expect(controller.use).to.be.callCount(5)
+    })
+  })
+
+  describe('#setupAddMultipleFieldsValues()', function () {
+    let req
+    let next
+    beforeEach(function () {
+      req = {
+        form: {
+          options: {
+            fields: {
+              foo: {
+                component: 'appAddAnother',
+              },
+            },
+          },
+        },
+        sessionModel: {
+          toJSON: sinon.stub().returns({}),
+          set: sinon.stub(),
+        },
+      }
+      next = sinon.stub()
+    })
+
+    context('When called', function () {
+      beforeEach(function () {
+        controller.setupAddMultipleFieldsValues(req, {}, next)
+      })
+      it('shoud invoke the next method', function () {
+        expect(next).to.be.calledOnceWithExactly()
+      })
+
+      it('shoud not update the session model', function () {
+        expect(req.sessionModel.set).to.not.be.called
+      })
+    })
+
+    context('When body contains values for component', function () {
+      beforeEach(function () {
+        req.body = {
+          foo: [{ id: 1 }],
+        }
+        controller.setupAddMultipleFieldsValues(req, {}, next)
+      })
+
+      it('shoud update the session model', function () {
+        expect(req.sessionModel.set).to.be.calledOnceWithExactly('foo', [
+          { id: 1 },
+        ])
+      })
+    })
+
+    context(
+      'When session model’s errorValues contains values for component',
+      function () {
+        beforeEach(function () {
+          req.sessionModel.toJSON.returns({
+            errorValues: { foo: [{ id: 1 }] },
+          })
+          controller.setupAddMultipleFieldsValues(req, {}, next)
+        })
+
+        it('shoud update the session model', function () {
+          expect(req.sessionModel.set).to.be.calledOnceWithExactly('foo', [
+            { id: 1 },
+          ])
+        })
+      }
+    )
+
+    context('When component is not of type appAddAnother', function () {
+      beforeEach(function () {
+        req.form.options.fields.foo.component = 'appAnotherComponent'
+        req.body = {
+          foo: [{ id: 1 }],
+        }
+        req.sessionModel.toJSON.returns({
+          errorValues: { foo: [{ id: 1 }] },
+        })
+        controller.setupAddMultipleFieldsValues(req, {}, next)
+      })
+
+      it('shoud not update the session model', function () {
+        expect(req.sessionModel.set).to.not.be.called
+      })
     })
   })
 
