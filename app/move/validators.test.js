@@ -155,7 +155,7 @@ describe('#prisonNumber()', function () {
   })
 
   describe('valid values', function () {
-    const inputs = ['', 'A1234BC']
+    const inputs = ['', 'A1234BC', 'a1234bc']
 
     inputs.forEach(i => {
       it(`test for: "${i}"`, function () {
