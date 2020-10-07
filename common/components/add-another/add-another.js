@@ -14,7 +14,7 @@ MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
     el.name = $el.attr('data-name').replace(/%index%/, index)
     el.id = $el.attr('data-id').replace(/%index%/, index)
 
-    // BASM changes to this method from here
+    // Book a secyre move changes to this method from here
     var label = $el.siblings('label')[0] || $el.parents('label')[0]
 
     if (label) {

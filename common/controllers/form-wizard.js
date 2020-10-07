@@ -20,9 +20,10 @@ class FormController extends Controller {
 
   setupAddMultipleFieldsValues(req, res, next) {
     const values = req.sessionModel.toJSON()
+    const { fields } = req.form.options
 
-    const addAnotherProps = Object.keys(req.form.options.fields).filter(
-      key => req.form.options.fields[key].component === 'appAddAnother'
+    const addAnotherProps = Object.keys(fields).filter(
+      key => fields[key].component === 'appAddAnother'
     )
 
     addAnotherProps.forEach(fieldName => {
@@ -38,14 +39,15 @@ class FormController extends Controller {
   }
 
   setupAddMultipleFields(req, res, next) {
-    const allFields = req.form.options.allFields
+    const { allFields, fields } = req.form.options
     const values = req.sessionModel.toJSON()
-    const itemFields = Object.entries(req.form.options.fields).reduce(
+    const itemFields = Object.entries(fields).reduce(
       fieldHelpers.reduceAddAnotherFields(allFields, values),
       {}
     )
+
     req.form.options.fields = {
-      ...req.form.options.fields,
+      ...fields,
       ...itemFields,
     }
 
@@ -53,8 +55,8 @@ class FormController extends Controller {
   }
 
   setupConditionalFields(req, res, next) {
-    const allFields = req.form.options.allFields
-    const stepFieldsArray = Object.entries(req.form.options.fields)
+    const { allFields, fields } = req.form.options
+    const stepFieldsArray = Object.entries(fields)
     const stepFields = stepFieldsArray.map(
       fieldHelpers.flattenConditionalFields
     )
@@ -73,7 +75,7 @@ class FormController extends Controller {
 
   post(req, res, next) {
     const isMultipleAction = req.body['multiple-action']
-    const fields = req.form.options.fields
+    const { fields } = req.form.options
 
     if (isMultipleAction) {
       const [action, key, index] = isMultipleAction.split('::')
@@ -122,8 +124,9 @@ class FormController extends Controller {
   }
 
   setFieldContext(req, res, next) {
-    Object.keys(req.form.options.fields).forEach(fieldKey => {
-      req.form.options.fields[fieldKey].context = req.form.options.key
+    const { fields } = req.form.options
+    Object.keys(fields).forEach(fieldKey => {
+      fields[fieldKey].context = req.form.options.key
     })
 
     next()
@@ -131,7 +134,7 @@ class FormController extends Controller {
 
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
-    const fields = req.form.options.fields
+    const { fields } = req.form.options
     const errorList = map(errors, error => {
       return {
         html: fieldHelpers.getFieldErrorMessage({
@@ -179,14 +182,14 @@ class FormController extends Controller {
   }
 
   render(req, res, next) {
-    const fields = Object.entries(req.form.options.fields)
+    const fieldsEntries = Object.entries(req.form.options.fields)
       .map(fieldHelpers.setFieldValue(req.form.values))
       .map(fieldHelpers.setFieldError(req.form.errors))
       .map(fieldHelpers.translateField)
       .map(fieldHelpers.renderConditionalFields)
       .map(fieldHelpers.renderAddAnotherFields)
 
-    req.form.options.fields = fromPairs(fields)
+    req.form.options.fields = fromPairs(fieldsEntries)
 
     super.render(req, res, next)
   }
