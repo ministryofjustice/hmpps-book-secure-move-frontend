@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.46.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.0...v2.46.1) (2020-10-08)
+
+
+### Bug Fixes
+
+* Add prison number hint ([b281909](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b281909acfcd34ad5f0e028761ecef0658597315))
+* Add prison number validation message ([40d8b52](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/40d8b5213fad919e079b5ee7dbf7f5204da25d96))
+* Add validation to prison number field ([a27b654](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a27b65424b64e1754f0852404f0d3d649502d4d6))
+* Allow prison number to be case insensitive ([b1977dd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b1977dd2260408025f92af3e67410c7b772c9653))
+* Use 4 digits in police number ([d3a4046](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d3a40462c611156b3298a8cc034088b710b13c5e))
+
 ## [2.46.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.45.1...v2.46.0) (2020-10-01)
 
 
