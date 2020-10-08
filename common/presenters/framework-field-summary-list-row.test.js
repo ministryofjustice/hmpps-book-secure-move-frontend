@@ -1,6 +1,15 @@
+const proxyquire = require('proxyquire')
+
+const i18n = require('../../config/i18n')
 const componentService = require('../services/component')
 
-const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
+const frameworkNomisMappingsToPanelStub = sinon.stub().returns('NOMIS_HTML')
+const frameworkFieldToSummaryListRow = proxyquire(
+  './framework-field-summary-list-row',
+  {
+    '../presenters/framework-nomis-mappings-to-panel': frameworkNomisMappingsToPanelStub,
+  }
+)
 
 describe('Presenters', function () {
   describe('#frameworkFieldToSummaryListRow', function () {
@@ -8,6 +17,8 @@ describe('Presenters', function () {
     const mockStepUrl = '/step-url'
 
     beforeEach(function () {
+      frameworkNomisMappingsToPanelStub.resetHistory()
+      sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(componentService, 'getComponent').returnsArg(0)
     })
 
@@ -78,6 +89,56 @@ describe('Presenters', function () {
               key: {
                 classes: 'govuk-!-font-weight-regular',
                 text: mockField.question,
+              },
+              value: {
+                html: 'appFrameworkResponse',
+              },
+            },
+          ])
+        })
+      })
+
+      context('with NOMIS mappings', function () {
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)({
+            ...mockField,
+            response: {
+              nomis_mappings: [{ foo: 'bar' }, { fizz: 'buzz' }],
+            },
+          })
+        })
+
+        it('should transform mappings', function () {
+          expect(frameworkNomisMappingsToPanelStub).to.be.calledOnceWithExactly(
+            {
+              heading:
+                'person-escort-record::nomis_mappings.information_included',
+              mappings: [{ foo: 'bar' }, { fizz: 'buzz' }],
+            }
+          )
+        })
+
+        it('should call component service', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'appFrameworkResponse',
+            {
+              value: undefined,
+              valueType: undefined,
+              responded: false,
+              questionUrl: `${mockStepUrl}#${mockField.id}`,
+              afterContent: {
+                html: 'NOMIS_HTML',
+              },
+            }
+          )
+        })
+
+        it('should return single object in array of rows', function () {
+          expect(response).to.deep.equal([
+            {
+              key: {
+                classes: 'govuk-!-font-weight-regular',
+                text: mockField.description,
               },
               value: {
                 html: 'appFrameworkResponse',
