@@ -466,6 +466,7 @@ describe('Single request service', function () {
         moves = await singleRequestService.getCancelled({
           fromLocationId: 'fromLocationId',
           createdAtDate: ['2019-01-01', '2019-01-07'],
+          moveDate: ['2020-01-01', '2020-01-07'],
         })
       })
 
@@ -476,12 +477,14 @@ describe('Single request service', function () {
             'filter[from_location_id]': 'fromLocationId',
             'filter[allocation]': false,
             'filter[move_type]': 'prison_transfer',
-            'filter[rejection_reason]': undefined,
             'filter[status]': 'cancelled',
+            'filter[rejection_reason]': undefined,
             'sort[by]': 'created_at',
             'sort[direction]': 'desc',
             'filter[created_at_from]': '2019-01-01',
             'filter[created_at_to]': '2019-01-07',
+            'filter[date_from]': '2020-01-01',
+            'filter[date_to]': '2020-01-07',
           },
           include: [
             'from_location',

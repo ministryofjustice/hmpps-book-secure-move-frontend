@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { isNil, mapValues, omitBy, pick } = require('lodash')
+const { isNil, isUndefined, mapValues, omitBy, pick } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -82,13 +82,25 @@ const singleRequestService = {
   },
 
   getCancelled({
+    moveDate = [],
     createdAtDate = [],
     fromLocationId,
     include,
     sortBy = 'created_at',
     sortDirection = 'desc',
   } = {}) {
+    const [moveDateFrom, moveDateTo] = moveDate
     const [createdAtFrom, createdAtTo] = createdAtDate
+    const dateRanges = omitBy(
+      {
+        'filter[date_from]': moveDateFrom,
+        'filter[date_to]': moveDateTo,
+        'filter[created_at_from]': createdAtFrom,
+        'filter[created_at_to]': createdAtTo,
+      },
+      isUndefined
+    )
+
     return moveService.getAll({
       isAggregation: false,
       include: include || [
@@ -106,8 +118,7 @@ const singleRequestService = {
         'filter[rejection_reason]': undefined,
         'sort[by]': sortBy,
         'sort[direction]': sortDirection,
-        'filter[created_at_from]': createdAtFrom,
-        'filter[created_at_to]': createdAtTo,
+        ...dateRanges,
       },
     })
   },
