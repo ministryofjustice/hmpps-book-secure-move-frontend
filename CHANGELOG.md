@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.47.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.1...v2.47.0) (2020-10-09)
+
+
+### Features
+
+* **per:** Display NOMIS information on section overview ([3efcb5e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3efcb5ead783cc753cb35c15953630be036741db))
+* **per:** Render NOMIS information against questions ([6afa48c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6afa48cdcd81b55fda6c4a4b8cfb954204ca25c8))
+
 ### [2.46.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.0...v2.46.1) (2020-10-08)
 
 
