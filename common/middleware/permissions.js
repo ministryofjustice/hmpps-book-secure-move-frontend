@@ -1,8 +1,21 @@
 const { get } = require('lodash')
 
-function check(permissions, userPermissions = []) {
+const { prohibitionsByLocationType } = require('../lib/prohibitions')
+
+function check(permissions, userPermissions = [], locationType) {
   if (!Array.isArray(permissions)) {
     permissions = [permissions]
+  }
+
+  const locationTypeProhibitions = prohibitionsByLocationType[locationType]
+
+  if (
+    locationTypeProhibitions &&
+    permissions.some(permission =>
+      locationTypeProhibitions.includes(permission)
+    )
+  ) {
+    return false
   }
 
   return permissions.some(permission => userPermissions.includes(permission))

@@ -1,4 +1,13 @@
-const middleware = require('./permissions')
+const proxyquire = require('proxyquire')
+const prohibitions = {
+  prohibitionsByLocationType: {
+    forbidden_planet: ['required_permission'],
+  },
+}
+
+const middleware = proxyquire('./permissions', {
+  '../lib/prohibitions': prohibitions,
+})
 
 describe('Permissions middleware', function () {
   describe('#check()', function () {
@@ -16,17 +25,34 @@ describe('Permissions middleware', function () {
 
     context('when required permission exists', function () {
       beforeEach(function () {
-        permit = middleware.check('required_permission', [
-          'user_permission_1',
-          'user_permission_2',
+        permit = middleware.check(
           'required_permission',
-        ])
+          ['user_permission_1', 'user_permission_2', 'required_permission'],
+          'somewhere'
+        )
       })
 
       it('should return true', function () {
         expect(permit).to.be.true
       })
     })
+
+    context(
+      'when required permission exists but location type prohibits it',
+      function () {
+        beforeEach(function () {
+          permit = middleware.check(
+            'required_permission',
+            ['required_permission'],
+            'forbidden_planet'
+          )
+        })
+
+        it('should return false', function () {
+          expect(permit).to.be.false
+        })
+      }
+    )
 
     describe('when multiple permissions are possible', function () {
       let permit
