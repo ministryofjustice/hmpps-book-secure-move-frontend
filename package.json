@@ -186,7 +186,7 @@
     "sinon-chai": "3.5.0",
     "standard-version": "9.0.0",
     "style-loader": "1.3.0",
-    "terser-webpack-plugin": "4.2.2",
+    "terser-webpack-plugin": "4.2.3",
     "testcafe": "1.9.3",
     "testcafe-browser-provider-browserstack": "1.13.0",
     "testcafe-reporter-xunit": "2.1.0",
