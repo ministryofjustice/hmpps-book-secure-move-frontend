@@ -1,5 +1,4 @@
 const dateHelpers = require('../../../common/helpers/date')
-const permissions = require('../../../common/middleware/permissions')
 
 const middleware = require('./set-body.allocations')
 
@@ -21,6 +20,7 @@ describe('Allocations middleware', function () {
           sortBy: 'moves_count',
           sortDirection: 'asc',
         },
+        checkPermissions: sinon.stub().returns(false),
       }
     })
 
@@ -67,7 +67,7 @@ describe('Allocations middleware', function () {
 
     context('when user has assign role', function () {
       beforeEach(function () {
-        sinon.stub(permissions, 'check').returns(true)
+        mockReq.checkPermissions.returns(true)
         middleware(mockReq, mockRes, nextSpy)
       })
 

@@ -6,11 +6,7 @@ describe('Home middleware', function () {
 
     beforeEach(function () {
       req = {
-        session: {
-          user: {
-            permissions: [],
-          },
-        },
+        checkPermissions: sinon.stub().returns(false),
       }
       res = {
         redirect: sinon.spy(),
@@ -34,8 +30,7 @@ describe('Home middleware', function () {
 
     context('with correct permission', function () {
       beforeEach(function () {
-        req.session.user.permissions = ['dashboard:view']
-
+        req.checkPermissions.withArgs('dashboard:view').returns(true)
         controllers.movesRedirect(req, res, next)
       })
 

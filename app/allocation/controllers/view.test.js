@@ -1,4 +1,3 @@
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 const handler = require('./view')
@@ -85,9 +84,7 @@ describe('Allocation controllers', function () {
 
       mockReq = {
         t: sinon.stub().returnsArg(0),
-        session: {
-          user: { permissions: [] },
-        },
+        checkPermissions: sinon.stub().returns(false),
         allocation: { ...allocationExample },
       }
       mockRes = {
@@ -100,12 +97,7 @@ describe('Allocation controllers', function () {
       'the creation of the link to remove a move from an allocation',
       function () {
         beforeEach(function () {
-          sinon
-            .stub(permissions, 'check')
-            .withArgs('allocation:cancel')
-            .returns(true)
-            .withArgs('allocation:person:assign')
-            .returns(false)
+          mockReq.checkPermissions.callsFake(arg => arg === 'allocation:cancel')
           moveToCardComponentStub = sinon.stub()
         })
 
@@ -117,13 +109,7 @@ describe('Allocation controllers', function () {
         })
 
         it('does not create removeMoveHref if the user has no permission to cancel allocations', function () {
-          permissions.check.restore()
-          sinon
-            .stub(permissions, 'check')
-            .withArgs('allocation:cancel')
-            .returns(false)
-            .withArgs('allocation:person:assign')
-            .returns(false)
+          mockReq.checkPermissions.callsFake(() => false)
           handler()(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
 
@@ -140,6 +126,7 @@ describe('Allocation controllers', function () {
         })
 
         it('does otherwise create removeMoveHref', function () {
+          mockReq.checkPermissions.callsFake(arg => arg === 'allocation:cancel')
           handler()(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
           expect(moves[0].removeMoveHref).to.equal(
@@ -291,8 +278,7 @@ describe('Allocation controllers', function () {
       let locals
 
       beforeEach(function () {
-        mockReq.session.user.permissions = ['allocation:person:assign']
-
+        mockReq.checkPermissions.returns(true)
         handler()(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
       })

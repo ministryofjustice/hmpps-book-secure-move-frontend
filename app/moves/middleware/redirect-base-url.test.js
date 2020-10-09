@@ -9,7 +9,7 @@ describe('Moves middleware', function () {
       this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       req = {
         baseUrl: '/moves',
-        session: {},
+        checkPermissions: sinon.stub().returns(false),
       }
       res = {
         redirect: sinon.stub(),
@@ -33,9 +33,6 @@ describe('Moves middleware', function () {
             beforeEach(function () {
               req.session = {
                 currentLocation: mockLocation,
-                user: {
-                  permissions: [],
-                },
               }
 
               middleware(req, res)
@@ -56,9 +53,6 @@ describe('Moves middleware', function () {
             beforeEach(function () {
               req.session = {
                 currentLocation: mockLocation,
-                user: {
-                  permissions: [],
-                },
               }
 
               middleware(req, res)
@@ -82,11 +76,9 @@ describe('Moves middleware', function () {
             }
 
             beforeEach(function () {
+              req.checkPermissions.withArgs('moves:view:proposed').returns(true)
               req.session = {
                 currentLocation: mockLocation,
-                user: {
-                  permissions: ['moves:view:proposed'],
-                },
               }
 
               middleware(req, res)
@@ -104,11 +96,9 @@ describe('Moves middleware', function () {
             }
 
             beforeEach(function () {
+              req.checkPermissions.withArgs('moves:view:proposed').returns(true)
               req.session = {
                 currentLocation: mockLocation,
-                user: {
-                  permissions: ['moves:view:proposed'],
-                },
               }
 
               middleware(req, res)
@@ -140,11 +130,7 @@ describe('Moves middleware', function () {
         'when user has permission to see the proposed moves',
         function () {
           beforeEach(function () {
-            req.session = {
-              user: {
-                permissions: ['move:proposed:view'],
-              },
-            }
+            req.checkPermissions.withArgs('move:proposed:view').returns(true)
             res.redirect.resetHistory()
             middleware(req, res)
           })

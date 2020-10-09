@@ -1,6 +1,5 @@
 const { omitBy, isUndefined } = require('lodash')
 
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const moveService = require('../../../common/services/move')
 
@@ -16,10 +15,9 @@ function setResultsMoves(bodyKey, locationKey, personEscortRecordFeature) {
         moveService.getActive(args),
         moveService.getCancelled(args),
       ])
-      const userPermissions = req.session?.user?.permissions
       const personEscortRecordIsEnabled =
         personEscortRecordFeature &&
-        permissions.check('person_escort_record:view', userPermissions)
+        req.checkPermissions('person_escort_record:view')
       const cardTagSource = personEscortRecordIsEnabled
         ? 'personEscortRecord'
         : undefined

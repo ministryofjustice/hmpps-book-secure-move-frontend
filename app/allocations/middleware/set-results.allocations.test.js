@@ -1,4 +1,3 @@
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const allocationService = require('../../../common/services/allocation')
 
@@ -27,17 +26,19 @@ describe('Allocations middleware', function () {
       sinon.stub(allocationService, 'getActive')
       sinon.stub(allocationService, 'getCancelled')
       sinon
-        .stub(permissions, 'check')
-        .returns(false)
-        .withArgs('allocation:person:assign', ['allocation:person:assign'])
-        .returns(true)
-      sinon
         .stub(presenters, 'allocationsToTableComponent')
         .returns(allocationsToTableStub)
       next = sinon.stub()
       res = {}
       req = {
         session: {},
+        checkPermissions: sinon.stub().callsFake(permission => {
+          if (Array.isArray(permission)) {
+            permission = permission[0]
+          }
+
+          return permission === 'allocation:person:assign'
+        }),
         query: {
           status: 'approved',
         },
@@ -53,6 +54,7 @@ describe('Allocations middleware', function () {
 
     context('when services resolve', function () {
       beforeEach(function () {
+        req.checkPermissions.returns(false)
         allocationService.getActive.resolves(mockActiveMoves)
         allocationService.getCancelled.resolves(mockCancelledMoves)
       })
@@ -152,9 +154,9 @@ describe('Allocations middleware', function () {
         'when user has permissions to assign a person to a move',
         function () {
           beforeEach(async function () {
-            req.session.user = {
-              permissions: ['allocation:person:assign'],
-            }
+            req.checkPermissions
+              .withArgs('allocation:person:assign')
+              .returns(true)
             await middleware(req, res, next)
           })
 

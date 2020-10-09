@@ -1,14 +1,12 @@
-const { check } = require('../../../../common/middleware/permissions')
-
-const getUpdateUrls = (updateSteps, move, userPermissions) => {
+const getUpdateUrls = (updateSteps, move, req) => {
   const updateUrls = {}
 
-  if (!check(`move:update:${move.move_type}`, userPermissions)) {
+  if (!req.checkPermissions(`move:update:${move.move_type}`)) {
     return updateUrls
   }
 
   updateSteps.forEach(updateJourney => {
-    if (!check(updateJourney.permission, userPermissions)) {
+    if (!req.checkPermissions(updateJourney.permission)) {
       return
     }
 

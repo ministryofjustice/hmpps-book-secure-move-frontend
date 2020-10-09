@@ -1,4 +1,3 @@
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const moveService = require('../../../common/services/move')
 
@@ -27,13 +26,13 @@ describe('Moves middleware', function () {
       sinon.stub(moveService, 'getCancelled')
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
       sinon.stub(presenters, 'movesByLocation').returnsArg(0)
-      sinon.stub(permissions, 'check').returns(false)
       sinon
         .stub(presenters, 'moveToCardComponent')
         .returns(moveToCardComponentMapStub)
       nextSpy = sinon.spy()
       res = {}
       req = {
+        checkPermissions: sinon.stub().returns(false),
         body: {
           [mockBodyKey]: {
             dateRange: ['2010-10-10', '2010-10-11'],
@@ -138,14 +137,9 @@ describe('Moves middleware', function () {
       context('with `personEscortRecordFeature`', function () {
         context('with correct user permission', function () {
           beforeEach(async function () {
-            permissions.check
-              .withArgs('person_escort_record:view', [
-                'person_escort_record:view',
-              ])
+            req.checkPermissions
+              .withArgs('person_escort_record:view')
               .returns(true)
-            req.session.user = {
-              permissions: ['person_escort_record:view'],
-            }
             await middleware(mockBodyKey, mockLocationKey, true)(
               req,
               res,
