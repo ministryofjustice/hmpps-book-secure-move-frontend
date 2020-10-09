@@ -21,6 +21,15 @@ function check(permissions, userPermissions = [], locationType) {
   return permissions.some(permission => userPermissions.includes(permission))
 }
 
+function setCheckPermissions(req, res, next) {
+  const userPermissions = req.session.user?.permissions
+  const locationType = req.session.currentLocation?.location_type
+  req.checkPermissions = permission =>
+    check(permission, userPermissions, locationType)
+
+  next()
+}
+
 function protectRoute(permission) {
   return (req, res, next) => {
     const userPermissions = get(req.session, 'user.permissions')
@@ -38,5 +47,6 @@ function protectRoute(permission) {
 
 module.exports = {
   check,
+  setCheckPermissions,
   protectRoute,
 }

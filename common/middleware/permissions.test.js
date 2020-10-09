@@ -92,6 +92,73 @@ describe('Permissions middleware', function () {
     })
   })
 
+  describe('#setCheckPermissions()', function () {
+    let req, next, allowed
+
+    beforeEach(function () {
+      next = sinon.spy()
+      req = {
+        session: {
+          currentLocation: {
+            location_type: 'somewhere',
+          },
+          user: {
+            permissions: ['required_permission'],
+          },
+        },
+      }
+    })
+
+    context('when invoked', function () {
+      beforeEach(function () {
+        middleware.setCheckPermissions(req, {}, next)
+      })
+
+      it('should call next', function () {
+        expect(next).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when the method on the request object is invoked', function () {
+      context('and the user does not have the permission', function () {
+        beforeEach(function () {
+          middleware.setCheckPermissions(req, {}, next)
+          allowed = req.checkPermissions('missing_permission')
+        })
+
+        it('should return false', function () {
+          expect(allowed).to.be.false
+        })
+      })
+
+      context('and the user has the permission', function () {
+        beforeEach(function () {
+          middleware.setCheckPermissions(req, {}, next)
+          allowed = req.checkPermissions('required_permission')
+        })
+
+        it('should return true', function () {
+          expect(allowed).to.be.true
+        })
+      })
+
+      context(
+        'and the user has the permission but the location prohibits the action',
+        function () {
+          beforeEach(function () {
+            req.session.currentLocation.location_type = 'forbidden_planet'
+            middleware.setCheckPermissions(req, {}, next)
+            allowed = req.checkPermissions('required_permission')
+          })
+
+          it('should return false', function () {
+            expect(allowed).to.be.false
+          })
+        }
+      )
+    })
+  })
+
   describe('#protectRoute()', function () {
     let req, nextSpy
 
