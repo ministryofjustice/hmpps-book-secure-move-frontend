@@ -17,6 +17,9 @@
       "content":"Once you are confident the information below is correct and won’t change, provide your confirmation that this record is correct in order to complete it.\n\n!!! warning\nOnce you confirm and complete the Person Escort Record you will no longer be able to update the information.\n!!!"
     }
   },
+  "nomis_mappings": {
+    "information_to_be_included": "Active NOMIS information to be included"
+  },
   "sections": {
     "handover": {
       "heading": "Escort handover details",

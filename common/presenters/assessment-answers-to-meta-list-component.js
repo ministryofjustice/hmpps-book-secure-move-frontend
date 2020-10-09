@@ -4,26 +4,52 @@ const filters = require('../../config/nunjucks/filters')
 function _mapAnswer({
   comments,
   created_at: createdAt,
-  nomis_alert_description: description,
+  creation_date: creationDate,
+  start_date: startDate,
+  end_date: endDate,
+  nomis_alert_description: nomisAlertDescription,
+  code_type: codeType,
+  code_description: codeDescription,
 }) {
+  const description = nomisAlertDescription || codeDescription
+  const created = createdAt || creationDate
   let html = ''
 
   if (description) {
     html = `
-      <h4 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2">
+      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">
         ${description}
       </h4>
     `
   }
 
-  html +=
-    comments ||
-    `<span class="app-secondary-text-colour">${i18n.t('empty_details')}</span>`
+  html += comments
+    ? `<span class="app-!-text-colour-black">${comments}</span>`
+    : `<span class="app-secondary-text-colour">${i18n.t(
+        'empty_details'
+      )}</span>`
 
-  if (description && createdAt) {
+  if (description && created) {
     html += `
       <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
-        ${i18n.t('created_on')} ${filters.formatDateWithDay(createdAt)}
+        ${i18n.t('created_on', {
+          context: codeType,
+        })} ${filters.formatDateWithDay(created)}
+      </div>
+    `
+  }
+
+  if (startDate) {
+    html += `
+      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
+        ${i18n.t('started_on', {
+          context: codeType,
+        })} ${filters.formatDateWithDay(startDate)}
+        ${
+          endDate
+            ? `${i18n.t('and_ended_on')} ${filters.formatDateWithDay(endDate)}`
+            : ''
+        }
       </div>
     `
   }

@@ -4,10 +4,17 @@
     "type": "person_escort_records",
     "attributes": {
       "status": "not_started",
-      "confirmed_at": null,
+      "confirmed_at": "2020-06-15T09:52:10+01:00",
+      "created_at": "2020-06-09T01:00:40+01:00",
       "version": "1.1"
     },
     "relationships": {
+      "move": {
+        "data": {
+          "id": "dfa3ba99-10be-4bc6-bd7d-33cd99d2b48a",
+          "type": "moves"
+        }
+      },
       "profile": {
         "data": {
           "id": "2d47fc09-a0ce-48b9-b629-3d2de80e9240",
