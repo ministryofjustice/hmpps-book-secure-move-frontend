@@ -58,6 +58,12 @@ examples:
           option: Item three
           details: Further details for option three
       valueType: collection::followup_comment
+  - name: additional HTML
+    data:
+      value: Example string response
+      valueType: string
+      afterContent:
+        html: Some example <strong>HTML</strong>
   - name: unanswered
     data:
       questionUrl: /step-url#question-id

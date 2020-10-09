@@ -178,6 +178,36 @@ describe('Framework Response component', function () {
     })
   })
 
+  context('with additional html', function () {
+    beforeEach(function () {
+      const $ = renderComponentHtmlToCheerio(
+        'framework-response',
+        examples['additional HTML']
+      )
+      $component = $('body')
+    })
+
+    it('should render a parent p', function () {
+      expect($component.children().first().get(0).tagName).to.equal('p')
+    })
+
+    it('should contain correct ul classes', function () {
+      expect($component.children().first().attr('class')).to.equal(
+        'govuk-!-font-size-16'
+      )
+    })
+
+    it('should render value', function () {
+      expect($component.children().first().html().trim()).to.equal(
+        'Example string response'
+      )
+    })
+
+    it('should render additional HTML', function () {
+      expect($component.html()).to.include('Some example <strong>HTML</strong>')
+    })
+  })
+
   context('unanswered', function () {
     const example = examples.unanswered
 

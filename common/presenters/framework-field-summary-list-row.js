@@ -1,6 +1,7 @@
 const { find, filter, flattenDeep, isEmpty } = require('lodash')
 
 const i18n = require('../../config/i18n')
+const frameworkNomisMappingsToPanel = require('../presenters/framework-nomis-mappings-to-panel')
 const componentService = require('../services/component')
 
 function frameworkFieldToSummaryListRow(stepUrl) {
@@ -47,12 +48,23 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       return flattenDeep(rows)
     }
 
-    const responseHtml = componentService.getComponent('appFrameworkResponse', {
+    const frameworkResponseProps = {
       value: isEmpty(response.value) ? undefined : response.value,
       valueType,
       responded: response.responded === true,
       questionUrl: `${stepUrl}#${id}`,
-    })
+    }
+
+    if ((response.nomis_mappings || []).length > 0) {
+      frameworkResponseProps.afterContent = {
+        html: frameworkNomisMappingsToPanel({
+          heading: i18n.t(
+            'person-escort-record::nomis_mappings.information_included'
+          ),
+          mappings: response.nomis_mappings,
+        }),
+      }
+    }
 
     const row = {
       key: {
@@ -60,7 +72,10 @@ function frameworkFieldToSummaryListRow(stepUrl) {
         text: headerText,
       },
       value: {
-        html: responseHtml,
+        html: componentService.getComponent(
+          'appFrameworkResponse',
+          frameworkResponseProps
+        ),
       },
     }
 

@@ -18,7 +18,8 @@
     }
   },
   "nomis_mappings": {
-    "information_to_be_included": "Active NOMIS information to be included"
+    "information_to_be_included": "Active NOMIS information to be included",
+    "information_included": "Information included from NOMIS"
   },
   "sections": {
     "handover": {
