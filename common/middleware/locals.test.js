@@ -104,5 +104,31 @@ describe('Locals', function () {
         expect(res.locals.CANONICAL_URL).to.equal('gopher://hostname/foo')
       })
     })
+
+    context('When invoking canAccess', function () {
+      it('should return false if no checkPermissions on the req object', function () {
+        setLocals(req, res, next)
+        expect(res.locals.canAccess('required_permission')).to.be.false
+      })
+
+      context('and checkPermissions exists on the req object', function () {
+        let checked
+        beforeEach(function () {
+          req.checkPermissions = sinon.stub().returns('checked-permission')
+          setLocals(req, res, next)
+          checked = res.locals.canAccess('required_permission')
+        })
+
+        it('should call checkPermissions with the permission', function () {
+          expect(req.checkPermissions).to.be.calledOnceWithExactly(
+            'required_permission'
+          )
+        })
+
+        it('should return the expected result', function () {
+          expect(checked).to.equal('checked-permission')
+        })
+      })
+    })
   })
 })
