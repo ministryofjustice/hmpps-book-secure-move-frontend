@@ -161,7 +161,7 @@
     "eslint-plugin-standard": "4.0.1",
     "eslint-plugin-testcafe": "0.2.1",
     "faker": "5.1.0",
-    "file-loader": "6.1.0",
+    "file-loader": "6.1.1",
     "finepack": "2.10.6",
     "git-authors-cli": "1.0.29",
     "glob": "7.1.6",
