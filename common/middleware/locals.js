@@ -1,9 +1,6 @@
 const { startOfTomorrow } = require('date-fns')
-const { get } = require('lodash')
 
 const movesApp = require('../../app/moves')
-
-const { check } = require('./permissions')
 
 module.exports = function setLocals(req, res, next) {
   const protocol = req.encrypted ? 'https' : req.protocol
@@ -20,8 +17,11 @@ module.exports = function setLocals(req, res, next) {
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
     canAccess: permission => {
-      const userPermissions = get(req.session, 'user.permissions')
-      return check(permission, userPermissions)
+      if (!req.canAccess) {
+        return false
+      }
+
+      return req.canAccess(permission)
     },
   }
 

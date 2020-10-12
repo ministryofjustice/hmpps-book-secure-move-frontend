@@ -22,12 +22,19 @@ describe('Move controllers', function () {
   describe('#view()', function () {
     describe('#getUpdateUrls', function () {
       let updateUrls
-      const userPermissions = ['move:allowed', 'move:update:prison_transfer']
+      const req = {
+        canAccess: sinon.stub().returns(false),
+      }
       beforeEach(function () {
+        req.canAccess
+          .withArgs('move:update:prison_transfer')
+          .returns(true)
+          .withArgs('move:allowed')
+          .returns(true)
         updateUrls = getUpdateUrls(
           updateSteps,
           { id: 'moveId', move_type: 'prison_transfer' },
-          userPermissions
+          req
         )
       })
 
@@ -47,7 +54,7 @@ describe('Move controllers', function () {
         updateUrls = getUpdateUrls(
           updateSteps,
           { id: 'moveId', move_type: 'hospital' },
-          userPermissions
+          req
         )
         expect(updateUrls).to.deep.equal({})
       })

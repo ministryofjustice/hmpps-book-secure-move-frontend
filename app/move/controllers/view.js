@@ -1,6 +1,5 @@
 const { isEmpty, find, sortBy } = require('lodash')
 
-const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
@@ -28,8 +27,7 @@ module.exports = function view(req, res) {
   }
 
   const bannerStatuses = ['cancelled']
-  const userPermissions = req.session?.user?.permissions
-  const updateUrls = getUpdateUrls(updateSteps, move, userPermissions)
+  const updateUrls = getUpdateUrls(updateSteps, move, req)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
   const {
     person,
@@ -38,7 +36,7 @@ module.exports = function view(req, res) {
   } = profile || {}
   const personEscortRecordIsEnabled =
     FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
-    permissionsMiddleware.check('person_escort_record:view', userPermissions)
+    req.canAccess('person_escort_record:view')
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
@@ -96,6 +94,7 @@ module.exports = function view(req, res) {
       }
     })
 
+  const userPermissions = req.session?.user?.permissions
   const locals = {
     move,
     assessment,

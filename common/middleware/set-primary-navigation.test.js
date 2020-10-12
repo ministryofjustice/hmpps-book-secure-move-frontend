@@ -1,4 +1,3 @@
-const permissions = require('./permissions')
 const middleware = require('./set-primary-navigation')
 
 describe('#setPrimaryNavigation()', function () {
@@ -7,17 +6,8 @@ describe('#setPrimaryNavigation()', function () {
   beforeEach(function () {
     nextSpy = sinon.spy()
     req = {
+      canAccess: sinon.stub().returns(false),
       path: '',
-      session: {
-        user: {
-          permissions: [
-            'dashboard:view',
-            'allocations:view',
-            'moves:view:proposed',
-            'moves:view:outgoing',
-          ],
-        },
-      },
       t: sinon.stub().returnsArg(0),
     }
     res = {
@@ -27,7 +17,6 @@ describe('#setPrimaryNavigation()', function () {
 
   context('with no permissions', function () {
     beforeEach(function () {
-      sinon.stub(permissions, 'check').returns(false)
       middleware(req, res, nextSpy)
     })
 
@@ -42,7 +31,7 @@ describe('#setPrimaryNavigation()', function () {
 
   context('with all permissions', function () {
     beforeEach(function () {
-      sinon.stub(permissions, 'check').returns(true)
+      req.canAccess.returns(true)
     })
 
     describe('navigation items', function () {
@@ -236,47 +225,32 @@ describe('#setPrimaryNavigation()', function () {
 
   describe('permissions', function () {
     beforeEach(function () {
-      sinon.stub(permissions, 'check').returns(true)
+      req.canAccess.returns(true)
       middleware(req, res, nextSpy)
     })
 
     it('should check for dashboard permission', function () {
-      expect(permissions.check).to.be.calledWithExactly(
-        'dashboard:view',
-        req.session.user.permissions
-      )
+      expect(req.canAccess).to.be.calledWithExactly('dashboard:view')
     })
 
     it('should check for single request permission', function () {
-      expect(permissions.check).to.be.calledWithExactly(
-        'moves:view:proposed',
-        req.session.user.permissions
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:proposed')
     })
 
     it('should check for allocation permission', function () {
-      expect(permissions.check).to.be.calledWithExactly(
-        'allocations:view',
-        req.session.user.permissions
-      )
+      expect(req.canAccess).to.be.calledWithExactly('allocations:view')
     })
 
     it('should check for outgoing moves permission', function () {
-      expect(permissions.check).to.be.calledWithExactly(
-        'moves:view:outgoing',
-        req.session.user.permissions
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:outgoing')
     })
 
     it('should check for incoming moves permission', function () {
-      expect(permissions.check).to.be.calledWithExactly(
-        'moves:view:incoming',
-        req.session.user.permissions
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:incoming')
     })
 
     it('should check for permissions correct number of times', function () {
-      expect(permissions.check.callCount).to.equal(5)
+      expect(req.canAccess.callCount).to.equal(5)
     })
   })
 })

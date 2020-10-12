@@ -1,35 +1,29 @@
 const { sortBy } = require('lodash')
 
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 function viewAllocation(personEscortRecordFeature = false) {
   return (req, res) => {
-    const { allocation } = req
+    const { allocation, canAccess } = req
     const { moves, status } = allocation
-    const userPermissions = req.session?.user?.permissions
     const bannerStatuses = ['cancelled']
     const movesWithoutProfile = moves.filter(move => !move.profile)
     const movesWithProfile = moves.filter(move => move.profile)
     const personEscortRecordIsEnabled =
-      personEscortRecordFeature &&
-      permissions.check('person_escort_record:view', userPermissions)
+      personEscortRecordFeature && canAccess('person_escort_record:view')
     const moveToCardComponent = presenters.moveToCardComponent({
       showStatus: false,
       tagSource: personEscortRecordIsEnabled ? 'personEscortRecord' : '',
     })
 
     const removeUnassignedMoves = move => {
-      return !(
-        permissions.check('allocation:person:assign', userPermissions) &&
-        !move.profile
-      )
+      return !(canAccess('allocation:person:assign') && !move.profile)
     }
 
     const removeMoveLink = move => {
       if (
         move.profile ||
-        !permissions.check('allocation:cancel', userPermissions) ||
+        !canAccess('allocation:cancel') ||
         moves.length === 1
       ) {
         return

@@ -1,7 +1,6 @@
 const { format } = require('date-fns')
 const { get } = require('lodash')
 
-const permissions = require('../../../common/middleware/permissions')
 const { DATE_FORMATS } = require('../../../config/index')
 
 function redirectBaseUrl(req, res) {
@@ -9,11 +8,7 @@ function redirectBaseUrl(req, res) {
   const currentLocation = get(req.session, 'currentLocation')
 
   if (currentLocation) {
-    const userPermissions = get(req.session, 'user.permissions')
-    const canViewProposedMoves = permissions.check(
-      'moves:view:proposed',
-      userPermissions
-    )
+    const canViewProposedMoves = req.canAccess('moves:view:proposed')
     const url =
       canViewProposedMoves && currentLocation.location_type === 'prison'
         ? `${req.baseUrl}/week/${today}/${currentLocation.id}/requested`

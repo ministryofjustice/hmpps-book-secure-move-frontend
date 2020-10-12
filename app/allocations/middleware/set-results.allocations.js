@@ -1,15 +1,8 @@
-const { get } = require('lodash')
-
-const permissions = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
-  const userPermissions = get(req.session, 'user.permissions')
-  const hasAssignerPermission = permissions.check(
-    'allocation:person:assign',
-    userPermissions
-  )
+  const hasAssignerPermission = req.canAccess('allocation:person:assign')
   const query = req.query
 
   const displayConfig = {

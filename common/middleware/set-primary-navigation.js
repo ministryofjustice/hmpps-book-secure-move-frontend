@@ -1,9 +1,6 @@
-const { get, omit } = require('lodash')
-
-const permissions = require('./permissions')
+const { omit } = require('lodash')
 
 function setPrimaryNavigation(req, res, next) {
-  const userPermissions = get(req.session, 'user.permissions')
   const items = [
     {
       permission: 'dashboard:view',
@@ -39,7 +36,7 @@ function setPrimaryNavigation(req, res, next) {
   ]
 
   res.locals.primaryNavigation = items
-    .filter(item => permissions.check(item.permission, userPermissions))
+    .filter(item => req.canAccess(item.permission))
     .map(item => omit(item, 'permission'))
 
   next()

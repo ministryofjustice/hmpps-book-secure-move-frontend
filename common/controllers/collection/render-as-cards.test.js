@@ -1,5 +1,3 @@
-const permissions = require('../../middleware/permissions')
-
 const controller = require('./render-as-cards')
 
 const mockActiveMovesByDate = [
@@ -21,6 +19,7 @@ describe('Collection controllers', function () {
 
     beforeEach(function () {
       req = {
+        canAccess: sinon.stub().returns(false),
         actions: ['1', '2'],
         context: 'listContext',
         pagination: mockPagination,
@@ -84,24 +83,15 @@ describe('Collection controllers', function () {
     })
 
     describe('template', function () {
-      beforeEach(function () {
-        sinon.stub(permissions, 'check')
-      })
-
       context(
         'if user can view move and individual location requested',
         function () {
           beforeEach(function () {
-            req.session = {
-              user: {
-                permissions: ['move:view'],
-              },
-            }
             req.params = {
               locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
               dateRange: ['2020-10-01', '2020-10-10'],
             }
-            permissions.check.withArgs('move:view', ['move:view']).returns(true)
+            req.canAccess.withArgs('move:view').returns(true)
 
             controller(req, res)
           })
@@ -117,13 +107,7 @@ describe('Collection controllers', function () {
 
       context('if user can view move and all locations requested', function () {
         beforeEach(function () {
-          req.session = {
-            user: {
-              permissions: ['move:view'],
-            },
-          }
-
-          permissions.check.withArgs('move:view', ['move:view']).returns(true)
+          req.canAccess.withArgs('move:view').returns(true)
 
           controller(req, res)
         })
@@ -138,7 +122,6 @@ describe('Collection controllers', function () {
 
       context('if user cannot view move', function () {
         beforeEach(function () {
-          permissions.check.returns(false)
           controller(req, res)
         })
 

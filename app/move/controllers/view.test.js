@@ -1,6 +1,5 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const permissionsMiddleware = require('../../../common/middleware/permissions')
 const presenters = require('../../../common/presenters')
 
 const getUpdateUrls = sinon.stub()
@@ -100,7 +99,6 @@ describe('Move controllers', function () {
     beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
-      sinon.stub(permissionsMiddleware, 'check').returns(true)
       sinon
         .stub(presenters, 'moveToMetaListComponent')
         .returns('__moveToMetaListComponent__')
@@ -126,6 +124,7 @@ describe('Move controllers', function () {
 
       req = {
         t: sinon.stub().returnsArg(0),
+        canAccess: sinon.stub().returns(true),
         session: {
           user: {
             permissions: userPermissions,
@@ -385,7 +384,7 @@ describe('Move controllers', function () {
           expect(getUpdateUrls).to.be.calledOnceWithExactly(
             updateSteps,
             mockMove,
-            userPermissions
+            req
           )
         })
 
@@ -428,7 +427,7 @@ describe('Move controllers', function () {
           expect(getUpdateUrls).to.be.calledOnceWithExactly(
             updateSteps,
             { ...youthTransferMove, move_type: youthTransferType },
-            userPermissions
+            req
           )
         })
       })
@@ -765,7 +764,7 @@ describe('Move controllers', function () {
 
       context('when user does not have permission', function () {
         beforeEach(function () {
-          permissionsMiddleware.check.returns(false)
+          req.canAccess.returns(false)
           controller(req, res)
           params = res.render.args[0][1]
         })
@@ -813,7 +812,6 @@ describe('Move controllers', function () {
           ...mockMove,
           person: undefined,
         }
-        req.session.user.permissions = []
       })
 
       context('with proposed state', function () {

@@ -1,11 +1,32 @@
 const { get } = require('lodash')
 
-function check(permissions, userPermissions = []) {
+const { prohibitionsByLocationType } = require('../lib/prohibitions')
+
+function check(permissions, userPermissions = [], locationType) {
   if (!Array.isArray(permissions)) {
     permissions = [permissions]
   }
 
+  const locationTypeProhibitions = prohibitionsByLocationType[locationType]
+
+  if (
+    locationTypeProhibitions &&
+    permissions.some(permission =>
+      locationTypeProhibitions.includes(permission)
+    )
+  ) {
+    return false
+  }
+
   return permissions.some(permission => userPermissions.includes(permission))
+}
+
+function setCanAccess(req, res, next) {
+  const userPermissions = req.session.user?.permissions
+  const locationType = req.session.currentLocation?.location_type
+  req.canAccess = permission => check(permission, userPermissions, locationType)
+
+  next()
 }
 
 function protectRoute(permission) {
@@ -25,5 +46,6 @@ function protectRoute(permission) {
 
 module.exports = {
   check,
+  setCanAccess,
   protectRoute,
 }
