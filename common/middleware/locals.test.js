@@ -106,21 +106,21 @@ describe('Locals', function () {
     })
 
     context('When invoking canAccess', function () {
-      it('should return false if no checkPermissions on the req object', function () {
+      it('should return false if no canAccess on the req object', function () {
         setLocals(req, res, next)
         expect(res.locals.canAccess('required_permission')).to.be.false
       })
 
-      context('and checkPermissions exists on the req object', function () {
+      context('and canAccess exists on the req object', function () {
         let checked
         beforeEach(function () {
-          req.checkPermissions = sinon.stub().returns('checked-permission')
+          req.canAccess = sinon.stub().returns('checked-permission')
           setLocals(req, res, next)
           checked = res.locals.canAccess('required_permission')
         })
 
-        it('should call checkPermissions with the permission', function () {
-          expect(req.checkPermissions).to.be.calledOnceWithExactly(
+        it('should call canAccess with the permission', function () {
+          expect(req.canAccess).to.be.calledOnceWithExactly(
             'required_permission'
           )
         })

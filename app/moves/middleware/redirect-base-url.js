@@ -8,7 +8,7 @@ function redirectBaseUrl(req, res) {
   const currentLocation = get(req.session, 'currentLocation')
 
   if (currentLocation) {
-    const canViewProposedMoves = req.checkPermissions('moves:view:proposed')
+    const canViewProposedMoves = req.canAccess('moves:view:proposed')
     const url =
       canViewProposedMoves && currentLocation.location_type === 'prison'
         ? `${req.baseUrl}/week/${today}/${currentLocation.id}/requested`

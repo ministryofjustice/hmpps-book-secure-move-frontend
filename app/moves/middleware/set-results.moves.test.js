@@ -32,7 +32,7 @@ describe('Moves middleware', function () {
       nextSpy = sinon.spy()
       res = {}
       req = {
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
         body: {
           [mockBodyKey]: {
             dateRange: ['2010-10-10', '2010-10-11'],
@@ -137,9 +137,7 @@ describe('Moves middleware', function () {
       context('with `personEscortRecordFeature`', function () {
         context('with correct user permission', function () {
           beforeEach(async function () {
-            req.checkPermissions
-              .withArgs('person_escort_record:view')
-              .returns(true)
+            req.canAccess.withArgs('person_escort_record:view').returns(true)
             await middleware(mockBodyKey, mockLocationKey, true)(
               req,
               res,

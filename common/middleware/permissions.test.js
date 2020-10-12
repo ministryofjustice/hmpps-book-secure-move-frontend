@@ -92,7 +92,7 @@ describe('Permissions middleware', function () {
     })
   })
 
-  describe('#setCheckPermissions()', function () {
+  describe('#setCanAccess()', function () {
     let req, next, allowed
 
     beforeEach(function () {
@@ -111,7 +111,7 @@ describe('Permissions middleware', function () {
 
     context('when invoked', function () {
       beforeEach(function () {
-        middleware.setCheckPermissions(req, {}, next)
+        middleware.setCanAccess(req, {}, next)
       })
 
       it('should call next', function () {
@@ -122,8 +122,8 @@ describe('Permissions middleware', function () {
     context('when the method on the request object is invoked', function () {
       context('and the user does not have the permission', function () {
         beforeEach(function () {
-          middleware.setCheckPermissions(req, {}, next)
-          allowed = req.checkPermissions('missing_permission')
+          middleware.setCanAccess(req, {}, next)
+          allowed = req.canAccess('missing_permission')
         })
 
         it('should return false', function () {
@@ -133,8 +133,8 @@ describe('Permissions middleware', function () {
 
       context('and the user has the permission', function () {
         beforeEach(function () {
-          middleware.setCheckPermissions(req, {}, next)
-          allowed = req.checkPermissions('required_permission')
+          middleware.setCanAccess(req, {}, next)
+          allowed = req.canAccess('required_permission')
         })
 
         it('should return true', function () {
@@ -147,8 +147,8 @@ describe('Permissions middleware', function () {
         function () {
           beforeEach(function () {
             req.session.currentLocation.location_type = 'forbidden_planet'
-            middleware.setCheckPermissions(req, {}, next)
-            allowed = req.checkPermissions('required_permission')
+            middleware.setCanAccess(req, {}, next)
+            allowed = req.canAccess('required_permission')
           })
 
           it('should return false', function () {

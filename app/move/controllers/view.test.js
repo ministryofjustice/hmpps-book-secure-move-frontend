@@ -124,7 +124,7 @@ describe('Move controllers', function () {
 
       req = {
         t: sinon.stub().returnsArg(0),
-        checkPermissions: sinon.stub().returns(true),
+        canAccess: sinon.stub().returns(true),
         session: {
           user: {
             permissions: userPermissions,
@@ -764,7 +764,7 @@ describe('Move controllers', function () {
 
       context('when user does not have permission', function () {
         beforeEach(function () {
-          req.checkPermissions.returns(false)
+          req.canAccess.returns(false)
           controller(req, res)
           params = res.render.args[0][1]
         })

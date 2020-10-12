@@ -4,26 +4,26 @@ const presenters = require('../../../common/presenters')
 
 function viewAllocation(personEscortRecordFeature = false) {
   return (req, res) => {
-    const { allocation, checkPermissions } = req
+    const { allocation, canAccess } = req
     const { moves, status } = allocation
     const bannerStatuses = ['cancelled']
     const movesWithoutProfile = moves.filter(move => !move.profile)
     const movesWithProfile = moves.filter(move => move.profile)
     const personEscortRecordIsEnabled =
-      personEscortRecordFeature && checkPermissions('person_escort_record:view')
+      personEscortRecordFeature && canAccess('person_escort_record:view')
     const moveToCardComponent = presenters.moveToCardComponent({
       showStatus: false,
       tagSource: personEscortRecordIsEnabled ? 'personEscortRecord' : '',
     })
 
     const removeUnassignedMoves = move => {
-      return !(checkPermissions('allocation:person:assign') && !move.profile)
+      return !(canAccess('allocation:person:assign') && !move.profile)
     }
 
     const removeMoveLink = move => {
       if (
         move.profile ||
-        !checkPermissions('allocation:cancel') ||
+        !canAccess('allocation:cancel') ||
         moves.length === 1
       ) {
         return

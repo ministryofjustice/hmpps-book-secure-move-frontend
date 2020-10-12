@@ -36,7 +36,7 @@ function setPrimaryNavigation(req, res, next) {
   ]
 
   res.locals.primaryNavigation = items
-    .filter(item => req.checkPermissions(item.permission))
+    .filter(item => req.canAccess(item.permission))
     .map(item => omit(item, 'permission'))
 
   next()

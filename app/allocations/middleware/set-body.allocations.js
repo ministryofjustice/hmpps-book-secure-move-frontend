@@ -5,7 +5,7 @@ const dateHelpers = require('../../../common/helpers/date')
 function setBodyAllocations(req, res, next) {
   const { status, sortBy, sortDirection } = req.query
   const { dateRange } = req.params
-  const hasAssignerPermission = req.checkPermissions('allocation:person:assign')
+  const hasAssignerPermission = req.canAccess('allocation:person:assign')
   const locationType = hasAssignerPermission ? 'fromLocations' : 'locations'
   const locations = req.locations
 

@@ -17,11 +17,11 @@ module.exports = function setLocals(req, res, next) {
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
     canAccess: permission => {
-      if (!req.checkPermissions) {
+      if (!req.canAccess) {
         return false
       }
 
-      return req.checkPermissions(permission)
+      return req.canAccess(permission)
     },
   }
 

@@ -9,7 +9,7 @@ describe('Moves middleware', function () {
       this.clock = sinon.useFakeTimers(new Date(mockMoveDate).getTime())
       req = {
         baseUrl: '/moves',
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
       }
       res = {
         redirect: sinon.stub(),
@@ -76,7 +76,7 @@ describe('Moves middleware', function () {
             }
 
             beforeEach(function () {
-              req.checkPermissions.withArgs('moves:view:proposed').returns(true)
+              req.canAccess.withArgs('moves:view:proposed').returns(true)
               req.session = {
                 currentLocation: mockLocation,
               }
@@ -96,7 +96,7 @@ describe('Moves middleware', function () {
             }
 
             beforeEach(function () {
-              req.checkPermissions.withArgs('moves:view:proposed').returns(true)
+              req.canAccess.withArgs('moves:view:proposed').returns(true)
               req.session = {
                 currentLocation: mockLocation,
               }
@@ -130,7 +130,7 @@ describe('Moves middleware', function () {
         'when user has permission to see the proposed moves',
         function () {
           beforeEach(function () {
-            req.checkPermissions.withArgs('move:proposed:view').returns(true)
+            req.canAccess.withArgs('move:proposed:view').returns(true)
             res.redirect.resetHistory()
             middleware(req, res)
           })

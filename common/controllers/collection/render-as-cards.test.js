@@ -19,7 +19,7 @@ describe('Collection controllers', function () {
 
     beforeEach(function () {
       req = {
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
         actions: ['1', '2'],
         context: 'listContext',
         pagination: mockPagination,
@@ -91,7 +91,7 @@ describe('Collection controllers', function () {
               locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
               dateRange: ['2020-10-01', '2020-10-10'],
             }
-            req.checkPermissions.withArgs('move:view').returns(true)
+            req.canAccess.withArgs('move:view').returns(true)
 
             controller(req, res)
           })
@@ -107,7 +107,7 @@ describe('Collection controllers', function () {
 
       context('if user can view move and all locations requested', function () {
         beforeEach(function () {
-          req.checkPermissions.withArgs('move:view').returns(true)
+          req.canAccess.withArgs('move:view').returns(true)
 
           controller(req, res)
         })

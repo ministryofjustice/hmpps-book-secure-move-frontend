@@ -36,7 +36,7 @@ module.exports = function view(req, res) {
   } = profile || {}
   const personEscortRecordIsEnabled =
     FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
-    req.checkPermissions('person_escort_record:view')
+    req.canAccess('person_escort_record:view')
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)

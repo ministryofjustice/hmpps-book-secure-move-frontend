@@ -16,8 +16,7 @@ function setResultsMoves(bodyKey, locationKey, personEscortRecordFeature) {
         moveService.getCancelled(args),
       ])
       const personEscortRecordIsEnabled =
-        personEscortRecordFeature &&
-        req.checkPermissions('person_escort_record:view')
+        personEscortRecordFeature && req.canAccess('person_escort_record:view')
       const cardTagSource = personEscortRecordIsEnabled
         ? 'personEscortRecord'
         : undefined

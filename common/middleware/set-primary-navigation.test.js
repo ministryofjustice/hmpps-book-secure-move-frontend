@@ -6,7 +6,7 @@ describe('#setPrimaryNavigation()', function () {
   beforeEach(function () {
     nextSpy = sinon.spy()
     req = {
-      checkPermissions: sinon.stub().returns(false),
+      canAccess: sinon.stub().returns(false),
       path: '',
       t: sinon.stub().returnsArg(0),
     }
@@ -31,7 +31,7 @@ describe('#setPrimaryNavigation()', function () {
 
   context('with all permissions', function () {
     beforeEach(function () {
-      req.checkPermissions.returns(true)
+      req.canAccess.returns(true)
     })
 
     describe('navigation items', function () {
@@ -225,38 +225,32 @@ describe('#setPrimaryNavigation()', function () {
 
   describe('permissions', function () {
     beforeEach(function () {
-      req.checkPermissions.returns(true)
+      req.canAccess.returns(true)
       middleware(req, res, nextSpy)
     })
 
     it('should check for dashboard permission', function () {
-      expect(req.checkPermissions).to.be.calledWithExactly('dashboard:view')
+      expect(req.canAccess).to.be.calledWithExactly('dashboard:view')
     })
 
     it('should check for single request permission', function () {
-      expect(req.checkPermissions).to.be.calledWithExactly(
-        'moves:view:proposed'
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:proposed')
     })
 
     it('should check for allocation permission', function () {
-      expect(req.checkPermissions).to.be.calledWithExactly('allocations:view')
+      expect(req.canAccess).to.be.calledWithExactly('allocations:view')
     })
 
     it('should check for outgoing moves permission', function () {
-      expect(req.checkPermissions).to.be.calledWithExactly(
-        'moves:view:outgoing'
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:outgoing')
     })
 
     it('should check for incoming moves permission', function () {
-      expect(req.checkPermissions).to.be.calledWithExactly(
-        'moves:view:incoming'
-      )
+      expect(req.canAccess).to.be.calledWithExactly('moves:view:incoming')
     })
 
     it('should check for permissions correct number of times', function () {
-      expect(req.checkPermissions.callCount).to.equal(5)
+      expect(req.canAccess.callCount).to.equal(5)
     })
   })
 })

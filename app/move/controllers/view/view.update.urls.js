@@ -1,12 +1,12 @@
 const getUpdateUrls = (updateSteps, move, req) => {
   const updateUrls = {}
 
-  if (!req.checkPermissions(`move:update:${move.move_type}`)) {
+  if (!req.canAccess(`move:update:${move.move_type}`)) {
     return updateUrls
   }
 
   updateSteps.forEach(updateJourney => {
-    if (!req.checkPermissions(updateJourney.permission)) {
+    if (!req.canAccess(updateJourney.permission)) {
       return
     }
 

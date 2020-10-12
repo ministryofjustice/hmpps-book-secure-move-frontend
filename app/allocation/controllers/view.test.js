@@ -84,7 +84,7 @@ describe('Allocation controllers', function () {
 
       mockReq = {
         t: sinon.stub().returnsArg(0),
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
         allocation: { ...allocationExample },
       }
       mockRes = {
@@ -97,7 +97,7 @@ describe('Allocation controllers', function () {
       'the creation of the link to remove a move from an allocation',
       function () {
         beforeEach(function () {
-          mockReq.checkPermissions.callsFake(arg => arg === 'allocation:cancel')
+          mockReq.canAccess.callsFake(arg => arg === 'allocation:cancel')
           moveToCardComponentStub = sinon.stub()
         })
 
@@ -109,7 +109,7 @@ describe('Allocation controllers', function () {
         })
 
         it('does not create removeMoveHref if the user has no permission to cancel allocations', function () {
-          mockReq.checkPermissions.callsFake(() => false)
+          mockReq.canAccess.callsFake(() => false)
           handler()(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
 
@@ -126,7 +126,7 @@ describe('Allocation controllers', function () {
         })
 
         it('does otherwise create removeMoveHref', function () {
-          mockReq.checkPermissions.callsFake(arg => arg === 'allocation:cancel')
+          mockReq.canAccess.callsFake(arg => arg === 'allocation:cancel')
           handler()(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
           expect(moves[0].removeMoveHref).to.equal(
@@ -278,7 +278,7 @@ describe('Allocation controllers', function () {
       let locals
 
       beforeEach(function () {
-        mockReq.checkPermissions.returns(true)
+        mockReq.canAccess.returns(true)
         handler()(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
       })

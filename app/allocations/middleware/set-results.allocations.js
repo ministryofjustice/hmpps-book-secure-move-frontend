@@ -2,7 +2,7 @@ const presenters = require('../../../common/presenters')
 const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
-  const hasAssignerPermission = req.checkPermissions('allocation:person:assign')
+  const hasAssignerPermission = req.canAccess('allocation:person:assign')
   const query = req.query
 
   const displayConfig = {

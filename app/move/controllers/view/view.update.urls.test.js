@@ -23,10 +23,10 @@ describe('Move controllers', function () {
     describe('#getUpdateUrls', function () {
       let updateUrls
       const req = {
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
       }
       beforeEach(function () {
-        req.checkPermissions
+        req.canAccess
           .withArgs('move:update:prison_transfer')
           .returns(true)
           .withArgs('move:allowed')

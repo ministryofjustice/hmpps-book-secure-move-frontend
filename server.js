@@ -25,7 +25,7 @@ const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
 const ensureSelectedLocation = require('./common/middleware/ensure-selected-location')
 const errorHandlers = require('./common/middleware/errors')
 const locals = require('./common/middleware/locals')
-const { setCheckPermissions } = require('./common/middleware/permissions')
+const { setCanAccess } = require('./common/middleware/permissions')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
 const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
@@ -186,7 +186,7 @@ app.use(
 app.use(processOriginalRequestBody())
 
 // Add permission checker
-app.use(setCheckPermissions)
+app.use(setCanAccess)
 
 // Routing
 app.use(setPrimaryNavigation)

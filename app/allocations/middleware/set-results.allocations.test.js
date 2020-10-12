@@ -32,7 +32,7 @@ describe('Allocations middleware', function () {
       res = {}
       req = {
         session: {},
-        checkPermissions: sinon.stub().callsFake(permission => {
+        canAccess: sinon.stub().callsFake(permission => {
           if (Array.isArray(permission)) {
             permission = permission[0]
           }
@@ -54,7 +54,7 @@ describe('Allocations middleware', function () {
 
     context('when services resolve', function () {
       beforeEach(function () {
-        req.checkPermissions.returns(false)
+        req.canAccess.returns(false)
         allocationService.getActive.resolves(mockActiveMoves)
         allocationService.getCancelled.resolves(mockCancelledMoves)
       })
@@ -154,9 +154,7 @@ describe('Allocations middleware', function () {
         'when user has permissions to assign a person to a move',
         function () {
           beforeEach(async function () {
-            req.checkPermissions
-              .withArgs('allocation:person:assign')
-              .returns(true)
+            req.canAccess.withArgs('allocation:person:assign').returns(true)
             await middleware(req, res, next)
           })
 

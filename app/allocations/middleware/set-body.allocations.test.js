@@ -20,7 +20,7 @@ describe('Allocations middleware', function () {
           sortBy: 'moves_count',
           sortDirection: 'asc',
         },
-        checkPermissions: sinon.stub().returns(false),
+        canAccess: sinon.stub().returns(false),
       }
     })
 
@@ -67,7 +67,7 @@ describe('Allocations middleware', function () {
 
     context('when user has assign role', function () {
       beforeEach(function () {
-        mockReq.checkPermissions.returns(true)
+        mockReq.canAccess.returns(true)
         middleware(mockReq, mockRes, nextSpy)
       })
 
