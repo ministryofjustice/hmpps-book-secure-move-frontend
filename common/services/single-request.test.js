@@ -394,6 +394,39 @@ describe('Single request service', function () {
           })
         })
 
+        context('with cancelled status', function () {
+          beforeEach(async function () {
+            moves = await singleRequestService.getAll({
+              status: 'cancelled',
+            })
+          })
+
+          it('should call moves.getAll with correct statuses', function () {
+            expect(moveService.getAll).to.be.calledOnceWithExactly({
+              isAggregation: false,
+              include: [
+                'from_location',
+                'to_location',
+                'profile.person',
+                'prison_transfer_reason',
+              ],
+              filter: {
+                'filter[status]': 'cancelled',
+                'filter[has_relationship_to_allocation]': false,
+                'filter[cancellation_reason]':
+                  'made_in_error,supplier_declined_to_move,cancelled_by_pmu,other',
+                'filter[move_type]': 'prison_transfer',
+                'sort[by]': 'created_at',
+                'sort[direction]': 'desc',
+              },
+            })
+          })
+
+          it('should return moves', function () {
+            expect(moves).to.deep.equal(mockMoves)
+          })
+        })
+
         context('with any other status', function () {
           beforeEach(async function () {
             moves = await singleRequestService.getAll({

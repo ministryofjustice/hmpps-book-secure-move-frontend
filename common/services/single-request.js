@@ -42,6 +42,14 @@ const singleRequestService = {
           'filter[cancellation_reason]': 'rejected',
         }
         break
+      case 'cancelled':
+        statusFilter = {
+          'filter[status]': 'cancelled',
+          // TODO: Find a better filter for this. Currently we will need to add any new reasons from the API here.
+          'filter[cancellation_reason]':
+            'made_in_error,supplier_declined_to_move,cancelled_by_pmu,other',
+        }
+        break
       default:
         statusFilter = {
           'filter[status]': status,
