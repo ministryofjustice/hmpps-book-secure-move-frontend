@@ -10,8 +10,8 @@
   {{ appRequestFilter(requestFilters) }}
 
   {% if totalResults > 0 %}
-    {% if resultsAsTable.active.rows.length %}
-      {{ govukTable(resultsAsTable.active) }}
+    {% if resultsAsTable.rows.length %}
+      {{ govukTable(resultsAsTable) }}
     {% else %}
       {{ appMessage({
         classes: "app-message--muted govuk-!-margin-top-7",
@@ -33,21 +33,5 @@
         })
       }
     }) }}
-  {% endif %}
-
-  {% if resultsAsTable.cancelled.rows.length %}
-    <div class="govuk-!-margin-top-9">
-      {% set html %}
-          {{ govukTable(resultsAsTable.cancelled) }}
-      {% endset %}
-
-      {{ govukDetails({
-        html: html,
-        summaryText: t("collections::cancelled", {
-          context: context,
-          count: resultsAsTable.cancelled.rows.length
-        })
-      }) }}
-    </div>
   {% endif %}
 {% endblock %}

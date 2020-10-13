@@ -78,10 +78,7 @@ describe('Allocations middleware', function () {
 
         it('should set resultsAsTable on req', function () {
           expect(req).to.have.property('resultsAsTable')
-          expect(req.resultsAsTable).to.deep.equal({
-            active: mockActiveMoves,
-            cancelled: [],
-          })
+          expect(req.resultsAsTable).to.deep.equal(mockActiveMoves)
         })
 
         it('should call presenter correct number of times', function () {

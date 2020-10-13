@@ -10,12 +10,9 @@ async function setResultsSingleRequests(req, res, next) {
       cancelled: [],
     }
 
-    req.resultsAsTable = {
-      active: presenters.singleRequestsToTableComponent({ query: req.query })(
-        singleRequests
-      ),
-      cancelled: [],
-    }
+    req.resultsAsTable = presenters.singleRequestsToTableComponent({
+      query: req.query,
+    })(singleRequests)
 
     next()
   } catch (error) {
