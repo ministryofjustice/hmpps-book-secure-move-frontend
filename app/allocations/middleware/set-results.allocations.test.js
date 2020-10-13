@@ -9,10 +9,6 @@ const mockActiveMoves = [
   { id: '3', foo: 'bar', status: 'completed' },
   { id: '4', fizz: 'buzz', status: 'completed' },
 ]
-const mockCancelledMoves = [
-  { id: '5', foo: 'bar', status: 'cancelled' },
-  { id: '6', fizz: 'buzz', status: 'cancelled' },
-]
 
 describe('Allocations middleware', function () {
   describe('#setResultsAllocations()', function () {
@@ -23,8 +19,7 @@ describe('Allocations middleware', function () {
 
     beforeEach(function () {
       allocationsToTableStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'getActive')
-      sinon.stub(allocationService, 'getCancelled')
+      sinon.stub(allocationService, 'getByDateAndLocation')
       sinon
         .stub(presenters, 'allocationsToTableComponent')
         .returns(allocationsToTableStub)
@@ -55,8 +50,7 @@ describe('Allocations middleware', function () {
     context('when services resolve', function () {
       beforeEach(function () {
         req.canAccess.returns(false)
-        allocationService.getActive.resolves(mockActiveMoves)
-        allocationService.getCancelled.resolves(mockCancelledMoves)
+        allocationService.getByDateAndLocation.resolves(mockActiveMoves)
       })
 
       context('by default', function () {
@@ -66,17 +60,7 @@ describe('Allocations middleware', function () {
 
         it('should call the data service with request body', function () {
           expect(
-            allocationService.getActive
-          ).to.have.been.calledOnceWithExactly({
-            fromLocationId: '123',
-            moveDate: ['2019-01-01', '2019-01-07'],
-            status: 'proposed',
-          })
-        })
-
-        it('should call the data service with request body', function () {
-          expect(
-            allocationService.getCancelled
+            allocationService.getByDateAndLocation
           ).to.have.been.calledOnceWithExactly({
             fromLocationId: '123',
             moveDate: ['2019-01-01', '2019-01-07'],
@@ -88,7 +72,7 @@ describe('Allocations middleware', function () {
           expect(req).to.have.property('results')
           expect(req.results).to.deep.equal({
             active: mockActiveMoves,
-            cancelled: mockCancelledMoves,
+            cancelled: [],
           })
         })
 
@@ -96,12 +80,12 @@ describe('Allocations middleware', function () {
           expect(req).to.have.property('resultsAsTable')
           expect(req.resultsAsTable).to.deep.equal({
             active: mockActiveMoves,
-            cancelled: mockCancelledMoves,
+            cancelled: [],
           })
         })
 
         it('should call presenter correct number of times', function () {
-          expect(presenters.allocationsToTableComponent).to.be.calledTwice
+          expect(presenters.allocationsToTableComponent).to.be.calledOnce
         })
 
         it('should call presenter with correct config', function () {
@@ -117,12 +101,6 @@ describe('Allocations middleware', function () {
         it('should call presenter for active moves', function () {
           expect(allocationsToTableStub).to.have.been.calledWithExactly(
             mockActiveMoves
-          )
-        })
-
-        it('should call presenter for cancelled moves', function () {
-          expect(allocationsToTableStub).to.have.been.calledWithExactly(
-            mockCancelledMoves
           )
         })
 
@@ -175,7 +153,7 @@ describe('Allocations middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        allocationService.getActive.rejects(mockError)
+        allocationService.getByDateAndLocation.rejects(mockError)
         await middleware(req, res, next)
       })
 
