@@ -41,6 +41,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(controller, 'setupConditionalFields')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setButtonText')
+        sinon.stub(controller, 'setValidationRules')
 
         controller.middlewareSetup()
       })
@@ -58,12 +59,18 @@ describe('Person Escort Record controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+          controller.setValidationRules
+        )
+      })
+
+      it('should call set button text method', function () {
+        expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(2)
+        expect(controller.use).to.be.callCount(3)
       })
     })
 

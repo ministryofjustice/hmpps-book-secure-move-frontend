@@ -40,6 +40,7 @@ function buildCommentField(
   const field = {
     rows,
     component,
+    dependentQuestionKey: dependentField,
     name: `${dependentField}--${kebabCase(dependentValue)}`,
     id: `${dependentField}--${kebabCase(dependentValue)}`,
     classes: inputWidthClasses[charWidth] || 'govuk-input--width-20',

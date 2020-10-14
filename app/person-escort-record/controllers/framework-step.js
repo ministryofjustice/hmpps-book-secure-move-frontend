@@ -33,7 +33,19 @@ class FrameworkStepController extends FormWizardController {
     // TODO: Find a more efficient way to solve this ordering issue
     this.use(this.setupConditionalFields)
     super.middlewareSetup()
+    this.use(this.setValidationRules)
     this.use(this.setButtonText)
+  }
+
+  setValidationRules(req, res, next) {
+    const { responses } = req.personEscortRecord || {}
+    const fields = Object.entries(req.form.options.fields).map(
+      frameworksHelpers.setValidationRules(responses)
+    )
+
+    req.form.options.fields = fromPairs(fields)
+
+    next()
   }
 
   setInitialValues(req, res, next) {
