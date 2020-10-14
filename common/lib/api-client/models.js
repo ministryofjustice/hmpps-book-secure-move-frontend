@@ -393,6 +393,7 @@ module.exports = {
       created_at: '',
       confirmed_at: '',
       version: '',
+      nomis_sync_status: '',
       move: {
         jsonApi: 'hasOne',
         type: 'moves',

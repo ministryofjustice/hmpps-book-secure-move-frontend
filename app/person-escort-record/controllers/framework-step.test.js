@@ -78,6 +78,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'setPageTitleLocals')
+        sinon.stub(controller, 'setSyncStatusBanner')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -88,14 +89,20 @@ describe('Person Escort Record controllers', function () {
           .calledOnce
       })
 
-      it('should call set models method', function () {
+      it('should call page titles method', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           controller.setPageTitleLocals
         )
       })
 
+      it('should call set sync banner method', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setSyncStatusBanner
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(1)
+        expect(controller.use).to.be.callCount(2)
       })
     })
 
@@ -239,6 +246,80 @@ describe('Person Escort Record controllers', function () {
 
       it('should call next without error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#setSyncStatusBanner', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          personEscortRecord: {
+            nomis_sync_status: [
+              {
+                resource_type: 'alerts',
+                status: 'success',
+              },
+              {
+                resource_type: 'personal_care_needs',
+                status: 'success',
+              },
+              {
+                resource_type: 'reasonable_adjustments',
+                status: 'success',
+              },
+            ],
+          },
+        }
+        mockRes = {
+          locals: {},
+        }
+      })
+
+      context('without failures', function () {
+        beforeEach(function () {
+          controller.setSyncStatusBanner(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set an empty array', function () {
+          expect(mockRes.locals.syncFailures).to.deep.equal([])
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with failures', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.nomis_sync_status = [
+            {
+              resource_type: 'alerts',
+              status: 'failed',
+            },
+            {
+              resource_type: 'personal_care_needs',
+              status: 'success',
+            },
+            {
+              resource_type: 'reasonable_adjustments',
+              status: 'failed',
+            },
+          ]
+          controller.setSyncStatusBanner(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set array of failures', function () {
+          expect(mockRes.locals.syncFailures).to.deep.equal([
+            'alerts',
+            'reasonable_adjustments',
+          ])
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
