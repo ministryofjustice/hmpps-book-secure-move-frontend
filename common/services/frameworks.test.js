@@ -354,6 +354,7 @@ describe('Services', function () {
                   text: 'Yes, I agree',
                   conditional: {
                     rows: 2,
+                    dependentQuestionKey: 'question-key',
                     name: 'question-key--yes-i-agree',
                     id: 'question-key--yes-i-agree',
                     component: 'govukTextarea',
@@ -379,6 +380,7 @@ describe('Services', function () {
                   text: 'No, I do not agree',
                   conditional: {
                     rows: 4,
+                    dependentQuestionKey: 'question-key',
                     name: 'question-key--no-i-do-not-agree',
                     id: 'question-key--no-i-do-not-agree',
                     component: 'govukInput',
