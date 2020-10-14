@@ -1,0 +1,5 @@
+<div class="app-feedback-prompt{% if params.classes %} {{ params.classes }}{% endif %}">
+  <p class="app-feedback-prompt__content">
+    {{ params.content.html | safe if params.content.html else params.content.text }}
+  </p>
+</div>
