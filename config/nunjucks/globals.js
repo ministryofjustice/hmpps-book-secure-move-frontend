@@ -1,6 +1,12 @@
 const { isFunction } = require('lodash')
 
-const { ANALYTICS, ASSETS_HOST, FEEDBACK_URL, SUPPORT_EMAIL } = require('../')
+const {
+  ANALYTICS,
+  ASSETS_HOST,
+  FEEDBACK_URL,
+  PERSON_ESCORT_RECORD_FEEDBACK_URL,
+  SUPPORT_EMAIL,
+} = require('../')
 const i18n = require('../i18n')
 const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
@@ -18,6 +24,7 @@ try {
 
 module.exports = {
   FEEDBACK_URL,
+  PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
   SERVICE_NAME: 'Book a secure move',
   GA_ID: ANALYTICS.GA_ID,

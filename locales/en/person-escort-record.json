@@ -58,5 +58,6 @@
     "section_incomplete": "Warnings will display once this section has been completed",
     "empty": "No {{name}} warnings. View <a href=\"{{url}}\">all answers</a>.",
     "information_provided_when_requested": "View information provided when move was requested"
-  }
+  },
+  "feedback_prompt": "This is a new feature — <a href=\"{{url}}\">give us your feedback</a> to help us improve it"
 }
