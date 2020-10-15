@@ -14,10 +14,6 @@ async function setResultsAllocations(req, res, next) {
       req.body.allocations
     )
 
-    req.results = {
-      active: results,
-      cancelled: [],
-    }
     req.resultsAsTable = presenters.allocationsToTableComponent(displayConfig)(
       results
     )

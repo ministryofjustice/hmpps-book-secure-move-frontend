@@ -51,14 +51,6 @@ describe('Moves middleware', function () {
         })
       })
 
-      it('should set results on req', function () {
-        expect(req).to.have.property('results')
-        expect(req.results).to.deep.equal({
-          active: mockActiveMoves,
-          cancelled: [],
-        })
-      })
-
       it('should set resultsAsTable on req', function () {
         expect(req).to.have.property('resultsAsTable')
         expect(req.resultsAsTable).to.deep.equal(mockActiveMoves)
@@ -90,7 +82,6 @@ describe('Moves middleware', function () {
       })
 
       it('should not request properties', function () {
-        expect(req).not.to.have.property('results')
         expect(req).not.to.have.property('resultsAsTable')
       })
 
