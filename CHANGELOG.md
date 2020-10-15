@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.48.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.1...v2.48.0) (2020-10-15)
+
+
+### Features
+
+* **per:** Display banner when NOMIS sync fails ([5f3f5f8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5f3f5f8955387e8763938d687a32025079e16937))
+* **per:** Display NOMIS information on section overview ([3efcb5e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3efcb5ead783cc753cb35c15953630be036741db))
+* **per:** Only validate follow up comments when no NOMIS information ([a6ce0b9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a6ce0b9cb0c96a42e5fc54b80291b040513dbe92))
+* **per:** Render a feedback banner on section overview step ([c95ed75](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c95ed753411d23a059934d3b7cd85de09e2b8ec5))
+* **per:** Render NOMIS information against questions ([6afa48c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6afa48cdcd81b55fda6c4a4b8cfb954204ca25c8))
+
+
+### Bug Fixes
+
+* **per:** Handle when followup comments does not have any validations ([64e051b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/64e051b8ee835453ea9d9e079c59e69a5ff1e4e2))
+* Add actual move dates to single-request getCancelled method ([3d127df](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3d127dfdedb41d93048b16b3360c3f09ada07143))
+* upgrade debug from 4.2.0 to 4.3.0 ([59d043d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/59d043d707ca2f498e378375b222b83726ef410a))
+
 ## [2.47.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.1...v2.47.0) (2020-10-09)
 
 
