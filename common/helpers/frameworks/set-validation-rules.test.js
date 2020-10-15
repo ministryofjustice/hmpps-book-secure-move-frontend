@@ -153,6 +153,63 @@ describe('Framework helpers', function () {
             ])
           })
         })
+
+        context('without validations', function () {
+          const mockFieldWithoutValidations = [
+            'mock-field',
+            {
+              label: {
+                text: 'Please answer this question',
+              },
+              dependentQuestionKey: 'violent-or-dangerous',
+            },
+          ]
+          context('without NOMIS mappings', function () {
+            beforeEach(function () {
+              output = helper([{ ...mockResponses[0], nomis_mappings: [] }])(
+                mockFieldWithoutValidations
+              )
+            })
+
+            it('should not add validations', function () {
+              expect(output).to.deep.equal([
+                'mock-field',
+                {
+                  label: {
+                    text: 'Please answer this question',
+                  },
+                  dependentQuestionKey: 'violent-or-dangerous',
+                },
+              ])
+            })
+          })
+
+          context('with NOMIS mappings', function () {
+            beforeEach(function () {
+              output = helper([
+                { ...mockResponses[0], nomis_mappings: [{ foo: 'bar' }] },
+              ])(mockFieldWithoutValidations)
+            })
+
+            it('should not update label', function () {
+              expect(output[1].label).to.deep.equal({
+                text: 'Please answer this question',
+              })
+            })
+
+            it('should not add validations', function () {
+              expect(output).to.deep.equal([
+                'mock-field',
+                {
+                  label: {
+                    text: 'Please answer this question',
+                  },
+                  dependentQuestionKey: 'violent-or-dangerous',
+                },
+              ])
+            })
+          })
+        })
       })
     })
   })

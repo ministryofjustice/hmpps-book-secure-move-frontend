@@ -7,7 +7,7 @@ function setValidationRules(responses = []) {
       field.dependentQuestionKey,
     ])
 
-    if (!response) {
+    if (!response || !field.validate) {
       return [key, field]
     }
 
