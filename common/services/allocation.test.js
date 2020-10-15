@@ -649,7 +649,7 @@ describe('Allocation service', function () {
         expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           includeCancelled: false,
-          include: undefined,
+          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
           filter: {},
         })
       })
@@ -706,7 +706,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
-            include: undefined,
+            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -730,7 +730,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             includeCancelled: false,
-            include: undefined,
+            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -766,10 +766,10 @@ describe('Allocation service', function () {
         })
       })
 
-      context('with including cancelled moves', function () {
+      context('when status includes cancelled', function () {
         beforeEach(async function () {
           results = await allocationService.getByDateAndLocation({
-            includeCancelled: true,
+            status: 'cancelled',
             locations: [mockFromLocationId],
           })
         })
@@ -778,9 +778,10 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: true,
-            include: undefined,
+            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
+              'filter[status]': 'cancelled',
             },
           })
         })
@@ -788,69 +789,6 @@ describe('Allocation service', function () {
         it('should return results', function () {
           expect(results).to.deep.equal(mockAllocations)
         })
-      })
-    })
-  })
-
-  describe('#getActive', function () {
-    beforeEach(function () {
-      sinon.stub(allocationService, 'getByDateAndLocation')
-    })
-
-    context('with custom status', function () {
-      beforeEach(function () {
-        allocationService.getActive({
-          additionalParams: {},
-          status: 'custom',
-        })
-      })
-
-      it('invokes getByDateAndLocation passing a proposed status', function () {
-        expect(
-          allocationService.getByDateAndLocation
-        ).to.have.been.calledWithExactly({
-          additionalParams: {},
-          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
-          status: 'custom',
-        })
-      })
-    })
-
-    context('without custom status', function () {
-      beforeEach(function () {
-        allocationService.getActive({
-          additionalParams: {},
-        })
-      })
-
-      it('invokes getByDateAndLocation passing a proposed status', function () {
-        expect(
-          allocationService.getByDateAndLocation
-        ).to.have.been.calledWithExactly({
-          additionalParams: {},
-          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
-          status: 'filled,unfilled',
-        })
-      })
-    })
-  })
-
-  describe('#getCancelled', function () {
-    beforeEach(function () {
-      sinon.stub(allocationService, 'getByDateAndLocation')
-      allocationService.getCancelled({
-        additionalParams: {},
-      })
-    })
-
-    it('invokes getByDateAndLocation passing a cancelled status', function () {
-      expect(
-        allocationService.getByDateAndLocation
-      ).to.have.been.calledWithExactly({
-        additionalParams: {},
-        includeCancelled: true,
-        include: ['from_location', 'moves', 'moves.profile', 'to_location'],
-        status: 'cancelled',
       })
     })
   })

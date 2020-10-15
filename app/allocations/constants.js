@@ -14,7 +14,11 @@ const COLLECTION_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uu
 
 const DEFAULTS = {
   QUERY: {
-    outgoing: { status: '', sortBy: 'date', sortDirection: 'asc' },
+    outgoing: {
+      status: 'unfilled',
+      sortBy: 'date',
+      sortDirection: 'asc',
+    },
   },
   TIME_PERIOD: {
     outgoing: 'week',
@@ -24,16 +28,16 @@ const DEFAULTS = {
 const FILTERS = {
   outgoing: [
     {
-      label: 'allocations::total',
-      status: '',
+      label: 'statuses::unfilled',
+      status: 'unfilled',
     },
     {
       label: 'statuses::filled',
       status: 'filled',
     },
     {
-      label: 'statuses::unfilled',
-      status: 'unfilled',
+      label: 'collections::cancelled_allocations',
+      status: 'cancelled',
     },
   ],
 }

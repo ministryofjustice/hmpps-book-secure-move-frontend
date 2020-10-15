@@ -3,35 +3,20 @@ const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
   const hasAssignerPermission = req.canAccess('allocation:person:assign')
-  const query = req.query
-
   const displayConfig = {
     showFromLocation: !hasAssignerPermission,
     showRemaining: hasAssignerPermission,
-    query,
+    query: req.query,
   }
 
   try {
-    const [activeAllocations, cancelledAllocations] = (
-      await Promise.all([
-        allocationService.getActive(req.body.allocations),
-        allocationService.getCancelled(req.body.allocations),
-      ])
-    ).map(response => response.flat())
+    const results = await allocationService.getByDateAndLocation(
+      req.body.allocations
+    )
 
-    req.results = {
-      active: activeAllocations,
-      cancelled: cancelledAllocations,
-    }
-    req.resultsAsTable = {
-      active: presenters.allocationsToTableComponent(displayConfig)(
-        activeAllocations
-      ),
-      cancelled: presenters.allocationsToTableComponent({
-        ...displayConfig,
-        isSortable: false,
-      })(cancelledAllocations),
-    }
+    req.resultsAsTable = presenters.allocationsToTableComponent(displayConfig)(
+      results
+    )
 
     next()
   } catch (error) {

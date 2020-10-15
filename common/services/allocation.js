@@ -104,8 +104,7 @@ const allocationService = {
     fromLocations = [],
     toLocations = [],
     locations = [],
-    include,
-    includeCancelled = false,
+    include = ['from_location', 'moves', 'moves.profile', 'to_location'],
     isAggregation = false,
     status,
     sortBy,
@@ -116,7 +115,9 @@ const allocationService = {
     return allocationService.getAll({
       isAggregation,
       include,
-      includeCancelled,
+      // TODO: This can be removed once move count and progress are returned
+      // by the API as resouce meta
+      includeCancelled: status ? status.includes('cancelled') : false,
       filter: pickBy({
         'filter[status]': status,
         'filter[from_locations]': fromLocations.join(','),
@@ -129,22 +130,7 @@ const allocationService = {
       }),
     })
   },
-  getActive(args) {
-    return allocationService.getByDateAndLocation({
-      ...args,
-      status: args.status || 'filled,unfilled',
-      include: ['from_location', 'moves', 'moves.profile', 'to_location'],
-    })
-  },
-  getCancelled(args) {
-    return allocationService.getByDateAndLocation({
-      ...args,
-      includeCancelled: true,
-      include: ['from_location', 'moves', 'moves.profile', 'to_location'],
-      status: 'cancelled',
-    })
-  },
-  async getAll(props) {
+  getAll(props) {
     return batchRequest(getAll, props, [
       'from_locations',
       'to_locations',

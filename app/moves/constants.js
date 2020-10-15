@@ -50,6 +50,10 @@ const FILTERS = {
       label: 'statuses::rejected',
       status: 'rejected',
     },
+    {
+      label: 'collections::cancelled',
+      status: 'cancelled',
+    },
   ],
 }
 

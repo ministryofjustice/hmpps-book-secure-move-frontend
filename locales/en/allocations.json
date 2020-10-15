@@ -1,6 +1,4 @@
 {
-  "total": "total allocation",
-  "total_plural": "total allocations",
   "confirmation": {
     "page_title": "Allocation requested",
     "detail": "The request for <strong><a href=\"{{href}}\">{{moves_count}} {{people}}</a></strong> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong> on <strong>{{date}}</strong> has been sent.",

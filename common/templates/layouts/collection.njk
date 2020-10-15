@@ -72,7 +72,7 @@
       {% block headerLinks %}
         <div class="govuk-grid-column-one-third">
           <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
-            {% if canAccess('moves:download') %}
+            {% if canAccess('moves:download') and context !== "allocations" %}
               <li>
                 <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
                   {{ t("collections::download_csv", {
