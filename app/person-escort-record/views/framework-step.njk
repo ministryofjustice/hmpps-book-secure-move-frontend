@@ -2,6 +2,37 @@
 
 {% set mainClasses = "interruption-card" if options.stepType == 'interruption-card' %}
 
+{% block contentHeader %}
+  {% if syncFailures.length > 0 %}
+    {% set html %}
+      <p class="govuk-!-margin-bottom-3">
+        {{ t("person-escort-record::sync_status.failed.message") }}
+      </p>
+
+      <ul>
+        {% for type in syncFailures %}
+          <li>
+            {{ t("person-escort-record::sync_status.failed.resource_types." + type) }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endset %}
+
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "app-message--warning govuk-!-margin-bottom-4",
+      title: {
+        text: t("person-escort-record::sync_status.failed.title")
+      },
+      content: {
+        html: html
+      }
+    }) }}
+  {% endif %}
+
+  {{ super() }}
+{% endblock %}
+
 {% block pageTitle %}
   {{ t(options.pageTitle) }}
   – {{ t(frameworkSection) }}

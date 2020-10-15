@@ -78,10 +78,21 @@ class FrameworkStepController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setPageTitleLocals)
+    this.use(this.setSyncStatusBanner)
   }
 
   setPageTitleLocals(req, res, next) {
     res.locals.frameworkSection = req.frameworkSection.name
+    next()
+  }
+
+  setSyncStatusBanner(req, res, next) {
+    const { nomis_sync_status: syncStatus } = req.personEscortRecord
+
+    res.locals.syncFailures = syncStatus
+      .filter(type => type.status === 'failed')
+      .map(type => type.resource_type)
+
     next()
   }
 
