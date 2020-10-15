@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.49.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.48.0...v2.49.0) (2020-10-15)
+
+
+### Features
+
+* **allocations:** Move cancelled items to filter component ([477b3cb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/477b3cbebc9c19210a8d0e6624120f243f9664b8))
+* **single requests:** Move cancelled items to filter component ([a0b1703](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a0b17035e4c46360133b7d21a0f5327f55a32eb8))
+
 ## [2.48.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.46.1...v2.48.0) (2020-10-15)
 
 
