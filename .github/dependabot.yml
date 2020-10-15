@@ -15,6 +15,8 @@ updates:
       - dependency-name: 'moj-frontend'
       - dependency-name: 'css-loader'
         versions: ['>=4']
+      - dependency-name: 'webpack-cli'
+        versions: ['>=4']
       - dependency-name: 'webpack-merge'
         versions: ['>=5']
     commit-message:
