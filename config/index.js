@@ -70,6 +70,8 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
   NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
+  PERSON_ESCORT_RECORD_FEEDBACK_URL:
+    process.env.PERSON_ESCORT_RECORD_FEEDBACK_URL,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   APP_VERSION,

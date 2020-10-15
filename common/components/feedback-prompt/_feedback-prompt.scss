@@ -1,0 +1,19 @@
+.app-feedback-prompt {
+  @include govuk-width-container();
+  background: govuk-colour("blue");
+}
+
+.app-feedback-prompt__content {
+  color: govuk-colour("white");
+  padding: govuk-spacing(5);
+  margin: 0;
+  font-weight: bold;
+
+  a,
+  a:hover,
+  a:active,
+  a:visited,
+  a:link {
+    color: govuk-colour("white");
+  }
+}
