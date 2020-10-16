@@ -3,6 +3,11 @@ const proxyquire = require('proxyquire')
 
 const clientMetrics = require('./client-metrics')
 
+const getDuration = sinon.stub().callsFake(() => {
+  return 23
+})
+const timer = () => getDuration
+
 describe('API Client', function () {
   describe('Auth library', function () {
     let authInstance
@@ -108,12 +113,12 @@ describe('API Client', function () {
       }
       beforeEach(async function () {
         sinon.stub(axios, 'post').resolves(mockResponse)
-        sinon.stub(clientMetrics, 'start').returns('clientInstrumentation')
-        sinon.stub(clientMetrics, 'stop')
-        sinon.stub(clientMetrics, 'stopWithError')
+        sinon.stub(clientMetrics, 'recordSuccess')
+        sinon.stub(clientMetrics, 'recordError')
 
         authInstance = proxyquire('./auth', {
           './client-metrics': clientMetrics,
+          '../timer': timer,
         })(mockOptions)
       })
 
@@ -137,13 +142,6 @@ describe('API Client', function () {
             }
           )
         })
-
-        it('should start recording metrics for the call', function () {
-          expect(clientMetrics.start).to.be.calledOnceWithExactly({
-            url: mockOptions.authUrl,
-            method: 'POST',
-          })
-        })
       })
 
       describe('when endpoint returns successfully', function () {
@@ -155,10 +153,14 @@ describe('API Client', function () {
           expect(refreshedToken).to.deep.equal(mockTokenResponse)
         })
 
-        it('should stop recording metrics for the call', function () {
-          expect(clientMetrics.stop).to.be.calledOnceWithExactly(
-            'clientInstrumentation',
-            mockResponse
+        it('should record metrics for the call', function () {
+          expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
+            {
+              url: mockOptions.authUrl,
+              method: 'POST',
+            },
+            mockResponse,
+            23
           )
         })
       })
@@ -178,10 +180,14 @@ describe('API Client', function () {
           expect(thrownError).to.equal(error)
         })
 
-        it('should stop recording metrics for the call', function () {
-          expect(clientMetrics.stopWithError).to.be.calledOnceWithExactly(
-            'clientInstrumentation',
-            error
+        it('should record metrics for the failed call', function () {
+          expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+            {
+              url: mockOptions.authUrl,
+              method: 'POST',
+            },
+            error,
+            23
           )
         })
       })

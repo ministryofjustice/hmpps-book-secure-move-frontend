@@ -5,14 +5,20 @@ const cache = {
 }
 
 const clientMetrics = {
-  start: sinon.stub(),
-  stop: sinon.stub(),
-  stopWithError: sinon.stub(),
+  record: sinon.stub(),
+  recordSuccess: sinon.stub(),
+  recordError: sinon.stub(),
 }
+
+const getDuration = sinon.stub().callsFake(() => {
+  return 23
+})
+const timer = () => getDuration
 
 const requestMiddleware = proxyquire('./request', {
   '../cache': cache,
   '../client-metrics': clientMetrics,
+  '../../timer': timer,
 })
 
 const mockResponse = {
@@ -25,7 +31,6 @@ describe('API Client', function () {
   describe('Request middleware', function () {
     let payload
     let response
-    const clientInstrumentation = {}
 
     beforeEach(function () {
       payload = {
@@ -40,10 +45,8 @@ describe('API Client', function () {
       }
 
       cache.set.resetHistory()
-      clientMetrics.start.resetHistory()
-      clientMetrics.start.returns(clientInstrumentation)
-      clientMetrics.stop.resetHistory()
-      clientMetrics.stopWithError.resetHistory()
+      clientMetrics.recordSuccess.resetHistory()
+      clientMetrics.recordError.resetHistory()
     })
 
     context('when payload includes a response', function () {
@@ -67,14 +70,11 @@ describe('API Client', function () {
         expect(response).to.deep.equal(mockResponse)
       })
 
-      it('should start recording metrics for the call', function () {
-        expect(clientMetrics.start).to.be.calledOnceWithExactly(payload.req)
-      })
-
-      it('should stop recording metrics for the call', function () {
-        expect(clientMetrics.stop).to.be.calledOnceWithExactly(
-          clientInstrumentation,
-          mockResponse
+      it('should recording metrics for the call', function () {
+        expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
+          payload.req,
+          mockResponse,
+          23
         )
       })
     })
@@ -160,9 +160,10 @@ describe('API Client', function () {
       })
 
       it('should stop recording metrics for the call', function () {
-        expect(clientMetrics.stopWithError).to.be.calledOnceWithExactly(
-          clientInstrumentation,
-          error
+        expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+          payload.req,
+          error,
+          23
         )
       })
 

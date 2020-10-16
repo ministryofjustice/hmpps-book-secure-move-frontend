@@ -1,5 +1,6 @@
 const debug = require('debug')('app:api-client:axios-request')
 
+const timer = require('../../timer')
 const cache = require('../cache')
 const clientMetrics = require('../client-metrics')
 
@@ -15,15 +16,16 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
 
       debug('API REQUEST', req.url)
 
-      // get metrics instrumentation
-      const clientInstrumentation = clientMetrics.start(req)
+      // start timer for metrics and logging
+      const clientTimer = timer()
 
       const response = await jsonApi
         .axios(req)
         .then(async response => {
           debug('API SUCCESS', req.url)
           // record successful request
-          clientMetrics.stop(clientInstrumentation, response)
+          const duration = clientTimer()
+          clientMetrics.recordSuccess(req, response, duration)
 
           if (cacheKey) {
             debug('CACHEING API RESPONSE', cacheKey)
@@ -35,7 +37,8 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
         .catch(error => {
           debug('API ERROR', req.url, error)
           // record error
-          clientMetrics.stopWithError(clientInstrumentation, error)
+          const duration = clientTimer()
+          clientMetrics.recordError(req, error, duration)
 
           throw error
         })

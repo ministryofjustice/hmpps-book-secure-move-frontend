@@ -2,6 +2,7 @@ const axios = require('axios')
 const debug = require('debug')('app:api-client:auth')
 
 const { API } = require('../../../config')
+const timer = require('../timer')
 
 const clientMetrics = require('./client-metrics')
 let authInstance = null
@@ -56,25 +57,28 @@ Auth.prototype = {
 
     debug('AUTH REQUEST', url)
 
-    // get metrics instrumentation
-    const clientInstrumentation = clientMetrics.start({
+    // start request timer
+    const authTimer = timer()
+    const reqLabels = {
       url,
       method: 'POST',
-    })
+    }
 
     return axios
       .post(this.config.authUrl, data, config)
       .then(response => {
         debug('AUTH SUCCESS', url)
         // record successful request
-        clientMetrics.stop(clientInstrumentation, response)
+        const duration = authTimer()
+        clientMetrics.recordSuccess(reqLabels, response, duration)
 
         return response.data
       })
       .catch(error => {
         debug('AUTH ERROR', url, error)
         // record error
-        clientMetrics.stopWithError(clientInstrumentation, error)
+        const duration = authTimer()
+        clientMetrics.recordError(reqLabels, error, duration)
 
         throw error
       })
