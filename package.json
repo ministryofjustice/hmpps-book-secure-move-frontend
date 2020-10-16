@@ -89,6 +89,7 @@
     "concurrently": "5.3.0",
     "connect-flash": "0.1.1",
     "connect-redis": "5.0.0",
+    "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.5",
     "core-js": "3.6.5",
     "date-fns": "2.16.1",
