@@ -4,7 +4,7 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 const permissionsControllers = require('../../../common/middleware/permissions')
-const responseService = require('../../../common/services/framework-response')
+const personEscortRecordService = require('../../../common/services/person-escort-record')
 
 class FrameworkStepController extends FormWizardController {
   middlewareChecks() {
@@ -110,9 +110,13 @@ class FrameworkStepController extends FormWizardController {
 
     try {
       // wait for all responses to resolve first
-      await Promise.all(
-        responses.map(response => responseService.update(response))
-      )
+      if (responses.length) {
+        await personEscortRecordService.respond(
+          personEscortRecord.id,
+          responses
+        )
+      }
+
       // call parent saveValues to handle storing new values in the session
       super.saveValues(req, res, next)
     } catch (error) {

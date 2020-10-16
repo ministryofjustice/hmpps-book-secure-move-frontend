@@ -9,9 +9,9 @@ import { isArray, isNil } from 'lodash'
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
 import referenceDataHelpers from '../../common/helpers/reference-data'
-import responseService from '../../common/services/framework-response'
 import moveService from '../../common/services/move'
 import personService from '../../common/services/person'
+import personEscortRecordService from '../../common/services/person-escort-record'
 import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
 import { formatDate } from '../../config/nunjucks/filters'
@@ -288,9 +288,7 @@ export async function fillInPersonEscortRecord(moveId) {
     }
   })
 
-  return Promise.all(
-    responses.map(response => responseService.update(response))
-  )
+  return personEscortRecordService.respond(personEscortRecord.id, responses)
 }
 
 /**

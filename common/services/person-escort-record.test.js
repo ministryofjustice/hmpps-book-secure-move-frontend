@@ -191,5 +191,60 @@ describe('Services', function () {
         })
       })
     })
+
+    describe('#respond', function () {
+      let output
+      const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
+      const mockResponses = [{ id: '1' }, { id: '2' }]
+
+      beforeEach(async function () {
+        sinon.stub(apiClient, 'patch').resolves({
+          data: [],
+        })
+        sinon.spy(apiClient, 'all')
+        sinon.spy(apiClient, 'one')
+      })
+
+      context('without ID', function () {
+        it('should reject with error', function () {
+          return expect(personEscortRecordService.respond()).to.be.rejectedWith(
+            'No resource ID supplied'
+          )
+        })
+      })
+
+      context('no responses', function () {
+        it('should return empty array', async function () {
+          const response = await personEscortRecordService.respond(mockId, [])
+          expect(response).to.deep.equal([])
+        })
+      })
+
+      context('with ID', function () {
+        beforeEach(async function () {
+          output = await personEscortRecordService.respond(
+            mockId,
+            mockResponses
+          )
+        })
+
+        it('calls the api service', function () {
+          expect(apiClient.one).to.be.calledOnceWithExactly(
+            'person_escort_record',
+            mockId
+          )
+          expect(apiClient.all).to.be.calledOnceWithExactly(
+            'framework_response'
+          )
+          expect(apiClient.patch).to.be.calledOnceWithExactly(mockResponses)
+        })
+
+        it('returns the output of transformer', function () {
+          expect(output).to.deep.equal({
+            data: [],
+          })
+        })
+      })
+    })
   })
 })

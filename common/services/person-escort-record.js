@@ -45,6 +45,21 @@ const personEscortRecordService = {
       .find('person_escort_record', id)
       .then(this.transformResponse)
   },
+
+  respond(id, data = []) {
+    if (!id) {
+      return Promise.reject(new Error(noIdMessage))
+    }
+
+    if (data.length === 0) {
+      return Promise.resolve([])
+    }
+
+    return apiClient
+      .one('person_escort_record', id)
+      .all('framework_response')
+      .patch(data)
+  },
 }
 
 module.exports = personEscortRecordService
