@@ -2,7 +2,7 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 const permissionsMiddleware = require('../../../common/middleware/permissions')
-const responseService = require('../../../common/services/framework-response')
+const personEscortRecordService = require('../../../common/services/person-escort-record')
 
 const Controller = require('./framework-step')
 
@@ -455,29 +455,11 @@ describe('Person Escort Record controllers', function () {
         { id: '3', value: 'Yes' },
         { id: '4', value: 'No' },
       ]
-      const mockReq = {
-        body: {},
-        form: {
-          options: {
-            fields: {
-              one: { name: 'one' },
-              two: { name: 'two' },
-              three: { name: 'three' },
-            },
-          },
-          values: {
-            foo: 'bar',
-            fizz: 'buzz',
-          },
-        },
-        personEscortRecord: {
-          responses: mockResponses,
-        },
-      }
+      let mockReq
       let nextSpy
 
       beforeEach(function () {
-        sinon.stub(responseService, 'update')
+        sinon.stub(personEscortRecordService, 'respond')
         sinon.stub(fieldHelpers, 'isAllowedDependent').returns(true)
         sinon
           .stub(frameworksHelpers, 'responsesToSaveReducer')
@@ -487,11 +469,33 @@ describe('Person Escort Record controllers', function () {
           })
         sinon.stub(FormWizardController.prototype, 'saveValues')
         nextSpy = sinon.spy()
+
+        mockReq = {
+          body: {},
+          form: {
+            options: {
+              fields: {
+                one: { name: 'one' },
+                two: { name: 'two' },
+                three: { name: 'three' },
+              },
+            },
+            values: {
+              foo: 'bar',
+              fizz: 'buzz',
+            },
+          },
+          personEscortRecord: {
+            id: '12345',
+            responses: mockResponses,
+          },
+        }
       })
 
-      context('when promises resolve', function () {
+      context('without responses', function () {
         beforeEach(async function () {
-          responseService.update.resolves({})
+          mockReq.personEscortRecord.responses = []
+          personEscortRecordService.respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -502,18 +506,39 @@ describe('Person Escort Record controllers', function () {
           ).to.be.calledOnceWithExactly(mockReq.form.values)
         })
 
-        it('should call correct number of updates', function () {
-          expect(responseService.update.callCount).to.equal(
-            mockResponses.length
-          )
+        it('should not call service', function () {
+          expect(personEscortRecordService.respond).not.to.be.called
         })
 
-        it('should update each response correct', function () {
-          mockResponses.forEach((response, i) => {
-            expect(responseService.update.getCall(i)).to.be.calledWithExactly(
-              mockResponses[i]
-            )
-          })
+        it('should call the super method', function () {
+          expect(
+            FormWizardController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(mockReq, {}, nextSpy)
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).to.not.be.called
+        })
+      })
+
+      context('when promises resolve', function () {
+        beforeEach(async function () {
+          personEscortRecordService.respond.resolves({})
+
+          await controller.saveValues(mockReq, {}, nextSpy)
+        })
+
+        it('should call reducer correctly', function () {
+          expect(
+            frameworksHelpers.responsesToSaveReducer
+          ).to.be.calledOnceWithExactly(mockReq.form.values)
+        })
+
+        it('should call service method', function () {
+          expect(personEscortRecordService.respond).to.be.calledOnceWithExactly(
+            mockReq.personEscortRecord.id,
+            mockResponses
+          )
         })
 
         it('should call the super method', function () {
@@ -531,7 +556,7 @@ describe('Person Escort Record controllers', function () {
         const error = new Error()
 
         beforeEach(async function () {
-          responseService.update.rejects(error)
+          personEscortRecordService.respond.rejects(error)
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -579,7 +604,7 @@ describe('Person Escort Record controllers', function () {
 
         beforeEach(async function () {
           mockReq.personEscortRecord.responses = mockResponsesWithDependents
-          responseService.update.resolves({})
+          personEscortRecordService.respond.resolves({})
 
           fieldHelpers.isAllowedDependent
             .withArgs(
@@ -614,17 +639,13 @@ describe('Person Escort Record controllers', function () {
           })
         })
 
-        it('should save correct number of responses', function () {
-          expect(responseService.update.callCount).to.equal(2)
-        })
-
         it('should filter out dependent fields', function () {
-          expect(responseService.update).to.be.calledWithExactly(
-            mockResponsesWithDependents[0]
-          )
-          expect(responseService.update).to.be.calledWithExactly(
-            mockResponsesWithDependents[2]
-          )
+          expect(
+            personEscortRecordService.respond
+          ).to.be.calledOnceWithExactly(mockReq.personEscortRecord.id, [
+            mockResponsesWithDependents[0],
+            mockResponsesWithDependents[2],
+          ])
         })
       })
     })
