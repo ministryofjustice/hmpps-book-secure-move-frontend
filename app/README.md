@@ -66,19 +66,107 @@ They can have a variety of different parts, in either a root file, or a folder w
 
 ##### Data setup, retrieval and transformation
 
-- setBody*Something*
-  - sets `req.body.something`
+- setBody\<<Something\>>
+  - sets `req.body.<<something>>`
     - structure includes `status`, `sortBy`, `sortDirection`, `[locationType]`
-- set*Something*Filters
+  - example:
+    - set-body-allocations
+      - uses
+        - req.query
+          - status
+          - sortboy
+          - sortDirection
+        - req.params.dateRange
+        - req.lcations
+      - sets
+        - status
+        - sortBy
+        - sortDirection
+        - moveDate
+        - \[locationType\]
+  - set-body-moves
+    - uses
+      - req.params.dateRange
+      - req.locations
+      - req.session.user.supplierId
+    - sets
+      - req.body
+        - dateRange
+        - locationProperty
+        supplierId
+  - set-body-single-requests
+    - uses
+      - req.query
+        - status
+        - sortBy
+        - sortDirection
+      - req.params.dateRage
+      - req.locations
+    - req.body.requested
+      - status
+      - sortBy
+      - sortDirection
+      - \[dateType\]
+      - dateRange
+      - fromLocationId
+      
+      
+      
+        
+- set\<<Something\>>\*Filters
   - calls services
   - uses body prop
   - sets `req.filter`
-- set*Something*Results
+- set\<<Something\>>Results
   - calls services
   - uses body prop
-  - sets `req.resultsSomething` or `req.resultsSomethingAsTable`
+  - sets `req.results<<Something>>` or `req.resultsSomethingAsTable`
+  - example
+    - setResultsMoves
+      - uses
+        - req.bod.\<<bodyKey\>>
+        - req.session.currentLocation
+      - calls
+         - movesService.getActive
+         - movesService.getCancelled
+         
+- setFilter\<<Something\>>
+  - calls services
+  - sets `req.filter` and or `req.filter<<Something>>`
+  - example:
+    - setFilterAllocations
+      - uses
+        - req.body.allocations
+        - req.query
+        - req.baseUrl
+        - req.path
+      - calls
+        - allocationService.getActive
+      - sets
+        - req
+          - filter
+          - filterAllocations   
+    - setFilterMoves
+      - uses
+        - req.body.\<<bodyKey\>>
+        - req.session.user.supplierId
+        - req.baseUrl
+        - req.path
+      - calls
+        - moveService
+      - sets
+        - req.filter
+        - req.filter\<<bodyKey\>>
+          
+###### Example
+
+- allocations
+  setBodyAllocations,
+  setResultsAllocations,
+  setFilterAllocations(FILTERS.outgoing),
 
 ##### Render
+
 - `render` method from controller, e.g. `home/controllers.js:dashboard`
   - `res.render` with template e.g. `home/dashboard`
     - actions
