@@ -151,6 +151,17 @@ if (config.IS_DEV) {
   app.use(development.setUserLocations(config.USER_LOCATIONS))
 }
 
+// Session injection middleware
+app.all('*', function (req, res, next) {
+  req.session.featureFlags = config.FEATURE_FLAGS
+  next()
+})
+
+if (config.SESSION_INJECTION_ENABLED) {
+  const SessionInjection = require('hmpo-form-wizard').SessionInjection
+  app.use('/debug/session', new SessionInjection().middleware())
+}
+
 app.use(
   ensureAuthenticated({
     provider: config.DEFAULT_AUTH_PROVIDER,

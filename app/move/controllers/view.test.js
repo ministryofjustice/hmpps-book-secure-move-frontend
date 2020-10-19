@@ -129,6 +129,9 @@ describe('Move controllers', function () {
           user: {
             permissions: userPermissions,
           },
+          featureFlags: {
+            PERSON_ESCORT_RECORD: true,
+          },
         },
         move: mockMove,
         originalUrl: mockOriginalUrl,
@@ -737,18 +740,17 @@ describe('Move controllers', function () {
       })
 
       context('when feature flag is disabled', function () {
-        const controllerWithoutPER = proxyquire('./view', {
-          ...pathStubs,
-          '../../../config': {
-            FEATURE_FLAGS: {
-              PERSON_ESCORT_RECORD: false,
-            },
-          },
+        let previousPerFlag
+        beforeEach(function () {
+          previousPerFlag = req.session.featureFlags.PERSON_ESCORT_RECORD
+          req.session.featureFlags.PERSON_ESCORT_RECORD = false
+
+          controller(req, res)
+          params = res.render.args[0][1]
         })
 
-        beforeEach(function () {
-          controllerWithoutPER(req, res)
-          params = res.render.args[0][1]
+        afterEach(function () {
+          req.session.featureFlags.PERSON_ESCORT_RECORD = previousPerFlag
         })
 
         it('should set personEscortRecordIsEnabled to false', function () {

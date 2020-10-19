@@ -89,6 +89,7 @@ const getDefaultLabels = config => {
 
   // add feature flags if any to labels
   const flags = Object.keys(FEATURE_FLAGS).reduce((acc, key) => {
+    // FIXME: Feature flags are now based on the session, so how do we get these values into our instrumentat?
     acc[`FEATURE_FLAG_${key}`] = FEATURE_FLAGS[key]
     return acc
   }, {})

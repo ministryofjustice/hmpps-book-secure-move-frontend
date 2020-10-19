@@ -86,6 +86,9 @@ describe('Allocation controllers', function () {
         t: sinon.stub().returnsArg(0),
         canAccess: sinon.stub().returns(false),
         allocation: { ...allocationExample },
+        session: {
+          featureFlags: {},
+        },
       }
       mockRes = {
         render: sinon.stub(),

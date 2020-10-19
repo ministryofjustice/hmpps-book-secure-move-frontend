@@ -2,8 +2,10 @@ const { sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
 
-function viewAllocation(personEscortRecordFeature = false) {
+function viewAllocation() {
   return (req, res) => {
+    const personEscortRecordFeature =
+      req.session.featureFlags.PERSON_ESCORT_RECORD
     const { allocation, canAccess } = req
     const { moves, status } = allocation
     const bannerStatuses = ['cancelled']

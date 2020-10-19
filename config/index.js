@@ -246,4 +246,7 @@ module.exports = {
       },
     },
   },
+  SESSION_INJECTION_ENABLED: /true/i.test(
+    process.env.SESSION_INJECTION_ENABLED
+  ),
 }

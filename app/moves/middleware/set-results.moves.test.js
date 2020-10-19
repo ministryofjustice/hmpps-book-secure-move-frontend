@@ -41,6 +41,9 @@ describe('Moves middleware', function () {
         },
         session: {
           currentLocation: '#location',
+          featureFlags: {
+            PERSON_ESCORT_RECORD: true,
+          },
         },
       }
     })
@@ -134,7 +137,7 @@ describe('Moves middleware', function () {
         })
       })
 
-      context('with `personEscortRecordFeature`', function () {
+      context('with `personEscortRecordFeature` enabled', function () {
         context('with correct user permission', function () {
           beforeEach(async function () {
             req.canAccess.withArgs('person_escort_record:view').returns(true)
@@ -156,11 +159,7 @@ describe('Moves middleware', function () {
 
         context('without correct user permission', function () {
           beforeEach(async function () {
-            await middleware(mockBodyKey, mockLocationKey, true)(
-              req,
-              res,
-              nextSpy
-            )
+            await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
           })
 
           it('should call movesByLocation presenter with locationKey', function () {
@@ -170,6 +169,49 @@ describe('Moves middleware', function () {
               undefined
             )
           })
+        })
+      })
+    })
+
+    context('with `personEscortRecordFeature` disabled', function () {
+      context('with correct user permission', function () {
+        let previousPerFlag
+        beforeEach(async function () {
+          previousPerFlag = req.session.featureFlags.PERSON_ESCORT_RECORD
+          req.session.featureFlags.PERSON_ESCORT_RECORD = false
+
+          req.canAccess.withArgs('person_escort_record:view').returns(true)
+          await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
+        })
+
+        afterEach(function () {
+          req.session.featureFlags.PERSON_ESCORT_RECORD = previousPerFlag
+        })
+
+        it('should call movesByLocation presenter with locationKey', function () {
+          expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
+            mockActiveMoves,
+            mockLocationKey,
+            undefined
+          )
+        })
+      })
+
+      context('without correct user permission', function () {
+        beforeEach(async function () {
+          await middleware(mockBodyKey, mockLocationKey, true)(
+            req,
+            res,
+            nextSpy
+          )
+        })
+
+        it('should call movesByLocation presenter with locationKey', function () {
+          expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
+            mockActiveMoves,
+            mockLocationKey,
+            undefined
+          )
         })
       })
     })
