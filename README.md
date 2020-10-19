@@ -263,6 +263,12 @@ The TZ (timezone) environment variable is set to 'Europe/London' in `start.js`.
 | E2E_SUPPLIER_PASSWORD | Supplier user password used for acceptance testing | |
 | LOCATIONS_BATCH_SIZE | Maximum number of location IDs to send in one request when requesting moves for all locations | 40 |
 | FEATURE_FLAG_PERSON_ESCORT_RECORD | Set to `true` to enable display of the Person Escort Record feature | |
+| FEATURE_FLAG_POPULATION_OVERVIEW | Set to `true` to enable display of the PMU Overview feature | |
+| FEATURE_FLAG_POPULATION_DETAILS | Set to `true` to enable display of the PMU Details feature | |
+| FEATURE_FLAG_POPULATION_FREESPACES | Set to `true` to enable display of the PMU Freespaces feature | |
+| FEATURE_FLAG_POPULATION_FREESPACES_EDIT | Set to `true` to enable display of the PMU Freespaces Editing feature | |
+| FEATURE_FLAG_POPULATION_TRANSFERS | Set to `true` to enable display of the PMU Transfers feature | |
+
 | FRAMEWORKS_VERSION | Current [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks/releases) version that the frontend will use to create new Person Escort Records or any other frameworks being used | latest supported version (see `@hmpps-book-secure-move-frameworks` in package.json) |
 
 ### Development specific

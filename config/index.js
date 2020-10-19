@@ -224,6 +224,21 @@ module.exports = {
     PERSON_ESCORT_RECORD: /true/i.test(
       process.env.FEATURE_FLAG_PERSON_ESCORT_RECORD
     ),
+    POPULATION_OVERVIEW: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_OVERVIEW
+    ),
+    POPULATION_DETAILS: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_DETAILS
+    ),
+    POPULATION_FREESPACES: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_FREESPACES
+    ),
+    POPULATION_FREESPACES_EDIT: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_FREESPACES_EDIT
+    ),
+    POPULATION_TRANSFERS: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_TRANSFERS
+    ),
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
