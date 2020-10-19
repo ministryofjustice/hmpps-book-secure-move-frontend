@@ -221,6 +221,8 @@ module.exports = {
     },
   },
   FEATURE_FLAGS: {
+    // FIXME: Perhaps now we are using this as code we should change this to be of the format
+    // personEscortRecord
     PERSON_ESCORT_RECORD: /true/i.test(
       process.env.FEATURE_FLAG_PERSON_ESCORT_RECORD
     ),
