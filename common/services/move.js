@@ -3,6 +3,7 @@ const { mapValues, omitBy, isUndefined, isEmpty, get } = require('lodash')
 
 const ApiClient = require('../lib/api-client')
 const restClient = require('../lib/api-client/rest-client')
+const monitoring = require('../lib/monitoring')
 const PersonService = require('../services/person')
 const ProfileService = require('../services/profile')
 
@@ -51,7 +52,9 @@ const addRequestContext = req => {
   }
 
   const noMoveIdMessage = 'No move ID supplied'
+
   const moveService = {
+    context: req,
     transform(move) {
       // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
       const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
@@ -109,7 +112,7 @@ const addRequestContext = req => {
         return results
       }
 
-      return results.map(this.transform)
+      return results.map(moveService.transform)
     },
 
     getActive({
@@ -220,14 +223,14 @@ const addRequestContext = req => {
       return apiClient
         .find('move', id, { include })
         .then(response => response.data)
-        .then(this.transform)
+        .then(moveService.transform)
     },
 
     create(data) {
       return apiClient
         .create('move', moveService.format(data))
         .then(response => response.data)
-        .then(this.transform)
+        .then(moveService.transform)
     },
 
     update(data) {
@@ -238,7 +241,7 @@ const addRequestContext = req => {
       return apiClient
         .update('move', moveService.format(data))
         .then(response => response.data)
-        .then(this.transform)
+        .then(moveService.transform)
     },
 
     redirect(data) {
@@ -285,6 +288,23 @@ const addRequestContext = req => {
         .then(response => response.data)
     },
   }
+
+  const monitoringOptions = {
+    transform: { metrics: true, async: false },
+    format: { metrics: true, async: false },
+    getAll: true,
+    getActive: true,
+    getCancelled: true,
+    getDownload: true,
+    getById: true,
+    create: true,
+    update: true,
+    redirect: true,
+    unassign: true,
+    cancel: true,
+  }
+
+  monitoring.wrapMethods('move', moveService, monitoringOptions)
   return moveService
 }
 

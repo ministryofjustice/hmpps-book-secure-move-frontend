@@ -83,7 +83,7 @@ describe('Move Service', function () {
       person: mockPerson,
     }
     let move
-    beforeEach(function () {
+    beforeEach(async function () {
       // restore the stub as its stubbed before every test for convenience
       moveService.transform.restore()
 
@@ -119,7 +119,7 @@ describe('Move Service', function () {
     })
 
     context('with youth-like moves', function () {
-      it('should upgrade the move type', function () {
+      it('should upgrade the move type', async function () {
         const transformed = moveService.transform({
           id: '__move__',
           profile: mockProfile,
