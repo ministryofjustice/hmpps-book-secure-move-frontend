@@ -1,19 +1,27 @@
 const FormData = require('form-data')
 
-const apiClient = require('../lib/api-client')()
+const ApiClient = require('../lib/api-client')
 
-const documentService = {
-  create(file, data) {
-    const formData = new FormData()
-    formData.append('data[attributes][file]', data, {
-      filename: file.originalname,
-      knownLength: file.size,
-    })
+const addRequestContext = req => {
+  const apiClient = ApiClient(req)
 
-    return apiClient
-      .create('document', formData)
-      .then(response => response.data)
-  },
+  const documentService = {
+    create(file, data) {
+      const formData = new FormData()
+      formData.append('data[attributes][file]', data, {
+        filename: file.originalname,
+        knownLength: file.size,
+      })
+
+      return apiClient
+        .create('document', formData)
+        .then(response => response.data)
+    },
+  }
+  return documentService
 }
+
+const documentService = addRequestContext()
+documentService.addRequestContext = addRequestContext
 
 module.exports = documentService
