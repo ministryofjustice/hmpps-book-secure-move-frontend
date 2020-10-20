@@ -4,6 +4,7 @@ const moveService = require('../../../common/services/move')
 class UnassignController extends FormWizardController {
   middlewareChecks() {
     this.use(this.checkAllocation)
+    this.use(this.checkEligibility)
     super.middlewareChecks()
   }
 
@@ -19,6 +20,20 @@ class UnassignController extends FormWizardController {
     }
 
     next()
+  }
+
+  checkEligibility(req, res, next) {
+    const { allocation, id, profile, status } = req.move
+
+    if (['requested', 'booked'].includes(status)) {
+      return next()
+    }
+
+    res.render('move/views/unassign-ineligible', {
+      allocation,
+      moveId: id,
+      fullname: profile?.person?.fullname,
+    })
   }
 
   middlewareLocals() {
