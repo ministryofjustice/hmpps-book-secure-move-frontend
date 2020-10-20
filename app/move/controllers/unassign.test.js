@@ -10,6 +10,8 @@ describe('Move controllers', function () {
     describe('#middlewareChecks()', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+        sinon.stub(UnassignController.prototype, 'checkAllocation')
+        sinon.stub(UnassignController.prototype, 'checkEligibility')
         sinon.stub(controller, 'use')
 
         controller.middlewareChecks()
@@ -21,8 +23,14 @@ describe('Move controllers', function () {
       })
 
       it('should call checkAllocation middleware', function () {
-        expect(controller.use).to.have.been.calledOnceWithExactly(
+        expect(controller.use).to.have.been.calledWithExactly(
           controller.checkAllocation
+        )
+      })
+
+      it('should call checkEligibility middleware', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.checkEligibility
         )
       })
     })
@@ -116,6 +124,91 @@ describe('Move controllers', function () {
 
         it('should call next', function () {
           expect(next).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#checkEligibility()', function () {
+      let req, res, next
+
+      beforeEach(function () {
+        next = sinon.stub()
+        req = {
+          move: {
+            id: '12345',
+            allocation: {
+              id: 'ABCDE',
+            },
+            profile: {
+              person: {
+                fullname: 'DOE, JOHN',
+              },
+            },
+          },
+        }
+        res = {
+          render: sinon.stub(),
+        }
+      })
+
+      describe('eligible statuses', function () {
+        const statuses = ['requested', 'booked']
+
+        statuses.forEach(status => {
+          context(`with ${status} status`, function () {
+            it('should return next', function () {
+              req.move.status = status
+              controller.checkEligibility(req, res, next)
+
+              expect(next).to.be.calledOnceWithExactly()
+            })
+          })
+        })
+      })
+
+      describe('ineligible statuses', function () {
+        const statuses = ['proposed', 'in_transit', 'completed']
+
+        statuses.forEach(status => {
+          context(`with ${status} status`, function () {
+            it('should return next', function () {
+              req.move.status = status
+              controller.checkEligibility(req, res, next)
+
+              expect(res.render).to.be.calledOnceWithExactly(
+                'move/views/unassign-ineligible',
+                {
+                  allocation: {
+                    id: 'ABCDE',
+                  },
+                  moveId: '12345',
+                  fullname: 'DOE, JOHN',
+                }
+              )
+            })
+          })
+        })
+      })
+
+      context('without profile', function () {
+        beforeEach(function () {
+          req.move.profile = undefined
+          req.move.status = 'proposed'
+
+          controller.checkEligibility(req, res, next)
+        })
+
+        it('should return next', function () {
+          expect(res.render).to.be.calledOnceWithExactly(
+            'move/views/unassign-ineligible',
+            {
+              allocation: {
+                id: 'ABCDE',
+              },
+              moveId: '12345',
+              fullname: undefined,
+            }
+          )
         })
       })
     })
