@@ -2,6 +2,7 @@ const dateFunctions = require('date-fns')
 const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const restClient = require('../lib/api-client/rest-client')
+const monitoring = require('../lib/monitoring')
 
 const BaseService = require('./base')
 const batchRequest = require('./batch-request')
@@ -319,5 +320,22 @@ class MoveService extends BaseService {
       .then(response => response.data)
   }
 }
+
+const monitoringOptions = {
+  transform: { metrics: true, async: false },
+  format: { metrics: true, async: false },
+  getAll: true,
+  getActive: true,
+  getCancelled: true,
+  getDownload: true,
+  getById: true,
+  create: true,
+  update: true,
+  redirect: true,
+  unassign: true,
+  cancel: true,
+}
+
+monitoring.wrapMethods('move', MoveService, monitoringOptions)
 
 module.exports = MoveService
