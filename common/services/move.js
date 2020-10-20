@@ -4,6 +4,7 @@ const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 const canCancelMove = require('../helpers/move/can-cancel-move')
 const canEditMove = require('../helpers/move/can-edit-move')
 const restClient = require('../lib/api-client/rest-client')
+const monitoring = require('../lib/monitoring')
 
 const BaseService = require('./base')
 
@@ -412,5 +413,22 @@ class MoveService extends BaseService {
       .then(response => response.data)
   }
 }
+
+const monitoringOptions = {
+  transform: { metrics: true, async: false },
+  format: { metrics: true, async: false },
+  getAll: true,
+  getActive: true,
+  getCancelled: true,
+  getDownload: true,
+  getById: true,
+  create: true,
+  update: true,
+  redirect: true,
+  unassign: true,
+  cancel: true,
+}
+
+monitoring.wrapMethods('move', MoveService, monitoringOptions)
 
 module.exports = MoveService
