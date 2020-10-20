@@ -1,11 +1,13 @@
 const { forEach } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
-
 const unformatStub = sinon.stub()
 
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
 const personService = proxyquire('./person', {
+  '../lib/api-client': ApiClient,
   './person/person.unformat': unformatStub,
 })
 
@@ -18,6 +20,10 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
+  beforeEach(function () {
+    ApiClient.resetHistory()
+  })
+
   describe('#transform()', function () {
     let transformed
 
@@ -265,7 +271,7 @@ describe('Person Service', function () {
     let person
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'create').resolves(mockResponse)
+      apiClient.create = sinon.stub().resolves(mockResponse)
       sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
 
@@ -302,7 +308,7 @@ describe('Person Service', function () {
     let person
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'update').resolves(mockResponse)
+      apiClient.update = sinon.stub().resolves(mockResponse)
       sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
     })
@@ -356,9 +362,9 @@ describe('Person Service', function () {
     let imageUrl
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'one').returnsThis()
-      sinon.stub(apiClient, 'all').returnsThis()
-      sinon.stub(apiClient, 'get').resolves(mockResponse)
+      apiClient.all = sinon.stub().returns(apiClient)
+      apiClient.one = sinon.stub().returns(apiClient)
+      apiClient.get = sinon.stub().resolves(mockResponse)
     })
 
     context('without ID', function () {
@@ -401,9 +407,9 @@ describe('Person Service', function () {
     let imageUrl
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'one').returnsThis()
-      sinon.stub(apiClient, 'all').returnsThis()
-      sinon.stub(apiClient, 'get').resolves(mockResponse)
+      apiClient.all = sinon.stub().returns(apiClient)
+      apiClient.one = sinon.stub().returns(apiClient)
+      apiClient.get = sinon.stub().resolves(mockResponse)
     })
 
     context('without ID', function () {
@@ -449,9 +455,9 @@ describe('Person Service', function () {
     let imageUrl
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'one').returnsThis()
-      sinon.stub(apiClient, 'all').returnsThis()
-      sinon.stub(apiClient, 'get').resolves(mockResponse)
+      apiClient.all = sinon.stub().returns(apiClient)
+      apiClient.one = sinon.stub().returns(apiClient)
+      apiClient.get = sinon.stub().resolves(mockResponse)
     })
 
     context('without ID', function () {
@@ -518,7 +524,7 @@ describe('Person Service', function () {
     let person
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'findAll').resolves(mockResponse)
+      apiClient.findAll = sinon.stub().resolves(mockResponse)
       sinon.stub(personService, 'transform').returnsArg(0)
     })
 
