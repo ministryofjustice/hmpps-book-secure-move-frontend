@@ -1,4 +1,4 @@
-## Folder structure
+## Project structure
 
 - `.build` **contains auto-generated files**
 
@@ -14,7 +14,7 @@
 
 - `app/`
 
-  [Express](https://github.com/expressjs/express) application to preview components; also referred to as _Book a Secure Move Frontend_.
+  [Express](https://github.com/expressjs/express) application to preview components; also referred to as _Book a secure move Frontend_.
 
   Each folder inside this directory refers to a `module`, which can contain
 
