@@ -1,10 +1,17 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
-const profileService = require('../services/profile')
+const ProfileService = {}
+
+const profileService = {}
+ProfileService.addRequestContext = sinon.stub().returns(profileService)
+
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 
 const mockFrameworksVersion = '2.5.3'
 const personEscortRecordService = proxyquire('./person-escort-record', {
+  '../lib/api-client': ApiClient,
+  './profile': ProfileService,
   '../../config': {
     FRAMEWORKS: {
       CURRENT_VERSION: mockFrameworksVersion,
@@ -29,6 +36,11 @@ const mockRecord = {
 
 describe('Services', function () {
   describe('Person Escort Record Service', function () {
+    beforeEach(function () {
+      ApiClient.resetHistory()
+      ProfileService.addRequestContext.resetHistory()
+    })
+
     describe('#transformResponse()', function () {
       const mockProfile = {
         id: '__profile__',
@@ -37,7 +49,7 @@ describe('Services', function () {
       let response
 
       beforeEach(function () {
-        sinon.stub(profileService, 'transform').returnsArg(0)
+        profileService.transform = sinon.stub().returnsArg(0)
 
         response = personEscortRecordService.transformResponse({
           data: {
@@ -73,7 +85,7 @@ describe('Services', function () {
       let response
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'create').resolves(mockResponse)
+        apiClient.create = sinon.stub().resolves(mockResponse)
 
         response = await personEscortRecordService.create(mockProfileId)
       })
@@ -101,7 +113,7 @@ describe('Services', function () {
 
       beforeEach(async function () {
         sinon.stub(personEscortRecordService, 'transformResponse').returnsArg(0)
-        sinon.stub(apiClient, 'update').resolves({
+        apiClient.update = sinon.stub().resolves({
           data: mockRecord,
         })
       })
@@ -151,7 +163,7 @@ describe('Services', function () {
 
       beforeEach(async function () {
         sinon.stub(personEscortRecordService, 'transformResponse').returnsArg(0)
-        sinon.stub(apiClient, 'find').resolves({
+        apiClient.find = sinon.stub().resolves({
           data: mockRecord,
         })
       })
@@ -198,11 +210,11 @@ describe('Services', function () {
       const mockResponses = [{ id: '1' }, { id: '2' }]
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'patch').resolves({
+        apiClient.patch = sinon.stub().resolves({
           data: [],
         })
-        sinon.spy(apiClient, 'all')
-        sinon.spy(apiClient, 'one')
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
       })
 
       context('without ID', function () {
@@ -243,6 +255,22 @@ describe('Services', function () {
           expect(output).to.deep.equal({
             data: [],
           })
+        })
+      })
+    })
+  })
+
+  describe('#addRequestContext()', function () {
+    context('When adding request object to service', function () {
+      beforeEach(function () {
+        personEscortRecordService.addRequestContext({
+          method: 'bar',
+        })
+      })
+
+      it('should pass the request object to the profile service', function () {
+        expect(ProfileService.addRequestContext).to.be.calledOnceWithExactly({
+          method: 'bar',
         })
       })
     })
