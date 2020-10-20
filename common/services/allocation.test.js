@@ -1,8 +1,5 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
-const moveService = require('../services/move')
-
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
 
@@ -13,11 +10,20 @@ const batchRequest = proxyquire('./batch-request', {
 })
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
+const MoveService = {}
+const moveService = {}
+MoveService.addRequestContext = sinon.stub().returns(moveService)
+
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
 const allocationService = proxyquire('./allocation', {
+  '../lib/api-client': ApiClient,
   'date-fns': {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
+  './move': MoveService,
 })
 
 const mockAllocations = [
@@ -81,15 +87,20 @@ const mockAllocations = [
 ]
 
 describe('Allocation service', function () {
+  beforeEach(function () {
+    ApiClient.resetHistory()
+    MoveService.addRequestContext.resetHistory()
+  })
+
   describe('cancel', function () {
     context('with correct data supplied', function () {
       let outcome
       beforeEach(async function () {
-        sinon.stub(apiClient, 'post').resolves({
+        apiClient.post = sinon.stub().resolves({
           data: mockAllocations[0],
         })
-        sinon.spy(apiClient, 'one')
-        sinon.spy(apiClient, 'all')
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
         outcome = await allocationService.cancel(123, {
           reason: 'other',
           comment: 'Flood at receiving establishment',
@@ -151,7 +162,7 @@ describe('Allocation service', function () {
     let output
 
     beforeEach(function () {
-      sinon.stub(moveService, 'transform').returnsArg(0)
+      moveService.transform = sinon.stub().returnsArg(0)
     })
 
     context('with no arguments', function () {
@@ -350,7 +361,7 @@ describe('Allocation service', function () {
     beforeEach(function () {
       transformStub = sinon.stub().returnsArg(0)
       sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
-      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll = sinon.stub()
     })
 
     context('when batching the request', function () {
@@ -799,7 +810,7 @@ describe('Allocation service', function () {
     beforeEach(async function () {
       transformStub = sinon.stub().returnsArg(0)
       sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
-      sinon.stub(apiClient, 'find').resolves({
+      apiClient.find = sinon.stub().resolves({
         data: mockAllocations[0],
       })
     })
@@ -810,6 +821,7 @@ describe('Allocation service', function () {
           '8567f1a5-2201-4bc2-b655-f6526401303a'
         )
       })
+
       it('calls the api service', function () {
         expect(apiClient.find).to.have.been.calledOnceWithExactly(
           'allocation',
@@ -857,7 +869,7 @@ describe('Allocation service', function () {
     beforeEach(async function () {
       transformStub = sinon.stub().returnsArg(0)
       sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
-      sinon.stub(apiClient, 'create').resolves({
+      apiClient.create = sinon.stub().resolves({
         data: mockAllocations[0],
       })
       sinon.stub(allocationService, 'format').returns({
@@ -882,6 +894,22 @@ describe('Allocation service', function () {
 
     it('returns the response', function () {
       expect(output).to.deep.equal(mockAllocations[0])
+    })
+  })
+
+  describe('#addRequestContext()', function () {
+    context('When adding request object to service', function () {
+      beforeEach(function () {
+        allocationService.addRequestContext({
+          method: 'bar',
+        })
+      })
+
+      it('should pass the request object to the move service', function () {
+        expect(MoveService.addRequestContext).to.be.calledOnceWithExactly({
+          method: 'bar',
+        })
+      })
     })
   })
 })
