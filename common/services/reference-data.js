@@ -1,167 +1,176 @@
 const { flattenDeep, sortBy } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
+const ApiClient = require('../lib/api-client')
 const restClient = require('../lib/api-client/rest-client')
 
-const referenceDataService = {
-  getGenders() {
-    return apiClient.findAll('gender').then(response => response.data)
-  },
+const addRequestContext = req => {
+  const apiClient = ApiClient(req)
 
-  getEthnicities() {
-    return apiClient.findAll('ethnicity').then(response => response.data)
-  },
+  const referenceDataService = {
+    getGenders() {
+      return apiClient.findAll('gender').then(response => response.data)
+    },
 
-  getAssessmentQuestions(category) {
-    return apiClient
-      .findAll('assessment_question', {
-        'filter[category]': category,
-      })
-      .then(response => response.data)
-  },
+    getEthnicities() {
+      return apiClient.findAll('ethnicity').then(response => response.data)
+    },
 
-  getLocations({ filter, combinedData, page = 1, include } = {}) {
-    return apiClient
-      .findAll('location', {
-        ...filter,
-        page,
-        per_page: 100,
-        include,
-      })
-      .then(response => {
-        const { data, links } = response
-        const locations = combinedData
-          ? flattenDeep([combinedData, ...response.data])
-          : data
+    getAssessmentQuestions(category) {
+      return apiClient
+        .findAll('assessment_question', {
+          'filter[category]': category,
+        })
+        .then(response => response.data)
+    },
 
-        const hasNext = links.next && data.length !== 0
-
-        if (!hasNext) {
-          return sortBy(locations, 'title')
-        }
-
-        return referenceDataService.getLocations({
-          filter,
-          page: page + 1,
-          combinedData: locations,
+    getLocations({ filter, combinedData, page = 1, include } = {}) {
+      return apiClient
+        .findAll('location', {
+          ...filter,
+          page,
+          per_page: 100,
           include,
         })
-      })
-  },
+        .then(response => {
+          const { data, links } = response
+          const locations = combinedData
+            ? flattenDeep([combinedData, ...response.data])
+            : data
 
-  getLocationById(id, { include } = {}) {
-    if (!id) {
-      return Promise.reject(new Error('No location ID supplied'))
-    }
+          const hasNext = links.next && data.length !== 0
 
-    return apiClient
-      .find('location', id, { include })
-      .then(response => response.data)
-  },
+          if (!hasNext) {
+            return sortBy(locations, 'title')
+          }
 
-  getLocationByNomisAgencyId(nomisAgencyId) {
-    return referenceDataService
-      .getLocations({
+          return referenceDataService.getLocations({
+            filter,
+            page: page + 1,
+            combinedData: locations,
+            include,
+          })
+        })
+    },
+
+    getLocationById(id, { include } = {}) {
+      if (!id) {
+        return Promise.reject(new Error('No location ID supplied'))
+      }
+
+      return apiClient
+        .find('location', id, { include })
+        .then(response => response.data)
+    },
+
+    getLocationByNomisAgencyId(nomisAgencyId) {
+      return referenceDataService
+        .getLocations({
+          filter: {
+            'filter[nomis_agency_id]': nomisAgencyId,
+          },
+        })
+        .then(results => results[0])
+    },
+
+    getLocationsByNomisAgencyId(ids = []) {
+      return referenceDataService.mapLocationIdsToLocations(
+        ids,
+        referenceDataService.getLocationByNomisAgencyId
+      )
+    },
+
+    getLocationsByType(type) {
+      return referenceDataService.getLocations({
         filter: {
-          'filter[nomis_agency_id]': nomisAgencyId,
+          'filter[location_type]': type,
         },
       })
-      .then(results => results[0])
-  },
+    },
 
-  getLocationsByNomisAgencyId(ids = []) {
-    return referenceDataService.mapLocationIdsToLocations(
-      ids,
-      referenceDataService.getLocationByNomisAgencyId
-    )
-  },
-
-  getLocationsByType(type) {
-    return referenceDataService.getLocations({
-      filter: {
-        'filter[location_type]': type,
-      },
-    })
-  },
-
-  async getLocationsBySupplierId(supplierId) {
-    const { data } = await restClient(`/suppliers/${supplierId}/locations`, {
-      per_page: 2000,
-    })
-    const locations = data.map(location => {
-      const { attributes, relationships, ...values } = location
-      return {
-        ...values,
-        ...attributes,
-      }
-    })
-    return locations
-  },
-
-  getRegionById(id, { include } = {}) {
-    if (!id) {
-      return Promise.reject(new Error('No region ID supplied'))
-    }
-
-    return apiClient
-      .find('region', id, { include })
-      .then(response => response.data)
-  },
-
-  getRegions({ page = 1, combinedData } = {}) {
-    return apiClient
-      .findAll('region', { page, per_page: 100 })
-      .then(response => {
-        const { data, links } = response
-        const regions = combinedData
-          ? flattenDeep([combinedData, ...data])
-          : data
-
-        const hasNext = links && links.next && data.length !== 0
-
-        if (!hasNext) {
-          return sortBy(regions, 'title')
-        }
-
-        return referenceDataService.getRegions({
-          page: page + 1,
-          combinedData: regions,
-        })
+    async getLocationsBySupplierId(supplierId) {
+      const { data } = await restClient(`/suppliers/${supplierId}/locations`, {
+        per_page: 2000,
       })
-  },
+      const locations = data.map(location => {
+        const { attributes, relationships, ...values } = location
+        return {
+          ...values,
+          ...attributes,
+        }
+      })
+      return locations
+    },
 
-  mapLocationIdsToLocations(ids, callback) {
-    const locationPromises = ids.map(id => {
-      return callback(id).catch(() => false)
-    })
-    return Promise.all(locationPromises).then(locations =>
-      locations.filter(Boolean)
-    )
-  },
+    getRegionById(id, { include } = {}) {
+      if (!id) {
+        return Promise.reject(new Error('No region ID supplied'))
+      }
 
-  getSuppliers() {
-    return apiClient.findAll('supplier').then(response => response.data)
-  },
+      return apiClient
+        .find('region', id, { include })
+        .then(response => response.data)
+    },
 
-  getSupplierByKey(key) {
-    if (!key) {
-      return Promise.reject(new Error('No supplier key provided'))
-    }
+    getRegions({ page = 1, combinedData } = {}) {
+      return apiClient
+        .findAll('region', { page, per_page: 100 })
+        .then(response => {
+          const { data, links } = response
+          const regions = combinedData
+            ? flattenDeep([combinedData, ...data])
+            : data
 
-    return apiClient.find('supplier', key).then(response => response.data)
-  },
+          const hasNext = links && links.next && data.length !== 0
 
-  getPrisonTransferReasons() {
-    return apiClient
-      .findAll('prison_transfer_reason')
-      .then(response => response.data)
-  },
+          if (!hasNext) {
+            return sortBy(regions, 'title')
+          }
 
-  getAllocationComplexCases() {
-    return apiClient.findAll('allocation_complex_case').then(response => {
-      return response.data
-    })
-  },
+          return referenceDataService.getRegions({
+            page: page + 1,
+            combinedData: regions,
+          })
+        })
+    },
+
+    mapLocationIdsToLocations(ids, callback) {
+      const locationPromises = ids.map(id => {
+        return callback(id).catch(() => false)
+      })
+      return Promise.all(locationPromises).then(locations =>
+        locations.filter(Boolean)
+      )
+    },
+
+    getSuppliers() {
+      return apiClient.findAll('supplier').then(response => response.data)
+    },
+
+    getSupplierByKey(key) {
+      if (!key) {
+        return Promise.reject(new Error('No supplier key provided'))
+      }
+
+      return apiClient.find('supplier', key).then(response => response.data)
+    },
+
+    getPrisonTransferReasons() {
+      return apiClient
+        .findAll('prison_transfer_reason')
+        .then(response => response.data)
+    },
+
+    getAllocationComplexCases() {
+      return apiClient.findAll('allocation_complex_case').then(response => {
+        return response.data
+      })
+    },
+  }
+
+  return referenceDataService
 }
+
+const referenceDataService = addRequestContext()
+referenceDataService.addRequestContext = addRequestContext
 
 module.exports = referenceDataService

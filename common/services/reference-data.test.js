@@ -1,11 +1,12 @@
 const { sortBy } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
-
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 const restClient = sinon.stub()
 
 const referenceDataService = proxyquire('./reference-data', {
+  '../lib/api-client': ApiClient,
   '../lib/api-client/rest-client': restClient,
 })
 
@@ -69,8 +70,12 @@ const mockRegions = [
     title: 'Region B',
   },
 ]
-
 describe('Reference Data Service', function () {
+  beforeEach(async function () {
+    ApiClient.resetHistory()
+    apiClient.findAll = sinon.stub()
+    apiClient.find = sinon.stub()
+  })
   context('', function () {
     describe('#getGenders()', function () {
       const mockResponse = {
@@ -79,9 +84,7 @@ describe('Reference Data Service', function () {
       let response
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'findAll')
         apiClient.findAll.withArgs('gender').resolves(mockResponse)
-
         response = await referenceDataService.getGenders()
       })
 
@@ -105,9 +108,7 @@ describe('Reference Data Service', function () {
       let response
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'findAll')
         apiClient.findAll.withArgs('ethnicity').resolves(mockResponse)
-
         response = await referenceDataService.getEthnicities()
       })
 
@@ -129,10 +130,6 @@ describe('Reference Data Service', function () {
         data: mockAssessmentQuestions,
       }
       let response
-
-      beforeEach(async function () {
-        sinon.stub(apiClient, 'findAll')
-      })
 
       context('with no category', function () {
         beforeEach(async function () {
@@ -218,10 +215,6 @@ describe('Reference Data Service', function () {
         filterOne: 'foo',
       }
       let locations
-
-      beforeEach(function () {
-        sinon.stub(apiClient, 'findAll')
-      })
 
       context('with only one page', function () {
         beforeEach(function () {
@@ -375,7 +368,7 @@ describe('Reference Data Service', function () {
           apiClient.findAll.resolves(mockResponse)
           await referenceDataService.getLocations({ include: ['foo', 'bar'] })
         })
-        it('should pass include paramter to api client', function () {
+        it('should pass include parameter to api client', function () {
           expect(apiClient.findAll).to.be.calledOnceWithExactly('location', {
             page: 1,
             per_page: 100,
@@ -402,8 +395,7 @@ describe('Reference Data Service', function () {
         let location
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
-
+          apiClient.find.resolves(mockResponse)
           location = await referenceDataService.getLocationById(mockId)
         })
 
@@ -427,8 +419,7 @@ describe('Reference Data Service', function () {
         }
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
-
+          apiClient.find.resolves(mockResponse)
           await referenceDataService.getLocationById(mockId, {
             include: ['foo', 'bar'],
           })
@@ -500,7 +491,8 @@ describe('Reference Data Service', function () {
           let filters
 
           beforeEach(function () {
-            filters = referenceDataService.getLocations.args[0][0].filter
+            const getLocationsArgs = referenceDataService.getLocations.args
+            filters = getLocationsArgs[0][0].filter
           })
 
           it('should set nomis_agency_id filter to agency ID', function () {
@@ -687,9 +679,7 @@ describe('Reference Data Service', function () {
       let response
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'findAll')
         apiClient.findAll.withArgs('supplier').resolves(mockResponse)
-
         response = await referenceDataService.getSuppliers()
       })
 
@@ -723,8 +713,7 @@ describe('Reference Data Service', function () {
         let response
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
-
+          apiClient.find.resolves(mockResponse)
           response = await referenceDataService.getSupplierByKey(mockKey)
         })
 
@@ -747,16 +736,14 @@ describe('Reference Data Service', function () {
       }
 
       let response
-      let stubForFind
 
       beforeEach(async function () {
-        stubForFind = sinon.stub(apiClient, 'findAll').resolves(mockResponse)
-
+        apiClient.findAll.resolves(mockResponse)
         response = await referenceDataService.getPrisonTransferReasons()
       })
 
       it('should request the list of reasons for transfer', function () {
-        expect(stubForFind).to.be.calledOnceWithExactly(
+        expect(apiClient.findAll).to.be.calledOnceWithExactly(
           'prison_transfer_reason'
         )
       })
@@ -772,16 +759,14 @@ describe('Reference Data Service', function () {
       }
 
       let response
-      let serviceStub
 
       beforeEach(async function () {
-        serviceStub = sinon.stub(apiClient, 'findAll').resolves(mockResponse)
-
+        apiClient.findAll.resolves(mockResponse)
         response = await referenceDataService.getAllocationComplexCases()
       })
 
       it('should request the list of allocation complex cases', function () {
-        expect(serviceStub).to.be.calledOnceWithExactly(
+        expect(apiClient.findAll).to.be.calledOnceWithExactly(
           'allocation_complex_case'
         )
       })
@@ -809,10 +794,6 @@ describe('Reference Data Service', function () {
         },
       }
       let regions
-
-      beforeEach(function () {
-        sinon.stub(apiClient, 'findAll')
-      })
 
       context('with only one page', function () {
         beforeEach(function () {
@@ -923,8 +904,7 @@ describe('Reference Data Service', function () {
         let region
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
-
+          apiClient.find.resolves(mockResponse)
           region = await referenceDataService.getRegionById(mockId)
         })
 
@@ -939,15 +919,14 @@ describe('Reference Data Service', function () {
         })
       })
 
-      context('with explict include parameter', function () {
+      context('with explicit include parameter', function () {
         const mockId = 'regiona-222b-4522-9d65-4ef429f9081e'
         const mockResponse = {
           data: mockRegions[0],
         }
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
-
+          apiClient.find.resolves(mockResponse)
           await referenceDataService.getRegionById(mockId, {
             include: ['foo', 'bar'],
           })
