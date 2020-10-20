@@ -1,8 +1,8 @@
 const { get } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
+const ApiClient = require('../lib/api-client')
 
-const personService = require('./person')
+const PersonService = require('./person')
 const unformat = require('./profile/profile.unformat')
 
 const assessmentKeys = [
@@ -30,59 +30,68 @@ const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const allFields = [].concat(assessmentKeys, explicitAssessmentKeys)
 
-const profileService = {
-  transform(profile) {
-    if (!profile) {
-      return profile
-    }
+const addRequestContext = req => {
+  const apiClient = ApiClient(req)
+  const personService = PersonService.addRequestContext(req)
 
-    return {
-      ...profile,
-      person: personService.transform(profile.person),
-    }
-  },
+  const profileService = {
+    transform(profile) {
+      if (!profile) {
+        return profile
+      }
 
-  unformat(
-    profile,
-    fields = allFields,
-    {
-      assessment = assessmentKeys,
-      explicitAssessment = explicitAssessmentKeys,
-    } = {}
-  ) {
-    return unformat(profile, fields, {
-      assessment,
-      explicitAssessment,
-    })
-  },
+      return {
+        ...profile,
+        person: personService.transform(profile.person),
+      }
+    },
 
-  create(personId, data) {
-    if (!personId) {
-      return Promise.reject(new Error('No Person ID supplied'))
-    }
+    unformat(
+      profile,
+      fields = allFields,
+      {
+        assessment = assessmentKeys,
+        explicitAssessment = explicitAssessmentKeys,
+      } = {}
+    ) {
+      return unformat(profile, fields, {
+        assessment,
+        explicitAssessment,
+      })
+    },
 
-    return apiClient
-      .one('person', personId)
-      .all('profile')
-      .post(data)
-      .then(response => response.data)
-      .then(profile => profileService.transform(profile))
-  },
+    create(personId, data) {
+      if (!personId) {
+        return Promise.reject(new Error('No Person ID supplied'))
+      }
 
-  async update(data) {
-    const personId = get(data, 'person.id')
+      return apiClient
+        .one('person', personId)
+        .all('profile')
+        .post(data)
+        .then(response => response.data)
+        .then(profile => profileService.transform(profile))
+    },
 
-    if (!personId) {
-      return Promise.reject(new Error('No Person ID supplied'))
-    }
+    async update(data) {
+      const personId = get(data, 'person.id')
 
-    return apiClient
-      .one('person', personId)
-      .one('profile', data.id)
-      .patch(data)
-      .then(response => response.data)
-      .then(profile => profileService.transform(profile))
-  },
+      if (!personId) {
+        return Promise.reject(new Error('No Person ID supplied'))
+      }
+
+      return apiClient
+        .one('person', personId)
+        .one('profile', data.id)
+        .patch(data)
+        .then(response => response.data)
+        .then(profile => profileService.transform(profile))
+    },
+  }
+  return profileService
 }
+
+const profileService = addRequestContext()
+profileService.addRequestContext = addRequestContext
 
 module.exports = profileService

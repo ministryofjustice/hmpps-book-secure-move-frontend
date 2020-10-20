@@ -1,14 +1,27 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const PersonService = {}
 
-const personService = require('./person')
+const personService = {}
+PersonService.addRequestContext = sinon.stub().returns(personService)
+
 const unformatStub = sinon.stub()
 
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
 const profileService = proxyquire('./profile', {
+  '../lib/api-client': ApiClient,
+  './person': PersonService,
   './profile/profile.unformat': unformatStub,
 })
+
 describe('Profile Service', function () {
+  beforeEach(function () {
+    ApiClient.resetHistory()
+    PersonService.addRequestContext.resetHistory()
+  })
+
   context('#transform', function () {
     context('When profile is not a valid object', function () {
       it('should leave profile untouched', function () {
@@ -23,7 +36,7 @@ describe('Profile Service', function () {
       }
       let profile
       beforeEach(function () {
-        sinon.stub(personService, 'transform').callsFake(person => {
+        personService.transform = sinon.stub().callsFake(person => {
           return {
             ...person,
             foo: 'bar',
@@ -68,9 +81,9 @@ describe('Profile Service', function () {
 
     context('with person ID', function () {
       beforeEach(async function () {
-        sinon.spy(apiClient, 'one')
-        sinon.spy(apiClient, 'all')
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.post = sinon.stub().resolves(mockResponse)
         sinon.stub(profileService, 'transform')
 
         await profileService.create('#personId', profileData)
@@ -114,8 +127,8 @@ describe('Profile Service', function () {
 
     context('with person ID', function () {
       beforeEach(async function () {
-        sinon.spy(apiClient, 'one')
-        sinon.stub(apiClient, 'patch').resolves(mockResponse)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.patch = sinon.stub().resolves(mockResponse)
         sinon.stub(profileService, 'transform')
 
         await profileService.update(profileData)
@@ -230,6 +243,22 @@ describe('Profile Service', function () {
         expect(unformatStub).to.be.calledOnceWithExactly(profile, fields, {
           ...defaultKeys,
           ...keys,
+        })
+      })
+    })
+  })
+
+  describe('#addRequestContext()', function () {
+    context('When adding request object to service', function () {
+      beforeEach(function () {
+        profileService.addRequestContext({
+          method: 'bar',
+        })
+      })
+
+      it('should pass the request object to the person service', function () {
+        expect(PersonService.addRequestContext).to.be.calledOnceWithExactly({
+          method: 'bar',
         })
       })
     })
