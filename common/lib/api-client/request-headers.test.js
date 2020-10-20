@@ -43,6 +43,10 @@ describe('API Client', function () {
         it('should return the `Idempotency-Key` header', function () {
           expect(headers['Idempotency-Key']).to.equal('#uuid')
         })
+
+        it('should return the `X-Transaction-Id` header', function () {
+          expect(headers['X-Transaction-Id']).to.equal('auto-#uuid')
+        })
       })
     })
 
@@ -50,7 +54,7 @@ describe('API Client', function () {
       let headers
 
       beforeEach(function () {
-        headers = getRequestHeaders('format/foo')
+        headers = getRequestHeaders({ format: 'format/foo' })
       })
 
       it('should return `Accept` header with specified format and the api version', function () {
@@ -58,19 +62,23 @@ describe('API Client', function () {
           `format/foo; version=${config.API.VERSION}`
         )
       })
+    })
 
-      it('should return the `User-Agent` header', function () {
-        expect(headers['User-Agent']).to.equal(
-          'hmpps-book-secure-move-frontend/chuck-d'
-        )
-      })
+    context('when called with a request', function () {
+      let headers
 
-      it('should return the `Accept-Encoding` header', function () {
-        expect(headers['Accept-Encoding']).to.equal('gzip')
+      beforeEach(function () {
+        headers = getRequestHeaders({
+          req: { transactionId: '#transactionId' },
+        })
       })
 
       it('should return the `Idempotency-Key` header', function () {
         expect(headers['Idempotency-Key']).to.equal('#uuid')
+      })
+
+      it('should return req’s transactionId as the `X-Transaction-Id` header', function () {
+        expect(headers['X-Transaction-Id']).to.equal('#transactionId')
       })
     })
   })

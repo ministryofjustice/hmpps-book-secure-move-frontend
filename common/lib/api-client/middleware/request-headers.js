@@ -7,11 +7,19 @@ module.exports = {
       return payload
     }
 
-    const { req } = payload
+    const { jsonApi, req } = payload
+
+    const { _originalReq } = jsonApi
+
+    const requestHeadersOptions = {
+      ...(_originalReq && {
+        req: _originalReq,
+      }),
+    }
 
     req.headers = {
       ...req.headers,
-      ...getRequestHeaders(),
+      ...getRequestHeaders(requestHeadersOptions),
     }
     return payload
   },

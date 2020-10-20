@@ -5,11 +5,16 @@ const {
   APP_VERSION,
 } = require('../../../config')
 
-module.exports = (format = 'application/vnd.api+json') => {
-  return {
+module.exports = ({ req = {}, format = 'application/vnd.api+json' } = {}) => {
+  const idempotencyKey = uuid.v4()
+  const transactionId = req.transactionId || `auto-${idempotencyKey}`
+  const headers = {
     'User-Agent': `hmpps-book-secure-move-frontend/${APP_VERSION}`,
     Accept: `${format}; version=${VERSION}`,
     'Accept-Encoding': 'gzip',
-    'Idempotency-Key': uuid.v4(),
+    'Idempotency-Key': idempotencyKey,
+    'X-Transaction-Id': transactionId,
   }
+
+  return headers
 }

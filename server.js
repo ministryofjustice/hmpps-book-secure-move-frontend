@@ -15,6 +15,7 @@ const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
 const slashify = require('slashify')
+const uuid = require('uuid')
 
 // Local dependencies
 const healthcheckApp = require('./app/healthcheck')
@@ -51,6 +52,12 @@ const app = express()
 if (config.IS_PRODUCTION) {
   app.enable('trust proxy')
 }
+
+// Ensure we have a useful transaction id
+app.use((req, res, next) => {
+  req.transactionId = req.get('x-request-id') || uuid.v4()
+  next()
+})
 
 if (config.SENTRY.DSN) {
   Sentry.init({
