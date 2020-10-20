@@ -1,5 +1,4 @@
 const allocationService = require('../../common/services/allocation')
-const moveService = require('../../common/services/move')
 
 module.exports = {
   setMove: async (req, res, next, moveId) => {
@@ -8,6 +7,7 @@ module.exports = {
     }
 
     try {
+      const moveService = req.services.move()
       req.move = await moveService.getById(moveId)
       next()
     } catch (error) {

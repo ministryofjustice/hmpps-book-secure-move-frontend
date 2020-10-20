@@ -1,5 +1,4 @@
 const allocationService = require('../../common/services/allocation')
-const moveService = require('../../common/services/move')
 
 const middleware = require('./middleware')
 
@@ -15,16 +14,24 @@ const errorStub = new Error('Problem')
 describe('Move middleware', function () {
   describe('#setMove()', function () {
     let req, res, nextSpy
+    let moveService
 
     beforeEach(function () {
-      req = {}
+      moveService = {
+        getById: sinon.stub().resolves(),
+      }
+      req = {
+        services: {
+          move: () => moveService,
+        },
+      }
       res = {}
       nextSpy = sinon.spy()
     })
 
     context('when no move ID exists', function () {
       beforeEach(async function () {
-        sinon.stub(moveService, 'getById').resolves(moveStub)
+        moveService.getById.resolves(moveStub)
 
         await middleware.setMove(req, res, nextSpy)
       })
@@ -45,7 +52,7 @@ describe('Move middleware', function () {
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'getById').resolves(moveStub)
+          moveService.getById.resolves(moveStub)
 
           await middleware.setMove(req, res, nextSpy, mockMoveId)
         })
@@ -66,9 +73,9 @@ describe('Move middleware', function () {
 
       context('when API call returns an error', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'getById').throws(errorStub)
+          moveService.getById.throws(errorStub)
 
-          await middleware.setMove({}, res, nextSpy, mockMoveId)
+          await middleware.setMove(req, res, nextSpy, mockMoveId)
         })
 
         it('should not set response data to request object', function () {
