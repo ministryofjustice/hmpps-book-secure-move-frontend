@@ -1,7 +1,16 @@
-const apiClient = require('../lib/api-client')()
+const proxyquire = require('proxyquire')
 
-const moveService = require('./move')
-const singleRequestService = require('./single-request')
+const MoveService = {}
+const moveService = {}
+MoveService.addRequestContext = sinon.stub().returns(moveService)
+
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
+const singleRequestService = proxyquire('./single-request', {
+  '../lib/api-client': ApiClient,
+  './move': MoveService,
+})
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -31,11 +40,16 @@ const mockMoves = [
 ]
 
 describe('Single request service', function () {
+  beforeEach(async function () {
+    ApiClient.resetHistory()
+    MoveService.addRequestContext.resetHistory()
+  })
+
   describe('#getAll()', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+      moveService.getAll = sinon.stub().resolves(mockMoves)
     })
 
     context('without arguments', function () {
@@ -465,7 +479,7 @@ describe('Single request service', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getDownload').resolves('#download')
+      moveService.getDownload = sinon.stub().resolves('#download')
     })
 
     context('with arguments', function () {
@@ -491,7 +505,7 @@ describe('Single request service', function () {
     let moves
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getAll').resolves(mockMoves)
+      moveService.getAll = sinon.stub().resolves(mockMoves)
     })
 
     context('without arguments', function () {
@@ -555,7 +569,7 @@ describe('Single request service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves(mockResponse)
+        apiClient.update = sinon.stub().resolves(mockResponse)
       })
 
       context('without data args', function () {
@@ -617,9 +631,9 @@ describe('Single request service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'all').returns(apiClient)
-        sinon.stub(apiClient, 'one').returns(apiClient)
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.post = sinon.stub().resolves(mockResponse)
       })
 
       context('without comment', function () {
@@ -663,6 +677,22 @@ describe('Single request service', function () {
             rebook: false,
             timestamp: sinon.match.string,
           })
+        })
+      })
+    })
+  })
+
+  describe('#addRequestContext()', function () {
+    context('When adding request object to service', function () {
+      beforeEach(function () {
+        singleRequestService.addRequestContext({
+          method: 'bar',
+        })
+      })
+
+      it('should pass the request object to the move service', function () {
+        expect(MoveService.addRequestContext).to.be.calledOnceWithExactly({
+          method: 'bar',
         })
       })
     })
