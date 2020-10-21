@@ -295,6 +295,48 @@ describe('Monitoring', function () {
         expect(path).to.equal('/:date/:date')
       })
 
+      it('should obfusctate auth callback path', function () {
+        const path = metrics.normalizePath('/foo/callback?code=SOOPERSEKRIT!99')
+        expect(path).to.equal('/foo/callback?code=:code')
+      })
+
+      context('when asset paths contain build sha', function () {
+        it('should normalise .js', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.js')
+          expect(path).to.equal('/foo/bar.:sha.js')
+        })
+
+        it('should normalise .css', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.css')
+          expect(path).to.equal('/foo/bar.:sha.css')
+        })
+
+        it('should normalise .woff', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.woff2')
+          expect(path).to.equal('/foo/bar.:sha.woff2')
+        })
+
+        it('should normalise .svg', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.svg')
+          expect(path).to.equal('/foo/bar.:sha.svg')
+        })
+
+        it('should normalise .png', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.png')
+          expect(path).to.equal('/foo/bar.:sha.png')
+        })
+
+        it('should normalise .jpg', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.jpg')
+          expect(path).to.equal('/foo/bar.:sha.jpg')
+        })
+
+        it('should normalise .gif', function () {
+          const path = metrics.normalizePath('/foo/bar.62f6496e.gif')
+          expect(path).to.equal('/foo/bar.:sha.gif')
+        })
+      })
+
       it('should not obfusctate other path', function () {
         const path = metrics.normalizePath('/foo/bar')
         expect(path).to.equal('/foo/bar')

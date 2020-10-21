@@ -47,21 +47,27 @@ prometheusClient = {
   },
 }
 
+const uuidRegex = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi
+const dateRegex = /\d{4}-\d{2}-\d{2}/g
+const authCallbackRegex = /(callback\?code)=.*/
+const assetRegex = /\.[0-9a-f]{8}\.(js|css|woff.*|svg|png|jpg|gif)$/
+
 /**
  * Normalise path
  *
  * @param {string} path
  * Path to normalise
  *
+ * Replaces uuids, dates and build shas
+ *
  * @return {string}
  */
 const normalizePath = path => {
   const normalizedPath = path
-    .replace(
-      /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi,
-      ':uuid'
-    )
-    .replace(/\d{4}-\d{2}-\d{2}/g, ':date')
+    .replace(uuidRegex, ':uuid')
+    .replace(dateRegex, ':date')
+    .replace(authCallbackRegex, '$1=:code')
+    .replace(assetRegex, '.:sha.$1')
   return normalizedPath
 }
 
