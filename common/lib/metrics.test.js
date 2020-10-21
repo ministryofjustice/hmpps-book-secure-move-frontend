@@ -211,6 +211,7 @@ describe('Monitoring', function () {
     describe('#summaryRoute', function () {
       let req
       let res
+      let next
 
       beforeEach(function () {
         promster.getContentType.returns('metrics-content-type')
@@ -222,11 +223,12 @@ describe('Monitoring', function () {
           setHeader: sinon.stub(),
           end: sinon.stub(),
         }
+        next = sinon.stub()
       })
       describe('When accessing the metrics endpoint', function () {
         beforeEach(function () {
           // invoke the summary route
-          metrics.summaryRoute(req, res)
+          metrics.summaryRoute(req, res, next)
         })
 
         it('should set the metrics content type', function () {
@@ -244,14 +246,14 @@ describe('Monitoring', function () {
       describe('When attempting to access the metrics endpoint from an external client', function () {
         beforeEach(function () {
           req.get.returns('external-ip')
+          metrics.summaryRoute(req, res, next)
         })
 
-        it('should reject the request', function () {
-          try {
-            expect(metrics.summaryRoute(req, res)).to.have.thrown
-          } catch (e) {
-            expect(e.message).to.equal('404')
-          }
+        it('should return page not found', function () {
+          expect(next).to.be.calledOnce
+          const error = next.firstCall.args[0]
+          expect(error.message).to.equal('External metrics access')
+          expect(error.statusCode).to.equal(404)
         })
       })
     })

@@ -152,9 +152,11 @@ const getClient = () => {
 /**
  * Prometheus metrics route middleware
  */
-const summaryRoute = (req, res) => {
+const summaryRoute = (req, res, next) => {
   if (req.get('x-forwarded-host')) {
-    throw new Error(404)
+    const error = new Error('External metrics access')
+    error.statusCode = 404
+    return next(error)
   }
 
   const contentType = promster.getContentType()
