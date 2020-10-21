@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.49.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.49.0...v2.49.1) (2020-10-21)
+
+
+### Bug Fixes
+
+* **allocation:** Stop person removal from an active or completed move ([fd92181](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fd9218100130a4a9a64b0e434d1d20b9cce1ab5e))
+
 ## [2.49.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.48.0...v2.49.0) (2020-10-15)
 
 
