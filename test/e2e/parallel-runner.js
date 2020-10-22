@@ -4,13 +4,58 @@ const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
 
-const {
-  E2E_MAX_PROCESSES,
-  E2E_SKIP,
-  E2E_VIDEO,
-  E2E_FAIL_FAST,
-  E2E_BASE_URL,
-} = process.env
+/**
+ * Allow environment variables set at the project level tp be overridden for current PR
+ * eg. Given a CIRCLE_PR_NUMBER of 123
+ * if set, PR123_E2E_VIDEO will be used in place of E2E_VIDEO
+ */
+// CIRCLE_PR_NUMBER should exist but is missing
+// Use CIRCLE_PULL_REQUEST and strip github url up to number
+const { CIRCLE_PULL_REQUEST = '' } = process.env
+const prNumber = CIRCLE_PULL_REQUEST.replace(/.*\//, '')
+
+if (prNumber) {
+  const prPrefix = `PR${prNumber}_`
+  const prEnvVars = Object.keys(process.env).filter(prKey =>
+    prKey.startsWith(prPrefix)
+  )
+  prEnvVars.forEach(prKey => {
+    const envKey = prKey.replace(prPrefix, '')
+    process.env[envKey] = process.env[prKey]
+  })
+}
+
+/**
+ * Empty strings can be passed as a space
+ * `false` and `true` will be coerced to boolean values
+ */
+Object.keys(process.env).forEach(key => {
+  process.env[key] = process.env[key].trim()
+})
+
+const getEnvVar = key => {
+  let value = process.env[key]
+
+  if (value === undefined) {
+    return
+  }
+
+  value = value.trim()
+
+  if (value === 'false') {
+    value = false
+  } else if (value === 'true') {
+    value = true
+  }
+
+  return value
+}
+
+const E2E_MAX_PROCESSES = getEnvVar('E2E_MAX_PROCESSES')
+const E2E_SKIP = getEnvVar('E2E_SKIP')
+const E2E_FAIL_FAST = getEnvVar('E2E_FAIL_FAST')
+const E2E_BASE_URL = getEnvVar('E2E_BASE_URL')
+const E2E_VIDEO = getEnvVar('E2E_VIDEO')
 
 const args = yargs
   .usage(
