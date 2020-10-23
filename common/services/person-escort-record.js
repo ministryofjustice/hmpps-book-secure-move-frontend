@@ -12,12 +12,12 @@ const personEscortRecordService = {
     }
   },
 
-  create(profileId) {
+  create(moveId) {
     return apiClient
       .create('person_escort_record', {
         version: FRAMEWORKS.CURRENT_VERSION,
-        profile: {
-          id: profileId,
+        move: {
+          id: moveId,
         },
       })
       .then(response => response.data)

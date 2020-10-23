@@ -22,7 +22,7 @@ class NewPersonEscortRecordController extends FormWizardController {
 
   async saveValues(req, res, next) {
     try {
-      req.record = await personEscortRecordService.create(req.move.profile.id)
+      req.record = await personEscortRecordService.create(req.move.id)
       next()
     } catch (err) {
       const apiErrorCode = get(err, 'errors[0].code')

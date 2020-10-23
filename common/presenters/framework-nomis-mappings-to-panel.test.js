@@ -73,7 +73,7 @@ describe('#frameworkNomisMappingsToPanel', function () {
 
     it('should return HTML', function () {
       expect(output).to.equal(
-        '\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-padding-top-0 govuk-!-margin-bottom-2">\n        Sample heading\n      </h4>\n    \n      <div class="govuk-caption-s govuk-!-margin-top-0 govuk-!-margin-bottom-2 govuk-!-font-size-16">\n        last_updated_at\n      </div>\n    appPanel'
+        '\n      <h4 class="govuk-!-font-size-19 govuk-!-font-weight-regular govuk-!-margin-top-3 govuk-!-padding-top-0 govuk-!-margin-bottom-1">\n        Sample heading\n      </h4>\n    \n      <div class="govuk-caption-s govuk-!-margin-top-0 govuk-!-margin-bottom-2 govuk-!-font-size-16">\n        last_updated_at\n      </div>\n    appPanel'
       )
     })
   })
