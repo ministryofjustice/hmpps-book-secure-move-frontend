@@ -13,7 +13,7 @@ function frameworkNomisMappingsToPanel({
 
   if (heading) {
     html += `
-      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-padding-top-0 govuk-!-margin-bottom-2">
+      <h4 class="govuk-!-font-size-19 govuk-!-font-weight-regular govuk-!-margin-top-3 govuk-!-padding-top-0 govuk-!-margin-bottom-1">
         ${heading}
       </h4>
     `
