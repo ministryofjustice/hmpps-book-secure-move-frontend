@@ -1,3 +1,5 @@
+const path = require('path')
+
 const axios = require('axios')
 const proxyquire = require('proxyquire')
 
@@ -26,7 +28,9 @@ describe('API Client', function () {
     describe('when instantiated', function () {
       context('with options', function () {
         beforeEach(function () {
-          authInstance = requireUncached(`${__dirname}/auth`)(mockOptions)
+          authInstance = requireUncached(path.join(__dirname, 'auth'))(
+            mockOptions
+          )
           secondAuthInstance = require('./auth')()
         })
 
@@ -45,7 +49,7 @@ describe('API Client', function () {
 
       context('without options', function () {
         beforeEach(function () {
-          authInstance = requireUncached(`${__dirname}/auth`)({})
+          authInstance = requireUncached(path.join(__dirname, 'auth'))({})
         })
 
         it('should set default config', function () {
@@ -63,7 +67,7 @@ describe('API Client', function () {
       let accessToken
 
       beforeEach(function () {
-        authInstance = requireUncached(`${__dirname}/auth`)({})
+        authInstance = requireUncached(path.join(__dirname, 'auth'))({})
         authInstance.accessToken = 'mockToken'
         authInstance.isExpired = sinon.stub()
         authInstance.refreshAccessToken = sinon.stub()
@@ -195,7 +199,7 @@ describe('API Client', function () {
 
     describe('#isExpired()', function () {
       beforeEach(function () {
-        authInstance = requireUncached(`${__dirname}/auth`)({})
+        authInstance = requireUncached(path.join(__dirname, 'auth'))({})
       })
 
       context('when no access token is set', function () {
@@ -250,7 +254,7 @@ describe('API Client', function () {
       let authorizationHeader
 
       beforeEach(async function () {
-        authInstance = requireUncached(`${__dirname}/auth`)({})
+        authInstance = requireUncached(path.join(__dirname, 'auth'))({})
         sinon.stub(authInstance, 'getAccessToken').resolves('mockToken')
         authorizationHeader = await authInstance.getAuthorizationHeader()
       })
