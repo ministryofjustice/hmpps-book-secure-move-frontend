@@ -21,11 +21,9 @@ const mockAllocations = [
       key: 'hmp_ashfield',
       title: 'HMP Ashfield',
     },
-    moves: [
-      { id: '1', profile: {} },
-      { id: '2', profile: {} },
-      { id: '3', profile: {} },
-    ],
+    totalSlots: 3,
+    filledSlots: 3,
+    unfilledSlots: 0,
   },
   {
     id: '05140394-c517-45d9-8c24-9b4913972d87',
@@ -42,11 +40,9 @@ const mockAllocations = [
       key: 'hmirc_the_verne',
       title: 'HMIRC The Verne',
     },
-    moves: [
-      { id: '1', profile: null },
-      { id: '2', profile: null },
-      { id: '3', profile: null },
-    ],
+    totalSlots: 3,
+    filledSlots: 0,
+    unfilledSlots: 3,
   },
   {
     id: 'c213ebd7-fd77-4b27-aa0c-5545204f3521',
@@ -63,11 +59,9 @@ const mockAllocations = [
       key: 'hmp_yoi_parc',
       title: 'HMP/YOI Parc',
     },
-    moves: [
-      { id: '1', profile: {} },
-      { id: '2', profile: null },
-      { id: '3', profile: null },
-    ],
+    totalSlots: 3,
+    filledSlots: 1,
+    unfilledSlots: 2,
   },
 ]
 

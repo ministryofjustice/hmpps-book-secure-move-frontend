@@ -83,8 +83,17 @@ const allocationService = {
   },
   transform({ includeCancelled = false } = {}) {
     return function transformAllocation(result) {
+      const { total: totalSlots, filled: filledSlots } =
+        result.meta?.moves || {}
+
+      result = { ...result }
+      delete result.meta
+
       return {
         ...result,
+        totalSlots,
+        filledSlots,
+        unfilledSlots: totalSlots ? totalSlots - filledSlots : undefined,
         moves: result.moves
           .filter(
             move => includeCancelled || !['cancelled'].includes(move.status)
@@ -104,7 +113,7 @@ const allocationService = {
     fromLocations = [],
     toLocations = [],
     locations = [],
-    include = ['from_location', 'moves', 'moves.profile', 'to_location'],
+    include = ['from_location', 'to_location'],
     isAggregation = false,
     status,
     sortBy,

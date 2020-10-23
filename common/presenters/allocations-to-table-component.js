@@ -45,7 +45,7 @@ function allocationsToTableComponent({
           scope: 'row',
         },
         html: data => {
-          const count = data.moves.length
+          const { totalSlots: count } = data
           return `<a href="/allocation/${data.id}">${count} ${i18n.t('person', {
             count,
           })}</a>`
@@ -61,8 +61,7 @@ function allocationsToTableComponent({
       },
       row: {
         html: data => {
-          const totalSlots = data.moves.length
-          const unfilledSlots = data.moves.filter(move => !move.profile).length
+          const { totalSlots, unfilledSlots } = data
           const classes = {
             complete: 'govuk-tag--green',
             by_remaining: 'govuk-tag--yellow',
