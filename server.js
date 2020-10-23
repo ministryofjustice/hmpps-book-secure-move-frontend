@@ -15,7 +15,6 @@ const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
 const slashify = require('slashify')
-const uuid = require('uuid')
 
 // Local dependencies
 const healthcheckApp = require('./app/healthcheck')
@@ -34,6 +33,7 @@ const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const setServices = require('./common/middleware/set-services')
+const setTransactionId = require('./common/middleware/set-transaction-id')
 const setUser = require('./common/middleware/set-user')
 const config = require('./config')
 const i18n = require('./config/i18n')
@@ -55,10 +55,7 @@ if (config.IS_PRODUCTION) {
 }
 
 // Ensure we have a useful transaction id
-app.use((req, res, next) => {
-  req.transactionId = req.get('x-request-id') || uuid.v4()
-  next()
-})
+app.use(setTransactionId)
 
 if (config.SENTRY.DSN) {
   Sentry.init({
