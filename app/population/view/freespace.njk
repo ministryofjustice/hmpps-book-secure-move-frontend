@@ -1,0 +1,21 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t(pageTitle) }}
+    </h1>
+  </header>
+
+  <h2>Total space</h2>
+  <h3>Operational capacity</h3>
+  <p>1000</p>
+  <h3>Useable capacity</h3>
+  <p>976</p>
+
+
+{% endblock %}

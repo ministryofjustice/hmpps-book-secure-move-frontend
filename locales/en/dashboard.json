@@ -21,5 +21,8 @@
     "allocations": {
       "heading": "$t(primary_navigation.allocations) for"
     }
+  },
+  "population": {
+    "heading": "Population overview for"
   }
 }

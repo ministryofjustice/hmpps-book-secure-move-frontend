@@ -1,0 +1,75 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t("population::transfers.title")}}
+    </h1>
+  </header>
+
+  {{ govukTable({
+    firstCellIsHeader: false,
+    head: [
+      {
+        text: "Prisoners"
+      },
+      {
+        text: "Move Type"
+      },
+      {
+        text: "Agreed"
+      }
+    ],
+    rows: [
+      [
+        {
+          html: "<a href='/person/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>Mils, Stephen Dom</a>"
+        },
+        {
+          html: "<a href='/allocations/26e4cfba-f4d8-4873-bf05-53ca11a8b674'>Allocation: 3 from Norwich (1)</a>"
+        },
+        {
+          text: "Agreed with Joe Bloggs"
+        }
+      ],
+      [
+        {
+          html: "<a href='/person/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>Haitas, Christopher Ben</a>"
+        },
+        {
+          html: "<a href='/allocations/26e4cfba-f4d8-4873-bf05-53ca11a8b674'>Allocation: 3 from Norwich (1)</a>"
+        },
+        {
+          text: "Agreed with Joe Bloggs"
+        }
+      ],
+      [
+        {
+          html: "<a href='/person/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>Beeber, Justin Paul</a>"
+        },
+        {
+          html: "<a href='/allocations/26e4cfba-f4d8-4873-bf05-53ca11a8b674'>Allocation: 3 from Norwich (1)</a>"
+        },
+        {
+          text: "Agreed with Paul Smith"
+        }
+      ],
+      [
+        {
+          html: "To be allocated"
+        },
+        {
+          html: "<a href='/allocations/26e4cfba-f4d8-4873-bf05-53ca11a8b674'>Allocation: 3 from Norwich (2)</a>"
+        },
+        {
+          text: "Not agreed"
+        }
+      ]
+    ]
+  }) }}
+
+{% endblock %}

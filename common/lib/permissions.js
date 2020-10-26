@@ -91,6 +91,7 @@ const ocaPermissions = [
   'move:create:secure_training_centre',
 ]
 const pmuPermissions = [
+  'dashboard:view:population',
   'allocations:view',
   'allocation:create',
   'allocation:cancel',

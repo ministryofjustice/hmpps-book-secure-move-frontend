@@ -1,0 +1,49 @@
+{
+  "data": {
+    "data": [{
+      "id": "dc76e71d-413b-48c8-b1cf-85c702c5f465",
+      "type": "locations",
+      "attributes": {
+        "title": "BELMARSH (HMP)"
+      },
+      "meta": {
+        "populations": [{
+          "id": "1bf70844-6b85-4fa6-8437-1c3859f883ee",
+          "free_spaces": 51
+        }, {
+          "id": "6318fafa-923d-468f-ab5f-dc9cbdd79198",
+          "free_spaces": -37
+        }, {
+          "id": "06bb368a-d512-406c-9a3f-ef47d75a31c7",
+          "free_spaces": -83
+        }, {
+          "id": "18a46696-f6ff-4c4e-8fe8-bc3177845a4a",
+          "free_spaces": -58
+        }, {
+          "id": "abccd8db-29fe-47cf-b463-4f71cbea5416",
+          "free_spaces": 0
+        }, {
+          "id": "0671ac0d-a558-456a-a842-10e5dfd0002f",
+          "free_spaces": -121
+        }, {
+          "id": "928405b8-9ce1-412a-8b43-dd4e8c734f42",
+          "free_spaces": -23
+        }]
+      }
+    }],
+    "meta": {
+      "pagination": {
+        "per_page": "100",
+        "total_pages": 1,
+        "total_objects": 1
+      }
+    },
+    "links": {
+      "self": "https://hmpps-book-secure-move-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk/api/v1/locations_free_spaces?date_from=2020-10-26\u0026date_to=2020-11-01\u0026filter%5Blocation_id%5D=dc76e71d-413b-48c8-b1cf-85c702c5f465\u0026filter%5Blocation_type%5D=prison\u0026page=1\u0026per_page=100",
+      "first": "https://hmpps-book-secure-move-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk/api/v1/locations_free_spaces?date_from=2020-10-26\u0026date_to=2020-11-01\u0026filter%5Blocation_id%5D=dc76e71d-413b-48c8-b1cf-85c702c5f465\u0026filter%5Blocation_type%5D=prison\u0026page=1\u0026per_page=100",
+      "prev": null,
+      "next": null,
+      "last": "https://hmpps-book-secure-move-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk/api/v1/locations_free_spaces?date_from=2020-10-26\u0026date_to=2020-11-01\u0026filter%5Blocation_id%5D=dc76e71d-413b-48c8-b1cf-85c702c5f465\u0026filter%5Blocation_type%5D=prison\u0026page=1\u0026per_page=100"
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t(pageTitle) }}
+    </h1>
+  </header>
+
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+        {{ t("dashboard::population.heading") }}
+
+        <span class="govuk-!-display-block">
+                {{ currentWeek | formatDateRangeWithRelativeWeek }}
+              </span>
+      </h2>
+
+
+      <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold" data-location-type="locations">
+        {% for location in population %}
+          <li>
+            {{ location.title }}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  {{ govukTable({
+    firstCellIsHeader: true,
+    head: [
+      {
+        text: ""
+      },
+      {
+        text: "Mon 10"
+      },
+      {
+        text: "Tue 11"
+      },
+      {
+        text: "Wed 12"
+      },
+      {
+        text: "Thu 13"
+      },
+      {
+        text: "Fri 14"
+      }
+    ],
+    rows: [
+      [
+        {
+          text: "Free spaces"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>10 spaces</a>"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>1 space</a>"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>-2 spaces</a>"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>Add numbers</a>"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/freespace'>Add numbers</a>"
+        }
+      ],
+      [
+        {
+          text: "Transfers in"
+        },
+        {
+          text: "None cancelled"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Peterborough"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Chelmsford"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>3 to Highdown"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>None cancelled"
+        }
+      ],
+      [
+        {
+          html: "Transfers out"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Chelmsford</a>"
+        },
+        {
+          html: "None cancelled"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Peterborough</a>"
+        },
+        {
+          html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>3 to Highdown</a>"
+        },
+        {
+          html: "None cancelled"
+        }
+      ]
+    ]
+  }) }}
+
+    {{ govukTable({
+      rows: [
+        [
+          {
+            text: "Cancelled transfers in"
+          },
+          {
+            text: "Non cancelled"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>1 from Chelmsford</a>"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>1 from Peterborough</a>"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 from Highdown</a>"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>None cancelled</a>"
+          }
+        ],
+        [
+          {
+            text: "Cancelled transfers out"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Chelmsford</a>"
+          },
+          {
+            text: "None cancelled"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>2 to Peterborough</a>"
+          },
+          {
+            html: "<a href='/population/day/2020-10-01/26e4cfba-f4d8-4873-bf05-53ca11a8b674/transfers'>3 to Highdown</a>"
+          },
+          {
+            text: "None cancelled"
+          }
+        ]
+      ]
+  })
+  }}
+{#    {{ govukTable(capacitiesAsTable) }}#}
+
+{#    {%   include "../../common/templates/collection-as-table.njk"%}#}
+
+{% endblock %}
