@@ -22,6 +22,7 @@ const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
 const movesToCSV = require('./moves-to-csv')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
+const locationsToPopulationTableComponent = require('./population-table/locations-to-population-table-component')
 const profileToCardComponent = require('./profile-to-card-component')
 const singleRequestsToTableComponent = require('./single-requests-to-table-component')
 const tablePresenters = require('./table')
@@ -44,6 +45,7 @@ module.exports = {
   frameworkSectionToPanelList,
   frameworkStepToSummary,
   frameworkToTaskListComponent,
+  locationsToPopulationTableComponent,
   moveToCardComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,

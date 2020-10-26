@@ -1,0 +1,8 @@
+{
+  "spaces_with_count": "{{count}} space",
+  "spaces_with_count_plural": "{{count}} spaces",
+  "add_space": "Add numbers",
+  "labels": {
+    "establishment": "Establishment"
+  }
+}
