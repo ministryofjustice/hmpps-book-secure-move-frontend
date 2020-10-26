@@ -212,6 +212,10 @@ describe('Move controllers', function () {
           controller.process(req, {}, nextSpy)
         })
 
+        afterEach(function () {
+          this.clock.restore()
+        })
+
         it('should set value of date to tomorrow', function () {
           expect(req.form.values.date).to.equal('2017-08-11')
         })

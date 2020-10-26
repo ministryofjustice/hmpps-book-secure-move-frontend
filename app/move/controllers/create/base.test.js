@@ -588,6 +588,10 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
       })
 
+      afterEach(function () {
+        this.clock.restore()
+      })
+
       context('with no timestamp in the session', function () {
         beforeEach(function () {
           req.sessionModel.get.withArgs('journeyTimestamp').returns(undefined)
