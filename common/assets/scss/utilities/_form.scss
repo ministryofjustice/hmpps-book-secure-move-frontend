@@ -1,0 +1,20 @@
+// Add support to show when a field contains a message
+.app-form-group--message:not(.govuk-form-group--error) {
+  padding-left: govuk-spacing(3);
+  border-left: 5px solid govuk-colour("blue");
+
+}
+.app-form-group__message-text {
+  @include govuk-font($size: 19, $weight: bold);
+  margin-top: govuk-spacing(3);
+  margin-bottom: govuk-spacing(3);
+  display: block;
+  color: govuk-colour("blue");
+
+  a,
+  a:active,
+  a:hover,
+  a:visited {
+    color: govuk-colour("blue");
+  }
+}
