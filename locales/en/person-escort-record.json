@@ -22,6 +22,9 @@
       }
     }
   },
+  "prefilled_banner": {
+    "title": "Some answers on this page need to be reviewed. They are from the last Person Escort Record confirmed on {{date}}."
+  },
   "prefilled_message": "This answer needs to be reviewed",
   "journeys": {
     "confirm": {

@@ -79,6 +79,7 @@ class FrameworkStepController extends FormWizardController {
     super.middlewareLocals()
     this.use(this.setPageTitleLocals)
     this.use(this.setSyncStatusBanner)
+    this.use(this.setPrefillBanner)
   }
 
   setPageTitleLocals(req, res, next) {
@@ -92,6 +93,22 @@ class FrameworkStepController extends FormWizardController {
     res.locals.syncFailures = syncStatus
       .filter(type => type.status === 'failed')
       .map(type => type.resource_type)
+
+    next()
+  }
+
+  setPrefillBanner(req, res, next) {
+    const { prefill_source: source, responses } = req.personEscortRecord || {}
+    const fields = req.form.options.fields
+    const prefilledResponses = responses
+      .filter(response => fields[response.question?.key])
+      .filter(response => !isEmpty(response.value))
+      .filter(
+        response => response.prefilled === true && response.responded === false
+      )
+
+    res.locals.prefilledSourceDate = source?.confirmed_at
+    res.locals.hasPrefilledResponses = prefilledResponses.length > 0
 
     next()
   }
@@ -140,9 +157,13 @@ class FrameworkStepController extends FormWizardController {
 
   render(req, res, next) {
     const { responses } = req.personEscortRecord || {}
-    const fields = Object.entries(req.form.options.fields).map(
-      frameworksHelpers.renderNomisMappingsToField(responses)
-    )
+    const fields = Object.entries(req.form.options.fields)
+      .map(frameworksHelpers.renderNomisMappingsToField(responses))
+      .map(
+        frameworksHelpers.renderPreviousAnswerToField({
+          responses,
+        })
+      )
 
     req.form.options.fields = fromPairs(fields)
 

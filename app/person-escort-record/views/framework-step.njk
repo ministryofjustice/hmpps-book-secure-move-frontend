@@ -30,6 +30,18 @@
     }) }}
   {% endif %}
 
+  {% if hasPrefilledResponses %}
+    {{ appMessage({
+      allowDismiss: false,
+      classes: "govuk-!-margin-bottom-4",
+      title: {
+        text: t("person-escort-record::prefilled_banner.title", {
+          date: prefilledSourceDate | formatDateWithRelativeDay + " at " + prefilledSourceDate | formatTime
+        })
+      }
+    }) }}
+  {% endif %}
+
   {{ super() }}
 {% endblock %}
 
