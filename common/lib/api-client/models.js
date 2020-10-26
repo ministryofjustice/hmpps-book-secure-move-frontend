@@ -69,6 +69,7 @@ module.exports = {
         'profile.person_escort_record.responses.question.descendants.**',
         'profile.person_escort_record.responses.nomis_mappings',
         'profile.person_escort_record.flags',
+        'profile.person_escort_record.prefill_source',
         'profile.person',
         'profile.person.ethnicity',
         'profile.person.gender',
@@ -414,6 +415,10 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'framework_flags',
       },
+      prefill_source: {
+        jsonApi: 'hasOne',
+        type: 'person_escort_records',
+      },
     },
     options: {
       defaultInclude: [
@@ -425,6 +430,7 @@ module.exports = {
         'responses.question.descendants.**',
         'responses.nomis_mappings',
         'flags',
+        'prefill_source',
       ],
     },
   },
@@ -471,6 +477,7 @@ module.exports = {
       value: '',
       value_type: '',
       responded: '',
+      prefilled: '',
       person_escort_record: {
         jsonApi: 'hasOne',
         type: 'person_escort_records',
