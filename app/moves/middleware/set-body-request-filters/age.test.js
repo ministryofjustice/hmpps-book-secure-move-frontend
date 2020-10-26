@@ -4,8 +4,14 @@ const ageFilter = require('./age')
 
 describe('age filter', function () {
   const now = new Date('2020-01-01T02:00')
+  let clock
+
   beforeEach(function () {
-    sinon.useFakeTimers(now.getTime())
+    clock = sinon.useFakeTimers(now.getTime())
+  })
+
+  afterEach(function () {
+    clock.restore()
   })
 
   describe('when called without an age value', function () {

@@ -28,6 +28,10 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returnsArg(0)
     })
 
+    afterEach(function () {
+      timezoneMock.unregister()
+    })
+
     context('when provided no move', function () {
       beforeEach(function () {
         transformedResponse = moveToSummaryListComponent()

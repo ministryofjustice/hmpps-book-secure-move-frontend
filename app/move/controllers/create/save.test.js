@@ -789,6 +789,10 @@ describe('Move controllers', function () {
           await controller.successHandler(req, res, nextSpy)
         })
 
+        afterEach(function () {
+          this.clock.restore()
+        })
+
         it('should send journey time to analytics', function () {
           expect(analytics.sendJourneyTime).to.be.calledOnceWithExactly({
             utv: capitalize(req.form.options.name),

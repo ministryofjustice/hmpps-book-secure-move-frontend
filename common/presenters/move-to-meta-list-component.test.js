@@ -25,6 +25,10 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returns('__translated__')
     })
 
+    afterEach(function () {
+      timezoneMock.unregister()
+    })
+
     context('when provided with a mock move object', function () {
       let transformedResponse
 
