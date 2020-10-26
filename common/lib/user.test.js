@@ -114,7 +114,7 @@ describe('User class', function () {
       })
 
       it('should contain empty permissions', function () {
-        expect(permissions).to.deep.equal([])
+        expect(permissions).to.have.members([])
       })
     })
 
@@ -147,7 +147,7 @@ describe('User class', function () {
           'move:update:video_remand',
         ]
 
-        expect(permissions).to.deep.equal(policePermissions)
+        expect(permissions).to.have.members(policePermissions)
       })
     })
 
@@ -157,7 +157,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'moves:view:outgoing',
           'moves:view:incoming',
           'moves:download',
@@ -196,7 +196,7 @@ describe('User class', function () {
           'move:cancel:proposed',
         ]
 
-        expect(permissions).to.deep.equal(stcPermissions)
+        expect(permissions).to.have.members(stcPermissions)
       })
     })
 
@@ -206,7 +206,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
@@ -234,7 +234,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'moves:view:outgoing',
           'moves:view:incoming',
           'moves:download',
@@ -253,7 +253,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'dashboard:view',
           'allocations:view',
           'allocation:person:assign',
@@ -275,7 +275,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'allocations:view',
           'allocation:create',
           'allocation:cancel',
@@ -294,7 +294,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'locations:all',
           'moves:view:outgoing',
           'moves:view:incoming',
@@ -310,7 +310,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
@@ -326,7 +326,7 @@ describe('User class', function () {
       })
 
       it('should contain correct permission', function () {
-        expect(permissions).to.deep.equal([
+        expect(permissions).to.have.members([
           'person_escort_record:view',
           'person_escort_record:create',
           'person_escort_record:update',
@@ -394,7 +394,7 @@ describe('User class', function () {
           'person_escort_record:confirm',
         ]
 
-        expect(permissions.sort()).to.deep.equal(allPermissions.sort())
+        expect(permissions).to.have.members(allPermissions)
       })
     })
   })
