@@ -164,6 +164,10 @@ class FormController extends Controller {
         'MISSING_LOCATION',
       ].includes(err.code)
     ) {
+      if (err.code === 'CSRF_ERROR') {
+        Sentry.captureException(err)
+      }
+
       return res.render('form-wizard-error', {
         journeyName: req.form.options.journeyName.replace('-', '_'),
         journeyBaseUrl: req.baseUrl,

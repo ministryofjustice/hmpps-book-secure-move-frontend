@@ -368,6 +368,7 @@ describe('Form wizard', function () {
         redirect: sinon.spy(),
         render: sinon.spy(),
       }
+      sinon.stub(Sentry, 'captureException')
       sinon.spy(FormController.prototype, 'errorHandler')
     })
 
@@ -405,6 +406,10 @@ describe('Form wizard', function () {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
+      it('should not send error to sentry', function () {
+        expect(Sentry.captureException).not.to.be.called
+      })
+
       it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
@@ -437,6 +442,10 @@ describe('Form wizard', function () {
         }
 
         controller.errorHandler(errorMock, reqMock, resMock)
+      })
+
+      it('should not send error to sentry', function () {
+        expect(Sentry.captureException).not.to.be.called
       })
 
       it('should render the timeout template', function () {
@@ -473,6 +482,10 @@ describe('Form wizard', function () {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
+      it('should not send error to sentry', function () {
+        expect(Sentry.captureException).not.to.be.called
+      })
+
       it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
@@ -507,6 +520,10 @@ describe('Form wizard', function () {
         controller.errorHandler(errorMock, reqMock, resMock)
       })
 
+      it('should send error to sentry', function () {
+        expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+      })
+
       it('should render the timeout template', function () {
         expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
       })
@@ -532,7 +549,6 @@ describe('Form wizard', function () {
 
         nextSpy = sinon.spy()
         sinon.spy(Sentry, 'withScope')
-        sinon.stub(Sentry, 'captureException')
 
         controller.errorHandler(errorMock, {}, {}, nextSpy)
       })
