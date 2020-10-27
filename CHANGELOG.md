@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.50.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.49.1...v2.50.0) (2020-10-27)
+
+
+### Features
+
+* **per:** Prefill question with previous answer ([c8b1905](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c8b1905c912d02c388161406f15a31e208e090f5))
+
+
+### Bug Fixes
+
+* package.json & package-lock.json to reduce vulnerabilities ([d44e63a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d44e63a576a642132894e8ba4a654f4fefb3e159))
+
 ### [2.49.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.49.0...v2.49.1) (2020-10-21)
 
 
