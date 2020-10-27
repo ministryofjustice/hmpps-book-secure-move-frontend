@@ -43,6 +43,7 @@ describe('Presenters', function () {
               value: undefined,
               valueType: undefined,
               responded: false,
+              prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -78,6 +79,7 @@ describe('Presenters', function () {
               value: undefined,
               valueType: undefined,
               responded: false,
+              prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -125,6 +127,7 @@ describe('Presenters', function () {
               value: undefined,
               valueType: undefined,
               responded: false,
+              prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               afterContent: {
                 html: 'NOMIS_HTML',
@@ -178,6 +181,7 @@ describe('Presenters', function () {
               value: undefined,
               valueType: undefined,
               responded: false,
+              prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -241,6 +245,7 @@ describe('Presenters', function () {
                 value: 'Yes',
                 valueType: 'string',
                 responded: false,
+                prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -250,6 +255,7 @@ describe('Presenters', function () {
                 value: undefined,
                 valueType: undefined,
                 responded: false,
+                prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
               }
             )
@@ -297,6 +303,7 @@ describe('Presenters', function () {
                 value: 'No',
                 valueType: 'string',
                 responded: false,
+                prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
               }
             )
@@ -374,6 +381,7 @@ describe('Presenters', function () {
                   value: undefined,
                   valueType: test.valueType,
                   responded: false,
+                  prefilled: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                 }
               )
@@ -402,6 +410,7 @@ describe('Presenters', function () {
                   value: test.nonEmptyValue,
                   valueType: test.valueType,
                   responded: false,
+                  prefilled: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                 }
               )
@@ -433,6 +442,38 @@ describe('Presenters', function () {
               value: undefined,
               valueType: 'array',
               responded: true,
+              prefilled: false,
+              questionUrl: `${mockStepUrl}#${mockField.id}`,
+            }
+          )
+        })
+      })
+
+      context('when response has been prefilled', function () {
+        const mockResponse = {
+          value: 'An answer',
+          responded: false,
+          prefilled: true,
+          question: {
+            response_type: 'string',
+          },
+        }
+
+        beforeEach(function () {
+          response = frameworkFieldToSummaryListRow(mockStepUrl)({
+            ...mockField,
+            response: mockResponse,
+          })
+        })
+
+        it('should call component service with undefined value and responded value', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'appFrameworkResponse',
+            {
+              value: 'An answer',
+              valueType: 'string',
+              responded: false,
+              prefilled: true,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )
@@ -571,6 +612,7 @@ describe('Presenters', function () {
                 value: test.value,
                 valueType: test.valueType,
                 responded: false,
+                prefilled: false,
                 questionUrl: `${mockStepUrl}#${test.id}`,
               }
             )
@@ -590,6 +632,7 @@ describe('Presenters', function () {
               value: undefined,
               valueType: 'collection::add_multiple_items',
               responded: false,
+              prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
             }
           )

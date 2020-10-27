@@ -79,6 +79,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'setPageTitleLocals')
         sinon.stub(controller, 'setSyncStatusBanner')
+        sinon.stub(controller, 'setPrefillBanner')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -101,8 +102,14 @@ describe('Person Escort Record controllers', function () {
         )
       })
 
+      it('should call set sync banner method', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setPrefillBanner
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(2)
+        expect(controller.use).to.be.callCount(3)
       })
     })
 
@@ -319,6 +326,153 @@ describe('Person Escort Record controllers', function () {
 
         it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setPrefillBanner', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          personEscortRecord: {
+            responses: [],
+            prefill_source: {
+              id: '12345',
+              confirmed_at: '2020-10-10T14:00:00',
+            },
+          },
+          form: {
+            options: {
+              fields: {
+                'field-one': {},
+                'field-two': {},
+                'field-three': {},
+                'field-four': {},
+                'field-five': {},
+                'field-six': {},
+              },
+            },
+          },
+        }
+        mockRes = {
+          locals: {},
+        }
+      })
+
+      context('without prefilled responses', function () {
+        beforeEach(function () {
+          mockReq.personEscortRecord.responses = []
+          controller.setPrefillBanner(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set source date', function () {
+          expect(mockRes.locals.prefilledSourceDate).to.equal(
+            '2020-10-10T14:00:00'
+          )
+        })
+
+        it('should set banner status to false', function () {
+          expect(mockRes.locals.hasPrefilledResponses).to.be.false
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with prefilled responses', function () {
+        const truthyTests = [
+          {
+            value: {
+              option: 'Yes',
+              details: 'Some extra details',
+            },
+            responded: false,
+            prefilled: true,
+            question: {
+              key: 'field-two',
+            },
+          },
+        ]
+        const falseyTests = [
+          {
+            value: '',
+            responded: false,
+            prefilled: true,
+            question: {
+              key: 'field-one',
+            },
+          },
+          {
+            value: {
+              option: 'Yes',
+              details: 'Some extra details',
+            },
+            responded: true,
+            prefilled: true,
+            question: {
+              key: 'field-two',
+            },
+          },
+          {
+            value: {
+              option: 'Yes',
+              details: 'Some extra details',
+            },
+            responded: true,
+            prefilled: true,
+            question: {
+              key: 'field-three',
+            },
+          },
+        ]
+
+        truthyTests.forEach(test => {
+          describe(test.question.key, function () {
+            beforeEach(function () {
+              mockReq.personEscortRecord.responses = [test]
+              controller.setPrefillBanner(mockReq, mockRes, nextSpy)
+            })
+
+            it('should set source date', function () {
+              expect(mockRes.locals.prefilledSourceDate).to.equal(
+                '2020-10-10T14:00:00'
+              )
+            })
+
+            it('should set banner status to true', function () {
+              expect(mockRes.locals.hasPrefilledResponses).to.be.true
+            })
+
+            it('should call next without error', function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
+        })
+
+        falseyTests.forEach(test => {
+          describe(test.question.key, function () {
+            beforeEach(function () {
+              mockReq.personEscortRecord.responses = [test]
+              controller.setPrefillBanner(mockReq, mockRes, nextSpy)
+            })
+
+            it('should set source date', function () {
+              expect(mockRes.locals.prefilledSourceDate).to.equal(
+                '2020-10-10T14:00:00'
+              )
+            })
+
+            it('should set banner status to true', function () {
+              expect(mockRes.locals.hasPrefilledResponses).to.be.false
+            })
+
+            it('should call next without error', function () {
+              expect(nextSpy).to.be.calledOnceWithExactly()
+            })
+          })
         })
       })
     })
@@ -661,6 +815,11 @@ describe('Person Escort Record controllers', function () {
           .callsFake(() => ([key, field]) => {
             return [key, { ...field, renderNOMISInfo: true }]
           })
+        sinon
+          .stub(frameworksHelpers, 'renderPreviousAnswerToField')
+          .callsFake(() => ([key, field]) => {
+            return [key, { ...field, renderPrevAnswer: true }]
+          })
 
         reqMock = {
           personEscortRecord: {
@@ -705,18 +864,29 @@ describe('Person Escort Record controllers', function () {
         ).to.be.calledOnceWithExactly(reqMock.personEscortRecord.responses)
       })
 
+      it('should call renderPreviousAnswerToField on each field', function () {
+        expect(
+          frameworksHelpers.renderPreviousAnswerToField
+        ).to.be.calledOnceWithExactly({
+          responses: reqMock.personEscortRecord.responses,
+        })
+      })
+
       it('should mutate fields object', function () {
         expect(reqMock.form.options.fields).to.deep.equal({
           field_1: {
             renderNOMISInfo: true,
+            renderPrevAnswer: true,
             name: 'Field 1',
           },
           field_2: {
             renderNOMISInfo: true,
+            renderPrevAnswer: true,
             name: 'Field 2',
           },
           field_3: {
             renderNOMISInfo: true,
+            renderPrevAnswer: true,
             name: 'Field 3',
           },
         })

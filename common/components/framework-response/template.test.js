@@ -270,6 +270,37 @@ describe('Framework Response component', function () {
     })
   })
 
+  context('with prefilled answer', function () {
+    const example = examples.prefilled
+
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returnsArg(0)
+
+      const $ = renderComponentHtmlToCheerio('framework-response', example)
+      $component = $('body')
+    })
+
+    it('should render a parent anchor', function () {
+      expect($component.children().first().get(0).tagName).to.equal('a')
+    })
+
+    it('should contain correct href for anchor', function () {
+      expect($component.children().first().attr('href')).to.equal(
+        '/step-url#question-id'
+      )
+    })
+
+    it('should translate text', function () {
+      expect(i18n.t).to.be.calledOnceWithExactly('actions::review_answer')
+    })
+
+    it('should contain correct text', function () {
+      expect($component.children().first().text().trim()).to.equal(
+        'actions::review_answer'
+      )
+    })
+  })
+
   context('without value', function () {
     const example = examples.unanswered
 

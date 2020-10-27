@@ -22,6 +22,7 @@
   "cancel_move": "Cancel this move",
   "confirm_cancellation": "Confirm cancellation",
   "answer_question": "Answer question",
+  "review_answer": "Review answer",
   "change": "Change",
   "change_with_visually_hidden_text": "Change <span class=\"govuk-visually-hidden\">{{text}}</span>",
   "add_person": "Add person",

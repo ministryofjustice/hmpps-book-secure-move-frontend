@@ -52,6 +52,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       value: isEmpty(response.value) ? undefined : response.value,
       valueType,
       responded: response.responded === true,
+      prefilled: response.prefilled === true,
       questionUrl: `${stepUrl}#${id}`,
     }
 
