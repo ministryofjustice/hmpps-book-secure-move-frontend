@@ -80,7 +80,7 @@
     "@promster/express": "4.1.14",
     "@sentry/node": "5.27.1",
     "accessible-autocomplete": "2.0.3",
-    "axios": "0.20.0",
+    "axios": "0.21.0",
     "axios-debug-log": "0.8.0",
     "bluebird": "3.7.2",
     "chrono-node": "2.1.8",
