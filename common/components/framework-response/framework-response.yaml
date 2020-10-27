@@ -11,23 +11,34 @@ params:
     type: string
     required: false
     description: The URL to the question. Used in the `href` when no response has been provided yet
+  - name: responded
+    type: string
+    required: false
+    description: Determines whether the answer has been provided, if false it will show a link to the question URL
+  - name: prefilled
+    type: string
+    required: false
+    description: Determines if the value shown has been prefilled. If true, will link to the question URL with review text
 
 examples:
   - name: string
     data:
       value: Example string response
       valueType: string
+      responded: true
   - name: object
     data:
       value:
         option: "Yes"
       valueType: object::followup_comment
+      responded: true
   - name: object with details
     data:
       value:
         option: "Yes"
         details: Example further details for this response
       valueType: object::followup_comment
+      responded: true
   - name: array
     data:
       value:
@@ -35,6 +46,7 @@ examples:
         - Item two
         - Item three
       valueType: array
+      responded: true
   - name: collection
     data:
       value:
@@ -45,6 +57,7 @@ examples:
         -
           option: Item three
       valueType: collection::followup_comment
+      responded: true
   - name: collection with details
     data:
       value:
@@ -58,14 +71,24 @@ examples:
           option: Item three
           details: Further details for option three
       valueType: collection::followup_comment
+      responded: true
   - name: additional HTML
     data:
       value: Example string response
       valueType: string
+      responded: true
       afterContent:
         html: Some example <strong>HTML</strong>
   - name: unanswered
     data:
+      responded: false
+      questionUrl: /step-url#question-id
+  - name: prefilled
+    data:
+      value: Example string response
+      valueType: string
+      responded: false
+      prefilled: true
       questionUrl: /step-url#question-id
   - name: empty answer
     data:
