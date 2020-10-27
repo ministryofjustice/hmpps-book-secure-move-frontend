@@ -78,7 +78,7 @@
     "@hmpps-book-secure-move-frameworks/1.4.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.4.0",
     "@ministryofjustice/frontend": "0.0.21",
     "@promster/express": "4.1.14",
-    "@sentry/node": "5.27.0",
+    "@sentry/node": "5.27.1",
     "accessible-autocomplete": "2.0.3",
     "axios": "0.20.0",
     "axios-debug-log": "0.8.0",
