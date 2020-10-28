@@ -63,6 +63,26 @@ const mockAllocations = [
     filledSlots: 1,
     unfilledSlots: 2,
   },
+  {
+    id: 'd213ebd7-fd77-4b27-aa0c-5545204f3521',
+    date: '2020-05-03',
+    created_at: '2020-04-20T10:44:37+01:00',
+    updated_at: '2020-04-20T10:44:37+01:00',
+    status: 'cancelled',
+    from_location: {
+      id: 'b9e8bc2b-9224-4a8f-b1e7-19b2973c30fa',
+      key: 'hmp_yoi_thorn_cross',
+      title: 'HMP/YOI Thorn Cross',
+    },
+    to_location: {
+      id: '8f5347f8-6463-4eea-8ec5-9d00c02e0acd',
+      key: 'hmp_yoi_parc',
+      title: 'HMP/YOI Parc',
+    },
+    totalSlots: 5,
+    filledSlots: 3,
+    unfilledSlots: 2,
+  },
 ]
 
 describe('#allocationsToTableComponent', function () {
@@ -135,7 +155,7 @@ describe('#allocationsToTableComponent', function () {
 
       describe('rows', function () {
         it('should return the correct number', function () {
-          expect(output.rows).to.have.length(3)
+          expect(output.rows).to.have.length(4)
         })
 
         it('should return correct number of columns', function () {
@@ -275,6 +295,49 @@ describe('#allocationsToTableComponent', function () {
             )
           })
         })
+
+        describe('Cancelled allocation', function () {
+          it('should return allocation correctly', function () {
+            expect(output.rows[3]).to.deep.equal([
+              {
+                html: `<a href="/allocation/${mockAllocations[3].id}">5 person</a>`,
+                attributes: {
+                  scope: 'row',
+                },
+              },
+              {
+                html: 'govukTag',
+              },
+              {
+                text: mockAllocations[3].from_location.title,
+              },
+              {
+                text: mockAllocations[3].to_location.title,
+              },
+              {
+                text: mockAllocations[3].date,
+              },
+            ])
+          })
+
+          it('should call tag component correctly', function () {
+            expect(
+              componentService.getComponent.getCall(3)
+            ).to.be.calledWithExactly('govukTag', {
+              classes: 'govuk-tag--red',
+              text: 'collections::labels.progress_status',
+            })
+          })
+
+          it('should call i18n with correct data', function () {
+            expect(i18n.t.getCall(7)).to.be.calledWithExactly(
+              'collections::labels.progress_status',
+              {
+                context: 'cancelled',
+              }
+            )
+          })
+        })
       })
     })
 
@@ -333,7 +396,7 @@ describe('#allocationsToTableComponent', function () {
 
       describe('rows', function () {
         it('should return the correct number', function () {
-          expect(output.rows).to.have.length(3)
+          expect(output.rows).to.have.length(4)
         })
 
         describe('filled allocation', function () {

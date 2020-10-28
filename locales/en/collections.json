@@ -59,6 +59,7 @@
     "progress_status_new": "None added",
     "progress_status_complete": "Filled",
     "progress_status_by_added": "{{count}} added",
-    "progress_status_by_remaining": "{{count}} remaining"
+    "progress_status_by_remaining": "{{count}} remaining",
+    "progress_status_cancelled": "Cancelled"
   }
 }

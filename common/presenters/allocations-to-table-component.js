@@ -14,13 +14,13 @@ function _byRemaining(totalSlots, unfilledSlots) {
   }
 }
 
-function _byAdded(totalSlots, unfilledSlots) {
-  const isComplete = unfilledSlots === 0
-  const inProgress = unfilledSlots !== totalSlots
+function _byAdded(totalSlots, filledSlots) {
+  const isComplete = filledSlots === totalSlots
+  const inProgress = filledSlots > 0
 
   return {
     context: inProgress ? (isComplete ? 'complete' : 'by_added') : '',
-    count: totalSlots - unfilledSlots,
+    count: filledSlots,
   }
 }
 
@@ -61,16 +61,19 @@ function allocationsToTableComponent({
       },
       row: {
         html: data => {
-          const { totalSlots, unfilledSlots } = data
+          const { totalSlots, unfilledSlots, filledSlots } = data
           const classes = {
             complete: 'govuk-tag--green',
             by_remaining: 'govuk-tag--yellow',
             by_added: 'govuk-tag--yellow',
             default: 'govuk-tag--red',
           }
-          const opts = showRemaining
-            ? _byRemaining(totalSlots, unfilledSlots)
-            : _byAdded(totalSlots, unfilledSlots)
+          const opts =
+            data.status !== 'cancelled'
+              ? showRemaining
+                ? _byRemaining(totalSlots, unfilledSlots)
+                : _byAdded(totalSlots, filledSlots)
+              : { context: 'cancelled' }
 
           return componentService.getComponent('govukTag', {
             text: i18n.t('collections::labels.progress_status', opts),
