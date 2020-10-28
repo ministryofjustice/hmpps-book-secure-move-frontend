@@ -94,6 +94,7 @@ const allocationService = {
           set(result, 'meta.moves.total', result.moves.length)
         }
       }
+      // TODO: end
 
       const {
         total: totalSlots,

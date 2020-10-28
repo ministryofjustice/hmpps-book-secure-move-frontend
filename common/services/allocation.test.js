@@ -161,6 +161,104 @@ describe('Allocation service', function () {
       sinon.stub(moveService, 'transform').returnsArg(0)
     })
 
+    // TODO: Remove when individual allocations return meta.moves info
+    describe('single allocation', function () {
+      context('when there is no meta object', function () {
+        beforeEach(function () {
+          const allocation = {
+            ...mockAllocations[0],
+            meta: undefined,
+            moves: mockAllocations[0].moves.slice(),
+          }
+          output = allocationService.transform()(allocation)
+        })
+
+        it('should return correct output', function () {
+          expect(output).to.deep.equal({
+            id: '12345',
+            status: 'requested',
+            totalSlots: 3,
+            filledSlots: undefined,
+            unfilledSlots: undefined,
+            moves: [
+              {
+                profile: {
+                  person: {
+                    name: 'James Stephens',
+                  },
+                },
+              },
+              {
+                status: 'requested',
+                profile: {
+                  person: {
+                    name: 'Hugh Jack',
+                  },
+                },
+              },
+              {
+                profile: {
+                  person: {
+                    name: 'Steve Adams',
+                  },
+                },
+              },
+            ],
+          })
+        })
+      })
+
+      context(
+        'when allocation is cancelled and there is no meta object',
+        function () {
+          beforeEach(function () {
+            const allocation = {
+              ...mockAllocations[0],
+              meta: undefined,
+              status: 'cancelled',
+              moves: mockAllocations[0].moves.slice(),
+            }
+            output = allocationService.transform()(allocation)
+          })
+
+          it('should return correct output', function () {
+            expect(output).to.deep.equal({
+              id: '12345',
+              status: 'cancelled',
+              totalSlots: 5,
+              filledSlots: undefined,
+              unfilledSlots: undefined,
+              moves: [
+                {
+                  profile: {
+                    person: {
+                      name: 'James Stephens',
+                    },
+                  },
+                },
+                {
+                  status: 'requested',
+                  profile: {
+                    person: {
+                      name: 'Hugh Jack',
+                    },
+                  },
+                },
+                {
+                  profile: {
+                    person: {
+                      name: 'Steve Adams',
+                    },
+                  },
+                },
+              ],
+            })
+          })
+        }
+      )
+    })
+    // TODO: end
+
     context('with no arguments', function () {
       beforeEach(function () {
         output = allocationService.transform()(mockAllocations[0])
