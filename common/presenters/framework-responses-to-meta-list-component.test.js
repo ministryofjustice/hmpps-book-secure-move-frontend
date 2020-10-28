@@ -28,6 +28,7 @@ describe('Presenters', function () {
         {
           value: 'string value',
           value_type: 'string',
+          responded: true,
           question: {
             description: 'String',
           },
@@ -35,6 +36,7 @@ describe('Presenters', function () {
         {
           value: { option: 'Yes' },
           value_type: 'object',
+          responded: false,
           question: {
             description: 'Object',
           },
@@ -42,6 +44,7 @@ describe('Presenters', function () {
         {
           value: ['One'],
           value_type: 'array',
+          responded: true,
           question: {
             description: 'Array',
           },
@@ -87,6 +90,7 @@ describe('Presenters', function () {
                 {
                   value: response.value,
                   valueType: response.value_type,
+                  responded: response.responded,
                 }
               )
             })
@@ -100,6 +104,7 @@ describe('Presenters', function () {
         {
           value: '',
           value_type: 'string',
+          responded: true,
           question: {
             description: 'String',
           },
@@ -107,6 +112,7 @@ describe('Presenters', function () {
         {
           value: {},
           value_type: 'object',
+          responded: false,
           question: {
             description: 'Object',
           },
@@ -114,6 +120,7 @@ describe('Presenters', function () {
         {
           value: [],
           value_type: 'array',
+          responded: true,
           question: {
             description: 'Array',
           },
@@ -159,6 +166,7 @@ describe('Presenters', function () {
                 {
                   value: undefined,
                   valueType: response.value_type,
+                  responded: response.responded,
                 }
               )
             })

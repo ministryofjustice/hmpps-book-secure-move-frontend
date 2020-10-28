@@ -6,6 +6,7 @@ function _mapResponse(response) {
   const responseHtml = componentService.getComponent('appFrameworkResponse', {
     value: isEmpty(response.value) ? undefined : response.value,
     valueType: response.value_type,
+    responded: response.responded,
   })
   const description = response.question?.description
 
