@@ -4,6 +4,13 @@ const componentService = require('../services/component')
 
 const tablePresenters = require('./table')
 
+function showProgress(data, showRemaining) {
+  const { totalSlots, unfilledSlots, filledSlots } = data
+  return showRemaining
+    ? _byRemaining(totalSlots, unfilledSlots)
+    : _byAdded(totalSlots, filledSlots)
+}
+
 function _byRemaining(totalSlots, unfilledSlots) {
   const isComplete = unfilledSlots === 0
   const inProgress = unfilledSlots !== totalSlots
@@ -61,7 +68,6 @@ function allocationsToTableComponent({
       },
       row: {
         html: data => {
-          const { totalSlots, unfilledSlots, filledSlots } = data
           const classes = {
             complete: 'govuk-tag--green',
             by_remaining: 'govuk-tag--yellow',
@@ -70,9 +76,7 @@ function allocationsToTableComponent({
           }
           const opts =
             data.status !== 'cancelled'
-              ? showRemaining
-                ? _byRemaining(totalSlots, unfilledSlots)
-                : _byAdded(totalSlots, filledSlots)
+              ? showProgress(data, showRemaining)
               : { context: 'cancelled' }
 
           return componentService.getComponent('govukTag', {
