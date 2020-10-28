@@ -28,7 +28,7 @@ function renderPreviousAnswerToField({ responses = [] } = {}) {
     `
 
     set(copy, 'hint.html', hintContent)
-    set(copy, 'formGroup.classes', 'app-form-group__message-text')
+    set(copy, 'formGroup.classes', 'app-form-group--message')
 
     return [key, copy]
   }

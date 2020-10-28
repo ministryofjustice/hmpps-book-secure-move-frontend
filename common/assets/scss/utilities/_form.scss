@@ -17,4 +17,8 @@
   a:visited {
     color: govuk-colour("blue");
   }
+
+  .govuk-hint & {
+    color: govuk-colour("blue");
+  }
 }

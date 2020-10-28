@@ -81,9 +81,7 @@ describe('#renderPreviousAnswerToField', function () {
       })
 
       it('should append form group class', function () {
-        expect(output[1].formGroup.classes).to.equal(
-          'app-form-group__message-text'
-        )
+        expect(output[1].formGroup.classes).to.equal('app-form-group--message')
       })
 
       it('should append message to hint content', function () {
@@ -118,9 +116,7 @@ describe('#renderPreviousAnswerToField', function () {
       })
 
       it('should append form group class', function () {
-        expect(output[1].formGroup.classes).to.equal(
-          'app-form-group__message-text'
-        )
+        expect(output[1].formGroup.classes).to.equal('app-form-group--message')
       })
 
       it('should append message to existing hint content', function () {
