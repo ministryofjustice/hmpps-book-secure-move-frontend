@@ -77,79 +77,81 @@
     {% endif %}
   </section>
 
-  <section class="govuk-!-margin-top-8">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-      {{ t("allocation::view.people.heading") }}
-    </h2>
+  {% if allocation.status != "cancelled" %}
+    <section class="govuk-!-margin-top-8">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+        {{ t("allocation::view.people.heading") }}
+      </h2>
 
-    <h3 class="govuk-heading-s">
-      {% if remainingCount === 0 %}
-        <span class="app-icon app-icon--tick app-green">{{ t("allocation::view.people.complete") }}</span>
-      {% elif canAccess('allocation:person:assign') %}
-        {{ t("allocation::view.people.progress", {
-          count: remainingCount,
-          context: "remaining"
-        }) }}
-      {% else %}
-        {{ t("allocation::view.people.progress", {
-          count: totalCount,
-          addedCount: addedCount
-        }) }}
-      {% endif %}
-    </h3>
+      <h3 class="govuk-heading-s">
+        {% if remainingCount === 0 %}
+          <span class="app-icon app-icon--tick app-green">{{ t("allocation::view.people.complete") }}</span>
+        {% elif canAccess('allocation:person:assign') %}
+          {{ t("allocation::view.people.progress", {
+            count: remainingCount,
+            context: "remaining"
+          }) }}
+        {% else %}
+          {{ t("allocation::view.people.progress", {
+            count: totalCount,
+            addedCount: addedCount
+          }) }}
+        {% endif %}
+      </h3>
 
-    {% if canAccess('allocation:person:assign') and remainingCount %}
-      <p>
-        {{ t("allocation::view.people.special_vehicle_instruction", {
-          href:"/move/new"
-        }) | safe }}
-      </p>
-
-      {{ govukButton({
-        href: "/move/" + unassignedMoveId + "/assign",
-        html: t("actions::add_person", {
-          context: "another" if addedCount !== 0
-        })
-      }) }}
-    {% endif %}
-  </section>
-
-  {% for move in moves %}
-    <div class="app-!-position-relative">
-      {{ appCard(move.card) }}
-
-      {# TODO: consider handling actions within card component #}
-      {# TODO: consider whether long names may cause overlap problems #}
-      {% if move.profile and canAccess('allocation:person:assign') %}
-        <p class="app-!-position-top-right govuk-!-margin-top-3">
-          {{ govukButton({
-            href: "/move/" + move.id + "/unassign",
-            html: t("actions::remove_person", {
-              name: move.profile.person.fullname
-            }),
-            classes: "govuk-button--secondary"
-          })}}
+      {% if canAccess('allocation:person:assign') and remainingCount %}
+        <p>
+          {{ t("allocation::view.people.special_vehicle_instruction", {
+            href:"/move/new"
+          }) | safe }}
         </p>
-      {% endif %}
 
-      {% if move.removeMoveHref %}
-        <div>
-          <a class="app-!-position-top-right govuk-!-margin-top-7 govuk-!-margin-right-3 app-font-weight-normal" href="{{move.removeMoveHref}}">
-            {{ t("actions::person_unassign_confirmation") }}
-          </a>
-        </div>
+        {{ govukButton({
+          href: "/move/" + unassignedMoveId + "/assign",
+          html: t("actions::add_person", {
+            context: "another" if addedCount !== 0
+          })
+        }) }}
       {% endif %}
+    </section>
 
-    </div>
-  {% else %}
-    {{ appMessage({
-      classes: "app-message--muted",
-      allowDismiss: false,
-      content: {
-        html: t("allocation::view.people.no_results")
-      }
-    }) }}
-  {% endfor %}
+    {% for move in moves %}
+      <div class="app-!-position-relative">
+        {{ appCard(move.card) }}
+
+        {# TODO: consider handling actions within card component #}
+        {# TODO: consider whether long names may cause overlap problems #}
+        {% if move.profile and canAccess('allocation:person:assign') %}
+          <p class="app-!-position-top-right govuk-!-margin-top-3">
+            {{ govukButton({
+              href: "/move/" + move.id + "/unassign",
+              html: t("actions::remove_person", {
+                name: move.profile.person.fullname
+              }),
+              classes: "govuk-button--secondary"
+            })}}
+          </p>
+        {% endif %}
+
+        {% if move.removeMoveHref %}
+          <div>
+            <a class="app-!-position-top-right govuk-!-margin-top-7 govuk-!-margin-right-3 app-font-weight-normal" href="{{move.removeMoveHref}}">
+              {{ t("actions::person_unassign_confirmation") }}
+            </a>
+          </div>
+        {% endif %}
+
+      </div>
+    {% else %}
+      {{ appMessage({
+        classes: "app-message--muted",
+        allowDismiss: false,
+        content: {
+          html: t("allocation::view.people.no_results")
+        }
+      }) }}
+    {% endfor %}
+  {% endif %}
 
   {% if canAccess("allocation:cancel") and allocation.status != "cancelled" %}
     <p class="govuk-!-margin-top-9 govuk-!-margin-bottom-0">
