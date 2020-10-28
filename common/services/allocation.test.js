@@ -28,6 +28,7 @@ const mockAllocations = [
       moves: {
         total: 10,
         filled: 9,
+        unfilled: 1,
       },
     },
     moves: [
