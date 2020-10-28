@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.50.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.50.0...v2.50.1) (2020-10-28)
+
+
+### Bug Fixes
+
+* **per:** Correct styling used to indicate when a question is prefilled ([b3f4c1b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b3f4c1b6edb0ab7ec0ced3958cc77aff152acf80))
+* **per:** Ensure responses are displayed correctly on profile page ([5576c53](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5576c53e15183799c18dba8620cd7b74121d6cc2))
+
 ## [2.50.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.49.1...v2.50.0) (2020-10-27)
 
 
