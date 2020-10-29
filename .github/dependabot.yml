@@ -19,11 +19,18 @@ updates:
         versions: ['>=4']
       - dependency-name: 'webpack-merge'
         versions: ['>=5']
+      - dependency-name: 'mini-css-extract-plugin'
+        versions: ['>=1']
     commit-message:
       prefix: 'build'
       include: 'scope'
+    open-pull-requests-limit: 3
   - package-ecosystem: 'docker'
     directory: '/'
     schedule:
       interval: 'weekly'
       day: 'sunday'
+    ignore:
+      - dependency-name: 'node'
+        versions: ['15.x']
+    open-pull-requests-limit: 1
