@@ -50,6 +50,7 @@ prometheusClient = {
 const uuidRegex = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi
 const dateRegex = /\d{4}-\d{2}-\d{2}/g
 const authCallbackRegex = /(callback\?code)=.*/
+const lookupValueRegex = /(filter\[(prison_number|police_national_computer)\])=[^&]+/g
 const assetRegex = /\.[0-9a-f]{8}\.(js|css|woff.*|svg|png|jpg|gif)$/
 
 /**
@@ -62,11 +63,13 @@ const assetRegex = /\.[0-9a-f]{8}\.(js|css|woff.*|svg|png|jpg|gif)$/
  *
  * @return {string}
  */
+// TODO: consider caching return value for path
 const normalizePath = path => {
   const normalizedPath = path
     .replace(uuidRegex, ':uuid')
     .replace(dateRegex, ':date')
     .replace(authCallbackRegex, '$1=:code')
+    .replace(lookupValueRegex, '$1=:lookup')
     .replace(assetRegex, '.:sha.$1')
   return normalizedPath
 }
