@@ -1,4 +1,4 @@
-const { parseISO, isValid } = require('date-fns')
+const { parseISO, isValid, isDate } = require('date-fns')
 const { times } = require('lodash')
 
 const tablePresenters = require('../table')
@@ -12,7 +12,7 @@ function locationsToPopulationTable({
   startDate,
   dayCount = 5,
 } = {}) {
-  if (!isValid(startDate)) {
+  if (!isDate(startDate)) {
     startDate = parseISO(startDate)
   }
 

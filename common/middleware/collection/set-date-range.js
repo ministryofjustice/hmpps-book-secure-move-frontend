@@ -12,6 +12,7 @@ function setDateRange(req, res, next, date) {
   }
 
   req.params.dateRange = dateRange
+  req.dateRange = dateRange // https://github.com/expressjs/express/issues/2911
 
   next()
 }
