@@ -295,6 +295,20 @@ describe('Monitoring', function () {
         expect(path).to.equal('/:date/:date')
       })
 
+      it('should obfusctate lookup values', function () {
+        const pathPolice = metrics.normalizePath(
+          '/foo?bar=baz&filter[police_national_computer]=PNC&something=else'
+        )
+        const pathPrison = metrics.normalizePath(
+          '/foo?filter[prison_number]=PRISON'
+        )
+        expect(pathPolice).to.equal(
+          '/foo?bar=baz&filter[police_national_computer]=:lookup&something=else'
+        )
+
+        expect(pathPrison).to.equal('/foo?filter[prison_number]=:lookup')
+      })
+
       it('should obfusctate auth callback path', function () {
         const path = metrics.normalizePath('/foo/callback?code=SOOPERSEKRIT!99')
         expect(path).to.equal('/foo/callback?code=:code')
