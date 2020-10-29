@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.51.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.50.1...v2.51.0) (2020-10-29)
+
+
+### Features
+
+* **allocation:** Improve allocations listing performance ([67d6ec0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/67d6ec080384982d6378f1a2430475f79ca89050))
+* Add PMU population table component ([46f5469](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/46f546969ae63e2accf003e82f0a85e390d2e6fe))
+
 ### [2.50.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.50.0...v2.50.1) (2020-10-28)
 
 
