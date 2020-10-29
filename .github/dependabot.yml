@@ -19,6 +19,8 @@ updates:
         versions: ['>=4']
       - dependency-name: 'webpack-merge'
         versions: ['>=5']
+      - dependency-name: 'mini-css-extract-plugin'
+        versions: ['>=1']
     commit-message:
       prefix: 'build'
       include: 'scope'
