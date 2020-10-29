@@ -259,43 +259,43 @@ describe('Monitoring', function () {
     })
 
     describe('#normalizePath', function () {
-      it('should obfusctate path ending with a uuid', function () {
+      it('should obfuscate path ending with a uuid', function () {
         const path = metrics.normalizePath(
           '/foo/0ee995d1-9390-4e85-9f5a-c6a436716234'
         )
         expect(path).to.equal('/foo/:uuid')
       })
 
-      it('should obfusctate path containing a uuid', function () {
+      it('should obfuscate path containing a uuid', function () {
         const path = metrics.normalizePath(
           '/foo/0ee995d1-9390-4e85-9f5a-c6a436716234/bar'
         )
         expect(path).to.equal('/foo/:uuid/bar')
       })
 
-      it('should obfusctate path containing multiple uuids', function () {
+      it('should obfuscate path containing multiple uuids', function () {
         const path = metrics.normalizePath(
           '/ff59bf52-5e16-48c8-a154-616ad4ff247c/0ee995d1-9390-4e85-9f5a-c6a436716234'
         )
         expect(path).to.equal('/:uuid/:uuid')
       })
 
-      it('should obfusctate path ending with a date', function () {
+      it('should obfuscate path ending with a date', function () {
         const path = metrics.normalizePath('/foo/2020-09-23')
         expect(path).to.equal('/foo/:date')
       })
 
-      it('should obfusctate path containing a date', function () {
+      it('should obfuscate path containing a date', function () {
         const path = metrics.normalizePath('/foo/2020-09-23/bar')
         expect(path).to.equal('/foo/:date/bar')
       })
 
-      it('should obfusctate path containing multiple dates', function () {
+      it('should obfuscate path containing multiple dates', function () {
         const path = metrics.normalizePath('/2019-09-24/2020-09-23')
         expect(path).to.equal('/:date/:date')
       })
 
-      it('should obfusctate lookup values', function () {
+      it('should obfuscate lookup values', function () {
         const pathPolice = metrics.normalizePath(
           '/foo?bar=baz&filter[police_national_computer]=PNC&something=else'
         )
@@ -309,7 +309,7 @@ describe('Monitoring', function () {
         expect(pathPrison).to.equal('/foo?filter[prison_number]=:lookup')
       })
 
-      it('should obfusctate auth callback path', function () {
+      it('should obfuscate auth callback path', function () {
         const path = metrics.normalizePath('/foo/callback?code=SOOPERSEKRIT!99')
         expect(path).to.equal('/foo/callback?code=:code')
       })
@@ -351,7 +351,7 @@ describe('Monitoring', function () {
         })
       })
 
-      it('should not obfusctate other path', function () {
+      it('should not obfuscate other path', function () {
         const path = metrics.normalizePath('/foo/bar')
         expect(path).to.equal('/foo/bar')
       })
