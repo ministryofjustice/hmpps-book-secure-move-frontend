@@ -5,7 +5,7 @@ const presenters = require('../../../common/presenters')
 function viewAllocation(personEscortRecordFeature = false) {
   return (req, res) => {
     const { allocation, canAccess } = req
-    const { moves, status } = allocation
+    const { moves, status, totalSlots } = allocation
     const bannerStatuses = ['cancelled']
     const movesWithoutProfile = moves.filter(move => !move.profile)
     const movesWithProfile = moves.filter(move => move.profile)
@@ -48,7 +48,7 @@ function viewAllocation(personEscortRecordFeature = false) {
       unassignedMoveId: movesWithoutProfile.length
         ? movesWithoutProfile[0].id
         : undefined,
-      totalCount: moves.length,
+      totalCount: totalSlots,
       remainingCount: movesWithoutProfile.length,
       addedCount: movesWithProfile.length,
       moves: sortBy(

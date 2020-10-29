@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { mapValues, pickBy } = require('lodash')
+const { mapValues, pickBy, set } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 const moveService = require('../services/move')
@@ -83,8 +83,33 @@ const allocationService = {
   },
   transform({ includeCancelled = false } = {}) {
     return function transformAllocation(result) {
+      // TODO: Remove when individual allocations return meta.moves info
+      if (!result.meta?.moves && result.moves.length) {
+        set(result, 'meta.moves.total', result.moves.length)
+
+        if (result.status !== 'cancelled') {
+          result.moves = result.moves.filter(
+            move => move.status !== 'cancelled'
+          )
+          set(result, 'meta.moves.total', result.moves.length)
+        }
+      }
+      // TODO: end
+
+      const {
+        total: totalSlots,
+        filled: filledSlots,
+        unfilled: unfilledSlots,
+      } = result.meta?.moves || {}
+
+      result = { ...result }
+      delete result.meta
+
       return {
         ...result,
+        totalSlots,
+        filledSlots,
+        unfilledSlots,
         moves: result.moves
           .filter(
             move => includeCancelled || !['cancelled'].includes(move.status)
@@ -104,7 +129,7 @@ const allocationService = {
     fromLocations = [],
     toLocations = [],
     locations = [],
-    include = ['from_location', 'moves', 'moves.profile', 'to_location'],
+    include = ['from_location', 'to_location'],
     isAggregation = false,
     status,
     sortBy,

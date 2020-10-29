@@ -4,6 +4,13 @@ const componentService = require('../services/component')
 
 const tablePresenters = require('./table')
 
+function showProgress(data, showRemaining) {
+  const { totalSlots, unfilledSlots, filledSlots } = data
+  return showRemaining
+    ? _byRemaining(totalSlots, unfilledSlots)
+    : _byAdded(totalSlots, filledSlots)
+}
+
 function _byRemaining(totalSlots, unfilledSlots) {
   const isComplete = unfilledSlots === 0
   const inProgress = unfilledSlots !== totalSlots
@@ -14,13 +21,13 @@ function _byRemaining(totalSlots, unfilledSlots) {
   }
 }
 
-function _byAdded(totalSlots, unfilledSlots) {
-  const isComplete = unfilledSlots === 0
-  const inProgress = unfilledSlots !== totalSlots
+function _byAdded(totalSlots, filledSlots) {
+  const isComplete = filledSlots === totalSlots
+  const inProgress = filledSlots > 0
 
   return {
     context: inProgress ? (isComplete ? 'complete' : 'by_added') : '',
-    count: totalSlots - unfilledSlots,
+    count: filledSlots,
   }
 }
 
@@ -45,7 +52,7 @@ function allocationsToTableComponent({
           scope: 'row',
         },
         html: data => {
-          const count = data.moves.length
+          const { totalSlots: count } = data
           return `<a href="/allocation/${data.id}">${count} ${i18n.t('person', {
             count,
           })}</a>`
@@ -61,17 +68,16 @@ function allocationsToTableComponent({
       },
       row: {
         html: data => {
-          const totalSlots = data.moves.length
-          const unfilledSlots = data.moves.filter(move => !move.profile).length
           const classes = {
             complete: 'govuk-tag--green',
             by_remaining: 'govuk-tag--yellow',
             by_added: 'govuk-tag--yellow',
             default: 'govuk-tag--red',
           }
-          const opts = showRemaining
-            ? _byRemaining(totalSlots, unfilledSlots)
-            : _byAdded(totalSlots, unfilledSlots)
+          const opts =
+            data.status !== 'cancelled'
+              ? showProgress(data, showRemaining)
+              : { context: 'cancelled' }
 
           return componentService.getComponent('govukTag', {
             text: i18n.t('collections::labels.progress_status', opts),

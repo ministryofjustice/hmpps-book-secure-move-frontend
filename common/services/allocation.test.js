@@ -24,6 +24,13 @@ const mockAllocations = [
   {
     id: '12345',
     status: 'requested',
+    meta: {
+      moves: {
+        total: 10,
+        filled: 9,
+        unfilled: 1,
+      },
+    },
     moves: [
       {
         status: 'cancelled',
@@ -154,6 +161,104 @@ describe('Allocation service', function () {
       sinon.stub(moveService, 'transform').returnsArg(0)
     })
 
+    // TODO: Remove when individual allocations return meta.moves info
+    describe('single allocation', function () {
+      context('when there is no meta object', function () {
+        beforeEach(function () {
+          const allocation = {
+            ...mockAllocations[0],
+            meta: undefined,
+            moves: mockAllocations[0].moves.slice(),
+          }
+          output = allocationService.transform()(allocation)
+        })
+
+        it('should return correct output', function () {
+          expect(output).to.deep.equal({
+            id: '12345',
+            status: 'requested',
+            totalSlots: 3,
+            filledSlots: undefined,
+            unfilledSlots: undefined,
+            moves: [
+              {
+                profile: {
+                  person: {
+                    name: 'James Stephens',
+                  },
+                },
+              },
+              {
+                status: 'requested',
+                profile: {
+                  person: {
+                    name: 'Hugh Jack',
+                  },
+                },
+              },
+              {
+                profile: {
+                  person: {
+                    name: 'Steve Adams',
+                  },
+                },
+              },
+            ],
+          })
+        })
+      })
+
+      context(
+        'when allocation is cancelled and there is no meta object',
+        function () {
+          beforeEach(function () {
+            const allocation = {
+              ...mockAllocations[0],
+              meta: undefined,
+              status: 'cancelled',
+              moves: mockAllocations[0].moves.slice(),
+            }
+            output = allocationService.transform()(allocation)
+          })
+
+          it('should return correct output', function () {
+            expect(output).to.deep.equal({
+              id: '12345',
+              status: 'cancelled',
+              totalSlots: 5,
+              filledSlots: undefined,
+              unfilledSlots: undefined,
+              moves: [
+                {
+                  profile: {
+                    person: {
+                      name: 'James Stephens',
+                    },
+                  },
+                },
+                {
+                  status: 'requested',
+                  profile: {
+                    person: {
+                      name: 'Hugh Jack',
+                    },
+                  },
+                },
+                {
+                  profile: {
+                    person: {
+                      name: 'Steve Adams',
+                    },
+                  },
+                },
+              ],
+            })
+          })
+        }
+      )
+    })
+    // TODO: end
+
     context('with no arguments', function () {
       beforeEach(function () {
         output = allocationService.transform()(mockAllocations[0])
@@ -171,6 +276,9 @@ describe('Allocation service', function () {
         expect(output).to.deep.equal({
           id: '12345',
           status: 'requested',
+          totalSlots: 10,
+          filledSlots: 9,
+          unfilledSlots: 1,
           moves: [
             {
               profile: {
@@ -218,6 +326,9 @@ describe('Allocation service', function () {
         expect(output).to.deep.equal({
           id: '12345',
           status: 'requested',
+          totalSlots: 10,
+          filledSlots: 9,
+          unfilledSlots: 1,
           moves: [
             {
               profile: {
@@ -265,6 +376,9 @@ describe('Allocation service', function () {
         expect(output).to.deep.equal({
           id: '12345',
           status: 'requested',
+          totalSlots: 10,
+          filledSlots: 9,
+          unfilledSlots: 1,
           moves: [
             {
               status: 'cancelled',
@@ -305,6 +419,23 @@ describe('Allocation service', function () {
               },
             },
           ],
+        })
+      })
+    })
+
+    context('with no meta moves info is present`', function () {
+      beforeEach(function () {
+        output = allocationService.transform({ includeCancelled: false })({
+          moves: [],
+        })
+      })
+
+      it('should set the slots values to undefined', function () {
+        expect(output).to.deep.equal({
+          totalSlots: undefined,
+          filledSlots: undefined,
+          unfilledSlots: undefined,
+          moves: [],
         })
       })
     })
@@ -649,7 +780,7 @@ describe('Allocation service', function () {
         expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           includeCancelled: false,
-          include: ['from_location', 'moves', 'moves.profile', 'to_location'],
+          include: ['from_location', 'to_location'],
           filter: {},
         })
       })
@@ -706,7 +837,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
-            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
+            include: ['from_location', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -730,7 +861,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             includeCancelled: false,
-            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
+            include: ['from_location', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -778,7 +909,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: true,
-            include: ['from_location', 'moves', 'moves.profile', 'to_location'],
+            include: ['from_location', 'to_location'],
             filter: {
               'filter[locations]': mockFromLocationId,
               'filter[status]': 'cancelled',
