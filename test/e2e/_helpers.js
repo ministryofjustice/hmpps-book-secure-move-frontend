@@ -34,18 +34,6 @@ const getEthnicities = async () => {
   return ethnicities
 }
 
-const getLocations = async () => {
-  let locations = await referenceDataService.getLocations()
-  locations = locations.filter(filterDisabled)
-  return locations
-}
-
-const getLocationsByType = async locationType => {
-  let locations = await referenceDataService.getLocationsByType(locationType)
-  locations = locations.filter(filterDisabled)
-  return locations
-}
-
 export async function generatePerson(overrides = {}) {
   const firstNames = faker.name.firstName()
   const lastName = faker.name.lastName()
@@ -165,16 +153,21 @@ export async function createProfileFixture(personId, overrides = {}) {
  *
  * @returns {string} - location id
  */
-const getRandomLocation = async locationType => {
+const getRandomLocation = async (locationType, shouldHaveSupplier = false) => {
   let locations
 
   if (locationType) {
-    locations = await getLocationsByType(locationType)
+    locations = await referenceDataService.getLocationsByType(locationType)
   } else {
-    locations = await getLocations()
+    locations = await referenceDataService.getLocations()
   }
 
-  return faker.random.arrayElement(locations.map(({ id }) => id))
+  const locationIds = locations
+    .filter(filterDisabled)
+    .filter(l => (shouldHaveSupplier ? l.suppliers.length > 0 : true))
+    .map(({ id }) => id)
+
+  return faker.random.arrayElement(locationIds)
 }
 
 /**
@@ -195,7 +188,7 @@ export async function generateMove(profile, options = {}, overrides = {}) {
 
   const move = {
     profile,
-    from_location: await getRandomLocation(fromLocationType),
+    from_location: await getRandomLocation(fromLocationType, true),
     to_location: await getRandomLocation(toLocationType),
     move_type: moveType,
     date: formatDate(new Date(), 'yyyy-MM-dd'),
@@ -231,6 +224,7 @@ export async function createMoveFixture({
   const person = await createPersonFixture(personOverrides)
   const profile = await createProfileFixture(person.id, profileOverrides)
   const moveFixture = await generateMove(profile, moveOptions, moveOverrides)
+  // console.log(moveFixture)
   let move = await moveService.create(moveFixture)
   move = {
     ...move,
