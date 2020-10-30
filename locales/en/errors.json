@@ -25,7 +25,7 @@
   },
   "tampered_with": {
     "heading": "This form has been tampered with",
-    "content": "Try to reload the page and submit the form again in a few moments."
+    "content": "Try to <a href=\"\">reload the page</a> and submit the form again in a few moments."
   },
   "csrf_error": {
     "heading": "$t(errors::tampered_with.heading)",
