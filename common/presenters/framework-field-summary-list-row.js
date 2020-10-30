@@ -29,6 +29,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
               response: {
                 ...descendantResponse,
                 question: frameworkQuestion,
+                responded: true,
               },
             }
           })

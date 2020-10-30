@@ -611,7 +611,7 @@ describe('Presenters', function () {
               {
                 value: test.value,
                 valueType: test.valueType,
-                responded: false,
+                responded: true,
                 prefilled: false,
                 questionUrl: `${mockStepUrl}#${test.id}`,
               }
