@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.51.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.51.0...v2.51.1) (2020-10-30)
+
+
+### Bug Fixes
+
+* **per:** Ensure add another responses are rendered correctly ([8d5794e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8d5794eaf606af9159a089b1618021ba930f4da2))
+* Add link to hard reload a form that has been tampered with ([4dbcca7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4dbcca71db916b04545ec03bad6b7c50b32b3fc1))
+* **per:** Ensure form-wizard journey is unique for each PER ([0dca482](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0dca48297d7f32a46ca1f9b9e0f20175f4defd7b))
+
 ## [2.51.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.50.1...v2.51.0) (2020-10-29)
 
 
