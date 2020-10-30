@@ -313,7 +313,11 @@ describe('population-table-config', function () {
 
       context('with missing population data', function () {
         beforeEach(function () {
-          data = {}
+          data = {
+            meta: {
+              populations: [],
+            },
+          }
 
           const { html: renderFunction } = populationTableConfig.dayRowConfig({
             date,
