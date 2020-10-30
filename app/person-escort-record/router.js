@@ -5,6 +5,7 @@ const FrameworkStepController = require('./controllers/framework-step')
 
 function defineFormWizard(req, res, next) {
   const { key, steps } = req.frameworkSection
+  const { id: personEscortRecordId } = req.personEscortRecord
   const firstStep = Object.values(steps)[0]
   const wizardFields = req.framework.questions
   const wizardSteps = {
@@ -25,9 +26,11 @@ function defineFormWizard(req, res, next) {
   const wizardConfig = {
     controller: FrameworkStepController,
     entryPoint: true,
-    journeyName: `person-escort-record-${key}`,
+    // Unique for each Person Escort Record and section
+    journeyName: `person-escort-record-${personEscortRecordId}-${key}`,
     journeyPageTitle: 'Person escort record',
-    name: `person-escort-record-${key}`,
+    // Unique for each Person Escort Record
+    name: `person-escort-record-${personEscortRecordId}`,
     template: 'framework-step',
     templatePath: 'person-escort-record/views/',
     defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
