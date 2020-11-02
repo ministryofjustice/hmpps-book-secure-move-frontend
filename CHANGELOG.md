@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.52.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.51.1...v2.52.0) (2020-11-02)
+
+
+### Features
+
+* Add new dashboard permission for PMU role ([880b3d3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/880b3d310d9f659615fcf38a3e12faac1f148539))
+
 ### [2.51.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.51.0...v2.51.1) (2020-10-30)
 
 
