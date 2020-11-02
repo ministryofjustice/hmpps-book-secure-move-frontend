@@ -55,7 +55,7 @@ const populationTableDay = {
   dayRowConfig({ date, focusDate, populationIndex = 0 }) {
     return {
       html: data => {
-        const count = data?.meta?.populations?.[populationIndex].free_spaces
+        const count = data?.meta?.populations?.[populationIndex]?.free_spaces
 
         const action =
           count === undefined
