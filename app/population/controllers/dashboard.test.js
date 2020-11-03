@@ -53,7 +53,7 @@ describe('Population controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(7)
+          expect(Object.keys(params)).to.have.length(6)
         })
 
         it('should set context', function () {
@@ -86,13 +86,6 @@ describe('Population controllers', function () {
         it('should set currentWeek', function () {
           expect(params).to.have.property('currentWeek')
           expect(params.currentWeek).to.deep.equal(mockReq.dateRange)
-        })
-
-        it('should set today', function () {
-          expect(params).to.have.property('today')
-          expect(params.today).to.deep.equal(
-            new Date('2020-06-01').toISOString()
-          )
         })
       })
     })
