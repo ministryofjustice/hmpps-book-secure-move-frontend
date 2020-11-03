@@ -1,4 +1,4 @@
-const { flattenDeep, sortBy } = require('lodash')
+const { flattenDeep } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -29,7 +29,7 @@ const locationsFreeSpacesService = {
         const hasNext = links.next && data.length !== 0
 
         if (!hasNext) {
-          return sortBy(locations, 'title')
+          return locations
         }
 
         return locationsFreeSpacesService.getLocationsFreeSpaces({

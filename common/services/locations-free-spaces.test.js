@@ -1,4 +1,3 @@
-const { sortBy } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
@@ -11,12 +10,12 @@ const locationsFreeSpacesService = proxyquire('./locations-free-spaces', {
 
 const mockLocations = [
   {
-    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
-    title: 'Barnstaple Crown Court',
-  },
-  {
     id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
     title: 'Axminster Crown Court',
+  },
+  {
+    id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
+    title: 'Barnstaple Crown Court',
   },
 ]
 
@@ -42,7 +41,9 @@ describe('Locations Free Spaces Service', function () {
       },
     }
     const mockFilter = {
-      filterOne: 'foo',
+      location_id: 'ABADBEEF',
+      'sort[by]': 'name',
+      'sort[direction]': 'asc',
     }
     let locationsFreeSpaces
 
@@ -79,12 +80,6 @@ describe('Locations Free Spaces Service', function () {
               per_page: 100,
               include: undefined,
             }
-          )
-        })
-
-        it('should return locations sorted by title', function () {
-          expect(locationsFreeSpaces).to.deep.equal(
-            sortBy(mockLocations, 'title')
           )
         })
       })
@@ -162,12 +157,6 @@ describe('Locations Free Spaces Service', function () {
               per_page: 100,
               include: undefined,
             }
-          )
-        })
-
-        it('should return locations sorted by title', function () {
-          expect(locationsFreeSpaces).to.deep.equal(
-            sortBy([...mockLocations, ...mockLocations], 'title')
           )
         })
       })
