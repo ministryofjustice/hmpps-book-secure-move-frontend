@@ -251,48 +251,113 @@ describe('Locations Free Spaces Service', function () {
   describe('#getPrisonFreeSpaces()', function () {
     const mockResponse = mockLocations
 
-    beforeEach(async function () {
-      sinon
-        .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
-        .resolves(mockResponse)
+    context('by default', function () {
+      beforeEach(async function () {
+        sinon
+          .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
+          .resolves(mockResponse)
 
-      locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
-        {
+        locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
+          {
+            dateFrom,
+            dateTo,
+          }
+        )
+      })
+
+      afterEach(function () {
+        locationsFreeSpacesService.getLocationsFreeSpaces.restore()
+      })
+
+      it('should call getLocationsFreeSpaces methods', function () {
+        expect(
+          locationsFreeSpacesService.getLocationsFreeSpaces
+        ).to.be.calledOnce
+      })
+
+      it('should return first result', function () {
+        expect(locationsFreeSpaces).to.deep.equal(mockResponse)
+      })
+
+      it('should set location_type filter to undefined', function () {
+        const filters =
+          locationsFreeSpacesService.getLocationsFreeSpaces.args[0][0].filter
+
+        expect(filters).to.contain.property('filter[location_type]')
+        expect(filters['filter[location_type]']).to.equal('prison')
+      })
+
+      it('should call getLocationFreeSpaces with date params', function () {
+        expect(
+          locationsFreeSpacesService.getLocationsFreeSpaces
+        ).to.be.calledWith({
           dateFrom,
           dateTo,
-        }
-      )
+          filter: {
+            'filter[location_type]': 'prison',
+          },
+        })
+      })
     })
 
-    afterEach(function () {
-      locationsFreeSpacesService.getLocationsFreeSpaces.restore()
-    })
+    context('with filter', function () {
+      beforeEach(async function () {
+        sinon
+          .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
+          .resolves(mockResponse)
 
-    it('should call getLocationsFreeSpaces methods', function () {
-      expect(locationsFreeSpacesService.getLocationsFreeSpaces).to.be.calledOnce
-    })
+        locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
+          {
+            dateFrom,
+            dateTo,
+            filter: {
+              'filter[location_ids]': 'ABADFEED',
+            },
+          }
+        )
+      })
 
-    it('should return first result', function () {
-      expect(locationsFreeSpaces).to.deep.equal(mockResponse)
-    })
+      afterEach(function () {
+        locationsFreeSpacesService.getLocationsFreeSpaces.restore()
+      })
 
-    it('should set location_type filter to undefined', function () {
-      const filters =
-        locationsFreeSpacesService.getLocationsFreeSpaces.args[0][0].filter
+      it('should call getLocationsFreeSpaces methods', function () {
+        expect(
+          locationsFreeSpacesService.getLocationsFreeSpaces
+        ).to.be.calledOnce
+      })
 
-      expect(filters).to.contain.property('filter[location_type]')
-      expect(filters['filter[location_type]']).to.equal('prison')
-    })
+      it('should return first result', function () {
+        expect(locationsFreeSpaces).to.deep.equal(mockResponse)
+      })
 
-    it('should call getLocationFreeSpaces with date params', function () {
-      expect(
-        locationsFreeSpacesService.getLocationsFreeSpaces
-      ).to.be.calledWith({
-        dateFrom,
-        dateTo,
-        filter: {
-          'filter[location_type]': 'prison',
-        },
+      it('should set location_type filter to prison', function () {
+        const filters =
+          locationsFreeSpacesService.getLocationsFreeSpaces.args[0][0].filter
+
+        expect(filters).to.contain.property('filter[location_type]')
+        expect(filters['filter[location_type]']).to.equal('prison')
+      })
+
+      it('should keep existing filters', function () {
+        const filters =
+          locationsFreeSpacesService.getLocationsFreeSpaces.args[0][0].filter
+
+        expect(filters).to.contain.property('filter[location_ids]')
+        expect(filters['filter[location_ids]']).to.equal('ABADFEED')
+      })
+
+      it('should call getLocationFreeSpaces with date params', function () {
+        expect(
+          locationsFreeSpacesService.getLocationsFreeSpaces
+        ).to.be.calledWith({
+          dateFrom,
+          dateTo,
+          filter: {
+            'filter[location_ids]': 'ABADFEED',
+            'filter[location_type]': 'prison',
+          },
+        })
       })
     })
   })

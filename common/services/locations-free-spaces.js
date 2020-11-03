@@ -42,12 +42,13 @@ const locationsFreeSpacesService = {
         })
       })
   },
-  getPrisonFreeSpaces({ dateFrom, dateTo } = {}) {
+  getPrisonFreeSpaces({ dateFrom, dateTo, filter } = {}) {
     return locationsFreeSpacesService.getLocationsFreeSpaces({
       dateFrom,
       dateTo,
       filter: {
         'filter[location_type]': 'prison',
+        ...filter,
       },
     })
   },
