@@ -6,7 +6,7 @@ async function setResultsPopulationTable(req, res, next) {
     // date range should be a set ... body method?
     const { dateRange, filter } = req
 
-    const freeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces({
+    const freeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces({
       dateFrom: dateRange[0],
       dateTo: dateRange[1],
       filter,

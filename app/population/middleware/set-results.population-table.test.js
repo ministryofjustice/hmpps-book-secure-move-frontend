@@ -17,7 +17,6 @@ const mockCapacities = [
     },
   },
 ]
-// { id: 'DEADBEEF', meta: [1, 2, 3, 4, 5] },
 
 const mockLocations = ['ABADCAFE', 'BAADF00D']
 
@@ -35,7 +34,7 @@ describe('Population middleware', function () {
 
     beforeEach(function () {
       setResultsAsPopulationStub = sinon.stub().returns(mockPopulationTable)
-      sinon.stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
+      sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
       sinon
         .stub(presenters, 'locationsToPopulationTableComponent')
         .returns(setResultsAsPopulationStub)
@@ -51,17 +50,19 @@ describe('Population middleware', function () {
 
     context('when service resolves', function () {
       beforeEach(async function () {
-        locationsFreeSpacesService.getLocationsFreeSpaces.resolves(
-          mockCapacities
-        )
+        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
         setResultsAsPopulationStub = sinon.stub().returnsArg(0)
 
         await middleware(req, res, next)
       })
 
+      afterEach(function () {
+        locationsFreeSpacesService.getPrisonFreeSpaces.restore()
+      })
+
       it('should call the data service with request body', function () {
         expect(
-          locationsFreeSpacesService.getLocationsFreeSpaces
+          locationsFreeSpacesService.getPrisonFreeSpaces
         ).to.have.been.calledOnceWith({
           dateFrom: '2020-08-01',
           dateTo: '2020-08-05',
@@ -85,7 +86,7 @@ describe('Population middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        locationsFreeSpacesService.getLocationsFreeSpaces.rejects(mockError)
+        locationsFreeSpacesService.getPrisonFreeSpaces.rejects(mockError)
         await middleware(req, res, next)
       })
 
@@ -100,9 +101,7 @@ describe('Population middleware', function () {
 
     context('calling locationsToPopulationTable presenter', function () {
       beforeEach(async function () {
-        locationsFreeSpacesService.getLocationsFreeSpaces.resolves(
-          mockCapacities
-        )
+        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
 
         await middleware(req, res, next)
       })

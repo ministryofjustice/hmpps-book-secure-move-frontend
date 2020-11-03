@@ -30,14 +30,12 @@ describe('Population middleware', function () {
       it('should set req.filter', function () {
         expect(req.filter).to.deep.equal({
           'filter[location_id]': 'ABADCAFE,CAFEFEED',
-          'filter[location_type]': 'prison',
         })
       })
 
       it('should set req.filterPopulation', function () {
         expect(req.filterPopulation).to.deep.equal({
           'filter[location_id]': 'ABADCAFE,CAFEFEED',
-          'filter[location_type]': 'prison',
         })
       })
 
