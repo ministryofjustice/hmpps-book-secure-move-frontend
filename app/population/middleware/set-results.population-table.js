@@ -3,7 +3,6 @@ const locationsFreeSpacesService = require('../../../common/services/locations-f
 
 async function setResultsPopulationTable(req, res, next) {
   try {
-    // date range should be a set ... body method?
     const { dateRange, filter } = req
 
     const freeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces({
