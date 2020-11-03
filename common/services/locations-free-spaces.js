@@ -42,6 +42,15 @@ const locationsFreeSpacesService = {
         })
       })
   },
+  getPrisonFreeSpaces({ dateFrom, dateTo } = {}) {
+    return locationsFreeSpacesService.getLocationsFreeSpaces({
+      dateFrom,
+      dateTo,
+      filter: {
+        'filter[location_type]': 'prison',
+      },
+    })
+  },
 }
 
 module.exports = locationsFreeSpacesService

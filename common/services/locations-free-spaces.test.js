@@ -22,6 +22,8 @@ const mockLocations = [
 const dateFrom = '2020-06-01'
 const dateTo = '2020-06-07'
 
+let locationsFreeSpaces
+
 describe('Locations Free Spaces Service', function () {
   describe('#getLocationsFreeSpaces()', function () {
     const mockResponse = {
@@ -45,7 +47,6 @@ describe('Locations Free Spaces Service', function () {
       'sort[by]': 'name',
       'sort[direction]': 'asc',
     }
-    let locationsFreeSpaces
 
     beforeEach(function () {
       sinon.stub(apiClient, 'findAll')
@@ -243,6 +244,55 @@ describe('Locations Free Spaces Service', function () {
             include: ['foo', 'bar'],
           }
         )
+      })
+    })
+  })
+
+  describe('#getPrisonFreeSpaces()', function () {
+    const mockResponse = mockLocations
+
+    beforeEach(async function () {
+      sinon
+        .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
+        .resolves(mockResponse)
+
+      locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
+        {
+          dateFrom,
+          dateTo,
+        }
+      )
+    })
+
+    afterEach(function () {
+      locationsFreeSpacesService.getLocationsFreeSpaces.restore()
+    })
+
+    it('should call getLocationsFreeSpaces methods', function () {
+      expect(locationsFreeSpacesService.getLocationsFreeSpaces).to.be.calledOnce
+    })
+
+    it('should return first result', function () {
+      expect(locationsFreeSpaces).to.deep.equal(mockResponse)
+    })
+
+    it('should set location_type filter to undefined', function () {
+      const filters =
+        locationsFreeSpacesService.getLocationsFreeSpaces.args[0][0].filter
+
+      expect(filters).to.contain.property('filter[location_type]')
+      expect(filters['filter[location_type]']).to.equal('prison')
+    })
+
+    it('should call getLocationFreeSpaces with date params', function () {
+      expect(
+        locationsFreeSpacesService.getLocationsFreeSpaces
+      ).to.be.calledWith({
+        dateFrom,
+        dateTo,
+        filter: {
+          'filter[location_type]': 'prison',
+        },
       })
     })
   })
