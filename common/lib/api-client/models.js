@@ -237,6 +237,11 @@ module.exports = {
       defaultInclude: ['suppliers'],
     },
   },
+  locations_free_spaces: {
+    options: {
+      cache: false,
+    },
+  },
   region: {
     fields: {
       key: '',

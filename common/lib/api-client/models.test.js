@@ -122,6 +122,13 @@ const testCases = {
       statusCode: 200,
     },
   ],
+  locations_free_spaces: [
+    {
+      method: 'findAll',
+      httpMock: 'get',
+      statusCode: 200,
+    },
+  ],
   supplier: [
     {
       method: 'findAll',
