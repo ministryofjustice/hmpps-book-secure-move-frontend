@@ -3,12 +3,12 @@ const locationsFreeSpacesService = require('../../../common/services/locations-f
 
 async function setResultsPopulationTable(req, res, next) {
   try {
-    const { dateRange, filter } = req
+    const { dateRange, locations } = req
 
     const freeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces({
       dateFrom: dateRange[0],
       dateTo: dateRange[1],
-      filter,
+      locationIds: locations?.join(),
     })
 
     const query = req.query
@@ -17,7 +17,7 @@ async function setResultsPopulationTable(req, res, next) {
       {
         query,
         startDate: dateRange[0],
-        focusDate: new Date(),
+        focusDate: new Date(), // FIXME - Use date locals?
       }
     )(freeSpaces)
 

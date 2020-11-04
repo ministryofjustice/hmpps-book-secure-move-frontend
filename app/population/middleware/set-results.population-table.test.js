@@ -42,9 +42,7 @@ describe('Population middleware', function () {
       res = {}
       req = {
         dateRange: ['2020-08-01', '2020-08-05'],
-        filter: {
-          'filter[locationIds]': mockLocations.join(','),
-        },
+        locations: mockLocations,
       }
     })
 
@@ -66,9 +64,7 @@ describe('Population middleware', function () {
         ).to.have.been.calledOnceWith({
           dateFrom: '2020-08-01',
           dateTo: '2020-08-05',
-          filter: {
-            'filter[locationIds]': 'ABADCAFE,BAADF00D',
-          },
+          locationIds: 'ABADCAFE,BAADF00D',
         })
       })
 
