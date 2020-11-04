@@ -1,4 +1,4 @@
-const { flattenDeep } = require('lodash')
+const { flattenDeep, omitBy, isEmpty } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -42,14 +42,17 @@ const locationsFreeSpacesService = {
         })
       })
   },
-  getPrisonFreeSpaces({ dateFrom, dateTo, filter } = {}) {
+  getPrisonFreeSpaces({ dateFrom, dateTo, locationIds } = {}) {
     return locationsFreeSpacesService.getLocationsFreeSpaces({
       dateFrom,
       dateTo,
-      filter: {
-        'filter[location_type]': 'prison',
-        ...filter,
-      },
+      filter: omitBy(
+        {
+          'filter[location_type]': 'prison',
+          'filter[location_id]': locationIds,
+        },
+        isEmpty
+      ),
     })
   },
 }
