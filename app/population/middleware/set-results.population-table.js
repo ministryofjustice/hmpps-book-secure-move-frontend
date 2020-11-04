@@ -3,15 +3,13 @@ const locationsFreeSpacesService = require('../../../common/services/locations-f
 
 async function setResultsPopulationTable(req, res, next) {
   try {
-    const { dateRange, locations } = req
+    const { dateRange, locations, query } = req
 
     const freeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces({
       dateFrom: dateRange[0],
       dateTo: dateRange[1],
       locationIds: locations?.join(),
     })
-
-    const query = req.query
 
     req.resultsAsPopulationTable = presenters.locationsToPopulationTableComponent(
       {
