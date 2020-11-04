@@ -4,22 +4,14 @@ App modules are subsections of the main site, dealing with a specific area , e.g
 
 They can have a variety of different parts, in either a root file, or a folder with multiple files, and exposed via an `index.js` in the folder.
 
-- controllers
-  - Express
-- constants
-  - Predefined default settings for a module, including routing paths, actions, and other defaults
-- fields
-  - Form-wizard field definitions
-- middleware
-  - Express middleware for the module, rendering against the views
-- steps
-  - Form-wizard step definitions
-- validators
-  - Form-wizard field validator functions
-- views
-  - Nunjucks templates
-- index (routing)
-  - Main entrypoint for the module, tying together all the parts of the module in the form of an Express router
+- `controllers` - Express controllers
+- `constants` - Predefined default settings for a module, including routing paths, actions, and other defaults
+- `fields` - Form-wizard field definitions
+- `middleware` - Express middleware for the module, rendering against the views
+- `steps` - Form-wizard step definitions
+- `validators` - Form-wizard field validator functions
+- `views` - Nunjucks templates`
+- `index / routing` - Main entrypoint for the module, tying together all the parts of the module in the form of an Express router
 
 ## Index / Routing Setup
 
