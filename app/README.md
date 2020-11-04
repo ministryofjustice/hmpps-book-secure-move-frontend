@@ -13,173 +13,45 @@ They can have a variety of different parts, in either a root file, or a folder w
 - `views` - Nunjucks templates`
 - `index / routing` - Main entrypoint for the module, tying together all the parts of the module in the form of an Express router
 
-## Index / Routing Setup
+## Form Wizard
 
-### params middleware
+Note: Multi-page forms are provided using the [HMPO Form Wizard](https://github.com/HMPO/hmpo-form-wizard) and have a different setup and lifecycle. Please refer to the linked documentation for more information and not the app module specific details below.
 
-- set req vars
-  - **setDateRange**
-    - req.period
-    - req.dateRange
-- redirect
+## Routing
 
-### shared middleware
+The index file of each app module is used to setup any routes or subroutes that this module will serve through Express. The [standard Express middleware pattern](https://expressjs.com/en/guide/using-middleware.html) is used here with a variety of middleware using and transforming the request object, with a final method that will usually render content.
 
-- **saveUrl**
+## Middleware
 
-### routing middleware
+There are a variety of generic middleware that are provided from within the [common](../common/middleware) folder
 
-#### types
+## Common Middleware
 
-- redirects
-- simple routes
-- routes with form-wizard
-- sub-routers
-- arrays of grouped middleware
-  - collections middleware (`setActions`,`setContext`,`setPagination`)
-  - data setup, retrieval and transformation middleware (`setBody` `setFilter` `setResults`)
+- `permissions` - secures route access based upon user permissions
+- `setLocations` - sets locations on the current request
+- `setPrimaryNaviation` - sets the primaryNavigation based upon the current users permissions
+- `setUser` - sets the user on the current request from the session
 
-#### router.`HTTP_METHOD`
+### Common Collections Middleware
 
-##### Generic middleware
+- `redirectDefaultQuery` - redirect with a default query if provided
+- `redirectView` - redirect to a path of the format `timePeriod/date/location/view?query`
+- `setActions` - sets potential actions during the routing setup phase
+- `setContext` - sets the `context` used by [i18n]() to specific content within a generalised template
+- `setDateRange` - sets the `dateRange` used by the weekly views
+- `setPagination` - sets the pagination object used for day/week pagination. Note: This is not for numeric pagination of table data.
 
-- **path/with/:tokens**
-- **protectRoute**
-- redirects
+## Orchestration
 
-##### Collections setup
+There are also three specific kinds of orchestration middleware used by this application to more clearly orchestrate fetching and arranging of data. When multiple instances of this middleware are used, they share data through the `req.body[moduleName]` property.
 
-- setActions
-- setContext
-  - permission
-  - text
-  - href
-- setPagination
+- `setBody` — used to build the shared body data that is used to call service(s) which then supplies data for the filter and the results. Contains a shared query for date filters, location filters, etc. Attaches data to `req.body[moduleName]`.
+- `setFilter` — builds the filter component for collection modules. Uses `req.body[moduleName]` as a base and overrides the filter based on the desired counts to retrieve - usually status. Attaches data as a filter component to `req.filter`.
+- `setResults` — makes a call to the relevant service method to return the results that should be displayed for the current view. Can use `req.body[moduleName]` which is based on the current params and filters in the URL. If required for the view it will also call the relevant [presenter]('../common/presenters') for this resource type and sets the results as `req.resultsAsTable` or `req.resultsAsCards` to be used by the controller/template.
 
-##### Data setup, retrieval and transformation
+## General notes
 
-- setBody\<<Something\>>
-  - sets `req.body.<<something>>`
-    - structure includes `status`, `sortBy`, `sortDirection`, `[locationType]`
-  - example:
-    - set-body-allocations
-      - uses
-        - req.query
-          - status
-          - sortboy
-          - sortDirection
-        - req.params.dateRange
-        - req.lcations
-      - sets
-        - status
-        - sortBy
-        - sortDirection
-        - moveDate
-        - \[locationType\]
-  - set-body-moves
-    - uses
-      - req.params.dateRange
-      - req.locations
-      - req.session.user.supplierId
-    - sets
-      - req.body
-        - dateRange
-        - locationProperty
-        supplierId
-  - set-body-single-requests
-    - uses
-      - req.query
-        - status
-        - sortBy
-        - sortDirection
-      - req.params.dateRage
-      - req.locations
-    - req.body.requested
-      - status
-      - sortBy
-      - sortDirection
-      - \[dateType\]
-      - dateRange
-      - fromLocationId
-      
-      
-      
-        
-- set\<<Something\>>\*Filters
-  - calls services
-  - uses body prop
-  - sets `req.filter`
-- set\<<Something\>>Results
-  - calls services
-  - uses body prop
-  - sets `req.results<<Something>>` or `req.resultsSomethingAsTable`
-  - example
-    - setResultsMoves
-      - uses
-        - req.bod.\<<bodyKey\>>
-        - req.session.currentLocation
-      - calls
-         - movesService.getActive
-         - movesService.getCancelled
-         
-- setFilter\<<Something\>>
-  - calls services
-  - sets `req.filter` and or `req.filter<<Something>>`
-  - example:
-    - setFilterAllocations
-      - uses
-        - req.body.allocations
-        - req.query
-        - req.baseUrl
-        - req.path
-      - calls
-        - allocationService.getActive
-      - sets
-        - req
-          - filter
-          - filterAllocations   
-    - setFilterMoves
-      - uses
-        - req.body.\<<bodyKey\>>
-        - req.session.user.supplierId
-        - req.baseUrl
-        - req.path
-      - calls
-        - moveService
-      - sets
-        - req.filter
-        - req.filter\<<bodyKey\>>
-          
-###### Example
-
-- allocations
-  setBodyAllocations,
-  setResultsAllocations,
-  setFilterAllocations(FILTERS.outgoing),
-
-##### Render
-
-- `render` method from controller, e.g. `home/controllers.js:dashboard`
-  - `res.render` with template e.g. `home/dashboard`
-    - actions
-    - context
-    - dateRange
-    - filter
-    - pagination
-    - period
-    - resultsVars
-
-# Questions
-
-- what is the difference between setBody, setFilter and setResults
-- what is context? It's used by Express and by Nunjucks, are they exactly the same thing?
-- ````javascript
-  content: {
-          html: t("collections::no_results", {
-            context: context
-          })
-        }```
-          - ```javascript
-      {{ t("errors::" + errorKey + ".content", { context: journeyName }) | safe }}
-      ```
-  ````
+- [Services](../common/services) are the only part of application that should have knowledge of the backend services. This means that  API specific properties, e.g. `filter[from_location]` should contained within this service and exposed in a different way, such as a paremter of `fromLocationId`. This also allows the rest of the application to maintain a consistency, while the API is changed and upgraded.
+- Properties should be added to `req` as needed, and other middleware functions can use these properties as required. `res.locals` should be reserved only for data that will definitely be rendered in some way - often data on the `req` object can replace this usage.
+- Filter properties are used for the filter component and not for specific filtering of service data. If non-configurable data filtering is required, this can usually be more carefully hidden behind a service convenience method.
+ 
