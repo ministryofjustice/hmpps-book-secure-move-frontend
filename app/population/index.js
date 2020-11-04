@@ -6,13 +6,9 @@ const {
   setPagination,
 } = require('../../common/middleware/collection')
 
-const { BASE_PATH, MOUNTPATH, FILTERS } = require('./constants')
+const { BASE_PATH, MOUNTPATH } = require('./constants')
 const { dashboard } = require('./controllers')
-const {
-  setResultsAsPopulationTable,
-  setFilterPopulation,
-  redirectBaseUrl,
-} = require('./middleware')
+const { setResultsAsPopulationTable, redirectBaseUrl } = require('./middleware')
 
 router.param('date', setDateRange)
 
@@ -22,7 +18,6 @@ router.use(
   BASE_PATH,
   setContext('population'),
   setPagination(MOUNTPATH + BASE_PATH),
-  setFilterPopulation(FILTERS),
   setResultsAsPopulationTable,
   dashboard
 )
