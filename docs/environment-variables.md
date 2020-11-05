@@ -40,7 +40,8 @@
 | FRAMEWORKS_VERSION                  | Current [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks/releases) version that the frontend will use to create new Person Escort Records or any other frameworks being used | latest supported version (see `@hmpps-book-secure-move-frameworks` in package.json) |
 | LOG_LEVEL                           | Level of logs to output                                                                                                                                                                                                            | production: `error`, development: `debug`                                           |
 
-## Metrics and Anallytics
+## Metrics and Analytics
+
 | Name                                | Description                                                                                                                                                                                                                        | Default                                                                             |
 | :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
 | SENTRY_DSN                          | Sentry DSN used to log issues in sentry                                                                                                                                                                                            |                                                                                     |
@@ -89,7 +90,6 @@
 
 | Name             | Description                                                                  | Default |
 | :--------------- | :--------------------------------------------------------------------------- | :------ |
-| FEATURE_FLAG_PERSON_ESCORT_RECORD   | Set to `true` to enable display of the Person Escort Record feature                                                                                                                                                                |                                                                                     |
 
 ## Development specific
 

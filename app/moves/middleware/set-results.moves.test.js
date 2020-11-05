@@ -54,11 +54,7 @@ describe('Moves middleware', function () {
       context('without current location', function () {
         beforeEach(async function () {
           req.session.currentLocation = undefined
-          await middleware(mockBodyKey, mockLocationKey, true)(
-            req,
-            res,
-            nextSpy
-          )
+          await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
         })
 
         it('should not fetch the active moves', function () {
@@ -138,11 +134,7 @@ describe('Moves middleware', function () {
         context('with correct user permission', function () {
           beforeEach(async function () {
             req.canAccess.withArgs('person_escort_record:view').returns(true)
-            await middleware(mockBodyKey, mockLocationKey, true)(
-              req,
-              res,
-              nextSpy
-            )
+            await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
           })
 
           it('should call movesByLocation presenter with locationKey', function () {
@@ -156,11 +148,7 @@ describe('Moves middleware', function () {
 
         context('without correct user permission', function () {
           beforeEach(async function () {
-            await middleware(mockBodyKey, mockLocationKey, true)(
-              req,
-              res,
-              nextSpy
-            )
+            await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
           })
 
           it('should call movesByLocation presenter with locationKey', function () {

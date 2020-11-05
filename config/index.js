@@ -220,11 +220,7 @@ module.exports = {
       },
     },
   },
-  FEATURE_FLAGS: {
-    PERSON_ESCORT_RECORD: /true/i.test(
-      process.env.FEATURE_FLAG_PERSON_ESCORT_RECORD
-    ),
-  },
+  FEATURE_FLAGS: {},
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
     FLAG_SETTINGS: {

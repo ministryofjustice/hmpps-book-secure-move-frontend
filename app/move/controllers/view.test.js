@@ -10,11 +10,6 @@ const frameworkStub = {
   sections: [{ id: 'one' }],
 }
 const pathStubs = {
-  '../../../config': {
-    FEATURE_FLAGS: {
-      PERSON_ESCORT_RECORD: true,
-    },
-  },
   '../steps/update': updateSteps,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
@@ -733,32 +728,6 @@ describe('Move controllers', function () {
         it('should not show Person Escort Record banner', function () {
           expect(params).to.have.property('showPersonEscortRecordBanner')
           expect(params.showPersonEscortRecordBanner).to.be.true
-        })
-      })
-
-      context('when feature flag is disabled', function () {
-        const controllerWithoutPER = proxyquire('./view', {
-          ...pathStubs,
-          '../../../config': {
-            FEATURE_FLAGS: {
-              PERSON_ESCORT_RECORD: false,
-            },
-          },
-        })
-
-        beforeEach(function () {
-          controllerWithoutPER(req, res)
-          params = res.render.args[0][1]
-        })
-
-        it('should set personEscortRecordIsEnabled to false', function () {
-          expect(params).to.have.property('personEscortRecordIsEnabled')
-          expect(params.personEscortRecordIsEnabled).to.be.false
-        })
-
-        it('should not show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.false
         })
       })
 
