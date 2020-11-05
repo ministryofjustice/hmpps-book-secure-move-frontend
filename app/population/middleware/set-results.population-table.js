@@ -15,7 +15,7 @@ async function setResultsPopulationTable(req, res, next) {
       {
         query,
         startDate: dateRange[0],
-        focusDate: new Date(), // FIXME - Use date locals?
+        focusDate: new Date(), // TODO - Use date locals?
       }
     )(freeSpaces)
 
