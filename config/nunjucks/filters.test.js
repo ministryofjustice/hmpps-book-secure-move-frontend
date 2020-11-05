@@ -13,6 +13,7 @@ const filters = proxyquire('./filters', {
     DATE_FORMATS: {
       LONG: 'd MMM yyyy',
       WITH_DAY: 'EEEE d MMM yyyy',
+      WITH_DAY_AND_TIME: 'EEEE d MMM yyyy, h:mm:ss aa',
     },
   },
   '../../locales/en/actions.json': actions,
@@ -92,6 +93,16 @@ describe('Nunjucks filters', function () {
       const formattedDate = filters.formatDateWithDay('2010-01-05')
 
       expect(formattedDate).to.equal('Tuesday 5 Jan 2010')
+    })
+  })
+
+  describe('#formatDateWithDayAndTime()', function () {
+    it('should return config date with day format', function () {
+      const formattedDate = filters.formatDateWithDayAndTime(
+        '2000-01-05T13:46:00Z'
+      )
+
+      expect(formattedDate).to.equal('Wednesday 5 Jan 2000, 1:46:00 PM')
     })
   })
 

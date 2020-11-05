@@ -1,0 +1,65 @@
+{% extends "layouts/base.njk" %}
+{% from "panel/macro.njk" import appPanel %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ resultsAsDailySummary.date | formatDateWithDay }}
+    </h1>
+  </header>
+
+  {%  call appPanel() %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <h1 class="govuk-heading-m">{{ t("population::daily_view.labels.free_spaces") }}</h1>
+      <h2 class="govuk-heading-xl">{{ t("population::spaces_with_count", {count:resultsAsDailySummary.freeSpaces}) if resultsAsDailySummary.freeSpaces else t("population::daily_view.not_calculated") }}</h2>
+      <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
+      <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  resultsAsDailySummary.updatedAt | formatDateWithDayAndTime if resultsAsDailySummary.updatedAt else t("population::daily_view.not_updated")}}</b></p>
+    </div>
+  </div>
+  {%  endcall %}
+
+  <div class="govuk-grid-row govuk-!-padding-top-4">
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-m">{{ t("population::daily_view.labels.total_space") }}</h2>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.operational_capacity") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.operationalCapacity if resultsAsDailySummary.operationalCapacity  else t("population::daily_view.missing_value")}}</p>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.usable_capacity") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.usableCapacity if resultsAsDailySummary.usableCapacity else t("population::daily_view.missing_value")}}</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-m">{{ t("population::daily_view.labels.unavailable_space") }}</h2>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.unlock") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.unlock if resultsAsDailySummary.unlock else t("population::daily_view.missing_value")}}</p>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.bedwatch") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.bedwatch if resultsAsDailySummary.bedwatch else t("population::daily_view.missing_value")}}</p>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.overnights_in") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.overnightsIn if resultsAsDailySummary.overnightsIn else t("population::daily_view.missing_value")}}</p>
+    </div>
+
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-m">{{ t("population::daily_view.labels.available_space") }}</h2>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.overnights_out") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.overnightsOut if resultsAsDailySummary.overnightsOut else t("population::daily_view.missing_value")}}</p>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.out_of_area_courts") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.outOfAreaCourts if resultsAsDailySummary.outOfAreaCourts else t("population::daily_view.missing_value")}}</p>
+
+      <h4 class="govuk-heading-s">{{ t("population::daily_view.labels.discharges") }}</h3>
+      <p class="govuk-body">{{  resultsAsDailySummary.discharges if resultsAsDailySummary.discharges else t("population::daily_view.missing_value")}}</p>
+    </div>
+  </div>
+{% endblock %}

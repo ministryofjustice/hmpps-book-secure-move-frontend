@@ -20,6 +20,7 @@ const locationsFreeSpaces = require('./locations-free-spaces')
 const move = require('./move')
 const person = require('./person')
 const personEscortRecord = require('./person-escort-record')
+const population = require('./population')
 const prisonTransferReason = require('./prison-transfer-reason')
 const profile = require('./profile')
 const redirect = require('./redirect')
@@ -51,6 +52,7 @@ module.exports = {
   move,
   person,
   person_escort_record: personEscortRecord,
+  population,
   prison_transfer_reason: prisonTransferReason,
   profile,
   redirect,
