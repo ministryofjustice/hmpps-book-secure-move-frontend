@@ -16,7 +16,9 @@ describe('Move controllers', function () {
           .returns('/next-step')
         sinon.stub(FormController.prototype, 'setStepComplete')
         req = {
-          body: {},
+          form: {
+            values: {},
+          },
         }
         res = {
           redirect: sinon.stub(),
@@ -26,7 +28,7 @@ describe('Move controllers', function () {
       context('with filters', function () {
         context('with one filter', function () {
           beforeEach(function () {
-            req.body = {
+            req.form.values = {
               'filter.police_national_computer': 'ABCD',
             }
             controller.successHandler(req, res)
@@ -47,7 +49,7 @@ describe('Move controllers', function () {
 
         context('with multiple filters', function () {
           beforeEach(function () {
-            req.body = {
+            req.form.values = {
               'filter.police_national_computer': 'ABCD',
               'filter.prison_number': '1234',
               'filter.cro_number': 'EFGH',
@@ -71,6 +73,23 @@ describe('Move controllers', function () {
 
       context('without filters', function () {
         beforeEach(function () {
+          controller.successHandler(req, res)
+        })
+
+        it('should set step complete', function () {
+          expect(
+            FormController.prototype.setStepComplete
+          ).to.be.calledOnceWithExactly(req, res)
+        })
+
+        it('should redirect without search', function () {
+          expect(res.redirect).to.be.calledOnceWithExactly('/next-step')
+        })
+      })
+
+      context('without form values', function () {
+        beforeEach(function () {
+          req = {}
           controller.successHandler(req, res)
         })
 

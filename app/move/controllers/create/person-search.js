@@ -2,10 +2,11 @@ const PersonController = require('./person')
 
 class PersonSearchController extends PersonController {
   successHandler(req, res) {
+    const values = req.form?.values || {}
     const nextStep = this.getNextStep(req, res)
-    const filters = Object.keys(req.body)
+    const filters = Object.keys(values)
       .filter(key => key.includes('filter.'))
-      .map(name => `filter[${name.replace('filter.', '')}]=${req.body[name]}`)
+      .map(name => `filter[${name.replace('filter.', '')}]=${values[name]}`)
 
     this.setStepComplete(req, res)
 
