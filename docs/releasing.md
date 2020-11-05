@@ -20,3 +20,27 @@ This will:
 It will also start a new deployment specific [job on CircleCI](https://app.circleci.com/github/ministryofjustice/hmpps-book-secure-move-frontend/pipelines) which will run the full suite of automated tests and create a [release on GitHub](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases).
 
 **Note:** The deployment job has a [manual approval](https://circleci.com/blog/supporting-digital-transformation-while-avoiding-common-stalls/) step before it will release that version to production.
+
+## Clearing cached reference data
+
+Sometimes, the need to clear cached reference data may arise - if a users locations have changed, for example.
+To clear cached reference data you can run with the following:
+
+`node tasks/clear-cache-reference-data.js DATA_NAME`
+
+OR
+
+`npm run clear-cache-reference-data -- DATA_NAME`
+
+`DATA_NAME` can be replaced with any reference data name, full list:
+```
+genders
+ethnicities
+assessment_questions
+locations
+regions
+suppliers
+prison_transfer_reasons
+allocation_complex_cases
+\*
+```
