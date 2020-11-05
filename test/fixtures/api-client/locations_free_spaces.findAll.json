@@ -1,0 +1,43 @@
+{
+  "data": [
+    {
+      "id": "dc76e71d-413b-48c8-b1cf-85c702c5f465",
+      "type": "locations",
+      "attributes": {
+        "title": "BELMARSH (HMP)"
+      },
+      "meta": {
+        "populations": [
+          {
+            "id": "1bf70844-6b85-4fa6-8437-1c3859f883ee",
+            "free_spaces": 51
+          },
+          {
+            "id": "6318fafa-923d-468f-ab5f-dc9cbdd79198",
+            "free_spaces": -37
+          },
+          {
+            "id": "06bb368a-d512-406c-9a3f-ef47d75a31c7",
+            "free_spaces": -83
+          },
+          {
+            "id": "18a46696-f6ff-4c4e-8fe8-bc3177845a4a",
+            "free_spaces": -58
+          },
+          {
+            "id": "abccd8db-29fe-47cf-b463-4f71cbea5416",
+            "free_spaces": 0
+          },
+          {
+            "id": "0671ac0d-a558-456a-a842-10e5dfd0002f",
+            "free_spaces": -121
+          },
+          {
+            "id": "928405b8-9ce1-412a-8b43-dd4e8c734f42",
+            "free_spaces": -23
+          }
+        ]
+      }
+    }
+  ]
+}
