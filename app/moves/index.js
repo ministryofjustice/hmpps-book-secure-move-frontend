@@ -15,7 +15,6 @@ const {
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setRequestFilters = require('../../common/middleware/set-request-filters')
-const { FEATURE_FLAGS } = require('../../config')
 const requestFilterFields = require('../filters/fields')
 
 const {
@@ -82,11 +81,7 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('outgoing', 'fromLocationId'),
-    setResultsMoves(
-      'outgoing',
-      'to_location',
-      FEATURE_FLAGS.PERSON_ESCORT_RECORD
-    ),
+    setResultsMoves('outgoing', 'to_location'),
   ],
   renderAsCards
 )
@@ -107,11 +102,7 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('incoming', 'toLocationId'),
-    setResultsMoves(
-      'incoming',
-      'from_location',
-      FEATURE_FLAGS.PERSON_ESCORT_RECORD
-    ),
+    setResultsMoves('incoming', 'from_location'),
   ],
   renderAsCards
 )

@@ -1,7 +1,6 @@
 const { isEmpty, find, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
-const { FEATURE_FLAGS } = require('../../../config')
 const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
@@ -34,9 +33,7 @@ module.exports = function view(req, res) {
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
   } = profile || {}
-  const personEscortRecordIsEnabled =
-    FEATURE_FLAGS.PERSON_ESCORT_RECORD &&
-    req.canAccess('person_escort_record:view')
+  const personEscortRecordIsEnabled = req.canAccess('person_escort_record:view')
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)

@@ -1,6 +1,6 @@
 const presenters = require('../../../common/presenters')
 
-const handler = require('./view')
+const controller = require('./view')
 
 describe('Allocation controllers', function () {
   describe('view allocation', function () {
@@ -102,7 +102,7 @@ describe('Allocation controllers', function () {
         })
 
         it('does not create removeMoveHref if the move has a person', function () {
-          handler()(mockReq, mockRes)
+          controller(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
           expect(moves[2].removeMoveHref).to.be.undefined
           expect(moves[3].removeMoveHref).to.be.undefined
@@ -110,7 +110,7 @@ describe('Allocation controllers', function () {
 
         it('does not create removeMoveHref if the user has no permission to cancel allocations', function () {
           mockReq.canAccess.callsFake(() => false)
-          handler()(mockReq, mockRes)
+          controller(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
 
           for (const move of moves) {
@@ -120,14 +120,14 @@ describe('Allocation controllers', function () {
 
         it('does not create removeMoveHref if there is just one move left', function () {
           mockReq.allocation.moves = [{ id: 1 }]
-          handler()(mockReq, mockRes)
+          controller(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
           expect(moves[0].removeMoveHref).to.be.undefined
         })
 
         it('does otherwise create removeMoveHref', function () {
           mockReq.canAccess.callsFake(arg => arg === 'allocation:cancel')
-          handler()(mockReq, mockRes)
+          controller(mockReq, mockRes)
           const { moves } = mockRes.render.firstCall.lastArg
           expect(moves[0].removeMoveHref).to.equal(
             '/allocation/06464fbd-b78a-4e47-b65c-8ab3c3867196/789/remove'
@@ -141,7 +141,7 @@ describe('Allocation controllers', function () {
 
     context('with active allocation', function () {
       beforeEach(function () {
-        handler()(mockReq, mockRes)
+        controller(mockReq, mockRes)
       })
 
       describe('locals', function () {
@@ -203,7 +203,7 @@ describe('Allocation controllers', function () {
       beforeEach(function () {
         mockReq.allocation.status = 'cancelled'
 
-        handler()(mockReq, mockRes)
+        controller(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
       })
 
@@ -265,7 +265,7 @@ describe('Allocation controllers', function () {
           },
         ]
 
-        handler()(mockReq, mockRes)
+        controller(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
       })
 
@@ -279,7 +279,7 @@ describe('Allocation controllers', function () {
 
       beforeEach(function () {
         mockReq.canAccess.returns(true)
-        handler()(mockReq, mockRes)
+        controller(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
       })
 
