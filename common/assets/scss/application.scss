@@ -3,6 +3,8 @@ $govuk-global-styles: true;
 // Override font styles to replace NTA with Inter UI
 $govuk-fonts-path: "../fonts/inter/";
 $govuk-font-family: "Inter", system-ui, sans-serif;
+$govuk-assets-path: "govuk-frontend/govuk/assets/";
+$moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
 
 // Import GOV.UK Frontend
 @import "govuk-frontend/govuk/base";
