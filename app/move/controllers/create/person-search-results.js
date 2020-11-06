@@ -41,6 +41,7 @@ class PersonSearchResultsController extends PersonController {
       return {
         html: componentService.getComponent('appCard', card),
         value: person.id,
+        checked: req.people.length === 1,
       }
     })
     next()
