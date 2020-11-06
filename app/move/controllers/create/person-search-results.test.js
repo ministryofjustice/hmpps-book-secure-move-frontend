@@ -175,7 +175,7 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
       })
 
-      context('with people items', function () {
+      context('with multiple results', function () {
         const mockPeople = [
           {
             id: 1,
@@ -196,10 +196,12 @@ describe('Move controllers', function () {
           expect(req.form.options.fields.people.items).to.deep.equal([
             {
               value: 1,
+              checked: false,
               html: 'appCard',
             },
             {
               value: 2,
+              checked: false,
               html: 'appCard',
             },
           ])
@@ -242,7 +244,58 @@ describe('Move controllers', function () {
         })
       })
 
-      context('without people items', function () {
+      context('with one result', function () {
+        const mockPeople = [
+          {
+            id: 1,
+            name: 'foo',
+          },
+        ]
+
+        beforeEach(function () {
+          req.people = mockPeople
+          controller.setPeopleItems(req, {}, nextSpy)
+        })
+
+        it('should set people items property with checked property', function () {
+          expect(req.form.options.fields.people.items).to.deep.equal([
+            {
+              value: 1,
+              checked: true,
+              html: 'appCard',
+            },
+          ])
+        })
+
+        it('should call presenter correct number of times', function () {
+          expect(presenters.profileToCardComponent.callCount).to.equal(1)
+        })
+
+        it('should call presenter correctly', function () {
+          expect(
+            presenters.profileToCardComponent.firstCall
+          ).to.be.calledWithExactly({ showTags: false })
+          expect(profileToCardComponentStub.firstCall).to.be.calledWithExactly({
+            person: mockPeople[0],
+          })
+        })
+
+        it('should call component service correct number of times', function () {
+          expect(componentService.getComponent.callCount).to.equal(1)
+        })
+
+        it('should call component service correctly', function () {
+          expect(
+            componentService.getComponent.firstCall
+          ).to.be.calledWithExactly('appCard', { person: mockPeople[0] })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with no results', function () {
         beforeEach(function () {
           controller.setPeopleItems(req, {}, nextSpy)
         })
