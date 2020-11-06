@@ -10,7 +10,7 @@ They can have a variety of different parts, in either a root file, or a folder w
 - `middleware` - Express middleware for the module, rendering against the views
 - `steps` - Form-wizard step definitions
 - `validators` - Form-wizard field validator functions
-- `views` - Nunjucks templates`
+- `views` - Nunjucks templates
 - `index / routing` - Main entrypoint for the module, tying together all the parts of the module in the form of an Express router
 
 ## Form Wizard
@@ -37,7 +37,7 @@ There are a variety of generic middleware that are provided from within the [com
 - `redirectDefaultQuery` - redirect with a default query if provided
 - `redirectView` - redirect to a path of the format `timePeriod/date/location/view?query`
 - `setActions` - sets potential actions during the routing setup phase
-- `setContext` - sets the `context` used by [i18n]() to specific content within a generalised template
+- `setContext` - sets the `context` used by [i18next](https://www.i18next.com/translation-function/context) to specific content within a generalised template
 - `setDateRange` - sets the `dateRange` used by the weekly views
 - `setPagination` - sets the pagination object used for day/week pagination. Note: This is not for numeric pagination of table data.
 
