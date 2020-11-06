@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.53.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.52.0...v2.53.0) (2020-11-06)
+
+
+### Features
+
+* Add getPrisonFreeSpaces helper ([57264b1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/57264b1c10a5a71367db1198cc1c156d80ea61e8))
+* Add location-free-spaces service ([7ffaa69](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7ffaa6965c451833b33ba2590427fb2311ee4614))
+* Add locations_free_spaces model and fixture ([7253afd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7253afd64ddbb1a1ab3df57ae1f1adb5c8bdd41d))
+* Add population dashboard ([0655316](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/065531611766eda66587b043e0875aadb4eeef3e))
+* Use getPrisonFreeSpaces ([a7d33a5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a7d33a50c1d827d9108c889af6af75713b301227))
+* Use serverside sorting ([b484205](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b484205fefeaa0113fd6fa17b477e4e9c73cbd11))
+
+
+### Bug Fixes
+
+* Handle missing data from BE service correctly ([5d809f8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5d809f87f65d4b08b4d462a88ba078ede7fbd76b))
+* Trim whitespace from person search inputs ([b94c0f5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b94c0f549c0d07c9f3eb24d58609f0176d2649ad))
+* Use filters with getPrisonFreeSpaces ([17db94f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/17db94f09be3c5e9bb049cc5e508e0a2360a2251))
+
 ## [2.52.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.51.1...v2.52.0) (2020-11-02)
 
 
