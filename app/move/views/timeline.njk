@@ -1,0 +1,19 @@
+{% extends "./view.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move history'});
+{% endblock %}
+
+{% block contentMain %}
+  {% if timeline.items.length %}
+    {{ appTimeline(timeline) }}
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted",
+      allowDismiss: false,
+      content: {
+        html: t("events::no_events")
+      }
+    }) }}
+  {% endif %}
+{% endblock %}

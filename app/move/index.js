@@ -11,7 +11,14 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const personEscortRecordApp = require('../person-escort-record')
 const { setFramework } = require('../person-escort-record/middleware')
 
-const { assign, confirmation, create, update, view } = require('./controllers')
+const {
+  assign,
+  confirmation,
+  create,
+  update,
+  timeline,
+  view,
+} = require('./controllers')
 const {
   assignFields,
   cancelFields,
@@ -99,6 +106,9 @@ router.use(
 )
 
 moveRouter.get('/', protectRoute('move:view'), view)
+
+moveRouter.get('/timeline', protectRoute('move:view'), timeline)
+
 moveRouter.get(
   '/confirmation',
   protectRoute(['move:create', 'move:review']),
