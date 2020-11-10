@@ -84,6 +84,7 @@ const allocationService = {
   transform({ includeCancelled = false } = {}) {
     return function transformAllocation(result) {
       // TODO: Remove when individual allocations return meta.moves info
+      // TODO: see moves filtering below too
       if (!result.meta?.moves && result.moves.length) {
         set(result, 'meta.moves.total', result.moves.length)
 
@@ -105,6 +106,11 @@ const allocationService = {
       result = { ...result }
       delete result.meta
 
+      // ensure that moves is not empty before attempting to transform them
+      // why? because the BE does not return moves for multiple allocations
+      result.moves = result.moves || []
+
+      // TODO: Remove includeCancelled malarkey when meta.moves info available
       return {
         ...result,
         totalSlots,
