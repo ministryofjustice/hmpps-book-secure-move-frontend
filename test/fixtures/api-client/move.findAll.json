@@ -60,6 +60,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "timeline_events": {
+          "data": []
         }
       }
     },
@@ -123,6 +126,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "timeline_events": {
+          "data": []
         }
       }
     },
@@ -186,6 +192,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "timeline_events": {
+          "data": []
         }
       }
     },
@@ -249,6 +258,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "timeline_events": {
+          "data": []
         }
       }
     },
@@ -312,6 +324,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "timeline_events": {
+          "data": []
         }
       }
     }
