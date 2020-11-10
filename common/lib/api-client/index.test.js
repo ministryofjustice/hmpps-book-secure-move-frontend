@@ -1,4 +1,3 @@
-const { expect } = require('chai')
 const proxyquire = require('proxyquire').noCallThru()
 
 const mockConfig = {
@@ -47,6 +46,7 @@ describe('Back-end API client', function () {
     let requestStub
     let requestIncludeStub
     let requestTimeoutStub
+    let processResponseStub
     let middlewareMock
 
     beforeEach(function () {
@@ -59,9 +59,11 @@ describe('Back-end API client', function () {
       requestStub = sinon.stub()
       requestIncludeStub = sinon.stub()
       requestTimeoutStub = sinon.stub().returnsArg(0)
+      processResponseStub = sinon.stub()
       JsonApiStub.prototype.init = sinon.stub()
       JsonApiStub.prototype.replaceMiddleware = sinon.stub()
       JsonApiStub.prototype.insertMiddlewareBefore = sinon.stub()
+      JsonApiStub.prototype.insertMiddlewareAfter = sinon.stub()
       JsonApiStub.prototype.define = sinon.stub()
       middlewareMock = {
         auth: authStub,
@@ -73,6 +75,7 @@ describe('Back-end API client', function () {
         requestInclude: requestIncludeStub,
         requestHeaders: requestHeadersStub,
         requestTimeout: requestTimeoutStub,
+        processResponse: processResponseStub,
       }
 
       jsonApi = proxyquire('./', {
@@ -172,6 +175,18 @@ describe('Back-end API client', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.callCount
             ).to.equal(6)
+          })
+
+          it('should insert process response middleware', function () {
+            expect(
+              JsonApiStub.prototype.insertMiddlewareAfter.getCall(0)
+            ).to.be.calledWithExactly('axios-request', processResponseStub)
+          })
+
+          it('should call insertMiddlewareAfter correct number of times', function () {
+            expect(
+              JsonApiStub.prototype.insertMiddlewareAfter.callCount
+            ).to.equal(1)
           })
 
           it('should call replaceMiddleware correct number of times', function () {
