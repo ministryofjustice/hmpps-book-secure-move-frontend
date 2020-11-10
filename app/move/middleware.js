@@ -23,7 +23,7 @@ module.exports = {
 
     try {
       const move = await moveService.getByIdWithEvents(moveIdWithEvents)
-      move.timeline_events = addMockValuesToEvents(req, move.timeline_events)
+      addMockValuesToEvents(req, move)
       await populateResources(move.timeline_events)
       req.move = move
       next()

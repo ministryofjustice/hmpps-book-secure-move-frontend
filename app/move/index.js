@@ -18,7 +18,12 @@ const {
   unassignConfig,
   updateConfig,
 } = require('./config')
-const { confirmation, timeline, view } = require('./controllers')
+const {
+  confirmation,
+  timeline,
+  timelineExamples,
+  view,
+} = require('./controllers')
 const {
   assignFields,
   cancelFields,
@@ -60,6 +65,7 @@ router.get(
   setYouthRiskAssessment,
   timeline
 )
+router.get('/timeline-examples', protectRoute('move:view'), timelineExamples)
 
 router.use(
   `/:moveId(${uuidRegex})`,
