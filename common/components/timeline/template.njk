@@ -1,0 +1,10 @@
+<div class="moj-timeline {{- ' ' + params.classes if params.classes}}" {%- for attribute, value in params.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
+
+  {%- for item in params.items %}
+  <div class="moj-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
+    {% set itemComponent = item.component if item.component else 'appTimelineItem' %}
+    {{ callAsMacro(itemComponent)(params, item) }}
+  </div>
+  {% endfor -%}
+
+</div>
