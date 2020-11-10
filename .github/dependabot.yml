@@ -13,14 +13,10 @@ updates:
       - dependency-name: '@hmpps-book-secure-move-frameworks*'
       - dependency-name: 'govuk-frontend'
       - dependency-name: 'moj-frontend'
-      - dependency-name: 'css-loader'
-        versions: ['>=4']
       - dependency-name: 'webpack-cli'
         versions: ['>=4']
       - dependency-name: 'webpack-merge'
         versions: ['>=5']
-      - dependency-name: 'mini-css-extract-plugin'
-        versions: ['>=1']
     commit-message:
       prefix: 'build'
       include: 'scope'
