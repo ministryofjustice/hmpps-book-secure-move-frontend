@@ -1,0 +1,9 @@
+<p class="moj-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
+  <time datetime="{{ item.datetime.timestamp }}">
+    {%- if item.datetime.type %}
+      {{- item.datetime.timestamp | mojDate(item.datetime.type) -}}
+    {% else %}
+      {{- item.datetime.timestamp | date(item.datetime.format) -}}
+    {% endif -%}
+  </time>
+</p>

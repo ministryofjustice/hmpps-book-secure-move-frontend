@@ -1,0 +1,326 @@
+params:
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the timeline's container element.
+  - name: attributes
+    type: object
+    required: false
+    description: HTML attributes (for example data attributes) to add to the container element.
+  - name: items
+    type: array
+    required: true
+    description: Array of event items.
+    params:
+      - name: component
+        type: string
+        required: false
+        description: Name of component/macro to use when rendering item. Defaults to `appTimelineItem`
+        enum:
+          - appTimelineItem
+          - appTimelineItemAlt
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the item element. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the item element. If `html` is provided, the `text` argument will be ignored.
+      - name: classes
+        type: string
+        required: false
+        description: Classes to add to the item element.
+      - name: attributes
+        type: object
+        required: false
+        description: HTML attributes (for example data attributes) to add to the item element.
+      - name: label
+        type: object
+        required: true
+        description: Options for the item label/heading.
+        params:
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within the item label. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within the item label. If `html` is provided, the `text` argument will be ignored.
+          - name: classes
+            type: string
+            required: false
+            description: Classes to add to the item label element.
+          - name: headingLevel
+            type: string
+            required: false
+            description: Heading level to use for heading/label. Defaults to 2.
+      - name: datetime
+        type: object
+        required: true
+        description: Options for the item xxxxx.
+        params:
+          - name: timestamp
+            type: string
+            required: true
+            description: A valid datetime string to be formatted. For example `1970-01-01T11:59:59.000Z`
+          - name: type
+            type: string
+            required: true
+            description: If `format` is set, this is not required. The standard date format to use within the item. If `type` is provided, the `format` argument will be ignored.
+            enum:
+              - datetime
+              - shortdatetime
+              - date
+              - shortdate
+              - time
+          - name: format
+            type: string
+            required: false
+            description: If `type` is set, this is not required. The user-defined date format to use within the item. If `type` is provided, the `format` argument will be ignored. See the [Moment.js document on display formats](https://momentjs.com/docs/).
+          - name: classes
+            type: string
+            required: false
+            description: Classes to add to the item label element.
+      - name: byline
+        type: object
+        required: false
+        description: Options for the item byline.
+        params:
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within the item byline. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within the item byline. If `html` is provided, the `text` argument will be ignored.
+      - name: additional
+        type: object
+        required: false
+        description: Options for assitional item content.
+        params:
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within the additional item element. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within the additional item element. If `html` is provided, the `text` argument will be ignored.
+examples:
+  - name: default
+    data:
+      items:
+        - label:
+            html: Something happened
+          html: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+        - label:
+            text: Something else happened
+          text: Explanation of what else happened
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+  - name: container classes
+    data:
+      classes: container-class
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: container attributes
+    data:
+      attributes:
+        data-attr: container-value
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: heading level
+    data:
+      headingLevel: 4
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: description with text params
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: <b>Explanation</b> of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: description with html params
+    data:
+      items:
+        - label:
+            text: Something happened
+          html: <b>Explanation</b> of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: item classes
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          classes: item-class
+  - name: item attributes
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          attributes:
+            data-attr: item-value
+  - name: label with text params
+    data:
+      items:
+        - label:
+            text: <b>Something</b> happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: label with html params
+    data:
+      items:
+        - label:
+            html: <b>Something</b> happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: label classes
+    data:
+      items:
+        - label:
+            text: Something happened
+            classes: label-class
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+  - name: date using shortdatetime type
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: shortdatetime
+  - name: date using date type
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: date
+  - name: date using shortdate type
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: shortdate
+  - name: date using time type
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: time
+  - name: date using format
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            format: "YYYY-MM-DD / DD dddd MMMM HH:mm"
+  - name: byline with text params
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          byline:
+            text: <b>Agent</b> Smith
+  - name: byline with html params
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          byline:
+            html: <b>Agent</b> Smith
+  - name: component
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          component: appTimelineItemAlt
+  - name: additional with text params
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          component: appTimelineItemAlt
+          additional:
+            text: <b>Additional</b> information
+  - name: additional with html params
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          component: appTimelineItemAlt
+          additional:
+            html: <b>Additional</b> information

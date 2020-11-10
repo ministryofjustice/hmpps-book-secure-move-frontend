@@ -1,0 +1,5 @@
+{% if item.additional %}
+  <div class="moj-timeline__additional {{- ' ' + item.additional.classes if item.additional.classes}}">
+    {{- item.additional.html | safe if item.additional.html else item.additional.text -}}
+  </div>
+{% endif %}
