@@ -423,6 +423,20 @@ describe('Allocation service', function () {
       })
     })
 
+    context('with no moves', function () {
+      beforeEach(function () {
+        const allocation = {
+          ...mockAllocations[0],
+        }
+        delete allocation.moves
+        output = allocationService.transform()(allocation)
+      })
+
+      it('should add an empty moves property', function () {
+        expect(output.moves).to.have.length(0)
+      })
+    })
+
     context('with no meta moves info is present`', function () {
       beforeEach(function () {
         output = allocationService.transform({ includeCancelled: false })({
