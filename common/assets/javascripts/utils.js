@@ -8,7 +8,7 @@ function nodeListForEach(nodes, callback) {
     return nodes.forEach(callback)
   }
 
-  for (var i = 0; i < nodes.length; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     callback.call(window, nodes[i], i, nodes)
   }
 }

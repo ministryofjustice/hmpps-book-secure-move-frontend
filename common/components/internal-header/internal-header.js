@@ -4,14 +4,14 @@ function Header($module) {
 
 Header.prototype.init = function () {
   // Check for module
-  var $module = this.$module
+  const $module = this.$module
 
   if (!$module) {
     return
   }
 
   // Check for button
-  var $toggleButton = $module.querySelector('.js-header-toggle')
+  const $toggleButton = $module.querySelector('.js-header-toggle')
 
   if (!$toggleButton) {
     return
@@ -39,9 +39,9 @@ Header.prototype.toggleClass = function (node, className) {
  * @param {object} event event
  */
 Header.prototype.handleClick = function (event) {
-  var $module = this.$module
-  var $toggleButton = event.target || event.srcElement
-  var $target = $module.querySelector(
+  const $module = this.$module
+  const $toggleButton = event.target || event.srcElement
+  const $target = $module.querySelector(
     '#' + $toggleButton.getAttribute('aria-controls')
   )
 

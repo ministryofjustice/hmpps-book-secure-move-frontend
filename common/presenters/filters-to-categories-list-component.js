@@ -28,7 +28,7 @@ const filtersToCategoriesListComponent = (fields, values, pageUrl) => {
       const fieldValues = values[key]
 
       if (!fieldValues || fieldValues === 'default') {
-        return
+        return undefined
       }
 
       const heading = {

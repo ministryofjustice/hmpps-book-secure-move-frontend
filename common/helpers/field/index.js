@@ -91,7 +91,7 @@ function renderConditionalFields([key, field], index, obj) {
             : fields[conditionalFieldKey]
 
           if (!conditionalField) {
-            return
+            return undefined
           }
 
           return componentService.getComponent(
