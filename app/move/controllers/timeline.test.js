@@ -11,11 +11,13 @@ const presenters = {
 const moveService = {
   getById: sinon.stub().resolves({ id: 'moveId' }),
 }
+const getTabsUrls = sinon.stub().returns('tab_urls')
 
 const timelineController = proxyquire('./timeline', {
   '../../../common/lib/populate-resources': populateResources,
   '../../../common/presenters': presenters,
   '../../../common/services/move': moveService,
+  './view/view.tabs.urls': getTabsUrls,
 })
 
 describe('Move controllers', function () {
@@ -38,6 +40,7 @@ describe('Move controllers', function () {
       moveService.getById.resetHistory()
       moveService.getById.resolves(mockMove)
       populateResources.resetHistory()
+      getTabsUrls.resetHistory()
       req = {
         move: mockMove,
       }
@@ -46,6 +49,10 @@ describe('Move controllers', function () {
     context('', function () {
       beforeEach(async function () {
         await timelineController(req, res)
+      })
+
+      it('should get the tab urls', function () {
+        expect(getTabsUrls).to.be.calledOnceWithExactly(mockMove)
       })
 
       it('should fetch timeline events for move', function () {
@@ -79,6 +86,9 @@ describe('Move controllers', function () {
           moveSummary: 'moveToMetaListComponentArgs',
           tagList: 'assessmentToTagListArgs',
           timeline: 'eventsToTimelineComponentArgs',
+          urls: {
+            tabs: 'tab_urls',
+          },
         })
       })
     })

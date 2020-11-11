@@ -3,6 +3,7 @@ const { isEmpty, find, sortBy } = require('lodash')
 const presenters = require('../../../common/presenters')
 const updateSteps = require('../steps/update')
 
+const getTabsUrls = require('./view/view.tabs.urls')
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
 
@@ -64,6 +65,7 @@ module.exports = function view(req, res) {
   )
   const urls = {
     update: updateUrls,
+    tabs: getTabsUrls(move),
   }
   const assessment = presenters
     .assessmentAnswersByCategory(assessmentAnswers)

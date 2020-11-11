@@ -264,7 +264,23 @@
   {% endif %}
 {% endmacro %}
 
+{% macro tabs(urls, active) %}
+{% set tabItems = ['view', 'timeline'] %}
+<div class="govuk-tabs">
+  <ul class="govuk-tabs__list">
+    {% for item in tabItems %}
+      <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if active == item}}">
+        <a class="govuk-tabs__tab" href="{{ urls.tabs[item] }}">
+          {{ t("moves::tabs."+item) }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endmacro %}
+
 {% block contentMain %}
+  {{ tabs(urls, 'view') }}
   {% if move.profile %}
     <div class="govuk-!-margin-bottom-9">
       <section class="app-!-position-relative">

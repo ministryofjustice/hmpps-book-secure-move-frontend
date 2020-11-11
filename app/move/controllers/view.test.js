@@ -4,6 +4,7 @@ const presenters = require('../../../common/presenters')
 
 const getUpdateUrls = sinon.stub()
 const getUpdateLinks = sinon.stub()
+const getTabsUrls = sinon.stub()
 
 const updateSteps = []
 const frameworkStub = {
@@ -11,6 +12,7 @@ const frameworkStub = {
 }
 const pathStubs = {
   '../steps/update': updateSteps,
+  './view/view.tabs.urls': getTabsUrls,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
 }
@@ -71,6 +73,9 @@ const mockMove = {
 const mockUrls = {
   somewhere: '/somewhere',
 }
+const mockTabsUrls = {
+  elsewhere: '/elsewhere',
+}
 const mockUpdateLinks = {
   somewhere: {
     attributes: {
@@ -84,6 +89,7 @@ const mockUpdateLinks = {
 const mockOriginalUrl = '/url-to-move'
 
 getUpdateUrls.returns(mockUrls)
+getTabsUrls.returns(mockTabsUrls)
 getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
@@ -92,6 +98,7 @@ describe('Move controllers', function () {
     const userPermissions = ['permA']
 
     beforeEach(function () {
+      getTabsUrls.resetHistory()
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
       sinon
@@ -372,6 +379,22 @@ describe('Move controllers', function () {
       it('should contain message content param', function () {
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
+      })
+
+      describe('tabs urls', function () {
+        it('should call getTabsUrls with expected args', function () {
+          expect(getTabsUrls).to.be.calledOnceWithExactly(mockMove)
+        })
+
+        it('should pass tabs urls in locals to render', function () {
+          const urls = res.render.args[0][1].urls
+          expect(urls).to.have.property('tabs')
+        })
+
+        it('should pass tabs links in locals to render', function () {
+          const tabsUrls = res.render.args[0][1].urls.tabs
+          expect(tabsUrls).to.deep.equal(mockTabsUrls)
+        })
       })
 
       describe('update urls and links', function () {
