@@ -5,6 +5,7 @@ const updateSteps = require('../steps/update')
 
 const getUpdateLinks = require('./view/view.update.links')
 const getUpdateUrls = require('./view/view.update.urls')
+const setYouthMove = require('./view/view.youth-move')
 
 module.exports = function view(req, res) {
   const { move, originalUrl, framework = {} } = req
@@ -16,14 +17,7 @@ module.exports = function view(req, res) {
     rejection_reason: rejectionReason,
   } = move
 
-  // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
-  const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
-  const toLocationType = move?.to_location?.location_type
-  const fromLocationType = move?.from_location?.location_type
-
-  if (toLocationType === 'prison' && youthTransfer.includes(fromLocationType)) {
-    move.move_type = fromLocationType
-  }
+  setYouthMove(move)
 
   const bannerStatuses = ['cancelled']
   const updateUrls = getUpdateUrls(updateSteps, move, req)
@@ -65,6 +59,7 @@ module.exports = function view(req, res) {
   const urls = {
     update: updateUrls,
   }
+
   const assessment = presenters
     .assessmentAnswersByCategory(assessmentAnswers)
     .filter(category => category.key !== 'court')

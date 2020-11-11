@@ -4,6 +4,7 @@ const presenters = require('../../../common/presenters')
 
 const getUpdateUrls = sinon.stub()
 const getUpdateLinks = sinon.stub()
+const setYouthMove = sinon.stub()
 
 const updateSteps = []
 const frameworkStub = {
@@ -13,6 +14,7 @@ const pathStubs = {
   '../steps/update': updateSteps,
   './view/view.update.urls': getUpdateUrls,
   './view/view.update.links': getUpdateLinks,
+  './view/view.youth-move': setYouthMove,
 }
 const controller = proxyquire('./view', pathStubs)
 
@@ -68,7 +70,7 @@ const mockMove = {
   ],
 }
 
-const mockUrls = {
+const mockUpdateUrls = {
   somewhere: '/somewhere',
 }
 const mockUpdateLinks = {
@@ -83,7 +85,7 @@ const mockUpdateLinks = {
 }
 const mockOriginalUrl = '/url-to-move'
 
-getUpdateUrls.returns(mockUrls)
+getUpdateUrls.returns(mockUpdateUrls)
 getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
@@ -94,6 +96,7 @@ describe('Move controllers', function () {
     beforeEach(function () {
       getUpdateUrls.resetHistory()
       getUpdateLinks.resetHistory()
+      setYouthMove.resetHistory()
       sinon
         .stub(presenters, 'moveToMetaListComponent')
         .returns('__moveToMetaListComponent__')
@@ -386,7 +389,7 @@ describe('Move controllers', function () {
         it('should call getUpdateLinks with expected args', function () {
           expect(getUpdateLinks).to.be.calledOnceWithExactly(
             updateSteps,
-            mockUrls
+            mockUpdateUrls
           )
         })
 
@@ -402,29 +405,11 @@ describe('Move controllers', function () {
       })
     })
 
-    context('with youth transfer moves', function () {
-      ;['secure_childrens_home', 'secure_training_centre'].forEach(function (
-        youthTransferType
-      ) {
-        const youthTransferMove = {
-          to_location: {
-            location_type: 'prison',
-          },
-          from_location: {
-            location_type: youthTransferType,
-          },
-        }
-        it(`should upgrade the move when ${youthTransferType} to prison`, function () {
-          req.move = {
-            ...youthTransferMove,
-          }
-          controller(req, res)
-          expect(getUpdateUrls).to.be.calledOnceWithExactly(
-            updateSteps,
-            { ...youthTransferMove, move_type: youthTransferType },
-            req
-          )
-        })
+    context('move types', function () {
+      it('should update move type if necessary', function () {
+        req.move = {}
+        controller(req, res)
+        expect(setYouthMove).to.be.calledOnceWithExactly(req.move)
       })
     })
 
