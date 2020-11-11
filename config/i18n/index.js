@@ -1,6 +1,8 @@
 const i18next = require('i18next')
 const Backend = require('i18next-sync-fs-backend')
 
+const interpolation = require('./interpolation')
+
 i18next.use(Backend).init({
   initImmediate: false,
   lng: 'en',
@@ -16,6 +18,7 @@ i18next.use(Backend).init({
     'default',
     'actions',
     'errors',
+    'events',
     'fields',
     'filters',
     'locations',
@@ -30,6 +33,7 @@ i18next.use(Backend).init({
   backend: {
     loadPath: './locales/{{lng}}/{{ns}}.json',
   },
+  interpolation,
 })
 
 module.exports = i18next

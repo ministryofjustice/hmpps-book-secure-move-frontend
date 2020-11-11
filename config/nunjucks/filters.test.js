@@ -732,6 +732,34 @@ describe('Nunjucks filters', function () {
 
   describe('#oxfordJoin()', function () {
     context('by default', function () {
+      context('with undefined', function () {
+        it('should return undefined', function () {
+          const joined = filters.oxfordJoin()
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with a string', function () {
+        it('should return string untouched', function () {
+          const joined = filters.oxfordJoin('foo')
+          expect(joined).to.equal('foo')
+        })
+      })
+
+      context('with a number', function () {
+        it('should return number untouched', function () {
+          const joined = filters.oxfordJoin(23)
+          expect(joined).to.equal(23)
+        })
+      })
+
+      context('with a boolean', function () {
+        it('should return boolean untouched', function () {
+          const joined = filters.oxfordJoin(false)
+          expect(joined).to.equal(false)
+        })
+      })
+
       context('with no items', function () {
         it('should return empty string', function () {
           const joined = filters.oxfordJoin([])
