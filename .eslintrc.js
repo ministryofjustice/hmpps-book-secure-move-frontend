@@ -32,6 +32,7 @@ module.exports = {
     'dot-notation': 'error',
     'no-process-env': 'error',
     'no-console': 'error',
+    'default-param-last': 'off',
     'import/no-unresolved': ['error', { commonjs: true }],
     'import/order': [
       'error',
