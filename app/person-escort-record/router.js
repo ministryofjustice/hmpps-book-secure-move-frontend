@@ -20,6 +20,7 @@ function defineFormWizard(req, res, next) {
       reset: true,
       resetJourney: true,
       skip: true,
+      noPost: true,
     },
     ...steps,
   }
@@ -30,7 +31,7 @@ function defineFormWizard(req, res, next) {
     journeyName: `person-escort-record-${personEscortRecordId}-${key}`,
     journeyPageTitle: 'Person escort record',
     // Unique for each Person Escort Record
-    name: `person-escort-record-${personEscortRecordId}`,
+    name: `person-escort-record-${personEscortRecordId}-${key}`,
     template: 'framework-step',
     templatePath: 'person-escort-record/views/',
     defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
