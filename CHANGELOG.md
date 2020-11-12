@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.54.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.53.0...v2.54.0) (2020-11-12)
+
+
+### Features
+
+* Select radio item when only one result ([001bcfb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/001bcfb5bf8e534eb524c76fb40c619f60904bba)), closes [#809](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues/809)
+
+
+### Bug Fixes
+
+* **allocation:** Ensure allocation service resource always has moves ([db7a78e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/db7a78eb4b8162b01779ec2766b16d0f79012cb9))
+
 ## [2.53.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.52.0...v2.53.0) (2020-11-06)
 
 
