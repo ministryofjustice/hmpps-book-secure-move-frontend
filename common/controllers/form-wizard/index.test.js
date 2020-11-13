@@ -1,13 +1,25 @@
 const Sentry = require('@sentry/node')
 const FormController = require('hmpo-form-wizard').Controller
+const proxyquire = require('proxyquire')
 
-const fieldHelpers = require('../helpers/field')
+const fieldHelpers = require('../../helpers/field')
 
-const Controller = require('./form-wizard')
-
-const controller = new Controller({ route: '/' })
+const mixins = ['csrf']
 
 describe('Form wizard', function () {
+  let controller, Controller
+
+  beforeEach(function () {
+    const mixinStubs = {}
+
+    mixins.forEach(mixin => {
+      mixinStubs['./mixins/' + mixin] = sinon.stub().returnsArg(0)
+    })
+
+    Controller = proxyquire('./index', mixinStubs)
+    controller = new Controller({ route: '/' })
+  })
+
   describe('#middlewareSetup()', function () {
     beforeEach(function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')
@@ -541,6 +553,44 @@ describe('Form wizard', function () {
       })
     })
 
+    context('when it returns a csurf CSRF error', function () {
+      let reqMock
+
+      beforeEach(function () {
+        errorMock.code = 'EBADCSRFTOKEN'
+        reqMock = {
+          baseUrl: '/journey-base-url-other',
+          form: {
+            options: {
+              journeyName: 'mock-journey',
+            },
+          },
+        }
+
+        controller.errorHandler(errorMock, reqMock, resMock)
+      })
+
+      it('should send error to sentry', function () {
+        expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+      })
+
+      it('should render the timeout template', function () {
+        expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+      })
+
+      it('should pass the correct data to the view', function () {
+        expect(resMock.render.args[0][1]).to.deep.equal({
+          journeyBaseUrl: reqMock.baseUrl,
+          errorKey: errorMock.code.toLowerCase(),
+          journeyName: 'mock_journey',
+        })
+      })
+
+      it('should not call parent error handler', function () {
+        expect(FormController.prototype.errorHandler).not.to.be.called
+      })
+    })
+
     context('when it returns validation error', function () {
       let nextSpy
 
@@ -685,6 +735,42 @@ describe('Form wizard', function () {
         reqMock,
         {},
         nextSpy
+      )
+    })
+  })
+
+  describe('mixins', function () {
+    mixins.forEach(mixin => {
+      it('should should run the ' + mixin + ' mixin function', function () {
+        const mixinFunction = sinon.stub().returnsArg(0)
+        proxyquire('./index', {
+          ['./mixins/' + mixin]: mixinFunction,
+        })
+
+        expect(mixinFunction).to.have.been.calledOnceWithExactly(
+          sinon.match.func
+        )
+      })
+    })
+
+    mixins.slice(1).forEach((mixin, index) => {
+      const previousMixin = mixins[index]
+      it(
+        'should should run the ' +
+          mixin +
+          ' mixin function after ' +
+          previousMixin,
+        function () {
+          const mixinFunction = sinon.stub().returnsArg(0)
+          const previousMixinFunction = sinon.stub().returnsArg(0)
+
+          proxyquire('./index', {
+            ['./mixins/' + mixin]: mixinFunction,
+            ['./mixins/' + previousMixin]: previousMixinFunction,
+          })
+
+          expect(mixinFunction).to.have.been.calledAfter(previousMixinFunction)
+        }
       )
     })
   })

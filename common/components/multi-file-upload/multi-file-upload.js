@@ -44,7 +44,7 @@ MultiFileUpload.prototype = {
     this.$previewNode.removeAttribute('data-dz-preview-template')
     this.$dropzone = this.$module.querySelector('[data-dz-dropzone]')
     this.previewTemplate = this.$previewNode.outerHTML
-    this.xrsfToken = document.querySelector('input[name="x-csrf-token"]').value
+    this.xrsfToken = document.querySelector('input[name="_csrf"]').value
   },
 
   bindEvents() {
@@ -71,7 +71,7 @@ MultiFileUpload.prototype = {
       ...this.params,
       previewTemplate: this.previewTemplate,
       params: {
-        'x-csrf-token': this.xrsfToken,
+        _csrf: this.xrsfToken,
       },
     })
 
@@ -143,7 +143,7 @@ MultiFileUpload.prototype = {
   deleteFile(fileId) {
     const formData = {
       delete: fileId,
-      'x-csrf-token': this.xrsfToken,
+      _csrf: this.xrsfToken,
     }
     const config = {
       headers: { 'X-Requested-With': 'XMLHttpRequest' },

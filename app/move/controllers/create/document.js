@@ -20,8 +20,8 @@ class DocumentUploadController extends CreateBaseController {
   }
 
   middlewareSetup() {
-    super.middlewareSetup()
     this.use(upload.array('documents'))
+    super.middlewareSetup()
     // must be called after multer to correctly parse the form body
     this.use(this.setNextStep)
   }
