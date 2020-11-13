@@ -58,7 +58,7 @@
   >
 
     {% if formMethod == 'post' %}
-      <input type="hidden" name="x-csrf-token" value="{{ getLocal('csrf-token') }}">
+      <input type="hidden" name="_csrf" value="{{ getLocal('csrf-token') }}">
     {% endif %}
 
     {% block beforeFields %}

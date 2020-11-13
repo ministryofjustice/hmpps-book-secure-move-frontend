@@ -31,6 +31,10 @@
     "heading": "$t(errors::tampered_with.heading)",
     "content": "$t(errors::tampered_with.content)"
   },
+  "ebadcsrftoken": {
+    "heading": "$t(errors::tampered_with.heading)",
+    "content": "$t(errors::tampered_with.content)"
+  },
   "unauthorized": {
     "heading": "You don’t have permission to view this page",
     "content": "If you think you should have access please contact the support team."

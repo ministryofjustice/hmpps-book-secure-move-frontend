@@ -2,9 +2,9 @@ const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
 const { map, fromPairs, forEach, mapKeys } = require('lodash')
 
-const fieldHelpers = require('../helpers/field')
+const fieldHelpers = require('../../helpers/field')
 
-class FormController extends Controller {
+class BaseController extends Controller {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setInitialValues)
@@ -160,11 +160,12 @@ class FormController extends Controller {
       [
         'SESSION_TIMEOUT',
         'CSRF_ERROR',
+        'EBADCSRFTOKEN',
         'MISSING_PREREQ',
         'MISSING_LOCATION',
       ].includes(err.code)
     ) {
-      if (err.code === 'CSRF_ERROR') {
+      if (err.code === 'CSRF_ERROR' || err.code === 'EBADCSRFTOKEN') {
         Sentry.captureException(err)
       }
 
@@ -198,5 +199,8 @@ class FormController extends Controller {
     super.render(req, res, next)
   }
 }
+
+let FormController = BaseController
+FormController = require('./mixins/csrf')(FormController)
 
 module.exports = FormController
