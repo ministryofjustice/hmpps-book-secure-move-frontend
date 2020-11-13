@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.54.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.54.1...v2.54.2) (2020-11-13)
+
+
+### Bug Fixes
+
+* **form wizard:** Use consistent CSRF secret across the session ([5643385](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5643385b50346b149ea8b604c3dfca7d6b32b037))
+
 ### [2.54.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.54.0...v2.54.1) (2020-11-12)
 
 
