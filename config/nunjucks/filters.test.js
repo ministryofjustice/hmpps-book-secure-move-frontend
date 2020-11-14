@@ -1,10 +1,13 @@
 const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
-const i18n = require('../i18n')
+const actions = {
+  current_week: 'This is the week that is',
+}
 
 const mockFilesizeResponse = '10 MB'
 const mockFilesizejs = sinon.stub().returns(mockFilesizeResponse)
+
 const filters = proxyquire('./filters', {
   '../index': {
     DATE_FORMATS: {
@@ -12,6 +15,7 @@ const filters = proxyquire('./filters', {
       WITH_DAY: 'EEEE d MMM yyyy',
     },
   },
+  '../../locales/en/actions.json': actions,
   filesize: mockFilesizejs,
 })
 
@@ -219,7 +223,9 @@ describe('Nunjucks filters', function () {
     context('when current date is this week', function () {
       it('should return date along with `This week`', function () {
         const formattedDate = filters.formatDateRangeWithRelativeWeek(dateRange)
-        expect(formattedDate).to.equal('14 to 20 Aug 2017 (This week)')
+        expect(formattedDate).to.equal(
+          `14 to 20 Aug 2017 (${actions.current_week})`
+        )
       })
     })
 
@@ -425,7 +431,6 @@ describe('Nunjucks filters', function () {
     beforeEach(function () {
       const mockDate = new Date('2020-04-06')
       this.clock = sinon.useFakeTimers(mockDate.getTime())
-      sinon.stub(i18n, 't').returnsArg(0)
     })
 
     afterEach(function () {
@@ -439,7 +444,7 @@ describe('Nunjucks filters', function () {
             '2020-04-06',
             '2020-04-12',
           ])
-          expect(formattedRange).to.equal('actions::current_week')
+          expect(formattedRange).to.equal(actions.current_week)
         })
       })
 
@@ -449,7 +454,7 @@ describe('Nunjucks filters', function () {
             '2020-04-08',
             '2020-04-12',
           ])
-          expect(formattedRange).to.equal('actions::current_week')
+          expect(formattedRange).to.equal(actions.current_week)
         })
 
         it('should return `This week`', function () {
@@ -457,7 +462,7 @@ describe('Nunjucks filters', function () {
             '2020-04-06',
             '2020-04-10',
           ])
-          expect(formattedRange).to.equal('actions::current_week')
+          expect(formattedRange).to.equal(actions.current_week)
         })
       })
     })
