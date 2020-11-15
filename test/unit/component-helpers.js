@@ -9,6 +9,9 @@ const filters = require('../../config/nunjucks/filters')
 const templateGlobals = require('../../config/nunjucks/globals')
 const configPaths = require('../../config/paths')
 
+// eslint-disable-next-line no-process-env
+process.env.TZ = 'Europe/London'
+
 const views = [
   configPaths.components,
   configPaths.govukFrontend,
