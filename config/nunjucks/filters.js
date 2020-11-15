@@ -1,3 +1,4 @@
+const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
 const {
   format,
   isThisWeek,
@@ -307,6 +308,7 @@ function filesize(str) {
 }
 
 module.exports = {
+  ...mojFilters,
   formatDate,
   formatDateRange,
   formatDateRangeAsRelativeWeek,
