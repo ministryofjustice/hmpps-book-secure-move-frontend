@@ -5,6 +5,7 @@ const cheerio = require('cheerio')
 const yaml = require('js-yaml')
 const nunjucks = require('nunjucks')
 
+const filters = require('../../config/nunjucks/filters')
 const templateGlobals = require('../../config/nunjucks/globals')
 const configPaths = require('../../config/paths')
 
@@ -17,6 +18,11 @@ const views = [
 const nunjucksEnvironment = nunjucks.configure(views, {
   trimBlocks: true,
   lstripBlocks: true,
+})
+
+// Filters
+Object.keys(filters).forEach(filter => {
+  nunjucksEnvironment.addFilter(filter, filters[filter])
 })
 
 // Global variables
