@@ -1,11 +1,11 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
+{% from 'filter/macro.njk' import appFilter %}
+
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-{{ govukTable( data ) }}
+      {{ govukTable( data ) }}
     </div>
   </div>
 </div>
-

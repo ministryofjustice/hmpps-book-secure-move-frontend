@@ -1,2 +1,9 @@
 {% from 'card/macro.njk' import appCard %}
-{{ appCard( data ) }}
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appCard( data ) }}
+    </div>
+  </div>
+</div>

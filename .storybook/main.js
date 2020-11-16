@@ -4,7 +4,7 @@ const configPaths = require('../config/paths')
 const path = require('path')
 
 module.exports = {
-  stories: ['../common/**/*.stories.js'],
+  stories: ['../app/**/*.stories.js', '../common/**/*.stories.js'],
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-actions',
@@ -107,7 +107,7 @@ module.exports = {
                 },
               },
               {
-                loader: 'nunjucks-relative-loader',
+                loader: 'nunjucks-imports-loader',
                 options: {
                   // search: '{%- include "./template.njk" -%}',
                   // replace: '{%- include "../template.njk" -%}',

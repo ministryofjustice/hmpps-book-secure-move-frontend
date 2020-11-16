@@ -1,4 +1,9 @@
 {% from 'request-filter/macro.njk' import appRequestFilter %}
-<div>
-{{ appRequestFilter( data ) }}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appRequestFilter( data ) }}
+    </div>
+  </div>
 </div>
+

@@ -1,4 +1,9 @@
 {% from 'feedback-prompt/macro.njk' import appFeedbackPrompt %}
-<div>
-{{ appFeedbackPrompt( data ) }}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appFeedbackPrompt( data ) }}
+    </div>
+  </div>
 </div>
+

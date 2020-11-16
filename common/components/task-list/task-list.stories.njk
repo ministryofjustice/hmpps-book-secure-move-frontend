@@ -1,4 +1,9 @@
 {% from 'task-list/macro.njk' import appTaskList %}
-<div>
-{{ appTaskList( data ) }}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appTaskList( data ) }}
+    </div>
+  </div>
 </div>
+

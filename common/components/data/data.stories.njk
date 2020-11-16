@@ -1,2 +1,9 @@
 {% from 'data/macro.njk' import appData %}
-{{ appData( data ) }}
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appData( data ) }}
+    </div>
+  </div>
+</div>

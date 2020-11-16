@@ -1,4 +1,9 @@
 {% from 'pagination/macro.njk' import appPagination %}
-<div>
-{{ appPagination( data ) }}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appPagination( data ) }}
+    </div>
+  </div>
 </div>
+

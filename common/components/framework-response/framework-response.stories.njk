@@ -1,4 +1,9 @@
 {% from 'framework-response/macro.njk' import appFrameworkResponse %}
-<div>
-{{ appFrameworkResponse( data ) }}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ appFrameworkResponse( data ) }}
+    </div>
+  </div>
 </div>
+
