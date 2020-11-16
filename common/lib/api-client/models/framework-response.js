@@ -4,9 +4,8 @@ module.exports = {
     value_type: '',
     responded: '',
     prefilled: '',
-    person_escort_record: {
+    assessment: {
       jsonApi: 'hasOne',
-      type: 'person_escort_records',
     },
     question: {
       jsonApi: 'hasOne',
@@ -22,6 +21,6 @@ module.exports = {
     },
   },
   options: {
-    defaultInclude: ['person_escort_record', 'question'],
+    defaultInclude: [],
   },
 }
