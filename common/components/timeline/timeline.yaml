@@ -270,25 +270,3 @@ examples:
             type: datetime
           byline:
             html: <b>Agent</b> Smith
-  - name: additional with text params
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          additional:
-            text: <b>Additional</b> information
-  - name: additional with html params
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          additional:
-            html: <b>Additional</b> information

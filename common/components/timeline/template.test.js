@@ -17,7 +17,7 @@ describe('Timeline component', function () {
   let $description
   let $date
   let $time
-  let $additional
+  let $byline
 
   beforeEach(function () {
     const $ = renderComponentHtmlToCheerio('timeline', example)
@@ -30,7 +30,7 @@ describe('Timeline component', function () {
     $description = $component.find('.app-timeline__description')
     $date = $component.find('.app-timeline__date')
     $time = $component.find('time')
-    $additional = $component.find('.app-timeline__additional')
+    $byline = $component.find('.app-timeline__byline')
   })
 
   context('by default', function () {
@@ -75,8 +75,8 @@ describe('Timeline component', function () {
       expect($time.eq(1).attr('datetime')).to.equal('2019-06-14T15:01:00.000Z')
     })
 
-    it('should not contain any additional content', function () {
-      expect($additional.length).to.equal(0)
+    it('should not contain any byline content', function () {
+      expect($byline.length).to.equal(0)
     })
 
     it('should have correct structure', function () {
@@ -244,27 +244,23 @@ describe('Timeline component', function () {
     })
   })
 
-  context('additional with html params', function () {
+  context('byline with html params', function () {
     before(function () {
-      example = examples['additional with html params']
+      example = examples['byline with html params']
     })
 
-    it('should output expected additional info', function () {
-      expect($additional.html().trim()).to.equal(
-        '<b>Additional</b> information'
-      )
+    it('should output expected byline info', function () {
+      expect($byline.html().trim()).to.equal('<b>Agent</b> Smith')
     })
   })
 
-  context('additional with text params', function () {
+  context('byline with text params', function () {
     before(function () {
-      example = examples['additional with text params']
+      example = examples['byline with text params']
     })
 
-    it('should output expected additional info escaping any html', function () {
-      expect($additional.html().trim()).to.equal(
-        '&lt;b&gt;Additional&lt;/b&gt; information'
-      )
+    it('should output expected byline info escaping any html', function () {
+      expect($byline.html().trim()).to.equal('&lt;b&gt;Agent&lt;/b&gt; Smith')
     })
   })
 })

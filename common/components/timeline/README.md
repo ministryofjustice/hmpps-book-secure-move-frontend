@@ -4,8 +4,6 @@ Use the timeline component to show a linear record of what’s happened.
 
 Derived from the equivalent component in the [MoJ Design System](https://moj-design-system.herokuapp.com/components/timeline)
 
-Requires the `callAsMacro` global defined in `./config/nunjucks/globals.js`
-
 
 ## Example
 Below is a typical example of the timeline component in use.
@@ -32,7 +30,7 @@ Below is a typical example of the timeline component in use.
         timestamp: "2019-06-07T12:32:00.000Z",
         type: "datetime"
       },
-      additional: {
+      byline: {
         text: "Caseworker 1"
       }
     },
@@ -45,7 +43,7 @@ Below is a typical example of the timeline component in use.
         timestamp: "2019-06-06T09:12:00.000Z",
         type: "datetime"
       },
-      additional: {
+      byline: {
         html: "Caseworker 2"
       }
     }
@@ -80,7 +78,6 @@ Required
 |html|string|Yes|If `text` is set, this is not required. HTML to use as description within the item. If `html` is provided, the `text` argument will be ignored.|
 |datetime|object|No|See [item date and time](#itemdatetime).|
 |byline|object|No|See [item byline](#itembyline).|
-|additional|object|No|See [item additional](#itemadditional).|
 |classes|string|No|Classes to add to the timeline's items container.|
 |attributes|object|No|HTML attributes (for example data attributes) to add to the timeline's items container.|
 
@@ -111,15 +108,15 @@ Adds formatted timestamp.
 |classes|string|No|Classes to add to the datetime.|
 
 
-#### Item additional
+#### Item byline
 
 Optional
 
-Adds additional content.
+Adds byline content.
 
 Not used by `appTimelineItem`.
 
 |Name|Type|Required|Description|
 |---|---|---|---|
-|text|string|Yes|If `html` is set, this is not required. Text to use within the additional content for the item. If `html` is provided, the `text` argument will be ignored.|
-|html|string|Yes|If `text` is set, this is not required. HTML to use within the additional content for the item. If `html` is provided, the `text` argument will be ignored.|
+|text|string|Yes|If `html` is set, this is not required. Text to use within the byline content for the item. If `html` is provided, the `text` argument will be ignored.|
+|html|string|Yes|If `text` is set, this is not required. HTML to use within the byline content for the item. If `html` is provided, the `text` argument will be ignored.|
