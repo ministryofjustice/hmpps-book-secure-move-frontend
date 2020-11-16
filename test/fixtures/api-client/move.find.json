@@ -59,6 +59,9 @@
       },
       "original_move": {
         "data": null
+      },
+      "timeline_events": {
+        "data": []
       }
     }
   },

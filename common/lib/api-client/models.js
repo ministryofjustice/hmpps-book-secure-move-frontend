@@ -52,6 +52,10 @@ module.exports = {
         jsonApi: 'hasOne',
         type: 'suppliers',
       },
+      timeline_events: {
+        jsonApi: 'hasMany',
+        type: 'events',
+      },
     },
     options: {
       defaultInclude: [
@@ -319,10 +323,6 @@ module.exports = {
         jsonApi: 'hasMany',
         type: 'moves',
       },
-      events: {
-        jsonApi: 'hasMany',
-        type: 'events',
-      },
     },
     options: {
       defaultInclude: [
@@ -349,9 +349,50 @@ module.exports = {
   },
   event: {
     fields: {
-      event_name: '',
-      timestamp: '',
+      event_type: '',
       notes: '',
+      occurred_at: '',
+      recorded_at: '',
+      details: '',
+      eventable: {
+        jsonApi: 'hasOne',
+      },
+      location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      court_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      from_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      to_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      previous_move: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
+      supplier: {
+        jsonApi: 'hasOne',
+        type: 'suppliers',
+      },
+    },
+  },
+  journey: {
+    fields: {
+      state: '',
+      billable: '',
+      vehicle: '',
+      timestamp: '',
+      from_location: {
+        jsonApi: 'hasOne',
+        type: 'locations',
+      },
       to_location: {
         jsonApi: 'hasOne',
         type: 'locations',
