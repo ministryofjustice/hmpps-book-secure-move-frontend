@@ -4,19 +4,6 @@
 
    .app-timeline {
     margin-bottom: govuk-spacing(4);
-    overflow: hidden;
-    position: relative;
-
-    &:before {
-      background-color: $govuk-brand-colour;
-      content: "";
-      height: 100%;
-      left: 0;
-      position: absolute;
-      top: govuk-spacing(2);
-      width: 5px;
-    }
-
   }
 
   .app-timeline--full {
@@ -40,7 +27,23 @@
       top: govuk-spacing(2);
       width: 15px;
     }
+    &:after {
+      background-color: $govuk-brand-colour;
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: govuk-spacing(2);
+      width: 5px;
+    }
 
+    &:last-child {
+      padding-bottom: 0;
+
+      &:after {
+        display: none;
+      }
+    }
   }
 
   .app-timeline__title {
@@ -48,66 +51,22 @@
     display: inline;
   }
 
+  .app-timeline__date,
   .app-timeline__byline {
-    @include govuk-font($size: 19);
+    @include govuk-font($size: 16);
     color: $govuk-secondary-text-colour;
     display: inline;
-    margin: 0;
-  }
-
-  .app-timeline__date {
-    @include govuk-font($size: 16);
     margin-top: govuk-spacing(1);
     margin-bottom: 0;
   }
 
   .app-timeline__description {
     @include govuk-font($size: 19);
-    margin-top: govuk-spacing(4);
+    margin-top: govuk-spacing(1);
+
+    & br {
+      padding-top: govuk-spacing(2);
+      content: '';
+      display: block;
+    }
   }
-
-  /* ==========================================================================
-    #TIMELINE OVERRIDE STYLES
-    ========================================================================== */
-
-    .app-timeline {
-      overflow: visible;
-
-      &:before {
-        display: none;
-      }
-    }
-
-    .app-timeline__item:last-child {
-      padding-bottom: 0;
-
-      &:after {
-        display: none;
-      }
-    }
-
-    .app-timeline__item {
-      &:after {
-        background-color: $govuk-brand-colour;
-        content: "";
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: govuk-spacing(2);
-        width: 5px;
-      }
-    }
-
-    .app-timeline__description {
-      margin-top: govuk-spacing(1);
-    }
-
-    .app-timeline__date {
-      @include govuk-font($size: 16);
-      color: $govuk-secondary-text-colour;
-    }
-
-    .app-timeline__byline {
-      @include govuk-font($size: 16);
-      color: $govuk-secondary-text-colour;
-    }
