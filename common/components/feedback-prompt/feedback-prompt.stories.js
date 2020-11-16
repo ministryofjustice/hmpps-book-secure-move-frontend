@@ -1,7 +1,7 @@
 import macroTemplate from './feedback-prompt.stories.njk'
 
 export default {
-  title: 'Feedback Prompt',
+  title: 'Components / Feedback Prompt',
   component: macroTemplate,
 }
 

@@ -1,7 +1,7 @@
 import macroTemplate from './filter.stories.njk'
 
 export default {
-  title: 'Filter',
+  title: 'Components / Filter',
   component: macroTemplate,
 }
 

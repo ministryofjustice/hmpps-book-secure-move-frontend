@@ -1,15 +1,16 @@
 import macroTemplate from './request-filter.stories.njk'
 
 export default {
-  title: 'Request Filter',
+  title: 'Components / Request Filter',
   component: macroTemplate,
 }
 
 const Template = data => `${macroTemplate(data)}`
 
-const t = t => {
-  return t
-}
+// FIXME: `t is undefined` error
+// const t = t => {
+//   return t
+// }
 
 export const basic = Template.bind({})
 basic.args = {

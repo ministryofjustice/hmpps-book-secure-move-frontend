@@ -1,7 +1,7 @@
 import macroTemplate from './card.stories.njk'
 
 export default {
-  title: 'Card',
+  title: 'Components / Card',
   component: macroTemplate,
 }
 

@@ -1,7 +1,7 @@
 import macroTemplate from './task-list.stories.njk'
 
 export default {
-  title: 'Task List',
+  title: 'Components / Task List',
   component: macroTemplate,
 }
 

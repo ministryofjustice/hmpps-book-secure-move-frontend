@@ -1,7 +1,7 @@
 import macroTemplate from './panel.stories.njk'
 
 export default {
-  title: 'Panel',
+  title: 'Components / Panel',
   component: macroTemplate,
 }
 

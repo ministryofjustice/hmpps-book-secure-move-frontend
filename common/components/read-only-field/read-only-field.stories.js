@@ -1,7 +1,7 @@
 import macroTemplate from './read-only-field.stories.njk'
 
 export default {
-  title: 'Read Only Field',
+  title: 'Components / Read Only Field',
   component: macroTemplate,
 }
 

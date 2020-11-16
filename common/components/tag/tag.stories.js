@@ -1,7 +1,7 @@
 import macroTemplate from './tag.stories.njk'
 
 export default {
-  title: 'Tag',
+  title: 'Components / Tag',
   component: macroTemplate,
 }
 

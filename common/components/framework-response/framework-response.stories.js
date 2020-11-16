@@ -1,7 +1,7 @@
 import macroTemplate from './framework-response.stories.njk'
 
 export default {
-  title: 'Framework Response',
+  title: 'Components / Framework Response',
   component: macroTemplate,
 }
 

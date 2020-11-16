@@ -1,7 +1,7 @@
 import macroTemplate from './meta-list.stories.njk'
 
 export default {
-  title: 'Meta List',
+  title: 'Components / Meta List',
   component: macroTemplate,
 }
 

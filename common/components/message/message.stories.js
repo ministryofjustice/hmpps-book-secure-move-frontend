@@ -1,7 +1,7 @@
 import macroTemplate from './message.stories.njk'
 
 export default {
-  title: 'Message',
+  title: 'Components / Message',
   component: macroTemplate,
 }
 

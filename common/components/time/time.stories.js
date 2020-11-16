@@ -1,7 +1,7 @@
 import macroTemplate from './time.stories.njk'
 
 export default {
-  title: 'Time',
+  title: 'Components / Time',
   component: macroTemplate,
 }
 

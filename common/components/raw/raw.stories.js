@@ -1,7 +1,7 @@
 import macroTemplate from './raw.stories.njk'
 
 export default {
-  title: 'Raw',
+  title: 'Components / Raw',
   component: macroTemplate,
 }
 

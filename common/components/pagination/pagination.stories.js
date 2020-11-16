@@ -1,7 +1,7 @@
 import macroTemplate from './pagination.stories.njk'
 
 export default {
-  title: 'Pagination',
+  title: 'Components / Pagination',
   component: macroTemplate,
 }
 

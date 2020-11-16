@@ -1,7 +1,7 @@
 import macroTemplate from './internal-header.stories.njk'
 
 export default {
-  title: 'Internal Header',
+  title: 'Components / Internal Header',
   component: macroTemplate,
 }
 
