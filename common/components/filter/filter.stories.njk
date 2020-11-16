@@ -1,0 +1,9 @@
+{% from 'filter/macro.njk' import appFilter %}
+
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {{ appFilter( data ) }}
+      </div>
+    </div>
+</div>
