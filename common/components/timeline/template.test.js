@@ -17,7 +17,6 @@ describe('Timeline component', function () {
   let $description
   let $date
   let $time
-  let $byline
   let $additional
 
   beforeEach(function () {
@@ -31,7 +30,6 @@ describe('Timeline component', function () {
     $description = $component.find('.moj-timeline__description')
     $date = $component.find('.moj-timeline__date')
     $time = $component.find('time')
-    $byline = $component.find('.moj-timeline__byline')
     $additional = $component.find('.moj-timeline__additional')
   })
 
@@ -48,8 +46,8 @@ describe('Timeline component', function () {
       expect($timeline.length).to.equal(1)
     })
 
-    it('should not contain content container', function () {
-      expect($content.length).to.equal(0)
+    it('should contain content container', function () {
+      expect($content.length).to.equal(2)
     })
 
     it('should contain a heading element for each item', function () {
@@ -77,17 +75,16 @@ describe('Timeline component', function () {
       expect($time.eq(1).attr('datetime')).to.equal('2019-06-14T15:01:00.000Z')
     })
 
-    it('should not contain any bylines', function () {
-      expect($byline.length).to.equal(0)
-    })
-
     it('should not contain any additional content', function () {
       expect($additional.length).to.equal(0)
     })
 
     it('should have correct structure', function () {
-      expect($header.next().hasClass('moj-timeline__date')).to.equal(true)
-      expect($date.next().hasClass('moj-timeline__description')).to.equal(true)
+      expect($header.next().hasClass('moj-timeline__content')).to.equal(true)
+      expect($description.parent().hasClass('moj-timeline__content')).to.equal(
+        true
+      )
+      expect($description.next().hasClass('moj-timeline__date')).to.equal(true)
     })
   })
 
@@ -244,62 +241,6 @@ describe('Timeline component', function () {
 
     it('should output expected time', function () {
       expect($time.html().trim()).to.equal('2019-06-14 / 14 Friday June 15:01')
-    })
-  })
-
-  context('byline with html params', function () {
-    before(function () {
-      example = examples['byline with html params']
-    })
-
-    it('should output expected byline', function () {
-      expect($byline.html().trim()).to.equal('by <b>Agent</b> Smith')
-    })
-  })
-
-  context('byline with text params', function () {
-    before(function () {
-      example = examples['byline with text params']
-    })
-
-    it('should output expected byline escaping any html', function () {
-      expect($byline.html().trim()).to.equal(
-        'by &lt;b&gt;Agent&lt;/b&gt; Smith'
-      )
-    })
-  })
-
-  context('byline with text params', function () {
-    before(function () {
-      example = examples['byline with text params']
-    })
-
-    it('should output expected byline escaping any html', function () {
-      expect($byline.html().trim()).to.equal(
-        'by &lt;b&gt;Agent&lt;/b&gt; Smith'
-      )
-    })
-  })
-
-  context('component', function () {
-    before(function () {
-      example = examples.component
-    })
-
-    it('should render', function () {
-      expect($component.length).to.equal(1)
-    })
-
-    it('should contain content container', function () {
-      expect($content.length).to.equal(1)
-    })
-
-    it('should have correct structure', function () {
-      expect($header.next().hasClass('moj-timeline__content')).to.equal(true)
-      expect($description.parent().hasClass('moj-timeline__content')).to.equal(
-        true
-      )
-      expect($description.next().hasClass('moj-timeline__date')).to.equal(true)
     })
   })
 

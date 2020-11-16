@@ -12,13 +12,6 @@ params:
     required: true
     description: Array of event items.
     params:
-      - name: component
-        type: string
-        required: false
-        description: Name of component/macro to use when rendering item. Defaults to `appTimelineItem`
-        enum:
-          - appTimelineItem
-          - appTimelineItemAlt
       - name: text
         type: string
         required: true
@@ -83,19 +76,6 @@ params:
             type: string
             required: false
             description: Classes to add to the item label element.
-      - name: byline
-        type: object
-        required: false
-        description: Options for the item byline.
-        params:
-          - name: text
-            type: string
-            required: true
-            description: If `html` is set, this is not required. Text to use within the item byline. If `html` is provided, the `text` argument will be ignored.
-          - name: html
-            type: string
-            required: true
-            description: If `text` is set, this is not required. HTML to use within the item byline. If `html` is provided, the `text` argument will be ignored.
       - name: additional
         type: object
         required: false
@@ -290,16 +270,6 @@ examples:
             type: datetime
           byline:
             html: <b>Agent</b> Smith
-  - name: component
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          component: appTimelineItemAlt
   - name: additional with text params
     data:
       items:
@@ -309,7 +279,6 @@ examples:
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
             type: datetime
-          component: appTimelineItemAlt
           additional:
             text: <b>Additional</b> information
   - name: additional with html params
@@ -321,6 +290,5 @@ examples:
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
             type: datetime
-          component: appTimelineItemAlt
           additional:
             html: <b>Additional</b> information

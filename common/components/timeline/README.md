@@ -1,12 +1,3 @@
-<!--
-TODO: Update with info about new macros
-TODO: Add docs for additional classes - heading, description and date
-TODO: Add docs for item.additional
-TODO: Add docs for item.component
-TODO: Update with info about callAsMacro
--->
-
-
 # Timeline
 
 Use the timeline component to show a linear record of what’s happened.
@@ -30,9 +21,6 @@ Below is a typical example of the timeline component in use.
       datetime: {
         timestamp: "2019-06-14T14:01:00.000Z",
         type: "datetime"
-      },
-      byline: {
-        text: "Joe Bloggs"
       }
     },
     {
@@ -44,7 +32,7 @@ Below is a typical example of the timeline component in use.
         timestamp: "2019-06-07T12:32:00.000Z",
         type: "datetime"
       },
-      byline: {
+      additional: {
         text: "Caseworker 1"
       }
     },
@@ -57,47 +45,8 @@ Below is a typical example of the timeline component in use.
         timestamp: "2019-06-06T09:12:00.000Z",
         type: "datetime"
       },
-      byline: {
-        text: "Caseworker 1"
-      }
-    },
-    {
-      label: {
-        text:  "Application submitted"
-      },
-      html: detailsHtml,
-      datetime: {
-        timestamp: "2019-05-28T10:45:00.000Z",
-        type: "datetime"
-      },
-      byline: {
-        text: "Joe Bloggs"
-      }
-    },
-    {
-      label: {
-        text:  "Documents uploaded"
-      },
-      html: documentsHtml,
-      datetime: {
-        timestamp: "2019-05-28T10:15:00.000Z",
-        type: "datetime"
-      },
-      byline: {
-        text: "Joe Bloggs"
-      }
-    },
-    {
-      label: {
-        text:  "Application started"
-      },
-      html: listHtml,
-      datetime: {
-        timestamp: "2019-05-21T13:15:00.000Z",
-        type: "datetime"
-      },
-      byline: {
-        text: "Joe Bloggs"
+      additional: {
+        html: "Caseworker 2"
       }
     }
   ]
@@ -134,7 +83,6 @@ Required
 |additional|object|No|See [item additional](#itemadditional).|
 |classes|string|No|Classes to add to the timeline's items container.|
 |attributes|object|No|HTML attributes (for example data attributes) to add to the timeline's items container.|
-|component|string|No|Name of component/macro to use when rendering item. Values include `appTimelineItem` and `appTimelineItemAlt`. Defaults to `appTimelineItem`.|
 
 #### Item label
 
@@ -162,16 +110,6 @@ Adds formatted timestamp.
 |format|string|Yes|If `type` is set, this is not required. The user-defined date format to use within the item. If `type` is provided, the `format` argument will be ignored. See the [Moment.js document on display formats](https://momentjs.com/docs/).|
 |classes|string|No|Classes to add to the datetime.|
 
-#### Item byline
-
-Optional
-
-Adds a byline strap to the item label if set.
-
-|Name|Type|Required|Description|
-|---|---|---|---|
-|text|string|Yes|If `html` is set, this is not required. Text to use within the item byline. If `html` is provided, the `text` argument will be ignored.|
-|html|string|Yes|If `text` is set, this is not required. HTML to use within the item byline. If `html` is provided, the `text` argument will be ignored.|
 
 #### Item additional
 

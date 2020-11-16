@@ -1,3 +1,7 @@
 {{ appTimelineItemHeading(params, item) }}
-{{ appTimelineItemDate(params, item) }}
-{{ appTimelineItemDescription(params, item) }}
+
+<div class="moj-timeline__content">
+  {{ appTimelineItemDescription(params, item) }}
+  {{ appTimelineItemDate(params, item) }}
+  {{ appTimelineItemAdditional(params, item) }}
+</div>
