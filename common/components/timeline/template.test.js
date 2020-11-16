@@ -18,7 +18,6 @@ describe('Timeline component', function () {
   let $date
   let $time
   let $byline
-  let $additional
 
   beforeEach(function () {
     const $ = renderComponentHtmlToCheerio('timeline', example)
@@ -32,7 +31,6 @@ describe('Timeline component', function () {
     $date = $component.find('.moj-timeline__date')
     $time = $component.find('time')
     $byline = $component.find('.moj-timeline__byline')
-    $additional = $component.find('.moj-timeline__additional')
   })
 
   context('by default', function () {
@@ -79,10 +77,6 @@ describe('Timeline component', function () {
 
     it('should not contain any bylines', function () {
       expect($byline.length).to.equal(0)
-    })
-
-    it('should not contain any additional content', function () {
-      expect($additional.length).to.equal(0)
     })
 
     it('should have correct structure', function () {
@@ -300,30 +294,6 @@ describe('Timeline component', function () {
         true
       )
       expect($description.next().hasClass('moj-timeline__date')).to.equal(true)
-    })
-  })
-
-  context('additional with html params', function () {
-    before(function () {
-      example = examples['additional with html params']
-    })
-
-    it('should output expected additional info', function () {
-      expect($additional.html().trim()).to.equal(
-        '<b>Additional</b> information'
-      )
-    })
-  })
-
-  context('additional with text params', function () {
-    before(function () {
-      example = examples['additional with text params']
-    })
-
-    it('should output expected additional info escaping any html', function () {
-      expect($additional.html().trim()).to.equal(
-        '&lt;b&gt;Additional&lt;/b&gt; information'
-      )
     })
   })
 })

@@ -2,8 +2,31 @@
 
   {%- for item in params.items %}
   <div class="moj-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
-    {% set itemComponent = item.component if item.component else 'appTimelineItem' %}
-    {{ callAsMacro(itemComponent)(params, item) }}
+
+    <div class="moj-timeline__header">
+      <h{{ params.headingLevel | default(2) }} class="moj-timeline__title {{- ' ' + item.label.classes if item.label.classes}}">
+        {{- item.label.html | safe if item.label.html else item.label.text -}}
+      </h{{ params.headingLevel | default(2) }}>
+    </div>
+
+    <div class="moj-timeline__description {{- ' ' + item.description.classes if item.description.classes}}">
+      {{- item.html | safe if item.html else item.text -}}
+    </div>
+
+    <p class="moj-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
+      <time datetime="{{ item.datetime.timestamp }}">
+        {%- if item.datetime.type %}
+          {{- item.datetime.timestamp | mojDate(item.datetime.type) -}}
+        {% else %}
+          {{- item.datetime.timestamp | date(item.datetime.format) -}}
+        {% endif -%}
+      </time>
+
+      {% if item.byline %}
+        <span class="moj-timeline__byline">by {{ item.byline.html | safe if item.byline.html else item.byline.text }}</span>
+      {% endif %}
+    </p>
+
   </div>
   {% endfor -%}
 

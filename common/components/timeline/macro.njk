@@ -1,27 +1,3 @@
 {% macro appTimeline(params) %}
   {%- include "./template.njk" -%}
 {% endmacro %}
-
-{% macro appTimelineItemHeading(params, item) %}
-  {%- include "./timeline--heading.njk" -%}
-{% endmacro %}
-
-{% macro appTimelineItemDate(params, item) %}
-  {%- include "./timeline--date.njk" -%}
-{% endmacro %}
-
-{% macro appTimelineItemDescription(params, item) %}
-  {%- include "./timeline--description.njk" -%}
-{% endmacro %}
-
-{% macro appTimelineItemAdditional(params, item) %}
-  {%- include "./timeline--additional.njk" -%}
-{% endmacro %}
-
-{% macro appTimelineItem(params, item) %}
-{%- include "./timeline--item.njk" -%}
-{% endmacro %}
-
-{% macro appTimelineItemAlt(params, item) %}
-{%- include "./timeline--item-alt.njk" -%}
-{% endmacro %}
