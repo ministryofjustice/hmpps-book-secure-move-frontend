@@ -1,40 +1,108 @@
 /* ==========================================================================
+   #TIMELINE
+   ========================================================================== */
+
+   .app-timeline {
+    margin-bottom: govuk-spacing(4);
+    overflow: hidden;
+    position: relative;
+
+    &:before {
+      background-color: $govuk-brand-colour;
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: govuk-spacing(2);
+      width: 5px;
+    }
+
+  }
+
+  .app-timeline--full {
+    margin-bottom: 0;
+    &:before {
+      height: calc(100% - 75px);
+    }
+  }
+
+  .app-timeline__item {
+    padding-bottom: govuk-spacing(6);
+    padding-left: govuk-spacing(4);
+    position: relative;
+
+    &:before {
+      background-color: $govuk-brand-colour;
+      content: "";
+      height: 5px;
+      left: 0;
+      position: absolute;
+      top: govuk-spacing(2);
+      width: 15px;
+    }
+
+  }
+
+  .app-timeline__title {
+    @include govuk-font($size: 19, $weight: bold);
+    display: inline;
+  }
+
+  .app-timeline__byline {
+    @include govuk-font($size: 19);
+    color: $govuk-secondary-text-colour;
+    display: inline;
+    margin: 0;
+  }
+
+  .app-timeline__date {
+    @include govuk-font($size: 16);
+    margin-top: govuk-spacing(1);
+    margin-bottom: 0;
+  }
+
+  .app-timeline__description {
+    @include govuk-font($size: 19);
+    margin-top: govuk-spacing(4);
+  }
+
+  /* ==========================================================================
     #TIMELINE OVERRIDE STYLES
     ========================================================================== */
 
-.moj-timeline {
-  overflow: visible;
-}
-
-.moj-timeline__item:last-child {
-  padding-bottom: 0;
-}
-
-.moj-timeline__content {
-  position: relative;
-  overflow: hidden;
-}
-
-
-.moj-timeline__content {
-  & .moj-timeline__date,
-  & .moj-timeline__additional {
-    @include govuk-font($size: 16);
-    color: $govuk-secondary-text-colour;
-    float: left;
-    margin-top: govuk-spacing(2);
-    padding-right: govuk-spacing(1);
-    white-space: nowrap;
-  }
-
-  & .moj-timeline__description {
-    margin-top: govuk-spacing(2);
-    margin-bottom: govuk-spacing(0);
-
-    & br {
-      @include govuk-responsive-padding(2, 'top');
-      content: '';
-      display: block;
+    .app-timeline {
+      overflow: visible;
     }
-  }
-}
+
+    .app-timeline__item:last-child {
+      padding-bottom: 0;
+    }
+
+    .app-timeline__content {
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    .app-timeline__content {
+      & .app-timeline__date,
+      & .app-timeline__additional {
+        @include govuk-font($size: 16);
+        color: $govuk-secondary-text-colour;
+        float: left;
+        margin-top: govuk-spacing(2);
+        padding-right: govuk-spacing(1);
+        white-space: nowrap;
+      }
+
+      & .app-timeline__description {
+        margin-top: govuk-spacing(2);
+        margin-bottom: govuk-spacing(0);
+
+        & br {
+          @include govuk-responsive-padding(2, 'top');
+          content: '';
+          display: block;
+        }
+      }
+    }

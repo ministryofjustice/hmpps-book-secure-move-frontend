@@ -22,15 +22,15 @@ describe('Timeline component', function () {
   beforeEach(function () {
     const $ = renderComponentHtmlToCheerio('timeline', example)
     $component = $('body')
-    $timeline = $component.find('.moj-timeline')
-    $item = $component.find('.moj-timeline__item')
-    $content = $component.find('.moj-timeline__content')
-    $header = $component.find('.moj-timeline__header')
-    $title = $component.find('.moj-timeline__title')
-    $description = $component.find('.moj-timeline__description')
-    $date = $component.find('.moj-timeline__date')
+    $timeline = $component.find('.app-timeline')
+    $item = $component.find('.app-timeline__item')
+    $content = $component.find('.app-timeline__content')
+    $header = $component.find('.app-timeline__header')
+    $title = $component.find('.app-timeline__title')
+    $description = $component.find('.app-timeline__description')
+    $date = $component.find('.app-timeline__date')
     $time = $component.find('time')
-    $additional = $component.find('.moj-timeline__additional')
+    $additional = $component.find('.app-timeline__additional')
   })
 
   context('by default', function () {
@@ -80,11 +80,11 @@ describe('Timeline component', function () {
     })
 
     it('should have correct structure', function () {
-      expect($header.next().hasClass('moj-timeline__content')).to.equal(true)
-      expect($description.parent().hasClass('moj-timeline__content')).to.equal(
+      expect($header.next().hasClass('app-timeline__content')).to.equal(true)
+      expect($description.parent().hasClass('app-timeline__content')).to.equal(
         true
       )
-      expect($description.next().hasClass('moj-timeline__date')).to.equal(true)
+      expect($description.next().hasClass('app-timeline__date')).to.equal(true)
     })
   })
 

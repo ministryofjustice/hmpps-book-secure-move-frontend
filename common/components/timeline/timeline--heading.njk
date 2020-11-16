@@ -1,5 +1,5 @@
-  <div class="moj-timeline__header">
-    <h{{ params.headingLevel | default(2) }} class="moj-timeline__title {{- ' ' + item.label.classes if item.label.classes}}">
+  <div class="app-timeline__header">
+    <h{{ params.headingLevel | default(2) }} class="app-timeline__title {{- ' ' + item.label.classes if item.label.classes}}">
       {{- item.label.html | safe if item.label.html else item.label.text -}}
     </h{{ params.headingLevel | default(2) }}>
   </div>
