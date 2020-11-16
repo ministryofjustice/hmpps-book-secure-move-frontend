@@ -1,3 +1,4 @@
+const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
 const {
   format,
   isThisWeek,
@@ -16,7 +17,7 @@ const { filter, kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 
 const parse = require('../../common/parsers')
-const i18n = require('../i18n')
+const { current_week: currentWeek } = require('../../locales/en/actions.json')
 const { DATE_FORMATS } = require('../index')
 
 function _isRelativeDate(date) {
@@ -125,7 +126,7 @@ function formatDateRangeAsRelativeWeek(value) {
   }
 
   if (_isCurrentWeek(dates)) {
-    return i18n.t('actions::current_week')
+    return currentWeek
   }
 
   return formatDateRange(value)
@@ -283,21 +284,23 @@ function formatTime(value) {
  * @example {{ ["one","two","three"] | oxfordJoin }}
  */
 function oxfordJoin(arr = [], lastDelimiter = 'and') {
-  if (arr.length === 0) {
-    return ''
-  }
+  let output
 
-  if (arr.length === 1) {
-    return arr[0]
-  }
-
-  if (arr.length === 2) {
+  if (!arr || !Array.isArray(arr)) {
+    output = arr
+  } else if (arr.length === 0) {
+    output = ''
+  } else if (arr.length === 1) {
+    output = arr[0]
+  } else if (arr.length === 2) {
     // joins all with "and" but no commas
-    return arr.join(` ${lastDelimiter} `)
+    output = arr.join(` ${lastDelimiter} `)
+  } else {
+    // joins all with commas, but last one gets ", and" (oxford comma!)
+    output = `${arr.slice(0, -1).join(', ')}, ${lastDelimiter} ${arr.slice(-1)}`
   }
 
-  // joins all with commas, but last one gets ", and" (oxford comma!)
-  return `${arr.slice(0, -1).join(', ')}, ${lastDelimiter} ${arr.slice(-1)}`
+  return output
 }
 
 function filesize(str) {
@@ -307,6 +310,7 @@ function filesize(str) {
 }
 
 module.exports = {
+  ...mojFilters,
   formatDate,
   formatDateRange,
   formatDateRangeAsRelativeWeek,
