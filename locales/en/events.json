@@ -1,0 +1,412 @@
+{
+  "additional": "{{user.name}}",
+  "select_agency": "$t(events::agency, {\"context\": \"{{agency}}\"})",
+  "agency": "",
+  "agency_user": "user",
+  "agency_pmu": "PMU",
+  "agency_supplier": "{{move.supplier.name}}",
+  "default_agency": "pmu",
+  "select_authorised_by": "$t(events::authorised_by, {\"context\": \"{{authorised_by, exists}}\"})",
+  "authorised_by": "",
+  "authorised_by_true": "<br>Authorised by {{authorised_by}}",
+  "select_fault_classification": "Incident has been classified as: $t(events::fault_classification, {\"context\": \"{{fault_classification}}\"})",
+  "fault_classification": "{{fault_classification}}",
+  "fault_classification_supplier": "Supplier’s fault",
+  "fault_classification_was_not_supplier": "Not supplier’s fault",
+  "fault_classification_investigation": "Under investigation",
+  "select_incident_vehicle": "$t(events::incident_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
+  "incident_vehicle": "",
+  "incident_vehicle_true": "The event occurred on vehicle {{vehicle_reg}}",
+  "incident_reported": "The incident was reported by {{supplier_personnel_numbers, oxfordJoin}} at {{reported_at, formatTime}}",
+  "incident_reported_classified": "<br>$t(events::incident_reported)<br>$t(events::select_fault_classification)",
+  "incident_level_details": "{{incident_level}} incident involving {{person.fullname}} occurred $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
+  "select_incident_location_preposition": "$t(events::incident_location_preposition, {\"context\": \"{{vehicle_reg, exists}}\"})",
+  "incident_location_preposition_true": "on",
+  "incident_location_preposition_false": "at",
+  "select_incident_location_vehicle": "$t(events::incident_location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
+  "incident_location_vehicle_true": "vehicle {{vehicle_reg}}",
+  "incident_location_vehicle_false": "{{location.title}}",
+  "incident_escaped": "{{person.fullname}} escaped from $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
+  "no_events": "No events",
+  "JourneyAdmitThroughOuterGate": {
+    "heading": "Admitted through outer gate",
+    "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{journey.to_location.title}}"
+  },
+  "JourneyArriveAtOuterGate": {
+    "heading": "Arrived at outer gate",
+    "description": "Vehicle {{journey.vehicle.registration}} arrived at outer gate of {{journey.to_location.title}}"
+  },
+  "JourneyCancel": {
+    "heading": "Journey cancelled",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} cancelled"
+  },
+  "JourneyChangeVehicle": {
+    "heading": "Vehicle changed",
+    "description": "{{person.fullname}} moved from {{previous_vehicle_reg}} to {{journey.vehicle.registration}}"
+  },
+  "JourneyComplete": {
+    "heading": "Journey completed",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} completed"
+  },
+  "JourneyExitThroughOuterGate": {
+    "heading": "Exited from outer gate",
+    "description": "Vehicle {{journey.vehicle.registration}} exited through outer gate of {{journey.from_location.title}}"
+  },
+  "JourneyHandoverToDestination": {
+    "heading": "Handover to establishment",
+    "description": "{{person.fullname}} handed over by {{move.supplier.name}} (Personnel number {{supplier_personnel_number}}) at {{journey.to_location.title}}"
+  },
+  "JourneyPersonBoardVehicle": {
+    "heading": "Boarded escort vehicle",
+    "description": "{{person.fullname}} boarded escort vehicle {{journey.vehicle.registration}}"
+  },
+  "JourneyPersonLeaveVehicle": {
+    "heading": "Left escort vehicle",
+    "description": "{{person.fullname}} left escort vehicle {{journey.vehicle.registration}}"
+  },
+  "JourneyReadyToExit": {
+    "heading": "Ready to exit",
+    "description": "Escort vehicle {{journey.vehicle.registration}} boarding complete, ready to exit from {{journey.from_location.title}}"
+  },
+  "JourneyReject": {
+    "heading": "Journey rejected",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} rejected by {{move.supplier.name}}"
+  },
+  "JourneyStart": {
+    "heading": "Journey started",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} started by {{move.supplier.name}}"
+  },
+  "JourneyUncancel": {
+    "heading": "Journey uncancelled",
+    "description": "Cancelled Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
+  },
+  "JourneyUncomplete": {
+    "heading": "Journey uncompleted",
+    "description": "Completed Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
+  },
+  "MoveAccept": {
+    "triggers": "StatusMoveBooked",
+    "heading": "Move accepted by {{move.supplier.name}}",
+    "description": ""
+  },
+  "MoveApprove": {
+    "triggers": "StatusMoveRequested",
+    "heading": "Approved by PMU",
+    "description": "Date of travel set to {{move.date, formatDateWithDay}}"
+  },
+  "MoveCancel": {
+    "triggers": "StatusMoveCancelled",
+    "heading": "Move cancelled by $t(events::select_agency)",
+    "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} has been cancelled for the following reason: $t(events::MoveCancel.select_cancellation_reason) $t(events::MoveCancel.select_cancellation_reason_comment)",
+    "select_cancellation_reason": "$t(events::MoveCancel.cancellation_reason, {\"context\": \"{{cancellation_reason}}\"})",
+    "cancellation_reason_prefix": "<br>Cancellation reason:",
+    "cancellation_reason": "",
+    "cancellation_reason_supplier_declined_to_move": "$t(events::MoveCancel.cancellation_reason_prefix) {{move.supplier.name}} declined to move this person",
+    "cancellation_reason_cancelled_by_pmu": "$t(events::MoveCancel.cancellation_reason_prefix) Cancelled by Population Management Unit (PMU)",
+    "cancellation_reason_other": "",
+    "select_cancellation_reason_comment": "$t(events::MoveCancel.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
+    "cancellation_reason_comment": "",
+    "cancellation_reason_comment_true": "<br>Additional comments:<br>{{cancellation_reason_comment}}"
+  },
+  "MoveCollectionByEscort": {
+    "heading": "Handover to {{move.supplier.name}}",
+    "description": "{{person.fullname}} has been received"
+  },
+  "MoveComplete": {
+    "triggers": "StatusMoveCompleted",
+    "heading": "Handover to {{move.to_location.title}}",
+    "description": "{{person.fullname}} has been received"
+  },
+  "MoveLockout": {
+    "contextKey": "reason",
+    "heading": "Lockout",
+    "description": "{{person.fullname}} locked out from {{move.from_location.title}} $t(events::MoveLockout.select_reason)",
+    "select_reason": "$t(events::MoveLockout.reason, {\"context\": \"{{reason}}\"})",
+    "reason": "due to **{{reason}}**",
+    "reason_no_space": "due to there being no space",
+    "reason_unachievable_redirection": "due to an unachievable redirection",
+    "reason_late_sitting_court": "due to the late sitting of the court",
+    "reason_unavailable_resource_vehicle_or_staff": "due to a vehicle or member of staff being unavailable",
+    "reason_traffic_issues": "due to traffic issues",
+    "reason_mechanical_or_other_vehicle_failure": "due to a mechanical or other vehicle failure",
+    "reason_ineffective_route_planning": "due to ineffective route planning",
+    "reason_unachievable_ptr_request": "due to an unachievable PTR request",
+    "reason_other": ""
+  },
+  "MoveLodgingStart": {
+    "heading": "Lodging started",
+    "description": "{{person.fullname}}  temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "select_reason": "$t(events::MoveLodgingStart.reason, {\"context\": \"{{reason}}\"})",
+    "reason": "due to **{{reason}}**",
+    "reason_overnight_lodging": "due to an overnight lodging",
+    "reason_lockout": "due to a lockout",
+    "reason_operation_hmcts": "due to Operation HMCTS",
+    "reason_court_cells": "due to court cells reaching capacity",
+    "reason_operation_tornado": "due to Operation Tornado",
+    "reason_operation_safeguard": "due to Operation Safeguard",
+    "reason_other": ""
+  },
+  "MoveLodgingEnd": {
+    "heading": "Lodging ended",
+    "description": "{{person.fullname}} collected by {{move.supplier.name}} from temporary lodging at {{location.title}}"
+  },
+  "MoveNotifyPremisesOfArrivalIn30Mins": {
+    "heading": "30 minute arrival notification",
+    "description": "{{move.supplier.name}} will arrive at {{move.to_location.title}} in 30 minutes"
+  },
+  "MoveNotifyPremisesOfEta": {
+    "heading": "{{move.to_location.title}} notified of expected time of arrival",
+    "description": "Expected arrival at {{expected_at, formatTime}}"
+  },
+  "MoveNotifyPremisesOfExpectedCollectionTime": {
+    "heading": "{{move.from_location.title}} notified of expected collection time",
+    "description": "Expected collection at {{expected_at, formatTime}}"
+  },
+  "MoveNotifySupplierOfMoveRequest": {
+    "heading": "{{move.supplier.name}} notified of move request",
+    "description": ""
+  },
+  "MoveOperationHMCTS": {
+    "heading": "Operation HMCTS enacted",
+    "description": "$t(events::select_authorised_by)"
+  },
+  "MoveOperationSafeguard": {
+    "heading": "Operation Safeguard enacted",
+    "description": "$t(events::select_authorised_by)"
+  },
+  "MoveOperationTornado": {
+    "heading": "Operation Tornado enacted",
+    "description": "$t(events::select_authorised_by)"
+  },
+  "MoveProposed": {
+    "triggers": "StatusMoveProposed",
+    "heading": "Proposed by user",
+    "description": ""
+  },
+  "MoveRedirect": {
+    "heading": "Redirected to {{move.to_location.title}}",
+    "description": "Move redirected $t(events::MoveRedirect.select_reason)",
+    "select_reason": "$t(events::MoveRedirect.reason, {\"context\": \"{{reason}}\"})",
+    "reason": "due to **{{reason}}**",
+    "reason_no_space": "as there was no space",
+    "reason_serious_incident": "due to a serious incident",
+    "reason_covid": "due to COVID",
+    "reason_receiving_prison_request": "as the receiving prison made a request",
+    "reason_force_majeure": "due to force majeure",
+    "reason_other": ""
+  },
+  "MoveReject": {
+    "triggers": "StatusMoveCancelled",
+    "alt_heading": "{{blammo, foo:gazi}} ",
+    "heading": "Rejected by $t(events::select_agency)",
+    "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} rejected by $t(events::select_agency) $t(events::MoveReject.select_rejection_reason) $t(events::MoveReject.select_cancellation_reason_comment) $t(events::MoveReject.select_rebook)",
+    "select_rejection_reason": "$t(events::MoveReject.rejection_reason, {\"context\": \"{{rejection_reason}}\"})",
+    "rejection_reason_prefix": "<br>Rejection reason:",
+    "rejection_reason": "",
+    "rejection_reason_no_space_at_receiving_prison": "$t(events::MoveReject.rejection_reason_prefix) There was no space at {{move.to_location.title}}",
+    "rejection_reason_no_transport_available": "$t(events::MoveReject.rejection_reason_prefix) There was no transport available",
+    "select_rebook": "$t(events::MoveReject.rebook, {\"context\": \"{{rebook}}\"})",
+    "rebook": "",
+    "rebook_true": "<br>This move will be rebooked in 7 days",
+    "rebook_false": "<br>This move will not be rebooked",
+    "select_cancellation_reason_comment": "$t(events::MoveReject.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
+    "cancellation_reason_comment": "",
+    "cancellation_reason_comment_true": "<br>Comment: {{cancellation_reason_comment}}"
+  },
+  "MoveRequested": {
+    "default_agency": "user",
+    "triggers": "StatusMoveRequested",
+    "heading": "Requested by $t(events::select_agency)",
+    "description": ""
+  },
+  "MoveStart": {
+    "triggers": "StatusMoveInTransit",
+    "heading": "Move started by {{move.supplier.name}}",
+    "description": ""
+  },
+  "MoveCrossSupplierPickUp": {
+    "heading": "Crossdeck move",
+    "description": "Move {{previous_move.reference}} picked up by {{move.supplier.name}}"
+  },
+  "MoveCrossSupplierDropOff": {
+    "heading": "Crossdeck move",
+    "description": "Drop off by {{supplier.name}}"
+  },
+  "PerCourtAllDocumentationProvidedToSupplier": {
+    "heading": "Documentation provided to supplier",
+    "description": "$t(events::PerCourtAllDocumentationProvidedToSupplier.select_subtype) made available to supplier personnel at {{court_location.title}}",
+    "select_subtype": "$t(events::PerCourtAllDocumentationProvidedToSupplier.subtype, {\"context\": \"{{subtype}}\"})",
+    "subtype": "",
+    "subtype_extradition_order": "Extradition order",
+    "subtype_placement_confirmation": "Placement confirmation",
+    "subtype_warrant": "Warrant"
+  },
+  "PerCourtAssignCellInCustody": {
+    "heading": "Person assigned to cell",
+    "description": "Assigned to {{court_cell_number}} at {{location.title}}"
+  },
+  "PerCourtCellShareRiskAssessment": {
+    "heading": "Cell share risk assessment completed",
+    "description": ""
+  },
+  "PerCourtExcessiveDelayNotDueToSupplier": {
+    "heading": "Court delayed",
+    "description": "Excessive delay due to $t(events::PerCourtExcessiveDelayNotDueToSupplier.select_subtype) at {{location.title}} between {{occurred_at, formatTime}} and {{ended_at, formatTime}}",
+    "select_subtype": "$t(events::PerCourtExcessiveDelayNotDueToSupplier.subtype, {\"context\": \"{{subtype}}\"})",
+    "subtype": "",
+    "subtype_making_prisoner_available_for_loading": "excessive delay accessing location when collecting or dropping off prisoner",
+    "subtype_access_to_or_from_location_when_collecting_dropping_off_prisoner": "excessive delay in making prisoner available for loading"
+  },
+  "PerCourtHearing": {
+    "heading": "Court hearing",
+    "description": "The $t(events::PerCourtHearing.hearing) was listed for {{court_listing_at, formatTime}} at {{location.title}}. The agreed arrival time was {{agreed_at, formatTime}}.<br>The $t(events::PerCourtHearing.hearing) started at {{started_at, formatTime}} and finished at {{ended_at, formatTime}}.<br>The following outcome was reached: {{court_outcome}}",
+    "hearing": "$t(events::PerCourtHearing.select_is_virtual) $t(events::PerCourtHearing.select_is_trial)",
+    "select_is_trial": "$t(events::PerCourtHearing.is_trial, {\"context\": \"{{is_trial}}\"})",
+    "is_trial": "hearing",
+    "is_trial_true": "trial",
+    "select_is_virtual": "$t(events::PerCourtHearing.is_virtual, {\"context\": \"{{is_virtual}}\"})",
+    "is_virtual": "",
+    "is_virtual_true": "virtual"
+  },
+  "PerCourtPreReleaseChecksCompleted": {
+    "heading": "Pre-release checks completed",
+    "description": ""
+  },
+  "PerCourtReadyInCustody": {
+    "heading": "{{person.fullname}} ready in custody",
+    "description": ""
+  },
+  "PerCourtRelease": {
+    "heading": "{{person.fullname}} released",
+    "description": ""
+  },
+  "PerCourtReleaseOnBail": {
+    "heading": "{{person.fullname}} released on bail",
+    "description": ""
+  },
+  "PerCourtReturnToCustodyAreaFromDock": {
+    "heading": "{{person.fullname}} returned to custody area from dock",
+    "description": ""
+  },
+  "PerCourtReturnToCustodyAreaFromVisitorArea": {
+    "heading": "{{person.fullname}} returned to custody area from visitor area",
+    "description": ""
+  },
+  "PerCourtTakeFromCustodyToDock": {
+    "heading": "{{person.fullname}} taken to court dock from custody area",
+    "description": ""
+  },
+  "PerCourtTakeToSeeVisitors": {
+    "heading": "{{person.fullname}} taken to visitor area",
+    "description": ""
+  },
+  "PerCourtTask": {
+    "heading": "Court task",
+    "description": "{{notes}}, completed by {{supplier_personnel_id}}"
+  },
+  "PerGeneric": {
+    "heading": "{{move.supplier.name}} has logged a generic event note",
+    "description": "{{notes}}"
+  },
+  "PerMedicalAid": {
+    "heading": "Medical attention requested",
+    "description": "{{person.fullname}} requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} on {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} on {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
+    "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
+    "location_vehicle": "at {{location.title}}",
+    "location_vehicle_true": "inside the vehicle {{vehicle_reg}}"
+  },
+  "PerPrisonerWelfare": {
+    "heading": "Welfare offered",
+    "description": "{{person.fullname}} was offered $t(events::PerPrisonerWelfare.select_subtype) at {{occurred_at, formatTime}}<br>Welfare was {{outcome}}<br>{{supplier_personnel_number}} provided welfare at {{given_at, formatTime}}",
+    "select_subtype": "$t(events::PerPrisonerWelfare.subtype, {\"context\": \"{{subtype}}\"})",
+    "subtype": "",
+    "subtype_miscellaneous_welfare": "miscellaneous welfare",
+    "subtype_comfort_break": "comfort_break",
+    "subtype_food": "food",
+    "subtype_beverage": "a beverage",
+    "subtype_additional_clothing": "additional clothing",
+    "subtype_relevant_information_given": "relevant information"
+  },
+  "PersonMoveAssault": {
+    "heading": "Assault occurred",
+    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
+  },
+  "PersonMoveDeathInCustody": {
+    "heading": "Death in custody",
+    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
+  },
+  "PersonMoveBookedIntoReceivingEstablishment": {
+    "heading": "{{person.fullname}} booked into {{location.title}}",
+    "description": ""
+  },
+  "PersonMoveMajorIncidentOther": {
+    "heading": "Major incident occurred",
+    "description": "$t(events::incident_level_details, {\"incident_level\": \"Major\"})"
+  },
+  "PersonMoveMinorIncidentOther": {
+    "heading": "Minor incident occurred",
+    "description": "$t(events::incident_level_details, {\"incident_level\": \"Minor\"})"
+  },
+  "PersonMovePersonEscapedKpi": {
+    "heading": "KPI Escape occured",
+    "description": "$t(events::incident_escaped)"
+  },
+  "PersonMovePersonEscaped": {
+    "heading": "Non KPI Escape occured",
+    "description": "$t(events::incident_escaped)"
+  },
+  "PersonMoveReleasedError": {
+    "heading": "Released in error",
+    "description": "{{person.fullname}} was released in error from {{location.title}} $t(events::incident_reported_classified)"
+  },
+  "PersonMoveRoadTrafficAccident": {
+    "heading": "Road traffic accident",
+    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} met with road traffic accident $t(events::incident_reported_classified)"
+  },
+  "PersonMoveSeriousInjury": {
+    "heading": "Serious injury sustained",
+    "description": "{{person.fullname}} sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)"
+  },
+  "PersonMoveUsedForce": {
+    "heading": "Supplier used force",
+    "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on {{person.fullname}} <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
+  },
+  "PersonMoveVehicleBrokeDown": {
+    "heading": "Supplier vehicle breakdown",
+    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} broke down $t(events::incident_reported_classified)"
+  },
+  "PersonMoveVehicleSystemsFailed": {
+    "heading": "Supplier vehicle systems failed",
+    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} has had a system failure $t(events::incident_reported_classified)"
+  },
+  "StatusMoveBooked": {
+    "statusChange": true,
+    "heading": "$t(statuses::booked)",
+    "description": "Move has been booked with {{move.supplier.name}}"
+  },
+  "StatusMoveCancelled": {
+    "statusChange": true,
+    "heading": "$t(statuses::cancelled)",
+    "description": "Move has been cancelled"
+  },
+  "StatusMoveCompleted": {
+    "statusChange": true,
+    "heading": "$t(statuses::completed)",
+    "description": "Move has been completed by {{move.supplier.name}}"
+  },
+  "StatusMoveInTransit": {
+    "statusChange": true,
+    "heading": "$t(statuses::in_transit)",
+    "description": "Move is in transit with {{move.supplier.name}}"
+  },
+  "StatusMoveProposed": {
+    "statusChange": true,
+    "heading": "$t(statuses::proposed)",
+    "description": "Move has been proposed by OCA"
+  },
+  "StatusMoveRequested": {
+    "statusChange": true,
+    "heading": "$t(statuses::requested)",
+    "description": "Move has been requested with {{move.supplier.name}}"
+  }
+}

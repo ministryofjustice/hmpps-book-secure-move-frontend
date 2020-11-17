@@ -8,6 +8,7 @@ const assessmentCategoryToSummaryListComponent = require('./assessment-category-
 const assessmentToTagList = require('./assessment-to-tag-list')
 const courtCaseToCardComponent = require('./court-case-to-card-component')
 const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
+const eventsToTimelineComponent = require('./events-to-timeline-component')
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkNomisMappingsToPanel = require('./framework-nomis-mappings-to-panel')
@@ -39,6 +40,7 @@ module.exports = {
   assessmentCategoryToSummaryListComponent,
   courtCaseToCardComponent,
   courtHearingToSummaryListComponent,
+  eventsToTimelineComponent,
   frameworkFieldToSummaryListRow,
   frameworkFlagsToTagList,
   frameworkNomisMappingsToPanel,
