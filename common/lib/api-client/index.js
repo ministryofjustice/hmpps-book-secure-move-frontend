@@ -12,6 +12,7 @@ const {
   requestHeaders,
   requestInclude,
   requestTimeout,
+  processResponse,
 } = require('./middleware')
 const models = require('./models')
 
@@ -55,6 +56,8 @@ module.exports = function () {
   insertRequestMiddleware(requestTimeout(API.TIMEOUT))
   insertRequestMiddleware(requestHeaders)
   insertRequestMiddleware(requestInclude)
+
+  instance.insertMiddlewareAfter('axios-request', processResponse)
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {

@@ -16,6 +16,11 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
 
       debug('API REQUEST', req.url)
 
+      if (req.params.populateResources) {
+        req.populateResources = req.params.populateResources
+        delete req.params.populateResources
+      }
+
       // start timer for metrics and logging
       const clientTimer = timer()
 
@@ -43,6 +48,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
           throw error
         })
 
+      response.req = req
       return response
     },
   }

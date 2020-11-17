@@ -964,6 +964,7 @@ describe('Move Service', function () {
         it('should call find method with data', function () {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
             include: undefined,
+            preserveResourceRefs: undefined,
           })
         })
 
@@ -987,6 +988,21 @@ describe('Move Service', function () {
         it('should pass include paramter to api client', function () {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
             include: ['foo', 'bar'],
+            preserveResourceRefs: undefined,
+          })
+        })
+      })
+
+      context('when called with preserveResourceRefs parameter', function () {
+        beforeEach(async function () {
+          move = await moveService.getById(mockId, {
+            preserveResourceRefs: true,
+          })
+        })
+        it('should pass preserveResourceRefs param on', function () {
+          expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
+            include: undefined,
+            preserveResourceRefs: true,
           })
         })
       })

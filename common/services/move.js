@@ -206,13 +206,13 @@ const moveService = {
     return response
   },
 
-  getById(id, { include } = {}) {
+  getById(id, { include, preserveResourceRefs } = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
     return apiClient
-      .find('move', id, { include })
+      .find('move', id, { include, preserveResourceRefs })
       .then(response => response.data)
       .then(this.transform)
   },
