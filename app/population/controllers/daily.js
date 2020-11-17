@@ -1,7 +1,6 @@
 function daily(req, res) {
   const {
     context,
-    resultsAsDailySummary,
     details,
     totalSpace,
     availableSpace,
@@ -13,7 +12,6 @@ function daily(req, res) {
   res.render('population/view/daily', {
     context,
     pageTitle: 'dashboard::page_title',
-    resultsAsDailySummary,
     details,
     totalSpace,
     availableSpace,

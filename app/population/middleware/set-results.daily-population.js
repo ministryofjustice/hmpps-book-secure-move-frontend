@@ -1,6 +1,6 @@
 const populationService = require('../../../common/services/population')
 
-async function setBodyFreeSpaces(req, res, next) {
+async function setResultsDailyPopulation(req, res, next) {
   try {
     req.transfersIn = [
       {
@@ -28,10 +28,10 @@ async function setBodyFreeSpaces(req, res, next) {
       },
     ]
 
-    const { populationId } = req.body.population
+    const { populationId } = req.body
 
     if (!populationId) {
-      req.body.population.freeSpaces = {
+      req.body.details = {
         date: req.params.date,
       }
       return next()
@@ -51,21 +51,8 @@ async function setBodyFreeSpaces(req, res, next) {
       updated_at: updatedAt,
     } = await populationService.getById(populationId)
 
-    req.body.population.freeSpaces = {
-      date,
-      freeSpaces: freeSpaces,
-      updatedAt: updatedAt,
-      operationalCapacity: operationalCapacity,
-      usableCapacity: usableCapacity,
-      unlock: unlock,
-      bedwatch: bedwatch,
-      overnightsIn: overnightsIn,
-      overnightsOut: overnightsOut,
-      outOfAreaCourts: outOfAreaCourts,
-      discharges: discharges,
-    }
-
     req.details = {
+      date: date,
       free_spaces: freeSpaces,
       updated_at: updatedAt,
     }
@@ -92,4 +79,4 @@ async function setBodyFreeSpaces(req, res, next) {
   }
 }
 
-module.exports = setBodyFreeSpaces
+module.exports = setResultsDailyPopulation

@@ -1,6 +1,6 @@
 const populationService = require('../../../common/services/population')
 
-const middleware = require('./set-body.free-spaces')
+const middleware = require('./set-results.daily-population')
 
 const mockFreeSpaceData = {
   date: '2020-11-09',

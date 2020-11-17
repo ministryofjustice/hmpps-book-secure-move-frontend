@@ -1,6 +1,6 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
 
-const middleware = require('./set-body.population-id')
+const middleware = require('./set-population-id')
 
 const mockCapacities = [
   {

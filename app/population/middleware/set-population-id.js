@@ -13,8 +13,7 @@ async function setResultsPopulationTable(req, res, next) {
     const population = freeSpaces?.[0]?.meta?.populations?.[0] || {}
     const { id: populationId } = population
 
-    req.body.population = req.body.population || {}
-    req.body.population.populationId = populationId
+    req.body.populationId = populationId
 
     next()
   } catch (error) {

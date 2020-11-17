@@ -1,13 +1,11 @@
 const redirectBaseUrl = require('./redirect-base-url')
-const setBodyFreeSpaces = require('./set-body.free-spaces')
-const setBodyPopulationId = require('./set-body.population-id')
-const setResultsAsDailySummary = require('./set-results.daily-summary')
+const setPopulationId = require('./set-population-id')
+const setResultsDailyPopulation = require('./set-results.daily-population')
 const setResultsAsPopulationTable = require('./set-results.population-table')
 
 module.exports = {
-  setResultsAsPopulationTable,
   redirectBaseUrl,
-  setResultsAsDailySummary,
-  setBodyPopulationId,
-  setBodyFreeSpaces,
+  setPopulationId,
+  setResultsAsPopulationTable,
+  setResultsDailyPopulation,
 }
