@@ -2,6 +2,8 @@ const { forEach, flatten, get, startCase } = require('lodash')
 const pluralize = require('pluralize')
 const proxyquire = require('proxyquire')
 
+const frameworksService = require('../../../services/frameworks')
+
 const models = require('./index')
 
 function checkProperties(data, properties) {
@@ -222,6 +224,10 @@ const expectNoData = ({ response }) => {
 }
 
 describe('API client models', function () {
+  beforeEach(function () {
+    sinon.stub(frameworksService, 'getPersonEscortRecord').returnsArg(0)
+  })
+
   forEach(models, (model, modelName) => {
     describe(`${startCase(modelName)} model`, function () {
       // ensure all methods have a statusCode defined

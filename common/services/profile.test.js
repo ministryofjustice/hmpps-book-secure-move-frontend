@@ -2,52 +2,12 @@ const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
 
-const personService = require('./person')
 const unformatStub = sinon.stub()
 
 const profileService = proxyquire('./profile', {
   './profile/profile.unformat': unformatStub,
 })
 describe('Profile Service', function () {
-  context('#transform', function () {
-    context('When profile is not a valid object', function () {
-      it('should leave profile untouched', function () {
-        const profile = profileService.transform(null)
-        expect(profile).to.be.null
-      })
-    })
-
-    context('When profile is valid object', function () {
-      const mockPerson = {
-        id: '__person__',
-      }
-      let profile
-      beforeEach(function () {
-        sinon.stub(personService, 'transform').callsFake(person => {
-          return {
-            ...person,
-            foo: 'bar',
-          }
-        })
-        profile = profileService.transform({
-          id: '__profile__',
-          person: mockPerson,
-        })
-      })
-
-      it('should transform the person', function () {
-        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
-      })
-
-      it('should update the person object on the profile', function () {
-        expect(profile.person).to.deep.equal({
-          ...mockPerson,
-          foo: 'bar',
-        })
-      })
-    })
-  })
-
   describe('#create()', function () {
     const profileData = {
       assessment_answer: [],
@@ -71,7 +31,6 @@ describe('Profile Service', function () {
         sinon.spy(apiClient, 'one')
         sinon.spy(apiClient, 'all')
         sinon.stub(apiClient, 'post').resolves(mockResponse)
-        sinon.stub(profileService, 'transform')
 
         await profileService.create('#personId', profileData)
       })
@@ -80,12 +39,6 @@ describe('Profile Service', function () {
         expect(apiClient.one).to.be.calledOnceWithExactly('person', '#personId')
         expect(apiClient.all).to.be.calledOnceWithExactly('profile')
         expect(apiClient.post).to.be.calledOnceWithExactly(profileData)
-      })
-
-      it('should transform profile', function () {
-        expect(profileService.transform).to.be.calledOnceWithExactly({
-          id: '#createdProfile',
-        })
       })
     })
   })
@@ -116,7 +69,6 @@ describe('Profile Service', function () {
       beforeEach(async function () {
         sinon.spy(apiClient, 'one')
         sinon.stub(apiClient, 'patch').resolves(mockResponse)
-        sinon.stub(profileService, 'transform')
 
         await profileService.update(profileData)
       })
@@ -131,12 +83,6 @@ describe('Profile Service', function () {
           '#profileId'
         )
         expect(apiClient.patch).to.be.calledOnceWithExactly(profileData)
-      })
-
-      it('should transform profile', function () {
-        expect(profileService.transform).to.be.calledOnceWithExactly({
-          id: '#updatedProfile',
-        })
       })
     })
   })

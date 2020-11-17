@@ -1,8 +1,6 @@
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
-const personService = require('../services/person')
-const profileService = require('../services/profile')
 
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
@@ -58,11 +56,7 @@ const mockMoves = [
 ]
 
 describe('Move Service', function () {
-  beforeEach(function () {
-    sinon.stub(moveService, 'transform').returnsArg(0)
-  })
-
-  context('#transform', function () {
+  describe('default include', function () {
     expect(moveService.defaultInclude).to.deep.equal([
       'allocation',
       'court_hearings',
@@ -85,68 +79,6 @@ describe('Move Service', function () {
       'supplier',
       'to_location',
     ])
-  })
-
-  context('#transform', function () {
-    const mockPerson = {
-      id: '__person__',
-    }
-    const mockProfile = {
-      id: '__profile__',
-      person: mockPerson,
-    }
-    let move
-    beforeEach(function () {
-      // restore the stub as its stubbed before every test for convenience
-      moveService.transform.restore()
-
-      sinon.stub(profileService, 'transform').callsFake(profile => {
-        return {
-          ...profile,
-          person: profile.person,
-        }
-      })
-      sinon.stub(personService, 'transform').callsFake(person => {
-        return {
-          ...person,
-          foo: 'bar',
-        }
-      })
-      move = moveService.transform({
-        id: '__move__',
-        profile: mockProfile,
-        person: mockPerson,
-      })
-    })
-    it('should transform the move profile', function () {
-      expect(profileService.transform).to.be.calledOnceWithExactly(mockProfile)
-    })
-    it('should transform the move person', function () {
-      expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
-    })
-    it('should add the person object as a direct property of the move', function () {
-      expect(move.person).to.deep.equal({
-        ...mockPerson,
-        foo: 'bar',
-      })
-    })
-
-    context('with youth-like moves', function () {
-      it('should upgrade the move type', function () {
-        const transformed = moveService.transform({
-          id: '__move__',
-          profile: mockProfile,
-          person: mockPerson,
-          from_location: {
-            location_type: 'secure_childrens_home',
-          },
-          to_location: {
-            location_type: 'secure_childrens_home',
-          },
-        })
-        expect(transformed.move_type).to.equal('secure_childrens_home')
-      })
-    })
   })
 
   describe('#format()', function () {
@@ -416,10 +348,6 @@ describe('Move Service', function () {
           })
         })
 
-        it('should transform each person object', function () {
-          expect(moveService.transform.callCount).to.equal(mockMoves.length)
-        })
-
         it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
@@ -539,10 +467,6 @@ describe('Move Service', function () {
             per_page: 100,
             include: undefined,
           })
-        })
-
-        it('should transform each person object', function () {
-          expect(moveService.transform.callCount).to.equal(4)
         })
 
         it('should return moves', function () {
@@ -990,12 +914,6 @@ describe('Move Service', function () {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {})
         })
 
-        it('should call move transformer with response data', function () {
-          expect(moveService.transform).to.be.calledOnceWithExactly(
-            mockResponse.data
-          )
-        })
-
         it('should return move', function () {
           expect(move).to.deep.equal(mockResponse.data)
         })
@@ -1095,12 +1013,6 @@ describe('Move Service', function () {
       expect(moveService.format).to.be.calledOnceWithExactly(mockData)
     })
 
-    it('should call move transformer with response data', function () {
-      expect(moveService.transform).to.be.calledOnceWithExactly(
-        mockResponse.data
-      )
-    })
-
     it('should return move', function () {
       expect(move).to.deep.equal(mockResponse.data)
     })
@@ -1181,12 +1093,6 @@ describe('Move Service', function () {
 
       it('should format data', function () {
         expect(moveService.format).to.be.calledOnceWithExactly(mockMove)
-      })
-
-      it('should call move transformer with response data', function () {
-        expect(moveService.transform).to.be.calledOnceWithExactly(
-          mockResponse.data
-        )
       })
 
       it('should return move', function () {

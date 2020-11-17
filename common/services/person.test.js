@@ -1,4 +1,3 @@
-const { forEach } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
@@ -18,92 +17,6 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
-  describe('#transform()', function () {
-    let transformed
-
-    context('with first name and last name', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform(mockPerson)
-      })
-
-      it('should set full name', function () {
-        expect(transformed).to.contain.property('fullname')
-        expect(transformed.fullname).to.equal(
-          `${mockPerson.last_name}, ${mockPerson.first_names}`
-        )
-      })
-
-      it('should set image url', function () {
-        expect(transformed).to.contain.property('image_url')
-        expect(transformed.image_url).to.equal(`/person/${mockPerson.id}/image`)
-      })
-
-      it('should contain original properties', function () {
-        forEach(mockPerson, (value, key) => {
-          expect(transformed).to.contain.property(key)
-          expect(transformed[key]).to.equal(value)
-        })
-      })
-    })
-
-    context('with no first name', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform({
-          last_name: 'Last',
-        })
-      })
-
-      it('should return only last name for full name', function () {
-        expect(transformed).to.contain.property('fullname')
-        expect(transformed.fullname).to.equal('Last')
-      })
-    })
-
-    context('with no last name', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform({
-          first_names: 'Firstname',
-        })
-      })
-
-      it('should return only last name for full name', function () {
-        expect(transformed).to.contain.property('fullname')
-        expect(transformed.fullname).to.equal('Firstname')
-      })
-    })
-
-    context('with no first name or last name', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform({})
-      })
-
-      it('should return only last name for full name', function () {
-        expect(transformed).to.contain.property('fullname')
-        expect(transformed.fullname).to.equal('')
-      })
-    })
-
-    context('with no arguments', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform()
-      })
-
-      it('should return only last name for full name', function () {
-        expect(transformed).to.be.undefined
-      })
-    })
-
-    context('with null', function () {
-      beforeEach(async function () {
-        transformed = await personService.transform(null)
-      })
-
-      it('should return only last name for full name', function () {
-        expect(transformed).to.be.null
-      })
-    })
-  })
-
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted
@@ -266,7 +179,6 @@ describe('Person Service', function () {
 
     beforeEach(async function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
-      sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
 
       person = await personService.create(mockData)
@@ -278,12 +190,6 @@ describe('Person Service', function () {
 
     it('should format data', function () {
       expect(personService.format).to.be.calledOnceWithExactly(mockData)
-    })
-
-    it('should transform response data', function () {
-      expect(personService.transform).to.be.calledOnceWithExactly(
-        mockResponse.data
-      )
     })
 
     it('should return data property', function () {
@@ -303,7 +209,6 @@ describe('Person Service', function () {
 
     beforeEach(async function () {
       sinon.stub(apiClient, 'update').resolves(mockResponse)
-      sinon.stub(personService, 'transform').returnsArg(0)
       sinon.stub(personService, 'format').returnsArg(0)
     })
 
@@ -332,12 +237,6 @@ describe('Person Service', function () {
 
       it('should format data', function () {
         expect(personService.format).to.be.calledOnceWithExactly(mockData)
-      })
-
-      it('should transform response data', function () {
-        expect(personService.transform).to.be.calledOnceWithExactly(
-          mockResponse.data
-        )
       })
 
       it('should return data property', function () {
@@ -519,7 +418,6 @@ describe('Person Service', function () {
 
     beforeEach(async function () {
       sinon.stub(apiClient, 'findAll').resolves(mockResponse)
-      sinon.stub(personService, 'transform').returnsArg(0)
     })
 
     context('without filters', function () {
@@ -531,10 +429,6 @@ describe('Person Service', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
           include: undefined,
         })
-      })
-
-      it('should transform response data', function () {
-        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
       })
 
       it('should return data property', function () {
@@ -556,10 +450,6 @@ describe('Person Service', function () {
           'filter[filterTwo]': 'filter-two-value',
           include: undefined,
         })
-      })
-
-      it('should transform response data', function () {
-        expect(personService.transform).to.be.calledOnceWithExactly(mockPerson)
       })
 
       it('should return data property', function () {

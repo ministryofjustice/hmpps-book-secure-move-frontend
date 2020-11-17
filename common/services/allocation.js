@@ -2,7 +2,6 @@ const dateFunctions = require('date-fns')
 const { mapValues, pickBy, set } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
-const moveService = require('../services/move')
 
 const batchRequest = require('./batch-request')
 
@@ -116,11 +115,9 @@ const allocationService = {
         totalSlots,
         filledSlots,
         unfilledSlots,
-        moves: result.moves
-          .filter(
-            move => includeCancelled || !['cancelled'].includes(move.status)
-          )
-          .map(moveService.transform),
+        moves: result.moves.filter(
+          move => includeCancelled || !['cancelled'].includes(move.status)
+        ),
       }
     }
   },

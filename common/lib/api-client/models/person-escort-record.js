@@ -1,3 +1,8 @@
+const {
+  transformResource,
+  personEscortRecordTransformer,
+} = require('../transformers')
+
 module.exports = {
   fields: {
     status: '',
@@ -41,6 +46,8 @@ module.exports = {
       'responses.nomis_mappings',
       'flags',
       'prefill_source',
+      'move',
     ],
+    deserializer: transformResource(personEscortRecordTransformer),
   },
 }

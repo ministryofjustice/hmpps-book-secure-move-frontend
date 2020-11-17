@@ -1,10 +1,8 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined, isEmpty, get } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 const restClient = require('../lib/api-client/rest-client')
-const personService = require('../services/person')
-const profileService = require('../services/profile')
 
 const batchRequest = require('./batch-request')
 
@@ -72,21 +70,6 @@ const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
   defaultInclude,
 
-  transform(move) {
-    // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
-    const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
-    const locationType = get(move, 'to_location.location_type')
-
-    if (youthTransfer.includes(locationType)) {
-      move.move_type = locationType
-    }
-
-    return {
-      ...move,
-      profile: profileService.transform(move.profile),
-      person: personService.transform(move.person),
-    }
-  },
   format(data) {
     const booleansAndNulls = ['move_agreed']
     const relationships = [
@@ -129,7 +112,7 @@ const moveService = {
       return results
     }
 
-    return results.map(this.transform)
+    return results
   },
 
   getActive({
@@ -236,10 +219,7 @@ const moveService = {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
-    return apiClient
-      .find('move', id, options)
-      .then(response => response.data)
-      .then(this.transform)
+    return apiClient.find('move', id, options).then(response => response.data)
   },
 
   getById(id) {
@@ -260,7 +240,6 @@ const moveService = {
     return apiClient
       .create('move', moveService.format(data))
       .then(response => response.data)
-      .then(this.transform)
   },
 
   update(data) {
@@ -271,7 +250,6 @@ const moveService = {
     return apiClient
       .update('move', moveService.format(data))
       .then(response => response.data)
-      .then(this.transform)
   },
 
   redirect(data) {

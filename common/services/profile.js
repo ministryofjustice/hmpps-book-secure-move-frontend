@@ -2,7 +2,6 @@ const { get } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
-const personService = require('./person')
 const unformat = require('./profile/profile.unformat')
 
 const assessmentKeys = [
@@ -31,17 +30,6 @@ const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 const allFields = [].concat(assessmentKeys, explicitAssessmentKeys)
 
 const profileService = {
-  transform(profile) {
-    if (!profile) {
-      return profile
-    }
-
-    return {
-      ...profile,
-      person: personService.transform(profile.person),
-    }
-  },
-
   unformat(
     profile,
     fields = allFields,
@@ -66,7 +54,6 @@ const profileService = {
       .all('profile')
       .post(data)
       .then(response => response.data)
-      .then(profile => profileService.transform(profile))
   },
 
   async update(data) {
@@ -81,7 +68,6 @@ const profileService = {
       .one('profile', data.id)
       .patch(data)
       .then(response => response.data)
-      .then(profile => profileService.transform(profile))
   },
 }
 

@@ -1,3 +1,5 @@
+const { transformResource, moveTransformer } = require('../transformers')
+
 module.exports = {
   fields: {
     reference: '',
@@ -79,5 +81,6 @@ module.exports = {
       'supplier',
       'to_location',
     ],
+    deserializer: transformResource(moveTransformer),
   },
 }
