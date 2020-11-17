@@ -5,19 +5,25 @@ const moveService = require('../../../common/services/move')
 const getTabsUrls = require('./view/view.tabs.urls')
 
 module.exports = async function view(req, res) {
-  const { move } = req
-  const { profile } = move
+  const move = await moveService.getById(req.params.id, {
+    include: [
+      'profile',
+      'profile.person',
+      'from_location',
+      'to_location',
+      'timeline_events',
+      'timeline_events.eventable',
+    ],
+    populateResources: true,
+  })
+
+  const { profile, timeline_events: moveEvents } = move
 
   const urls = {
     tabs: getTabsUrls(move),
   }
 
   const { assessment_answers: assessmentAnswers = [] } = profile || {}
-
-  const { timeline_events: moveEvents } = await moveService.getById(move.id, {
-    include: 'timeline_events',
-    populateResources: true,
-  })
 
   await populateResources(moveEvents)
 

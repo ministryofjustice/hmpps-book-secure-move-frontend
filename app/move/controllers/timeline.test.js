@@ -42,7 +42,9 @@ describe('Move controllers', function () {
       populateResources.resetHistory()
       getTabsUrls.resetHistory()
       req = {
-        move: mockMove,
+        params: {
+          id: 'moveId',
+        },
       }
     })
 
@@ -57,7 +59,14 @@ describe('Move controllers', function () {
 
       it('should fetch timeline events for move', function () {
         expect(moveService.getById).to.be.calledOnceWithExactly(mockMove.id, {
-          include: 'timeline_events',
+          include: [
+            'profile',
+            'profile.person',
+            'from_location',
+            'to_location',
+            'timeline_events',
+            'timeline_events.eventable',
+          ],
           populateResources: true,
         })
       })

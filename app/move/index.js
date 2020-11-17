@@ -89,6 +89,8 @@ const unassignConfig = {
   journeyPageTitle: 'actions::cancel_allocation',
 }
 
+router.get(`/:id(${uuidRegex})/timeline`, protectRoute('move:view'), timeline)
+
 // Define param middleware
 router.param('moveId', setMove)
 
@@ -106,8 +108,6 @@ router.use(
 )
 
 moveRouter.get('/', protectRoute('move:view'), view)
-
-moveRouter.get('/timeline', protectRoute('move:view'), timeline)
 
 moveRouter.get(
   '/confirmation',
