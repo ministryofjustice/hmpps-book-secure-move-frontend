@@ -34,16 +34,28 @@
   </p>
 {% endmacro %}
 
+{% set displayDate = details.date | formatDateWithRelativeDay %}
 
 {% block pageTitle %}
-  {{ t(pageTitle) }} – {{ super() }}
+  {{ t("collections::page_title_with_date", {
+    context: context,
+    date: displayDate
+  }) }}
 {% endblock %}
 
+
 {% block content %}
-  <header>
-    <h1 class="govuk-heading-xl">
-      {{ resultsAsDailySummary.date | formatDateWithDay }}
-    </h1>
+  <header class="govuk-grid-row govuk-!-margin-bottom-7">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
+        <span class="govuk-caption-xl">
+            {{ t("collections::subheading", {
+              context: context
+            }) }}
+            </span>
+        <span class="govuk-!-display-block">{{ displayDate }}</span>
+      </h1>
+    </div>
   </header>
 
   {%  call appPanel({classes: 'govuk-!-margin-bottom-4 govuk-!-padding-bottom-0'}) %}
