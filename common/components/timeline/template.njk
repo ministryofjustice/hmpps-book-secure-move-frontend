@@ -9,27 +9,25 @@
       </h{{ params.headingLevel | default(2) }}>
     </div>
 
-    <div class="app-timeline__content">
-      <div class="app-timeline__description {{- ' ' + item.description.classes if item.description.classes}}">
-        {{- item.html | safe if item.html else item.text -}}
-      </div>
-
-      <p class="app-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
-        <time datetime="{{ item.datetime.timestamp }}">
-          {%- if item.datetime.type %}
-            {{- item.datetime.timestamp | mojDate(item.datetime.type) -}}
-          {% else %}
-            {{- item.datetime.timestamp | date(item.datetime.format) -}}
-          {% endif -%}
-        </time>
-      </p>
-
-      {% if item.byline %}
-        <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes}}">
-          {{- item.byline.html | safe if item.byline.html else item.byline.text -}}
-        </div>
-      {% endif %}
+    <div class="app-timeline__description {{- ' ' + item.description.classes if item.description.classes}}">
+      {{- item.html | safe if item.html else item.text -}}
     </div>
+
+    <p class="app-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
+      <time datetime="{{ item.datetime.timestamp }}">
+        {%- if item.datetime.type %}
+          {{- item.datetime.timestamp | mojDate(item.datetime.type) -}}
+        {% else %}
+          {{- item.datetime.timestamp | date(item.datetime.format) -}}
+        {% endif -%}
+      </time>
+    </p>
+
+    {% if item.byline %}
+      <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes}}">
+        {{- item.byline.html | safe if item.byline.html else item.byline.text -}}
+      </div>
+    {% endif %}
 
   </div>
   {% endfor -%}

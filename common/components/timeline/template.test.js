@@ -12,7 +12,6 @@ describe('Timeline component', function () {
   let $timeline
   let $item
   let $header
-  let $content
   let $title
   let $description
   let $date
@@ -24,7 +23,6 @@ describe('Timeline component', function () {
     $component = $('body')
     $timeline = $component.find('.app-timeline')
     $item = $component.find('.app-timeline__item')
-    $content = $component.find('.app-timeline__content')
     $header = $component.find('.app-timeline__header')
     $title = $component.find('.app-timeline__title')
     $description = $component.find('.app-timeline__description')
@@ -44,10 +42,6 @@ describe('Timeline component', function () {
 
     it('should contain a timeline element', function () {
       expect($timeline.length).to.equal(1)
-    })
-
-    it('should contain content container', function () {
-      expect($content.length).to.equal(2)
     })
 
     it('should contain a heading element for each item', function () {
@@ -80,8 +74,7 @@ describe('Timeline component', function () {
     })
 
     it('should have correct structure', function () {
-      expect($header.next().hasClass('app-timeline__content')).to.equal(true)
-      expect($description.parent().hasClass('app-timeline__content')).to.equal(
+      expect($header.next().hasClass('app-timeline__description')).to.equal(
         true
       )
       expect($description.next().hasClass('app-timeline__date')).to.equal(true)
@@ -251,6 +244,10 @@ describe('Timeline component', function () {
 
     it('should output expected byline info', function () {
       expect($byline.html().trim()).to.equal('<b>Agent</b> Smith')
+    })
+
+    it('should have correct structure', function () {
+      expect($date.next().hasClass('app-timeline__byline')).to.equal(true)
     })
   })
 
