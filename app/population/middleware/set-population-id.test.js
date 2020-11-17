@@ -53,9 +53,7 @@ describe('Population middleware', function () {
       })
 
       it('should set resultsAsPopulationTable on req', function () {
-        expect(req.body).to.have.property('population')
-        expect(req.body.population).to.have.property('populationId')
-        expect(req.body.population.populationId).to.equal('A')
+        expect(req.populationId).to.equal('A')
       })
 
       it('should call next', function () {
@@ -90,9 +88,7 @@ describe('Population middleware', function () {
       })
 
       it('should set resultsAsPopulationTable on req', function () {
-        expect(req.body).to.have.property('population')
-        expect(req.body.population).to.have.property('populationId')
-        expect(req.body.population.populationId).to.be.undefined
+        expect(req.populationId).to.be.undefined
       })
 
       it('should call next', function () {

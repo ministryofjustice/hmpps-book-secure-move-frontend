@@ -30,11 +30,7 @@ describe('Population middleware', function () {
       next = sinon.stub()
       res = {}
       req = {
-        body: {
-          population: {
-            populationId: 'ABADCAFE',
-          },
-        },
+        populationId: 'ABADCAFE',
         params: {
           date: '2020-08-01',
         },
@@ -58,22 +54,63 @@ describe('Population middleware', function () {
         )
       })
 
-      it('should set resultsAsPopulationTable on req', function () {
-        expect(req.body).to.have.property('population')
-        expect(req.body.population).to.have.property('freeSpaces')
-        expect(req.body.population.freeSpaces).to.deep.equal({
+      it('should set details on req', function () {
+        expect(req).to.have.property('details')
+        expect(req.details).to.deep.equal({
           date: mockFreeSpaceData.date,
-          operationalCapacity: mockFreeSpaceData.operational_capacity,
-          usableCapacity: mockFreeSpaceData.usable_capacity,
-          unlock: mockFreeSpaceData.unlock,
-          bedwatch: mockFreeSpaceData.bedwatch,
-          overnightsIn: mockFreeSpaceData.overnights_in,
-          overnightsOut: mockFreeSpaceData.overnights_out,
-          outOfAreaCourts: mockFreeSpaceData.out_of_area_courts,
-          discharges: mockFreeSpaceData.discharges,
-          freeSpaces: mockFreeSpaceData.free_spaces,
-          updatedAt: mockFreeSpaceData.updated_at,
+          free_spaces: mockFreeSpaceData.free_spaces,
+          updated_at: mockFreeSpaceData.updated_at,
         })
+      })
+
+      it('should set totalSpace on req', function () {
+        expect(req).to.have.property('totalSpace')
+        expect(req.totalSpace).to.deep.equal([
+          {
+            property: 'operational_capacity',
+            value: mockFreeSpaceData.operational_capacity,
+          },
+          {
+            property: 'usable_capacity',
+            value: mockFreeSpaceData.usable_capacity,
+          },
+        ])
+      })
+
+      it('should set unavailableSpace on req', function () {
+        expect(req).to.have.property('unavailableSpace')
+        expect(req.unavailableSpace).to.deep.equal([
+          {
+            property: 'unlock',
+            value: mockFreeSpaceData.unlock,
+          },
+          {
+            property: 'bedwatch',
+            value: mockFreeSpaceData.bedwatch,
+          },
+          {
+            property: 'overnights_in',
+            value: mockFreeSpaceData.overnights_in,
+          },
+        ])
+      })
+
+      it('should set availableSpace on req', function () {
+        expect(req).to.have.property('availableSpace')
+        expect(req.availableSpace).to.deep.equal([
+          {
+            property: 'overnights_out',
+            value: mockFreeSpaceData.overnights_out,
+          },
+          {
+            property: 'out_of_area_courts',
+            value: mockFreeSpaceData.out_of_area_courts,
+          },
+          {
+            property: 'discharges',
+            value: mockFreeSpaceData.discharges,
+          },
+        ])
       })
 
       it('should call next', function () {
@@ -83,7 +120,7 @@ describe('Population middleware', function () {
 
     context('without populationId', function () {
       beforeEach(async function () {
-        req.body.population.populationId = undefined
+        req.populationId = undefined
 
         await middleware(req, res, next)
       })
@@ -94,10 +131,9 @@ describe('Population middleware', function () {
         expect(populationService.getById).not.to.have.been.called
       })
 
-      it('should set freeSpaces with date only', function () {
-        expect(req.body).to.have.property('population')
-        expect(req.body.population).to.have.property('freeSpaces')
-        expect(req.body.population.freeSpaces.date).to.equal('2020-08-01')
+      it('should set details with date only', function () {
+        expect(req).to.have.property('details')
+        expect(req.details.date).to.equal('2020-08-01')
       })
 
       it('should call next', function () {
@@ -114,7 +150,7 @@ describe('Population middleware', function () {
       })
 
       it('should not request properties', function () {
-        expect(req.body.population).not.to.have.property('freeSpaces')
+        expect(req.details).to.be.undefined
       })
 
       it('should call next with error', function () {

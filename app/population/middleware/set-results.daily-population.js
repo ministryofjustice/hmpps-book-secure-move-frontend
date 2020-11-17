@@ -28,10 +28,10 @@ async function setResultsDailyPopulation(req, res, next) {
       },
     ]
 
-    const { populationId } = req.body
+    const { populationId } = req
 
     if (!populationId) {
-      req.body.details = {
+      req.details = {
         date: req.params.date,
       }
       return next()
