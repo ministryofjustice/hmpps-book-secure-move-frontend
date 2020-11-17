@@ -2,7 +2,7 @@ const { forEach, flatten, get, startCase } = require('lodash')
 const pluralize = require('pluralize')
 const proxyquire = require('proxyquire')
 
-const models = require('./models')
+const models = require('./index')
 
 function checkProperties(data, properties) {
   forEach(properties, (type, attribute) => {
@@ -10,7 +10,7 @@ function checkProperties(data, properties) {
   })
 }
 
-const fixturesPath = '../../../test/fixtures/api-client'
+const fixturesPath = '../../../../test/fixtures/api-client'
 const mockConfig = {
   IS_DEV: false,
   API: {
@@ -175,7 +175,7 @@ const testCases = {
   ],
 }
 
-const client = proxyquire('./', {
+const client = proxyquire('../index', {
   '../../../config': mockConfig,
   './middleware': {
     auth: sinon.stub(),

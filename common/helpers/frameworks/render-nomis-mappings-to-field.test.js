@@ -50,7 +50,7 @@ describe('#renderNomisMappingsToField', function () {
       const mockResponseWithMappings = {
         ...mockResponse,
         nomis_mappings: [{ foo: 'bar' }, { fizz: 'buzz' }],
-        person_escort_record: {
+        assessment: {
           created_at: '2020-10-10T14:22:00Z',
         },
       }
@@ -64,7 +64,7 @@ describe('#renderNomisMappingsToField', function () {
           expect(frameworkNomisMappingsToPanelStub).to.be.calledWithExactly({
             heading:
               'person-escort-record::nomis_mappings.information_to_be_included',
-            updatedAt: mockResponseWithMappings.person_escort_record.created_at,
+            updatedAt: mockResponseWithMappings.assessment.created_at,
             mappings: mockResponseWithMappings.nomis_mappings,
           })
         })
@@ -102,7 +102,7 @@ describe('#renderNomisMappingsToField', function () {
           expect(frameworkNomisMappingsToPanelStub).to.be.calledWithExactly({
             heading:
               'person-escort-record::nomis_mappings.information_to_be_included',
-            updatedAt: mockResponseWithMappings.person_escort_record.created_at,
+            updatedAt: mockResponseWithMappings.assessment.created_at,
             mappings: mockResponseWithMappings.nomis_mappings,
           })
         })

@@ -11,10 +11,7 @@ function renderNomisMappingsToField(responses = []) {
       return [key, field]
     }
 
-    const {
-      nomis_mappings: mappings = [],
-      person_escort_record: personEscortRecord = {},
-    } = response
+    const { assessment = {}, nomis_mappings: mappings = [] } = response
 
     if (mappings.length === 0) {
       return [key, field]
@@ -27,7 +24,7 @@ function renderNomisMappingsToField(responses = []) {
       heading: i18n.t(
         'person-escort-record::nomis_mappings.information_to_be_included'
       ),
-      updatedAt: personEscortRecord.created_at,
+      updatedAt: assessment.created_at,
       mappings,
     })
 
