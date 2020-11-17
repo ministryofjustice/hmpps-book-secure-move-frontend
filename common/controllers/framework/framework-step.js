@@ -1,10 +1,10 @@
 const { isEmpty, fromPairs } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const fieldHelpers = require('../../../common/helpers/field')
-const frameworksHelpers = require('../../../common/helpers/frameworks')
-const permissionsControllers = require('../../../common/middleware/permissions')
-const personEscortRecordService = require('../../../common/services/person-escort-record')
+const fieldHelpers = require('../../helpers/field')
+const frameworksHelpers = require('../../helpers/frameworks')
+const permissionsControllers = require('../../middleware/permissions')
+const personEscortRecordService = require('../../services/person-escort-record')
+const FormWizardController = require('../form-wizard')
 
 class FrameworkStepController extends FormWizardController {
   middlewareChecks() {

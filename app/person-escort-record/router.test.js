@@ -1,7 +1,7 @@
 const proxyquire = require('proxyquire')
 
-const FrameworkSectionController = require('./controllers/framework-section')
-const FrameworkStepController = require('./controllers/framework-step')
+const FrameworkSectionController = require('../../common/controllers/framework/framework-section')
+const FrameworkStepController = require('../../common/controllers/framework/framework-step')
 
 const wizardReqStub = sinon.stub()
 const wizardStub = sinon.stub().returns(wizardReqStub)
@@ -103,7 +103,6 @@ describe('Person Escort Record router', function () {
           journeyPageTitle: 'Person escort record',
           name: `person-escort-record-${req.personEscortRecord.id}-${req.frameworkSection.key}`,
           template: 'framework-step',
-          templatePath: 'person-escort-record/views/',
           defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
         }
 

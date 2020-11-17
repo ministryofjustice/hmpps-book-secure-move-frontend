@@ -1,7 +1,7 @@
 const wizard = require('hmpo-form-wizard')
 
-const FrameworkSectionController = require('./controllers/framework-section')
-const FrameworkStepController = require('./controllers/framework-step')
+const FrameworkSectionController = require('../../common/controllers/framework/framework-section')
+const FrameworkStepController = require('../../common/controllers/framework/framework-step')
 
 function defineFormWizard(req, res, next) {
   const { key, steps } = req.frameworkSection
@@ -33,7 +33,6 @@ function defineFormWizard(req, res, next) {
     // Unique for each Person Escort Record
     name: `person-escort-record-${personEscortRecordId}-${key}`,
     template: 'framework-step',
-    templatePath: 'person-escort-record/views/',
     defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
   }
 
