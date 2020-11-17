@@ -184,6 +184,10 @@
       }
     }
   },
+  "tabs": {
+    "view": "Record",
+    "timeline": "History of events"
+  },
   "update_link": {
     "link_text": "Change",
     "link_text_with_category": "Change <span class=\"app-!-visually-hidden-desktop\">{{ category }}</span>",

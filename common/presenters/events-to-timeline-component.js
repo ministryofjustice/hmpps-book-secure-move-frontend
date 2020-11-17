@@ -27,7 +27,9 @@ const getItem = ({
   }
 }
 
-const eventsToTimelineComponent = (moveEvents, move) => {
+const eventsToTimelineComponent = (move = {}) => {
+  const { timeline_events: moveEvents } = move
+
   const items = addTriggeredEvents(moveEvents).map(moveEvent => {
     const event = setEventDetails(moveEvent, move)
 

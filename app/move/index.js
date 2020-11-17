@@ -11,7 +11,14 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const personEscortRecordApp = require('../person-escort-record')
 const { setFramework } = require('../person-escort-record/middleware')
 
-const { assign, confirmation, create, update, view } = require('./controllers')
+const {
+  assign,
+  confirmation,
+  create,
+  update,
+  timeline,
+  view,
+} = require('./controllers')
 const {
   assignFields,
   cancelFields,
@@ -21,6 +28,7 @@ const {
 } = require('./fields')
 const {
   setMove,
+  setMoveWithEvents,
   setPersonEscortRecord,
   setAllocation,
 } = require('./middleware')
@@ -84,6 +92,7 @@ const unassignConfig = {
 
 // Define param middleware
 router.param('moveId', setMove)
+router.param('moveIdWithEvents', setMoveWithEvents)
 
 // Define routes
 router.use(
@@ -91,6 +100,15 @@ router.use(
   protectRoute('move:create'),
   wizard(createSteps, createFields, createConfig)
 )
+
+router.get(
+  `/:moveIdWithEvents(${uuidRegex})/timeline`,
+  protectRoute('move:view'),
+  setPersonEscortRecord,
+  setFramework,
+  timeline
+)
+
 router.use(
   `/:moveId(${uuidRegex})`,
   setPersonEscortRecord,
@@ -99,6 +117,7 @@ router.use(
 )
 
 moveRouter.get('/', protectRoute('move:view'), view)
+
 moveRouter.get(
   '/confirmation',
   protectRoute(['move:create', 'move:review']),
