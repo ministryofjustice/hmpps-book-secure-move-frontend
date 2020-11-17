@@ -1,5 +1,7 @@
 {
   "daily_view": {
+    "free_spaces_with_count": "{{count}} free space",
+    "free_spaces_with_count_plural": "{{count}} free spaces",
     "missing_value": "-",
     "not_calculated": "Not calculated",
     "not_updated": "Page not updated",
@@ -17,7 +19,13 @@
       "available_space": "Available space",
       "overnights_out": "Overnights out",
       "out_of_area_courts": "Out of area courts",
-      "discharges": "Discharges including immigration"
+      "discharges": "Discharges including immigration",
+      "transfers_in": "Transfers in",
+      "transfers_out": "Transfers out"
+    },
+    "buttons": {
+      "update_numbers": "Update numbers",
+      "add_numbers": "Add numbers"
     }
   },
   "spaces_with_count": "{{count}} space",

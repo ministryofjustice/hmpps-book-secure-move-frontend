@@ -1,10 +1,25 @@
 function daily(req, res) {
-  const { context, resultsAsDailySummary } = req
+  const {
+    context,
+    resultsAsDailySummary,
+    details,
+    totalSpace,
+    availableSpace,
+    unavailableSpace,
+    transfersIn,
+    transfersOut,
+  } = req
 
   res.render('population/view/daily', {
     context,
     pageTitle: 'dashboard::page_title',
     resultsAsDailySummary,
+    details,
+    totalSpace,
+    availableSpace,
+    unavailableSpace,
+    transfersIn,
+    transfersOut,
   })
 }
 
