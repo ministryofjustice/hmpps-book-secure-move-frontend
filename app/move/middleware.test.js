@@ -1,9 +1,17 @@
+const proxyquire = require('proxyquire')
+
 const allocationService = require('../../common/services/allocation')
 const moveService = require('../../common/services/move')
 
-const middleware = require('./middleware')
+const populateResources = sinon.stub()
+
+const middleware = proxyquire('./middleware', {
+  '../../common/lib/populate-resources': populateResources,
+})
 
 const moveStub = { foo: 'bar' }
+const moveEvents = ['a', 'b', 'c']
+const moveWithEventsStub = { foo: 'bar', timeline_events: moveEvents }
 const moveWithAllocationStub = {
   foo: 'bar',
   allocation: { id: '#allocationId', fizz: 'buzz' },
@@ -69,6 +77,83 @@ describe('Move middleware', function () {
           sinon.stub(moveService, 'getById').throws(errorStub)
 
           await middleware.setMove({}, res, nextSpy, mockMoveId)
+        })
+
+        it('should not set response data to request object', function () {
+          expect(req).not.to.have.property('move')
+        })
+
+        it('should send error to next function', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
+        })
+      })
+    })
+  })
+
+  describe('#setMoveWithEvents()', function () {
+    let req, res, nextSpy
+
+    beforeEach(function () {
+      req = {}
+      res = {}
+      nextSpy = sinon.spy()
+    })
+
+    context('when no move ID exists', function () {
+      beforeEach(async function () {
+        sinon
+          .stub(moveService, 'getByIdWithEvents')
+          .resolves(moveWithEventsStub)
+
+        await middleware.setMoveWithEvents(req, res, nextSpy)
+      })
+
+      it('should call next with no argument', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not call API with move ID', function () {
+        expect(moveService.getByIdWithEvents).not.to.be.called
+      })
+
+      it('should not set response data to request object', function () {
+        expect(req).not.to.have.property('move')
+      })
+    })
+
+    context('when move ID exists', function () {
+      context('when API call returns succesfully', function () {
+        beforeEach(async function () {
+          sinon
+            .stub(moveService, 'getByIdWithEvents')
+            .resolves(moveWithEventsStub)
+
+          await middleware.setMoveWithEvents(req, res, nextSpy, mockMoveId)
+        })
+
+        it('should call API with move ID', function () {
+          expect(moveService.getByIdWithEvents).to.be.calledWith(mockMoveId)
+        })
+
+        it('should populate timeline events', function () {
+          expect(populateResources).to.be.calledWith(moveEvents)
+        })
+
+        it('should set response data to request object', function () {
+          expect(req).to.have.property('move')
+          expect(req.move).to.equal(moveWithEventsStub)
+        })
+
+        it('should call next with no argument', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when API call returns an error', function () {
+        beforeEach(async function () {
+          sinon.stub(moveService, 'getByIdWithEvents').throws(errorStub)
+
+          await middleware.setMoveWithEvents({}, res, nextSpy, mockMoveId)
         })
 
         it('should not set response data to request object', function () {

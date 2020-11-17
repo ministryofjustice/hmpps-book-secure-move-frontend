@@ -63,6 +63,31 @@ describe('Move Service', function () {
   })
 
   context('#transform', function () {
+    expect(moveService.defaultInclude).to.deep.equal([
+      'allocation',
+      'court_hearings',
+      'from_location',
+      'from_location.suppliers',
+      'prison_transfer_reason',
+      'profile',
+      'profile.documents',
+      'profile.person_escort_record',
+      'profile.person_escort_record.framework',
+      'profile.person_escort_record.responses',
+      'profile.person_escort_record.responses.question',
+      'profile.person_escort_record.responses.question.descendants.**',
+      'profile.person_escort_record.responses.nomis_mappings',
+      'profile.person_escort_record.flags',
+      'profile.person_escort_record.prefill_source',
+      'profile.person',
+      'profile.person.ethnicity',
+      'profile.person.gender',
+      'supplier',
+      'to_location',
+    ])
+  })
+
+  context('#transform', function () {
     const mockPerson = {
       id: '__person__',
     }
@@ -937,10 +962,10 @@ describe('Move Service', function () {
     })
   })
 
-  describe('#getById()', function () {
+  describe('#_getById()', function () {
     context('without move ID', function () {
       it('should reject with error', function () {
-        return expect(moveService.getById()).to.be.rejectedWith(
+        return expect(moveService._getById()).to.be.rejectedWith(
           'No move ID supplied'
         )
       })
@@ -959,13 +984,10 @@ describe('Move Service', function () {
 
       context('when called without include parameter', function () {
         beforeEach(async function () {
-          move = await moveService.getById(mockId)
+          move = await moveService._getById(mockId)
         })
         it('should call find method with data', function () {
-          expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
-            include: undefined,
-            preserveResourceRefs: undefined,
-          })
+          expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {})
         })
 
         it('should call move transformer with response data', function () {
@@ -981,30 +1003,70 @@ describe('Move Service', function () {
 
       context('when called with include parameter', function () {
         beforeEach(async function () {
-          move = await moveService.getById(mockId, {
-            include: ['foo', 'bar'],
+          move = await moveService._getById(mockId, {
+            include: ['boo', 'far'],
           })
         })
         it('should pass include paramter to api client', function () {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
-            include: ['foo', 'bar'],
-            preserveResourceRefs: undefined,
+            include: ['boo', 'far'],
           })
         })
       })
 
       context('when called with preserveResourceRefs parameter', function () {
         beforeEach(async function () {
-          move = await moveService.getById(mockId, {
+          move = await moveService._getById(mockId, {
             preserveResourceRefs: true,
           })
         })
         it('should pass preserveResourceRefs param on', function () {
           expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
-            include: undefined,
             preserveResourceRefs: true,
           })
         })
+      })
+    })
+  })
+
+  describe('#getById*()', function () {
+    const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+    let move
+
+    beforeEach(async function () {
+      sinon.stub(moveService, '_getById').resolves(mockMove)
+    })
+
+    context('#getById()', function () {
+      beforeEach(async function () {
+        move = await moveService.getById(mockId)
+      })
+      it('should call find method with data', function () {
+        expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
+          include: moveService.defaultInclude,
+        })
+      })
+      it('should return move', function () {
+        expect(move).to.deep.equal(mockMove)
+      })
+    })
+
+    context('#getByIdWithEvents()', function () {
+      beforeEach(async function () {
+        move = await moveService.getByIdWithEvents(mockId)
+      })
+      it('should call find method with data', function () {
+        expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
+          include: [
+            ...moveService.defaultInclude,
+            'timeline_events',
+            'timeline_events.eventable',
+          ],
+          preserveResourceRefs: true,
+        })
+      })
+      it('should return move', function () {
+        expect(move).to.deep.equal(mockMove)
       })
     })
   })

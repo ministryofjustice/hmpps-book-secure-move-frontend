@@ -8,6 +8,29 @@ const profileService = require('../services/profile')
 
 const batchRequest = require('./batch-request')
 
+const defaultInclude = [
+  'allocation',
+  'court_hearings',
+  'from_location',
+  'from_location.suppliers',
+  'prison_transfer_reason',
+  'profile',
+  'profile.documents',
+  'profile.person_escort_record',
+  'profile.person_escort_record.framework',
+  'profile.person_escort_record.responses',
+  'profile.person_escort_record.responses.question',
+  'profile.person_escort_record.responses.question.descendants.**',
+  'profile.person_escort_record.responses.nomis_mappings',
+  'profile.person_escort_record.flags',
+  'profile.person_escort_record.prefill_source',
+  'profile.person',
+  'profile.person.ethnicity',
+  'profile.person.gender',
+  'supplier',
+  'to_location',
+]
+
 function getAll({
   filter = {},
   combinedData = [],
@@ -47,6 +70,8 @@ function getAll({
 
 const noMoveIdMessage = 'No move ID supplied'
 const moveService = {
+  defaultInclude,
+
   transform(move) {
     // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
     const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
@@ -206,15 +231,29 @@ const moveService = {
     return response
   },
 
-  getById(id, { include, preserveResourceRefs } = {}) {
+  _getById(id, options = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
     return apiClient
-      .find('move', id, { include, preserveResourceRefs })
+      .find('move', id, options)
       .then(response => response.data)
       .then(this.transform)
+  },
+
+  getById(id) {
+    return moveService._getById(id, { include: moveService.defaultInclude })
+  },
+
+  getByIdWithEvents(id) {
+    const include = [
+      ...moveService.defaultInclude,
+      'timeline_events',
+      'timeline_events.eventable',
+    ]
+
+    return moveService._getById(id, { include, preserveResourceRefs: true })
   },
 
   create(data) {

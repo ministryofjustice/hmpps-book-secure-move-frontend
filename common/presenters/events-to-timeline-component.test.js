@@ -33,7 +33,7 @@ describe('Presenters', function () {
 
     context('when transforming event', function () {
       beforeEach(function () {
-        transformedResponse = eventsToTimelineComponent(mockEvents, mockMove)
+        transformedResponse = eventsToTimelineComponent(mockMove)
       })
 
       it('should add triggered events if needed', function () {
@@ -89,7 +89,7 @@ describe('Presenters', function () {
     context('when event is a triggered status change', function () {
       beforeEach(function () {
         i18n.exists.returns(true)
-        transformedResponse = eventsToTimelineComponent(mockEvents, mockMove)
+        transformedResponse = eventsToTimelineComponent(mockMove)
       })
 
       it('should add the expected class name', function () {
@@ -102,7 +102,7 @@ describe('Presenters', function () {
       function () {
         beforeEach(function () {
           i18n.t.onCall(1).returns('<br>description')
-          transformedResponse = eventsToTimelineComponent(mockEvents)
+          transformedResponse = eventsToTimelineComponent(mockMove)
         })
 
         it('should strip the leading line break', function () {

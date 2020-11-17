@@ -1,3 +1,4 @@
+const populateResources = require('../../common/lib/populate-resources')
 const allocationService = require('../../common/services/allocation')
 const moveService = require('../../common/services/move')
 
@@ -9,6 +10,21 @@ module.exports = {
 
     try {
       req.move = await moveService.getById(moveId)
+      next()
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  setMoveWithEvents: async (req, res, next, moveIdWithEvents) => {
+    if (!moveIdWithEvents) {
+      return next()
+    }
+
+    try {
+      const move = await moveService.getByIdWithEvents(moveIdWithEvents)
+      await populateResources(move.timeline_events)
+      req.move = move
       next()
     } catch (error) {
       next(error)

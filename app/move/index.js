@@ -28,6 +28,7 @@ const {
 } = require('./fields')
 const {
   setMove,
+  setMoveWithEvents,
   setPersonEscortRecord,
   setAllocation,
 } = require('./middleware')
@@ -89,10 +90,9 @@ const unassignConfig = {
   journeyPageTitle: 'actions::cancel_allocation',
 }
 
-router.get(`/:id(${uuidRegex})/timeline`, protectRoute('move:view'), timeline)
-
 // Define param middleware
 router.param('moveId', setMove)
+router.param('moveIdWithEvents', setMoveWithEvents)
 
 // Define routes
 router.use(
@@ -100,6 +100,15 @@ router.use(
   protectRoute('move:create'),
   wizard(createSteps, createFields, createConfig)
 )
+
+router.get(
+  `/:moveIdWithEvents(${uuidRegex})/timeline`,
+  protectRoute('move:view'),
+  setPersonEscortRecord,
+  setFramework,
+  timeline
+)
+
 router.use(
   `/:moveId(${uuidRegex})`,
   setPersonEscortRecord,
