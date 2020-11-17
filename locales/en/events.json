@@ -381,32 +381,32 @@
   },
   "StatusMoveBooked": {
     "statusChange": true,
-    "heading": "Booked",
+    "heading": "$t(statuses::booked)",
     "description": "Move has been booked with {{move.supplier.name}}"
   },
   "StatusMoveCancelled": {
     "statusChange": true,
-    "heading": "Cancelled",
+    "heading": "$t(statuses::cancelled)",
     "description": "Move has been cancelled"
   },
   "StatusMoveCompleted": {
     "statusChange": true,
-    "heading": "Completed",
+    "heading": "$t(statuses::completed)",
     "description": "Move has been completed by {{move.supplier.name}}"
   },
   "StatusMoveInTransit": {
     "statusChange": true,
-    "heading": "In transit",
+    "heading": "$t(statuses::in_transit)",
     "description": "Move is in transit with {{move.supplier.name}}"
   },
   "StatusMoveProposed": {
     "statusChange": true,
-    "heading": "Proposed",
+    "heading": "$t(statuses::proposed)",
     "description": "Move has been proposed by OCA"
   },
   "StatusMoveRequested": {
     "statusChange": true,
-    "heading": "Requested",
+    "heading": "$t(statuses::requested)",
     "description": "Move has been requested with {{move.supplier.name}}"
   }
 }
