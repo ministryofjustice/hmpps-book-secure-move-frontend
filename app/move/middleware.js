@@ -1,3 +1,4 @@
+const addMockValuesToEvents = require('../../common/helpers/events/add-mock-values-to-events')
 const populateResources = require('../../common/lib/populate-resources')
 const moveService = require('../../common/services/move')
 
@@ -22,6 +23,7 @@ module.exports = {
 
     try {
       const move = await moveService.getByIdWithEvents(moveIdWithEvents)
+      move.timeline_events = addMockValuesToEvents(req, move.timeline_events)
       await populateResources(move.timeline_events)
       req.move = move
       next()
