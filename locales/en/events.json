@@ -208,7 +208,7 @@
     "select_rebook": "$t(events::MoveReject.rebook, {\"context\": \"{{rebook}}\"})",
     "rebook": "",
     "rebook_true": "<br>This move will be rebooked in 7 days",
-    "rebook_false": "<br>This move will not be rebooked",
+    "rebook_false": "<br>This move may be rebooked in 7 days if still required",
     "select_cancellation_reason_comment": "$t(events::MoveReject.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
     "cancellation_reason_comment": "",
     "cancellation_reason_comment_true": "<br>Comment: {{cancellation_reason_comment}}"
