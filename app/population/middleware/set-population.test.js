@@ -1,5 +1,6 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
 const populationService = require('../../../common/services/population')
+const moveService = require('../../../common/services/move')
 
 const middleware = require('./set-population')
 
@@ -15,6 +16,8 @@ const mockCapacities = [
 const mockPopulation = {
   id: 'A',
   total_spaces: 100,
+  moves_to: ['001', '002', '003'],
+  moves_from: ['901', '902'],
 }
 
 const mockError = new Error('Error!!')
@@ -28,6 +31,7 @@ describe('Population middleware', function () {
     beforeEach(function () {
       sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
       sinon.stub(populationService, 'getById')
+      sinon.stub(moveService, 'getActive')
 
       next = sinon.fake()
 
@@ -72,8 +76,15 @@ describe('Population middleware', function () {
           expect(populationService.getById).to.have.been.calledOnceWith('A')
         })
 
-        it('should set resultsAsPopulationTable on req', function () {
+        it('should set req.population', function () {
           expect(req.population).to.deep.equal(mockPopulation)
+        })
+
+        it('should set req.transfers', function () {
+          expect(req.transfers).to.deep.equal({
+            transfersIn: 3,
+            transfersOut: 2,
+          })
         })
 
         it('should call next', function () {
@@ -91,11 +102,15 @@ describe('Population middleware', function () {
           },
         ])
 
+        moveService.getActive.onCall(0).returns(4)
+        moveService.getActive.onCall(1).returns(2)
+
         await middleware(req, res, next)
       })
 
       afterEach(function () {
         locationsFreeSpacesService.getPrisonFreeSpaces.restore()
+        moveService.getActive.restore()
       })
 
       it('should call the data service with request body', function () {
@@ -114,6 +129,27 @@ describe('Population middleware', function () {
 
       it('should not set population on req', function () {
         expect(req.population).to.be.undefined
+      })
+
+      it('should call move service for transfers in and transfers out', function () {
+        expect(moveService.getActive).to.have.been.calledTwice
+        expect(moveService.getActive.firstCall).to.have.been.calledWith({
+          dateRange: ['2020-08-01', '2020-08-01'],
+          isAggregation: true,
+          toLocationId: 'BAADF00D',
+        })
+        expect(moveService.getActive.secondCall).to.have.been.calledWith({
+          dateRange: ['2020-08-01', '2020-08-01'],
+          isAggregation: true,
+          fromLocationId: 'BAADF00D',
+        })
+      })
+
+      it('should set req.transfers', function () {
+        expect(req.transfers).to.deep.equal({
+          transfersIn: 4,
+          transfersOut: 2,
+        })
       })
 
       it('should call next', function () {

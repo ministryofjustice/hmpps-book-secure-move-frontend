@@ -1,11 +1,9 @@
 const proxyquire = require('proxyquire')
 
 const populationToGridStub = sinon.stub()
-const transfersToGridStub = sinon.stub()
 
 const controller = proxyquire('./daily', {
   '../../../common/presenters/population-to-grid': populationToGridStub,
-  '../../../common/presenters/transfers-to-grid': transfersToGridStub,
 })
 
 describe('Population controllers', function () {
@@ -36,11 +34,6 @@ describe('Population controllers', function () {
         details: {
           date: '2020-07-29',
         },
-      })
-
-      transfersToGridStub.returns({
-        transfersIn: [],
-        transfersOut: [],
       })
     })
 

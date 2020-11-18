@@ -1,9 +1,7 @@
 const populationToGrid = require('../../../common/presenters/population-to-grid')
-const transfersToGrid = require('../../../common/presenters/transfers-to-grid')
 
-function daily(req, res) {
-  const { population } = req
-  const transfers = transfersToGrid()
+async function daily(req, res) {
+  const { population, transfers } = req
 
   const spaces = populationToGrid({ population })
 

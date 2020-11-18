@@ -28,9 +28,7 @@
   <h3 class="govuk-heading-m">{{ label }}</h3>
 
   <p class="govuk-body">
-  {%  for transfer in transfers %}
-    {{ transfer.count }} from {{  transfer.establishment }}<br>
-  {% endfor %}
+    {{  transfers }}
   </p>
 {% endmacro %}
 

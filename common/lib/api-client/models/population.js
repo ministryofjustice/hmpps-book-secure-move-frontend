@@ -13,5 +13,17 @@ module.exports = {
     updated_by: '',
     created_at: '',
     updated_at: '',
+    location: {
+      jsonApi: 'hasOne',
+      type: 'location',
+    },
+    moves_from: {
+      jsonApi: 'hasMany',
+      type: 'moves',
+    },
+    moves_to: {
+      jsonApi: 'hasMany',
+      type: 'moves',
+    },
   },
 }
