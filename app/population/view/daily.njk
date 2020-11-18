@@ -61,13 +61,13 @@
           <h2 class="govuk-heading-xl">{{ t("population::daily_view.free_spaces_with_count", {count:spaces.details.free_spaces}) }}</h2>
           <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
           <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
-          <div>
-            <a href="" class="govuk-link">
-              <strong>{{ t("population::daily_view.actions.change_numbers", {
+          <p class="govuk-body-m">
+            <a href="" class="govuk-link govuk-link--no-visited-state">
+              {{ t("population::daily_view.actions.change_numbers", {
                 context: "with_visually_hidden_text"
-              }) | safe }}</strong>
+              }) | safe }}
             </a>
-          </div>
+          </p>
         {% endif %}
 
         {%  if not spaces.details.updated_at %}
