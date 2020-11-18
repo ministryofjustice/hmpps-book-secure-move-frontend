@@ -22,4 +22,16 @@ describe('i18n interpolation', function () {
       expect(interpolation.format('', 'exists')).to.equal(false)
     })
   })
+
+  context('uppercase formatter', function () {
+    it('should return the uppercased value if it is a string', function () {
+      expect(interpolation.format('ab', 'uppercase')).to.equal('AB')
+    })
+    it('should return the value if it is not a string', function () {
+      expect(interpolation.format(23, 'uppercase')).to.equal(23)
+    })
+    it('should return undefined is the value is undefined', function () {
+      expect(interpolation.format(undefined, 'uppercase')).to.equal(undefined)
+    })
+  })
 })

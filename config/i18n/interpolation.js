@@ -2,9 +2,13 @@ const filters = require('../nunjucks/filters')
 
 const exists = value => value !== undefined && value !== ''
 
+const uppercase = value =>
+  value && value.toUpperCase ? value.toUpperCase() : value
+
 const formatters = {
   ...filters,
   exists,
+  uppercase,
 }
 
 const interpolation = {
