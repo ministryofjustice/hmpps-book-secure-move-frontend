@@ -95,7 +95,7 @@ getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
   describe('#view locals()', function () {
-    let req, res, params
+    let req, params
     const userPermissions = ['permA']
 
     beforeEach(function () {
@@ -134,9 +134,6 @@ describe('Move controllers', function () {
           },
         },
         move: mockMove,
-      }
-      res = {
-        render: sinon.spy(),
       }
     })
 
@@ -409,32 +406,6 @@ describe('Move controllers', function () {
 
         it('should pass update links in locals to render', function () {
           expect(params.updateLinks).to.deep.equal(mockUpdateLinks)
-        })
-      })
-    })
-
-    context('with youth transfer moves', function () {
-      ;['secure_childrens_home', 'secure_training_centre'].forEach(function (
-        youthTransferType
-      ) {
-        const youthTransferMove = {
-          to_location: {
-            location_type: 'prison',
-          },
-          from_location: {
-            location_type: youthTransferType,
-          },
-        }
-        it(`should upgrade the move when ${youthTransferType} to prison`, function () {
-          req.move = {
-            ...youthTransferMove,
-          }
-          getViewLocals(req, res)
-          expect(getUpdateUrls).to.be.calledOnceWithExactly(
-            updateSteps,
-            { ...youthTransferMove, move_type: youthTransferType },
-            req
-          )
         })
       })
     })
