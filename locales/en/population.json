@@ -1,10 +1,9 @@
 {
   "daily_view": {
+    "page_title_with_date": "Population for {{date}}",
+    "subheading": "Population for",
     "free_spaces_with_count": "{{count}} free space",
     "free_spaces_with_count_plural": "{{count}} free spaces",
-    "missing_value": "-",
-    "not_calculated": "Not calculated",
-    "not_updated": "Page not updated",
     "free_space_description": "Projected free spaces based upon the figures provided in this page, along with transfers in and out",
     "labels": {
       "last_updated": "Last updated",
@@ -23,8 +22,8 @@
       "transfers_in": "Transfers in",
       "transfers_out": "Transfers out"
     },
-    "buttons": {
-      "update_numbers": "Update numbers",
+    "actions": {
+      "change_numbers": "Change numbers",
       "add_numbers": "Add numbers"
     }
   },

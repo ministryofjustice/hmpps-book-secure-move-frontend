@@ -37,8 +37,7 @@
 {% set displayDate = details.date if details.date else date | formatDateWithRelativeDay %}
 
 {% block pageTitle %}
-  {{ t("collections::page_title_with_date", {
-    context: context,
+  {{ t("population::daily_view.page_title_with_date", {
     date: displayDate
   }) }}
 {% endblock %}
@@ -49,16 +48,14 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
         <span class="govuk-caption-xl">
-            {{ t("collections::subheading", {
-              context: context
-            }) }}
+            {{ t("population::daily_view.subheading") }}
             </span>
         <span class="govuk-!-display-block">{{ displayDate }}</span>
       </h1>
     </div>
   </header>
 
-  {%  call appPanel({classes: 'govuk-!-margin-bottom-4 govuk-!-padding-bottom-0'}) %}
+  {%  call appPanel({classes: 'govuk-!-margin-bottom-4'}) %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
 
@@ -67,11 +64,11 @@
           <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
           <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
           <div>
-            {{ govukButton({
-              href: "",
-              html: t("population::daily_view.buttons.update_numbers") ,
-              classes: "govuk-button"
-            })}}
+            <a href="" class="govuk-link">
+              <strong>{{ t("population::daily_view.actions.change_numbers", {
+                context: "with_visually_hidden_text"
+              }) | safe }}</strong>
+            </a>
           </div>
         {% endif %}
 
@@ -79,7 +76,7 @@
           <div>
             {{ govukButton({
               href: "",
-              html: t("population::daily_view.buttons.update_numbers"),
+              html: t("population::daily_view.actions.add_numbers"),
               classes: "govuk-button"
             })}}
           </div>
