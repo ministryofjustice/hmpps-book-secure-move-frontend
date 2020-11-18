@@ -21,7 +21,7 @@ const SERVER_HOST = process.env.HEROKU_APP_NAME
   ? `${process.env.HEROKU_APP_NAME}.herokuapp.com`
   : process.env.SERVER_HOST
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
-const API_BASE_URL = process.env.API_BASE_URL
+const API_BASE_URL = process.env.PR1008_API_BASE_URL
 const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
@@ -85,8 +85,8 @@ module.exports = {
     AUTH_TIMEOUT: Number(process.env.API_AUTH_TIMEOUT || 10000), // in milliseconds
     AUTH_URL: API_BASE_URL + process.env.API_AUTH_PATH,
     HEALTHCHECK_URL: API_BASE_URL + process.env.API_HEALTHCHECK_PATH,
-    CLIENT_ID: process.env.API_CLIENT_ID,
-    SECRET: process.env.API_SECRET,
+    CLIENT_ID: process.env.PR1008_API_CLIENT_ID,
+    SECRET: process.env.PR1008_API_SECRET,
     TIMEOUT: Number(process.env.API_TIMEOUT || 30000), // in milliseconds
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
     USE_REDIS_CACHE: !!REDIS.SESSION,
