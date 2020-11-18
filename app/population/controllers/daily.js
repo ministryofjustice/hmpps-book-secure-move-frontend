@@ -1,23 +1,18 @@
+const populationToGrid = require('../../../common/presenters/population-to-grid')
+const transfersToGrid = require('../../../common/presenters/transfers-to-grid')
+
 function daily(req, res) {
-  const {
-    context,
-    details,
-    totalSpace,
-    availableSpace,
-    unavailableSpace,
-    transfersIn,
-    transfersOut,
-  } = req
+  const { population } = req
+  const transfers = transfersToGrid()
+
+  const spaces = populationToGrid({ population })
 
   res.render('population/view/daily', {
-    context,
+    context: 'population',
     pageTitle: 'dashboard::page_title',
-    details,
-    totalSpace,
-    availableSpace,
-    unavailableSpace,
-    transfersIn,
-    transfersOut,
+    date: req.params.date,
+    spaces,
+    transfers,
   })
 }
 

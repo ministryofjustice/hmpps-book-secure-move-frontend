@@ -34,7 +34,7 @@
   </p>
 {% endmacro %}
 
-{% set displayDate = details.date | formatDateWithRelativeDay %}
+{% set displayDate = details.date if details.date else date | formatDateWithRelativeDay %}
 
 {% block pageTitle %}
   {{ t("collections::page_title_with_date", {
@@ -62,24 +62,24 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
 
-        {% if details.updated_at %}
-          <h2 class="govuk-heading-xl">{{ t("population::daily_view.free_spaces_with_count", {count:details.free_spaces}) }}</h2>
+        {% if spaces.details.updated_at %}
+          <h2 class="govuk-heading-xl">{{ t("population::daily_view.free_spaces_with_count", {count:spaces.details.free_spaces}) }}</h2>
           <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
-          <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  details.updated_at | formatDateWithTimeAndDay }}</b></p>
+          <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
           <div>
             {{ govukButton({
               href: "",
-              html: t("population::daily_view.buttons.update_numbers") if resultsAsDailySummary.updatedAt else t("population::daily_view.buttons.add_numbers"),
+              html: t("population::daily_view.buttons.update_numbers") ,
               classes: "govuk-button"
             })}}
           </div>
         {% endif %}
 
-        {%  if not details.updated_at %}
+        {%  if not spaces.details.updated_at %}
           <div>
             {{ govukButton({
               href: "",
-              html: t("population::daily_view.buttons.update_numbers") if resultsAsDailySummary.updatedAt else t("population::daily_view.buttons.add_numbers"),
+              html: t("population::daily_view.buttons.update_numbers"),
               classes: "govuk-button"
             })}}
           </div>
@@ -90,29 +90,29 @@
     </div>
   {%  endcall %}
 
-  {% if details.updated_at %}
+  {% if spaces.details.updated_at %}
   <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
-        {{ statsGroup("total_space", totalSpace) }}
+        {{ statsGroup("total_space", spaces.totalSpace) }}
       </div>
     </div>
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
-        {{ statsGroup("unavailable_space", unavailableSpace) }}
+        {{ statsGroup("unavailable_space", spaces.unavailableSpace) }}
       </div>
       <div class="govuk-grid-column-one-half">
-        {{ statsGroup("available_space", availableSpace) }}
+        {{ statsGroup("available_space", spaces.availableSpace) }}
       </div>
     </div>
   {%  endif %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      {{ transfersGroup("transfers_in", transfersIn) }}
+      {{ transfersGroup("transfers_in", transfers.transfersIn) }}
     </div>
     <div class="govuk-grid-column-one-half">
-      {{ transfersGroup("transfers_out", transfersOut) }}
+      {{ transfersGroup("transfers_out", transfers.transfersOut) }}
     </div>
   </div>
 

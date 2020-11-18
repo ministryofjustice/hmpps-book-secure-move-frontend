@@ -1,4 +1,12 @@
-const controller = require('./daily')
+const proxyquire = require('proxyquire')
+
+const populationToGridStub = sinon.stub()
+const transfersToGridStub = sinon.stub()
+
+const controller = proxyquire('./daily', {
+  '../../../common/presenters/population-to-grid': populationToGridStub,
+  '../../../common/presenters/transfers-to-grid': transfersToGridStub,
+})
 
 describe('Population controllers', function () {
   describe('#dashboard()', function () {
@@ -6,45 +14,34 @@ describe('Population controllers', function () {
 
     beforeEach(function () {
       mockReq = {
-        context: 'population',
         params: {
-          period: 'week',
+          date: '2020-07-29',
         },
-        details: {
+        population: {
           date: '2020-08-01',
           free_spaces: 0,
           updated_at: '2020-07-29',
         },
-        totalSpace: [
-          { property: 'operational_capacity', value: 100 },
-          { property: 'usable_capacity', value: 99 },
-        ],
-        unavailableSpace: [
-          { property: 'unlock', value: 2 },
-          { property: 'bedwatch', value: 3 },
-          { property: 'overnights_in', value: 4 },
-        ],
-        availableSpace: [
-          { property: 'overnights_out', value: 5 },
-          { property: 'out_of_area_courts', value: 6 },
-          { property: 'discharges', value: 7 },
-        ],
-        transfersIn: [
-          {
-            establishment: 'Consequentar',
-            count: 3,
-          },
-        ],
-        transfersOut: [
-          {
-            establishment: 'Adipiscing Elit',
-            count: 1,
-          },
-        ],
+        transfers: {
+          transfersIn: [],
+          transfersOut: [],
+        },
       }
+
       mockRes = {
         render: sinon.spy(),
       }
+
+      populationToGridStub.returns({
+        details: {
+          date: '2020-07-29',
+        },
+      })
+
+      transfersToGridStub.returns({
+        transfersIn: [],
+        transfersOut: [],
+      })
     })
 
     context('by default', function () {
@@ -67,12 +64,12 @@ describe('Population controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(8)
+          expect(Object.keys(params)).to.have.length(5)
         })
 
         it('should set context', function () {
           expect(params).to.have.property('context')
-          expect(params.context).to.deep.equal(mockReq.context)
+          expect(params.context).to.deep.equal('population')
         })
 
         it('should set pageTitle', function () {
@@ -80,36 +77,26 @@ describe('Population controllers', function () {
           expect(params.pageTitle).to.deep.equal('dashboard::page_title')
         })
 
-        it('should set details', function () {
-          expect(params).to.have.property('details')
-          expect(params.details).to.deep.equal(mockReq.details)
+        it('should set pageTitle', function () {
+          expect(params).to.have.property('date')
+          expect(params.date).to.deep.equal(mockReq.params.date)
         })
 
-        it('should set totalSpace', function () {
-          expect(params).to.have.property('totalSpace')
-          expect(params.totalSpace).to.deep.equal(mockReq.totalSpace)
+        it('should set spaces', function () {
+          expect(params).to.have.property('spaces')
+          expect(params.spaces).to.deep.equal({
+            details: {
+              date: '2020-07-29',
+            },
+          })
         })
 
-        it('should set availableSpace', function () {
-          expect(params).to.have.property('availableSpace')
-          expect(params.availableSpace).to.deep.equal(mockReq.availableSpace)
-        })
-
-        it('should set unavailableSpace', function () {
-          expect(params).to.have.property('unavailableSpace')
-          expect(params.unavailableSpace).to.deep.equal(
-            mockReq.unavailableSpace
-          )
-        })
-
-        it('should set transfersIn', function () {
-          expect(params).to.have.property('transfersIn')
-          expect(params.transfersIn).to.deep.equal(mockReq.transfersIn)
-        })
-
-        it('should set transfersOut', function () {
-          expect(params).to.have.property('transfersOut')
-          expect(params.transfersOut).to.deep.equal(mockReq.transfersOut)
+        it('should set transfers', function () {
+          expect(params).to.have.property('transfers')
+          expect(params.transfers).to.deep.equal({
+            transfersIn: [],
+            transfersOut: [],
+          })
         })
       })
     })

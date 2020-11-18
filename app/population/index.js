@@ -13,7 +13,6 @@ const {
   redirectBaseUrl,
   setPopulationId,
   setResultsAsPopulationTable,
-  setResultsDailyPopulation,
 } = require('./middleware')
 
 router.param('date', setDateRange)
@@ -21,7 +20,7 @@ router.param('locationId', setPopulationId)
 
 router.get('/', redirectBaseUrl)
 
-dailyRouter.get('/', setContext('population'), setResultsDailyPopulation, daily)
+dailyRouter.get('/', setContext('population'), daily)
 
 router.use(DAILY_PATH, dailyRouter)
 
