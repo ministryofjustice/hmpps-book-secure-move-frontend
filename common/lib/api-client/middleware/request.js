@@ -16,9 +16,9 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
 
       debug('API REQUEST', req.url)
 
-      if (req.params.populateResources) {
-        req.populateResources = req.params.populateResources
-        delete req.params.populateResources
+      if (req.params.preserveResourceRefs) {
+        req.preserveResourceRefs = req.params.preserveResourceRefs
+        delete req.params.preserveResourceRefs
       }
 
       // start timer for metrics and logging
