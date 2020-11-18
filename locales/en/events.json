@@ -310,6 +310,7 @@
     "description": "{{notes}}"
   },
   "PerMedicalAid": {
+    "flag": "medical",
     "heading": "Medical attention requested",
     "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} on {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} on {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
@@ -329,46 +330,56 @@
     "subtype_relevant_information_given": "relevant information"
   },
   "PersonMoveAssault": {
+    "flag": "red",
     "heading": "Assault occurred",
     "description": "{{supplier_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
-  },
-  "PersonMoveDeathInCustody": {
-    "heading": "Death in custody",
-    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
   },
   "PersonMoveBookedIntoReceivingEstablishment": {
     "heading": "$t(events::person) booked into {{location.title}}",
     "description": ""
   },
+  "PersonMoveDeathInCustody": {
+    "flag": "red",
+    "heading": "Death in custody",
+    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
+  },
   "PersonMoveMajorIncidentOther": {
+    "flag": "red",
     "heading": "Major incident occurred",
     "description": "$t(events::incident_level_details, {\"incident_level\": \"Major\"})"
   },
   "PersonMoveMinorIncidentOther": {
+    "flag": "red",
     "heading": "Minor incident occurred",
     "description": "$t(events::incident_level_details, {\"incident_level\": \"Minor\"})"
   },
   "PersonMovePersonEscapedKpi": {
+    "flag": "red",
     "heading": "KPI Escape occured",
     "description": "$t(events::incident_escaped)"
   },
   "PersonMovePersonEscaped": {
+    "flag": "red",
     "heading": "Non KPI Escape occured",
     "description": "$t(events::incident_escaped)"
   },
   "PersonMoveReleasedError": {
+    "flag": "red",
     "heading": "Released in error",
     "description": "$t(events::person) was released in error from {{location.title}} $t(events::incident_reported_classified)"
   },
   "PersonMoveRoadTrafficAccident": {
+    "flag": "red",
     "heading": "Road traffic accident",
     "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) met with road traffic accident $t(events::incident_reported_classified)"
   },
   "PersonMoveSeriousInjury": {
+    "flag": "red",
     "heading": "Serious injury sustained",
     "description": "$t(events::person) sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)"
   },
   "PersonMoveUsedForce": {
+    "flag": "red",
     "heading": "Supplier used force",
     "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
   },

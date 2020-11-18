@@ -51,6 +51,14 @@
     display: inline;
   }
 
+  .app-timeline__title.moj-badge {
+    @include govuk-font($size: 14, $weight: bold);
+  }
+
+  .app-panel .app-timeline__title {
+    @include govuk-font($size: 14, $weight: bold);
+  }
+
   .app-timeline__date,
   .app-timeline__byline {
     @include govuk-font($size: 16);
