@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.55.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.54.2...v2.55.0) (2020-11-18)
+
+
+### Features
+
+* **move:** Create events timeline for moves ([00327e6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/00327e63174a222271e8a3bd2404c8e2a39d3576))
+
 ### [2.54.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.54.1...v2.54.2) (2020-11-13)
 
 
