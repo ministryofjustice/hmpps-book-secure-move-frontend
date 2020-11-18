@@ -2,20 +2,20 @@
 const router = require('express').Router({ mergeParams: true })
 
 // Local dependencies
+const {
+  frameworkOverviewController,
+} = require('../../common/controllers/framework')
 const { uuidRegex } = require('../../common/helpers/url')
+const {
+  setFramework,
+  setFrameworkSection,
+} = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const confirmApp = require('./app/confirm')
 const newApp = require('./app/new')
-const {
-  frameworkOverviewController,
-  printRecordController,
-} = require('./controllers')
-const {
-  setFramework,
-  setFrameworkSection,
-  setPersonEscortRecord,
-} = require('./middleware')
+const { printRecordController } = require('./controllers')
+const { setPersonEscortRecord } = require('./middleware')
 const { defineFormWizard } = require('./router')
 
 router.param('section', setFrameworkSection)

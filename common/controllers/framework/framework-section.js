@@ -1,7 +1,7 @@
 const { filter } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
+const presenters = require('../../presenters')
+const FormWizardController = require('../form-wizard')
 
 class FrameworkSectionController extends FormWizardController {
   middlewareLocals() {

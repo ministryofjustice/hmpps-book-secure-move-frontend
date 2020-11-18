@@ -1,4 +1,4 @@
-const presenters = require('../../../common/presenters')
+const presenters = require('../../presenters')
 
 function frameworkOverview(req, res) {
   const { originalUrl, framework, personEscortRecord = {}, move } = req
@@ -11,7 +11,7 @@ function frameworkOverview(req, res) {
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })
 
-  res.render('person-escort-record/views/framework-overview', {
+  res.render('framework-overview', {
     moveId,
     taskList,
     fullname,

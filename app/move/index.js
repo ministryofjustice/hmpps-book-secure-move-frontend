@@ -7,9 +7,9 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { uuidRegex } = require('../../common/helpers/url')
+const { setFramework } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 const personEscortRecordApp = require('../person-escort-record')
-const { setFramework } = require('../person-escort-record/middleware')
 
 const {
   assign,

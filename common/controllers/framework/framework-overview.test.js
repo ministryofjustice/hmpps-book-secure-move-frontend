@@ -37,9 +37,7 @@ describe('Person Escort Record controllers', function () {
         const template = mockRes.render.args[0][0]
 
         expect(mockRes.render.calledOnce).to.be.true
-        expect(template).to.equal(
-          'person-escort-record/views/framework-overview'
-        )
+        expect(template).to.equal('framework-overview')
       })
 
       describe('params', function () {
