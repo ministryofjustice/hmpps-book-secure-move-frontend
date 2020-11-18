@@ -8,8 +8,6 @@ function daily(req, res) {
   const spaces = populationToGrid({ population })
 
   res.render('population/view/daily', {
-    context: 'population',
-    pageTitle: 'dashboard::page_title',
     date: req.params.date,
     spaces,
     transfers,

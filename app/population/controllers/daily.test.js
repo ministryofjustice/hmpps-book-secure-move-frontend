@@ -64,20 +64,10 @@ describe('Population controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(5)
+          expect(Object.keys(params)).to.have.length(3)
         })
 
-        it('should set context', function () {
-          expect(params).to.have.property('context')
-          expect(params.context).to.deep.equal('population')
-        })
-
-        it('should set pageTitle', function () {
-          expect(params).to.have.property('pageTitle')
-          expect(params.pageTitle).to.deep.equal('dashboard::page_title')
-        })
-
-        it('should set pageTitle', function () {
+        it('should set date', function () {
           expect(params).to.have.property('date')
           expect(params.date).to.deep.equal(mockReq.params.date)
         })
