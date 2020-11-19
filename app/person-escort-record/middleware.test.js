@@ -5,6 +5,34 @@ const middleware = require('./middleware')
 const personEscortRecordStub = { foo: 'bar' }
 
 describe('Person escort record middleware', function () {
+  describe('#setAssessment()', function () {
+    let mockReq, nextSpy
+
+    beforeEach(function () {
+      mockReq = {
+        personEscortRecord: {
+          id: '__movePER__',
+          status: 'not_started',
+        },
+      }
+      nextSpy = sinon.spy()
+
+      middleware.setAssessment(mockReq, {}, nextSpy)
+    })
+
+    it('should set request property to existing property', function () {
+      expect(mockReq).to.have.property('assessment')
+      expect(mockReq.assessment).to.deep.equal({
+        id: '__movePER__',
+        status: 'not_started',
+      })
+    })
+
+    it('should call next with no argument', function () {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+  })
+
   describe('#setPersonEscortRecord()', function () {
     const mockRecordId = '12345'
     const errorStub = new Error('Problem')

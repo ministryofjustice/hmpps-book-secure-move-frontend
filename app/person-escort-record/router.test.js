@@ -50,9 +50,12 @@ describe('Person Escort Record router', function () {
 
     beforeEach(function () {
       req = {
-        personEscortRecord: {
+        assessment: {
           _framework: mockFramework,
           id: '12345',
+          framework: {
+            name: 'person-escort-record',
+          },
         },
         frameworkSection: {
           key: 'section-one',
@@ -99,9 +102,9 @@ describe('Person Escort Record router', function () {
         const config = {
           controller: FrameworkStepController,
           entryPoint: true,
-          journeyName: `person-escort-record-${req.personEscortRecord.id}-${req.frameworkSection.key}`,
-          journeyPageTitle: 'Person escort record',
-          name: `person-escort-record-${req.personEscortRecord.id}-${req.frameworkSection.key}`,
+          journeyName: `person-escort-record-${req.assessment.id}-${req.frameworkSection.key}`,
+          journeyPageTitle: 'Person Escort Record',
+          name: `person-escort-record-${req.assessment.id}-${req.frameworkSection.key}`,
           template: 'framework-step',
           defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
         }

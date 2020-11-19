@@ -12,8 +12,8 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const confirmApp = require('./app/confirm')
 const newApp = require('./app/new')
 const { printRecordController } = require('./controllers')
-const { setPersonEscortRecord } = require('./middleware')
 const { defineFormWizard } = require('./router')
+const { setAssessment, setPersonEscortRecord } = require('./middleware')
 
 router.param('section', setFrameworkSection)
 
@@ -23,6 +23,7 @@ router.use(newApp.mountpath, newApp.router)
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
 router.use(setPersonEscortRecord)
+router.use(setAssessment)
 
 // Define sub-apps
 router.use(confirmApp.mountpath, confirmApp.router)

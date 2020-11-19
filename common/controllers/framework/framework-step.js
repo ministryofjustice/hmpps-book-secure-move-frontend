@@ -13,7 +13,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   checkEditable(req, res, next) {
-    const isEditable = req.personEscortRecord?.isEditable
+    const isEditable = req.assessment?.isEditable
     const userPermissions = req.user?.permissions
     const canEdit = permissionsControllers.check(
       'person_escort_record:update',
@@ -38,7 +38,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   setValidationRules(req, res, next) {
-    const { responses } = req.personEscortRecord || {}
+    const { responses } = req.assessment || {}
     const fields = Object.entries(req.form.options.fields).map(
       frameworksHelpers.setValidationRules(responses)
     )
@@ -50,7 +50,7 @@ class FrameworkStepController extends FormWizardController {
 
   setInitialValues(req, res, next) {
     const fields = req.form.options.fields
-    const responses = req.personEscortRecord.responses
+    const responses = req.assessment.responses
     const savedValues = responses
       .filter(response => fields[response.question?.key])
       .filter(response => !isEmpty(response.value))
@@ -88,7 +88,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   setSyncStatusBanner(req, res, next) {
-    const { nomis_sync_status: syncStatus } = req.personEscortRecord
+    const { nomis_sync_status: syncStatus } = req.assessment
 
     res.locals.syncFailures = syncStatus
       .filter(type => type.status === 'failed')
@@ -98,7 +98,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   setPrefillBanner(req, res, next) {
-    const { prefill_source: source, responses } = req.personEscortRecord || {}
+    const { prefill_source: source, responses } = req.assessment || {}
     const fields = req.form.options.fields
     const prefilledResponses = responses
       .filter(response => fields[response.question?.key])
@@ -114,8 +114,8 @@ class FrameworkStepController extends FormWizardController {
   }
 
   async saveValues(req, res, next) {
-    const { form, personEscortRecord } = req
-    const responses = personEscortRecord.responses
+    const { form, assessment } = req
+    const responses = assessment.responses
       .filter(response =>
         fieldHelpers.isAllowedDependent(
           form.options.fields,
@@ -128,10 +128,7 @@ class FrameworkStepController extends FormWizardController {
     try {
       // wait for all responses to resolve first
       if (responses.length) {
-        await personEscortRecordService.respond(
-          personEscortRecord.id,
-          responses
-        )
+        await personEscortRecordService.respond(assessment.id, responses)
       }
 
       // call parent saveValues to handle storing new values in the session
@@ -156,7 +153,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   render(req, res, next) {
-    const { responses } = req.personEscortRecord || {}
+    const { responses } = req.assessment || {}
     const fields = Object.entries(req.form.options.fields)
       .map(frameworksHelpers.renderNomisMappingsToField(responses))
       .map(

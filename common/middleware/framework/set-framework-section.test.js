@@ -34,7 +34,7 @@ describe('Framework middleware', function () {
 
     context('with framework', function () {
       beforeEach(function () {
-        mockReq.personEscortRecord = {
+        mockReq.assessment = {
           _framework: {
             sections: {
               foo: {

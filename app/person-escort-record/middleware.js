@@ -1,5 +1,10 @@
 const personEscortRecordService = require('../../common/services/person-escort-record')
 
+function setAssessment(req, res, next) {
+  req.assessment = req.personEscortRecord
+  next()
+}
+
 async function setPersonEscortRecord(req, res, next) {
   const recordId = req.params?.personEscortRecordId
 
@@ -23,5 +28,6 @@ async function setPersonEscortRecord(req, res, next) {
 }
 
 module.exports = {
+  setAssessment,
   setPersonEscortRecord,
 }

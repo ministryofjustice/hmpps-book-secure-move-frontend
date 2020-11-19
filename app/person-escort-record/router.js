@@ -1,11 +1,12 @@
 const wizard = require('hmpo-form-wizard')
+const { startCase } = require('lodash')
 
 const FrameworkSectionController = require('../../common/controllers/framework/framework-section')
 const FrameworkStepController = require('../../common/controllers/framework/framework-step')
 
 function defineFormWizard(req, res, next) {
   const { key, steps } = req.frameworkSection
-  const { id: personEscortRecordId, _framework } = req.personEscortRecord
+  const { id: assessmentId, _framework, framework } = req.assessment
   const firstStep = Object.values(steps)[0]
   const wizardFields = _framework.questions
   const wizardSteps = {
@@ -27,11 +28,9 @@ function defineFormWizard(req, res, next) {
   const wizardConfig = {
     controller: FrameworkStepController,
     entryPoint: true,
-    // Unique for each Person Escort Record and section
-    journeyName: `person-escort-record-${personEscortRecordId}-${key}`,
-    journeyPageTitle: 'Person escort record',
-    // Unique for each Person Escort Record
-    name: `person-escort-record-${personEscortRecordId}-${key}`,
+    journeyName: `${framework.name}-${assessmentId}-${key}`,
+    journeyPageTitle: startCase(framework.name),
+    name: `${framework.name}-${assessmentId}-${key}`,
     template: 'framework-step',
     defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
   }
