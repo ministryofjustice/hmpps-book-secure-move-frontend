@@ -19,15 +19,16 @@
   "incident_vehicle_true": "The event occurred on vehicle {{vehicle_reg}}",
   "incident_reported": "The incident was reported by {{supplier_personnel_numbers, oxfordJoin}} at {{reported_at, formatTime}}",
   "incident_reported_classified": "<br>$t(events::incident_reported)<br>$t(events::select_fault_classification)",
-  "incident_level_details": "{{incident_level}} incident involving {{person.fullname}} occurred $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
+  "incident_level_details": "{{incident_level}} incident involving $t(events::person) occurred $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
   "select_incident_location_preposition": "$t(events::incident_location_preposition, {\"context\": \"{{vehicle_reg, exists}}\"})",
   "incident_location_preposition_true": "on",
   "incident_location_preposition_false": "at",
   "select_incident_location_vehicle": "$t(events::incident_location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
   "incident_location_vehicle_true": "vehicle {{vehicle_reg}}",
   "incident_location_vehicle_false": "{{location.title}}",
-  "incident_escaped": "{{person.fullname}} escaped from $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
+  "incident_escaped": "$t(events::person) escaped from $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
   "no_events": "No events",
+  "person": "{{person.fullname, uppercase}}",
   "JourneyAdmitThroughOuterGate": {
     "heading": "Admitted through outer gate",
     "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{journey.to_location.title}}"
@@ -42,11 +43,15 @@
   },
   "JourneyChangeVehicle": {
     "heading": "Vehicle changed",
-    "description": "{{person.fullname}} moved from {{previous_vehicle_reg}} to {{journey.vehicle.registration}}"
+    "description": "$t(events::person) moved from {{previous_vehicle_reg}} to {{journey.vehicle.registration}}"
   },
   "JourneyComplete": {
     "heading": "Journey completed",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} completed"
+  },
+  "JourneyCreate": {
+    "heading": "Journey created",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} created by {{supplier.name}}"
   },
   "JourneyExitThroughOuterGate": {
     "heading": "Exited from outer gate",
@@ -54,15 +59,15 @@
   },
   "JourneyHandoverToDestination": {
     "heading": "Handover to establishment",
-    "description": "{{person.fullname}} handed over by {{move.supplier.name}} (Personnel number {{supplier_personnel_number}}) at {{journey.to_location.title}}"
+    "description": "$t(events::person) handed over by {{move.supplier.name}} (Personnel number {{supplier_personnel_number}}) at {{journey.to_location.title}}"
   },
   "JourneyPersonBoardVehicle": {
     "heading": "Boarded escort vehicle",
-    "description": "{{person.fullname}} boarded escort vehicle {{journey.vehicle.registration}}"
+    "description": "$t(events::person) boarded escort vehicle {{journey.vehicle.registration}}"
   },
   "JourneyPersonLeaveVehicle": {
     "heading": "Left escort vehicle",
-    "description": "{{person.fullname}} left escort vehicle {{journey.vehicle.registration}}"
+    "description": "$t(events::person) left escort vehicle {{journey.vehicle.registration}}"
   },
   "JourneyReadyToExit": {
     "heading": "Ready to exit",
@@ -75,6 +80,10 @@
   "JourneyStart": {
     "heading": "Journey started",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} started by {{move.supplier.name}}"
+  },
+  "JourneyUpdate": {
+    "heading": "Journey updated by {{supplier.name}}",
+    "description": ""
   },
   "JourneyUncancel": {
     "heading": "Journey uncancelled",
@@ -110,17 +119,17 @@
   },
   "MoveCollectionByEscort": {
     "heading": "Handover to {{move.supplier.name}}",
-    "description": "{{person.fullname}} has been received"
+    "description": "$t(events::person) has been received"
   },
   "MoveComplete": {
     "triggers": "StatusMoveCompleted",
     "heading": "Handover to {{move.to_location.title}}",
-    "description": "{{person.fullname}} has been received"
+    "description": "$t(events::person) has been received"
   },
   "MoveLockout": {
     "contextKey": "reason",
     "heading": "Lockout",
-    "description": "{{person.fullname}} locked out from {{move.from_location.title}} $t(events::MoveLockout.select_reason)",
+    "description": "$t(events::person) locked out from {{move.from_location.title}} $t(events::MoveLockout.select_reason)",
     "select_reason": "$t(events::MoveLockout.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
     "reason_no_space": "due to there being no space",
@@ -135,7 +144,7 @@
   },
   "MoveLodgingStart": {
     "heading": "Lodging started",
-    "description": "{{person.fullname}}  temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "description": "$t(events::person)  temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
     "select_reason": "$t(events::MoveLodgingStart.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
     "reason_overnight_lodging": "due to an overnight lodging",
@@ -148,7 +157,7 @@
   },
   "MoveLodgingEnd": {
     "heading": "Lodging ended",
-    "description": "{{person.fullname}} collected by {{move.supplier.name}} from temporary lodging at {{location.title}}"
+    "description": "$t(events::person) collected by {{move.supplier.name}} from temporary lodging at {{location.title}}"
   },
   "MoveNotifyPremisesOfArrivalIn30Mins": {
     "heading": "30 minute arrival notification",
@@ -273,31 +282,31 @@
     "description": ""
   },
   "PerCourtReadyInCustody": {
-    "heading": "{{person.fullname}} ready in custody",
+    "heading": "$t(events::person) ready in custody",
     "description": ""
   },
   "PerCourtRelease": {
-    "heading": "{{person.fullname}} released",
+    "heading": "$t(events::person) released",
     "description": ""
   },
   "PerCourtReleaseOnBail": {
-    "heading": "{{person.fullname}} released on bail",
+    "heading": "$t(events::person) released on bail",
     "description": ""
   },
   "PerCourtReturnToCustodyAreaFromDock": {
-    "heading": "{{person.fullname}} returned to custody area from dock",
+    "heading": "$t(events::person) returned to custody area from dock",
     "description": ""
   },
   "PerCourtReturnToCustodyAreaFromVisitorArea": {
-    "heading": "{{person.fullname}} returned to custody area from visitor area",
+    "heading": "$t(events::person) returned to custody area from visitor area",
     "description": ""
   },
   "PerCourtTakeFromCustodyToDock": {
-    "heading": "{{person.fullname}} taken to court dock from custody area",
+    "heading": "$t(events::person) taken to court dock from custody area",
     "description": ""
   },
   "PerCourtTakeToSeeVisitors": {
-    "heading": "{{person.fullname}} taken to visitor area",
+    "heading": "$t(events::person) taken to visitor area",
     "description": ""
   },
   "PerCourtTask": {
@@ -309,15 +318,16 @@
     "description": "{{notes}}"
   },
   "PerMedicalAid": {
+    "flag": "medical",
     "heading": "Medical attention requested",
-    "description": "{{person.fullname}} requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} on {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} on {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
+    "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} on {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} on {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
     "location_vehicle": "at {{location.title}}",
     "location_vehicle_true": "inside the vehicle {{vehicle_reg}}"
   },
   "PerPrisonerWelfare": {
     "heading": "Welfare offered",
-    "description": "{{person.fullname}} was offered $t(events::PerPrisonerWelfare.select_subtype) at {{occurred_at, formatTime}}<br>Welfare was {{outcome}}<br>{{supplier_personnel_number}} provided welfare at {{given_at, formatTime}}",
+    "description": "$t(events::person) was offered $t(events::PerPrisonerWelfare.select_subtype) at {{occurred_at, formatTime}}<br>Welfare was {{outcome}}<br>{{supplier_personnel_number}} provided welfare at {{given_at, formatTime}}",
     "select_subtype": "$t(events::PerPrisonerWelfare.subtype, {\"context\": \"{{subtype}}\"})",
     "subtype": "",
     "subtype_miscellaneous_welfare": "miscellaneous welfare",
@@ -328,56 +338,66 @@
     "subtype_relevant_information_given": "relevant information"
   },
   "PersonMoveAssault": {
+    "flag": "red",
     "heading": "Assault occurred",
     "description": "{{supplier_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
   },
+  "PersonMoveBookedIntoReceivingEstablishment": {
+    "heading": "$t(events::person) booked into {{location.title}}",
+    "description": ""
+  },
   "PersonMoveDeathInCustody": {
+    "flag": "red",
     "heading": "Death in custody",
     "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
   },
-  "PersonMoveBookedIntoReceivingEstablishment": {
-    "heading": "{{person.fullname}} booked into {{location.title}}",
-    "description": ""
-  },
   "PersonMoveMajorIncidentOther": {
+    "flag": "red",
     "heading": "Major incident occurred",
     "description": "$t(events::incident_level_details, {\"incident_level\": \"Major\"})"
   },
   "PersonMoveMinorIncidentOther": {
+    "flag": "red",
     "heading": "Minor incident occurred",
     "description": "$t(events::incident_level_details, {\"incident_level\": \"Minor\"})"
   },
   "PersonMovePersonEscapedKpi": {
+    "flag": "red",
     "heading": "KPI Escape occured",
     "description": "$t(events::incident_escaped)"
   },
   "PersonMovePersonEscaped": {
+    "flag": "red",
     "heading": "Non KPI Escape occured",
     "description": "$t(events::incident_escaped)"
   },
   "PersonMoveReleasedError": {
+    "flag": "red",
     "heading": "Released in error",
-    "description": "{{person.fullname}} was released in error from {{location.title}} $t(events::incident_reported_classified)"
+    "description": "$t(events::person) was released in error from {{location.title}} $t(events::incident_reported_classified)"
   },
   "PersonMoveRoadTrafficAccident": {
+    "flag": "red",
     "heading": "Road traffic accident",
-    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} met with road traffic accident $t(events::incident_reported_classified)"
+    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) met with road traffic accident $t(events::incident_reported_classified)"
   },
   "PersonMoveSeriousInjury": {
+    "flag": "red",
     "heading": "Serious injury sustained",
-    "description": "{{person.fullname}} sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)"
+    "description": "$t(events::person) sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)"
   },
   "PersonMoveUsedForce": {
+    "flag": "red",
     "heading": "Supplier used force",
-    "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on {{person.fullname}} <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
+    "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",
-    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} broke down $t(events::incident_reported_classified)"
+    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) broke down $t(events::incident_reported_classified)"
   },
   "PersonMoveVehicleSystemsFailed": {
     "heading": "Supplier vehicle systems failed",
-    "description": "Vehicle {{vehicle_reg}} transporting {{person.fullname}} has had a system failure $t(events::incident_reported_classified)"
+    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) has had a system failure $t(events::incident_reported_classified)"
   },
   "StatusMoveBooked": {
     "statusChange": true,

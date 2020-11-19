@@ -3,7 +3,9 @@ const addTriggeredEvents = require('../helpers/events/add-triggered-events')
 const setEventDetails = require('../helpers/events/set-event-details')
 
 const getItem = ({
-  component,
+  itemClasses,
+  headerClasses,
+  containerClasses,
   labelClasses,
   heading,
   description,
@@ -11,11 +13,17 @@ const getItem = ({
   byline,
 }) => {
   return {
+    container: {
+      classes: containerClasses,
+    },
+    header: {
+      classes: headerClasses,
+    },
     label: {
       classes: labelClasses,
       html: heading,
     },
-    classes: 'app-timeline__item',
+    classes: itemClasses,
     html: description,
     datetime: {
       timestamp,
@@ -27,6 +35,32 @@ const getItem = ({
   }
 }
 
+const getLabelClasses = eventTypePrefix => {
+  const statusChange = i18n.exists(`${eventTypePrefix}.statusChange`)
+  return statusChange ? 'moj-badge' : undefined
+}
+
+const getFlagClasses = eventTypePrefix => {
+  let containerClasses
+  let headerClasses
+  const hasFlag = i18n.exists(`${eventTypePrefix}.flag`)
+
+  if (hasFlag) {
+    const flag = i18n.t(`${eventTypePrefix}.flag`)
+    containerClasses = 'app-panel'
+    headerClasses = 'app-tag'
+
+    if (flag === 'red') {
+      headerClasses += ' app-tag--destructive'
+    }
+  }
+
+  return {
+    containerClasses,
+    headerClasses,
+  }
+}
+
 const eventsToTimelineComponent = (move = {}) => {
   const { timeline_events: moveEvents } = move
 
@@ -34,12 +68,15 @@ const eventsToTimelineComponent = (move = {}) => {
     const event = setEventDetails(moveEvent, move)
 
     const { details, event_type: eventType } = event
-    const statusChange = i18n.exists(`events::${eventType}.statusChange`)
-    const labelClasses = statusChange ? 'moj-badge' : undefined
+    const eventTypePrefix = `events::${eventType}`
 
-    const heading = i18n.t(`events::${eventType}.heading`, details)
+    const labelClasses = getLabelClasses(eventTypePrefix)
+
+    const flagClasses = getFlagClasses(eventTypePrefix)
+
+    const heading = i18n.t(`${eventTypePrefix}.heading`, details)
     const description = i18n
-      .t(`events::${eventType}.description`, details)
+      .t(`${eventTypePrefix}.description`, details)
       .replace(/^<br>/, '')
     // Some strings that get added together are prefixed with a <br>.
     // This enables them to be used as the first item or where a previous string doesn't get output
@@ -52,6 +89,7 @@ const eventsToTimelineComponent = (move = {}) => {
     const timestamp = event.occurred_at
 
     return getItem({
+      ...flagClasses,
       labelClasses,
       heading,
       description,

@@ -76,19 +76,37 @@ params:
             type: string
             required: false
             description: Classes to add to the item label element.
-      - name: additional
+      - name: byline
         type: object
         required: false
-        description: Options for assitional item content.
+        description: Options for byline content.
         params:
           - name: text
             type: string
             required: true
-            description: If `html` is set, this is not required. Text to use within the additional item element. If `html` is provided, the `text` argument will be ignored.
+            description: If `html` is set, this is not required. Text to use within the byline item element. If `html` is provided, the `text` argument will be ignored.
           - name: html
             type: string
             required: true
-            description: If `text` is set, this is not required. HTML to use within the additional item element. If `html` is provided, the `text` argument will be ignored.
+            description: If `text` is set, this is not required. HTML to use within the byline item element. If `html` is provided, the `text` argument will be ignored.
+      - name: container
+        type: object
+        required: true
+        description: Options for the nested item container element.
+        params:
+          - name: classes
+            type: string
+            required: false
+            description: Classes to add to the nested item container element.
+      - name: header
+        type: object
+        required: true
+        description: Options for the item header container element.
+        params:
+          - name: classes
+            type: string
+            required: false
+            description: Classes to add to the item header container element.
 examples:
   - name: default
     data:
@@ -270,3 +288,25 @@ examples:
             type: datetime
           byline:
             html: <b>Agent</b> Smith
+  - name: item container classes
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          container:
+            classes: item-container-class
+  - name: item header classes
+    data:
+      items:
+        - label:
+            text: Something happened
+          text: Explanation of what happened
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: datetime
+          header:
+            classes: item-header-class

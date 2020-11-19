@@ -11,6 +11,7 @@ describe('Timeline component', function () {
   let $component
   let $timeline
   let $item
+  let $container
   let $header
   let $title
   let $description
@@ -23,6 +24,7 @@ describe('Timeline component', function () {
     $component = $('body')
     $timeline = $component.find('.app-timeline')
     $item = $component.find('.app-timeline__item')
+    $container = $component.find('.app-timeline__item__container')
     $header = $component.find('.app-timeline__header')
     $title = $component.find('.app-timeline__title')
     $description = $component.find('.app-timeline__description')
@@ -42,6 +44,14 @@ describe('Timeline component', function () {
 
     it('should contain a timeline element', function () {
       expect($timeline.length).to.equal(1)
+    })
+
+    it('should contain an element for each item', function () {
+      expect($item.length).to.equal(2)
+    })
+
+    it('should contain a container element for each item', function () {
+      expect($container.length).to.equal(2)
     })
 
     it('should contain a heading element for each item', function () {
@@ -74,10 +84,14 @@ describe('Timeline component', function () {
     })
 
     it('should have correct structure', function () {
+      expect($item.parent().hasClass('app-timeline'))
+      expect($container.parent().hasClass('app-timeline__item'))
+      expect($header.parent().hasClass('app-timeline__item__container'))
       expect($header.next().hasClass('app-timeline__description')).to.equal(
         true
       )
       expect($description.next().hasClass('app-timeline__date')).to.equal(true)
+      expect($time.parent().hasClass('app-timeline__date'))
     })
   })
 
@@ -258,6 +272,26 @@ describe('Timeline component', function () {
 
     it('should output expected byline info escaping any html', function () {
       expect($byline.html().trim()).to.equal('&lt;b&gt;Agent&lt;/b&gt; Smith')
+    })
+  })
+
+  context('item container classes', function () {
+    before(function () {
+      example = examples['item container classes']
+    })
+
+    it('should set the class on the item container', function () {
+      expect($container.hasClass('item-container-class')).to.equal(true)
+    })
+  })
+
+  context('item header classes', function () {
+    before(function () {
+      example = examples['item header classes']
+    })
+
+    it('should set the class on the header container', function () {
+      expect($header.hasClass('item-header-class')).to.equal(true)
     })
   })
 })

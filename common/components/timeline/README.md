@@ -78,7 +78,9 @@ Required
 |html|string|Yes|If `text` is set, this is not required. HTML to use as description within the item. If `html` is provided, the `text` argument will be ignored.|
 |datetime|object|No|See [item date and time](#itemdatetime).|
 |byline|object|No|See [item byline](#itembyline).|
-|classes|string|No|Classes to add to the timeline's items container.|
+|container|object|No|Nested container element within item element. See [item container](#itemcontainer).|
+|header|object|No|Container element for item title. See [item header](#itemheader).|
+|classes|string|No|Classes to add to the timeline's items element.|
 |attributes|object|No|HTML attributes (for example data attributes) to add to the timeline's items container.|
 
 #### Item label
@@ -114,9 +116,28 @@ Optional
 
 Adds byline content.
 
-Not used by `appTimelineItem`.
-
 |Name|Type|Required|Description|
 |---|---|---|---|
 |text|string|Yes|If `html` is set, this is not required. Text to use within the byline content for the item. If `html` is provided, the `text` argument will be ignored.|
 |html|string|Yes|If `text` is set, this is not required. HTML to use within the byline content for the item. If `html` is provided, the `text` argument will be ignored.|
+
+#### Item container
+
+Optional
+
+Adds container classes.
+
+|Name|Type|Required|Description|
+|---|---|---|---|
+|classes|string|No|Classes to add to the item container element.|
+
+#### Item header
+
+Optional
+
+Adds header classes.
+
+|Name|Type|Required|Description|
+|---|---|---|---|
+|classes|string|No|Classes to add to the item header element.|
+

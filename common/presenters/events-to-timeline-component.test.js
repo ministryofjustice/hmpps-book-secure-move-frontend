@@ -47,9 +47,19 @@ describe('Presenters', function () {
         )
       })
 
+      it('should invoke i18n.exists expected number of times', function () {
+        expect(i18n.exists).to.be.calledTwice
+      })
+
       it('should check whether the event is a triggered status change', function () {
-        expect(i18n.exists).to.be.calledOnceWithExactly(
+        expect(i18n.exists.firstCall).to.be.calledWithExactly(
           'events::foo.statusChange'
+        )
+      })
+
+      it('should check whether the event has a flag', function () {
+        expect(i18n.exists.secondCall).to.be.calledWithExactly(
+          'events::foo.flag'
         )
       })
 
@@ -75,8 +85,10 @@ describe('Presenters', function () {
         expect(transformedResponse).to.deep.equal({
           items: [
             {
+              container: { classes: undefined },
+              header: { classes: undefined },
+              classes: undefined,
               label: { html: 'events::foo.heading', classes: undefined },
-              classes: 'app-timeline__item',
               html: 'events::foo.description',
               datetime: { timestamp: '2020-10-03', type: 'datetime' },
               byline: { html: '' },
@@ -88,12 +100,69 @@ describe('Presenters', function () {
 
     context('when event is a triggered status change', function () {
       beforeEach(function () {
-        i18n.exists.returns(true)
+        i18n.exists.onCall(0).returns(true)
         transformedResponse = eventsToTimelineComponent(mockMove)
       })
 
       it('should add the expected class name', function () {
         expect(transformedResponse.items[0].label.classes).to.equal('moj-badge')
+      })
+    })
+
+    context('when event has a flag', function () {
+      beforeEach(function () {
+        i18n.exists.onCall(1).returns(true)
+        transformedResponse = eventsToTimelineComponent(mockMove)
+      })
+      it('should get the event class', function () {
+        expect(i18n.t.firstCall).to.be.calledWithExactly('events::foo.flag')
+      })
+
+      it('should get the heading for the event as usual', function () {
+        expect(i18n.t.secondCall).to.be.calledWithExactly(
+          'events::foo.heading',
+          mockEvents[0].details
+        )
+      })
+
+      it('should set the expected item class names', function () {
+        expect(transformedResponse).to.deep.equal({
+          items: [
+            {
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
+              html: 'events::foo.description',
+              datetime: { timestamp: '2020-10-03', type: 'datetime' },
+              byline: { html: '' },
+              container: { classes: 'app-panel' },
+              header: { classes: 'app-tag' },
+            },
+          ],
+        })
+      })
+    })
+
+    context('when event has a red flag', function () {
+      beforeEach(function () {
+        i18n.exists.onCall(1).returns(true)
+        i18n.t.onCall(0).returns('red')
+        transformedResponse = eventsToTimelineComponent(mockMove)
+      })
+
+      it('should set the expected item class names', function () {
+        expect(transformedResponse).to.deep.equal({
+          items: [
+            {
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
+              html: 'events::foo.description',
+              datetime: { timestamp: '2020-10-03', type: 'datetime' },
+              byline: { html: '' },
+              container: { classes: 'app-panel' },
+              header: { classes: 'app-tag app-tag--destructive' },
+            },
+          ],
+        })
       })
     })
 
