@@ -70,10 +70,12 @@ const mockMove = {
   ],
 }
 
+const mockMoveUrl = '/url-to-move'
 const mockUrls = {
   somewhere: '/somewhere',
 }
 const mockTabsUrls = {
+  view: mockMoveUrl,
   elsewhere: '/elsewhere',
 }
 const mockUpdateLinks = {
@@ -86,14 +88,13 @@ const mockUpdateLinks = {
     url: '/somewhere',
   },
 }
-const mockOriginalUrl = '/url-to-move'
 
 getUpdateUrls.returns(mockUrls)
 getTabsUrls.returns(mockTabsUrls)
 getUpdateLinks.returns(mockUpdateLinks)
 
 describe('Move controllers', function () {
-  describe('#view()', function () {
+  describe('#view locals()', function () {
     let req, res, params
     const userPermissions = ['permA']
 
@@ -133,7 +134,6 @@ describe('Move controllers', function () {
           },
         },
         move: mockMove,
-        originalUrl: mockOriginalUrl,
       }
       res = {
         render: sinon.spy(),
@@ -157,7 +157,7 @@ describe('Move controllers', function () {
         expect(
           presenters.frameworkToTaskListComponent
         ).to.be.calledOnceWithExactly({
-          baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+          baseUrl: `${mockMoveUrl}/person-escort-record/`,
           deepLinkToFirstStep: true,
           frameworkSections: undefined,
           sectionProgress: undefined,
@@ -192,7 +192,7 @@ describe('Move controllers', function () {
       it('should contain a personEscortRecordUrl param', function () {
         expect(params).to.have.property('personEscortRecordUrl')
         expect(params.personEscortRecordUrl).to.equal(
-          `${mockOriginalUrl}/person-escort-record`
+          `${mockMoveUrl}/person-escort-record`
         )
       })
 
@@ -247,7 +247,8 @@ describe('Move controllers', function () {
 
       it('should call assessmentToTagList presenter with correct args', function () {
         expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(
-          mockAssessmentAnswers
+          mockAssessmentAnswers,
+          mockMoveUrl
         )
       })
 
@@ -494,7 +495,10 @@ describe('Move controllers', function () {
       })
 
       it('should call assessmentToTagList presenter with empty array', function () {
-        expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly([])
+        expect(presenters.assessmentToTagList).to.be.calledOnceWithExactly(
+          [],
+          mockMoveUrl
+        )
       })
 
       it('should contain tag list param', function () {
@@ -589,7 +593,7 @@ describe('Move controllers', function () {
         it('should contain url to Person Escort Record', function () {
           expect(params).to.have.property('personEscortRecordUrl')
           expect(params.personEscortRecordUrl).to.equal(
-            `${mockOriginalUrl}/person-escort-record`
+            `${mockMoveUrl}/person-escort-record`
           )
         })
 
@@ -597,7 +601,7 @@ describe('Move controllers', function () {
           expect(
             presenters.frameworkToTaskListComponent
           ).to.be.calledOnceWithExactly({
-            baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            baseUrl: `${mockMoveUrl}/person-escort-record/`,
             deepLinkToFirstStep: true,
             frameworkSections: frameworkStub.sections,
             sectionProgress: mockPersonEscortRecord.meta.section_progress,
@@ -667,7 +671,7 @@ describe('Move controllers', function () {
         it('should contain url to Person Escort Record', function () {
           expect(params).to.have.property('personEscortRecordUrl')
           expect(params.personEscortRecordUrl).to.equal(
-            `${mockOriginalUrl}/person-escort-record`
+            `${mockMoveUrl}/person-escort-record`
           )
         })
 
@@ -675,7 +679,7 @@ describe('Move controllers', function () {
           expect(
             presenters.frameworkToTaskListComponent
           ).to.be.calledOnceWithExactly({
-            baseUrl: `${mockOriginalUrl}/person-escort-record/`,
+            baseUrl: `${mockMoveUrl}/person-escort-record/`,
             deepLinkToFirstStep: true,
             frameworkSections: frameworkStub.sections,
             sectionProgress: mockPersonEscortRecord.meta.section_progress,
@@ -685,7 +689,10 @@ describe('Move controllers', function () {
         it('should call frameworkFlagsToTagList presenter with correct args', function () {
           expect(
             presenters.frameworkFlagsToTagList
-          ).to.be.calledOnceWithExactly(mockPersonEscortRecord.flags)
+          ).to.be.calledOnceWithExactly(
+            mockPersonEscortRecord.flags,
+            mockMoveUrl
+          )
         })
 
         it('should contain Person Escort Record tasklist', function () {
