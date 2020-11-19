@@ -85,7 +85,10 @@ describe('Presenters', function () {
         expect(transformedResponse).to.deep.equal({
           items: [
             {
-              label: { html: 'events::foo.heading' },
+              container: { classes: undefined },
+              header: { classes: undefined },
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
               html: 'events::foo.description',
               datetime: { timestamp: '2020-10-03', type: 'datetime' },
               byline: { html: '' },
@@ -126,7 +129,8 @@ describe('Presenters', function () {
         expect(transformedResponse).to.deep.equal({
           items: [
             {
-              label: { html: 'events::foo.heading' },
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
               html: 'events::foo.description',
               datetime: { timestamp: '2020-10-03', type: 'datetime' },
               byline: { html: '' },
@@ -149,7 +153,8 @@ describe('Presenters', function () {
         expect(transformedResponse).to.deep.equal({
           items: [
             {
-              label: { html: 'events::foo.heading' },
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
               html: 'events::foo.description',
               datetime: { timestamp: '2020-10-03', type: 'datetime' },
               byline: { html: '' },

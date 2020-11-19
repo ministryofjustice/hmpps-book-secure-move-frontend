@@ -2,23 +2,6 @@ const i18n = require('../../config/i18n')
 const addTriggeredEvents = require('../helpers/events/add-triggered-events')
 const setEventDetails = require('../helpers/events/set-event-details')
 
-const removeUndefinedProps = obj => {
-  const transformedObject = Object.keys(obj).reduce((acc, key) => {
-    let objProp = obj[key]
-
-    if (typeof objProp === 'object') {
-      objProp = removeUndefinedProps(objProp)
-    }
-
-    if (objProp !== undefined) {
-      acc[key] = objProp
-    }
-
-    return acc
-  }, {})
-  return Object.keys(transformedObject).length ? transformedObject : undefined
-}
-
 const getItem = ({
   itemClasses,
   headerClasses,
@@ -29,7 +12,7 @@ const getItem = ({
   timestamp,
   byline,
 }) => {
-  return removeUndefinedProps({
+  return {
     container: {
       classes: containerClasses,
     },
@@ -49,7 +32,7 @@ const getItem = ({
     byline: {
       html: byline,
     },
-  })
+  }
 }
 
 const getLabelClasses = eventTypePrefix => {
