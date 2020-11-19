@@ -55,14 +55,18 @@ const populationTableDay = {
   dayRowConfig({ date, focusDate, populationIndex = 0 }) {
     return {
       html: data => {
-        const count = data?.meta?.populations?.[populationIndex]?.free_spaces
+        const { id } = data
+        const { free_spaces: count } =
+          data?.meta?.populations?.[populationIndex] || {}
 
         const action =
           count === undefined
             ? i18n.t('population::add_space')
             : i18n.t('population::spaces_with_count', { count })
 
-        return `<a>${action}</a>`
+        const url = `/population/day/${format(date, 'yyyy-MM-dd')}/${id}`
+
+        return `<a href="${url}">${action}</a>`
       },
       classes: isSameDay(focusDate, date)
         ? 'focus-table__td--day focus-table__td--focus'

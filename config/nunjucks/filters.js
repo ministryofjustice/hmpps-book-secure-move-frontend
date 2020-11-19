@@ -156,6 +156,18 @@ function formatDateWithDay(value) {
 }
 
 /**
+ * Formats a date with date and time
+ *
+ * @param  {Any} any type
+ * @return {String} a formatted date with the day
+ *
+ * @example {{ "2019-02-21" | formatDateWithTimeAndDay }}
+ */
+function formatDateWithTimeAndDay(value) {
+  return formatDate(value, DATE_FORMATS.WITH_TIME_AND_DAY)
+}
+
+/**
  * Returns today, tomorrow or yesterday if they match, otherwise
  * it will return that date formatted with day by default or in
  * the format supplied
@@ -316,6 +328,7 @@ module.exports = {
   formatDateRangeAsRelativeWeek,
   formatDateRangeWithRelativeWeek,
   formatDateWithDay,
+  formatDateWithTimeAndDay,
   formatDateWithRelativeDay,
   formatDateAsRelativeDay,
   formatISOWeek,

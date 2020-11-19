@@ -24,6 +24,7 @@ const movesByLocation = require('./moves-by-location')
 const movesToCSV = require('./moves-to-csv')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const locationsToPopulationTableComponent = require('./population-table/locations-to-population-table-component')
+const populationToGrid = require('./population-to-grid')
 const profileToCardComponent = require('./profile-to-card-component')
 const singleRequestsToTableComponent = require('./single-requests-to-table-component')
 const tablePresenters = require('./table')
@@ -33,11 +34,11 @@ module.exports = {
   allocationsToTableComponent,
   allocationToMetaListComponent,
   allocationToSummaryListComponent,
-  assessmentAnswerToTag,
   assessmentAnswersByCategory,
+  assessmentAnswerToTag,
   assessmentCategoryToPanelComponent,
-  assessmentToTagList,
   assessmentCategoryToSummaryListComponent,
+  assessmentToTagList,
   courtCaseToCardComponent,
   courtHearingToSummaryListComponent,
   eventsToTimelineComponent,
@@ -48,15 +49,16 @@ module.exports = {
   frameworkStepToSummary,
   frameworkToTaskListComponent,
   locationsToPopulationTableComponent,
+  movesByLocation,
+  movesToCSV,
+  moveToAdditionalInfoListComponent,
   moveToCardComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
-  moveToAdditionalInfoListComponent,
-  profileToCardComponent,
-  personToSummaryListComponent,
-  movesByLocation,
-  movesToCSV,
   moveTypesToFilterComponent,
+  personToSummaryListComponent,
+  populationToGrid,
+  profileToCardComponent,
   singleRequestsToTableComponent,
   tablePresenters,
   timetableToTableComponent,

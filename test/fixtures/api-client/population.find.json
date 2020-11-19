@@ -1,0 +1,56 @@
+{
+  "data": {
+    "id": "3b25c3e5-b16a-45af-b20a-ad1a4f9d3e61",
+    "type": "populations",
+    "attributes": {
+      "date": "2020-11-02",
+      "operational_capacity": 219,
+      "usable_capacity": 260,
+      "unlock": 396,
+      "bedwatch": 5,
+      "overnights_in": 6,
+      "overnights_out": 10,
+      "out_of_area_courts": 2,
+      "discharges": 2,
+      "free_spaces": -128,
+      "updated_by": "The Hon. Boyce Lakin",
+      "created_at": "2020-10-20T15:42:24+01:00",
+      "updated_at": "2020-10-20T15:42:24+01:00"
+    },
+    "relationships": {
+      "location": {
+        "data": {
+          "id": "faf36187-d51a-4a93-8265-444a45e519be",
+          "type": "locations"
+        }
+      },
+      "moves_from": {
+        "data": [{
+          "id": "1349e9a9-1768-4d75-9b4f-598a49eb5b08",
+          "type": "moves"
+        }, {
+          "id": "3b1b9097-53a6-40b5-998f-d740d23c462a",
+          "type": "moves"
+        }, {
+          "id": "51cff88b-e727-4b39-a277-89e84d1bb0f6",
+          "type": "moves"
+        }, {
+          "id": "82c8fdbc-c251-4af5-a8af-c2bc9ed0be7a",
+          "type": "moves"
+        }, {
+          "id": "e1f086a1-dfe6-43b2-b6ea-95101dd7b633",
+          "type": "moves"
+        }, {
+          "id": "f4e1a66f-be84-4134-a45f-459c27807005",
+          "type": "moves"
+        }]
+      },
+      "moves_to": {
+        "data": [{
+          "id": "07d0ddf8-2b97-4990-b8e8-40cd7def4d9d",
+          "type": "moves"
+        }]
+      }
+    }
+  }
+}

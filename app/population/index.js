@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const dailyRouter = require('express').Router({ mergeParams: true })
 
 const {
   setContext,
@@ -6,15 +7,24 @@ const {
   setPagination,
 } = require('../../common/middleware/collection')
 
-const { BASE_PATH, MOUNTPATH } = require('./constants')
-const { dashboard } = require('./controllers')
-const { setResultsAsPopulationTable, redirectBaseUrl } = require('./middleware')
+const { BASE_PATH, MOUNTPATH, DAILY_PATH } = require('./constants')
+const { dashboard, daily } = require('./controllers')
+const {
+  redirectBaseUrl,
+  setPopulation,
+  setResultsAsPopulationTable,
+} = require('./middleware')
 
 router.param('date', setDateRange)
+router.param('locationId', setPopulation)
 
 router.get('/', redirectBaseUrl)
 
-router.use(
+dailyRouter.get('/', daily)
+
+router.use(DAILY_PATH, dailyRouter)
+
+router.get(
   BASE_PATH,
   setContext('population'),
   setPagination(MOUNTPATH + BASE_PATH),

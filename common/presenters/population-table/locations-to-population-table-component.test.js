@@ -262,45 +262,41 @@ describe('#locationToPopulationTableComponent()', function () {
       })
 
       it('returns the first capacity for Monday', function () {
-        expect(output.rows[0][1]).to.deep.include({
-          html: '<a>population::spaces_with_count</a>',
-        })
+        expect(output.rows[0][1].html).to.include(
+          'population::spaces_with_count'
+        )
         expect(t).to.have.been.calledWith('population::spaces_with_count', {
           count: 2,
         })
       })
 
       it('returns the second capacity for Tuesday', function () {
-        expect(output.rows[0][2]).to.deep.include({
-          html: '<a>population::spaces_with_count</a>',
-        })
+        expect(output.rows[0][2].html).to.include(
+          'population::spaces_with_count'
+        )
         expect(t).to.have.been.calledWith('population::spaces_with_count', {
           count: -1,
         })
       })
 
       it('returns the third capacity for Wednesday', function () {
-        expect(output.rows[0][3]).to.deep.include({
-          html: '<a>population::spaces_with_count</a>',
-        })
+        expect(output.rows[0][3].html).to.include(
+          'population::spaces_with_count'
+        )
         expect(t).to.have.been.calledWith('population::spaces_with_count', {
           count: 0,
         })
       })
 
       it('returns the fourth capacity for Thursday', function () {
-        expect(output.rows[0][4]).to.deep.include({
-          html: '<a>population::add_space</a>',
-        })
+        expect(output.rows[0][4].html).to.include('population::add_space')
         expect(t).to.have.been.calledWith('population::spaces_with_count', {
           count: 2,
         })
       })
 
       it('returns the fifth capacity for Friday', function () {
-        expect(output.rows[0][5]).to.deep.include({
-          html: '<a>population::add_space</a>',
-        })
+        expect(output.rows[0][5].html).to.include('population::add_space')
         expect(t).to.have.been.calledWith('population::spaces_with_count', {
           count: 2,
         })

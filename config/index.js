@@ -98,6 +98,7 @@ module.exports = {
     SHORT: 'd M yyyy',
     LONG: 'd MMM yyyy',
     WITH_DAY: 'EEEE d MMM yyyy',
+    WITH_TIME_AND_DAY: "h:mm aa 'on' EEEE d MMM yyyy",
     URL_PARAM: 'yyyy-MM-dd',
     WEEK_STARTS_ON: 1,
   },
