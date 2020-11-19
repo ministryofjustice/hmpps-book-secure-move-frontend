@@ -1,12 +1,12 @@
 const proxyquire = require('proxyquire')
 
-const FrameworkSectionController = require('../../common/controllers/framework/framework-section')
-const FrameworkStepController = require('../../common/controllers/framework/framework-step')
+const FrameworkSectionController = require('../controllers/framework/framework-section')
+const FrameworkStepController = require('../controllers/framework/framework-step')
 
 const wizardReqStub = sinon.stub()
 const wizardStub = sinon.stub().returns(wizardReqStub)
 
-const router = proxyquire('./router', {
+const router = proxyquire('./framework-form-wizard', {
   'hmpo-form-wizard': wizardStub,
 })
 
@@ -44,7 +44,7 @@ const mockFramework = {
   },
 }
 
-describe('Person Escort Record router', function () {
+describe('Framework form wizard', function () {
   describe('#defineFormWizard', function () {
     let req, res, next
 
@@ -102,9 +102,9 @@ describe('Person Escort Record router', function () {
         const config = {
           controller: FrameworkStepController,
           entryPoint: true,
-          journeyName: `person-escort-record-${req.assessment.id}-${req.frameworkSection.key}`,
+          journeyName: `${req.assessment.framework.name}-${req.assessment.id}-${req.frameworkSection.key}`,
           journeyPageTitle: 'Person Escort Record',
-          name: `person-escort-record-${req.assessment.id}-${req.frameworkSection.key}`,
+          name: `${req.assessment.framework.name}-${req.assessment.id}-${req.frameworkSection.key}`,
           template: 'framework-step',
           defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
         }

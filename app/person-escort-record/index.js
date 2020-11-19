@@ -6,13 +6,13 @@ const {
   frameworkOverviewController,
 } = require('../../common/controllers/framework')
 const { uuidRegex } = require('../../common/helpers/url')
+const { defineFormWizard } = require('../../common/lib/framework-form-wizard')
 const { setFrameworkSection } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const confirmApp = require('./app/confirm')
 const newApp = require('./app/new')
 const { printRecordController } = require('./controllers')
-const { defineFormWizard } = require('./router')
 const { setAssessment, setPersonEscortRecord } = require('./middleware')
 
 router.param('section', setFrameworkSection)
