@@ -5,7 +5,6 @@ function populationToGrid({ population } = {}) {
 
   return {
     details: {
-      date: population.date,
       free_spaces: population.free_spaces,
       updated_at: population.updated_at,
     },

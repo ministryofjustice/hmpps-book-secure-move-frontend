@@ -25,7 +25,6 @@ describe('Presenters', function () {
 
       expect(result).to.deep.equal({
         details: {
-          date: population.date,
           free_spaces: population.free_spaces,
           updated_at: population.updated_at,
         },

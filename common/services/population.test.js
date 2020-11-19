@@ -77,4 +77,26 @@ describe('Population Service', function () {
       })
     })
   })
+
+  describe('#getByIdWithMoves()', function () {
+    context('without ID', function () {
+      beforeEach(function () {
+        sinon.stub(populationService, 'getById')
+      })
+
+      afterEach(function () {
+        populationService.getById.restore()
+      })
+
+      it('should pass through params to getById', function () {
+        populationService.getByIdWithMoves('ABADCAFE')
+        expect(populationService.getById).to.be.calledOnceWithExactly(
+          'ABADCAFE',
+          {
+            include: ['moves_from', 'moves_to', 'location'],
+          }
+        )
+      })
+    })
+  })
 })

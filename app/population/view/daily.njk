@@ -1,12 +1,10 @@
 {% extends "layouts/base.njk" %}
-{% from "panel/macro.njk" import appPanel %}
-{% from "data/macro.njk" import appData %}
 
 {%  macro statsEntry(property, value) %}
   {%  set key = "population::daily_view.labels." + property %}
   {%  set label = t(key) %}
 
-  <h4 class="govuk-heading-s">{{ label }}</h4>
+  <h4 class="govuk-heading-s govuk-!-margin-bottom-1">{{ label }}</h4>
   <p class="govuk-body">{{ value }}</p>
 {% endmacro %}
 
@@ -21,18 +19,7 @@
   {% endfor %}
 {% endmacro %}
 
-{% macro transfersGroup(headingProperty, transfers) %}
-  {%  set key = "population::daily_view.labels." + headingProperty %}
-  {%  set label = t(key) %}
-
-  <h3 class="govuk-heading-m">{{ label }}</h3>
-
-  <p class="govuk-body">
-    {{  transfers }}
-  </p>
-{% endmacro %}
-
-{% set displayDate = details.date if details.date else date | formatDateWithRelativeDay %}
+{% set displayDate = date | formatDateWithRelativeDay %}
 
 {% block pageTitle %}
   {{ t("population::daily_view.page_title_with_date", {
@@ -40,14 +27,13 @@
   }) }}
 {% endblock %}
 
-
 {% block content %}
   <header class="govuk-grid-row govuk-!-margin-bottom-7">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">
         <span class="govuk-caption-xl">
-            {{ t("population::daily_view.subheading") }}
-            </span>
+          {{ t("population::daily_view.subheading") }}
+        </span>
         <span class="govuk-!-display-block">{{ displayDate }}</span>
       </h1>
     </div>
@@ -55,22 +41,20 @@
 
   {%  call appPanel({classes: 'govuk-!-margin-bottom-4'}) %}
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half">
+      <div class="govuk-grid-column-two-thirds">
 
         {% if spaces.details.updated_at %}
           <h2 class="govuk-heading-xl">{{ t("population::daily_view.free_spaces_with_count", {count:spaces.details.free_spaces}) }}</h2>
-          <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
-          <p class="govuk-body"><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
-          <p class="govuk-body-m">
+          <p>{{ t("population::daily_view.free_space_description") }}</p>
+          <p><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
+          <p class="govuk-!-margin-bottom-0">
             <a href="" class="govuk-link govuk-link--no-visited-state">
               {{ t("population::daily_view.actions.change_numbers", {
                 context: "with_visually_hidden_text"
               }) | safe }}
             </a>
           </p>
-        {% endif %}
-
-        {%  if not spaces.details.updated_at %}
+        {%  else %}
           <div>
             {{ govukButton({
               href: "",
@@ -79,14 +63,14 @@
             })}}
           </div>
 
-          <p class="govuk-body">{{ t("population::daily_view.free_space_description") }}</p>
+          <p class="govuk-!-margin-bottom-0">{{ t("population::daily_view.free_space_description") }}</p>
         {%  endif %}
       </div>
     </div>
   {%  endcall %}
 
   {% if spaces.details.updated_at %}
-  <div class="govuk-grid-row">
+    <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-half">
         {{ statsGroup("total_space", spaces.totalSpace) }}
       </div>
@@ -104,10 +88,10 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      {{ transfersGroup("transfers_in", transfers.transfersIn) }}
+      {{  statsEntry("transfers_in", transfers.transfersIn) }}
     </div>
     <div class="govuk-grid-column-one-half">
-      {{ transfersGroup("transfers_out", transfers.transfersOut) }}
+      {{  statsEntry("transfers_out", transfers.transfersOut) }}
     </div>
   </div>
 

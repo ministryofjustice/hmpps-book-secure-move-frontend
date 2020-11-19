@@ -1,6 +1,6 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-const populationService = require('../../../common/services/population')
 const moveService = require('../../../common/services/move')
+const populationService = require('../../../common/services/population')
 
 const middleware = require('./set-population')
 
@@ -30,7 +30,7 @@ describe('Population middleware', function () {
 
     beforeEach(function () {
       sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
-      sinon.stub(populationService, 'getById')
+      sinon.stub(populationService, 'getByIdWithMoves')
       sinon.stub(moveService, 'getActive')
 
       next = sinon.fake()
@@ -52,14 +52,14 @@ describe('Population middleware', function () {
           locationsFreeSpacesService.getPrisonFreeSpaces.resolves(
             mockCapacities
           )
-          populationService.getById.resolves(mockPopulation)
+          populationService.getByIdWithMoves.resolves(mockPopulation)
 
           await middleware(req, res, next)
         })
 
         afterEach(function () {
           locationsFreeSpacesService.getPrisonFreeSpaces.restore()
-          populationService.getById.restore()
+          populationService.getByIdWithMoves.restore()
         })
 
         it('should call locationFreeSpaces service with date and locationId', function () {
@@ -73,7 +73,9 @@ describe('Population middleware', function () {
         })
 
         it('should call population service with population', function () {
-          expect(populationService.getById).to.have.been.calledOnceWith('A')
+          expect(
+            populationService.getByIdWithMoves
+          ).to.have.been.calledOnceWith('A')
         })
 
         it('should set req.population', function () {
@@ -124,7 +126,7 @@ describe('Population middleware', function () {
       })
 
       it('should not call population service', function () {
-        expect(populationService.getById).not.to.have.been.called
+        expect(populationService.getByIdWithMoves).not.to.have.been.called
       })
 
       it('should not set population on req', function () {
@@ -175,7 +177,7 @@ describe('Population middleware', function () {
     context('when population service rejects', function () {
       beforeEach(async function () {
         locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
-        populationService.getById.rejects(mockError)
+        populationService.getByIdWithMoves.rejects(mockError)
 
         await middleware(req, res, next)
       })

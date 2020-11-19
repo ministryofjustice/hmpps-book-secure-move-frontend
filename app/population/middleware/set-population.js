@@ -5,8 +5,8 @@ const populationService = require('../../../common/services/population')
 async function setPopulation(req, res, next) {
   try {
     const { locationId, date } = req.params
-    let transfersIn = 0
-    let transfersOut = 0
+    let transfersIn
+    let transfersOut
 
     const dailyFreeSpace = await locationsFreeSpacesService.getPrisonFreeSpaces(
       {
@@ -21,25 +21,20 @@ async function setPopulation(req, res, next) {
     const { id: populationId } = freeSpacePopulation
 
     if (populationId) {
-      req.population = await populationService.getById(populationId, {
-        include: ['moves_from', 'moves_to', 'location'],
-      })
+      req.population = await populationService.getByIdWithMoves(populationId)
 
       transfersIn = req.population.moves_to.length
       transfersOut = req.population.moves_from.length
-    }
-
-    if (!req.population) {
+    } else {
+      const options = { dateRange: [date, date], isAggregation: true }
       ;[transfersIn, transfersOut] = await Promise.all([
         moveService.getActive({
-          dateRange: [date, date],
+          ...options,
           toLocationId: locationId,
-          isAggregation: true,
         }),
         moveService.getActive({
-          dateRange: [date, date],
+          ...options,
           fromLocationId: locationId,
-          isAggregation: true,
         }),
       ])
     }

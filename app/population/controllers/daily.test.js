@@ -1,10 +1,6 @@
-const proxyquire = require('proxyquire')
+const presenters = require('../../../common/presenters')
 
-const populationToGridStub = sinon.stub()
-
-const controller = proxyquire('./daily', {
-  '../../../common/presenters/population-to-grid': populationToGridStub,
-})
+const controller = require('./daily')
 
 describe('Population controllers', function () {
   describe('#dashboard()', function () {
@@ -21,8 +17,8 @@ describe('Population controllers', function () {
           updated_at: '2020-07-29',
         },
         transfers: {
-          transfersIn: [],
-          transfersOut: [],
+          transfersIn: 1,
+          transfersOut: 9,
         },
       }
 
@@ -30,11 +26,13 @@ describe('Population controllers', function () {
         render: sinon.spy(),
       }
 
-      populationToGridStub.returns({
-        details: {
-          date: '2020-07-29',
-        },
+      sinon.stub(presenters, 'populationToGrid').returns({
+        details: {},
       })
+    })
+
+    afterEach(function () {
+      presenters.populationToGrid.restore()
     })
 
     context('by default', function () {
@@ -49,7 +47,7 @@ describe('Population controllers', function () {
         expect(template).to.equal('population/view/daily')
       })
 
-      describe('params', function () {
+      describe('render params', function () {
         let params
 
         beforeEach(function () {
@@ -67,18 +65,20 @@ describe('Population controllers', function () {
 
         it('should set spaces', function () {
           expect(params).to.have.property('spaces')
-          expect(params.spaces).to.deep.equal({
-            details: {
-              date: '2020-07-29',
-            },
-          })
+          expect(params.spaces).to.have.all.keys(
+            'details',
+            'totalSpace',
+            'availableSpace',
+            'unavailableSpace'
+          )
+          expect(params.spaces.details.updated_at).to.equal('2020-07-29')
         })
 
         it('should set transfers', function () {
           expect(params).to.have.property('transfers')
           expect(params.transfers).to.deep.equal({
-            transfersIn: [],
-            transfersOut: [],
+            transfersIn: 1,
+            transfersOut: 9,
           })
         })
       })

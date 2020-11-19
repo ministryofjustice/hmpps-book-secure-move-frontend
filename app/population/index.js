@@ -11,16 +11,16 @@ const { BASE_PATH, MOUNTPATH, DAILY_PATH } = require('./constants')
 const { dashboard, daily } = require('./controllers')
 const {
   redirectBaseUrl,
-  setPopulationId,
+  setPopulation,
   setResultsAsPopulationTable,
 } = require('./middleware')
 
 router.param('date', setDateRange)
-router.param('locationId', setPopulationId)
+router.param('locationId', setPopulation)
 
 router.get('/', redirectBaseUrl)
 
-dailyRouter.get('/', setContext('population'), daily)
+dailyRouter.get('/', daily)
 
 router.use(DAILY_PATH, dailyRouter)
 
