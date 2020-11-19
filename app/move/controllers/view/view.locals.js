@@ -8,7 +8,8 @@ const getUpdateLinks = require('./view.update.links')
 const getUpdateUrls = require('./view.update.urls')
 
 function getViewLocals(req) {
-  const { move, originalUrl, framework = {} } = req
+  const { move, framework = {} } = req
+
   const {
     profile,
     status,
@@ -16,6 +17,9 @@ function getViewLocals(req) {
     cancellation_reason_comment: cancellationComments,
     rejection_reason: rejectionReason,
   } = move
+
+  const tabsUrls = getTabsUrls(move)
+  const moveUrl = tabsUrls.view
 
   // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
   const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
@@ -41,7 +45,7 @@ function getViewLocals(req) {
   const personEscortRecordIsConfirmed = ['confirmed'].includes(
     personEscortRecord?.status
   )
-  const personEscortRecordUrl = `${originalUrl}/person-escort-record`
+  const personEscortRecordUrl = `${moveUrl}/person-escort-record`
   const showPersonEscortRecordBanner =
     personEscortRecordIsEnabled &&
     !['proposed'].includes(move?.status) &&
@@ -61,11 +65,12 @@ function getViewLocals(req) {
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })
   const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
-    personEscortRecord?.flags
+    personEscortRecord?.flags,
+    moveUrl
   )
   const urls = {
     update: updateUrls,
-    tabs: getTabsUrls(move),
+    tabs: tabsUrls,
   }
   const assessment = presenters
     .assessmentAnswersByCategory(assessmentAnswers)
@@ -112,7 +117,7 @@ function getViewLocals(req) {
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),
-    tagList: presenters.assessmentToTagList(assessmentAnswers),
+    tagList: presenters.assessmentToTagList(assessmentAnswers, moveUrl),
     canCancelMove:
       (userPermissions.includes('move:cancel') &&
         !move.allocation &&
