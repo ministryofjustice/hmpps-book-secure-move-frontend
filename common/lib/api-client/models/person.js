@@ -1,3 +1,5 @@
+const { transformResource, personTransformer } = require('../transformers')
+
 module.exports = {
   fields: {
     first_names: '',
@@ -24,5 +26,6 @@ module.exports = {
   },
   options: {
     defaultInclude: ['ethnicity', 'gender'],
+    deserializer: transformResource(personTransformer),
   },
 }

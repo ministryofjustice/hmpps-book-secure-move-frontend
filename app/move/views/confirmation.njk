@@ -30,8 +30,8 @@
         {% set context = "assign" %}
       {% else %}
 
-        {% if move.status === "proposed" and (move.move_type === "secure_training_centre" or move.move_type === "secure_childrens_home") %}
-          {% set context = move.move_type %}
+        {% if move.status === "proposed" and (move.from_location.location_type === "secure_training_centre" or move.from_location.location_type === "secure_childrens_home") %}
+          {% set context = move.from_location.location_type %}
         {% else %}
           {% set context = move.status %}
         {% endif %}

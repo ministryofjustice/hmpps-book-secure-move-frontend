@@ -1,7 +1,6 @@
 const proxyquire = require('proxyquire')
 
 const apiClient = require('../lib/api-client')()
-const moveService = require('../services/move')
 
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
@@ -157,10 +156,6 @@ describe('Allocation service', function () {
   describe('#transform()', function () {
     let output
 
-    beforeEach(function () {
-      sinon.stub(moveService, 'transform').returnsArg(0)
-    })
-
     // TODO: Remove when individual allocations return meta.moves info
     describe('single allocation', function () {
       context('when there is no meta object', function () {
@@ -268,10 +263,6 @@ describe('Allocation service', function () {
         expect(output.moves).to.have.length(3)
       })
 
-      it('should call the person transform method on remaining moves', function () {
-        expect(moveService.transform.callCount).to.equal(3)
-      })
-
       it('should return correct output', function () {
         expect(output).to.deep.equal({
           id: '12345',
@@ -318,10 +309,6 @@ describe('Allocation service', function () {
         expect(output.moves).to.have.length(3)
       })
 
-      it('should call the person transform method on remaining moves', function () {
-        expect(moveService.transform.callCount).to.equal(3)
-      })
-
       it('should return correct output', function () {
         expect(output).to.deep.equal({
           id: '12345',
@@ -366,10 +353,6 @@ describe('Allocation service', function () {
 
       it('should not filter out cancelled moves', function () {
         expect(output.moves).to.have.length(5)
-      })
-
-      it('should call the person transform method on all moves', function () {
-        expect(moveService.transform.callCount).to.equal(5)
       })
 
       it('should return correct output', function () {

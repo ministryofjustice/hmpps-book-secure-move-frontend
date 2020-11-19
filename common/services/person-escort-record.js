@@ -1,17 +1,9 @@
 const { FRAMEWORKS } = require('../../config')
 const apiClient = require('../lib/api-client')()
-const profileService = require('../services/profile')
 
 const noIdMessage = 'No resource ID supplied'
 
 const personEscortRecordService = {
-  transformResponse({ data = {} } = {}) {
-    return {
-      ...data,
-      profile: profileService.transform(data.profile),
-    }
-  },
-
   create(moveId) {
     return apiClient
       .create('person_escort_record', {
@@ -33,7 +25,7 @@ const personEscortRecordService = {
         id,
         status: 'confirmed',
       })
-      .then(this.transformResponse)
+      .then(response => response.data)
   },
 
   getById(id) {
@@ -43,7 +35,7 @@ const personEscortRecordService = {
 
     return apiClient
       .find('person_escort_record', id)
-      .then(this.transformResponse)
+      .then(response => response.data)
   },
 
   respond(id, data = []) {

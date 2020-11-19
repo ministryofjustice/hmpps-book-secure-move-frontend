@@ -9,20 +9,6 @@ const relationshipKeys = ['gender', 'ethnicity']
 const dateKeys = ['date_of_birth']
 
 const personService = {
-  transform(person) {
-    if (!person) {
-      return person
-    }
-
-    return {
-      ...person,
-      image_url: `/person/${person.id}/image`,
-      fullname: [person.last_name, person.first_names]
-        .filter(Boolean)
-        .join(', '),
-    }
-  },
-
   format(data) {
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
@@ -52,7 +38,6 @@ const personService = {
     return apiClient
       .create('person', personService.format(data))
       .then(response => response.data)
-      .then(person => personService.transform(person))
   },
 
   update(data) {
@@ -63,7 +48,6 @@ const personService = {
     return apiClient
       .update('person', personService.format(data))
       .then(response => response.data)
-      .then(person => personService.transform(person))
   },
 
   getImageUrl(personId) {
@@ -119,10 +103,7 @@ const personService = {
       include,
     }
 
-    return apiClient
-      .findAll('person', filter)
-      .then(response => response.data)
-      .then(data => data.map(person => personService.transform(person)))
+    return apiClient.findAll('person', filter).then(response => response.data)
   },
 }
 

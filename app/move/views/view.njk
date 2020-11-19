@@ -39,7 +39,7 @@
   {% if move.status == "proposed" %}
     {% set html %}
       <p>{{ t("messages::pending_review.content", {
-        context: move.move_type
+        context: move.from_location.location_type
       }) }}</p>
 
       {% if canAccess("move:review") %}

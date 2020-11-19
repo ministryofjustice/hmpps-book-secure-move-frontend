@@ -9,7 +9,6 @@ const getUpdateUrls = require('./view.update.urls')
 
 function getViewLocals(req) {
   const { move, framework = {} } = req
-
   const {
     profile,
     status,
@@ -17,19 +16,8 @@ function getViewLocals(req) {
     cancellation_reason_comment: cancellationComments,
     rejection_reason: rejectionReason,
   } = move
-
   const tabsUrls = getTabsUrls(move)
   const moveUrl = tabsUrls.view
-
-  // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
-  const youthTransfer = ['secure_childrens_home', 'secure_training_centre']
-  const toLocationType = move?.to_location?.location_type
-  const fromLocationType = move?.from_location?.location_type
-
-  if (toLocationType === 'prison' && youthTransfer.includes(fromLocationType)) {
-    move.move_type = fromLocationType
-  }
-
   const bannerStatuses = ['cancelled']
   const updateUrls = getUpdateUrls(updateSteps, move, req)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
