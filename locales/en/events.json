@@ -49,6 +49,10 @@
     "heading": "Journey completed",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} completed"
   },
+  "JourneyCreate": {
+    "heading": "Journey created",
+    "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} created by {{supplier.name}}"
+  },
   "JourneyExitThroughOuterGate": {
     "heading": "Exited from outer gate",
     "description": "Vehicle {{journey.vehicle.registration}} exited through outer gate of {{journey.from_location.title}}"
@@ -76,6 +80,10 @@
   "JourneyStart": {
     "heading": "Journey started",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} started by {{move.supplier.name}}"
+  },
+  "JourneyUpdate": {
+    "heading": "Journey updated by {{supplier.name}}",
+    "description": ""
   },
   "JourneyUncancel": {
     "heading": "Journey uncancelled",
