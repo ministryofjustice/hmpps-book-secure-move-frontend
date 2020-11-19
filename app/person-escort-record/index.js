@@ -6,10 +6,7 @@ const {
   frameworkOverviewController,
 } = require('../../common/controllers/framework')
 const { uuidRegex } = require('../../common/helpers/url')
-const {
-  setFramework,
-  setFrameworkSection,
-} = require('../../common/middleware/framework')
+const { setFrameworkSection } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 
 const confirmApp = require('./app/confirm')
@@ -26,7 +23,6 @@ router.use(newApp.mountpath, newApp.router)
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
 router.use(setPersonEscortRecord)
-router.use(setFramework)
 
 // Define sub-apps
 router.use(confirmApp.mountpath, confirmApp.router)

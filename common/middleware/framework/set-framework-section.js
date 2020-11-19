@@ -1,5 +1,5 @@
 function setFrameworkSection(req, res, next, key) {
-  const section = req.framework?.sections[key]
+  const section = req.personEscortRecord?._framework?.sections[key]
 
   if (section) {
     req.frameworkSection = section

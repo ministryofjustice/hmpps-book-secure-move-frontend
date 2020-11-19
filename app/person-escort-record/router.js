@@ -5,9 +5,9 @@ const FrameworkStepController = require('../../common/controllers/framework/fram
 
 function defineFormWizard(req, res, next) {
   const { key, steps } = req.frameworkSection
-  const { id: personEscortRecordId } = req.personEscortRecord
+  const { id: personEscortRecordId, _framework } = req.personEscortRecord
   const firstStep = Object.values(steps)[0]
-  const wizardFields = req.framework.questions
+  const wizardFields = _framework.questions
   const wizardSteps = {
     '/': {
       controller: FrameworkSectionController,

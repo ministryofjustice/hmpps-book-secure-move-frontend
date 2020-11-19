@@ -1,13 +1,13 @@
 const presenters = require('../../presenters')
 
 function frameworkOverview(req, res) {
-  const { originalUrl, framework, personEscortRecord = {}, move } = req
+  const { originalUrl, personEscortRecord = {}, move } = req
   const moveId = move?.id
   const profile = move?.profile || personEscortRecord?.profile
   const fullname = profile?.person?.fullname
   const taskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${originalUrl}/`,
-    frameworkSections: framework.sections,
+    frameworkSections: personEscortRecord._framework?.sections,
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })
 

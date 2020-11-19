@@ -51,9 +51,9 @@ describe('Person Escort Record router', function () {
     beforeEach(function () {
       req = {
         personEscortRecord: {
+          _framework: mockFramework,
           id: '12345',
         },
-        framework: mockFramework,
         frameworkSection: {
           key: 'section-one',
           steps: {

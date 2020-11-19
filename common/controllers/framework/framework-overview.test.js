@@ -21,7 +21,6 @@ describe('Person Escort Record controllers', function () {
 
       mockReq = {
         originalUrl: '/person-escort-record/1',
-        framework: mockFramework,
       }
       mockRes = {
         render: sinon.spy(),
@@ -73,7 +72,7 @@ describe('Person Escort Record controllers', function () {
         ).to.have.been.calledOnceWithExactly({
           baseUrl: '/person-escort-record/1/',
           sectionProgress: undefined,
-          frameworkSections: mockFramework.sections,
+          frameworkSections: undefined,
         })
       })
     })
@@ -84,6 +83,7 @@ describe('Person Escort Record controllers', function () {
           {
             ...mockReq,
             personEscortRecord: {
+              _framework: mockFramework,
               meta: {
                 section_progress: [
                   {
