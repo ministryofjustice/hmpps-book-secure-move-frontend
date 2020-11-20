@@ -23,25 +23,26 @@
   "default_with_label": "{{label}} is required",
   "generic": "something went wrong",
   "prisonNumber": "Enter a prison number in the correct format",
+  "name": "{{name, uppercase}}",
   "move_conflict": {
     "heading": "This move cannot be created",
-    "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
+    "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
     "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>."
   },
   "assign_conflict": {
     "heading": "This person cannot be added to this allocation",
-    "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>{{name}}</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
+    "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
     "instructions": "Try <a href=\"{{assign_href}}\">adding a different person</a>."
   },
   "assign_needs_special_vehicle": {
-    "heading": "{{name}} cannot be added to this allocation",
+    "heading": "$t(validation::name) cannot be added to this allocation",
     "message": "This person needs a special vehicle and cannot be part of an allocation move.",
-    "instructions": "<a href=\"{{allocationhHref}}\">Add a different person</a> or <a href=\"{{moveHref}}\">create a single request</a> if <strong>{{name}}</strong> still needs to move."
+    "instructions": "<a href=\"{{allocationhHref}}\">Add a different person</a> or <a href=\"{{moveHref}}\">create a single request</a> if <strong>$t(validation::name)</strong> still needs to move."
   },
   "unassign_ineligible": {
     "heading": "This person cannot be removed from this allocation",
     "message": "A person cannot be removed once the move is in transit or completed.",
-    "instructions": "View the <a href=\"{{move_href}}\"><strong>move for {{name}}</strong></a> or the <strong><a href=\"{{allocation_href}}\">allocation for $t(n_person)</a></strong> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong>."
+    "instructions": "View the <a href=\"{{move_href}}\"><strong>move for $t(validation::name)</strong></a> or the <strong><a href=\"{{allocation_href}}\">allocation for $t(n_person)</a></strong> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong>."
   },
   "LIMIT_FILE_SIZE": "must be smaller than 50MB",
   "LIMIT_PART_COUNT": "has too many parts",
