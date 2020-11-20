@@ -60,7 +60,7 @@ describe('Move controllers', function () {
         expect(
           commonMiddleware.setLocationItems.getCall(3)
         ).to.have.been.calledWith(
-          'high_security_hospital',
+          ['hospital', 'high_security_hospital'],
           'to_location_hospital'
         )
       })
