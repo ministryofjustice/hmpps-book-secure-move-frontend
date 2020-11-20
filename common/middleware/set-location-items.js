@@ -4,7 +4,39 @@ const fieldHelpers = require('../helpers/field')
 const referenceDataHelpers = require('../helpers/reference-data')
 const referenceDataService = require('../services/reference-data')
 
-function setLocationItems(locationType, fieldName) {
+const getLocations = async locationTypes => {
+  const locations = (
+    await Promise.all(
+      locationTypes.map(x => referenceDataService.getLocationsByType(x))
+    )
+  )
+    .reduce((acc, val) => acc.concat(val))
+    .sort(sortByTitle)
+  return locations
+}
+
+const sortByTitle = (a, b) => {
+  if (a.title < b.title) {
+    return -1
+  }
+
+  if (a.title > b.title) {
+    return 1
+  }
+
+  return 0
+}
+
+const getLocationItems = (location, locations) => {
+  return fieldHelpers.insertInitialOption(
+    locations
+      .filter(referenceDataHelpers.filterDisabled())
+      .map(fieldHelpers.mapReferenceDataToOption),
+    location
+  )
+}
+
+function setLocationItems(locationTypes, fieldName) {
   return async (req, res, next) => {
     const { fields } = req.form.options
 
@@ -13,36 +45,13 @@ function setLocationItems(locationType, fieldName) {
     }
 
     try {
-      if (!Array.isArray(locationType)) {
-        locationType = [locationType]
+      if (!Array.isArray(locationTypes)) {
+        locationTypes = [locationTypes]
       }
 
-      const locationString = locationType[0]
+      const locations = await getLocations(locationTypes)
 
-      const locations = (
-        await Promise.all(
-          locationType.map(x => referenceDataService.getLocationsByType(x))
-        )
-      )
-        .reduce((acc, val) => acc.concat(val))
-        .sort((a, b) => {
-          if (a.title < b.title) {
-            return -1
-          }
-
-          if (a.title > b.title) {
-            return 1
-          }
-
-          return 0
-        })
-
-      const items = fieldHelpers.insertInitialOption(
-        locations
-          .filter(referenceDataHelpers.filterDisabled())
-          .map(fieldHelpers.mapReferenceDataToOption),
-        locationString
-      )
+      const items = getLocationItems(locationTypes[0], locations)
 
       set(req, `form.options.fields.${fieldName}.items`, items)
       next()
