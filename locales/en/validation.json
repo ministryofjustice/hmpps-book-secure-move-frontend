@@ -29,6 +29,10 @@
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
     "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>."
   },
+  "move_not_supported": {
+    "heading": "$t(validation::name) cannot be moved using this service",
+    "message": "As this person is a Category {{category}} prisoner, they cannot be moved using this service."
+  },
   "assign_conflict": {
     "heading": "This person cannot be added to this allocation",
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
