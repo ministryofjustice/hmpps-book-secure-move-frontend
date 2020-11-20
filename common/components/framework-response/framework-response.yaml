@@ -78,12 +78,12 @@ examples:
       valueType: string
       responded: true
       afterContent:
-        html: Some example <strong>HTML</strong>
-  - name: unanswered
+        html: <p>Some example <strong>HTML</strong></p>
+  - name: unanswered question
     data:
       responded: false
       questionUrl: /step-url#question-id
-  - name: prefilled
+  - name: prefilled question
     data:
       value: Example string response
       valueType: string

@@ -36,7 +36,7 @@ params:
             description: the content to display for filter item
 
 examples:
-  - name: default
+  - name: with filters
     data:
       links:
         editFilters: /edit/filters
@@ -54,10 +54,7 @@ examples:
           items:
             - href: /brown/remove
               text: Brown
-  - name: no categories
+  - name: without filters
     data:
       links:
         editFilters: /edit/filters
-  - name: skipped
-    data:
-      links:

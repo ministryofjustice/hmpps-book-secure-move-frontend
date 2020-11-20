@@ -1,34 +1,34 @@
 params:
-- name: xhrUrl
-  type: string
-  required: true
-  description: URL for XHR requests
-- name: heading
-  type: object
-  required: false
-  description: Heading content for the component
-  params:
-  - name: text
+  - name: xhrUrl
     type: string
     required: true
-    description: If `html` is set, this is not required. Text to use within the component. If `html` is provided, the `text` argument will be ignored.
-  - name: html
-    type: string
-    required: true
-    description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
-- name: value
-  type: array
-  required: false
-  description: Array of file objects.
-  params:
-  - name: id
-    type: string
-    required: true
-    description: UUID of the file
-  - name: filename
-    type: string
-    required: true
-    description: Filename of the file to display
+    description: URL for XHR requests
+  - name: heading
+    type: object
+    required: false
+    description: Heading content for the component
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the component. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
+  - name: value
+    type: array
+    required: false
+    description: Array of file objects.
+    params:
+      - name: id
+        type: string
+        required: true
+        description: UUID of the file
+      - name: filename
+        type: string
+        required: true
+        description: Filename of the file to display
 
 examples:
   - name: default

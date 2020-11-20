@@ -1,81 +1,81 @@
 params:
-- name: classes
-  type: string
-  required: false
-  description: Classes to add to the parent element.
-- name: title
-  type: object
-  required: true
-  description: Options for the title.
-  params:
-  - name: text
+  - name: classes
     type: string
+    required: false
+    description: Classes to add to the parent element.
+  - name: title
+    type: object
     required: true
-    description: If `html` is set, this is not required. Text to use within the title. If `html` is provided, the `text` argument will be ignored.
-  - name: html
-    type: string
-    required: true
-    description: If `text` is set, this is not required. HTML to use within the title. If `html` is provided, the `text` argument will be ignored.
-- name: caption
-  type: object
-  required: false
-  description: Options for the caption.
-  params:
-  - name: text
-    type: string
-    required: true
-    description: If `html` is set, this is not required. Text to use within the caption. If `html` is provided, the `text` argument will be ignored.
-  - name: html
-    type: string
-    required: true
-    description: If `text` is set, this is not required. HTML to use within the caption. If `html` is provided, the `text` argument will be ignored.
-- name: href
-  type: string
-  required: false
-  description: Link to use on title.
-- name: image_path
-  type: string
-  required: false
-  description: Optional image path for left hand image.
-- name: image_alt
-  type: string
-  required: false
-  description: Optional alt text for the left hand image.
-- name: meta
-  type: object
-  required: false
-  description: Options for meta items.
-  params:
-  - name: items
-    type: array
-    required: true
-    description: Array of meta item objects.
+    description: Options for the title.
     params:
-    - name: label
-      type: string
-      required: true
-      description: Label to use for meta item.
-    - name: hideLabel
-      type: boolean
-      required: false
-      description: If true, label will be visually hidden.
-    - name: text
-      type: string
-      required: true
-      description: If `html` is set, this is not required. Text to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
-    - name: html
-      type: string
-      required: true
-      description: If `text` is set, this is not required. HTML to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
-- name: tags
-  type: object
-  required: false
-  description: Options for tag items.
-  params:
-  - name: items
-    type: array
-    required: true
-    description: Array of tag components. See `Tag` component for options.
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the title. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the title. If `html` is provided, the `text` argument will be ignored.
+  - name: caption
+    type: object
+    required: false
+    description: Options for the caption.
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the caption. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the caption. If `html` is provided, the `text` argument will be ignored.
+  - name: href
+    type: string
+    required: false
+    description: Link to use on title.
+  - name: image_path
+    type: string
+    required: false
+    description: Optional image path for left hand image.
+  - name: image_alt
+    type: string
+    required: false
+    description: Optional alt text for the left hand image.
+  - name: meta
+    type: object
+    required: false
+    description: Options for meta items.
+    params:
+      - name: items
+        type: array
+        required: true
+        description: Array of meta item objects.
+        params:
+          - name: label
+            type: string
+            required: true
+            description: Label to use for meta item.
+          - name: hideLabel
+            type: boolean
+            required: false
+            description: If true, label will be visually hidden.
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
+  - name: tags
+    type: object
+    required: false
+    description: Options for tag items.
+    params:
+      - name: items
+        type: array
+        required: true
+        description: Array of tag components. See `Tag` component for options.
 
 examples:
   - name: default
@@ -88,12 +88,11 @@ examples:
         text: Card with status
       status:
         text: Requested
-        classes: app-tag--inactive
   - name: with image
     data:
       title:
         text: Card with image
-      image_path: https://via.placeholder.com/80x105.png
+      image_path: /images/person-fallback.png
       image_alt: Example alt text
   - name: with caption
     data:
@@ -124,8 +123,9 @@ examples:
         text: Card with tags
       tags:
         items:
-        - text: Incomplete
-        - text: Delayed
+          - text: Incomplete
+            classes: app-tag--destructive
+          - text: Delayed
   - name: with inset text
     data:
       title:
@@ -133,3 +133,56 @@ examples:
       insetText:
         classes: govuk-inset-text--compact
         text: A message about this card
+  - name: complete example
+    data:
+      title:
+        text: DOE, JOHN
+      href: http://google.com
+      image_path: /images/person-fallback.png
+      image_alt: Example alt text
+      caption:
+        text: REF/12345
+      status:
+        text: Requested
+        classes: app-tag--inactive
+      meta:
+        items:
+          - label: Date of birth
+            text: 10/10/1970
+          - label: Gender
+            html: Female
+          - label: Location
+            text: C1203A
+      tags:
+        items:
+          - text: Incomplete
+            classes: app-tag--destructive
+          - text: Delayed
+      insetText:
+        classes: govuk-inset-text--compact
+        text: Something on this card still needs to be completed
+  - name: compact variation
+    data:
+      title:
+        text: DOE, JOHN
+      classes: app-card--compact
+      href: http://google.com
+      image_alt: Example alt text
+      caption:
+        text: REF/12345
+      status:
+        text: Requested
+        classes: app-tag--inactive
+  - name: placeholder variation
+    data:
+      title:
+        text: Person to be added
+      href: http://google.com
+      classes: app-card--placeholder
+      image_path: /images/person-fallback.png
+      image_alt: Example alt text
+      caption:
+        text: REF/12345
+      status:
+        text: Requested
+        classes: app-tag--inactive

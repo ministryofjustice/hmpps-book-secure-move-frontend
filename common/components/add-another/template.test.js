@@ -10,7 +10,9 @@ describe('Add another component', function () {
     let $component
 
     beforeEach(function () {
-      const $ = renderComponentHtmlToCheerio('add-another', examples.default)
+      const $ = renderComponentHtmlToCheerio('add-another', {
+        name: 'add-another-field',
+      })
       $component = $('body')
     })
 
@@ -39,28 +41,29 @@ describe('Add another component', function () {
     })
 
     describe('fieldsets', function () {
-      let $fieldsets, $item1, $item2
+      let $fieldsets, $item1, $item2, $item3
 
       beforeEach(function () {
         $fieldsets = $component.find('fieldset')
         $item1 = $($fieldsets[0])
         $item2 = $($fieldsets[1])
+        $item3 = $($fieldsets[2])
       })
 
       it('should render fieldsets correct number of fieldsets', function () {
-        expect($fieldsets.length).to.equal(2)
+        expect($fieldsets.length).to.equal(3)
       })
 
       it('should render item content', function () {
-        expect($item1.text()).to.contain('Item 1 content')
-
-        expect($item2.text()).to.contain('Item 2 content')
+        expect($item1.html()).to.contain('Item <strong>1</strong> content')
         expect($item2.html()).to.contain('Item <strong>2</strong> content')
+        expect($item3.html()).to.contain('Item <strong>3</strong> content')
       })
 
       it('should render legends', function () {
         expect($item1.find('legend').text().trim()).to.equal('Item 1')
         expect($item2.find('legend').text().trim()).to.equal('Item 2')
+        expect($item3.find('legend').text().trim()).to.equal('Item 3')
       })
 
       it('should render remove buttons', function () {
@@ -71,6 +74,10 @@ describe('Add another component', function () {
         expect($item2.find('button').text().trim()).to.equal('Remove item 2')
         expect($item2.find('button').attr('value')).to.equal(
           'remove::add-another-field::1'
+        )
+        expect($item3.find('button').text().trim()).to.equal('Remove item 3')
+        expect($item3.find('button').attr('value')).to.equal(
+          'remove::add-another-field::2'
         )
       })
     })
@@ -93,7 +100,7 @@ describe('Add another component', function () {
     beforeEach(function () {
       $ = renderComponentHtmlToCheerio(
         'add-another',
-        examples['with item name']
+        examples['with custom item name']
       )
       $component = $('body')
     })
@@ -138,7 +145,10 @@ describe('Add another component', function () {
     let $, $component
 
     beforeEach(function () {
-      $ = renderComponentHtmlToCheerio('add-another', examples['with minItems'])
+      $ = renderComponentHtmlToCheerio(
+        'add-another',
+        examples['with minimum number of items']
+      )
       $component = $('body')
     })
 
@@ -148,6 +158,10 @@ describe('Add another component', function () {
       beforeEach(function () {
         $fieldsets = $component.find('fieldset')
         $item1 = $($fieldsets[0])
+      })
+
+      it('should render fieldsets correct number of fieldsets', function () {
+        expect($fieldsets.length).to.equal(2)
       })
 
       it('should not render remove buttons', function () {
@@ -160,10 +174,10 @@ describe('Add another component', function () {
     let $, $component
 
     beforeEach(function () {
-      $ = renderComponentHtmlToCheerio(
-        'add-another',
-        examples['with minItems set to zero']
-      )
+      $ = renderComponentHtmlToCheerio('add-another', {
+        ...examples['with minimum number of items'],
+        minItems: 0,
+      })
       $component = $('body')
     })
 
@@ -173,6 +187,10 @@ describe('Add another component', function () {
       beforeEach(function () {
         $fieldsets = $component.find('fieldset')
         $item1 = $($fieldsets[0])
+      })
+
+      it('should render fieldsets correct number of fieldsets', function () {
+        expect($fieldsets.length).to.equal(2)
       })
 
       it('should render remove buttons', function () {

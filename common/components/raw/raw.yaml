@@ -3,7 +3,3 @@ params:
     type: string
     required: false
     description: HTML to be rendered as is.
-examples:
-  - name: default
-    data:
-      html: "<p class=\"foo-bar\">Hello</p>"

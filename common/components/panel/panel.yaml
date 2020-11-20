@@ -1,31 +1,56 @@
 params:
-- name: classes
-  type: string
-  required: false
-  description: Classes to add to the parent element.
-- name: attributes
-  type: object
-  required: false
-  description: HTML attributes (for example data attributes) to add to the component.
-- name: text
-  type: string
-  required: true
-  description: If `html` is set, this is not required. Text to use within the panel content. If `html` is provided, the `text` argument will be ignored.
-- name: html
-  type: string
-  required: true
-  description: If `text` is set, this is not required. HTML to use within the panel content. If `html` is provided, the `text` argument will be ignored.
-- name: tag
-  type: object
-  required: false
-  description: Params to pass to the tag component.
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the parent element.
+  - name: attributes
+    type: object
+    required: false
+    description: HTML attributes (for example data attributes) to add to the component.
+  - name: text
+    type: string
+    required: true
+    description: If `html` is set, this is not required. Text to use within the panel content. If `html` is provided, the `text` argument will be ignored.
+  - name: html
+    type: string
+    required: true
+    description: If `text` is set, this is not required. HTML to use within the panel content. If `html` is provided, the `text` argument will be ignored.
+  - name: tag
+    type: object
+    required: false
+    description: Params to pass to the tag component.
 
 examples:
   - name: default
     data:
-      text: Panel contents
+      text: Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi odit, aut architecto molestias omnis iure et suscipit blanditiis impedit, quisquam incidunt cumque. Quo facere, magni quia dolorum odio provident impedit!
+  - name: with HTML content
+    data:
+      html:
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi odit, aut architecto molestias omnis iure et suscipit blanditiis impedit, quisquam incidunt cumque. Quo facere, magni quia dolorum odio provident impedit!</p>
   - name: with tag
     data:
-      text: Panel contents
+      html:
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi odit, aut architecto molestias omnis iure et suscipit blanditiis impedit, quisquam incidunt cumque. Quo facere, magni quia dolorum odio provident impedit!</p>
       tag:
         text: An example tag
+  - name: alert example
+    data:
+      html:
+        <p>This person has a history of violence and extra care needs to be taken.</p>
+      tag:
+        text: Violent or dangerous
+        classes: app-tag--destructive
+  - name: medical example
+    data:
+      html:
+        <p>This person has a health issue that needs to be taken into account.</p>
+      tag:
+        text: Health issue
+  - name: special example
+    data:
+      html:
+        <p>This person requires a special vehicle.</p>
+      tag:
+        text: Special vehicle
+        classes: app-tag--warning

@@ -1,9 +1,6 @@
 const {
   renderComponentHtmlToCheerio,
-  getExamples,
 } = require('../../../test/unit/component-helpers')
-
-const examples = getExamples('raw')
 
 describe('Raw component', function () {
   context('by default', function () {
@@ -12,7 +9,7 @@ describe('Raw component', function () {
     beforeEach(function () {
       const $ = renderComponentHtmlToCheerio(
         'raw',
-        examples.default,
+        { html: '<p class="foo-bar">Hello</p>' },
         false,
         'raw'
       )

@@ -25,8 +25,8 @@
       </p>
 
       {% if item.byline %}
-        <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes}}">
-          {{- item.byline.html | safe if item.byline.html else item.byline.text -}}
+        <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes }}">
+          by {{ item.byline.html | safe if item.byline.html else item.byline.text }}
         </div>
       {% endif %}
 

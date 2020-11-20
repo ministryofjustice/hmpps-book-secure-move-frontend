@@ -126,7 +126,7 @@ describe('Filter component', function () {
     let component, items, $
 
     beforeEach(function () {
-      $ = renderComponentHtmlToCheerio('filter', examples.withoutValue)
+      $ = renderComponentHtmlToCheerio('filter', examples['without values'])
 
       component = $('.app-filter')
       items = component.find('.app-filter__list-item')
@@ -164,7 +164,7 @@ describe('Filter component', function () {
     let component, items, $
 
     beforeEach(function () {
-      $ = renderComponentHtmlToCheerio('filter', examples.withoutLabel)
+      $ = renderComponentHtmlToCheerio('filter', examples['without labels'])
 
       component = $('.app-filter')
       items = component.find('.app-filter__list-item')

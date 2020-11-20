@@ -40,7 +40,7 @@ describe('Read only field component', function () {
         expect($heading.hasClass('govuk-label')).to.be.true
       })
       it('should output heading', function () {
-        expect($heading.text().trim()).to.equal('Display text')
+        expect($heading.text().trim()).to.equal('A text label')
       })
     })
 
@@ -101,7 +101,7 @@ describe('Read only field component', function () {
       })
 
       it('should prefer html value for heading', function () {
-        expect($heading.text().trim()).to.equal('Display html')
+        expect($heading.html().trim()).to.equal('A <strong>HTML</strong> label')
       })
     })
   })
@@ -110,7 +110,15 @@ describe('Read only field component', function () {
     let $component
 
     beforeEach(function () {
-      $component = getComponent('with classes')
+      const $ = renderComponentHtmlToCheerio('read-only-field', {
+        label: {
+          classes: 'heading-class',
+          text: 'Display text',
+        },
+        value: 'Display value',
+        classes: 'display-class',
+      })
+      $component = $('.app-read-only-field')
     })
 
     context('when rendering component', function () {
@@ -136,7 +144,7 @@ describe('Read only field component', function () {
     let $component
 
     beforeEach(function () {
-      $component = getComponent('with name')
+      $component = getComponent('with custom name')
     })
 
     context('when rendering hidden input', function () {

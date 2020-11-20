@@ -1,42 +1,42 @@
 params:
-- name: classes
-  type: string
-  required: false
-  description: Classes to add to the parent element. Use `app-pagination--inline` to create the inline variation.
-- name: previous
-  type: object
-  required: true
-  description: Previous navigation item
-  params:
-    - name: href
-      type: string
-      required: true
-      description: The destination of the previous link
-    - name: text
-      type: string
-      required: false
-      description: The text to use as the main title. If not provided, defaults to `Previous`
-    - name: label
-      type: string
-      required: false
-      description: Supporting label to give a more detailed description of the previous page
-- name: next
-  type: object
-  required: true
-  description: Next navigation item
-  params:
-    - name: href
-      type: string
-      required: true
-      description: The destination of the next link
-    - name: text
-      type: string
-      required: false
-      description: The text to use as the main title. If not provided, defaults to `Next`
-    - name: label
-      type: string
-      required: false
-      description: Supporting label to give a more detailed description of the next page
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the parent element. Use `app-pagination--inline` to create the inline variation.
+  - name: previous
+    type: object
+    required: true
+    description: Previous navigation item
+    params:
+      - name: href
+        type: string
+        required: true
+        description: The destination of the previous link
+      - name: text
+        type: string
+        required: false
+        description: The text to use as the main title. If not provided, defaults to `Previous`
+      - name: label
+        type: string
+        required: false
+        description: Supporting label to give a more detailed description of the previous page
+  - name: next
+    type: object
+    required: true
+    description: Next navigation item
+    params:
+      - name: href
+        type: string
+        required: true
+        description: The destination of the next link
+      - name: text
+        type: string
+        required: false
+        description: The text to use as the main title. If not provided, defaults to `Next`
+      - name: label
+        type: string
+        required: false
+        description: Supporting label to give a more detailed description of the next page
 
 examples:
   - name: default
@@ -60,7 +60,7 @@ examples:
         text: "Previous day"
       next:
         href: "/next-day"
-        label: "Next day"
+        text: "Next day"
   - name: inline variation
     data:
       classes: app-pagination--inline
@@ -81,3 +81,17 @@ examples:
         text: "two"
       - href: "/page-3"
         text: "three"
+  - name: with inline items
+    data:
+      classes: app-pagination--inline
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+      items:
+      - href: "/page-1"
+        text: "1"
+      - href: "/page-2"
+        text: "2"
+      - href: "/page-3"
+        text: "3"

@@ -1,35 +1,35 @@
 params:
-- name: name
-  type: string
-  required: true
-  description: Field name to use for button values.
-- name: items
-  type: array
-  required: true
-  description: Array of items
-  params:
-  - name: text
+  - name: name
     type: string
     required: true
-    description: If `html` is set, this is not required. Text to use within the item. If `html` is provided, the `text` argument will be ignored.
-  - name: html
-    type: string
+    description: Field name to use for button values.
+  - name: items
+    type: array
     required: true
-    description: If `text` is set, this is not required. HTML to use within the item. If `html` is provided, the `text` argument will be ignored.
-- name: itemName
-  type: string
-  required: false
-  description: Name to use for each item heading and "Add another {name}" button. Defaults to `item`.
-- name: minItems
-  type: number
-  default: 1
-  description: Minimum number of items
-- name: maxItems
-  type: number
-  description: Maximum number of items
+    description: Array of items
+    params:
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use within the item. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use within the item. If `html` is provided, the `text` argument will be ignored.
+  - name: itemName
+    type: string
+    required: false
+    description: Name to use for each item heading and "Add another {name}" button. Defaults to `item`.
+  - name: minItems
+    type: number
+    default: 1
+    description: Minimum number of items
+  - name: maxItems
+    type: number
+    description: Maximum number of items
 
 examples:
-  - name: default
+  - name: without items
     data:
       name: add-another-field
   - name: with items
@@ -37,29 +37,24 @@ examples:
       name: add-another-field
       items:
         -
-          text: Item 1 content
+          html: <p>Item <strong>1</strong> content</p>
         -
-          html: Item <strong>2</strong> content
-  - name: with item name
+          html: <p>Item <strong>2</strong> content</p>
+        -
+          html: <p>Item <strong>3</strong> content</p>
+  - name: with custom item name
     data:
       name: add-another-field
       itemName: Person
       items:
         -
-          text: Person 1 content
-  - name: with minItems
+          html: <p>Person <strong>1</strong> content</p>
+  - name: with minimum number of items
     data:
       name: add-another-field
-      minItems: 1
-      itemName: Person
+      minItems: 2
       items:
         -
-          text: Person 1 content
-  - name: with minItems set to zero
-    data:
-      name: add-another-field
-      minItems: 0
-      itemName: Person
-      items:
+          html: <p>Item <strong>1</strong> content</p>
         -
-          text: Person 1 content
+          html: <p>Item <strong>2</strong> content</p>
