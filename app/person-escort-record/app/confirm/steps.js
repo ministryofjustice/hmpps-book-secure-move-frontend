@@ -14,6 +14,6 @@ module.exports = {
     buttonText: 'actions::confirm_and_complete_record',
     pageTitle: 'person-escort-record::journeys.confirm.heading',
     beforeFieldsContent: 'person-escort-record::journeys.confirm.content',
-    template: 'provide-confirmation',
+    template: 'assessment-confirmation',
   },
 }
