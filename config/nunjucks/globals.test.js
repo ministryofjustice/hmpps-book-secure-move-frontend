@@ -1,11 +1,59 @@
 const proxyquire = require('proxyquire').noCallThru()
 
+const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
 const logger = require('../logger')
 
 const mockThis = { ctx: {} }
 
 describe('Nunjucks globals', function () {
+  describe('FOOTER_ITEMS', function () {
+    let globals
+
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returnsArg(0)
+    })
+
+    context('with items', function () {
+      beforeEach(function () {
+        globals = proxyquire('./globals', {
+          '../': {
+            ENABLE_COMPONENTS_LIBRARY: true,
+            FEEDBACK_URL: '/feedback-url',
+          },
+        })
+      })
+
+      it('should set footer items', function () {
+        globals.FOOTER_ITEMS = [
+          {
+            href: '/feedback-url',
+            text: 'feedback_link',
+          },
+          {
+            href: componentsUrl,
+            text: 'components::title',
+          },
+        ]
+      })
+    })
+
+    context('without items', function () {
+      beforeEach(function () {
+        globals = proxyquire('./globals', {
+          '../': {
+            ENABLE_COMPONENTS_LIBRARY: false,
+            FEEDBACK_URL: undefined,
+          },
+        })
+      })
+
+      it('should set footer items to empty', function () {
+        globals.FOOTER_ITEMS = []
+      })
+    })
+  })
+
   describe('#t', function () {
     const { t } = require('./globals')
     const mockKey = 'translation_key'

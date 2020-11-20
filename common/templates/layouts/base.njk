@@ -134,16 +134,11 @@
 {% endblock %}
 
 {% block footer %}
-    {{ govukFooter({
-      meta: {
-        items: [
-          {
-            href: FEEDBACK_URL,
-            text: t("feedback_link")
-          }
-        ] if FEEDBACK_URL
-      }
-    }) }}
+  {{ govukFooter({
+    meta: {
+      items: FOOTER_ITEMS
+    }
+  }) }}
 {% endblock %}
 
 {% block bodyEnd %}
