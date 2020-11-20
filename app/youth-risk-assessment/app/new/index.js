@@ -8,7 +8,7 @@ const config = require('./config')
 const steps = require('./steps')
 
 // Define shared middleware
-router.use(protectRoute('person_escort_record:create'))
+router.use(protectRoute('youth_risk_assessment:create'))
 
 // Define routes
 router.use(wizard(steps, {}, config, 'move.id'))

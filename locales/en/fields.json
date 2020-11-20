@@ -430,5 +430,9 @@
   "confirm_person_escort_record": {
     "label": "Check this box to confirm that, to the best your knowledge, all information provided in this Person Escort Record is correct",
     "error_message": "You must provide confirmation"
+  },
+  "confirm_youth_risk_assessment": {
+    "label": "Check this box to confirm that, to the best your knowledge, all information provided in this assessment is correct",
+    "error_message": "You must provide confirmation"
   }
 }
