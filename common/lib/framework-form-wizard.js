@@ -1,8 +1,8 @@
-const wizard = require('hmpo-form-wizard')
 const { startCase } = require('lodash')
 
 const FrameworkSectionController = require('../controllers/framework/framework-section')
 const FrameworkStepController = require('../controllers/framework/framework-step')
+const wizard = require('../middleware/unique-form-wizard')
 
 function defineFormWizard(req, res, next) {
   const { key, steps } = req.frameworkSection
