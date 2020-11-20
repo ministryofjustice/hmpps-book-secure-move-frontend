@@ -24,50 +24,63 @@ describe('Move controllers', function () {
         expect(BaseController.prototype.middlewareSetup).to.have.been.calledOnce
       })
 
+      it('should call correct number of middleware', function () {
+        expect(controller.use.callCount).to.equal(7)
+      })
+
       it('should call setMoveType middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
           controller.setMoveTypes
         )
       })
 
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.secondCall).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.thirdCall).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.getCall(3)).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.getCall(4)).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.getCall(5)).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
-      it('should call setLocationItems middleware', function () {
-        expect(controller.use.getCall(6)).to.have.been.calledWith(
-          commonMiddleware.setLocationItems()
-        )
-      })
-
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(7)
+        expect(commonMiddleware.setLocationItems.callCount).to.equal(6)
+      })
+
+      it('should call setLocationItems middleware to set court locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(0)
+        ).to.have.been.calledWith('court', 'to_location_court_appearance')
+      })
+
+      it('should call setLocationItems middleware to set prison locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(1)
+        ).to.have.been.calledWith('prison', 'to_location_prison_transfer')
+      })
+
+      it('should call setLocationItems middleware to set police locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(2)
+        ).to.have.been.calledWith('police', 'to_location_police_transfer')
+      })
+
+      it('should call setLocationItems middleware to set hospital locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(3)
+        ).to.have.been.calledWith(
+          'high_security_hospital',
+          'to_location_hospital'
+        )
+      })
+
+      it('should call setLocationItems middleware to set SCH locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(4)
+        ).to.have.been.calledWith(
+          'secure_childrens_home',
+          'to_location_secure_childrens_home'
+        )
+      })
+
+      it('should call setLocationItems middleware to set STC locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(5)
+        ).to.have.been.calledWith(
+          'secure_training_centre',
+          'to_location_secure_training_centre'
+        )
       })
     })
 
