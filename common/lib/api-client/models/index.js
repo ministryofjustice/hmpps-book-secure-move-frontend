@@ -2,6 +2,7 @@ const allocation = require('./allocation')
 const allocationComplexCase = require('./allocation-complex-case')
 const assessmentQuestion = require('./assessment-question')
 const cancel = require('./cancel')
+const category = require('./category')
 const courtCase = require('./court-case')
 const courtHearing = require('./court-hearing')
 const document = require('./document')
@@ -34,6 +35,7 @@ module.exports = {
   allocation_complex_case: allocationComplexCase,
   assessment_question: assessmentQuestion,
   cancel,
+  category,
   court_case: courtCase,
   court_hearing: courtHearing,
   document,

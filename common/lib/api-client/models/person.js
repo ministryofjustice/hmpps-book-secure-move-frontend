@@ -23,6 +23,10 @@ module.exports = {
       jsonApi: 'hasMany',
       type: 'profiles',
     },
+    category: {
+      jsonApi: 'hasOne',
+      type: 'categories',
+    },
   },
   options: {
     defaultInclude: ['ethnicity', 'gender'],

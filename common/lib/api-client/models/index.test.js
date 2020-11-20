@@ -37,6 +37,13 @@ const testCases = {
   ],
   person: [
     {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+      statusCode: 200,
+    },
+    {
       method: 'create',
       httpMock: 'post',
       args: {},
@@ -86,6 +93,15 @@ const testCases = {
     {
       method: 'findAll',
       httpMock: 'get',
+      statusCode: 200,
+    },
+  ],
+  category: [
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
       statusCode: 200,
     },
   ],
