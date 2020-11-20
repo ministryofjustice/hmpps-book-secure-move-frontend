@@ -2,6 +2,7 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
+const personService = require('../../../../common/services/person')
 
 const CreateBaseController = require('./base')
 
@@ -25,6 +26,12 @@ describe('Move controllers', function () {
       it('should call check current location method', function () {
         expect(controller.use).to.have.been.calledWith(
           controller.checkCurrentLocation
+        )
+      })
+
+      it('should call check move supported method', function () {
+        expect(controller.use).to.have.been.calledWith(
+          controller.checkMoveSupported
         )
       })
     })
@@ -93,6 +100,103 @@ describe('Move controllers', function () {
       it('should call correct number of middleware', function () {
         expect(controller.use).to.be.callCount(4)
       })
+    })
+
+    describe('#checkMoveSupported()', function () {
+      let res
+      let req
+      let next
+      let person
+      let category
+      beforeEach(async function () {
+        sinon.stub(personService, 'getCategory').resolves(category)
+        req = {
+          getPerson: sinon.stub().returns(person),
+        }
+        res = {
+          render: sinon.stub(),
+        }
+        next = sinon.spy()
+        await controller.checkMoveSupported(req, res, next)
+      })
+
+      context('when person has no prison number', function () {
+        before(function () {
+          person = {}
+        })
+
+        it('should not get the person’s category', function () {
+          expect(personService.getCategory).to.not.be.called
+        })
+
+        it('should not render the move not supported page', function () {
+          expect(res.render).to.not.be.called
+        })
+
+        it('should call next()', function () {
+          expect(next).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context(
+        'when person has a prison number and move is supported',
+        function () {
+          before(function () {
+            person = { id: 'supported', prison_number: 'AAA' }
+            category = {
+              key: 'B',
+              move_supported: true,
+            }
+          })
+
+          it('should get the person’s category', function () {
+            expect(personService.getCategory).to.be.calledOnceWithExactly(
+              'supported'
+            )
+          })
+
+          it('should not render the move not supported page', function () {
+            expect(res.render).to.not.be.called
+          })
+
+          it('should call next()', function () {
+            expect(next).to.be.calledOnceWithExactly()
+          })
+        }
+      )
+
+      context(
+        'when person has a prison number and move is not supported',
+        function () {
+          before(function () {
+            person = { id: 'unsupported', prison_number: 'AAA' }
+            category = {
+              key: 'A',
+              move_supported: false,
+            }
+          })
+
+          it('should get the person’s category', function () {
+            expect(personService.getCategory).to.be.calledOnceWithExactly(
+              'unsupported'
+            )
+          })
+
+          it('should render the move not supported page', function () {
+            expect(res.render).to.be.calledOnceWithExactly(
+              'move/views/create/move-not-supported',
+              {
+                person,
+                category,
+              }
+            )
+          })
+
+          it('should not call next()', function () {
+            expect(next).to.not.be.called
+          })
+        }
+      )
     })
 
     describe('#setButtonText()', function () {
