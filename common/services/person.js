@@ -8,6 +8,8 @@ const relationshipKeys = ['gender', 'ethnicity']
 
 const dateKeys = ['date_of_birth']
 
+const noPersonIdMessage = 'No person ID supplied'
+
 const defaultInclude = ['ethnicity', 'gender']
 
 const personService = {
@@ -54,6 +56,25 @@ const personService = {
     return apiClient
       .update('person', personService.format(data), { include })
       .then(response => response.data)
+  },
+
+  _getById(id, options = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noPersonIdMessage))
+    }
+
+    return apiClient.find('person', id, options).then(response => response.data)
+  },
+
+  getById(id) {
+    const include = personService.defaultInclude
+    return personService._getById(id, { include })
+  },
+
+  getCategory(id) {
+    return personService
+      ._getById(id, { include: ['category'] })
+      .then(person => person.category)
   },
 
   getImageUrl(personId) {
