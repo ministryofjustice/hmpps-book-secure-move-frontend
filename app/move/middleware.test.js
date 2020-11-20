@@ -284,6 +284,123 @@ describe('Move middleware', function () {
     })
   })
 
+  describe('#setYouthRiskAssessment()', function () {
+    let mockReq, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockReq = {}
+    })
+
+    context('without record', function () {
+      beforeEach(function () {
+        middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+      })
+
+      it('should not set request property', function () {
+        expect(mockReq).not.to.contain.property('youthRiskAssessment')
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with record', function () {
+      beforeEach(function () {
+        mockReq = {
+          move: {
+            profile: {
+              youth_risk_assessment: {
+                id: '12345',
+                status: 'not_started',
+              },
+            },
+          },
+        }
+      })
+
+      context('with unstarted move', function () {
+        beforeEach(function () {
+          mockReq.move.status = 'requested'
+        })
+
+        context('with unconfirmed record', function () {
+          beforeEach(function () {
+            middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('youthRiskAssessment')
+            expect(mockReq.youthRiskAssessment).to.deep.equal({
+              id: '12345',
+              status: 'not_started',
+              isEditable: true,
+            })
+          })
+        })
+
+        context('with confirmed record', function () {
+          beforeEach(function () {
+            mockReq.move.profile.youth_risk_assessment.status = 'confirmed'
+            middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('youthRiskAssessment')
+            expect(mockReq.youthRiskAssessment).to.deep.equal({
+              id: '12345',
+              status: 'confirmed',
+              isEditable: false,
+            })
+          })
+        })
+      })
+
+      context('with started move', function () {
+        beforeEach(function () {
+          mockReq.move.status = 'in_transit'
+        })
+
+        context('with unconfirmed record', function () {
+          beforeEach(function () {
+            middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('youthRiskAssessment')
+            expect(mockReq.youthRiskAssessment).to.deep.equal({
+              id: '12345',
+              status: 'not_started',
+              isEditable: false,
+            })
+          })
+        })
+
+        context('with confirmed record', function () {
+          beforeEach(function () {
+            mockReq.move.profile.youth_risk_assessment.status = 'confirmed'
+            middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+          })
+
+          it('should set request property', function () {
+            expect(mockReq).to.contain.property('youthRiskAssessment')
+            expect(mockReq.youthRiskAssessment).to.deep.equal({
+              id: '12345',
+              status: 'confirmed',
+              isEditable: false,
+            })
+          })
+        })
+      })
+
+      it('should call next', function () {
+        middleware.setYouthRiskAssessment(mockReq, {}, nextSpy)
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
   describe('#setAllocation()', function () {
     let req, res, nextSpy
 
