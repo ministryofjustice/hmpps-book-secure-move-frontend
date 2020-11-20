@@ -7,6 +7,7 @@ const personEscortRecord = require('./person-escort-record')
 const population = require('./population')
 const referenceData = require('./reference-data')
 const singleRequest = require('./single-request')
+const youthRiskAssessment = require('./youth-risk-assessment')
 
 module.exports = {
   allocation,
@@ -18,4 +19,5 @@ module.exports = {
   population,
   referenceData,
   singleRequest,
+  youthRiskAssessment,
 }
