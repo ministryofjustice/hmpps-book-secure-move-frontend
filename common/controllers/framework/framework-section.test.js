@@ -7,7 +7,7 @@ const controller = new Controller({
   route: '/',
 })
 
-describe('Person Escort Record controllers', function () {
+describe('Framework controllers', function () {
   describe('FrameworkSectionController', function () {
     describe('#middlewareLocals()', function () {
       beforeEach(function () {
@@ -98,7 +98,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
-          personEscortRecord: {
+          assessment: {
             id: '12345',
             isEditable: true,
           },
@@ -142,7 +142,7 @@ describe('Person Escort Record controllers', function () {
               '/step-3': {},
             },
           },
-          personEscortRecord: {
+          assessment: {
             responses: [{ id: '1' }, { id: '2' }, { id: '3' }],
           },
         }
@@ -169,7 +169,7 @@ describe('Person Escort Record controllers', function () {
       it('should call presenter', function () {
         expect(presenters.frameworkStepToSummary).to.be.calledOnceWithExactly(
           mockReq.form.options.allFields,
-          mockReq.personEscortRecord.responses,
+          mockReq.assessment.responses,
           `${mockReq.baseUrl}/`
         )
       })

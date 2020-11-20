@@ -496,6 +496,7 @@ describe('Move controllers', function () {
 
     context('with Person Escort Record', function () {
       const mockPersonEscortRecord = {
+        _framework: frameworkStub,
         id: '67890',
         status: 'not_started',
         meta: {
@@ -531,7 +532,6 @@ describe('Move controllers', function () {
             person_escort_record: mockPersonEscortRecord,
           },
         }
-        req.framework = frameworkStub
       })
 
       context('when record is not_started', function () {

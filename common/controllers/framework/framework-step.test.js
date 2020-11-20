@@ -8,7 +8,7 @@ const Controller = require('./framework-step')
 
 const controller = new Controller({ route: '/' })
 
-describe('Person Escort Record controllers', function () {
+describe('Framework controllers', function () {
   describe('FrameworkStepController', function () {
     describe('#middlewareChecks', function () {
       beforeEach(function () {
@@ -120,7 +120,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(permissionsMiddleware, 'check').returns(true)
         nextSpy = sinon.spy()
         mockReq = {
-          personEscortRecord: {
+          assessment: {
             id: '12345',
             isEditable: true,
           },
@@ -136,7 +136,7 @@ describe('Person Escort Record controllers', function () {
 
       context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.isEditable = false
+          mockReq.assessment.isEditable = false
 
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
@@ -262,7 +262,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
-          personEscortRecord: {
+          assessment: {
             nomis_sync_status: [
               {
                 resource_type: 'alerts',
@@ -300,7 +300,7 @@ describe('Person Escort Record controllers', function () {
 
       context('with failures', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.nomis_sync_status = [
+          mockReq.assessment.nomis_sync_status = [
             {
               resource_type: 'alerts',
               status: 'failed',
@@ -336,7 +336,7 @@ describe('Person Escort Record controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
-          personEscortRecord: {
+          assessment: {
             responses: [],
             prefill_source: {
               id: '12345',
@@ -363,7 +363,7 @@ describe('Person Escort Record controllers', function () {
 
       context('without prefilled responses', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.responses = []
+          mockReq.assessment.responses = []
           controller.setPrefillBanner(mockReq, mockRes, nextSpy)
         })
 
@@ -432,7 +432,7 @@ describe('Person Escort Record controllers', function () {
         truthyTests.forEach(test => {
           describe(test.question.key, function () {
             beforeEach(function () {
-              mockReq.personEscortRecord.responses = [test]
+              mockReq.assessment.responses = [test]
               controller.setPrefillBanner(mockReq, mockRes, nextSpy)
             })
 
@@ -455,7 +455,7 @@ describe('Person Escort Record controllers', function () {
         falseyTests.forEach(test => {
           describe(test.question.key, function () {
             beforeEach(function () {
-              mockReq.personEscortRecord.responses = [test]
+              mockReq.assessment.responses = [test]
               controller.setPrefillBanner(mockReq, mockRes, nextSpy)
             })
 
@@ -639,7 +639,7 @@ describe('Person Escort Record controllers', function () {
               fizz: 'buzz',
             },
           },
-          personEscortRecord: {
+          assessment: {
             id: '12345',
             responses: mockResponses,
           },
@@ -648,7 +648,7 @@ describe('Person Escort Record controllers', function () {
 
       context('without responses', function () {
         beforeEach(async function () {
-          mockReq.personEscortRecord.responses = []
+          mockReq.assessment.responses = []
           personEscortRecordService.respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
@@ -690,7 +690,7 @@ describe('Person Escort Record controllers', function () {
 
         it('should call service method', function () {
           expect(personEscortRecordService.respond).to.be.calledOnceWithExactly(
-            mockReq.personEscortRecord.id,
+            mockReq.assessment.id,
             mockResponses
           )
         })
@@ -757,7 +757,7 @@ describe('Person Escort Record controllers', function () {
         ]
 
         beforeEach(async function () {
-          mockReq.personEscortRecord.responses = mockResponsesWithDependents
+          mockReq.assessment.responses = mockResponsesWithDependents
           personEscortRecordService.respond.resolves({})
 
           fieldHelpers.isAllowedDependent
@@ -796,7 +796,7 @@ describe('Person Escort Record controllers', function () {
         it('should filter out dependent fields', function () {
           expect(
             personEscortRecordService.respond
-          ).to.be.calledOnceWithExactly(mockReq.personEscortRecord.id, [
+          ).to.be.calledOnceWithExactly(mockReq.assessment.id, [
             mockResponsesWithDependents[0],
             mockResponsesWithDependents[2],
           ])
@@ -822,7 +822,7 @@ describe('Person Escort Record controllers', function () {
           })
 
         reqMock = {
-          personEscortRecord: {
+          assessment: {
             responses: [
               {
                 id: '1',
@@ -861,14 +861,14 @@ describe('Person Escort Record controllers', function () {
       it('should call renderNomisMappingsToField on each field', function () {
         expect(
           frameworksHelpers.renderNomisMappingsToField
-        ).to.be.calledOnceWithExactly(reqMock.personEscortRecord.responses)
+        ).to.be.calledOnceWithExactly(reqMock.assessment.responses)
       })
 
       it('should call renderPreviousAnswerToField on each field', function () {
         expect(
           frameworksHelpers.renderPreviousAnswerToField
         ).to.be.calledOnceWithExactly({
-          responses: reqMock.personEscortRecord.responses,
+          responses: reqMock.assessment.responses,
         })
       })
 

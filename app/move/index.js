@@ -7,7 +7,6 @@ const wizard = require('hmpo-form-wizard')
 // Local dependencies
 const FormWizardController = require('../../common/controllers/form-wizard')
 const { uuidRegex } = require('../../common/helpers/url')
-const { setFramework } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 const personEscortRecordApp = require('../person-escort-record')
 
@@ -105,16 +104,10 @@ router.get(
   `/:moveIdWithEvents(${uuidRegex})/timeline`,
   protectRoute('move:view'),
   setPersonEscortRecord,
-  setFramework,
   timeline
 )
 
-router.use(
-  `/:moveId(${uuidRegex})`,
-  setPersonEscortRecord,
-  setFramework,
-  moveRouter
-)
+router.use(`/:moveId(${uuidRegex})`, setPersonEscortRecord, moveRouter)
 
 moveRouter.get('/', protectRoute('move:view'), view)
 

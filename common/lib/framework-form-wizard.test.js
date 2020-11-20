@@ -1,12 +1,12 @@
 const proxyquire = require('proxyquire')
 
-const FrameworkSectionController = require('../../common/controllers/framework/framework-section')
-const FrameworkStepController = require('../../common/controllers/framework/framework-step')
+const FrameworkSectionController = require('../controllers/framework/framework-section')
+const FrameworkStepController = require('../controllers/framework/framework-step')
 
 const wizardReqStub = sinon.stub()
 const wizardStub = sinon.stub().returns(wizardReqStub)
 
-const router = proxyquire('./router', {
+const router = proxyquire('./framework-form-wizard', {
   'hmpo-form-wizard': wizardStub,
 })
 
@@ -44,16 +44,19 @@ const mockFramework = {
   },
 }
 
-describe('Person Escort Record router', function () {
+describe('Framework form wizard', function () {
   describe('#defineFormWizard', function () {
     let req, res, next
 
     beforeEach(function () {
       req = {
-        personEscortRecord: {
+        assessment: {
+          _framework: mockFramework,
           id: '12345',
+          framework: {
+            name: 'person-escort-record',
+          },
         },
-        framework: mockFramework,
         frameworkSection: {
           key: 'section-one',
           steps: {
@@ -99,9 +102,9 @@ describe('Person Escort Record router', function () {
         const config = {
           controller: FrameworkStepController,
           entryPoint: true,
-          journeyName: `person-escort-record-${req.personEscortRecord.id}-${req.frameworkSection.key}`,
-          journeyPageTitle: 'Person escort record',
-          name: `person-escort-record-${req.personEscortRecord.id}-${req.frameworkSection.key}`,
+          journeyName: `${req.assessment.framework.name}-${req.assessment.id}-${req.frameworkSection.key}`,
+          journeyPageTitle: 'Person Escort Record',
+          name: `${req.assessment.framework.name}-${req.assessment.id}-${req.frameworkSection.key}`,
           template: 'framework-step',
           defaultFormatters: ['trim', 'singlespaces', 'apostrophes', 'quotes'],
         }

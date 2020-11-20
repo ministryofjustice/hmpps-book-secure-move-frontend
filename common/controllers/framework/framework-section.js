@@ -12,24 +12,22 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setMoveId(req, res, next) {
-    // TODO: Make available when accessing PER without a move based URLs
-    res.locals.moveId = req.move?.id
-
+    res.locals.moveId = req.move?.id || req.assessment?.move?.id
     next()
   }
 
   setEditableStatus(req, res, next) {
-    res.locals.isEditable = req.personEscortRecord?.isEditable
+    res.locals.isEditable = req.assessment?.isEditable
     next()
   }
 
   setSectionSummary(req, res, next) {
-    const { frameworkSection, personEscortRecord, baseUrl, form } = req
+    const { frameworkSection, assessment, baseUrl, form } = req
     const { name, steps } = frameworkSection
     const stepSummaries = Object.entries(steps).map(
       presenters.frameworkStepToSummary(
         form.options.allFields,
-        personEscortRecord.responses,
+        assessment.responses,
         `${baseUrl}/`
       )
     )

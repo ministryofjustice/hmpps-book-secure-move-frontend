@@ -62,7 +62,7 @@ describe('Person Escort Record controllers', function () {
           move: {
             id: '12345',
           },
-          personEscortRecord: {
+          assessment: {
             id: '12345',
           },
         }
@@ -73,7 +73,7 @@ describe('Person Escort Record controllers', function () {
 
       context('with completed status', function () {
         beforeEach(function () {
-          mockReq.personEscortRecord.status = 'completed'
+          mockReq.assessment.status = 'completed'
           controller.checkStatus(mockReq, mockRes, nextSpy)
         })
 
@@ -90,7 +90,7 @@ describe('Person Escort Record controllers', function () {
       statuses.forEach(status => {
         context(`with ${status} status`, function () {
           beforeEach(function () {
-            mockReq.personEscortRecord.status = status
+            mockReq.assessment.status = status
             controller.checkStatus(mockReq, mockRes, nextSpy)
           })
 
@@ -159,7 +159,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(personEscortRecordService, 'confirm')
         nextSpy = sinon.spy()
         req = {
-          personEscortRecord: {
+          assessment: {
             id: mockPERId,
           },
         }

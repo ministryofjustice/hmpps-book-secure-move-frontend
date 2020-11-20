@@ -19,7 +19,7 @@ class ConfirmPersonEscortRecordController extends FormWizardController {
 
   checkStatus(req, res, next) {
     const moveId = req.move?.id
-    const isCompleted = req?.personEscortRecord?.status === 'completed'
+    const isCompleted = req?.assessment?.status === 'completed'
 
     if (isCompleted) {
       return next()
@@ -30,7 +30,7 @@ class ConfirmPersonEscortRecordController extends FormWizardController {
 
   async saveValues(req, res, next) {
     try {
-      await personEscortRecordService.confirm(req.personEscortRecord.id)
+      await personEscortRecordService.confirm(req.assessment.id)
       next()
     } catch (err) {
       next(err)

@@ -1,13 +1,12 @@
-const personEscortRecordService = require('../../common/services/person-escort-record')
+const middleware = require('./set-record')
 
-const middleware = require('./middleware')
-
-const personEscortRecordStub = { foo: 'bar' }
-
-describe('Person escort record middleware', function () {
-  describe('#setPersonEscortRecord()', function () {
+describe('Framework middleware', function () {
+  describe('#setRecord()', function () {
     const mockRecordId = '12345'
     const errorStub = new Error('Problem')
+    const mockKey = 'personEscortRecord'
+    const mockResource = { foo: 'bar' }
+    const getMethodStub = sinon.stub().resolves(mockResource)
     let mockReq, nextSpy
 
     beforeEach(function () {
@@ -15,31 +14,51 @@ describe('Person escort record middleware', function () {
         params: {},
       }
       nextSpy = sinon.spy()
-
-      sinon
-        .stub(personEscortRecordService, 'getById')
-        .resolves(personEscortRecordStub)
     })
 
-    context('with existing `req.personEscortRecord`', function () {
+    context('without args', function () {
+      beforeEach(async function () {
+        await middleware()(mockReq, {}, nextSpy)
+      })
+
+      it('should call next with 404 error', function () {
+        const error = nextSpy.args[0][0]
+
+        expect(nextSpy).to.be.calledOnce
+
+        expect(error).to.be.an('error')
+        expect(error.message).to.equal('Resource (undefined) not found')
+        expect(error.statusCode).to.equal(404)
+      })
+
+      it('should not call API with record ID', function () {
+        expect(getMethodStub).not.to.be.called
+      })
+
+      it('should not set request property', function () {
+        expect(mockReq).not.to.have.property(mockKey)
+      })
+    })
+
+    context('with existing request key', function () {
       beforeEach(async function () {
         mockReq = {
           ...mockReq,
-          personEscortRecord: {
+          [mockKey]: {
             id: '__movePER__',
             status: 'not_started',
           },
         }
-        await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+        await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
       })
 
       it('should not call API', function () {
-        expect(personEscortRecordService.getById).not.to.be.called
+        expect(getMethodStub).not.to.be.called
       })
 
       it('should set request property to existing property', function () {
-        expect(mockReq).to.have.property('personEscortRecord')
-        expect(mockReq.personEscortRecord).to.deep.equal({
+        expect(mockReq).to.have.property(mockKey)
+        expect(mockReq[mockKey]).to.deep.equal({
           id: '__movePER__',
           status: 'not_started',
         })
@@ -52,7 +71,7 @@ describe('Person escort record middleware', function () {
 
     context('when no record ID exists', function () {
       beforeEach(async function () {
-        await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+        await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
       })
 
       it('should call next with 404 error', function () {
@@ -61,42 +80,38 @@ describe('Person escort record middleware', function () {
         expect(nextSpy).to.be.calledOnce
 
         expect(error).to.be.an('error')
-        expect(error.message).to.equal('Person Escort Record not found')
+        expect(error.message).to.equal(`Resource (${mockKey}) not found`)
         expect(error.statusCode).to.equal(404)
       })
 
       it('should not call API with record ID', function () {
-        expect(personEscortRecordService.getById).not.to.be.called
+        expect(getMethodStub).not.to.be.called
       })
 
       it('should not set request property', function () {
-        expect(mockReq).not.to.have.property('personEscortRecord')
+        expect(mockReq).not.to.have.property(mockKey)
       })
     })
 
     context('when record ID exists', function () {
       beforeEach(async function () {
         mockReq.params = {
-          personEscortRecordId: mockRecordId,
+          resourceId: mockRecordId,
         }
       })
 
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
         })
 
         it('should call API with record ID', function () {
-          expect(personEscortRecordService.getById).to.be.calledWith(
-            mockRecordId
-          )
+          expect(getMethodStub).to.be.calledWith(mockRecordId)
         })
 
         it('should set response data to request property', function () {
-          expect(mockReq).to.have.property('personEscortRecord')
-          expect(mockReq.personEscortRecord).to.deep.equal(
-            personEscortRecordStub
-          )
+          expect(mockReq).to.have.property(mockKey)
+          expect(mockReq[mockKey]).to.deep.equal(mockResource)
         })
 
         it('should call next with no argument', function () {
@@ -106,13 +121,13 @@ describe('Person escort record middleware', function () {
 
       context('when API call returns an error', function () {
         beforeEach(async function () {
-          personEscortRecordService.getById.throws(errorStub)
+          getMethodStub.throws(errorStub)
 
-          await middleware.setPersonEscortRecord(mockReq, {}, nextSpy)
+          await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
         })
 
         it('should not set request property', function () {
-          expect(mockReq).not.to.have.property('personEscortRecord')
+          expect(mockReq).not.to.have.property(mockKey)
         })
 
         it('should send error to next function', function () {

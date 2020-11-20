@@ -10,7 +10,7 @@ const mockFramework = {
   },
 }
 
-describe('Person Escort Record controllers', function () {
+describe('Framework controllers', function () {
   describe('#frameworkOverview()', function () {
     let mockReq, mockRes
 
@@ -21,7 +21,6 @@ describe('Person Escort Record controllers', function () {
 
       mockReq = {
         originalUrl: '/person-escort-record/1',
-        framework: mockFramework,
       }
       mockRes = {
         render: sinon.spy(),
@@ -73,17 +72,18 @@ describe('Person Escort Record controllers', function () {
         ).to.have.been.calledOnceWithExactly({
           baseUrl: '/person-escort-record/1/',
           sectionProgress: undefined,
-          frameworkSections: mockFramework.sections,
+          frameworkSections: undefined,
         })
       })
     })
 
-    context('with person escort record', function () {
+    context('with assessment', function () {
       beforeEach(function () {
         controller(
           {
             ...mockReq,
-            personEscortRecord: {
+            assessment: {
+              _framework: mockFramework,
               meta: {
                 section_progress: [
                   {

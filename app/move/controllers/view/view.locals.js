@@ -8,7 +8,7 @@ const getUpdateLinks = require('./view.update.links')
 const getUpdateUrls = require('./view.update.urls')
 
 function getViewLocals(req) {
-  const { move, framework = {} } = req
+  const { move } = req
   const {
     profile,
     status,
@@ -49,7 +49,7 @@ function getViewLocals(req) {
   const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${personEscortRecordUrl}/`,
     deepLinkToFirstStep: true,
-    frameworkSections: framework.sections,
+    frameworkSections: personEscortRecord?._framework?.sections,
     sectionProgress: personEscortRecord?.meta?.section_progress,
   })
   const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
@@ -68,11 +68,14 @@ function getViewLocals(req) {
     .assessmentAnswersByCategory(assessmentAnswers)
     .filter(category => category.key === 'court')
     .map(presenters.assessmentCategoryToSummaryListComponent)[0]
-  const assessmentSections = sortBy(framework.sections, 'order')
+  const assessmentSections = sortBy(
+    personEscortRecord?._framework?.sections,
+    'order'
+  )
     .map(
       presenters.frameworkSectionToPanelList({
         tagList: personEscortRecordTagList,
-        questions: framework.questions,
+        questions: personEscortRecord?._framework?.questions,
         personEscortRecord,
         personEscortRecordUrl,
       })
