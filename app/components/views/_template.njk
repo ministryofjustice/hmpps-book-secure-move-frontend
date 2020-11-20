@@ -1,0 +1,45 @@
+{% extends "layouts/base.njk" %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% set pageTitle = component.name | startCase or t("components::all_components") %}
+
+{% block pageTitle %}
+  {{ pageTitle }} — {{ t("components::title") }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+      {% block contentSidebar %}
+        <ul class="govuk-list govuk-!-font-size-16">
+          {% for component in components %}
+            <li class="govuk-!-margin-bottom-3{{ ' govuk-!-font-weight-bold' if activeComponent == component.name }}">
+              <a href="{{ component.url }}" class="govuk-link--no-visited-state govuk-link--no-underline">
+                {{ component.name | startCase }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endblock %}
+
+    </div>
+
+    <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
+      {% block contentHeader %}
+        <header class="govuk-!-margin-bottom-8">
+          <span class="govuk-caption-xl">
+            {{ t("components::title") }}
+          </span>
+
+          <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+          </h1>
+        </header>
+      {% endblock %}
+
+      {% block contentMain %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

@@ -93,3 +93,11 @@
     }
   }
 }
+
+.govkuk-template--white {
+  background: govuk-colour("white");
+}
+
+.govuk-link--no-underline {
+  text-decoration: none;
+}

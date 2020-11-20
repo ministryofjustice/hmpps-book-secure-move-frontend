@@ -1,0 +1,23 @@
+{% extends "./_template.njk" %}
+
+{% block contentMain %}
+  {% for example in component.config.examples %}
+    <div class="{{ 'govuk-!-margin-top-8' if not loop.first }}">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+        {{ example.name | startCase }}
+      </h2>
+
+      <div class="app-border-1 govuk-!-padding-5">
+        {{ callAsMacro(component.macroName)(example.data) }}
+      </div>
+
+      <p class="govuk-!-margin-0 govuk-!-margin-top-1">
+        <a href="{{ component.url }}/{{ example.name }}" target="_blank" class="govuk-!-font-size-14">
+          {{ t("components::open_in_new_tab") }}
+        </a>
+      </p>
+    </div>
+  {% else %}
+    <p>There are no examples of this component.</p>
+  {% endfor %}
+{% endblock %}
