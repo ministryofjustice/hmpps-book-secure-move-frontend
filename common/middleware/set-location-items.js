@@ -13,14 +13,35 @@ function setLocationItems(locationType, fieldName) {
     }
 
     try {
-      const locations = await referenceDataService.getLocationsByType(
-        locationType
+      if (!Array.isArray(locationType)) {
+        locationType = [locationType]
+      }
+
+      const locationString = locationType[0]
+
+      const locations = (
+        await Promise.all(
+          locationType.map(x => referenceDataService.getLocationsByType(x))
+        )
       )
+        .reduce((acc, val) => acc.concat(val))
+        .sort((a, b) => {
+          if (a.title < b.title) {
+            return -1
+          }
+
+          if (a.title > b.title) {
+            return 1
+          }
+
+          return 0
+        })
+
       const items = fieldHelpers.insertInitialOption(
         locations
           .filter(referenceDataHelpers.filterDisabled())
           .map(fieldHelpers.mapReferenceDataToOption),
-        locationType
+        locationString
       )
 
       set(req, `form.options.fields.${fieldName}.items`, items)
