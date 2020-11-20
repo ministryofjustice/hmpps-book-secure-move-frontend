@@ -17,6 +17,10 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
+  describe('default include', function () {
+    expect(personService.defaultInclude).to.deep.equal(['ethnicity', 'gender'])
+  })
+
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted
@@ -185,7 +189,9 @@ describe('Person Service', function () {
     })
 
     it('should call create method with data', function () {
-      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData)
+      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData, {
+        include: personService.defaultInclude,
+      })
     })
 
     it('should format data', function () {
@@ -232,7 +238,13 @@ describe('Person Service', function () {
       })
 
       it('should call update method with data', function () {
-        expect(apiClient.update).to.be.calledOnceWithExactly('person', mockData)
+        expect(apiClient.update).to.be.calledOnceWithExactly(
+          'person',
+          mockData,
+          {
+            include: personService.defaultInclude,
+          }
+        )
       })
 
       it('should format data', function () {
@@ -427,7 +439,7 @@ describe('Person Service', function () {
 
       it('should call findAll method with empty object', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          include: undefined,
+          include: personService.defaultInclude,
         })
       })
 
@@ -448,27 +460,12 @@ describe('Person Service', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
           'filter[filterOne]': 'filter-one-value',
           'filter[filterTwo]': 'filter-two-value',
-          include: undefined,
+          include: personService.defaultInclude,
         })
       })
 
       it('should return data property', function () {
         expect(person).to.deep.equal(mockResponse.data)
-      })
-    })
-
-    context('with include parameter', function () {
-      beforeEach(async function () {
-        person = await personService.getByIdentifiers(
-          {},
-          { include: ['foo', 'bar'] }
-        )
-      })
-
-      it('should pass include parameter to api client', function () {
-        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          include: ['foo', 'bar'],
-        })
       })
     })
   })

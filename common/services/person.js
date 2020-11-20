@@ -8,7 +8,11 @@ const relationshipKeys = ['gender', 'ethnicity']
 
 const dateKeys = ['date_of_birth']
 
+const defaultInclude = ['ethnicity', 'gender']
+
 const personService = {
+  defaultInclude,
+
   format(data) {
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
@@ -35,8 +39,9 @@ const personService = {
   },
 
   create(data) {
+    const include = personService.defaultInclude
     return apiClient
-      .create('person', personService.format(data))
+      .create('person', personService.format(data), { include })
       .then(response => response.data)
   },
 
@@ -45,8 +50,9 @@ const personService = {
       return
     }
 
+    const include = personService.defaultInclude
     return apiClient
-      .update('person', personService.format(data))
+      .update('person', personService.format(data), { include })
       .then(response => response.data)
   },
 
@@ -72,7 +78,6 @@ const personService = {
       .all('court_case')
       .get({
         'filter[active]': true,
-        // TODO: remove if/when devour adds model info to get method
         include: ['location'],
       })
       .then(response => response.data)
@@ -91,13 +96,13 @@ const personService = {
           date_from: date,
           date_to: date,
         },
-        // TODO: remove if/when devour adds model info to get method
         include: ['location'],
       })
       .then(response => response.data)
   },
 
-  getByIdentifiers(identifiers, { include } = {}) {
+  getByIdentifiers(identifiers) {
+    const include = personService.defaultInclude
     const filter = {
       ...mapKeys(identifiers, (value, key) => `filter[${key}]`),
       include,
