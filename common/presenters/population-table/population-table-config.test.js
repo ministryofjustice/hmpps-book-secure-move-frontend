@@ -266,6 +266,10 @@ describe('population-table-config', function () {
         it('should render with spaces with count', function () {
           expect(result).to.contain('>population::spaces_with_count<')
         })
+
+        it('should use not use url with edit', function () {
+          expect(result).not.to.contain('/edit">')
+        })
       })
 
       context('with populationIndex === 1', function () {
@@ -333,6 +337,10 @@ describe('population-table-config', function () {
 
         it('should render with spaces as Add Space', function () {
           expect(result).to.contain('>population::add_space<')
+        })
+
+        it('should use url with edit', function () {
+          expect(result).to.contain('/edit">')
         })
       })
 

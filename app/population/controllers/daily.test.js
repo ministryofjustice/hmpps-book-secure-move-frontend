@@ -10,6 +10,7 @@ describe('Population controllers', function () {
       mockReq = {
         params: {
           date: '2020-07-29',
+          locationId: 'C0DEC0DE',
         },
         population: {
           date: '2020-08-01',
@@ -55,12 +56,17 @@ describe('Population controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(3)
+          expect(Object.keys(params)).to.have.length(4)
         })
 
         it('should set date', function () {
           expect(params).to.have.property('date')
           expect(params.date).to.deep.equal(mockReq.params.date)
+        })
+
+        it('should set locationId', function () {
+          expect(params).to.have.property('locationId')
+          expect(params.locationId).to.deep.equal(mockReq.params.locationId)
         })
 
         it('should set spaces', function () {
