@@ -12,6 +12,20 @@ const courtsMock = [
     title: 'Court 9999',
   },
 ]
+const courtsMock2 = [
+  {
+    id: '8888-dupe',
+    title: 'Court 8888',
+  },
+  {
+    id: '7777',
+    title: 'Court 7777',
+  },
+  {
+    id: 'aaaa',
+    title: 'Court AAAA',
+  },
+]
 
 describe('#setLocationItems()', function () {
   let req, res, nextSpy
@@ -107,6 +121,101 @@ describe('#setLocationItems()', function () {
       })
     })
   })
+
+  context(
+    'when field exists and multiple location types are to be used',
+    function () {
+      const mockFieldName = 'to_location_court'
+      const mockLocationType = ['court', 'hospital']
+
+      context('when service resolves', function () {
+        beforeEach(async function () {
+          referenceDataService.getLocationsByType.resolves(courtsMock)
+          referenceDataService.getLocationsByType
+            .onCall(1)
+            .resolves(courtsMock2)
+
+          await setLocationItems(mockLocationType, mockFieldName)(
+            req,
+            {},
+            nextSpy
+          )
+        })
+
+        it('should call reference data service for each location type', function () {
+          expect(referenceDataService.getLocationsByType).to.be.calledTwice
+          expect(
+            referenceDataService.getLocationsByType
+          ).to.be.calledWithExactly(mockLocationType[0])
+          expect(
+            referenceDataService.getLocationsByType
+          ).to.be.calledWithExactly(mockLocationType[1])
+        })
+
+        it('populates the move type items and sorts them', function () {
+          expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
+            {
+              text: `--- Choose ${mockLocationType[0]} ---`,
+            },
+            {
+              text: 'Court 7777',
+              value: '7777',
+            },
+            {
+              text: 'Court 8888',
+              value: '8888',
+            },
+            {
+              text: 'Court 8888',
+              value: '8888-dupe',
+            },
+            {
+              text: 'Court 9999',
+              value: '9999',
+            },
+            {
+              text: 'Court AAAA',
+              value: 'aaaa',
+            },
+          ])
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when service rejects', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function () {
+          referenceDataService.getLocationsByType.onCall(1).throws(errorMock)
+
+          await setLocationItems(mockLocationType, mockFieldName)(
+            req,
+            {},
+            nextSpy
+          )
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should not mutate request object', function () {
+          expect(req).to.deep.equal({
+            form: {
+              options: {
+                fields: {
+                  to_location_court: {},
+                },
+              },
+            },
+          })
+        })
+      })
+    }
+  )
 
   context('when field does not exist', function () {
     beforeEach(async function () {

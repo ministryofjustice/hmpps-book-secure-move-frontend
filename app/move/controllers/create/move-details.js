@@ -18,9 +18,12 @@ class MoveDetailsController extends CreateBaseController {
     this.use(
       commonMiddleware.setLocationItems('police', 'to_location_police_transfer')
     )
+    // hospitals come in 2 different flavours for obscure “legacy” reasons
+    // book-a-secure-move makes no distinction between them
+    // selecting a location from either results in a move_type of `hospital`
     this.use(
       commonMiddleware.setLocationItems(
-        'high_security_hospital',
+        ['hospital', 'high_security_hospital'],
         'to_location_hospital'
       )
     )
