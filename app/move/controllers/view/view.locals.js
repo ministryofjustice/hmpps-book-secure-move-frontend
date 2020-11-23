@@ -22,6 +22,11 @@ function getViewLocals(req) {
   const bannerStatuses = ['cancelled']
   const updateUrls = getUpdateUrls(updateSteps, move, req)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
+  const messageBanner = presenters.moveToMessageBannerComponent({
+    move,
+    moveUrl: moveUrl,
+    canAccess: req.canAccess,
+  })
   const {
     person,
     assessment_answers: assessmentAnswers = [],
@@ -31,28 +36,7 @@ function getViewLocals(req) {
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
-  const personEscortRecordIsConfirmed = ['confirmed'].includes(
-    personEscortRecord?.status
-  )
   const personEscortRecordUrl = `${moveUrl}/person-escort-record`
-  const showPersonEscortRecordBanner =
-    personEscortRecordIsEnabled &&
-    !['proposed'].includes(move?.status) &&
-    move.profile?.id !== undefined
-  const canStartPersonEscortRecord =
-    showPersonEscortRecordBanner &&
-    ['requested', 'booked'].includes(move?.status) &&
-    !personEscortRecord
-  const canConfirmPersonEscortRecord =
-    showPersonEscortRecordBanner &&
-    personEscortRecordIsCompleted &&
-    ['requested', 'booked'].includes(move?.status)
-  const personEscortRecordtaskList = presenters.frameworkToTaskListComponent({
-    baseUrl: `${personEscortRecordUrl}/`,
-    deepLinkToFirstStep: true,
-    frameworkSections: personEscortRecord?._framework?.sections,
-    sectionProgress: personEscortRecord?.meta?.section_progress,
-  })
   const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
     personEscortRecord?.flags,
     moveUrl
@@ -93,17 +77,11 @@ function getViewLocals(req) {
   const userPermissions = req.session?.user?.permissions
   const locals = {
     move,
+    messageBanner,
     assessment,
     courtSummary,
-    personEscortRecord,
     personEscortRecordIsEnabled,
     personEscortRecordIsCompleted,
-    personEscortRecordIsConfirmed,
-    personEscortRecordUrl,
-    personEscortRecordtaskList,
-    showPersonEscortRecordBanner,
-    canStartPersonEscortRecord,
-    canConfirmPersonEscortRecord,
     personEscortRecordTagList,
     assessmentSections,
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
