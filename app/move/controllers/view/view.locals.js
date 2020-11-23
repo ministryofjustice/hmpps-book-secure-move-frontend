@@ -15,6 +15,7 @@ function getViewLocals(req) {
     cancellation_reason: cancellationReason,
     cancellation_reason_comment: cancellationComments,
     rejection_reason: rejectionReason,
+    rebook,
   } = move
   const tabsUrls = getTabsUrls(move)
   const moveUrl = tabsUrls.view
@@ -131,6 +132,8 @@ function getViewLocals(req) {
     messageContent: req.t('statuses::description', {
       context: rejectionReason || cancellationReason,
       comment: cancellationComments,
+      cancellation_reason_comment: cancellationComments,
+      rebook,
     }),
     updateLinks: updateActions,
     urls,

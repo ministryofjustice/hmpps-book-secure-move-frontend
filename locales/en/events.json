@@ -108,7 +108,7 @@
     "heading": "Move cancelled by $t(events::select_agency)",
     "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} has been cancelled for the following reason: $t(events::MoveCancel.select_cancellation_reason) $t(events::MoveCancel.select_cancellation_reason_comment)",
     "select_cancellation_reason": "$t(events::MoveCancel.cancellation_reason, {\"context\": \"{{cancellation_reason}}\"})",
-    "cancellation_reason_prefix": "<br>Cancellation reason:",
+    "cancellation_reason_prefix": "<br>Cancellation reason - ",
     "cancellation_reason": "",
     "cancellation_reason_supplier_declined_to_move": "$t(events::MoveCancel.cancellation_reason_prefix) {{move.supplier.name}} declined to move this person",
     "cancellation_reason_cancelled_by_pmu": "$t(events::MoveCancel.cancellation_reason_prefix) Cancelled by Population Management Unit (PMU)",
@@ -210,7 +210,7 @@
     "heading": "Rejected by $t(events::select_agency)",
     "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} rejected by $t(events::select_agency) $t(events::MoveReject.select_rejection_reason) $t(events::MoveReject.select_cancellation_reason_comment) $t(events::MoveReject.select_rebook)",
     "select_rejection_reason": "$t(events::MoveReject.rejection_reason, {\"context\": \"{{rejection_reason}}\"})",
-    "rejection_reason_prefix": "<br>Rejection reason:",
+    "rejection_reason_prefix": "<br>Rejection reason - ",
     "rejection_reason": "",
     "rejection_reason_no_space_at_receiving_prison": "$t(events::MoveReject.rejection_reason_prefix) There was no space at {{move.to_location.title}}",
     "rejection_reason_no_transport_available": "$t(events::MoveReject.rejection_reason_prefix) There was no transport available",
@@ -220,7 +220,7 @@
     "rebook_false": "<br>This move may be rebooked in 7 days if still required",
     "select_cancellation_reason_comment": "$t(events::MoveReject.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
     "cancellation_reason_comment": "",
-    "cancellation_reason_comment_true": "<br>Comment: {{cancellation_reason_comment}}"
+    "cancellation_reason_comment_true": "<br>Additional information - {{cancellation_reason_comment}}"
   },
   "MoveRequested": {
     "default_agency": "user",

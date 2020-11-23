@@ -420,6 +420,7 @@ describe('Move controllers', function () {
           status: 'cancelled',
           cancellation_reason: 'made_in_error',
           cancellation_reason_comment: 'Reason for cancelling comments',
+          rebook: true,
         }
 
         params = getViewLocals(req)
@@ -433,6 +434,8 @@ describe('Move controllers', function () {
         expect(req.t).to.be.calledWithExactly('statuses::description', {
           context: 'made_in_error',
           comment: 'Reason for cancelling comments',
+          rebook: true,
+          cancellation_reason_comment: 'Reason for cancelling comments',
         })
       })
 
