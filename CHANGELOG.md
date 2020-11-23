@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.56.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.55.1...v2.56.0) (2020-11-23)
+
+
+### Features
+
+* **move:** Check prisoner category before creating move [P4-2310] ([2ad4733](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2ad4733b622ad46bd449c5135899e7137e12a6f7))
+* **move:** Show all hospitals in hospital location typeahead [P4-2408] ([1319aeb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1319aeb39d1a8191930cd4a8b2b57dbc2e8f7fe6))
+* Add daily free spaces page ([cea693a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cea693aacb57bd4b08f2124705aca26fdfd4d16c))
+* Add population and date heading to daily population page ([fb09c3f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fb09c3fd22b0148c4cde4e18785cb09626f9cf14))
+* Add support to create, edit and confirm youth risk assessments ([52e92f2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/52e92f257c37863c0ebea2349021101916bd0242))
+* Show transfers count on daily population page ([1230f51](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1230f51ab3c3dadba71e27a82759c298145f03a8))
+* **move:** Add medical and red flags to timeline events ([abffdbf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/abffdbff17d51da8465a25ef18709d4498b6bb22))
+
+
+### Bug Fixes
+
+* Adjust size and formatting of change numbers link ([5fbe7ff](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5fbe7ff5bf55fd284cf29c1fe817dae404319d19))
+* Improve layout of daily free spaces page ([deee073](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/deee073233ed33ab5cca19659fc60404ea64e1e9))
+* Use unique form wizard for individual resources ([1452d30](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1452d30f4d83114dd0158b68b5500fb1db91dcef))
+
 ### [2.55.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.55.0...v2.55.1) (2020-11-18)
 
 ## [2.55.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.54.2...v2.55.0) (2020-11-18)
