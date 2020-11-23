@@ -177,6 +177,84 @@ describe('Presenters', function () {
             })
           })
         })
+
+        context('with youth move', function () {
+          let mockMove
+          beforeEach(function () {
+            mockMove = {
+              _is_youth_move: true,
+              status: 'requested',
+            }
+          })
+
+          context('with unconfirmed assessment', function () {
+            beforeEach(function () {
+              output = presenter({
+                ...mockArgs,
+                move: {
+                  ...mockMove,
+                  profile: {
+                    youth_risk_assessment: {
+                      id: '_youth_12345',
+                      status: 'in_progress',
+                    },
+                    person_escort_record: null,
+                  },
+                },
+              })
+            })
+
+            it('should return unconfirmed banner', function () {
+              expect(output).to.deep.equal('__assessmentToUnconfirmedBanner__')
+            })
+
+            it('should call presenter', function () {
+              expect(
+                assessmentToUnconfirmedBannerStub
+              ).to.have.been.calledOnceWithExactly({
+                assessment: {
+                  id: '_youth_12345',
+                  status: 'in_progress',
+                },
+                baseUrl: '/move/12345/youth-risk-assessment',
+                context: 'youth_risk_assessment',
+                canAccess: mockArgs.canAccess,
+              })
+            })
+          })
+
+          context('with confirmed assessment', function () {
+            beforeEach(function () {
+              output = presenter({
+                ...mockArgs,
+                move: {
+                  ...mockMove,
+                  profile: {
+                    youth_risk_assessment: {
+                      id: '_youth_12345',
+                      status: 'confirmed',
+                    },
+                    person_escort_record: null,
+                  },
+                },
+              })
+            })
+
+            it('should return unconfirmed banner', function () {
+              expect(output).to.deep.equal('__assessmentToStartBanner__')
+            })
+
+            it('should call presenter', function () {
+              expect(
+                assessmentToStartBannerStub
+              ).to.have.been.calledOnceWithExactly({
+                baseUrl: '/move/12345/person-escort-record',
+                context: 'person_escort_record',
+                canAccess: mockArgs.canAccess,
+              })
+            })
+          })
+        })
       })
     })
   })

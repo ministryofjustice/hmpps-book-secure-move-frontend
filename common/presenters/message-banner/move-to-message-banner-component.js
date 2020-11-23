@@ -9,7 +9,11 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
     return undefined
   }
 
-  const assessmentType = 'person_escort_record'
+  const assessmentType =
+    move._is_youth_move &&
+    move.profile?.youth_risk_assessment?.status !== 'confirmed'
+      ? 'youth_risk_assessment'
+      : 'person_escort_record'
   const assessment = move.profile[assessmentType]
   const baseUrl = `${moveUrl}/${kebabCase(assessmentType)}`
   const context = assessmentType
@@ -18,11 +22,11 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
     return assessmentToStartBanner({ baseUrl, canAccess, context })
   }
 
-  if (assessment.status === 'confirmed') {
+  if (assessment?.status === 'confirmed') {
     return assessmentToConfirmedBanner({ assessment, baseUrl, context })
   }
 
-  if (assessment.status !== 'confirmed') {
+  if (assessment?.status !== 'confirmed') {
     return assessmentToUnconfirmedBanner({
       assessment,
       baseUrl,
