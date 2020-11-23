@@ -8,7 +8,13 @@ const relationshipKeys = ['gender', 'ethnicity']
 
 const dateKeys = ['date_of_birth']
 
+const noPersonIdMessage = 'No person ID supplied'
+
+const defaultInclude = ['ethnicity', 'gender']
+
 const personService = {
+  defaultInclude,
+
   format(data) {
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
@@ -35,8 +41,9 @@ const personService = {
   },
 
   create(data) {
+    const include = personService.defaultInclude
     return apiClient
-      .create('person', personService.format(data))
+      .create('person', personService.format(data), { include })
       .then(response => response.data)
   },
 
@@ -45,9 +52,29 @@ const personService = {
       return
     }
 
+    const include = personService.defaultInclude
     return apiClient
-      .update('person', personService.format(data))
+      .update('person', personService.format(data), { include })
       .then(response => response.data)
+  },
+
+  _getById(id, options = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noPersonIdMessage))
+    }
+
+    return apiClient.find('person', id, options).then(response => response.data)
+  },
+
+  getById(id) {
+    const include = personService.defaultInclude
+    return personService._getById(id, { include })
+  },
+
+  getCategory(id) {
+    return personService
+      ._getById(id, { include: ['category'] })
+      .then(person => person.category)
   },
 
   getImageUrl(personId) {
@@ -72,7 +99,6 @@ const personService = {
       .all('court_case')
       .get({
         'filter[active]': true,
-        // TODO: remove if/when devour adds model info to get method
         include: ['location'],
       })
       .then(response => response.data)
@@ -91,13 +117,13 @@ const personService = {
           date_from: date,
           date_to: date,
         },
-        // TODO: remove if/when devour adds model info to get method
         include: ['location'],
       })
       .then(response => response.data)
   },
 
-  getByIdentifiers(identifiers, { include } = {}) {
+  getByIdentifiers(identifiers) {
+    const include = personService.defaultInclude
     const filter = {
       ...mapKeys(identifiers, (value, key) => `filter[${key}]`),
       include,

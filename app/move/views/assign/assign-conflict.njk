@@ -1,35 +1,14 @@
-{% extends "layouts/two-column.njk" %}
+{% extends "layouts/action-prevented.njk" %}
 
-{% block pageTitle %}
-  {{ t("validation::page_title_prefix") }}: {{ t("validation::assign_conflict.heading") }}
-{% endblock %}
+{% set actionPreventedTitle = t("validation::assign_conflict.heading") %}
 
-{% block contentHeader %}
-  {% set errorMsg %}
-    <p class="govuk-!-margin-top-4">
-      {{ t("validation::assign_conflict.message", {
-        href: "/move/" + existingMoveId,
-        name: person.fullname | upper,
-        location: move.to_location.title,
-        date: move.date | formatDateWithDay
-      }) | safe }}
-    </p>
+{% set actionPreventedMessage = t("validation::assign_conflict.message", {
+  href: "/move/" + existingMoveId,
+  name: person.fullname | upper,
+  location: move.to_location.title,
+  date: move.date | formatDateWithDay
+}) %}
 
-    <p class="govuk-!-margin-top-2">
-      {{ t("validation::assign_conflict.instructions", {
-        assign_href: "/move/" + move.id + "/assign"
-      }) | safe }}
-    </p>
-  {% endset %}
-
-  {{ appMessage({
-    focusOnload: true,
-    classes: "app-message--error",
-    title: {
-      text: t("validation::assign_conflict.heading")
-    },
-    content: {
-      html: errorMsg
-    }
-  }) }}
-{% endblock %}
+{% set actionPreventedInstructions = t("validation::assign_conflict.instructions", {
+  assign_href: "/move/" + move.id + "/assign"
+}) %}

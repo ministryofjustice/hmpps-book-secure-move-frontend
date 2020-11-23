@@ -1,5 +1,6 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
+const personService = require('../../../../common/services/person')
 
 class CreateBaseController extends FormWizardController {
   middlewareSetup() {
@@ -10,6 +11,7 @@ class CreateBaseController extends FormWizardController {
   middlewareChecks() {
     super.middlewareChecks()
     this.use(this.checkCurrentLocation)
+    this.use(this.checkMoveSupported)
   }
 
   middlewareLocals() {
@@ -40,6 +42,25 @@ class CreateBaseController extends FormWizardController {
     this._setModels(req)
     this._addModelMethods(req)
     next()
+  }
+
+  async checkMoveSupported(req, res, next) {
+    const person = req.getPerson()
+
+    if (!person?.prison_number) {
+      return next()
+    }
+
+    const category = await personService.getCategory(person.id)
+
+    if (!category || category.move_supported) {
+      return next()
+    }
+
+    return res.render('move/views/create/move-not-supported', {
+      person,
+      category,
+    })
   }
 
   setButtonText(req, res, next) {

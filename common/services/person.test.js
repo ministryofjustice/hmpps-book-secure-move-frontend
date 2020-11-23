@@ -10,13 +10,21 @@ const personService = proxyquire('./person', {
 
 const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
+const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
 const mockPerson = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
   first_names: 'Steve Jones',
   last_name: 'Bloggs',
+  category: {
+    key: 'U',
+  },
 }
 
 describe('Person Service', function () {
+  describe('default include', function () {
+    expect(personService.defaultInclude).to.deep.equal(['ethnicity', 'gender'])
+  })
+
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted
@@ -185,7 +193,9 @@ describe('Person Service', function () {
     })
 
     it('should call create method with data', function () {
-      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData)
+      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData, {
+        include: personService.defaultInclude,
+      })
     })
 
     it('should format data', function () {
@@ -194,6 +204,90 @@ describe('Person Service', function () {
 
     it('should return data property', function () {
       expect(person).to.deep.equal(mockResponse.data)
+    })
+  })
+
+  describe('#_getById()', function () {
+    context('without person ID', function () {
+      it('should reject with error', function () {
+        return expect(personService._getById()).to.be.rejectedWith(
+          'No person ID supplied'
+        )
+      })
+    })
+
+    context('with person ID', function () {
+      const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
+      const mockResponse = {
+        data: mockPerson,
+      }
+      let person
+
+      beforeEach(async function () {
+        sinon.stub(apiClient, 'find').resolves(mockResponse)
+      })
+
+      context('when called without include parameter', function () {
+        beforeEach(async function () {
+          person = await personService._getById(mockId)
+        })
+        it('should call find method with data', function () {
+          expect(apiClient.find).to.be.calledOnceWithExactly(
+            'person',
+            mockId,
+            {}
+          )
+        })
+
+        it('should return person', function () {
+          expect(person).to.deep.equal(mockResponse.data)
+        })
+      })
+
+      context('when called with include parameter', function () {
+        beforeEach(async function () {
+          person = await personService._getById(mockId, {
+            include: ['boo', 'far'],
+          })
+        })
+        it('should pass include paramter to api client', function () {
+          expect(apiClient.find).to.be.calledOnceWithExactly('person', mockId, {
+            include: ['boo', 'far'],
+          })
+        })
+      })
+    })
+  })
+
+  describe('#getById()', function () {
+    let person
+    beforeEach(async function () {
+      sinon.stub(personService, '_getById').resolves(mockPerson)
+      person = await personService.getById(mockId)
+    })
+    it('should call find method with data', function () {
+      expect(personService._getById).to.be.calledOnceWithExactly(mockId, {
+        include: personService.defaultInclude,
+      })
+    })
+    it('should return person', function () {
+      expect(person).to.deep.equal(mockPerson)
+    })
+  })
+
+  describe('#getCategory()', function () {
+    let category
+    beforeEach(async function () {
+      sinon.stub(personService, '_getById').resolves(mockPerson)
+      category = await personService.getCategory(mockId)
+    })
+    it('should call find method with data', function () {
+      expect(personService._getById).to.be.calledOnceWithExactly(mockId, {
+        include: ['category'],
+      })
+    })
+    it('should return category', function () {
+      expect(category).to.deep.equal(mockPerson.category)
     })
   })
 
@@ -232,7 +326,13 @@ describe('Person Service', function () {
       })
 
       it('should call update method with data', function () {
-        expect(apiClient.update).to.be.calledOnceWithExactly('person', mockData)
+        expect(apiClient.update).to.be.calledOnceWithExactly(
+          'person',
+          mockData,
+          {
+            include: personService.defaultInclude,
+          }
+        )
       })
 
       it('should format data', function () {
@@ -427,7 +527,7 @@ describe('Person Service', function () {
 
       it('should call findAll method with empty object', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          include: undefined,
+          include: personService.defaultInclude,
         })
       })
 
@@ -448,27 +548,12 @@ describe('Person Service', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
           'filter[filterOne]': 'filter-one-value',
           'filter[filterTwo]': 'filter-two-value',
-          include: undefined,
+          include: personService.defaultInclude,
         })
       })
 
       it('should return data property', function () {
         expect(person).to.deep.equal(mockResponse.data)
-      })
-    })
-
-    context('with include parameter', function () {
-      beforeEach(async function () {
-        person = await personService.getByIdentifiers(
-          {},
-          { include: ['foo', 'bar'] }
-        )
-      })
-
-      it('should pass include parameter to api client', function () {
-        expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          include: ['foo', 'bar'],
-        })
       })
     })
   })

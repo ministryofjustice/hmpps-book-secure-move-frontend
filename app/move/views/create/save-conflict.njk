@@ -1,8 +1,4 @@
-{% extends "layouts/two-column.njk" %}
-
-{% block pageTitle %}
-  {{ t("validation::page_title_prefix") }}: {{ t("validation::move_conflict.heading") }}
-{% endblock %}
+{% extends "layouts/action-prevented.njk" %}
 
 {% block beforeContent %}
   {% if backLink and not options.hideBackLink %}
@@ -11,39 +7,19 @@
       href: backLink
     }) }}
   {% endif %}
-
-  {{ super() }}
 {% endblock %}
 
-{% block contentHeader %}
-  {% set errorMsg %}
-    <p class="govuk-!-margin-top-4">
-      {{ t("validation::move_conflict.message", {
-        href: "/move/" + existingMoveId,
-        name: values.person.fullname | upper,
-        location: values.to_location.title,
-        date: values.date | formatDateWithDay
-      }) | safe }}
-    </p>
+{% set actionPreventedTitle = t("validation::move_conflict.heading") %}
 
-    {# TODO: Find way to get correct "move details" #}
-    <p class="govuk-!-margin-top-2">
-      {{ t("validation::move_conflict.instructions", {
-        date_href: "move-date/edit",
-        location_href: "move-details/edit"
-      }) | safe }}
-    </p>
-  {% endset %}
+{# TODO: Find way to get correct "move details" #}
+{% set actionPreventedMessage = t("validation::move_conflict.message", {
+  href: "/move/" + existingMoveId,
+  name: values.person.fullname | upper,
+  location: values.to_location.title,
+  date: values.date | formatDateWithDay
+}) %}
 
-  {{ appMessage({
-    focusOnload: true,
-    classes: "app-message--error",
-    title: {
-      text: t("validation::move_conflict.heading")
-    },
-    content: {
-      html: errorMsg
-    }
-  }) }}
-{% endblock %}
-
+{% set actionPreventedInstructions = t("validation::move_conflict.instructions", {
+  date_href: "move-date/edit",
+  location_href: "move-details/edit"
+}) %}
