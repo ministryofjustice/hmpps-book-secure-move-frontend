@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash')
+const { isEmpty, kebabCase } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
@@ -19,10 +19,16 @@ function _returnComponent(title, content) {
   }
 }
 
-function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
+function moveToMessageBannerComponent({
+  move,
+  moveUrl,
+  canAccess,
+  assessmentType,
+}) {
   const { profile, status } = move
-  const { id: profileId, person_escort_record: personEscortRecord } =
-    profile || {}
+  const { id: profileId, [assessmentType]: assessment } = profile || {}
+  const baseUrl = `${moveUrl}/${kebabCase(assessmentType)}`
+  const context = assessmentType
 
   if (['proposed'].includes(status) || !profileId) {
     return undefined
@@ -32,17 +38,19 @@ function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
   let content
 
   // No PER exists
-  if (['requested', 'booked'].includes(status) && isEmpty(personEscortRecord)) {
-    title = i18n.t('messages::person_escort_record_pending.heading')
-    content = `<p>${i18n.t(
-      'messages::person_escort_record_pending.content'
-    )}</p>`
+  if (['requested', 'booked'].includes(status) && isEmpty(assessment)) {
+    title = i18n.t('messages::assessment.pending.heading', { context })
+    content = `<p>${i18n.t('messages::assessment.pending.content', {
+      context,
+    })}</p>`
 
-    if (canAccess('person_escort_record:create')) {
+    if (canAccess(`${assessmentType}:create`)) {
       content += `
         ${componentService.getComponent('govukButton', {
-          href: `${moveUrl}/person-escort-record/new`,
-          text: i18n.t('actions::start_person_escort_record'),
+          href: `${baseUrl}/new`,
+          text: i18n.t('actions::start_assessment', {
+            context,
+          }),
         })}
       `
     }
@@ -55,21 +63,24 @@ function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
     meta = {},
     status: perStatus,
     confirmed_at: confirmedAt,
-  } = personEscortRecord || {}
+  } = assessment || {}
 
   // PER has been confirmed
-  if (personEscortRecord && perStatus === 'confirmed') {
-    title = i18n.t('messages::person_escort_record_confirmed.heading')
+  if (assessment && perStatus === 'confirmed') {
+    title = i18n.t(`messages::assessment.${perStatus}.heading`, { context })
     content = `
       <p>
-        ${i18n.t('messages::person_escort_record_confirmed.content', {
+        ${i18n.t(`messages::assessment.${perStatus}.content`, {
+          context,
           date: filters.formatDateWithTimeAndDay(confirmedAt),
         })}
       </p>
 
       <p>
-        <a href="${moveUrl}/person-escort-record/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_person_escort_record')}
+        <a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', {
+            context,
+          })}
         </a>
       </p>
     `
@@ -78,19 +89,15 @@ function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
   }
 
   // PER is unconfirmed
-  if (personEscortRecord && perStatus !== 'confirmed') {
+  if (assessment && perStatus !== 'confirmed') {
     const taskList = frameworkToTaskListComponent({
-      baseUrl: `${moveUrl}/person-escort-record/`,
+      baseUrl: `${baseUrl}/`,
       deepLinkToFirstStep: true,
       frameworkSections: _framework.sections,
       sectionProgress: meta.section_progress,
     })
 
-    title = i18n.t(
-      `messages::person_escort_record_${
-        perStatus === 'completed' ? 'complete' : 'incomplete'
-      }.heading`
-    )
+    title = i18n.t(`messages::assessment.${perStatus}.heading`, { context })
     content = `
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -98,17 +105,16 @@ function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
     `
 
     // PER has been completed
-    if (
-      perStatus === 'completed' &&
-      canAccess('person_escort_record:confirm')
-    ) {
+    if (perStatus === 'completed' && canAccess(`${assessmentType}:confirm`)) {
       content += `
         <p>
-          ${i18n.t('messages::person_escort_record_complete.content')}
+          ${i18n.t(`messages::assessment.${perStatus}.content`, {
+            context,
+          })}
         </p>
 
         ${componentService.getComponent('govukButton', {
-          href: `${moveUrl}/person-escort-record/confirm`,
+          href: `${baseUrl}/confirm`,
           text: i18n.t('actions::provide_confirmation'),
           disabled: !['requested', 'booked'].includes(status),
         })}
@@ -117,7 +123,9 @@ function moveToMessageBannerComponent({ move, moveUrl, canAccess }) {
       if (!['requested', 'booked'].includes(status)) {
         content += `
           ${componentService.getComponent('govukWarningText', {
-            text: i18n.t('person-escort-record::left_custody'),
+            text: i18n.t(`messages::assessment.${perStatus}.uneditable`, {
+              context,
+            }),
             classes: 'govuk-!-padding-top-0 govuk-!-margin-top-5',
             iconFallbackText: 'Warning',
           })}

@@ -20,18 +20,27 @@ function getViewLocals(req) {
   const tabsUrls = getTabsUrls(move)
   const moveUrl = tabsUrls.view
   const bannerStatuses = ['cancelled']
+  const isYouthMove = [
+    'secure_training_centre',
+    'secure_childrens_home',
+  ].includes(move.from_location.location_type)
   const updateUrls = getUpdateUrls(updateSteps, move, req)
   const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const messageBanner = presenters.moveToMessageBannerComponent({
-    move,
-    moveUrl: moveUrl,
-    canAccess: req.canAccess,
-  })
   const {
     person,
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
+    youth_risk_assessment: youthRiskAssessment,
   } = profile || {}
+  const messageBanner = presenters.moveToMessageBannerComponent({
+    move,
+    moveUrl: moveUrl,
+    canAccess: req.canAccess,
+    assessmentType:
+      isYouthMove && youthRiskAssessment?.status !== 'confirmed'
+        ? 'youth_risk_assessment'
+        : 'person_escort_record',
+  })
   const personEscortRecordIsEnabled = req.canAccess('person_escort_record:view')
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
