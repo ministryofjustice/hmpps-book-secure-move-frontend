@@ -4,7 +4,7 @@ async function daily(req, res) {
   const { population, transfers } = req
   const spaces = populationToGrid({ population })
 
-  res.render('population/view/daily', {
+  res.render('population/views/daily', {
     date: req.params.date,
     spaces,
     transfers,
