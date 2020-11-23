@@ -42,7 +42,7 @@ describe('Population controllers', function () {
         const template = mockRes.render.args[0][0]
 
         expect(mockRes.render.calledOnce).to.be.true
-        expect(template).to.equal('population/view/dashboard')
+        expect(template).to.equal('population/views/dashboard')
       })
 
       describe('params', function () {

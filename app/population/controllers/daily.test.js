@@ -44,7 +44,7 @@ describe('Population controllers', function () {
         const template = mockRes.render.args[0][0]
 
         expect(mockRes.render.calledOnce).to.be.true
-        expect(template).to.equal('population/view/daily')
+        expect(template).to.equal('population/views/daily')
       })
 
       describe('render params', function () {
