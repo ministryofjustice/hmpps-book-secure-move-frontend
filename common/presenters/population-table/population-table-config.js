@@ -59,14 +59,19 @@ const populationTableDay = {
         const { free_spaces: count } =
           data?.meta?.populations?.[populationIndex] || {}
 
-        const action =
+        const link =
           count === undefined
             ? i18n.t('population::add_space')
             : i18n.t('population::spaces_with_count', { count })
 
-        const url = `/population/day/${format(date, 'yyyy-MM-dd')}/${id}`
+        const editQuicklink = count === undefined ? '/edit' : ''
 
-        return `<a href="${url}">${action}</a>`
+        const url = `/population/day/${format(
+          date,
+          'yyyy-MM-dd'
+        )}/${id}${editQuicklink}`
+
+        return `<a href="${url}">${link}</a>`
       },
       classes: isSameDay(focusDate, date)
         ? 'focus-table__td--day focus-table__td--focus'
