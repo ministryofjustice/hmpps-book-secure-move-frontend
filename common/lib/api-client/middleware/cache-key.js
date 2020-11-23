@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, pickBy } = require('lodash')
 
 const models = require('../models')
 
@@ -13,8 +13,7 @@ function cacheKeyMiddleware({ apiVersion = 2 } = {}) {
 
       if (tryCache) {
         const pathname = new URL(req.url).pathname
-
-        const searchString = new URLSearchParams(req.params).toString()
+        const searchString = new URLSearchParams(pickBy(req.params)).toString()
         const key = `cache:v${apiVersion}:${req.method}.${pathname}${
           searchString ? `?${searchString}` : ''
         }`

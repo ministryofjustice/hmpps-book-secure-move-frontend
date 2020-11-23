@@ -93,6 +93,27 @@ describe('API Client', function () {
             expect(payload).to.deep.equal(expectedPayload)
           })
         })
+
+        context('with request params', function () {
+          beforeEach(function () {
+            payload.req.params = {
+              ...payload.req.params,
+              foo: false,
+              bar: undefined,
+              page: '1',
+              per_page: '100',
+            }
+            expectedPayload = {
+              ...payload,
+              cacheKey: 'cache:v2:GET./path/to/endpoint?page=1&per_page=100',
+            }
+          })
+
+          it('should add cacheKey to payload', function () {
+            middleware().req(payload)
+            expect(payload).to.deep.equal(expectedPayload)
+          })
+        })
       })
     })
   })
