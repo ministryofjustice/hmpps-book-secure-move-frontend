@@ -151,11 +151,7 @@ const singleRequestService = {
     }
 
     const booleansAndNulls = ['rebook']
-    const fields = [
-      'rejection_reason',
-      'cancellation_reason_other_comment',
-      'rebook',
-    ]
+    const fields = ['rejection_reason', 'cancellation_reason_comment', 'rebook']
 
     const mappedData = mapValues(pick(data, fields), (value, key) => {
       if (booleansAndNulls.includes(key)) {

@@ -599,7 +599,7 @@ describe('Move controllers', function () {
             ).to.have.been.calledOnceWithExactly(mockMove.id, {
               review_decision: 'reject',
               rejection_reason: 'no_space_at_receiving_prison',
-              cancellation_reason_other_comment: 'No further comments',
+              cancellation_reason_comment: 'No further comments',
               rebook: 'false',
             })
           })

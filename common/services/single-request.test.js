@@ -627,7 +627,7 @@ describe('Single request service', function () {
           move = await singleRequestService.reject(mockId, {
             review_decision: 'reject',
             rejection_reason: 'no_space',
-            cancellation_reason_other_comment: undefined,
+            cancellation_reason_comment: undefined,
             rebook: 'true',
           })
         })
@@ -635,7 +635,7 @@ describe('Single request service', function () {
         it('should call update method with data', function () {
           expect(apiClient.post).to.be.calledOnceWithExactly({
             rejection_reason: 'no_space',
-            cancellation_reason_other_comment: undefined,
+            cancellation_reason_comment: undefined,
             rebook: true,
             timestamp: sinon.match.string,
           })
@@ -651,7 +651,7 @@ describe('Single request service', function () {
           move = await singleRequestService.reject(mockId, {
             review_decision: 'reject',
             rejection_reason: 'no_transport',
-            cancellation_reason_other_comment: 'No van available',
+            cancellation_reason_comment: 'No van available',
             rebook: 'false',
           })
         })
@@ -659,7 +659,7 @@ describe('Single request service', function () {
         it('should call update method with data', function () {
           expect(apiClient.post).to.be.calledOnceWithExactly({
             rejection_reason: 'no_transport',
-            cancellation_reason_other_comment: 'No van available',
+            cancellation_reason_comment: 'No van available',
             rebook: false,
             timestamp: sinon.match.string,
           })
