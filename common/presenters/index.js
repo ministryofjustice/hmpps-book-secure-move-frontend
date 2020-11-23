@@ -15,6 +15,7 @@ const frameworkNomisMappingsToPanel = require('./framework-nomis-mappings-to-pan
 const frameworkSectionToPanelList = require('./framework-section-to-panel-list')
 const frameworkStepToSummary = require('./framework-step-to-summary')
 const frameworkToTaskListComponent = require('./framework-to-task-list-component')
+const moveToMessageBannerComponent = require('./message-banner/move-to-message-banner-component')
 const moveToAdditionalInfoListComponent = require('./move-to-additional-info-list-component')
 const moveToCardComponent = require('./move-to-card-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
@@ -53,6 +54,7 @@ module.exports = {
   movesToCSV,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
+  moveToMessageBannerComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
   moveTypesToFilterComponent,
