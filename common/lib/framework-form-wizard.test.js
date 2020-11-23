@@ -7,7 +7,7 @@ const wizardReqStub = sinon.stub()
 const wizardStub = sinon.stub().returns(wizardReqStub)
 
 const router = proxyquire('./framework-form-wizard', {
-  'hmpo-form-wizard': wizardStub,
+  '../middleware/unique-form-wizard': wizardStub,
 })
 
 const mockFramework = {

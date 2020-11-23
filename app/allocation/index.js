@@ -1,46 +1,14 @@
 const router = require('express').Router()
-const wizard = require('hmpo-form-wizard')
 
-const FormWizardController = require('../../common/controllers/form-wizard')
 const { protectRoute } = require('../../common/middleware/permissions')
+const wizard = require('../../common/middleware/unique-form-wizard')
 const { setMove } = require('../move/middleware')
 
+const { cancelConfig, removeMoveConfig, createConfig } = require('./config')
 const { createControllers, viewAllocation } = require('./controllers')
 const { cancelFields, createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
 const { cancelSteps, removeMoveSteps, createSteps } = require('./steps')
-
-const wizardConfig = {
-  controller: FormWizardController,
-  template: 'form-wizard',
-}
-const createConfig = {
-  ...wizardConfig,
-  controller: FormWizardController,
-  name: 'create-an-allocation',
-  templatePath: 'allocation/views/create/',
-  template: '../../../form-wizard',
-  journeyName: 'create-an-allocation',
-  journeyPageTitle: 'actions::create_allocation',
-}
-const cancelConfig = {
-  ...wizardConfig,
-  controller: FormWizardController,
-  name: 'cancel-an-allocation',
-  templatePath: 'allocation/views/',
-  template: '../../../form-wizard',
-  journeyName: 'cancel-an-allocation',
-  journeyPageTitle: 'actions::cancel_allocation',
-}
-const removeMoveConfig = {
-  ...wizardConfig,
-  controller: FormWizardController,
-  name: 'remove-a-move-from-an-allocation',
-  templatePath: 'allocation/views/cancel/',
-  template: '../../../form-wizard',
-  journeyName: 'remove-a-move-from-an-allocation',
-  journeyPageTitle: 'actions::cancel_move',
-}
 
 router.param('allocationId', setAllocation)
 router.param('moveId', setMove)
@@ -60,13 +28,13 @@ router.get(
 router.use(
   '/:allocationId/:moveId/remove',
   protectRoute('allocation:cancel'),
-  wizard(removeMoveSteps, {}, removeMoveConfig)
+  wizard(removeMoveSteps, {}, removeMoveConfig, 'params.allocationId')
 )
 
 router.use(
   '/:allocationId/cancel',
   protectRoute('allocation:cancel'),
-  wizard(cancelSteps, cancelFields, cancelConfig)
+  wizard(cancelSteps, cancelFields, cancelConfig, 'params.allocationId')
 )
 
 router.get('/:allocationId', protectRoute('allocations:view'), viewAllocation)
