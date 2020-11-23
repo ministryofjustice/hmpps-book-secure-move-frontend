@@ -6,7 +6,6 @@ module.exports = {
     created_at: '',
     confirmed_at: '',
     version: '',
-    nomis_sync_status: '',
     move: {
       jsonApi: 'hasOne',
       type: 'moves',
@@ -29,7 +28,7 @@ module.exports = {
     },
     prefill_source: {
       jsonApi: 'hasOne',
-      type: 'person_escort_records',
+      type: 'youth_risk_assessments',
     },
   },
   options: {

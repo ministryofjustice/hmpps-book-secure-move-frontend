@@ -225,7 +225,7 @@ const expectNoData = ({ response }) => {
 
 describe('API client models', function () {
   beforeEach(function () {
-    sinon.stub(frameworksService, 'getPersonEscortRecord').returnsArg(0)
+    sinon.stub(frameworksService, 'getFramework').returnsArg(0)
   })
 
   forEach(models, (model, modelName) => {

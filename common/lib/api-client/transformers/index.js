@@ -1,9 +1,9 @@
-const personEscortRecordTransformer = require('./person-escort-record.transformer')
+const assessmentTransformer = require('./assessment.transformer')
 const personTransformer = require('./person.transformer')
 const transformResource = require('./transform-resource')
 
 module.exports = {
-  personEscortRecordTransformer,
+  assessmentTransformer,
   personTransformer,
   transformResource,
 }

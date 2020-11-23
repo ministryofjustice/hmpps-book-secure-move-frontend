@@ -48,6 +48,23 @@ module.exports = {
     next()
   },
 
+  setYouthRiskAssessment: (req, res, next) => {
+    const youthRiskAssessment = req.move?.profile?.youth_risk_assessment
+
+    if (youthRiskAssessment) {
+      const isEditable =
+        ['requested', 'booked'].includes(req.move?.status) &&
+        !['confirmed'].includes(youthRiskAssessment.status)
+
+      req.youthRiskAssessment = {
+        ...youthRiskAssessment,
+        isEditable,
+      }
+    }
+
+    next()
+  },
+
   setAllocation: async (req, res, next) => {
     const { allocation } = req.move || {}
 
