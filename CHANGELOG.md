@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.57.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.56.0...v2.57.0) (2020-11-24)
+
+
+### Features
+
+* **per:** Use person image in print out ([f95b07a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f95b07af1a04b1a2110be25bdc64a25085864bf1))
+
+
+### Bug Fixes
+
+* **per:** Display sections correctly in print layout ([82b07e4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/82b07e44bce0a9b1e177dc2904e0724c0b4fd589))
+
 ## [2.56.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.55.1...v2.56.0) (2020-11-23)
 
 
