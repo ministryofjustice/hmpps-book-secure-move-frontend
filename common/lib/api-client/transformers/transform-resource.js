@@ -2,10 +2,6 @@ const { cloneDeep } = require('lodash')
 
 module.exports = function transformResource(transformer) {
   return function deserializer(item, included) {
-    if (!transformer) {
-      return this.deserialize.resource.call(this, item, included)
-    }
-
     const _this = cloneDeep(this)
     const modelName = this.pluralize.singular(item.type)
 
@@ -18,6 +14,10 @@ module.exports = function transformResource(transformer) {
       item,
       included
     )
+
+    if (!transformer) {
+      return deserializedData
+    }
 
     const transformedData = transformer(deserializedData)
 
