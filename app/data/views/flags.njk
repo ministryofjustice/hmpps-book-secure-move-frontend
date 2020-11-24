@@ -1,0 +1,58 @@
+{% extends "layouts/base.njk" %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% block pageTitle %}
+  Data
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      {{ appData({
+        label: "moves with flags",
+        value: flagBreakdown.count
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      {{ appData({
+        label: "flags applied",
+        value: flagBreakdown.totalFlags
+      }) }}
+    </div>
+  </div>
+
+  {% for flag in flagBreakdown.flagCount %}
+    <h2 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-padding-top-3 app-border-top-1">
+      {{ flag.title }}
+    </h2>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        {{ appData({
+          classes: "app-data--s",
+          label: "occurrences",
+          value: flag.total
+        }) }}
+      </div>
+
+      <div class="govuk-grid-column-one-third">
+        {{ appData({
+          classes: "app-data--s",
+          label: "with comments",
+          value: flag.with_comments + " (" + flag.with_comments_perc + "%)"
+        }) }}
+      </div>
+
+      <div class="govuk-grid-column-one-third">
+        {{ appData({
+          classes: "app-data--s",
+          label: "without comments",
+          value: flag.without_comments + " (" + flag.without_comments_perc + "%)"
+        }) }}
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}

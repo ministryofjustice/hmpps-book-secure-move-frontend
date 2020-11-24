@@ -4,7 +4,9 @@ const {
   subDays,
   parseISO,
   startOfWeek,
+  startOfMonth,
   endOfWeek,
+  endOfMonth,
   isValid: isValidDate,
   isDate,
 } = require('date-fns')
@@ -12,6 +14,30 @@ const {
 const { DATE_FORMATS } = require('../../config/index')
 
 module.exports = {
+  getCurrentMonthAsRange: () => {
+    const today = new Date()
+    const startDate = format(startOfMonth(today), DATE_FORMATS.URL_PARAM)
+    const endDate = format(endOfMonth(today), DATE_FORMATS.URL_PARAM)
+
+    return [startDate, endDate]
+  },
+  getPast30DaysAsRange: () => {
+    const today = new Date()
+    const startDate = format(
+      startOfWeek(today, {
+        weekStartsOn: DATE_FORMATS.WEEK_STARTS_ON,
+      }),
+      DATE_FORMATS.URL_PARAM
+    )
+    const endDate = format(
+      endOfWeek(today, {
+        weekStartsOn: DATE_FORMATS.WEEK_STARTS_ON,
+      }),
+      DATE_FORMATS.URL_PARAM
+    )
+
+    return [startDate, endDate]
+  },
   getCurrentWeekAsRange: () => {
     const today = new Date()
     const startDate = format(
