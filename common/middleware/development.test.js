@@ -59,11 +59,7 @@ describe('Development specific middleware', function () {
 
     beforeEach(function () {
       req = {
-        session: {
-          user: {
-            permissions: [],
-          },
-        },
+        session: {},
       }
     })
 
@@ -90,8 +86,8 @@ describe('Development specific middleware', function () {
         middleware.setUserPermissions()(req, {}, nextSpy)
       })
 
-      it('should not update permissions', function () {
-        expect(req.session.user.permissions).to.deep.equal([])
+      it('should not set permissions', function () {
+        expect(req.session.user.permissions).to.be.undefined
       })
 
       it('should call next', function () {
@@ -115,6 +111,23 @@ describe('Development specific middleware', function () {
           'two',
           'three',
         ])
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when permissions exist', function () {
+      beforeEach(function () {
+        req.session.user = {
+          permissions: ['foo', 'bar'],
+        }
+        middleware.setUserPermissions('one,two,three')(req, {}, nextSpy)
+      })
+
+      it('should not update permissions', function () {
+        expect(req.session.user.permissions).to.deep.equal(['foo', 'bar'])
       })
 
       it('should call next', function () {
