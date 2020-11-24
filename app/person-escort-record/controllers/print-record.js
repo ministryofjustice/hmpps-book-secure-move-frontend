@@ -21,13 +21,15 @@ function _checkResponse({ responses = [], key, expectedValue }) {
 }
 
 function printRecord(req, res) {
-  const { framework, personEscortRecord, move } = req
+  const { personEscortRecord, move } = req
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
+  const framework = personEscortRecord?._framework
   const moveId = move?.id
   const pickupLocation = move?.from_location?.title
   const moveType = move?.move_type
   const fullname = profile?.person?.fullname
+  const imageUrl = profile?.person?.image_url
   const moveSummary = presenters.moveToSummaryListComponent(move)
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     profile?.person
@@ -110,6 +112,7 @@ function printRecord(req, res) {
     moveId,
     moveType,
     pickupLocation,
+    imageUrl,
     fullname,
     reference,
     moveSummary,
