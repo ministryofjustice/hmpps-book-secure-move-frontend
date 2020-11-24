@@ -3,8 +3,8 @@ const { cloneDeep } = require('lodash')
 const transformResource = require('./transform-resource')
 
 describe('API Client', function () {
-  describe('Models', function () {
-    describe('#transform', function () {
+  describe('Transformers', function () {
+    describe('#transformResource', function () {
       let output, _this, item, included
 
       beforeEach(function () {
@@ -18,11 +18,16 @@ describe('API Client', function () {
             singular: sinon.stub().returnsArg(0),
           },
           deserialize: {
+            cache: {
+              clear: sinon.stub(),
+              set: sinon.stub().returnsArg(1),
+            },
             resource: sinon.stub().returnsArg(0),
           },
         }
         included = []
         item = {
+          id: '12345',
           type: 'book',
           foo: 'bar',
         }
@@ -35,9 +40,22 @@ describe('API Client', function () {
 
         it('should not transform output', function () {
           expect(output).to.deep.equal({
+            id: '12345',
             type: 'book',
             foo: 'bar',
           })
+        })
+
+        it('should call original deserializer', function () {
+          expect(_this.deserialize.resource).to.be.calledOnceWithExactly(
+            item,
+            included
+          )
+        })
+
+        it('should not adjust cache', function () {
+          expect(_this.deserialize.cache.clear).not.to.be.called
+          expect(_this.deserialize.cache.set).not.to.be.called
         })
       })
 
@@ -61,6 +79,7 @@ describe('API Client', function () {
 
         it('should return transformed resource', function () {
           expect(output).to.deep.equal({
+            id: '12345',
             type: 'book',
             foo: 'bar',
             _fizz: 'buzz',
@@ -69,6 +88,7 @@ describe('API Client', function () {
 
         it('should not mutate original item', function () {
           expect(item).to.deep.equal({
+            id: '12345',
             type: 'book',
             foo: 'bar',
           })
@@ -78,6 +98,20 @@ describe('API Client', function () {
           expect(_this.deserialize.resource).to.have.been.calledWithExactly(
             item,
             included
+          )
+        })
+
+        it('should adjust devour cache', function () {
+          expect(_this.deserialize.cache.clear).to.have.been.calledWithExactly()
+          expect(_this.deserialize.cache.set).to.have.been.calledWithExactly(
+            'book',
+            '12345',
+            {
+              id: '12345',
+              type: 'book',
+              foo: 'bar',
+              _fizz: 'buzz',
+            }
           )
         })
 
