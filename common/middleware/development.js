@@ -15,8 +15,9 @@ function bypassAuth(bypass) {
 
 function setUserPermissions(permissions) {
   return (req, res, next) => {
-    if (permissions) {
-      req.session.user = req.session.user || {}
+    req.session.user = req.session.user || {}
+
+    if (permissions && !req.session.user.permissions) {
       req.session.user.permissions = permissions.split(',')
     }
 
