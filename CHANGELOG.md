@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.58.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.57.0...v2.58.0) (2020-11-24)
+
+
+### Features
+
+* **single-request:** Add rejection info to banner [P4-2414] ([4dae7a9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4dae7a914323f54b1a8b5d172a1242e6f0424738))
+
+
+### Bug Fixes
+
+* Apply transformer to duplicate resources correctly ([fe1b203](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fe1b20359d1111286df40392fa0d00df6e65f108))
+* **single-request:** Ensure additional info about rejection gets saved ([e2ccca7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e2ccca7e4c96b3335e14fd88bbdb672f542ecc90))
+
 ## [2.57.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.56.0...v2.57.0) (2020-11-24)
 
 
