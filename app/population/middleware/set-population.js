@@ -44,6 +44,9 @@ async function setPopulation(req, res, next) {
       transfersOut,
     }
 
+    req.locationId = locationId
+    req.date = date
+
     next()
   } catch (error) {
     next(error)
