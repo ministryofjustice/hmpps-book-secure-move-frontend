@@ -21,9 +21,10 @@ function _checkResponse({ responses = [], key, expectedValue }) {
 }
 
 function printRecord(req, res) {
-  const { framework, personEscortRecord, move } = req
+  const { personEscortRecord, move } = req
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
+  const framework = personEscortRecord?._framework
   const moveId = move?.id
   const pickupLocation = move?.from_location?.title
   const moveType = move?.move_type
