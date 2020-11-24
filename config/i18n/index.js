@@ -18,6 +18,7 @@ i18next.use(Backend).init({
     'dashboard',
     'default',
     'actions',
+    'date_select',
     'errors',
     'events',
     'fields',

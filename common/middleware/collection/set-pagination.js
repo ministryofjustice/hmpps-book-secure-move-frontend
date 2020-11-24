@@ -17,6 +17,7 @@ function setPagination(route) {
       todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
       nextUrl: urlHelpers.compileFromRoute(route, req, { date: nextDate }),
       prevUrl: urlHelpers.compileFromRoute(route, req, { date: prevDate }),
+      dateSelectUrl: `/date-select?referrer=${escape(req.originalUrl)}`,
     }
 
     next()

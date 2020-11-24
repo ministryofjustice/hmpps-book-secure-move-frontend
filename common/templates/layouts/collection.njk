@@ -49,7 +49,16 @@
               },
               items: [{
                 href: pagination.todayUrl,
-                text: t("actions::current", { context: period })
+                text: t("actions::current", { context: period }),
+                attributes: {
+                  'data-pagination-action': 'today'
+                }
+              },{
+                href: pagination.dateSelectUrl,
+                text: t("actions::date_select"),
+                attributes: {
+                  'data-pagination-action': 'date-select'
+                }
               }]
             }) }}
           {% endif %}
