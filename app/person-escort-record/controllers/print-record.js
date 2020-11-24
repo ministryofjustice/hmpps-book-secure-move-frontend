@@ -29,6 +29,7 @@ function printRecord(req, res) {
   const pickupLocation = move?.from_location?.title
   const moveType = move?.move_type
   const fullname = profile?.person?.fullname
+  const imageUrl = profile?.person?.image_url
   const moveSummary = presenters.moveToSummaryListComponent(move)
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     profile?.person
@@ -111,6 +112,7 @@ function printRecord(req, res) {
     moveId,
     moveType,
     pickupLocation,
+    imageUrl,
     fullname,
     reference,
     moveSummary,

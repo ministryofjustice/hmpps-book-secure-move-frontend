@@ -22,11 +22,12 @@ describe('Person Escort Record controllers', function () {
     })
 
     it('should contain correct locals', function () {
-      expect(Object.keys(params)).to.have.length(17)
+      expect(Object.keys(params)).to.have.length(18)
       expect(Object.keys(params)).to.deep.equal([
         'moveId',
         'moveType',
         'pickupLocation',
+        'imageUrl',
         'fullname',
         'reference',
         'moveSummary',
