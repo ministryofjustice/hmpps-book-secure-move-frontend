@@ -160,13 +160,16 @@ class MoveService extends BaseService {
 
   getActive({
     dateRange = [],
+    createdateRange = [],
     fromLocationId = [],
     toLocationId = [],
     supplierId,
     status,
     isAggregation = false,
+    include,
   } = {}) {
     const [startDate, endDate] = dateRange
+    const [createdStartDate, createdEndDate] = createdateRange
     let statusFilter
 
     switch (status) {
@@ -210,7 +213,7 @@ class MoveService extends BaseService {
 
     return this.getAll({
       isAggregation,
-      include: [
+      include: include || [
         'from_location',
         'important_events',
         'profile',
@@ -226,6 +229,8 @@ class MoveService extends BaseService {
         ...statusFilter,
         date_from: startDate,
         date_to: endDate,
+        created_at_from: createdStartDate,
+        created_at_to: createdEndDate,
         from_location_id: fromLocationId.join(','),
         to_location_id: toLocationId.join(','),
         supplier_id: supplierId,

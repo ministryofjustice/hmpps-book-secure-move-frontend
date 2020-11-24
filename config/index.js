@@ -66,6 +66,10 @@ module.exports = {
   IS_DEV,
   IS_PRODUCTION,
   SESSION,
+  DATAWRAPPER: {
+    API_TOKEN: process.env.DATAWRAPPER_API_TOKEN,
+    CHART_ID: process.env.DATAWRAPPER_CHART_ID,
+  },
   AUTH_EXPIRY_MARGIN: process.env.AUTH_EXPIRY_MARGIN || 5 * 60, // 5 minutes
   SERVER_HOST,
   PORT: process.env.PORT || 3000,

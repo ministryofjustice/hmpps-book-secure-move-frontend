@@ -12,6 +12,7 @@ module.exports = {
     MutationObserver: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  // parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2020,
   },

@@ -226,7 +226,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
+        defaultSrc: ["'self'", "'unsafe-inline'"],
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
@@ -250,6 +250,7 @@ app.use(
         ],
         fontSrc: ["'self'", 'fonts.googleapis.com'],
         styleSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net'],
+        frameSrc: ["'self'", 'https://datawrapper.dwcdn.net'],
       },
     },
   })
