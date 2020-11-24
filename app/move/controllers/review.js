@@ -96,6 +96,9 @@ class ReviewController extends FormWizardController {
 
     try {
       if (data.review_decision === 'reject') {
+        data.cancellation_reason_comment =
+          data.cancellation_reason_other_comment
+        delete data.cancellation_reason_other_comment
         await singleRequestService.reject(moveId, data)
       }
 

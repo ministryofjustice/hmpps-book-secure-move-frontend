@@ -1,9 +1,14 @@
 const proxyquire = require('proxyquire').noCallThru()
 
+const moveService = {
+  getByIdWithEvents: sinon.stub(),
+}
+
 const getViewLocals = sinon.stub()
 
 const controller = proxyquire('./view', {
   './view/view.locals': getViewLocals,
+  '../../../common/services/move': moveService,
 })
 
 describe('Move controllers', function () {
@@ -18,6 +23,7 @@ describe('Move controllers', function () {
 
       req = {
         foo: 'bar',
+        move: {},
       }
       res = {
         render: sinon.spy(),
@@ -25,8 +31,8 @@ describe('Move controllers', function () {
     })
 
     context('by default', function () {
-      beforeEach(function () {
-        controller(req, res)
+      beforeEach(async function () {
+        await controller(req, res)
         params = res.render.args[0][1]
       })
 
@@ -42,6 +48,31 @@ describe('Move controllers', function () {
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
         expect(getViewLocals).to.be.calledOnceWithExactly(req)
+      })
+    })
+
+    context('when move is rejected single request', function () {
+      beforeEach(async function () {
+        moveService.getByIdWithEvents.resetHistory()
+        moveService.getByIdWithEvents.resolves({
+          timeline_events: [
+            {
+              event_type: 'MoveReject',
+              details: {
+                rebook: true,
+              },
+            },
+          ],
+        })
+        req.move = {
+          status: 'cancelled',
+          cancellation_reason: 'rejected',
+        }
+        await controller(req, res)
+      })
+
+      it('should copy rebook property from MoveReject event to move', function () {
+        expect(req.move.rebook).to.be.true
       })
     })
   })
