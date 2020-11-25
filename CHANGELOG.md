@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.58.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.0...v2.58.1) (2020-11-25)
+
+
+### Bug Fixes
+
+* Ensure custom deserializer is removed before calling parent ([f3e7f7e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f3e7f7ed59ddd5e51420ef9fea467de6ad6a4965))
+
 ## [2.58.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.57.0...v2.58.0) (2020-11-24)
 
 
