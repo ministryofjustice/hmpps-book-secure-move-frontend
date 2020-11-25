@@ -21,20 +21,30 @@
     "heading": "Awaiting a person to be added",
     "content": "$t(moves::allocation_relationship) and is waiting for a person to be added."
   },
-  "person_escort_record_pending": {
-    "heading": "Start the Person Escort Record",
-    "content": "Once the Person Escort Record has been started you cannot edit the risk and health information provided below, but you can amend them when you complete the risk and health sections in the Person Escort Record."
-  },
-  "person_escort_record_incomplete": {
-    "heading": "Incomplete Person Escort Record"
-  },
-  "person_escort_record_complete": {
-    "heading": "Person Escort Record has been completed",
-    "content": "Once you are confident the information provided is correct and won’t change, provide your confirmation that this record is correct in order to print it."
-  },
-  "person_escort_record_confirmed": {
-    "heading": "Person Escort Record has been confirmed",
-    "content": "All information in this Person Escort Record was confirmed at <strong>{{time}}</strong> on <strong>{{date}}</strong>."
+  "assessment": {
+    "pending": {
+      "heading": "Start the $t({{context}})",
+      "content": "",
+      "content_person_escort_record": "Once the $t({{context}}) has been started you cannot edit the risk and health information provided below, but you can amend them when you complete the risk and health sections in the $t({{context}})."
+    },
+    "incomplete": {
+      "heading": "Incomplete $t({{context}})"
+    },
+    "not_started": {
+      "heading": "$t(messages::assessment.incomplete.heading)"
+    },
+    "in_progress": {
+      "heading": "$t(messages::assessment.incomplete.heading)"
+    },
+    "completed": {
+      "heading": "$t({{context}}) has been completed",
+      "content": "Once you are confident the information provided is correct and won’t change, provide your confirmation that this record is correct in order to print it.",
+      "uneditable": "A $t({{context}}) cannot be confirmed once the move has started."
+    },
+    "confirmed": {
+      "heading": "$t({{context}}) has been confirmed",
+      "content": "All information in this $t({{context}}) was confirmed at <strong>{{date}}</strong>."
+    }
   },
   "cancel_allocation_move": {
     "content": "$t(moves::allocation_relationship). It can only be cancelled from the allocations page by a member of the Population Management Unit (PMU)."
