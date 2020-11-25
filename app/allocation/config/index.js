@@ -1,9 +1,9 @@
 const cancelConfig = require('./cancel.config')
 const createConfig = require('./create.config')
-const removeConfig = require('./remove.config')
+const removeMoveConfig = require('./remove-move.config')
 
 module.exports = {
   cancelConfig,
   createConfig,
-  removeConfig,
+  removeMoveConfig,
 }

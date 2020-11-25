@@ -21,6 +21,12 @@ class AllocationViewPage extends Page {
       summaryPanel: Selector('#main-content h3')
         .withText('Allocation details')
         .sibling('dl'),
+      allocatedMoves: Selector('.app-card'),
+      allocatedMovesReferences: Selector('.app-card__caption'),
+      allocatedMovesRemoveLinks: Selector('a').withText(
+        'Remove from allocation'
+      ),
+      confirmationLink: count => Selector('a').withExactText(`${count} people`),
     }
   }
 

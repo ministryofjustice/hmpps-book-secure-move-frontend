@@ -1,5 +1,3 @@
-import { Selector } from 'testcafe'
-
 import { pmuUser } from './_roles'
 import { newAllocation } from './_routes'
 import { allocationJourney } from './pages/'
@@ -8,9 +6,10 @@ fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
 
   const allocation = await allocationJourney.createAllocation()
-  const confirmationLink = Selector('a').withExactText(
-    `${allocation.movesCount} people`
+  const confirmationLink = allocationJourney.allocationViewPage.nodes.confirmationLink(
+    allocation.movesCount
   )
+
   await t
     .expect(confirmationLink.exists)
     .ok('Confirmation should contain allocation link')
