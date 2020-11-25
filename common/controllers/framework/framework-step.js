@@ -1,8 +1,7 @@
-const { isEmpty, fromPairs } = require('lodash')
+const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
-const permissionsControllers = require('../../middleware/permissions')
 const personEscortRecordService = require('../../services/person-escort-record')
 const FormWizardController = require('../form-wizard')
 
@@ -13,14 +12,9 @@ class FrameworkStepController extends FormWizardController {
   }
 
   checkEditable(req, res, next) {
-    const isEditable = req.assessment?.isEditable
-    const userPermissions = req.user?.permissions
-    const canEdit = permissionsControllers.check(
-      'person_escort_record:update',
-      userPermissions
-    )
+    const { isEditable, framework } = req.assessment
 
-    if (!isEditable || !canEdit) {
+    if (!isEditable || !req.canAccess(`${snakeCase(framework.name)}:update`)) {
       return res.redirect(req.baseUrl)
     }
 
@@ -90,9 +84,11 @@ class FrameworkStepController extends FormWizardController {
   setSyncStatusBanner(req, res, next) {
     const { nomis_sync_status: syncStatus } = req.assessment
 
-    res.locals.syncFailures = syncStatus
-      .filter(type => type.status === 'failed')
-      .map(type => type.resource_type)
+    if (syncStatus) {
+      res.locals.syncFailures = syncStatus
+        .filter(type => type.status === 'failed')
+        .map(type => type.resource_type)
+    }
 
     next()
   }

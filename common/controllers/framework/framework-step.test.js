@@ -1,7 +1,6 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
-const permissionsMiddleware = require('../../../common/middleware/permissions')
 const personEscortRecordService = require('../../../common/services/person-escort-record')
 
 const Controller = require('./framework-step')
@@ -117,17 +116,17 @@ describe('Framework controllers', function () {
       let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
-        sinon.stub(permissionsMiddleware, 'check').returns(true)
         nextSpy = sinon.spy()
         mockReq = {
           assessment: {
             id: '12345',
             isEditable: true,
+            framework: {
+              name: 'person-escort-record',
+            },
           },
           baseUrl: '/base-url',
-          user: {
-            permissions: ['one', 'two'],
-          },
+          canAccess: sinon.stub().returns(true),
         }
         mockRes = {
           redirect: sinon.spy(),
@@ -166,14 +165,13 @@ describe('Framework controllers', function () {
 
       context("when user doesn't have permission", function () {
         beforeEach(function () {
-          permissionsMiddleware.check.returns(false)
+          mockReq.canAccess.returns(false)
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
 
         it('should check permissions correctly', function () {
-          expect(permissionsMiddleware.check).to.be.calledOnceWithExactly(
-            'person_escort_record:update',
-            mockReq.user.permissions
+          expect(mockReq.canAccess).to.be.calledOnceWithExactly(
+            'person_escort_record:update'
           )
         })
 
@@ -282,6 +280,21 @@ describe('Framework controllers', function () {
         mockRes = {
           locals: {},
         }
+      })
+
+      context('without nomis_sync_status', function () {
+        beforeEach(function () {
+          mockReq.assessment = {}
+          controller.setSyncStatusBanner(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not set local', function () {
+          expect(mockRes.locals.syncFailures).to.be.undefined
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
       context('without failures', function () {
