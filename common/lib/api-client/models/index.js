@@ -29,6 +29,7 @@ const region = require('./region')
 const reject = require('./reject')
 const supplier = require('./supplier')
 const timetableEntry = require('./timetable-entry')
+const youthRiskAssessment = require('./youth-risk-assessment')
 
 module.exports = {
   allocation,
@@ -62,4 +63,5 @@ module.exports = {
   reject,
   supplier,
   timetable_entry: timetableEntry,
+  youth_risk_assessment: youthRiskAssessment,
 }

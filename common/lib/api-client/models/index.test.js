@@ -191,6 +191,21 @@ const testCases = {
       statusCode: 201,
     },
   ],
+  youth_risk_assessment: [
+    {
+      method: 'find',
+      httpMock: 'get',
+      mockPath: '/1',
+      args: '1',
+      statusCode: 200,
+    },
+    {
+      method: 'create',
+      httpMock: 'post',
+      args: {},
+      statusCode: 201,
+    },
+  ],
 }
 
 const client = proxyquire('../index', {

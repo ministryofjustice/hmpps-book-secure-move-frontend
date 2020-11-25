@@ -91,6 +91,12 @@
           "type": "person_escort_records"
         }
       },
+      "youth_risk_assessment": {
+        "data": {
+          "id": "2c952ca0-f750-4ac3-ac76-fb631445f974",
+          "type": "youth_risk_assessments"
+        }
+      },
       "documents": {
         "data": []
       }
@@ -103,6 +109,14 @@
       "attributes": {
         "status": "not_started",
         "version": "1.1"
+      }
+    },
+    {
+      "id": "2c952ca0-f750-4ac3-ac76-fb631445f974",
+      "type": "youth_risk_assessments",
+      "attributes": {
+        "status": "in_progress",
+        "version": "1.5"
       }
     }
   ]

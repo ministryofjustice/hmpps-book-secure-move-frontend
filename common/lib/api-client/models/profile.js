@@ -13,6 +13,10 @@ module.exports = {
       jsonApi: 'hasOne',
       type: 'person_escort_records',
     },
+    youth_risk_assessment: {
+      jsonApi: 'hasOne',
+      type: 'youth_risk_assessments',
+    },
   },
   options: {
     defaultInclude: ['person', 'documents'],
