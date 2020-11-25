@@ -1,16 +1,2 @@
-const discharges = {
-  validate: ['required', 'numeric'],
-  component: 'govukInput',
-  label: {
-    text: 'fields::discharges.label',
-    classes: 'govuk-label--s',
-  },
-  id: 'discharges',
-  name: 'discharges',
-  classes: 'govuk-input--width-5',
-  autocomplete: 'off',
-  inputmode: 'numeric',
-  pattern: '[0-9]*',
-}
-
-module.exports = discharges
+const numeric = require('./common.numeric')
+module.exports = numeric('discharges')
