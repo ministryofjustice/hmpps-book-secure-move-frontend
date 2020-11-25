@@ -1,5 +1,3 @@
-const { cloneDeep } = require('lodash')
-
 const transformResource = require('./transform-resource')
 
 describe('API Client', function () {
@@ -19,7 +17,12 @@ describe('API Client', function () {
           },
           deserialize: {
             cache: {
-              clear: sinon.stub(),
+              _cache: [
+                {
+                  id: '12345',
+                  type: 'book',
+                },
+              ],
               set: sinon.stub().returnsArg(1),
             },
             resource: sinon.stub().returnsArg(0),
@@ -53,8 +56,12 @@ describe('API Client', function () {
           )
         })
 
-        it('should not adjust cache', function () {
-          expect(_this.deserialize.cache.clear).not.to.be.called
+        it('should not remove item from devour cache', function () {
+          expect(_this.deserialize.cache._cache).to.deep.equal([
+            { id: '12345', type: 'book' },
+          ])
+        })
+        it('should not set cache', function () {
           expect(_this.deserialize.cache.set).not.to.be.called
         })
       })
@@ -101,8 +108,11 @@ describe('API Client', function () {
           )
         })
 
-        it('should adjust devour cache', function () {
-          expect(_this.deserialize.cache.clear).to.have.been.calledWithExactly()
+        it('should remove item from devour cache', function () {
+          expect(_this.deserialize.cache._cache).to.deep.equal([])
+        })
+
+        it('should set devour cache', function () {
           expect(_this.deserialize.cache.set).to.have.been.calledWithExactly(
             'book',
             '12345',
@@ -115,11 +125,9 @@ describe('API Client', function () {
           )
         })
 
-        it.skip('should delete model deserializer', function () {
-          const _that = cloneDeep(_this)
-          delete _that.models.book.options.deserializer
-
-          expect(_this.deserialize.resource).to.have.been.calledOn(_that)
+        it('should delete model deserializer', function () {
+          const _that = _this.deserialize.resource.firstCall.thisValue
+          expect(_that.models.book.options.deserializer).to.be.undefined
         })
       })
     })

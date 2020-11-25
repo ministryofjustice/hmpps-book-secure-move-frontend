@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.58.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.1...v2.58.2) (2020-11-25)
+
+
+### Bug Fixes
+
+* Missing template in removing a move from an allocation ([5854c9e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5854c9e9918ac9183d87320474a73523d93ed8ba))
+* Prevent transformer looping ([85ba46e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/85ba46e98344910eb8da5a49becdd8f0fd3d5127))
+
 ### [2.58.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.0...v2.58.1) (2020-11-25)
 
 
