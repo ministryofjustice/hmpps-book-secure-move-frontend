@@ -95,12 +95,16 @@
 
   {% if canStartPersonEscortRecord %}
     {% set html %}
-      <p>{{ t("messages::person_escort_record_pending.content") }}</p>
+      <p>{{ t("messages::assessment.pending.content", {
+        context: "person_escort_record"
+      }) }}</p>
 
       {% if canAccess("person_escort_record:create") %}
         {{ govukButton({
           href: personEscortRecordUrl + "/new",
-          text: t("actions::start_person_escort_record")
+          text: t("actions::start_assessment", {
+            context: "person_escort_record"
+          })
         }) }}
       {% endif %}
     {% endset %}
@@ -109,7 +113,9 @@
       allowDismiss: false,
       classes: "app-message--instruction",
       title: {
-        text: t("messages::person_escort_record_pending.heading")
+        text: t("messages::assessment.pending.heading", {
+          context: "person_escort_record"
+        })
       },
       content: {
         html: html
@@ -125,7 +131,9 @@
 
           {% if personEscortRecordIsCompleted and canAccess("person_escort_record:confirm") %}
             <p>
-              {{ t("messages::person_escort_record_complete.content") }}
+              {{ t("messages::assessment." + personEscortRecord.status + ".content", {
+                context: "person_escort_record"
+              }) }}
             </p>
 
             {{ govukButton({
@@ -136,7 +144,9 @@
 
             {% if not canConfirmPersonEscortRecord %}
               {{ govukWarningText({
-                text: t("person-escort-record::left_custody"),
+                text: t("messages::assessment.completed.uneditable", {
+                  context: "person_escort_record"
+                }),
                 classes: "govuk-!-padding-top-0 govuk-!-margin-top-5",
                 iconFallbackText: "Warning"
               }) }}
@@ -150,7 +160,9 @@
       allowDismiss: false,
       classes: "app-message--instruction govuk-!-padding-right-0",
       title: {
-        text: t("messages::person_escort_record_complete.heading") if personEscortRecordIsCompleted else t("messages::person_escort_record_incomplete.heading")
+        text: t("messages::assessment." + personEscortRecord.status + ".heading", {
+          context: "person_escort_record"
+        })
       },
       content: {
         html: html
@@ -161,15 +173,17 @@
   {% if showPersonEscortRecordBanner and personEscortRecord and personEscortRecordIsConfirmed %}
     {% set html %}
       <p>
-        {{ t("messages::person_escort_record_confirmed.content", {
-          date: personEscortRecord.confirmed_at | formatDate,
-          time: personEscortRecord.confirmed_at | formatTime
+        {{ t("messages::assessment.confirmed.content", {
+          context: "person_escort_record",
+          date: personEscortRecord.confirmed_at | formatDateWithTimeAndDay
         }) | safe }}
       </p>
 
       <p>
         <a href="{{ personEscortRecordUrl + '/print' }}" class="app-icon app-icon--print">
-          {{ t("actions::print_person_escort_record") }}
+          {{ t("actions::print_assessment", {
+            context: "person_escort_record"
+          }) }}
         </a>
       </p>
     {% endset %}
@@ -178,7 +192,9 @@
       allowDismiss: false,
       classes: "app-message--instruction govuk-!-padding-right-0",
       title: {
-        text: t("messages::person_escort_record_confirmed.heading")
+        text: t("messages::assessment.confirmed.heading", {
+          context: "person_escort_record"
+        })
       },
       content: {
         html: html

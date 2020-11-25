@@ -5,7 +5,6 @@
   "heading_with_name": "Person Escort Record for",
   "section_overview": "{{section}} overview",
   "locked": "A Person Escort Record cannot be updated once it has been confirmed or once the move has started.",
-  "left_custody": "A Person Escort Record cannot be confirmed once the move has started.",
   "statuses": {
     "not_started": "Not started",
     "in_progress": "In progress",
