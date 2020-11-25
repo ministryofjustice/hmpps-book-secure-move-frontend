@@ -1,9 +1,17 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const PersonService = {}
+const personService = {}
+PersonService.addRequestContext = sinon.stub().returns(personService)
+const ProfileService = {}
+const profileService = {}
+ProfileService.addRequestContext = sinon.stub().returns(profileService)
 
 const formatISOStub = sinon.stub().returns('#timestamp')
 const mockBatchSize = 30
+
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 
 const batchRequest = proxyquire('./batch-request', {
   '../../config': {
@@ -20,7 +28,10 @@ const moveService = proxyquire('./move', {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
+  '../lib/api-client': ApiClient,
   '../lib/api-client/rest-client': restClient,
+  './person': PersonService,
+  './profile': ProfileService,
 })
 
 const mockMove = {
@@ -56,6 +67,12 @@ const mockMoves = [
 ]
 
 describe('Move Service', function () {
+  beforeEach(function () {
+    ApiClient.resetHistory()
+    PersonService.addRequestContext.resetHistory()
+    ProfileService.addRequestContext.resetHistory()
+  })
+
   describe('default include', function () {
     expect(moveService.defaultInclude).to.deep.equal([
       'allocation',
@@ -304,7 +321,7 @@ describe('Move Service', function () {
     let moves
 
     beforeEach(function () {
-      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll = sinon.stub()
     })
 
     context('when batching the request', function () {
@@ -903,7 +920,7 @@ describe('Move Service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'find').resolves(mockResponse)
+        apiClient.find = sinon.stub().resolves(mockResponse)
       })
 
       context('when called without include parameter', function () {
@@ -999,7 +1016,7 @@ describe('Move Service', function () {
     let move
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'create').resolves(mockResponse)
+      apiClient.create = sinon.stub().resolves(mockResponse)
       sinon.stub(moveService, 'format').returnsArg(0)
 
       move = await moveService.create(mockData)
@@ -1037,9 +1054,9 @@ describe('Move Service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
-        sinon.spy(apiClient, 'one')
-        sinon.spy(apiClient, 'all')
+        apiClient.post = sinon.stub().resolves(mockResponse)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.all = sinon.stub().returns(apiClient)
       })
 
       context('with correct data supplied', function () {
@@ -1081,7 +1098,7 @@ describe('Move Service', function () {
 
     context('with move ID', function () {
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves(mockResponse)
+        apiClient.update = sinon.stub().resolves(mockResponse)
         sinon.stub(moveService, 'format').returnsArg(0)
 
         move = await moveService.update(mockMove)
@@ -1169,9 +1186,9 @@ describe('Move Service', function () {
           now: currentDate,
         })
         formatISOStub.resetHistory()
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
-        sinon.spy(apiClient, 'all')
-        sinon.spy(apiClient, 'one')
+        apiClient.post = sinon.stub().resolves(mockResponse)
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
 
         await moveService.redirect(mockRedirect)
       })

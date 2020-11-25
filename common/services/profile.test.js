@@ -1,11 +1,13 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 
 const unformatStub = sinon.stub()
 
 const profileService = proxyquire('./profile', {
   './profile/profile.unformat': unformatStub,
+  '../lib/api-client': ApiClient,
 })
 describe('Profile Service', function () {
   describe('#create()', function () {
@@ -28,9 +30,9 @@ describe('Profile Service', function () {
 
     context('with person ID', function () {
       beforeEach(async function () {
-        sinon.spy(apiClient, 'one')
-        sinon.spy(apiClient, 'all')
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.post = sinon.stub().resolves(mockResponse)
 
         await profileService.create('#personId', profileData)
       })
@@ -67,8 +69,8 @@ describe('Profile Service', function () {
 
     context('with person ID', function () {
       beforeEach(async function () {
-        sinon.spy(apiClient, 'one')
-        sinon.stub(apiClient, 'patch').resolves(mockResponse)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.patch = sinon.stub().resolves(mockResponse)
 
         await profileService.update(profileData)
       })

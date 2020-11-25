@@ -1,11 +1,13 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 
 const restClient = sinon.stub()
 
 const locationsFreeSpacesService = proxyquire('./locations-free-spaces', {
   '../lib/api-client/rest-client': restClient,
+  '../lib/api-client': ApiClient,
 })
 
 const mockLocations = [
@@ -49,7 +51,7 @@ describe('Locations Free Spaces Service', function () {
     }
 
     beforeEach(function () {
-      sinon.stub(apiClient, 'findAll')
+      apiClient.findAll = sinon.stub()
     })
 
     context('with only one page', function () {

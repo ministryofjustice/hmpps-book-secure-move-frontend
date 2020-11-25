@@ -1,7 +1,15 @@
-const apiClient = require('../lib/api-client')()
+const proxyquire = require('proxyquire')
 
-const moveService = require('./move')
-const singleRequestService = require('./single-request')
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
+const moveService = proxyquire('./move', {
+  '../lib/api-client': ApiClient,
+})
+const singleRequestService = proxyquire('./single-request', {
+  '../lib/api-client': ApiClient,
+  './move': moveService,
+})
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -555,7 +563,7 @@ describe('Single request service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves(mockResponse)
+        apiClient.update = sinon.stub().resolves(mockResponse)
       })
 
       context('without data args', function () {
@@ -617,9 +625,9 @@ describe('Single request service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'all').returns(apiClient)
-        sinon.stub(apiClient, 'one').returns(apiClient)
-        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
+        apiClient.post = sinon.stub().resolves(mockResponse)
       })
 
       context('without comment', function () {

@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(_req => apiClient)
 
 const mockFrameworksVersion = '2.5.3'
 const youthRiskAssessmentService = proxyquire('./youth-risk-assessment', {
@@ -9,6 +10,7 @@ const youthRiskAssessmentService = proxyquire('./youth-risk-assessment', {
       CURRENT_VERSION: mockFrameworksVersion,
     },
   },
+  '../lib/api-client': ApiClient,
 })
 
 const mockRecord = {
@@ -36,7 +38,7 @@ describe('Services', function () {
       let response
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'create').resolves(mockResponse)
+        apiClient.create = sinon.stub().resolves(mockResponse)
 
         response = await youthRiskAssessmentService.create(mockMoveId)
       })
@@ -63,7 +65,7 @@ describe('Services', function () {
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves({
+        apiClient.update = sinon.stub().resolves({
           data: mockRecord,
         })
       })
@@ -102,7 +104,7 @@ describe('Services', function () {
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'find').resolves({
+        apiClient.find = sinon.stub().resolves({
           data: mockRecord,
         })
       })
@@ -139,11 +141,11 @@ describe('Services', function () {
       const mockResponses = [{ id: '1' }, { id: '2' }]
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'patch').resolves({
+        apiClient.patch = sinon.stub().resolves({
           data: [],
         })
-        sinon.spy(apiClient, 'all')
-        sinon.spy(apiClient, 'one')
+        apiClient.all = sinon.stub().returns(apiClient)
+        apiClient.one = sinon.stub().returns(apiClient)
       })
 
       context('without ID', function () {

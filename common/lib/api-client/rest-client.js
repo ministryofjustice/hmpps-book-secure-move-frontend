@@ -9,7 +9,7 @@ const getRequestHeaders = require('./request-headers')
 
 const restClient = async (url, args, options = {}) => {
   const authorizationHeader = await auth.getAuthorizationHeader()
-  const requestHeaders = getRequestHeaders(options.format)
+  const requestHeaders = getRequestHeaders({ ...options })
   const headers = {
     ...authorizationHeader,
     ...requestHeaders,

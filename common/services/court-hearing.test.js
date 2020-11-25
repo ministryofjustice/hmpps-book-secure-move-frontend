@@ -1,6 +1,11 @@
-const apiClient = require('../lib/api-client')()
+const proxyquire = require('proxyquire')
 
-const courtHearingService = require('./court-hearing')
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
+
+const courtHearingService = proxyquire('./court-hearing', {
+  '../lib/api-client': ApiClient,
+})
 
 const mockCourtHearing = {
   start_time: '2020-10-20T13:00:00+00:00',
@@ -96,7 +101,7 @@ describe('Court Hearing Service', function () {
     let courtHearing
 
     beforeEach(async function () {
-      sinon.stub(apiClient, 'create').resolves(mockResponse)
+      apiClient.create = sinon.stub().resolves(mockResponse)
     })
 
     context('by default', function () {

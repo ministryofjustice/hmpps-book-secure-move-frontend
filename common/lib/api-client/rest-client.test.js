@@ -41,7 +41,7 @@ describe('API Client', async function () {
       })
 
       it('should get the default client headers', function () {
-        expect(getRequestHeadersStub).to.be.calledOnceWithExactly(undefined)
+        expect(getRequestHeadersStub).to.be.calledOnceWithExactly({})
       })
 
       it('should make the expected request', function () {
@@ -125,9 +125,9 @@ describe('API Client', async function () {
       })
 
       it('should pass the expected format to the method that returns the default client headers', function () {
-        expect(getRequestHeadersStub).to.be.calledOnceWithExactly(
-          'application/foo'
-        )
+        expect(getRequestHeadersStub).to.be.calledOnceWithExactly({
+          format: 'application/foo',
+        })
       })
     })
 

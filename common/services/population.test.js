@@ -1,11 +1,13 @@
 const proxyquire = require('proxyquire')
 
-const apiClient = require('../lib/api-client')()
+const apiClient = {}
+const ApiClient = sinon.stub().callsFake(req => apiClient)
 
 const restClient = sinon.stub()
 
 const populationService = proxyquire('./population', {
   '../lib/api-client/rest-client': restClient,
+  '../lib/api-client': ApiClient,
 })
 
 const mockPopulations = [
@@ -35,7 +37,7 @@ describe('Population Service', function () {
         let location
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
+          apiClient.find = sinon.stub().resolves(mockResponse)
 
           location = await populationService.getById(mockId)
         })
@@ -60,7 +62,7 @@ describe('Population Service', function () {
         }
 
         beforeEach(async function () {
-          sinon.stub(apiClient, 'find').resolves(mockResponse)
+          apiClient.find = sinon.stub().resolves(mockResponse)
 
           await populationService.getById(mockId, {
             include: ['foo', 'bar'],

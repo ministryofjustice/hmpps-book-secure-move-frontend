@@ -16,17 +16,13 @@ const {
 } = require('./middleware')
 const models = require('./models')
 
-let instance
-
-module.exports = function () {
-  if (instance) {
-    return instance
-  }
-
-  instance = new JsonApi({
+module.exports = function (req) {
+  const instance = new JsonApi({
     apiUrl: API.BASE_URL,
     logger: false,
   })
+
+  instance._originalReq = req
 
   instance.replaceMiddleware('errors', errors)
   instance.replaceMiddleware('POST', post(FILE_UPLOADS.MAX_FILE_SIZE))
