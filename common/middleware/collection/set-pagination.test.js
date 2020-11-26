@@ -1,6 +1,12 @@
+const proxyquire = require('proxyquire')
+
 const urlHelpers = require('../../helpers/url')
 
-const middleware = require('./set-pagination')
+const middleware = proxyquire('./set-pagination', {
+  '../../../app/date-select/constants': {
+    MOUNTPATH: '/datejumper',
+  },
+})
 
 describe('Moves middleware', function () {
   describe('#setPagination()', function () {
@@ -21,6 +27,7 @@ describe('Moves middleware', function () {
         params: {
           date: mockDate,
         },
+        originalUrl: '/foo?bar=baz',
       }
       nextSpy = sinon.spy()
     })
@@ -65,6 +72,11 @@ describe('Moves middleware', function () {
             {
               date: '2019-10-09',
             }
+          )
+        })
+        it('should set date select link', function () {
+          expect(req.pagination.dateSelectUrl).to.equal(
+            '/datejumper?referrer=/foo%3Fbar%3Dbaz'
           )
         })
         it('should call next', function () {

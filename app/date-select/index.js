@@ -1,11 +1,15 @@
 const router = require('express').Router()
 
-const { applyDateSelect, renderDateSelectInputs } = require('./controllers')
+const wizard = require('../../common/middleware/unique-form-wizard')
 
-router.post('/', applyDateSelect, renderDateSelectInputs)
-router.get('/', renderDateSelectInputs)
+const config = require('./config')
+const { MOUNTPATH } = require('./constants')
+const fields = require('./fields')
+const steps = require('./steps')
+
+router.use('/', wizard(steps, fields, config))
 
 module.exports = {
   router,
-  mountpath: '/date-select',
+  mountpath: MOUNTPATH,
 }

@@ -4,7 +4,8 @@
     "label_with_error": "Date"
   },
   "date_select": {
-    "label": "Enter date you want to view"
+    "label": "Date you want to view",
+    "label_with_error": "date you want to view"
   },
   "filter": {
     "police_national_computer": {

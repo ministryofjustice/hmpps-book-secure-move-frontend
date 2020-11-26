@@ -1,5 +1,6 @@
 const { format } = require('date-fns')
 
+const DATESELECT = require('../../../app/date-select/constants')
 const { DATE_FORMATS } = require('../../../config')
 const dateHelpers = require('../../helpers/date')
 const urlHelpers = require('../../helpers/url')
@@ -17,7 +18,9 @@ function setPagination(route) {
       todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
       nextUrl: urlHelpers.compileFromRoute(route, req, { date: nextDate }),
       prevUrl: urlHelpers.compileFromRoute(route, req, { date: prevDate }),
-      dateSelectUrl: `/date-select?referrer=${escape(req.originalUrl)}`,
+      dateSelectUrl: `${DATESELECT.MOUNTPATH}?referrer=${escape(
+        req.originalUrl
+      )}`,
     }
 
     next()
