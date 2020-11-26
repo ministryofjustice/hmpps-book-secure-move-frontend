@@ -272,11 +272,7 @@ describe('Form wizard', function () {
     let errors, reqMock
 
     beforeEach(function () {
-      sinon
-        .stub(fieldHelpers, 'getFieldErrorMessage')
-        .callsFake(({ key, type }) => {
-          return `${key}.${type}`
-        })
+      sinon.stub(fieldHelpers, 'addErrorListToErrors')
       sinon.stub(FormController.prototype, 'getErrors')
       reqMock = {
         form: {
@@ -297,12 +293,22 @@ describe('Form wizard', function () {
 
     context('when parent returns empty errors object', function () {
       beforeEach(function () {
+        fieldHelpers.addErrorListToErrors.returns({ errorList: [] })
         FormController.prototype.getErrors.returns({})
         errors = controller.getErrors(reqMock, {})
       })
 
-      it('should set an empty error list property', function () {
-        expect(errors.errorList.length).to.equal(0)
+      it('should add the summary error list to the errors', function () {
+        expect(fieldHelpers.addErrorListToErrors).to.be.calledOnceWithExactly(
+          {},
+          reqMock.form.options.fields
+        )
+      })
+
+      it('should return the transformed errors object', function () {
+        expect(errors).to.deep.equal({
+          errorList: [],
+        })
       })
     })
 
@@ -321,51 +327,25 @@ describe('Form wizard', function () {
       }
 
       beforeEach(function () {
+        fieldHelpers.addErrorListToErrors.returns({
+          ...mockErrors,
+          errorList: ['a', 'b'],
+        })
         FormController.prototype.getErrors.returns(mockErrors)
         errors = controller.getErrors(reqMock, {})
       })
 
-      it('should contain correct number of errors', function () {
-        expect(errors.errorList.length).to.equal(2)
+      it('should add the summary error list to the errors', function () {
+        expect(fieldHelpers.addErrorListToErrors).to.be.calledOnceWithExactly(
+          mockErrors,
+          reqMock.form.options.fields
+        )
       })
 
-      it('should get error messages', function () {
-        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly({
-          ...reqMock.form.options.fields.fieldOne,
-          ...mockErrors.fieldOne,
-        })
-        expect(fieldHelpers.getFieldErrorMessage).to.be.calledWithExactly({
-          ...reqMock.form.options.fields.fieldTwo,
-          ...mockErrors.fieldTwo,
-        })
-      })
-
-      it('should get error messages correct number of times', function () {
-        expect(fieldHelpers.getFieldErrorMessage.callCount).to.equal(2)
-      })
-
-      it('should transform and append messages property', function () {
+      it('should return the transformed errors object', function () {
         expect(errors).to.deep.equal({
-          fieldOne: {
-            key: 'fieldOne',
-            type: 'required',
-            url: '/step-url',
-          },
-          fieldTwo: {
-            key: 'fieldTwo',
-            type: 'before',
-            url: '/step-url',
-          },
-          errorList: [
-            {
-              href: `#${reqMock.form.options.fields.fieldOne.id}`,
-              html: `${mockErrors.fieldOne.key}.${mockErrors.fieldOne.type}`,
-            },
-            {
-              href: `#${reqMock.form.options.fields.fieldTwo.id}`,
-              html: `${mockErrors.fieldTwo.key}.${mockErrors.fieldTwo.type}`,
-            },
-          ],
+          ...mockErrors,
+          errorList: ['a', 'b'],
         })
       })
     })

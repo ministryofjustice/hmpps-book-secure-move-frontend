@@ -13,12 +13,14 @@ const explicitAssessmentAnswer = require('../../../app/move/fields/common.explic
 const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
+const addErrorListToErrors = require('./add-errorlist-to-errors')
 const flattenConditionalFields = require('./flatten-conditional-fields')
 const getFieldErrorMessage = require('./get-field-error-message')
 const isAllowedDependent = require('./is-allowed-dependent')
 const reduceAddAnotherFields = require('./reduce-add-another-fields')
 const reduceDependentFields = require('./reduce-dependent-fields')
 const renderAddAnotherFields = require('./render-add-another-fields')
+const setErrors = require('./set-errors')
 const setFieldError = require('./set-field-error')
 
 function mapReferenceDataToOption({
@@ -258,6 +260,8 @@ module.exports = {
   renderConditionalFields,
   getFieldErrorMessage,
   isAllowedDependent,
+  setErrors,
+  addErrorListToErrors,
   setFieldValue,
   setFieldError,
   translateField,
