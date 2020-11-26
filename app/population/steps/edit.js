@@ -22,11 +22,5 @@ module.exports = {
       'out_of_area_courts',
       'discharges',
     ],
-    //   next: 'save',
-    // },
-    // '/save': {
-    //   checkJourney: false,
-    //   skip: true,
-    //   controller: SaveController,
   },
 }
