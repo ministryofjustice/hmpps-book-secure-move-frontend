@@ -1,7 +1,7 @@
 const { omit } = require('lodash')
 
-const FormWizardController = require('../../../../common/controllers/form-wizard')
-const populationService = require('../../../../common/services/population')
+const FormWizardController = require('../../../common/controllers/form-wizard')
+const populationService = require('../../../common/services/population')
 
 class DetailsController extends FormWizardController {
   setInitialValues(req, res, next) {

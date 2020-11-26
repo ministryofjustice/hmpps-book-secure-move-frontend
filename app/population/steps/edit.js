@@ -1,4 +1,4 @@
-const { DetailsController } = require('../controllers/edit')
+const EditController = require('../controllers/edit')
 
 module.exports = {
   '/': {
@@ -10,7 +10,7 @@ module.exports = {
     next: 'details',
   },
   '/details': {
-    controller: DetailsController,
+    controller: EditController,
     pageTitle: 'population::free_space_details.page_title',
     fields: [
       'operational_capacity',
