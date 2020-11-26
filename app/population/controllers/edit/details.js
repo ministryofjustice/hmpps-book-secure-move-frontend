@@ -1,10 +1,18 @@
 const { omit } = require('lodash')
 
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 const populationService = require('../../../../common/services/population')
 
-const EditPopulationBaseController = require('./base')
+class DetailsController extends FormWizardController {
+  setInitialValues(req, res, next) {
+    if (req.journeyModel?.get('history').length === 1 && req.population) {
+      const values = omit(req.population, ['moves_from', 'moves_to'])
+      req.sessionModel.set(values)
+    }
 
-class DetailsController extends EditPopulationBaseController {
+    next()
+  }
+
   async successHandler(req, res, next) {
     const { date, locationId } = req
 
