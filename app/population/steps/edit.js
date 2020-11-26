@@ -1,4 +1,4 @@
-const { DetailsController, SaveController } = require('../controllers/edit')
+const { DetailsController } = require('../controllers/edit')
 
 module.exports = {
   '/': {
@@ -22,11 +22,11 @@ module.exports = {
       'out_of_area_courts',
       'discharges',
     ],
-    next: 'save',
-  },
-  '/save': {
-    checkJourney: false,
-    skip: true,
-    controller: SaveController,
+    //   next: 'save',
+    // },
+    // '/save': {
+    //   checkJourney: false,
+    //   skip: true,
+    //   controller: SaveController,
   },
 }
