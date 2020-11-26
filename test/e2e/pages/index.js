@@ -3,6 +3,7 @@ import CancelMovePage from './cancel-move'
 import CreateMovePage from './create-move'
 import DashboardPage from './dashboard'
 import MoveDetailPage from './move-detail'
+import MoveTimelinePage from './move-timeline'
 import MovesDashboardPage from './moves-dashboard'
 import Page from './page'
 import UpdateMovePage from './update-move'
@@ -10,6 +11,7 @@ import UpdateMovePage from './update-move'
 const page = new Page()
 const allocationJourney = new AllocationJourney()
 const moveDetailPage = new MoveDetailPage()
+const moveTimelinePage = new MoveTimelinePage()
 const movesDashboardPage = new MovesDashboardPage()
 const createMovePage = new CreateMovePage()
 const cancelMovePage = new CancelMovePage()
@@ -19,6 +21,7 @@ export {
   page,
   allocationJourney,
   moveDetailPage,
+  moveTimelinePage,
   movesDashboardPage,
   createMovePage,
   cancelMovePage,

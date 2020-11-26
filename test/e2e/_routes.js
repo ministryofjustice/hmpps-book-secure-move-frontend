@@ -19,6 +19,7 @@ export const incomingMoves = `${E2E.BASE_URL}/moves/incoming`
 export const outgoingMoves = `${E2E.BASE_URL}/moves/outgoing`
 export const newMove = `${E2E.BASE_URL}/move/new`
 export const getMove = id => `${E2E.BASE_URL}/move/${id}`
+export const getTimeline = id => `${E2E.BASE_URL}/move/${id}/timeline`
 export const getUpdateMove = (id, page) =>
   `${E2E.BASE_URL}/move/${id}/edit/${getUpdatePageStub(page)}`
 export const newAllocation = `${E2E.BASE_URL}/allocation/new`
