@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const dailyRouter = require('express').Router({ mergeParams: true })
-const wizard = require('hmpo-form-wizard')
 
 const FormWizardController = require('../../common/controllers/form-wizard')
 const {
@@ -8,6 +7,7 @@ const {
   setDateRange,
   setPagination,
 } = require('../../common/middleware/collection')
+const wizard = require('../../common/middleware/unique-form-wizard')
 
 const { BASE_PATH, MOUNTPATH, DAILY_PATH } = require('./constants')
 const { dashboard, daily } = require('./controllers')
