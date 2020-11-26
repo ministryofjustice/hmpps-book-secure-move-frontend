@@ -64,39 +64,41 @@ const getFlagClasses = eventTypePrefix => {
 const eventsToTimelineComponent = (move = {}) => {
   const { timeline_events: moveEvents } = move
 
-  const items = addTriggeredEvents(moveEvents).map(moveEvent => {
-    const event = setEventDetails(moveEvent, move)
+  const items = addTriggeredEvents(moveEvents)
+    .map(moveEvent => {
+      const event = setEventDetails(moveEvent, move)
 
-    const { details, event_type: eventType } = event
-    const eventTypePrefix = `events::${eventType}`
+      const { details, event_type: eventType } = event
+      const eventTypePrefix = `events::${eventType}`
 
-    const labelClasses = getLabelClasses(eventTypePrefix)
+      const labelClasses = getLabelClasses(eventTypePrefix)
 
-    const flagClasses = getFlagClasses(eventTypePrefix)
+      const flagClasses = getFlagClasses(eventTypePrefix)
 
-    const heading = i18n.t(`${eventTypePrefix}.heading`, details)
-    const description = i18n
-      .t(`${eventTypePrefix}.description`, details)
-      .replace(/^<br>/, '')
-    // Some strings that get added together are prefixed with a <br>.
-    // This enables them to be used as the first item or where a previous string doesn't get output
-    // and not insert additional space without having to make the <br> conditional
+      const heading = i18n.t(`${eventTypePrefix}.heading`, details)
+      const description = i18n
+        .t(`${eventTypePrefix}.description`, details)
+        .replace(/^<br>/, '')
+      // Some strings that get added together are prefixed with a <br>.
+      // This enables them to be used as the first item or where a previous string doesn't get output
+      // and not insert additional space without having to make the <br> conditional
 
-    // TODO: when we have user info for event, update the following with something like
-    // const byline = i18n.t('events::byline', details)
-    const byline = ''
+      // TODO: when we have user info for event, update the following with something like
+      // const byline = i18n.t('events::byline', details)
+      const byline = ''
 
-    const timestamp = event.occurred_at
+      const timestamp = event.occurred_at
 
-    return getItem({
-      ...flagClasses,
-      labelClasses,
-      heading,
-      description,
-      timestamp,
-      byline,
+      return getItem({
+        ...flagClasses,
+        labelClasses,
+        heading,
+        description,
+        timestamp,
+        byline,
+      })
     })
-  })
+    .reverse()
   return { items }
 }
 
