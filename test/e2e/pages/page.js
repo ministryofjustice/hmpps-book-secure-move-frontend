@@ -26,6 +26,7 @@ export default class Page {
         'ul[data-location-type="locations"] li a'
       ).withAttribute('href', /\/locations\/.+/),
       locationValue: Selector('.moj-organisation-nav__title'),
+      dateSelectInput: '[name="date_select"]',
     }
     this.getCurrentUrl = ClientFunction(() => window.location.href)
   }
