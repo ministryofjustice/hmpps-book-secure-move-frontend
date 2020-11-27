@@ -10,6 +10,5 @@ module.exports = {
   },
   options: {
     collectionPath: 'timetable',
-    defaultInclude: ['location'],
   },
 }
