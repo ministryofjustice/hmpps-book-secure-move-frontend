@@ -27,7 +27,9 @@ class DetailsController extends FormWizardController {
           updated_by: 'user.fullname',
         })
       } else {
-        await populationService.create(req.locationId, req.date, {
+        await populationService.create({
+          location: req.locationId,
+          date: req.date,
           ...data,
           updated_by: 'user.fullname',
         })

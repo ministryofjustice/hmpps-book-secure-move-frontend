@@ -18,6 +18,53 @@ const mockPopulations = [
 
 describe('Population Service', function () {
   context('', function () {
+    describe('#format', function () {
+      const mockLocationId = 'FACEFEED'
+      let formatted
+
+      context('when relationship fields are a string', function () {
+        beforeEach(function () {
+          formatted = populationService.format({
+            date: '2010-10-10',
+            location: mockLocationId,
+          })
+        })
+
+        it('should format relationships as relationship object', function () {
+          expect(formatted.location).to.deep.equal({
+            id: mockLocationId,
+          })
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.date).to.equal('2010-10-10')
+        })
+      })
+
+      context('when relationship fields are not a string', function () {
+        beforeEach(function () {
+          formatted = populationService.format({
+            date: '2010-10-10',
+            location: {
+              id: mockLocationId,
+              type: 'locations',
+            },
+          })
+        })
+
+        it('should return objects as original value', function () {
+          expect(formatted.location).to.deep.equal({
+            id: mockLocationId,
+            type: 'locations',
+          })
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.date).to.equal('2010-10-10')
+        })
+      })
+    })
+
     describe('#getById()', function () {
       context('without ID', function () {
         it('should reject with error', function () {

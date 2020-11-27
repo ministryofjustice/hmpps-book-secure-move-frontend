@@ -94,14 +94,12 @@ describe('Population controllers', function () {
           await controllerInstance.successHandler(req, res, next)
 
           expect(mockPopulationService.create).to.have.been.called
-          expect(mockPopulationService.create).to.have.been.calledWith(
-            req.locationId,
-            req.date,
-            {
-              updated_by: username,
-              ...sessionData,
-            }
-          )
+          expect(mockPopulationService.create).to.have.been.calledWith({
+            location: req.locationId,
+            date: req.date,
+            updated_by: username,
+            ...sessionData,
+          })
         })
 
         it('should reset the journey model', async function () {
