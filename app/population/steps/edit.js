@@ -22,5 +22,6 @@ module.exports = {
       'out_of_area_courts',
       'discharges',
     ],
+    buttonText: 'actions::confirm_and_save',
   },
 }
