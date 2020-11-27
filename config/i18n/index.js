@@ -14,6 +14,7 @@ i18next.use(Backend).init({
     'allocation',
     'assessment',
     'collections',
+    'components',
     'dashboard',
     'default',
     'actions',

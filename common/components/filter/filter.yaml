@@ -29,11 +29,14 @@ params:
             type: string
             required: false
             description: the css class applied to the container
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the component.
 
 examples:
   - name: default
     data:
-      classes: 'app-filter-stacked'
       items:
         - active: false
           href: /moves/proposed
@@ -47,15 +50,23 @@ examples:
           href: /moves/rejected
           label: Moves rejected
           value: 5
-  - name: withClasses
+  - name: vertical items
     data:
-      classes: 'app-filter-stacked'
+      classes: 'app-filter--stacked'
       items:
-        - active: true
+        - active: false
           href: /moves/proposed
           label: Moves proposed
           value: 4
-  - name: withoutValue
+        - active: true
+          href: /moves/requested
+          label: Moves requested
+          value: 3
+        - active: false
+          href: /moves/rejected
+          label: Moves rejected
+          value: 5
+  - name: without values
     data:
       items:
         - active: false
@@ -64,7 +75,7 @@ examples:
         - active: true
           href: /moves/requested
           label: Moves requested
-  - name: withoutLabel
+  - name: without labels
     data:
       items:
         - active: false

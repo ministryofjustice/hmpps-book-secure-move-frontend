@@ -1,0 +1,13 @@
+{% extends "layouts/base.njk" %}
+
+{% set htmlClasses = "govkuk-template--white" %}
+
+{% block header %}{% endblock %}
+{% block beforeContent %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block main %}
+  <div class="govuk-!-padding-5">
+    {{ callAsMacro(component.macroName)(example.data) }}
+  </div>
+{% endblock %}

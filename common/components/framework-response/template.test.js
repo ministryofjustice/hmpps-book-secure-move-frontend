@@ -209,7 +209,7 @@ describe('Framework Response component', function () {
   })
 
   context('unanswered', function () {
-    const example = examples.unanswered
+    const example = examples['unanswered question']
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -271,7 +271,7 @@ describe('Framework Response component', function () {
   })
 
   context('with prefilled answer', function () {
-    const example = examples.prefilled
+    const example = examples['prefilled question']
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -302,7 +302,7 @@ describe('Framework Response component', function () {
   })
 
   context('without value', function () {
-    const example = examples.unanswered
+    const example = examples['unanswered question']
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -336,7 +336,7 @@ describe('Framework Response component', function () {
   })
 
   context('without valueType', function () {
-    const example = examples.unanswered
+    const example = examples['unanswered question']
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)

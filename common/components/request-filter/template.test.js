@@ -11,10 +11,13 @@ describe('Request filters component', function () {
     sinon.stub(i18n, 't').returnsArg(0)
   })
 
-  context('by default', function () {
+  context('with filters', function () {
     let $component
     beforeEach(function () {
-      const $ = renderComponentHtmlToCheerio('request-filter', examples.default)
+      const $ = renderComponentHtmlToCheerio(
+        'request-filter',
+        examples['with filters']
+      )
       $component = $('.moj-filter__selected')
     })
 
@@ -164,14 +167,14 @@ describe('Request filters component', function () {
     })
   })
 
-  context('with no categories', function () {
+  context('without filters', function () {
     let $component
     let $editLink
 
     beforeEach(function () {
       const $ = renderComponentHtmlToCheerio(
         'request-filter',
-        examples['no categories']
+        examples['without filters']
       )
       $component = $('.moj-filter__none-selected')
       $editLink = $component.find('.app-filter-requests__edit-filters')
@@ -206,7 +209,7 @@ describe('Request filters component', function () {
     let $component
 
     beforeEach(function () {
-      const $ = renderComponentHtmlToCheerio('request-filter', examples.skipped)
+      const $ = renderComponentHtmlToCheerio('request-filter', {})
       $component = $('body')
     })
 

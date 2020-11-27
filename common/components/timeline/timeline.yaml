@@ -107,6 +107,7 @@ params:
             type: string
             required: false
             description: Classes to add to the item header container element.
+
 examples:
   - name: default
     data:
@@ -123,190 +124,106 @@ examples:
           datetime:
             timestamp: "2019-06-14T15:01:00.000Z"
             type: datetime
-  - name: container classes
-    data:
-      classes: container-class
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: container attributes
-    data:
-      attributes:
-        data-attr: container-value
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: heading level
-    data:
-      headingLevel: 4
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: description with text params
+  - name: comprehensive example
     data:
       items:
         - label:
-            text: Something happened
-          text: <b>Explanation</b> of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: description with html params
-    data:
-      items:
-        - label:
-            text: Something happened
-          html: <b>Explanation</b> of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: item classes
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          classes: item-class
-  - name: item attributes
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          attributes:
-            data-attr: item-value
-  - name: label with text params
-    data:
-      items:
-        - label:
-            text: <b>Something</b> happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: label with html params
-    data:
-      items:
-        - label:
-            html: <b>Something</b> happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: label classes
-    data:
-      items:
-        - label:
-            text: Something happened
-            classes: label-class
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-  - name: date using shortdatetime type
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: shortdatetime
-  - name: date using date type
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: date
-  - name: date using shortdate type
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: shortdate
-  - name: date using time type
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            type: time
-  - name: date using format
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
-          datetime:
-            timestamp: "2019-06-14T14:01:00.000Z"
-            format: "YYYY-MM-DD / DD dddd MMMM HH:mm"
-  - name: byline with text params
-    data:
-      items:
-        - label:
-            text: Something happened
-          text: Explanation of what happened
+            html: Move requested
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
             type: datetime
           byline:
-            text: <b>Agent</b> Smith
-  - name: byline with html params
+            html: User one
+        - label:
+            text: Move requested
+            classes: moj-badge
+          text: Move was requested with Supplier One
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+        - label:
+            text: Move accepted
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+          byline:
+            html: Supplier one
+        - label:
+            text: Move booked
+            classes: moj-badge
+          text: Move was accepted by Supplier One
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+        - label:
+            text: Journey was started
+          text: This journey started
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+          byline:
+            html: Supplier one
+        - label:
+            text: Something serious happened
+          text: Something serious happened on this journey
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+          container:
+            classes: app-panel
+          header:
+            classes: app-tag app-tag--destructive
+          byline:
+            html: Supplier one
+        - label:
+            text: Medical incident
+          text: A medical incident occurred
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+          container:
+            classes: app-panel
+          header:
+            classes: app-tag
+  - name: with byline
     data:
       items:
         - label:
-            text: Something happened
-          text: Explanation of what happened
+            html: Move was created
+          html: This move was created as this point in time
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
             type: datetime
           byline:
             html: <b>Agent</b> Smith
-  - name: item container classes
+        - label:
+            text: Move was booked
+          text: This move was booked at this point in time
+          datetime:
+            timestamp: "2019-06-14T15:01:00.000Z"
+            type: datetime
+          byline:
+            html: Agent <b>Jones</b>
+  - name: with different date formats
     data:
       items:
         - label:
-            text: Something happened
-          text: Explanation of what happened
+            text: Short format
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          container:
-            classes: item-container-class
-  - name: item header classes
-    data:
-      items:
+            type: shortdatetime
         - label:
-            text: Something happened
-          text: Explanation of what happened
+            text: Date only
           datetime:
             timestamp: "2019-06-14T14:01:00.000Z"
-            type: datetime
-          header:
-            classes: item-header-class
+            type: date
+        - label:
+            text: Time only
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            type: time
+        - label:
+            text: Custom format
+          datetime:
+            timestamp: "2019-06-14T14:01:00.000Z"
+            format: "YYYY-MM-DD / DD dddd MMMM HH:mm"

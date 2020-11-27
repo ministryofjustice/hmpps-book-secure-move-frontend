@@ -5,6 +5,17 @@ const {
 
 const examples = getExamples('timeline')
 
+const defaultItem = {
+  label: {
+    text: 'Something happened',
+  },
+  text: 'Explanation of what happened',
+  datetime: {
+    timestamp: '2019-06-14T14:01:00.000Z',
+    type: 'datetime',
+  },
+}
+
 describe('Timeline component', function () {
   let example
 
@@ -97,7 +108,10 @@ describe('Timeline component', function () {
 
   context('container classes', function () {
     before(function () {
-      example = examples['container classes']
+      example = {
+        classes: 'container-class',
+        items: [defaultItem],
+      }
     })
 
     it('should add expected classes', function () {
@@ -107,7 +121,12 @@ describe('Timeline component', function () {
 
   context('container attributes', function () {
     before(function () {
-      example = examples['container attributes']
+      example = {
+        attributes: {
+          'data-attr': 'container-value',
+        },
+        items: [defaultItem],
+      }
     })
 
     it('should add expected attributes', function () {
@@ -117,7 +136,10 @@ describe('Timeline component', function () {
 
   context('heading level', function () {
     before(function () {
-      example = examples['heading level']
+      example = {
+        headingLevel: 4,
+        items: [defaultItem],
+      }
     })
 
     it('should set the heading level', function () {
@@ -127,7 +149,14 @@ describe('Timeline component', function () {
 
   context('description with html params', function () {
     before(function () {
-      example = examples['description with html params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            html: '<b>Explanation</b> of what happened',
+          },
+        ],
+      }
     })
 
     it('should output expected description', function () {
@@ -139,7 +168,14 @@ describe('Timeline component', function () {
 
   context('description with text params', function () {
     before(function () {
-      example = examples['description with text params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            text: '<b>Explanation</b> of what happened',
+          },
+        ],
+      }
     })
 
     it('should output expected description escaping any html', function () {
@@ -151,7 +187,14 @@ describe('Timeline component', function () {
 
   context('item classes', function () {
     before(function () {
-      example = examples['item classes']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            classes: 'item-class',
+          },
+        ],
+      }
     })
 
     it('should add expected classes', function () {
@@ -161,7 +204,16 @@ describe('Timeline component', function () {
 
   context('item attributes', function () {
     before(function () {
-      example = examples['item attributes']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            attributes: {
+              'data-attr': 'item-value',
+            },
+          },
+        ],
+      }
     })
 
     it('should add expected attributes', function () {
@@ -171,7 +223,16 @@ describe('Timeline component', function () {
 
   context('label with html params', function () {
     before(function () {
-      example = examples['label with html params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            label: {
+              html: '<b>Something</b> happened',
+            },
+          },
+        ],
+      }
     })
 
     it('should output expected heading', function () {
@@ -181,7 +242,16 @@ describe('Timeline component', function () {
 
   context('label with text params', function () {
     before(function () {
-      example = examples['label with text params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            label: {
+              text: '<b>Something</b> happened',
+            },
+          },
+        ],
+      }
     })
 
     it('should output expected heading escaping any html', function () {
@@ -193,7 +263,17 @@ describe('Timeline component', function () {
 
   context('label classes', function () {
     before(function () {
-      example = examples['label classes']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            label: {
+              text: 'Something happened',
+              classes: 'label-class',
+            },
+          },
+        ],
+      }
     })
 
     it('should add expected classes', function () {
@@ -201,9 +281,19 @@ describe('Timeline component', function () {
     })
   })
 
-  context('date using shortdatetime type', function () {
+  context('date with type', function () {
     before(function () {
-      example = examples['date using shortdatetime type']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            datetime: {
+              timestamp: '2019-06-14T14:01:00.000Z',
+              type: 'shortdatetime',
+            },
+          },
+        ],
+      }
     })
 
     it('should output expected shortdatetime', function () {
@@ -211,53 +301,22 @@ describe('Timeline component', function () {
     })
   })
 
-  context('date using date type', function () {
-    before(function () {
-      example = examples['date using date type']
-    })
-
-    it('should output expected date', function () {
-      expect($time.html().trim()).to.equal('14 June 2019')
-    })
-  })
-
-  context('date using shortdate type', function () {
-    before(function () {
-      example = examples['date using shortdate type']
-    })
-
-    it('should output expected shortdate', function () {
-      expect($time.html().trim()).to.equal('14 Jun 2019')
-    })
-  })
-
-  context('date using time type', function () {
-    before(function () {
-      example = examples['date using time type']
-    })
-
-    it('should output expected time', function () {
-      expect($time.html().trim()).to.equal('3:01pm')
-    })
-  })
-
-  context('date using format', function () {
-    before(function () {
-      example = examples['date using format']
-    })
-
-    it('should output expected time', function () {
-      expect($time.html().trim()).to.equal('2019-06-14 / 14 Friday June 15:01')
-    })
-  })
-
   context('byline with html params', function () {
     before(function () {
-      example = examples['byline with html params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            byline: {
+              html: '<b>Agent</b> Smith',
+            },
+          },
+        ],
+      }
     })
 
     it('should output expected byline info', function () {
-      expect($byline.html().trim()).to.equal('<b>Agent</b> Smith')
+      expect($byline.html().trim()).to.equal('by <b>Agent</b> Smith')
     })
 
     it('should have correct structure', function () {
@@ -267,17 +326,37 @@ describe('Timeline component', function () {
 
   context('byline with text params', function () {
     before(function () {
-      example = examples['byline with text params']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            byline: {
+              text: '<b>Agent</b> Smith',
+            },
+          },
+        ],
+      }
     })
 
     it('should output expected byline info escaping any html', function () {
-      expect($byline.html().trim()).to.equal('&lt;b&gt;Agent&lt;/b&gt; Smith')
+      expect($byline.html().trim()).to.equal(
+        'by &lt;b&gt;Agent&lt;/b&gt; Smith'
+      )
     })
   })
 
   context('item container classes', function () {
     before(function () {
-      example = examples['item container classes']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            container: {
+              classes: 'item-container-class',
+            },
+          },
+        ],
+      }
     })
 
     it('should set the class on the item container', function () {
@@ -287,7 +366,16 @@ describe('Timeline component', function () {
 
   context('item header classes', function () {
     before(function () {
-      example = examples['item header classes']
+      example = {
+        items: [
+          {
+            ...defaultItem,
+            header: {
+              classes: 'item-header-class',
+            },
+          },
+        ],
+      }
     })
 
     it('should set the class on the header container', function () {

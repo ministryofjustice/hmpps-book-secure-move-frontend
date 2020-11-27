@@ -1,0 +1,6 @@
+{
+  "title": "Component library",
+  "all_components": "All components",
+  "open_in_new_tab": "Open this example in a new tab",
+  "into": "<p>Browse components used interally within this sevice.</p><p>Components from the <a href=\"https://design-system.service.gov.uk/\">GOV.UK Design System</a> and <a href=\"https://moj-design-system.herokuapp.com/\">MOJ Design System</a> are also used to keep this service consistent with other government services.</p>"
+}

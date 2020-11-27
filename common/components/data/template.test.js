@@ -64,10 +64,11 @@ describe('Data component', function () {
 
   context('with classes', function () {
     it('should render classes', function () {
-      const $ = renderComponentHtmlToCheerio(
-        'data',
-        examples['extra large variation']
-      )
+      const $ = renderComponentHtmlToCheerio('data', {
+        classes: 'app-data--xl',
+        label: 'emails sent',
+        value: 25,
+      })
       const $component = $('.app-data')
 
       expect($component.hasClass('app-data--xl')).to.be.true
@@ -76,10 +77,11 @@ describe('Data component', function () {
 
   context('with custom element', function () {
     it('should render custom element', function () {
-      const $ = renderComponentHtmlToCheerio(
-        'data',
-        examples['with heading as element']
-      )
+      const $ = renderComponentHtmlToCheerio('data', {
+        element: 'h2',
+        label: 'emails sent',
+        value: 25,
+      })
       const $component = $('.app-data')
 
       expect($component.get(0).tagName).to.equal('h2')

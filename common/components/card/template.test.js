@@ -59,9 +59,7 @@ describe('Card component', function () {
 
     it('should render image', function () {
       expect($image.length).to.equal(1)
-      expect($image.attr('src')).to.equal(
-        'https://via.placeholder.com/80x105.png'
-      )
+      expect($image.attr('src')).to.equal('/images/person-fallback.png')
     })
 
     it('should include image alt text', function () {

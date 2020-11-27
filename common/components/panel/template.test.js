@@ -19,7 +19,9 @@ describe('Panel component', function () {
     })
 
     it('should render text', function () {
-      expect($component.html().trim()).to.equal('Panel contents')
+      expect($component.html().trim()).to.equal(
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi odit, aut architecto molestias omnis iure et suscipit blanditiis impedit, quisquam incidunt cumque. Quo facere, magni quia dolorum odio provident impedit!'
+      )
     })
 
     it('should not render tag component', function () {
@@ -106,7 +108,9 @@ describe('Panel component', function () {
     })
 
     it('should render content', function () {
-      expect($component.html()).to.contain('Panel contents')
+      expect($component.html()).to.contain(
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi odit, aut architecto molestias omnis iure et suscipit blanditiis impedit, quisquam incidunt cumque. Quo facere, magni quia dolorum odio provident impedit!'
+      )
     })
   })
 })

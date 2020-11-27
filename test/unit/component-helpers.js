@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
-
 const cheerio = require('cheerio')
-const yaml = require('js-yaml')
 const nunjucks = require('nunjucks')
 
+const {
+  componentNameToMacroName,
+  getExamples,
+} = require('../../common/helpers/component')
 const filters = require('../../config/nunjucks/filters')
 const templateGlobals = require('../../config/nunjucks/globals')
 const configPaths = require('../../config/paths')
@@ -34,22 +34,6 @@ Object.keys(templateGlobals).forEach(global => {
 })
 
 /**
- * Return a macro name for a component
- * @param {string} componentName
- * @returns {string} returns naming convention based macro name
- */
-function _componentNameToMacroName(componentName) {
-  const macroName = componentName
-    .toLowerCase()
-    .split('-')
-    // capitalize each 'word'
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('')
-
-  return `app${macroName}`
-}
-
-/**
  * Render a component's macro for testing
  * @param {string} componentName
  * @param {string} params parameters that are used in the component macro
@@ -69,8 +53,7 @@ function renderComponentHtmlToCheerio(
     )
   }
 
-  const macroName =
-    explicitMacroName || _componentNameToMacroName(componentName)
+  const macroName = explicitMacroName || componentNameToMacroName(componentName)
   const macroParams = JSON.stringify(params, null, 2)
 
   let macroString = `{%- from "${componentName}/macro.njk" import ${macroName} -%}`
@@ -85,28 +68,6 @@ function renderComponentHtmlToCheerio(
 
   const output = nunjucks.renderString(macroString)
   return cheerio.load(output)
-}
-
-/**
- * Get examples from a component's metadata file
- * @param {string} componentName
- * @returns {object} returns object that includes all examples at once
- */
-function getExamples(componentPath) {
-  const file = fs.readFileSync(
-    path.join(configPaths.components, componentPath, `${componentPath}.yaml`),
-    'utf8'
-  )
-
-  const docs = yaml.safeLoad(file)
-
-  const examples = {}
-
-  for (const example of docs.examples) {
-    examples[example.name] = example.data
-  }
-
-  return examples
 }
 
 module.exports = {
