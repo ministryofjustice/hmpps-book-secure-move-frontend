@@ -62,54 +62,13 @@ describe('API Client', function () {
               expect(request.params.include).to.not.exist
             })
           })
-
-          context('with default include on model', function () {
-            it('should retain existing include', function () {
-              request.params.include = 'authors,comments'
-              jsonApi.models.mockModel.options = {
-                defaultInclude: 'authors',
-              }
-              request.model = 'mockModel'
-              middleware.req({ req: request, jsonApi })
-
-              expect(request.params.include).to.equal('authors,comments')
-            })
-          })
         })
 
         context('without existing include request param', function () {
-          context('with default include on model', function () {
-            beforeEach(function () {
-              request.model = 'mockModel'
-            })
+          it('should not set include', function () {
+            middleware.req({ req: request, jsonApi })
 
-            context('with default include as a string', function () {
-              it('should retain existing include', function () {
-                jsonApi.models.mockModel.options = {
-                  defaultInclude: 'authors,comments',
-                }
-                middleware.req({ req: request, jsonApi })
-                expect(request.params.include).to.equal('authors,comments')
-              })
-            })
-
-            context('with default include as an array', function () {
-              it('should convert include to string', function () {
-                jsonApi.models.mockModel.options = {
-                  defaultInclude: ['authors', 'comments'],
-                }
-                middleware.req({ req: request, jsonApi })
-                expect(request.params.include).to.equal('authors,comments')
-              })
-            })
-          })
-
-          context('without default include on model', function () {
-            it('should not set include', function () {
-              middleware.req({ req: request, jsonApi })
-
-              expect(request.params.include).to.not.exist
-            })
+            expect(request.params.include).to.not.exist
           })
         })
       })
