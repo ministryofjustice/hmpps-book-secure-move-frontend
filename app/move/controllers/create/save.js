@@ -30,7 +30,11 @@ class SaveController extends CreateBaseController {
         'person',
       ])
 
-      const profile = req.getProfile()
+      const person = req.getPerson()
+      const profile = {
+        ...req.getProfile(),
+        person,
+      }
 
       const moveData = {
         ...data,
