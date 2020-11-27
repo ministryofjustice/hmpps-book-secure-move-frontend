@@ -27,3 +27,4 @@ export const allocations = `${E2E.BASE_URL}/allocations`
 export const allocationsWithDate = date =>
   `${E2E.BASE_URL}/allocations/week/${date}/outgoing`
 export const singleRequests = `${E2E.BASE_URL}/moves/requested`
+export const populationDashboard = `${E2E.BASE_URL}/population`

@@ -25,6 +25,9 @@ export default class Page {
       locationsList: Selector(
         'ul[data-location-type="locations"] li a'
       ).withAttribute('href', /\/locations\/.+/),
+      regionsList: Selector(
+        'ul[data-location-type="regions"] li a'
+      ).withAttribute('href', /\/locations\/.+/),
       locationValue: Selector('.moj-organisation-nav__title'),
       dateSelectInput: '[name="date_select"]',
     }
@@ -56,6 +59,26 @@ export default class Page {
     const randomItem = Math.floor(Math.random() * count)
 
     await t.click(this.nodes.locationsList.nth(randomItem))
+
+    await t.expect(this.getCurrentUrl()).notContains('/locations')
+  }
+
+  /**
+   * Randomly select a region
+   *
+   * @returns {Promise}
+   */
+  async chooseRegion() {
+    await t
+      .expect(this.getCurrentUrl())
+      .contains('/locations')
+      .expect(this.nodes.regionsList.count)
+      .notEql(0, { timeout: 15000 })
+
+    const count = await this.nodes.regionsList.count
+    const randomItem = Math.floor(Math.random() * count)
+
+    await t.click(this.nodes.regionsList.nth(randomItem))
 
     await t.expect(this.getCurrentUrl()).notContains('/locations')
   }

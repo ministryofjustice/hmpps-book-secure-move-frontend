@@ -6,6 +6,8 @@ import MoveDetailPage from './move-detail'
 import MoveTimelinePage from './move-timeline'
 import MovesDashboardPage from './moves-dashboard'
 import Page from './page'
+import PopulationDashboardPage from './population-dashboard'
+import PopulationEditPage from './population-edit'
 import UpdateMovePage from './update-move'
 
 const page = new Page()
@@ -16,6 +18,8 @@ const movesDashboardPage = new MovesDashboardPage()
 const createMovePage = new CreateMovePage()
 const cancelMovePage = new CancelMovePage()
 const dashboardPage = new DashboardPage()
+const populationDashboardPage = new PopulationDashboardPage()
+const populationEditPage = new PopulationEditPage()
 
 export {
   page,
@@ -27,4 +31,6 @@ export {
   cancelMovePage,
   dashboardPage,
   UpdateMovePage,
+  populationDashboardPage,
+  populationEditPage,
 }
