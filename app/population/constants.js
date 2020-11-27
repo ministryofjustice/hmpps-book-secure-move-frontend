@@ -8,6 +8,6 @@ const DAILY_PATH = `/day/:date(${dateRegex})/:locationId(${uuidRegex})`
 
 module.exports = {
   BASE_PATH,
-  MOUNTPATH,
   DAILY_PATH,
+  MOUNTPATH,
 }

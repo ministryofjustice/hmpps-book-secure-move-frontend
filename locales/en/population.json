@@ -32,5 +32,8 @@
   "add_space": "Add numbers",
   "labels": {
     "establishment": "Establishment"
+  },
+  "free_space_details": {
+    "page_title": "Population Details"
   }
 }

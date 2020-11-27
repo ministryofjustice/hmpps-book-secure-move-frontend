@@ -44,6 +44,10 @@ async function setPopulation(req, res, next) {
       transfersOut,
     }
 
+    req.locationId = locationId
+    req.date = date
+    req.wizardKey = `${req.locationId}-${req.date}`
+
     next()
   } catch (error) {
     next(error)

@@ -18,6 +18,53 @@ const mockPopulations = [
 
 describe('Population Service', function () {
   context('', function () {
+    describe('#format', function () {
+      const mockLocationId = 'FACEFEED'
+      let formatted
+
+      context('when relationship fields are a string', function () {
+        beforeEach(function () {
+          formatted = populationService.format({
+            date: '2010-10-10',
+            location: mockLocationId,
+          })
+        })
+
+        it('should format relationships as relationship object', function () {
+          expect(formatted.location).to.deep.equal({
+            id: mockLocationId,
+          })
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.date).to.equal('2010-10-10')
+        })
+      })
+
+      context('when relationship fields are not a string', function () {
+        beforeEach(function () {
+          formatted = populationService.format({
+            date: '2010-10-10',
+            location: {
+              id: mockLocationId,
+              type: 'locations',
+            },
+          })
+        })
+
+        it('should return objects as original value', function () {
+          expect(formatted.location).to.deep.equal({
+            id: mockLocationId,
+            type: 'locations',
+          })
+        })
+
+        it('should not affect non relationship fields', function () {
+          expect(formatted.date).to.equal('2010-10-10')
+        })
+      })
+    })
+
     describe('#getById()', function () {
       context('without ID', function () {
         it('should reject with error', function () {
@@ -76,26 +123,154 @@ describe('Population Service', function () {
         })
       })
     })
-  })
 
-  describe('#getByIdWithMoves()', function () {
-    context('without ID', function () {
+    describe('#getByIdWithMoves()', function () {
+      context('without ID', function () {
+        beforeEach(function () {
+          sinon.stub(populationService, 'getById')
+        })
+
+        afterEach(function () {
+          populationService.getById.restore()
+        })
+
+        it('should pass through params to getById', function () {
+          populationService.getByIdWithMoves('ABADCAFE')
+          expect(populationService.getById).to.be.calledOnceWithExactly(
+            'ABADCAFE',
+            {
+              include: ['moves_from', 'moves_to', 'location'],
+            }
+          )
+        })
+      })
+    })
+
+    describe('#create', function () {
+      let populationData
+      let populationResponse
+
       beforeEach(function () {
-        sinon.stub(populationService, 'getById')
+        populationData = {
+          location: 'ABADCAFE',
+          date: '2020-06-01',
+          operational_capacity: 1,
+        }
+
+        populationResponse = {
+          date: '2020-06-01',
+          operational_capacity: 1,
+          relationships: {
+            location: {
+              id: 'ABADCAFE',
+            },
+          },
+        }
+
+        sinon.stub(apiClient, 'create').resolves({
+          data: populationResponse,
+        })
+        sinon.stub(populationService, 'format').callThrough()
       })
 
       afterEach(function () {
-        populationService.getById.restore()
+        apiClient.create.restore()
+        populationService.format.restore()
       })
 
-      it('should pass through params to getById', function () {
-        populationService.getByIdWithMoves('ABADCAFE')
-        expect(populationService.getById).to.be.calledOnceWithExactly(
-          'ABADCAFE',
-          {
-            include: ['moves_from', 'moves_to', 'location'],
-          }
-        )
+      context('without location', function () {
+        it('should reject with error', function () {
+          delete populationData.location
+          return expect(
+            populationService.create(populationData)
+          ).to.be.rejectedWith('No location ID supplied')
+        })
+      })
+
+      context('without date', function () {
+        it('should reject with error', function () {
+          delete populationData.date
+          return expect(
+            populationService.create(populationData)
+          ).to.be.rejectedWith('No date supplied')
+        })
+      })
+
+      context('with full data', function () {
+        beforeEach(function () {
+          populationService.create(populationData)
+        })
+
+        it('should format parameters', function () {
+          expect(populationService.format).to.have.been.called
+        })
+        it('should call create', function () {
+          expect(apiClient.create).to.be.calledOnceWithExactly('population', {
+            date: populationData.date,
+            location: {
+              id: 'ABADCAFE',
+            },
+            operational_capacity: 1,
+          })
+        })
+      })
+    })
+    describe('#update', function () {
+      let populationData
+      let populationResponse
+
+      beforeEach(function () {
+        populationData = {
+          id: 'FACEFEED',
+          date: '2020-06-01',
+          operational_capacity: 1,
+        }
+
+        populationResponse = {
+          date: '2020-06-01',
+          operational_capacity: 1,
+          relationships: {
+            location: {
+              id: 'ABADCAFE',
+            },
+          },
+        }
+
+        sinon.stub(apiClient, 'update').resolves({
+          data: populationResponse,
+        })
+        sinon.stub(populationService, 'format').callThrough()
+      })
+
+      afterEach(function () {
+        apiClient.update.restore()
+        populationService.format.restore()
+      })
+
+      context('without population id', function () {
+        it('should reject with error', function () {
+          delete populationData.id
+          return expect(
+            populationService.update(populationData)
+          ).to.be.rejectedWith('No population ID supplied')
+        })
+      })
+
+      context('with full data', function () {
+        beforeEach(function () {
+          populationService.update(populationData)
+        })
+
+        it('should format parameters', function () {
+          expect(populationService.format).to.have.been.called
+        })
+        it('should call create', function () {
+          expect(apiClient.update).to.be.calledOnceWithExactly('population', {
+            date: populationData.date,
+            id: 'FACEFEED',
+            operational_capacity: 1,
+          })
+        })
       })
     })
   })

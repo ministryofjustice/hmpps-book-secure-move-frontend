@@ -434,5 +434,29 @@
   "confirm_youth_risk_assessment": {
     "label": "Check this box to confirm that, to the best your knowledge, all information provided in this assessment is correct",
     "error_message": "You must provide confirmation"
+  },
+  "unlock": {
+    "label": "Unlock"
+  },
+  "bedwatch": {
+    "label": "Bedwatch"
+  },
+  "overnights_in": {
+    "label": "Overnights In"
+  },
+  "overnights_out": {
+    "label": "Overnights Out"
+  },
+  "out_of_area_courts": {
+    "label": "Out Of Area Courts"
+  },
+  "discharges": {
+    "label": "Discharges"
+  },
+  "operational_capacity": {
+    "label": "Operational Capacity"
+  },
+  "usable_capacity": {
+    "label": "Usable Capacity"
   }
 }
