@@ -5,7 +5,7 @@ const populationService = require('../../../common/services/population')
 
 class DetailsController extends FormWizardController {
   setInitialValues(req, res, next) {
-    if (req.journeyModel?.get('history').length === 1 && req.population) {
+    if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
       const values = omit(req.population, ['moves_from', 'moves_to'])
       req.sessionModel.set(values)
     }
