@@ -33,8 +33,21 @@ const personEscortRecordService = {
       return Promise.reject(new Error(noIdMessage))
     }
 
+    const include = [
+      'profile',
+      'profile.person',
+      'framework',
+      'responses',
+      'responses.question',
+      'responses.question.descendants.**',
+      'responses.nomis_mappings',
+      'flags',
+      'prefill_source',
+      'move',
+    ]
+
     return apiClient
-      .find('person_escort_record', id)
+      .find('person_escort_record', id, { include })
       .then(response => response.data)
   },
 
