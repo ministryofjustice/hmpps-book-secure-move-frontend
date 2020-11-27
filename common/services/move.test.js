@@ -947,7 +947,7 @@ describe('Move Service', function () {
     })
   })
 
-  describe('#getById*()', function () {
+  describe('#getById()', function () {
     const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     let move
 
@@ -1001,20 +1001,46 @@ describe('Move Service', function () {
     beforeEach(async function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
       sinon.stub(moveService, 'format').returnsArg(0)
-
-      move = await moveService.create(mockData)
     })
 
-    it('should call create method with data', function () {
-      expect(apiClient.create).to.be.calledOnceWithExactly('move', mockData)
+    context('without include', function () {
+      beforeEach(async function () {
+        move = await moveService.create(mockData)
+      })
+
+      it('should call create method with data', function () {
+        expect(apiClient.create).to.be.calledOnceWithExactly('move', mockData, {
+          include: undefined,
+        })
+      })
+
+      it('should format data', function () {
+        expect(moveService.format).to.be.calledOnceWithExactly(mockData)
+      })
+
+      it('should return move', function () {
+        expect(move).to.deep.equal(mockResponse.data)
+      })
     })
 
-    it('should format data', function () {
-      expect(moveService.format).to.be.calledOnceWithExactly(mockData)
-    })
+    context('with include', function () {
+      beforeEach(async function () {
+        move = await moveService.create(mockData, { include: ['foo', 'bar'] })
+      })
 
-    it('should return move', function () {
-      expect(move).to.deep.equal(mockResponse.data)
+      it('should call create method with data', function () {
+        expect(apiClient.create).to.be.calledOnceWithExactly('move', mockData, {
+          include: ['foo', 'bar'],
+        })
+      })
+
+      it('should format data', function () {
+        expect(moveService.format).to.be.calledOnceWithExactly(mockData)
+      })
+
+      it('should return move', function () {
+        expect(move).to.deep.equal(mockResponse.data)
+      })
     })
   })
 

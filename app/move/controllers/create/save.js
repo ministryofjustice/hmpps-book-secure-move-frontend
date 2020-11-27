@@ -110,7 +110,8 @@ class SaveController extends CreateBaseController {
   }
 
   async successHandler(req, res, next) {
-    const { id, from_location: fromLocation } = req.sessionModel.get('move')
+    const move = req.sessionModel.get('move')
+    const fromLocationType = req.sessionModel.get('from_location_type')
     const journeyDuration = Math.round(
       new Date().getTime() - req.sessionModel.get('journeyTimestamp')
     )
@@ -119,13 +120,13 @@ class SaveController extends CreateBaseController {
       await analytics.sendJourneyTime({
         utv: capitalize(req.form.options.name),
         utt: journeyDuration,
-        utc: capitalize(fromLocation.location_type),
+        utc: capitalize(fromLocationType),
       })
 
       req.journeyModel.reset()
       req.sessionModel.reset()
 
-      res.redirect(`/move/${id}/confirmation`)
+      res.redirect(`/move/${move.id}/confirmation`)
     } catch (err) {
       next(err)
     }

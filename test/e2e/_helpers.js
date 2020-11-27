@@ -224,8 +224,9 @@ export async function createMoveFixture({
   const person = await createPersonFixture(personOverrides)
   const profile = await createProfileFixture(person.id, profileOverrides)
   const moveFixture = await generateMove(profile, moveOptions, moveOverrides)
-  // console.log(moveFixture)
-  let move = await moveService.create(moveFixture)
+  let move = await moveService.create(moveFixture, {
+    include: ['from_location', 'to_location'],
+  })
   move = {
     ...move,
     person,

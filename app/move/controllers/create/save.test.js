@@ -778,6 +778,7 @@ describe('Move controllers', function () {
       context('by default', function () {
         const mockJourneyTimestamp = 12345
         const mockCurrentTimestamp = new Date('2017-08-10').getTime()
+        const mockFromLocationType = 'police'
 
         beforeEach(async function () {
           this.clock = sinon.useFakeTimers(mockCurrentTimestamp)
@@ -786,6 +787,8 @@ describe('Move controllers', function () {
           req.sessionModel.get
             .withArgs('journeyTimestamp')
             .returns(mockJourneyTimestamp)
+            .withArgs('from_location_type')
+            .returns(mockFromLocationType)
           await controller.successHandler(req, res, nextSpy)
         })
 
@@ -797,7 +800,7 @@ describe('Move controllers', function () {
           expect(analytics.sendJourneyTime).to.be.calledOnceWithExactly({
             utv: capitalize(req.form.options.name),
             utt: mockCurrentTimestamp - mockJourneyTimestamp,
-            utc: capitalize(mockMove.from_location.location_type),
+            utc: capitalize(mockFromLocationType),
           })
         })
 
