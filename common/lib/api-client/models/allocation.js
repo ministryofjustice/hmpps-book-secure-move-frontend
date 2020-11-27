@@ -29,15 +29,4 @@ module.exports = {
       type: 'moves',
     },
   },
-  options: {
-    defaultInclude: [
-      'from_location',
-      'moves',
-      'moves.profile',
-      'moves.profile.person',
-      'moves.profile.person.ethnicity',
-      'moves.profile.person.gender',
-      'to_location',
-    ],
-  },
 }

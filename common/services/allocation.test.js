@@ -762,6 +762,7 @@ describe('Allocation service', function () {
   })
 
   describe('#getByDateAndLocation()', function () {
+    const getAllInclude = ['from_location', 'to_location']
     let results
 
     beforeEach(async function () {
@@ -777,7 +778,7 @@ describe('Allocation service', function () {
         expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           includeCancelled: false,
-          include: ['from_location', 'to_location'],
+          include: getAllInclude,
           filter: {},
         })
       })
@@ -799,7 +800,6 @@ describe('Allocation service', function () {
             fromLocations: [mockFromLocationId],
             toLocations: [mockToLocationId],
             locations: [mockFromLocationId, mockToLocationId],
-            include: ['foo', 'bar'],
           })
         })
 
@@ -807,7 +807,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
-            include: ['foo', 'bar'],
+            include: getAllInclude,
             filter: {
               'filter[date_from]': mockMoveDateRange[0],
               'filter[date_to]': mockMoveDateRange[1],
@@ -834,7 +834,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: false,
-            include: ['from_location', 'to_location'],
+            include: getAllInclude,
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -858,31 +858,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: true,
             includeCancelled: false,
-            include: ['from_location', 'to_location'],
-            filter: {
-              'filter[locations]': mockFromLocationId,
-            },
-          })
-        })
-
-        it('should return results', function () {
-          expect(results).to.deep.equal(mockAllocations)
-        })
-      })
-
-      context('with include ', function () {
-        beforeEach(async function () {
-          results = await allocationService.getByDateAndLocation({
-            include: ['fizz', 'buzz'],
-            locations: [mockFromLocationId],
-          })
-        })
-
-        it('should call moves.getAll with correct args', function () {
-          expect(allocationService.getAll).to.be.calledOnceWithExactly({
-            isAggregation: false,
-            includeCancelled: false,
-            include: ['fizz', 'buzz'],
+            include: getAllInclude,
             filter: {
               'filter[locations]': mockFromLocationId,
             },
@@ -906,7 +882,7 @@ describe('Allocation service', function () {
           expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: true,
-            include: ['from_location', 'to_location'],
+            include: getAllInclude,
             filter: {
               'filter[locations]': mockFromLocationId,
               'filter[status]': 'cancelled',
@@ -930,48 +906,36 @@ describe('Allocation service', function () {
       sinon.stub(apiClient, 'find').resolves({
         data: mockAllocations[0],
       })
+
+      output = await allocationService.getById(
+        '8567f1a5-2201-4bc2-b655-f6526401303a'
+      )
     })
 
-    context('when called without include parameter', function () {
-      beforeEach(async function () {
-        output = await allocationService.getById(
-          '8567f1a5-2201-4bc2-b655-f6526401303a'
-        )
-      })
-      it('calls the api service', function () {
-        expect(apiClient.find).to.have.been.calledOnceWithExactly(
-          'allocation',
-          '8567f1a5-2201-4bc2-b655-f6526401303a',
-          {
-            include: undefined,
-          }
-        )
-      })
-
-      it('should transform person object', function () {
-        expect(transformStub.callCount).to.equal(1)
-      })
-
-      it('returns the data from the api service', function () {
-        expect(output).to.deep.equal(mockAllocations[0])
-      })
+    it('calls the api service', function () {
+      expect(apiClient.find).to.have.been.calledOnceWithExactly(
+        'allocation',
+        '8567f1a5-2201-4bc2-b655-f6526401303a',
+        {
+          include: [
+            'from_location',
+            'moves',
+            'moves.profile',
+            'moves.profile.person',
+            'moves.profile.person.ethnicity',
+            'moves.profile.person.gender',
+            'to_location',
+          ],
+        }
+      )
     })
 
-    context('when called with include parameter', function () {
-      const mockId = '8fadb516-f10a-45b1-91b7-a256196829f9'
-      beforeEach(async function () {
-        apiClient.find.resolves([])
-        await allocationService.getById(mockId, { include: ['foo', 'bar'] })
-      })
-      it('should pass include paramter to api client', function () {
-        expect(apiClient.find).to.be.calledOnceWithExactly(
-          'allocation',
-          mockId,
-          {
-            include: ['foo', 'bar'],
-          }
-        )
-      })
+    it('should transform person object', function () {
+      expect(transformStub.callCount).to.equal(1)
+    })
+
+    it('returns the data from the api service', function () {
+      expect(output).to.deep.equal(mockAllocations[0])
     })
   })
 
