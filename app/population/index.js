@@ -35,7 +35,7 @@ const editConfig = {
   journeyPageTitle: 'actions::create_population',
 }
 
-dailyRouter.use('/edit', wizard(editSteps, editFields, editConfig))
+dailyRouter.use('/edit', wizard(editSteps, editFields, editConfig, 'wizardKey'))
 
 router.use(DAILY_PATH, dailyRouter)
 
