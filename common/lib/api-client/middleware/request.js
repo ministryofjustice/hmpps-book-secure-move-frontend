@@ -13,8 +13,10 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
       }
 
       const { req, jsonApi, cacheKey } = payload
+      const searchString = new URLSearchParams(req.params).toString()
+      const url = `${req.url}${searchString ? `?${searchString}` : ''}`
 
-      debug('API REQUEST', req.url)
+      debug('API REQUEST', url)
 
       if (req.params.preserveResourceRefs) {
         req.preserveResourceRefs = req.params.preserveResourceRefs
@@ -27,7 +29,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
       const response = await jsonApi
         .axios(req)
         .then(async response => {
-          debug('API SUCCESS', req.url)
+          debug('API SUCCESS', url)
           // record successful request
           const duration = clientTimer()
           clientMetrics.recordSuccess(req, response, duration)
@@ -40,7 +42,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
           return response
         })
         .catch(error => {
-          debug('API ERROR', req.url, error)
+          debug('API ERROR', url, error)
           // record error
           const duration = clientTimer()
           clientMetrics.recordError(req, error, duration)
