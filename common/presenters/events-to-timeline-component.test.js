@@ -98,6 +98,67 @@ describe('Presenters', function () {
       })
     })
 
+    context('when transforming events', function () {
+      const mockEvents = [
+        {
+          event_type: 'foo',
+          occurred_at: '2020-10-03',
+          details: {
+            hello: 'world',
+          },
+        },
+        {
+          event_type: 'bar',
+          occurred_at: '2020-10-04',
+          details: {
+            goodbye: 'columbus',
+          },
+        },
+      ]
+      const mockMove = {
+        id: 'move2',
+        timeline_events: mockEvents,
+      }
+      beforeEach(function () {
+        transformedResponse = eventsToTimelineComponent(mockMove)
+      })
+
+      it('should add triggered events if needed', function () {
+        expect(addTriggeredEvents).to.be.calledOnceWithExactly(mockEvents)
+      })
+
+      it('should set the event details', function () {
+        expect(setEventDetails.callCount).to.equal(2)
+        expect(setEventDetails).to.be.calledWithExactly(mockEvents[0], mockMove)
+        expect(setEventDetails).to.be.calledWithExactly(mockEvents[1], mockMove)
+      })
+
+      it('should return the events in reverse order', function () {
+        expect(transformedResponse).to.deep.equal({
+          items: [
+            {
+              container: { classes: undefined },
+              header: { classes: undefined },
+              classes: undefined,
+              label: { html: 'events::bar.heading', classes: undefined },
+              html: 'events::bar.description',
+              datetime: { timestamp: '2020-10-04', type: 'datetime' },
+              byline: { html: '' },
+            },
+            {
+              container: { classes: undefined },
+              header: { classes: undefined },
+              classes: undefined,
+              label: { html: 'events::foo.heading', classes: undefined },
+              html: 'events::foo.description',
+              datetime: { timestamp: '2020-10-03', type: 'datetime' },
+              byline: { html: '' },
+            },
+          ],
+        })
+      })
+    })
+
     context('when event is a triggered status change', function () {
       beforeEach(function () {
         i18n.exists.onCall(0).returns(true)
