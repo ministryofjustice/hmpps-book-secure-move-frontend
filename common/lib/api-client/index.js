@@ -39,7 +39,7 @@ module.exports = function () {
   )
 
   const insertRequestMiddleware = middleware => {
-    instance.insertMiddlewareBefore('axios-request', middleware)
+    instance.insertMiddlewareBefore('app-request', middleware)
   }
 
   insertRequestMiddleware(cacheKey({ apiVersion: API.VERSION }))
@@ -57,7 +57,7 @@ module.exports = function () {
   insertRequestMiddleware(requestHeaders)
   insertRequestMiddleware(requestInclude)
 
-  instance.insertMiddlewareAfter('axios-request', processResponse)
+  instance.insertMiddlewareAfter('app-request', processResponse)
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {
