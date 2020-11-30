@@ -53,6 +53,27 @@ describe('Ensure current location middleware', function () {
     })
   })
 
+  context('when whitelist url uses a pattern', function () {
+    const whitelist = ['/url', '/bypass-url', '/components/(.*)']
+
+    beforeEach(function () {
+      req.url = '/components/component-name/example'
+
+      ensureCurrentLocation({
+        locationsMountpath,
+        whitelist,
+      })(req, res, nextSpy)
+    })
+
+    it('should call next', function () {
+      expect(nextSpy).to.be.calledOnceWithExactly()
+    })
+
+    it('should not redirect', function () {
+      expect(res.redirect).not.to.be.called
+    })
+  })
+
   context('when url contains locations mountpath', function () {
     beforeEach(function () {
       req.url = '/locations/location-id'

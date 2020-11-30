@@ -127,6 +127,8 @@ module.exports = {
     '/auth/sign-out',
     '/healthcheck',
     '/healthcheck/ping',
+    '/components',
+    '/components/(.*)',
   ],
   AUTH_PROVIDERS: {
     hmpps: {
