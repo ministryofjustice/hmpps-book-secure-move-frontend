@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'errors',
+  name: 'app-errors',
   error: function error(payload = {}) {
     if (!payload.response) {
       if (payload instanceof Error) {

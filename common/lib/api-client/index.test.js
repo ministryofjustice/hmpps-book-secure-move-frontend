@@ -134,7 +134,7 @@ describe('Back-end API client', function () {
           it('should insert cache key middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(0)
-            ).to.be.calledWithExactly('axios-request', {
+            ).to.be.calledWithExactly('app-request', {
               apiVersion: mockConfig.API.VERSION,
             })
           })
@@ -142,7 +142,7 @@ describe('Back-end API client', function () {
           it('should insert get cache middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(1)
-            ).to.be.calledWithExactly('axios-request', {
+            ).to.be.calledWithExactly('app-request', {
               useRedisCache: mockConfig.API.USE_REDIS_CACHE,
             })
           })
@@ -150,25 +150,25 @@ describe('Back-end API client', function () {
           it('should insert auth middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(2)
-            ).to.be.calledWithExactly('axios-request', authStub)
+            ).to.be.calledWithExactly('app-request', authStub)
           })
 
           it('should insert request timeout', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(3)
-            ).to.be.calledWithExactly('axios-request', mockConfig.API.TIMEOUT)
+            ).to.be.calledWithExactly('app-request', mockConfig.API.TIMEOUT)
           })
 
           it('should insert request headers middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(4)
-            ).to.be.calledWithExactly('axios-request', requestHeadersStub)
+            ).to.be.calledWithExactly('app-request', requestHeadersStub)
           })
 
           it('should insert request include middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(5)
-            ).to.be.calledWithExactly('axios-request', requestIncludeStub)
+            ).to.be.calledWithExactly('app-request', requestIncludeStub)
           })
 
           it('should call insertMiddlewareBefore correct number of times', function () {
@@ -180,7 +180,7 @@ describe('Back-end API client', function () {
           it('should insert process response middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareAfter.getCall(0)
-            ).to.be.calledWithExactly('axios-request', processResponseStub)
+            ).to.be.calledWithExactly('app-request', processResponseStub)
           })
 
           it('should call insertMiddlewareAfter correct number of times', function () {

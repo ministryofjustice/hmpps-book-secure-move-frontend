@@ -212,7 +212,6 @@ const client = proxyquire('../index', {
   '../../../config': mockConfig,
   './middleware': {
     auth: sinon.stub(),
-    request: sinon.stub().returns({}),
   },
 })()
 

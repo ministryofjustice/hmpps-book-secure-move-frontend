@@ -3,7 +3,7 @@ const { find } = require('lodash')
 
 module.exports = function post(maxFileSize) {
   return {
-    name: 'POST',
+    name: 'app-post',
     req: payload => {
       if (payload.res) {
         return payload
