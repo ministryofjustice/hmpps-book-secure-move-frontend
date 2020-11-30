@@ -1,3 +1,5 @@
+const pathToRegexp = require('path-to-regexp')
+
 function _isExpired(authExpiry) {
   if (!authExpiry) {
     return true
@@ -18,7 +20,11 @@ module.exports = function ensureAuthenticated({
       authExpiry -= expiryMargin
     }
 
-    if (whitelist.includes(req.url) || !_isExpired(authExpiry)) {
+    const matchedWhitelists = whitelist.filter(route =>
+      pathToRegexp.match(route)(req.url)
+    )
+
+    if (matchedWhitelists.length > 0 || !_isExpired(authExpiry)) {
       return next()
     }
 

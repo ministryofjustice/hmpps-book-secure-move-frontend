@@ -38,6 +38,24 @@ describe('Authentication middleware', function () {
       })
     })
 
+    context('when whitelist url uses a pattern', function () {
+      const whitelist = ['/url', '/bypass-url', '/components/(.*)']
+
+      beforeEach(function () {
+        req.url = '/components/component-name/example'
+
+        ensureAuthenticated({ provider, whitelist })(req, res, nextSpy)
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).not.to.be.called
+      })
+    })
+
     context('when there is no access token', function () {
       beforeEach(function () {
         ensureAuthenticated({ provider })(req, res, nextSpy)

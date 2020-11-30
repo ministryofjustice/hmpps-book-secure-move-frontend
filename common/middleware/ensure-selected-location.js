@@ -1,8 +1,14 @@
+const pathToRegexp = require('path-to-regexp')
+
 function ensureSelectedLocation({ locationsMountpath, whitelist = [] } = {}) {
   return (req, res, next) => {
+    const matchedWhitelists = whitelist.filter(route =>
+      pathToRegexp.match(route)(req.url)
+    )
+
     if (
       req.session.hasSelectedLocation ||
-      whitelist.includes(req.url) ||
+      matchedWhitelists.length > 0 ||
       req.url.includes(locationsMountpath)
     ) {
       return next()
