@@ -225,7 +225,11 @@ module.exports = {
       },
     },
   },
-  FEATURE_FLAGS: {},
+  FEATURE_FLAGS: {
+    POPULATION_DASHBOARD: /true/i.test(
+      process.env.FEATURE_FLAG_POPULATION_DASHBOARD
+    ),
+  },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
     FLAG_SETTINGS: {
