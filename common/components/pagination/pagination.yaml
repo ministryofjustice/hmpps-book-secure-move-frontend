@@ -37,6 +37,18 @@ params:
         type: string
         required: false
         description: Supporting label to give a more detailed description of the next page
+  - name: items
+    type: array
+    description: List of items to render between next and previous links
+    params:
+      - name: classes
+        type: string
+        required: false
+        description: Classes to add to the pagination item.
+      - name: attributes
+        type: object
+        required: false
+        description: HTML attributes (for example data attributes) to add to the pagination item.
 
 examples:
   - name: default
@@ -75,12 +87,33 @@ examples:
       next:
         href: "/next-page"
       items:
-      - href: "/page-1"
-        text: "one"
-      - href: "/page-2"
-        text: "two"
-      - href: "/page-3"
-        text: "three"
+        - href: "/page-1"
+          text: "one"
+        - href: "/page-2"
+          text: "two"
+        - href: "/page-3"
+          text: "three"
+  - name: with items with class
+    data:
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+      items:
+        - href: "/page-1"
+          text: "one"
+          classes: "item-class"
+  - name: with items with attributes
+    data:
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+      items:
+        - href: "/page-1"
+          text: "one"
+          attributes:
+            data-foo: "bar"
   - name: with inline items
     data:
       classes: app-pagination--inline
@@ -89,9 +122,9 @@ examples:
       next:
         href: "/next-page"
       items:
-      - href: "/page-1"
-        text: "1"
-      - href: "/page-2"
-        text: "2"
-      - href: "/page-3"
-        text: "3"
+        - href: "/page-1"
+          text: "1"
+        - href: "/page-2"
+          text: "2"
+        - href: "/page-3"
+          text: "3"

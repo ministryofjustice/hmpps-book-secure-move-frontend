@@ -185,3 +185,59 @@ describe('Pagination component', function () {
     })
   })
 })
+
+context('with items with class', function () {
+  let $, $component, items
+
+  beforeEach(function () {
+    $ = renderComponentHtmlToCheerio(
+      'pagination',
+      examples['with items with class']
+    )
+    $component = $('.app-pagination')
+    items = $component.find('.app-pagination__list-item')
+  })
+
+  it('should render correct number of items', function () {
+    const $items = $component.find('.app-pagination__list-item')
+    expect($items.length).to.equal(3)
+  })
+
+  it('should render item class', function () {
+    const $item = $(items[1])
+    const $itemText = $item.find('.app-pagination__link-text')
+    const $itemLink = $item.find('a')
+
+    expect($itemText.text().trim()).to.equal('one')
+    expect($itemLink.attr('href')).to.equal('/page-1')
+    expect($item.hasClass('item-class')).to.be.true
+  })
+})
+
+context('with items with attributes', function () {
+  let $, $component, items
+
+  beforeEach(function () {
+    $ = renderComponentHtmlToCheerio(
+      'pagination',
+      examples['with items with attributes']
+    )
+    $component = $('.app-pagination')
+    items = $component.find('.app-pagination__list-item')
+  })
+
+  it('should render correct number of items', function () {
+    const $items = $component.find('.app-pagination__list-item')
+    expect($items.length).to.equal(3)
+  })
+
+  it('should render item class', function () {
+    const $item = $(items[1])
+    const $itemText = $item.find('.app-pagination__link-text')
+    const $itemLink = $item.find('a')
+
+    expect($itemText.text().trim()).to.equal('one')
+    expect($itemLink.attr('href')).to.equal('/page-1')
+    expect($item.attr('data-foo')).to.equal('bar')
+  })
+})
