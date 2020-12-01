@@ -640,5 +640,149 @@ describe('Move controllers', function () {
         })
       })
     })
+
+    describe('#errorHandler()', function () {
+      let reqMock, resMock, errorMock, nextSpy
+
+      beforeEach(function () {
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        sinon.stub(FormWizardController.prototype, 'errorHandler')
+        nextSpy = sinon.spy()
+        errorMock = new Error()
+        reqMock = {
+          sessionModel: {
+            get: sinon.stub().withArgs('move_date').returns('2020-10-10'),
+          },
+          t: sinon.stub().returnsArg(0),
+          move: {
+            id: '12345',
+            to_location: {
+              title: 'BRIXTON',
+            },
+            profile: {
+              person: {
+                fullname: 'DOE, JOHN',
+              },
+            },
+          },
+        }
+        resMock = {
+          render: sinon.spy(),
+        }
+      })
+
+      context('with non validation error', function () {
+        beforeEach(function () {
+          errorMock.statusCode = 500
+          controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+        })
+
+        it('should call parent error handler', function () {
+          expect(
+            FormWizardController.prototype.errorHandler
+          ).to.have.been.calledOnceWithExactly(
+            errorMock,
+            reqMock,
+            resMock,
+            nextSpy
+          )
+        })
+
+        it('should not render a template', function () {
+          expect(resMock.render).not.to.have.been.called
+        })
+      })
+
+      context('with validation error', function () {
+        const mockExistingMoveId = '_12345_'
+
+        beforeEach(function () {
+          errorMock.statusCode = 422
+        })
+
+        context('with `taken` error code', function () {
+          beforeEach(function () {
+            errorMock.errors = [
+              {
+                code: 'taken',
+                meta: {
+                  existing_id: mockExistingMoveId,
+                },
+              },
+            ]
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+          })
+
+          it('should not call parent error handler', function () {
+            expect(
+              FormWizardController.prototype.errorHandler
+            ).not.to.have.been.called
+          })
+
+          it('should render a template', function () {
+            expect(resMock.render).to.have.been.calledOnceWithExactly(
+              'action-prevented',
+              {
+                pageTitle: 'validation::move_conflict.heading',
+                message: 'validation::move_conflict.message',
+                instruction: 'validation::move_conflict.instructions',
+              }
+            )
+          })
+
+          it('should translate page title', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.heading',
+              {
+                context: 'review',
+              }
+            )
+          })
+
+          it('should translate message', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.message',
+              {
+                href: '/move/_12345_',
+                name: 'DOE, JOHN',
+                location: 'BRIXTON',
+                date: '2020-10-10',
+              }
+            )
+          })
+
+          it('should translate instruction', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.instructions',
+              {
+                context: 'review',
+                date_href: '',
+              }
+            )
+          })
+        })
+
+        context('with any other error code', function () {
+          beforeEach(function () {
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+          })
+
+          it('should call parent error handler', function () {
+            expect(
+              FormWizardController.prototype.errorHandler
+            ).to.have.been.calledOnceWithExactly(
+              errorMock,
+              reqMock,
+              resMock,
+              nextSpy
+            )
+          })
+
+          it('should not render a template', function () {
+            expect(resMock.render).not.to.have.been.called
+          })
+        })
+      })
+    })
   })
 })
