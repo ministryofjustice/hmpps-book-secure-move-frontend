@@ -122,7 +122,7 @@
         {% if not personEscortRecordIsCompleted %}
           {{ govukInsetText({
             classes: "govuk-inset-text--compact govuk-!-margin-0",
-            text: t("person-escort-record::flags.incomplete")
+            text: t("assessment::incomplete")
           }) }}
         {% endif %}
 
@@ -167,8 +167,10 @@
       classes: "app-message--muted govuk-!-margin-top-2",
       allowDismiss: false,
       content: {
-        text: t('assessment::no_items.text', {
-          context: assessment.key
+        html: t('assessment::no_items.text', {
+          context: assessment.context or assessment.key,
+          name: assessment.name,
+          url: assessment.url
         })
       }
     }) }}
@@ -205,7 +207,9 @@
 
       {% if personEscortRecordIsEnabled and personEscortRecord %}
         {% include "move/views/_includes/person-escort-record-summary.njk" %}
-      {% else %}
+      {% elif youthRiskAssessment %}
+        {% include "move/views/_includes/person-escort-record-summary.njk" %}
+      {% elif not personEscortRecordIsEnabled and not move._is_youth_move %}
         {% include "move/views/_includes/assessment.njk" %}
       {% endif %}
 

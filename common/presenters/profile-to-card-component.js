@@ -73,7 +73,7 @@ function profileToCardComponent({
         } else {
           card.insetText = {
             classes: 'govuk-inset-text--compact',
-            text: i18n.t('person-escort-record::flags.incomplete'),
+            text: i18n.t('assessment::incomplete'),
           }
         }
       } else {
