@@ -1,3 +1,5 @@
+const { transformResource, moveTransformer } = require('../transformers')
+
 module.exports = {
   fields: {
     reference: '',
@@ -55,5 +57,8 @@ module.exports = {
       jsonApi: 'hasMany',
       type: 'events',
     },
+  },
+  options: {
+    deserializer: transformResource(moveTransformer),
   },
 }
