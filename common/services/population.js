@@ -53,6 +53,7 @@ const populationService = {
 
   update(data) {
     const { id } = data
+
     if (!id) {
       return Promise.reject(new Error(noPopulationIdMessage))
     }
