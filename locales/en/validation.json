@@ -26,8 +26,10 @@
   "name": "{{name, uppercase}}",
   "move_conflict": {
     "heading": "This move cannot be created",
+    "heading_update": "This move cannot be updated",
     "message": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong>.",
-    "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>."
+    "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>.",
+    "message_update": "A move <a href=\"{{href}}\">already exists</a> for <strong>$t(validation::name)</strong> on <strong>{{date}}</strong>."
   },
   "move_not_supported": {
     "heading": "$t(validation::name) cannot be moved using this service",
