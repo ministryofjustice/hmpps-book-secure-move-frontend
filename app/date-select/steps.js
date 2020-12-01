@@ -4,9 +4,9 @@ const steps = {
   '/': {
     controller: DateSelectController,
     entryPoint: true,
-    pageTitle: 'date_select::heading',
+    pageTitle: 'actions::date_select',
     fields: ['date_select'],
-    buttonText: 'date_select::submit',
+    buttonText: 'actions::date_select_submit',
   },
 }
 

@@ -7,6 +7,7 @@
   "next_week": "Next week",
   "current_week": "This week",
   "date_select": "Jump to date",
+  "date_select_submit": "Go to date",
   "back": "Back",
   "back_to_dashboard": "$t(actions::back) to dashboard",
   "back_to_move": "$t(actions::back) to move",
