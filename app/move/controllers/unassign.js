@@ -29,10 +29,14 @@ class UnassignController extends FormWizardController {
       return next()
     }
 
-    res.render('move/views/unassign-ineligible', {
-      allocation,
-      moveId: id,
-      fullname: profile?.person?.fullname,
+    res.render('action-prevented', {
+      backLink: `/allocation/${allocation.id}`,
+      pageTitle: req.t('validation::unassign_ineligible.heading'),
+      message: req.t('validation::unassign_ineligible.message'),
+      instruction: req.t('validation::unassign_ineligible.instructions', {
+        move_href: `/move/${id}`,
+        name: profile?.person?.fullname,
+      }),
     })
   }
 

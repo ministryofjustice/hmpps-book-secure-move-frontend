@@ -2,6 +2,7 @@ const { get, omit } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const profileService = require('../../../../common/services/profile')
+const filters = require('../../../../config/nunjucks/filters')
 const MoveCreateSaveController = require('../create/save')
 
 const PersonAssignBase = require('./base')
@@ -38,9 +39,19 @@ class SaveController extends PersonAssignBase {
 
     if (err.statusCode === 422 && apiErrorCode === 'taken') {
       const existingMoveId = get(err, 'errors[0].meta.existing_id')
+      const person = req.sessionModel.get('person')
 
-      return res.render('move/views/assign/assign-conflict', {
-        existingMoveId,
+      return res.render('action-prevented', {
+        pageTitle: req.t('validation::assign_conflict.heading'),
+        message: req.t('validation::assign_conflict.message', {
+          href: `/move/${existingMoveId}`,
+          name: person.fullname,
+          location: req.move.allocation.to_location.title,
+          date: filters.formatDateWithDay(req.move.date),
+        }),
+        instruction: req.t('validation::assign_conflict.instructions', {
+          assign_href: `/move/${req.move.id}/assign`,
+        }),
       })
     }
 

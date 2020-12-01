@@ -4,6 +4,7 @@ const analytics = require('../../../../common/lib/analytics')
 const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
 const profileService = require('../../../../common/services/profile')
+const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 
@@ -141,9 +142,20 @@ class SaveController extends CreateBaseController {
 
     if (err.statusCode === 422 && apiErrorCode === 'taken') {
       const existingMoveId = get(err, 'errors[0].meta.existing_id')
+      const values = req.sessionModel.toJSON()
 
-      return res.render('move/views/create/save-conflict', {
-        existingMoveId,
+      return res.render('action-prevented', {
+        pageTitle: req.t('validation::move_conflict.heading'),
+        message: req.t('validation::move_conflict.message', {
+          href: `/move/${existingMoveId}`,
+          name: values.person.fullname,
+          location: values.to_location.title,
+          date: filters.formatDateWithDay(values.date),
+        }),
+        instruction: req.t('validation::move_conflict.instructions', {
+          date_href: 'move-date/edit',
+          location_href: 'move-details/edit',
+        }),
       })
     }
 

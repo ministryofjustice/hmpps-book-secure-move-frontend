@@ -1,15 +1,12 @@
-{% extends "layouts/action-prevented.njk" %}
+{% extends "action-prevented.njk" %}
 
-{% set actionPreventedTitle = t("validation::assign_needs_special_vehicle.heading", {
+{% set pageTitle = t("validation::assign_needs_special_vehicle.heading") %}
+
+{% set message = t("validation::assign_needs_special_vehicle.message", {
   name: person.fullname
 }) %}
 
-{% set actionPreventedMessage = t("validation::assign_needs_special_vehicle.message", {
-  name: person.fullname,
-  href: "/move/new"
-}) %}
-
-{% set actionPreventedInstructions = t("validation::assign_needs_special_vehicle.instructions", {
+{% set instruction = t("validation::assign_needs_special_vehicle.instructions", {
   name: person.fullname,
   allocationHref: "/move/" + move.id + "/assign",
   moveHref: "/move/new"
