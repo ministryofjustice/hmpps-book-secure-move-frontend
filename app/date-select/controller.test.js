@@ -23,10 +23,7 @@ describe('Date select view controllers', function () {
         reset: sinon.stub(),
         set: sinon.stub(),
         get: sinon.stub(),
-        toJSON: sinon.stub().returns({
-          referrer: '/bar/foo-1234/outgoing',
-          date_select: 'stored-date',
-        }),
+        toJSON: sinon.stub().returns({}),
       },
       form: {
         options: {
@@ -124,18 +121,34 @@ describe('Date select view controllers', function () {
   })
 
   describe('#successHandler', function () {
-    beforeEach(function () {
-      controller.successHandler(req, res, next)
+    context('and a referrer exists', function () {
+      beforeEach(function () {
+        req.sessionModel.toJSON.returns({
+          referrer: '/bar/foo-1234/outgoing',
+          date_select: 'stored-date',
+        })
+        controller.successHandler(req, res, next)
+      })
+
+      it('should reset session model', function () {
+        expect(req.sessionModel.reset).to.be.calledOnceWithExactly()
+      })
+
+      it('should redirect to the new date', function () {
+        expect(res.redirect).to.be.calledOnceWithExactly(
+          '/bar/stored-date/outgoing'
+        )
+      })
     })
 
-    it('should reset session model', function () {
-      expect(req.sessionModel.reset).to.be.calledOnceWithExactly()
-    })
+    context('and a referrer does not exist', function () {
+      beforeEach(function () {
+        controller.successHandler(req, res, next)
+      })
 
-    it('should redirect to the new date', function () {
-      expect(res.redirect).to.be.calledOnceWithExactly(
-        '/bar/stored-date/outgoing'
-      )
+      it('should redirect to the home page', function () {
+        expect(res.redirect).to.be.calledOnceWithExactly('/')
+      })
     })
   })
 })

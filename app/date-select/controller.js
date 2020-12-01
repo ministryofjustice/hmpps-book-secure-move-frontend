@@ -25,6 +25,12 @@ class DateSelectController extends FormWizardController {
 
   successHandler(req, res, next) {
     const { date_select: dateSelect, referrer } = req.sessionModel.toJSON()
+
+    // if someone has opened up the jump-to-date page in 2 tabs then maybe, just maybe, the session model won't have the referrer info. In that case, the best we can do is go back to the start
+    if (!referrer) {
+      return res.redirect('/')
+    }
+
     req.sessionModel.reset()
     const redirectUrl = referrer.replace(DateRegExp, `/${dateSelect}`)
     return res.redirect(redirectUrl)
