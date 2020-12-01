@@ -40,6 +40,7 @@
   "person_escort_record": "Person Escort Record",
   "primary_navigation": {
     "home": "Home",
+    "population": "Population",
     "outgoing": "Outgoing",
     "incoming": "Incoming",
     "allocations": "Allocations",
