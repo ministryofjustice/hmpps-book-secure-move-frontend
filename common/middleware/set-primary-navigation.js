@@ -48,6 +48,7 @@ function setPrimaryNavigation(req, res, next) {
     .filter(item => req.canAccess(item.permission))
     .filter(item => get(item, 'featureFlag', true))
     .map(item => omit(item, 'permission'))
+    .map(item => omit(item, 'featureFlag'))
 
   next()
 }

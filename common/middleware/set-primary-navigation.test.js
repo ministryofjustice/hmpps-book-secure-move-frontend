@@ -1,4 +1,12 @@
-const middleware = require('./set-primary-navigation')
+const proxyquire = require('proxyquire')
+
+const mockConfig = {
+  FEATURE_FLAGS: {},
+}
+
+const middleware = proxyquire('./set-primary-navigation', {
+  '../../config': mockConfig,
+})
 
 describe('#setPrimaryNavigation()', function () {
   let req, res, nextSpy
@@ -36,6 +44,7 @@ describe('#setPrimaryNavigation()', function () {
 
     describe('navigation items', function () {
       beforeEach(function () {
+        mockConfig.FEATURE_FLAGS.POPULATION_DASHBOARD = false
         middleware(req, res, nextSpy)
       })
 
@@ -225,6 +234,7 @@ describe('#setPrimaryNavigation()', function () {
 
   describe('permissions', function () {
     beforeEach(function () {
+      mockConfig.FEATURE_FLAGS.POPULATION_DASHBOARD = false
       req.canAccess.returns(true)
       middleware(req, res, nextSpy)
     })
@@ -249,8 +259,56 @@ describe('#setPrimaryNavigation()', function () {
       expect(req.canAccess).to.be.calledWithExactly('moves:view:incoming')
     })
 
+    it('should check for population permission', function () {
+      expect(req.canAccess).to.be.calledWithExactly('dashboard:view:population')
+    })
+
     it('should check for permissions correct number of times', function () {
-      expect(req.canAccess.callCount).to.equal(5)
+      expect(req.canAccess.callCount).to.equal(6)
+    })
+  })
+
+  describe('feature flags', function () {
+    context('with no feature flags used', function () {
+      it('should')
+    })
+    context('with feature flag enabled', function () {
+      beforeEach(function () {
+        mockConfig.FEATURE_FLAGS.POPULATION_DASHBOARD = true
+        req.canAccess.returns(true)
+        middleware(req, res, nextSpy)
+      })
+
+      it('should have the correct number of menu options', function () {
+        expect(res.locals.primaryNavigation.length).to.equal(6)
+      })
+
+      it('should include flagged menu options', function () {
+        expect(res.locals.primaryNavigation).to.deep.include({
+          text: req.t('primary_navigation.population'),
+          href: '/population',
+          active: req.path.startsWith('/population'),
+        })
+      })
+    })
+    context('with feature flag disabled', function () {
+      beforeEach(function () {
+        mockConfig.FEATURE_FLAGS.POPULATION_DASHBOARD = false
+        req.canAccess.returns(true)
+        middleware(req, res, nextSpy)
+      })
+
+      it('should have the correct number of menu options', function () {
+        expect(res.locals.primaryNavigation.length).to.equal(5)
+      })
+
+      it('should include flagged menu options', function () {
+        expect(res.locals.primaryNavigation).to.not.deep.include({
+          text: req.t('primary_navigation.population'),
+          href: '/population',
+          active: req.path.startsWith('/population'),
+        })
+      })
     })
   })
 })
