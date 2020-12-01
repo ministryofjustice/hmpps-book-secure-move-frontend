@@ -1,5 +1,7 @@
 const { find, kebabCase, omit } = require('lodash')
 
+const componentService = require('../services/component')
+
 const frameworkResponseToMetaListComponent = require('./framework-responses-to-meta-list-component')
 
 function frameworkSectionToPanelList({
@@ -51,42 +53,46 @@ function frameworkSectionToPanelList({
     const sectionStatus = find(personEscortRecord?.meta?.section_progress, {
       key: section.key,
     })?.status
+    const panels = tagList
+      // Filter tags to just this section
+      .filter(tag => tag.section === section.key)
+      // Return a meta list component for each tag
+      .map(tag => {
+        // Loop over each item to append question description
+        const flagsWithQuestionDescription = (flagsMap[tag.text] || []).map(
+          response => {
+            const { description } = questions[response.question.key]
+
+            return {
+              ...response,
+              question: {
+                ...response.question,
+                description,
+              },
+            }
+          }
+        )
+        const metaList = frameworkResponseToMetaListComponent(
+          flagsWithQuestionDescription
+        )
+
+        return {
+          // Remove link so that when displayed in the main
+          // body the tag isn't linked
+          tag: omit(tag, ['href']),
+          attributes: { id: kebabCase(tag.text) },
+          html: componentService.getComponent('appMetaList', metaList),
+        }
+      })
 
     const output = {
       key: section.key,
       name: section.name,
       url: `${personEscortRecordUrl}/${section.key}`,
       isCompleted: sectionStatus === 'completed',
-      panels: tagList
-        // Filter tags to just this section
-        .filter(tag => tag.section === section.key)
-        // Return a meta list component for each tag
-        .map(tag => {
-          // Loop over each item to append question description
-          const flagsWithQuestionDescription = (flagsMap[tag.text] || []).map(
-            response => {
-              const { description } = questions[response.question.key]
-
-              return {
-                ...response,
-                question: {
-                  ...response.question,
-                  description,
-                },
-              }
-            }
-          )
-
-          return {
-            // Remove link so that when displayed in the main
-            // body the tag isn't linked
-            tag: omit(tag, ['href']),
-            attributes: { id: kebabCase(tag.text) },
-            metaList: frameworkResponseToMetaListComponent(
-              flagsWithQuestionDescription
-            ),
-          }
-        }),
+      count: panels.length,
+      context: 'framework',
+      panels,
     }
 
     return output

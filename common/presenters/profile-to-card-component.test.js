@@ -369,7 +369,7 @@ describe('Presenters', function () {
 
           it('should translate inset text message', function () {
             expect(i18n.t).to.have.been.calledWithExactly(
-              'person-escort-record::flags.incomplete'
+              'assessment::incomplete'
             )
           })
         })
@@ -401,7 +401,7 @@ describe('Presenters', function () {
 
             it('should translate inset text message', function () {
               expect(i18n.t).to.have.been.calledWithExactly(
-                'person-escort-record::flags.incomplete'
+                'assessment::incomplete'
               )
             })
           })
@@ -432,7 +432,7 @@ describe('Presenters', function () {
 
             it('should translate inset text message', function () {
               expect(i18n.t).to.have.been.calledWithExactly(
-                'person-escort-record::flags.incomplete'
+                'assessment::incomplete'
               )
             })
           })
