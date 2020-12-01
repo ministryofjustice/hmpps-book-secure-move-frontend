@@ -32,6 +32,7 @@ const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
+const setServices = require('./common/middleware/set-services')
 const setUser = require('./common/middleware/set-user')
 const config = require('./config')
 const i18n = require('./config/i18n')
@@ -165,6 +166,9 @@ app.use(
   })
 )
 app.use(setLocations)
+
+// Set services
+app.use(setServices)
 
 // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
 app.use(
