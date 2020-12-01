@@ -8,7 +8,7 @@ function dashboard(req, res) {
     pagination,
     resultsAsPopulationTable,
     period,
-    currentWeek: dateRange,
+    dateRange,
   })
 }
 

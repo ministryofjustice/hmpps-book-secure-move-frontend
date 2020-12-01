@@ -84,8 +84,8 @@ describe('Population controllers', function () {
         })
 
         it('should set currentWeek', function () {
-          expect(params).to.have.property('currentWeek')
-          expect(params.currentWeek).to.deep.equal(mockReq.dateRange)
+          expect(params).to.have.property('dateRange')
+          expect(params.dateRange).to.deep.equal(mockReq.dateRange)
         })
       })
     })

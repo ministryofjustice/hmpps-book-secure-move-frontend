@@ -4,16 +4,7 @@
   {% if resultsAsPopulationTable | length  %}
     <div class="govuk-grid-row">
       <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-          {{ t("dashboard::population.heading") }}
-
-          <span class="govuk-!-display-block">
-              {{ currentWeek | formatDateRangeWithRelativeWeek }}
-            </span>
-        </h2>
-
         {{ govukTable(resultsAsPopulationTable) }}
-
       </section>
     </div>
   {% endif %}
