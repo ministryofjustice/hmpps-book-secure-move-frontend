@@ -51,7 +51,7 @@ See [components](./common/components/README.md) for more detail on how to struct
 
 Feature flags are used to hide large or complicated features until they are ready for release. This also de-reisks deployments by separating out deployment of code from enabling features.
 
-See [feature flags](./docs/feature-flags) for more details.
+See [feature flags](./docs/feature-flags.md) for more details.
 
 ## Releasing a new version & updating the Changelog
 
