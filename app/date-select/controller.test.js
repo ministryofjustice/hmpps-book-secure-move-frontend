@@ -4,7 +4,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 
 const DateSelectController = proxyquire('./controller', {
   '../../common/helpers/url': {
-    dateRegex: '\\w{3}-\\d{4}',
+    dateRegex: '\\d{2}-[A-Z][a-z]{2}-\\d{4}',
   },
 })
 
@@ -161,8 +161,8 @@ describe('Date select view controllers', function () {
     context('when called', function () {
       beforeEach(function () {
         req.sessionModel.toJSON.returns({
-          referrer: '/bar/foo-1234/outgoing',
-          date_select: 'stored-date',
+          referrer: '/bar/12-Aug-2020/outgoing',
+          date_select: '25-Dec-2020',
         })
         controller.successHandler(req, res, next)
       })
@@ -173,7 +173,7 @@ describe('Date select view controllers', function () {
 
       it('should redirect to the new date', function () {
         expect(res.redirect).to.be.calledOnceWithExactly(
-          '/bar/stored-date/outgoing'
+          '/bar/25-Dec-2020/outgoing'
         )
       })
     })
