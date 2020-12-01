@@ -16,7 +16,9 @@ describe('Date select view controllers', function () {
   let next
 
   beforeEach(function () {
+    sinon.stub(FormWizardController.prototype, 'middlewareChecks')
     sinon.stub(FormWizardController.prototype, 'get')
+    sinon.stub(controller, 'use')
     req = {
       query: {},
       sessionModel: {
@@ -38,11 +40,27 @@ describe('Date select view controllers', function () {
     next = sinon.stub()
   })
 
-  describe('#get', function () {
+  describe('#middlewareChecks', function () {
+    beforeEach(function () {
+      controller.middlewareChecks(req, res, next)
+    })
+    it('should call parent method', function () {
+      expect(FormWizardController.prototype.middlewareChecks).to.have.been
+        .calledOnce
+    })
+
+    it('should call checkReferrer middleware', function () {
+      expect(controller.use.firstCall).to.have.been.calledWith(
+        controller.checkReferrer
+      )
+    })
+  })
+
+  describe('#checkReferrer', function () {
     context('when called with a referrer', function () {
       beforeEach(function () {
         req.query.referrer = '/foo'
-        controller.get(req, res, next)
+        controller.checkReferrer(req, res, next)
       })
 
       it('should reset session model', function () {
@@ -66,7 +84,7 @@ describe('Date select view controllers', function () {
     context('when called without a referrer', function () {
       context('and a referrer has not been stored', function () {
         beforeEach(function () {
-          controller.get(req, res, next)
+          controller.checkReferrer(req, res, next)
         })
 
         it('should not reset session model', function () {
@@ -82,15 +100,15 @@ describe('Date select view controllers', function () {
           expect(res.redirect).to.be.calledOnceWithExactly('/')
         })
 
-        it('should not call the super method', function () {
-          expect(FormWizardController.prototype.get).to.not.be.called
+        it('should not call next', function () {
+          expect(next).to.not.be.called
         })
       })
 
       context('and a referrer has been stored', function () {
         beforeEach(function () {
           req.sessionModel.get.returns('/referrer')
-          controller.get(req, res, next)
+          controller.checkReferrer(req, res, next)
         })
 
         it('should not reset session model', function () {
@@ -102,15 +120,8 @@ describe('Date select view controllers', function () {
           expect(req.sessionModel.get).to.be.calledOnceWithExactly('referrer')
         })
 
-        it('should set the cancel and back links', function () {
-          expect(res.locals.cancelUrl).to.equal('/referrer')
-          expect(res.locals.backLink).to.equal('/referrer')
-        })
-
         it('should call the super method', function () {
-          expect(
-            FormWizardController.prototype.get
-          ).to.be.calledOnceWithExactly(req, res, next)
+          expect(next).to.be.calledOnceWithExactly()
         })
 
         it('should not redirect', function () {
@@ -120,8 +131,34 @@ describe('Date select view controllers', function () {
     })
   })
 
+  describe('#get', function () {
+    context('when called', function () {
+      beforeEach(function () {
+        req.sessionModel.get.returns('/referrer')
+        controller.get(req, res, next)
+      })
+
+      it('should get stored referrer', function () {
+        expect(req.sessionModel.get).to.be.calledOnceWithExactly('referrer')
+      })
+
+      it('should set the cancel and back links', function () {
+        expect(res.locals.cancelUrl).to.equal('/referrer')
+        expect(res.locals.backLink).to.equal('/referrer')
+      })
+
+      it('should call the super method', function () {
+        expect(FormWizardController.prototype.get).to.be.calledOnceWithExactly(
+          req,
+          res,
+          next
+        )
+      })
+    })
+  })
+
   describe('#successHandler', function () {
-    context('and a referrer exists', function () {
+    context('when called', function () {
       beforeEach(function () {
         req.sessionModel.toJSON.returns({
           referrer: '/bar/foo-1234/outgoing',
@@ -138,16 +175,6 @@ describe('Date select view controllers', function () {
         expect(res.redirect).to.be.calledOnceWithExactly(
           '/bar/stored-date/outgoing'
         )
-      })
-    })
-
-    context('and a referrer does not exist', function () {
-      beforeEach(function () {
-        controller.successHandler(req, res, next)
-      })
-
-      it('should redirect to the home page', function () {
-        expect(res.redirect).to.be.calledOnceWithExactly('/')
       })
     })
   })
