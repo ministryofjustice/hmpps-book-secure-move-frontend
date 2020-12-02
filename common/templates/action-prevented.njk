@@ -1,0 +1,41 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{- t("validation::page_title_prefix") }}: {{ pageTitle -}}
+{% endblock %}
+
+{% block beforeContent %}
+  {% if backLink %}
+    {{ govukBackLink({
+      text: t("actions::back"),
+      href: backLink
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% set contentHtml %}
+    {% if message %}
+      <p class="govuk-!-margin-top-4">
+        {{ message | safe }}
+      </p>
+    {% endif %}
+
+    {% if instruction %}
+      <p class="govuk-!-margin-top-2">
+        {{ instruction | safe }}
+      </p>
+    {% endif %}
+  {% endset %}
+
+  {{ appMessage({
+    focusOnload: true,
+    classes: "app-message--error",
+    title: {
+      text: pageTitle
+    },
+    content: {
+      html: contentHtml
+    }
+  }) }}
+{% endblock %}

@@ -1,5 +1,6 @@
 const moveService = require('../../../../common/services/move')
 const profileService = require('../../../../common/services/profile')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateSave = require('../create/save')
 
 const MixinProto = CreateSave.prototype
@@ -165,15 +166,36 @@ describe('Assign controllers', function () {
     describe('#errorHandler()', function () {
       let err
       let res = {}
-      const req = {}
+      let req = {}
       let next
+
       beforeEach(function () {
+        req = {
+          t: sinon.stub().returnsArg(0),
+          sessionModel: {
+            get: sinon
+              .stub()
+              .withArgs('person')
+              .returns({ fullname: 'DOE, JOHN' }),
+          },
+          move: {
+            id: '12345',
+            date: '2020-10-10',
+            allocation: {
+              to_location: {
+                title: 'BRIXTON',
+              },
+            },
+          },
+        }
         res = {
           render: sinon.stub(),
         }
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         sinon.stub(AssignBaseController.prototype, 'errorHandler')
         next = sinon.stub()
       })
+
       describe('When a move conflict error is thrown', function () {
         beforeEach(function () {
           err = {
@@ -194,10 +216,36 @@ describe('Assign controllers', function () {
         })
 
         it('should render the conflict page', function () {
-          expect(res.render).to.be.calledOnceWithExactly(
-            'move/views/assign/assign-conflict',
+          expect(res.render).to.be.calledOnceWithExactly('action-prevented', {
+            pageTitle: 'validation::assign_conflict.heading',
+            message: 'validation::assign_conflict.message',
+            instruction: 'validation::assign_conflict.instructions',
+          })
+        })
+
+        it('should translate page title', function () {
+          expect(req.t).to.have.been.calledWithExactly(
+            'validation::assign_conflict.heading'
+          )
+        })
+
+        it('should translate message', function () {
+          expect(req.t).to.have.been.calledWithExactly(
+            'validation::assign_conflict.message',
             {
-              existingMoveId: '__existing_id__',
+              href: '/move/__existing_id__',
+              name: 'DOE, JOHN',
+              location: 'BRIXTON',
+              date: '2020-10-10',
+            }
+          )
+        })
+
+        it('should translate instruction', function () {
+          expect(req.t).to.have.been.calledWithExactly(
+            'validation::assign_conflict.instructions',
+            {
+              assign_href: '/move/12345/assign',
             }
           )
         })

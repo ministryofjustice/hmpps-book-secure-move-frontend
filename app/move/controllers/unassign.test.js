@@ -145,6 +145,7 @@ describe('Move controllers', function () {
               },
             },
           },
+          t: sinon.stub().returnsArg(0),
         }
         res = {
           render: sinon.stub(),
@@ -171,18 +172,35 @@ describe('Move controllers', function () {
 
         statuses.forEach(status => {
           context(`with ${status} status`, function () {
-            it('should return next', function () {
+            beforeEach(function () {
               req.move.status = status
               controller.checkEligibility(req, res, next)
+            })
 
+            it('should render template', function () {
               expect(res.render).to.be.calledOnceWithExactly(
-                'move/views/unassign-ineligible',
+                'action-prevented',
                 {
-                  allocation: {
-                    id: 'ABCDE',
-                  },
-                  moveId: '12345',
-                  fullname: 'DOE, JOHN',
+                  backLink: '/allocation/ABCDE',
+                  pageTitle: 'validation::unassign_ineligible.heading',
+                  message: 'validation::unassign_ineligible.message',
+                  instruction: 'validation::unassign_ineligible.instructions',
+                }
+              )
+            })
+
+            it('should translate correctly', function () {
+              expect(req.t).to.be.calledWithExactly(
+                'validation::unassign_ineligible.heading'
+              )
+              expect(req.t).to.be.calledWithExactly(
+                'validation::unassign_ineligible.message'
+              )
+              expect(req.t).to.be.calledWithExactly(
+                'validation::unassign_ineligible.instructions',
+                {
+                  move_href: '/move/12345',
+                  name: 'DOE, JOHN',
                 }
               )
             })
@@ -199,16 +217,12 @@ describe('Move controllers', function () {
         })
 
         it('should return next', function () {
-          expect(res.render).to.be.calledOnceWithExactly(
-            'move/views/unassign-ineligible',
-            {
-              allocation: {
-                id: 'ABCDE',
-              },
-              moveId: '12345',
-              fullname: undefined,
-            }
-          )
+          expect(res.render).to.be.calledOnceWithExactly('action-prevented', {
+            backLink: '/allocation/ABCDE',
+            pageTitle: 'validation::unassign_ineligible.heading',
+            message: 'validation::unassign_ineligible.message',
+            instruction: 'validation::unassign_ineligible.instructions',
+          })
         })
       })
     })

@@ -1,7 +1,8 @@
-const { isEqual, keys, pick } = require('lodash')
+const { get, isEqual, keys, pick } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 
 class UpdateBaseController extends CreateBaseController {
@@ -136,6 +137,37 @@ class UpdateBaseController extends CreateBaseController {
         supplier,
       }),
     })
+  }
+
+  errorHandler(err, req, res, next) {
+    const apiErrorCode = get(err, 'errors[0].code')
+
+    if (err.statusCode === 422 && apiErrorCode === 'taken') {
+      const existingMoveId = get(err, 'errors[0].meta.existing_id')
+      const move = {
+        ...req.getMove(),
+        ...req.form.values,
+      }
+
+      return res.render('action-prevented', {
+        backLink: `/move/${move.id}`,
+        pageTitle: req.t('validation::move_conflict.heading', {
+          context: 'update',
+        }),
+        message: req.t('validation::move_conflict.message', {
+          context: 'update',
+          href: `/move/${existingMoveId}`,
+          name: move.profile.person.fullname,
+          date: filters.formatDateWithDay(move.date),
+        }),
+        instruction: req.t('validation::move_conflict.instructions', {
+          date_href: `/move/${move.id}/edit/move-date`,
+          location_href: `/move/${move.id}/edit/move-details`,
+        }),
+      })
+    }
+
+    super.errorHandler(err, req, res, next)
   }
 }
 

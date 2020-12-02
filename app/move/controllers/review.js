@@ -1,5 +1,5 @@
 const { differenceInCalendarDays, parseISO } = require('date-fns')
-const { pick, set } = require('lodash')
+const { get, pick, set } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
@@ -119,6 +119,33 @@ class ReviewController extends FormWizardController {
     } catch (error) {
       next(error)
     }
+  }
+
+  errorHandler(err, req, res, next) {
+    const apiErrorCode = get(err, 'errors[0].code')
+
+    if (err.statusCode === 422 && apiErrorCode === 'taken') {
+      const existingMoveId = get(err, 'errors[0].meta.existing_id')
+      const moveDate = req.sessionModel.get('move_date')
+
+      return res.render('action-prevented', {
+        pageTitle: req.t('validation::move_conflict.heading', {
+          context: 'review',
+        }),
+        message: req.t('validation::move_conflict.message', {
+          href: `/move/${existingMoveId}`,
+          name: req.move.profile.person.fullname,
+          location: req.move.to_location.title,
+          date: filters.formatDateWithDay(moveDate),
+        }),
+        instruction: req.t('validation::move_conflict.instructions', {
+          context: 'review',
+          date_href: '',
+        }),
+      })
+    }
+
+    super.errorHandler(err, req, res, next)
   }
 }
 

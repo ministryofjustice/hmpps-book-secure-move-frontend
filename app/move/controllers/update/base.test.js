@@ -3,6 +3,7 @@ const { cloneDeep } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
+const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
 
@@ -248,6 +249,147 @@ describe('Move controllers', function () {
 
       it('should add person model to req', function () {
         expect(req.models.person).to.deep.equal(mockSession.profile.person)
+      })
+    })
+
+    describe('#errorHandler()', function () {
+      let reqMock, resMock, errorMock, nextSpy
+
+      beforeEach(function () {
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+        sinon.stub(BaseProto, 'errorHandler')
+        nextSpy = sinon.spy()
+        errorMock = new Error()
+        reqMock = {
+          form: {
+            values: {
+              date: '2021-01-20',
+            },
+          },
+          t: sinon.stub().returnsArg(0),
+          getMove: sinon.stub().returns({
+            id: '12345',
+            to_location: {
+              title: 'BRIXTON',
+            },
+            profile: {
+              person: {
+                fullname: 'DOE, JOHN',
+              },
+            },
+          }),
+        }
+        resMock = {
+          render: sinon.spy(),
+        }
+      })
+
+      context('with non validation error', function () {
+        beforeEach(function () {
+          errorMock.statusCode = 500
+          controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+        })
+
+        it('should call parent error handler', function () {
+          expect(BaseProto.errorHandler).to.have.been.calledOnceWithExactly(
+            errorMock,
+            reqMock,
+            resMock,
+            nextSpy
+          )
+        })
+
+        it('should not render a template', function () {
+          expect(resMock.render).not.to.have.been.called
+        })
+      })
+
+      context('with validation error', function () {
+        const mockExistingMoveId = '_12345_'
+
+        beforeEach(function () {
+          errorMock.statusCode = 422
+        })
+
+        context('with `taken` error code', function () {
+          beforeEach(function () {
+            errorMock.errors = [
+              {
+                code: 'taken',
+                meta: {
+                  existing_id: mockExistingMoveId,
+                },
+              },
+            ]
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+          })
+
+          it('should not call parent error handler', function () {
+            expect(BaseProto.errorHandler).not.to.have.been.called
+          })
+
+          it('should render a template', function () {
+            expect(resMock.render).to.have.been.calledOnceWithExactly(
+              'action-prevented',
+              {
+                backLink: '/move/12345',
+                pageTitle: 'validation::move_conflict.heading',
+                message: 'validation::move_conflict.message',
+                instruction: 'validation::move_conflict.instructions',
+              }
+            )
+          })
+
+          it('should translate page title', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.heading',
+              {
+                context: 'update',
+              }
+            )
+          })
+
+          it('should translate message', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.message',
+              {
+                context: 'update',
+                href: '/move/_12345_',
+                name: 'DOE, JOHN',
+                date: '2021-01-20',
+              }
+            )
+          })
+
+          it('should translate instruction', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.instructions',
+              {
+                date_href: '/move/12345/edit/move-date',
+                location_href: '/move/12345/edit/move-details',
+              }
+            )
+          })
+        })
+
+        context('with any other error code', function () {
+          beforeEach(function () {
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+          })
+
+          it('should call parent error handler', function () {
+            expect(BaseProto.errorHandler).to.have.been.calledOnceWithExactly(
+              errorMock,
+              reqMock,
+              resMock,
+              nextSpy
+            )
+          })
+
+          it('should not render a template', function () {
+            expect(resMock.render).not.to.have.been.called
+          })
+        })
       })
     })
 

@@ -783,7 +783,6 @@ describe('Move controllers', function () {
         }
         nextSpy = sinon.stub()
 
-        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         sinon.stub(analytics, 'sendJourneyTime')
       })
 
@@ -857,12 +856,27 @@ describe('Move controllers', function () {
     })
 
     describe('#errorHandler()', function () {
-      let resMock, errorMock, nextSpy
+      let reqMock, resMock, errorMock, nextSpy
 
       beforeEach(function () {
+        sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         sinon.stub(BaseController.prototype, 'errorHandler')
         nextSpy = sinon.spy()
         errorMock = new Error()
+        reqMock = {
+          sessionModel: {
+            toJSON: sinon.stub().returns({
+              date: '2020-10-10',
+              person: {
+                fullname: 'DOE, JOHN',
+              },
+              to_location: {
+                title: 'BRIXTON',
+              },
+            }),
+          },
+          t: sinon.stub().returnsArg(0),
+        }
         resMock = {
           render: sinon.spy(),
         }
@@ -871,13 +885,18 @@ describe('Move controllers', function () {
       context('with non validation error', function () {
         beforeEach(function () {
           errorMock.statusCode = 500
-          controller.errorHandler(errorMock, {}, resMock, nextSpy)
+          controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
         })
 
         it('should call parent error handler', function () {
           expect(
             BaseController.prototype.errorHandler
-          ).to.have.been.calledOnceWithExactly(errorMock, {}, resMock, nextSpy)
+          ).to.have.been.calledOnceWithExactly(
+            errorMock,
+            reqMock,
+            resMock,
+            nextSpy
+          )
         })
 
         it('should not render a template', function () {
@@ -902,7 +921,7 @@ describe('Move controllers', function () {
                 },
               },
             ]
-            controller.errorHandler(errorMock, {}, resMock, nextSpy)
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
           })
 
           it('should not call parent error handler', function () {
@@ -913,9 +932,39 @@ describe('Move controllers', function () {
 
           it('should render a template', function () {
             expect(resMock.render).to.have.been.calledOnceWithExactly(
-              'move/views/create/save-conflict',
+              'action-prevented',
               {
-                existingMoveId: mockExistingMoveId,
+                pageTitle: 'validation::move_conflict.heading',
+                message: 'validation::move_conflict.message',
+                instruction: 'validation::move_conflict.instructions',
+              }
+            )
+          })
+
+          it('should translate page title', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.heading'
+            )
+          })
+
+          it('should translate message', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.message',
+              {
+                href: '/move/12345',
+                name: 'DOE, JOHN',
+                location: 'BRIXTON',
+                date: '2020-10-10',
+              }
+            )
+          })
+
+          it('should translate instruction', function () {
+            expect(reqMock.t).to.have.been.calledWithExactly(
+              'validation::move_conflict.instructions',
+              {
+                date_href: 'move-date/edit',
+                location_href: 'move-details/edit',
               }
             )
           })
@@ -923,7 +972,7 @@ describe('Move controllers', function () {
 
         context('with any other error code', function () {
           beforeEach(function () {
-            controller.errorHandler(errorMock, {}, resMock, nextSpy)
+            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
           })
 
           it('should call parent error handler', function () {
@@ -931,7 +980,7 @@ describe('Move controllers', function () {
               BaseController.prototype.errorHandler
             ).to.have.been.calledOnceWithExactly(
               errorMock,
-              {},
+              reqMock,
               resMock,
               nextSpy
             )
