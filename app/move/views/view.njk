@@ -1,7 +1,7 @@
 {% extends "layouts/two-column.njk" %}
 
 {% set additionalContainerClass = "sticky-sidebar-container" %}
-{% set name = (move.profile.person.fullname | upper) or t("awaiting_person") %}
+{% set name = (move.profile.person._fullname | upper) or t("awaiting_person") %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
@@ -357,9 +357,9 @@
           {{ name }}
         </h3>
 
-        {% if move.profile.person.image_url %}
+        {% if move.profile.person._image_url %}
           <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
-            <img src="{{ move.profile.person.image_url }}" alt="{{ name }}">
+            <img src="{{ move.profile.person._image_url }}" alt="{{ name }}">
           </div>
         {% endif %}
 

@@ -49,7 +49,7 @@ describe('Allocation controllers', function () {
             person: {
               first_names: 'John',
               last_name: 'Doe',
-              fullname: 'John Doe',
+              _fullname: 'John Doe',
             },
           },
         },
@@ -60,7 +60,7 @@ describe('Allocation controllers', function () {
             person: {
               first_names: 'Phil',
               last_name: 'Jones',
-              fullname: 'Phil Jones',
+              _fullname: 'Phil Jones',
             },
           },
         },
@@ -291,7 +291,7 @@ describe('Allocation controllers', function () {
               person: {
                 first_names: 'Phil',
                 last_name: 'Jones',
-                fullname: 'Phil Jones',
+                _fullname: 'Phil Jones',
               },
             },
             removeMoveHref: undefined,
@@ -301,7 +301,7 @@ describe('Allocation controllers', function () {
                 person: {
                   first_names: 'Phil',
                   last_name: 'Jones',
-                  fullname: 'Phil Jones',
+                  _fullname: 'Phil Jones',
                 },
               },
             },
@@ -312,7 +312,7 @@ describe('Allocation controllers', function () {
               person: {
                 first_names: 'John',
                 last_name: 'Doe',
-                fullname: 'John Doe',
+                _fullname: 'John Doe',
               },
             },
             removeMoveHref: undefined,
@@ -322,7 +322,7 @@ describe('Allocation controllers', function () {
                 person: {
                   first_names: 'John',
                   last_name: 'Doe',
-                  fullname: 'John Doe',
+                  _fullname: 'John Doe',
                 },
               },
             },

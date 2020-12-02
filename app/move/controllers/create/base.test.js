@@ -583,7 +583,7 @@ describe('Move controllers', function () {
         additional_information: 'Additional information',
         person: {
           first_names: 'Mr',
-          fullname: 'Benn, Mr',
+          _fullname: 'Benn, Mr',
           last_name: 'Benn',
         },
       }

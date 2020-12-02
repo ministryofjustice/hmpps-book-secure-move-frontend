@@ -157,7 +157,7 @@ class UpdateBaseController extends CreateBaseController {
         message: req.t('validation::move_conflict.message', {
           context: 'update',
           href: `/move/${existingMoveId}`,
-          name: move.profile.person.fullname,
+          name: move.profile.person._fullname,
           date: filters.formatDateWithDay(move.date),
         }),
         instruction: req.t('validation::move_conflict.instructions', {

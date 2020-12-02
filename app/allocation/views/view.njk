@@ -126,7 +126,7 @@
             {{ govukButton({
               href: "/move/" + move.id + "/unassign",
               html: t("actions::remove_person", {
-                name: move.profile.person.fullname
+                name: move.profile.person._fullname
               }),
               classes: "govuk-button--secondary"
             })}}

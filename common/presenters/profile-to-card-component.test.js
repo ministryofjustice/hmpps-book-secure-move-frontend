@@ -35,8 +35,8 @@ const mockProfile = {
   ],
   person: {
     id: '12345',
-    fullname: 'Name, Full',
-    image_url: '/path/to/image.jpg',
+    _fullname: 'Name, Full',
+    _image_url: '/path/to/image.jpg',
     date_of_birth: '2000-10-10',
     gender: {
       title: 'Male',
@@ -69,7 +69,7 @@ describe('Presenters', function () {
           it('should contain a title', function () {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
-              text: mockProfile.person.fullname.toUpperCase(),
+              text: mockProfile.person._fullname.toUpperCase(),
             })
           })
 
@@ -80,14 +80,14 @@ describe('Presenters', function () {
           it('should contain an image path', function () {
             expect(transformedResponse).to.have.property('image_path')
             expect(transformedResponse.image_path).to.equal(
-              mockProfile.person.image_url
+              mockProfile.person._image_url
             )
           })
 
           it('should contain image alt', function () {
             expect(transformedResponse).to.have.property('image_alt')
             expect(transformedResponse.image_alt).to.equal(
-              mockProfile.person.fullname.toUpperCase()
+              mockProfile.person._fullname.toUpperCase()
             )
           })
 

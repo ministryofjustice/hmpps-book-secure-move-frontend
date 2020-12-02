@@ -12,7 +12,7 @@
 {% block contentMain %}
   <p class="govuk-lede">
     {{ t("allocation::unassign.detail", {
-      name: person.fullname,
+      name: person._fullname,
       href: '/allocation/' + allocation.id,
       count: allocation.moves_count,
       from_location: move.from_location.title,

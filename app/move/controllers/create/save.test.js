@@ -20,7 +20,7 @@ const controller = new Controller({ route: '/' })
 
 const mockPerson = {
   id: '3333',
-  fullname: 'Full name',
+  _fullname: 'Full name',
 }
 const mockProfile = {
   id: '2222',
@@ -868,7 +868,7 @@ describe('Move controllers', function () {
             toJSON: sinon.stub().returns({
               date: '2020-10-10',
               person: {
-                fullname: 'DOE, JOHN',
+                _fullname: 'DOE, JOHN',
               },
               to_location: {
                 title: 'BRIXTON',

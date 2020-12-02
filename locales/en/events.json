@@ -28,7 +28,7 @@
   "incident_location_vehicle_false": "{{location.title}}",
   "incident_escaped": "$t(events::person) escaped from $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
   "no_events": "No events",
-  "person": "{{person.fullname, uppercase}}",
+  "person": "{{person._fullname, uppercase}}",
   "JourneyAdmitThroughOuterGate": {
     "heading": "Admitted through outer gate",
     "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{journey.to_location.title}}"

@@ -4,7 +4,7 @@ function frameworkOverview(req, res) {
   const { originalUrl, assessment = {}, move } = req
   const moveId = move?.id
   const profile = move?.profile || assessment.profile
-  const fullname = profile?.person?.fullname
+  const fullname = profile?.person?._fullname
   const taskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${originalUrl}/`,
     frameworkSections: assessment._framework?.sections,

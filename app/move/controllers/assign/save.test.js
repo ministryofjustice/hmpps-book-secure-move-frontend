@@ -176,7 +176,7 @@ describe('Assign controllers', function () {
             get: sinon
               .stub()
               .withArgs('person')
-              .returns({ fullname: 'DOE, JOHN' }),
+              .returns({ _fullname: 'DOE, JOHN' }),
           },
           move: {
             id: '12345',

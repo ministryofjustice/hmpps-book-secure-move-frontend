@@ -98,7 +98,7 @@ describe('Framework controllers', function () {
               },
               profile: {
                 person: {
-                  fullname: 'John Doe',
+                  _fullname: 'John Doe',
                 },
               },
             },
@@ -149,7 +149,7 @@ describe('Framework controllers', function () {
               id: '12345',
               profile: {
                 person: {
-                  fullname: 'James Stevens',
+                  _fullname: 'James Stevens',
                 },
               },
             },

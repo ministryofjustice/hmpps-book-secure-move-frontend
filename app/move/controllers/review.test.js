@@ -13,7 +13,7 @@ const controller = new ReviewController({ route: '/' })
 const mockMove = {
   id: '123456789',
   person: {
-    fullname: 'Full name',
+    _fullname: 'Full name',
   },
 }
 
@@ -661,7 +661,7 @@ describe('Move controllers', function () {
             },
             profile: {
               person: {
-                fullname: 'DOE, JOHN',
+                _fullname: 'DOE, JOHN',
               },
             },
           },

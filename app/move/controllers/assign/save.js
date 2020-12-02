@@ -45,7 +45,7 @@ class SaveController extends PersonAssignBase {
         pageTitle: req.t('validation::assign_conflict.heading'),
         message: req.t('validation::assign_conflict.message', {
           href: `/move/${existingMoveId}`,
-          name: person.fullname,
+          name: person._fullname,
           location: req.move.allocation.to_location.title,
           date: filters.formatDateWithDay(req.move.date),
         }),

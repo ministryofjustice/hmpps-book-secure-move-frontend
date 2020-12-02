@@ -22,8 +22,8 @@ function profileToCardComponent({
     const {
       id,
       gender,
-      fullname,
-      image_url: imageUrl,
+      _fullname: fullname,
+      _image_url: imageUrl,
       date_of_birth: dateOfBirth,
     } = person
     const card = {

@@ -19,8 +19,8 @@ describe('API Client', function () {
           id: '12345',
           first_names: 'Foo',
           last_name: 'Bar',
-          image_url: '/person/12345/image',
-          fullname: 'Bar, Foo',
+          _image_url: '/person/12345/image',
+          _fullname: 'Bar, Foo',
         })
       })
     })

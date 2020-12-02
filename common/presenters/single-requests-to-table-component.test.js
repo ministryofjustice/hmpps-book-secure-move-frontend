@@ -38,7 +38,7 @@ const mockMoves = [
           value: 'A5075DA',
         },
       ],
-      fullname: 'DOE, JOHN',
+      _fullname: 'DOE, JOHN',
     },
     from_location: {
       id: '54d1c8c3-699e-4198-9218-f923a7f18149',
@@ -83,7 +83,7 @@ const mockMoves = [
           value: 'A5075DY',
         },
       ],
-      fullname: 'DOE, JANE',
+      _fullname: 'DOE, JANE',
     },
     from_location: {
       id: '54d1c8c3-699e-4198-9218-f923a7f18149',
@@ -131,7 +131,7 @@ const mockApprovedMoves = [
           value: 'A5075DA',
         },
       ],
-      fullname: 'DOE, JOHN',
+      _fullname: 'DOE, JOHN',
     },
     from_location: {
       id: '54d1c8c3-699e-4198-9218-f923a7f18149',
