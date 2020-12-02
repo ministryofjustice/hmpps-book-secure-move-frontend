@@ -7,6 +7,7 @@ class DetailsController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setButtonText)
+    this.use(this.setCancelUrl)
   }
 
   setInitialValues(req, res, next) {
@@ -54,6 +55,16 @@ class DetailsController extends FormWizardController {
       ? 'actions::change_numbers'
       : 'actions::add_numbers'
     req.form.options.buttonText = req.form.options.buttonText || buttonText
+
+    next()
+  }
+
+  setCancelUrl(req, res, next) {
+    if (req.population) {
+      res.locals.cancelUrl = `/population/day/${req.date}/${req.locationId}`
+    } else {
+      res.locals.cancelUrl = `/population/week/${req.date}`
+    }
 
     next()
   }
