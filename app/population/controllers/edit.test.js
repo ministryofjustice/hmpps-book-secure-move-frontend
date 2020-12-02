@@ -67,8 +67,14 @@ describe('Population controllers', function () {
         ).to.have.been.calledWithExactly(controllerInstance.setButtonText)
       })
 
+      it('should call set cancel url method', function () {
+        expect(
+          controllerInstance.use.getCall(1)
+        ).to.have.been.calledWithExactly(controllerInstance.setCancelUrl)
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controllerInstance.use).to.be.callCount(1)
+        expect(controllerInstance.use).to.be.callCount(2)
       })
     })
     describe('setInitialValues', function () {
@@ -232,6 +238,40 @@ describe('Population controllers', function () {
         })
         it('should use add text', function () {
           expect(req.form.options.buttonText).to.equal('actions::add_numbers')
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+    })
+
+    describe('setCancelUrl', function () {
+      context('with an existing population', function () {
+        beforeEach(function () {
+          req.date = '2020-06-01'
+          req.locationId = 'ABADCAFE'
+          req.population = {}
+          controllerInstance.setCancelUrl(req, res, next)
+        })
+        it('should use change text', function () {
+          expect(res.locals.cancelUrl).to.equal(
+            '/population/day/2020-06-01/ABADCAFE'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+
+      context('with an new population', function () {
+        beforeEach(async function () {
+          req.date = '2020-06-01'
+          await controllerInstance.setCancelUrl(req, res, next)
+        })
+        it('should use add text', function () {
+          expect(res.locals.cancelUrl).to.equal('/population/week/2020-06-01')
         })
 
         it('should call next', function () {
