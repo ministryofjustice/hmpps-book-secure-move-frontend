@@ -14,6 +14,7 @@ const { dashboard, daily } = require('./controllers')
 const { editFields } = require('./fields')
 const {
   redirectBaseUrl,
+  setBreadcrumb,
   setPopulation,
   setResultsAsPopulationTable,
 } = require('./middleware')
@@ -37,7 +38,7 @@ const editConfig = {
 
 dailyRouter.use('/edit', wizard(editSteps, editFields, editConfig, 'wizardKey'))
 
-router.use(DAILY_PATH, dailyRouter)
+router.use(DAILY_PATH, setBreadcrumb, dailyRouter)
 
 router.get(
   BASE_PATH,
