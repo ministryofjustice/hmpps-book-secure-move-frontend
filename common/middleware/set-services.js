@@ -1,11 +1,19 @@
 const services = require('../services')
 
 const setServices = (req, res, next) => {
-  req.services = Object.keys(services).reduce((acc, serviceKey) => {
-    acc[serviceKey] = () => services[serviceKey]
+  const servicesCache = {}
+
+  const servicesWithReq = Object.keys(services).reduce((acc, serviceKey) => {
+    if (!servicesCache[serviceKey]) {
+      servicesCache[serviceKey] = services[serviceKey]
+    }
+
+    acc[serviceKey] = () => servicesCache[serviceKey]
 
     return acc
   }, {})
+
+  req.services = servicesWithReq
 
   next()
 }
