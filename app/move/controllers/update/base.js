@@ -15,7 +15,7 @@ class UpdateBaseController extends CreateBaseController {
     const move = req.move
     req.models.move = move
     req.models.profile = move.profile
-    req.models.person = move.profile.person
+    req.models.person = move.profile?.person
   }
 
   getBaseUrl(req) {
@@ -116,9 +116,7 @@ class UpdateBaseController extends CreateBaseController {
           ...newValues,
         }
 
-        const updatedMove = await moveService.update(data)
-        req.move = updatedMove
-        this._setModels(req)
+        await moveService.update(data)
         this.setFlash(req)
       }
 

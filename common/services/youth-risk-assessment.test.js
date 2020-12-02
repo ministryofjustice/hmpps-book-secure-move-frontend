@@ -123,7 +123,21 @@ describe('Services', function () {
         it('calls the api service', function () {
           expect(apiClient.find).to.have.been.calledOnceWithExactly(
             'youth_risk_assessment',
-            mockId
+            mockId,
+            {
+              include: [
+                'profile',
+                'profile.person',
+                'framework',
+                'responses',
+                'responses.question',
+                'responses.question.descendants.**',
+                'responses.nomis_mappings',
+                'flags',
+                'prefill_source',
+                'move',
+              ],
+            }
           )
         })
 

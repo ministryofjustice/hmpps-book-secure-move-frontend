@@ -236,9 +236,9 @@ const moveService = {
     return moveService._getById(id, { include, preserveResourceRefs: true })
   },
 
-  create(data) {
+  create(data, { include } = {}) {
     return apiClient
-      .create('move', moveService.format(data))
+      .create('move', moveService.format(data), { include })
       .then(response => response.data)
   },
 

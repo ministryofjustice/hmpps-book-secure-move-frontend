@@ -103,6 +103,7 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
         req = {
           getProfile: sinon.stub().returns(mockProfile),
+          getPerson: sinon.stub().returns(mockPerson),
           form: {
             values: {},
           },
@@ -128,7 +129,10 @@ describe('Move controllers', function () {
               reference: '',
               to_location: 'Court',
               from_location: 'Prison',
-              profile: mockProfile,
+              profile: {
+                ...mockProfile,
+                person: mockPerson,
+              },
             })
           })
 
@@ -139,6 +143,7 @@ describe('Move controllers', function () {
           it('should patch profile', function () {
             expect(profileService.update).to.be.calledOnceWithExactly({
               ...mockProfile,
+              person: mockPerson,
               assessment_answers: mockValues.assessment,
               documents: mockValues.documents,
             })
@@ -192,7 +197,10 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                profile: mockProfile,
+                profile: {
+                  ...mockProfile,
+                  person: mockPerson,
+                },
                 court_hearings: mockValuesWithHearings.court_hearings,
               })
             })
@@ -204,6 +212,7 @@ describe('Move controllers', function () {
             it('should patch profile', function () {
               expect(profileService.update).to.be.calledOnceWithExactly({
                 ...mockProfile,
+                person: mockPerson,
                 assessment_answers: mockValuesWithHearings.assessment,
                 documents: mockValuesWithHearings.documents,
               })
@@ -262,7 +271,10 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                profile: mockProfile,
+                profile: {
+                  ...mockProfile,
+                  person: mockPerson,
+                },
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
               })
@@ -778,6 +790,7 @@ describe('Move controllers', function () {
       context('by default', function () {
         const mockJourneyTimestamp = 12345
         const mockCurrentTimestamp = new Date('2017-08-10').getTime()
+        const mockFromLocationType = 'police'
 
         beforeEach(async function () {
           this.clock = sinon.useFakeTimers(mockCurrentTimestamp)
@@ -786,6 +799,8 @@ describe('Move controllers', function () {
           req.sessionModel.get
             .withArgs('journeyTimestamp')
             .returns(mockJourneyTimestamp)
+            .withArgs('from_location_type')
+            .returns(mockFromLocationType)
           await controller.successHandler(req, res, nextSpy)
         })
 
@@ -797,7 +812,7 @@ describe('Move controllers', function () {
           expect(analytics.sendJourneyTime).to.be.calledOnceWithExactly({
             utv: capitalize(req.form.options.name),
             utt: mockCurrentTimestamp - mockJourneyTimestamp,
-            utc: capitalize(mockMove.from_location.location_type),
+            utc: capitalize(mockFromLocationType),
           })
         })
 

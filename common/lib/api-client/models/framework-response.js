@@ -20,7 +20,4 @@ module.exports = {
       type: 'framework_nomis_mappings',
     },
   },
-  options: {
-    defaultInclude: [],
-  },
 }

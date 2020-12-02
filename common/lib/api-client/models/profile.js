@@ -18,7 +18,4 @@ module.exports = {
       type: 'youth_risk_assessments',
     },
   },
-  options: {
-    defaultInclude: ['person', 'documents'],
-  },
 }

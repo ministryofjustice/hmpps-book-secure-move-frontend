@@ -606,7 +606,7 @@ describe('Move controllers', function () {
         await controller.saveMove(req, res, nextSpy)
       })
 
-      it('should call savePerson with expected data', function () {
+      it('should not update move', function () {
         expect(moveService.update).to.not.be.called
       })
 
@@ -621,15 +621,10 @@ describe('Move controllers', function () {
 
     context('when the values have changed', function () {
       const updatedMove = { id: '#updated' }
-      let updatedRequest
+
       beforeEach(async function () {
-        updatedRequest = {
-          ...req,
-          move: updatedMove,
-        }
-        sinon.stub(controller, '_setModels')
         moveService.update.resolves(updatedMove)
-        await controller.saveMove({ ...req }, res, nextSpy)
+        await controller.saveMove(req, res, nextSpy)
       })
 
       it('should call savePerson with expected data', function () {
@@ -640,14 +635,8 @@ describe('Move controllers', function () {
         })
       })
 
-      it('should update the move models', function () {
-        expect(controller._setModels).to.be.calledOnceWithExactly(
-          updatedRequest
-        )
-      })
-
       it('should set the confirmation message', function () {
-        expect(controller.setFlash).to.be.calledOnceWithExactly(updatedRequest)
+        expect(controller.setFlash).to.be.calledOnceWithExactly(req)
       })
 
       it('should invoke next with no error', function () {

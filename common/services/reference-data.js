@@ -3,6 +3,9 @@ const { flattenDeep, sortBy } = require('lodash')
 const apiClient = require('../lib/api-client')()
 const restClient = require('../lib/api-client/rest-client')
 
+const locationInclude = ['suppliers']
+const regionInclude = ['locations']
+
 const referenceDataService = {
   getGenders() {
     return apiClient.findAll('gender').then(response => response.data)
@@ -20,13 +23,13 @@ const referenceDataService = {
       .then(response => response.data)
   },
 
-  getLocations({ filter, combinedData, page = 1, include } = {}) {
+  getLocations({ filter, combinedData, page = 1 } = {}) {
     return apiClient
       .findAll('location', {
         ...filter,
         page,
         per_page: 100,
-        include,
+        include: locationInclude,
       })
       .then(response => {
         const { data, links } = response
@@ -44,18 +47,17 @@ const referenceDataService = {
           filter,
           page: page + 1,
           combinedData: locations,
-          include,
         })
       })
   },
 
-  getLocationById(id, { include } = {}) {
+  getLocationById(id) {
     if (!id) {
       return Promise.reject(new Error('No location ID supplied'))
     }
 
     return apiClient
-      .find('location', id, { include })
+      .find('location', id, { include: locationInclude })
       .then(response => response.data)
   },
 
@@ -98,19 +100,19 @@ const referenceDataService = {
     return locations
   },
 
-  getRegionById(id, { include } = {}) {
+  getRegionById(id) {
     if (!id) {
       return Promise.reject(new Error('No region ID supplied'))
     }
 
     return apiClient
-      .find('region', id, { include })
+      .find('region', id, { include: regionInclude })
       .then(response => response.data)
   },
 
   getRegions({ page = 1, combinedData } = {}) {
     return apiClient
-      .findAll('region', { page, per_page: 100 })
+      .findAll('region', { include: regionInclude, page, per_page: 100 })
       .then(response => {
         const { data, links } = response
         const regions = combinedData

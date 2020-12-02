@@ -32,18 +32,6 @@ module.exports = {
     },
   },
   options: {
-    defaultInclude: [
-      'profile',
-      'profile.person',
-      'framework',
-      'responses',
-      'responses.question',
-      'responses.question.descendants.**',
-      'responses.nomis_mappings',
-      'flags',
-      'prefill_source',
-      'move',
-    ],
     deserializer: transformResource(assessmentTransformer),
   },
 }

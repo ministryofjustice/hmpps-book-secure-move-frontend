@@ -132,7 +132,6 @@ const allocationService = {
     fromLocations = [],
     toLocations = [],
     locations = [],
-    include = ['from_location', 'to_location'],
     isAggregation = false,
     status,
     sortBy,
@@ -142,7 +141,7 @@ const allocationService = {
 
     return allocationService.getAll({
       isAggregation,
-      include,
+      include: ['from_location', 'to_location'],
       // TODO: This can be removed once move count and progress are returned
       // by the API as resouce meta
       includeCancelled: status ? status.includes('cancelled') : false,
@@ -165,7 +164,17 @@ const allocationService = {
       'locations',
     ])
   },
-  getById(id, { include } = {}) {
+  getById(id) {
+    const include = [
+      'from_location',
+      'moves',
+      'moves.profile',
+      'moves.profile.person',
+      'moves.profile.person.ethnicity',
+      'moves.profile.person.gender',
+      'to_location',
+    ]
+
     return apiClient
       .find('allocation', id, { include })
       .then(response => response.data)

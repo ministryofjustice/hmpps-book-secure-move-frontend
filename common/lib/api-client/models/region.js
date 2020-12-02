@@ -12,6 +12,5 @@ module.exports = {
   options: {
     cache: true,
     collectionPath: 'reference/regions',
-    defaultInclude: ['locations'],
   },
 }

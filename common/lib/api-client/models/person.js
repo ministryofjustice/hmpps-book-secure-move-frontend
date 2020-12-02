@@ -29,7 +29,6 @@ module.exports = {
     },
   },
   options: {
-    defaultInclude: ['ethnicity', 'gender'],
     deserializer: transformResource(personTransformer),
   },
 }

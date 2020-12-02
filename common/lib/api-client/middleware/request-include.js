@@ -1,5 +1,3 @@
-const { get } = require('lodash')
-
 module.exports = {
   name: 'request-include',
   req: function req(payload = {}) {
@@ -7,13 +5,9 @@ module.exports = {
       return payload
     }
 
-    const { req, jsonApi = {} } = payload
-    const defaultInclude = get(
-      jsonApi,
-      `models.${req.model}.options.defaultInclude`
-    )
+    const { req } = payload
 
-    let include = req.params.include || defaultInclude
+    let include = req.params.include
 
     if (Array.isArray(include)) {
       include = include.sort().join(',')

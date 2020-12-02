@@ -21,10 +21,6 @@ const mockPerson = {
 }
 
 describe('Person Service', function () {
-  describe('default include', function () {
-    expect(personService.defaultInclude).to.deep.equal(['ethnicity', 'gender'])
-  })
-
   describe('#format()', function () {
     context('when relationship field is string', function () {
       let formatted
@@ -193,9 +189,7 @@ describe('Person Service', function () {
     })
 
     it('should call create method with data', function () {
-      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData, {
-        include: personService.defaultInclude,
-      })
+      expect(apiClient.create).to.be.calledOnceWithExactly('person', mockData)
     })
 
     it('should format data', function () {
@@ -267,7 +261,7 @@ describe('Person Service', function () {
     })
     it('should call find method with data', function () {
       expect(personService._getById).to.be.calledOnceWithExactly(mockId, {
-        include: personService.defaultInclude,
+        include: ['ethnicity', 'gender'],
       })
     })
     it('should return person', function () {
@@ -326,13 +320,7 @@ describe('Person Service', function () {
       })
 
       it('should call update method with data', function () {
-        expect(apiClient.update).to.be.calledOnceWithExactly(
-          'person',
-          mockData,
-          {
-            include: personService.defaultInclude,
-          }
-        )
+        expect(apiClient.update).to.be.calledOnceWithExactly('person', mockData)
       })
 
       it('should format data', function () {
@@ -527,7 +515,7 @@ describe('Person Service', function () {
 
       it('should call findAll method with empty object', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
-          include: personService.defaultInclude,
+          include: ['gender'],
         })
       })
 
@@ -548,7 +536,7 @@ describe('Person Service', function () {
         expect(apiClient.findAll).to.be.calledOnceWithExactly('person', {
           'filter[filterOne]': 'filter-one-value',
           'filter[filterTwo]': 'filter-two-value',
-          include: personService.defaultInclude,
+          include: ['gender'],
         })
       })
 

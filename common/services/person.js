@@ -5,16 +5,10 @@ const apiClient = require('../lib/api-client')()
 const unformat = require('./person/person.unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']
-
 const dateKeys = ['date_of_birth']
-
 const noPersonIdMessage = 'No person ID supplied'
 
-const defaultInclude = ['ethnicity', 'gender']
-
 const personService = {
-  defaultInclude,
-
   format(data) {
     const formatted = mapValues(data, (value, key) => {
       if (typeof value === 'string') {
@@ -41,9 +35,8 @@ const personService = {
   },
 
   create(data) {
-    const include = personService.defaultInclude
     return apiClient
-      .create('person', personService.format(data), { include })
+      .create('person', personService.format(data))
       .then(response => response.data)
   },
 
@@ -52,9 +45,8 @@ const personService = {
       return
     }
 
-    const include = personService.defaultInclude
     return apiClient
-      .update('person', personService.format(data), { include })
+      .update('person', personService.format(data))
       .then(response => response.data)
   },
 
@@ -67,8 +59,7 @@ const personService = {
   },
 
   getById(id) {
-    const include = personService.defaultInclude
-    return personService._getById(id, { include })
+    return personService._getById(id, { include: ['ethnicity', 'gender'] })
   },
 
   getCategory(id) {
@@ -123,10 +114,9 @@ const personService = {
   },
 
   getByIdentifiers(identifiers) {
-    const include = personService.defaultInclude
     const filter = {
       ...mapKeys(identifiers, (value, key) => `filter[${key}]`),
-      include,
+      include: ['gender'],
     }
 
     return apiClient.findAll('person', filter).then(response => response.data)

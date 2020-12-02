@@ -10,7 +10,4 @@ module.exports = {
       type: 'locations',
     },
   },
-  options: {
-    defaultInclude: ['location'],
-  },
 }

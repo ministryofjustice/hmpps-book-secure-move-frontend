@@ -14,6 +14,5 @@ module.exports = {
   options: {
     cache: true,
     collectionPath: 'reference/locations',
-    defaultInclude: ['suppliers'],
   },
 }
