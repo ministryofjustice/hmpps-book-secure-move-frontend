@@ -21,6 +21,7 @@ class MovesDashboardPage extends Page {
         thisWeekLink: Selector('.app-pagination__list-item a').withText(
           'This week'
         ),
+        dateSelectLink: Selector('[data-pagination-action="date-select"] a'),
         nextLink: Selector('.app-pagination__list-item--next a'),
       },
     }

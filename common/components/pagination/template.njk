@@ -24,7 +24,7 @@
     {% endif %}
 
     {% for item in params.items %}
-      <li class="app-pagination__list-item">
+      <li class="app-pagination__list-item {{- ' ' + item.classes if item.classes}}"  {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
         <a href="{{ item.href }}" class="app-pagination__link">
           <span class="app-pagination__link-title">
             <span class="app-pagination__link-text">{{ item.text }}</span>

@@ -1,6 +1,6 @@
 const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
-const { map, fromPairs, forEach, mapKeys } = require('lodash')
+const { fromPairs, forEach, mapKeys } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 
@@ -135,20 +135,7 @@ class BaseController extends Controller {
   getErrors(req, res) {
     const errors = super.getErrors(req, res)
     const { fields } = req.form.options
-    const errorList = map(errors, error => {
-      return {
-        html: fieldHelpers.getFieldErrorMessage({
-          ...fields[error.key],
-          ...error,
-        }),
-        href: `#${fields[error.key].id}`,
-      }
-    })
-
-    return {
-      ...errors,
-      errorList,
-    }
+    return fieldHelpers.addErrorListToErrors(errors, fields)
   }
 
   errorHandler(err, req, res, next) {
