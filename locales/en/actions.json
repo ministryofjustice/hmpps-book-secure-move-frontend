@@ -49,5 +49,7 @@
   "confirm_and_complete_record": "Confirm and complete record",
   "add_item": "Add {{name}}",
   "add_item_with_items": "Add another {{name}}",
-  "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>"
+  "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
+  "add_numbers": "Add numbers",
+  "change_numbers": "Change numbers"
 }

@@ -4,6 +4,11 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const populationService = require('../../../common/services/population')
 
 class DetailsController extends FormWizardController {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setButtonText)
+  }
+
   setInitialValues(req, res, next) {
     if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
       const values = omit(req.population, ['moves_from', 'moves_to'])
@@ -42,6 +47,15 @@ class DetailsController extends FormWizardController {
     } catch (err) {
       next(err)
     }
+  }
+
+  setButtonText(req, res, next) {
+    const buttonText = req.population
+      ? 'actions::change_numbers'
+      : 'actions::add_numbers'
+    req.form.options.buttonText = req.form.options.buttonText || buttonText
+
+    next()
   }
 }
 module.exports = DetailsController
