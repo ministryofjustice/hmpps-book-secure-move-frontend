@@ -35,7 +35,7 @@ class UnassignController extends FormWizardController {
       message: req.t('validation::unassign_ineligible.message'),
       instruction: req.t('validation::unassign_ineligible.instructions', {
         move_href: `/move/${id}`,
-        name: profile?.person?.fullname,
+        name: profile?.person?._fullname,
       }),
     })
   }

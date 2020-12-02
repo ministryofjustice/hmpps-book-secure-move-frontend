@@ -22,14 +22,14 @@ function profileToCardComponent({
     const {
       id,
       gender,
-      fullname,
-      image_url: imageUrl,
+      _fullname: fullname,
+      _image_url: imageUrl,
       date_of_birth: dateOfBirth,
     } = person
     const card = {
       href,
       title: {
-        text: fullname ? fullname.toUpperCase() : i18n.t('awaiting_person'),
+        text: fullname || i18n.t('awaiting_person'),
       },
     }
 
@@ -85,9 +85,7 @@ function profileToCardComponent({
 
     if (showImage) {
       card.image_path = imageUrl
-      card.image_alt = fullname
-        ? fullname.toUpperCase()
-        : i18n.t('awaiting_person')
+      card.image_alt = fullname || i18n.t('awaiting_person')
     }
 
     return card

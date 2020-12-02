@@ -274,7 +274,7 @@ describe('Move controllers', function () {
             },
             profile: {
               person: {
-                fullname: 'DOE, JOHN',
+                _fullname: 'DOE, JOHN',
               },
             },
           }),

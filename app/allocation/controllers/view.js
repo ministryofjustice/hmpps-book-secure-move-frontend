@@ -47,7 +47,7 @@ function viewAllocation(req, res) {
     addedCount: movesWithProfile.length,
     moves: sortBy(
       moves.filter(removeUnassignedMoves),
-      'profile.person.fullname'
+      'profile.person._fullname'
     )
       .reverse()
       .map(move => ({

@@ -134,7 +134,7 @@ class ReviewController extends FormWizardController {
         }),
         message: req.t('validation::move_conflict.message', {
           href: `/move/${existingMoveId}`,
-          name: req.move.profile.person.fullname,
+          name: req.move.profile.person._fullname,
           location: req.move.to_location.title,
           date: filters.formatDateWithDay(moveDate),
         }),

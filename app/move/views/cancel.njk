@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block innerPageTitle %}
-  {{ t("moves::cancel.page_title", { name: move.profile.person.fullname | upper }) }}
+  {{ t("moves::cancel.page_title", { name: move.profile.person._fullname }) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -21,7 +21,7 @@
   {% if move.status != "proposed" %}
     {{ govukWarningText({
       html: t("moves::cancel.warning", {
-        name: move.profile.person.fullname | upper
+        name: move.profile.person._fullname
       }),
       iconFallbackText: "Warning"
     }) }}

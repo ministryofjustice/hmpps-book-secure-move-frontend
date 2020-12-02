@@ -8,7 +8,7 @@ const mockMove = {
   status: 'requested',
   profile: {
     person: {
-      fullname: 'Name, Full',
+      _fullname: 'Name, Full',
     },
   },
 }

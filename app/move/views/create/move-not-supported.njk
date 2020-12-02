@@ -1,7 +1,7 @@
 {% extends "layouts/action-prevented.njk" %}
 
 {% set actionPreventedTitle = t("validation::move_not_supported.heading", {
-  name: person.fullname
+  name: person._fullname
 }) %}
 
 {% set actionPreventedMessage = t("validation::move_not_supported.message", {

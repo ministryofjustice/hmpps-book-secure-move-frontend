@@ -28,8 +28,8 @@ function printRecord(req, res) {
   const moveId = move?.id
   const pickupLocation = move?.from_location?.title
   const moveType = move?.move_type
-  const fullname = profile?.person?.fullname
-  const imageUrl = profile?.person?.image_url
+  const fullname = profile?.person?._fullname
+  const imageUrl = profile?.person?._image_url
   const moveSummary = presenters.moveToSummaryListComponent(move)
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     profile?.person

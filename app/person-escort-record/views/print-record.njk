@@ -15,7 +15,7 @@
 {% block pageTitle %}
   {{ t("person-escort-record::page_title", {
     context: "with_name",
-    name: fullname | upper
+    name: fullname
   }) }}
   – {{ SERVICE_NAME }}
 {% endblock %}
@@ -112,7 +112,7 @@
         <div class="app-!-float-left govuk-grid-column-three-quarters-at-mobile">
           <header class="govuk-!-margin-bottom-4">
             <h1 class="govuk-heading-l govuk-!-margin-bottom-0">
-              {{ fullname | upper }}
+              {{ fullname }}
             </h1>
             <span class="govuk-caption-l">
               {{ t("moves::move_reference", {

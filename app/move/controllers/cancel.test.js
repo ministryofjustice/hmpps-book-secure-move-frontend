@@ -9,7 +9,7 @@ const mockMove = {
   id: '123456789',
   profile: {
     person: {
-      fullname: 'Full name',
+      _fullname: 'Full name',
     },
   },
 }

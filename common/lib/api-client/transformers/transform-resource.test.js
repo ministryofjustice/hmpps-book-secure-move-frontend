@@ -70,9 +70,8 @@ describe('API Client', function () {
         let transformer
 
         beforeEach(function () {
-          transformer = sinon.stub().returns({
-            ...item,
-            _fizz: 'buzz',
+          transformer = sinon.stub().callsFake(data => {
+            data._fizz = 'buzz'
           })
 
           _this.models.book.options.deserializer = transformer
@@ -93,11 +92,12 @@ describe('API Client', function () {
           })
         })
 
-        it('should not mutate original item', function () {
+        it('should mutate original item', function () {
           expect(item).to.deep.equal({
             id: '12345',
             type: 'book',
             foo: 'bar',
+            _fizz: 'buzz',
           })
         })
 
@@ -105,23 +105,6 @@ describe('API Client', function () {
           expect(_this.deserialize.resource).to.have.been.calledWithExactly(
             item,
             included
-          )
-        })
-
-        it('should remove item from devour cache', function () {
-          expect(_this.deserialize.cache._cache).to.deep.equal([])
-        })
-
-        it('should set devour cache', function () {
-          expect(_this.deserialize.cache.set).to.have.been.calledWithExactly(
-            'book',
-            '12345',
-            {
-              id: '12345',
-              type: 'book',
-              foo: 'bar',
-              _fizz: 'buzz',
-            }
           )
         })
 
