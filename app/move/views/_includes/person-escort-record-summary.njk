@@ -5,26 +5,11 @@
     </h2>
 
     {% if assessment.isCompleted %}
-      {% for panel in assessment.panels %}
-        {% call appPanel(panel) %}
-          {{ appMetaList(panel.metaList) }}
-        {% endcall %}
-      {% else %}
-        {{ appMessage({
-          classes: "app-message--muted govuk-!-margin-top-2",
-          allowDismiss: false,
-          content: {
-            html: t("person-escort-record::flags.empty", {
-              name: assessment.name,
-              url: assessment.url
-            })
-          }
-        }) }}
-      {% endfor %}
+      {{ renderAssessmentComponent(assessment) }}
     {% else %}
       {{ govukInsetText({
         classes: "govuk-inset-text--compact govuk-!-margin-0",
-        text: t("person-escort-record::flags.section_incomplete")
+        text: t("assessment::section_incomplete")
       }) }}
     {% endif %}
 
@@ -36,7 +21,9 @@
       {{ govukDetails({
         html: html,
         classes: "govuk-!-font-size-16 govuk-!-margin-top-2",
-        summaryText: t("person-escort-record::flags.information_provided_when_requested")
+        summaryText: t("assessment::view_previous_assessment", {
+          context: assessment.previousAssessment.context
+        })
       }) }}
     {% endif %}
 

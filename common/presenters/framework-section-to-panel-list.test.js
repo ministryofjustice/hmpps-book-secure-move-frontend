@@ -1,5 +1,7 @@
 const proxyquire = require('proxyquire')
 
+const componentService = require('../services/component')
+
 const frameworkResponseToMetaListComponentStub = sinon
   .stub()
   .returns('__frameworkResponseToMetaListComponent__')
@@ -293,6 +295,8 @@ const expectedOutput = {
   key: 'risk-information',
   isCompleted: true,
   name: 'Risk information',
+  count: 3,
+  context: 'framework',
   url:
     '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information',
   panels: [
@@ -306,7 +310,7 @@ const expectedOutput = {
       attributes: {
         id: 'concealed-items',
       },
-      metaList: '__frameworkResponseToMetaListComponent__',
+      html: 'appMetaList',
     },
     {
       tag: {
@@ -318,7 +322,7 @@ const expectedOutput = {
       attributes: {
         id: 'escape',
       },
-      metaList: '__frameworkResponseToMetaListComponent__',
+      html: 'appMetaList',
     },
     {
       tag: {
@@ -330,7 +334,7 @@ const expectedOutput = {
       attributes: {
         id: 'hold-separately',
       },
-      metaList: '__frameworkResponseToMetaListComponent__',
+      html: 'appMetaList',
     },
   ],
 }
@@ -342,6 +346,7 @@ describe('Presenters', function () {
     let output
 
     beforeEach(function () {
+      sinon.stub(componentService, 'getComponent').returnsArg(0)
       frameworkResponseToMetaListComponentStub.resetHistory()
     })
 
@@ -356,6 +361,8 @@ describe('Presenters', function () {
           isCompleted: false,
           name: 'Risk information',
           panels: [],
+          count: 0,
+          context: 'framework',
           url: '/risk-information',
         })
       })
@@ -366,8 +373,16 @@ describe('Presenters', function () {
         output = presenter(mockArgs)(mockSection)
       })
 
-      it('should return no output', function () {
+      it('should return output', function () {
         expect(output).to.deep.equal(expectedOutput)
+      })
+
+      it('should call component service', function () {
+        expect(componentService.getComponent).to.have.been.calledWithExactly(
+          'appMetaList',
+          '__frameworkResponseToMetaListComponent__'
+        )
+        expect(componentService.getComponent).to.have.been.calledThrice
       })
 
       it('should call meta list presenter', function () {
