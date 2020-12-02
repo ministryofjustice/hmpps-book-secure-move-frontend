@@ -1,6 +1,8 @@
 const proxyquire = require('proxyquire')
 const mockPopulationService = {}
 
+const FormWizardController = require('../../../common/controllers/form-wizard')
+
 const Controller = proxyquire('./edit', {
   '../../../common/services/population': mockPopulationService,
 })
@@ -38,6 +40,7 @@ describe('Population controllers', function () {
       }
       res = {
         redirect: sinon.fake(),
+        locals: {},
       }
 
       next = sinon.fake()
@@ -45,6 +48,29 @@ describe('Population controllers', function () {
       controllerInstance = new Controller({ route: '/' })
     })
 
+    describe('middlewareLocals', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controllerInstance, 'use')
+
+        controllerInstance.middlewareLocals()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set button text method', function () {
+        expect(
+          controllerInstance.use.getCall(0)
+        ).to.have.been.calledWithExactly(controllerInstance.setButtonText)
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controllerInstance.use).to.be.callCount(1)
+      })
+    })
     describe('setInitialValues', function () {
       context('on first page visit', function () {
         beforeEach(async function () {
@@ -179,6 +205,37 @@ describe('Population controllers', function () {
           expect(req.journeyModel.reset).not.to.have.been.called
           expect(req.sessionModel.reset).not.to.have.been.called
           expect(next).to.have.been.calledWith(error)
+        })
+      })
+    })
+
+    describe('setButtonText', function () {
+      context('with an existing population', function () {
+        beforeEach(function () {
+          req.population = {}
+          controllerInstance.setButtonText(req, res, next)
+        })
+        it('should use change text', function () {
+          expect(req.form.options.buttonText).to.equal(
+            'actions::change_numbers'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+
+      context('with an new population', function () {
+        beforeEach(async function () {
+          await controllerInstance.setButtonText(req, res, next)
+        })
+        it('should use add text', function () {
+          expect(req.form.options.buttonText).to.equal('actions::add_numbers')
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
         })
       })
     })
