@@ -105,7 +105,7 @@
   </form>
 {% endblock %}
 
-{% set sidebarHeading = sidebarHeading or (person._fullname | upper) or t("awaiting_person") %}
+{% set sidebarHeading = sidebarHeading or person._fullname or t("awaiting_person") %}
 
 {% block contentSidebar %}
   {% if person.id or move.id and not options.hideSidebar %}
@@ -118,7 +118,7 @@
 
           {% if person._image_url %}
             <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
-              <img src="{{ person._image_url }}" alt="{{ person._fullname | upper }}">
+              <img src="{{ person._image_url }}" alt="{{ person._fullname }}">
             </div>
           {% endif %}
 

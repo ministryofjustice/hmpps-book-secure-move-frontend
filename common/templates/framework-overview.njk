@@ -7,7 +7,7 @@
 {% block pageTitle %}
   {{ t("person-escort-record::page_title", {
     context: "with_name",
-    name: fullname | upper
+    name: fullname
   }) }} – {{ SERVICE_NAME }}
 {% endblock %}
 
@@ -31,7 +31,7 @@
         }) }}
       </span>
       <h1 class="govuk-heading-xl">
-        {{ fullname | upper }}
+        {{ fullname }}
       </h1>
     </div>
   </header>

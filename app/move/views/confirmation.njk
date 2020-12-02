@@ -7,7 +7,7 @@
 {% block pageTitle %}
   {{ t("moves::confirmation.page_title", {
     context: "assign" if move.allocation else move.status,
-    name: move.profile.person._fullname | upper
+    name: move.profile.person._fullname
   }) }}
 {% endblock %}
 
@@ -44,7 +44,7 @@
           count: move.allocation.moves_count,
           href: "/move/" + move.id,
           allocationHref: "/allocation/" + move.allocation.id,
-          name: move.profile.person._fullname | upper,
+          name: move.profile.person._fullname,
           location: location,
           date: move.date | formatDateWithDay,
           supplier: move.supplier.name or t("supplier_fallback")
@@ -63,7 +63,7 @@
       {% if savedHearings|length %}
         {{ govukInsetText({
           html: t("moves::confirmation.saved_to_nomis", {
-            name: move.profile.person._fullname | upper,
+            name: move.profile.person._fullname,
             date: move.date | formatDateWithDay,
             cases: savedHearings | oxfordJoin,
             count: savedHearings.length
