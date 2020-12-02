@@ -5,7 +5,7 @@ const transformer = require('./assessment.transformer')
 describe('API Client', function () {
   describe('Transformers', function () {
     describe('#assessmentTransformer', function () {
-      let output, item, mockFramework
+      let item, mockFramework
 
       beforeEach(function () {
         mockFramework = {
@@ -24,7 +24,7 @@ describe('API Client', function () {
               version: '1.1.0',
             },
           }
-          output = transformer(item)
+          transformer(item)
         })
 
         it('should get correct framework', function () {
@@ -37,8 +37,12 @@ describe('API Client', function () {
         })
 
         it('should add custom properties', function () {
-          expect(output).to.deep.equal({
-            ...item,
+          expect(item).to.deep.equal({
+            id: '12345',
+            framework: {
+              name: 'framework-name',
+              version: '1.1.0',
+            },
             _framework: mockFramework,
           })
         })
@@ -49,7 +53,7 @@ describe('API Client', function () {
           item = {
             id: '12345',
           }
-          output = transformer(item)
+          transformer(item)
         })
 
         it('should not get framework', function () {
@@ -57,7 +61,9 @@ describe('API Client', function () {
         })
 
         it('should not add custom properties', function () {
-          expect(output).to.deep.equal(item)
+          expect(item).to.deep.equal({
+            id: '12345',
+          })
         })
       })
     })
