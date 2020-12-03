@@ -187,6 +187,9 @@ app.use(
   })
 )
 
+// Set services
+app.use(setServices)
+
 // Ensure body processed after reauthentication
 app.use(processOriginalRequestBody())
 
@@ -196,9 +199,6 @@ app.use(setCanAccess)
 // Routing
 app.use(setPrimaryNavigation)
 app.use(router)
-
-// Set services
-app.use(setServices)
 
 // error handling
 app.use(Sentry.Handlers.errorHandler())
