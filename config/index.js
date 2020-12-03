@@ -254,4 +254,10 @@ module.exports = {
       },
     },
   },
+  MOCKS: {
+    AUTH: {
+      PORT: process.env.MOCKS_AUTH_PORT || 3999,
+      ENABLED: /true/i.test(process.env.MOCKS_AUTH_ENABLED),
+    },
+  },
 }

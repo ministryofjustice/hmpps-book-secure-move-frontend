@@ -3,9 +3,14 @@
 const compression = require('compression')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const morgan = require('morgan')
 
+const { ping } = require('../app/healthcheck/controllers')
 const { decodeAccessToken } = require('../common/lib/access-token')
 const {
+  MOCKS: {
+    AUTH: { PORT },
+  },
   E2E: { ROLES },
 } = require('../config')
 
@@ -74,7 +79,13 @@ const users = Object.keys(ROLES).reduce((users, role) => {
   return users
 }, {})
 
+const loggingFormat = 'dev'
+
 const app = express()
+
+app.use(morgan(loggingFormat))
+
+app.use('/ping', ping)
 
 app.use(compression())
 app.use(express.json())
@@ -158,6 +169,6 @@ app.use('*', (req, res, next) => {
   res.send(`Received ${JSON.stringify({ url, query, body }, 2, null)}`)
 })
 
-app.listen(3999, () => {
-  process.stdout.write('Mock auth server running on port 3999')
+app.listen(PORT, () => {
+  process.stdout.write(`Mock auth server running on port ${PORT}`)
 })

@@ -1,8 +1,21 @@
+const { exec } = require('child_process')
 const http = require('http')
 
-const { PORT } = require('./config')
+const config = require('./config')
 const logger = require('./config/logger')
 const app = require('./server')
+
+const {
+  PORT,
+  MOCKS: {
+    AUTH: { ENABLED: MOCK_AUTH_ENABLED },
+  },
+} = config
+
+if (MOCK_AUTH_ENABLED) {
+  process.stdout.write('Using the mock auth server\n')
+  exec('pm2 start mocks/auth-server.js --watch mocks/auth-server.js -i max')
+}
 
 // eslint-disable-next-line no-process-env
 process.env.TZ = 'Europe/London'
