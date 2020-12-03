@@ -66,22 +66,22 @@ describe('Population controllers', function () {
           .calledOnce
       })
 
-      it('should call set cancel url method', function () {
+      it('should call set breadcumbs method', function () {
         expect(
           controllerInstance.use.getCall(0)
+        ).to.have.been.calledWithExactly(controllerInstance.setBreadcrumbs)
+      })
+
+      it('should call set cancel url method', function () {
+        expect(
+          controllerInstance.use.getCall(1)
         ).to.have.been.calledWithExactly(controllerInstance.setCancelUrl)
       })
 
       it('should call set page title method', function () {
         expect(
-          controllerInstance.use.getCall(1)
-        ).to.have.been.calledWithExactly(controllerInstance.setPageTitle)
-      })
-
-      it('should call set cancel url method', function () {
-        expect(
           controllerInstance.use.getCall(2)
-        ).to.have.been.calledWithExactly(controllerInstance.setBreadcrumbs)
+        ).to.have.been.calledWithExactly(controllerInstance.setPageTitle)
       })
 
       it('should call correct number of middleware', function () {
