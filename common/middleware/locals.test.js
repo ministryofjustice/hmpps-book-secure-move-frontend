@@ -136,6 +136,12 @@ describe('Locals', function () {
         setLocals(req, res, next)
       })
 
+      it('should do something if breadcrumbs have not been initialised', function () {
+        delete res.breadcrumb
+
+        expect(res.locals.getBreadcrumbs()).to.deep.equal([])
+      })
+
       it('return breadcrumbs data', function () {
         res.breadcrumb = sinon.stub().returns([
           { text: 'A', href: '/a' },
