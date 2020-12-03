@@ -6,8 +6,8 @@ const populationService = require('../../../common/services/population')
 class DetailsController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setTitleText)
     this.use(this.setCancelUrl)
+    this.use(this.setPageTitle)
   }
 
   setInitialValues(req, res, next) {
@@ -60,7 +60,7 @@ class DetailsController extends FormWizardController {
     next()
   }
 
-  setTitleText(req, res, next) {
+  setPageTitle(req, res, next) {
     req.form.options.pageTitle = req.population
       ? 'population::edit.page_title_update'
       : 'population::edit.page_title_new'

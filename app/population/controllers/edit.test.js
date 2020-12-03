@@ -61,22 +61,23 @@ describe('Population controllers', function () {
           .calledOnce
       })
 
-      it('should call set button text method', function () {
-        expect(
-          controllerInstance.use.getCall(0)
-        ).to.have.been.calledWithExactly(controllerInstance.setTitleText)
-      })
-
       it('should call set cancel url method', function () {
         expect(
-          controllerInstance.use.getCall(1)
+          controllerInstance.use.getCall(0)
         ).to.have.been.calledWithExactly(controllerInstance.setCancelUrl)
+      })
+
+      it('should call set page title method', function () {
+        expect(
+          controllerInstance.use.getCall(1)
+        ).to.have.been.calledWithExactly(controllerInstance.setPageTitle)
       })
 
       it('should call correct number of middleware', function () {
         expect(controllerInstance.use).to.be.callCount(2)
       })
     })
+
     describe('setInitialValues', function () {
       context('on first page visit', function () {
         beforeEach(async function () {
@@ -249,11 +250,11 @@ describe('Population controllers', function () {
       })
     })
 
-    describe('setTitleText', function () {
+    describe('setPageTitle', function () {
       context('with an existing population', function () {
         beforeEach(function () {
           req.population = {}
-          controllerInstance.setTitleText(req, res, next)
+          controllerInstance.setPageTitle(req, res, next)
         })
         it('should use change text', function () {
           expect(req.form.options.pageTitle).to.equal(
@@ -268,7 +269,7 @@ describe('Population controllers', function () {
 
       context('with an new population', function () {
         beforeEach(async function () {
-          await controllerInstance.setTitleText(req, res, next)
+          await controllerInstance.setPageTitle(req, res, next)
         })
         it('should use add text', function () {
           expect(req.form.options.pageTitle).to.equal(
