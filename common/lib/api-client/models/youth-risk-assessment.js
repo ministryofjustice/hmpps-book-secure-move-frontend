@@ -6,6 +6,7 @@ module.exports = {
     created_at: '',
     confirmed_at: '',
     version: '',
+    editable: '',
     move: {
       jsonApi: 'hasOne',
       type: 'moves',

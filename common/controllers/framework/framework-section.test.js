@@ -100,7 +100,7 @@ describe('Framework controllers', function () {
         mockReq = {
           assessment: {
             id: '12345',
-            isEditable: true,
+            editable: true,
           },
         }
         mockRes = {
