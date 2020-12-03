@@ -11,7 +11,6 @@ module.exports = {
   },
   '/details': {
     controller: EditController,
-    pageTitle: 'population::free_space_details.page_title',
     fields: [
       'operational_capacity',
       'usable_capacity',
@@ -22,5 +21,6 @@ module.exports = {
       'out_of_area_courts',
       'discharges',
     ],
+    buttonText: 'actions::save_and_calculate',
   },
 }

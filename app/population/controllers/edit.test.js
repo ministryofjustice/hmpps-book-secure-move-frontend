@@ -64,7 +64,7 @@ describe('Population controllers', function () {
       it('should call set button text method', function () {
         expect(
           controllerInstance.use.getCall(0)
-        ).to.have.been.calledWithExactly(controllerInstance.setButtonText)
+        ).to.have.been.calledWithExactly(controllerInstance.setTitleText)
       })
 
       it('should call set cancel url method', function () {
@@ -215,37 +215,6 @@ describe('Population controllers', function () {
       })
     })
 
-    describe('setButtonText', function () {
-      context('with an existing population', function () {
-        beforeEach(function () {
-          req.population = {}
-          controllerInstance.setButtonText(req, res, next)
-        })
-        it('should use change text', function () {
-          expect(req.form.options.buttonText).to.equal(
-            'actions::change_numbers'
-          )
-        })
-
-        it('should call next', function () {
-          expect(next).to.have.been.calledWith()
-        })
-      })
-
-      context('with an new population', function () {
-        beforeEach(async function () {
-          await controllerInstance.setButtonText(req, res, next)
-        })
-        it('should use add text', function () {
-          expect(req.form.options.buttonText).to.equal('actions::add_numbers')
-        })
-
-        it('should call next', function () {
-          expect(next).to.have.been.calledWith()
-        })
-      })
-    })
-
     describe('setCancelUrl', function () {
       context('with an existing population', function () {
         beforeEach(function () {
@@ -272,6 +241,39 @@ describe('Population controllers', function () {
         })
         it('should use add text', function () {
           expect(res.locals.cancelUrl).to.equal('/population/week/2020-06-01')
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+    })
+
+    describe('setTitleText', function () {
+      context('with an existing population', function () {
+        beforeEach(function () {
+          req.population = {}
+          controllerInstance.setTitleText(req, res, next)
+        })
+        it('should use change text', function () {
+          expect(req.form.options.pageTitle).to.equal(
+            'population::edit.page_title_update'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+
+      context('with an new population', function () {
+        beforeEach(async function () {
+          await controllerInstance.setTitleText(req, res, next)
+        })
+        it('should use add text', function () {
+          expect(req.form.options.pageTitle).to.equal(
+            'population::edit.page_title_new'
+          )
         })
 
         it('should call next', function () {
