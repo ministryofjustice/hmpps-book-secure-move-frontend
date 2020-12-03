@@ -205,7 +205,7 @@
     "testcafe-reporter-xunit": "2.1.0",
     "timezone-mock": "1.1.2",
     "webpack": "4.44.2",
-    "webpack-assets-manifest": "3.1.1",
+    "webpack-assets-manifest": "4.0.0",
     "webpack-cli": "3.3.12",
     "webpack-merge": "4.2.2"
   },
