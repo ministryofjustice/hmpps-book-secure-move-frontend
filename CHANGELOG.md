@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.59.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.2...v2.59.0) (2020-12-03)
+
+
+### Features
+
+* Add ability to navigate to specific date in dashboard ([3992514](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3992514bfafb6abf2dd3bdb1e5b0177332cab1c6))
+* Add component library explorer ([684dd71](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/684dd71f8c403acdf30d22c0df0b1b1e2188390f))
+* Add population create/edit wizard ([75f7721](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/75f77218cffb099e52727c26a260c1f7e5966d83))
+* Add population link to dashboard ([a09ba67](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a09ba67671e23d9e0e4b3feae5dee592623a19a3))
+
+
+### Bug Fixes
+
+* Don't store any falsy values in API cache key ([58ced60](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/58ced60f72d3323366743e4680187b3225670da0))
+* Mutate instead of return API responses when transforming ([cda21cf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cda21cf9094fa8b4803e95c652d95a8921dcfc3c))
+* Prevent error when approving a move when another already exists ([492b3bd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/492b3bd038d604b45cfe57c51405e1d46c00dfd6))
+* Prevent error when editing to a conflicting move ([84fc6e3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/84fc6e3c406c55f11e2ca16b274a4b85a7439773))
+* Update edit population action text ([8889e9b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8889e9b0d7a7f30a3ee8dd90163305fe62701aa1))
+* Update edit population cancel link ([92bc985](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/92bc9853b4cee62ea1076b7d4d4f29eb09a251bb))
+* Use consistent heading style for population ([a99636c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a99636c2c50936ccfef98e16f8aaab579775f77c))
+
 ### [2.58.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.1...v2.58.2) (2020-11-25)
 
 
