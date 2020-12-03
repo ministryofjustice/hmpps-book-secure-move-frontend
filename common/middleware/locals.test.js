@@ -130,5 +130,23 @@ describe('Locals', function () {
         })
       })
     })
+
+    context('getBreadcrumbs', function () {
+      beforeEach(function () {
+        setLocals(req, res, next)
+      })
+
+      it('return breadcrumbs data', function () {
+        res.breadcrumb = sinon.stub().returns([
+          { text: 'A', href: '/a' },
+          { text: 'B', href: '/b' },
+        ])
+
+        expect(res.locals.getBreadcrumbs()).to.deep.equal([
+          { text: 'A', href: '/a' },
+          { text: 'B', href: null },
+        ])
+      })
+    })
   })
 })
