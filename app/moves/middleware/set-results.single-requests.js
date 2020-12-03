@@ -1,7 +1,8 @@
 const presenters = require('../../../common/presenters')
-const singleRequestService = require('../../../common/services/single-request')
 
 async function setResultsSingleRequests(req, res, next) {
+  const singleRequestService = req.services.singleRequest
+
   try {
     const singleRequests = await singleRequestService.getAll(req.body.requested)
 

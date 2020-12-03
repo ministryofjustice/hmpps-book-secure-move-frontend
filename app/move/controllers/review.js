@@ -3,7 +3,6 @@ const { get, pick, set } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const singleRequestService = require('../../../common/services/single-request')
 const filters = require('../../../config/nunjucks/filters')
 
 class ReviewController extends FormWizardController {
@@ -93,6 +92,8 @@ class ReviewController extends FormWizardController {
       req.sessionModel.toJSON(),
       Object.keys(req.form.options.allFields)
     )
+
+    const singleRequestService = req.services.singleRequest
 
     try {
       if (data.review_decision === 'reject') {
