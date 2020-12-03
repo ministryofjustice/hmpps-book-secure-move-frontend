@@ -2,7 +2,6 @@ const { capitalize } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const analytics = require('../../../../common/lib/analytics')
-const courtHearingService = require('../../../../common/services/court-hearing')
 const moveService = require('../../../../common/services/move')
 const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
@@ -95,11 +94,13 @@ const mockValues = {
 describe('Move controllers', function () {
   describe('Save', function () {
     describe('#saveValues()', function () {
-      let req, nextSpy
+      let req, nextSpy, courtHearingService
 
       beforeEach(function () {
+        courtHearingService = {
+          create: sinon.stub().resolvesArg(0),
+        }
         sinon.stub(profileService, 'update').resolves({})
-        sinon.stub(courtHearingService, 'create').resolvesArg(0)
         nextSpy = sinon.spy()
         req = {
           getProfile: sinon.stub().returns(mockProfile),
@@ -110,6 +111,9 @@ describe('Move controllers', function () {
           sessionModel: {
             set: sinon.stub(),
             toJSON: () => mockValues,
+          },
+          services: {
+            courtHearing: courtHearingService,
           },
         }
       })
