@@ -4,9 +4,21 @@ const path = require('path')
 const debug = require('debug')('app:mount')
 const express = require('express')
 
+const getSubApps = dir => {
+  let subApps = []
+
+  try {
+    subApps = fs.readdirSync(dir, { withFileTypes: true })
+  } catch (e) {
+    debug('Failed to mount:', dir)
+  }
+
+  return subApps
+}
+
 const mount = dir => {
   const router = express.Router()
-  const subApps = fs.readdirSync(dir, { withFileTypes: true })
+  const subApps = getSubApps(dir)
 
   const appRouters = subApps
     .filter(dirent => dirent.isDirectory())

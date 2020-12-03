@@ -108,4 +108,20 @@ describe('subapp mounter', function () {
       expect(next).to.be.calledOnceWithExactly()
     })
   })
+
+  describe('when the app directory does not exist', function () {
+    beforeEach(function () {
+      mounts = mountPath('non-existent')
+    })
+
+    it('should not attempt to use any subapps', function () {
+      expect(use).to.not.be.called
+    })
+
+    it('should return a noop middleware', function () {
+      const next = sinon.stub()
+      mounts('req', 'res', next)
+      expect(next).to.be.calledOnceWithExactly()
+    })
+  })
 })
