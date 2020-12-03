@@ -113,7 +113,7 @@ describe('Move controllers', function () {
             toJSON: () => mockValues,
           },
           services: {
-            courtHearing: () => courtHearingService,
+            courtHearing: courtHearingService,
           },
         }
       })

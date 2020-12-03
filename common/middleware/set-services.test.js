@@ -21,7 +21,7 @@ describe('Middleware', function () {
     })
 
     it('should return expected values from service functions which did not have context added', function () {
-      expect(req.services.serviceWithoutContext()).to.deep.equal({
+      expect(req.services.serviceWithoutContext).to.deep.equal({
         method: 'service - without context',
       })
     })

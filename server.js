@@ -167,9 +167,6 @@ app.use(
 )
 app.use(setLocations)
 
-// Set services
-app.use(setServices)
-
 // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
 app.use(
   helmet({
@@ -199,6 +196,9 @@ app.use(setCanAccess)
 // Routing
 app.use(setPrimaryNavigation)
 app.use(router)
+
+// Set services
+app.use(setServices)
 
 // error handling
 app.use(Sentry.Handlers.errorHandler())

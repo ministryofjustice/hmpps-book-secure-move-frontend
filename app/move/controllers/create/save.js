@@ -17,7 +17,7 @@ function filterAnswer(currentAssessment, searchKey) {
 
 class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
-    const courtHearingService = req.services.courtHearing()
+    const courtHearingService = req.services.courtHearing
 
     try {
       const sessionData = req.sessionModel.toJSON()
