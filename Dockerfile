@@ -46,6 +46,7 @@ COPY --chown=node:node server.js .
 COPY --chown=node:node locales locales
 COPY --chown=node:node common common
 COPY --chown=node:node app app
+COPY --chown=node:node tasks tasks
 
 EXPOSE 3000
 CMD [ "node", "start.js" ]
