@@ -103,9 +103,12 @@ The following environment variables can be set to help development.
 | USER_PERMISSIONS | Comma delimited string of available permissions (required if bypassing auth) |         |
 | USER_LOCATIONS   | Comma delimited string of available locations (required if bypassing auth)   |         |
 
-## Mocks
+## Mocks/Proxies
 
-| Name               | Description                                  | Default |
-| :----------------- | :------------------------------------------- | :------ |
-| MOCKS_AUTH_ENABLED | Whether to run a mock auth server on startup | false   |
-| MOCKS_AUTH_PORT    | Port to run mock auth server on              | 3999    |
+| Name               | Description                                                                                    | Default |
+| :----------------- | :--------------------------------------------------------------------------------------------- | :------ |
+| MOCKS_AUTH_ENABLED | Whether to run a mock auth server on startup                                                   | false   |
+| MOCKS_AUTH_PORT    | Port to run mock auth server on                                                                | 3999    |
+| PROXY_API_ENABLED  | Whether to run a API proxy server on startup                                                   | false   |
+| PROXY_API_PORT     | Port to run API proxy server on                                                                | 3998    |
+| PROXY_API_BASE_URL | Base url to pass requests through to if not intercepted (required if MOCKS_API_ENABLED is set) |         |

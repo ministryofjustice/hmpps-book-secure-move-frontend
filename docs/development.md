@@ -94,6 +94,29 @@ DEBUG=axios,app:*,-app:api-client:axois* npm run develop
 
 In development mode, node debugger support is enabled. Various IDEs and standalone applications are available to step through running code.
 
+#### Intercepting auth and API calls
+
+2 express apps are provided to intercept calls to the authentication and API endpoints.
+
+These can be started
+
+- manually
+- or automatically as part of the app startup process
+
+  (See the mocks/proxies section of the [environment variables docs](./environment-variables.md))
+
+##### `mocks/auth-server.js`
+
+Replaces the use of an actual auth server entirely.
+
+Allows the use of `E2E_*` users only.
+
+##### `proxies/api-proxy-server.js`
+
+Proxies calls to actual API.
+
+See details [here](./api-proxy-server.md)
+
 ## Book a secure move frameworks
 
 The frontend uses the [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks) repo to build and maintain

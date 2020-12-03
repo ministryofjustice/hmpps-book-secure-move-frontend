@@ -7,10 +7,18 @@ const app = require('./server')
 
 const {
   PORT,
+  PROXY: {
+    API: { ENABLED: PROXY_API_ENABLED },
+  },
   MOCKS: {
     AUTH: { ENABLED: MOCK_AUTH_ENABLED },
   },
 } = config
+
+if (PROXY_API_ENABLED) {
+  process.stdout.write('Using the API proxy server\n')
+  exec('pm2 start proxies/api-proxy-server.js --watch proxies -i max')
+}
 
 if (MOCK_AUTH_ENABLED) {
   process.stdout.write('Using the mock auth server\n')

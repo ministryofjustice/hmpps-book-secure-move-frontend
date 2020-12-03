@@ -260,4 +260,11 @@ module.exports = {
       ENABLED: /true/i.test(process.env.MOCKS_AUTH_ENABLED),
     },
   },
+  PROXY: {
+    API: {
+      PORT: process.env.PROXY_API_PORT || 3998,
+      BASE_URL: process.env.PROXY_API_BASE_URL,
+      ENABLED: /true/i.test(process.env.PROXY_API_ENABLED),
+    },
+  },
 }
