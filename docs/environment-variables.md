@@ -34,64 +34,64 @@
 | SERVER_HOST **(required)**          | The (accessible) hostname (and port) of the listening web server. Used by [Grant](https://github.com/simov/grant) to construct redirect URLs after OAuth authentication. For example `localhost:3000`                              |                                                                                     |
 | ASSETS_HOST                         | Host for assets CDN                                                                                                                                                                                                                |                                                                                     |
 | FEEDBACK_URL                        | URL for the feedback link in the phase banner at the top of the page. If empty, the link will not be displayed.                                                                                                                    |                                                                                     |
-| PERSON_ESCORT_RECORD_FEEDBACK_URL   | URL for the feedback prompt to collect Person Escort Record feedback. If empty, the link will not be displayed. | |
+| PERSON_ESCORT_RECORD_FEEDBACK_URL   | URL for the feedback prompt to collect Person Escort Record feedback. If empty, the link will not be displayed.                                                                                                                    |                                                                                     |
 | SUPPORT_EMAIL                       | Email address used to contact support or the team in parts of the app where the user may require further help.                                                                                                                     |                                                                                     |
 | LOCATIONS_BATCH_SIZE                | Maximum number of location IDs to send in one request when requesting moves for all locations                                                                                                                                      | 40                                                                                  |
 | FRAMEWORKS_VERSION                  | Current [Book a secure move frameworks](https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks/releases) version that the frontend will use to create new Person Escort Records or any other frameworks being used | latest supported version (see `@hmpps-book-secure-move-frameworks` in package.json) |
 | LOG_LEVEL                           | Level of logs to output                                                                                                                                                                                                            | production: `error`, development: `debug`                                           |
-| ENABLE_COMPONENTS_LIBRARY           | Whether to enable the component library and allowed it to be browsed on this environment                                                                                                                                           | false                                                          |
+| ENABLE_COMPONENTS_LIBRARY           | Whether to enable the component library and allowed it to be browsed on this environment                                                                                                                                           | false                                                                               |
 
 ## Metrics and Analytics
 
-| Name                                | Description                                                                                                                                                                                                                        | Default                                                                             |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| SENTRY_DSN                          | Sentry DSN used to log issues in sentry                                                                                                                                                                                            |                                                                                     |
-| SENTRY_ORG                          | Sentry organisation slug                                                                                                                                                                                                           |                                                                                     |
-| SENTRY_PROJECT                      | Sentry project slug                                                                                                                                                                                                                |                                                                                     |
-| SENTRY_ENVIRONMENT                  | Environment used to distinguish issue location                                                                                                                                                                                     |                                                                                     |
-| SENTRY_AUTH_TOKEN                   | Sentry internal integration token used to publish release                                                                                                                                                                          |                                                                                     |
-| PROMETHEUS_MOUNTPATH | Mountpath to serve Prometheus metrics. If none, no metrics will be collected | |
-| GOOGLE_ANALYTICS_ID                 | Google analytics tracking ID to use for the environment                                                                                                                                                                            |                                                                                     |
+| Name                 | Description                                                                  | Default |
+| :------------------- | :--------------------------------------------------------------------------- | :------ |
+| SENTRY_DSN           | Sentry DSN used to log issues in sentry                                      |         |
+| SENTRY_ORG           | Sentry organisation slug                                                     |         |
+| SENTRY_PROJECT       | Sentry project slug                                                          |         |
+| SENTRY_ENVIRONMENT   | Environment used to distinguish issue location                               |         |
+| SENTRY_AUTH_TOKEN    | Sentry internal integration token used to publish release                    |         |
+| PROMETHEUS_MOUNTPATH | Mountpath to serve Prometheus metrics. If none, no metrics will be collected |         |
+| GOOGLE_ANALYTICS_ID  | Google analytics tracking ID to use for the environment                      |         |
 
 ## E2E Tests
 
-| Name                                | Description                                                                                                                                                                                                                        | Default                                                                             |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| E2E_BASE_URL | Base URL used for acceptance testing | `http://${process.env.SERVER_HOST}` |
-| E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests | 1 |
-| E2E_FAIL_FAST | Whether to stop all tests if an end-to-end tests fails | false |
-| E2E_VIDEO | Whether to capture video when end-to-end tests fail | false |
-| E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
-| E2E_MOCK_AUTH | Whether to use the mock auth server | false |
+| Name              | Description                                                                                                   | Default                             |
+| :---------------- | :------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
+| E2E_BASE_URL      | Base URL used for acceptance testing                                                                          | `http://${process.env.SERVER_HOST}` |
+| E2E_MAX_PROCESSES | Max number of processes to use for end-to-end tests                                                           | 1                                   |
+| E2E_FAIL_FAST     | Whether to stop all tests if an end-to-end tests fails                                                        | false                               |
+| E2E_VIDEO         | Whether to capture video when end-to-end tests fail                                                           | false                               |
+| E2E_SKIP          | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js |                                     |
+| E2E_MOCK_AUTH     | Whether to use the mock auth server                                                                           | false                               |
 
 ## E2E Users
 
-| Name                                | Description                                                                                                                                                                                                                        | Default                                                                             |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| E2E_COURT_USERNAME | Court user username used for acceptance testing | |
-| E2E_COURT_PASSWORD | Court user password used for acceptance testing | |
-| E2E_OCA_USERNAME | OCA user username used for acceptance testing | |
-| E2E_OCA_PASSWORD | OCA user password used for acceptance testing | |
-| E2E_PER_USERNAME | Person Escort Record user username used for acceptance testing | |
-| E2E_PER_PASSWORD | Person Escort Record user password used for acceptance testing | |
-| E2E_PMU_USERNAME | Population Management Unit user username used for acceptance testing | |
-| E2E_PMU_PASSWORD | Population Management Unit user password used for acceptance testing | |
-| E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
-| E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |
-| E2E_PRISON_USERNAME | Prison user username used for acceptance testing | |
-| E2E_PRISON_PASSWORD | Prison user password used for acceptance testing | |
-| E2E_SCH_USERNAME | Secure Children Homr user username used for acceptance testing | |
-| E2E_SCH_PASSWORD | Secure Children Home user password used for acceptance testing | |
-| E2E_STC_USERNAME | Secure Training user username used for acceptance testing | |
-| E2E_STC_PASSWORD | Secure Training user password used for acceptance testing | |
-| E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
-| E2E_SUPPLIER_PASSWORD | Supplier user username used for acceptance testing | |
+| Name                  | Description                                                          | Default |
+| :-------------------- | :------------------------------------------------------------------- | :------ |
+| E2E_COURT_USERNAME    | Court user username used for acceptance testing                      |         |
+| E2E_COURT_PASSWORD    | Court user password used for acceptance testing                      |         |
+| E2E_OCA_USERNAME      | OCA user username used for acceptance testing                        |         |
+| E2E_OCA_PASSWORD      | OCA user password used for acceptance testing                        |         |
+| E2E_PER_USERNAME      | Person Escort Record user username used for acceptance testing       |         |
+| E2E_PER_PASSWORD      | Person Escort Record user password used for acceptance testing       |         |
+| E2E_PMU_USERNAME      | Population Management Unit user username used for acceptance testing |         |
+| E2E_PMU_PASSWORD      | Population Management Unit user password used for acceptance testing |         |
+| E2E_POLICE_USERNAME   | Police user username used for acceptance testing                     |         |
+| E2E_POLICE_PASSWORD   | Police user password used for acceptance testing                     |         |
+| E2E_PRISON_USERNAME   | Prison user username used for acceptance testing                     |         |
+| E2E_PRISON_PASSWORD   | Prison user password used for acceptance testing                     |         |
+| E2E_SCH_USERNAME      | Secure Children Homr user username used for acceptance testing       |         |
+| E2E_SCH_PASSWORD      | Secure Children Home user password used for acceptance testing       |         |
+| E2E_STC_USERNAME      | Secure Training user username used for acceptance testing            |         |
+| E2E_STC_PASSWORD      | Secure Training user password used for acceptance testing            |         |
+| E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing                   |         |
+| E2E_SUPPLIER_PASSWORD | Supplier user username used for acceptance testing                   |         |
 
 ## Feature Flags
 
-| Name                    | Description                                                                  | Default |
-| :---------------------- | :--------------------------------------------------------------------------- | :------ |
-| YOUTH_RISK_ASSESSMENT   | Set to `true` to enabled youth risk assessment                               |         |
+| Name                  | Description                                    | Default |
+| :-------------------- | :--------------------------------------------- | :------ |
+| YOUTH_RISK_ASSESSMENT | Set to `true` to enabled youth risk assessment |         |
 
 ## Development specific
 
