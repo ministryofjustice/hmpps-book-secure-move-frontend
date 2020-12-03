@@ -6,7 +6,7 @@ function setBreadcrumb(req, res, next) {
   const { date, locationName } = req
 
   res.breadcrumb({
-    text: 'Population Overview',
+    text: req.t('population::breadcrumbs.home'),
     href: `/population/week/${date}`,
   })
 
