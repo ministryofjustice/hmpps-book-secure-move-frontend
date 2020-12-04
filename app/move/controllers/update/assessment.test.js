@@ -1,4 +1,3 @@
-const profileService = require('../../../../common/services/profile')
 const CreateAssessment = require('../create/assessment')
 
 const MixinProto = CreateAssessment.prototype
@@ -94,11 +93,14 @@ describe('Move controllers', function () {
     })
 
     describe('#getUpdateValues', function () {
-      let req
+      let req, profileService
       const res = {}
 
       beforeEach(function () {
-        sinon.stub(profileService, 'update').resolves()
+        profileService = {
+          update: sinon.stub().resolves(),
+          unformat: sinon.stub(),
+        }
         sinon.stub(controller, 'setFlash')
         req = {
           getProfile: sinon.stub().returns(mockProfile),
@@ -110,8 +112,10 @@ describe('Move controllers', function () {
               },
             },
           },
+          services: {
+            profile: profileService,
+          },
         }
-        sinon.stub(profileService, 'unformat')
       })
 
       context('When assessment answers are unchanged', function () {
@@ -125,11 +129,13 @@ describe('Move controllers', function () {
     })
 
     describe('#saveValues', function () {
-      let req
+      let req, profileService
       const res = {}
       let nextSpy
       beforeEach(function () {
-        sinon.stub(profileService, 'update').resolves()
+        profileService = {
+          update: sinon.stub().resolves(),
+        }
         sinon.stub(controller, 'setFlash')
         req = {
           getProfile: sinon.stub().returns(mockProfile),
@@ -204,6 +210,9 @@ describe('Move controllers', function () {
               category: 'risk',
             },
           ],
+          services: {
+            profile: profileService,
+          },
         }
         nextSpy = sinon.spy()
       })

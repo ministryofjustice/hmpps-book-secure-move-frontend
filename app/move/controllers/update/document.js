@@ -1,6 +1,5 @@
 const { pick } = require('lodash')
 
-const profileService = require('../../../../common/services/profile')
 const DocumentUploadController = require('../create/document')
 
 const UpdateBase = require('./base')
@@ -46,6 +45,8 @@ class UpdateDocumentUploadController extends UpdateBase {
         next,
       ])
     }
+
+    const profileService = req.services.profile
 
     try {
       const profile = pick(req.getMove().profile, ['id', 'person'])

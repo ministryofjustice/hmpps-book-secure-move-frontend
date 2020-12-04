@@ -2,7 +2,6 @@ const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
 const analytics = require('../../../../common/lib/analytics')
 const moveService = require('../../../../common/services/move')
-const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
@@ -18,6 +17,7 @@ function filterAnswer(currentAssessment, searchKey) {
 class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
     const courtHearingService = req.services.courtHearing
+    const profileService = req.services.profile
 
     try {
       const sessionData = req.sessionModel.toJSON()

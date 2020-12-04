@@ -1,7 +1,6 @@
 const { get, omit } = require('lodash')
 
 const moveService = require('../../../../common/services/move')
-const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
 const MoveCreateSaveController = require('../create/save')
 
@@ -9,6 +8,8 @@ const PersonAssignBase = require('./base')
 
 class SaveController extends PersonAssignBase {
   async saveValues(req, res, next) {
+    const profileService = req.services.profile
+
     try {
       const data = omit(req.sessionModel.toJSON(), [
         'csrf-secret',

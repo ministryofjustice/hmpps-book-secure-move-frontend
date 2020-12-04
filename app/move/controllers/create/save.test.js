@@ -3,7 +3,6 @@ const proxyquire = require('proxyquire')
 
 const analytics = require('../../../../common/lib/analytics')
 const moveService = require('../../../../common/services/move')
-const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
 const shouldSaveCourtHearingsField = require('../../fields/should-save-court-hearings')
 
@@ -94,13 +93,15 @@ const mockValues = {
 describe('Move controllers', function () {
   describe('Save', function () {
     describe('#saveValues()', function () {
-      let req, nextSpy, courtHearingService
+      let req, nextSpy, courtHearingService, profileService
 
       beforeEach(function () {
         courtHearingService = {
           create: sinon.stub().resolvesArg(0),
         }
-        sinon.stub(profileService, 'update').resolves({})
+        profileService = {
+          update: sinon.stub().resolves({}),
+        }
         nextSpy = sinon.spy()
         req = {
           getProfile: sinon.stub().returns(mockProfile),
@@ -114,6 +115,7 @@ describe('Move controllers', function () {
           },
           services: {
             courtHearing: courtHearingService,
+            profile: profileService,
           },
         }
       })
