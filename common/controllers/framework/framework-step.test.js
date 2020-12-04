@@ -1,7 +1,10 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
-const personEscortRecordService = require('../../../common/services/person-escort-record')
+const services = {
+  'person-escort-record': require('../../services/person-escort-record'),
+  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
+}
 
 const Controller = require('./framework-step')
 
@@ -626,7 +629,8 @@ describe('Framework controllers', function () {
       let nextSpy
 
       beforeEach(function () {
-        sinon.stub(personEscortRecordService, 'respond')
+        sinon.stub(services['person-escort-record'], 'respond')
+        sinon.stub(services['youth-risk-assessment'], 'respond')
         sinon.stub(fieldHelpers, 'isAllowedDependent').returns(true)
         sinon
           .stub(frameworksHelpers, 'responsesToSaveReducer')
@@ -655,6 +659,9 @@ describe('Framework controllers', function () {
           assessment: {
             id: '12345',
             responses: mockResponses,
+            framework: {
+              name: 'person-escort-record',
+            },
           },
         }
       })
@@ -662,7 +669,7 @@ describe('Framework controllers', function () {
       context('without responses', function () {
         beforeEach(async function () {
           mockReq.assessment.responses = []
-          personEscortRecordService.respond.resolves({})
+          services['person-escort-record'].respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -674,7 +681,7 @@ describe('Framework controllers', function () {
         })
 
         it('should not call service', function () {
-          expect(personEscortRecordService.respond).not.to.be.called
+          expect(services['person-escort-record'].respond).not.to.be.called
         })
 
         it('should call the super method', function () {
@@ -690,7 +697,7 @@ describe('Framework controllers', function () {
 
       context('when promises resolve', function () {
         beforeEach(async function () {
-          personEscortRecordService.respond.resolves({})
+          services['person-escort-record'].respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -702,10 +709,9 @@ describe('Framework controllers', function () {
         })
 
         it('should call service method', function () {
-          expect(personEscortRecordService.respond).to.be.calledOnceWithExactly(
-            mockReq.assessment.id,
-            mockResponses
-          )
+          expect(
+            services['person-escort-record'].respond
+          ).to.be.calledOnceWithExactly(mockReq.assessment.id, mockResponses)
         })
 
         it('should call the super method', function () {
@@ -723,7 +729,7 @@ describe('Framework controllers', function () {
         const error = new Error()
 
         beforeEach(async function () {
-          personEscortRecordService.respond.rejects(error)
+          services['person-escort-record'].respond.rejects(error)
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -734,6 +740,21 @@ describe('Framework controllers', function () {
 
         it('should call next with the error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(error)
+        })
+      })
+
+      context('with youth risk assessment', function () {
+        beforeEach(async function () {
+          mockReq.assessment.framework.name = 'youth-risk-assessment'
+          services['youth-risk-assessment'].respond.resolves({})
+
+          await controller.saveValues(mockReq, {}, nextSpy)
+        })
+
+        it('should call the correct service method', function () {
+          expect(
+            services['youth-risk-assessment'].respond
+          ).to.be.calledOnceWithExactly(mockReq.assessment.id, mockResponses)
         })
       })
 
@@ -771,7 +792,7 @@ describe('Framework controllers', function () {
 
         beforeEach(async function () {
           mockReq.assessment.responses = mockResponsesWithDependents
-          personEscortRecordService.respond.resolves({})
+          services['person-escort-record'].respond.resolves({})
 
           fieldHelpers.isAllowedDependent
             .withArgs(
@@ -808,7 +829,7 @@ describe('Framework controllers', function () {
 
         it('should filter out dependent fields', function () {
           expect(
-            personEscortRecordService.respond
+            services['person-escort-record'].respond
           ).to.be.calledOnceWithExactly(mockReq.assessment.id, [
             mockResponsesWithDependents[0],
             mockResponsesWithDependents[2],

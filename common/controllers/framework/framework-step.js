@@ -2,8 +2,11 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
-const personEscortRecordService = require('../../services/person-escort-record')
 const FormWizardController = require('../form-wizard')
+const services = {
+  'person-escort-record': require('../../services/person-escort-record'),
+  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
+}
 
 class FrameworkStepController extends FormWizardController {
   middlewareChecks() {
@@ -124,7 +127,10 @@ class FrameworkStepController extends FormWizardController {
     try {
       // wait for all responses to resolve first
       if (responses.length) {
-        await personEscortRecordService.respond(assessment.id, responses)
+        await services[assessment.framework.name].respond(
+          assessment.id,
+          responses
+        )
       }
 
       // call parent saveValues to handle storing new values in the session
