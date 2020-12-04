@@ -12,9 +12,9 @@ class FrameworkStepController extends FormWizardController {
   }
 
   checkEditable(req, res, next) {
-    const { isEditable, framework } = req.assessment
+    const { editable, framework } = req.assessment
 
-    if (!isEditable || !req.canAccess(`${snakeCase(framework.name)}:update`)) {
+    if (!editable || !req.canAccess(`${snakeCase(framework.name)}:update`)) {
       return res.redirect(req.baseUrl)
     }
 

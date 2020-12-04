@@ -57,28 +57,30 @@ const mockMoves = [
 
 describe('Move Service', function () {
   describe('default include', function () {
-    expect(moveService.defaultInclude).to.deep.equal([
-      'allocation',
-      'court_hearings',
-      'from_location',
-      'from_location.suppliers',
-      'prison_transfer_reason',
-      'profile',
-      'profile.documents',
-      'profile.person_escort_record',
-      'profile.person_escort_record.framework',
-      'profile.person_escort_record.responses',
-      'profile.person_escort_record.responses.question',
-      'profile.person_escort_record.responses.question.descendants.**',
-      'profile.person_escort_record.responses.nomis_mappings',
-      'profile.person_escort_record.flags',
-      'profile.person_escort_record.prefill_source',
-      'profile.person',
-      'profile.person.ethnicity',
-      'profile.person.gender',
-      'supplier',
-      'to_location',
-    ])
+    it('should contain default include', function () {
+      expect(moveService.defaultInclude).to.deep.equal([
+        'allocation',
+        'court_hearings',
+        'from_location',
+        'from_location.suppliers',
+        'prison_transfer_reason',
+        'profile',
+        'profile.documents',
+        'profile.person_escort_record',
+        'profile.person_escort_record.framework',
+        'profile.person_escort_record.responses',
+        'profile.person_escort_record.responses.question',
+        'profile.person_escort_record.responses.question.descendants.**',
+        'profile.person_escort_record.responses.nomis_mappings',
+        'profile.person_escort_record.flags',
+        'profile.person_escort_record.prefill_source',
+        'profile.person',
+        'profile.person.ethnicity',
+        'profile.person.gender',
+        'supplier',
+        'to_location',
+      ])
+    })
   })
 
   describe('#format()', function () {

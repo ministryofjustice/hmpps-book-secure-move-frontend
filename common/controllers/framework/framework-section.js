@@ -17,7 +17,7 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setEditableStatus(req, res, next) {
-    res.locals.isEditable = req.assessment?.isEditable
+    res.locals.isEditable = req.assessment.editable
     next()
   }
 

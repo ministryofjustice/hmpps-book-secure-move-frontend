@@ -35,14 +35,7 @@ module.exports = {
     const personEscortRecord = req.move?.profile?.person_escort_record
 
     if (personEscortRecord) {
-      const isEditable =
-        ['requested', 'booked'].includes(req.move?.status) &&
-        !['confirmed'].includes(personEscortRecord.status)
-
-      req.personEscortRecord = {
-        ...personEscortRecord,
-        isEditable,
-      }
+      req.personEscortRecord = personEscortRecord
     }
 
     next()
@@ -52,14 +45,7 @@ module.exports = {
     const youthRiskAssessment = req.move?.profile?.youth_risk_assessment
 
     if (youthRiskAssessment) {
-      const isEditable =
-        ['requested', 'booked'].includes(req.move?.status) &&
-        !['confirmed'].includes(youthRiskAssessment.status)
-
-      req.youthRiskAssessment = {
-        ...youthRiskAssessment,
-        isEditable,
-      }
+      req.youthRiskAssessment = youthRiskAssessment
     }
 
     next()

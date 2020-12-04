@@ -120,7 +120,7 @@ describe('Framework controllers', function () {
         mockReq = {
           assessment: {
             id: '12345',
-            isEditable: true,
+            editable: true,
             framework: {
               name: 'person-escort-record',
             },
@@ -135,7 +135,7 @@ describe('Framework controllers', function () {
 
       context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.assessment.isEditable = false
+          mockReq.assessment.editable = false
 
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })

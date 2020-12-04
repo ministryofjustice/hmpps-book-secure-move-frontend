@@ -7,6 +7,7 @@ module.exports = {
     confirmed_at: '',
     version: '',
     nomis_sync_status: '',
+    editable: '',
     move: {
       jsonApi: 'hasOne',
       type: 'moves',

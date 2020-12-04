@@ -106,11 +106,11 @@ describe('Move controllers', function () {
         .stub(presenters, 'moveToMetaListComponent')
         .returns('__moveToMetaListComponent__')
       sinon
-        .stub(presenters, 'frameworkToTaskListComponent')
-        .returns('__frameworkToTaskListComponent__')
-      sinon
         .stub(presenters, 'frameworkFlagsToTagList')
         .returns('__frameworkFlagsToTagList__')
+      sinon
+        .stub(presenters, 'moveToMessageBannerComponent')
+        .returns('__moveToMessageBannerComponent__')
       sinon
         .stub(presenters, 'frameworkSectionToPanelList')
         .returns(sinon.stub().returns({}))
@@ -150,17 +150,6 @@ describe('Move controllers', function () {
         )
       })
 
-      it('should call frameworkToTaskListComponent presenter with correct args', function () {
-        expect(
-          presenters.frameworkToTaskListComponent
-        ).to.be.calledOnceWithExactly({
-          baseUrl: `${mockMoveUrl}/person-escort-record/`,
-          deepLinkToFirstStep: true,
-          frameworkSections: undefined,
-          sectionProgress: undefined,
-        })
-      })
-
       it('should contain a move param', function () {
         expect(params).to.have.property('move')
         expect(params.move).to.deep.equal(mockMove)
@@ -176,43 +165,9 @@ describe('Move controllers', function () {
         expect(params.personEscortRecordIsEnabled).to.be.true
       })
 
-      it('should contain a personEscortRecordIsConfirmed param', function () {
-        expect(params).to.have.property('personEscortRecordIsConfirmed')
-        expect(params.personEscortRecordIsCompleted).to.be.false
-      })
-
       it('should contain a personEscortRecordIsCompleted param', function () {
         expect(params).to.have.property('personEscortRecordIsCompleted')
         expect(params.personEscortRecordIsCompleted).to.be.false
-      })
-
-      it('should contain a personEscortRecordUrl param', function () {
-        expect(params).to.have.property('personEscortRecordUrl')
-        expect(params.personEscortRecordUrl).to.equal(
-          `${mockMoveUrl}/person-escort-record`
-        )
-      })
-
-      it('should contain a showPersonEscortRecordBanner param', function () {
-        expect(params).to.have.property('showPersonEscortRecordBanner')
-        expect(params.showPersonEscortRecordBanner).to.be.false
-      })
-
-      it('should contain a showPersonEscortRecordBanner param', function () {
-        expect(params).to.have.property('canStartPersonEscortRecord')
-        expect(params.canStartPersonEscortRecord).to.be.false
-      })
-
-      it('should contain a showPersonEscortRecordBanner param', function () {
-        expect(params).to.have.property('canConfirmPersonEscortRecord')
-        expect(params.canConfirmPersonEscortRecord).to.be.false
-      })
-
-      it('should contain a personEscortRecordtaskList param', function () {
-        expect(params).to.have.property('personEscortRecordtaskList')
-        expect(params.personEscortRecordtaskList).to.equal(
-          '__frameworkToTaskListComponent__'
-        )
       })
 
       it('should contain a personEscortRecordTagList param', function () {
@@ -229,6 +184,23 @@ describe('Move controllers', function () {
       it('should contain a move summary param', function () {
         expect(params).to.have.property('moveSummary')
         expect(params.moveSummary).to.equal('__moveToMetaListComponent__')
+      })
+
+      it('should call moveToMessageBannerComponent presenter with correct args', function () {
+        expect(
+          presenters.moveToMessageBannerComponent
+        ).to.be.calledOnceWithExactly({
+          move: mockMove,
+          moveUrl: mockMoveUrl,
+          canAccess: req.canAccess,
+        })
+      })
+
+      it('should contain personal details summary param', function () {
+        expect(params).to.have.property('messageBanner')
+        expect(params.messageBanner).to.equal(
+          '__moveToMessageBannerComponent__'
+        )
       })
 
       it('should call personToSummaryListComponent presenter with correct args', function () {
@@ -549,49 +521,9 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should not allow record to be confirmed', function () {
-          expect(params).to.have.property('canConfirmPersonEscortRecord')
-          expect(params.canConfirmPersonEscortRecord).to.be.false
-        })
-
-        it('should not show Person Escort Record as confirmed', function () {
-          expect(params).to.have.property('personEscortRecordIsConfirmed')
-          expect(params.personEscortRecordIsConfirmed).to.be.false
-        })
-
         it('should not show Person Escort Record as complete', function () {
           expect(params).to.have.property('personEscortRecordIsCompleted')
           expect(params.personEscortRecordIsCompleted).to.be.false
-        })
-
-        it('should contain url to Person Escort Record', function () {
-          expect(params).to.have.property('personEscortRecordUrl')
-          expect(params.personEscortRecordUrl).to.equal(
-            `${mockMoveUrl}/person-escort-record`
-          )
-        })
-
-        it('should call frameworkToTaskListComponent presenter with correct args', function () {
-          expect(
-            presenters.frameworkToTaskListComponent
-          ).to.be.calledOnceWithExactly({
-            baseUrl: `${mockMoveUrl}/person-escort-record/`,
-            deepLinkToFirstStep: true,
-            frameworkSections: frameworkStub.sections,
-            sectionProgress: mockPersonEscortRecord.meta.section_progress,
-          })
-        })
-
-        it('should contain Person Escort Record tasklist', function () {
-          expect(params).to.have.property('personEscortRecordtaskList')
-          expect(params.personEscortRecordtaskList).to.equal(
-            '__frameworkToTaskListComponent__'
-          )
-        })
-
-        it('should show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.true
         })
       })
 
@@ -602,11 +534,6 @@ describe('Move controllers', function () {
             status: 'in_progress',
           }
           params = getViewLocals(req)
-        })
-
-        it('should show Person Escort Record as not confirmed', function () {
-          expect(params).to.have.property('personEscortRecordIsConfirmed')
-          expect(params.personEscortRecordIsConfirmed).to.be.false
         })
 
         it('should show Person Escort Record as incomplete', function () {
@@ -632,32 +559,9 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should show Person Escort Record as not confirmed', function () {
-          expect(params).to.have.property('personEscortRecordIsConfirmed')
-          expect(params.personEscortRecordIsConfirmed).to.be.false
-        })
-
         it('should show Person Escort Record as completed', function () {
           expect(params).to.have.property('personEscortRecordIsCompleted')
           expect(params.personEscortRecordIsCompleted).to.be.true
-        })
-
-        it('should contain url to Person Escort Record', function () {
-          expect(params).to.have.property('personEscortRecordUrl')
-          expect(params.personEscortRecordUrl).to.equal(
-            `${mockMoveUrl}/person-escort-record`
-          )
-        })
-
-        it('should call frameworkToTaskListComponent presenter with correct args', function () {
-          expect(
-            presenters.frameworkToTaskListComponent
-          ).to.be.calledOnceWithExactly({
-            baseUrl: `${mockMoveUrl}/person-escort-record/`,
-            deepLinkToFirstStep: true,
-            frameworkSections: frameworkStub.sections,
-            sectionProgress: mockPersonEscortRecord.meta.section_progress,
-          })
         })
 
         it('should call frameworkFlagsToTagList presenter with correct args', function () {
@@ -667,38 +571,6 @@ describe('Move controllers', function () {
             mockPersonEscortRecord.flags,
             mockMoveUrl
           )
-        })
-
-        it('should contain Person Escort Record tasklist', function () {
-          expect(params).to.have.property('personEscortRecordtaskList')
-          expect(params.personEscortRecordtaskList).to.equal(
-            '__frameworkToTaskListComponent__'
-          )
-        })
-
-        it('should show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.true
-        })
-      })
-
-      context('when record is confirmed', function () {
-        beforeEach(function () {
-          req.move.profile.person_escort_record = {
-            ...mockPersonEscortRecord,
-            status: 'confirmed',
-          }
-          params = getViewLocals(req)
-        })
-
-        it('should show Person Escort Record as confirmed', function () {
-          expect(params).to.have.property('personEscortRecordIsConfirmed')
-          expect(params.personEscortRecordIsConfirmed).to.be.true
-        })
-
-        it('should not show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.true
         })
       })
 
@@ -711,33 +583,6 @@ describe('Move controllers', function () {
         it('should set personEscortRecordIsEnabled to false', function () {
           expect(params).to.have.property('personEscortRecordIsEnabled')
           expect(params.personEscortRecordIsEnabled).to.be.false
-        })
-
-        it('should not show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.false
-        })
-      })
-
-      context('when move has started', function () {
-        beforeEach(function () {
-          req.move.status = 'in_transit'
-          params = getViewLocals(req)
-        })
-
-        it('should not allow record to be started', function () {
-          expect(params).to.have.property('canStartPersonEscortRecord')
-          expect(params.canStartPersonEscortRecord).to.be.false
-        })
-
-        it('should not allow record to be confirmed', function () {
-          expect(params).to.have.property('canConfirmPersonEscortRecord')
-          expect(params.canConfirmPersonEscortRecord).to.be.false
-        })
-
-        it('should show Person Escort Record banner', function () {
-          expect(params).to.have.property('showPersonEscortRecordBanner')
-          expect(params.showPersonEscortRecordBanner).to.be.true
         })
       })
     })

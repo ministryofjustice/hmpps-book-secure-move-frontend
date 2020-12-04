@@ -5,6 +5,7 @@
     "attributes": {
       "status": "not_started",
       "confirmed_at": null,
+      "editable": true,
       "created_at": "2020-06-09T01:00:40+01:00",
       "nomis_sync_status": [
         {
