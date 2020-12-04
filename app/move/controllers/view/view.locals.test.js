@@ -567,10 +567,11 @@ describe('Move controllers', function () {
         it('should call frameworkFlagsToTagList presenter with correct args', function () {
           expect(
             presenters.frameworkFlagsToTagList
-          ).to.be.calledOnceWithExactly(
-            mockPersonEscortRecord.flags,
-            mockMoveUrl
-          )
+          ).to.be.calledOnceWithExactly({
+            flags: mockPersonEscortRecord.flags,
+            hrefPrefix: mockMoveUrl,
+            includeLink: true,
+          })
         })
       })
 

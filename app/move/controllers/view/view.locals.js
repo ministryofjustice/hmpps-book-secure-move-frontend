@@ -37,10 +37,11 @@ function getViewLocals(req) {
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
   const personEscortRecordUrl = `${moveUrl}/person-escort-record`
-  const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
-    personEscortRecord?.flags,
-    moveUrl
-  )
+  const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
+    flags: personEscortRecord?.flags,
+    hrefPrefix: moveUrl,
+    includeLink: true,
+  })
   const urls = {
     update: updateUrls,
     tabs: tabsUrls,

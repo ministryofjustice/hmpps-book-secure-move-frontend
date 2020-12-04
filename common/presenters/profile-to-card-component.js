@@ -68,7 +68,11 @@ function profileToCardComponent({
 
         if (isComplete) {
           card.tags = {
-            items: frameworkFlagsToTagList(flags, href),
+            items: frameworkFlagsToTagList({
+              flags,
+              hrefPrefix: href,
+              includeLink: true,
+            }),
           }
         } else {
           card.insetText = {

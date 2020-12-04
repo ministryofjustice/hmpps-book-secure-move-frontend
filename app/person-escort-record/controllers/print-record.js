@@ -64,9 +64,9 @@ function printRecord(req, res) {
       }
     }
   )
-  const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
-    personEscortRecord?.flags
-  )
+  const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
+    flags: personEscortRecord?.flags,
+  })
   // TODO: Extract this logic to the framework
   // Checking for this value based on a key within the frontend is fragile
   // It could break if somebody simply renames a question key (filename) or option

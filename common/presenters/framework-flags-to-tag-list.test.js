@@ -67,7 +67,7 @@ describe('Presenters', function () {
         ]
 
         beforeEach(function () {
-          output = presenter(mockFlags)
+          output = presenter({ flags: mockFlags })
         })
 
         it('should order items correctly', function () {
@@ -79,18 +79,6 @@ describe('Presenters', function () {
             'Vehicle',
             'Foo bar',
             'Mystery',
-          ])
-        })
-
-        it('should set hrefs correctly', function () {
-          const hrefs = output.map(it => it.href)
-          expect(hrefs).to.deep.equal([
-            '#climber',
-            '#escape-risk',
-            '#pregnant',
-            '#vehicle',
-            '#foo-bar',
-            '#mystery',
           ])
         })
 
@@ -119,46 +107,86 @@ describe('Presenters', function () {
 
         it('should contain correct number of keys', function () {
           output.forEach(item => {
-            expect(Object.keys(item)).to.have.length(5)
+            expect(Object.keys(item)).to.have.length(3)
           })
         })
       })
 
-      context('with hrefPrefix', function () {
-        const mockFlags = [
-          {
-            title: 'Escape risk',
-            flag_type: 'alert',
-          },
-        ]
-        const mockPrefix = '/prefix'
-
-        beforeEach(function () {
-          output = presenter(mockFlags, mockPrefix)
-        })
-
-        it('href should include prefix', function () {
-          expect(output[0].href).to.equal('/prefix#escape-risk')
-        })
-      })
-
-      context('with question', function () {
-        const mockFlags = [
-          {
-            title: 'Escape risk',
-            flag_type: 'alert',
-            question: {
-              section: 'section-one',
+      context('with link', function () {
+        context('without hrefPrefix', function () {
+          const mockFlags = [
+            {
+              title: 'Escape risk',
+              flag_type: 'alert',
             },
-          },
-        ]
+            {
+              title: 'Foo bar',
+              flag_type: 'attention',
+            },
+            {
+              title: 'Pregnant',
+              flag_type: 'warning',
+            },
+            {
+              title: 'Climber',
+              flag_type: 'alert',
+            },
+            {
+              title: 'Vehicle',
+              flag_type: 'warning',
+            },
+            {
+              title: 'Mystery',
+              flag_type: '__unknown_cat__',
+            },
+          ]
 
-        beforeEach(function () {
-          output = presenter(mockFlags)
+          beforeEach(function () {
+            output = presenter({
+              flags: mockFlags,
+              includeLink: true,
+            })
+          })
+
+          it('should set hrefs correctly', function () {
+            const hrefs = output.map(it => it.href)
+            expect(hrefs).to.deep.equal([
+              '#climber',
+              '#escape-risk',
+              '#pregnant',
+              '#vehicle',
+              '#foo-bar',
+              '#mystery',
+            ])
+          })
+
+          it('should contain correct number of keys', function () {
+            output.forEach(item => {
+              expect(Object.keys(item)).to.have.length(4)
+            })
+          })
         })
 
-        it('href should include prefix', function () {
-          expect(output[0].section).to.equal('section-one')
+        context('with hrefPrefix', function () {
+          const mockFlags = [
+            {
+              title: 'Escape risk',
+              flag_type: 'alert',
+            },
+          ]
+          const mockPrefix = '/prefix'
+
+          beforeEach(function () {
+            output = presenter({
+              flags: mockFlags,
+              hrefPrefix: mockPrefix,
+              includeLink: true,
+            })
+          })
+
+          it('href should include prefix', function () {
+            expect(output[0].href).to.equal('/prefix#escape-risk')
+          })
         })
       })
     })
