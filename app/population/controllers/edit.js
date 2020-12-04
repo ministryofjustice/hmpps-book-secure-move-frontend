@@ -30,14 +30,14 @@ class DetailsController extends FormWizardController {
         await populationService.update({
           id: req.population.id,
           ...data,
-          updated_by: 'user.fullname',
+          updated_by: req.session.user.fullname,
         })
       } else {
         await populationService.create({
           location: req.locationId,
           date: req.date,
           ...data,
-          updated_by: 'user.fullname',
+          updated_by: req.session.user.fullname,
         })
       }
 

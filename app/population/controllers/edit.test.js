@@ -14,15 +14,17 @@ describe('Population controllers', function () {
     let next
     let controllerInstance
     let sessionData
-    let username
 
     beforeEach(function () {
-      username = 'user.fullname'
       sessionData = { key: 'value' }
       req = {
         date: '2020-06-01',
         locationId: 'DEADBEEF',
-
+        session: {
+          user: {
+            fullname: 'Lorem Ipsum',
+          },
+        },
         sessionModel: {
           toJSON: sinon.stub().returns(sessionData),
           reset: sinon.fake(),
@@ -130,7 +132,7 @@ describe('Population controllers', function () {
           expect(mockPopulationService.create).to.have.been.calledWith({
             location: req.locationId,
             date: req.date,
-            updated_by: username,
+            updated_by: req.session.user.fullname,
             ...sessionData,
           })
         })
@@ -181,7 +183,7 @@ describe('Population controllers', function () {
 
           expect(mockPopulationService.update).to.have.been.calledWith({
             id: req.population.id,
-            updated_by: username,
+            updated_by: req.session.user.fullname,
             ...sessionData,
           })
         })
