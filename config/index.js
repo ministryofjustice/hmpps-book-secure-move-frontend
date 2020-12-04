@@ -229,6 +229,9 @@ module.exports = {
     POPULATION_DASHBOARD: /true/i.test(
       process.env.FEATURE_FLAG_POPULATION_DASHBOARD
     ),
+    YOUTH_RISK_ASSESSMENT: /true/i.test(
+      process.env.FEATURE_FLAG_YOUTH_RISK_ASSESSMENT
+    ),
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

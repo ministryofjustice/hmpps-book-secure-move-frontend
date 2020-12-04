@@ -89,8 +89,9 @@
 
 ## Feature Flags
 
-| Name             | Description                                                                  | Default |
-| :--------------- | :--------------------------------------------------------------------------- | :------ |
+| Name                    | Description                                                                  | Default |
+| :---------------------- | :--------------------------------------------------------------------------- | :------ |
+| YOUTH_RISK_ASSESSMENT   | Set to `true` to enabled youth risk assessment                               |         |
 
 ## Development specific
 
