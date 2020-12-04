@@ -1,6 +1,5 @@
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
-const profileService = require('../../../../common/services/profile')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 const Controller = require('./assessment')
@@ -12,14 +11,22 @@ describe('Move controllers', function () {
     describe('#configure()', function () {
       let nextSpy
       let req
+      let profileService
 
       beforeEach(function () {
-        sinon.stub(profileService, 'create').resolves({
-          id: '#profile',
-          person: {
-            id: '#person',
+        profileService = {
+          create: sinon.stub().resolves({
+            id: '#profile',
+            person: {
+              id: '#person',
+            },
+          }),
+        }
+        req = {
+          services: {
+            profile: profileService,
           },
-        })
+        }
         sinon.stub(BaseController.prototype, 'configure')
         sinon.stub(referenceDataService, 'getAssessmentQuestions')
         sinon.stub(fieldHelpers, 'populateAssessmentFields')
@@ -178,7 +185,7 @@ describe('Move controllers', function () {
     })
 
     describe('#setPreviousAssessment', function () {
-      let req, res, nextSpy
+      let req, res, nextSpy, profileService
       const mockProfile = {
         id: '#profile',
         assessment_answers: [
@@ -211,6 +218,9 @@ describe('Move controllers', function () {
       }
 
       beforeEach(function () {
+        profileService = {
+          create: sinon.stub().resolves(mockProfile),
+        }
         sinon.stub(presenters, 'assessmentAnswersByCategory').returns([
           {
             key: 'health',
@@ -240,6 +250,9 @@ describe('Move controllers', function () {
               },
             },
           },
+          services: {
+            profile: profileService,
+          },
         }
         res = {
           locals: {},
@@ -249,7 +262,6 @@ describe('Move controllers', function () {
 
       context('when no profile exists', function () {
         beforeEach(async function () {
-          sinon.stub(profileService, 'create').resolves(mockProfile)
           req.getProfile.returns({})
           await controller.setPreviousAssessment(req, res, nextSpy)
         })

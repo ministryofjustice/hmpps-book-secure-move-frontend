@@ -1,4 +1,3 @@
-const profileService = require('../../../../common/services/profile')
 const CreateDocument = require('../create/document')
 
 const UpdateBaseController = require('./base')
@@ -183,12 +182,15 @@ describe('Move controllers', function () {
     describe('#successHandler', function () {
       let req = {}
       let res = {}
-      let nextSpy
+      let nextSpy, profileService
       const documents = [{ id: 'foo' }, { id: 'bar' }]
       const profile = { id: '#profile', person: { id: '#person' } }
       const mockProfile = { ...profile, foo: 'bar' }
 
       beforeEach(async function () {
+        profileService = {
+          update: sinon.stub().resolves({}),
+        }
         req = {
           getMove: sinon.stub().returns({ profile: mockProfile }),
           form: {
@@ -196,11 +198,13 @@ describe('Move controllers', function () {
               documents,
             },
           },
+          services: {
+            profile: profileService,
+          },
         }
         res = {
           redirect: sinon.stub(),
         }
-        sinon.stub(profileService, 'update').resolves({})
         sinon.stub(controller, 'getBaseUrl').returns('__url__')
         sinon.stub(MixinProto, 'successHandler')
         nextSpy = sinon.spy()

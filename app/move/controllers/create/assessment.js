@@ -2,7 +2,6 @@ const { flatten, get, values } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
-const profileService = require('../../../../common/services/profile')
 const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
@@ -38,6 +37,8 @@ class AssessmentController extends CreateBaseController {
       customAssessmentGroupings = [],
       showPreviousAssessment,
     } = req.form.options
+
+    const profileService = req.services.profile
 
     let profile = req.getProfile()
 

@@ -1,5 +1,4 @@
 const moveService = require('../../../../common/services/move')
-const profileService = require('../../../../common/services/profile')
 const filters = require('../../../../config/nunjucks/filters')
 const CreateSave = require('../create/save')
 
@@ -59,17 +58,23 @@ describe('Assign controllers', function () {
       const res = {}
       let req
       let next
+      let profileService
       beforeEach(function () {
+        profileService = {
+          create: sinon.stub().resolves(profile),
+          update: sinon.stub(),
+        }
         req = {
           sessionModel: {
             set: sinon.stub(),
             toJSON: sinon.stub().returns(sessionData),
           },
+          services: {
+            profile: profileService,
+          },
         }
         next = sinon.stub()
         sinon.stub(moveService, 'update').returns(updatedMove)
-        sinon.stub(profileService, 'create').resolves(profile)
-        sinon.stub(profileService, 'update')
       })
       describe('When allocating the person to the move', function () {
         beforeEach(async function () {
