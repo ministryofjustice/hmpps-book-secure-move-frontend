@@ -3,7 +3,6 @@ const { cloneDeep } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const singleRequestService = require('../../../common/services/single-request')
 const filters = require('../../../config/nunjucks/filters')
 
 const ReviewController = require('./review')
@@ -481,11 +480,13 @@ describe('Move controllers', function () {
     })
 
     describe('#successHandler()', function () {
-      let req, res, nextSpy
+      let req, res, nextSpy, singleRequestService
 
       beforeEach(function () {
-        sinon.stub(singleRequestService, 'approve')
-        sinon.stub(singleRequestService, 'reject')
+        singleRequestService = {
+          approve: sinon.stub(),
+          reject: sinon.stub(),
+        }
         nextSpy = sinon.spy()
         req = {
           form: {
@@ -506,6 +507,9 @@ describe('Move controllers', function () {
             reset: sinon.stub(),
           },
           move: mockMove,
+          services: {
+            singleRequest: singleRequestService,
+          },
         }
         res = {
           redirect: sinon.stub(),

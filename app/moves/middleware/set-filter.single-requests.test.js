@@ -1,4 +1,3 @@
-const singleRequestService = require('../../../common/services/single-request')
 const i18n = require('../../../config/i18n')
 
 const middleware = require('./set-filter.single-requests')
@@ -23,6 +22,7 @@ describe('Moves middleware', function () {
     let next
     let req
     let res
+    let singleRequestService
 
     context('when service resolves', function () {
       const mockDateRange = ['2010-09-03', '2010-09-10']
@@ -30,7 +30,9 @@ describe('Moves middleware', function () {
 
       beforeEach(function () {
         sinon.stub(i18n, 't').returnsArg(0)
-        sinon.stub(singleRequestService, 'getAll').resolves(4)
+        singleRequestService = {
+          getAll: sinon.stub().resolves(4),
+        }
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -42,6 +44,9 @@ describe('Moves middleware', function () {
               fromLocationId: mockLocationId,
               status: 'pending',
             },
+          },
+          services: {
+            singleRequest: singleRequestService,
           },
         }
         res = {}
@@ -195,10 +200,13 @@ describe('Moves middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        sinon.stub(singleRequestService, 'getAll').rejects(mockError)
+        singleRequestService.getAll.rejects(mockError)
         next = sinon.spy()
         req = {
           params: {},
+          services: {
+            singleRequest: singleRequestService,
+          },
         }
 
         await middleware(mockConfig)(req, {}, next)

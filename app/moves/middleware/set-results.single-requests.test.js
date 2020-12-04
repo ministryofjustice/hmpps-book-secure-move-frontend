@@ -1,5 +1,4 @@
 const presenters = require('../../../common/presenters')
-const singleRequestService = require('../../../common/services/single-request')
 
 const middleware = require('./set-results.single-requests')
 
@@ -16,10 +15,13 @@ describe('Moves middleware', function () {
     let req
     let next
     let singleRequestsToTableStub
+    let singleRequestService
 
     beforeEach(function () {
       singleRequestsToTableStub = sinon.stub().returnsArg(0)
-      sinon.stub(singleRequestService, 'getAll')
+      singleRequestService = {
+        getAll: sinon.stub().resolves(mockActiveMoves),
+      }
       sinon
         .stub(presenters, 'singleRequestsToTableComponent')
         .returns(singleRequestsToTableStub)
@@ -34,12 +36,14 @@ describe('Moves middleware', function () {
             fromLocationId: '123',
           },
         },
+        services: {
+          singleRequest: singleRequestService,
+        },
       }
     })
 
     context('when service resolves', function () {
       beforeEach(async function () {
-        singleRequestService.getAll.resolves(mockActiveMoves)
         await middleware(req, res, next)
       })
 

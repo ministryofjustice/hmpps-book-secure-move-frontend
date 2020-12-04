@@ -1,7 +1,6 @@
 const { omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
-const singleRequestService = require('../../../common/services/single-request')
 const i18n = require('../../../config/i18n')
 
 const getItemFilterHref = (req, status, href) => {
@@ -29,6 +28,7 @@ const getItemFilterPromise = (item, req, requested) => {
     },
     isUndefined
   )
+  const singleRequestService = req.services.singleRequest
 
   return singleRequestService.getAll(itemRequested).then(value => ({
     value,

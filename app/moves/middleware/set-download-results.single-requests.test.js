@@ -1,5 +1,3 @@
-const singleRequestService = require('../../../common/services/single-request')
-
 const middleware = require('./set-download-results.single-requests')
 
 const mockMoves = [
@@ -14,9 +12,12 @@ describe('Moves middleware', function () {
     let res
     let req
     let next
+    let singleRequestService
 
     beforeEach(function () {
-      sinon.stub(singleRequestService, 'getDownload')
+      singleRequestService = {
+        getDownload: sinon.stub(),
+      }
       next = sinon.stub()
       res = {}
       req = {
@@ -26,6 +27,9 @@ describe('Moves middleware', function () {
             createdAtDate: ['2019-01-01', '2019-01-07'],
             fromLocationId: '123',
           },
+        },
+        services: {
+          singleRequest: singleRequestService,
         },
       }
     })
