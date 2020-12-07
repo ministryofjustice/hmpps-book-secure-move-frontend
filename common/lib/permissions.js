@@ -39,6 +39,10 @@ const secureChildrensHomePermissions = [
   'move:update:hospital',
   'move:cancel',
   'move:cancel:proposed',
+  'youth_risk_assessment:view',
+  'youth_risk_assessment:create',
+  'youth_risk_assessment:update',
+  'youth_risk_assessment:confirm',
 ]
 const secureTrainingCentrePermissions = [
   'dashboard:view',
@@ -58,6 +62,10 @@ const secureTrainingCentrePermissions = [
   'move:update:hospital',
   'move:cancel',
   'move:cancel:proposed',
+  'youth_risk_assessment:view',
+  'youth_risk_assessment:create',
+  'youth_risk_assessment:update',
+  'youth_risk_assessment:confirm',
 ]
 
 const supplierPermissions = [
@@ -115,6 +123,7 @@ const personEscortRecordAuthorPermissions = [
   'person_escort_record:confirm',
   'dashboard:view',
   'moves:view:outgoing',
+  'moves:view:incoming',
   'move:view',
 ]
 
