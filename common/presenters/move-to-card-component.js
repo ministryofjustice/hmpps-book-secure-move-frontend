@@ -1,5 +1,6 @@
 const i18n = require('../../config/i18n')
 
+const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const profileToCardComponent = require('./profile-to-card-component')
 
 function moveToCardComponent({
@@ -11,7 +12,8 @@ function moveToCardComponent({
   showStatus = true,
   hrefSuffix = '',
 } = {}) {
-  return function item({ id, reference, profile, status }) {
+  return function item(move) {
+    const { id, reference, profile, status } = move
     const href = profile ? `/move/${id}${hrefSuffix}` : ''
     const excludedBadgeStatuses = ['cancelled']
 
@@ -30,6 +32,9 @@ function moveToCardComponent({
       href,
     })
 
+    // TODO: only include this is showTags is true???
+    const importantEventsTagList = moveToImportantEventsTagListComponent(move)
+
     return {
       ...personCardComponent,
       status: statusBadge,
@@ -41,6 +46,7 @@ function moveToCardComponent({
           reference,
         }),
       },
+      importantEventsTagList,
     }
   }
 }
