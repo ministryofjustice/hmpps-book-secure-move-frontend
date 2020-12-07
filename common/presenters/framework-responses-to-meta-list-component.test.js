@@ -29,7 +29,7 @@ describe('Presenters', function () {
           value: 'string value',
           value_type: 'string',
           responded: true,
-          question: {
+          _question: {
             description: 'String',
           },
         },
@@ -37,7 +37,7 @@ describe('Presenters', function () {
           value: { option: 'Yes' },
           value_type: 'object',
           responded: false,
-          question: {
+          _question: {
             description: 'Object',
           },
         },
@@ -45,7 +45,7 @@ describe('Presenters', function () {
           value: ['One'],
           value_type: 'array',
           responded: true,
-          question: {
+          _question: {
             description: 'Array',
           },
         },
@@ -83,7 +83,7 @@ describe('Presenters', function () {
 
       describe('component service', function () {
         mockResponses.forEach(response => {
-          describe(response.question.description, function () {
+          describe(response._question.description, function () {
             it('should call component with value', function () {
               expect(componentService.getComponent).to.have.been.calledWith(
                 'appFrameworkResponse',
@@ -105,7 +105,7 @@ describe('Presenters', function () {
           value: '',
           value_type: 'string',
           responded: true,
-          question: {
+          _question: {
             description: 'String',
           },
         },
@@ -113,7 +113,7 @@ describe('Presenters', function () {
           value: {},
           value_type: 'object',
           responded: false,
-          question: {
+          _question: {
             description: 'Object',
           },
         },
@@ -121,7 +121,7 @@ describe('Presenters', function () {
           value: [],
           value_type: 'array',
           responded: true,
-          question: {
+          _question: {
             description: 'Array',
           },
         },
@@ -159,7 +159,7 @@ describe('Presenters', function () {
 
       describe('component service', function () {
         mockEmptyResponses.forEach(response => {
-          describe(response.question.description, function () {
+          describe(response._question.description, function () {
             it('should call component with undefined', function () {
               expect(componentService.getComponent).to.have.been.calledWith(
                 'appFrameworkResponse',

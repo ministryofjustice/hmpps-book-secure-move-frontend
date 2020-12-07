@@ -8,7 +8,7 @@ function _mapResponse(response) {
     valueType: response.value_type,
     responded: response.responded,
   })
-  const description = response.question?.description
+  const description = response._question?.description
 
   return {
     value: {

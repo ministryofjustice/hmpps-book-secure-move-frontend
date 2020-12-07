@@ -36,7 +36,6 @@ function getViewLocals(req) {
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
-  const personEscortRecordUrl = `${moveUrl}/person-escort-record`
   const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
     flags: personEscortRecord?.flags,
     hrefPrefix: moveUrl,
@@ -60,10 +59,7 @@ function getViewLocals(req) {
   )
     .map(
       presenters.frameworkSectionToPanelList({
-        tagList: personEscortRecordTagList,
-        questions: personEscortRecord?._framework?.questions,
-        personEscortRecord,
-        personEscortRecordUrl,
+        baseUrl: `${moveUrl}/person-escort-record`,
       })
     )
     .map(section => {
