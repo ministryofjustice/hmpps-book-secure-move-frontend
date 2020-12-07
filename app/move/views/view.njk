@@ -206,8 +206,10 @@
       </section>
 
       {% if personEscortRecordIsEnabled and personEscortRecord %}
-        {% include "move/views/_includes/person-escort-record-summary.njk" %}
-      {% else %}
+        {% include "move/views/_includes/assessment-summary.njk" %}
+      {% elif youthRiskAssessmentIsEnabled and youthRiskAssessment %}
+        {% include "move/views/_includes/assessment-summary.njk" %}
+      {% elif not personEscortRecordIsEnabled and not move._is_youth_move or not youthRiskAssessmentIsEnabled %}
         {% include "move/views/_includes/assessment.njk" %}
       {% endif %}
 

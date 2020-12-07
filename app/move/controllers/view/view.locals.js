@@ -1,6 +1,7 @@
-const { isEmpty, find, sortBy } = require('lodash')
+const { isEmpty, find, map, sortBy } = require('lodash')
 
 const presenters = require('../../../../common/presenters')
+const { FEATURE_FLAGS } = require('../../../../config')
 const updateSteps = require('../../steps/update')
 
 const getTabsUrls = require('./view.tabs.urls')
@@ -31,16 +32,17 @@ function getViewLocals(req) {
     person,
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
+    youth_risk_assessment: youthRiskAssessment,
   } = profile || {}
   const personEscortRecordIsEnabled = req.canAccess('person_escort_record:view')
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord?.status)
-  const personEscortRecordUrl = `${moveUrl}/person-escort-record`
-  const personEscortRecordTagList = presenters.frameworkFlagsToTagList(
-    personEscortRecord?.flags,
-    moveUrl
-  )
+  const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
+    flags: personEscortRecord?.flags,
+    hrefPrefix: moveUrl,
+    includeLink: true,
+  })
   const urls = {
     update: updateUrls,
     tabs: tabsUrls,
@@ -53,26 +55,40 @@ function getViewLocals(req) {
     .assessmentAnswersByCategory(assessmentAnswers)
     .filter(category => category.key === 'court')
     .map(presenters.assessmentCategoryToSummaryListComponent)[0]
-  const assessmentSections = sortBy(
-    personEscortRecord?._framework?.sections,
-    'order'
-  )
-    .map(
-      presenters.frameworkSectionToPanelList({
-        tagList: personEscortRecordTagList,
-        questions: personEscortRecord?._framework?.questions,
-        personEscortRecord,
-        personEscortRecordUrl,
-      })
-    )
-    .map(section => {
-      return {
-        ...section,
-        previousAssessment: find(assessment, {
-          frameworksSection: section.key,
-        }),
-      }
+  const youthAssessmentSections = map(
+    youthRiskAssessment?._framework?.sections,
+    presenters.frameworkSectionToPanelList({
+      baseUrl: `${moveUrl}/youth-risk-assessment`,
     })
+  )
+  const perAssessmentSections = map(
+    personEscortRecord?._framework?.sections,
+    presenters.frameworkSectionToPanelList({
+      baseUrl: `${moveUrl}/person-escort-record`,
+    })
+  ).map(section => {
+    return {
+      ...section,
+      previousAssessment: move._is_youth_move
+        ? find(youthAssessmentSections, { key: section.key })
+        : find(assessment, { frameworksSection: section.key }),
+    }
+  })
+  const combinedSections = perAssessmentSections.reduce((acc, section) => {
+    const key = section.previousAssessment?.key
+
+    if (key) {
+      acc.push(key)
+    }
+
+    return acc
+  }, [])
+  const combinedAssessmentSections = [
+    ...perAssessmentSections,
+    ...youthAssessmentSections.filter(
+      section => !combinedSections.includes(section.key)
+    ),
+  ]
 
   const userPermissions = req.session?.user?.permissions
   const locals = {
@@ -84,7 +100,13 @@ function getViewLocals(req) {
     personEscortRecordIsEnabled,
     personEscortRecordIsCompleted,
     personEscortRecordTagList,
-    assessmentSections,
+    youthRiskAssessment,
+    youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
+    assessmentSections:
+      move._is_youth_move &&
+      (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)
+        ? sortBy(youthAssessmentSections, 'order')
+        : sortBy(combinedAssessmentSections, 'order'),
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),

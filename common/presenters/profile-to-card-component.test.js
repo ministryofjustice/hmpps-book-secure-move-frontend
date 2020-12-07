@@ -460,7 +460,11 @@ describe('Presenters', function () {
             it('should call frameworkFlagsToTagList presenter', function () {
               expect(
                 frameworkFlagsToTagListStub
-              ).to.have.been.calledWithExactly(['foo', 'bar'], '/move/12345')
+              ).to.have.been.calledWithExactly({
+                flags: ['foo', 'bar'],
+                hrefPrefix: '/move/12345',
+                includeLink: true,
+              })
             })
 
             it('should not contain inset text message', function () {
