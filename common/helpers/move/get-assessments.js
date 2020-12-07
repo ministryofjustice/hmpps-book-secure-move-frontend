@@ -1,6 +1,5 @@
 const { find, map, sortBy } = require('lodash')
 
-const { FEATURE_FLAGS } = require('../../../config')
 const presenters = require('../../presenters')
 
 const getMoveUrl = require('./get-move-url')
@@ -37,9 +36,7 @@ function getAssessments(move) {
     return {
       ...section,
       previousAssessment:
-        requiresYouthRiskAssessment &&
-        youthRiskAssessment &&
-        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+        requiresYouthRiskAssessment && youthRiskAssessment
           ? find(youthAssessmentSections, { key: section.key })
           : find(assessment, { frameworksSection: section.key }),
     }
@@ -56,9 +53,7 @@ function getAssessments(move) {
   const combinedAssessmentSections = [
     ...perAssessmentSections,
     ...youthAssessmentSections.filter(
-      section =>
-        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
-        !combinedSections.includes(section.key)
+      section => !combinedSections.includes(section.key)
     ),
   ]
 
@@ -71,7 +66,6 @@ function getAssessments(move) {
     assessment,
     courtSummary,
     youthRiskAssessment,
-    youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
     assessmentSections,
   }
 
