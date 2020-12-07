@@ -918,61 +918,131 @@ describe('Move controllers', function () {
         })
 
         context('with `taken` error code', function () {
-          beforeEach(function () {
-            errorMock.errors = [
-              {
-                code: 'taken',
-                meta: {
-                  existing_id: mockExistingMoveId,
+          context('with to location', function () {
+            beforeEach(function () {
+              errorMock.errors = [
+                {
+                  code: 'taken',
+                  meta: {
+                    existing_id: mockExistingMoveId,
+                  },
                 },
-              },
-            ]
-            controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+              ]
+              controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+            })
+
+            it('should not call parent error handler', function () {
+              expect(
+                BaseController.prototype.errorHandler
+              ).not.to.have.been.called
+            })
+
+            it('should render a template', function () {
+              expect(resMock.render).to.have.been.calledOnceWithExactly(
+                'action-prevented',
+                {
+                  pageTitle: 'validation::move_conflict.heading',
+                  message: 'validation::move_conflict.message',
+                  instruction: 'validation::move_conflict.instructions',
+                }
+              )
+            })
+
+            it('should translate page title', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.heading'
+              )
+            })
+
+            it('should translate message', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.message',
+                {
+                  href: '/move/12345',
+                  name: 'DOE, JOHN',
+                  location: 'BRIXTON',
+                  date: '2020-10-10',
+                }
+              )
+            })
+
+            it('should translate instruction', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.instructions',
+                {
+                  date_href: 'move-date/edit',
+                  location_href: 'move-details/edit',
+                }
+              )
+            })
           })
 
-          it('should not call parent error handler', function () {
-            expect(
-              BaseController.prototype.errorHandler
-            ).not.to.have.been.called
-          })
-
-          it('should render a template', function () {
-            expect(resMock.render).to.have.been.calledOnceWithExactly(
-              'action-prevented',
-              {
-                pageTitle: 'validation::move_conflict.heading',
-                message: 'validation::move_conflict.message',
-                instruction: 'validation::move_conflict.instructions',
-              }
-            )
-          })
-
-          it('should translate page title', function () {
-            expect(reqMock.t).to.have.been.calledWithExactly(
-              'validation::move_conflict.heading'
-            )
-          })
-
-          it('should translate message', function () {
-            expect(reqMock.t).to.have.been.calledWithExactly(
-              'validation::move_conflict.message',
-              {
-                href: '/move/12345',
-                name: 'DOE, JOHN',
-                location: 'BRIXTON',
+          context('with prison recall', function () {
+            beforeEach(function () {
+              reqMock.sessionModel.toJSON.returns({
                 date: '2020-10-10',
-              }
-            )
-          })
+                person: {
+                  _fullname: 'DOE, JOHN',
+                },
+              })
+              errorMock.errors = [
+                {
+                  code: 'taken',
+                  meta: {
+                    existing_id: mockExistingMoveId,
+                  },
+                },
+              ]
+              controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+            })
 
-          it('should translate instruction', function () {
-            expect(reqMock.t).to.have.been.calledWithExactly(
-              'validation::move_conflict.instructions',
-              {
-                date_href: 'move-date/edit',
-                location_href: 'move-details/edit',
-              }
-            )
+            it('should not call parent error handler', function () {
+              expect(
+                BaseController.prototype.errorHandler
+              ).not.to.have.been.called
+            })
+
+            it('should render a template', function () {
+              expect(resMock.render).to.have.been.calledOnceWithExactly(
+                'action-prevented',
+                {
+                  pageTitle: 'validation::move_conflict.heading',
+                  message: 'validation::move_conflict.message',
+                  instruction: 'validation::move_conflict.instructions',
+                }
+              )
+            })
+
+            it('should translate page title', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.heading'
+              )
+            })
+
+            it('should translate message', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.message',
+                {
+                  href: '/move/12345',
+                  name: 'DOE, JOHN',
+                  location: 'fields::move_type.items.prison_recall.label',
+                  date: '2020-10-10',
+                }
+              )
+            })
+
+            it('should translate instruction', function () {
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'validation::move_conflict.instructions',
+                {
+                  date_href: 'move-date/edit',
+                  location_href: 'move-details/edit',
+                }
+              )
+              expect(reqMock.t).to.have.been.calledWithExactly(
+                'fields::move_type.items.prison_recall.label'
+              )
+            })
           })
         })
 
