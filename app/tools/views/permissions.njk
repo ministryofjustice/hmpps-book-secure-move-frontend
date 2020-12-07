@@ -1,0 +1,69 @@
+{% extends "layouts/base.njk" %}
+
+{% block primaryNavigation %}{% endblock %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% block pageTitle %}
+  User permissions
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <span class="govuk-caption-xl govuk-!-margin-bottom-1">
+      Development tools
+    </span>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      User permissions
+    </h1>
+  </header>
+
+  <form method="post" action="">
+    <h2 class="govuk-fieldset__legend--m">
+      Choose roles to use
+    </h2>
+
+    {% for role, permissions in roles %}
+      {% set permissionsHTML %}
+        <ul class="govuk-list govuk-!-font-size-16 govuk-!-margin-0">
+          {% for permission in permissions %}
+            <li>{{ permission }}</li>
+          {% endfor %}
+        </ul>
+      {% endset %}
+
+      {% set html %}
+        {{ govukDetails({
+          classes: "govuk-!-font-size-14 govuk-!-margin-0",
+          summaryText: "View permissions",
+          html: permissionsHTML
+        }) }}
+      {% endset %}
+
+      {{ govukCheckboxes({
+        idPrefix: "roles-" + role,
+        name: "roles[]",
+        formGroup: {
+          classes: "govuk-!-margin-0"
+        },
+        items: [
+          {
+            checked: 'true' if role in activeRoles,
+            value: role,
+            html: role,
+            hint: {
+              html: html
+            }
+          }
+        ]
+      }) }}
+    {% endfor %}
+
+    <div class="govuk-!-margin-top-6">
+      {{ govukButton({
+        text: "Use roles",
+        type: "submit"
+      }) }}
+    </div>
+  </form>
+{% endblock %}
