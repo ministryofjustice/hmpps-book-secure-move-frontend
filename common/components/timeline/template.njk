@@ -1,12 +1,23 @@
+{% from "flag/macro.njk" import appFlag %}
+
 <div class="app-timeline {{- ' ' + params.classes if params.classes}}" {%- for attribute, value in params.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
 
   {%- for item in params.items %}
-  <div class="app-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
+  <div id="{{ item.id }}" class="app-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="app-timeline__item__container {{- ' ' + item.container.classes if item.container.classes}}">
 
       <div class="app-timeline__header {{- ' ' + item.header.classes if item.header.classes}}">
         <h{{ params.headingLevel | default(2) }} class="app-timeline__title {{- ' ' + item.label.classes if item.label.classes}}">
-          {{- item.label.html | safe if item.label.html else item.label.text -}}
+          {% set heading %}
+            {{- item.label.html | safe if item.label.html else item.label.text -}}
+          {% endset %}
+          {% if item.flag %}
+            {% call appFlag(item) %}
+              {{- heading | safe -}}
+            {% endcall %}
+          {% else %}
+             {{- heading | safe -}}
+          {% endif %}
         </h{{ params.headingLevel | default(2) }}>
       </div>
 
@@ -24,7 +35,7 @@
         </time>
       </p>
 
-      {% if item.byline %}
+      {% if item.byline.html or item.byline.text %}
         <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes }}">
           by {{ item.byline.html | safe if item.byline.html else item.byline.text }}
         </div>
