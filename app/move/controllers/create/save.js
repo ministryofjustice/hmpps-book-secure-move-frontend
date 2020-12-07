@@ -150,7 +150,9 @@ class SaveController extends CreateBaseController {
         message: req.t('validation::move_conflict.message', {
           href: `/move/${existingMoveId}`,
           name: values.person._fullname,
-          location: values.to_location.title,
+          location:
+            values.to_location?.title ||
+            req.t('fields::move_type.items.prison_recall.label'),
           date: filters.formatDateWithDay(values.date),
         }),
         instruction: req.t('validation::move_conflict.instructions', {
