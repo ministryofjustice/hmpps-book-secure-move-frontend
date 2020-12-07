@@ -51,8 +51,11 @@
   }
 }
 
-// Set hover state only if link tag
+// Set pos-rel only if link tag
 a.app-tag {
+  position: relative;
+
+  // Set hover state only if link tag
   &:hover {
     color: rgba(255, 255, 255, 0.9);
   }

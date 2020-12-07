@@ -1,0 +1,9 @@
+<span class="app-flag">
+  <span class="app-flag__icon" aria-hidden="true">!</span>
+  <span class="govuk-warning-text__assistive">{{ params.flag.html | safe if params.flag.html else params.flag.text }}</span>
+  {% if caller %}
+    {{ caller() }}
+  {% else %}
+    {{ params.html | safe if params.html else params.text }}
+  {% endif %}
+</span>
