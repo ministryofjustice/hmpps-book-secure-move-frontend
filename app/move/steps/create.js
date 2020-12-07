@@ -1,3 +1,4 @@
+const { FEATURE_FLAGS } = require('../../../config')
 const {
   Assessment,
   CourtHearings,
@@ -47,6 +48,17 @@ const riskStep = {
   ],
 }
 
+function isYouthMove(fieldValue) {
+  return (
+    ['secure_training_centre', 'secure_childrens_home'].includes(fieldValue) &&
+    FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+  )
+}
+
+function canUploadDocuments(fieldValue) {
+  return fieldValue && !FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+}
+
 function createDateRangeStepForLocations({
   from: fromLocationType,
   to: toLocationTypes,
@@ -76,12 +88,14 @@ const healthStep = {
   pageTitle: 'moves::steps.health_information.heading',
   next: [
     ...WhenYouthTransferMove({
-      goTo: 'upload-risk-assessment',
+      goTo: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+        ? 'save'
+        : 'upload-risk-assessment',
       orElse: 'save',
     }),
     {
       field: 'can_upload_documents',
-      value: true,
+      op: canUploadDocuments,
       next: 'document',
     },
     'save',
@@ -244,6 +258,11 @@ module.exports = {
         field: 'from_location_type',
         value: 'prison',
         next: 'release-status',
+      },
+      {
+        field: 'from_location_type',
+        op: isYouthMove,
+        next: 'save',
       },
       'risk-information',
     ],
