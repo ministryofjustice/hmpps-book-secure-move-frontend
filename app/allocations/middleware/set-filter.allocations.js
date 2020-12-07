@@ -1,13 +1,12 @@
 const { get } = require('lodash')
 const querystring = require('qs')
 
-const allocationService = require('../../../common/services/allocation')
 const i18n = require('../../../config/i18n')
 
 function setfilterAllocations(items = []) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
-      allocationService
+      req.services.allocation
         .getByDateAndLocation({
           ...req.body.allocations,
           isAggregation: true,

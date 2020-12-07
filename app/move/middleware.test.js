@@ -1,6 +1,5 @@
 const proxyquire = require('proxyquire')
 
-const allocationService = require('../../common/services/allocation')
 const moveService = require('../../common/services/move')
 
 const populateResources = sinon.stub()
@@ -270,12 +269,18 @@ describe('Move middleware', function () {
   })
 
   describe('#setAllocation()', function () {
-    let req, res, nextSpy
+    let req, res, nextSpy, allocationService
 
     beforeEach(function () {
-      sinon.stub(allocationService, 'getById')
+      allocationService = {
+        getById: sinon.stub(),
+      }
 
-      req = {}
+      req = {
+        services: {
+          allocation: allocationService,
+        },
+      }
       res = {}
       nextSpy = sinon.spy()
     })
@@ -328,7 +333,7 @@ describe('Move middleware', function () {
 
         context('when API call returns succesfully', function () {
           beforeEach(async function () {
-            allocationService.getById.resolves(allocationStub)
+            allocationService.getById = sinon.stub().resolves(allocationStub)
             await middleware.setAllocation(req, res, nextSpy)
           })
 
@@ -350,7 +355,7 @@ describe('Move middleware', function () {
 
         context('when API call returns an error', function () {
           beforeEach(async function () {
-            allocationService.getById.throws(errorStub)
+            allocationService.getById = sinon.stub().throws(errorStub)
             await middleware.setAllocation(req, res, nextSpy)
           })
 

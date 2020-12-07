@@ -1,5 +1,3 @@
-const allocationService = require('../../../../common/services/allocation')
-
 const Controller = require('./save')
 
 const controller = new Controller({
@@ -9,6 +7,7 @@ const controller = new Controller({
 describe('the save controller', function () {
   let sessionModel
   let next
+  let allocationService
   const mockData = {
     'csrf-secret': '123',
     errors: [],
@@ -18,14 +17,16 @@ describe('the save controller', function () {
   describe('#saveValues', function () {
     context('happy path', function () {
       beforeEach(async function () {
+        allocationService = {
+          create: sinon.stub().resolves({
+            id: 9,
+            allocationCreated: true,
+          }),
+        }
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
           set: sinon.stub(),
         }
-        sinon.stub(allocationService, 'create').resolves({
-          id: 9,
-          allocationCreated: true,
-        })
         next = sinon.stub()
         await controller.saveValues(
           {
@@ -34,6 +35,9 @@ describe('the save controller', function () {
               user: {
                 fullname: 'John Doe',
               },
+            },
+            services: {
+              allocation: allocationService,
             },
           },
           {},
@@ -66,7 +70,7 @@ describe('the save controller', function () {
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
         }
-        sinon.stub(allocationService, 'create').throws(error)
+        allocationService.create = sinon.stub().throws(error)
         next = sinon.stub()
         await controller.saveValues(
           {
@@ -75,6 +79,9 @@ describe('the save controller', function () {
               user: {
                 fullname: 'John Doe',
               },
+            },
+            services: {
+              allocation: allocationService,
             },
           },
           {},

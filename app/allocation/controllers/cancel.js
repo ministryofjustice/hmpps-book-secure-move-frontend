@@ -1,7 +1,6 @@
 const { omit } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const allocationService = require('../../../common/services/allocation')
 
 class CancelController extends FormWizardController {
   async successHandler(req, res, next) {
@@ -15,7 +14,7 @@ class CancelController extends FormWizardController {
     data.cancellation_reason_comment = data.cancellation_reason_other_comment
 
     try {
-      await allocationService.cancel(id, {
+      await req.services.allocation.cancel(id, {
         reason: data.cancellation_reason,
         comment: data.cancellation_reason_comment,
       })

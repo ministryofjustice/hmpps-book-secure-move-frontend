@@ -1,5 +1,4 @@
 const presenters = require('../../../common/presenters')
-const allocationService = require('../../../common/services/allocation')
 
 async function setResultsAllocations(req, res, next) {
   const hasAssignerPermission = req.canAccess('allocation:person:assign')
@@ -10,7 +9,7 @@ async function setResultsAllocations(req, res, next) {
   }
 
   try {
-    const results = await allocationService.getByDateAndLocation(
+    const results = await req.services.allocation.getByDateAndLocation(
       req.body.allocations
     )
 
