@@ -130,7 +130,7 @@ class CreateBaseController extends FormWizardController {
       id: currentLocationId,
       location_type: locationType,
       can_upload_documents: canUploadDocuments,
-    } = req.session.currentLocation
+    } = req.session.currentLocation || {}
 
     req.form.values.from_location = currentLocationId
     req.form.values.from_location_type = locationType

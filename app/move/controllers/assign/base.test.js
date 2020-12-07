@@ -10,8 +10,8 @@ const controller = new UpdateBaseController({ route: '/' })
 describe('Assign controllers', function () {
   describe('Assign base controller', function () {
     describe('#middlewareChecks()', function () {
-      it('should inherit middlewareChecks from CreateBaseController', function () {
-        expect(controller.middlewareChecks).to.exist.and.equal(
+      it('should not inherit middlewareChecks from CreateBaseController', function () {
+        expect(controller.middlewareChecks).to.exist.and.not.equal(
           BaseProto.middlewareChecks
         )
       })
@@ -74,11 +74,42 @@ describe('Assign controllers', function () {
     })
 
     describe('#checkCurrentLocation()', function () {
-      it('should inherit checkCurrentLocation from CreateBaseController', function () {
-        expect(controller.checkCurrentLocation).to.exist.and.equal(
+      it('should not inherit checkCurrentLocation from CreateBaseController', function () {
+        expect(controller.checkCurrentLocation).to.exist.and.not.equal(
           BaseProto.checkCurrentLocation
         )
       })
+
+      it('should call next', function () {
+        const nextSpy = sinon.spy()
+
+        controller.checkCurrentLocation({}, {}, nextSpy)
+
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
+  describe('#middlewareChecks()', function () {
+    beforeEach(function () {
+      sinon.stub(BaseProto, 'middlewareChecks')
+      sinon.stub(controller, 'use')
+
+      controller.middlewareChecks()
+    })
+
+    it('should call parent method', function () {
+      expect(BaseProto.middlewareChecks).to.have.been.calledOnce
+    })
+
+    it('should call set move method', function () {
+      expect(controller.use.getCall(0)).to.have.been.calledWithExactly(
+        controller.checkNoProfileExists
+      )
+    })
+
+    it('should call correct number of additional middleware', function () {
+      expect(controller.use).to.have.been.calledOnce
     })
   })
 
@@ -108,6 +139,58 @@ describe('Assign controllers', function () {
 
     it('should call correct number of additional middleware', function () {
       expect(controller.use).to.have.been.calledTwice
+    })
+  })
+
+  describe('#checkNoProfileExists()', function () {
+    let req = {}
+    let res, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      req = {
+        move: {
+          allocation: {
+            id: '__allocationId__',
+          },
+        },
+      }
+      res = {
+        redirect: sinon.stub(),
+      }
+    })
+
+    context('when profile already exists', function () {
+      beforeEach(function () {
+        req.move.profile = {
+          id: '__profile_id__',
+        }
+        controller.checkNoProfileExists(req, res, nextSpy)
+      })
+
+      it('should redirect back to allocation assign route', function () {
+        expect(res.redirect).to.have.been.calledOnceWithExactly(
+          '/allocation/__allocationId__/assign'
+        )
+      })
+
+      it('should not call next', function () {
+        expect(nextSpy).not.to.have.been.called
+      })
+    })
+
+    context('when profile does not exist', function () {
+      beforeEach(function () {
+        controller.checkNoProfileExists(req, res, nextSpy)
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).not.to.have.been.called
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
     })
   })
 
