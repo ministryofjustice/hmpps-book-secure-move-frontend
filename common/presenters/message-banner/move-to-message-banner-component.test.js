@@ -14,25 +14,7 @@ const presenter = proxyquire('./move-to-message-banner-component', {
   './assessment-to-confirmed-banner': assessmentToConfirmedBannerStub,
   './assessment-to-start-banner': assessmentToStartBannerStub,
   './assessment-to-unconfirmed-banner': assessmentToUnconfirmedBannerStub,
-  '../../../config': {
-    FEATURE_FLAGS: {
-      YOUTH_RISK_ASSESSMENT: true,
-    },
-  },
 })
-const presenterWithoutFeature = proxyquire(
-  './move-to-message-banner-component',
-  {
-    './assessment-to-confirmed-banner': assessmentToConfirmedBannerStub,
-    './assessment-to-start-banner': assessmentToStartBannerStub,
-    './assessment-to-unconfirmed-banner': assessmentToUnconfirmedBannerStub,
-    '../../../config': {
-      FEATURE_FLAGS: {
-        YOUTH_RISK_ASSESSMENT: false,
-      },
-    },
-  }
-)
 
 describe('Presenters', function () {
   describe('Message banner presenters', function () {
@@ -296,35 +278,6 @@ describe('Presenters', function () {
                   id: '_per_12345',
                   status: 'in_progress',
                 },
-                baseUrl: '/move/12345/person-escort-record',
-                context: 'person_escort_record',
-                canAccess: mockArgs.canAccess,
-              })
-            })
-          })
-
-          context('when feature is not enabled', function () {
-            beforeEach(function () {
-              mockMove.profile.youth_risk_assessment = {
-                id: '_youth_12345',
-                status: 'in_progress',
-              }
-              mockMove.profile.person_escort_record = null
-
-              output = presenterWithoutFeature({
-                ...mockArgs,
-                move: mockMove,
-              })
-            })
-
-            it('should return unconfirmed banner', function () {
-              expect(output).to.deep.equal('__assessmentToStartBanner__')
-            })
-
-            it('should call presenter with person escort record', function () {
-              expect(
-                assessmentToStartBannerStub
-              ).to.have.been.calledOnceWithExactly({
                 baseUrl: '/move/12345/person-escort-record',
                 context: 'person_escort_record',
                 canAccess: mockArgs.canAccess,

@@ -231,9 +231,6 @@ module.exports = {
     POPULATION_DASHBOARD: /true/i.test(
       process.env.FEATURE_FLAG_POPULATION_DASHBOARD
     ),
-    YOUTH_RISK_ASSESSMENT: /true/i.test(
-      process.env.FEATURE_FLAG_YOUTH_RISK_ASSESSMENT
-    ),
     YOUTH_RISK_ASSESSMENT_YOI: /true/i.test(
       process.env.FEATURE_FLAG_YOUTH_RISK_ASSESSMENT_YOI
     ),
