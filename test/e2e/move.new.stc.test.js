@@ -10,7 +10,7 @@ fixture('New move from Secure Training Centre (STC) to Court').beforeEach(
   }
 )
 
-test.meta('hasDocument', 'true')('With a new person', async t => {
+test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
@@ -34,20 +34,6 @@ test.meta('hasDocument', 'true')('With a new person', async t => {
   const courtInformation = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
-  // Risk information
-  const riskInformation = await createMovePage.fillInRiskInformation()
-  await page.submitForm()
-
-  // Health information
-  const healthInformation = await createMovePage.fillInHealthInformation()
-  await page.submitForm()
-
-  // Documents upload
-  const files = ['a-random-text-file.txt', 'boy-the-cat.jpg', 'leo-the-cat.png']
-  await createMovePage.fillInDocumentUploads(files)
-  await createMovePage.checkDocumentUploads(files)
-  await page.submitForm()
-
   // Confirmation page
 
   await createMovePage.checkConfirmationStep({
@@ -64,8 +50,4 @@ test.meta('hasDocument', 'true')('With a new person', async t => {
 
   // Check assessment
   await moveDetailPage.checkCourtInformation(courtInformation)
-  await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation)
-
-  // TODO: Check files are present
 })
