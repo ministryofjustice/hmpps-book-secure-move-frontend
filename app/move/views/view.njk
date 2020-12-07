@@ -207,9 +207,9 @@
 
       {% if personEscortRecordIsEnabled and personEscortRecord %}
         {% include "move/views/_includes/assessment-summary.njk" %}
-      {% elif youthRiskAssessmentIsEnabled and youthRiskAssessment %}
+      {% elif move._is_youth_move %}
         {% include "move/views/_includes/assessment-summary.njk" %}
-      {% elif not personEscortRecordIsEnabled and not move._is_youth_move or not youthRiskAssessmentIsEnabled %}
+      {% else %}
         {% include "move/views/_includes/assessment.njk" %}
       {% endif %}
 
