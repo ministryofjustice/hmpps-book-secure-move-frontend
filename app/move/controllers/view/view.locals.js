@@ -1,6 +1,7 @@
 const { isEmpty, find, map, sortBy } = require('lodash')
 
 const presenters = require('../../../../common/presenters')
+const { FEATURE_FLAGS } = require('../../../../config')
 const updateSteps = require('../../steps/update')
 
 const getTabsUrls = require('./view.tabs.urls')
@@ -100,6 +101,7 @@ function getViewLocals(req) {
     personEscortRecordIsCompleted,
     personEscortRecordTagList,
     youthRiskAssessment,
+    youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
     assessmentSections:
       move._is_youth_move &&
       (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)

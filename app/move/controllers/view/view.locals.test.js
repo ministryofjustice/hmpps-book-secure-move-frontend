@@ -20,6 +20,11 @@ const pathStubs = {
   './view.tabs.urls': getTabsUrls,
   './view.update.urls': getUpdateUrls,
   './view.update.links': getUpdateLinks,
+  '../../../../config': {
+    FEATURE_FLAGS: {
+      YOUTH_RISK_ASSESSMENT: false,
+    },
+  },
 }
 const getViewLocals = proxyquire('./view.locals', pathStubs)
 
@@ -345,6 +350,11 @@ describe('Move controllers', function () {
       it('should contain message content param', function () {
         expect(params).to.have.property('messageContent')
         expect(params.messageContent).to.equal('statuses::description')
+      })
+
+      it('should contain youthRiskAssessmentIsEnabled param', function () {
+        expect(params).to.have.property('youthRiskAssessmentIsEnabled')
+        expect(params.youthRiskAssessmentIsEnabled).to.equal(false)
       })
 
       describe('tabs urls', function () {
@@ -778,6 +788,25 @@ describe('Move controllers', function () {
             },
           ])
         })
+      })
+    })
+
+    context('with feature flag turned on', function () {
+      beforeEach(function () {
+        const locals = proxyquire('./view.locals', {
+          ...pathStubs,
+          '../../../../config': {
+            FEATURE_FLAGS: {
+              YOUTH_RISK_ASSESSMENT: true,
+            },
+          },
+        })
+        params = locals(req)
+      })
+
+      it('should contain youthRiskAssessmentIsEnabled param', function () {
+        expect(params).to.have.property('youthRiskAssessmentIsEnabled')
+        expect(params.youthRiskAssessmentIsEnabled).to.be.true
       })
     })
 
