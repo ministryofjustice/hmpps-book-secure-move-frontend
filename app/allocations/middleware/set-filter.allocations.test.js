@@ -1,4 +1,3 @@
-const allocationService = require('../../../common/services/allocation')
 const i18n = require('../../../config/i18n')
 
 const middleware = require('./set-filter.allocations')
@@ -23,14 +22,17 @@ describe('Allocations middleware', function () {
     let next
     let req
     let res
+    let allocationService
 
     context('when service resolves', function () {
       const mockDateRange = ['2010-09-03', '2010-09-10']
       const mockLocationId = '123'
 
       beforeEach(function () {
+        allocationService = {
+          getByDateAndLocation: sinon.stub().resolves(4),
+        }
         sinon.stub(i18n, 't').returnsArg(0)
-        sinon.stub(allocationService, 'getByDateAndLocation').resolves(4)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -41,6 +43,9 @@ describe('Allocations middleware', function () {
               fromLocationId: mockLocationId,
               status: 'pending',
             },
+          },
+          services: {
+            allocation: allocationService,
           },
         }
         res = {}
@@ -216,11 +221,14 @@ describe('Allocations middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        sinon.stub(allocationService, 'getByDateAndLocation').rejects(mockError)
+        allocationService.getByDateAndLocation = sinon.stub().rejects(mockError)
         next = sinon.spy()
         req = {
           body: {},
           params: {},
+          services: {
+            allocation: allocationService,
+          },
         }
 
         await middleware(mockConfig)(req, {}, next)

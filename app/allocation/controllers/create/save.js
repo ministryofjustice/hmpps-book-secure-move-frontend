@@ -1,7 +1,5 @@
 const { omit } = require('lodash')
 
-const allocationService = require('../../../../common/services/allocation')
-
 const CreateAllocationBaseController = require('./base')
 
 class SaveController extends CreateAllocationBaseController {
@@ -10,7 +8,7 @@ class SaveController extends CreateAllocationBaseController {
       const sessionModel = req.sessionModel.toJSON()
       const data = omit(sessionModel, ['csrf-secret', 'errors', 'errorValues'])
 
-      const allocation = await allocationService.create({
+      const allocation = await req.services.allocation.create({
         ...data,
         requested_by: req.session.user.fullname,
       })

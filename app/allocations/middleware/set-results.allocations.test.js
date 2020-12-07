@@ -1,5 +1,4 @@
 const presenters = require('../../../common/presenters')
-const allocationService = require('../../../common/services/allocation')
 
 const middleware = require('./set-results.allocations')
 
@@ -16,10 +15,13 @@ describe('Allocations middleware', function () {
     let req
     let next
     let allocationsToTableStub
+    let allocationService
 
     beforeEach(function () {
+      allocationService = {
+        getByDateAndLocation: sinon.stub(),
+      }
       allocationsToTableStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'getByDateAndLocation')
       sinon
         .stub(presenters, 'allocationsToTableComponent')
         .returns(allocationsToTableStub)
@@ -43,6 +45,9 @@ describe('Allocations middleware', function () {
             moveDate: ['2019-01-01', '2019-01-07'],
             fromLocationId: '123',
           },
+        },
+        services: {
+          allocation: allocationService,
         },
       }
     })
@@ -142,7 +147,7 @@ describe('Allocations middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        allocationService.getByDateAndLocation.rejects(mockError)
+        allocationService.getByDateAndLocation = sinon.stub().rejects(mockError)
         await middleware(req, res, next)
       })
 

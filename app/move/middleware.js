@@ -1,5 +1,4 @@
 const populateResources = require('../../common/lib/populate-resources')
-const allocationService = require('../../common/services/allocation')
 const moveService = require('../../common/services/move')
 
 module.exports = {
@@ -59,7 +58,7 @@ module.exports = {
     }
 
     try {
-      req.allocation = await allocationService.getById(allocation.id)
+      req.allocation = await req.services.allocation.getById(allocation.id)
       next()
     } catch (error) {
       next(error)

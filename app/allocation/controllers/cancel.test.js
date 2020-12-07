@@ -1,5 +1,3 @@
-const allocationService = require('../../../common/services/allocation')
-
 const CancelController = require('./cancel')
 
 const controller = new CancelController({ route: '/' })
@@ -8,10 +6,13 @@ const mockAllocation = {
 }
 describe('Cancel controller', function () {
   describe('#successHandler()', function () {
-    let req, res, nextSpy
+    let req, res, nextSpy, allocationService
 
     beforeEach(function () {
       nextSpy = sinon.spy()
+      allocationService = {
+        cancel: sinon.stub().resolves({}),
+      }
       req = {
         form: {
           options: {
@@ -32,6 +33,9 @@ describe('Cancel controller', function () {
           reset: sinon.stub(),
         },
         allocation: mockAllocation,
+        services: {
+          allocation: allocationService,
+        },
       }
       res = {
         redirect: sinon.stub(),
@@ -40,7 +44,6 @@ describe('Cancel controller', function () {
 
     context('happy path', function () {
       beforeEach(async function () {
-        sinon.stub(allocationService, 'cancel').resolves({})
         await controller.successHandler(req, res, nextSpy)
       })
 
@@ -71,7 +74,7 @@ describe('Cancel controller', function () {
       const errorMock = new Error('500!')
 
       beforeEach(async function () {
-        sinon.stub(allocationService, 'cancel').throws(errorMock)
+        req.services.allocation.cancel = sinon.stub().throws(errorMock)
         await controller.successHandler(req, res, nextSpy)
       })
 
