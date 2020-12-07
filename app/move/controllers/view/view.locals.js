@@ -89,6 +89,9 @@ function getViewLocals(req) {
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),
     tagList: presenters.assessmentToTagList(assessmentAnswers, moveUrl),
+    importantEventsTagList: presenters.moveToImportantEventsTagListComponent(
+      move
+    ),
     canCancelMove:
       (userPermissions.includes('move:cancel') &&
         !move.allocation &&

@@ -140,6 +140,13 @@
         {% endfor %}
       </div>
     {% endif %}
+    {% if importantEventsTagList.length %}
+      <div class="govuk-!-margin-top-2" data-tag-list-source="move-important-events">
+        {% for tag in importantEventsTagList %}
+          {{ appTag(tag) }}
+        {% endfor %}
+      </div>
+    {% endif %}
   </header>
 {% endblock %}
 

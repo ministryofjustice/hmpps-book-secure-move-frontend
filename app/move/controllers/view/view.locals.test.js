@@ -124,6 +124,9 @@ describe('Move controllers', function () {
       sinon
         .stub(presenters, 'courtHearingToSummaryListComponent')
         .callsFake(hearing => `summaryList__${hearing.id}`)
+      sinon
+        .stub(presenters, 'moveToImportantEventsTagListComponent')
+        .returns('importantEventsTagList')
 
       req = {
         t: sinon.stub().returnsArg(0),
@@ -450,6 +453,17 @@ describe('Move controllers', function () {
       it('should contain tag list param', function () {
         expect(params).to.have.property('tagList')
         expect(params.tagList).to.deep.equal([])
+      })
+
+      it('should call moveToImportantEventsTagList presenter with move', function () {
+        expect(
+          presenters.moveToImportantEventsTagListComponent
+        ).to.be.calledOnceWithExactly(req.move)
+      })
+
+      it('should contain important events tag list param', function () {
+        expect(params).to.have.property('importantEventsTagList')
+        expect(params.importantEventsTagList).to.equal('importantEventsTagList')
       })
 
       it('should call assessmentAnswersByCategory presenter with empty array', function () {

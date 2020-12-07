@@ -3,9 +3,7 @@ const proxyquire = require('proxyquire')
 const presenters = {
   moveToMetaListComponent: sinon.stub().returns('moveToMetaListComponentArgs'),
   assessmentToTagList: sinon.stub().returns('assessmentToTagListArgs'),
-  eventsToTimelineComponent: sinon
-    .stub()
-    .returns('eventsToTimelineComponentArgs'),
+  moveToTimelineComponent: sinon.stub().returns('moveToTimelineComponentArgs'),
 }
 
 const getTabsUrls = sinon.stub().returns('tab_urls')
@@ -36,7 +34,7 @@ describe('Move controllers', function () {
       res.render.resetHistory()
       presenters.moveToMetaListComponent.resetHistory()
       presenters.assessmentToTagList.resetHistory()
-      presenters.eventsToTimelineComponent.resetHistory()
+      presenters.moveToTimelineComponent.resetHistory()
       getViewLocals.resetHistory()
       getTabsUrls.resetHistory()
       req = {
@@ -60,7 +58,7 @@ describe('Move controllers', function () {
       it('should render the timeline', function () {
         expect(res.render).to.be.calledOnceWithExactly('move/views/timeline', {
           locals: 'view.locals',
-          timeline: 'eventsToTimelineComponentArgs',
+          timeline: 'moveToTimelineComponentArgs',
           urls: {
             tabs: 'tab_urls',
           },
