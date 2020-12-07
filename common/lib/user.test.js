@@ -194,6 +194,10 @@ describe('User class', function () {
           'move:update:hospital',
           'move:cancel',
           'move:cancel:proposed',
+          'youth_risk_assessment:view',
+          'youth_risk_assessment:create',
+          'youth_risk_assessment:update',
+          'youth_risk_assessment:confirm',
         ]
 
         expect(permissions).to.have.members(stcPermissions)
@@ -224,6 +228,10 @@ describe('User class', function () {
           'move:update:hospital',
           'move:cancel',
           'move:cancel:proposed',
+          'youth_risk_assessment:view',
+          'youth_risk_assessment:create',
+          'youth_risk_assessment:update',
+          'youth_risk_assessment:confirm',
         ])
       })
     })
@@ -395,6 +403,10 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'youth_risk_assessment:view',
+          'youth_risk_assessment:create',
+          'youth_risk_assessment:update',
+          'youth_risk_assessment:confirm',
         ]
 
         expect(permissions).to.have.members(allPermissions)
