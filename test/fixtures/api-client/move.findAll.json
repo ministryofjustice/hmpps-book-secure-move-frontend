@@ -61,6 +61,9 @@
         "original_move": {
           "data": null
         },
+        "important_events": {
+          "data": []
+        },
         "timeline_events": {
           "data": []
         }
@@ -126,6 +129,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "important_events": {
+          "data": []
         },
         "timeline_events": {
           "data": []
@@ -193,6 +199,9 @@
         "original_move": {
           "data": null
         },
+        "important_events": {
+          "data": []
+        },
         "timeline_events": {
           "data": []
         }
@@ -259,6 +268,9 @@
         "original_move": {
           "data": null
         },
+        "important_events": {
+          "data": []
+        },
         "timeline_events": {
           "data": []
         }
@@ -324,6 +336,9 @@
         },
         "original_move": {
           "data": null
+        },
+        "important_events": {
+          "data": []
         },
         "timeline_events": {
           "data": []

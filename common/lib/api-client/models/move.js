@@ -53,6 +53,10 @@ module.exports = {
       jsonApi: 'hasOne',
       type: 'suppliers',
     },
+    important_events: {
+      jsonApi: 'hasMany',
+      type: 'events',
+    },
     timeline_events: {
       jsonApi: 'hasMany',
       type: 'events',

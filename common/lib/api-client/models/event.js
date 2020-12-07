@@ -2,6 +2,7 @@ module.exports = {
   fields: {
     event_type: '',
     notes: '',
+    classification: '',
     occurred_at: '',
     recorded_at: '',
     details: '',
