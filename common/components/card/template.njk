@@ -63,6 +63,16 @@
       </ul>
     {% endif %}
 
+    {% if params.importantEventsTagList.length %}
+      <ul class="app-card__tag-list">
+        {% for item in params.importantEventsTagList %}
+          <li class="app-card__tag-list-item">
+            {{ appTag(item) }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     {% if params.insetText %}
       {{ govukInsetText(params.insetText) }}
     {% endif %}
