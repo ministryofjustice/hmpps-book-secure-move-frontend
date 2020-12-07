@@ -639,12 +639,13 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           include: [
+            'from_location',
+            'important_events',
             'profile',
-            'profile.person_escort_record.flags',
             'profile.person',
             'profile.person.gender',
+            'profile.person_escort_record.flags',
             'to_location',
-            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
@@ -676,12 +677,13 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
           include: [
+            'from_location',
+            'important_events',
             'profile',
-            'profile.person_escort_record.flags',
             'profile.person',
             'profile.person.gender',
+            'profile.person_escort_record.flags',
             'to_location',
-            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
@@ -713,12 +715,13 @@ describe('Move Service', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: true,
           include: [
+            'from_location',
+            'important_events',
             'profile',
-            'profile.person_escort_record.flags',
             'profile.person',
             'profile.person.gender',
+            'profile.person_escort_record.flags',
             'to_location',
-            'from_location',
           ],
           filter: {
             'filter[status]': 'requested,accepted,booked,in_transit,completed',
@@ -971,7 +974,7 @@ describe('Move Service', function () {
       })
       it('should call find method with data', function () {
         expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
-          include: moveService.defaultInclude,
+          include: [...moveService.defaultInclude, 'important_events'],
         })
       })
       it('should return move', function () {
