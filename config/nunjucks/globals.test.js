@@ -1,6 +1,10 @@
 const proxyquire = require('proxyquire').noCallThru()
 
 const { mountpath: componentsUrl } = require('../../app/components')
+const {
+  mountpath: toolsMountpath,
+  routes: toolsRoutes,
+} = require('../../app/tools')
 const i18n = require('../i18n')
 const logger = require('../logger')
 
@@ -19,13 +23,14 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: true,
+            ENABLE_DEVELOPMENT_TOOLS: true,
             FEEDBACK_URL: '/feedback-url',
           },
         })
       })
 
       it('should set footer items', function () {
-        globals.FOOTER_ITEMS = [
+        expect(globals.FOOTER_ITEMS).to.deep.equal([
           {
             href: '/feedback-url',
             text: 'feedback_link',
@@ -34,7 +39,11 @@ describe('Nunjucks globals', function () {
             href: componentsUrl,
             text: 'components::title',
           },
-        ]
+          {
+            href: `${toolsMountpath}${toolsRoutes.permissions}`,
+            text: 'Set permissions (dev only)',
+          },
+        ])
       })
     })
 
@@ -49,7 +58,7 @@ describe('Nunjucks globals', function () {
       })
 
       it('should set footer items to empty', function () {
-        globals.FOOTER_ITEMS = []
+        expect(globals.FOOTER_ITEMS).to.deep.equal([])
       })
     })
   })
