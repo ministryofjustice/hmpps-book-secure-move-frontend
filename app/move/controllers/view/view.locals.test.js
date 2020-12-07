@@ -8,7 +8,12 @@ const getTabsUrls = sinon.stub()
 
 const updateSteps = []
 const frameworkStub = {
-  sections: [{ id: 'one' }],
+  sections: [
+    { id: 'one', order: 4 },
+    { id: 'two', order: 3 },
+    { id: 'three', order: 2 },
+    { id: 'four', order: 1 },
+  ],
 }
 const pathStubs = {
   '../../steps/update': updateSteps,
@@ -113,7 +118,7 @@ describe('Move controllers', function () {
         .returns('__moveToMessageBannerComponent__')
       sinon
         .stub(presenters, 'frameworkSectionToPanelList')
-        .returns(sinon.stub().returns({}))
+        .returns(sinon.stub().returnsArg(0))
       sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
       sinon.stub(presenters, 'assessmentToTagList').returnsArg(0)
       sinon.stub(presenters, 'assessmentAnswersByCategory').returns([])
@@ -584,6 +589,194 @@ describe('Move controllers', function () {
         it('should set personEscortRecordIsEnabled to false', function () {
           expect(params).to.have.property('personEscortRecordIsEnabled')
           expect(params.personEscortRecordIsEnabled).to.be.false
+        })
+      })
+    })
+
+    context('with Youth Risk Assessment', function () {
+      const mockYouthRiskAssessment = {
+        _framework: {
+          sections: [
+            { key: 'two', order: 2, youth: true },
+            { key: 'one', order: 1, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'six', order: 6, youth: true },
+          ],
+        },
+        id: '67890',
+        status: 'in_progress',
+        meta: {
+          section_progress: {
+            one: 'in_progress',
+            two: 'completed',
+          },
+        },
+        flags: [
+          {
+            id: '12345',
+            type: 'framework_flags',
+            title: 'Flag 1',
+          },
+          {
+            id: '67890',
+            type: 'framework_flags',
+            title: 'Flag 2',
+          },
+          {
+            id: 'abcde',
+            type: 'framework_flags',
+            title: 'Flag 3',
+          },
+        ],
+      }
+
+      beforeEach(function () {
+        req.move = {
+          ...req.move,
+          _is_youth_move: true,
+          profile: {
+            id: '12345',
+            youth_risk_assessment: mockYouthRiskAssessment,
+          },
+        }
+      })
+
+      context('when record is in progress', function () {
+        beforeEach(function () {
+          params = getViewLocals(req)
+        })
+
+        it('should contain a youthRiskAssessment', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('youthRiskAssessment')
+          expect(params.youthRiskAssessment).to.deep.equal(
+            mockYouthRiskAssessment
+          )
+        })
+
+        it('should use youth risk assessment for sections', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('assessmentSections')
+          expect(params.assessmentSections).to.deep.equal([
+            { key: 'one', order: 1, youth: true },
+            { key: 'two', order: 2, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'six', order: 6, youth: true },
+          ])
+        })
+      })
+
+      context('when record is confirmed', function () {
+        beforeEach(function () {
+          req.move.profile.youth_risk_assessment = {
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          }
+          params = getViewLocals(req)
+        })
+
+        it('should contain a youthRiskAssessment', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('youthRiskAssessment')
+          expect(params.youthRiskAssessment).to.deep.equal({
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          })
+        })
+
+        it('should use youth risk assessment for sections', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('assessmentSections')
+          expect(params.assessmentSections).to.deep.equal([
+            { key: 'one', order: 1, youth: true },
+            { key: 'two', order: 2, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'six', order: 6, youth: true },
+          ])
+        })
+      })
+
+      context('when person escort record exists', function () {
+        beforeEach(function () {
+          req.move.profile.youth_risk_assessment = {
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          }
+          req.move.profile.person_escort_record = {
+            ...mockYouthRiskAssessment,
+            _framework: {
+              sections: [
+                { key: 'one', order: 1 },
+                { key: 'three', order: 3 },
+                { key: 'two', order: 2 },
+              ],
+            },
+          }
+          params = getViewLocals(req)
+        })
+
+        it('should contain a youthRiskAssessment', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('youthRiskAssessment')
+          expect(params.youthRiskAssessment).to.deep.equal({
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          })
+        })
+
+        it('should merge assessment sections', function () {
+          params = getViewLocals(req)
+          expect(params).to.have.property('assessmentSections')
+          expect(params.assessmentSections).to.deep.equal([
+            {
+              key: 'one',
+              order: 1,
+              previousAssessment: {
+                key: 'one',
+                order: 1,
+                youth: true,
+              },
+            },
+            {
+              key: 'two',
+              order: 2,
+              previousAssessment: {
+                key: 'two',
+                order: 2,
+                youth: true,
+              },
+            },
+            {
+              key: 'three',
+              order: 3,
+              previousAssessment: {
+                key: 'three',
+                order: 3,
+                youth: true,
+              },
+            },
+            {
+              key: 'four',
+              order: 4,
+              youth: true,
+            },
+            {
+              key: 'five',
+              order: 5,
+              youth: true,
+            },
+            {
+              key: 'six',
+              order: 6,
+              youth: true,
+            },
+          ])
         })
       })
     })

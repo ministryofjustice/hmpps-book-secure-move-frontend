@@ -82,7 +82,7 @@ function getViewLocals(req) {
 
     return acc
   }, [])
-  const basicAssessment = [
+  const combinedAssessmentSections = [
     ...perAssessmentSections,
     ...youthAssessmentSections.filter(
       section => !combinedSections.includes(section.key)
@@ -104,7 +104,7 @@ function getViewLocals(req) {
       move._is_youth_move &&
       (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)
         ? sortBy(youthAssessmentSections, 'order')
-        : sortBy(basicAssessment, 'order'),
+        : sortBy(combinedAssessmentSections, 'order'),
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),
