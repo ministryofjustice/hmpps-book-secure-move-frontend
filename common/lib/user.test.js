@@ -334,6 +334,7 @@ describe('User class', function () {
           'person_escort_record:confirm',
           'dashboard:view',
           'moves:view:outgoing',
+          'moves:view:incoming',
           'move:view',
         ])
       })
