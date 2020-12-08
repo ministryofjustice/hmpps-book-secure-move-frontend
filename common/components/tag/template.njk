@@ -4,5 +4,11 @@
   class="app-tag{% if params.classes %} {{ params.classes }}{% endif %}"
   {% if params.href %}href="{{ params.href }}"{% endif %}
   >
+  {% if params.flag.html or params.flag.text %}
+    <span class="app-tag__flag">
+      <span class="app-tag__flag__icon" aria-hidden="true">!</span>
+      <span class="govuk-warning-text__assistive">{{ params.flag.html | safe if params.flag.html else params.flag.text }}</span>
+    </span>
+  {% endif %}
   {{ params.html | safe if params.html else params.text }}
 </{{ element }}>

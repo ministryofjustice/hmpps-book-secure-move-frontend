@@ -1,6 +1,8 @@
 .app-tag {
   @include govuk-font($size: 14, $weight: bold, $line-height: 1.25);
 
+  position: relative;
+
   display: inline-block;
   padding: 3px 8px;
 
@@ -10,8 +12,8 @@
   outline: 2px solid transparent;
   outline-offset: -2px;
 
-  color: govuk-colour("white");
-  background-color: govuk-colour("blue");
+  color: govuk-colour('white');
+  background-color: govuk-colour('blue');
 
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -21,11 +23,11 @@
   &:hover,
   &:visited,
   &:focus {
-    color: govuk-colour("white");
+    color: govuk-colour('white');
   }
 
   &:focus {
-    background-color: govuk-colour("blue");
+    background-color: govuk-colour('blue');
   }
 
   // create s
@@ -34,57 +36,53 @@
   }
 
   @include govuk-media-query($media-type: print) {
-    background: govuk-colour("white") !important;
-    border: 1px solid govuk-colour("black") !important;
-    color: govuk-colour("black") !important;
+    background: govuk-colour('white') !important;
+    border: 1px solid govuk-colour('black') !important;
+    color: govuk-colour('black') !important;
     font-size: 11px !important;
     padding: 2px 5px;
     text-decoration: none;
 
     &[href^="/"],
     &[href^="http://"],
-    &[href^="https://"] {
+    &[href^="https://"]
+    {
       &::after {
-        content: "";
+        content: '';
       }
     }
   }
 }
 
-// Set pos-rel only if link tag
-a.app-tag {
-  position: relative;
-
-  // Set hover state only if link tag
-  &:hover {
-    color: rgba(255, 255, 255, 0.9);
-  }
+// Set hover state only if link tag
+a.app-tag:hover {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 // Modifiers for different colours
 .app-tag--inactive {
-  background-color: govuk-colour("dark-grey");
+  background-color: govuk-colour('dark-grey');
 
   &:focus {
-    background-color: govuk-colour("dark-grey");
+    background-color: govuk-colour('dark-grey');
   }
 }
 
 .app-tag--destructive {
-  background-color: govuk-colour("red");
+  background-color: govuk-colour('red');
 
   &:focus {
-    background-color: govuk-colour("red");
+    background-color: govuk-colour('red');
   }
 }
 
 .app-tag--warning {
-  background-color: govuk-colour("yellow");
-  color: govuk-colour("black");
+  background-color: govuk-colour('yellow');
+  color: govuk-colour('black');
 
   &:focus {
-    background-color: govuk-colour("yellow");
-    color: govuk-colour("black");
+    background-color: govuk-colour('yellow');
+    color: govuk-colour('black');
   }
 }
 
@@ -94,6 +92,24 @@ a.app-tag--warning {
   &:hover,
   &:visited,
   &:focus {
-    color: govuk-colour("black");
+    color: govuk-colour('black');
   }
+}
+
+.app-tag__flag {
+  padding-left: 1.5rem;
+}
+
+.app-tag__flag__icon {
+  background: govuk-colour('yellow');
+  color: govuk-colour('black');
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 150%;
+  line-height: 1.25;
 }

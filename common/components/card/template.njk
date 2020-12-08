@@ -53,25 +53,17 @@
       </dl>
     {% endif %}
 
-    {% if params.tags.items.length %}
-      <ul class="app-card__tag-list">
-        {% for item in params.tags.items %}
-          <li class="app-card__tag-list-item">
-            {{ appTag(item) }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
-    {% if params.importantEventsTagList.length %}
-      <ul class="app-card__tag-list">
-        {% for item in params.importantEventsTagList %}
-          <li class="app-card__tag-list-item">
-            {{ appTag(item) }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+    {% for tagList in params.tags %}
+      {% if tagList.items.length %}
+        <ul class="app-card__tag-list">
+          {% for item in tagList.items %}
+            <li class="app-card__tag-list-item">
+              {{ appTag(item) }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
 
     {% if params.insetText %}
       {{ govukInsetText(params.insetText) }}

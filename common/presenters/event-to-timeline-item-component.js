@@ -1,8 +1,8 @@
 const eventHelpers = require('../helpers/events/event')
 const setEventDetails = require('../helpers/events/set-event-details')
+const componentService = require('../services/component')
 
 const getItem = ({
-  headerClasses,
   containerClasses,
   labelClasses,
   heading,
@@ -13,9 +13,6 @@ const getItem = ({
   return {
     container: {
       classes: containerClasses,
-    },
-    header: {
-      classes: headerClasses,
     },
     label: {
       classes: labelClasses,
@@ -41,13 +38,20 @@ const eventToTimelineItemComponent = (moveEvent, move) => {
 
   const containerClasses = eventHelpers.getContainerClasses(event)
 
-  const headerClasses = eventHelpers.getHeaderClasses(event)
-
-  const heading = eventHelpers.getHeading(event)
+  let heading = eventHelpers.getHeading(event)
 
   const labelClasses = eventHelpers.getLabelClasses(event)
 
   const description = eventHelpers.getDescription(event)
+
+  if (flag) {
+    const headerClasses = eventHelpers.getHeaderClasses(event)
+    heading = componentService.getComponent('appTag', {
+      html: heading,
+      flag,
+      classes: headerClasses,
+    })
+  }
 
   // TODO: when we have user info for event, update the following with something like
   // const byline = i18n.t('events::byline', details)
@@ -55,10 +59,8 @@ const eventToTimelineItemComponent = (moveEvent, move) => {
 
   return {
     id,
-    flag,
     ...getItem({
       containerClasses,
-      headerClasses,
       labelClasses,
       heading,
       description,

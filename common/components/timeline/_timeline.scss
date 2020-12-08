@@ -2,79 +2,82 @@
    #TIMELINE
    ========================================================================== */
 
-   .app-timeline {
-    margin-bottom: govuk-spacing(4);
+.app-timeline {
+  margin-bottom: govuk-spacing(4);
+}
+
+.app-timeline--full {
+  margin-bottom: 0;
+  &:before {
+    height: calc(100% - 75px);
+  }
+}
+
+.app-timeline__item {
+  padding-bottom: govuk-spacing(6);
+  padding-left: govuk-spacing(4);
+  position: relative;
+
+  &:before {
+    background-color: $govuk-brand-colour;
+    content: '';
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: govuk-spacing(2);
+    width: 15px;
+  }
+  &:after {
+    background-color: $govuk-brand-colour;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: govuk-spacing(2);
+    width: 5px;
   }
 
-  .app-timeline--full {
-    margin-bottom: 0;
-    &:before {
-      height: calc(100% - 75px);
-    }
-  }
+  &:last-child {
+    padding-bottom: 0;
 
-  .app-timeline__item {
-    padding-bottom: govuk-spacing(6);
-    padding-left: govuk-spacing(4);
-    position: relative;
-
-    &:before {
-      background-color: $govuk-brand-colour;
-      content: "";
-      height: 5px;
-      left: 0;
-      position: absolute;
-      top: govuk-spacing(2);
-      width: 15px;
-    }
     &:after {
-      background-color: $govuk-brand-colour;
-      content: "";
-      height: 100%;
-      left: 0;
-      position: absolute;
-      top: govuk-spacing(2);
-      width: 5px;
-    }
-
-    &:last-child {
-      padding-bottom: 0;
-
-      &:after {
-        display: none;
-      }
+      display: none;
     }
   }
+}
 
-  .app-timeline__title {
-    @include govuk-font($size: 19, $weight: bold);
-    display: inline;
+.app-timeline__title {
+  @include govuk-font($size: 19, $weight: bold);
+  display: inline;
+}
+
+.app-timeline__title.moj-badge {
+  @include govuk-font($size: 14, $weight: bold);
+}
+
+.app-timeline__date,
+.app-timeline__byline {
+  @include govuk-font($size: 16);
+  color: $govuk-secondary-text-colour;
+  display: inline;
+  margin-top: govuk-spacing(1);
+  margin-bottom: 0;
+}
+
+.app-timeline__description {
+  @include govuk-font($size: 19);
+  margin-top: govuk-spacing(1);
+
+  & br {
+    padding-top: govuk-spacing(2);
+    content: '';
+    display: block;
   }
+}
 
-  .app-timeline__title.moj-badge {
-    @include govuk-font($size: 14, $weight: bold);
-  }
-
-  .app-panel .app-timeline__title {
-    @include govuk-font($size: 14, $weight: bold);
-  }
-
-  .app-timeline__date,
-  .app-timeline__byline {
-    @include govuk-font($size: 16);
-    color: $govuk-secondary-text-colour;
-    display: inline;
-    margin-top: govuk-spacing(1);
-    margin-bottom: 0;
-  }
-
-  .app-timeline__description {
-    @include govuk-font($size: 19);
-    margin-top: govuk-spacing(1);
-
-    & br {
-      padding-top: govuk-spacing(2);
-      content: '';
-      display: block;
-    }
-  }
+.app-panel .app-timeline__title {
+  @include govuk-font($size: 14, $weight: bold);
+}
+.app-panel .app-timeline__description {
+  margin-top: govuk-spacing(4);
+}

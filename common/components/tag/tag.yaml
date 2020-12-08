@@ -15,6 +15,18 @@ params:
     type: string
     required: false
     description: Classes to add to the tag.
+  - name: flag
+    type: object
+    required: false
+    params:
+    - name: text
+      type: string
+      required: true
+      description: If `html` is set, this is not required. Text to use as assistive text for flag. If `html` is provided, the `text` argument will be ignored.
+    - name: html
+      type: string
+      required: true
+      description: If `text` is set, this is not required. HTML to use as assistive text for flag. If `html` is provided, the `text` argument will be ignored.
 
 examples:
   - name: default
@@ -23,7 +35,7 @@ examples:
   - name: with link
     data:
       text: alpha
-      href: /a-link
+      href: /dev/null
   - name: inactive modifier
     data:
       text: translater
@@ -36,3 +48,8 @@ examples:
     data:
       text: special vehicle
       classes: app-tag--warning
+  - name: with flag
+    data:
+      text: special vehicle
+      flag:
+        text: Medical issue

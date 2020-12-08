@@ -109,28 +109,30 @@ describe('Presenters', function () {
 
           it('should contain correct tags', function () {
             expect(transformedResponse).to.have.property('tags')
-            expect(transformedResponse.tags).to.deep.equal({
-              items: [
-                {
-                  href: '/move/12345#concealed-items',
-                  text: 'Concealed items',
-                  classes: 'app-tag--destructive',
-                  sortOrder: 1,
-                },
-                {
-                  href: '/move/12345#any-other-risks',
-                  text: 'Any other risks',
-                  classes: 'app-tag--destructive',
-                  sortOrder: 1,
-                },
-                {
-                  href: '/move/12345#health-issue',
-                  text: 'Health issue',
-                  classes: '',
-                  sortOrder: 2,
-                },
-              ],
-            })
+            expect(transformedResponse.tags).to.deep.equal([
+              {
+                items: [
+                  {
+                    href: '/move/12345#concealed-items',
+                    text: 'Concealed items',
+                    classes: 'app-tag--destructive',
+                    sortOrder: 1,
+                  },
+                  {
+                    href: '/move/12345#any-other-risks',
+                    text: 'Any other risks',
+                    classes: 'app-tag--destructive',
+                    sortOrder: 1,
+                  },
+                  {
+                    href: '/move/12345#health-issue',
+                    text: 'Health issue',
+                    classes: '',
+                    sortOrder: 2,
+                  },
+                ],
+              },
+            ])
           })
 
           it('should contain correct amount of properties', function () {
@@ -308,11 +310,12 @@ describe('Presenters', function () {
 
         it('should correctly filter', function () {
           expect(transformedResponse).to.have.property('tags')
-          expect(transformedResponse.tags.items.length).to.equal(5)
+          expect(transformedResponse.tags.length).to.equal(1)
+          expect(transformedResponse.tags[0].items.length).to.equal(5)
         })
 
         it('should correctly map and sort', function () {
-          expect(transformedResponse.tags.items).to.deep.equal([
+          expect(transformedResponse.tags[0].items).to.deep.equal([
             {
               href: `${mockPersonWithAnswers.href}#concealed-items`,
               text: 'Concealed items',
@@ -452,7 +455,7 @@ describe('Presenters', function () {
 
             it('should contain tags', function () {
               expect(transformedResponse).to.have.property('tags')
-              expect(transformedResponse.tags).to.deep.equal({
+              expect(transformedResponse.tags[0]).to.deep.equal({
                 items: ['1', '2', '3'],
               })
             })
@@ -492,7 +495,7 @@ describe('Presenters', function () {
 
       it('should contain tags', function () {
         expect(transformedResponse).to.have.property('tags')
-        expect(transformedResponse.tags.items.length).to.equal(3)
+        expect(transformedResponse.tags[0].items.length).to.equal(3)
       })
     })
 
@@ -559,7 +562,7 @@ describe('Presenters', function () {
       classes: 'app-card--placeholder',
       title: { text: '__translated__' },
       meta: { items: [] },
-      tags: { items: [] },
+      tags: [{ items: [] }],
       image_path: undefined,
       image_alt: '__translated__',
     }
