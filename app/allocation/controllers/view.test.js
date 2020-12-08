@@ -169,10 +169,6 @@ describe('Allocation controllers', function () {
           expect(locals.messageTitle).to.be.undefined
         })
 
-        it('should create unassigned move ID', function () {
-          expect(locals.unassignedMoveId).to.equal('123')
-        })
-
         it('should order moves without person first', function () {
           const ordered = locals.moves.map(move => move.id)
           expect(ordered).to.deep.equal(['789', '123', '011', '456'])
@@ -187,7 +183,7 @@ describe('Allocation controllers', function () {
         })
 
         it('should contain correct number of locals', function () {
-          expect(Object.keys(locals)).to.have.length(11)
+          expect(Object.keys(locals)).to.have.length(10)
         })
       })
 
@@ -228,49 +224,6 @@ describe('Allocation controllers', function () {
         expect(mockReq.t).to.be.calledWithExactly('statuses::cancelled', {
           context: 'allocation',
         })
-      })
-    })
-
-    context('when all moves have been filled', function () {
-      let locals
-
-      beforeEach(function () {
-        mockReq.allocation.moves = [
-          {
-            id: '123',
-            profile: {
-              person: {
-                first_names: 'James',
-                last_name: 'Stevens',
-              },
-            },
-          },
-          {
-            id: '456',
-            profile: {
-              person: {
-                first_names: 'Andrew',
-                last_name: 'Collins',
-              },
-            },
-          },
-          {
-            id: '789',
-            profile: {
-              person: {
-                first_names: 'John',
-                last_name: 'Doe',
-              },
-            },
-          },
-        ]
-
-        controller(mockReq, mockRes)
-        locals = mockRes.render.firstCall.lastArg
-      })
-
-      it('should not create an unassigned move ID', function () {
-        expect(locals.unassignedMoveId).to.be.undefined
       })
     })
 

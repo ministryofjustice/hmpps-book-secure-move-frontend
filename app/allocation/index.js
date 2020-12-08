@@ -5,7 +5,11 @@ const wizard = require('../../common/middleware/unique-form-wizard')
 const { setMove } = require('../move/middleware')
 
 const { cancelConfig, removeMoveConfig, createConfig } = require('./config')
-const { createControllers, viewAllocation } = require('./controllers')
+const {
+  createControllers,
+  viewAllocation,
+  assignToAllocation,
+} = require('./controllers')
 const { cancelFields, createFields } = require('./fields')
 const { setAllocation } = require('./middleware')
 const { cancelSteps, removeMoveSteps, createSteps } = require('./steps')
@@ -38,6 +42,7 @@ router.use(
 )
 
 router.get('/:allocationId', protectRoute('allocations:view'), viewAllocation)
+router.get('/:allocationId/assign', assignToAllocation)
 
 // Export
 module.exports = {

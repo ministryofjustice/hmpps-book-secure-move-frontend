@@ -107,7 +107,7 @@
         </p>
 
         {{ govukButton({
-          href: "/move/" + unassignedMoveId + "/assign",
+          href: "/allocation/" + allocation.id + "/assign",
           html: t("actions::add_person", {
             context: "another" if addedCount !== 0
           })
