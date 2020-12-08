@@ -38,6 +38,10 @@
       "email": "inspiro@gmail.com"
     },
     {
+      "name": "Nevelina Aleksandrova",
+      "email": "nevelina@diginaga.online"
+    },
+    {
       "name": "Ryan Brooks",
       "email": "ryan@slatehorse.com"
     },
@@ -54,12 +58,12 @@
       "email": "mafonso@gmail.com"
     },
     {
-      "name": "Adam Sharp",
-      "email": "adam.sharp@digital.justice.gov.uk"
-    },
-    {
       "name": "Andy White",
       "email": "andy@wireworldmedia.co.uk"
+    },
+    {
+      "name": "Adam Sharp",
+      "email": "adam.sharp@digital.justice.gov.uk"
     }
   ],
   "repository": {
