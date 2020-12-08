@@ -14,7 +14,7 @@ const addImportantEvents = data => {
   // timeline_events and important_events are mutually exclusive at the BE
   // copy any event with a non-default classification to .important_events
   // maintaining the same order
-  if (data.timeline_events && data.timeline_events.length) {
+  if (!data.important_events?.length && data.timeline_events?.length) {
     data.important_events = data.timeline_events.filter(
       ({ classification }) => classification && classification !== 'default'
     )

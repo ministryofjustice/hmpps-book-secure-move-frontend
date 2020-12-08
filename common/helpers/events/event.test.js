@@ -23,7 +23,7 @@ describe('Helpers', function () {
     }
     const mockEventWithCount = {
       ...mockEvent,
-      _eventCount: 3,
+      _index: 3,
     }
 
     beforeEach(function () {

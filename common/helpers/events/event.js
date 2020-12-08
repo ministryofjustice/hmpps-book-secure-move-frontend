@@ -40,11 +40,11 @@ const getHeaderClasses = event => {
 
 const getHeading = event => {
   const eventTypePrefix = getEventTypePrefix(event)
-  const { _eventCount: eventCount, details } = event
+  const { _index, details } = event
   let heading = i18n.t(`${eventTypePrefix}.heading`, details)
 
-  if (eventCount) {
-    heading += ` (${eventCount})`
+  if (_index) {
+    heading += ` (${_index})`
   }
 
   return heading

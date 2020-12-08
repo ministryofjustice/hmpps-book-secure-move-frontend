@@ -1,5 +1,3 @@
-const { expect } = require('chai')
-
 const transformer = require('./move.transformer')
 
 describe('API Client', function () {
@@ -113,6 +111,36 @@ describe('API Client', function () {
             {
               id: 'incident',
               classification: 'incident',
+            },
+          ])
+        })
+      })
+
+      describe('when move has has both important and timeline events', function () {
+        let move
+        beforeEach(function () {
+          move = {
+            timeline_events: [
+              {
+                id: 'medical',
+                classification: 'medical',
+              },
+            ],
+            important_events: [
+              {
+                id: 'foo',
+                classification: 'foo',
+              },
+            ],
+          }
+          transformer(move)
+        })
+
+        it('should leave original important events untouched', function () {
+          expect(move.important_events).to.deep.equal([
+            {
+              id: 'foo',
+              classification: 'foo',
             },
           ])
         })
