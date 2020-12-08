@@ -1,5 +1,3 @@
-const personEscortRecordService = require('../../../../common/services/person-escort-record')
-
 const { NewPersonEscortRecordController } = require('./controllers')
 
 const controller = new NewPersonEscortRecordController({ route: '/' })
@@ -8,21 +6,25 @@ describe('Person Escort Record controllers', function () {
   describe('NewPersonEscortRecordController', function () {
     describe('#saveValues', function () {
       const mockMoveId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
-      let req, nextSpy
+      let req, nextSpy, personEscortRecordService
 
       beforeEach(function () {
-        sinon.stub(personEscortRecordService, 'create')
+        personEscortRecordService = {
+          create: sinon.stub().resolves({}),
+        }
         nextSpy = sinon.spy()
         req = {
           move: {
             id: mockMoveId,
+          },
+          services: {
+            personEscortRecord: personEscortRecordService,
           },
         }
       })
 
       context('when save is successful', function () {
         beforeEach(async function () {
-          personEscortRecordService.create.resolves({})
           await controller.saveValues(req, {}, nextSpy)
         })
 
@@ -54,8 +56,9 @@ describe('Person Escort Record controllers', function () {
             ]
 
             sinon.stub(controller, 'successHandler')
-
-            personEscortRecordService.create.throws(errorMock)
+            req.services.personEscortRecord.create = sinon
+              .stub()
+              .throws(errorMock)
             await controller.saveValues(req, {}, nextSpy)
           })
 
@@ -75,7 +78,9 @@ describe('Person Escort Record controllers', function () {
           const errorMock = new Error('Problem')
 
           beforeEach(async function () {
-            personEscortRecordService.create.throws(errorMock)
+            req.services.personEscortRecord.create = sinon
+              .stub()
+              .throws(errorMock)
             await controller.saveValues(req, {}, nextSpy)
           })
 

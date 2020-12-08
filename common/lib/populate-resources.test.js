@@ -21,11 +21,11 @@ const findUnpopulatedResourcesStub = sinon
 const req = {
   services: {
     move: moveService,
+    personEscortRecord: personEscortRecordService,
   },
 }
 
 const populateResources = proxyquire('./populate-resources', {
-  '../services/person-escort-record': personEscortRecordService,
   '../services/reference-data': referenceDataService,
   './find-unpopulated-resources': findUnpopulatedResourcesStub,
 })

@@ -1,4 +1,3 @@
-const personEscortRecordService = require('../services/person-escort-record')
 const referenceDataService = require('../services/reference-data')
 
 const findUnpopulatedResources = require('./find-unpopulated-resources')
@@ -7,7 +6,7 @@ const populateResources = async (obj, req, options, processed = []) => {
   const lookupMethods = {
     locations: referenceDataService.getLocationById,
     moves: req.services.move.getById,
-    person_escort_records: personEscortRecordService.getById,
+    person_escort_records: req.services.personEscortRecord.getById,
   }
   const unpopulated = findUnpopulatedResources(obj, options).filter(
     resource => !processed.includes(resource)
