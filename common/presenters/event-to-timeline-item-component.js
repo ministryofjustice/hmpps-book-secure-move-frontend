@@ -30,17 +30,11 @@ const getItem = ({
 
 const eventToTimelineItemComponent = (moveEvent, move) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
-
   const { id, occurred_at: timestamp } = event
-
   const flag = eventHelpers.getFlag(event)
-
   const containerClasses = eventHelpers.getContainerClasses(event)
-
   let heading = eventHelpers.getHeading(event)
-
   const labelClasses = eventHelpers.getLabelClasses(event)
-
   const description = eventHelpers.getDescription(event)
 
   if (flag) {
