@@ -154,21 +154,66 @@ describe('Framework controllers', function () {
           assessment: {
             id: '12345',
             editable: true,
+            framework: {
+              name: 'person-escort-record',
+            },
           },
+          canAccess: sinon.stub().returns(true),
         }
         mockRes = {
           locals: {},
         }
-
-        controller.setEditableStatus(mockReq, mockRes, nextSpy)
       })
 
-      it('should set isEditable to false', function () {
-        expect(mockRes.locals.isEditable).to.equal(true)
+      context('when Person Escort Record is not editable', function () {
+        beforeEach(function () {
+          mockReq.assessment.editable = false
+
+          controller.setEditableStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set isEditable to false', function () {
+          expect(mockRes.locals.isEditable).to.equal(false)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call next without error', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      context('when Person Escort Record is editable', function () {
+        beforeEach(function () {
+          controller.setEditableStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set isEditable to true', function () {
+          expect(mockRes.locals.isEditable).to.equal(true)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context("when user doesn't have permission", function () {
+        beforeEach(function () {
+          mockReq.canAccess.returns(false)
+          controller.setEditableStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should check permissions correctly', function () {
+          expect(mockReq.canAccess).to.be.calledOnceWithExactly(
+            'person_escort_record:update'
+          )
+        })
+
+        it('should set isEditable to false', function () {
+          expect(mockRes.locals.isEditable).to.equal(false)
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

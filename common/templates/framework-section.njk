@@ -49,7 +49,7 @@
             {{ step.pageTitle }}
           </h2>
 
-          {% if canAccess('person_escort_record:update') and isEditable %}
+          {% if isEditable %}
             <p class="app-!-position-top-right">
               <a href="{{ step.stepUrl }}" class="govuk-link">
                 <strong>{{ t("actions::change", {

@@ -23,7 +23,11 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setEditableStatus(req, res, next) {
-    res.locals.isEditable = req.assessment.editable
+    const { editable, framework } = req.assessment
+
+    res.locals.isEditable =
+      editable && req.canAccess(`${snakeCase(framework.name)}:update`)
+
     next()
   }
 
