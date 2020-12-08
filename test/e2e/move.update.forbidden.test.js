@@ -3,18 +3,10 @@ import {
   checkNoUpdateLinks,
   checkUpdatePagesForbidden,
 } from './_move'
-import { prisonUser, ocaUser, supplierUser } from './_roles'
+import { supplierUser } from './_roles'
 import { home } from './_routes'
 
 const users = [
-  {
-    name: 'prison user',
-    role: prisonUser,
-  },
-  {
-    name: 'OCA user',
-    role: ocaUser,
-  },
   {
     name: 'supplier user',
     role: supplierUser,
@@ -27,11 +19,9 @@ users.forEach(user => {
     await createCourtMove()
   })
 
-  test('User should not see any update links on move page', async () => {
+  test('User should not be able to update a move', async () => {
     await checkNoUpdateLinks()
-  })
 
-  test('User should not be able to access move update pages', async () => {
     await checkUpdatePagesForbidden()
   })
 })
