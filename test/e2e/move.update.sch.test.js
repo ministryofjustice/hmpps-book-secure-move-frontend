@@ -22,27 +22,19 @@ fixture('Existing move from Secure Children Home (SCH) to Court').beforeEach(
 test.meta('hasDocument', 'true')(
   'User should be able to update move',
   async () => {
-    await checkUpdateLinks([
-      'personal_details',
-      'risk',
-      'health',
-      'court',
-      'move',
-      'date',
-      'document',
-    ])
+    await checkUpdateLinks(
+      ['personal_details', 'court', 'move', 'date', 'document'],
+      false,
+      ['risk', 'health']
+    )
 
     await checkUpdateDocuments()
 
-    await checkUpdatePagesAccessible([
-      'personal_details',
-      'risk',
-      'health',
-      'court',
-      'move',
-      'date',
-      'document',
-    ])
+    await checkUpdatePagesAccessible(
+      ['personal_details', 'move', 'date', 'court', 'document'],
+      false,
+      ['risk', 'health']
+    )
   }
 )
 
@@ -62,17 +54,17 @@ test.meta('hasDocument', 'true')(
   'User should be able to update move',
   async () => {
     await checkUpdateLinks(
-      ['personal_details', 'risk', 'health', 'move', 'date', 'document'],
+      ['personal_details', 'move', 'date', 'document'],
       false,
-      ['court']
+      ['court', 'risk', 'health']
     )
 
     await checkUpdateDocuments()
 
     await checkUpdatePagesAccessible(
-      ['personal_details', 'risk', 'health', 'move', 'date', 'document'],
+      ['personal_details', 'move', 'date', 'document'],
       false,
-      ['court']
+      ['court', 'risk', 'health']
     )
   }
 )
@@ -93,16 +85,9 @@ test.meta('hasDocument', 'true')(
   'User should not be able to update move',
   async () => {
     await checkUpdateLinks(
-      [
-        'personal_details',
-        'risk',
-        'health',
-        'court',
-        'move',
-        'date',
-        'document',
-      ],
-      true
+      ['personal_details', 'court', 'move', 'date', 'document'],
+      true,
+      ['risk', 'health']
     )
   }
 )
@@ -123,16 +108,9 @@ test.meta('hasDocument', 'true')(
   'User should not be able to update move',
   async () => {
     await checkUpdateLinks(
-      [
-        'personal_details',
-        'risk',
-        'health',
-        'court',
-        'move',
-        'date',
-        'document',
-      ],
-      true
+      ['personal_details', 'court', 'move', 'date', 'document'],
+      true,
+      ['risk', 'health']
     )
   }
 )
@@ -153,16 +131,9 @@ test.meta('hasDocument', 'true')(
   'User should not be able to update move',
   async () => {
     await checkUpdateLinks(
-      [
-        'personal_details',
-        'risk',
-        'health',
-        'court',
-        'move',
-        'date',
-        'document',
-      ],
-      true
+      ['personal_details', 'court', 'move', 'date', 'document'],
+      true,
+      ['risk', 'health']
     )
   }
 )
