@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.60.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.60.0...v2.60.1) (2020-12-08)
+
+
+### Bug Fixes
+
+* Ensure Person Escort Record is displayed without feature flag ([d50ce9c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d50ce9c031bed04acb910be42ebf085dccb8d952))
+* Use approval endpoint for approving single requests ([be475e3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/be475e32afa5ea745299ee267372d97f5e1cdcf2))
+
 ## [2.60.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.59.1...v2.60.0) (2020-12-08)
 
 
