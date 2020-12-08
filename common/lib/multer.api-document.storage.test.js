@@ -1,6 +1,8 @@
 const { ObjectReadableMock } = require('stream-mock')
 
-const documentService = require('../services/document')
+const documentService = {
+  create: sinon.stub(),
+}
 
 const APIDocumentStorage = require('./multer.api-document.storage')()
 
@@ -13,7 +15,11 @@ describe('Multer Document Storage Engine', function () {
   let mockReq, mockFile
 
   beforeEach(function () {
-    mockReq = {}
+    mockReq = {
+      services: {
+        document: documentService,
+      },
+    }
     mockFile = {
       stream: new ObjectReadableMock([1, 2, 3]),
     }
@@ -22,7 +28,7 @@ describe('Multer Document Storage Engine', function () {
   describe('#_handleFile()', function () {
     context('when document service resolves', function () {
       beforeEach(function () {
-        sinon.stub(documentService, 'create').resolves(mockServiceResponse)
+        documentService.create.resolves(mockServiceResponse)
       })
 
       it('should call callback with correct arguments', function (done) {
@@ -40,12 +46,11 @@ describe('Multer Document Storage Engine', function () {
       const error = new Error('Document error')
 
       beforeEach(function () {
-        sinon.stub(documentService, 'create').rejects(error)
+        documentService.create.rejects(error)
       })
 
       it('should call callback with error', function (done) {
         function callback(error) {
-          expect(error).to.equal(error)
           expect(error.name).to.equal('MulterError')
           expect(error.message).to.equal('Document error')
           expect(error.code).to.equal('API_DOCUMENT_STORAGE_FAILED')
