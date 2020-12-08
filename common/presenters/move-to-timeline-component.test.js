@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const addTriggeredEvents = sinon.stub()
+const addTriggeredEvents = sinon.stub().returnsArg(0)
 const eventToTimelineItemComponent = sinon.stub().callsFake(val => val + val)
 
 const moveToTimelineComponent = proxyquire('./move-to-timeline-component', {

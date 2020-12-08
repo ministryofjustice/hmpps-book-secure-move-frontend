@@ -3,8 +3,8 @@ const addTriggeredEvents = require('../../common/helpers/events/add-triggered-ev
 const eventToTimelineItemComponent = require('./event-to-timeline-item-component')
 
 const moveToTimelineComponent = (move = {}) => {
+  move.timeline_events = addTriggeredEvents(move.timeline_events)
   const { timeline_events: timelineEvents = [] } = move
-  addTriggeredEvents(timelineEvents)
 
   const items = timelineEvents
     .map(moveEvent => eventToTimelineItemComponent(moveEvent, move))
