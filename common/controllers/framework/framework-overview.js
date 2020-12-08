@@ -1,3 +1,5 @@
+const { snakeCase } = require('lodash')
+
 const presenters = require('../../presenters')
 
 function frameworkOverview(req, res) {
@@ -10,8 +12,10 @@ function frameworkOverview(req, res) {
     frameworkSections: assessment._framework?.sections,
     sectionProgress: assessment.meta?.section_progress,
   })
+  const i18nContext = snakeCase(assessment.framework?.name || '')
 
   res.render('framework-overview', {
+    i18nContext,
     moveId,
     taskList,
     fullname,

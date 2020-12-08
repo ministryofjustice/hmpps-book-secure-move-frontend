@@ -1,8 +1,5 @@
 {
-  "page_title": "Youth risk assessment",
-  "page_title_with_name": "Youth risk assessment for {{name}}",
   "heading": "Youth risk assessment",
-  "heading_with_name": "Youth risk assessment for",
   "journeys": {
     "confirm": {
       "heading":"Confirm and complete this youth risk assessment",

@@ -82,6 +82,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'setPageTitleLocals')
         sinon.stub(controller, 'setSyncStatusBanner')
         sinon.stub(controller, 'setPrefillBanner')
+        sinon.stub(controller, 'seti18nContext')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -110,8 +111,60 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set i18n context', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.seti18nContext
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(3)
+        expect(controller.use).to.be.callCount(4)
+      })
+    })
+
+    describe('#seti18nContext', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {}
+        mockRes = {
+          locals: {},
+        }
+      })
+
+      context('without an assessment', function () {
+        beforeEach(function () {
+          controller.seti18nContext(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not set move ID', function () {
+          expect(mockRes.locals.i18nContext).to.equal('')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with an assessment', function () {
+        beforeEach(function () {
+          mockReq.assessment = {
+            framework: {
+              name: 'person-escort-record',
+            },
+          }
+
+          controller.seti18nContext(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set move ID', function () {
+          expect(mockRes.locals.i18nContext).to.equal('person_escort_record')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

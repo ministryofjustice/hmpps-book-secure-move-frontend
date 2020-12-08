@@ -77,6 +77,12 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setPageTitleLocals)
     this.use(this.setSyncStatusBanner)
     this.use(this.setPrefillBanner)
+    this.use(this.seti18nContext)
+  }
+
+  seti18nContext(req, res, next) {
+    res.locals.i18nContext = snakeCase(req.assessment?.framework?.name || '')
+    next()
   }
 
   setPageTitleLocals(req, res, next) {
