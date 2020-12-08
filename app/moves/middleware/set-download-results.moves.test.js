@@ -1,5 +1,3 @@
-const moveService = require('../../../common/services/move')
-
 const middleware = require('./set-download-results.moves')
 
 const mockMoves = [
@@ -13,10 +11,12 @@ const errorStub = new Error('Problem')
 
 describe('Moves middleware', function () {
   describe('#setDownloadResultsMoves()', function () {
-    let req, res, nextSpy
+    let req, res, nextSpy, moveService
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getDownload')
+      moveService = {
+        getDownload: sinon.stub().resolves(mockMoves),
+      }
       nextSpy = sinon.spy()
       res = {}
       req = {
@@ -26,14 +26,13 @@ describe('Moves middleware', function () {
             locationId: '5555',
           },
         },
+        services: {
+          move: moveService,
+        },
       }
     })
 
     context('when API call returns successfully', function () {
-      beforeEach(function () {
-        moveService.getDownload.resolves(mockMoves)
-      })
-
       context('without `locationKey`', function () {
         beforeEach(async function () {
           await middleware(mockBodyKey)(req, res, nextSpy)
@@ -58,7 +57,7 @@ describe('Moves middleware', function () {
 
     context('when API call returns an error', function () {
       beforeEach(async function () {
-        moveService.getDownload.throws(errorStub)
+        req.services.move.getDownload = sinon.stub().throws(errorStub)
         await middleware(mockBodyKey)(req, res, nextSpy)
       })
 

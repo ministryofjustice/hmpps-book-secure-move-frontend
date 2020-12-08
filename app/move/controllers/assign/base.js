@@ -8,6 +8,24 @@ class AssignBaseController extends CreateBaseController {
     this.use(this.setCancelUrl)
   }
 
+  middlewareChecks() {
+    super.middlewareChecks()
+    this.use(this.checkNoProfileExists)
+  }
+
+  checkNoProfileExists(req, res, next) {
+    if (req.move.profile) {
+      return res.redirect(`/allocation/${req.move.allocation.id}/assign`)
+    }
+
+    next()
+  }
+
+  // override create method as no location is required to assign
+  checkCurrentLocation(req, res, next) {
+    next()
+  }
+
   setCancelUrl(req, res, next) {
     const allocationId = req.move.allocation.id
     res.locals.cancelUrl = `/allocation/${allocationId}`

@@ -1,5 +1,4 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-const moveService = require('../../../common/services/move')
 const populationService = require('../../../common/services/population')
 
 const middleware = require('./set-population')
@@ -27,11 +26,14 @@ describe('Population middleware', function () {
     let res
     let req
     let next
+    let moveService
 
     beforeEach(function () {
       sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
       sinon.stub(populationService, 'getByIdWithMoves')
-      sinon.stub(moveService, 'getActive')
+      moveService = {
+        getActive: sinon.stub(),
+      }
 
       next = sinon.fake()
 
@@ -41,6 +43,9 @@ describe('Population middleware', function () {
         params: {
           locationId: 'BAADF00D',
           date: '2020-08-01',
+        },
+        services: {
+          move: moveService,
         },
       }
     })
@@ -112,7 +117,6 @@ describe('Population middleware', function () {
 
       afterEach(function () {
         locationsFreeSpacesService.getPrisonFreeSpaces.restore()
-        moveService.getActive.restore()
       })
 
       it('should call the data service with request body', function () {

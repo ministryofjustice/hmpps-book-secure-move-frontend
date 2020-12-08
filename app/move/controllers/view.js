@@ -1,5 +1,3 @@
-const moveService = require('../../../common/services/move')
-
 const getViewLocals = require('./view/view.locals')
 
 module.exports = async function view(req, res) {
@@ -7,7 +5,7 @@ module.exports = async function view(req, res) {
 
   // TODO: remove this second call when backend returns rebook info as part of move
   if (status === 'cancelled' && cancellationReason === 'rejected') {
-    const moveWithEvents = await moveService.getByIdWithEvents(id)
+    const moveWithEvents = await req.services.move.getByIdWithEvents(id)
     const moveRejectEvent = moveWithEvents.timeline_events.filter(
       event => event.event_type === 'MoveReject'
     )[0]

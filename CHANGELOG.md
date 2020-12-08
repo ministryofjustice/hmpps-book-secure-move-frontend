@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.60.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.59.1...v2.60.0) (2020-12-08)
+
+
+### Features
+
+* Add incoming dashboard permission to PER Auther role ([7ca3431](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7ca3431746407aa9a4b1be7944ed722af854cabc))
+* Add youth risk assessment permission to STC and SCH roles ([73cc2e4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/73cc2e4b494abe8ab524ab5052ac69f8f7e175d2))
+* Render youth risk assessment on move detail page ([ea6ff07](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ea6ff078419b2091ec7487df09dc10cadbe24a38))
+
+
+### Bug Fixes
+
+* Ensure next move is set dynamically for allocations ([ec5b30a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ec5b30a3b8ea70837666c9df21092f32e5284e0e))
+* Ensure profile is checked before assigning a person to a move ([c8242b5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c8242b57233145637452f07991eac22df9d38e75))
+* Update edit population heading and button ([e5a5e3e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e5a5e3e2790252d3e97d15619cbfc1cb0cd61e3a))
+* Update fallback text for framework responses ([a5fdbb8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a5fdbb824d49664c640ec94521bc4b0860028cae))
+* Use correct content for prison recall conflicts ([8b8ec7b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8b8ec7be1704a0a7e53dc1404f5216f72d82a9e6))
+* Use session.user.fullname for updated_by ([3d21938](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3d21938bc807cc0a0b7e9a7ca72acdf20da7b1c7))
+
 ### [2.59.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.59.0...v2.59.1) (2020-12-03)
 
 ## [2.59.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.58.2...v2.59.0) (2020-12-03)

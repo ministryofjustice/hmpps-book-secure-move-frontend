@@ -2,7 +2,6 @@ const { capitalize } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const analytics = require('../../../../common/lib/analytics')
-const moveService = require('../../../../common/services/move')
 const filters = require('../../../../config/nunjucks/filters')
 const shouldSaveCourtHearingsField = require('../../fields/should-save-court-hearings')
 
@@ -93,7 +92,7 @@ const mockValues = {
 describe('Move controllers', function () {
   describe('Save', function () {
     describe('#saveValues()', function () {
-      let req, nextSpy, courtHearingService, profileService
+      let req, nextSpy, courtHearingService, profileService, moveService
 
       beforeEach(function () {
         courtHearingService = {
@@ -101,6 +100,9 @@ describe('Move controllers', function () {
         }
         profileService = {
           update: sinon.stub().resolves({}),
+        }
+        moveService = {
+          create: sinon.stub().resolves(mockMove),
         }
         nextSpy = sinon.spy()
         req = {
@@ -116,15 +118,12 @@ describe('Move controllers', function () {
           services: {
             courtHearing: courtHearingService,
             profile: profileService,
+            move: moveService,
           },
         }
       })
 
       context('when move save is successful', function () {
-        beforeEach(async function () {
-          sinon.stub(moveService, 'create').resolves(mockMove)
-        })
-
         context('without court hearings', function () {
           beforeEach(async function () {
             await controller.saveValues(req, {}, nextSpy)
@@ -316,7 +315,7 @@ describe('Move controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          sinon.stub(moveService, 'create').throws(errorMock)
+          req.services.move.create = sinon.stub().throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
 

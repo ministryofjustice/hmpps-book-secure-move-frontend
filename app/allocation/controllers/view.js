@@ -39,9 +39,6 @@ function viewAllocation(req, res) {
       context: allocation.cancellation_reason,
       comment: allocation.cancellation_reason_comment,
     }),
-    unassignedMoveId: movesWithoutProfile.length
-      ? movesWithoutProfile[0].id
-      : undefined,
     totalCount: totalSlots,
     remainingCount: movesWithoutProfile.length,
     addedCount: movesWithProfile.length,

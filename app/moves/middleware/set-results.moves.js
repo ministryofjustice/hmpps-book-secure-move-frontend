@@ -1,7 +1,6 @@
 const { omitBy, isUndefined } = require('lodash')
 
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
 
 function setResultsMoves(bodyKey, locationKey) {
   return async function handleResults(req, res, next) {
@@ -12,8 +11,8 @@ function setResultsMoves(bodyKey, locationKey) {
 
       const args = omitBy(req.body[bodyKey], isUndefined)
       const [activeMoves, cancelledMoves] = await Promise.all([
-        moveService.getActive(args),
-        moveService.getCancelled(args),
+        req.services.move.getActive(args),
+        req.services.move.getCancelled(args),
       ])
       const personEscortRecordIsEnabled = req.canAccess(
         'person_escort_record:view'

@@ -1,7 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 const { cloneDeep } = require('lodash')
 
-const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
@@ -716,10 +715,12 @@ describe('Move controllers', function () {
   describe('#saveMove', function () {
     let req
     const res = {}
-    let nextSpy
+    let nextSpy, moveService
     beforeEach(async function () {
       sinon.stub(controller, 'setFlash')
-      sinon.stub(moveService, 'update').resolves()
+      moveService = {
+        update: sinon.stub().resolves(),
+      }
       req = {
         getMoveId: sinon.stub().returns('#moveId'),
         getMove: sinon.stub().returns({
@@ -737,6 +738,9 @@ describe('Move controllers', function () {
             bar: 'b',
             baz: 'c',
           },
+        },
+        services: {
+          move: moveService,
         },
       }
       nextSpy = sinon.stub()
@@ -765,7 +769,7 @@ describe('Move controllers', function () {
       const updatedMove = { id: '#updated' }
 
       beforeEach(async function () {
-        moveService.update.resolves(updatedMove)
+        req.services.move.update = sinon.stub().resolves(updatedMove)
         await controller.saveMove(req, res, nextSpy)
       })
 
@@ -790,7 +794,7 @@ describe('Move controllers', function () {
       let error
       beforeEach(async function () {
         error = new Error()
-        moveService.update.rejects(error)
+        req.services.move.update = sinon.stub().rejects(error)
         await controller.saveMove(req, res, nextSpy)
       })
       it('should invoke next with the error', function () {

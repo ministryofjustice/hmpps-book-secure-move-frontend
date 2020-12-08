@@ -1,7 +1,5 @@
 const proxyquire = require('proxyquire')
 
-const moveService = require('../../common/services/move')
-
 const populateResources = sinon.stub()
 
 const middleware = proxyquire('./middleware', {
@@ -21,18 +19,22 @@ const errorStub = new Error('Problem')
 
 describe('Move middleware', function () {
   describe('#setMove()', function () {
-    let req, res, nextSpy
+    let req, res, nextSpy, moveService
 
     beforeEach(function () {
       req = {}
       res = {}
       nextSpy = sinon.spy()
+      moveService = {
+        getById: sinon.stub().resolves(moveStub),
+      }
+      req.services = {
+        move: moveService,
+      }
     })
 
     context('when no move ID exists', function () {
       beforeEach(async function () {
-        sinon.stub(moveService, 'getById').resolves(moveStub)
-
         await middleware.setMove(req, res, nextSpy)
       })
 
@@ -52,8 +54,6 @@ describe('Move middleware', function () {
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'getById').resolves(moveStub)
-
           await middleware.setMove(req, res, nextSpy, mockMoveId)
         })
 
@@ -73,9 +73,12 @@ describe('Move middleware', function () {
 
       context('when API call returns an error', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'getById').throws(errorStub)
-
-          await middleware.setMove({}, res, nextSpy, mockMoveId)
+          await middleware.setMove(
+            { services: { move: { getById: sinon.stub().throws(errorStub) } } },
+            res,
+            nextSpy,
+            mockMoveId
+          )
         })
 
         it('should not set response data to request object', function () {
@@ -90,20 +93,23 @@ describe('Move middleware', function () {
   })
 
   describe('#setMoveWithEvents()', function () {
-    let req, res, nextSpy
+    let req, res, nextSpy, moveService
 
     beforeEach(function () {
       req = {}
       res = {}
       nextSpy = sinon.spy()
+
+      moveService = {
+        getByIdWithEvents: sinon.stub().resolves(moveWithEventsStub),
+      }
+      req.services = {
+        move: moveService,
+      }
     })
 
     context('when no move ID exists', function () {
       beforeEach(async function () {
-        sinon
-          .stub(moveService, 'getByIdWithEvents')
-          .resolves(moveWithEventsStub)
-
         await middleware.setMoveWithEvents(req, res, nextSpy)
       })
 
@@ -123,10 +129,6 @@ describe('Move middleware', function () {
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          sinon
-            .stub(moveService, 'getByIdWithEvents')
-            .resolves(moveWithEventsStub)
-
           await middleware.setMoveWithEvents(req, res, nextSpy, mockMoveId)
         })
 
@@ -135,7 +137,7 @@ describe('Move middleware', function () {
         })
 
         it('should populate timeline events', function () {
-          expect(populateResources).to.be.calledWith(moveEvents)
+          expect(populateResources).to.be.calledWith(moveEvents, req)
         })
 
         it('should set response data to request object', function () {
@@ -150,9 +152,16 @@ describe('Move middleware', function () {
 
       context('when API call returns an error', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'getByIdWithEvents').throws(errorStub)
-
-          await middleware.setMoveWithEvents({}, res, nextSpy, mockMoveId)
+          await middleware.setMoveWithEvents(
+            {
+              services: {
+                move: { getByIdWithEvents: sinon.stub().throws(errorStub) },
+              },
+            },
+            res,
+            nextSpy,
+            mockMoveId
+          )
         })
 
         it('should not set response data to request object', function () {

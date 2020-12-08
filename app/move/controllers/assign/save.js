@@ -1,6 +1,5 @@
 const { get, omit } = require('lodash')
 
-const moveService = require('../../../../common/services/move')
 const filters = require('../../../../config/nunjucks/filters')
 const MoveCreateSaveController = require('../create/save')
 
@@ -21,7 +20,7 @@ class SaveController extends PersonAssignBase {
         assessment_answers: data.assessment,
       })
 
-      const move = await moveService.update({
+      const move = await req.services.move.update({
         ...data,
         id: data.move.id,
         profile,

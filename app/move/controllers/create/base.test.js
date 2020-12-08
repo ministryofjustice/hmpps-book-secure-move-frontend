@@ -748,36 +748,62 @@ describe('Move controllers', function () {
           form: {
             values: {},
           },
-          session: {
-            currentLocation: currentLocationMock,
-          },
+          session: {},
         }
         nextSpy = sinon.spy()
-        controller.saveValues(req, {}, nextSpy)
       })
 
-      it('should set current location ID', function () {
-        expect(req.form.values.from_location).to.equal(currentLocationMock.id)
+      context('with location', function () {
+        beforeEach(function () {
+          req.session.currentLocation = currentLocationMock
+          controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should set current location ID', function () {
+          expect(req.form.values.from_location).to.equal(currentLocationMock.id)
+        })
+
+        it('should set from location type', function () {
+          expect(req.form.values.from_location_type).to.equal(
+            currentLocationMock.location_type
+          )
+        })
+
+        it('should set can upload documents values', function () {
+          expect(req.form.values.can_upload_documents).to.equal(
+            currentLocationMock.can_upload_documents
+          )
+        })
+
+        it('should call parent method', function () {
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
       })
 
-      it('should set from location type', function () {
-        expect(req.form.values.from_location_type).to.equal(
-          currentLocationMock.location_type
-        )
-      })
+      context('without location', function () {
+        beforeEach(function () {
+          controller.saveValues(req, {}, nextSpy)
+        })
 
-      it('should set can upload documents values', function () {
-        expect(req.form.values.can_upload_documents).to.equal(
-          currentLocationMock.can_upload_documents
-        )
-      })
+        it('should set current location ID', function () {
+          expect(req.form.values.from_location).to.be.undefined
+        })
 
-      it('should call parent method', function () {
-        expect(FormController.prototype.saveValues).to.be.calledOnceWithExactly(
-          req,
-          {},
-          nextSpy
-        )
+        it('should set from location type', function () {
+          expect(req.form.values.from_location_type).to.be.undefined
+        })
+
+        it('should set can upload documents values', function () {
+          expect(req.form.values.can_upload_documents).to.be.undefined
+        })
+
+        it('should call parent method', function () {
+          expect(
+            FormController.prototype.saveValues
+          ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
       })
     })
   })
