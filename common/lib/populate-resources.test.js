@@ -18,8 +18,13 @@ const findUnpopulatedResourcesStub = sinon
   .stub()
   .callsFake(findUnpopulatedResources)
 
+const req = {
+  services: {
+    move: moveService,
+  },
+}
+
 const populateResources = proxyquire('./populate-resources', {
-  '../services/move': moveService,
   '../services/person-escort-record': personEscortRecordService,
   '../services/reference-data': referenceDataService,
   './find-unpopulated-resources': findUnpopulatedResourcesStub,
@@ -38,7 +43,7 @@ describe('populateResources', function () {
       data = {
         move: { id: 'move', type: 'moves', foo: 'baz' },
       }
-      await populateResources(data)
+      await populateResources(data, req)
     })
     it('should not lookup the resource', function () {
       expect(moveService.getById).to.not.be.called
@@ -58,7 +63,7 @@ describe('populateResources', function () {
         data = {
           x: { id: 'x', type: 'xs' },
         }
-        await populateResources(data)
+        await populateResources(data, req)
       })
 
       it('should leave the resource untouched', function () {
@@ -75,7 +80,7 @@ describe('populateResources', function () {
       data = {
         move: { id: 'move', type: 'moves' },
       }
-      await populateResources(data)
+      await populateResources(data, req)
     })
     it('should lookup the move', function () {
       expect(moveService.getById).to.be.calledOnceWithExactly('move')
@@ -93,7 +98,7 @@ describe('populateResources', function () {
       data = {
         per: { id: 'per', type: 'person_escort_records' },
       }
-      await populateResources(data)
+      await populateResources(data, req)
     })
     it('should lookup the PER', function () {
       expect(personEscortRecordService.getById).to.be.calledOnceWithExactly(
@@ -113,7 +118,7 @@ describe('populateResources', function () {
       data = {
         location: { id: 'loc', type: 'locations' },
       }
-      await populateResources(data)
+      await populateResources(data, req)
     })
     it('should lookup the location', function () {
       expect(referenceDataService.getLocationById).to.be.calledOnceWithExactly(
@@ -135,7 +140,7 @@ describe('populateResources', function () {
         per: { id: 'per', type: 'person_escort_records' },
         location: { id: 'loc', type: 'locations' },
       }
-      await populateResources(data)
+      await populateResources(data, req)
     })
 
     it('should populate with resolved location', function () {
@@ -155,7 +160,7 @@ context('when data contains multiple refs to unpopulated move', function () {
       move: { id: 'move', type: 'moves' },
       anuthaMove: { id: 'move', type: 'moves' },
     }
-    await populateResources(data)
+    await populateResources(data, req)
   })
 
   it('should populate all refs with resolved move', function () {
@@ -171,7 +176,7 @@ context('when data contains multiple refs to unpopulated move', function () {
       data = {
         move: { id: 'move', type: 'moves' },
       }
-      await populateResources(data, { exclude: ['moves'] })
+      await populateResources(data, req, { exclude: ['moves'] })
     })
 
     it('should pass those options to findUnpopulatedResources', function () {

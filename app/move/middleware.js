@@ -21,7 +21,7 @@ module.exports = {
 
     try {
       const move = await req.services.move.getByIdWithEvents(moveIdWithEvents)
-      await populateResources(move.timeline_events)
+      await populateResources(move.timeline_events, req)
       req.move = move
       next()
     } catch (error) {

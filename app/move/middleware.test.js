@@ -137,7 +137,7 @@ describe('Move middleware', function () {
         })
 
         it('should populate timeline events', function () {
-          expect(populateResources).to.be.calledWith(moveEvents)
+          expect(populateResources).to.be.calledWith(moveEvents, req)
         })
 
         it('should set response data to request object', function () {
