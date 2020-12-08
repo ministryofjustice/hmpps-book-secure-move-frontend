@@ -38,7 +38,7 @@
     <div class="govuk-grid-column-three-quarters">
       {% if not isEditable %}
         {{ govukWarningText({
-          text: t("assessment::locked"),
+          text: t("assessment::locked", { context: i18nContext }),
           iconFallbackText: "Warning"
         }) }}
       {% endif %}
