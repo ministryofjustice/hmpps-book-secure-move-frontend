@@ -136,11 +136,14 @@ const singleRequestService = {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
+    const timestamp = dateFunctions.formatISO(new Date())
+
     return apiClient
-      .update('move', {
-        id,
+      .one('move', id)
+      .all('approve')
+      .post({
+        timestamp,
         date,
-        status: 'requested',
       })
       .then(response => response.data)
   },
