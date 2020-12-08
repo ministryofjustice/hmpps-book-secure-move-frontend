@@ -1,5 +1,6 @@
 const allocation = require('./allocation')
 const allocationComplexCase = require('./allocation-complex-case')
+const approve = require('./approve')
 const assessmentQuestion = require('./assessment-question')
 const cancel = require('./cancel')
 const category = require('./category')
@@ -34,6 +35,7 @@ const youthRiskAssessment = require('./youth-risk-assessment')
 module.exports = {
   allocation,
   allocation_complex_case: allocationComplexCase,
+  approve,
   assessment_question: assessmentQuestion,
   cancel,
   category,

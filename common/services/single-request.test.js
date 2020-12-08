@@ -555,7 +555,9 @@ describe('Single request service', function () {
       let move
 
       beforeEach(async function () {
-        sinon.stub(apiClient, 'update').resolves(mockResponse)
+        sinon.stub(apiClient, 'all').returns(apiClient)
+        sinon.stub(apiClient, 'one').returns(apiClient)
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
       })
 
       context('without data args', function () {
@@ -564,10 +566,11 @@ describe('Single request service', function () {
         })
 
         it('should call update method with data', function () {
-          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
-            id: mockId,
+          expect(apiClient.one).to.be.calledOnceWithExactly('move', mockId)
+          expect(apiClient.all).to.be.calledOnceWithExactly('approve')
+          expect(apiClient.post).to.be.calledOnceWithExactly({
             date: undefined,
-            status: 'requested',
+            timestamp: sinon.match.string,
           })
         })
 
@@ -584,10 +587,11 @@ describe('Single request service', function () {
         })
 
         it('should call update method with data', function () {
-          expect(apiClient.update).to.be.calledOnceWithExactly('move', {
-            id: mockId,
+          expect(apiClient.one).to.be.calledOnceWithExactly('move', mockId)
+          expect(apiClient.all).to.be.calledOnceWithExactly('approve')
+          expect(apiClient.post).to.be.calledOnceWithExactly({
             date: '2020-10-10',
-            status: 'requested',
+            timestamp: sinon.match.string,
           })
         })
 
