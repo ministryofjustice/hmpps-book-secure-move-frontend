@@ -1,6 +1,5 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
 
 class RemoveMoveController extends FormWizardController {
   middlewareLocals() {
@@ -27,7 +26,7 @@ class RemoveMoveController extends FormWizardController {
 
     try {
       // TODO remove reason and comment once the backend supplies them as default
-      await moveService.cancel(moveId, {
+      await req.services.move.cancel(moveId, {
         reason: 'other',
         comment: 'Cancelled by PMU',
       })

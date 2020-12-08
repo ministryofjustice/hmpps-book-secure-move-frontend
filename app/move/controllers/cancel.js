@@ -2,7 +2,6 @@ const { pick } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
 
 class CancelController extends FormWizardController {
   middlewareChecks() {
@@ -51,7 +50,7 @@ class CancelController extends FormWizardController {
           break
       }
 
-      await moveService.cancel(moveId, {
+      await req.services.move.cancel(moveId, {
         reason: data.cancellation_reason,
         ...(cancellationReasonComment && {
           comment: cancellationReasonComment,

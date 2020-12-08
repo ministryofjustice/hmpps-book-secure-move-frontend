@@ -1,5 +1,4 @@
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
 
 const middleware = require('./set-results.moves')
 
@@ -19,11 +18,13 @@ const errorStub = new Error('Problem')
 
 describe('Moves middleware', function () {
   describe('#setResultsMoves()', function () {
-    let req, res, nextSpy, moveToCardComponentMapStub
+    let req, res, nextSpy, moveToCardComponentMapStub, moveService
 
     beforeEach(async function () {
-      sinon.stub(moveService, 'getActive')
-      sinon.stub(moveService, 'getCancelled')
+      moveService = {
+        getActive: sinon.stub(),
+        getCancelled: sinon.stub(),
+      }
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
       sinon.stub(presenters, 'movesByLocation').returnsArg(0)
       sinon
@@ -41,6 +42,9 @@ describe('Moves middleware', function () {
         },
         session: {
           currentLocation: '#location',
+        },
+        services: {
+          move: moveService,
         },
       }
     })
@@ -164,7 +168,7 @@ describe('Moves middleware', function () {
 
     context('when API call returns an error', function () {
       beforeEach(async function () {
-        moveService.getActive.throws(errorStub)
+        req.services.move.getActive = sinon.stub().throws(errorStub)
         await middleware(mockBodyKey)(req, res, nextSpy)
       })
 

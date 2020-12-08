@@ -1,6 +1,5 @@
 const { get, isEqual, keys, pick } = require('lodash')
 
-const moveService = require('../../../../common/services/move')
 const personService = require('../../../../common/services/person')
 const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
@@ -117,7 +116,7 @@ class UpdateBaseController extends CreateBaseController {
           ...newValues,
         }
 
-        await moveService.update(data)
+        await req.services.move.update(data)
         this.setFlash(req)
       }
 

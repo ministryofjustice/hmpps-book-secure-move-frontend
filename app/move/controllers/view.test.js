@@ -1,21 +1,19 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const moveService = {
-  getByIdWithEvents: sinon.stub(),
-}
-
 const getViewLocals = sinon.stub()
 
 const controller = proxyquire('./view', {
   './view/view.locals': getViewLocals,
-  '../../../common/services/move': moveService,
 })
 
 describe('Move controllers', function () {
   describe('#view()', function () {
-    let req, res, params
+    let req, res, params, moveService
 
     beforeEach(function () {
+      moveService = {
+        getByIdWithEvents: sinon.stub(),
+      }
       getViewLocals.resetHistory()
       getViewLocals.returns({
         locals: 'view.locals',
@@ -24,6 +22,9 @@ describe('Move controllers', function () {
       req = {
         foo: 'bar',
         move: {},
+        services: {
+          move: moveService,
+        },
       }
       res = {
         render: sinon.spy(),
@@ -53,8 +54,8 @@ describe('Move controllers', function () {
 
     context('when move is rejected single request', function () {
       beforeEach(async function () {
-        moveService.getByIdWithEvents.resetHistory()
-        moveService.getByIdWithEvents.resolves({
+        req.services.move.getByIdWithEvents.resetHistory()
+        req.services.move.getByIdWithEvents.resolves({
           timeline_events: [
             {
               event_type: 'MoveReject',

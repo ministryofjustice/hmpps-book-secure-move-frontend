@@ -1,13 +1,12 @@
 const { get, camelCase, omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
-const moveService = require('../../../common/services/move')
 const i18n = require('../../../config/i18n')
 
 function setfilterMoves(items = [], bodyKey) {
   return async function buildFilter(req, res, next) {
     const promises = items.map(item =>
-      moveService
+      req.services.move
         .getActive(
           omitBy(
             {

@@ -1,7 +1,6 @@
 const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
 const analytics = require('../../../../common/lib/analytics')
-const moveService = require('../../../../common/services/move')
 const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
@@ -43,7 +42,7 @@ class SaveController extends CreateBaseController {
         profile,
       }
 
-      const move = await moveService.create(moveData)
+      const move = await req.services.move.create(moveData)
 
       await Promise.all([
         // create hearings
