@@ -1,5 +1,4 @@
-const eventHelpers = require('../helpers/events/event')
-const setEventDetails = require('../helpers/events/set-event-details')
+const eventHelpers = require('../helpers/events')
 const componentService = require('../services/component')
 
 const getItem = ({
@@ -30,7 +29,7 @@ const getItem = ({
 }
 
 const eventToTimelineItemComponent = (moveEvent, move) => {
-  const event = setEventDetails(moveEvent, move)
+  const event = eventHelpers.setEventDetails(moveEvent, move)
 
   const { id, occurred_at: timestamp } = event
 

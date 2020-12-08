@@ -7,7 +7,7 @@ const eventHelpers = {
 }
 
 const eventToTagComponent = proxyquire('./event-to-tag-component', {
-  '../helpers/events/event': eventHelpers,
+  '../helpers/events': eventHelpers,
 })
 
 describe('Presenters', function () {

@@ -1,4 +1,4 @@
-const eventHelpers = require('../helpers/events/event')
+const eventHelpers = require('../helpers/events')
 
 const eventToTagComponent = (event, moveId) => {
   const { id } = event

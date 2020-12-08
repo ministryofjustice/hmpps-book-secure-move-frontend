@@ -7,12 +7,11 @@ const eventHelpers = {
   getContainerClasses: sinon.stub().returns('containerClasses'),
   getLabelClasses: sinon.stub().returns('labelClasses'),
   getDescription: sinon.stub().returns('description'),
+  setEventDetails: sinon.stub().callsFake(event => ({
+    ...event,
+    details: 'details',
+  })),
 }
-
-const setEventDetails = sinon.stub().callsFake(event => ({
-  ...event,
-  details: 'details',
-}))
 
 const componentService = {
   getComponent: sinon.stub().returns('component output'),
@@ -21,8 +20,7 @@ const componentService = {
 const eventToTimelineItemComponent = proxyquire(
   './event-to-timeline-item-component',
   {
-    '../helpers/events/event': eventHelpers,
-    '../helpers/events/set-event-details': setEventDetails,
+    '../helpers/events': eventHelpers,
     '../services/component': componentService,
   }
 )
@@ -40,7 +38,7 @@ describe('Presenters', function () {
     }
 
     beforeEach(function () {
-      setEventDetails.resetHistory()
+      eventHelpers.setEventDetails.resetHistory()
       eventHelpers.getFlag.resetHistory()
       eventHelpers.getHeading.resetHistory()
       eventHelpers.getHeaderClasses.resetHistory()
@@ -53,6 +51,13 @@ describe('Presenters', function () {
     context('when event is a standard event', function () {
       beforeEach(function () {
         transformedResponse = eventToTimelineItemComponent(mockEvent, mockMove)
+      })
+
+      it('should set the event details', function () {
+        expect(eventHelpers.setEventDetails).to.be.calledOnceWithExactly(
+          mockEvent,
+          mockMove
+        )
       })
 
       it('should get the flag values', function () {
