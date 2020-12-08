@@ -1,8 +1,9 @@
 const Sentry = require('@sentry/node')
 const { Controller } = require('hmpo-form-wizard')
-const { fromPairs, forEach, mapKeys } = require('lodash')
+const { fromPairs, forEach, mapKeys, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
+const { uuidRegex } = require('../../helpers/url')
 
 class BaseController extends Controller {
   middlewareSetup() {
@@ -152,12 +153,25 @@ class BaseController extends Controller {
         'MISSING_LOCATION',
       ].includes(err.code)
     ) {
+      const journeyName = snakeCase(
+        req.form.options.journeyName.replace(new RegExp(uuidRegex, 'g'), '')
+      )
+
       if (err.code === 'CSRF_ERROR' || err.code === 'EBADCSRFTOKEN') {
         Sentry.captureException(err)
       }
 
+      if (err.code === 'MISSING_PREREQ') {
+        Sentry.withScope(scope => {
+          scope.setLevel('warning')
+          scope.setExtra('Original journey name', req.form.options.journeyName)
+          scope.setExtra('Normalised journey name', journeyName)
+          Sentry.captureException(err)
+        })
+      }
+
       return res.render('form-wizard-error', {
-        journeyName: req.form.options.journeyName.replace('-', '_'),
+        journeyName,
         journeyBaseUrl: req.baseUrl,
         errorKey: err.code.toLowerCase(),
       })

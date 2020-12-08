@@ -420,24 +420,48 @@ describe('Form wizard', function () {
     })
 
     context('when it returns missing prereq error', function () {
-      let reqMock
+      let reqMock, mockScope
 
       beforeEach(function () {
+        mockScope = {
+          setExtra: sinon.stub(),
+          setLevel: sinon.stub(),
+        }
+        sinon.stub(Sentry, 'withScope')
         errorMock.code = 'MISSING_PREREQ'
         reqMock = {
           baseUrl: '/journey-base-url-other',
           form: {
             options: {
-              journeyName: 'mock-journey',
+              journeyName: 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
             },
           },
         }
 
         controller.errorHandler(errorMock, reqMock, resMock)
+
+        // run callback with mock scope
+        Sentry.withScope.args[0][0](mockScope)
       })
 
-      it('should not send error to sentry', function () {
-        expect(Sentry.captureException).not.to.be.called
+      it('should call sentry with scope', function () {
+        expect(Sentry.withScope).to.be.calledOnce
+      })
+
+      it('should send warning to sentry', function () {
+        expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
+        expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+      })
+
+      it('should send extra data to sentry', function () {
+        expect(mockScope.setExtra).to.be.calledWithExactly(
+          'Original journey name',
+          'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557'
+        )
+        expect(mockScope.setExtra).to.be.calledWithExactly(
+          'Normalised journey name',
+          'mock_journey'
+        )
       })
 
       it('should render the timeout template', function () {
@@ -572,15 +596,29 @@ describe('Form wizard', function () {
     })
 
     context('when it returns validation error', function () {
-      let nextSpy
+      let nextSpy, mockScope
 
       beforeEach(function () {
         errorMock.statusCode = 422
+        errorMock.errors = [
+          {
+            key: 'error-one',
+          },
+          {
+            key: 'error-two',
+          },
+        ]
+        mockScope = {
+          setExtra: sinon.stub(),
+        }
 
         nextSpy = sinon.spy()
-        sinon.spy(Sentry, 'withScope')
+        sinon.stub(Sentry, 'withScope')
 
         controller.errorHandler(errorMock, {}, {}, nextSpy)
+
+        // run callback with mock scope
+        Sentry.withScope.args[0][0](mockScope)
       })
 
       it('should call sentry with scope', function () {
@@ -589,6 +627,13 @@ describe('Form wizard', function () {
 
       it('should send error to sentry', function () {
         expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+      })
+
+      it('should send extra data to sentry', function () {
+        expect(mockScope.setExtra).to.be.calledWithExactly(
+          'errors',
+          errorMock.errors
+        )
       })
 
       it('should call parent error handler', function () {
