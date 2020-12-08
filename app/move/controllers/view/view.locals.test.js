@@ -22,7 +22,7 @@ const pathStubs = {
   './view.update.links': getUpdateLinks,
   '../../../../config': {
     FEATURE_FLAGS: {
-      YOUTH_RISK_ASSESSMENT: false,
+      YOUTH_RISK_ASSESSMENT: true,
     },
   },
 }
@@ -354,7 +354,7 @@ describe('Move controllers', function () {
 
       it('should contain youthRiskAssessmentIsEnabled param', function () {
         expect(params).to.have.property('youthRiskAssessmentIsEnabled')
-        expect(params.youthRiskAssessmentIsEnabled).to.equal(false)
+        expect(params.youthRiskAssessmentIsEnabled).to.equal(true)
       })
 
       describe('tabs urls', function () {
@@ -789,24 +789,56 @@ describe('Move controllers', function () {
           ])
         })
       })
-    })
 
-    context('with feature flag turned on', function () {
-      beforeEach(function () {
-        const locals = proxyquire('./view.locals', {
-          ...pathStubs,
-          '../../../../config': {
-            FEATURE_FLAGS: {
-              YOUTH_RISK_ASSESSMENT: true,
+      context('with feature flag disabled', function () {
+        beforeEach(function () {
+          const locals = proxyquire('./view.locals', {
+            ...pathStubs,
+            '../../../../config': {
+              FEATURE_FLAGS: {
+                YOUTH_RISK_ASSESSMENT: false,
+              },
             },
-          },
+          })
+          req.move.profile.youth_risk_assessment = null
+          req.move.profile.person_escort_record = {
+            ...mockYouthRiskAssessment,
+            _framework: {
+              sections: [
+                { key: 'one', order: 1 },
+                { key: 'three', order: 3 },
+                { key: 'two', order: 2 },
+              ],
+            },
+          }
+          params = locals(req)
         })
-        params = locals(req)
-      })
 
-      it('should contain youthRiskAssessmentIsEnabled param', function () {
-        expect(params).to.have.property('youthRiskAssessmentIsEnabled')
-        expect(params.youthRiskAssessmentIsEnabled).to.be.true
+        it('should render PER as assessment sections', function () {
+          expect(params).to.have.property('assessmentSections')
+          expect(params.assessmentSections).to.deep.equal([
+            {
+              key: 'one',
+              order: 1,
+              previousAssessment: undefined,
+            },
+            {
+              key: 'two',
+              order: 2,
+              previousAssessment: undefined,
+            },
+            {
+              key: 'three',
+              order: 3,
+              previousAssessment: undefined,
+            },
+          ])
+        })
+
+        it('should contain youthRiskAssessmentIsEnabled param', function () {
+          expect(params).to.have.property('youthRiskAssessmentIsEnabled')
+          expect(params.youthRiskAssessmentIsEnabled).to.be.false
+        })
       })
     })
 

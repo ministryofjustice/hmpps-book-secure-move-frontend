@@ -104,6 +104,7 @@ function getViewLocals(req) {
     youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
     assessmentSections:
       move._is_youth_move &&
+      FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
       (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)
         ? sortBy(youthAssessmentSections, 'order')
         : sortBy(combinedAssessmentSections, 'order'),
