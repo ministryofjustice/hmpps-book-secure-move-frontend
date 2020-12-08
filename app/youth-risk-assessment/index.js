@@ -13,7 +13,6 @@ const {
   setRecord,
 } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
-const youthRiskAssessmentService = require('../../common/services/youth-risk-assessment')
 
 const confirmApp = require('./app/confirm')
 const newApp = require('./app/new')
@@ -26,7 +25,7 @@ router.use(newApp.mountpath, newApp.router)
 // Define shared middleware
 router.use(protectRoute('youth_risk_assessment:view'))
 // router.use(setPersonEscortRecord)
-router.use(setRecord('youthRiskAssessment', youthRiskAssessmentService.getById))
+router.use(setRecord('youthRiskAssessment', 'youthRiskAssessment'))
 router.use(setAssessment('youthRiskAssessment'))
 
 // Define sub-apps
