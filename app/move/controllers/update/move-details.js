@@ -1,6 +1,5 @@
 const { pick } = require('lodash')
 
-const moveService = require('../../../../common/services/move')
 const CreateMoveDetailsController = require('../create/move-details')
 
 const UpdateBase = require('./base')
@@ -57,7 +56,7 @@ class UpdateMoveDetailsController extends UpdateBase {
       if (toLocation !== move.to_location?.id) {
         const notes = req.t('moves::redirect_notes', req.session.user)
 
-        await moveService.redirect({
+        await req.services.move.redirect({
           id: moveId,
           notes,
           to_location: {
@@ -70,7 +69,7 @@ class UpdateMoveDetailsController extends UpdateBase {
         additionalInformation !== undefined &&
         additionalInformation !== move.additional_information
       ) {
-        await moveService.update({
+        await req.services.move.update({
           id: moveId,
           additional_information: additionalInformation,
         })

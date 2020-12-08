@@ -1,6 +1,5 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const moveService = require('../../../common/services/move')
 
 const CancelController = require('./cancel')
 
@@ -141,10 +140,13 @@ describe('Move controllers', function () {
     })
 
     describe('#successHandler()', function () {
-      let req, res, nextSpy
+      let req, res, nextSpy, moveService
 
       beforeEach(function () {
         nextSpy = sinon.spy()
+        moveService = {
+          cancel: sinon.stub().resolves({}),
+        }
         req = {
           form: {
             options: {
@@ -161,6 +163,9 @@ describe('Move controllers', function () {
             reset: sinon.stub(),
           },
           move: mockMove,
+          services: {
+            move: moveService,
+          },
         }
         res = {
           redirect: sinon.stub(),
@@ -169,7 +174,6 @@ describe('Move controllers', function () {
 
       context('when move save is successful', function () {
         beforeEach(async function () {
-          sinon.stub(moveService, 'cancel').resolves({})
           await controller.successHandler(req, res, nextSpy)
         })
 
@@ -197,7 +201,7 @@ describe('Move controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          sinon.stub(moveService, 'cancel').throws(errorMock)
+          req.services.move.cancel = sinon.stub().throws(errorMock)
           await controller.successHandler(req, res, nextSpy)
         })
 
@@ -220,8 +224,7 @@ describe('Move controllers', function () {
           mockValues.cancellation_reason_other_comment =
             'cancelled for other reason'
           req.form.options.allFields.cancellation_reason_other_comment = {}
-
-          sinon.stub(moveService, 'cancel').resolves({})
+          req.services.move.cancel = sinon.stub().resolves({})
           await controller.successHandler(req, res, nextSpy)
 
           expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
@@ -237,8 +240,7 @@ describe('Move controllers', function () {
           mockValues.cancellation_reason_cancelled_by_pmu_comment =
             'cancelled by pmu comment'
           req.form.options.allFields.cancellation_reason_cancelled_by_pmu_comment = {}
-
-          sinon.stub(moveService, 'cancel').resolves({})
+          req.services.move.cancel = sinon.stub().resolves({})
           await controller.successHandler(req, res, nextSpy)
 
           expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {
@@ -249,8 +251,7 @@ describe('Move controllers', function () {
 
         it('should cancel without a comment if "pmu comment" not provided', async function () {
           mockValues.cancellation_reason = 'cancelled_by_pmu'
-
-          sinon.stub(moveService, 'cancel').resolves({})
+          req.services.move.cancel = sinon.stub().resolves({})
           await controller.successHandler(req, res, nextSpy)
 
           expect(moveService.cancel).to.be.calledWithExactly(mockMove.id, {

@@ -1,5 +1,4 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const moveService = require('../../../common/services/move')
 
 const UnassignController = require('./unassign')
 
@@ -273,11 +272,15 @@ describe('Move controllers', function () {
         move,
       }
       const res = {}
-      let next
+      let next, moveService
 
       beforeEach(function () {
-        sinon.stub(moveService, 'unassign')
-        moveService.unassign.resolves({})
+        moveService = {
+          unassign: sinon.stub().resolves({}),
+        }
+        req.services = {
+          move: moveService,
+        }
         sinon.stub(FormWizardController.prototype, 'saveValues')
         next = sinon.stub()
       })
@@ -305,7 +308,7 @@ describe('Move controllers', function () {
       context('when the api returns an error', function () {
         const error = new Error()
         beforeEach(async function () {
-          moveService.unassign.throws(error)
+          req.services.move.unassign = sinon.stub().throws(error)
           await controller.saveValues(req, res, next)
         })
 

@@ -1,4 +1,3 @@
-const moveService = require('../../../../common/services/move')
 const CreateMoveDetails = require('../create/move-details')
 
 const UpdateBaseController = require('./base')
@@ -187,10 +186,12 @@ describe('Move controllers', function () {
     describe('#saveValues', function () {
       let req = {}
       const res = {}
-      let nextSpy
+      let nextSpy, moveService
       beforeEach(async function () {
-        sinon.stub(moveService, 'redirect')
-        sinon.stub(moveService, 'update')
+        moveService = {
+          redirect: sinon.stub(),
+          update: sinon.stub(),
+        }
         req = {
           session: {
             user: {
@@ -211,6 +212,9 @@ describe('Move controllers', function () {
             },
           },
           t: sinon.stub().returnsArg(0),
+          services: {
+            move: moveService,
+          },
         }
         nextSpy = sinon.spy()
       })
@@ -274,7 +278,7 @@ describe('Move controllers', function () {
           context('and the move service errors', function () {
             const error = new Error()
             beforeEach(async function () {
-              moveService.redirect.throws(error)
+              req.services.move.redirect = sinon.stub().throws(error)
               await controller.saveValues(req, res, nextSpy)
             })
 
@@ -333,7 +337,7 @@ describe('Move controllers', function () {
                 move_type: moveType,
                 additional_information: '#oldInformation',
               })
-              moveService.update.throws(error)
+              req.services.move.update = sinon.stub().throws(error)
               await controller.saveValues(req, res, nextSpy)
             })
 

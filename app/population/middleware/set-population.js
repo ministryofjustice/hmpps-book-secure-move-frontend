@@ -1,5 +1,4 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-const moveService = require('../../../common/services/move')
 const populationService = require('../../../common/services/population')
 
 async function setPopulation(req, res, next) {
@@ -28,11 +27,11 @@ async function setPopulation(req, res, next) {
     } else {
       const options = { dateRange: [date, date], isAggregation: true }
       ;[transfersIn, transfersOut] = await Promise.all([
-        moveService.getActive({
+        req.services.move.getActive({
           ...options,
           toLocationId: locationId,
         }),
-        moveService.getActive({
+        req.services.move.getActive({
           ...options,
           fromLocationId: locationId,
         }),

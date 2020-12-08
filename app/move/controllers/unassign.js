@@ -1,5 +1,4 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const moveService = require('../../../common/services/move')
 
 class UnassignController extends FormWizardController {
   middlewareChecks() {
@@ -58,7 +57,7 @@ class UnassignController extends FormWizardController {
     try {
       const { id: moveId } = req.move
 
-      await moveService.unassign(moveId)
+      await req.services.move.unassign(moveId)
 
       super.saveValues(req, res, next)
     } catch (err) {

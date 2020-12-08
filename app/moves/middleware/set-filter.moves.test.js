@@ -1,4 +1,3 @@
-const moveService = require('../../../common/services/move')
 const i18n = require('../../../config/i18n')
 
 const middleware = require('./set-filter.moves')
@@ -21,14 +20,17 @@ describe('Moves middleware', function () {
     let next
     let req
     let res
+    let moveService
 
     context('when service resolves', function () {
       const mockDateRange = ['2010-09-03', '2010-09-10']
       const mockLocationId = '123'
 
       beforeEach(function () {
+        moveService = {
+          getActive: sinon.stub().resolves(4),
+        }
         sinon.stub(i18n, 't').returnsArg(0)
-        sinon.stub(moveService, 'getActive').resolves(4)
         next = sinon.spy()
         req = {
           baseUrl: '/moves',
@@ -38,6 +40,9 @@ describe('Moves middleware', function () {
               createdAtDate: mockDateRange,
               fromLocationId: mockLocationId,
             },
+          },
+          services: {
+            move: moveService,
           },
         }
         res = {}
@@ -182,10 +187,14 @@ describe('Moves middleware', function () {
       const mockError = new Error('Error!')
 
       beforeEach(async function () {
-        sinon.stub(moveService, 'getActive').rejects(mockError)
         next = sinon.spy()
         req = {
           params: {},
+          services: {
+            move: {
+              getActive: sinon.stub().rejects(mockError),
+            },
+          },
         }
 
         await middleware(mockConfig)(req, {}, next)
