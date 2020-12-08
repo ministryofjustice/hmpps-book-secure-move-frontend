@@ -105,7 +105,9 @@ describe('Population middleware', function () {
         locationsFreeSpacesService.getPrisonFreeSpaces.resolves([
           {
             id: 'ABADCAFE',
-            meta: {},
+            meta: {
+              populations: [{ unused_property: 'not visible' }],
+            },
           },
         ])
 
