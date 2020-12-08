@@ -1,11 +1,13 @@
 .app-tag {
   @include govuk-font($size: 14, $weight: bold, $line-height: 1.25);
 
+  position: relative;
+
   display: inline-block;
   padding: 3px 8px;
 
   // When a user customises their colours often the background is removed,
-  // by adding a outline we ensure that the tag component still keeps it's meaning.
+  // by adding a outline we ensure that the tag component still keeps it"s meaning.
   // https://accessibility.blog.gov.uk/2017/03/27/how-users-change-colours-on-websites/
   outline: 2px solid transparent;
   outline-offset: -2px;
@@ -43,7 +45,8 @@
 
     &[href^="/"],
     &[href^="http://"],
-    &[href^="https://"] {
+    &[href^="https://"]
+    {
       &::after {
         content: "";
       }
@@ -51,14 +54,9 @@
   }
 }
 
-// Set pos-rel only if link tag
-a.app-tag {
-  position: relative;
-
-  // Set hover state only if link tag
-  &:hover {
-    color: rgba(255, 255, 255, 0.9);
-  }
+// Set hover state only if link tag
+a.app-tag:hover {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 // Modifiers for different colours
@@ -96,4 +94,22 @@ a.app-tag--warning {
   &:focus {
     color: govuk-colour("black");
   }
+}
+
+.app-tag__flag {
+  padding-left: 1.5rem;
+}
+
+.app-tag__flag__icon {
+  background: govuk-colour("yellow");
+  color: govuk-colour("black");
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 150%;
+  line-height: 1.25;
 }

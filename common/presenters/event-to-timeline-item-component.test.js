@@ -1,7 +1,7 @@
 const proxyquire = require('proxyquire')
 
 const eventHelpers = {
-  getFlag: sinon.stub().returns({ flag: 'flag' }),
+  getFlag: sinon.stub(),
   getHeading: sinon.stub().returns('heading'),
   getHeaderClasses: sinon.stub().returns('headerClasses'),
   getContainerClasses: sinon.stub().returns('containerClasses'),
@@ -14,11 +14,16 @@ const setEventDetails = sinon.stub().callsFake(event => ({
   details: 'details',
 }))
 
+const componentService = {
+  getComponent: sinon.stub().returns('component output'),
+}
+
 const eventToTimelineItemComponent = proxyquire(
   './event-to-timeline-item-component',
   {
     '../helpers/events/event': eventHelpers,
     '../helpers/events/set-event-details': setEventDetails,
+    '../services/component': componentService,
   }
 )
 
@@ -28,6 +33,12 @@ describe('Presenters', function () {
     const mockMove = { id: 'moveId' }
     const mockEvent = { id: 'eventId', occurred_at: 'timestamp' }
 
+    const eventWithDetails = {
+      id: 'eventId',
+      occurred_at: 'timestamp',
+      details: 'details',
+    }
+
     beforeEach(function () {
       setEventDetails.resetHistory()
       eventHelpers.getFlag.resetHistory()
@@ -36,15 +47,67 @@ describe('Presenters', function () {
       eventHelpers.getContainerClasses.resetHistory()
       eventHelpers.getLabelClasses.resetHistory()
       eventHelpers.getDescription.resetHistory()
+      componentService.getComponent.resetHistory()
     })
 
-    context('woo', function () {
-      const eventWithDetails = {
-        id: 'eventId',
-        occurred_at: 'timestamp',
-        details: 'details',
-      }
+    context('when event is a standard event', function () {
       beforeEach(function () {
+        transformedResponse = eventToTimelineItemComponent(mockEvent, mockMove)
+      })
+
+      it('should get the flag values', function () {
+        expect(eventHelpers.getFlag).to.be.calledOnceWithExactly(
+          eventWithDetails
+        )
+      })
+
+      it('should get the container classes', function () {
+        expect(eventHelpers.getContainerClasses).to.be.calledOnceWithExactly(
+          eventWithDetails
+        )
+      })
+
+      it('should not get the header classes', function () {
+        expect(eventHelpers.getHeaderClasses).to.not.be.called
+      })
+
+      it('should get the heading', function () {
+        expect(eventHelpers.getHeading).to.be.calledOnceWithExactly(
+          eventWithDetails
+        )
+      })
+
+      it('should get the label classes', function () {
+        expect(eventHelpers.getLabelClasses).to.be.calledOnceWithExactly(
+          eventWithDetails
+        )
+      })
+
+      it('should get the description', function () {
+        expect(eventHelpers.getDescription).to.be.calledOnceWithExactly(
+          eventWithDetails
+        )
+      })
+
+      it('should not render the heading with the tag component', function () {
+        expect(componentService.getComponent).to.not.be.called
+      })
+
+      it('should return a transformed response in the expected structure', function () {
+        expect(transformedResponse).to.deep.equal({
+          id: 'eventId',
+          container: { classes: 'containerClasses' },
+          label: { classes: 'labelClasses', html: 'heading' },
+          html: 'description',
+          datetime: { timestamp: 'timestamp', type: 'datetime' },
+          byline: { html: '' },
+        })
+      })
+    })
+
+    context('when event is an important event', function () {
+      beforeEach(function () {
+        eventHelpers.getFlag.returns({ html: 'flag html' })
         transformedResponse = eventToTimelineItemComponent(mockEvent, mockMove)
       })
 
@@ -84,14 +147,22 @@ describe('Presenters', function () {
         )
       })
 
+      it('should render the heading with the tag component', function () {
+        expect(componentService.getComponent).to.be.calledOnceWithExactly(
+          'appTag',
+          {
+            html: 'heading',
+            flag: { html: 'flag html' },
+            classes: 'headerClasses',
+          }
+        )
+      })
+
       it('should return a transformed response in the expected structure', function () {
-        transformedResponse // ?
         expect(transformedResponse).to.deep.equal({
           id: 'eventId',
-          flag: { flag: 'flag' },
           container: { classes: 'containerClasses' },
-          header: { classes: 'headerClasses' },
-          label: { classes: 'labelClasses', html: 'heading' },
+          label: { classes: 'labelClasses', html: 'component output' },
           html: 'description',
           datetime: { timestamp: 'timestamp', type: 'datetime' },
           byline: { html: '' },

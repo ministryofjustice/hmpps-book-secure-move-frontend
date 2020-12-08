@@ -17,6 +17,8 @@ function moveToCardComponent({
     const href = profile ? `/move/${id}${hrefSuffix}` : ''
     const excludedBadgeStatuses = ['cancelled']
 
+    showTags = isCompact ? false : showTags
+
     const showStatusBadge =
       showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
     const statusBadge = showStatusBadge
@@ -25,15 +27,20 @@ function moveToCardComponent({
     const personCardComponent = profileToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
-      showTags: isCompact ? false : showTags,
+      showTags,
       tagSource,
     })({
       ...profile,
       href,
     })
 
-    // TODO: only include this is showTags is true???
-    const importantEventsTagList = moveToImportantEventsTagListComponent(move)
+    let tags
+
+    if (showTags) {
+      const importantEventsTagList = moveToImportantEventsTagListComponent(move)
+      tags = personCardComponent.tags || []
+      tags.push({ items: importantEventsTagList })
+    }
 
     return {
       ...personCardComponent,
@@ -46,7 +53,7 @@ function moveToCardComponent({
           reference,
         }),
       },
-      importantEventsTagList,
+      ...(tags ? { tags } : undefined),
     }
   }
 }

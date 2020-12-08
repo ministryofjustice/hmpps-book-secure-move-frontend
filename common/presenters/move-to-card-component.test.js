@@ -70,7 +70,7 @@ describe('Presenters', function () {
               caption: {
                 text: '__translated__',
               },
-              importantEventsTagList: 'moveToImportantEventsTagListComponent',
+              tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
           })
         })
@@ -268,7 +268,6 @@ describe('Presenters', function () {
           caption: {
             text: '__translated__',
           },
-          importantEventsTagList: 'moveToImportantEventsTagListComponent',
         })
       })
     })
@@ -304,7 +303,6 @@ describe('Presenters', function () {
           caption: {
             text: '__translated__',
           },
-          importantEventsTagList: 'moveToImportantEventsTagListComponent',
         })
       })
     })
@@ -334,7 +332,7 @@ describe('Presenters', function () {
             caption: {
               text: '__translated__',
             },
-            importantEventsTagList: 'moveToImportantEventsTagListComponent',
+            tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
       }
@@ -370,7 +368,6 @@ describe('Presenters', function () {
             caption: {
               text: '__translated__',
             },
-            importantEventsTagList: 'moveToImportantEventsTagListComponent',
           })
         })
       })
@@ -390,7 +387,7 @@ describe('Presenters', function () {
             caption: {
               text: '__translated__',
             },
-            importantEventsTagList: 'moveToImportantEventsTagListComponent',
+            tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
       })

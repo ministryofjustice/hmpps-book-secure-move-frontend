@@ -1,4 +1,4 @@
-{% from "flag/macro.njk" import appFlag %}
+{% from "tag/macro.njk" import appTag %}
 
 <div class="app-timeline {{- ' ' + params.classes if params.classes}}" {%- for attribute, value in params.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
 
@@ -8,16 +8,7 @@
 
       <div class="app-timeline__header {{- ' ' + item.header.classes if item.header.classes}}">
         <h{{ params.headingLevel | default(2) }} class="app-timeline__title {{- ' ' + item.label.classes if item.label.classes}}">
-          {% set heading %}
-            {{- item.label.html | safe if item.label.html else item.label.text -}}
-          {% endset %}
-          {% if item.flag %}
-            {% call appFlag(item) %}
-              {{- heading | safe -}}
-            {% endcall %}
-          {% else %}
-             {{- heading | safe -}}
-          {% endif %}
+          {{- item.label.html | safe if item.label.html else item.label.text -}}
         </h{{ params.headingLevel | default(2) }}>
       </div>
 
