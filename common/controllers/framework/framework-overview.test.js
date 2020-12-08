@@ -47,7 +47,7 @@ describe('Framework controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(3)
+          expect(Object.keys(params)).to.have.length(4)
         })
 
         it('should set moveId', function () {
@@ -63,6 +63,11 @@ describe('Framework controllers', function () {
         it('should not set fullname', function () {
           expect(params).to.have.property('fullname')
           expect(params.fullname).to.be.undefined
+        })
+
+        it('should not set i18nContext', function () {
+          expect(params).to.have.property('i18nContext')
+          expect(params.i18nContext).to.equal('')
         })
       })
 
@@ -84,6 +89,9 @@ describe('Framework controllers', function () {
             ...mockReq,
             assessment: {
               _framework: mockFramework,
+              framework: {
+                name: 'person-escort-record',
+              },
               meta: {
                 section_progress: [
                   {
@@ -136,6 +144,11 @@ describe('Framework controllers', function () {
         it('should set fullname', function () {
           expect(params).to.have.property('fullname')
           expect(params.fullname).to.equal('John Doe')
+        })
+
+        it('should set i18nContext', function () {
+          expect(params).to.have.property('i18nContext')
+          expect(params.i18nContext).to.equal('person_escort_record')
         })
       })
     })

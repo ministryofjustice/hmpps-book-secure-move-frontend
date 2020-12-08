@@ -1,4 +1,13 @@
 {
+  "page_title": "$t({{context}})",
+  "page_title_with_name": "$t({{context}}) for {{name}}",
+  "section_overview": "{{section}} overview",
+  "locked": "A Person Escort Record cannot be updated once it has been confirmed or once the move has started.",
+  "statuses": {
+    "not_started": "Not started",
+    "in_progress": "In progress",
+    "completed": "Completed"
+  },
   "heading": {
     "text": "Information",
     "text_risk": "Risk information",
@@ -30,8 +39,24 @@
       }
     }
   },
+  "sync_status": {
+    "failed": {
+      "title": "Some NOMIS information could not be included",
+      "message": "The following information could not be included. Check NOMIS for the most up to date information:",
+      "resource_types": {
+        "alerts": "alerts",
+        "personal_care_needs": "personal care needs",
+        "reasonable_adjustments": "reasonable adjustments"
+      }
+    }
+  },
   "view_previous_assessment": "View information provided when move was requested",
   "view_previous_assessment_framework": "View information provided in youth risk assessment",
   "incomplete": "Warnings will display once a Person Escort Record has been completed",
-  "section_incomplete": "Warnings will display once this section has been completed"
+  "section_incomplete": "Warnings will display once this section has been completed",
+  "prefilled_banner": {
+    "title": "Some answers on this page need to be reviewed. They are from the last $t({{context}}) confirmed on {{date}}."
+  },
+  "prefilled_message": "This answer needs to be reviewed",
+  "feedback_prompt": "This is a new feature — <a href=\"{{url}}\">give us your feedback</a> to help us improve it"
 }

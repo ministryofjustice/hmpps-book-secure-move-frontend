@@ -1,4 +1,4 @@
-const { filter } = require('lodash')
+const { filter, snakeCase } = require('lodash')
 
 const presenters = require('../../presenters')
 const FormWizardController = require('../form-wizard')
@@ -9,6 +9,12 @@ class FrameworkSectionController extends FormWizardController {
     this.use(this.setSectionSummary)
     this.use(this.setMoveId)
     this.use(this.setEditableStatus)
+    this.use(this.seti18nContext)
+  }
+
+  seti18nContext(req, res, next) {
+    res.locals.i18nContext = snakeCase(req.assessment?.framework?.name || '')
+    next()
   }
 
   setMoveId(req, res, next) {
@@ -17,7 +23,11 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setEditableStatus(req, res, next) {
-    res.locals.isEditable = req.assessment.editable
+    const { editable, framework } = req.assessment
+
+    res.locals.isEditable =
+      editable && req.canAccess(`${snakeCase(framework.name)}:update`)
+
     next()
   }
 

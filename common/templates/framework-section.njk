@@ -1,10 +1,10 @@
 {% extends "layouts/base.njk" %}
 
 {% block pageTitle %}
-  {{ t("person-escort-record::section_overview", {
+  {{ t("assessment::section_overview", {
     section: sectionTitle
   }) }}
-  – {{ t("person-escort-record::page_title") }}
+  – {{ t("assessment::page_title", { context: i18nContext }) }}
   – {{ SERVICE_NAME }}
 {% endblock %}
 
@@ -27,7 +27,7 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l govuk-!-margin-bottom-9">
-        {{ t("person-escort-record::section_overview", {
+        {{ t("assessment::section_overview", {
           section: sectionTitle
         }) }}
       </h1>
@@ -38,7 +38,7 @@
     <div class="govuk-grid-column-three-quarters">
       {% if not isEditable %}
         {{ govukWarningText({
-          text: t("person-escort-record::locked"),
+          text: t("assessment::locked"),
           iconFallbackText: "Warning"
         }) }}
       {% endif %}
@@ -49,7 +49,7 @@
             {{ step.pageTitle }}
           </h2>
 
-          {% if canAccess('person_escort_record:update') and isEditable %}
+          {% if isEditable %}
             <p class="app-!-position-top-right">
               <a href="{{ step.stepUrl }}" class="govuk-link">
                 <strong>{{ t("actions::change", {
@@ -73,7 +73,7 @@
   {% if PERSON_ESCORT_RECORD_FEEDBACK_URL %}
     {{ appFeedbackPrompt({
       content: {
-        html: t("person-escort-record::feedback_prompt", {
+        html: t("assessment::feedback_prompt", {
           url: PERSON_ESCORT_RECORD_FEEDBACK_URL
         })
       }

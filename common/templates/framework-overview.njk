@@ -1,12 +1,12 @@
 {% extends "layouts/two-column.njk" %}
 
 {% block customGtagConfig %}
-  gtag('set', {'page_title': 'Person Escort Record'});
+  gtag('set', {'page_title': '{{ t(i18nContext) }}'});
 {% endblock %}
 
 {% block pageTitle %}
-  {{ t("person-escort-record::page_title", {
-    context: "with_name",
+  {{ t("assessment::page_title_with_name", {
+    context: i18nContext,
     name: fullname
   }) }} – {{ SERVICE_NAME }}
 {% endblock %}
@@ -26,8 +26,8 @@
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-xl">
-        {{ t("person-escort-record::heading", {
-          context: "with_name"
+        {{ t("assessment::page_title_with_name", {
+          context: i18nContext
         }) }}
       </span>
       <h1 class="govuk-heading-xl">

@@ -23,7 +23,7 @@ function renderPreviousAnswerToField({ responses = [] } = {}) {
 
     hintContent += `
       <span class="app-form-group__message-text">
-        ${i18n.t('person-escort-record::prefilled_message')}
+        ${i18n.t('assessment::prefilled_message')}
       </span>
     `
 
