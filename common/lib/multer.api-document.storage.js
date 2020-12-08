@@ -1,15 +1,13 @@
 const concat = require('concat-stream')
 const MulterError = require('multer/lib/multer-error')
 
-const documentService = require('../services/document')
-
 function APIDocumentStorage() {}
 
 APIDocumentStorage.prototype = {
   _handleFile: function (req, file, cb) {
     file.stream.pipe(
       concat({ encoding: 'buffer' }, data => {
-        documentService
+        req.services.document
           .create(file, data)
           .then(document => cb(null, document))
           .catch(error => {
