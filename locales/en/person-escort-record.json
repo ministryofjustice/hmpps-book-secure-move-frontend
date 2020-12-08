@@ -1,26 +1,5 @@
 {
-  "section_overview": "{{section}} overview",
-  "locked": "A Person Escort Record cannot be updated once it has been confirmed or once the move has started.",
-  "statuses": {
-    "not_started": "Not started",
-    "in_progress": "In progress",
-    "completed": "Completed"
-  },
-  "sync_status": {
-    "failed": {
-      "title": "Some NOMIS information could not be included",
-      "message": "The following information could not be included. Check NOMIS for the most up to date information:",
-      "resource_types": {
-        "alerts": "alerts",
-        "personal_care_needs": "personal care needs",
-        "reasonable_adjustments": "reasonable adjustments"
-      }
-    }
-  },
-  "prefilled_banner": {
-    "title": "Some answers on this page need to be reviewed. They are from the last Person Escort Record confirmed on {{date}}."
-  },
-  "prefilled_message": "This answer needs to be reviewed",
+  "heading": "Person Escort Record",
   "journeys": {
     "confirm": {
       "heading":"Confirm and complete this Person Escort Record",
@@ -51,6 +30,5 @@
     "property_handover": {
       "heading": "Property and cash handover"
     }
-  },
-  "feedback_prompt": "This is a new feature — <a href=\"{{url}}\">give us your feedback</a> to help us improve it"
+  }
 }

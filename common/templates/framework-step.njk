@@ -6,13 +6,13 @@
   {% if syncFailures.length > 0 %}
     {% set html %}
       <p class="govuk-!-margin-bottom-3">
-        {{ t("person-escort-record::sync_status.failed.message") }}
+        {{ t("assessment::sync_status.failed.message") }}
       </p>
 
       <ul>
         {% for type in syncFailures %}
           <li>
-            {{ t("person-escort-record::sync_status.failed.resource_types." + type) }}
+            {{ t("assessment::sync_status.failed.resource_types." + type) }}
           </li>
         {% endfor %}
       </ul>
@@ -22,7 +22,7 @@
       allowDismiss: false,
       classes: "app-message--warning govuk-!-margin-bottom-4",
       title: {
-        text: t("person-escort-record::sync_status.failed.title")
+        text: t("assessment::sync_status.failed.title")
       },
       content: {
         html: html
@@ -35,8 +35,9 @@
       allowDismiss: false,
       classes: "govuk-!-margin-bottom-4",
       title: {
-        text: t("person-escort-record::prefilled_banner.title", {
-          date: prefilledSourceDate | formatDateWithRelativeDay + " at " + prefilledSourceDate | formatTime
+        text: t("assessment::prefilled_banner.title", {
+          date: prefilledSourceDate | formatDateWithRelativeDay + " at " + prefilledSourceDate | formatTime,
+          context: i18nContext
         })
       }
     }) }}

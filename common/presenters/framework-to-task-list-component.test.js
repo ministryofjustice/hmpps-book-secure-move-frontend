@@ -133,13 +133,13 @@ describe('Presenters', function () {
 
           it('should translate status', function () {
             expect(i18n.t).to.be.calledWithExactly(
-              'person-escort-record::statuses.completed'
+              'assessment::statuses.completed'
             )
           })
 
           it('should return correct tag class', function () {
             expect(output.items[0].tag).to.deep.equal({
-              text: 'person-escort-record::statuses.completed',
+              text: 'assessment::statuses.completed',
               classes: '',
             })
           })
@@ -156,13 +156,13 @@ describe('Presenters', function () {
 
           it('should translate status', function () {
             expect(i18n.t).to.be.calledWithExactly(
-              'person-escort-record::statuses.in_progress'
+              'assessment::statuses.in_progress'
             )
           })
 
           it('should return correct tag class', function () {
             expect(output.items[1].tag).to.deep.equal({
-              text: 'person-escort-record::statuses.in_progress',
+              text: 'assessment::statuses.in_progress',
               classes: 'govuk-tag--blue',
             })
           })
@@ -179,13 +179,13 @@ describe('Presenters', function () {
 
           it('should translate status', function () {
             expect(i18n.t).to.be.calledWithExactly(
-              'person-escort-record::statuses.not_started'
+              'assessment::statuses.not_started'
             )
           })
 
           it('should return correct tag class', function () {
             expect(output.items[2].tag).to.deep.equal({
-              text: 'person-escort-record::statuses.not_started',
+              text: 'assessment::statuses.not_started',
               classes: 'govuk-tag--grey',
             })
           })

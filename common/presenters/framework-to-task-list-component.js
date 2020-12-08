@@ -24,7 +24,7 @@ function frameworkToTaskListComponent({
         text: name,
         href: `${baseUrl}${key}${deepLinkToFirstStep ? '/start' : ''}`,
         tag: {
-          text: i18n.t(`person-escort-record::statuses.${status}`),
+          text: i18n.t(`assessment::statuses.${status}`),
           classes: tagClasses[status] || tagClasses.default,
         },
       }

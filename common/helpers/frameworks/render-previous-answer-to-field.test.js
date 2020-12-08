@@ -87,14 +87,12 @@ describe('#renderPreviousAnswerToField', function () {
       it('should append message to hint content', function () {
         expect(output[1].hint).to.deep.equal({
           html:
-            '\n      <span class="app-form-group__message-text">\n        person-escort-record::prefilled_message\n      </span>\n    ',
+            '\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
         })
       })
 
       it('should translate keys', function () {
-        expect(i18n.t).to.be.calledWithExactly(
-          'person-escort-record::prefilled_message'
-        )
+        expect(i18n.t).to.be.calledWithExactly('assessment::prefilled_message')
       })
     })
 
@@ -122,7 +120,7 @@ describe('#renderPreviousAnswerToField', function () {
       it('should append message to existing hint content', function () {
         expect(output[1].hint).to.deep.equal({
           html:
-            'EXISTING_HINT\n      <span class="app-form-group__message-text">\n        person-escort-record::prefilled_message\n      </span>\n    ',
+            'EXISTING_HINT\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
         })
       })
     })
