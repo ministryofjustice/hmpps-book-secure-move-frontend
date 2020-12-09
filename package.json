@@ -192,7 +192,7 @@
     "nock": "13.0.5",
     "node-sass": "5.0.0",
     "nodemon": "2.0.6",
-    "npm-check-updates": "10.2.2",
+    "npm-check-updates": "10.2.3",
     "nyc": "15.1.0",
     "open-cli": "6.0.1",
     "optimize-css-assets-webpack-plugin": "5.0.4",
