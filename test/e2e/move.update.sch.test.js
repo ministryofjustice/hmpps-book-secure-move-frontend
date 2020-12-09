@@ -3,7 +3,6 @@ import {
   checkUpdatePagesAccessible,
   checkUpdateDocuments,
   createMove,
-  checkCancelLink,
 } from './_move'
 import { schUser } from './_roles'
 import { home } from './_routes'
@@ -47,10 +46,6 @@ test.meta('hasDocument', 'true')(
   }
 )
 
-test('User should be able to cancel move', async () => {
-  await checkCancelLink()
-})
-
 fixture(
   'Existing move from Secure Training Centre (STC) to Hospital'
 ).beforeEach(async t => {
@@ -82,10 +77,6 @@ test.meta('hasDocument', 'true')(
   }
 )
 
-test('User should be able to cancel move', async () => {
-  await checkCancelLink()
-})
-
 fixture('Existing move from Secure Children Home (SCH) to Prison').beforeEach(
   async t => {
     await t.useRole(schUser).navigateTo(home)
@@ -115,10 +106,6 @@ test.meta('hasDocument', 'true')(
     )
   }
 )
-
-test('User should be able to cancel move', async () => {
-  await checkCancelLink()
-})
 
 fixture(
   'Existing move from Secure Children Home (SCH) to Secure Training Centre (STC)'
@@ -150,10 +137,6 @@ test.meta('hasDocument', 'true')(
   }
 )
 
-test('User should be able to cancel move', async () => {
-  await checkCancelLink()
-})
-
 fixture(
   'Existing move from Secure Children Home (SCH) to Secure Children Home (SCH)'
 ).beforeEach(async t => {
@@ -183,7 +166,3 @@ test.meta('hasDocument', 'true')(
     )
   }
 )
-
-test('User should be able to cancel move', async () => {
-  await checkCancelLink()
-})
