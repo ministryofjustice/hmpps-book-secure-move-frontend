@@ -1,5 +1,3 @@
-const personEscortRecordService = require('../../../../common/services/person-escort-record')
-
 const { ConfirmPersonEscortRecordController } = require('./controllers')
 
 const controller = new ConfirmPersonEscortRecordController({ route: '/' })
@@ -8,21 +6,25 @@ describe('Person Escort Record controllers', function () {
   describe('ConfirmPersonEscortRecordController', function () {
     describe('#saveValues', function () {
       const mockPERId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
-      let req, nextSpy
+      let req, nextSpy, personEscortRecordService
 
       beforeEach(function () {
-        sinon.stub(personEscortRecordService, 'confirm')
+        personEscortRecordService = {
+          confirm: sinon.stub().resolves({}),
+        }
         nextSpy = sinon.spy()
         req = {
           assessment: {
             id: mockPERId,
+          },
+          services: {
+            personEscortRecord: personEscortRecordService,
           },
         }
       })
 
       context('when save is successful', function () {
         beforeEach(async function () {
-          personEscortRecordService.confirm.resolves({})
           await controller.saveValues(req, {}, nextSpy)
         })
 
@@ -41,7 +43,9 @@ describe('Person Escort Record controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          personEscortRecordService.confirm.throws(errorMock)
+          req.services.personEscortRecord.confirm = sinon
+            .stub()
+            .throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
 

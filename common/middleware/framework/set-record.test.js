@@ -6,12 +6,16 @@ describe('Framework middleware', function () {
     const errorStub = new Error('Problem')
     const mockKey = 'personEscortRecord'
     const mockResource = { foo: 'bar' }
-    const getMethodStub = sinon.stub().resolves(mockResource)
     let mockReq, nextSpy
 
     beforeEach(function () {
       mockReq = {
         params: {},
+        services: {
+          personEscortRecord: {
+            getById: sinon.stub().resolves(mockResource),
+          },
+        },
       }
       nextSpy = sinon.spy()
     })
@@ -32,7 +36,7 @@ describe('Framework middleware', function () {
       })
 
       it('should not call API with record ID', function () {
-        expect(getMethodStub).not.to.be.called
+        expect(mockReq.services.personEscortRecord.getById).not.to.be.called
       })
 
       it('should not set request property', function () {
@@ -49,11 +53,15 @@ describe('Framework middleware', function () {
             status: 'not_started',
           },
         }
-        await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
+        await middleware(mockKey, 'personEscortRecord', 'getById')(
+          mockReq,
+          {},
+          nextSpy
+        )
       })
 
       it('should not call API', function () {
-        expect(getMethodStub).not.to.be.called
+        expect(mockReq.services.personEscortRecord.getById).not.to.be.called
       })
 
       it('should set request property to existing property', function () {
@@ -71,7 +79,11 @@ describe('Framework middleware', function () {
 
     context('when no record ID exists', function () {
       beforeEach(async function () {
-        await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
+        await middleware(mockKey, 'personEscortRecord', 'getById')(
+          mockReq,
+          {},
+          nextSpy
+        )
       })
 
       it('should call next with 404 error', function () {
@@ -85,7 +97,7 @@ describe('Framework middleware', function () {
       })
 
       it('should not call API with record ID', function () {
-        expect(getMethodStub).not.to.be.called
+        expect(mockReq.services.personEscortRecord.getById).not.to.be.called
       })
 
       it('should not set request property', function () {
@@ -102,11 +114,17 @@ describe('Framework middleware', function () {
 
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
+          await middleware(mockKey, 'personEscortRecord', 'getById')(
+            mockReq,
+            {},
+            nextSpy
+          )
         })
 
         it('should call API with record ID', function () {
-          expect(getMethodStub).to.be.calledWith(mockRecordId)
+          expect(mockReq.services.personEscortRecord.getById).to.be.calledWith(
+            mockRecordId
+          )
         })
 
         it('should set response data to request property', function () {
@@ -121,9 +139,15 @@ describe('Framework middleware', function () {
 
       context('when API call returns an error', function () {
         beforeEach(async function () {
-          getMethodStub.throws(errorStub)
+          mockReq.services.personEscortRecord.getById = sinon
+            .stub()
+            .throws(errorStub)
 
-          await middleware(mockKey, getMethodStub)(mockReq, {}, nextSpy)
+          await middleware(mockKey, 'personEscortRecord', 'getById')(
+            mockReq,
+            {},
+            nextSpy
+          )
         })
 
         it('should not set request property', function () {
