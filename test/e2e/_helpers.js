@@ -2,6 +2,7 @@ import { unlinkSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
 
+import * as Sentry from '@sentry/node'
 import { format } from 'date-fns'
 import faker from 'faker'
 import glob from 'glob'
@@ -14,7 +15,47 @@ import personService from '../../common/services/person'
 import personEscortRecordService from '../../common/services/person-escort-record'
 import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
+import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
+
+if (SENTRY.DSN) {
+  Sentry.init({
+    dsn: SENTRY.DSN,
+    environment: SENTRY.ENVIRONMENT,
+  })
+}
+
+/* eslint-disable no-process-env */
+const {
+  CIRCLE_BRANCH,
+  CIRCLE_BUILD_NUM,
+  CIRCLE_BUILD_URL,
+  CIRCLE_WORKFLOW_ID,
+} = process.env
+/* eslint-disable no-process-env */
+
+function errorHandler(body) {
+  return err => {
+    Sentry.withScope(scope => {
+      err.errors.forEach((apiErr, idx) => {
+        scope.setContext(`error_${idx}`, apiErr)
+      })
+      scope.setContext('body', body)
+      scope.setContext('circle', {
+        'Workflow ID': CIRCLE_WORKFLOW_ID,
+        'Job number': CIRCLE_BUILD_NUM,
+        'Job URL': CIRCLE_BUILD_URL,
+        Branch: CIRCLE_BRANCH,
+      })
+      Sentry.setTag('workflow_id', CIRCLE_WORKFLOW_ID)
+      Sentry.setTag('job_number', CIRCLE_BUILD_NUM)
+      Sentry.setTag('branch', CIRCLE_BRANCH)
+      Sentry.captureException(err)
+    })
+
+    throw err
+  }
+}
 
 export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
@@ -72,7 +113,6 @@ export async function generatePerson(overrides = {}) {
 
 export async function createPersonFixture(overrides = {}) {
   const fixture = await generatePerson(overrides)
-
   const genders = await getGenders()
   const ethnicities = await getEthnicities()
 
@@ -80,8 +120,7 @@ export async function createPersonFixture(overrides = {}) {
   const ethnicity = ethnicities.filter(
     eth => eth.title === fixture.ethnicity
   )[0].id
-
-  const person = await personService.create({
+  const data = {
     police_national_computer: fixture.policeNationalComputer,
     prison_number: fixture.prisonNumber,
     criminal_records_office: fixture.criminalRecordsOffice,
@@ -92,24 +131,29 @@ export async function createPersonFixture(overrides = {}) {
     date_of_birth: fixture.dateOfBirth,
     ethnicity,
     gender,
-  })
-
-  const getIdentifierValue = type => person[type]
-
-  return {
-    ...person,
-    fullname: `${person.last_name}, ${person.first_names}`.toUpperCase(),
-    lastName: person.last_name,
-    firstNames: person.first_names,
-    dateOfBirth: person.date_of_birth,
-    gender: fixture.gender,
-    ethnicity: fixture.ethnicity,
-    prisonNumber: getIdentifierValue('prison_number'),
-    policeNationalComputer: getIdentifierValue('police_national_computer'),
-    criminalRecordsOffice: getIdentifierValue('criminal_records_office'),
-    nicheReference: getIdentifierValue('niche_reference'),
-    athenaReference: getIdentifierValue('athena_reference'),
   }
+
+  return personService
+    .create(data)
+    .then(response => {
+      const getIdentifierValue = type => response[type]
+
+      return {
+        ...response,
+        fullname: `${response.last_name}, ${response.first_names}`.toUpperCase(),
+        lastName: response.last_name,
+        firstNames: response.first_names,
+        dateOfBirth: response.date_of_birth,
+        gender: fixture.gender,
+        ethnicity: fixture.ethnicity,
+        prisonNumber: getIdentifierValue('prison_number'),
+        policeNationalComputer: getIdentifierValue('police_national_computer'),
+        criminalRecordsOffice: getIdentifierValue('criminal_records_office'),
+        nicheReference: getIdentifierValue('niche_reference'),
+        athenaReference: getIdentifierValue('athena_reference'),
+      }
+    })
+    .catch(errorHandler(data))
 }
 
 /**
@@ -141,9 +185,9 @@ export async function generateProfile(personId, overrides = {}) {
  * @returns {object} - created profile object
  */
 export async function createProfileFixture(personId, overrides = {}) {
-  const fixture = await generateProfile(overrides)
-  const profile = await profileService.create(personId, fixture)
-  return profile
+  const data = await generateProfile(overrides)
+
+  return profileService.create(personId, data).catch(errorHandler(data))
 }
 
 /**
@@ -223,21 +267,29 @@ export async function createMoveFixture({
 } = {}) {
   const person = await createPersonFixture(personOverrides)
   const profile = await createProfileFixture(person.id, profileOverrides)
-  const moveFixture = await generateMove(profile, moveOptions, moveOverrides)
-  let move = await moveService.create(moveFixture, {
-    include: ['from_location', 'to_location'],
-  })
-  move = {
-    ...move,
-    person,
-    profile,
-    moveType: move.move_type,
-    additionalInformation: move.additional_information,
-    [`${move.move_type}_comments`]: move.additional_information,
-    fromLocation: move.to_location ? move.to_location.title : undefined,
-    toLocation: move.to_location ? move.to_location.title : undefined,
-  }
-  return move
+  const data = await generateMove(profile, moveOptions, moveOverrides)
+
+  return moveService
+    .create(data, {
+      include: ['from_location', 'to_location'],
+    })
+    .then(response => {
+      return {
+        ...response,
+        person,
+        profile,
+        moveType: response.move_type,
+        additionalInformation: response.additional_information,
+        [`${response.move_type}_comments`]: response.additional_information,
+        fromLocation: response.to_location
+          ? response.to_location.title
+          : undefined,
+        toLocation: response.to_location
+          ? response.to_location.title
+          : undefined,
+      }
+    })
+    .catch(errorHandler(data))
 }
 
 export async function fillInPersonEscortRecord(moveId) {
@@ -283,7 +335,9 @@ export async function fillInPersonEscortRecord(moveId) {
     }
   })
 
-  return personEscortRecordService.respond(personEscortRecord.id, responses)
+  return personEscortRecordService
+    .respond(personEscortRecord.id, responses)
+    .catch(errorHandler(responses))
 }
 
 /**
