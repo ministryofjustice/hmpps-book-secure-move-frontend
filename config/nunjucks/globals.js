@@ -4,11 +4,16 @@ const {
   ANALYTICS,
   ASSETS_HOST,
   ENABLE_COMPONENTS_LIBRARY,
+  ENABLE_DEVELOPMENT_TOOLS,
   FEEDBACK_URL,
   PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
+const {
+  mountpath: toolsMountpath,
+  routes: toolsRoutes,
+} = require('../../app/tools')
 const i18n = require('../i18n')
 const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
@@ -22,6 +27,12 @@ const footerItems = [
   {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
+  },
+  {
+    href: ENABLE_DEVELOPMENT_TOOLS
+      ? `${toolsMountpath}${toolsRoutes.permissions}`
+      : undefined,
+    text: 'Set permissions (dev only)',
   },
 ]
 

@@ -104,6 +104,8 @@ module.exports = {
   },
   ENABLE_COMPONENTS_LIBRARY:
     IS_DEV || /true/i.test(process.env.ENABLE_COMPONENTS_LIBRARY),
+  ENABLE_DEVELOPMENT_TOOLS:
+    IS_DEV || /true/i.test(process.env.ENABLE_DEVELOPMENT_TOOLS),
   FILE_UPLOADS: {
     UPLOAD_DIR: '.tmp/uploads/',
     MAX_FILE_SIZE: 50 * 1024 * 1024, // 50mb
