@@ -1,6 +1,5 @@
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const BaseController = require('./base')
 const Controller = require('./prison-transfer-reason')
@@ -9,7 +8,7 @@ const controller = new Controller({ route: '/' })
 
 describe('Move controllers', function () {
   describe('Prison transfer reason controller', function () {
-    let mockReq, nextSpy
+    let mockReq, nextSpy, referenceDataService
 
     beforeEach(function () {
       nextSpy = sinon.spy()
@@ -63,15 +62,23 @@ describe('Move controllers', function () {
       ]
 
       beforeEach(function () {
-        mockReq = {}
-        sinon.stub(referenceDataService, 'getPrisonTransferReasons')
+        referenceDataService = {
+          getPrisonTransferReasons: sinon.stub(),
+        }
+        mockReq = {
+          services: {
+            referenceData: referenceDataService,
+          },
+        }
       })
 
       context('when service rejects', function () {
         const mockError = new Error('Mock error')
 
         beforeEach(async function () {
-          referenceDataService.getPrisonTransferReasons.rejects(mockError)
+          mockReq.services.referenceData.getPrisonTransferReasons = sinon
+            .stub()
+            .rejects(mockError)
           await controller.getPrisonTransferReason(mockReq, {}, nextSpy)
         })
 
@@ -92,7 +99,9 @@ describe('Move controllers', function () {
 
       context('when service resolves', function () {
         beforeEach(async function () {
-          referenceDataService.getPrisonTransferReasons.resolves(mockReasons)
+          mockReq.services.referenceData.getPrisonTransferReasons = sinon
+            .stub()
+            .resolves(mockReasons)
           await controller.getPrisonTransferReason(mockReq, {}, nextSpy)
         })
 

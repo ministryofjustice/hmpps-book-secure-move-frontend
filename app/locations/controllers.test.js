@@ -31,10 +31,11 @@ const mockSupplierLocations = [
 
 describe('Locations controllers', function () {
   let req, res
-  const mockReferenceData = {}
-  const proxiedController = proxyquire('./controllers', {
-    '../../common/services/reference-data': mockReferenceData,
-  })
+  const mockReferenceData = {
+    getRegions: sinon.fake.returns(Promise.resolve([])),
+    getLocationsBySupplierId: sinon.stub().resolves(mockSupplierLocations),
+  }
+  const proxiedController = proxyquire('./controllers', {})
   let nextSpy
 
   describe('#locations', function () {
@@ -46,6 +47,9 @@ describe('Locations controllers', function () {
           },
         },
         userLocations: mockUserLocations,
+        services: {
+          referenceData: mockReferenceData,
+        },
       }
       res = {
         render: sinon.spy(),
@@ -72,7 +76,7 @@ describe('Locations controllers', function () {
 
         context('when the region API is *not* available', function () {
           it('should fail gracefully', async function () {
-            mockReferenceData.getRegions = sinon.fake.returns(
+            req.services.referenceData.getRegions = sinon.fake.returns(
               Promise.reject(new Error())
             )
             await proxiedController.locations(req, res, nextSpy)

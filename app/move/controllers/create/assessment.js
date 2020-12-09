@@ -2,7 +2,6 @@ const { flatten, get, values } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
 
@@ -10,7 +9,7 @@ class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const { fields, assessmentCategory } = req.form.options
-      const questions = await referenceDataService.getAssessmentQuestions(
+      const questions = await req.services.referenceData.getAssessmentQuestions(
         assessmentCategory
       )
 

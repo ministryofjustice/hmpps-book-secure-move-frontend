@@ -2,7 +2,6 @@ const { find, set } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
 
@@ -15,7 +14,7 @@ class PrisonTransferReasonController extends CreateBaseController {
 
   async getPrisonTransferReason(req, res, next) {
     try {
-      req.prisonTransferReasons = await referenceDataService.getPrisonTransferReasons()
+      req.prisonTransferReasons = await req.services.referenceData.getPrisonTransferReasons()
 
       next()
     } catch (error) {

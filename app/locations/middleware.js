@@ -1,7 +1,5 @@
 const { find, get } = require('lodash')
 
-const referenceDataService = require('../../common/services/reference-data')
-
 function setUserLocations(req, res, next) {
   req.userLocations = get(req.session, 'user.locations', [])
   next()
@@ -53,7 +51,7 @@ async function setRegion(req, res, next) {
   let region
 
   try {
-    region = await referenceDataService.getRegionById(regionId)
+    region = await req.services.referenceData.getRegionById(regionId)
 
     if (!region) {
       throw getError('Region')

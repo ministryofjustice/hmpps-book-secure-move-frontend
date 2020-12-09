@@ -1,7 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
 const commonMiddleware = require('../../../../common/middleware')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const BaseController = require('./base')
 const Controller = require('./move-details')
@@ -497,14 +496,20 @@ describe('Move controllers', function () {
         title: 'mock to location',
         location_type: 'prison',
       }
-      let req, res, nextSpy
+      let req, res, nextSpy, referenceDataService
 
       beforeEach(function () {
+        referenceDataService = {
+          getLocationById: sinon.stub().resolves(mockLocationDetail),
+        }
         nextSpy = sinon.spy()
         req = {
           sessionModel: {
             toJSON: sinon.stub(),
             set: sinon.spy(),
+          },
+          services: {
+            referenceData: referenceDataService,
           },
         }
         res = {
@@ -517,9 +522,6 @@ describe('Move controllers', function () {
       context('with location_id', function () {
         beforeEach(async function () {
           req.sessionModel.toJSON.returns({ to_location: toLocationId })
-          sinon
-            .stub(referenceDataService, 'getLocationById')
-            .resolves(mockLocationDetail)
 
           await controller.successHandler(req, res, nextSpy)
         })
@@ -548,9 +550,6 @@ describe('Move controllers', function () {
       context('without location_id', function () {
         beforeEach(async function () {
           req.sessionModel.toJSON.returns({ to_location: '' })
-          sinon
-            .stub(referenceDataService, 'getLocationById')
-            .resolves(mockLocationDetail)
 
           await controller.successHandler(req, res, nextSpy)
         })
@@ -573,7 +572,9 @@ describe('Move controllers', function () {
 
         beforeEach(async function () {
           req.sessionModel.toJSON.returns({ to_location: toLocationId })
-          sinon.stub(referenceDataService, 'getLocationById').throws(errorMock)
+          req.services.referenceData.getLocationById = sinon
+            .stub()
+            .throws(errorMock)
 
           await controller.successHandler(req, res, nextSpy)
         })

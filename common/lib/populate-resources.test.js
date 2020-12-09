@@ -22,11 +22,11 @@ const req = {
   services: {
     move: moveService,
     personEscortRecord: personEscortRecordService,
+    referenceData: referenceDataService,
   },
 }
 
 const populateResources = proxyquire('./populate-resources', {
-  '../services/reference-data': referenceDataService,
   './find-unpopulated-resources': findUnpopulatedResourcesStub,
 })
 

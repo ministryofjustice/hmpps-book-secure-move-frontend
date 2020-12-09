@@ -1,10 +1,28 @@
 const fieldHelpers = require('../../../../common/helpers/field')
 const presenters = require('../../../../common/presenters')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const Controller = require('./assessment')
 const BaseController = require('./base')
 const controller = new Controller({ route: '/' })
+
+const mockQuestionsResponse = [
+  {
+    id: 'af8cfc67-757c-4019-9d5e-618017de1617',
+    type: 'assessment_questions',
+    key: 'violent',
+    category: 'risk',
+    title: 'Violent',
+    disabled_at: null,
+  },
+  {
+    id: 'f2db9a8f-a5a9-40cf-875b-d1f5f62b2497',
+    type: 'assessment_questions',
+    key: 'escape',
+    category: 'risk',
+    title: 'Escape',
+    disabled_at: null,
+  },
+]
 
 describe('Move controllers', function () {
   describe('Assessment controller', function () {
@@ -12,6 +30,7 @@ describe('Move controllers', function () {
       let nextSpy
       let req
       let profileService
+      let referenceDataService
 
       beforeEach(function () {
         profileService = {
@@ -22,36 +41,21 @@ describe('Move controllers', function () {
             },
           }),
         }
+        referenceDataService = {
+          getAssessmentQuestions: sinon.stub().resolves(mockQuestionsResponse),
+        }
         req = {
           services: {
             profile: profileService,
+            referenceData: referenceDataService,
           },
         }
         sinon.stub(BaseController.prototype, 'configure')
-        sinon.stub(referenceDataService, 'getAssessmentQuestions')
         sinon.stub(fieldHelpers, 'populateAssessmentFields')
         nextSpy = sinon.spy()
       })
 
       context('when getAssessmentQuestions resolves', function () {
-        const mockQuestionsResponse = [
-          {
-            id: 'af8cfc67-757c-4019-9d5e-618017de1617',
-            type: 'assessment_questions',
-            key: 'violent',
-            category: 'risk',
-            title: 'Violent',
-            disabled_at: null,
-          },
-          {
-            id: 'f2db9a8f-a5a9-40cf-875b-d1f5f62b2497',
-            type: 'assessment_questions',
-            key: 'escape',
-            category: 'risk',
-            title: 'Escape',
-            disabled_at: null,
-          },
-        ]
         const mockPopulateAssessmentFieldsResponse = {
           foo: 'bar',
         }
@@ -77,15 +81,15 @@ describe('Move controllers', function () {
           fieldHelpers.populateAssessmentFields.returns(
             mockPopulateAssessmentFieldsResponse
           )
-          referenceDataService.getAssessmentQuestions.resolves(
-            mockQuestionsResponse
-          )
           req = {
             form: {
               options: {
                 assessmentCategory: 'risk',
                 fields: mockFields,
               },
+            },
+            services: {
+              referenceData: referenceDataService,
             },
           }
 
@@ -123,6 +127,9 @@ describe('Move controllers', function () {
 
       context('when getAssessmentQuestions returns an error', function () {
         const errorMock = new Error('Problem')
+        referenceDataService = {
+          getAssessmentQuestions: sinon.stub().throws(errorMock),
+        }
         const req = {
           form: {
             options: {
@@ -134,11 +141,12 @@ describe('Move controllers', function () {
               },
             },
           },
+          services: {
+            referenceData: referenceDataService,
+          },
         }
 
         beforeEach(async function () {
-          referenceDataService.getAssessmentQuestions.throws(errorMock)
-
           await controller.configure(req, {}, nextSpy)
         })
 

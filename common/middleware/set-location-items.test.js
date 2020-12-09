@@ -1,5 +1,4 @@
 const referenceDataHelpers = require('../helpers/reference-data')
-const referenceDataService = require('../services/reference-data')
 
 const setLocationItems = require('./set-location-items')
 const courtsMock = [
@@ -28,9 +27,12 @@ const courtsMock2 = [
 ]
 
 describe('#setLocationItems()', function () {
-  let req, res, nextSpy
+  let req, res, nextSpy, referenceDataService
 
   beforeEach(function () {
+    referenceDataService = {
+      getLocationsByType: sinon.stub().resolves(courtsMock),
+    }
     req = {
       form: {
         options: {
@@ -39,6 +41,9 @@ describe('#setLocationItems()', function () {
           },
         },
       },
+      services: {
+        referenceData: referenceDataService,
+      },
     }
     res = {}
     nextSpy = sinon.spy()
@@ -46,7 +51,6 @@ describe('#setLocationItems()', function () {
     sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
       return () => true
     })
-    sinon.stub(referenceDataService, 'getLocationsByType')
   })
 
   context('when field exists', function () {
@@ -55,8 +59,6 @@ describe('#setLocationItems()', function () {
 
     context('when service resolves', function () {
       beforeEach(async function () {
-        referenceDataService.getLocationsByType.resolves(courtsMock)
-
         await setLocationItems(mockLocationType, mockFieldName)(
           req,
           {},
@@ -95,7 +97,9 @@ describe('#setLocationItems()', function () {
       const errorMock = new Error('Problem')
 
       beforeEach(async function () {
-        referenceDataService.getLocationsByType.throws(errorMock)
+        req.services.referenceData.getLocationsByType = sinon
+          .stub()
+          .throws(errorMock)
 
         await setLocationItems(mockLocationType, mockFieldName)(
           req,
@@ -117,6 +121,9 @@ describe('#setLocationItems()', function () {
               },
             },
           },
+          services: {
+            referenceData: referenceDataService,
+          },
         })
       })
     })
@@ -130,8 +137,9 @@ describe('#setLocationItems()', function () {
 
       context('when service resolves', function () {
         beforeEach(async function () {
-          referenceDataService.getLocationsByType.resolves(courtsMock)
-          referenceDataService.getLocationsByType
+          req.services.referenceData.getLocationsByType = sinon.stub()
+          req.services.referenceData.getLocationsByType.resolves(courtsMock)
+          req.services.referenceData.getLocationsByType
             .onCall(1)
             .resolves(courtsMock2)
 
@@ -189,7 +197,10 @@ describe('#setLocationItems()', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          referenceDataService.getLocationsByType.onCall(1).throws(errorMock)
+          req.services.referenceData.getLocationsByType = sinon
+            .stub()
+            .onCall(1)
+            .throws(errorMock)
 
           await setLocationItems(mockLocationType, mockFieldName)(
             req,
@@ -210,6 +221,9 @@ describe('#setLocationItems()', function () {
                   to_location_court: {},
                 },
               },
+            },
+            services: {
+              referenceData: referenceDataService,
             },
           })
         })
