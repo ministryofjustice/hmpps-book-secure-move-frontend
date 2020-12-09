@@ -1,3 +1,4 @@
+const { cloneDeep } = require('lodash')
 const proxyquire = require('proxyquire')
 
 const i18n = require('../../../config/i18n')
@@ -303,7 +304,79 @@ describe('#locationToPopulationTableComponent()', function () {
       })
     })
 
-    context('with missing population data', function () {})
+    context('with missing population data', function () {
+      beforeEach(function () {
+        const missingData = cloneDeep(mockLocations)
+
+        delete missingData[0].meta.populations[1].id
+        delete missingData[0].meta.populations[2].free_spaces
+        delete missingData[0].meta.populations[3].id
+        delete missingData[0].meta.populations[3].free_spaces
+        missingData[0].meta.populations[4] = undefined
+        delete missingData[0].meta.populations[5]
+
+        output = presenter({
+          query: {
+            sortBy: 'date',
+            status: 'approved',
+          },
+        })(missingData)
+      })
+
+      it('returns one head row with all the cells', function () {
+        expect(output.head.length).to.equal(6)
+      })
+
+      it('returns one data row ', function () {
+        expect(output.rows.length).to.equal(1)
+      })
+
+      it('returns one data row with all the cells', function () {
+        expect(output.rows[0].length).to.equal(6)
+      })
+
+      it('returns establishment on first cell', function () {
+        expect(output.rows[0][0]).to.deep.equal({
+          attributes: {
+            scope: 'row',
+          },
+          html: '<a>WETHERBY (HMPYOI)</a>',
+        })
+      })
+
+      it('returns the first capacity for Monday', function () {
+        expect(output.rows[0][1].html).to.include(
+          'population::spaces_with_count'
+        )
+        expect(t).to.have.been.calledWith('population::spaces_with_count', {
+          count: 2,
+        })
+      })
+
+      it('returns the second capacity for Tuesday', function () {
+        expect(output.rows[0][2].html).to.include(
+          'population::spaces_with_count'
+        )
+        expect(t).to.have.been.calledWith('population::spaces_with_count', {
+          count: -1,
+        })
+      })
+
+      it('returns the third capacity for Wednesday', function () {
+        expect(output.rows[0][3].html).to.include('population::add_space')
+        expect(t).to.have.been.calledWith('population::add_space')
+      })
+
+      it('returns the fourth capacity for Thursday', function () {
+        expect(output.rows[0][4].html).to.include('population::add_space')
+        expect(t).to.have.been.calledWith('population::add_space')
+      })
+
+      it('returns the fifth capacity for Friday', function () {
+        expect(output.rows[0][5].html).to.include('population::add_space')
+        expect(t).to.have.been.calledWith('population::add_space')
+      })
+    })
 
     context('with query', function () {
       beforeEach(function () {
