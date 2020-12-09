@@ -71,10 +71,6 @@ users.forEach(user => {
       .click(movesDashboardPage.nodes.pagination.nextLink)
       .expect(page.nodes.pageHeading.innerText)
       .contains('Tomorrow')
-      // Sign out
-      .click(page.nodes.signOutLink)
-      .expect(page.nodes.signInHeader.exists)
-      .ok()
   })
 })
 
@@ -97,9 +93,5 @@ usersWhoHaveADashboard.forEach(user => {
       .click(user.homeButton)
       .expect(page.nodes.pageHeading.innerText)
       .contains(user.timePeriod)
-      // Sign out
-      .click(page.nodes.signOutLink)
-      .expect(page.nodes.signInHeader.exists)
-      .ok()
   })
 })
