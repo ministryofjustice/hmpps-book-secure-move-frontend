@@ -1,4 +1,5 @@
 const { get } = require('lodash')
+// Using get because testcafe barfs on optional chaining
 
 const setIsYouthMove = data => {
   const fromLocationType = get(data, 'from_location.location_type')
@@ -14,7 +15,10 @@ const addImportantEvents = data => {
   // timeline_events and important_events are mutually exclusive at the BE
   // copy any event with a non-default classification to .important_events
   // maintaining the same order
-  if (!data.important_events?.length && data.timeline_events?.length) {
+  if (
+    !get(data, 'important_events.length') &&
+    get(data, 'timeline_events.length')
+  ) {
     data.important_events = data.timeline_events.filter(
       ({ classification }) => classification && classification !== 'default'
     )
