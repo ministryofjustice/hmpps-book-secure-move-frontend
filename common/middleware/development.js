@@ -1,7 +1,5 @@
 const { addDays, getTime } = require('date-fns')
 
-const referenceDataService = require('../services/reference-data')
-
 function bypassAuth(bypass) {
   return (req, res, next) => {
     if (bypass) {
@@ -30,7 +28,7 @@ function setUserLocations(locations) {
     req.session.user = req.session.user || {}
 
     if (locations && !req.session.user.locations) {
-      req.session.user.locations = await referenceDataService.getLocationsByNomisAgencyId(
+      req.session.user.locations = await req.services.referenceData.getLocationsByNomisAgencyId(
         locations.split(',')
       )
     }

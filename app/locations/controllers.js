@@ -1,7 +1,5 @@
 const { get, sortBy } = require('lodash')
 
-const referenceDataService = require('../../common/services/reference-data')
-
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
 
@@ -9,7 +7,7 @@ async function locations(req, res, next) {
 
   if (userPermissions.includes('allocation:create')) {
     try {
-      regions = await referenceDataService.getRegions()
+      regions = await req.services.referenceData.getRegions()
     } catch (error) {
       return next(error)
     }
@@ -20,7 +18,7 @@ async function locations(req, res, next) {
   const supplierId = req.session.user.supplierId
 
   if (supplierId) {
-    userLocations = await referenceDataService.getLocationsBySupplierId(
+    userLocations = await req.services.referenceData.getLocationsBySupplierId(
       supplierId
     )
     req.session.user.locations = userLocations

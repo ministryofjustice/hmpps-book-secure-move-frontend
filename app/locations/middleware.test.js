@@ -207,11 +207,11 @@ describe('Locations middleware', function () {
   })
 
   describe('#setRegion', function () {
-    const mockReferenceData = {}
-    const proxiedMiddleware = proxyquire('./middleware', {
-      '../../common/services/reference-data': mockReferenceData,
-    })
+    const proxiedMiddleware = proxyquire('./middleware', {})
     const currentRegion = { id: '1' }
+    const mockReferenceData = {
+      getRegionById: sinon.fake.returns(Promise.resolve(currentRegion)),
+    }
     let nextSpy
 
     beforeEach(function () {
@@ -220,15 +220,15 @@ describe('Locations middleware', function () {
         params: {
           regionId: '1',
         },
+        services: {
+          referenceData: mockReferenceData,
+        },
       }
       nextSpy = sinon.spy()
     })
 
     context('when the region is found', async function () {
       beforeEach(async function () {
-        mockReferenceData.getRegionById = sinon.fake.returns(
-          Promise.resolve(currentRegion)
-        )
         await proxiedMiddleware.setRegion(req, {}, nextSpy)
       })
 
@@ -246,7 +246,7 @@ describe('Locations middleware', function () {
     context('when the region is not found', async function () {
       const error = new Error()
       beforeEach(async function () {
-        mockReferenceData.getRegionById = sinon.fake.returns(
+        req.services.referenceData.getRegionById = sinon.fake.returns(
           Promise.reject(error)
         )
         await proxiedMiddleware.setRegion(req, {}, nextSpy)

@@ -1,5 +1,3 @@
-const referenceDataService = require('../services/reference-data')
-
 const middleware = require('./development')
 
 describe('Development specific middleware', function () {
@@ -140,12 +138,14 @@ describe('Development specific middleware', function () {
     let req
 
     beforeEach(function () {
-      sinon
-        .stub(referenceDataService, 'getLocationsByNomisAgencyId')
-        .resolvesArg(0)
       req = {
         session: {
           user: {},
+        },
+        services: {
+          referenceData: {
+            getLocationsByNomisAgencyId: sinon.stub().resolvesArg(0),
+          },
         },
       }
     })

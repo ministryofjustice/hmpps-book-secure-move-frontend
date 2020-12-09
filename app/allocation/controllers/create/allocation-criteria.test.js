@@ -1,5 +1,3 @@
-const referenceDataService = require('../../../../common/services/reference-data')
-
 const Controller = require('./allocation-criteria')
 const ParentController = require('./base')
 const controller = new Controller({
@@ -10,8 +8,43 @@ describe('Allocation criteria controller', function () {
   describe('#configure', function () {
     let req
     let next
+    let referenceDataService
     context('happy path', function () {
       beforeEach(async function () {
+        referenceDataService = {
+          getAllocationComplexCases: sinon.stub().resolves([
+            {
+              id: 'afa79a37-7c2f-4363-bed6-e1ccf2576901',
+              type: 'allocation_complex_cases',
+              key: 'hold_separately',
+              title: 'Segregated prisoners',
+            },
+            {
+              id: 'e8e8af77-198c-4b64-adb1-4aca6af469a7',
+              type: 'allocation_complex_cases',
+              key: 'self_harm',
+              title: 'Self harm / prisoners on ACCT',
+            },
+            {
+              id: 'c0d196aa-a96d-4296-8349-f52b9909a2b8',
+              type: 'allocation_complex_cases',
+              key: 'mental_health_issue',
+              title: 'Mental health issues',
+            },
+            {
+              id: '6f35f300-e3ed-4536-8f19-5954fc8b9963',
+              type: 'allocation_complex_cases',
+              key: 'under_drug_treatment',
+              title: 'Integrated Drug Treatment System',
+            },
+            {
+              id: '6f35f300-e3ed-4536-8f19-5954fc8b9965',
+              type: 'allocation_complex_cases',
+              key: 'disabled_items',
+              disabled_at: 2548972800000,
+            },
+          ]),
+        }
         req = {
           form: {
             options: {
@@ -20,40 +53,11 @@ describe('Allocation criteria controller', function () {
               },
             },
           },
+          services: {
+            referenceData: referenceDataService,
+          },
         }
         next = sinon.stub()
-        sinon.stub(referenceDataService, 'getAllocationComplexCases').resolves([
-          {
-            id: 'afa79a37-7c2f-4363-bed6-e1ccf2576901',
-            type: 'allocation_complex_cases',
-            key: 'hold_separately',
-            title: 'Segregated prisoners',
-          },
-          {
-            id: 'e8e8af77-198c-4b64-adb1-4aca6af469a7',
-            type: 'allocation_complex_cases',
-            key: 'self_harm',
-            title: 'Self harm / prisoners on ACCT',
-          },
-          {
-            id: 'c0d196aa-a96d-4296-8349-f52b9909a2b8',
-            type: 'allocation_complex_cases',
-            key: 'mental_health_issue',
-            title: 'Mental health issues',
-          },
-          {
-            id: '6f35f300-e3ed-4536-8f19-5954fc8b9963',
-            type: 'allocation_complex_cases',
-            key: 'under_drug_treatment',
-            title: 'Integrated Drug Treatment System',
-          },
-          {
-            id: '6f35f300-e3ed-4536-8f19-5954fc8b9965',
-            type: 'allocation_complex_cases',
-            key: 'disabled_items',
-            disabled_at: 2548972800000,
-          },
-        ])
         await controller.configure(req, {}, next)
       })
       it('calls the reference service', function () {
@@ -104,8 +108,8 @@ describe('Allocation criteria controller', function () {
       const error = new Error('error')
       beforeEach(async function () {
         next = sinon.stub()
-        sinon
-          .stub(referenceDataService, 'getAllocationComplexCases')
+        req.services.referenceData.getAllocationComplexCases = sinon
+          .stub()
           .throws(error)
         await controller.configure(req, {}, next)
       })

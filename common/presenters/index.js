@@ -22,7 +22,6 @@ const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
-const movesToCSV = require('./moves-to-csv')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const locationsToPopulationTableComponent = require('./population-table/locations-to-population-table-component')
 const populationToGrid = require('./population-to-grid')
@@ -51,7 +50,6 @@ module.exports = {
   frameworkToTaskListComponent,
   locationsToPopulationTableComponent,
   movesByLocation,
-  movesToCSV,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
   moveToMessageBannerComponent,

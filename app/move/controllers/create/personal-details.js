@@ -3,15 +3,14 @@ const { set } = require('lodash')
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 const personService = require('../../../../common/services/person')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
 
 class PersonalDetailsController extends CreateBaseController {
   async configure(req, res, next) {
     try {
-      const genders = await referenceDataService.getGenders()
-      const ethnicities = await referenceDataService.getEthnicities()
+      const genders = await req.services.referenceData.getGenders()
+      const ethnicities = await req.services.referenceData.getEthnicities()
       const genderOptions = genders
         .filter(referenceDataHelpers.filterDisabled())
         .map(fieldHelpers.mapReferenceDataToOption)

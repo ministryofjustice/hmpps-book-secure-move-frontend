@@ -2,14 +2,13 @@ const { set } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateAllocationBaseController = require('./base')
 
 class AllocationCriteriaController extends CreateAllocationBaseController {
   async configure(req, res, next) {
     try {
-      const allocationComplexCases = await referenceDataService.getAllocationComplexCases()
+      const allocationComplexCases = await req.services.referenceData.getAllocationComplexCases()
       const filteredCases = allocationComplexCases
         .filter(referenceDataHelpers.filterDisabled())
         .map(item => {

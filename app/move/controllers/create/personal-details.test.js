@@ -3,7 +3,6 @@ const FormController = require('hmpo-form-wizard').Controller
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 const personService = require('../../../../common/services/person')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const Controller = require('./personal-details')
 
@@ -45,20 +44,20 @@ describe('Move controllers', function () {
       })
 
       context('when getReferenceData returns 200', function () {
-        let req
+        let req, referenceDataService
 
         beforeEach(function () {
+          referenceDataService = {
+            getGenders: sinon.stub().resolves(genderMock),
+            getEthnicities: sinon.stub().resolves(ethnicityMock),
+          }
           sinon.spy(FormController.prototype, 'configure')
           sinon.stub(fieldHelpers, 'insertItemConditional').callsFake(() => {
             return item => item
           })
-          sinon.stub(referenceDataService, 'getGenders').resolves(genderMock)
           sinon.stub(referenceDataHelpers, 'filterDisabled').callsFake(() => {
             return () => true
           })
-          sinon
-            .stub(referenceDataService, 'getEthnicities')
-            .resolves(ethnicityMock)
 
           req = {
             query: {},
@@ -70,6 +69,9 @@ describe('Move controllers', function () {
                   police_national_computer: {},
                 },
               },
+            },
+            services: {
+              referenceData: referenceDataService,
             },
           }
         })
@@ -134,11 +136,16 @@ describe('Move controllers', function () {
 
       context('when getReferenceData returns an error', function () {
         const errorMock = new Error('Problem')
-        const req = {}
+        const referenceDataService = {
+          getGenders: sinon.stub().throws(errorMock),
+        }
+        const req = {
+          services: {
+            referenceData: referenceDataService,
+          },
+        }
 
         beforeEach(async function () {
-          sinon.stub(referenceDataService, 'getGenders').throws(errorMock)
-
           await controller.configure(req, {}, nextSpy)
         })
 
@@ -151,7 +158,11 @@ describe('Move controllers', function () {
         })
 
         it('should not mutate request object', function () {
-          expect(req).to.deep.equal({})
+          expect(req).to.deep.equal({
+            services: {
+              referenceData: referenceDataService,
+            },
+          })
         })
       })
     })

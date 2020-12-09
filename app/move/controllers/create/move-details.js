@@ -1,7 +1,6 @@
 const { get, map, omitBy, set } = require('lodash')
 
 const commonMiddleware = require('../../../../common/middleware')
-const referenceDataService = require('../../../../common/services/reference-data')
 
 const CreateBaseController = require('./base')
 
@@ -93,7 +92,7 @@ class MoveDetailsController extends CreateBaseController {
       const { to_location: toLocationId } = req.sessionModel.toJSON()
 
       if (toLocationId) {
-        const locationDetail = await referenceDataService.getLocationById(
+        const locationDetail = await req.services.referenceData.getLocationById(
           toLocationId
         )
 
