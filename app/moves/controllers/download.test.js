@@ -105,7 +105,7 @@ describe('Moves controllers', function () {
     })
 
     context('when params extension is `csv`', function () {
-      context('when movesToCSV returns successfully', function () {
+      context('when the results are set successfully', function () {
         beforeEach(async function () {
           req.results = csvStub
           req.params.extension = 'csv'
