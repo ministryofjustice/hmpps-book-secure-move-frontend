@@ -1,24 +1,38 @@
-const { format, parseISO } = require('date-fns')
-
-const { DATE_FORMATS } = require('../../../config/index')
+const {
+  isCurrentWeek,
+  isPreviousWeek,
+  isNextWeek,
+} = require('../../../common/helpers/date')
+const {
+  formatDateWithRelativeDay,
+} = require('../../../config/nunjucks/filters')
 
 function setBreadcrumb(req, res, next) {
   const { date, locationName } = req
 
-  res.breadcrumb({
-    text: req.t('population::breadcrumbs.home'),
-    href: `/population/week/${date}`,
-  })
+  let dateSuffix = ''
 
-  res.breadcrumb({
-    text: locationName,
-    href: '',
-  })
+  if (isCurrentWeek(date)) {
+    dateSuffix = ` (${req.t('actions::current_week')})`
+  } else if (isNextWeek(date)) {
+    dateSuffix = ` (${req.t('actions::next_week')})`
+  } else if (isPreviousWeek(date)) {
+    dateSuffix = ` (${req.t('actions::previous_week')})`
+  }
 
-  res.breadcrumb({
-    text: format(parseISO(req.date), DATE_FORMATS.WITH_DAY),
-    href: req.population ? req.baseUrl : '',
-  })
+  res
+    .breadcrumb({
+      text: `${req.t('population::breadcrumbs.home')}${dateSuffix}`,
+      href: `/population/week/${date}`,
+    })
+    .breadcrumb({
+      text: locationName,
+      href: '',
+    })
+    .breadcrumb({
+      text: formatDateWithRelativeDay(req.date),
+      href: req.baseUrl,
+    })
 
   next()
 }
