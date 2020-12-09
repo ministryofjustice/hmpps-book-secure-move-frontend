@@ -1,4 +1,4 @@
-function setRecord(key, serviceName) {
+function setRecord(key, serviceName, methodName) {
   return async (req, res, next) => {
     const resourceId = req.params?.resourceId
 
@@ -13,7 +13,7 @@ function setRecord(key, serviceName) {
     }
 
     try {
-      req[key] = await req.services[serviceName].getById(resourceId)
+      req[key] = await req.services[serviceName][methodName](resourceId)
 
       next()
     } catch (error) {

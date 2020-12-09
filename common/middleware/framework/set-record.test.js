@@ -53,7 +53,11 @@ describe('Framework middleware', function () {
             status: 'not_started',
           },
         }
-        await middleware(mockKey, 'personEscortRecord')(mockReq, {}, nextSpy)
+        await middleware(mockKey, 'personEscortRecord', 'getById')(
+          mockReq,
+          {},
+          nextSpy
+        )
       })
 
       it('should not call API', function () {
@@ -75,7 +79,11 @@ describe('Framework middleware', function () {
 
     context('when no record ID exists', function () {
       beforeEach(async function () {
-        await middleware(mockKey, 'personEscortRecord')(mockReq, {}, nextSpy)
+        await middleware(mockKey, 'personEscortRecord', 'getById')(
+          mockReq,
+          {},
+          nextSpy
+        )
       })
 
       it('should call next with 404 error', function () {
@@ -106,7 +114,11 @@ describe('Framework middleware', function () {
 
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware(mockKey, 'personEscortRecord')(mockReq, {}, nextSpy)
+          await middleware(mockKey, 'personEscortRecord', 'getById')(
+            mockReq,
+            {},
+            nextSpy
+          )
         })
 
         it('should call API with record ID', function () {
@@ -131,7 +143,11 @@ describe('Framework middleware', function () {
             .stub()
             .throws(errorStub)
 
-          await middleware(mockKey, 'personEscortRecord')(mockReq, {}, nextSpy)
+          await middleware(mockKey, 'personEscortRecord', 'getById')(
+            mockReq,
+            {},
+            nextSpy
+          )
         })
 
         it('should not set request property', function () {

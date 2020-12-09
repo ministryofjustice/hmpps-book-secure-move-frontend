@@ -25,7 +25,7 @@ router.use(newApp.mountpath, newApp.router)
 
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
-router.use(setRecord('personEscortRecord', 'personEscortRecord'))
+router.use(setRecord('personEscortRecord', 'personEscortRecord', 'getById'))
 router.use(setAssessment('personEscortRecord'))
 
 // Define sub-apps

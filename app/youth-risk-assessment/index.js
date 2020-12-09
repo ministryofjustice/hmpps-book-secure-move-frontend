@@ -25,7 +25,7 @@ router.use(newApp.mountpath, newApp.router)
 // Define shared middleware
 router.use(protectRoute('youth_risk_assessment:view'))
 // router.use(setPersonEscortRecord)
-router.use(setRecord('youthRiskAssessment', 'youthRiskAssessment'))
+router.use(setRecord('youthRiskAssessment', 'youthRiskAssessment', 'getById'))
 router.use(setAssessment('youthRiskAssessment'))
 
 // Define sub-apps
