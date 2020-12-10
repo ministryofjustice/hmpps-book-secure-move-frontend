@@ -143,6 +143,9 @@ app.use(
   })
 )
 
+// Set services
+app.use(setServices)
+
 // Development environment helpers
 if (config.IS_DEV) {
   require('axios-debug-log')
@@ -186,9 +189,6 @@ app.use(
     },
   })
 )
-
-// Set services
-app.use(setServices)
 
 // Ensure body processed after reauthentication
 app.use(processOriginalRequestBody())
