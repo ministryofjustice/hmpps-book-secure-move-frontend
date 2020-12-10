@@ -42,7 +42,7 @@ const addEventCountToEvents = data => {
       data.important_events
         .filter(event => event.event_type === eventType)
         .forEach((event, index) => {
-          event._eventCount = index + 1
+          event._index = index + 1
         })
     })
   }

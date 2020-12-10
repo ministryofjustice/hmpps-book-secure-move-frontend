@@ -173,12 +173,12 @@ describe('API Client', function () {
             {
               id: 'foo1',
               event_type: 'foo',
-              _eventCount: 1,
+              _index: 1,
             },
             {
               id: 'foo2',
               event_type: 'foo',
-              _eventCount: 2,
+              _index: 2,
             },
             {
               id: 'bar',
