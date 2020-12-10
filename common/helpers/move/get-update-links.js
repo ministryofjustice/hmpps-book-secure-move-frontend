@@ -1,30 +1,44 @@
 const i18n = require('../../../config/i18n')
 
-const getUpdateLinks = (updateSteps, urls) => {
-  const updateLinks = {}
-  updateSteps.forEach(updateJourney => {
+const getUpdateUrls = require('./get-update-urls')
+
+const getUpdateLink = (category, urls) => {
+  const categoryText = i18n.t(`moves::update_link.categories.${category}`)
+
+  if (!categoryText) {
+    return
+  }
+
+  return {
+    category,
+    attributes: {
+      'data-update-link': category,
+    },
+    href: urls[category],
+    html: i18n.t('moves::update_link.link_text', {
+      context: 'with_category',
+      category: categoryText,
+    }),
+  }
+}
+
+const getUpdateLinks = (updateSteps, req) => {
+  const urls = getUpdateUrls(updateSteps, req)
+
+  const updateLinks = updateSteps.reduce((acc, updateJourney) => {
     const category = updateJourney.key
 
-    if (!urls[category]) {
-      return
-    }
+    if (urls[category]) {
+      const updateLink = getUpdateLink(category, urls)
 
-    const categoryText = i18n.t(`moves::update_link.categories.${category}`)
-
-    if (categoryText) {
-      updateLinks[category] = {
-        category,
-        attributes: {
-          'data-update-link': category,
-        },
-        href: urls[category],
-        html: i18n.t('moves::update_link.link_text', {
-          context: 'with_category',
-          category: categoryText,
-        }),
+      if (updateLink) {
+        acc[category] = updateLink
       }
     }
-  })
+
+    return acc
+  }, {})
+
   return updateLinks
 }
 

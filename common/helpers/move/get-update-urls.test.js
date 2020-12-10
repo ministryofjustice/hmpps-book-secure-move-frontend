@@ -25,38 +25,43 @@ describe('Move controllers', function () {
       const req = {
         canAccess: sinon.stub().returns(false),
       }
-      beforeEach(function () {
-        req.canAccess
-          .withArgs('move:update:prison_transfer')
-          .returns(true)
-          .withArgs('move:allowed')
-          .returns(true)
-        updateUrls = getUpdateUrls(
-          updateSteps,
-          { id: 'moveId', move_type: 'prison_transfer' },
-          req
-        )
+
+      describe('when permision matches', function () {
+        beforeEach(function () {
+          req.move = { id: 'moveId', move_type: 'prison_transfer' }
+          req.canAccess
+            .withArgs('move:update:prison_transfer')
+            .returns(true)
+            .withArgs('move:allowed')
+            .returns(true)
+          updateUrls = getUpdateUrls(updateSteps, req)
+        })
+        it('should get expected value for key', function () {
+          expect(updateUrls.foo).to.equal('/move/moveId/edit/foo')
+        })
+
+        it('should get expected value for key when multiple steps exist', function () {
+          expect(updateUrls.bar).to.equal('/move/moveId/edit/bar-details')
+        })
+
+        it('should return undefined if the route is inaccessible', function () {
+          expect(updateUrls.baz).to.be.undefined
+        })
       })
 
-      it('should get expected value for key', function () {
-        expect(updateUrls.foo).to.equal('/move/moveId/edit/foo')
-      })
-
-      it('should get expected value for key when multiple steps exist', function () {
-        expect(updateUrls.bar).to.equal('/move/moveId/edit/bar-details')
-      })
-
-      it('should return undefined if the route is inaccessible', function () {
-        expect(updateUrls.baz).to.be.undefined
-      })
-
-      it('should not expose url when the permission do not match', function () {
-        updateUrls = getUpdateUrls(
-          updateSteps,
-          { id: 'moveId', move_type: 'hospital' },
-          req
-        )
-        expect(updateUrls).to.deep.equal({})
+      describe('when permission does not match', function () {
+        beforeEach(function () {
+          req.move = { id: 'moveId', move_type: 'hospital' }
+          req.canAccess
+            .withArgs('move:update:prison_transfer')
+            .returns(true)
+            .withArgs('move:allowed')
+            .returns(true)
+          updateUrls = getUpdateUrls(updateSteps, req)
+        })
+        it('should not expose url', function () {
+          expect(updateUrls).to.deep.equal({})
+        })
       })
     })
   })

@@ -1,7 +1,10 @@
+const getMoveUrl = require('./get-move-url')
+
 const getTabsUrls = move => {
+  const moveId = move.id
   const tabsUrls = {
-    view: `/move/${move.id}`,
-    timeline: `/move/${move.id}/timeline`,
+    view: getMoveUrl(moveId),
+    timeline: getMoveUrl(moveId, 'timeline'),
   }
   return tabsUrls
 }

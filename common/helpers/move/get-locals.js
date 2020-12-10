@@ -1,149 +1,56 @@
-const { isEmpty, find, map, sortBy } = require('lodash')
-
 const updateSteps = require('../../../app/move/steps/update')
-const { FEATURE_FLAGS } = require('../../../config')
 const presenters = require('../../presenters')
 
+const getAssessments = require('./get-assessments')
+const getCanCancelMove = require('./get-can-cancel-move')
+const getCourtHearings = require('./get-court-hearings')
+const getMessage = require('./get-message')
+const getMessageBanner = require('./get-message-banner')
+const getPerDetails = require('./get-per-details')
 const getTabsUrls = require('./get-tabs-urls')
+const getTagLists = require('./get-tag-lists')
 const getUpdateLinks = require('./get-update-links')
 const getUpdateUrls = require('./get-update-urls')
 
+// TODO: pass updateSteps in so {updateSteps} = {}
+// or maybe not, if view controller does this instead
 function getLocals(req) {
   const { move } = req
-  const {
-    profile,
-    status,
-    cancellation_reason: cancellationReason,
-    cancellation_reason_comment: cancellationComments,
-    rejection_reason: rejectionReason,
-    rebook,
-  } = move
-  const tabsUrls = getTabsUrls(move)
-  const moveUrl = tabsUrls.view
-  const bannerStatuses = ['cancelled']
-  const updateUrls = getUpdateUrls(updateSteps, move, req)
-  const updateActions = getUpdateLinks(updateSteps, updateUrls)
-  const messageBanner = presenters.moveToMessageBannerComponent({
-    move,
-    moveUrl,
-    canAccess: req.canAccess,
-  })
-  const {
-    person,
-    assessment_answers: assessmentAnswers = [],
-    person_escort_record: personEscortRecord,
-    youth_risk_assessment: youthRiskAssessment,
-  } = profile || {}
-  const personEscortRecordIsEnabled = req.canAccess('person_escort_record:view')
-  const personEscortRecordIsCompleted =
-    !isEmpty(personEscortRecord) &&
-    !['not_started', 'in_progress'].includes(personEscortRecord?.status)
-  const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
-    flags: personEscortRecord?.flags,
-    hrefPrefix: moveUrl,
-    includeLink: true,
-  })
+  const { profile } = move
+  const { person } = profile || {}
+
   const urls = {
-    update: updateUrls,
-    tabs: tabsUrls,
+    update: getUpdateUrls(updateSteps, req),
+    tabs: getTabsUrls(move),
   }
-  const assessment = presenters
-    .assessmentAnswersByCategory(assessmentAnswers)
-    .filter(category => category.key !== 'court')
-    .map(presenters.assessmentCategoryToPanelComponent)
-  const courtSummary = presenters
-    .assessmentAnswersByCategory(assessmentAnswers)
-    .filter(category => category.key === 'court')
-    .map(presenters.assessmentCategoryToSummaryListComponent)[0]
-  const youthAssessmentSections = map(
-    youthRiskAssessment?._framework?.sections,
-    presenters.frameworkSectionToPanelList({
-      baseUrl: `${moveUrl}/youth-risk-assessment`,
-    })
+  const updateLinks = getUpdateLinks(updateSteps, req)
+  const personalDetailsSummary = presenters.personToSummaryListComponent(person)
+  const additionalInfoSummary = presenters.moveToAdditionalInfoListComponent(
+    move
   )
-  const perAssessmentSections = map(
-    personEscortRecord?._framework?.sections,
-    presenters.frameworkSectionToPanelList({
-      baseUrl: `${moveUrl}/person-escort-record`,
-    })
-  ).map(section => {
-    return {
-      ...section,
-      previousAssessment:
-        move._is_youth_move &&
-        youthRiskAssessment &&
-        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-          ? find(youthAssessmentSections, { key: section.key })
-          : find(assessment, { frameworksSection: section.key }),
-    }
-  })
-  const combinedSections = perAssessmentSections.reduce((acc, section) => {
-    const key = section.previousAssessment?.key
+  const moveSummary = presenters.moveToMetaListComponent(move, updateLinks)
+  // TODO: pass move instead of req (where possible)
+  const message = getMessage(req)
+  const messageBanner = getMessageBanner(req)
+  const canCancelMove = getCanCancelMove(req)
+  const courtHearings = getCourtHearings(req)
+  const perDetails = getPerDetails(req)
+  const tagLists = getTagLists(req)
+  const assessments = getAssessments(req)
 
-    if (key) {
-      acc.push(key)
-    }
-
-    return acc
-  }, [])
-  const combinedAssessmentSections = [
-    ...perAssessmentSections,
-    ...youthAssessmentSections.filter(
-      section =>
-        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
-        !combinedSections.includes(section.key)
-    ),
-  ]
-
-  const userPermissions = req.session?.user?.permissions
   const locals = {
     move,
+    ...assessments,
+    ...tagLists,
+    ...perDetails,
+    personalDetailsSummary,
+    additionalInfoSummary,
+    moveSummary,
+    canCancelMove,
+    courtHearings,
+    ...message,
     messageBanner,
-    assessment,
-    courtSummary,
-    personEscortRecord,
-    personEscortRecordIsEnabled,
-    personEscortRecordIsCompleted,
-    personEscortRecordTagList,
-    youthRiskAssessment,
-    youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
-    assessmentSections:
-      personEscortRecord || !move._is_youth_move
-        ? sortBy(combinedAssessmentSections, 'order')
-        : sortBy(youthAssessmentSections, 'order'),
-    moveSummary: presenters.moveToMetaListComponent(move, updateActions),
-    personalDetailsSummary: presenters.personToSummaryListComponent(person),
-    additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),
-    tagList: presenters.assessmentToTagList(assessmentAnswers, moveUrl),
-    importantEventsTagList: presenters.moveToImportantEventsTagListComponent(
-      move
-    ),
-    canCancelMove:
-      (userPermissions.includes('move:cancel') &&
-        !move.allocation &&
-        (move.status === 'requested' || move.status === 'booked')) ||
-      (userPermissions.includes('move:cancel:proposed') &&
-        move.status === 'proposed'),
-    courtHearings: sortBy(move.court_hearings, 'start_time').map(
-      courtHearing => {
-        return {
-          ...courtHearing,
-          summaryList: presenters.courtHearingToSummaryListComponent(
-            courtHearing
-          ),
-        }
-      }
-    ),
-    messageTitle: bannerStatuses.includes(status)
-      ? req.t('statuses::' + status, { context: cancellationReason })
-      : undefined,
-    messageContent: req.t('statuses::description', {
-      context: rejectionReason || cancellationReason,
-      comment: cancellationComments,
-      cancellation_reason_comment: cancellationComments,
-      rebook,
-    }),
-    updateLinks: updateActions,
+    updateLinks,
     urls,
   }
 

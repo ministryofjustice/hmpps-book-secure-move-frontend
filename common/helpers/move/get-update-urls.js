@@ -1,4 +1,7 @@
-const getUpdateUrls = (updateSteps, move, req) => {
+const getMoveUrl = require('./get-move-url')
+
+const getUpdateUrls = (updateSteps, req) => {
+  const { move } = req
   const updateUrls = {}
 
   if (!req.canAccess(`move:update:${move.move_type}`)) {
@@ -15,7 +18,7 @@ const getUpdateUrls = (updateSteps, move, req) => {
       step => steps[step].entryPoint
     )[0]
     const key = updateJourney.key
-    updateUrls[key] = `/move/${move.id}/edit${entryPointUrl}`
+    updateUrls[key] = getMoveUrl(move.id, 'update', { entryPointUrl })
   })
   return updateUrls
 }
