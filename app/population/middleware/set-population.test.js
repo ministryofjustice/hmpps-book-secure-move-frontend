@@ -1,5 +1,4 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-const populationService = require('../../../common/services/population')
 
 const middleware = require('./set-population')
 
@@ -27,10 +26,13 @@ describe('Population middleware', function () {
     let req
     let next
     let moveService
+    let populationService
 
     beforeEach(function () {
+      populationService = {
+        getByIdWithMoves: sinon.stub().resolves(mockPopulation),
+      }
       sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
-      sinon.stub(populationService, 'getByIdWithMoves')
       moveService = {
         getActive: sinon.stub(),
       }
@@ -46,6 +48,7 @@ describe('Population middleware', function () {
         },
         services: {
           move: moveService,
+          population: populationService,
         },
       }
     })
@@ -57,14 +60,13 @@ describe('Population middleware', function () {
           locationsFreeSpacesService.getPrisonFreeSpaces.resolves(
             mockCapacities
           )
-          populationService.getByIdWithMoves.resolves(mockPopulation)
+          populationService.getByIdWithMoves
 
           await middleware(req, res, next)
         })
 
         afterEach(function () {
           locationsFreeSpacesService.getPrisonFreeSpaces.restore()
-          populationService.getByIdWithMoves.restore()
         })
 
         it('should call locationFreeSpaces service with date and locationId', function () {
@@ -183,7 +185,9 @@ describe('Population middleware', function () {
     context('when population service rejects', function () {
       beforeEach(async function () {
         locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
-        populationService.getByIdWithMoves.rejects(mockError)
+        req.services.population.getByIdWithMoves = sinon
+          .stub()
+          .rejects(mockError)
 
         await middleware(req, res, next)
       })

@@ -1,11 +1,11 @@
-const proxyquire = require('proxyquire')
-const mockPopulationService = {}
+const mockPopulationService = {
+  create: sinon.stub(),
+  update: sinon.stub(),
+}
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 
-const Controller = proxyquire('./edit', {
-  '../../../common/services/population': mockPopulationService,
-})
+const Controller = require('./edit')
 
 describe('Population controllers', function () {
   describe('#edit()', function () {
@@ -38,6 +38,9 @@ describe('Population controllers', function () {
           options: {
             fullPath: '/details',
           },
+        },
+        services: {
+          population: mockPopulationService,
         },
       }
       res = {
@@ -121,10 +124,6 @@ describe('Population controllers', function () {
 
     describe('successHandler', function () {
       context('creating a new population', function () {
-        beforeEach(function () {
-          mockPopulationService.create = sinon.stub()
-        })
-
         it('should call create on the population service', async function () {
           await controllerInstance.successHandler(req, res, next)
 
@@ -159,7 +158,7 @@ describe('Population controllers', function () {
 
         it('should call next on failure', async function () {
           const error = new Error('Failure')
-          mockPopulationService.create.rejects(error)
+          req.services.population.create = sinon.stub().rejects(error)
 
           await controllerInstance.successHandler(req, res, next)
 
@@ -174,8 +173,6 @@ describe('Population controllers', function () {
           req.population = {
             id: 'ABADCAFE',
           }
-
-          mockPopulationService.update = sinon.stub()
         })
 
         it('should call update on the population service', async function () {
@@ -207,7 +204,7 @@ describe('Population controllers', function () {
 
         it('should call next on failure', async function () {
           const error = new Error('Failure')
-          mockPopulationService.update.rejects(error)
+          req.services.population.update = sinon.stub().rejects(error)
 
           await controllerInstance.successHandler(req, res, next)
 
