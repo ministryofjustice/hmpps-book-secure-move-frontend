@@ -1,5 +1,3 @@
-const youthRiskAssessmentService = require('../../../../common/services/youth-risk-assessment')
-
 const { ConfirmYouthRiskAssessmentController } = require('./controllers')
 
 const controller = new ConfirmYouthRiskAssessmentController({ route: '/' })
@@ -8,21 +6,25 @@ describe('Youth risk assessment controllers', function () {
   describe('ConfirmYouthRiskAssessmentController', function () {
     describe('#saveValues', function () {
       const mockPERId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
-      let req, nextSpy
+      let req, nextSpy, youthRiskAssessmentService
 
       beforeEach(function () {
-        sinon.stub(youthRiskAssessmentService, 'confirm')
+        youthRiskAssessmentService = {
+          confirm: sinon.stub().resolves({}),
+        }
         nextSpy = sinon.spy()
         req = {
           assessment: {
             id: mockPERId,
+          },
+          services: {
+            youthRiskAssessment: youthRiskAssessmentService,
           },
         }
       })
 
       context('when save is successful', function () {
         beforeEach(async function () {
-          youthRiskAssessmentService.confirm.resolves({})
           await controller.saveValues(req, {}, nextSpy)
         })
 
@@ -41,7 +43,9 @@ describe('Youth risk assessment controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          youthRiskAssessmentService.confirm.throws(errorMock)
+          req.services.youthRiskAssessment.confirm = sinon
+            .stub()
+            .throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
         })
 
