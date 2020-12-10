@@ -1,7 +1,6 @@
 const { omit } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
-const populationService = require('../../../common/services/population')
 
 class DetailsController extends FormWizardController {
   middlewareLocals() {
@@ -27,13 +26,13 @@ class DetailsController extends FormWizardController {
       const data = omit(sessionModel, ['csrf-secret', 'errors', 'errorValues'])
 
       if (req.population) {
-        await populationService.update({
+        await req.services.population.update({
           id: req.population.id,
           ...data,
           updated_by: req.session.user.fullname,
         })
       } else {
-        await populationService.create({
+        await req.services.population.create({
           location: req.locationId,
           date: req.date,
           ...data,

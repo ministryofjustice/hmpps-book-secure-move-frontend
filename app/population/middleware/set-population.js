@@ -1,5 +1,4 @@
 const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-const populationService = require('../../../common/services/population')
 
 async function setPopulation(req, res, next) {
   try {
@@ -20,7 +19,9 @@ async function setPopulation(req, res, next) {
     const { id: populationId } = freeSpacePopulation
 
     if (populationId) {
-      req.population = await populationService.getByIdWithMoves(populationId)
+      req.population = await req.services.population.getByIdWithMoves(
+        populationId
+      )
 
       transfersIn = req.population.moves_to.length
       transfersOut = req.population.moves_from.length
