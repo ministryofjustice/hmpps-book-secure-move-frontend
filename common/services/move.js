@@ -81,11 +81,11 @@ const moveService = {
   format(data) {
     const booleansAndNulls = ['move_agreed']
     const relationships = [
-      'to_location',
       'from_location',
       'person',
       'prison_transfer_reason',
       'supplier',
+      'to_location',
     ]
 
     // We have to pretend that 'secure_childrens_home', 'secure_training_centre' are valid `move_type`s
@@ -134,12 +134,13 @@ const moveService = {
     return moveService.getAll({
       isAggregation,
       include: [
+        'from_location',
+        'important_events',
         'profile',
-        'profile.person_escort_record.flags',
         'profile.person',
         'profile.person.gender',
+        'profile.person_escort_record.flags',
         'to_location',
-        'from_location',
       ],
       filter: omitBy(
         {
@@ -231,7 +232,9 @@ const moveService = {
   },
 
   getById(id) {
-    return moveService._getById(id, { include: moveService.defaultInclude })
+    return moveService._getById(id, {
+      include: [...moveService.defaultInclude, 'important_events'],
+    })
   },
 
   getByIdWithEvents(id) {

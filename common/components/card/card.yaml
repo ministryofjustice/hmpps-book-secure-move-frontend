@@ -68,9 +68,9 @@ params:
             required: true
             description: If `text` is set, this is not required. HTML to use within each meta item label. If `html` is provided, the `text` argument will be ignored.
   - name: tags
-    type: object
+    type: array
     required: false
-    description: Options for tag items.
+    description: List of options for tag items.
     params:
       - name: items
         type: array
@@ -122,7 +122,7 @@ examples:
       title:
         text: Card with tags
       tags:
-        items:
+        - items:
           - text: Incomplete
             classes: app-tag--destructive
           - text: Delayed

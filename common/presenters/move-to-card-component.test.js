@@ -23,6 +23,9 @@ const profileToCardComponentItemStub = sinon
 const profileToCardComponentStub = sinon
   .stub()
   .callsFake(() => profileToCardComponentItemStub)
+const moveToImportantEventsTagListComponent = sinon
+  .stub()
+  .returns('moveToImportantEventsTagListComponent')
 
 describe('Presenters', function () {
   describe('#moveToCardComponent()', function () {
@@ -33,6 +36,7 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returns('__translated__')
       moveToCardComponent = proxyquire('./move-to-card-component', {
         './profile-to-card-component': profileToCardComponentStub,
+        './move-to-important-events-tag-list-component': moveToImportantEventsTagListComponent,
       })
     })
 
@@ -66,6 +70,7 @@ describe('Presenters', function () {
               caption: {
                 text: '__translated__',
               },
+              tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
           })
         })
@@ -327,6 +332,7 @@ describe('Presenters', function () {
             caption: {
               text: '__translated__',
             },
+            tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
       }
@@ -343,6 +349,7 @@ describe('Presenters', function () {
               classes: mockClasses,
             })
           ),
+          './move-to-important-events-tag-list-component': moveToImportantEventsTagListComponent,
         })
       })
 
@@ -380,6 +387,7 @@ describe('Presenters', function () {
             caption: {
               text: '__translated__',
             },
+            tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
       })

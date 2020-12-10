@@ -88,4 +88,48 @@ describe('Tag component', function () {
       expect($component.html()).to.contain('<span>alpha</span>')
     })
   })
+
+  context('when flag html is passed', function () {
+    it('should render tag with flag', function () {
+      const $ = renderComponentHtmlToCheerio('tag', {
+        text: 'alpha',
+        flag: {
+          html: 'Medical <b>issue</b>',
+        },
+      })
+
+      const $component = $('.app-tag')
+      const $flag = $component.find('.app-tag__flag')
+      const $flagIcon = $flag.find('.app-tag__flag__icon')
+      const $assistiveText = $flag.find('.govuk-warning-text__assistive')
+      expect($flagIcon.html().trim()).to.equal('!')
+      expect(
+        $flagIcon.next().hasClass('govuk-warning-text__assistive')
+      ).to.equal(true)
+      expect($assistiveText.html().trim()).to.equal('Medical <b>issue</b>')
+    })
+  })
+
+  context('when flag text is passed', function () {
+    it('should render tag with flag', function () {
+      const $ = renderComponentHtmlToCheerio('tag', {
+        text: 'alpha',
+        flag: {
+          text: 'Medical <b>issue</b>',
+        },
+      })
+
+      const $component = $('.app-tag')
+      const $flag = $component.find('.app-tag__flag')
+      const $flagIcon = $flag.find('.app-tag__flag__icon')
+      const $assistiveText = $flag.find('.govuk-warning-text__assistive')
+      expect($flagIcon.html().trim()).to.equal('!')
+      expect(
+        $flagIcon.next().hasClass('govuk-warning-text__assistive')
+      ).to.equal(true)
+      expect($assistiveText.html().trim()).to.equal(
+        'Medical &lt;b&gt;issue&lt;/b&gt;'
+      )
+    })
+  })
 })

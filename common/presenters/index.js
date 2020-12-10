@@ -8,7 +8,8 @@ const assessmentCategoryToSummaryListComponent = require('./assessment-category-
 const assessmentToTagList = require('./assessment-to-tag-list')
 const courtCaseToCardComponent = require('./court-case-to-card-component')
 const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
-const eventsToTimelineComponent = require('./events-to-timeline-component')
+const eventToTagComponent = require('./event-to-tag-component')
+const eventToTimelineItemComponent = require('./event-to-timeline-item-component')
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkNomisMappingsToPanel = require('./framework-nomis-mappings-to-panel')
@@ -18,8 +19,10 @@ const frameworkToTaskListComponent = require('./framework-to-task-list-component
 const moveToMessageBannerComponent = require('./message-banner/move-to-message-banner-component')
 const moveToAdditionalInfoListComponent = require('./move-to-additional-info-list-component')
 const moveToCardComponent = require('./move-to-card-component')
+const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
+const moveToTimelineComponent = require('./move-to-timeline-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
@@ -41,7 +44,8 @@ module.exports = {
   assessmentToTagList,
   courtCaseToCardComponent,
   courtHearingToSummaryListComponent,
-  eventsToTimelineComponent,
+  eventToTagComponent,
+  eventToTimelineItemComponent,
   frameworkFieldToSummaryListRow,
   frameworkFlagsToTagList,
   frameworkNomisMappingsToPanel,
@@ -52,9 +56,11 @@ module.exports = {
   movesByLocation,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
+  moveToImportantEventsTagListComponent,
   moveToMessageBannerComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
+  moveToTimelineComponent,
   moveTypesToFilterComponent,
   personToSummaryListComponent,
   populationToGrid,

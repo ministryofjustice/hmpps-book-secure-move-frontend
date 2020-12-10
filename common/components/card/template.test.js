@@ -197,7 +197,7 @@ describe('Card component', function () {
       it('should not render tags', function () {
         const $ = renderComponentHtmlToCheerio('card', {
           title: { text: 'Title' },
-          tags: { items: [] },
+          tags: [{ items: [] }],
         })
         const $tags = $('.app-card__tag-list')
 

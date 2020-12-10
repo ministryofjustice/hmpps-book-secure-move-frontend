@@ -1,7 +1,9 @@
+{% from "tag/macro.njk" import appTag %}
+
 <div class="app-timeline {{- ' ' + params.classes if params.classes}}" {%- for attribute, value in params.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
 
   {%- for item in params.items %}
-  <div class="app-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
+  <div id="{{ item.id }}" class="app-timeline__item {{- ' ' + item.classes if item.classes}}" {%- for attribute, value in item.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
     <div class="app-timeline__item__container {{- ' ' + item.container.classes if item.container.classes}}">
 
       <div class="app-timeline__header {{- ' ' + item.header.classes if item.header.classes}}">
@@ -24,7 +26,7 @@
         </time>
       </p>
 
-      {% if item.byline %}
+      {% if item.byline.html or item.byline.text %}
         <div class="app-timeline__byline {{- ' ' + item.byline.classes if item.byline.classes }}">
           by {{ item.byline.html | safe if item.byline.html else item.byline.text }}
         </div>

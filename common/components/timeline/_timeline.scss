@@ -2,7 +2,7 @@
    #TIMELINE
    ========================================================================== */
 
-   .app-timeline {
+  .app-timeline {
     margin-bottom: govuk-spacing(4);
   }
 
@@ -55,10 +55,6 @@
     @include govuk-font($size: 14, $weight: bold);
   }
 
-  .app-panel .app-timeline__title {
-    @include govuk-font($size: 14, $weight: bold);
-  }
-
   .app-timeline__date,
   .app-timeline__byline {
     @include govuk-font($size: 16);
@@ -74,7 +70,14 @@
 
     & br {
       padding-top: govuk-spacing(2);
-      content: '';
+      content: "";
       display: block;
     }
+  }
+
+  .app-panel .app-timeline__title {
+    @include govuk-font($size: 14, $weight: bold);
+  }
+  .app-panel .app-timeline__description {
+    margin-top: govuk-spacing(4);
   }

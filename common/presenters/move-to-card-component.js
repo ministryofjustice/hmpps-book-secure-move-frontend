@@ -1,5 +1,6 @@
 const i18n = require('../../config/i18n')
 
+const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const profileToCardComponent = require('./profile-to-card-component')
 
 function moveToCardComponent({
@@ -11,9 +12,12 @@ function moveToCardComponent({
   showStatus = true,
   hrefSuffix = '',
 } = {}) {
-  return function item({ id, reference, profile, status }) {
+  return function item(move) {
+    const { id, reference, profile, status } = move
     const href = profile ? `/move/${id}${hrefSuffix}` : ''
     const excludedBadgeStatuses = ['cancelled']
+
+    showTags = isCompact ? false : showTags
 
     const showStatusBadge =
       showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
@@ -23,12 +27,20 @@ function moveToCardComponent({
     const personCardComponent = profileToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
-      showTags: isCompact ? false : showTags,
+      showTags,
       tagSource,
     })({
       ...profile,
       href,
     })
+
+    let tags
+
+    if (showTags) {
+      const importantEventsTagList = moveToImportantEventsTagListComponent(move)
+      tags = personCardComponent.tags || []
+      tags.push({ items: importantEventsTagList })
+    }
 
     return {
       ...personCardComponent,
@@ -41,6 +53,7 @@ function moveToCardComponent({
           reference,
         }),
       },
+      ...(tags ? { tags } : undefined),
     }
   }
 }

@@ -60,6 +60,8 @@ function profileToCardComponent({
     }
 
     if (showTags) {
+      let items
+
       // TODO: Remove condition once PER is enabled everywhere
       if (tagSource === 'personEscortRecord') {
         const { flags, status } = personEscortRecord || {}
@@ -67,13 +69,11 @@ function profileToCardComponent({
           personEscortRecord && !['not_started', 'in_progress'].includes(status)
 
         if (isComplete) {
-          card.tags = {
-            items: frameworkFlagsToTagList({
-              flags,
-              hrefPrefix: href,
-              includeLink: true,
-            }),
-          }
+          items = frameworkFlagsToTagList({
+            flags,
+            hrefPrefix: href,
+            includeLink: true,
+          })
         } else {
           card.insetText = {
             classes: 'govuk-inset-text--compact',
@@ -81,9 +81,15 @@ function profileToCardComponent({
           }
         }
       } else {
-        card.tags = {
-          items: assessmentToTagList(assessmentAnswers, href),
-        }
+        items = assessmentToTagList(assessmentAnswers, href)
+      }
+
+      if (items) {
+        card.tags = [
+          {
+            items,
+          },
+        ]
       }
     }
 
