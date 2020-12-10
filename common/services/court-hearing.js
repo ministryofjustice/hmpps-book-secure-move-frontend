@@ -2,8 +2,8 @@ const { mapValues, pickBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
-const courtHearingService = {
-  format(data) {
+const courtHearingService = req => {
+  const format = data => {
     const relationships = ['move']
 
     return mapValues(pickBy(data), (value, key) => {
@@ -13,9 +13,9 @@ const courtHearingService = {
 
       return value
     })
-  },
+  }
 
-  create(data, disableSaveToNomis = false) {
+  const create = (data, disableSaveToNomis = false) => {
     const params = {}
 
     if (disableSaveToNomis) {
@@ -23,9 +23,14 @@ const courtHearingService = {
     }
 
     return apiClient
-      .create('court_hearing', courtHearingService.format(data), params)
+      .create('court_hearing', format(data), params)
       .then(response => response.data)
-  },
+  }
+
+  return {
+    format,
+    create,
+  }
 }
 
 module.exports = courtHearingService
