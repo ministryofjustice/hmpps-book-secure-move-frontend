@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const presenters = require('../../../../common/presenters')
+const presenters = require('../../presenters')
 
 const getUpdateUrls = sinon.stub()
 const getUpdateLinks = sinon.stub()
@@ -16,17 +16,18 @@ const frameworkStub = {
   ],
 }
 const pathStubs = {
-  '../../steps/update': updateSteps,
-  './view.tabs.urls': getTabsUrls,
-  './view.update.urls': getUpdateUrls,
-  './view.update.links': getUpdateLinks,
-  '../../../../config': {
+  '../../../app/move/steps/update': updateSteps,
+  './get-tabs-urls': getTabsUrls,
+  './get-update-urls': getUpdateUrls,
+  './get-update-links': getUpdateLinks,
+  '../../../config': {
     FEATURE_FLAGS: {
       YOUTH_RISK_ASSESSMENT: true,
     },
   },
 }
-const getViewLocals = proxyquire('./view.locals', pathStubs)
+
+const getLocals = proxyquire('./get-locals', pathStubs)
 
 const mockAssessmentAnswers = []
 const mockAssessmentByCategory = [
@@ -153,7 +154,7 @@ describe('Move controllers', function () {
     context('by default', function () {
       beforeEach(function () {
         presenters.assessmentAnswersByCategory.returns(mockAssessmentByCategory)
-        params = getViewLocals(req)
+        params = getLocals(req)
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
@@ -413,7 +414,7 @@ describe('Move controllers', function () {
           rebook: true,
         }
 
-        params = getViewLocals(req)
+        params = getLocals(req)
       })
 
       it('should contain a message title param', function () {
@@ -444,7 +445,7 @@ describe('Move controllers', function () {
           person: undefined,
         }
 
-        params = getViewLocals(req)
+        params = getLocals(req)
       })
 
       it('should call personToSummaryListComponent presenter with undefined', function () {
@@ -540,7 +541,7 @@ describe('Move controllers', function () {
 
       context('when record is not_started', function () {
         beforeEach(function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should contain a personEscortRecord', function () {
@@ -562,7 +563,7 @@ describe('Move controllers', function () {
             ...mockPersonEscortRecord,
             status: 'in_progress',
           }
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should show Person Escort Record as incomplete', function () {
@@ -577,7 +578,7 @@ describe('Move controllers', function () {
             ...mockPersonEscortRecord,
             status: 'completed',
           }
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should contain a personEscortRecord', function () {
@@ -607,7 +608,7 @@ describe('Move controllers', function () {
       context('when user does not have permission', function () {
         beforeEach(function () {
           req.canAccess.returns(false)
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should set personEscortRecordIsEnabled to false', function () {
@@ -669,11 +670,11 @@ describe('Move controllers', function () {
 
       context('when record is in progress', function () {
         beforeEach(function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should contain a youthRiskAssessment', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('youthRiskAssessment')
           expect(params.youthRiskAssessment).to.deep.equal(
             mockYouthRiskAssessment
@@ -681,7 +682,7 @@ describe('Move controllers', function () {
         })
 
         it('should use youth risk assessment for sections', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('assessmentSections')
           expect(params.assessmentSections).to.deep.equal([
             { key: 'one', order: 1, youth: true },
@@ -700,11 +701,11 @@ describe('Move controllers', function () {
             ...mockYouthRiskAssessment,
             status: 'confirmed',
           }
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should contain a youthRiskAssessment', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('youthRiskAssessment')
           expect(params.youthRiskAssessment).to.deep.equal({
             ...mockYouthRiskAssessment,
@@ -713,7 +714,7 @@ describe('Move controllers', function () {
         })
 
         it('should use youth risk assessment for sections', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('assessmentSections')
           expect(params.assessmentSections).to.deep.equal([
             { key: 'one', order: 1, youth: true },
@@ -742,11 +743,11 @@ describe('Move controllers', function () {
               ],
             },
           }
-          params = getViewLocals(req)
+          params = getLocals(req)
         })
 
         it('should contain a youthRiskAssessment', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('youthRiskAssessment')
           expect(params.youthRiskAssessment).to.deep.equal({
             ...mockYouthRiskAssessment,
@@ -755,7 +756,7 @@ describe('Move controllers', function () {
         })
 
         it('should merge assessment sections', function () {
-          params = getViewLocals(req)
+          params = getLocals(req)
           expect(params).to.have.property('assessmentSections')
           expect(params.assessmentSections).to.deep.equal([
             {
@@ -806,9 +807,9 @@ describe('Move controllers', function () {
 
       context('with feature flag disabled', function () {
         beforeEach(function () {
-          const locals = proxyquire('./view.locals', {
+          const locals = proxyquire('./get-locals', {
             ...pathStubs,
-            '../../../../config': {
+            '../../../config': {
               FEATURE_FLAGS: {
                 YOUTH_RISK_ASSESSMENT: false,
               },
@@ -876,7 +877,7 @@ describe('Move controllers', function () {
 
         context('without permission to cancel proposed moves', function () {
           beforeEach(function () {
-            params = getViewLocals(req)
+            params = getLocals(req)
           })
 
           it('should not be able to cancel move', function () {
@@ -888,7 +889,7 @@ describe('Move controllers', function () {
           beforeEach(function () {
             req.session.user.permissions = ['move:cancel:proposed']
 
-            params = getViewLocals(req)
+            params = getLocals(req)
           })
 
           it('should be able to cancel move', function () {
@@ -919,7 +920,7 @@ describe('Move controllers', function () {
 
             context('without permission to cancel move', function () {
               beforeEach(function () {
-                params = getViewLocals(req)
+                params = getLocals(req)
               })
 
               it('should not be able to cancel move', function () {
@@ -930,7 +931,7 @@ describe('Move controllers', function () {
             context('with permission to cancel move', function () {
               beforeEach(function () {
                 req.session.user.permissions = ['move:cancel']
-                params = getViewLocals(req)
+                params = getLocals(req)
               })
 
               it('should not be able to cancel move', function () {
@@ -942,7 +943,7 @@ describe('Move controllers', function () {
           context('non-allocation move', function () {
             context('without permission to cancel move', function () {
               beforeEach(function () {
-                params = getViewLocals(req)
+                params = getLocals(req)
               })
 
               it('should not be able to cancel move', function () {
@@ -953,7 +954,7 @@ describe('Move controllers', function () {
             context('with permission to cancel move', function () {
               beforeEach(function () {
                 req.session.user.permissions = ['move:cancel']
-                params = getViewLocals(req)
+                params = getLocals(req)
               })
 
               it('should be able to cancel move', function () {
@@ -974,7 +975,7 @@ describe('Move controllers', function () {
 
         context('without permission to cancel move', function () {
           beforeEach(function () {
-            params = getViewLocals(req)
+            params = getLocals(req)
           })
 
           it('should not be able to cancel move', function () {
@@ -985,7 +986,7 @@ describe('Move controllers', function () {
         context('with permission to cancel move', function () {
           beforeEach(function () {
             req.session.user.permissions = ['move:cancel']
-            params = getViewLocals(req)
+            params = getLocals(req)
           })
 
           it('should not be able to cancel move', function () {

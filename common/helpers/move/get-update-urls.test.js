@@ -1,4 +1,4 @@
-const getUpdateUrls = require('./view.update.urls')
+const getUpdateUrls = require('./get-update-urls')
 
 const updateSteps = [
   {

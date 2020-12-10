@@ -1,14 +1,14 @@
 const { isEmpty, find, map, sortBy } = require('lodash')
 
-const presenters = require('../../../../common/presenters')
-const { FEATURE_FLAGS } = require('../../../../config')
-const updateSteps = require('../../steps/update')
+const updateSteps = require('../../../app/move/steps/update')
+const { FEATURE_FLAGS } = require('../../../config')
+const presenters = require('../../presenters')
 
-const getTabsUrls = require('./view.tabs.urls')
-const getUpdateLinks = require('./view.update.links')
-const getUpdateUrls = require('./view.update.urls')
+const getTabsUrls = require('./get-tabs-urls')
+const getUpdateLinks = require('./get-update-links')
+const getUpdateUrls = require('./get-update-urls')
 
-function getViewLocals(req) {
+function getLocals(req) {
   const { move } = req
   const {
     profile,
@@ -150,4 +150,4 @@ function getViewLocals(req) {
   return locals
 }
 
-module.exports = getViewLocals
+module.exports = getLocals

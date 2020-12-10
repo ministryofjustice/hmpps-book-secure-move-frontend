@@ -2,8 +2,8 @@ const proxyquire = require('proxyquire')
 const i18n = {
   t: sinon.stub(),
 }
-const getUpdateLinks = proxyquire('./view.update.links', {
-  '../../../../config/i18n': i18n,
+const getUpdateLinks = proxyquire('./get-update-links', {
+  '../../../config/i18n': i18n,
 })
 
 const updateSteps = [

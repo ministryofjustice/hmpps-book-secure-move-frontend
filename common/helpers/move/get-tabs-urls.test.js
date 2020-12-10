@@ -1,4 +1,4 @@
-const getTabsUrls = require('./view.tabs.urls')
+const getTabsUrls = require('./get-tabs-urls')
 
 describe('Move controllers', function () {
   describe('#view()', function () {

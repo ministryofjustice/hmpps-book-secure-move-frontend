@@ -1,4 +1,4 @@
-const i18n = require('../../../../config/i18n')
+const i18n = require('../../../config/i18n')
 
 const getUpdateLinks = (updateSteps, urls) => {
   const updateLinks = {}
