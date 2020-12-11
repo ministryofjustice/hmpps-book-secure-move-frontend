@@ -18,7 +18,7 @@ describe('Middleware', function () {
     const next = sinon.spy()
     let req
     beforeEach(function () {
-      req = { session: {} }
+      req = { session: {}, apiClient: {} }
 
       setServices(req, {}, next)
     })
@@ -34,7 +34,7 @@ describe('Middleware', function () {
     })
 
     it('should add context to service', function () {
-      expect(services.serviceWithContext).to.be.calledWithExactly(req)
+      expect(services.serviceWithContext).to.be.calledWithExactly(req.apiClient)
     })
 
     it('should return expected values from service functions which have context added', function () {
