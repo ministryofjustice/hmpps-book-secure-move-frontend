@@ -1,4 +1,9 @@
-const presenters = require('../../../common/presenters')
+const {
+  decorateAsDateTable,
+} = require('../../../common/presenters/date-table/date-table-decorator')
+const {
+  locationsToPopulationTable,
+} = require('../../../common/presenters/date-table/locations-to-population-table-component')
 
 async function setResultsPopulationTable(req, res, next) {
   try {
@@ -12,13 +17,15 @@ async function setResultsPopulationTable(req, res, next) {
       }
     )
 
-    req.resultsAsPopulationTable = presenters.locationsToPopulationTableComponent(
-      {
-        query,
-        startDate: dateRange[0],
-        focusDate: new Date(), // TODO - Use date locals?
-      }
-    )(freeSpaces)
+    const populationTable = locationsToPopulationTable({
+      query,
+      startDate: dateRange[0],
+    })(freeSpaces)
+
+    req.resultsAsPopulationTable = decorateAsDateTable({
+      focusDate: res.locals.TODAY,
+      tableComponent: populationTable,
+    })
 
     next()
   } catch (error) {
