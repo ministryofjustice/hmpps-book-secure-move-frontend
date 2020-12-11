@@ -1,0 +1,17 @@
+{% if moveSummary %}
+  <div class="sticky-sidebar">
+    <div class="sticky-sidebar__inner">
+      <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+        {{ move.profile.person._fullname }}
+      </h3>
+
+      {% if move.profile.person._image_url %}
+        <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
+          <img src="{{ move.profile.person._image_url }}" alt="{{ move.profile.person._fullname }}">
+        </div>
+      {% endif %}
+
+      {{ appMetaList(moveSummary) }}
+    </div>
+  </div>
+{% endif %}
