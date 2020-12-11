@@ -30,6 +30,7 @@ const { setCanAccess } = require('./common/middleware/permissions')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
 const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
+const setApiClient = require('./common/middleware/set-api-client')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const setServices = require('./common/middleware/set-services')
@@ -142,6 +143,9 @@ app.use(
     ...config.AUTH_PROVIDERS,
   })
 )
+
+// Set API client
+app.use(setApiClient)
 
 // Set services
 app.use(setServices)
