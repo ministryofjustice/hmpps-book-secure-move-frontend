@@ -1,4 +1,6 @@
-const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
+const locationsFreeSpacesService = {
+  getPrisonFreeSpaces: sinon.stub(),
+}
 
 const middleware = require('./set-population')
 
@@ -21,6 +23,10 @@ const mockPopulation = {
 const mockError = new Error('Error!!')
 
 describe('Population middleware', function () {
+  beforeEach(function () {
+    locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
+  })
+
   describe('#setPopulation()', function () {
     let res
     let req
@@ -32,7 +38,6 @@ describe('Population middleware', function () {
       populationService = {
         getByIdWithMoves: sinon.stub().resolves(mockPopulation),
       }
-      sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
       moveService = {
         getActive: sinon.stub(),
       }
@@ -49,6 +54,7 @@ describe('Population middleware', function () {
         services: {
           move: moveService,
           population: populationService,
+          locationsFreeSpaces: locationsFreeSpacesService,
         },
       }
     })
@@ -63,10 +69,6 @@ describe('Population middleware', function () {
           populationService.getByIdWithMoves
 
           await middleware(req, res, next)
-        })
-
-        afterEach(function () {
-          locationsFreeSpacesService.getPrisonFreeSpaces.restore()
         })
 
         it('should call locationFreeSpaces service with date and locationId', function () {
@@ -117,10 +119,6 @@ describe('Population middleware', function () {
         moveService.getActive.onCall(1).returns(2)
 
         await middleware(req, res, next)
-      })
-
-      afterEach(function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.restore()
       })
 
       it('should call the data service with request body', function () {
