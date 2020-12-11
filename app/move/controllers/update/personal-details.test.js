@@ -1,4 +1,7 @@
-const personService = require('../../../../common/services/person')
+const personService = {
+  unformat: sinon.stub(),
+  update: sinon.stub(),
+}
 const CreatePersonalDetails = require('../create/personal-details')
 
 const MixinProto = CreatePersonalDetails.prototype
@@ -44,8 +47,8 @@ describe('Move controllers', function () {
       let nextSpy
       beforeEach(async function () {
         sinon.stub(controller, 'setFlash')
-        sinon.stub(personService, 'unformat').returns({})
-        sinon.stub(personService, 'update').resolves()
+        personService.unformat.returns({}).resetHistory()
+        personService.update.resolves().resetHistory()
         req = {
           getPersonId: sinon.stub().returns('#personId'),
           getPerson: sinon.stub().returns({
@@ -64,6 +67,9 @@ describe('Move controllers', function () {
               baz: 'c',
             },
           },
+          services: {
+            person: personService,
+          },
         }
         nextSpy = sinon.stub()
       })
@@ -74,7 +80,7 @@ describe('Move controllers', function () {
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should call savePerson with expected data', async function () {
+        it('should not call update', async function () {
           expect(personService.update).to.not.be.called
         })
 
@@ -101,7 +107,7 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should call savePerson with expected data', async function () {
+        it('should call update with expected data', async function () {
           expect(personService.update).to.be.calledOnceWithExactly({
             id: '#personId',
             foo: 'a',

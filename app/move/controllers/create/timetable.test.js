@@ -1,5 +1,7 @@
 const presenters = require('../../../../common/presenters')
-const personService = require('../../../../common/services/person')
+const personService = {
+  getTimetableByDate: sinon.stub(),
+}
 
 const BaseController = require('./base')
 const Controller = require('./timetable')
@@ -12,6 +14,7 @@ describe('Move controllers', function () {
 
     beforeEach(function () {
       nextSpy = sinon.spy()
+      personService.getTimetableByDate.resetHistory()
     })
 
     describe('#middlewareSetup()', function () {
@@ -113,8 +116,10 @@ describe('Move controllers', function () {
           sessionModel: {
             get: sinon.stub(),
           },
+          services: {
+            person: personService,
+          },
         }
-        sinon.stub(personService, 'getTimetableByDate')
       })
 
       context('without person ID', function () {

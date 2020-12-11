@@ -1,6 +1,8 @@
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
-const personService = require('../../../../common/services/person')
+const personService = {
+  getByIdentifiers: sinon.stub(),
+}
 
 const PersonController = require('./person')
 const Controller = require('./person-search-results')
@@ -70,11 +72,14 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(function () {
-        sinon.stub(personService, 'getByIdentifiers')
         req = {
           query: {},
+          services: {
+            person: personService,
+          },
         }
         nextSpy = sinon.spy()
+        personService.getByIdentifiers.resetHistory()
       })
 
       context('when query contains filter', function () {

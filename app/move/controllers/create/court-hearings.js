@@ -3,7 +3,6 @@ const { find, pick } = require('lodash')
 
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
-const personService = require('../../../../common/services/person')
 const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
@@ -22,7 +21,9 @@ class CourtHearingsController extends CreateBaseController {
     }
 
     try {
-      const courtCases = await personService.getActiveCourtCases(person.id)
+      const courtCases = await req.services.person.getActiveCourtCases(
+        person.id
+      )
       const {
         court_hearing__court_case: courtCaseField,
       } = req.form.options.fields

@@ -1,13 +1,14 @@
 const axios = require('axios')
 
-const personService = require('../../common/services/person')
 const nunjucksGlobals = require('../../config/nunjucks/globals')
 
 module.exports = {
   image: fallbackImage => {
     return async (req, res) => {
       try {
-        const imageUrl = await personService.getImageUrl(req.params.personId)
+        const imageUrl = await req.services.person.getImageUrl(
+          req.params.personId
+        )
         const response = await axios.get(imageUrl, {
           responseType: 'arraybuffer',
         })

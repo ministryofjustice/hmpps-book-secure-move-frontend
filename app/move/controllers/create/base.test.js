@@ -2,7 +2,9 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
-const personService = require('../../../../common/services/person')
+const personService = {
+  getCategory: sinon.stub(),
+}
 
 const CreateBaseController = require('./base')
 
@@ -109,9 +111,12 @@ describe('Move controllers', function () {
       let person
       let category
       beforeEach(async function () {
-        sinon.stub(personService, 'getCategory').resolves(category)
+        personService.getCategory.resolves(category).resetHistory()
         req = {
           getPerson: sinon.stub().returns(person),
+          services: {
+            person: personService,
+          },
         }
         res = {
           render: sinon.stub(),
