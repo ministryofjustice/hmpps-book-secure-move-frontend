@@ -18,16 +18,10 @@ function getLocals(req) {
   const { move, canAccess } = req
   const userPermissions = req.session?.user?.permissions
   const { profile } = move
-  const { person } = profile || {}
+  const { person } = profile
 
-  const urls = {}
   // person
   const personalDetailsSummary = presenters.personToSummaryListComponent(person)
-  // updateSteps, req
-  urls.update = getUpdateUrls(updateSteps, req)
-  const updateLinks = getUpdateLinks(updateSteps, req)
-  // move, updateLinks
-  const moveSummary = presenters.moveToMetaListComponent(move, updateLinks)
   // move
   const additionalInfoSummary = presenters.moveToAdditionalInfoListComponent(
     move
@@ -36,12 +30,25 @@ function getLocals(req) {
   const message = getMessage(move)
   const tagLists = getTagLists(move)
   const assessments = getAssessments(move)
-  urls.tabs = getTabsUrls(move)
+  const tabsUrls = getTabsUrls(move)
   // move, canAccess
   const messageBanner = getMessageBanner(move, canAccess)
   const perDetails = getPerDetails(move, canAccess)
+  // move, canAccess, updateSteps
+  const updateUrls = getUpdateUrls(move, canAccess, updateSteps)
+  const updateLinks = getUpdateLinks(move, canAccess, updateSteps)
+  const moveSummary = presenters.moveToMetaListComponent(
+    move,
+    canAccess,
+    updateSteps
+  )
   // move, userPermissions
   const canCancelMove = getCanCancelMove(move, userPermissions)
+
+  const urls = {
+    tabs: tabsUrls,
+    update: updateUrls,
+  }
 
   const locals = {
     move,

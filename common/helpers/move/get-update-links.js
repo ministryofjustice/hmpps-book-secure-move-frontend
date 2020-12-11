@@ -22,8 +22,8 @@ const getUpdateLink = (category, urls) => {
   }
 }
 
-const getUpdateLinks = (updateSteps, req) => {
-  const urls = getUpdateUrls(updateSteps, req)
+const getUpdateLinks = (move, canAccess, updateSteps = []) => {
+  const urls = getUpdateUrls(move, canAccess, updateSteps)
 
   const updateLinks = updateSteps.reduce((acc, updateJourney) => {
     const category = updateJourney.key

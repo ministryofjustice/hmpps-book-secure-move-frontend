@@ -1,15 +1,14 @@
 const getMoveUrl = require('./get-move-url')
 
-const getUpdateUrls = (updateSteps, req) => {
-  const { move } = req
+const getUpdateUrls = (move, canAccess = () => false, updateSteps = []) => {
   const updateUrls = {}
 
-  if (!req.canAccess(`move:update:${move.move_type}`)) {
+  if (!canAccess(`move:update:${move.move_type}`)) {
     return updateUrls
   }
 
   updateSteps.forEach(updateJourney => {
-    if (!req.canAccess(updateJourney.permission)) {
+    if (!canAccess(updateJourney.permission)) {
       return
     }
 

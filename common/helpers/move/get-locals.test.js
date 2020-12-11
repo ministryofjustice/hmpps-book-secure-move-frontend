@@ -63,8 +63,10 @@ const mockMove = {
 
 describe('Move helpers', function () {
   describe('#getLocals()', function () {
-    let req, params
+    let req
+    let params
     const userPermissions = ['permA']
+    let canAccess
 
     beforeEach(function () {
       getAssessments.resetHistory()
@@ -79,10 +81,11 @@ describe('Move helpers', function () {
       personToSummaryListComponent.resetHistory()
       moveToAdditionalInfoListComponent.resetHistory()
       moveToMetaListComponent.resetHistory()
+      canAccess = sinon.stub().returns(true)
 
       req = {
         t: sinon.stub().returnsArg(0),
-        canAccess: sinon.stub().returns(true),
+        canAccess,
         session: {
           user: {
             permissions: userPermissions,
@@ -108,7 +111,8 @@ describe('Move helpers', function () {
         it('should get the move summary', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
-            mockUpdateLinks
+            canAccess,
+            updateSteps
           )
         })
 
@@ -167,10 +171,7 @@ describe('Move helpers', function () {
 
       describe('PER details', function () {
         it('should get the PER details', function () {
-          expect(getPerDetails).to.be.calledOnceWithExactly(
-            mockMove,
-            req.canAccess
-          )
+          expect(getPerDetails).to.be.calledOnceWithExactly(mockMove, canAccess)
         })
 
         it('should set the PER details params', function () {
@@ -208,7 +209,7 @@ describe('Move helpers', function () {
         it('should get the message banner', function () {
           expect(getMessageBanner).to.be.calledOnceWithExactly(
             mockMove,
-            req.canAccess
+            canAccess
           )
         })
 
@@ -235,11 +236,19 @@ describe('Move helpers', function () {
 
       describe('update urls and links', function () {
         it('should call getUpdateUrls with expected args', function () {
-          expect(getUpdateUrls).to.be.calledOnceWithExactly(updateSteps, req)
+          expect(getUpdateUrls).to.be.calledOnceWithExactly(
+            mockMove,
+            canAccess,
+            updateSteps
+          )
         })
 
         it('should call getUpdateLinks with expected args', function () {
-          expect(getUpdateLinks).to.be.calledOnceWithExactly(updateSteps, req)
+          expect(getUpdateLinks).to.be.calledOnceWithExactly(
+            mockMove,
+            canAccess,
+            updateSteps
+          )
         })
 
         it('should pass update urls in locals to render', function () {

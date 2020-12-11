@@ -23,12 +23,10 @@ const urls = {
 }
 getUpdateUrls.returns(urls)
 
-const req = {
-  move: {
-    id: 'moveId',
-  },
-  canAccess: () => true,
+const move = {
+  id: 'moveId',
 }
+const canAccess = () => true
 
 const expectedUpdateLinks = {
   foo: {
@@ -56,10 +54,14 @@ describe('Move controllers', function () {
 
           return key.replace(/moves::update_link.categories./, '')
         })
-        updateLinks = getUpdateLinks(updateSteps, req)
+        updateLinks = getUpdateLinks(move, canAccess, updateSteps)
       })
       it('should get the update urls', function () {
-        expect(getUpdateUrls).to.be.calledOnceWithExactly(updateSteps, req)
+        expect(getUpdateUrls).to.be.calledOnceWithExactly(
+          move,
+          canAccess,
+          updateSteps
+        )
       })
 
       it('should invoke t twice', function () {
