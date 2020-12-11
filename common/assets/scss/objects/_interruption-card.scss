@@ -35,4 +35,8 @@
     box-shadow: 0 2px 0 govuk-colour("black");
     color: govuk-colour("black");
   }
+
+  .app-border--blue {
+    border-color: govuk-colour("white");
+  }
 }
