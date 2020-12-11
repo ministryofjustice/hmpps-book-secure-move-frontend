@@ -1,12 +1,20 @@
 const proxyquire = require('proxyquire').noCallThru()
 
+class ServiceWithContext {
+  constructor(apiClient) {
+    this.apiClient = apiClient
+  }
+
+  method() {
+    return 'service with context'
+  }
+}
+
 const services = {
   serviceWithoutContext: {
     method: 'service - without context',
   },
-  serviceWithContext: sinon
-    .stub()
-    .returns({ method: 'service - with context' }),
+  serviceWithContext: ServiceWithContext,
 }
 
 const setServices = proxyquire('./set-services', {
@@ -33,14 +41,10 @@ describe('Middleware', function () {
       })
     })
 
-    it('should add context to service', function () {
-      expect(services.serviceWithContext).to.be.calledWithExactly(req.apiClient)
-    })
-
-    it('should return expected values from service functions which have context added', function () {
-      expect(req.services.serviceWithContext).to.deep.equal({
-        method: 'service - with context',
-      })
+    it('should return expected values from service functions which did have context added', function () {
+      expect(req.services.serviceWithContext).to.deep.equal(
+        new ServiceWithContext(req.apiClient)
+      )
     })
   })
 })
