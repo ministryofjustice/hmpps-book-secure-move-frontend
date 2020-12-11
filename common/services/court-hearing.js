@@ -1,10 +1,8 @@
 const { mapValues, pickBy } = require('lodash')
 
-class CourtHearingService {
-  constructor(apiClient) {
-    this.apiClient = apiClient
-  }
+const BaseService = require('./base')
 
+class CourtHearingService extends BaseService {
   format(data) {
     const relationships = ['move']
 

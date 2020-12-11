@@ -1,10 +1,8 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-class ServiceWithContext {
-  constructor(apiClient) {
-    this.apiClient = apiClient
-  }
+const BaseService = require('../services/base')
 
+class ServiceWithContext extends BaseService {
   method() {
     return 'service with context'
   }
@@ -43,7 +41,7 @@ describe('Middleware', function () {
 
     it('should return expected values from service functions which did have context added', function () {
       expect(req.services.serviceWithContext).to.deep.equal(
-        new ServiceWithContext(req.apiClient)
+        new ServiceWithContext(req)
       )
     })
   })
