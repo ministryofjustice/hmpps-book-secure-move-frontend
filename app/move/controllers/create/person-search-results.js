@@ -2,7 +2,6 @@ const { has, find } = require('lodash')
 
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
-const personService = require('../../../../common/services/person')
 
 const PersonController = require('./person')
 
@@ -23,7 +22,9 @@ class PersonSearchResultsController extends PersonController {
 
     if (has(req.query, 'filter')) {
       try {
-        req.people = await personService.getByIdentifiers(req.query.filter)
+        req.people = await req.services.person.getByIdentifiers(
+          req.query.filter
+        )
       } catch (error) {
         return next(error)
       }

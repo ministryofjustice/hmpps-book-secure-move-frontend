@@ -1,5 +1,4 @@
 const presenters = require('../../../../common/presenters')
-const personService = require('../../../../common/services/person')
 
 const CreateBaseController = require('./base')
 
@@ -28,7 +27,7 @@ class TimetableController extends CreateBaseController {
     }
 
     try {
-      req.timetable = await personService.getTimetableByDate(
+      req.timetable = await req.services.person.getTimetableByDate(
         person.id,
         moveDate
       )

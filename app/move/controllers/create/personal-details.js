@@ -2,7 +2,6 @@ const { set } = require('lodash')
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const personService = require('../../../../common/services/person')
 
 const CreateBaseController = require('./base')
 
@@ -42,7 +41,9 @@ class PersonalDetailsController extends CreateBaseController {
     }
   }
 
-  savePerson(id, data) {
+  savePerson(req, id, data) {
+    const personService = req.services.person
+
     if (id) {
       return personService.update({
         id,
@@ -57,7 +58,7 @@ class PersonalDetailsController extends CreateBaseController {
     try {
       const id = req.getPersonId()
 
-      req.form.values.person = await this.savePerson(id, req.form.values)
+      req.form.values.person = await this.savePerson(req, id, req.form.values)
       super.saveValues(req, res, next)
     } catch (error) {
       next(error)

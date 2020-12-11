@@ -1,7 +1,9 @@
 const FormController = require('hmpo-form-wizard').Controller
 const { cloneDeep } = require('lodash')
 
-const personService = require('../../../../common/services/person')
+const personService = {
+  unformat: sinon.stub(),
+}
 const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 const BaseProto = CreateBaseController.prototype
@@ -144,13 +146,16 @@ describe('Move controllers', function () {
             },
           },
         },
+        services: {
+          person: personService,
+        },
       }
       const person = { id: '#personId' }
       const values = { foo: 'bar' }
 
       beforeEach(function () {
         req.getPerson = sinon.stub().returns(person)
-        sinon.stub(personService, 'unformat').returns(values)
+        personService.unformat.resetHistory().returns(values)
       })
 
       it('should return updated values', function () {
@@ -554,6 +559,9 @@ describe('Move controllers', function () {
         form: {
           options: {},
         },
+        services: {
+          person: personService,
+        },
       }
       res = {
         locals: {},
@@ -641,9 +649,10 @@ describe('Move controllers', function () {
   })
 
   describe('#getUpdateValues()', function () {
-    const req = {}
+    const req = { services: { person: personService } }
     beforeEach(function () {
       req.getPerson = sinon.stub()
+      personService.unformat.resetHistory().returns({})
     })
     context('when default getUpdateValues method invoked', function () {
       it('should return an empty object', function () {
@@ -773,7 +782,7 @@ describe('Move controllers', function () {
         await controller.saveMove(req, res, nextSpy)
       })
 
-      it('should call savePerson with expected data', function () {
+      it('should call update with expected data', function () {
         expect(moveService.update).to.be.calledOnceWithExactly({
           id: '#moveId',
           foo: 'a',

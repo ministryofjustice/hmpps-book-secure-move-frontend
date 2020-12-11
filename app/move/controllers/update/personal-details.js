@@ -1,6 +1,5 @@
 const { isEqual, pick } = require('lodash')
 
-const personService = require('../../../../common/services/person')
 const PersonalDetails = require('../create/personal-details')
 
 const UpdateBase = require('./base')
@@ -8,6 +7,7 @@ const UpdateBase = require('./base')
 class UpdatePersonalDetailsController extends UpdateBase {
   async saveValues(req, res, next) {
     try {
+      const personService = req.services.person
       const person = req.getPerson()
       const fields = req.form.options.fields
       const fieldKeys = Object.keys(fields).filter(

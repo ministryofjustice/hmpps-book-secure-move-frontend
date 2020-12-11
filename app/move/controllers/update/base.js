@@ -1,6 +1,5 @@
 const { get, isEqual, keys, pick } = require('lodash')
 
-const personService = require('../../../../common/services/person')
 const filters = require('../../../../config/nunjucks/filters')
 const CreateBaseController = require('../create/base')
 
@@ -100,7 +99,7 @@ class UpdateBaseController extends CreateBaseController {
   getUpdateValues(req, res) {
     const person = req.getPerson()
     const fields = keys(req.form?.options?.fields)
-    return personService.unformat(person, fields)
+    return req.services.person.unformat(person, fields)
   }
 
   async saveMove(req, res, next) {

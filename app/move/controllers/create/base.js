@@ -1,6 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const presenters = require('../../../../common/presenters')
-const personService = require('../../../../common/services/person')
 
 class CreateBaseController extends FormWizardController {
   middlewareSetup() {
@@ -51,7 +50,7 @@ class CreateBaseController extends FormWizardController {
       return next()
     }
 
-    const category = await personService.getCategory(person.id)
+    const category = await req.services.person.getCategory(person.id)
 
     if (!category || category.move_supported) {
       return next()

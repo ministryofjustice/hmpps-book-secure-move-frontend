@@ -1,6 +1,8 @@
 const axios = require('axios')
 
-const personService = require('../../common/services/person')
+const personService = {
+  getImageUrl: sinon.stub(),
+}
 const nunjucksGlobals = require('../../config/nunjucks/globals')
 
 const controllers = require('./controllers')
@@ -14,12 +16,14 @@ describe('Person app', function () {
     let req, res
 
     beforeEach(function () {
-      sinon.stub(personService, 'getImageUrl')
       sinon.stub(nunjucksGlobals, 'getAssetPath').returns(manifestImagePath)
       sinon.stub(axios, 'get')
       req = {
         params: {
           personId: mockPersonId,
+        },
+        services: {
+          person: personService,
         },
       }
       res = {

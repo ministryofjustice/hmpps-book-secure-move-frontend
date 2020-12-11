@@ -2,7 +2,9 @@ const timezoneMock = require('timezone-mock')
 
 const presenters = require('../../../../common/presenters')
 const componentService = require('../../../../common/services/component')
-const personService = require('../../../../common/services/person')
+const personService = {
+  getActiveCourtCases: sinon.stub(),
+}
 const filters = require('../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
@@ -71,7 +73,6 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(function () {
-        sinon.stub(personService, 'getActiveCourtCases')
         sinon.stub(componentService, 'getComponent').returnsArg(0)
         sinon.stub(presenters, 'courtCaseToCardComponent').returnsArg(0)
         req = {
@@ -86,6 +87,9 @@ describe('Move controllers', function () {
           },
           sessionModel: {
             get: sinon.stub(),
+          },
+          services: {
+            person: personService,
           },
         }
         nextSpy = sinon.spy()

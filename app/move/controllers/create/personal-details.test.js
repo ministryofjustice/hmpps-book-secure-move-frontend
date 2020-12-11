@@ -2,7 +2,10 @@ const FormController = require('hmpo-form-wizard').Controller
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
-const personService = require('../../../../common/services/person')
+const personService = {
+  create: sinon.stub(),
+  update: sinon.stub().resolves(),
+}
 
 const Controller = require('./personal-details')
 
@@ -169,15 +172,20 @@ describe('Move controllers', function () {
 
     describe('#savePerson()', function () {
       const mockId = '1234567'
+      const fakeReq = {
+        services: {
+          person: personService,
+        },
+      }
 
       beforeEach(function () {
-        sinon.stub(personService, 'create').resolves()
-        sinon.stub(personService, 'update').resolves()
+        personService.create.resolves().resetHistory()
+        personService.update.resetHistory()
       })
 
       context('without id', function () {
         beforeEach(function () {
-          controller.savePerson(undefined, personMock)
+          controller.savePerson(fakeReq, undefined, personMock)
         })
 
         it('should create a person via the personService', function () {
@@ -191,7 +199,7 @@ describe('Move controllers', function () {
 
       context('with id', function () {
         beforeEach(function () {
-          controller.savePerson(mockId, personMock)
+          controller.savePerson(fakeReq, mockId, personMock)
         })
 
         it('should update a person via the personService', function () {
@@ -218,6 +226,9 @@ describe('Move controllers', function () {
           },
           getPerson: sinon.stub(),
           getPersonId: sinon.stub(),
+          services: {
+            person: personService,
+          },
         }
       })
 
@@ -233,6 +244,7 @@ describe('Move controllers', function () {
 
           it('should save the persons data', function () {
             expect(controller.savePerson).to.be.calledOnceWithExactly(
+              req,
               personMock.id,
               req.form.values
             )
@@ -259,6 +271,7 @@ describe('Move controllers', function () {
 
           it('should save the persons data', function () {
             expect(controller.savePerson).to.be.calledOnceWithExactly(
+              req,
               undefined,
               req.form.values
             )
@@ -280,7 +293,7 @@ describe('Move controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          sinon.stub(personService, 'create').throws(errorMock)
+          personService.create.throws(errorMock).resetHistory()
           await controller.saveValues(req, {}, nextSpy)
         })
 
