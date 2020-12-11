@@ -23,6 +23,19 @@ module.exports = function setLocals(req, res, next) {
 
       return req.canAccess(permission)
     },
+    getBreadcrumbs() {
+      if (!res.breadcrumb) {
+        return []
+      }
+
+      const breadcrumbs = res.breadcrumb()
+      return breadcrumbs.map(({ text, href }, i) => {
+        return {
+          text,
+          href: i === breadcrumbs.length - 1 ? null : href,
+        }
+      })
+    },
   }
 
   res.locals = {

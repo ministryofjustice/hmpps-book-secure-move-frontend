@@ -2,6 +2,7 @@
 
 {# GOV.UK Design System Components #}
 {% from "govuk/components/back-link/macro.njk"         import govukBackLink %}
+{% from "govuk/components/breadcrumbs/macro.njk"       import govukBreadcrumbs %}
 {% from "govuk/components/button/macro.njk"            import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk"        import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk"           import govukDetails %}
@@ -131,6 +132,17 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {% set breadcrumbs = getBreadcrumbs() %}
+
+  {% if breadcrumbs|length > 1 %}
+    {{ govukBreadcrumbs({
+      items: breadcrumbs,
+      attributes: {
+        'data-auto-id': 'breadcrumbs'
+      }
+    }) }}
+  {% endif %}
+
   {% include "includes/messages.njk" %}
 {% endblock %}
 
