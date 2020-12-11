@@ -1,5 +1,6 @@
-function getMessage(req) {
-  const { move } = req
+const i18n = require('../../../config/i18n')
+
+function getMessage(move) {
   const {
     status,
     cancellation_reason: cancellationReason,
@@ -12,9 +13,9 @@ function getMessage(req) {
 
   const message = {
     messageTitle: bannerStatuses.includes(status)
-      ? req.t('statuses::' + status, { context: cancellationReason })
+      ? i18n.t('statuses::' + status, { context: cancellationReason })
       : undefined,
-    messageContent: req.t('statuses::description', {
+    messageContent: i18n.t('statuses::description', {
       context: rejectionReason || cancellationReason,
       comment: cancellationComments,
       cancellation_reason_comment: cancellationComments,

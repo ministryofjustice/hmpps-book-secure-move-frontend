@@ -2,9 +2,7 @@ const { sortBy } = require('lodash')
 
 const presenters = require('../../presenters')
 
-function getLocals(req) {
-  const { move } = req
-
+function getCourtHearings(move) {
   const courtHearings = sortBy(move.court_hearings, 'start_time').map(
     courtHearing => {
       return {
@@ -19,4 +17,4 @@ function getLocals(req) {
   return courtHearings
 }
 
-module.exports = getLocals
+module.exports = getCourtHearings

@@ -5,8 +5,7 @@ const presenters = require('../../presenters')
 
 const getMoveUrl = require('./get-move-url')
 
-function getAssessments(req) {
-  const { move } = req
+function getAssessments(move) {
   const { profile, id: moveId } = move
   const {
     assessment_answers: assessmentAnswers = [],
@@ -36,9 +35,12 @@ function getAssessments(req) {
   ).map(section => {
     return {
       ...section,
-      previousAssessment: move._is_youth_move
-        ? find(youthAssessmentSections, { key: section.key })
-        : find(assessment, { frameworksSection: section.key }),
+      previousAssessment:
+        move._is_youth_move &&
+        youthRiskAssessment &&
+        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? find(youthAssessmentSections, { key: section.key })
+          : find(assessment, { frameworksSection: section.key }),
     }
   })
   const combinedSections = perAssessmentSections.reduce((acc, section) => {
@@ -53,16 +55,16 @@ function getAssessments(req) {
   const combinedAssessmentSections = [
     ...perAssessmentSections,
     ...youthAssessmentSections.filter(
-      section => !combinedSections.includes(section.key)
+      section =>
+        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
+        !combinedSections.includes(section.key)
     ),
   ]
 
   const assessmentSections =
-    move._is_youth_move &&
-    FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
-    (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)
-      ? sortBy(youthAssessmentSections, 'order')
-      : sortBy(combinedAssessmentSections, 'order')
+    personEscortRecord || !move._is_youth_move
+      ? sortBy(combinedAssessmentSections, 'order')
+      : sortBy(youthAssessmentSections, 'order')
 
   const assessments = {
     assessment,

@@ -1,16 +1,37 @@
-function getCanCancelMove(req) {
-  const { move } = req
+function checkCanCancelMove(permissions, status, allocation) {
+  if (permissions.includes('move:cancel')) {
+    if (['requested', 'booked'].includes(status)) {
+      if (!allocation) {
+        return true
+      }
+    }
+  }
 
-  const userPermissions = req.session?.user?.permissions
+  return false
+}
 
-  const canCancelMove =
-    (userPermissions.includes('move:cancel') &&
-      !move.allocation &&
-      (move.status === 'requested' || move.status === 'booked')) ||
-    (userPermissions.includes('move:cancel:proposed') &&
-      move.status === 'proposed')
+function checkCanCancelMoveProposed(permissions, status, allocation) {
+  if (permissions.includes('move:cancel:proposed')) {
+    if (status === 'proposed') {
+      return true
+    }
+  }
 
-  return canCancelMove
+  return false
+}
+
+function getCanCancelMove(move, permissions = []) {
+  const { status, allocation } = move
+
+  if (checkCanCancelMove(permissions, status, allocation)) {
+    return true
+  }
+
+  if (checkCanCancelMoveProposed(permissions, status)) {
+    return true
+  }
+
+  return false
 }
 
 module.exports = getCanCancelMove

@@ -15,41 +15,46 @@ const getUpdateUrls = require('./get-update-urls')
 // TODO: pass updateSteps in so {updateSteps} = {}
 // or maybe not, if view controller does this instead
 function getLocals(req) {
-  const { move } = req
+  const { move, canAccess } = req
+  const userPermissions = req.session?.user?.permissions
   const { profile } = move
   const { person } = profile || {}
 
-  const urls = {
-    update: getUpdateUrls(updateSteps, req),
-    tabs: getTabsUrls(move),
-  }
-  const updateLinks = getUpdateLinks(updateSteps, req)
+  const urls = {}
+  // person
   const personalDetailsSummary = presenters.personToSummaryListComponent(person)
+  // updateSteps, req
+  urls.update = getUpdateUrls(updateSteps, req)
+  const updateLinks = getUpdateLinks(updateSteps, req)
+  // move, updateLinks
+  const moveSummary = presenters.moveToMetaListComponent(move, updateLinks)
+  // move
   const additionalInfoSummary = presenters.moveToAdditionalInfoListComponent(
     move
   )
-  const moveSummary = presenters.moveToMetaListComponent(move, updateLinks)
-  // TODO: pass move instead of req (where possible)
-  const message = getMessage(req)
-  const messageBanner = getMessageBanner(req)
-  const canCancelMove = getCanCancelMove(req)
-  const courtHearings = getCourtHearings(req)
-  const perDetails = getPerDetails(req)
-  const tagLists = getTagLists(req)
-  const assessments = getAssessments(req)
+  const courtHearings = getCourtHearings(move)
+  const message = getMessage(move)
+  const tagLists = getTagLists(move)
+  const assessments = getAssessments(move)
+  urls.tabs = getTabsUrls(move)
+  // move, canAccess
+  const messageBanner = getMessageBanner(move, canAccess)
+  const perDetails = getPerDetails(move, canAccess)
+  // move, userPermissions
+  const canCancelMove = getCanCancelMove(move, userPermissions)
 
   const locals = {
     move,
-    ...assessments,
-    ...tagLists,
-    ...perDetails,
-    personalDetailsSummary,
     additionalInfoSummary,
-    moveSummary,
+    ...assessments,
     canCancelMove,
     courtHearings,
     ...message,
     messageBanner,
+    moveSummary,
+    ...perDetails,
+    personalDetailsSummary,
+    ...tagLists,
     updateLinks,
     urls,
   }
