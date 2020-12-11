@@ -64,6 +64,13 @@
         </section>
       {% endfor %}
     </div>
+
+    <div class="govuk-grid-column-one-quarter">
+      {% block contentSidebar %}
+        {% include "includes/move-summary.njk" %}
+      {% endblock %}
+    </div>
+
   </div>
 
   {{ backLink() }}

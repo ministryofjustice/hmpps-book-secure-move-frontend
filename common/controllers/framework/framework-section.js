@@ -1,5 +1,6 @@
 const { filter, snakeCase } = require('lodash')
 
+const setMoveWithSummary = require('../../middleware/set-move-with-summary')
 const presenters = require('../../presenters')
 const FormWizardController = require('../form-wizard')
 
@@ -10,6 +11,7 @@ class FrameworkSectionController extends FormWizardController {
     this.use(this.setMoveId)
     this.use(this.setEditableStatus)
     this.use(this.seti18nContext)
+    this.use(setMoveWithSummary)
   }
 
   seti18nContext(req, res, next) {

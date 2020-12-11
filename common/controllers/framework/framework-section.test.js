@@ -1,7 +1,13 @@
+const proxyquire = require('proxyquire')
+
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 
-const Controller = require('./framework-section')
+const setMoveWithSummary = sinon.stub()
+
+const Controller = proxyquire('./framework-section', {
+  '../../middleware/set-move-with-summary': setMoveWithSummary,
+})
 
 const controller = new Controller({
   route: '/',
@@ -50,8 +56,14 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set move with summary', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          setMoveWithSummary
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(4)
+        expect(controller.use).to.be.callCount(5)
       })
     })
 
