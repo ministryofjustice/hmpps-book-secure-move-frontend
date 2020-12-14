@@ -258,7 +258,7 @@ describe('Presenters', function () {
               })
             })
 
-            it('should return unconfirmed banner', function () {
+            it('should return start PER banner', function () {
               expect(output).to.deep.equal('__assessmentToStartBanner__')
             })
 
@@ -266,6 +266,42 @@ describe('Presenters', function () {
               expect(
                 assessmentToStartBannerStub
               ).to.have.been.calledOnceWithExactly({
+                baseUrl: '/move/12345/person-escort-record',
+                context: 'person_escort_record',
+                canAccess: mockArgs.canAccess,
+              })
+            })
+          })
+
+          context('when PER exists', function () {
+            beforeEach(function () {
+              output = presenter({
+                ...mockArgs,
+                move: {
+                  ...mockMove,
+                  profile: {
+                    youth_risk_assessment: null,
+                    person_escort_record: {
+                      id: '_per_12345',
+                      status: 'in_progress',
+                    },
+                  },
+                },
+              })
+            })
+
+            it('should return PER banner', function () {
+              expect(output).to.deep.equal('__assessmentToUnconfirmedBanner__')
+            })
+
+            it('should call presenter', function () {
+              expect(
+                assessmentToUnconfirmedBannerStub
+              ).to.have.been.calledOnceWithExactly({
+                assessment: {
+                  id: '_per_12345',
+                  status: 'in_progress',
+                },
                 baseUrl: '/move/12345/person-escort-record',
                 context: 'person_escort_record',
                 canAccess: mockArgs.canAccess,

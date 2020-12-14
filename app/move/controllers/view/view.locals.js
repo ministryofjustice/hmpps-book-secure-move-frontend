@@ -69,9 +69,12 @@ function getViewLocals(req) {
   ).map(section => {
     return {
       ...section,
-      previousAssessment: move._is_youth_move
-        ? find(youthAssessmentSections, { key: section.key })
-        : find(assessment, { frameworksSection: section.key }),
+      previousAssessment:
+        move._is_youth_move &&
+        youthRiskAssessment &&
+        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? find(youthAssessmentSections, { key: section.key })
+          : find(assessment, { frameworksSection: section.key }),
     }
   })
   const combinedSections = perAssessmentSections.reduce((acc, section) => {
@@ -86,7 +89,9 @@ function getViewLocals(req) {
   const combinedAssessmentSections = [
     ...perAssessmentSections,
     ...youthAssessmentSections.filter(
-      section => !combinedSections.includes(section.key)
+      section =>
+        FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
+        !combinedSections.includes(section.key)
     ),
   ]
 
@@ -103,11 +108,9 @@ function getViewLocals(req) {
     youthRiskAssessment,
     youthRiskAssessmentIsEnabled: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT,
     assessmentSections:
-      move._is_youth_move &&
-      FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
-      (youthRiskAssessment?.status !== 'confirmed' || !personEscortRecord)
-        ? sortBy(youthAssessmentSections, 'order')
-        : sortBy(combinedAssessmentSections, 'order'),
+      personEscortRecord || !move._is_youth_move
+        ? sortBy(combinedAssessmentSections, 'order')
+        : sortBy(youthAssessmentSections, 'order'),
     moveSummary: presenters.moveToMetaListComponent(move, updateActions),
     personalDetailsSummary: presenters.personToSummaryListComponent(person),
     additionalInfoSummary: presenters.moveToAdditionalInfoListComponent(move),

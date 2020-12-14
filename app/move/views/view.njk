@@ -246,6 +246,16 @@
     }) }}
   {% endif %}
 
+  {% if canAccess("youth_risk_assessment:view") and youthRiskAssessment %}
+    <p class="govuk-!-margin-bottom-2">
+      <a href="{{ move.id }}/youth-risk-assessment">
+        {{ t("actions::view_assessment", {
+          context: "youth_risk_assessment"
+        }) }}
+      </a>
+    </p>
+  {% endif %}
+
   {% if canCancelMove %}
     <p class="govuk-!-margin-bottom-0">
       <a href="{{ move.id }}/cancel" class="app-link--destructive">
