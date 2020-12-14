@@ -45,6 +45,7 @@
   "review": "Review",
   "start_assessment": "Start $t({{context}})",
   "print_assessment": "Print $t({{context}})",
+  "view_assessment": "View $t({{context}})",
   "provide_confirmation": "Provide confirmation",
   "confirm_and_complete_record": "Confirm and complete record",
   "add_item": "Add {{name}}",
