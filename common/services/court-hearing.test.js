@@ -1,6 +1,7 @@
 const apiClient = require('../lib/api-client')()
 
-const courtHearingService = require('./court-hearing')
+const CourtHearingService = require('./court-hearing')
+const courtHearingService = new CourtHearingService({ apiClient: apiClient })
 
 const mockCourtHearing = {
   start_time: '2020-10-20T13:00:00+00:00',
@@ -97,6 +98,7 @@ describe('Court Hearing Service', function () {
 
     beforeEach(async function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
+      sinon.stub(courtHearingService, 'format').returns(mockData)
     })
 
     context('by default', function () {
@@ -110,6 +112,10 @@ describe('Court Hearing Service', function () {
           mockData,
           {}
         )
+      })
+
+      it('should call format', function () {
+        expect(courtHearingService.format).to.be.calledOnceWithExactly(mockData)
       })
 
       it('should return court hearing', function () {

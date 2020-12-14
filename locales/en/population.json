@@ -36,5 +36,8 @@
   "edit": {
     "page_title_new": "Add numbers",
     "page_title_update": "Change numbers"
+  },
+  "breadcrumbs": {
+    "home": "Population Overview"
   }
 }

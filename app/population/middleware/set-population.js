@@ -11,6 +11,7 @@ async function setPopulation(req, res, next) {
         locationIds: locationId,
       }
     )
+    req.locationName = dailyFreeSpace?.[0]?.title
 
     const freeSpacePopulation =
       dailyFreeSpace?.[0]?.meta?.populations?.[0] || {}

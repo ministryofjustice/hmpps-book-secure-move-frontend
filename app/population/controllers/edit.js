@@ -5,6 +5,8 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 class DetailsController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
+
+    this.use(this.setBreadcrumbs)
     this.use(this.setCancelUrl)
     this.use(this.setPageTitle)
   }
@@ -47,6 +49,19 @@ class DetailsController extends FormWizardController {
     } catch (err) {
       next(err)
     }
+  }
+
+  setBreadcrumbs(req, res, next) {
+    const breadcrumbText = req.population
+      ? 'population::edit.page_title_update'
+      : 'population::edit.page_title_new'
+
+    res.breadcrumb({
+      text: req.t(breadcrumbText),
+      href: '',
+    })
+
+    next()
   }
 
   setCancelUrl(req, res, next) {
