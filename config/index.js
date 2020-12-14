@@ -7,6 +7,7 @@ const semverSort = require('semver-sort')
 
 const { version: APP_VERSION } = require('../package.json')
 
+const { customHeaders: CUSTOM_HEADERS } = require('./custom-headers')
 const { frameworks: frameworksPaths } = require('./paths')
 
 const API_VERSION = process.env.API_VERSION
@@ -91,6 +92,7 @@ module.exports = {
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
     USE_REDIS_CACHE: !!REDIS.SESSION,
   },
+  CUSTOM_HEADERS,
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',
   },

@@ -18,7 +18,7 @@ const models = require('./models')
 
 let instance
 
-module.exports = function () {
+module.exports = function (req) {
   if (instance) {
     return instance
   }
@@ -54,7 +54,7 @@ module.exports = function () {
   }
 
   insertRequestMiddleware(requestTimeout(API.TIMEOUT))
-  insertRequestMiddleware(requestHeaders)
+  insertRequestMiddleware(requestHeaders(req))
   insertRequestMiddleware(requestInclude)
 
   instance.insertMiddlewareAfter('app-request', processResponse)
