@@ -13,11 +13,12 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
 
   const assessmentType =
     // TODO: Remove once enabled
-    FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
-    move._is_youth_move &&
-    move.profile?.youth_risk_assessment?.status !== 'confirmed'
-      ? 'youth_risk_assessment'
-      : 'person_escort_record'
+    move.profile?.person_escort_record ||
+    !move._is_youth_move ||
+    move.profile?.youth_risk_assessment?.status === 'confirmed' ||
+    !FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+      ? 'person_escort_record'
+      : 'youth_risk_assessment'
   const assessment = move.profile[assessmentType]
   const baseUrl = `${moveUrl}/${kebabCase(assessmentType)}`
   const context = assessmentType
