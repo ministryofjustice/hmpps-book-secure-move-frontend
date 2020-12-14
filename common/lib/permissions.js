@@ -74,6 +74,8 @@ const supplierPermissions = [
   'moves:view:incoming',
   'moves:download',
   'move:view',
+  'person_escort_record:view',
+  'youth_risk_assessment:view',
 ]
 const prisonPermissions = [
   'moves:view:outgoing',

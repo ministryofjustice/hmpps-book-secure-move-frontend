@@ -309,6 +309,8 @@ describe('User class', function () {
           'moves:view:incoming',
           'moves:download',
           'move:view',
+          'person_escort_record:view',
+          'youth_risk_assessment:view',
         ])
       })
     })
