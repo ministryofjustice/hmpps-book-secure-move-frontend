@@ -1,12 +1,10 @@
-const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
-
 async function setPopulation(req, res, next) {
   try {
     const { locationId, date } = req.params
     let transfersIn
     let transfersOut
 
-    const dailyFreeSpace = await locationsFreeSpacesService.getPrisonFreeSpaces(
+    const dailyFreeSpace = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
       {
         dateFrom: date,
         dateTo: date,

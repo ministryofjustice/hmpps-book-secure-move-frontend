@@ -1,5 +1,7 @@
 const presenters = require('../../../common/presenters')
-const locationsFreeSpacesService = require('../../../common/services/locations-free-spaces')
+const locationsFreeSpacesService = {
+  getPrisonFreeSpaces: sinon.stub(),
+}
 
 const middleware = require('./set-results.population-table')
 
@@ -26,6 +28,10 @@ const mockPopulationTable = {
 }
 
 describe('Population middleware', function () {
+  beforeEach(function () {
+    locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
+  })
+
   describe('#setResultsPopulationTable()', function () {
     let res
     let req
@@ -34,7 +40,6 @@ describe('Population middleware', function () {
 
     beforeEach(function () {
       setResultsAsPopulationStub = sinon.stub().returns(mockPopulationTable)
-      sinon.stub(locationsFreeSpacesService, 'getPrisonFreeSpaces')
       sinon
         .stub(presenters, 'locationsToPopulationTableComponent')
         .returns(setResultsAsPopulationStub)
@@ -43,6 +48,9 @@ describe('Population middleware', function () {
       req = {
         dateRange: ['2020-08-01', '2020-08-05'],
         locations: mockLocations,
+        services: {
+          locationsFreeSpaces: locationsFreeSpacesService,
+        },
       }
     })
 
@@ -52,10 +60,6 @@ describe('Population middleware', function () {
         setResultsAsPopulationStub = sinon.stub().returnsArg(0)
 
         await middleware(req, res, next)
-      })
-
-      afterEach(function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.restore()
       })
 
       it('should call the data service with request body', function () {
