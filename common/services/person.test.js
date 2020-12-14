@@ -4,9 +4,10 @@ const apiClient = require('../lib/api-client')()
 
 const unformatStub = sinon.stub()
 
-const personService = proxyquire('./person', {
+const PersonService = proxyquire('./person', {
   './person/person.unformat': unformatStub,
 })
+const personService = new PersonService({ apiClient })
 
 const genderMockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 const ethnicityMockId = 'b95bfb7c-18cd-419d-8119-2dee1506726f'
