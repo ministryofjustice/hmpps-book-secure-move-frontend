@@ -5,7 +5,6 @@ import parsers from '../../common/parsers'
 import { fillInForm } from './_helpers'
 import { pmuUser } from './_roles'
 import {
-  home,
   incomingMoves,
   outgoingMoves,
   allocations,
@@ -13,37 +12,48 @@ import {
 } from './_routes'
 import { page, movesDashboardPage } from './pages'
 
-const jumpToDate = async (t, paginatedPage, value) => {
-  const expectedDate = dateFns.format(parsers.date(value), 'yyyy-MM-dd')
+const testCases = [
+  {
+    navigateTo: outgoingMoves,
+    title: 'Outgoing moves',
+    dateString: '2020-10-01',
+  },
+  {
+    navigateTo: incomingMoves,
+    title: 'Incoming moves',
+    dateString: 'next tuesday',
+  },
+  {
+    navigateTo: allocations,
+    title: 'Allocations',
+    dateString: '1 Jan',
+  },
+  {
+    navigateTo: singleRequests,
+    title: 'Single requests',
+    dateString: 'last fri',
+  },
+]
 
-  await t.navigateTo(outgoingMoves)
-  await t.click(movesDashboardPage.nodes.pagination.dateSelectLink)
-  await fillInForm([
-    {
-      selector: page.nodes.dateSelectInput,
-      value,
-    },
-  ])
-  await page.submitForm()
-  await t.expect(page.getCurrentUrl()).contains(expectedDate)
-}
+fixture('Jump to date')
 
-fixture('Jump to date').beforeEach(async t => {
-  await t.useRole(pmuUser).navigateTo(home)
-})
+testCases.forEach(testCase => {
+  test.before(async t => {
+    await t.useRole(pmuUser).navigateTo(testCase.navigateTo)
+  })(`${testCase.title} using '${testCase.dateString}'`, async t => {
+    const expectedDate = dateFns.format(
+      parsers.date(testCase.dateString),
+      'yyyy-MM-dd'
+    )
 
-test('Outgoing moves', async t => {
-  await jumpToDate(t, outgoingMoves, '2020-10-01')
-})
-
-test('Incoming moves', async t => {
-  await jumpToDate(t, incomingMoves, 'next tuesday')
-})
-
-test('Allocations', async t => {
-  await jumpToDate(t, allocations, '1 Jan')
-})
-
-test('Single requests', async t => {
-  await jumpToDate(t, singleRequests, 'last fri')
+    await t.click(movesDashboardPage.nodes.pagination.dateSelectLink)
+    await fillInForm([
+      {
+        selector: page.nodes.dateSelectInput,
+        value: testCase.dateString,
+      },
+    ])
+    await page.submitForm()
+    await t.expect(page.getCurrentUrl()).contains(expectedDate)
+  })
 })
