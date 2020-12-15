@@ -27,6 +27,19 @@ MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
     if (label) {
       label.htmlFor = el.id
     }
+
+    // ensure conditionally revealed inputs correctly targetted
+    const ariaControls = $el.attr('aria-controls')
+
+    if (ariaControls) {
+      const $ariaControlled = $el.parent().next()
+
+      if ($ariaControlled.attr('id') === ariaControls) {
+        const correctConditionalId = 'conditional-' + el.id
+        $el.attr('aria-controls', correctConditionalId)
+        $ariaControlled.attr('id', correctConditionalId)
+      }
+    }
   })
 
   this.updateContent(index, item)
