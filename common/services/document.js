@@ -1,8 +1,8 @@
 const FormData = require('form-data')
 
-const apiClient = require('../lib/api-client')()
+const BaseService = require('./base')
 
-const documentService = {
+class DocumentService extends BaseService {
   create(file, data) {
     const formData = new FormData()
     formData.append('data[attributes][file]', data, {
@@ -10,10 +10,10 @@ const documentService = {
       knownLength: file.size,
     })
 
-    return apiClient
+    return this.apiClient
       .create('document', formData)
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = documentService
+module.exports = DocumentService
