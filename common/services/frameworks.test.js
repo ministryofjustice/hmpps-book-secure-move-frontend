@@ -115,6 +115,54 @@ describe('Services', function () {
           })
         })
 
+        context('with prefix', function () {
+          let transformed
+          beforeEach(function () {
+            mockQuestion = {
+              ...mockQuestion,
+              display: {
+                prefix: '£',
+              },
+            }
+
+            transformed = frameworksService.transformQuestion(
+              'question-key',
+              mockQuestion
+            )
+          })
+
+          it('should format correctly', function () {
+            expect(transformed).to.have.property('prefix')
+            expect(transformed.prefix).to.deep.equal({
+              text: '£',
+            })
+          })
+        })
+
+        context('with suffix', function () {
+          let transformed
+          beforeEach(function () {
+            mockQuestion = {
+              ...mockQuestion,
+              display: {
+                suffix: 'per item',
+              },
+            }
+
+            transformed = frameworksService.transformQuestion(
+              'question-key',
+              mockQuestion
+            )
+          })
+
+          it('should format correctly', function () {
+            expect(transformed).to.have.property('suffix')
+            expect(transformed.suffix).to.deep.equal({
+              text: 'per item',
+            })
+          })
+        })
+
         context('with description', function () {
           beforeEach(function () {
             mockQuestion = {
@@ -305,6 +353,8 @@ describe('Services', function () {
                     display: {
                       rows: 2,
                       character_width: 5,
+                      prefix: '£',
+                      suffix: 'per item',
                     },
                     validations: [
                       {
@@ -366,6 +416,12 @@ describe('Services', function () {
                     hint: {
                       html: 'Some hint information',
                       classes: 'markdown',
+                    },
+                    prefix: {
+                      text: '£',
+                    },
+                    suffix: {
+                      text: 'per item',
                     },
                     validate: [
                       {

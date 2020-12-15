@@ -36,7 +36,8 @@ function buildCommentField(
   followupComment = {}
 ) {
   const component = uiComponentMap[followupComment.type] || 'govukTextarea'
-  const { rows = 4, character_width: charWidth } = followupComment.display || {}
+  const { rows = 4, character_width: charWidth, prefix, suffix } =
+    followupComment.display || {}
   const field = {
     rows,
     component,
@@ -55,6 +56,18 @@ function buildCommentField(
     field.hint = {
       html: markdown.render(followupComment.hint),
       classes: 'markdown',
+    }
+  }
+
+  if (prefix) {
+    field.prefix = {
+      text: prefix,
+    }
+  }
+
+  if (suffix) {
+    field.suffix = {
+      text: suffix,
     }
   }
 
@@ -94,6 +107,8 @@ const frameworksService = {
     {
       description,
       display = {},
+      prefix,
+      suffix,
       hint,
       list_item_name: itemName,
       options,
@@ -131,6 +146,18 @@ const frameworksService = {
       field.hint = {
         html: markdown.render(hint),
         classes: 'markdown',
+      }
+    }
+
+    if (display.prefix) {
+      field.prefix = {
+        text: display.prefix,
+      }
+    }
+
+    if (display.suffix) {
+      field.suffix = {
+        text: display.suffix,
       }
     }
 
