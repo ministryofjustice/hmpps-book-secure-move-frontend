@@ -1,12 +1,11 @@
 const dateFunctions = require('date-fns')
 const { isNil, isUndefined, mapValues, omitBy, pick } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
-
+const BaseService = require('./base')
 const moveService = require('./move')
 
 const noMoveIdMessage = 'No move ID supplied'
-const singleRequestService = {
+class SingleRequestService extends BaseService {
   getAll({
     status,
     moveDate = [],
@@ -83,11 +82,11 @@ const singleRequestService = {
         isNil
       ),
     })
-  },
+  }
 
   async getDownload(args) {
     return moveService.getDownload(args)
-  },
+  }
 
   getCancelled({
     moveDate = [],
@@ -129,7 +128,7 @@ const singleRequestService = {
         ...dateRanges,
       },
     })
-  },
+  }
 
   approve(id, { date } = {}) {
     if (!id) {
@@ -138,7 +137,7 @@ const singleRequestService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('move', id)
       .all('approve')
       .post({
@@ -146,7 +145,7 @@ const singleRequestService = {
         date,
       })
       .then(response => response.data)
-  },
+  }
 
   reject(id, data = {}) {
     if (!id) {
@@ -168,7 +167,7 @@ const singleRequestService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('move', id)
       .all('reject')
       .post({
@@ -176,7 +175,7 @@ const singleRequestService = {
         ...mappedData,
       })
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = singleRequestService
+module.exports = SingleRequestService
