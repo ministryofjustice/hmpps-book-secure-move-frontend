@@ -4,10 +4,12 @@ function MockFormData() {}
 
 MockFormData.prototype.append = sinon.stub()
 
-const documentService = proxyquire('./document', {
+const apiClient = require('../lib/api-client')()
+
+const DocumentService = proxyquire('./document', {
   'form-data': MockFormData,
 })
-const apiClient = require('../lib/api-client')()
+const documentService = new DocumentService({ apiClient })
 
 describe('Document Service', function () {
   describe('#create()', function () {
