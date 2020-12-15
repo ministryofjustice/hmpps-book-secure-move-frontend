@@ -10,6 +10,8 @@
 {% set items = params.items %}
 
 <div class="moj-add-another">
+  {{ params.hint.html | safe if params.hint.html else params.hint.text }}
+
   {% for item in items %}
     {% if item.html or item.text %}
       {% call govukFieldset({

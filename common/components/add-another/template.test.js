@@ -32,6 +32,38 @@ describe('Add another component', function () {
     })
   })
 
+  context('with hint', function () {
+    context('when html is passed to text', function () {
+      it('should render escaped html', function () {
+        const $ = renderComponentHtmlToCheerio('add-another', {
+          title: { text: 'Title' },
+          hint: {
+            text: '<span>Reference</span>',
+          },
+        })
+
+        const $component = $('body')
+        expect($component.html().trim()).to.contain(
+          '&lt;span&gt;Reference&lt;/span&gt;'
+        )
+      })
+    })
+
+    context('when html is passed to html', function () {
+      it('should render unescaped html', function () {
+        const $ = renderComponentHtmlToCheerio('add-another', {
+          title: { text: 'Title' },
+          hint: {
+            html: '<span>Reference</span>',
+          },
+        })
+
+        const $component = $('body')
+        expect($component.html().trim()).to.contain('<span>Reference</span>')
+      })
+    })
+  })
+
   context('with items', function () {
     let $, $component
 
