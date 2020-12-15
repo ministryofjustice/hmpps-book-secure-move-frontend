@@ -117,6 +117,7 @@ describe('Move controllers', function () {
           services: {
             person: personService,
           },
+          t: sinon.stub().returnsArg(0),
         }
         res = {
           render: sinon.stub(),
@@ -174,7 +175,11 @@ describe('Move controllers', function () {
         'when person has a prison number and move is not supported',
         function () {
           before(function () {
-            person = { id: 'unsupported', prison_number: 'AAA' }
+            person = {
+              id: 'unsupported',
+              prison_number: 'AAA',
+              _fullname: 'SMITH, JONES',
+            }
             category = {
               key: 'A',
               move_supported: false,
@@ -188,11 +193,23 @@ describe('Move controllers', function () {
           })
 
           it('should render the move not supported page', function () {
-            expect(res.render).to.be.calledOnceWithExactly(
-              'move/views/create/move-not-supported',
+            expect(res.render).to.be.calledOnceWithExactly('action-prevented', {
+              pageTitle: 'validation::move_not_supported.heading',
+              message: 'validation::move_not_supported.message',
+            })
+          })
+
+          it('should call translations', function () {
+            expect(req.t).to.have.been.calledWithExactly(
+              'validation::move_not_supported.heading',
               {
-                person,
-                category,
+                name: person._fullname,
+              }
+            )
+            expect(req.t).to.have.been.calledWithExactly(
+              'validation::move_not_supported.message',
+              {
+                category: category.key,
               }
             )
           })
