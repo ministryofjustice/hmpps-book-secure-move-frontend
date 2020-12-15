@@ -1,8 +1,12 @@
 const apiClient = require('../lib/api-client')()
 
-const moveService = require('./move')
+const MoveService = require('./move')
+const moveService = new MoveService({ apiClient })
 const SingleRequestService = require('./single-request')
-const singleRequestService = new SingleRequestService({ apiClient: apiClient })
+const singleRequestService = new SingleRequestService({
+  apiClient,
+  services: { move: moveService },
+})
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',

@@ -2,10 +2,17 @@ const dateFunctions = require('date-fns')
 const { isNil, isUndefined, mapValues, omitBy, pick } = require('lodash')
 
 const BaseService = require('./base')
-const moveService = require('./move')
+const MoveService = require('./move')
 
 const noMoveIdMessage = 'No move ID supplied'
 class SingleRequestService extends BaseService {
+  constructor(req) {
+    super()
+    this.moveService =
+      (req && req.services && req.services.move) ||
+      new MoveService({ apiClient: this.apiClient })
+  }
+
   getAll({
     status,
     moveDate = [],
@@ -55,7 +62,7 @@ class SingleRequestService extends BaseService {
         }
     }
 
-    return moveService.getAll({
+    return this.moveService.getAll({
       isAggregation,
       include: include || [
         'from_location',
@@ -85,7 +92,7 @@ class SingleRequestService extends BaseService {
   }
 
   async getDownload(args) {
-    return moveService.getDownload(args)
+    return this.moveService.getDownload(args)
   }
 
   getCancelled({
@@ -108,7 +115,7 @@ class SingleRequestService extends BaseService {
       isUndefined
     )
 
-    return moveService.getAll({
+    return this.moveService.getAll({
       isAggregation: false,
       include: include || [
         'from_location',
