@@ -33,9 +33,7 @@ describe('Development tools controllers', function () {
     })
 
     it('should call template', function () {
-      expect(resMock.render.args[0][0]).to.equal(
-        '_development-tools/views/permissions'
-      )
+      expect(resMock.render.args[0][0]).to.equal('tools/views/permissions')
     })
 
     it('should set locals', function () {

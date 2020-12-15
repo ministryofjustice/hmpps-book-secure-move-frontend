@@ -56,9 +56,13 @@ class CreateBaseController extends FormWizardController {
       return next()
     }
 
-    return res.render('move/views/create/move-not-supported', {
-      person,
-      category,
+    return res.render('action-prevented', {
+      pageTitle: req.t('validation::move_not_supported.heading', {
+        name: person._fullname,
+      }),
+      message: req.t('validation::move_not_supported.message', {
+        category: category.key,
+      }),
     })
   }
 
