@@ -21,6 +21,8 @@ const batchRequests = async (clientMethodCall, props = {}, propPaths = []) => {
       propPathValue = propPathValue.split(',')
     }
 
+    const { apiClient } = props
+
     const chunks = chunk(propPathValue, LOCATIONS_BATCH_SIZE).map(id =>
       id.join(',')
     )
@@ -29,7 +31,7 @@ const batchRequests = async (clientMethodCall, props = {}, propPaths = []) => {
       chunks.map(chunk => {
         const batchedProps = cloneDeep(props)
         set(batchedProps, propPath, chunk)
-        return clientMethodCall(batchedProps)
+        return clientMethodCall({ ...batchedProps, apiClient: apiClient })
       })
     ).then(response => {
       if (props.isAggregation) {

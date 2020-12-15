@@ -15,13 +15,15 @@ const batchRequestStub = sinon.stub().callsFake(batchRequest)
 const restClient = sinon.stub()
 restClient.post = sinon.stub()
 
-const moveService = proxyquire('./move', {
+const MoveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
   '../lib/api-client/rest-client': restClient,
 })
+
+const moveService = new MoveService({ apiClient: apiClient })
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -58,7 +60,7 @@ const mockMoves = [
 describe('Move Service', function () {
   describe('default include', function () {
     it('should contain default include', function () {
-      expect(moveService.defaultInclude).to.deep.equal([
+      expect(moveService.defaultInclude()).to.deep.equal([
         'allocation',
         'court_hearings',
         'from_location',
@@ -328,7 +330,7 @@ describe('Move Service', function () {
         expect(batchRequestStub).to.be.calledOnce
         const batchArgs = batchRequestStub.firstCall.args
         expect(typeof batchArgs[0]).to.equal('function')
-        expect(batchArgs[1]).to.deep.equal(props)
+        expect(batchArgs[1]).to.deep.equal({ ...props, apiClient: apiClient })
         expect(batchArgs[2]).to.deep.equal([
           'from_location_id',
           'to_location_id',
@@ -974,7 +976,7 @@ describe('Move Service', function () {
       })
       it('should call find method with data', function () {
         expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
-          include: [...moveService.defaultInclude, 'important_events'],
+          include: [...moveService.defaultInclude(), 'important_events'],
         })
       })
       it('should return move', function () {
@@ -989,7 +991,7 @@ describe('Move Service', function () {
       it('should call find method with data', function () {
         expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
           include: [
-            ...moveService.defaultInclude,
+            ...moveService.defaultInclude(),
             'timeline_events',
             'timeline_events.eventable',
           ],
