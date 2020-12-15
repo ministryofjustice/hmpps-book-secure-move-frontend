@@ -304,42 +304,5 @@ describe('Back-end API client', function () {
         })
       })
     })
-
-    context('on subsequent calls', function () {
-      let firstInstance
-      let secondInstance
-      let thirdInstance
-
-      beforeEach(function () {
-        firstInstance = jsonApi()
-        secondInstance = jsonApi()
-        thirdInstance = jsonApi()
-      })
-
-      it('should only create one new client', function () {
-        expect(JsonApiStub.prototype.init).to.be.calledOnce
-      })
-
-      describe('first instance', function () {
-        it('should return an client API', function () {
-          expect(firstInstance).to.be.a('object')
-          expect(firstInstance).to.deep.equal(new JsonApiStub())
-        })
-      })
-
-      describe('third instance', function () {
-        it('should return an client API', function () {
-          expect(thirdInstance).to.be.a('object')
-          expect(thirdInstance).to.deep.equal(new JsonApiStub())
-        })
-      })
-
-      describe('second instance', function () {
-        it('should return an client API', function () {
-          expect(secondInstance).to.be.a('object')
-          expect(secondInstance).to.deep.equal(new JsonApiStub())
-        })
-      })
-    })
   })
 })

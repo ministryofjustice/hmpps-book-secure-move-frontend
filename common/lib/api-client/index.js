@@ -16,14 +16,8 @@ const {
 } = require('./middleware')
 const models = require('./models')
 
-let instance
-
 module.exports = function (req) {
-  if (instance) {
-    return instance
-  }
-
-  instance = new JsonApi({
+  const instance = new JsonApi({
     apiUrl: API.BASE_URL,
     logger: false,
   })
