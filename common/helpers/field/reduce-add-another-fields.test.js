@@ -45,10 +45,10 @@ describe('Field helpers', function () {
           skip: true,
           prefix: 'foo[0]',
           name: 'foo[0][baz]',
-          id: 'foo-0--baz-',
+          id: 'foo-0--baz',
           attributes: {
             'data-name': 'foo[%index%][baz]',
-            'data-id': 'foo-%index%--baz-',
+            'data-id': 'foo-%index%--baz',
           },
         })
       })
@@ -59,22 +59,22 @@ describe('Field helpers', function () {
             {
               attributes: {
                 'data-name': 'foo[%index%][bar]',
-                'data-id': 'foo-%index%--bar-',
+                'data-id': 'foo-%index%--bar',
                 attr: 'value',
               },
             },
             {
               attributes: {
-                'data-name': 'foo[%index%][bar][2]',
-                'data-id': 'foo-%index%--bar--2-',
+                'data-name': 'foo[%index%][bar]',
+                'data-id': 'foo-%index%--bar-2',
               },
             },
           ],
           skip: true,
           prefix: 'foo[0]',
           name: 'foo[0][bar]',
-          id: 'foo-0--bar-',
-          idPrefix: 'foo-0--bar-',
+          id: 'foo-0--bar',
+          idPrefix: 'foo-0--bar',
         })
       })
     })
@@ -96,10 +96,10 @@ describe('Field helpers', function () {
           skip: true,
           prefix: 'foo[1]',
           name: 'foo[1][baz]',
-          id: 'foo-1--baz-',
+          id: 'foo-1--baz',
           attributes: {
             'data-name': 'foo[%index%][baz]',
-            'data-id': 'foo-%index%--baz-',
+            'data-id': 'foo-%index%--baz',
           },
         })
       })
@@ -110,22 +110,22 @@ describe('Field helpers', function () {
             {
               attributes: {
                 'data-name': 'foo[%index%][bar]',
-                'data-id': 'foo-%index%--bar-',
+                'data-id': 'foo-%index%--bar',
                 attr: 'value',
               },
             },
             {
               attributes: {
-                'data-name': 'foo[%index%][bar][2]',
-                'data-id': 'foo-%index%--bar--2-',
+                'data-name': 'foo[%index%][bar]',
+                'data-id': 'foo-%index%--bar-2',
               },
             },
           ],
           skip: true,
           prefix: 'foo[1]',
           name: 'foo[1][bar]',
-          id: 'foo-1--bar-',
-          idPrefix: 'foo-1--bar-',
+          id: 'foo-1--bar',
+          idPrefix: 'foo-1--bar',
         })
       })
     })
