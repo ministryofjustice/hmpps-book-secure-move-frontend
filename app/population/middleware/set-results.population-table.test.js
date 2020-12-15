@@ -1,30 +1,29 @@
-const presenters = require('../../../common/presenters')
+const dateTableDecorator = { decorateAsDateTable: sinon.stub() }
 const locationsFreeSpacesService = {
   getPrisonFreeSpaces: sinon.stub(),
 }
+const locationsToPopulationComponent = {
+  locationsToPopulationTable: sinon.stub(),
+}
 
-const middleware = require('./set-results.population-table')
+const proxyquire = require('proxyquire')
 
-const mockCapacities = [
-  {
-    id: 'ABADCAFE',
-    meta: {
-      populations: [
-        { id: 'A', free_spaces: 0 },
-        { id: 'B', free_spaces: -1 },
-        { id: 'C', free_spaces: -1 },
-        { id: 'D' },
-        { free_spaces: 0 },
-      ],
-    },
-  },
-]
+const middleware = proxyquire('./set-results.population-table', {
+  '../../../common/services/locations-free-spaces': locationsFreeSpacesService,
+  '../../../common/presenters/date-table/date-table-decorator': dateTableDecorator,
+  '../../../common/presenters/date-table/locations-to-population-table-component': locationsToPopulationComponent,
+})
 
 const mockLocations = ['ABADCAFE', 'BAADF00D']
 
 const mockPopulationTable = {
-  head: { text: 'Title' },
-  rows: [],
+  head: { text: 'Title', date: '2020-06-01' },
+  rows: [{ text: 'Value', date: '2020-06-01' }],
+}
+
+const mockDateTable = {
+  head: { text: 'Title', date: '2020-06-01', classes: 'date-stying' },
+  rows: [{ text: 'Value', date: '2020-06-01', classes: 'date-styling' }],
 }
 
 describe('Population middleware', function () {
@@ -36,17 +35,21 @@ describe('Population middleware', function () {
     let res
     let req
     let next
-    let setResultsAsPopulationStub
 
     beforeEach(function () {
-      setResultsAsPopulationStub = sinon.stub().returns(mockPopulationTable)
-      sinon
-        .stub(presenters, 'locationsToPopulationTableComponent')
-        .returns(setResultsAsPopulationStub)
+      locationsToPopulationComponent.locationsToPopulationTable.returns(
+        sinon.stub().returns(mockPopulationTable)
+      )
+      dateTableDecorator.decorateAsDateTable.returns(mockDateTable)
+
       next = sinon.stub()
-      res = {}
+      res = {
+        locals: {
+          today: new Date('2020-06-03'),
+        },
+      }
       req = {
-        dateRange: ['2020-08-01', '2020-08-05'],
+        dateRange: ['2020-06-01', '2020-06-05'],
         locations: mockLocations,
         services: {
           locationsFreeSpaces: locationsFreeSpacesService,
@@ -54,11 +57,14 @@ describe('Population middleware', function () {
       }
     })
 
+    afterEach(function () {
+      locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
+      locationsToPopulationComponent.locationsToPopulationTable.resetHistory()
+      dateTableDecorator.decorateAsDateTable.resetHistory()
+    })
+
     context('when service resolves', function () {
       beforeEach(async function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
-        setResultsAsPopulationStub = sinon.stub().returnsArg(0)
-
         await middleware(req, res, next)
       })
 
@@ -66,15 +72,25 @@ describe('Population middleware', function () {
         expect(
           locationsFreeSpacesService.getPrisonFreeSpaces
         ).to.have.been.calledOnceWith({
-          dateFrom: '2020-08-01',
-          dateTo: '2020-08-05',
+          dateFrom: '2020-06-01',
+          dateTo: '2020-06-05',
           locationIds: 'ABADCAFE,BAADF00D',
         })
       })
 
+      it('should call locationsToPopulationTable presenter', function () {
+        expect(
+          locationsToPopulationComponent.locationsToPopulationTable
+        ).to.have.been.calledOnce
+      })
+
+      it('should call decorateAsDateTable decorator', function () {
+        expect(dateTableDecorator.decorateAsDateTable).to.have.been.calledOnce
+      })
+
       it('should set resultsAsPopulationTable on req', function () {
         expect(req).to.have.property('resultsAsPopulationTable')
-        expect(req.resultsAsPopulationTable).to.deep.equal(mockPopulationTable)
+        expect(req.resultsAsPopulationTable).to.deep.equal(mockDateTable)
       })
 
       it('should call next', function () {
@@ -96,21 +112,6 @@ describe('Population middleware', function () {
 
       it('should call next with error', function () {
         expect(next).to.have.been.calledOnceWithExactly(mockError)
-      })
-    })
-
-    context('calling locationsToPopulationTable presenter', function () {
-      beforeEach(async function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
-
-        await middleware(req, res, next)
-      })
-
-      it('should return rendered table', function () {
-        expect(req.resultsAsPopulationTable).to.deep.equal({
-          head: { text: 'Title' },
-          rows: [],
-        })
       })
     })
   })

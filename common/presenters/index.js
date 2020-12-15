@@ -26,7 +26,6 @@ const moveToTimelineComponent = require('./move-to-timeline-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
-const locationsToPopulationTableComponent = require('./population-table/locations-to-population-table-component')
 const populationToGrid = require('./population-to-grid')
 const profileToCardComponent = require('./profile-to-card-component')
 const singleRequestsToTableComponent = require('./single-requests-to-table-component')
@@ -52,7 +51,6 @@ module.exports = {
   frameworkSectionToPanelList,
   frameworkStepToSummary,
   frameworkToTaskListComponent,
-  locationsToPopulationTableComponent,
   movesByLocation,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
