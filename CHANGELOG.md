@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.61.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.60.1...v2.61.0) (2020-12-15)
+
+
+### Features
+
+* Add breadcrumb to population pages ([431204c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/431204ca7deb281fd1e938afdfe306f98e859bd1))
+* **move:** Show medical and serious incidents on profile and dashboard ([b5755bf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b5755bfa696d120ad488a7f3daf1d1a647c28784))
+* Add support for development tools ([cbfb4f4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cbfb4f49b993292046301c413398bf903a63f7e8))
+
+
+### Bug Fixes
+
+* Cater for existing Person Escort Record during youth risk journey ([0a6ac5b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0a6ac5b533c1d23cddcc6aa44ffd53f1449b5c8d))
+* Make filter remove icons show up properly ([16c7c35](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/16c7c35ad88b9b5ee12d7c70d9c52fc55cb1991b))
+* Return empty breadcrumbs if not init correctly ([5336618](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/533661867d1ffeb4e95e5b365b74fcf10a550f9c))
+* Update incorrect reference to template when move is not supported ([9983c1e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9983c1e26a828d164867559d89c3df65b68748f2))
+* Update reference to tools template ([9cc891d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9cc891d3662abb2b2f0f190ac465c716b4e5c657))
+
 ### [2.60.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.60.0...v2.60.1) (2020-12-08)
 
 
