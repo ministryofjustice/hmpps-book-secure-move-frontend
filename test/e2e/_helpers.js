@@ -37,9 +37,12 @@ const {
 function errorHandler(body) {
   return err => {
     Sentry.withScope(scope => {
-      err.errors.forEach((apiErr, idx) => {
-        scope.setContext(`error_${idx}`, apiErr)
-      })
+      if (err.errors && err.errors.length > 0) {
+        err.errors.forEach((apiErr, idx) => {
+          scope.setContext(`error_${idx}`, apiErr)
+        })
+      }
+
       scope.setContext('body', body)
       scope.setContext('circle', {
         'Workflow ID': CIRCLE_WORKFLOW_ID,
