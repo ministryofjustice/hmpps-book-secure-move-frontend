@@ -11,12 +11,14 @@ import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 
 import referenceDataHelpers from '../../common/helpers/reference-data'
 import moveService from '../../common/services/move'
-import personService from '../../common/services/person'
+import PersonService from '../../common/services/person'
 import personEscortRecordService from '../../common/services/person-escort-record'
 import profileService from '../../common/services/profile'
 import referenceDataService from '../../common/services/reference-data'
 import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
+
+const personService = new PersonService()
 
 if (SENTRY.DSN) {
   Sentry.init({
