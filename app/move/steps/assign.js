@@ -1,6 +1,5 @@
+const create = require('../app/new/steps')
 const controllers = require('../controllers/assign')
-
-const create = require('./create')
 
 const assignSteps = {
   '/': {

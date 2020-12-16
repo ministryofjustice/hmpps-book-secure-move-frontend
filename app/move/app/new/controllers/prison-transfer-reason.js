@@ -1,7 +1,7 @@
 const { find, set } = require('lodash')
 
-const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const fieldHelpers = require('../../../../../common/helpers/field')
+const referenceDataHelpers = require('../../../../../common/helpers/reference-data')
 
 const CreateBaseController = require('./base')
 

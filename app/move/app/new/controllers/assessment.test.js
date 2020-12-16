@@ -1,5 +1,5 @@
-const fieldHelpers = require('../../../../common/helpers/field')
-const presenters = require('../../../../common/presenters')
+const fieldHelpers = require('../../../../../common/helpers/field')
+const presenters = require('../../../../../common/presenters')
 
 const Controller = require('./assessment')
 const BaseController = require('./base')

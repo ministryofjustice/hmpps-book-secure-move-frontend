@@ -1,17 +1,11 @@
 const { capitalize } = require('lodash')
-const proxyquire = require('proxyquire')
 
-const analytics = require('../../../../common/lib/analytics')
-const filters = require('../../../../config/nunjucks/filters')
-const shouldSaveCourtHearingsField = require('../../fields/should-save-court-hearings')
+const analytics = require('../../../../../common/lib/analytics')
+const filters = require('../../../../../config/nunjucks/filters')
+const shouldSaveCourtHearingsField = require('../../../fields/should-save-court-hearings')
 
 const BaseController = require('./base')
-
-const Controller = proxyquire('./save', {
-  '../../../moves': {
-    mountpath: '/moves',
-  },
-})
+const Controller = require('./save')
 
 const controller = new Controller({ route: '/' })
 

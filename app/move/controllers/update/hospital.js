@@ -1,4 +1,4 @@
-const HospitalController = require('../create/hospital')
+const HospitalController = require('../../app/new/controllers/hospital')
 
 const UpdateBase = require('./base')
 

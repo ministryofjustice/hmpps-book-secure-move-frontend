@@ -1,8 +1,8 @@
 const { reject } = require('lodash')
 const multer = require('multer')
 
-const APIDocumentStorage = require('../../../../common/lib/multer.api-document.storage')
-const { FILE_UPLOADS } = require('../../../../config')
+const APIDocumentStorage = require('../../../../../common/lib/multer.api-document.storage')
+const { FILE_UPLOADS } = require('../../../../../config')
 
 const CreateBaseController = require('./base')
 

@@ -1,7 +1,7 @@
 const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
-const analytics = require('../../../../common/lib/analytics')
-const filters = require('../../../../config/nunjucks/filters')
+const analytics = require('../../../../../common/lib/analytics')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 

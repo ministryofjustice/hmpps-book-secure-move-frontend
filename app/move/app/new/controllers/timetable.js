@@ -1,4 +1,4 @@
-const presenters = require('../../../../common/presenters')
+const presenters = require('../../../../../common/presenters')
 
 const CreateBaseController = require('./base')
 

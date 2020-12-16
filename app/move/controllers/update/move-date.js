@@ -1,5 +1,5 @@
 const { formatDate } = require('../../../../config/nunjucks/filters')
-const CreateMoveDateController = require('../create/move-date')
+const CreateMoveDateController = require('../../app/new/controllers/move-date')
 
 const UpdateBase = require('./base')
 

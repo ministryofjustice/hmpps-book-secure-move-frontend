@@ -1,6 +1,6 @@
 const timezoneMock = require('timezone-mock')
 
-const filters = require('../../../../config/nunjucks/filters')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 const Controller = require('./hospital')

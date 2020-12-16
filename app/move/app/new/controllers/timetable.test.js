@@ -1,4 +1,4 @@
-const presenters = require('../../../../common/presenters')
+const presenters = require('../../../../../common/presenters')
 const personService = {
   getTimetableByDate: sinon.stub(),
 }

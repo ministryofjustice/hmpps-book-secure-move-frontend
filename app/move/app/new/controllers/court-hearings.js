@@ -1,9 +1,9 @@
 const { formatISO, isValid, parseISO } = require('date-fns')
 const { find, pick } = require('lodash')
 
-const presenters = require('../../../../common/presenters')
-const componentService = require('../../../../common/services/component')
-const filters = require('../../../../config/nunjucks/filters')
+const presenters = require('../../../../../common/presenters')
+const componentService = require('../../../../../common/services/component')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 

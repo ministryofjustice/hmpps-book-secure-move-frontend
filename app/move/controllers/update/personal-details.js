@@ -1,6 +1,6 @@
 const { isEqual, pick } = require('lodash')
 
-const PersonalDetails = require('../create/personal-details')
+const PersonalDetails = require('../../app/new/controllers/personal-details')
 
 const UpdateBase = require('./base')
 

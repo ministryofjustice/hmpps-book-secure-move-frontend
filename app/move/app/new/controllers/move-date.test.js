@@ -1,4 +1,4 @@
-const filters = require('../../../../config/nunjucks/filters')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const BaseController = require('./base')
 const Controller = require('./move-date')

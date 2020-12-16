@@ -1,6 +1,6 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const commonMiddleware = require('../../../../common/middleware')
+const commonMiddleware = require('../../../../../common/middleware')
 
 const BaseController = require('./base')
 const Controller = require('./move-details')

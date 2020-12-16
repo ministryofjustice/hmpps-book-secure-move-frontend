@@ -1,4 +1,5 @@
-const { FEATURE_FLAGS } = require('../../../config')
+const { FEATURE_FLAGS } = require('../../../../config')
+
 const {
   Assessment,
   CourtHearings,
@@ -12,7 +13,7 @@ const {
   PrisonTransferReason,
   Save,
   Timetable,
-} = require('../controllers/create')
+} = require('./controllers')
 
 const personSearchStep = {
   controller: PersonSearch,
