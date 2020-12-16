@@ -1,10 +1,14 @@
 {% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
-  {% if resultsAsPopulationTable | length  %}
+  {% if resultsAsPopulationTables | length  %}
     <div class="govuk-grid-row">
       <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
-        {{ govukTable(resultsAsPopulationTable) }}
+      {% for table in resultsAsPopulationTables %}
+        {{ govukTable(table) }}
+      {% else %}
+        <h1>No population to display</h1>
+      {% endfor %}
       </section>
     </div>
   {% endif %}

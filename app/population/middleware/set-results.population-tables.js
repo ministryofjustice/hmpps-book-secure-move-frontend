@@ -5,7 +5,7 @@ const {
   locationsToPopulationTable,
 } = require('../../../common/presenters/date-table/locations-to-population-table-component')
 
-async function setResultsPopulationTable(req, res, next) {
+async function setResultsPopulationTables(req, res, next) {
   try {
     const { dateRange, locations, query } = req
 
@@ -22,9 +22,11 @@ async function setResultsPopulationTable(req, res, next) {
       startDate: dateRange[0],
     })(freeSpaces)
 
-    req.resultsAsPopulationTable = decorateAsDateTable({
-      focusDate: res.locals.TODAY,
-      tableComponent: populationTable,
+    req.resultsAsPopulationTables = populationTable.map(groupedPopulation => {
+      return decorateAsDateTable({
+        focusDate: res.locals.TODAY,
+        tableComponent: groupedPopulation,
+      })
     })
 
     next()
@@ -33,4 +35,4 @@ async function setResultsPopulationTable(req, res, next) {
   }
 }
 
-module.exports = setResultsPopulationTable
+module.exports = setResultsPopulationTables
