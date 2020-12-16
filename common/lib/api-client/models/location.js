@@ -10,6 +10,10 @@ module.exports = {
       jsonApi: 'hasMany',
       type: 'suppliers',
     },
+    category: {
+      jsonApi: 'hasOne',
+      type: 'categories',
+    },
   },
   options: {
     cache: true,
