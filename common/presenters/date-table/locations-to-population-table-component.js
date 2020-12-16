@@ -27,6 +27,8 @@ function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
     const groupedLocations = locationKeys.map(groupedLocation => {
       return {
         caption: groupedLocation,
+        captionClasses: 'govuk-heading-m',
+        classes: 'population-table',
         head: tableConfig.map(tablePresenters.objectToTableHead(query)),
         rows: locations[groupedLocation].map(
           tablePresenters.objectToTableRow(tableConfig)
