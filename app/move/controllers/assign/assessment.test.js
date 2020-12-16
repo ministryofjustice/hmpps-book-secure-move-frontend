@@ -1,4 +1,4 @@
-const CreateAssessment = require('../../../move/controllers/create/assessment')
+const CreateAssessment = require('../../app/new/controllers/assessment')
 
 const MixinProto = CreateAssessment.prototype
 const AssessmentController = require('./assessment')

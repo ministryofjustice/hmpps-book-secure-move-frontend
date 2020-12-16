@@ -1,5 +1,5 @@
-const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const FormWizardController = require('../../../../../common/controllers/form-wizard')
+const presenters = require('../../../../../common/presenters')
 
 class CreateBaseController extends FormWizardController {
   middlewareSetup() {

@@ -1,5 +1,5 @@
-const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const fieldHelpers = require('../../../../../common/helpers/field')
+const referenceDataHelpers = require('../../../../../common/helpers/reference-data')
 
 const BaseController = require('./base')
 const Controller = require('./prison-transfer-reason')

@@ -1,11 +1,11 @@
 const timezoneMock = require('timezone-mock')
 
-const presenters = require('../../../../common/presenters')
-const componentService = require('../../../../common/services/component')
+const presenters = require('../../../../../common/presenters')
+const componentService = require('../../../../../common/services/component')
 const personService = {
   getActiveCourtCases: sinon.stub(),
 }
-const filters = require('../../../../config/nunjucks/filters')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 const Controller = require('./court-hearings')

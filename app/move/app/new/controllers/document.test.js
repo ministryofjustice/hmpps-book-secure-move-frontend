@@ -3,7 +3,7 @@ const FormError = require('hmpo-form-wizard/lib/error')
 const multer = require('multer')
 const proxyquire = require('proxyquire').noCallThru()
 
-const FormWizardController = require('../../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../../common/controllers/form-wizard')
 
 function MulterStub() {}
 

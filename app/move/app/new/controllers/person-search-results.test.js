@@ -1,5 +1,5 @@
-const presenters = require('../../../../common/presenters')
-const componentService = require('../../../../common/services/component')
+const presenters = require('../../../../../common/presenters')
+const componentService = require('../../../../../common/services/component')
 const personService = {
   getByIdentifiers: sinon.stub(),
 }

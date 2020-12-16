@@ -1,7 +1,7 @@
 const { flatten, get, values } = require('lodash')
 
-const fieldHelpers = require('../../../../common/helpers/field')
-const presenters = require('../../../../common/presenters')
+const fieldHelpers = require('../../../../../common/helpers/field')
+const presenters = require('../../../../../common/presenters')
 
 const CreateBaseController = require('./base')
 

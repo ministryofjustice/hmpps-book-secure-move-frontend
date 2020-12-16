@@ -1,6 +1,6 @@
 const { get, map, omitBy, set } = require('lodash')
 
-const commonMiddleware = require('../../../../common/middleware')
+const commonMiddleware = require('../../../../../common/middleware')
 
 const CreateBaseController = require('./base')
 

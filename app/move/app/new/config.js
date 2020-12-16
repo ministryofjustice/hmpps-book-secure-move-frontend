@@ -1,4 +1,4 @@
-const CreateBaseController = require('../controllers/create/base')
+const CreateBaseController = require('./controllers/base')
 
 module.exports = {
   controller: CreateBaseController,

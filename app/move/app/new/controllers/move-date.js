@@ -6,7 +6,7 @@ const {
   isValid: isValidDate,
 } = require('date-fns')
 
-const filters = require('../../../../config/nunjucks/filters')
+const filters = require('../../../../../config/nunjucks/filters')
 
 const CreateBaseController = require('./base')
 

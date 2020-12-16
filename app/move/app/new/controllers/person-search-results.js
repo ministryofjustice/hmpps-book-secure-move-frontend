@@ -1,7 +1,7 @@
 const { has, find } = require('lodash')
 
-const presenters = require('../../../../common/presenters')
-const componentService = require('../../../../common/services/component')
+const presenters = require('../../../../../common/presenters')
+const componentService = require('../../../../../common/services/component')
 
 const PersonController = require('./person')
 

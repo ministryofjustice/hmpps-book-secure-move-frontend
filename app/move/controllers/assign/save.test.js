@@ -1,5 +1,5 @@
 const filters = require('../../../../config/nunjucks/filters')
-const CreateSave = require('../create/save')
+const CreateSave = require('../../app/new/controllers/save')
 
 const MixinProto = CreateSave.prototype
 const AssignBaseController = require('./base')

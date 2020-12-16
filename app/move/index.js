@@ -10,10 +10,10 @@ const wizard = require('../../common/middleware/unique-form-wizard')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
+const newApp = require('./app/new')
 const {
   assignConfig,
   cancelConfig,
-  createConfig,
   reviewConfig,
   unassignConfig,
   updateConfig,
@@ -22,7 +22,6 @@ const { confirmation, timeline, view } = require('./controllers')
 const {
   assignFields,
   cancelFields,
-  createFields,
   reviewFields,
   updateFields,
 } = require('./fields')
@@ -36,7 +35,6 @@ const {
 const {
   assign: assignSteps,
   cancel: cancelSteps,
-  create: createSteps,
   review: reviewSteps,
   unassign: unassignSteps,
   update: updateSteps,
@@ -47,11 +45,7 @@ router.param('moveId', setMove)
 router.param('moveIdWithEvents', setMoveWithEvents)
 
 // Define routes
-router.use(
-  '/new',
-  protectRoute('move:create'),
-  wizard(createSteps, createFields, createConfig)
-)
+router.use(newApp.mountpath, newApp.router)
 
 router.get(
   `/:moveIdWithEvents(${uuidRegex})/timeline`,

@@ -1,7 +1,7 @@
 const FormController = require('hmpo-form-wizard').Controller
 
-const fieldHelpers = require('../../../../common/helpers/field')
-const referenceDataHelpers = require('../../../../common/helpers/reference-data')
+const fieldHelpers = require('../../../../../common/helpers/field')
+const referenceDataHelpers = require('../../../../../common/helpers/reference-data')
 const personService = {
   create: sinon.stub(),
   update: sinon.stub().resolves(),
