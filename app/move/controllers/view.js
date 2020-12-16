@@ -1,4 +1,4 @@
-const getViewLocals = require('./view/view.locals')
+const moveHelpers = require('../../../common/helpers/move')
 
 module.exports = async function view(req, res) {
   const { id, status, cancellation_reason: cancellationReason } = req.move
@@ -12,7 +12,7 @@ module.exports = async function view(req, res) {
     req.move.rebook = moveRejectEvent.details.rebook
   }
 
-  const locals = getViewLocals(req)
+  const locals = moveHelpers.getLocals(req)
 
   res.render('move/views/view', locals)
 }

@@ -8,14 +8,16 @@ const presenters = {
 
 const getTabsUrls = sinon.stub().returns('tab_urls')
 
-const getViewLocals = sinon.stub().returns({
+const getLocals = sinon.stub().returns({
   locals: 'view.locals',
 })
 
 const timelineController = proxyquire('./timeline', {
+  '../../../common/helpers/move': {
+    getLocals,
+    getTabsUrls,
+  },
   '../../../common/presenters': presenters,
-  './view/view.locals': getViewLocals,
-  './view/view.tabs.urls': getTabsUrls,
 })
 
 describe('Move controllers', function () {
@@ -35,7 +37,7 @@ describe('Move controllers', function () {
       presenters.moveToMetaListComponent.resetHistory()
       presenters.assessmentToTagList.resetHistory()
       presenters.moveToTimelineComponent.resetHistory()
-      getViewLocals.resetHistory()
+      getLocals.resetHistory()
       getTabsUrls.resetHistory()
       req = {
         move: mockMove,
@@ -52,7 +54,7 @@ describe('Move controllers', function () {
       })
 
       it('should transform the data for presentation', function () {
-        expect(getViewLocals).to.be.calledOnceWithExactly(req)
+        expect(getLocals).to.be.calledOnceWithExactly(req)
       })
 
       it('should render the timeline', function () {

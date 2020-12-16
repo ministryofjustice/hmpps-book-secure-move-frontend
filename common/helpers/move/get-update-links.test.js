@@ -2,8 +2,11 @@ const proxyquire = require('proxyquire')
 const i18n = {
   t: sinon.stub(),
 }
-const getUpdateLinks = proxyquire('./view.update.links', {
-  '../../../../config/i18n': i18n,
+const getUpdateUrls = sinon.stub()
+
+const getUpdateLinks = proxyquire('./get-update-links', {
+  '../../../config/i18n': i18n,
+  './get-update-urls': getUpdateUrls,
 })
 
 const updateSteps = [
@@ -18,6 +21,12 @@ const updateSteps = [
 const urls = {
   foo: '/move/moveId/edit/foo',
 }
+getUpdateUrls.returns(urls)
+
+const move = {
+  id: 'moveId',
+}
+const canAccess = () => true
 
 const expectedUpdateLinks = {
   foo: {
@@ -36,6 +45,7 @@ describe('Move controllers', function () {
       let updateLinks
       const t = i18n.t
       beforeEach(function () {
+        getUpdateUrls.resetHistory()
         t.resetHistory()
         t.callsFake((key, args) => {
           if (args) {
@@ -44,7 +54,14 @@ describe('Move controllers', function () {
 
           return key.replace(/moves::update_link.categories./, '')
         })
-        updateLinks = getUpdateLinks(updateSteps, urls)
+        updateLinks = getUpdateLinks(move, canAccess, updateSteps)
+      })
+      it('should get the update urls', function () {
+        expect(getUpdateUrls).to.be.calledOnceWithExactly(
+          move,
+          canAccess,
+          updateSteps
+        )
       })
 
       it('should invoke t twice', function () {
