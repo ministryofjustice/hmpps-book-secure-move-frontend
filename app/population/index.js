@@ -16,7 +16,7 @@ const {
   redirectBaseUrl,
   setBreadcrumb,
   setPopulation,
-  setResultsAsPopulationTable,
+  setResultsAsPopulationTables,
 } = require('./middleware')
 const { editSteps } = require('./steps')
 
@@ -44,7 +44,7 @@ router.get(
   BASE_PATH,
   setContext('population'),
   setPagination(MOUNTPATH + BASE_PATH),
-  setResultsAsPopulationTable,
+  setResultsAsPopulationTables,
   dashboard
 )
 

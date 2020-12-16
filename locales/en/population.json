@@ -39,5 +39,6 @@
   },
   "breadcrumbs": {
     "home": "Population Overview"
-  }
+  },
+  "no_population": "No population to display"
 }

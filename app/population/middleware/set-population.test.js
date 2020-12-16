@@ -4,14 +4,16 @@ const locationsFreeSpacesService = {
 
 const middleware = require('./set-population')
 
-const mockCapacities = [
-  {
-    id: 'ABADCAFE',
-    meta: {
-      populations: [{ id: 'A', free_spaces: 0 }],
+const mockFreeSpaces = {
+  'Category Epsilon': [
+    {
+      id: 'ABADCAFE',
+      meta: {
+        populations: [{ id: 'A', free_spaces: 0 }],
+      },
     },
-  },
-]
+  ],
+}
 
 const mockPopulation = {
   id: 'A',
@@ -64,7 +66,7 @@ describe('Population middleware', function () {
       function () {
         beforeEach(async function () {
           locationsFreeSpacesService.getPrisonFreeSpaces.resolves(
-            mockCapacities
+            mockFreeSpaces
           )
           populationService.getByIdWithMoves
 
@@ -182,7 +184,7 @@ describe('Population middleware', function () {
 
     context('when population service rejects', function () {
       beforeEach(async function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockCapacities)
+        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(mockFreeSpaces)
         req.services.population.getByIdWithMoves = sinon
           .stub()
           .rejects(mockError)

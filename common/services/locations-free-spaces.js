@@ -1,4 +1,4 @@
-const { flattenDeep, omitBy, isEmpty } = require('lodash')
+const { flattenDeep, omitBy, isEmpty, groupBy } = require('lodash')
 
 const apiClient = require('../lib/api-client')()
 
@@ -42,8 +42,8 @@ const locationsFreeSpacesService = {
         })
       })
   },
-  getPrisonFreeSpaces({ dateFrom, dateTo, locationIds } = {}) {
-    return locationsFreeSpacesService.getLocationsFreeSpaces({
+  async getPrisonFreeSpaces({ dateFrom, dateTo, locationIds } = {}) {
+    const locations = await locationsFreeSpacesService.getLocationsFreeSpaces({
       dateFrom,
       dateTo,
       filter: omitBy(
@@ -53,7 +53,14 @@ const locationsFreeSpacesService = {
         },
         isEmpty
       ),
+      include: ['category'],
     })
+
+    const groupedLocations = groupBy(locations, value => {
+      return value?.category?.title || 'No Category'
+    })
+
+    return groupedLocations
   },
 }
 

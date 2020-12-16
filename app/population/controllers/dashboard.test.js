@@ -15,7 +15,7 @@ describe('Population controllers', function () {
           nextUrl: '/population/week/2020-06/08',
           prevUrl: '/population/week/20202-05-23',
         },
-        resultsAsPopulationTable: {
+        resultsAsPopulationTables: {
           populationTableData: {},
         },
         params: {
@@ -71,10 +71,10 @@ describe('Population controllers', function () {
           expect(params.pagination).to.deep.equal(mockReq.pagination)
         })
 
-        it('should set resultsAsPopulationTable', function () {
-          expect(params).to.have.property('resultsAsPopulationTable')
-          expect(params.resultsAsPopulationTable).to.deep.equal(
-            mockReq.resultsAsPopulationTable
+        it('should set resultsAsPopulationTables', function () {
+          expect(params).to.have.property('resultsAsPopulationTables')
+          expect(params.resultsAsPopulationTables).to.deep.equal(
+            mockReq.resultsAsPopulationTables
           )
         })
 

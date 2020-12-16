@@ -1,5 +1,5 @@
 const { parseISO, isValid, isDate, addDays } = require('date-fns')
-const { times } = require('lodash')
+const { times, keys } = require('lodash')
 
 const tablePresenters = require('../table')
 
@@ -21,11 +21,22 @@ function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
 
   tableConfig.unshift(establishmentConfig)
 
-  return function (locations = []) {
-    return {
-      head: tableConfig.map(tablePresenters.objectToTableHead(query)),
-      rows: locations.map(tablePresenters.objectToTableRow(tableConfig)),
-    }
+  return function (locations) {
+    const locationKeys = keys(locations).sort()
+
+    const groupedLocations = locationKeys.map(groupedLocation => {
+      return {
+        caption: groupedLocation,
+        captionClasses: 'govuk-heading-m',
+        classes: 'population-table',
+        head: tableConfig.map(tablePresenters.objectToTableHead(query)),
+        rows: locations[groupedLocation].map(
+          tablePresenters.objectToTableRow(tableConfig)
+        ),
+      }
+    })
+
+    return groupedLocations
   }
 }
 

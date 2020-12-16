@@ -12,12 +12,33 @@ const mockLocations = [
   {
     id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
     title: 'Axminster Crown Court',
+    category: {
+      title: 'Category Epsilon',
+    },
   },
   {
     id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
     title: 'Barnstaple Crown Court',
   },
 ]
+
+const mockGroupedLocations = {
+  'Category Epsilon': [
+    {
+      id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
+      title: 'Axminster Crown Court',
+      category: {
+        title: 'Category Epsilon',
+      },
+    },
+  ],
+  'No Category': [
+    {
+      id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
+      title: 'Barnstaple Crown Court',
+    },
+  ],
+}
 
 const dateFrom = '2020-06-01'
 const dateTo = '2020-06-07'
@@ -249,8 +270,10 @@ describe('Locations Free Spaces Service', function () {
   })
 
   describe('#getPrisonFreeSpaces()', function () {
-    const mockResponse = mockLocations
-
+    let mockResponse
+    beforeEach(function () {
+      mockResponse = mockLocations
+    })
     context('by default', function () {
       beforeEach(async function () {
         sinon
@@ -276,7 +299,7 @@ describe('Locations Free Spaces Service', function () {
       })
 
       it('should return first result', function () {
-        expect(locationsFreeSpaces).to.deep.equal(mockResponse)
+        expect(locationsFreeSpaces).to.deep.equal(mockGroupedLocations)
       })
 
       it('should call use provided date params', function () {
@@ -288,6 +311,7 @@ describe('Locations Free Spaces Service', function () {
           filter: {
             'filter[location_type]': 'prison',
           },
+          include: ['category'],
         })
       })
 
@@ -326,7 +350,7 @@ describe('Locations Free Spaces Service', function () {
       })
 
       it('should return first result', function () {
-        expect(locationsFreeSpaces).to.deep.equal(mockResponse)
+        expect(locationsFreeSpaces).to.deep.equal(mockGroupedLocations)
       })
 
       it('should set location_type filter to prison', function () {
@@ -347,6 +371,7 @@ describe('Locations Free Spaces Service', function () {
             'filter[location_id]': 'ABADFEED',
             'filter[location_type]': 'prison',
           },
+          include: ['category'],
         })
       })
 
