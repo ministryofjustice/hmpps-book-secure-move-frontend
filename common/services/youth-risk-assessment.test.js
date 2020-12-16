@@ -10,7 +10,7 @@ const YouthRiskAssessmentService = proxyquire('./youth-risk-assessment', {
     },
   },
 })
-const youthRiskAssessmentService = new YouthRiskAssessmentService()
+const youthRiskAssessmentService = new YouthRiskAssessmentService({ apiClient })
 
 const mockRecord = {
   id: '12345',
