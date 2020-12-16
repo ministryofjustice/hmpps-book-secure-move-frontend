@@ -1,16 +1,20 @@
 {% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
-  {% if resultsAsPopulationTables | length  %}
-    <div class="govuk-grid-row">
-      <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-full govuk-!-margin-bottom-6">
       {% for table in resultsAsPopulationTables %}
         {{ govukTable(table) }}
       {% else %}
-        <h1>No population to display</h1>
+        {{ appMessage({
+          classes: "app-message--muted govuk-!-margin-top-7",
+          allowDismiss: false,
+          content: {
+            html: t("population::no_population")
+          }
+        }) }}
       {% endfor %}
-      </section>
-    </div>
-  {% endif %}
+    </section>
+  </div>
 {% endblock %}
 
