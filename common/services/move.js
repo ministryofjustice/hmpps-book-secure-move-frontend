@@ -1,9 +1,9 @@
 const dateFunctions = require('date-fns')
 const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
 const restClient = require('../lib/api-client/rest-client')
 
+const BaseService = require('./base')
 const batchRequest = require('./batch-request')
 
 const defaultInclude = [
@@ -38,6 +38,7 @@ const defaultInclude = [
 ]
 
 function getAll({
+  apiClient,
   filter = {},
   combinedData = [],
   page = 1,
@@ -66,6 +67,7 @@ function getAll({
       }
 
       return getAll({
+        apiClient,
         filter,
         combinedData: moves,
         page: page + 1,
@@ -75,8 +77,11 @@ function getAll({
 }
 
 const noMoveIdMessage = 'No move ID supplied'
-const moveService = {
-  defaultInclude,
+
+class MoveService extends BaseService {
+  defaultInclude() {
+    return defaultInclude
+  }
 
   format(data) {
     const booleansAndNulls = ['move_agreed']
@@ -108,20 +113,21 @@ const moveService = {
 
       return value
     })
-  },
+  }
 
   async getAll(props = {}) {
-    const results = await batchRequest(getAll, props, [
-      'from_location_id',
-      'to_location_id',
-    ])
+    const results = await batchRequest(
+      getAll,
+      { ...props, apiClient: this.apiClient },
+      ['from_location_id', 'to_location_id']
+    )
 
     if (props.isAggregation) {
       return results
     }
 
     return results
-  },
+  }
 
   getActive({
     dateRange = [],
@@ -131,7 +137,7 @@ const moveService = {
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
-    return moveService.getAll({
+    return this.getAll({
       isAggregation,
       include: [
         'from_location',
@@ -154,7 +160,7 @@ const moveService = {
         isEmpty
       ),
     })
-  },
+  }
 
   getCancelled({
     dateRange = [],
@@ -164,7 +170,7 @@ const moveService = {
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
-    return moveService.getAll({
+    return this.getAll({
       isAggregation,
       include: ['profile.person'],
       filter: omitBy(
@@ -179,7 +185,7 @@ const moveService = {
         isEmpty
       ),
     })
-  },
+  }
 
   async getDownload({
     status = 'requested,accepted,booked,in_transit,completed,cancelled',
@@ -221,47 +227,49 @@ const moveService = {
       }
     )
     return response
-  },
+  }
 
   _getById(id, options = {}) {
     if (!id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
-    return apiClient.find('move', id, options).then(response => response.data)
-  },
+    return this.apiClient
+      .find('move', id, options)
+      .then(response => response.data)
+  }
 
   getById(id) {
-    return moveService._getById(id, {
-      include: [...moveService.defaultInclude, 'important_events'],
+    return this._getById(id, {
+      include: [...this.defaultInclude(), 'important_events'],
     })
-  },
+  }
 
   getByIdWithEvents(id) {
     const include = [
-      ...moveService.defaultInclude,
+      ...this.defaultInclude(),
       'timeline_events',
       'timeline_events.eventable',
     ]
 
-    return moveService._getById(id, { include, preserveResourceRefs: true })
-  },
+    return this._getById(id, { include, preserveResourceRefs: true })
+  }
 
   create(data, { include } = {}) {
-    return apiClient
-      .create('move', moveService.format(data), { include })
+    return this.apiClient
+      .create('move', this.format(data), { include })
       .then(response => response.data)
-  },
+  }
 
   update(data) {
     if (!data.id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
-    return apiClient
-      .update('move', moveService.format(data))
+    return this.apiClient
+      .update('move', this.format(data))
       .then(response => response.data)
-  },
+  }
 
   redirect(data) {
     if (!data.id) {
@@ -269,17 +277,17 @@ const moveService = {
     }
 
     const timestamp = dateFunctions.formatISO(new Date())
-    return apiClient
+    return this.apiClient
       .one('move', data.id)
       .all('redirect')
       .post({
         timestamp,
         ...data,
       })
-  },
+  }
 
   unassign(id) {
-    return moveService.update({
+    return this.update({
       id,
       profile: {
         id: null,
@@ -287,7 +295,7 @@ const moveService = {
       move_agreed: null,
       move_agreed_by: null,
     })
-  },
+  }
 
   cancel(id, { reason, comment } = {}) {
     if (!id) {
@@ -296,7 +304,7 @@ const moveService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('move', id)
       .all('cancel')
       .post({
@@ -305,7 +313,7 @@ const moveService = {
         cancellation_reason_comment: comment,
       })
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = moveService
+module.exports = MoveService
