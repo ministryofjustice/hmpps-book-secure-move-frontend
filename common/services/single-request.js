@@ -7,10 +7,10 @@ const MoveService = require('./move')
 const noMoveIdMessage = 'No move ID supplied'
 class SingleRequestService extends BaseService {
   constructor(req) {
-    super()
+    super(req)
     this.moveService =
-      (req && req.services && req.services.move) ||
-      new MoveService({ apiClient: this.apiClient })
+      (this.req && this.req.services && this.req.services.move) ||
+      new MoveService(this.req)
   }
 
   getAll({
