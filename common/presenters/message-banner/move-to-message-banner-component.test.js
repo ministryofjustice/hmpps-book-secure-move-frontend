@@ -198,27 +198,27 @@ describe('Presenters', function () {
 
         context('with youth move', function () {
           let mockMove
+
           beforeEach(function () {
             mockMove = {
-              _is_youth_move: true,
               status: 'requested',
+              profile: {
+                requires_youth_risk_assessment: true,
+              },
             }
           })
 
           context('with unconfirmed assessment', function () {
             beforeEach(function () {
+              mockMove.profile.youth_risk_assessment = {
+                id: '_youth_12345',
+                status: 'in_progress',
+              }
+              mockMove.profile.person_escort_record = null
+
               output = presenter({
                 ...mockArgs,
-                move: {
-                  ...mockMove,
-                  profile: {
-                    youth_risk_assessment: {
-                      id: '_youth_12345',
-                      status: 'in_progress',
-                    },
-                    person_escort_record: null,
-                  },
-                },
+                move: mockMove,
               })
             })
 
@@ -243,18 +243,15 @@ describe('Presenters', function () {
 
           context('with confirmed assessment', function () {
             beforeEach(function () {
+              mockMove.profile.youth_risk_assessment = {
+                id: '_youth_12345',
+                status: 'confirmed',
+              }
+              mockMove.profile.person_escort_record = null
+
               output = presenter({
                 ...mockArgs,
-                move: {
-                  ...mockMove,
-                  profile: {
-                    youth_risk_assessment: {
-                      id: '_youth_12345',
-                      status: 'confirmed',
-                    },
-                    person_escort_record: null,
-                  },
-                },
+                move: mockMove,
               })
             })
 
@@ -275,18 +272,15 @@ describe('Presenters', function () {
 
           context('when PER exists', function () {
             beforeEach(function () {
+              mockMove.profile.youth_risk_assessment = null
+              mockMove.profile.person_escort_record = {
+                id: '_per_12345',
+                status: 'in_progress',
+              }
+
               output = presenter({
                 ...mockArgs,
-                move: {
-                  ...mockMove,
-                  profile: {
-                    youth_risk_assessment: null,
-                    person_escort_record: {
-                      id: '_per_12345',
-                      status: 'in_progress',
-                    },
-                  },
-                },
+                move: mockMove,
               })
             })
 
@@ -311,18 +305,15 @@ describe('Presenters', function () {
 
           context('when feature is not enabled', function () {
             beforeEach(function () {
+              mockMove.profile.youth_risk_assessment = {
+                id: '_youth_12345',
+                status: 'in_progress',
+              }
+              mockMove.profile.person_escort_record = null
+
               output = presenterWithoutFeature({
                 ...mockArgs,
-                move: {
-                  ...mockMove,
-                  profile: {
-                    youth_risk_assessment: {
-                      id: '_youth_12345',
-                      status: 'in_progress',
-                    },
-                    person_escort_record: null,
-                  },
-                },
+                move: mockMove,
               })
             })
 

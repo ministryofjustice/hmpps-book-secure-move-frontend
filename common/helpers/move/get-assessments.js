@@ -11,6 +11,7 @@ function getAssessments(move) {
     assessment_answers: assessmentAnswers = [],
     person_escort_record: personEscortRecord,
     youth_risk_assessment: youthRiskAssessment,
+    requires_youth_risk_assessment: requiresYouthRiskAssessment,
   } = profile || {}
 
   const assessment = presenters
@@ -36,7 +37,7 @@ function getAssessments(move) {
     return {
       ...section,
       previousAssessment:
-        move._is_youth_move &&
+        requiresYouthRiskAssessment &&
         youthRiskAssessment &&
         FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
           ? find(youthAssessmentSections, { key: section.key })
@@ -62,7 +63,7 @@ function getAssessments(move) {
   ]
 
   const assessmentSections =
-    personEscortRecord || !move._is_youth_move
+    personEscortRecord || !requiresYouthRiskAssessment
       ? sortBy(combinedAssessmentSections, 'order')
       : sortBy(youthAssessmentSections, 'order')
 

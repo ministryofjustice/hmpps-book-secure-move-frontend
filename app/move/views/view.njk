@@ -206,7 +206,7 @@
 
       {% if personEscortRecord or (youthRiskAssessment and youthRiskAssessmentIsEnabled) %}
         {% include "move/views/_includes/assessment-summary.njk" %}
-      {% else %}
+      {% elif not move.profile.requires_youth_risk_assessment %}
         {% include "move/views/_includes/assessment.njk" %}
       {% endif %}
 
