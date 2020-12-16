@@ -3,6 +3,7 @@
     "id": "b695d0f0-af8e-4b97-891e-92020d6820b9",
     "type": "profiles",
     "attributes": {
+      "requires_youth_risk_assessment": true,
       "assessment_answers": [
         {
           "title": "Violent",
