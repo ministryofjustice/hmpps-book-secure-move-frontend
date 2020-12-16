@@ -4,13 +4,17 @@ async function setPopulation(req, res, next) {
     let transfersIn
     let transfersOut
 
-    const dailyFreeSpace = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
+    const dailyFreeSpaceByCategory = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
       {
         dateFrom: date,
         dateTo: date,
         locationIds: locationId,
       }
     )
+
+    const dailyFreeSpace =
+      dailyFreeSpaceByCategory?.[Object.keys(dailyFreeSpaceByCategory)]
+
     req.locationName = dailyFreeSpace?.[0]?.title
 
     const freeSpacePopulation =
