@@ -17,7 +17,11 @@
           "created_at": "2019-10-09T11:10:53+01:00",
           "updated_at": "2019-10-09T11:10:53+01:00"
         }
-      ]
+      ],
+      "category": {
+        "id": "c923ef88-a476-f1f5-b9bb-2fcc0fe42cb0",
+        "type": "category"
+      }
     }
   }
 }
