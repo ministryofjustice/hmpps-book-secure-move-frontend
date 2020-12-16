@@ -1,4 +1,5 @@
 const presenters = require('../../../common/presenters')
+const moveHelpers = require('../../helpers/move')
 
 const controller = require('./framework-overview')
 
@@ -18,6 +19,9 @@ describe('Framework controllers', function () {
       sinon
         .stub(presenters, 'frameworkToTaskListComponent')
         .returns('_taskListCmpt_')
+      sinon
+        .stub(moveHelpers, 'getMoveWithSummary')
+        .returns({ move: '__move__', moveSummary: '__move-summary__' })
 
       mockReq = {
         originalUrl: '/person-escort-record/1',
@@ -37,6 +41,9 @@ describe('Framework controllers', function () {
 
         expect(mockRes.render.calledOnce).to.be.true
         expect(template).to.equal('framework-overview')
+        expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly(
+          undefined
+        )
       })
 
       describe('params', function () {
@@ -47,7 +54,17 @@ describe('Framework controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(4)
+          expect(Object.keys(params)).to.have.length(6)
+        })
+
+        it('should set move', function () {
+          expect(params).to.have.property('move')
+          expect(params.move).to.equal('__move__')
+        })
+
+        it('should set move summary', function () {
+          expect(params).to.have.property('moveSummary')
+          expect(params.moveSummary).to.equal('__move-summary__')
         })
 
         it('should set moveId', function () {
@@ -176,6 +193,17 @@ describe('Framework controllers', function () {
 
         beforeEach(function () {
           params = mockRes.render.args[0][1]
+        })
+
+        it('should get the move summary', function () {
+          expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly({
+            id: '12345',
+            profile: {
+              person: {
+                _fullname: 'James Stevens',
+              },
+            },
+          })
         })
 
         it('should set moveId', function () {

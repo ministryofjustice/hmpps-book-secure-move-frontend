@@ -35,7 +35,7 @@
   </header>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-grid-column-two-thirds">
       {% if not isEditable %}
         {{ govukWarningText({
           text: t("assessment::locked", { context: i18nContext }),
@@ -64,6 +64,13 @@
         </section>
       {% endfor %}
     </div>
+
+    <div class="govuk-grid-column-one-third">
+      {% block contentSidebar %}
+        {% include "includes/move-summary.njk" %}
+      {% endblock %}
+    </div>
+
   </div>
 
   {{ backLink() }}
