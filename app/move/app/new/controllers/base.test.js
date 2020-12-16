@@ -922,6 +922,7 @@ describe('Move controllers', function () {
         id: '12345',
         location_type: 'police',
         can_upload_documents: true,
+        young_offender_institution: true,
       }
 
       beforeEach(function () {
@@ -957,6 +958,12 @@ describe('Move controllers', function () {
           )
         })
 
+        it('should set young offender institute value', function () {
+          expect(req.form.values.is_young_offender_institution).to.equal(
+            currentLocationMock.young_offender_institution
+          )
+        })
+
         it('should call parent method', function () {
           expect(
             FormController.prototype.saveValues
@@ -969,22 +976,110 @@ describe('Move controllers', function () {
           controller.saveValues(req, {}, nextSpy)
         })
 
-        it('should set current location ID', function () {
+        it('should not set current location ID', function () {
           expect(req.form.values.from_location).to.be.undefined
         })
 
-        it('should set from location type', function () {
+        it('should not set from location type', function () {
           expect(req.form.values.from_location_type).to.be.undefined
         })
 
-        it('should set can upload documents values', function () {
+        it('should not set can upload documents values', function () {
           expect(req.form.values.can_upload_documents).to.be.undefined
+        })
+
+        it('should not set young offender institute value', function () {
+          expect(req.form.values.is_young_offender_institution).to.be.undefined
         })
 
         it('should call parent method', function () {
           expect(
             FormController.prototype.saveValues
           ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+        })
+      })
+    })
+
+    describe('#shouldAskYouthSentenceStep', function () {
+      const mockDate = new Date('2020-12-25')
+      let mockReq
+
+      beforeEach(function () {
+        this.clock = sinon.useFakeTimers(mockDate.getTime())
+        mockReq = {
+          sessionModel: {
+            get: sinon.stub(),
+          },
+        }
+      })
+
+      afterEach(function () {
+        this.clock.restore()
+      })
+
+      context('with non-prison move', function () {
+        beforeEach(function () {
+          mockReq.sessionModel.get
+            .withArgs('from_location_type')
+            .returns('police')
+        })
+
+        it('should return false', function () {
+          expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.false
+        })
+      })
+
+      context('with prison move', function () {
+        beforeEach(function () {
+          mockReq.sessionModel.get
+            .withArgs('from_location_type')
+            .returns('prison')
+        })
+
+        context('without YOI', function () {
+          it('should return false', function () {
+            expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.false
+          })
+        })
+
+        context('with YOI', function () {
+          beforeEach(function () {
+            mockReq.sessionModel.get
+              .withArgs('is_young_offender_institution')
+              .returns(true)
+          })
+
+          context('when in age bracket', function () {
+            it('should return true', function () {
+              mockReq.sessionModel.get
+                .withArgs('person')
+                .returns({ date_of_birth: '2002-10-10' })
+              expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.true
+            })
+
+            it('should return true', function () {
+              mockReq.sessionModel.get
+                .withArgs('person')
+                .returns({ date_of_birth: '2001-10-10' })
+              expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.true
+            })
+          })
+
+          context('when not in age bracket', function () {
+            it('should return false', function () {
+              mockReq.sessionModel.get
+                .withArgs('person')
+                .returns({ date_of_birth: '2010-10-10' })
+              expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.false
+            })
+
+            it('should return false', function () {
+              mockReq.sessionModel.get
+                .withArgs('person')
+                .returns({ date_of_birth: '1990-10-10' })
+              expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.false
+            })
+          })
         })
       })
     })

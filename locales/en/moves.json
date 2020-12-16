@@ -21,6 +21,9 @@
     "personal_details": {
       "heading": "Personal details"
     },
+    "serving_youth_sentence": {
+      "heading": "Is this person serving their sentence in the Secure Youth Estate?"
+    },
     "move_date": {
       "heading": "When is this person moving?"
     },

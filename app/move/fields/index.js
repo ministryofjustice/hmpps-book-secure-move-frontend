@@ -36,6 +36,7 @@ const prisonRecallComments = require('./prison-recall-comments')
 const prisonTransferComments = require('./prison-transfer-comments')
 const prisonTransferType = require('./prison-transfer-type')
 const reviewFields = require('./review')
+const servingYouthSentence = require('./serving-youth-sentence')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const specialVehicleCheck = require('./special-vehicle-check')
 const timeDue = require('./time-due')
@@ -104,6 +105,7 @@ const createFields = {
     isRequired: true,
     isExplicit: true,
   }),
+  serving_youth_sentence: servingYouthSentence,
   should_save_court_hearings: shouldSaveCourtHearings,
   time_due: timeDue,
   to_location: toLocation,

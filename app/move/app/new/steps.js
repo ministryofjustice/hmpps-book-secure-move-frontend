@@ -2,6 +2,7 @@ const { FEATURE_FLAGS } = require('../../../../config')
 
 const {
   Assessment,
+  Base,
   CourtHearings,
   Document,
   Hospital,
@@ -137,6 +138,12 @@ module.exports = {
         value: true,
         next: 'personal-details',
       },
+      {
+        fn: Base.prototype.shouldAskYouthSentenceStep,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? 'serving-youth-sentence'
+          : 'move-details',
+      },
       'move-details',
     ],
     fields: ['people'],
@@ -144,7 +151,15 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
-    next: 'move-details',
+    next: [
+      {
+        fn: Base.prototype.shouldAskYouthSentenceStep,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? 'serving-youth-sentence'
+          : 'move-details',
+      },
+      'move-details',
+    ],
     fields: [
       'police_national_computer',
       'last_name',
@@ -154,6 +169,11 @@ module.exports = {
       'gender',
       'gender_additional_information',
     ],
+  },
+  '/serving-youth-sentence': {
+    pageTitle: 'moves::steps.serving_youth_sentence.heading',
+    fields: ['serving_youth_sentence'],
+    next: 'move-details',
   },
   // OCA journey
   '/move-date-range': {
