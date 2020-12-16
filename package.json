@@ -146,7 +146,7 @@
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
     "stream-mock": "2.0.5",
-    "uuid": "8.3.1",
+    "uuid": "8.3.2",
     "winston": "3.3.3",
     "yargs": "16.2.0"
   },
