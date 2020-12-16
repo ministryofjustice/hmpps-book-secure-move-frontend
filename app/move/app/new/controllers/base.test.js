@@ -1083,5 +1083,133 @@ describe('Move controllers', function () {
         })
       })
     })
+
+    describe('#requiresYouthAssessment', function () {
+      const mockDate = new Date('2020-12-25')
+      let mockReq
+
+      beforeEach(function () {
+        this.clock = sinon.useFakeTimers(mockDate.getTime())
+        mockReq = {
+          sessionModel: {
+            toJSON: sinon.stub(),
+          },
+        }
+      })
+
+      afterEach(function () {
+        this.clock.restore()
+      })
+
+      context('with youth move', function () {
+        it('should return true', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+            },
+            from_location_type: 'secure_childrens_home',
+            is_young_offender_institution: false,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.true
+        })
+
+        it('should return true', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+            },
+            from_location_type: 'secure_training_centre',
+            is_young_offender_institution: false,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.true
+        })
+      })
+
+      context('with under 18 YOI move', function () {
+        it('should return true', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '2005-12-25',
+            },
+            from_location_type: 'prison',
+            is_young_offender_institution: true,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.true
+        })
+      })
+
+      context('with under 18 prison move', function () {
+        it('should return false', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '2005-12-25',
+            },
+            from_location_type: 'prison',
+            is_young_offender_institution: false,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+
+      context('with over 18 prison move', function () {
+        it('should return false', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '1990-12-25',
+            },
+            from_location_type: 'prison',
+            is_young_offender_institution: true,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+
+      context('with serving youth sentence move', function () {
+        it('should return true', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '2002-12-25',
+            },
+            from_location_type: 'prison',
+            is_young_offender_institution: true,
+            serving_youth_sentence: 'yes',
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.true
+        })
+      })
+
+      context('without serving youth sentence move', function () {
+        it('should return false', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '2002-12-25',
+            },
+            from_location_type: 'prison',
+            is_young_offender_institution: true,
+            serving_youth_sentence: 'no',
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+
+      context('with police move', function () {
+        it('should return false', function () {
+          mockReq.sessionModel.toJSON.returns({
+            person: {
+              id: '12345',
+              date_of_birth: '2005-12-25',
+            },
+            from_location_type: 'police',
+            is_young_offender_institution: false,
+          })
+          expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+    })
   })
 })

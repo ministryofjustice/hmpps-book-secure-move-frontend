@@ -188,6 +188,38 @@ class CreateBaseController extends FormWizardController {
 
     return false
   }
+
+  requiresYouthAssessment(req) {
+    const {
+      person = {},
+      from_location_type: fromLocationType,
+      is_young_offender_institution: isYoungOffenderInstitution,
+      serving_youth_sentence: servingYouthSentence,
+    } = req.sessionModel.toJSON()
+    const age = filters.calculateAge(person.date_of_birth)
+
+    if (
+      ['secure_training_centre', 'secure_childrens_home'].includes(
+        fromLocationType
+      )
+    ) {
+      return true
+    }
+
+    if (
+      fromLocationType === 'prison' &&
+      isYoungOffenderInstitution &&
+      age < 18
+    ) {
+      return true
+    }
+
+    if (servingYouthSentence === 'yes') {
+      return true
+    }
+
+    return false
+  }
 }
 
 module.exports = CreateBaseController

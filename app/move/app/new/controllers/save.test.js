@@ -91,6 +91,9 @@ describe('Move controllers', function () {
       let req, nextSpy, courtHearingService, profileService, moveService
 
       beforeEach(function () {
+        sinon
+          .stub(BaseController.prototype, 'requiresYouthAssessment')
+          .returns(true)
         courtHearingService = {
           create: sinon.stub().resolvesArg(0),
         }
@@ -136,6 +139,7 @@ describe('Move controllers', function () {
           it('should patch profile', function () {
             expect(profileService.update).to.be.calledOnceWithExactly({
               ...mockValues.profile,
+              requires_youth_risk_assessment: true,
               assessment_answers: mockValues.assessment,
               documents: mockValues.documents,
             })
@@ -198,6 +202,7 @@ describe('Move controllers', function () {
             it('should patch profile', function () {
               expect(profileService.update).to.be.calledOnceWithExactly({
                 ...mockValuesWithHearings.profile,
+                requires_youth_risk_assessment: true,
                 assessment_answers: mockValuesWithHearings.assessment,
                 documents: mockValuesWithHearings.documents,
               })
