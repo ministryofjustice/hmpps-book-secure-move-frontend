@@ -5,8 +5,6 @@ const tablePresenters = require('../table')
 
 const {
   locationsToPopulationTable: presenter,
-  freeSpaceCellContent,
-  dayConfig,
 } = require('./locations-to-population-table-component')
 
 const mockLocations = [
@@ -52,107 +50,6 @@ describe('#locationToPopulationTableComponent()', function () {
 
   afterEach(function () {
     i18n.t.restore()
-  })
-
-  describe('freeSpaceCellContent', function () {
-    beforeEach(function () {
-      output = presenter({
-        startDate: new Date('2020-06-01'),
-        focusDate: new Date('2020-06-04'),
-      })(mockLocations)
-    })
-
-    let result
-    context('with population count', function () {
-      beforeEach(function () {
-        result = freeSpaceCellContent({
-          date: new Date(2020, 5, 1),
-          populationIndex: 1,
-        })(mockLocations[0])
-      })
-      it('should display as spaces_with_count', function () {
-        expect(result).to.contain('>population::spaces_with_count<')
-      })
-      it('should link to daily overview page', function () {
-        expect(result).to.contain(
-          `a href="/population/day/2020-06-01/${mockLocations[0].id}"`
-        )
-      })
-    })
-
-    context('without population count', function () {
-      beforeEach(function () {
-        result = freeSpaceCellContent({
-          date: new Date(2020, 5, 1),
-          populationIndex: 4,
-        })(mockLocations[0])
-      })
-
-      it('should display as add_space', function () {
-        expect(result).to.contain('>population::add_space<')
-      })
-      it('should link to daily edit page', function () {
-        expect(result).to.contain(
-          `a href="/population/day/2020-06-01/${mockLocations[0].id}/edit"`
-        )
-      })
-    })
-    context('with invalid population', function () {
-      beforeEach(function () {
-        result = freeSpaceCellContent({
-          date: new Date(2020, 5, 1),
-          populationIndex: 4,
-        })({
-          ...mockLocations[0],
-          meta: {},
-        })
-      })
-
-      it('should display as add_space', function () {
-        expect(result).to.contain('>population::add_space<')
-      })
-      it('should link to daily edit page', function () {
-        expect(result).to.contain(
-          `a href="/population/day/2020-06-01/${mockLocations[0].id}/edit"`
-        )
-      })
-    })
-  })
-
-  describe('dayConfig', function () {
-    let result
-    beforeEach(function () {
-      result = dayConfig({ date: '2020-01-01', populationIndex: 0 })
-    })
-    context('head', function () {
-      it('should contain a date', function () {
-        expect(result.head.date).to.equal('2020-01-01')
-      })
-      it('should contain other table properties', function () {
-        expect(result.head).to.deep.include({
-          attributes: {
-            width: '80',
-          },
-          text: 'Day 1',
-        })
-      })
-    })
-    context('row', function () {
-      it('should contain a date', function () {
-        expect(result.row.date).to.equal('2020-01-01')
-      })
-      it('should contain html render', function () {
-        expect(result.row.html).to.be.a('function')
-      })
-
-      it('should render cell content with html', function () {
-        result = dayConfig({ date: new Date(2020, 0, 1), populationIndex: 0 })
-
-        const renderedResult = result.row.html(mockLocations[0])
-        expect(renderedResult).to.contain('>population::spaces_with_count<')
-      })
-      it('should display as spaces_with_count', function () {})
-    })
   })
 
   describe('locationsToPopulationTable', function () {
