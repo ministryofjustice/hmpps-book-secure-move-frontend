@@ -3,13 +3,14 @@ const proxyquire = require('proxyquire')
 const apiClient = require('../lib/api-client')()
 
 const mockFrameworksVersion = '2.5.3'
-const youthRiskAssessmentService = proxyquire('./youth-risk-assessment', {
+const YouthRiskAssessmentService = proxyquire('./youth-risk-assessment', {
   '../../config': {
     FRAMEWORKS: {
       CURRENT_VERSION: mockFrameworksVersion,
     },
   },
 })
+const youthRiskAssessmentService = new YouthRiskAssessmentService({ apiClient })
 
 const mockRecord = {
   id: '12345',
