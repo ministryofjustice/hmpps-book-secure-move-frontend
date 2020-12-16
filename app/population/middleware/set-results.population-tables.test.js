@@ -8,20 +8,23 @@ const locationsToPopulationComponent = {
 
 const proxyquire = require('proxyquire')
 
-const middleware = proxyquire('./set-results.population-table', {
-  '../../../common/services/locations-free-spaces': locationsFreeSpacesService,
+const middleware = proxyquire('./set-results.population-tables', {
   '../../../common/presenters/date-table/date-table-decorator': dateTableDecorator,
   '../../../common/presenters/date-table/locations-to-population-table-component': locationsToPopulationComponent,
 })
 
 const mockLocations = ['ABADCAFE', 'BAADF00D']
 
-const mockPopulationTable = {
-  head: { text: 'Title', date: '2020-06-01' },
-  rows: [{ text: 'Value', date: '2020-06-01' }],
-}
+const mockPopulationTables = [
+  {
+    caption: 'Category Sigma',
+    head: { text: 'Title', date: '2020-06-01' },
+    rows: [{ text: 'Value', date: '2020-06-01' }],
+  },
+]
 
-const mockDateTable = {
+const mockDateTables = {
+  caption: 'Category Sigma',
   head: { text: 'Title', date: '2020-06-01', classes: 'date-stying' },
   rows: [{ text: 'Value', date: '2020-06-01', classes: 'date-styling' }],
 }
@@ -31,16 +34,16 @@ describe('Population middleware', function () {
     locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
   })
 
-  describe('#setResultsPopulationTable()', function () {
+  describe('#setResultsPopulationTables()', function () {
     let res
     let req
     let next
 
     beforeEach(function () {
       locationsToPopulationComponent.locationsToPopulationTable.returns(
-        sinon.stub().returns(mockPopulationTable)
+        sinon.stub().returns(mockPopulationTables)
       )
-      dateTableDecorator.decorateAsDateTable.returns(mockDateTable)
+      dateTableDecorator.decorateAsDateTable.returns(mockDateTables)
 
       next = sinon.stub()
       res = {
@@ -88,9 +91,9 @@ describe('Population middleware', function () {
         expect(dateTableDecorator.decorateAsDateTable).to.have.been.calledOnce
       })
 
-      it('should set resultsAsPopulationTable on req', function () {
-        expect(req).to.have.property('resultsAsPopulationTable')
-        expect(req.resultsAsPopulationTable).to.deep.equal(mockDateTable)
+      it('should set resultsAsPopulationTables on req', function () {
+        expect(req).to.have.property('resultsAsPopulationTables')
+        expect(req.resultsAsPopulationTables[0]).to.deep.equal(mockDateTables)
       })
 
       it('should call next', function () {
@@ -107,7 +110,7 @@ describe('Population middleware', function () {
       })
 
       it('should not request properties', function () {
-        expect(req).not.to.have.property('resultsAsPopulationTable')
+        expect(req).not.to.have.property('resultsAsPopulationTables')
       })
 
       it('should call next with error', function () {
