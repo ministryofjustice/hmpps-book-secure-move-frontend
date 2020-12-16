@@ -1,11 +1,12 @@
 const { FRAMEWORKS } = require('../../config')
-const apiClient = require('../lib/api-client')()
+
+const BaseService = require('./base')
 
 const noIdMessage = 'No resource ID supplied'
 
-const youthRiskAssessmentService = {
+class YouthRiskAssessmentService extends BaseService {
   create(moveId) {
-    return apiClient
+    return this.apiClient
       .create('youth_risk_assessment', {
         version: FRAMEWORKS.CURRENT_VERSION,
         move: {
@@ -13,20 +14,20 @@ const youthRiskAssessmentService = {
         },
       })
       .then(response => response.data)
-  },
+  }
 
   confirm(id) {
     if (!id) {
       return Promise.reject(new Error(noIdMessage))
     }
 
-    return apiClient
+    return this.apiClient
       .update('youth_risk_assessment', {
         id,
         status: 'confirmed',
       })
       .then(response => response.data)
-  },
+  }
 
   getById(id) {
     if (!id) {
@@ -46,10 +47,10 @@ const youthRiskAssessmentService = {
       'move',
     ]
 
-    return apiClient
+    return this.apiClient
       .find('youth_risk_assessment', id, { include })
       .then(response => response.data)
-  },
+  }
 
   respond(id, data = []) {
     if (!id) {
@@ -60,11 +61,11 @@ const youthRiskAssessmentService = {
       return Promise.resolve([])
     }
 
-    return apiClient
+    return this.apiClient
       .one('youth_risk_assessment', id)
       .all('framework_response')
       .patch(data)
-  },
+  }
 }
 
-module.exports = youthRiskAssessmentService
+module.exports = YouthRiskAssessmentService

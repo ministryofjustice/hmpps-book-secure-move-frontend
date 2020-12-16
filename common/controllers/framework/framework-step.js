@@ -2,11 +2,15 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
+<<<<<<< HEAD
 const setMoveWithSummary = require('../../middleware/set-move-with-summary')
+=======
+const YouthRiskAssessmentService = require('../../services/youth-risk-assessment')
+>>>>>>> refactor: Convert youth risk assessment to a class
 const FormWizardController = require('../form-wizard')
 const services = {
   'person-escort-record': require('../../services/person-escort-record'),
-  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
+  'youth-risk-assessment': new YouthRiskAssessmentService(),
 }
 
 class FrameworkStepController extends FormWizardController {

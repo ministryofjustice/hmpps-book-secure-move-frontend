@@ -3,15 +3,22 @@ const proxyquire = require('proxyquire')
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
+
+const youthRiskAssessmentService = {
+  respond: sinon.stub(),
+}
 const services = {
   'person-escort-record': require('../../services/person-escort-record'),
-  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
+  'youth-risk-assessment': youthRiskAssessmentService,
 }
 
 const setMoveWithSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-step', {
   '../../middleware/set-move-with-summary': setMoveWithSummary,
+  '../../services/youth-risk-assessment': function () {
+    return youthRiskAssessmentService
+  },
 })
 
 const controller = new Controller({ route: '/' })
@@ -695,7 +702,7 @@ describe('Framework controllers', function () {
 
       beforeEach(function () {
         sinon.stub(services['person-escort-record'], 'respond')
-        sinon.stub(services['youth-risk-assessment'], 'respond')
+        services['youth-risk-assessment'].respond.resetHistory()
         sinon.stub(fieldHelpers, 'isAllowedDependent').returns(true)
         sinon
           .stub(frameworksHelpers, 'responsesToSaveReducer')
@@ -811,7 +818,7 @@ describe('Framework controllers', function () {
       context('with youth risk assessment', function () {
         beforeEach(async function () {
           mockReq.assessment.framework.name = 'youth-risk-assessment'
-          services['youth-risk-assessment'].respond.resolves({})
+          services['youth-risk-assessment'].respond.resetHistory().resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
