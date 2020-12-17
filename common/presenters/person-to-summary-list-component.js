@@ -68,6 +68,17 @@ module.exports = function personToSummaryListComponent(props) {
     },
   ]
 
+  if (props.prison_number) {
+    rows.push({
+      key: {
+        text: i18n.t('fields::category.label'),
+      },
+      value: {
+        text: props.category?.title ?? i18n.t('fields::category.uncategorised'),
+      },
+    })
+  }
+
   return {
     classes: 'govuk-!-font-size-16',
     rows,

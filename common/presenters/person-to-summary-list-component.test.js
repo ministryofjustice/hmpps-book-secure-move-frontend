@@ -21,7 +21,7 @@ const mockPerson = {
 describe('Presenters', function () {
   describe('#personToSummaryListComponent()', function () {
     beforeEach(function () {
-      sinon.stub(i18n, 't').returns('__translated__')
+      sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
     })
@@ -46,34 +46,32 @@ describe('Presenters', function () {
         })
 
         it('should contain correct number of rows', function () {
-          expect(transformedResponse.rows.length).to.equal(6)
+          expect(transformedResponse.rows.length).to.equal(7)
         })
 
         it('should contain identifiers first', function () {
           const row1 = transformedResponse.rows[0]
           const row2 = transformedResponse.rows[1]
           const row3 = transformedResponse.rows[2]
-
           expect(row1).to.deep.equal({
-            key: { html: '__translated__' },
+            key: { html: 'fields::police_national_computer.label' },
             value: { text: mockPerson.police_national_computer },
           })
           expect(row2).to.deep.equal({
-            key: { html: '__translated__' },
+            key: { html: 'fields::prison_number.label' },
             value: { text: mockPerson.prison_number },
           })
           expect(row3).to.deep.equal({
-            key: { html: '__translated__' },
+            key: { html: 'fields::criminal_records_office.label' },
             value: { text: mockPerson.criminal_records_office },
           })
         })
 
         it('should contain date of birth', function () {
           const row = transformedResponse.rows[3]
-
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
-            value: { text: '18 Jun 1960 (__translated__ 50)' },
+            key: { text: 'fields::date_of_birth.label' },
+            value: { text: '18 Jun 1960 (age 50)' },
           })
         })
 
@@ -81,7 +79,7 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[4]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::gender.label' },
             value: {
               text: `${mockPerson.gender.title} — ${mockPerson.gender_additional_information}`,
             },
@@ -92,7 +90,7 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[5]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::ethnicity.label' },
             value: { text: mockPerson.ethnicity.title },
           })
         })
@@ -133,8 +131,20 @@ describe('Presenters', function () {
           )
         })
 
+        it('should translate category label', function () {
+          expect(i18n.t.getCall(7)).to.be.calledWithExactly(
+            'fields::category.label'
+          )
+        })
+
+        it('should translate category uncategorised', function () {
+          expect(i18n.t.getCall(8)).to.be.calledWithExactly(
+            'fields::category.uncategorised'
+          )
+        })
+
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(7)
+          expect(i18n.t).to.be.callCount(9)
         })
       })
     })
@@ -153,7 +163,7 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[0]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::date_of_birth.label' },
             value: { text: '' },
           })
         })
@@ -162,7 +172,7 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::gender.label' },
             value: { text: '' },
           })
         })
@@ -171,7 +181,7 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[2]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::ethnicity.label' },
             value: { text: '' },
           })
         })
@@ -195,9 +205,54 @@ describe('Presenters', function () {
           const row = transformedResponse.rows[1]
 
           expect(row).to.deep.equal({
-            key: { text: '__translated__' },
+            key: { text: 'fields::gender.label' },
             value: { text: 'Male' },
           })
+        })
+      })
+    })
+
+    describe('when person has category', function () {
+      let transformedResponse
+      let row
+
+      describe('and has a prison number', function () {
+        beforeEach(function () {
+          transformedResponse = personToSummaryListComponent({
+            id: '12345',
+            prison_number: 'AA/183716',
+            category: {
+              title: 'Category X',
+            },
+          })
+          row = transformedResponse.rows.filter(
+            row => row.key.text === 'fields::category.label'
+          )[0]
+        })
+
+        it('should return the person’s category', function () {
+          expect(row).to.deep.equal({
+            key: { text: 'fields::category.label' },
+            value: { text: 'Category X' },
+          })
+        })
+      })
+
+      describe('and has no prison number', function () {
+        beforeEach(function () {
+          transformedResponse = personToSummaryListComponent({
+            id: '12345',
+            category: {
+              title: 'Category X',
+            },
+          })
+          row = transformedResponse.rows.filter(
+            row => row.key.text === 'fields::category.label'
+          )[0]
+        })
+
+        it('should not return the person’s category', function () {
+          expect(row).to.be.undefined
         })
       })
     })
