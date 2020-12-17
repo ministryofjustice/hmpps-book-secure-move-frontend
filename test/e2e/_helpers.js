@@ -14,13 +14,14 @@ import MoveService from '../../common/services/move'
 import PersonService from '../../common/services/person'
 import PersonEscortRecordService from '../../common/services/person-escort-record'
 import profileService from '../../common/services/profile'
-import referenceDataService from '../../common/services/reference-data'
+import ReferenceDataService from '../../common/services/reference-data'
 import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
 
 const personService = new PersonService()
 const personEscortRecordService = new PersonEscortRecordService()
 const moveService = new MoveService()
+const referenceDataService = new ReferenceDataService()
 
 if (SENTRY.DSN) {
   Sentry.init({
