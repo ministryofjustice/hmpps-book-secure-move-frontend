@@ -1,3 +1,4 @@
+const createSteps = require('../app/new/steps')
 const {
   Assessment,
   Court,
@@ -7,8 +8,6 @@ const {
   MoveDetails,
   PersonalDetails,
 } = require('../controllers/update')
-
-const createSteps = require('./create')
 
 const updateStepPropOverrides = {
   entryPoint: true,

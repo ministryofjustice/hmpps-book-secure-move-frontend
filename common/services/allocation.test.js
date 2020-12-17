@@ -12,12 +12,13 @@ const batchRequest = proxyquire('./batch-request', {
 })
 const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
-const allocationService = proxyquire('./allocation', {
+const AllocationService = proxyquire('./allocation', {
   'date-fns': {
     formatISO: formatISOStub,
   },
   './batch-request': batchRequestStub,
 })
+const allocationService = new AllocationService({ apiClient })
 
 const mockAllocations = [
   {
@@ -165,7 +166,7 @@ describe('Allocation service', function () {
             meta: undefined,
             moves: mockAllocations[0].moves.slice(),
           }
-          output = allocationService.transform()(allocation)
+          output = AllocationService.transform()(allocation)
         })
 
         it('should return correct output', function () {
@@ -213,7 +214,7 @@ describe('Allocation service', function () {
               status: 'cancelled',
               moves: mockAllocations[0].moves.slice(),
             }
-            output = allocationService.transform()(allocation)
+            output = AllocationService.transform()(allocation)
           })
 
           it('should return correct output', function () {
@@ -256,7 +257,7 @@ describe('Allocation service', function () {
 
     context('with no arguments', function () {
       beforeEach(function () {
-        output = allocationService.transform()(mockAllocations[0])
+        output = AllocationService.transform()(mockAllocations[0])
       })
 
       it('should filter out cancelled moves', function () {
@@ -300,7 +301,7 @@ describe('Allocation service', function () {
 
     context('with excluding cancelled moves set to `false`', function () {
       beforeEach(function () {
-        output = allocationService.transform({ includeCancelled: false })(
+        output = AllocationService.transform({ includeCancelled: false })(
           mockAllocations[0]
         )
       })
@@ -346,7 +347,7 @@ describe('Allocation service', function () {
 
     context('with including cancelled moves set to `true`', function () {
       beforeEach(function () {
-        output = allocationService.transform({ includeCancelled: true })(
+        output = AllocationService.transform({ includeCancelled: true })(
           mockAllocations[0]
         )
       })
@@ -412,7 +413,7 @@ describe('Allocation service', function () {
           ...mockAllocations[0],
         }
         delete allocation.moves
-        output = allocationService.transform()(allocation)
+        output = AllocationService.transform()(allocation)
       })
 
       it('should add an empty moves property', function () {
@@ -422,7 +423,7 @@ describe('Allocation service', function () {
 
     context('with no meta moves info is present`', function () {
       beforeEach(function () {
-        output = allocationService.transform({ includeCancelled: false })({
+        output = AllocationService.transform({ includeCancelled: false })({
           moves: [],
         })
       })
@@ -477,12 +478,12 @@ describe('Allocation service', function () {
 
     beforeEach(function () {
       transformStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
+      sinon.stub(AllocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'findAll')
     })
 
     context('when batching the request', function () {
-      const props = { foo: 'bar' }
+      const props = { foo: 'bar', apiClient: apiClient }
       beforeEach(async function () {
         apiClient.findAll.resolves(mockResponse)
         await allocationService.getAll(props)
@@ -531,7 +532,7 @@ describe('Allocation service', function () {
         })
 
         it('should transform each person object not including cancelled', function () {
-          expect(allocationService.transform).to.be.calledOnceWithExactly({
+          expect(AllocationService.transform).to.be.calledOnceWithExactly({
             includeCancelled: false,
           })
         })
@@ -610,7 +611,7 @@ describe('Allocation service', function () {
         })
 
         it('should transform each person object and include cancelled', function () {
-          expect(allocationService.transform).to.be.calledOnceWithExactly({
+          expect(AllocationService.transform).to.be.calledOnceWithExactly({
             includeCancelled: true,
           })
         })
@@ -902,7 +903,7 @@ describe('Allocation service', function () {
 
     beforeEach(async function () {
       transformStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
+      sinon.stub(AllocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'find').resolves({
         data: mockAllocations[0],
       })
@@ -948,7 +949,7 @@ describe('Allocation service', function () {
 
     beforeEach(async function () {
       transformStub = sinon.stub().returnsArg(0)
-      sinon.stub(allocationService, 'transform').callsFake(() => transformStub)
+      sinon.stub(AllocationService, 'transform').callsFake(() => transformStub)
       sinon.stub(apiClient, 'create').resolves({
         data: mockAllocations[0],
       })

@@ -1,4 +1,4 @@
-const MoveCreateAssessmentController = require('../../../move/controllers/create/assessment')
+const MoveCreateAssessmentController = require('../../app/new/controllers/assessment')
 
 const PersonAssignBase = require('./base')
 

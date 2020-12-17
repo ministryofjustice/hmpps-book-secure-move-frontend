@@ -1,9 +1,11 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const getViewLocals = sinon.stub()
+const getLocals = sinon.stub()
 
 const controller = proxyquire('./view', {
-  './view/view.locals': getViewLocals,
+  '../../../common/helpers/move': {
+    getLocals,
+  },
 })
 
 describe('Move controllers', function () {
@@ -14,8 +16,8 @@ describe('Move controllers', function () {
       moveService = {
         getByIdWithEvents: sinon.stub(),
       }
-      getViewLocals.resetHistory()
-      getViewLocals.returns({
+      getLocals.resetHistory()
+      getLocals.returns({
         locals: 'view.locals',
       })
 
@@ -48,7 +50,7 @@ describe('Move controllers', function () {
       })
 
       it('should call moveToMetaListComponent presenter with correct args', function () {
-        expect(getViewLocals).to.be.calledOnceWithExactly(req)
+        expect(getLocals).to.be.calledOnceWithExactly(req)
       })
     })
 

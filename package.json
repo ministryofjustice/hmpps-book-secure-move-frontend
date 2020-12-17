@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.60.1",
+  "version": "2.61.0",
   "main": "start.js",
   "contributors": [
     {
@@ -34,20 +34,20 @@
       "email": "steve@stevelorek.com"
     },
     {
-      "name": "Tyom Semonov",
-      "email": "inspiro@gmail.com"
-    },
-    {
       "name": "Nevelina Aleksandrova",
       "email": "nevelina@diginaga.online"
     },
     {
-      "name": "Ryan Brooks",
-      "email": "ryan@slatehorse.com"
+      "name": "Tyom Semonov",
+      "email": "inspiro@gmail.com"
     },
     {
       "name": "Adam Sharp",
       "email": "adam.sharp@digital.justice.gov.uk"
+    },
+    {
+      "name": "Ryan Brooks",
+      "email": "ryan@slatehorse.com"
     },
     {
       "name": "Ed Brindley",
@@ -89,6 +89,7 @@
     "@hmpps-book-secure-move-frameworks/1.5.2": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.5.2",
     "@hmpps-book-secure-move-frameworks/1.5.3": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.5.3",
     "@hmpps-book-secure-move-frameworks/2.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v2.0.0",
+    "@hmpps-book-secure-move-frameworks/2.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v2.1.0",
     "@ministryofjustice/frontend": "0.0.21",
     "@promster/express": "5.0.0",
     "@sentry/node": "5.29.0",
@@ -146,13 +147,13 @@
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
     "stream-mock": "2.0.5",
-    "uuid": "8.3.1",
+    "uuid": "8.3.2",
     "winston": "3.3.3",
     "yargs": "16.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
-    "@babel/preset-env": "7.12.7",
+    "@babel/preset-env": "7.12.11",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "@ffmpeg-installer/ffmpeg": "1.0.20",
@@ -182,17 +183,17 @@
     "finepack": "2.10.9",
     "git-authors-cli": "1.0.32",
     "glob": "7.1.6",
-    "husky": "4.3.0",
+    "husky": "4.3.6",
     "imagemin-webpack-plugin": "2.4.2",
     "lint-staged": "10.5.3",
-    "mini-css-extract-plugin": "1.3.1",
+    "mini-css-extract-plugin": "1.3.3",
     "mocha": "8.2.1",
     "mocha-junit-reporter": "2.0.0",
     "mock-fs": "4.13.0",
     "nock": "13.0.5",
     "node-sass": "5.0.0",
     "nodemon": "2.0.6",
-    "npm-check-updates": "10.2.3",
+    "npm-check-updates": "10.2.5",
     "nyc": "15.1.0",
     "open-cli": "6.0.1",
     "optimize-css-assets-webpack-plugin": "5.0.4",
@@ -208,7 +209,7 @@
     "testcafe": "1.9.4",
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
-    "timezone-mock": "1.1.2",
+    "timezone-mock": "1.1.3",
     "webpack": "4.44.2",
     "webpack-assets-manifest": "4.0.0",
     "webpack-cli": "3.3.12",

@@ -1,12 +1,18 @@
 const dateFunctions = require('date-fns')
 const { isNil, isUndefined, mapValues, omitBy, pick } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
-
-const moveService = require('./move')
+const BaseService = require('./base')
+const MoveService = require('./move')
 
 const noMoveIdMessage = 'No move ID supplied'
-const singleRequestService = {
+class SingleRequestService extends BaseService {
+  constructor(req) {
+    super(req)
+    this.moveService =
+      (this.req && this.req.services && this.req.services.move) ||
+      new MoveService(this.req)
+  }
+
   getAll({
     status,
     moveDate = [],
@@ -56,7 +62,7 @@ const singleRequestService = {
         }
     }
 
-    return moveService.getAll({
+    return this.moveService.getAll({
       isAggregation,
       include: include || [
         'from_location',
@@ -83,11 +89,11 @@ const singleRequestService = {
         isNil
       ),
     })
-  },
+  }
 
   async getDownload(args) {
-    return moveService.getDownload(args)
-  },
+    return this.moveService.getDownload(args)
+  }
 
   getCancelled({
     moveDate = [],
@@ -109,7 +115,7 @@ const singleRequestService = {
       isUndefined
     )
 
-    return moveService.getAll({
+    return this.moveService.getAll({
       isAggregation: false,
       include: include || [
         'from_location',
@@ -129,7 +135,7 @@ const singleRequestService = {
         ...dateRanges,
       },
     })
-  },
+  }
 
   approve(id, { date } = {}) {
     if (!id) {
@@ -138,7 +144,7 @@ const singleRequestService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('move', id)
       .all('approve')
       .post({
@@ -146,7 +152,7 @@ const singleRequestService = {
         date,
       })
       .then(response => response.data)
-  },
+  }
 
   reject(id, data = {}) {
     if (!id) {
@@ -168,7 +174,7 @@ const singleRequestService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('move', id)
       .all('reject')
       .post({
@@ -176,7 +182,7 @@ const singleRequestService = {
         ...mappedData,
       })
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = singleRequestService
+module.exports = SingleRequestService

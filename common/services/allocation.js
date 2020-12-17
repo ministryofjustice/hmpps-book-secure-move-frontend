@@ -1,11 +1,11 @@
 const dateFunctions = require('date-fns')
 const { mapValues, pickBy, set } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
-
+const BaseService = require('./base')
 const batchRequest = require('./batch-request')
 
 function getAll({
+  apiClient,
   filter = {},
   combinedData = [],
   page = 1,
@@ -31,10 +31,11 @@ function getAll({
       const hasNext = links.next && data.length !== 0
 
       if (!hasNext) {
-        return results.map(allocationService.transform({ includeCancelled }))
+        return results.map(AllocationService.transform({ includeCancelled }))
       }
 
-      return allocationService.getAll({
+      return getAll({
+        apiClient,
         filter,
         combinedData: results,
         page: page + 1,
@@ -43,7 +44,7 @@ function getAll({
     })
 }
 
-const allocationService = {
+class AllocationService extends BaseService {
   cancel(id, { reason, comment } = {}) {
     if (!id) {
       return Promise.reject(new Error('No allocation id supplied'))
@@ -51,7 +52,7 @@ const allocationService = {
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return apiClient
+    return this.apiClient
       .one('allocation', id)
       .all('cancel')
       .post({
@@ -60,7 +61,7 @@ const allocationService = {
         cancellation_reason_comment: comment,
       })
       .then(response => response.data)
-  },
+  }
 
   format(data) {
     const booleansAndNulls = ['complete_in_full', 'sentence_length']
@@ -79,8 +80,9 @@ const allocationService = {
 
       return value
     })
-  },
-  transform({ includeCancelled = false } = {}) {
+  }
+
+  static transform({ includeCancelled = false } = {}) {
     return function transformAllocation(result) {
       // TODO: Remove when individual allocations return meta.moves info
       // TODO: see moves filtering below too
@@ -120,13 +122,15 @@ const allocationService = {
         ),
       }
     }
-  },
+  }
+
   create(data) {
-    return apiClient
-      .create('allocation', allocationService.format(data))
+    return this.apiClient
+      .create('allocation', this.format(data))
       .then(response => response.data)
-      .then(allocationService.transform())
-  },
+      .then(AllocationService.transform())
+  }
+
   getByDateAndLocation({
     moveDate = [],
     fromLocations = [],
@@ -139,7 +143,7 @@ const allocationService = {
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
 
-    return allocationService.getAll({
+    return this.getAll({
       isAggregation,
       include: ['from_location', 'to_location'],
       // TODO: This can be removed once move count and progress are returned
@@ -156,14 +160,16 @@ const allocationService = {
         'sort[direction]': sortDirection,
       }),
     })
-  },
+  }
+
   getAll(props) {
-    return batchRequest(getAll, props, [
+    return batchRequest(getAll, { ...props, apiClient: this.apiClient }, [
       'from_locations',
       'to_locations',
       'locations',
     ])
-  },
+  }
+
   getById(id) {
     const include = [
       'from_location',
@@ -175,11 +181,11 @@ const allocationService = {
       'to_location',
     ]
 
-    return apiClient
+    return this.apiClient
       .find('allocation', id, { include })
       .then(response => response.data)
-      .then(allocationService.transform())
-  },
+      .then(AllocationService.transform())
+  }
 }
 
-module.exports = allocationService
+module.exports = AllocationService

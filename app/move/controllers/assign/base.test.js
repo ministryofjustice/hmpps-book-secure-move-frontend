@@ -1,5 +1,5 @@
 const presenters = require('../../../../common/presenters')
-const CreateBaseController = require('../../../move/controllers/create/base')
+const CreateBaseController = require('../../app/new/controllers/base')
 
 const BaseProto = CreateBaseController.prototype
 

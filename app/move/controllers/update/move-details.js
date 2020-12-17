@@ -1,6 +1,6 @@
 const { pick } = require('lodash')
 
-const CreateMoveDetailsController = require('../create/move-details')
+const CreateMoveDetailsController = require('../../app/new/controllers/move-details')
 
 const UpdateBase = require('./base')
 

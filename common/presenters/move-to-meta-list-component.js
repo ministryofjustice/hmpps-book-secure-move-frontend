@@ -3,9 +3,11 @@ const { get, isNil } = require('lodash')
 const moveAgreedField = require('../../app/move/fields/move-agreed')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+const getUpdateLinks = require('../helpers/move/get-update-links')
 
 function moveToMetaListComponent(
   {
+    id,
     date,
     date_from: dateFrom,
     date_to: dateTo,
@@ -18,7 +20,8 @@ function moveToMetaListComponent(
     move_agreed: moveAgreed,
     move_agreed_by: moveAgreedBy,
   } = {},
-  actions = {}
+  canAccess,
+  updateSteps
 ) {
   const destination = get(toLocation, 'title', 'Unknown')
   const useLabel = ['prison_recall', 'video_remand']
@@ -47,6 +50,12 @@ function moveToMetaListComponent(
     moveAgreed === true || moveAgreed === moveAgreedField.items[0].value
       ? agreedLabel
       : notAgreedLabel
+
+  const actions = getUpdateLinks(
+    { id, move_type: moveType },
+    canAccess,
+    updateSteps
+  )
 
   Object.keys(actions).forEach(key => {
     actions[key] = {

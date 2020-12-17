@@ -16,6 +16,7 @@ describe('Batching requests', function () {
 
   beforeEach(function () {
     props = {
+      apiClient: {},
       filter: {
         'filter[foo]': '1,2,3,4,5,6,7,8,9,10',
         'filter[bar]': 'I,II,III,IV,V,VI,VII,VIII,IX,X',
@@ -72,6 +73,7 @@ describe('Batching requests', function () {
           expect(clientMethodCallStub).to.be.calledTwice
           expect(clientMethodCallStub.firstCall.args).to.deep.equal([
             {
+              apiClient: {},
               filter: {
                 'filter[foo]': '1,2,3,4,5',
                 'filter[bar]': 'I,II,III,IV,V,VI,VII,VIII,IX,X',
@@ -80,6 +82,7 @@ describe('Batching requests', function () {
           ])
           expect(clientMethodCallStub.secondCall.args).to.deep.equal([
             {
+              apiClient: {},
               filter: {
                 'filter[foo]': '6,7,8,9,10',
                 'filter[bar]': 'I,II,III,IV,V,VI,VII,VIII,IX,X',
@@ -109,6 +112,7 @@ describe('Batching requests', function () {
     describe('and there are fewer prop params than the batch limit', async function () {
       beforeEach(async function () {
         props = {
+          apiClient: {},
           filter: {
             'filter[foo]': '1,2,3,4,5',
             'filter[bar]': 'I,II,III,IV,V,VI,VII,VIII,IX,X',
@@ -123,6 +127,7 @@ describe('Batching requests', function () {
 
         it('should call the client method once', function () {
           expect(clientMethodCallStub).to.be.calledOnceWithExactly({
+            apiClient: {},
             filter: {
               'filter[foo]': '1,2,3,4,5',
               'filter[bar]': 'I,II,III,IV,V,VI,VII,VIII,IX,X',
@@ -158,6 +163,7 @@ describe('Batching requests', function () {
       expect(clientMethodCallStub).to.be.calledTwice
       expect(clientMethodCallStub.firstCall.args).to.deep.equal([
         {
+          apiClient: {},
           filter: {
             'filter[foo]': '1,2,3,4,5,6,7,8,9,10',
             'filter[bar]': 'I,II,III,IV,V',
@@ -166,6 +172,7 @@ describe('Batching requests', function () {
       ])
       expect(clientMethodCallStub.secondCall.args).to.deep.equal([
         {
+          apiClient: {},
           filter: {
             'filter[foo]': '1,2,3,4,5,6,7,8,9,10',
             'filter[bar]': 'VI,VII,VIII,IX,X',
@@ -181,6 +188,7 @@ describe('Batching requests', function () {
   describe('when called with a batchable param as an array', async function () {
     beforeEach(async function () {
       props = {
+        apiClient: {},
         filter: {
           'filter[foo]': ['1', '2', '3', '4', '5'],
         },
@@ -190,6 +198,7 @@ describe('Batching requests', function () {
 
     it('should call the client method with the param concatenated', function () {
       expect(clientMethodCallStub).to.be.calledOnceWithExactly({
+        apiClient: {},
         filter: {
           'filter[foo]': '1,2,3,4,5',
         },

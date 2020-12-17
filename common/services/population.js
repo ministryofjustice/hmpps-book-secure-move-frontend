@@ -1,12 +1,12 @@
 const { mapValues, omitBy, isUndefined } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
+const BaseService = require('./base')
 
 const noPopulationIdMessage = 'No population ID supplied'
 const noLocationIdMessage = 'No location ID supplied'
 const noDateMessage = 'No date supplied'
 
-const populationService = {
+class PopulationService extends BaseService {
   format(data) {
     const relationships = ['location']
 
@@ -17,23 +17,23 @@ const populationService = {
 
       return value
     })
-  },
+  }
 
   getById(id, { include } = {}) {
     if (!id) {
       return Promise.reject(new Error(noPopulationIdMessage))
     }
 
-    return apiClient
+    return this.apiClient
       .find('population', id, { include })
       .then(response => response.data)
-  },
+  }
 
   getByIdWithMoves(id) {
-    return populationService.getById(id, {
+    return this.getById(id, {
       include: ['moves_from', 'moves_to', 'location'],
     })
-  },
+  }
 
   create(data) {
     const { location, date } = data
@@ -46,10 +46,10 @@ const populationService = {
       return Promise.reject(new Error(noDateMessage))
     }
 
-    return apiClient
-      .create('population', populationService.format(data))
+    return this.apiClient
+      .create('population', this.format(data))
       .then(response => response.data)
-  },
+  }
 
   update(data) {
     const { id } = data
@@ -58,10 +58,10 @@ const populationService = {
       return Promise.reject(new Error(noPopulationIdMessage))
     }
 
-    return apiClient
-      .update('population', populationService.format(data))
+    return this.apiClient
+      .update('population', this.format(data))
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = populationService
+module.exports = PopulationService

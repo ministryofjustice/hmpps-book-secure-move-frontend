@@ -2,11 +2,8 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
+const setMoveWithSummary = require('../../middleware/set-move-with-summary')
 const FormWizardController = require('../form-wizard')
-const services = {
-  'person-escort-record': require('../../services/person-escort-record'),
-  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
-}
 
 class FrameworkStepController extends FormWizardController {
   middlewareChecks() {
@@ -78,6 +75,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setSyncStatusBanner)
     this.use(this.setPrefillBanner)
     this.use(this.seti18nContext)
+    this.use(setMoveWithSummary)
   }
 
   seti18nContext(req, res, next) {
@@ -129,6 +127,11 @@ class FrameworkStepController extends FormWizardController {
         )
       )
       .reduce(frameworksHelpers.responsesToSaveReducer(form.values), [])
+
+    const services = {
+      'person-escort-record': req.services.personEscortRecord,
+      'youth-risk-assessment': req.services.youthRiskAssessment,
+    }
 
     try {
       // wait for all responses to resolve first

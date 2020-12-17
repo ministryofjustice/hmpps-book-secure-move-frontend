@@ -5,9 +5,10 @@ const apiClient = require('../lib/api-client')()
 
 const restClient = sinon.stub()
 
-const referenceDataService = proxyquire('./reference-data', {
+const ReferenceDataService = proxyquire('./reference-data', {
   '../lib/api-client/rest-client': restClient,
 })
+const referenceDataService = new ReferenceDataService({ apiClient })
 
 const mockGenders = [
   {

@@ -1,9 +1,13 @@
+const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+const getUpdateLinks = sinon.stub().returns({})
 
-const moveToMetaListComponent = require('./move-to-meta-list-component')
+const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
+  '../helpers/move/get-update-links': getUpdateLinks,
+})
 
 const mockMove = {
   date: '2019-06-09',
@@ -17,12 +21,16 @@ const mockMove = {
   },
 }
 
+const canAccess = sinon.stub()
+const updateSteps = ['a', 'b']
+
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
     beforeEach(function () {
       timezoneMock.register('UTC')
       sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returns('__translated__')
+      getUpdateLinks.resetHistory()
     })
 
     afterEach(function () {
@@ -33,10 +41,22 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(
+          mockMove,
+          canAccess,
+          updateSteps
+        )
       })
 
       describe('response', function () {
+        it('should get the actions', function () {
+          expect(getUpdateLinks).to.be.calledOnceWithExactly(
+            { id: mockMove.id, move_type: mockMove.move_type },
+            canAccess,
+            updateSteps
+          )
+        })
+
         it('should contain items list', function () {
           expect(transformedResponse).to.have.property('items')
           expect(transformedResponse.items.length).to.equal(7)
@@ -326,10 +346,15 @@ describe('Presenters', function () {
       }
 
       it('should add actions to move and date items', function () {
-        transformedResponse = moveToMetaListComponent(mockMove, {
+        getUpdateLinks.returns({
           move: moveAction,
           date: dateAction,
         })
+        transformedResponse = moveToMetaListComponent(
+          mockMove,
+          canAccess,
+          updateSteps
+        )
         const { items } = transformedResponse
         expect(items[0].action).to.be.undefined
         expect(items[1].action).to.deep.equal(expectedMoveAction)
@@ -337,9 +362,14 @@ describe('Presenters', function () {
       })
 
       it('should add actions to move and date items', function () {
-        transformedResponse = moveToMetaListComponent(mockMove, {
+        getUpdateLinks.returns({
           date: dateAction,
         })
+        transformedResponse = moveToMetaListComponent(
+          mockMove,
+          canAccess,
+          updateSteps
+        )
         const { items } = transformedResponse
         expect(items[1].action).to.be.undefined
         expect(items[2].action).to.deep.equal(expectedDateAction)

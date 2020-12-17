@@ -18,7 +18,6 @@ const gender = require('./gender')
 const image = require('./image')
 const journey = require('./journey')
 const location = require('./location')
-const locationsFreeSpaces = require('./locations-free-spaces')
 const move = require('./move')
 const person = require('./person')
 const personEscortRecord = require('./person-escort-record')
@@ -53,7 +52,6 @@ module.exports = {
   image,
   journey,
   location,
-  locations_free_spaces: locationsFreeSpaces,
   move,
   person,
   person_escort_record: personEscortRecord,

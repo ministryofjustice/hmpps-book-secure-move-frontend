@@ -2,7 +2,8 @@ const ApiClient = require('../lib/api-client')
 
 class BaseService {
   constructor(req) {
-    this.apiClient = req?.apiClient || new ApiClient()
+    this.req = req || {}
+    this.apiClient = (req && req.apiClient) || new ApiClient()
   }
 }
 

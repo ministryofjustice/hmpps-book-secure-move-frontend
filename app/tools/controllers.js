@@ -3,7 +3,7 @@ const { uniq } = require('lodash')
 const { permissionsByRole } = require('../../common/lib/permissions')
 
 function renderPermissions(req, res) {
-  res.render('_development-tools/views/permissions', {
+  res.render('tools/views/permissions', {
     activeRoles: req.session.activeRoles || [],
     roles: permissionsByRole,
   })

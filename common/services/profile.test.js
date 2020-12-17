@@ -4,9 +4,11 @@ const apiClient = require('../lib/api-client')()
 
 const unformatStub = sinon.stub()
 
-const profileService = proxyquire('./profile', {
+const ProfileService = proxyquire('./profile', {
   './profile/profile.unformat': unformatStub,
 })
+const profileService = new ProfileService({ apiClient })
+
 describe('Profile Service', function () {
   describe('#create()', function () {
     const profileData = {

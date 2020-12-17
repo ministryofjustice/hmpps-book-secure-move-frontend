@@ -1,8 +1,8 @@
-const { flattenDeep, omitBy, isEmpty } = require('lodash')
+const { flattenDeep, omitBy, isEmpty, groupBy } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
+const BaseService = require('./base')
 
-const locationsFreeSpacesService = {
+class LocationsFreeSpacesService extends BaseService {
   getLocationsFreeSpaces({
     filter,
     combinedData,
@@ -11,7 +11,7 @@ const locationsFreeSpacesService = {
     page = 1,
     include,
   } = {}) {
-    return apiClient
+    return this.apiClient
       .findAll('locations_free_spaces', {
         ...filter,
         page,
@@ -32,7 +32,7 @@ const locationsFreeSpacesService = {
           return locations
         }
 
-        return locationsFreeSpacesService.getLocationsFreeSpaces({
+        return this.getLocationsFreeSpaces({
           filter,
           page: page + 1,
           combinedData: locations,
@@ -41,9 +41,10 @@ const locationsFreeSpacesService = {
           dateTo,
         })
       })
-  },
-  getPrisonFreeSpaces({ dateFrom, dateTo, locationIds } = {}) {
-    return locationsFreeSpacesService.getLocationsFreeSpaces({
+  }
+
+  async getPrisonFreeSpaces({ dateFrom, dateTo, locationIds } = {}) {
+    const locations = await this.getLocationsFreeSpaces({
       dateFrom,
       dateTo,
       filter: omitBy(
@@ -53,8 +54,15 @@ const locationsFreeSpacesService = {
         },
         isEmpty
       ),
+      include: ['category'],
     })
-  },
+
+    const groupedLocations = groupBy(locations, value => {
+      return value?.category?.title || 'No Category'
+    })
+
+    return groupedLocations
+  }
 }
 
-module.exports = locationsFreeSpacesService
+module.exports = LocationsFreeSpacesService

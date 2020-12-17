@@ -1,12 +1,14 @@
+const proxyquire = require('proxyquire')
+
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
-const services = {
-  'person-escort-record': require('../../services/person-escort-record'),
-  'youth-risk-assessment': require('../../services/youth-risk-assessment'),
-}
 
-const Controller = require('./framework-step')
+const setMoveWithSummary = sinon.stub()
+
+const Controller = proxyquire('./framework-step', {
+  '../../middleware/set-move-with-summary': setMoveWithSummary,
+})
 
 const controller = new Controller({ route: '/' })
 
@@ -117,8 +119,14 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set move summary', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          setMoveWithSummary
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(4)
+        expect(controller.use).to.be.callCount(5)
       })
     })
 
@@ -682,8 +690,6 @@ describe('Framework controllers', function () {
       let nextSpy
 
       beforeEach(function () {
-        sinon.stub(services['person-escort-record'], 'respond')
-        sinon.stub(services['youth-risk-assessment'], 'respond')
         sinon.stub(fieldHelpers, 'isAllowedDependent').returns(true)
         sinon
           .stub(frameworksHelpers, 'responsesToSaveReducer')
@@ -716,13 +722,20 @@ describe('Framework controllers', function () {
               name: 'person-escort-record',
             },
           },
+          services: {
+            personEscortRecord: {
+              respond: sinon.stub().resolves({}),
+            },
+            youthRiskAssessment: {
+              respond: sinon.stub().resolves({}),
+            },
+          },
         }
       })
 
       context('without responses', function () {
         beforeEach(async function () {
           mockReq.assessment.responses = []
-          services['person-escort-record'].respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -734,7 +747,7 @@ describe('Framework controllers', function () {
         })
 
         it('should not call service', function () {
-          expect(services['person-escort-record'].respond).not.to.be.called
+          expect(mockReq.services.personEscortRecord.respond).not.to.be.called
         })
 
         it('should call the super method', function () {
@@ -750,8 +763,6 @@ describe('Framework controllers', function () {
 
       context('when promises resolve', function () {
         beforeEach(async function () {
-          services['person-escort-record'].respond.resolves({})
-
           await controller.saveValues(mockReq, {}, nextSpy)
         })
 
@@ -763,7 +774,7 @@ describe('Framework controllers', function () {
 
         it('should call service method', function () {
           expect(
-            services['person-escort-record'].respond
+            mockReq.services.personEscortRecord.respond
           ).to.be.calledOnceWithExactly(mockReq.assessment.id, mockResponses)
         })
 
@@ -782,7 +793,9 @@ describe('Framework controllers', function () {
         const error = new Error()
 
         beforeEach(async function () {
-          services['person-escort-record'].respond.rejects(error)
+          mockReq.services.personEscortRecord.respond = sinon
+            .stub()
+            .rejects(error)
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
@@ -799,14 +812,13 @@ describe('Framework controllers', function () {
       context('with youth risk assessment', function () {
         beforeEach(async function () {
           mockReq.assessment.framework.name = 'youth-risk-assessment'
-          services['youth-risk-assessment'].respond.resolves({})
 
           await controller.saveValues(mockReq, {}, nextSpy)
         })
 
         it('should call the correct service method', function () {
           expect(
-            services['youth-risk-assessment'].respond
+            mockReq.services.youthRiskAssessment.respond
           ).to.be.calledOnceWithExactly(mockReq.assessment.id, mockResponses)
         })
       })
@@ -845,7 +857,6 @@ describe('Framework controllers', function () {
 
         beforeEach(async function () {
           mockReq.assessment.responses = mockResponsesWithDependents
-          services['person-escort-record'].respond.resolves({})
 
           fieldHelpers.isAllowedDependent
             .withArgs(
@@ -882,7 +893,7 @@ describe('Framework controllers', function () {
 
         it('should filter out dependent fields', function () {
           expect(
-            services['person-escort-record'].respond
+            mockReq.services.personEscortRecord.respond
           ).to.be.calledOnceWithExactly(mockReq.assessment.id, [
             mockResponsesWithDependents[0],
             mockResponsesWithDependents[2],
