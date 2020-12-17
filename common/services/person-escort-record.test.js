@@ -3,13 +3,14 @@ const proxyquire = require('proxyquire')
 const apiClient = require('../lib/api-client')()
 
 const mockFrameworksVersion = '2.5.3'
-const personEscortRecordService = proxyquire('./person-escort-record', {
+const PersonEscortRecordService = proxyquire('./person-escort-record', {
   '../../config': {
     FRAMEWORKS: {
       CURRENT_VERSION: mockFrameworksVersion,
     },
   },
 })
+const personEscortRecordService = new PersonEscortRecordService({ apiClient })
 
 const mockRecord = {
   id: '12345',
