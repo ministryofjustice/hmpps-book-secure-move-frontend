@@ -7,9 +7,6 @@ const config = {
     VERSION: 'terminator-x',
   },
   APP_VERSION: 'chuck-d',
-  CUSTOM_HEADERS: {
-    'X-Test-Header': 'testvalue',
-  },
 }
 
 const getRequestHeaders = proxyquire('./request-headers', {
@@ -55,10 +52,6 @@ describe('API Client', function () {
 
         it('should return the `Current-User` header', function () {
           expect(headers['X-Current-User']).to.equal('T_USER')
-        })
-
-        it('should return the custom header specified in config', function () {
-          expect(headers['X-Test-Header']).to.equal('testvalue')
         })
       })
     })
