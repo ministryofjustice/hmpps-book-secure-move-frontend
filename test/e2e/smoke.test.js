@@ -3,10 +3,11 @@ import {
   stcUser,
   prisonUser,
   supplierUser,
-  ocaUser,
+  // ocaUser,
 } from './_roles'
 import { home, movesByDay } from './_routes'
-import { dashboardPage, page, movesDashboardPage } from './pages'
+// import { dashboardPage,} from './pages'
+import { page, movesDashboardPage } from './pages'
 
 const users = [
   {
@@ -36,14 +37,14 @@ const users = [
 ]
 
 const usersWhoHaveADashboard = [
-  {
-    name: 'OCA user',
-    role: ocaUser,
-    username: 'End-to-end OCA',
-    homeSection: dashboardPage.nodes.singleRequestsSection,
-    homeButton: dashboardPage.nodes.singleRequestsLink,
-    timePeriod: 'This week',
-  },
+  // {
+  //   name: 'OCA user',
+  //   role: ocaUser,
+  //   username: 'End-to-end OCA',
+  //   homeSection: dashboardPage.nodes.singleRequestsSection,
+  //   homeButton: dashboardPage.nodes.singleRequestsLink,
+  //   timePeriod: 'This week',
+  // },
 ]
 
 fixture('Smoke tests')
