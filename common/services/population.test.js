@@ -4,9 +4,10 @@ const apiClient = require('../lib/api-client')()
 
 const restClient = sinon.stub()
 
-const populationService = proxyquire('./population', {
+const PopulationService = proxyquire('./population', {
   '../lib/api-client/rest-client': restClient,
 })
+const populationService = new PopulationService({ apiClient })
 
 const mockPopulations = [
   {
