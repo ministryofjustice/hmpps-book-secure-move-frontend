@@ -1,11 +1,12 @@
 const { FRAMEWORKS } = require('../../config')
-const apiClient = require('../lib/api-client')()
+
+const BaseService = require('./base')
 
 const noIdMessage = 'No resource ID supplied'
 
-const personEscortRecordService = {
+class PersonEscortRecordService extends BaseService {
   create(moveId) {
-    return apiClient
+    return this.apiClient
       .create('person_escort_record', {
         version: FRAMEWORKS.CURRENT_VERSION,
         move: {
@@ -13,20 +14,20 @@ const personEscortRecordService = {
         },
       })
       .then(response => response.data)
-  },
+  }
 
   confirm(id) {
     if (!id) {
       return Promise.reject(new Error(noIdMessage))
     }
 
-    return apiClient
+    return this.apiClient
       .update('person_escort_record', {
         id,
         status: 'confirmed',
       })
       .then(response => response.data)
-  },
+  }
 
   getById(id) {
     if (!id) {
@@ -46,10 +47,10 @@ const personEscortRecordService = {
       'move',
     ]
 
-    return apiClient
+    return this.apiClient
       .find('person_escort_record', id, { include })
       .then(response => response.data)
-  },
+  }
 
   respond(id, data = []) {
     if (!id) {
@@ -60,11 +61,11 @@ const personEscortRecordService = {
       return Promise.resolve([])
     }
 
-    return apiClient
+    return this.apiClient
       .one('person_escort_record', id)
       .all('framework_response')
       .patch(data)
-  },
+  }
 }
 
-module.exports = personEscortRecordService
+module.exports = PersonEscortRecordService
