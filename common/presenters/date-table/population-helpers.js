@@ -1,4 +1,5 @@
 const { format } = require('date-fns')
+const { isNil } = require('lodash')
 
 const i18n = require('../../../config/i18n')
 
@@ -38,15 +39,15 @@ const establishmentConfig = {
 const freeSpaceCellContent = function ({ date, populationIndex = 0 }) {
   return data => {
     const { id: locationId } = data
-    const { free_spaces: count } =
+    const { free_spaces: freeSpaces } =
       data?.meta?.populations?.[populationIndex] || {}
 
-    const link =
-      count === undefined
-        ? i18n.t('population::add_space')
-        : i18n.t('population::spaces_with_count', { count })
+    const hasNoFreeSpaces = isNil(freeSpaces)
+    const link = hasNoFreeSpaces
+      ? i18n.t('population::add_space')
+      : i18n.t('population::spaces_with_count', { count: freeSpaces })
 
-    const editQuicklink = count === undefined ? '/edit' : ''
+    const editQuicklink = hasNoFreeSpaces ? '/edit' : ''
 
     const url = `/population/day/${format(
       date,
