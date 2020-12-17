@@ -56,7 +56,7 @@ describe('Population controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(4)
+          expect(Object.keys(params)).to.have.length(5)
         })
 
         it('should set date', function () {
@@ -67,6 +67,13 @@ describe('Population controllers', function () {
         it('should set locationId', function () {
           expect(params).to.have.property('locationId')
           expect(params.locationId).to.deep.equal(mockReq.params.locationId)
+        })
+
+        it('should set editPath', function () {
+          expect(params).to.have.property('editPath')
+          expect(params.editPath).to.equal(
+            '/population/day/2020-07-29/C0DEC0DE/edit'
+          )
         })
 
         it('should set spaces', function () {

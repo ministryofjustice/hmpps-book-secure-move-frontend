@@ -48,7 +48,7 @@
           <p>{{ t("population::daily_view.free_space_description") }}</p>
           <p><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
           <p class="govuk-!-margin-bottom-0">
-            <a href="{{ locationId }}/edit" class="govuk-link govuk-link--no-visited-state">
+            <a href="{{ editPath }}" class="govuk-link govuk-link--no-visited-state">
               {{ t("population::daily_view.actions.change_numbers", {
                 context: "with_visually_hidden_text"
               }) | safe }}
@@ -57,7 +57,7 @@
         {%  else %}
           <div>
             {{ govukButton({
-              href: "",
+              href: editPath,
               html: t("population::daily_view.actions.add_numbers"),
               classes: "govuk-button"
             })}}
