@@ -976,7 +976,11 @@ describe('Move Service', function () {
       })
       it('should call find method with data', function () {
         expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
-          include: [...moveService.defaultInclude(), 'important_events'],
+          include: [
+            ...moveService.defaultInclude(),
+            'important_events',
+            'profile.category',
+          ],
         })
       })
       it('should return move', function () {
