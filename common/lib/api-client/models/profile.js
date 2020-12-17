@@ -17,5 +17,9 @@ module.exports = {
       jsonApi: 'hasOne',
       type: 'youth_risk_assessments',
     },
+    category: {
+      jsonApi: 'hasOne',
+      type: 'categories',
+    },
   },
 }

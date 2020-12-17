@@ -99,6 +99,9 @@
       },
       "documents": {
         "data": []
+      },
+      "category": {
+        "data": null
       }
     }
   },
