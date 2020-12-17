@@ -62,7 +62,9 @@ const mockUserCaseloads = [
 ]
 
 const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
-  './reference-data': referenceDataStub,
+  './reference-data': function () {
+    return referenceDataStub
+  },
   '../../config': configStub,
 })
 
