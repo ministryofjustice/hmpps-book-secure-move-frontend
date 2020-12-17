@@ -13,6 +13,7 @@ async function daily(req, res) {
     locationId: locationId,
     spaces,
     transfers,
+    editPath: `/population/day/${date}/${locationId}/edit`,
   })
 }
 

@@ -3,10 +3,8 @@ const axios = require('axios')
 const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 const { decodeAccessToken } = require('../lib/access-token')
 
-const {
-  getLocationsByNomisAgencyId,
-  getSupplierByKey,
-} = require('./reference-data')
+const ReferenceDataService = require('./reference-data')
+const referenceDataService = new ReferenceDataService()
 
 const getAuthHeader = token => ({ Authorization: `Bearer ${token}` })
 
@@ -46,7 +44,7 @@ async function getSupplierId(token) {
   const supplierKey = groups[0].toLowerCase()
 
   try {
-    const supplier = await getSupplierByKey(supplierKey)
+    const supplier = await referenceDataService.getSupplierByKey(supplierKey)
     return supplier.id
   } catch (error) {
     if (error.statusCode === 404) {
@@ -78,7 +76,7 @@ async function getAuthLocations(token) {
 
   const groups = await getAuthGroups(token)
 
-  return getLocationsByNomisAgencyId(groups)
+  return referenceDataService.getLocationsByNomisAgencyId(groups)
 }
 
 function getNomisLocations(token) {
@@ -88,7 +86,9 @@ function getNomisLocations(token) {
     })
     .then(response => response.data)
     .then(data => data.map(caseload => caseload.caseLoadId))
-    .then(agencies => getLocationsByNomisAgencyId(agencies))
+    .then(agencies =>
+      referenceDataService.getLocationsByNomisAgencyId(agencies)
+    )
 }
 
 module.exports = {
