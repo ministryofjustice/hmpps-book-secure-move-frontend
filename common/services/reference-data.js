@@ -71,7 +71,9 @@ class ReferenceDataService extends BaseService {
   }
 
   getLocationsByNomisAgencyId(ids = []) {
-    return this.mapLocationIdsToLocations(ids, this.getLocationByNomisAgencyId)
+    return this.mapLocationIdsToLocations(ids, id =>
+      this.getLocationByNomisAgencyId(id)
+    )
   }
 
   getLocationsByType(type) {
