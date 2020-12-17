@@ -1,8 +1,6 @@
 async function setPopulation(req, res, next) {
   try {
     const { locationId, date } = req.params
-    let transfersIn
-    let transfersOut
 
     const dailyFreeSpaceByCategory = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
       {
@@ -19,32 +17,21 @@ async function setPopulation(req, res, next) {
 
     const freeSpacePopulation =
       dailyFreeSpace?.[0]?.meta?.populations?.[0] || {}
-    const { id: populationId } = freeSpacePopulation
+    const {
+      id: populationId,
+      transfers_in: transfersIn,
+      transfers_out: transfersOut,
+    } = freeSpacePopulation
+
+    req.transfers = {
+      transfersIn,
+      transfersOut,
+    }
 
     if (populationId) {
       req.population = await req.services.population.getByIdWithMoves(
         populationId
       )
-
-      transfersIn = req.population.moves_to.length
-      transfersOut = req.population.moves_from.length
-    } else {
-      const options = { dateRange: [date, date], isAggregation: true }
-      ;[transfersIn, transfersOut] = await Promise.all([
-        req.services.move.getActive({
-          ...options,
-          toLocationId: locationId,
-        }),
-        req.services.move.getActive({
-          ...options,
-          fromLocationId: locationId,
-        }),
-      ])
-    }
-
-    req.transfers = {
-      transfersIn,
-      transfersOut,
     }
 
     req.locationId = locationId

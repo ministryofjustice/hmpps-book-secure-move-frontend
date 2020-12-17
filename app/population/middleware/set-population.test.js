@@ -9,7 +9,9 @@ const mockFreeSpaces = {
     {
       id: 'ABADCAFE',
       meta: {
-        populations: [{ id: 'A', free_spaces: 0 }],
+        populations: [
+          { id: 'A', free_spaces: 0, transfers_in: 3, transfers_out: 2 },
+        ],
       },
     },
   ],
@@ -39,9 +41,6 @@ describe('Population middleware', function () {
     beforeEach(function () {
       populationService = {
         getByIdWithMoves: sinon.stub().resolves(mockPopulation),
-      }
-      moveService = {
-        getActive: sinon.stub(),
       }
 
       next = sinon.fake()
@@ -108,17 +107,22 @@ describe('Population middleware', function () {
 
     context('when service resolves with no population data', function () {
       beforeEach(async function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.resolves([
-          {
-            id: 'ABADCAFE',
-            meta: {
-              populations: [{ unused_property: 'not visible' }],
+        locationsFreeSpacesService.getPrisonFreeSpaces.resolves({
+          'Category Epsilon': [
+            {
+              id: 'ABADCAFE',
+              meta: {
+                populations: [
+                  {
+                    unused_property: 'not visible',
+                    transfers_in: 5,
+                    transfers_out: 8,
+                  },
+                ],
+              },
             },
-          },
-        ])
-
-        moveService.getActive.onCall(0).returns(4)
-        moveService.getActive.onCall(1).returns(2)
+          ],
+        })
 
         await middleware(req, res, next)
       })
@@ -141,24 +145,10 @@ describe('Population middleware', function () {
         expect(req.population).to.be.undefined
       })
 
-      it('should call move service for transfers in and transfers out', function () {
-        expect(moveService.getActive).to.have.been.calledTwice
-        expect(moveService.getActive.firstCall).to.have.been.calledWith({
-          dateRange: ['2020-08-01', '2020-08-01'],
-          isAggregation: true,
-          toLocationId: 'BAADF00D',
-        })
-        expect(moveService.getActive.secondCall).to.have.been.calledWith({
-          dateRange: ['2020-08-01', '2020-08-01'],
-          isAggregation: true,
-          fromLocationId: 'BAADF00D',
-        })
-      })
-
       it('should set req.transfers', function () {
         expect(req.transfers).to.deep.equal({
-          transfersIn: 4,
-          transfersOut: 2,
+          transfersIn: 5,
+          transfersOut: 8,
         })
       })
 
