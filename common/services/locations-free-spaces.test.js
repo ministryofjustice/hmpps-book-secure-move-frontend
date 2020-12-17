@@ -4,9 +4,10 @@ const apiClient = require('../lib/api-client')()
 
 const restClient = sinon.stub()
 
-const locationsFreeSpacesService = proxyquire('./locations-free-spaces', {
+const LocationsFreeSpacesService = proxyquire('./locations-free-spaces', {
   '../lib/api-client/rest-client': restClient,
 })
+const locationsFreeSpacesService = new LocationsFreeSpacesService({ apiClient })
 
 const mockLocations = [
   {
