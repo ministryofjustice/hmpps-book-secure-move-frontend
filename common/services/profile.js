@@ -1,7 +1,6 @@
 const { get } = require('lodash')
 
-const apiClient = require('../lib/api-client')()
-
+const BaseService = require('./base')
 const unformat = require('./profile/profile.unformat')
 
 const assessmentKeys = [
@@ -29,7 +28,7 @@ const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
 const allFields = [].concat(assessmentKeys, explicitAssessmentKeys)
 
-const profileService = {
+class ProfileService extends BaseService {
   unformat(
     profile,
     fields = allFields,
@@ -42,19 +41,19 @@ const profileService = {
       assessment,
       explicitAssessment,
     })
-  },
+  }
 
   create(personId, data) {
     if (!personId) {
       return Promise.reject(new Error('No Person ID supplied'))
     }
 
-    return apiClient
+    return this.apiClient
       .one('person', personId)
       .all('profile')
       .post(data)
       .then(response => response.data)
-  },
+  }
 
   async update(data) {
     const personId = get(data, 'person.id')
@@ -63,12 +62,12 @@ const profileService = {
       return Promise.reject(new Error('No Person ID supplied'))
     }
 
-    return apiClient
+    return this.apiClient
       .one('person', personId)
       .one('profile', data.id)
       .patch(data)
       .then(response => response.data)
-  },
+  }
 }
 
-module.exports = profileService
+module.exports = ProfileService
