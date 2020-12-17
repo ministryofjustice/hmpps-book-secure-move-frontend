@@ -19,9 +19,15 @@ describe('API Client', function () {
     describe('#getRequestHeaders', function () {
       context('when called without a format', function () {
         let headers
+        let req
 
         beforeEach(function () {
-          headers = getRequestHeaders()
+          req = {
+            user: {
+              username: 'T_USER',
+            },
+          }
+          headers = getRequestHeaders(req)
         })
 
         it('should return `Accept` header with default format and the api version', function () {
@@ -43,14 +49,20 @@ describe('API Client', function () {
         it('should return the `Idempotency-Key` header', function () {
           expect(headers['Idempotency-Key']).to.equal('#uuid')
         })
+
+        it('should return the `Current-User` header', function () {
+          expect(headers['X-Current-User']).to.equal('T_USER')
+        })
       })
     })
 
     context('when called with a format', function () {
       let headers
+      let req
 
       beforeEach(function () {
-        headers = getRequestHeaders('format/foo')
+        req = {}
+        headers = getRequestHeaders(req, 'format/foo')
       })
 
       it('should return `Accept` header with specified format and the api version', function () {

@@ -14,7 +14,7 @@ describe('API Client', function () {
       context('when payload includes a response', function () {
         it('should return payload as is', function () {
           const payload = { req: {}, res: {} }
-          expect(middleware.req(payload)).to.deep.equal({ ...payload })
+          expect(middleware().req(payload)).to.deep.equal({ ...payload })
         })
       })
 
@@ -27,11 +27,11 @@ describe('API Client', function () {
               Accept: 'Something',
             },
           }
-          middleware.req({ req: request })
+          middleware(request).req({ req: request })
         })
 
         it('should get the request headers', function () {
-          expect(getRequestHeadersStub).to.be.calledOnceWithExactly()
+          expect(getRequestHeadersStub).to.be.calledOnceWithExactly(request)
         })
 
         it('should add the default request headers', function () {

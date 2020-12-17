@@ -51,7 +51,9 @@ describe('Back-end API client', function () {
 
     beforeEach(function () {
       authStub = sinon.stub()
-      requestHeadersStub = sinon.stub()
+      requestHeadersStub = sinon
+        .stub()
+        .returns({ 'X-Test-Header': 'headervalue' })
       postStub = sinon.stub()
       errorsStub = sinon.stub()
       cacheKeyStub = sinon.stub().returnsArg(0)
@@ -88,10 +90,16 @@ describe('Back-end API client', function () {
 
     context('on first call', function () {
       let client
+      let req
 
       context('with auth client ID and secret', function () {
         beforeEach(function () {
-          client = jsonApi()
+          req = {
+            user: {
+              userame: 'T_USER',
+            },
+          }
+          client = jsonApi(req)
         })
 
         it('should create a new client', function () {
@@ -162,7 +170,9 @@ describe('Back-end API client', function () {
           it('should insert request headers middleware', function () {
             expect(
               JsonApiStub.prototype.insertMiddlewareBefore.getCall(4)
-            ).to.be.calledWithExactly('app-request', requestHeadersStub)
+            ).to.be.calledWithExactly('app-request', {
+              'X-Test-Header': 'headervalue',
+            })
           })
 
           it('should insert request include middleware', function () {
@@ -291,43 +301,6 @@ describe('Back-end API client', function () {
           expect(
             JsonApiStub.prototype.insertMiddlewareBefore.callCount
           ).to.equal(5)
-        })
-      })
-    })
-
-    context('on subsequent calls', function () {
-      let firstInstance
-      let secondInstance
-      let thirdInstance
-
-      beforeEach(function () {
-        firstInstance = jsonApi()
-        secondInstance = jsonApi()
-        thirdInstance = jsonApi()
-      })
-
-      it('should only create one new client', function () {
-        expect(JsonApiStub.prototype.init).to.be.calledOnce
-      })
-
-      describe('first instance', function () {
-        it('should return an client API', function () {
-          expect(firstInstance).to.be.a('object')
-          expect(firstInstance).to.deep.equal(new JsonApiStub())
-        })
-      })
-
-      describe('third instance', function () {
-        it('should return an client API', function () {
-          expect(thirdInstance).to.be.a('object')
-          expect(thirdInstance).to.deep.equal(new JsonApiStub())
-        })
-      })
-
-      describe('second instance', function () {
-        it('should return an client API', function () {
-          expect(secondInstance).to.be.a('object')
-          expect(secondInstance).to.deep.equal(new JsonApiStub())
         })
       })
     })

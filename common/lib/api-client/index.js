@@ -16,14 +16,8 @@ const {
 } = require('./middleware')
 const models = require('./models')
 
-let instance
-
-module.exports = function () {
-  if (instance) {
-    return instance
-  }
-
-  instance = new JsonApi({
+module.exports = function (req) {
+  const instance = new JsonApi({
     apiUrl: API.BASE_URL,
     logger: false,
   })
@@ -54,7 +48,7 @@ module.exports = function () {
   }
 
   insertRequestMiddleware(requestTimeout(API.TIMEOUT))
-  insertRequestMiddleware(requestHeaders)
+  insertRequestMiddleware(requestHeaders(req))
   insertRequestMiddleware(requestInclude)
 
   instance.insertMiddlewareAfter('app-request', processResponse)
