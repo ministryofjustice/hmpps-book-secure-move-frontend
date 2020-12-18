@@ -30,22 +30,13 @@ class AssessmentController extends CreateBaseController {
     this.use(this.setPreviousAssessment)
   }
 
-  async setPreviousAssessment(req, res, next) {
+  setPreviousAssessment(req, res, next) {
     const {
       assessmentCategory,
       customAssessmentGroupings = [],
       showPreviousAssessment,
     } = req.form.options
-
-    const profileService = req.services.profile
-
-    let profile = req.getProfile()
-
-    if (!profile.id) {
-      const person = req.getPerson()
-      profile = await profileService.create(person.id, {})
-      req.sessionModel.set('profile', profile)
-    }
+    const profile = req.getProfile()
 
     if (showPreviousAssessment) {
       const customAssessmentKeys = customAssessmentGroupings

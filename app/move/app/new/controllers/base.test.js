@@ -42,6 +42,8 @@ describe('Move controllers', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareSetup')
         sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setModels')
+        sinon.stub(controller, 'setProfile')
 
         controller.middlewareSetup()
       })
@@ -57,8 +59,166 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call set profile method', function () {
+        expect(controller.use.getCall(1)).to.have.been.calledWithExactly(
+          controller.setProfile
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(1)
+        expect(controller.use).to.be.callCount(2)
+      })
+    })
+
+    describe('#setProfile', function () {
+      let mockReq, nextSpy
+      const mockCreatedProfile = {
+        id: '__profile__',
+        person: {
+          id: '__person__',
+        },
+      }
+
+      beforeEach(function () {
+        mockReq = {
+          services: {
+            profile: {
+              create: sinon.stub().resolves(mockCreatedProfile),
+            },
+          },
+          sessionModel: {
+            get: sinon.stub().returns(),
+            set: sinon.stub().returns({}),
+          },
+        }
+        nextSpy = sinon.spy()
+      })
+
+      context('without person', function () {
+        beforeEach(async function () {
+          await controller.setProfile(mockReq, {}, nextSpy)
+        })
+
+        it('should not create a profile', function () {
+          expect(mockReq.services.profile.create).not.to.have.been.called
+        })
+
+        it('should not update session data', function () {
+          expect(mockReq.sessionModel.set).not.to.have.been.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.have.been.calledOnceWithExactly()
+        })
+      })
+
+      context('with person', function () {
+        const mockPerson = {
+          id: 'person_12345',
+        }
+
+        beforeEach(function () {
+          mockReq.sessionModel.get.withArgs('person').returns(mockPerson)
+        })
+
+        context('without existing profile', function () {
+          beforeEach(async function () {
+            await controller.setProfile(mockReq, {}, nextSpy)
+          })
+
+          it('should create a profile', function () {
+            expect(
+              mockReq.services.profile.create
+            ).to.have.been.calledOnceWithExactly('person_12345', {})
+          })
+
+          it('should update session data with profile', function () {
+            expect(mockReq.sessionModel.set).to.have.been.calledOnceWithExactly(
+              'profile',
+              mockCreatedProfile
+            )
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.have.been.calledOnceWithExactly()
+          })
+        })
+
+        context('with existing profile', function () {
+          const mockProfile = {
+            id: 'profile_12345',
+          }
+
+          beforeEach(function () {
+            mockReq.sessionModel.get.withArgs('profile').returns(mockProfile)
+          })
+
+          context('with same person', function () {
+            beforeEach(async function () {
+              mockProfile.person = mockPerson
+              await controller.setProfile(mockReq, {}, nextSpy)
+            })
+
+            it('should not create a profile', function () {
+              expect(mockReq.services.profile.create).not.to.have.been.called
+            })
+
+            it('should not update session data', function () {
+              expect(mockReq.sessionModel.set).not.to.have.been.called
+            })
+
+            it('should call next', function () {
+              expect(nextSpy).to.have.been.calledOnceWithExactly()
+            })
+          })
+
+          context('with different person', function () {
+            beforeEach(async function () {
+              mockProfile.person = {
+                id: 'person_67890',
+              }
+              await controller.setProfile(mockReq, {}, nextSpy)
+            })
+
+            it('should create a profile', function () {
+              expect(
+                mockReq.services.profile.create
+              ).to.have.been.calledOnceWithExactly('person_12345', {})
+            })
+
+            it('should update session data with profile', function () {
+              expect(
+                mockReq.sessionModel.set
+              ).to.have.been.calledOnceWithExactly(
+                'profile',
+                mockCreatedProfile
+              )
+            })
+
+            it('should call next', function () {
+              expect(nextSpy).to.have.been.calledOnceWithExactly()
+            })
+          })
+        })
+
+        context('when create fails', function () {
+          const mockError = new Error('Error!')
+
+          beforeEach(async function () {
+            mockReq.services.profile.create.rejects(mockError)
+            await controller.setProfile(mockReq, {}, nextSpy)
+          })
+
+          it('should try to create a profile', function () {
+            expect(
+              mockReq.services.profile.create
+            ).to.have.been.calledOnceWithExactly('person_12345', {})
+          })
+
+          it('should call next with error', function () {
+            expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
+          })
+        })
       })
     })
 

@@ -268,27 +268,6 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
       })
 
-      context('when no profile exists', function () {
-        beforeEach(async function () {
-          req.getProfile.returns({})
-          await controller.setPreviousAssessment(req, res, nextSpy)
-        })
-
-        it('should create a profile', function () {
-          expect(profileService.create).to.be.calledOnceWithExactly(
-            '#person',
-            {}
-          )
-        })
-
-        it('should stash the profile on the session', function () {
-          expect(req.sessionModel.set).to.be.calledOnceWithExactly(
-            'profile',
-            mockProfile
-          )
-        })
-      })
-
       context('when the step should show previous assessment', function () {
         beforeEach(function () {
           req.form.options.showPreviousAssessment = true
