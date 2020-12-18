@@ -13,6 +13,8 @@ const mockLocation = {
       {
         id: '1bf70844-6b85-4fa6-8437-1c3859f883ee',
         free_spaces: 2,
+        transfers_in: 3,
+        transfers_out: 4,
       },
       {
         id: '6318fafa-923d-468f-ab5f-dc9cbdd79198',
@@ -23,12 +25,16 @@ const mockLocation = {
         free_spaces: 0,
       },
       {
-        id: '18a46696-f6ff-4c4e-8fe8-bc3177845a4a',
+        id: undefined,
         free_spaces: undefined,
+        transfers_in: 3,
+        transfers_out: 4,
       },
       {
-        id: 'abccd8db-29fe-47cf-b463-4f71cbea5416',
-        free_spaces: undefined,
+        id: null,
+        free_spaces: null,
+        transfers_in: 3,
+        transfers_out: 4,
       },
     ],
   },
