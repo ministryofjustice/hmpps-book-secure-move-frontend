@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.62.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.61.0...v2.62.0) (2020-12-18)
+
+
+### Features
+
+* Add population grouping by category ([ef770fc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ef770fcc5cbedfc7caee026c2cabbf17f17c5810))
+* Add support for prefix and suffix from framework ([eec2b24](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/eec2b24fe23a476498d5be4a0767158e4ef187b9))
+
+
+### Bug Fixes
+
+* Add styling for caption and table borders ([0a8c4ef](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0a8c4efa9a286941ae641b4b4cc8ed25b463a8e3))
+* Ensure radio/checkboxes within add another keep same name ([28b95ed](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/28b95ed0212cbd07b7daafe78c73a7c08d5973ae))
+* Quick fix for broken population adding ([b4e7dc9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b4e7dc98061a6c9a8502c13908e3def5253ab110))
+* Use appMessage styling for no population ([7790f2e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7790f2ea8356383897f8f239c8e824cc7dd628c3))
+* Use category key to select freespace to edit ([78dd012](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/78dd0128a006d312bca9dbc258890eedb3fe0c40))
+* Use correct link to population edit page ([388b655](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/388b65508168122b2e9734f3989ca60a766a9417))
+
 ## [2.61.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.60.1...v2.61.0) (2020-12-15)
 
 
