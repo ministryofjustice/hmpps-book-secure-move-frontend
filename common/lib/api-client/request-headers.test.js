@@ -85,5 +85,21 @@ describe('API Client', function () {
         expect(headers['Idempotency-Key']).to.equal('#uuid')
       })
     })
+
+    context('when there is no username', function () {
+      let headers
+      let req
+
+      beforeEach(function () {
+        req = {
+          user: {},
+        }
+        headers = getRequestHeaders(req, 'format/foo')
+      })
+
+      it('should not add Current User Header', function () {
+        expect('X-Current-User' in headers).to.equal(false)
+      })
+    })
   })
 })

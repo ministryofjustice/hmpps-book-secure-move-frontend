@@ -13,7 +13,7 @@ module.exports = (req, format = 'application/vnd.api+json') => {
     'Idempotency-Key': uuid.v4(),
   }
 
-  if (req && req.user) {
+  if (req && req.user && req.user.username) {
     headers['X-Current-User'] = req.user.username
   }
 
