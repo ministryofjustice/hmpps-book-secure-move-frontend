@@ -54,6 +54,7 @@ const mockPerson = {
 const mockProfile = {
   assessment_answers: mockAssessmentAnswers,
   person: mockPerson,
+  category: '__mock-category__',
 }
 const mockMove = {
   id: 'moveId',
@@ -123,14 +124,20 @@ describe('Move helpers', function () {
       })
 
       describe('personal details', function () {
+        const mockPersonWithProfileCategory = {
+          ...mockPerson,
+          category: '__mock-category__',
+        }
         it('should get the personal details summary', function () {
           expect(personToSummaryListComponent).to.be.calledOnceWithExactly(
-            mockPerson
+            mockPersonWithProfileCategory
           )
         })
         it('should set the personal details summary param', function () {
           expect(params).to.have.property('personalDetailsSummary')
-          expect(params.personalDetailsSummary).to.deep.equal(mockPerson)
+          expect(params.personalDetailsSummary).to.deep.equal(
+            mockPersonWithProfileCategory
+          )
         })
       })
 

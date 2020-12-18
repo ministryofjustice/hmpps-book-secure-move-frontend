@@ -241,7 +241,11 @@ class MoveService extends BaseService {
 
   getById(id) {
     return this._getById(id, {
-      include: [...this.defaultInclude(), 'important_events'],
+      include: [
+        ...this.defaultInclude(),
+        'important_events',
+        'profile.category',
+      ],
     })
   }
 

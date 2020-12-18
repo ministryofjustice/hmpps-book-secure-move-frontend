@@ -59,6 +59,10 @@
   "ethnicity": {
     "label": "Ethnicity"
   },
+  "category": {
+    "label": "Security category",
+    "uncategorised": "Pending category"
+  },
   "from_location": {
     "label": "Move from",
     "short_label": "From"

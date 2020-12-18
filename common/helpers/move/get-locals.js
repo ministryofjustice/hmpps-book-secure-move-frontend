@@ -21,7 +21,19 @@ function getLocals(req) {
   const { person } = profile
 
   // person
-  const personalDetailsSummary = presenters.personToSummaryListComponent(person)
+  // NB. category for move is actually on the move's profile
+  // since it's a snapshot rather than the current live value
+  // Merging the category into the person for now but could mix in
+  // during transformations or pass profile as extra param to presenter
+  const personWithProfileCategory = person
+    ? {
+        ...person,
+        category: profile.category,
+      }
+    : undefined
+  const personalDetailsSummary = presenters.personToSummaryListComponent(
+    personWithProfileCategory
+  )
   // move
   const additionalInfoSummary = presenters.moveToAdditionalInfoListComponent(
     move
