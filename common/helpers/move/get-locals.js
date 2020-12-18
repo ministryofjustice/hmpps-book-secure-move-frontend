@@ -17,7 +17,7 @@ const getUpdateUrls = require('./get-update-urls')
 function getLocals(req) {
   const { move, canAccess } = req
   const userPermissions = req.session?.user?.permissions
-  const { profile } = move
+  const profile = move.profile || {}
   const { person } = profile
 
   // person
