@@ -51,7 +51,7 @@ class ProfileService extends BaseService {
     return this.apiClient
       .one('person', personId)
       .all('profile')
-      .post(data)
+      .post(data, { include: ['person'] })
       .then(response => response.data)
   }
 

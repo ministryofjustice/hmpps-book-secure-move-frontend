@@ -5,6 +5,7 @@ class CreateBaseController extends FormWizardController {
   middlewareSetup() {
     super.middlewareSetup()
     this.use(this.setModels)
+    this.use(this.setProfile)
   }
 
   middlewareChecks() {
@@ -41,6 +42,29 @@ class CreateBaseController extends FormWizardController {
     this._setModels(req)
     this._addModelMethods(req)
     next()
+  }
+
+  async setProfile(req, res, next) {
+    const person = req.sessionModel.get('person') || {}
+
+    if (!person.id) {
+      return next()
+    }
+
+    const profile = req.sessionModel.get('profile') || {}
+
+    if (profile.person?.id === person.id) {
+      return next()
+    }
+
+    try {
+      const result = await req.services.profile.create(person.id, {})
+      req.sessionModel.set('profile', result)
+
+      next()
+    } catch (error) {
+      next(error)
+    }
   }
 
   async checkMoveSupported(req, res, next) {

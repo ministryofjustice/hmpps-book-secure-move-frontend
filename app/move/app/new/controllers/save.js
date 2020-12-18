@@ -28,21 +28,8 @@ class SaveController extends CreateBaseController {
         'errorValues',
         'assessment',
         'documents',
-        'person',
       ])
-
-      const person = req.getPerson()
-      const profile = {
-        ...req.getProfile(),
-        person,
-      }
-
-      const moveData = {
-        ...data,
-        profile,
-      }
-
-      const move = await req.services.move.create(moveData)
+      const move = await req.services.move.create(data)
 
       await Promise.all([
         // create hearings
@@ -58,7 +45,7 @@ class SaveController extends CreateBaseController {
       ])
 
       await profileService.update({
-        ...profile,
+        ...data.profile,
         assessment_answers: assessment,
         documents,
       })

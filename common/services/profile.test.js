@@ -40,7 +40,9 @@ describe('Profile Service', function () {
       it('should call create endpoint with data', function () {
         expect(apiClient.one).to.be.calledOnceWithExactly('person', '#personId')
         expect(apiClient.all).to.be.calledOnceWithExactly('profile')
-        expect(apiClient.post).to.be.calledOnceWithExactly(profileData)
+        expect(apiClient.post).to.be.calledOnceWithExactly(profileData, {
+          include: ['person'],
+        })
       })
     })
   })

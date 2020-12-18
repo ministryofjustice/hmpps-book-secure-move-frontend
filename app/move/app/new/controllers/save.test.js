@@ -9,13 +9,6 @@ const Controller = require('./save')
 
 const controller = new Controller({ route: '/' })
 
-const mockPerson = {
-  id: '3333',
-  _fullname: 'Full name',
-}
-const mockProfile = {
-  id: '2222',
-}
 const mockMove = {
   id: '4444',
   date: '2019-10-10',
@@ -26,7 +19,10 @@ const mockMove = {
   from_location: {
     location_type: 'police',
   },
-  person: mockPerson,
+  person: {
+    id: '3333',
+    _fullname: 'Full name',
+  },
 }
 const mockDocuments = [
   {
@@ -46,11 +42,17 @@ const mockValues = {
   to_location: 'Court',
   from_location: 'Prison',
   person: {
+    id: '__person_1__',
     first_names: 'Steve',
     last_name: 'Smith',
   },
   profile: {
-    id: '__profile',
+    id: '__profile_3__',
+    person: {
+      id: '__person_1__',
+      first_names: 'Steve',
+      last_name: 'Smith',
+    },
   },
   assessment: {
     court: [
@@ -100,8 +102,6 @@ describe('Move controllers', function () {
         }
         nextSpy = sinon.spy()
         req = {
-          getProfile: sinon.stub().returns(mockProfile),
-          getPerson: sinon.stub().returns(mockPerson),
           form: {
             values: {},
           },
@@ -128,21 +128,14 @@ describe('Move controllers', function () {
               reference: '',
               to_location: 'Court',
               from_location: 'Prison',
-              profile: {
-                ...mockProfile,
-                person: mockPerson,
-              },
+              person: mockValues.person,
+              profile: mockValues.profile,
             })
-          })
-
-          it('should fetch profile', function () {
-            expect(req.getProfile).to.be.calledOnceWithExactly()
           })
 
           it('should patch profile', function () {
             expect(profileService.update).to.be.calledOnceWithExactly({
-              ...mockProfile,
-              person: mockPerson,
+              ...mockValues.profile,
               assessment_answers: mockValues.assessment,
               documents: mockValues.documents,
             })
@@ -196,22 +189,15 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                profile: {
-                  ...mockProfile,
-                  person: mockPerson,
-                },
+                person: mockValues.person,
+                profile: mockValues.profile,
                 court_hearings: mockValuesWithHearings.court_hearings,
               })
             })
 
-            it('should fetch profile', function () {
-              expect(req.getProfile).to.be.calledOnceWithExactly()
-            })
-
             it('should patch profile', function () {
               expect(profileService.update).to.be.calledOnceWithExactly({
-                ...mockProfile,
-                person: mockPerson,
+                ...mockValuesWithHearings.profile,
                 assessment_answers: mockValuesWithHearings.assessment,
                 documents: mockValuesWithHearings.documents,
               })
@@ -270,10 +256,8 @@ describe('Move controllers', function () {
                 reference: '',
                 to_location: 'Court',
                 from_location: 'Prison',
-                profile: {
-                  ...mockProfile,
-                  person: mockPerson,
-                },
+                person: mockValuesWithHearings.person,
+                profile: mockValuesWithHearings.profile,
                 court_hearings: mockValuesWithHearings.court_hearings,
                 should_save_court_hearings: shouldSaveCourtHearingsFalseValue,
               })
