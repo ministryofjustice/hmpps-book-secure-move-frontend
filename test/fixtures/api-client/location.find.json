@@ -7,6 +7,7 @@
       "key": "axminster_crown_court",
       "title": "Axminster Crown Court",
       "location_type": "court",
+      "young_offender_institution": false,
       "can_upload_documents": false,
       "nomis_agency_id": null,
       "suppliers": [

@@ -1,6 +1,7 @@
 module.exports = {
   fields: {
     assessment_answers: '',
+    requires_youth_risk_assessment: '',
     person: {
       jsonApi: 'hasOne',
       type: 'people',
