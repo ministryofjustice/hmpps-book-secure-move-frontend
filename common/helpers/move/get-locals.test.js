@@ -296,6 +296,71 @@ describe('Move helpers', function () {
       })
     })
 
+    context('when move doesn’t have a profile', function () {
+      let params
+
+      beforeEach(function () {
+        req.move = {
+          id: 'moveId',
+          status: 'requested',
+        }
+
+        params = getLocals(req)
+      })
+
+      it('should still return the expected locals', function () {
+        expect(Object.keys(params).sort()).to.deep.equal([
+          'additionalInfoSummary',
+          'assessments',
+          'canCancelMove',
+          'courtHearings',
+          'messageBanner',
+          'messageContent',
+          'messageTitle',
+          'move',
+          'moveSummary',
+          'perDetails',
+          'personalDetailsSummary',
+          'tagLists',
+          'updateLinks',
+          'urls',
+        ])
+      })
+    })
+
+    context('when move profile is null', function () {
+      let params
+
+      beforeEach(function () {
+        req.move = {
+          id: 'moveId',
+          status: 'requested',
+          profile: null,
+        }
+
+        params = getLocals(req)
+      })
+
+      it('should still return the expected locals', function () {
+        expect(Object.keys(params).sort()).to.deep.equal([
+          'additionalInfoSummary',
+          'assessments',
+          'canCancelMove',
+          'courtHearings',
+          'messageBanner',
+          'messageContent',
+          'messageTitle',
+          'move',
+          'moveSummary',
+          'perDetails',
+          'personalDetailsSummary',
+          'tagLists',
+          'updateLinks',
+          'urls',
+        ])
+      })
+    })
+
     describe('cancelling a move', function () {
       let params
 
