@@ -227,11 +227,13 @@ describe('Timeline events', function () {
           occurred_at: 'timestamp',
           foo: 'foo',
           details: { bar: 'baz' },
+          created_by: 'TUSER',
         }
         const details = getEventProperties(mockEvent)
         expect(details).to.deep.equal({
           notes: 'notes',
           occurred_at: 'timestamp',
+          created_by: 'TUSER',
         })
       })
     })

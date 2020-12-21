@@ -4,6 +4,7 @@ module.exports = {
     notes: '',
     classification: '',
     occurred_at: '',
+    created_by: '',
     recorded_at: '',
     details: '',
     eventable: {

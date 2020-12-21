@@ -69,10 +69,11 @@ const getEventableDetails = event => {
 // add standard common properties of the event itself
 const getEventProperties = event => {
   // eslint-disable-next-line camelcase
-  const { notes, occurred_at } = event
+  const { notes, occurred_at, created_by } = event
   return {
     notes,
     occurred_at,
+    created_by,
   }
 }
 
