@@ -1,4 +1,5 @@
 const FormController = require('hmpo-form-wizard').Controller
+const proxyquire = require('proxyquire')
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const presenters = require('../../../../../common/presenters')
@@ -6,9 +7,28 @@ const personService = {
   getCategory: sinon.stub(),
 }
 
-const CreateBaseController = require('./base')
+const CreateBaseController = proxyquire('./base', {
+  '../../../../../config': {
+    FEATURE_FLAGS: {
+      YOUTH_RISK_ASSESSMENT: true,
+      YOUTH_RISK_ASSESSMENT_YOI: true,
+    },
+  },
+})
+
+const CreateBaseControllerWithoutFeatures = proxyquire('./base', {
+  '../../../../../config': {
+    FEATURE_FLAGS: {
+      YOUTH_RISK_ASSESSMENT: false,
+      YOUTH_RISK_ASSESSMENT_YOI: false,
+    },
+  },
+})
 
 const controller = new CreateBaseController({ route: '/' })
+const controllerWithoutFeatures = new CreateBaseControllerWithoutFeatures({
+  route: '/',
+})
 
 describe('Move controllers', function () {
   describe('Create base controller', function () {
@@ -1063,6 +1083,17 @@ describe('Move controllers', function () {
                 .returns({ date_of_birth: '2001-10-10' })
               expect(controller.shouldAskYouthSentenceStep(mockReq)).to.be.true
             })
+
+            context('with feature disabled', function () {
+              it('should return false', function () {
+                mockReq.sessionModel.get
+                  .withArgs('person')
+                  .returns({ date_of_birth: '2001-10-10' })
+                expect(
+                  controllerWithoutFeatures.shouldAskYouthSentenceStep(mockReq)
+                ).to.be.false
+              })
+            })
           })
 
           context('when not in age bracket', function () {
@@ -1123,6 +1154,21 @@ describe('Move controllers', function () {
           })
           expect(controller.requiresYouthAssessment(mockReq)).to.be.true
         })
+
+        context('with feature disabled', function () {
+          it('should return false', function () {
+            mockReq.sessionModel.toJSON.returns({
+              person: {
+                id: '12345',
+              },
+              from_location_type: 'secure_training_centre',
+              is_young_offender_institution: false,
+            })
+            expect(
+              controllerWithoutFeatures.requiresYouthAssessment(mockReq)
+            ).to.be.false
+          })
+        })
       })
 
       context('with under 18 YOI move', function () {
@@ -1136,6 +1182,22 @@ describe('Move controllers', function () {
             is_young_offender_institution: true,
           })
           expect(controller.requiresYouthAssessment(mockReq)).to.be.true
+        })
+
+        context('with feature disabled', function () {
+          it('should return false', function () {
+            mockReq.sessionModel.toJSON.returns({
+              person: {
+                id: '12345',
+                date_of_birth: '2005-12-25',
+              },
+              from_location_type: 'prison',
+              is_young_offender_institution: true,
+            })
+            expect(
+              controllerWithoutFeatures.requiresYouthAssessment(mockReq)
+            ).to.be.false
+          })
         })
       })
 
