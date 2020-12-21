@@ -14,19 +14,9 @@ function setResultsMoves(bodyKey, locationKey) {
         req.services.move.getActive(args),
         req.services.move.getCancelled(args),
       ])
-      const personEscortRecordIsEnabled = req.canAccess(
-        'person_escort_record:view'
-      )
-      const cardTagSource = personEscortRecordIsEnabled
-        ? 'personEscortRecord'
-        : undefined
 
       req.resultsAsCards = {
-        active: presenters.movesByLocation(
-          activeMoves,
-          locationKey,
-          cardTagSource
-        ),
+        active: presenters.movesByLocation(activeMoves, locationKey),
         cancelled: cancelledMoves.map(
           presenters.moveToCardComponent({
             showMeta: false,

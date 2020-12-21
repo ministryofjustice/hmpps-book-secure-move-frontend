@@ -8,10 +8,8 @@ function viewAllocation(req, res) {
   const bannerStatuses = ['cancelled']
   const movesWithoutProfile = moves.filter(move => !move.profile)
   const movesWithProfile = moves.filter(move => move.profile)
-  const personEscortRecordIsEnabled = canAccess('person_escort_record:view')
   const moveToCardComponent = presenters.moveToCardComponent({
     showStatus: false,
-    tagSource: personEscortRecordIsEnabled ? 'personEscortRecord' : '',
   })
 
   const removeUnassignedMoves = move => {

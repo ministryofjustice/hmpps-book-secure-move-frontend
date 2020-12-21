@@ -59,21 +59,7 @@ describe('Presenters', function () {
       })
 
       it('should call card presenter', function () {
-        expect(moveToCardComponentStub).to.be.calledWithExactly({
-          tagSource: undefined,
-        })
-      })
-    })
-
-    context('with cardTagSource', function () {
-      beforeEach(function () {
-        movesByLocation(mockMoves, undefined, 'tagSource')
-      })
-
-      it('should call card presenter with source', function () {
-        expect(moveToCardComponentStub).to.be.calledWithExactly({
-          tagSource: 'tagSource',
-        })
+        expect(moveToCardComponentStub).to.be.calledWithExactly()
       })
     })
 

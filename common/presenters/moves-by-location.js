@@ -22,11 +22,7 @@ function _emptyToLocation(move) {
   }
 }
 
-module.exports = function movesByLocation(
-  data,
-  locationKey = 'to_location',
-  cardTagSource
-) {
+module.exports = function movesByLocation(data, locationKey = 'to_location') {
   const locations = []
   const groupedByLocation = groupBy(
     data.map(_emptyToLocation),
@@ -35,11 +31,7 @@ module.exports = function movesByLocation(
 
   Object.entries(groupedByLocation).forEach(([locationId, moves]) => {
     locations.push({
-      items: moves.map(
-        moveToCardComponent({
-          tagSource: cardTagSource,
-        })
-      ),
+      items: moves.map(moveToCardComponent()),
       label: i18n.t(`collections::labels.${locationKey}`),
       location: get(moves[0], `${locationKey}.title`),
     })
