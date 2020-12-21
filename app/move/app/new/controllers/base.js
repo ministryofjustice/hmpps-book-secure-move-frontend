@@ -1,5 +1,6 @@
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const presenters = require('../../../../../common/presenters')
+const filters = require('../../../../../config/nunjucks/filters')
 
 class CreateBaseController extends FormWizardController {
   middlewareSetup() {
@@ -157,13 +158,67 @@ class CreateBaseController extends FormWizardController {
       id: currentLocationId,
       location_type: locationType,
       can_upload_documents: canUploadDocuments,
+      young_offender_institution: isYoungOffenderInstitution,
     } = req.session.currentLocation || {}
 
     req.form.values.from_location = currentLocationId
     req.form.values.from_location_type = locationType
     req.form.values.can_upload_documents = canUploadDocuments
+    req.form.values.is_young_offender_institution = isYoungOffenderInstitution
 
     super.saveValues(req, res, next)
+  }
+
+  shouldAskYouthSentenceStep(req) {
+    const fromLocationType = req.sessionModel.get('from_location_type')
+    const isYoungOffenderInstitution = req.sessionModel.get(
+      'is_young_offender_institution'
+    )
+    const { date_of_birth: dateOfBirth } = req.sessionModel.get('person') || {}
+    const age = filters.calculateAge(dateOfBirth)
+
+    if (
+      fromLocationType === 'prison' &&
+      isYoungOffenderInstitution &&
+      age >= 18 &&
+      age <= 19
+    ) {
+      return true
+    }
+
+    return false
+  }
+
+  requiresYouthAssessment(req) {
+    const {
+      person = {},
+      from_location_type: fromLocationType,
+      is_young_offender_institution: isYoungOffenderInstitution,
+      serving_youth_sentence: servingYouthSentence,
+    } = req.sessionModel.toJSON()
+    const age = filters.calculateAge(person.date_of_birth)
+
+    if (
+      ['secure_training_centre', 'secure_childrens_home'].includes(
+        fromLocationType
+      )
+    ) {
+      return true
+    }
+
+    if (
+      fromLocationType === 'prison' &&
+      isYoungOffenderInstitution &&
+      age < 18
+    ) {
+      return true
+    }
+
+    if (servingYouthSentence === 'yes') {
+      return true
+    }
+
+    return false
   }
 }
 

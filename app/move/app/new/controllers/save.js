@@ -46,6 +46,7 @@ class SaveController extends CreateBaseController {
 
       await profileService.update({
         ...data.profile,
+        requires_youth_risk_assessment: this.requiresYouthAssessment(req),
         assessment_answers: assessment,
         documents,
       })

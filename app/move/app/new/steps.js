@@ -2,6 +2,7 @@ const { FEATURE_FLAGS } = require('../../../../config')
 
 const {
   Assessment,
+  Base,
   CourtHearings,
   Document,
   Hospital,
@@ -47,13 +48,6 @@ const riskStep = {
     }),
     'health-information',
   ],
-}
-
-function isYouthMove(fieldValue) {
-  return (
-    ['secure_training_centre', 'secure_childrens_home'].includes(fieldValue) &&
-    FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-  )
 }
 
 function canUploadDocuments(fieldValue) {
@@ -137,6 +131,12 @@ module.exports = {
         value: true,
         next: 'personal-details',
       },
+      {
+        fn: Base.prototype.shouldAskYouthSentenceStep,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? 'serving-youth-sentence'
+          : 'move-details',
+      },
       'move-details',
     ],
     fields: ['people'],
@@ -144,7 +144,15 @@ module.exports = {
   '/personal-details': {
     controller: PersonalDetails,
     pageTitle: 'moves::steps.personal_details.heading',
-    next: 'move-details',
+    next: [
+      {
+        fn: Base.prototype.shouldAskYouthSentenceStep,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+          ? 'serving-youth-sentence'
+          : 'move-details',
+      },
+      'move-details',
+    ],
     fields: [
       'police_national_computer',
       'last_name',
@@ -154,6 +162,11 @@ module.exports = {
       'gender',
       'gender_additional_information',
     ],
+  },
+  '/serving-youth-sentence': {
+    pageTitle: 'moves::steps.serving_youth_sentence.heading',
+    fields: ['serving_youth_sentence'],
+    next: 'move-details',
   },
   // OCA journey
   '/move-date-range': {
@@ -190,6 +203,12 @@ module.exports = {
             field: 'to_location_type',
             value: 'prison',
             next: 'transfer-reason',
+          },
+          {
+            fn: Base.prototype.requiresYouthAssessment,
+            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+              ? 'save'
+              : 'release-status',
           },
           'release-status',
         ],
@@ -258,12 +277,19 @@ module.exports = {
       {
         field: 'from_location_type',
         value: 'prison',
-        next: 'release-status',
+        next: [
+          {
+            fn: Base.prototype.requiresYouthAssessment,
+            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+              ? 'save'
+              : 'release-status',
+          },
+          'release-status',
+        ],
       },
       {
-        field: 'from_location_type',
-        op: isYouthMove,
-        next: 'save',
+        fn: Base.prototype.requiresYouthAssessment,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'risk-information',
       },
       'risk-information',
     ],
@@ -278,6 +304,10 @@ module.exports = {
         value: 'true',
         next: 'timetable',
       },
+      {
+        fn: Base.prototype.requiresYouthAssessment,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'release-status',
+      },
       'release-status',
     ],
     fields: [
@@ -290,7 +320,13 @@ module.exports = {
   '/timetable': {
     controller: Timetable,
     pageTitle: 'moves::steps.timetable.heading',
-    next: 'release-status',
+    next: [
+      {
+        fn: Base.prototype.requiresYouthAssessment,
+        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'release-status',
+      },
+      'release-status',
+    ],
     template: 'timetable',
     fields: ['should_save_court_hearings'],
   },
@@ -302,7 +338,15 @@ module.exports = {
       {
         field: 'from_location_type',
         value: 'prison',
-        next: 'release-status',
+        next: [
+          {
+            fn: Base.prototype.requiresYouthAssessment,
+            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+              ? 'save'
+              : 'release-status',
+          },
+          'release-status',
+        ],
       },
       'risk-information',
     ],
