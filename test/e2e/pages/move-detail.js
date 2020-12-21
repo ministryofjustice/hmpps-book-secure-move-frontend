@@ -216,7 +216,6 @@ class MoveDetailPage extends Page {
 
   async checkAssessment(selector, selectedItems, labelMap) {
     for (const key of selectedItems) {
-      const tag = this.nodes.tags.withText(key.toUpperCase())
       const panel = selector
         .find('.app-tag')
         .withText(key.toUpperCase())
@@ -225,8 +224,6 @@ class MoveDetailPage extends Page {
 
       // check answer panel exists
       await t.expect(panel.exists).ok()
-      // check answer tag exists
-      await t.expect(tag.exists).ok()
 
       // if comment was entered, check it is displayed
       if (comment) {
