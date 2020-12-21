@@ -176,9 +176,9 @@ describe('Move helpers', function () {
         })
       })
 
-      describe('PER details', function () {
+      describe('Person Escort Record (PER) details', function () {
         it('should get the PER details', function () {
-          expect(getPerDetails).to.be.calledOnceWithExactly(mockMove, canAccess)
+          expect(getPerDetails).to.be.calledOnceWithExactly(mockMove)
         })
 
         it('should set the PER details params', function () {

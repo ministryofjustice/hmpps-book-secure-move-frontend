@@ -1,24 +1,18 @@
-const { filter } = require('lodash')
+const { filter, isEmpty } = require('lodash')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const assessmentToTagList = require('./assessment-to-tag-list')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 
 function profileToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
-  tagSource,
 } = {}) {
   return function item(profile) {
-    const {
-      assessment_answers: assessmentAnswers,
-      href,
-      person = {},
-      person_escort_record: personEscortRecord,
-    } = profile || {}
+    const { href, person = {}, person_escort_record: personEscortRecord } =
+      profile || {}
     const {
       id,
       gender,
@@ -60,36 +54,27 @@ function profileToCardComponent({
     }
 
     if (showTags) {
-      let items
+      // let items
 
-      // TODO: Remove condition once PER is enabled everywhere
-      if (tagSource === 'personEscortRecord') {
-        const { flags, status } = personEscortRecord || {}
-        const isComplete =
-          personEscortRecord && !['not_started', 'in_progress'].includes(status)
+      const { flags, status } = personEscortRecord || {}
+      const isComplete =
+        personEscortRecord && !['not_started', 'in_progress'].includes(status)
 
-        if (isComplete) {
-          items = frameworkFlagsToTagList({
-            flags,
-            hrefPrefix: href,
-            includeLink: true,
-          })
-        } else {
-          card.insetText = {
-            classes: 'govuk-inset-text--compact',
-            text: i18n.t('assessment::incomplete'),
-          }
-        }
-      } else {
-        items = assessmentToTagList(assessmentAnswers, href)
-      }
-
-      if (items) {
+      if (isComplete) {
         card.tags = [
           {
-            items,
+            items: frameworkFlagsToTagList({
+              flags,
+              hrefPrefix: href,
+              includeLink: true,
+            }),
           },
         ]
+      } else if (!isEmpty(person)) {
+        card.insetText = {
+          classes: 'govuk-inset-text--compact',
+          text: i18n.t('assessment::incomplete'),
+        }
       }
     }
 

@@ -43,9 +43,9 @@ function getLocals(req) {
   const tagLists = getTagLists(move)
   const assessments = getAssessments(move)
   const tabsUrls = getTabsUrls(move)
+  const perDetails = getPerDetails(move)
   // move, canAccess
   const messageBanner = getMessageBanner(move, canAccess)
-  const perDetails = getPerDetails(move, canAccess)
   // move, canAccess, updateSteps
   const updateUrls = getUpdateUrls(move, canAccess, updateSteps)
   const updateLinks = getUpdateLinks(move, canAccess, updateSteps)

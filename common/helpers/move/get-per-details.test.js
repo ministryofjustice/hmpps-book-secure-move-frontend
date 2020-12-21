@@ -9,8 +9,6 @@ const presenters = {
 
 const getMoveUrl = sinon.stub().returns('move-url')
 
-const canAccess = sinon.stub().returns(false)
-
 const getPerDetails = proxyquire('./get-per-details', {
   '../../presenters': presenters,
   './get-move-url': getMoveUrl,
@@ -38,22 +36,15 @@ describe('Move helpers', function () {
     beforeEach(function () {
       frameworkFlagsToTagList.resetHistory()
       getMoveUrl.resetHistory()
-      canAccess.resetHistory()
     })
 
     context('when getting the PER details', function () {
       beforeEach(function () {
-        perDetails = getPerDetails(move, canAccess)
+        perDetails = getPerDetails(move)
       })
 
       it('should get the move url', function () {
         expect(getMoveUrl).to.be.calledOnceWithExactly('moveId')
-      })
-
-      it('should get the PER view permission', function () {
-        expect(canAccess).to.be.calledOnceWithExactly(
-          'person_escort_record:view'
-        )
       })
 
       it('should get the framework flag tag list', function () {
@@ -68,38 +59,16 @@ describe('Move helpers', function () {
         perDetails // ?
         expect(perDetails).to.deep.equal({
           personEscortRecord,
-          personEscortRecordIsEnabled: false,
           personEscortRecordIsCompleted: false,
           personEscortRecordTagList: { content: 'framework flag tags' },
         })
       })
     })
 
-    context('when user has no access to PER', function () {
-      beforeEach(function () {
-        perDetails = getPerDetails(move, canAccess)
-      })
-
-      it('should not enable the PER', function () {
-        expect(perDetails.personEscortRecordIsEnabled).to.be.false
-      })
-    })
-
-    context('when user has access to PER', function () {
-      beforeEach(function () {
-        canAccess.returns(true)
-        perDetails = getPerDetails(move, canAccess)
-      })
-
-      it('should enable the PER', function () {
-        expect(perDetails.personEscortRecordIsEnabled).to.be.true
-      })
-    })
-
     context('when the PER is empty', function () {
       beforeEach(function () {
         const moveWithEmptyPER = getMockMove()
-        perDetails = getPerDetails(moveWithEmptyPER, canAccess)
+        perDetails = getPerDetails(moveWithEmptyPER)
       })
 
       it('should not show the PER as completed', function () {
@@ -112,7 +81,7 @@ describe('Move helpers', function () {
         const moveWithNotStartedStatus = getMockMove({
           status: 'not_started',
         })
-        perDetails = getPerDetails(moveWithNotStartedStatus, canAccess)
+        perDetails = getPerDetails(moveWithNotStartedStatus)
       })
 
       it('should not show the PER as completed', function () {
@@ -125,7 +94,7 @@ describe('Move helpers', function () {
         const moveWithInProgressStatus = getMockMove({
           status: 'in_progress',
         })
-        perDetails = getPerDetails(moveWithInProgressStatus, canAccess)
+        perDetails = getPerDetails(moveWithInProgressStatus)
       })
 
       it('should not show the PER as completed', function () {
@@ -138,7 +107,7 @@ describe('Move helpers', function () {
         const moveWithOtherStatus = getMockMove({
           status: 'other',
         })
-        perDetails = getPerDetails(moveWithOtherStatus, canAccess)
+        perDetails = getPerDetails(moveWithOtherStatus)
       })
 
       it('should show the PER as completed', function () {
@@ -152,7 +121,7 @@ describe('Move helpers', function () {
       }
 
       beforeEach(function () {
-        perDetails = getPerDetails(moveWithoutProfile, canAccess)
+        perDetails = getPerDetails(moveWithoutProfile)
       })
 
       it('should get the framework flag tag list with no items', function () {

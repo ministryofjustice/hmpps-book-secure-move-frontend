@@ -117,29 +117,21 @@
       }) }}
     </span>
 
-    {% if personEscortRecordIsEnabled %}
-      <div class="govuk-!-margin-top-2" data-tag-list-source="person-escort-record">
-        {% if not personEscortRecordIsCompleted %}
-          {{ govukInsetText({
-            classes: "govuk-inset-text--compact govuk-!-margin-0",
-            text: t("assessment::incomplete")
-          }) }}
-        {% endif %}
+    <div class="govuk-!-margin-top-2" data-tag-list-source="person-escort-record">
+      {% if not personEscortRecordIsCompleted %}
+        {{ govukInsetText({
+          classes: "govuk-inset-text--compact govuk-!-margin-0",
+          text: t("assessment::incomplete")
+        }) }}
+      {% endif %}
 
-        {% if personEscortRecordIsCompleted and personEscortRecordTagList | length %}
-          {% for tag in personEscortRecordTagList %}
-            {{ appTag(tag) }}
-          {% endfor %}
-        {% endif %}
-      </div>
-    {% elif tagList | length %}
-      {# TODO: Remove surrounding conditional once PER is fully enabled #}
-      <div class="govuk-!-margin-top-2" data-tag-list-source="move-request">
-        {% for tag in tagList %}
+      {% if personEscortRecordIsCompleted and personEscortRecordTagList | length %}
+        {% for tag in personEscortRecordTagList %}
           {{ appTag(tag) }}
         {% endfor %}
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
+
     {% if importantEventsTagList.length %}
       <div class="govuk-!-margin-top-2" data-tag-list-source="move-important-events">
         {% for tag in importantEventsTagList %}
@@ -212,11 +204,9 @@
         {{ updateLink(updateLinks.personal_details) }}
       </section>
 
-      {% if personEscortRecordIsEnabled and personEscortRecord %}
+      {% if personEscortRecord or (youthRiskAssessment and youthRiskAssessmentIsEnabled) %}
         {% include "move/views/_includes/assessment-summary.njk" %}
-      {% elif youthRiskAssessmentIsEnabled and youthRiskAssessment %}
-        {% include "move/views/_includes/assessment-summary.njk" %}
-      {% elif not personEscortRecordIsEnabled and not move._is_youth_move or not youthRiskAssessmentIsEnabled %}
+      {% else %}
         {% include "move/views/_includes/assessment.njk" %}
       {% endif %}
 

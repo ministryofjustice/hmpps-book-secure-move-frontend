@@ -99,7 +99,6 @@ describe('Moves middleware', function () {
         it('should call movesByLocation presenter without locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
-            undefined,
             undefined
           )
         })
@@ -128,40 +127,8 @@ describe('Moves middleware', function () {
         it('should call movesByLocation presenter with locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
-            mockLocationKey,
-            undefined
+            mockLocationKey
           )
-        })
-      })
-
-      context('with `personEscortRecordFeature`', function () {
-        context('with correct user permission', function () {
-          beforeEach(async function () {
-            req.canAccess.withArgs('person_escort_record:view').returns(true)
-            await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
-          })
-
-          it('should call movesByLocation presenter with locationKey', function () {
-            expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
-              mockActiveMoves,
-              mockLocationKey,
-              'personEscortRecord'
-            )
-          })
-        })
-
-        context('without correct user permission', function () {
-          beforeEach(async function () {
-            await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
-          })
-
-          it('should call movesByLocation presenter with locationKey', function () {
-            expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
-              mockActiveMoves,
-              mockLocationKey,
-              undefined
-            )
-          })
         })
       })
     })

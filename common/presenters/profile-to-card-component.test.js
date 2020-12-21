@@ -11,28 +11,6 @@ const profileToCardComponent = proxyquire('./profile-to-card-component', {
 const mockProfile = {
   id: '12345',
   href: '/move/12345',
-  assessment_answers: [
-    {
-      key: 'concealed_items',
-      title: 'Concealed items',
-      category: 'risk',
-    },
-    {
-      key: 'health_issue',
-      title: 'Health issue',
-      category: 'health',
-    },
-    {
-      key: 'other_risks',
-      title: 'Any other risks',
-      category: 'risk',
-    },
-    {
-      key: 'legal_representation',
-      title: 'Solicitor or other legal representation',
-      category: 'court',
-    },
-  ],
   person: {
     id: '12345',
     _fullname: 'Name, Full',
@@ -107,32 +85,16 @@ describe('Presenters', function () {
             })
           })
 
-          it('should contain correct tags', function () {
-            expect(transformedResponse).to.have.property('tags')
-            expect(transformedResponse.tags).to.deep.equal([
-              {
-                items: [
-                  {
-                    href: '/move/12345#concealed-items',
-                    text: 'Concealed items',
-                    classes: 'app-tag--destructive',
-                    sortOrder: 1,
-                  },
-                  {
-                    href: '/move/12345#any-other-risks',
-                    text: 'Any other risks',
-                    classes: 'app-tag--destructive',
-                    sortOrder: 1,
-                  },
-                  {
-                    href: '/move/12345#health-issue',
-                    text: 'Health issue',
-                    classes: '',
-                    sortOrder: 2,
-                  },
-                ],
-              },
-            ])
+          it('should not contain correct tags', function () {
+            expect(transformedResponse).not.to.have.property('tags')
+          })
+
+          it('should contain inset text', function () {
+            expect(transformedResponse).to.have.property('insetText')
+            expect(transformedResponse.insetText).to.deep.equal({
+              classes: 'govuk-inset-text--compact',
+              text: '__translated__',
+            })
           })
 
           it('should contain correct amount of properties', function () {
@@ -161,8 +123,12 @@ describe('Presenters', function () {
             )
           })
 
+          it('should translate inset text', function () {
+            expect(i18n.t).to.be.calledWithExactly('assessment::incomplete')
+          })
+
           it('should translate correct number of times', function () {
-            expect(i18n.t).to.be.callCount(3)
+            expect(i18n.t).to.be.callCount(4)
           })
         })
       })
@@ -229,133 +195,15 @@ describe('Presenters', function () {
         })
       })
 
-      context('with assessment answers', function () {
-        let transformedResponse, mockPersonWithAnswers
-
-        beforeEach(function () {
-          mockPersonWithAnswers = {
-            href: '/move/12345',
-            last_name: 'Jones',
-            first_names: 'Steve',
-            date_of_birth: '',
-            assessment_answers: [
-              {
-                key: 'concealed_items',
-                title: 'Concealed items',
-                comments: 'Penknife found in trouser pockets',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: '942a634a-2e38-49be-bfe6-ac03979620b3',
-                category: 'risk',
-              },
-              {
-                key: 'health_issue',
-                title: 'Health issue',
-                comments: 'Keeps complaining of headaches',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: '5bb4f1a2-b5e3-49af-a2ef-01b0ae33429d',
-                category: 'health',
-              },
-              {
-                key: 'other_risks',
-                title: 'Any other risks',
-                comments: '',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: '94cf7afd-d2c7-489f-b6c2-a6fb68cc9f15',
-                category: 'risk',
-              },
-              {
-                key: 'legal_representation',
-                title: 'Solicitor or other legal representation',
-                comments: '',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: 'f191fe25-11c8-4195-bbcc-99bf508f293d',
-                category: 'court',
-              },
-              {
-                key: 'invalid_answer',
-                title: 'Invalid answer',
-                comments: '',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: 'f1f1fe15-11c8-4195-bbcc-99bf508f293d',
-                category: 'invalid',
-              },
-              {
-                key: 'escape',
-                title: 'Escape',
-                comments: 'Large poster in cell',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: 'f199c4fe-0134-490c-afa9-a11f3c52c32b',
-                category: 'risk',
-              },
-              {
-                key: 'diet_allergy',
-                title: 'Special diet or allergy',
-                comments: 'Vegan',
-                date: null,
-                expiry_date: null,
-                assessment_question_id: '394d3f05-4d25-43ef-8e7e-6d3a0e742888',
-                category: 'health',
-              },
-            ],
-          }
-
-          transformedResponse = profileToCardComponent()(mockPersonWithAnswers)
-        })
-
-        it('should correctly filter', function () {
-          expect(transformedResponse).to.have.property('tags')
-          expect(transformedResponse.tags.length).to.equal(1)
-          expect(transformedResponse.tags[0].items.length).to.equal(5)
-        })
-
-        it('should correctly map and sort', function () {
-          expect(transformedResponse.tags[0].items).to.deep.equal([
-            {
-              href: `${mockPersonWithAnswers.href}#concealed-items`,
-              text: 'Concealed items',
-              classes: 'app-tag--destructive',
-              sortOrder: 1,
-            },
-            {
-              href: `${mockPersonWithAnswers.href}#any-other-risks`,
-              text: 'Any other risks',
-              classes: 'app-tag--destructive',
-              sortOrder: 1,
-            },
-            {
-              href: `${mockPersonWithAnswers.href}#escape`,
-              text: 'Escape',
-              classes: 'app-tag--destructive',
-              sortOrder: 1,
-            },
-            {
-              href: `${mockPersonWithAnswers.href}#health-issue`,
-              text: 'Health issue',
-              classes: '',
-              sortOrder: 2,
-            },
-            {
-              href: `${mockPersonWithAnswers.href}#special-diet-or-allergy`,
-              text: 'Special diet or allergy',
-              classes: '',
-              sortOrder: 2,
-            },
-          ])
-        })
-      })
-
-      context('with Person Escort Record tag source', function () {
-        context('with no Person Escort Record', function () {
+      context('with Person Escort Record', function () {
+        context('with `not_started` PER', function () {
           beforeEach(function () {
-            transformedResponse = profileToCardComponent({
-              tagSource: 'personEscortRecord',
-            })(mockProfile)
+            transformedResponse = profileToCardComponent()({
+              ...mockProfile,
+              person_escort_record: {
+                status: 'not_started',
+              },
+            })
           })
 
           it('should not contain tags', function () {
@@ -377,102 +225,63 @@ describe('Presenters', function () {
           })
         })
 
-        context('with Person Escort Record', function () {
-          context('with `not_started` PER', function () {
-            beforeEach(function () {
-              transformedResponse = profileToCardComponent({
-                tagSource: 'personEscortRecord',
-              })({
-                ...mockProfile,
-                person_escort_record: {
-                  status: 'not_started',
-                },
-              })
-            })
-
-            it('should not contain tags', function () {
-              expect(transformedResponse).not.to.have.property('tags')
-            })
-
-            it('should not contain inset text message', function () {
-              expect(transformedResponse).to.have.property('insetText')
-              expect(transformedResponse.insetText).to.deep.equal({
-                classes: 'govuk-inset-text--compact',
-                text: '__translated__',
-              })
-            })
-
-            it('should translate inset text message', function () {
-              expect(i18n.t).to.have.been.calledWithExactly(
-                'assessment::incomplete'
-              )
+        context('with `in_progress` PER', function () {
+          beforeEach(function () {
+            transformedResponse = profileToCardComponent()({
+              ...mockProfile,
+              person_escort_record: {
+                status: 'in_progress',
+              },
             })
           })
 
-          context('with `in_progress` PER', function () {
-            beforeEach(function () {
-              transformedResponse = profileToCardComponent({
-                tagSource: 'personEscortRecord',
-              })({
-                ...mockProfile,
-                person_escort_record: {
-                  status: 'in_progress',
-                },
-              })
-            })
+          it('should not contain tags', function () {
+            expect(transformedResponse).not.to.have.property('tags')
+          })
 
-            it('should not contain tags', function () {
-              expect(transformedResponse).not.to.have.property('tags')
-            })
-
-            it('should not contain inset text message', function () {
-              expect(transformedResponse).to.have.property('insetText')
-              expect(transformedResponse.insetText).to.deep.equal({
-                classes: 'govuk-inset-text--compact',
-                text: '__translated__',
-              })
-            })
-
-            it('should translate inset text message', function () {
-              expect(i18n.t).to.have.been.calledWithExactly(
-                'assessment::incomplete'
-              )
+          it('should not contain inset text message', function () {
+            expect(transformedResponse).to.have.property('insetText')
+            expect(transformedResponse.insetText).to.deep.equal({
+              classes: 'govuk-inset-text--compact',
+              text: '__translated__',
             })
           })
 
-          context('with `completed` PER', function () {
-            beforeEach(function () {
-              transformedResponse = profileToCardComponent({
-                tagSource: 'personEscortRecord',
-              })({
-                ...mockProfile,
-                person_escort_record: {
-                  status: 'completed',
-                  flags: ['foo', 'bar'],
-                },
-              })
-            })
+          it('should translate inset text message', function () {
+            expect(i18n.t).to.have.been.calledWithExactly(
+              'assessment::incomplete'
+            )
+          })
+        })
 
-            it('should contain tags', function () {
-              expect(transformedResponse).to.have.property('tags')
-              expect(transformedResponse.tags[0]).to.deep.equal({
-                items: ['1', '2', '3'],
-              })
-            })
-
-            it('should call frameworkFlagsToTagList presenter', function () {
-              expect(
-                frameworkFlagsToTagListStub
-              ).to.have.been.calledWithExactly({
+        context('with `completed` PER', function () {
+          beforeEach(function () {
+            transformedResponse = profileToCardComponent()({
+              ...mockProfile,
+              person_escort_record: {
+                status: 'completed',
                 flags: ['foo', 'bar'],
-                hrefPrefix: '/move/12345',
-                includeLink: true,
-              })
+              },
             })
+          })
 
-            it('should not contain inset text message', function () {
-              expect(transformedResponse).not.to.have.property('insetText')
+          it('should contain tags', function () {
+            expect(transformedResponse).to.have.property('tags')
+            expect(transformedResponse.tags[0]).to.deep.equal({
+              items: ['1', '2', '3'],
             })
+          })
+
+          it('should call frameworkFlagsToTagList presenter', function () {
+            expect(frameworkFlagsToTagListStub).to.have.been.calledWithExactly({
+              flags: ['foo', 'bar'],
+              hrefPrefix: '/move/12345',
+              includeLink: true,
+            })
+          })
+
+          it('should not contain inset text message', function () {
+            expect(transformedResponse).not.to.have.property('insetText')
           })
         })
       })
@@ -495,11 +304,6 @@ describe('Presenters', function () {
 
       it('should contain title', function () {
         expect(transformedResponse).to.have.property('title')
-      })
-
-      it('should contain tags', function () {
-        expect(transformedResponse).to.have.property('tags')
-        expect(transformedResponse.tags[0].items.length).to.equal(3)
       })
     })
 
@@ -566,7 +370,6 @@ describe('Presenters', function () {
       classes: 'app-card--placeholder',
       title: { text: '__translated__' },
       meta: { items: [] },
-      tags: [{ items: [] }],
       image_path: undefined,
       image_alt: '__translated__',
     }

@@ -56,7 +56,6 @@ describe('Presenters', function () {
               showImage: true,
               showMeta: true,
               showTags: true,
-              tagSource: undefined,
             })
           })
 
@@ -126,28 +125,6 @@ describe('Presenters', function () {
           showImage: true,
           showMeta: true,
           showTags: true,
-          tagSource: undefined,
-        })
-      })
-    })
-
-    context('with tagSource', function () {
-      beforeEach(function () {
-        transformedResponse = moveToCardComponent({
-          tagSource: 'personEscortRecord',
-        })(mockMove)
-      })
-
-      it('should call profile to card component correctly', function () {
-        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
-          ...mockMove.profile,
-          href: '/move/12345/path/to/somewhere',
-        })
-        expect(profileToCardComponentStub).to.be.calledWithExactly({
-          showImage: true,
-          showMeta: true,
-          showTags: true,
-          tagSource: 'personEscortRecord',
         })
       })
     })
@@ -168,7 +145,6 @@ describe('Presenters', function () {
           showImage: false,
           showMeta: true,
           showTags: true,
-          tagSource: undefined,
         })
       })
     })
@@ -189,7 +165,6 @@ describe('Presenters', function () {
           showImage: true,
           showMeta: false,
           showTags: true,
-          tagSource: undefined,
         })
       })
     })
@@ -210,7 +185,6 @@ describe('Presenters', function () {
           showImage: true,
           showMeta: true,
           showTags: false,
-          tagSource: undefined,
         })
       })
     })
@@ -231,7 +205,6 @@ describe('Presenters', function () {
           showImage: true,
           showMeta: true,
           showTags: true,
-          tagSource: undefined,
         })
       })
 
@@ -256,7 +229,6 @@ describe('Presenters', function () {
           showImage: false,
           showMeta: false,
           showTags: false,
-          tagSource: undefined,
         })
       })
 
@@ -291,7 +263,6 @@ describe('Presenters', function () {
           showImage: false,
           showMeta: false,
           showTags: false,
-          tagSource: undefined,
         })
       })
 
