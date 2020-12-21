@@ -136,9 +136,6 @@ jobs:
           command: |
             ./cc-test-reporter after-build
           when: always
-      - run:
-          name: Build the app
-          command: NODE_ENV=production npm run build
       - store_test_results:
           path: reports
       - store_artifacts:
