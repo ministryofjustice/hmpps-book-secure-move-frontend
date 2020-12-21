@@ -145,6 +145,10 @@ describe('User class', function () {
           'move:update:prison_recall',
           'move:update:police_transfer',
           'move:update:video_remand',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
         ]
 
         expect(permissions).to.have.members(policePermissions)
@@ -166,6 +170,10 @@ describe('User class', function () {
           'move:create:court_appearance',
           'move:create:hospital',
           'move:cancel',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
         ])
       })
     })
@@ -194,6 +202,10 @@ describe('User class', function () {
           'move:update:hospital',
           'move:cancel',
           'move:cancel:proposed',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
@@ -228,6 +240,10 @@ describe('User class', function () {
           'move:update:hospital',
           'move:cancel',
           'move:cancel:proposed',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
@@ -251,6 +267,10 @@ describe('User class', function () {
           'move:create:court_appearance',
           'move:create:hospital',
           'move:cancel',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
         ])
       })
     })
@@ -273,6 +293,10 @@ describe('User class', function () {
           'move:create:prison_transfer',
           'move:create:secure_childrens_home',
           'move:create:secure_training_centre',
+          'person_escort_record:view',
+          'person_escort_record:create',
+          'person_escort_record:update',
+          'person_escort_record:confirm',
         ])
       })
     })
@@ -293,6 +317,7 @@ describe('User class', function () {
           'moves:view:proposed',
           'move:review',
           'move:view',
+          'person_escort_record:view',
         ])
       })
     })
@@ -327,6 +352,7 @@ describe('User class', function () {
           'moves:view:incoming',
           'moves:download',
           'move:view',
+          'person_escort_record:view',
         ])
       })
     })

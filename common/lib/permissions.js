@@ -19,6 +19,10 @@ const policePermissions = [
   'move:update:prison_recall',
   'move:update:police_transfer',
   'move:update:video_remand',
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
 ]
 
 const secureChildrensHomePermissions = [
@@ -39,6 +43,10 @@ const secureChildrensHomePermissions = [
   'move:update:hospital',
   'move:cancel',
   'move:cancel:proposed',
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
   'youth_risk_assessment:view',
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
@@ -62,6 +70,10 @@ const secureTrainingCentrePermissions = [
   'move:update:hospital',
   'move:cancel',
   'move:cancel:proposed',
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
   'youth_risk_assessment:view',
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
@@ -86,6 +98,10 @@ const prisonPermissions = [
   'move:create:court_appearance',
   'move:create:hospital',
   'move:cancel',
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
 ]
 const ocaPermissions = [
   'dashboard:view',
@@ -99,6 +115,10 @@ const ocaPermissions = [
   'move:create:prison_transfer',
   'move:create:secure_childrens_home',
   'move:create:secure_training_centre',
+  'person_escort_record:view',
+  'person_escort_record:create',
+  'person_escort_record:update',
+  'person_escort_record:confirm',
 ]
 const pmuPermissions = [
   'allocations:view',
@@ -110,6 +130,7 @@ const pmuPermissions = [
   'moves:view:proposed',
   'move:review',
   'move:view',
+  'person_escort_record:view',
 ]
 const courtPermissions = [
   'dashboard:view',
@@ -117,6 +138,7 @@ const courtPermissions = [
   'moves:view:incoming',
   'moves:download',
   'move:view',
+  'person_escort_record:view',
 ]
 const personEscortRecordAuthorPermissions = [
   'person_escort_record:view',
