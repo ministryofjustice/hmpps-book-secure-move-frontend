@@ -120,7 +120,7 @@ jobs:
           name: Setup Code Climate test-reporter
           # download test reporter as a static binary
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.8.0-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
       - run:
           name: Notify CodeClimate before build
@@ -136,9 +136,6 @@ jobs:
           command: |
             ./cc-test-reporter after-build
           when: always
-      - run:
-          name: Build the app
-          command: NODE_ENV=production npm run build
       - store_test_results:
           path: reports
       - store_artifacts:
