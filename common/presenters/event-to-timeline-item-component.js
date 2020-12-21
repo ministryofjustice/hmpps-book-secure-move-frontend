@@ -30,7 +30,7 @@ const getItem = ({
 
 const eventToTimelineItemComponent = (moveEvent, move) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
-  const { id, occurred_at: timestamp } = event
+  const { id, occurred_at: timestamp, created_by: createdBy } = event
   const flag = eventHelpers.getFlag(event)
   const containerClasses = eventHelpers.getContainerClasses(event)
   let heading = eventHelpers.getHeading(event)
@@ -46,10 +46,6 @@ const eventToTimelineItemComponent = (moveEvent, move) => {
     })
   }
 
-  // TODO: when we have user info for event, update the following with something like
-  // const byline = i18n.t('events::byline', details)
-  const byline = ''
-
   return {
     id,
     ...getItem({
@@ -58,7 +54,7 @@ const eventToTimelineItemComponent = (moveEvent, move) => {
       heading,
       description,
       timestamp,
-      byline,
+      byline: createdBy,
     }),
   }
 }

@@ -29,12 +29,17 @@ describe('Presenters', function () {
   describe('#eventsToTimelineComponent()', function () {
     let transformedResponse
     const mockMove = { id: 'moveId' }
-    const mockEvent = { id: 'eventId', occurred_at: 'timestamp' }
+    const mockEvent = {
+      id: 'eventId',
+      occurred_at: 'timestamp',
+      created_by: 'TUSER',
+    }
 
     const eventWithDetails = {
       id: 'eventId',
       occurred_at: 'timestamp',
       details: 'details',
+      created_by: 'TUSER',
     }
 
     beforeEach(function () {
@@ -105,7 +110,7 @@ describe('Presenters', function () {
           label: { classes: 'labelClasses', html: 'heading' },
           html: 'description',
           datetime: { timestamp: 'timestamp', type: 'datetime' },
-          byline: { html: '' },
+          byline: { html: 'TUSER' },
         })
       })
     })
@@ -170,7 +175,7 @@ describe('Presenters', function () {
           label: { classes: 'labelClasses', html: 'component output' },
           html: 'description',
           datetime: { timestamp: 'timestamp', type: 'datetime' },
-          byline: { html: '' },
+          byline: { html: 'TUSER' },
         })
       })
     })
