@@ -8,13 +8,11 @@ describe('#sentryRequestId', function () {
   beforeEach(function () {
     sinon.stub(Sentry, 'setTag')
     nextSpy = sinon.spy()
-    req = {
-      headers: {},
-    }
+    req = {}
     res = {}
   })
 
-  context('without request header', function () {
+  context('without transaction id', function () {
     beforeEach(function () {
       sentryRequestId(req, res, nextSpy)
     })
@@ -28,9 +26,9 @@ describe('#sentryRequestId', function () {
     })
   })
 
-  context('with request header', function () {
+  context('with transaction id', function () {
     beforeEach(function () {
-      req.headers['x-request-id'] = '12345-aaaaa'
+      req.transactionId = '12345-aaaaa'
       sentryRequestId(req, res, nextSpy)
     })
 
@@ -38,8 +36,15 @@ describe('#sentryRequestId', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
 
-    it('should set location tags in Sentry', function () {
+    it('should set request ID tag in Sentry', function () {
       expect(Sentry.setTag).to.be.calledWithExactly('request_id', '12345-aaaaa')
+    })
+
+    it('should set transaction ID tag in Sentry', function () {
+      expect(Sentry.setTag).to.be.calledWithExactly(
+        'transaction_id',
+        '12345-aaaaa'
+      )
     })
   })
 })

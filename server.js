@@ -35,6 +35,7 @@ const setApiClient = require('./common/middleware/set-api-client')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const setServices = require('./common/middleware/set-services')
+const setTransactionId = require('./common/middleware/set-transaction-id')
 const setUser = require('./common/middleware/set-user')
 const config = require('./config')
 const i18n = require('./config/i18n')
@@ -54,6 +55,9 @@ const app = express()
 if (config.IS_PRODUCTION) {
   app.enable('trust proxy')
 }
+
+// Ensure we have a useful transaction id
+app.use(setTransactionId)
 
 if (config.SENTRY.DSN) {
   Sentry.init({

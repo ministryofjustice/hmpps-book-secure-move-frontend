@@ -17,5 +17,9 @@ module.exports = (req, format = 'application/vnd.api+json') => {
     headers['X-Current-User'] = req.user.username
   }
 
+  if (req && req.transactionId) {
+    headers['X-Transaction-ID'] = req.transactionId
+  }
+
   return headers
 }
