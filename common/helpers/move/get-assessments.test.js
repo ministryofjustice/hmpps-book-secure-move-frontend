@@ -162,237 +162,237 @@ describe('Move helpers', function () {
           answers: [],
         })
       })
+    })
 
-      context('with Youth Risk Assessment', function () {
-        const mockYouthRiskAssessment = {
-          _framework: {
-            sections: [
-              { key: 'two', order: 2, youth: true },
-              { key: 'one', order: 1, youth: true },
-              { key: 'four', order: 4, youth: true },
-              { key: 'five', order: 5, youth: true },
-              { key: 'three', order: 3, youth: true },
-              { key: 'six', order: 6, youth: true },
-            ],
-          },
-          id: '67890',
-          status: 'in_progress',
-          meta: {
-            section_progress: {
-              one: 'in_progress',
-              two: 'completed',
-            },
-          },
-          flags: [
-            {
-              id: '12345',
-              type: 'framework_flags',
-              title: 'Flag 1',
-            },
-            {
-              id: '67890',
-              type: 'framework_flags',
-              title: 'Flag 2',
-            },
-            {
-              id: 'abcde',
-              type: 'framework_flags',
-              title: 'Flag 3',
-            },
+    context('with Youth Risk Assessment', function () {
+      const mockYouthRiskAssessment = {
+        _framework: {
+          sections: [
+            { key: 'two', order: 2, youth: true },
+            { key: 'one', order: 1, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'six', order: 6, youth: true },
           ],
-        }
+        },
+        id: '67890',
+        status: 'in_progress',
+        meta: {
+          section_progress: {
+            one: 'in_progress',
+            two: 'completed',
+          },
+        },
+        flags: [
+          {
+            id: '12345',
+            type: 'framework_flags',
+            title: 'Flag 1',
+          },
+          {
+            id: '67890',
+            type: 'framework_flags',
+            title: 'Flag 2',
+          },
+          {
+            id: 'abcde',
+            type: 'framework_flags',
+            title: 'Flag 3',
+          },
+        ],
+      }
 
+      beforeEach(function () {
+        move = {
+          ...move,
+          profile: {
+            id: '12345',
+            youth_risk_assessment: mockYouthRiskAssessment,
+            requires_youth_risk_assessment: true,
+          },
+        }
+      })
+
+      context('when record is in progress', function () {
         beforeEach(function () {
-          move = {
-            ...move,
-            _is_youth_move: true,
-            profile: {
-              id: '12345',
-              youth_risk_assessment: mockYouthRiskAssessment,
+          assessments = getAssessments(move)
+        })
+
+        it('should contain a youthRiskAssessment', function () {
+          expect(assessments).to.have.property('youthRiskAssessment')
+          expect(assessments.youthRiskAssessment).to.deep.equal(
+            mockYouthRiskAssessment
+          )
+        })
+
+        it('should use youth risk assessment for sections', function () {
+          expect(assessments).to.have.property('assessmentSections')
+          expect(assessments.assessmentSections).to.deep.equal([
+            { key: 'one', order: 1, youth: true },
+            { key: 'two', order: 2, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'six', order: 6, youth: true },
+          ])
+        })
+      })
+
+      context('when record is confirmed', function () {
+        beforeEach(function () {
+          move.profile.youth_risk_assessment = {
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          }
+          assessments = getAssessments(move)
+        })
+
+        it('should contain a youthRiskAssessment', function () {
+          expect(assessments).to.have.property('youthRiskAssessment')
+          expect(assessments.youthRiskAssessment).to.deep.equal({
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          })
+        })
+
+        it('should use youth risk assessment for sections', function () {
+          expect(assessments).to.have.property('assessmentSections')
+          expect(assessments.assessmentSections).to.deep.equal([
+            { key: 'one', order: 1, youth: true },
+            { key: 'two', order: 2, youth: true },
+            { key: 'three', order: 3, youth: true },
+            { key: 'four', order: 4, youth: true },
+            { key: 'five', order: 5, youth: true },
+            { key: 'six', order: 6, youth: true },
+          ])
+        })
+      })
+
+      context('when person escort record exists', function () {
+        beforeEach(function () {
+          move.profile.youth_risk_assessment = {
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
+          }
+          move.profile.person_escort_record = {
+            ...mockYouthRiskAssessment,
+            _framework: {
+              sections: [
+                { key: 'one', order: 1 },
+                { key: 'three', order: 3 },
+                { key: 'two', order: 2 },
+              ],
             },
           }
+          assessments = getAssessments(move)
         })
 
-        context('when record is in progress', function () {
-          beforeEach(function () {
-            assessments = getAssessments(move)
-          })
-
-          it('should contain a youthRiskAssessment', function () {
-            expect(assessments).to.have.property('youthRiskAssessment')
-            expect(assessments.youthRiskAssessment).to.deep.equal(
-              mockYouthRiskAssessment
-            )
-          })
-
-          it('should use youth risk assessment for sections', function () {
-            expect(assessments).to.have.property('assessmentSections')
-            expect(assessments.assessmentSections).to.deep.equal([
-              { key: 'one', order: 1, youth: true },
-              { key: 'two', order: 2, youth: true },
-              { key: 'three', order: 3, youth: true },
-              { key: 'four', order: 4, youth: true },
-              { key: 'five', order: 5, youth: true },
-              { key: 'six', order: 6, youth: true },
-            ])
+        it('should contain a youthRiskAssessment', function () {
+          expect(assessments).to.have.property('youthRiskAssessment')
+          expect(assessments.youthRiskAssessment).to.deep.equal({
+            ...mockYouthRiskAssessment,
+            status: 'confirmed',
           })
         })
 
-        context('when record is confirmed', function () {
-          beforeEach(function () {
-            move.profile.youth_risk_assessment = {
-              ...mockYouthRiskAssessment,
-              status: 'confirmed',
-            }
-            assessments = getAssessments(move)
-          })
-
-          it('should contain a youthRiskAssessment', function () {
-            expect(assessments).to.have.property('youthRiskAssessment')
-            expect(assessments.youthRiskAssessment).to.deep.equal({
-              ...mockYouthRiskAssessment,
-              status: 'confirmed',
-            })
-          })
-
-          it('should use youth risk assessment for sections', function () {
-            expect(assessments).to.have.property('assessmentSections')
-            expect(assessments.assessmentSections).to.deep.equal([
-              { key: 'one', order: 1, youth: true },
-              { key: 'two', order: 2, youth: true },
-              { key: 'three', order: 3, youth: true },
-              { key: 'four', order: 4, youth: true },
-              { key: 'five', order: 5, youth: true },
-              { key: 'six', order: 6, youth: true },
-            ])
-          })
-        })
-
-        context('when person escort record exists', function () {
-          beforeEach(function () {
-            move.profile.youth_risk_assessment = {
-              ...mockYouthRiskAssessment,
-              status: 'confirmed',
-            }
-            move.profile.person_escort_record = {
-              ...mockYouthRiskAssessment,
-              _framework: {
-                sections: [
-                  { key: 'one', order: 1 },
-                  { key: 'three', order: 3 },
-                  { key: 'two', order: 2 },
-                ],
-              },
-            }
-            assessments = getAssessments(move)
-          })
-
-          it('should contain a youthRiskAssessment', function () {
-            expect(assessments).to.have.property('youthRiskAssessment')
-            expect(assessments.youthRiskAssessment).to.deep.equal({
-              ...mockYouthRiskAssessment,
-              status: 'confirmed',
-            })
-          })
-
-          it('should merge assessment sections', function () {
-            expect(assessments).to.have.property('assessmentSections')
-            expect(assessments.assessmentSections).to.deep.equal([
-              {
+        it('should merge assessment sections', function () {
+          expect(assessments).to.have.property('assessmentSections')
+          expect(assessments.assessmentSections).to.deep.equal([
+            {
+              key: 'one',
+              order: 1,
+              previousAssessment: {
                 key: 'one',
                 order: 1,
-                previousAssessment: {
-                  key: 'one',
-                  order: 1,
-                  youth: true,
-                },
+                youth: true,
               },
-              {
+            },
+            {
+              key: 'two',
+              order: 2,
+              previousAssessment: {
                 key: 'two',
                 order: 2,
-                previousAssessment: {
-                  key: 'two',
-                  order: 2,
-                  youth: true,
-                },
+                youth: true,
               },
-              {
+            },
+            {
+              key: 'three',
+              order: 3,
+              previousAssessment: {
                 key: 'three',
                 order: 3,
-                previousAssessment: {
-                  key: 'three',
-                  order: 3,
-                  youth: true,
-                },
-              },
-              {
-                key: 'four',
-                order: 4,
                 youth: true,
               },
-              {
-                key: 'five',
-                order: 5,
-                youth: true,
+            },
+            {
+              key: 'four',
+              order: 4,
+              youth: true,
+            },
+            {
+              key: 'five',
+              order: 5,
+              youth: true,
+            },
+            {
+              key: 'six',
+              order: 6,
+              youth: true,
+            },
+          ])
+        })
+      })
+
+      context('with feature flag disabled', function () {
+        beforeEach(function () {
+          const getAssessments = proxyquire('./get-assessments', {
+            ...pathStubs,
+            '../../../config': {
+              FEATURE_FLAGS: {
+                YOUTH_RISK_ASSESSMENT: false,
               },
-              {
-                key: 'six',
-                order: 6,
-                youth: true,
-              },
-            ])
+            },
           })
+          move.profile.youth_risk_assessment = null
+          move.profile.person_escort_record = {
+            ...mockYouthRiskAssessment,
+            _framework: {
+              sections: [
+                { key: 'one', order: 1 },
+                { key: 'three', order: 3 },
+                { key: 'two', order: 2 },
+              ],
+            },
+          }
+          assessments = getAssessments(move)
         })
 
-        context('with feature flag disabled', function () {
-          beforeEach(function () {
-            const getAssessments = proxyquire('./get-assessments', {
-              ...pathStubs,
-              '../../../config': {
-                FEATURE_FLAGS: {
-                  YOUTH_RISK_ASSESSMENT: false,
-                },
-              },
-            })
-            move.profile.youth_risk_assessment = null
-            move.profile.person_escort_record = {
-              ...mockYouthRiskAssessment,
-              _framework: {
-                sections: [
-                  { key: 'one', order: 1 },
-                  { key: 'three', order: 3 },
-                  { key: 'two', order: 2 },
-                ],
-              },
-            }
-            assessments = getAssessments(move)
-          })
+        it('should render PER as assessment sections', function () {
+          expect(assessments).to.have.property('assessmentSections')
+          expect(assessments.assessmentSections).to.deep.equal([
+            {
+              key: 'one',
+              order: 1,
+              previousAssessment: undefined,
+            },
+            {
+              key: 'two',
+              order: 2,
+              previousAssessment: undefined,
+            },
+            {
+              key: 'three',
+              order: 3,
+              previousAssessment: undefined,
+            },
+          ])
+        })
 
-          it('should render PER as assessment sections', function () {
-            expect(assessments).to.have.property('assessmentSections')
-            expect(assessments.assessmentSections).to.deep.equal([
-              {
-                key: 'one',
-                order: 1,
-                previousAssessment: undefined,
-              },
-              {
-                key: 'two',
-                order: 2,
-                previousAssessment: undefined,
-              },
-              {
-                key: 'three',
-                order: 3,
-                previousAssessment: undefined,
-              },
-            ])
-          })
-
-          it('should contain youthRiskAssessmentIsEnabled param', function () {
-            expect(assessments).to.have.property('youthRiskAssessmentIsEnabled')
-            expect(assessments.youthRiskAssessmentIsEnabled).to.be.false
-          })
+        it('should contain youthRiskAssessmentIsEnabled param', function () {
+          expect(assessments).to.have.property('youthRiskAssessmentIsEnabled')
+          expect(assessments.youthRiskAssessmentIsEnabled).to.be.false
         })
       })
     })

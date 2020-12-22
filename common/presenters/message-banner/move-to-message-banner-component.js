@@ -14,7 +14,7 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
   const assessmentType =
     // TODO: Remove once enabled
     move.profile?.person_escort_record ||
-    !move._is_youth_move ||
+    !move.profile?.requires_youth_risk_assessment ||
     move.profile?.youth_risk_assessment?.status === 'confirmed' ||
     !FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
       ? 'person_escort_record'

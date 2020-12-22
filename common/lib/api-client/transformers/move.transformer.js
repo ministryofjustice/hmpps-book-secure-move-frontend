@@ -1,16 +1,6 @@
 const { get } = require('lodash')
 // Using get because testcafe barfs on optional chaining
 
-const setIsYouthMove = data => {
-  const fromLocationType = get(data, 'from_location.location_type')
-  const isYouthMove = [
-    'secure_training_centre',
-    'secure_childrens_home',
-  ].includes(fromLocationType)
-
-  data._is_youth_move = isYouthMove
-}
-
 const addImportantEvents = data => {
   // timeline_events and important_events are mutually exclusive at the BE
   // copy any event with a non-default classification to .important_events
@@ -49,7 +39,6 @@ const addEventCountToEvents = data => {
 }
 
 module.exports = function moveTransformer(data) {
-  setIsYouthMove(data)
   addImportantEvents(data)
   addEventCountToEvents(data)
 }

@@ -90,9 +90,10 @@
 
 ## Feature Flags
 
-| Name                    | Description                                                                  | Default |
-| :---------------------- | :--------------------------------------------------------------------------- | :------ |
-| YOUTH_RISK_ASSESSMENT   | Set to `true` to enabled youth risk assessment                               |         |
+| Name                                    | Description                                                                  | Default |
+| :-------------------------------------- | :--------------------------------------------------------------------------- | :------ |
+| FEATURE_FLAG_YOUTH_RISK_ASSESSMENT      | Set to `true` to enabled youth risk assessment for Secure Training Centres and Secure Childrens Homes |         |
+| FEATURE_FLAG_YOUTH_RISK_ASSESSMENT_YOI  | Set to `true` to enabled youth risk assessment for YOIs                      |         |
 
 ## Development specific
 

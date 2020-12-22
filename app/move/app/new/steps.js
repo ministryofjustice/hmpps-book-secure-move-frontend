@@ -133,9 +133,7 @@ module.exports = {
       },
       {
         fn: Base.prototype.shouldAskYouthSentenceStep,
-        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-          ? 'serving-youth-sentence'
-          : 'move-details',
+        next: 'serving-youth-sentence',
       },
       'move-details',
     ],
@@ -147,9 +145,7 @@ module.exports = {
     next: [
       {
         fn: Base.prototype.shouldAskYouthSentenceStep,
-        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-          ? 'serving-youth-sentence'
-          : 'move-details',
+        next: 'serving-youth-sentence',
       },
       'move-details',
     ],
@@ -206,9 +202,7 @@ module.exports = {
           },
           {
             fn: Base.prototype.requiresYouthAssessment,
-            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-              ? 'save'
-              : 'release-status',
+            next: 'save',
           },
           'release-status',
         ],
@@ -280,16 +274,14 @@ module.exports = {
         next: [
           {
             fn: Base.prototype.requiresYouthAssessment,
-            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-              ? 'save'
-              : 'release-status',
+            next: 'save',
           },
           'release-status',
         ],
       },
       {
         fn: Base.prototype.requiresYouthAssessment,
-        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'risk-information',
+        next: 'save',
       },
       'risk-information',
     ],
@@ -306,7 +298,7 @@ module.exports = {
       },
       {
         fn: Base.prototype.requiresYouthAssessment,
-        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'release-status',
+        next: 'save',
       },
       'release-status',
     ],
@@ -323,7 +315,7 @@ module.exports = {
     next: [
       {
         fn: Base.prototype.requiresYouthAssessment,
-        next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT ? 'save' : 'release-status',
+        next: 'save',
       },
       'release-status',
     ],
@@ -341,9 +333,7 @@ module.exports = {
         next: [
           {
             fn: Base.prototype.requiresYouthAssessment,
-            next: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-              ? 'save'
-              : 'release-status',
+            next: 'save',
           },
           'release-status',
         ],
