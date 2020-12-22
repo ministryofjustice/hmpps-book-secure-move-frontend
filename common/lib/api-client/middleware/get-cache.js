@@ -1,4 +1,4 @@
-const debug = require('debug')('app:api-client:get-cache')
+const debug = require('debug')('app:api-client:cache')
 
 const cache = require('../cache')
 
@@ -12,11 +12,11 @@ function getCacheMiddleware({ useRedisCache = false } = {}) {
         return payload
       }
 
-      debug('LOOKING UP CACHE', cacheKey)
+      debug('SEARCHING', cacheKey)
       const data = await cache.get(cacheKey, useRedisCache)
 
       if (data) {
-        debug('CACHED', cacheKey, data)
+        debug('RETURNING', cacheKey, data)
         payload.res = {
           data,
         }

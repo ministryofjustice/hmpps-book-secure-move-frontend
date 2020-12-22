@@ -1,4 +1,5 @@
-const debug = require('debug')('app:api-client:axios-request')
+const debug = require('debug')('app:api-client:request')
+const cacheDebug = require('debug')('app:api-client:cache')
 
 const timer = require('../../timer')
 const cache = require('../cache')
@@ -13,10 +14,13 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
       }
 
       const { req, jsonApi, cacheKey } = payload
+      const urlObj = new URL(req.url)
       const searchString = new URLSearchParams(req.params).toString()
-      const url = `${req.url}${searchString ? `?${searchString}` : ''}`
+      const url = decodeURI(
+        `${urlObj.pathname}${searchString ? `?${searchString}` : ''}`
+      )
 
-      debug('API REQUEST', url)
+      debug(req.method, url)
 
       if (req.params.preserveResourceRefs) {
         req.preserveResourceRefs = req.params.preserveResourceRefs
@@ -29,20 +33,25 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
       const response = await jsonApi
         .axios(req)
         .then(async res => {
-          debug('API SUCCESS', url)
+          debug(`${res.status} ${res.statusText}`, `(${req.method} ${url})`)
+
           // record successful request
           const duration = clientTimer()
           clientMetrics.recordSuccess(req, res, duration)
 
           if (cacheKey) {
-            debug('CACHEING API RESPONSE', cacheKey)
+            cacheDebug('SAVING', cacheKey, res.data)
             await cache.set(cacheKey, res.data, cacheExpiry, useRedisCache)
           }
 
           return res
         })
         .catch(error => {
-          debug('API ERROR', url, error)
+          debug(
+            `${error.response.status} ${error.response.statusText}`,
+            `(${req.method} ${url})`,
+            error
+          )
           // record error
           const duration = clientTimer()
           clientMetrics.recordError(req, error, duration)

@@ -171,6 +171,10 @@ describe('API Client', function () {
 
       describe('when endpoint returns an error', function () {
         const error = new Error()
+        error.response = {
+          status: 404,
+          statusText: 'NOT FOUND',
+        }
         let thrownError
 
         beforeEach(async function () {

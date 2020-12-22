@@ -55,7 +55,7 @@ Auth.prototype = {
 
     const url = this.config.authUrl
 
-    debug('AUTH REQUEST', url)
+    debug('POST', url)
 
     // start request timer
     const authTimer = timer()
@@ -67,7 +67,7 @@ Auth.prototype = {
     return axios
       .post(this.config.authUrl, data, config)
       .then(response => {
-        debug('AUTH SUCCESS', url)
+        debug(`${response.status} ${response.statusText}`, `(POST ${url})`)
         // record successful request
         const duration = authTimer()
         clientMetrics.recordSuccess(reqLabels, response, duration)
@@ -75,7 +75,11 @@ Auth.prototype = {
         return response.data
       })
       .catch(error => {
-        debug('AUTH ERROR', url, error)
+        debug(
+          `${error.response.status} ${error.response.statusText}`,
+          `(POST ${url})`,
+          error
+        )
         // record error
         const duration = authTimer()
         clientMetrics.recordError(reqLabels, error, duration)
