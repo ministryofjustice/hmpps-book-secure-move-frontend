@@ -85,6 +85,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'setSyncStatusBanner')
         sinon.stub(controller, 'setPrefillBanner')
         sinon.stub(controller, 'seti18nContext')
+        sinon.stub(controller, 'setBreadcrumb')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -119,6 +120,12 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set breadcrumbs', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setBreadcrumb
+        )
+      })
+
       it('should call set move summary', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           setMoveWithSummary
@@ -126,7 +133,7 @@ describe('Framework controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(6)
       })
     })
 
@@ -173,6 +180,35 @@ describe('Framework controllers', function () {
         it('should call next without error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
+      })
+    })
+
+    describe('#setBreadcrumb', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          form: {
+            options: {
+              pageTitle: 'Step title',
+            },
+          },
+        }
+        mockRes = {
+          breadcrumb: sinon.stub().returnsThis(),
+        }
+        controller.setBreadcrumb(mockReq, mockRes, nextSpy)
+      })
+
+      it('should set breadcrumb item', function () {
+        expect(mockRes.breadcrumb).to.have.been.calledOnceWithExactly({
+          text: 'Step title',
+        })
+      })
+
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 

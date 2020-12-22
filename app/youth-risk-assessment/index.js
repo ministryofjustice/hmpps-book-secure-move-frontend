@@ -9,8 +9,10 @@ const { uuidRegex } = require('../../common/helpers/url')
 const { defineFormWizard } = require('../../common/lib/framework-form-wizard')
 const {
   setAssessment,
+  setBreadcrumbs,
   setFrameworkSection,
   setRecord,
+  setSectionBreadcrumb,
 } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
 
@@ -27,13 +29,14 @@ router.use(protectRoute('youth_risk_assessment:view'))
 // router.use(setPersonEscortRecord)
 router.use(setRecord('youthRiskAssessment', 'youthRiskAssessment', 'getById'))
 router.use(setAssessment('youthRiskAssessment'))
+router.use(setBreadcrumbs)
 
 // Define sub-apps
 router.use(confirmApp.mountpath, confirmApp.router)
 
 // Define routes
 router.get('/', frameworkOverviewController)
-router.use('/:section', defineFormWizard)
+router.use('/:section', setSectionBreadcrumb, defineFormWizard)
 
 // Export
 module.exports = {
