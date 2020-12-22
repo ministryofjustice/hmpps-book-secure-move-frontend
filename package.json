@@ -94,7 +94,7 @@
     "@promster/express": "5.0.0",
     "@sentry/node": "5.29.2",
     "accessible-autocomplete": "2.0.3",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "axios-debug-log": "0.8.2",
     "bluebird": "3.7.2",
     "chrono-node": "2.1.10",
