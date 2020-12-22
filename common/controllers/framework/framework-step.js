@@ -75,6 +75,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setSyncStatusBanner)
     this.use(this.setPrefillBanner)
     this.use(this.seti18nContext)
+    this.use(this.setBreadcrumb)
     this.use(setMoveWithSummary)
   }
 
@@ -85,6 +86,14 @@ class FrameworkStepController extends FormWizardController {
 
   setPageTitleLocals(req, res, next) {
     res.locals.frameworkSection = req.frameworkSection.name
+    next()
+  }
+
+  setBreadcrumb(req, res, next) {
+    res.breadcrumb({
+      text: req.form.options.pageTitle,
+    })
+
     next()
   }
 

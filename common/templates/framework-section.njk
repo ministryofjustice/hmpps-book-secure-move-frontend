@@ -8,21 +8,6 @@
   – {{ SERVICE_NAME }}
 {% endblock %}
 
-{% macro backLink() %}
-  {% if moveId %}
-    {{ govukBackLink({
-      text: t("actions::back_to_move"),
-      href: "/move/" + moveId
-    }) }}
-  {% endif %}
-{% endmacro %}
-
-{% block beforeContent %}
-  {{ backLink() }}
-
-  {{ super() }}
-{% endblock %}
-
 {% block content %}
   <header class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -72,8 +57,6 @@
     </div>
 
   </div>
-
-  {{ backLink() }}
 {% endblock %}
 
 {% block footer %}
