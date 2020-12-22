@@ -1,19 +1,9 @@
 const FormWizardController = require('../form-wizard')
 
 class ConfirmAssessmentController extends FormWizardController {
-  middlewareLocals() {
-    super.middlewareLocals()
-    this.use(this.setMoveId)
-  }
-
-  setMoveId(req, res, next) {
-    res.locals.moveId = req.move?.id
-    next()
-  }
-
   middlewareChecks() {
-    super.middlewareChecks()
     this.use(this.checkStatus)
+    super.middlewareChecks()
   }
 
   checkStatus(req, res, next) {
