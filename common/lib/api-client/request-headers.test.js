@@ -101,5 +101,37 @@ describe('API Client', function () {
         expect('X-Current-User' in headers).to.equal(false)
       })
     })
+
+    context('without request', function () {
+      let headers
+
+      beforeEach(function () {
+        headers = getRequestHeaders(undefined, 'format/foo')
+      })
+
+      it('should not add Current User Header', function () {
+        expect('X-Current-User' in headers).to.equal(false)
+      })
+
+      it('should not add Current User Header', function () {
+        expect('X-Transaction-ID' in headers).to.equal(false)
+      })
+    })
+
+    context('with transaction ID', function () {
+      let headers
+      let req
+
+      beforeEach(function () {
+        req = {
+          transactionId: '12345-aaaaa',
+        }
+        headers = getRequestHeaders(req)
+      })
+
+      it('should add transaction ID header', function () {
+        expect(headers['X-Transaction-ID']).to.equal('12345-aaaaa')
+      })
+    })
   })
 })
