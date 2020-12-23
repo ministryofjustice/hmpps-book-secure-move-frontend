@@ -18,9 +18,9 @@ class ReviewController extends FormWizardController {
   }
 
   middlewareChecks() {
-    super.middlewareChecks()
     this.use(this.checkStatus)
     this.use(this.canAccess)
+    super.middlewareChecks()
   }
 
   setRebookOptions(req, res, next) {

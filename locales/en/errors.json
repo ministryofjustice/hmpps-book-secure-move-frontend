@@ -18,10 +18,8 @@
   "missing_prereq": {
     "heading": "Journey expired",
     "heading_create_a_move": "This move has been requested",
-    "heading_review_move": "This move has been reviewed",
     "content": "Your journey has been completed.",
-    "content_create_a_move": "You can view upcoming moves or create a new move from the dashboard.",
-    "content_review_move": "You can view upcoming moves from the dashboard."
+    "content_create_a_move": "You can view upcoming moves or create a new move from the dashboard."
   },
   "tampered_with": {
     "heading": "This form has been tampered with",
