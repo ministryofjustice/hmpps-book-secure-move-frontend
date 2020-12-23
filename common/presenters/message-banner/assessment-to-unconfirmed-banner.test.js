@@ -21,9 +21,9 @@ describe('Presenters', function () {
       })
 
       context('without args', function () {
-        it('should return empty object', function () {
+        it('should return undefined', function () {
           output = presenter()
-          expect(output).to.deep.equal({})
+          expect(output).to.be.undefined
         })
       })
 
