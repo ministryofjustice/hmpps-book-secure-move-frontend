@@ -11,20 +11,15 @@ const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
 const newApp = require('./app/new')
+const reviewApp = require('./app/review')
 const {
   assignConfig,
   cancelConfig,
-  reviewConfig,
   unassignConfig,
   updateConfig,
 } = require('./config')
 const { confirmation, timeline, view } = require('./controllers')
-const {
-  assignFields,
-  cancelFields,
-  reviewFields,
-  updateFields,
-} = require('./fields')
+const { assignFields, cancelFields, updateFields } = require('./fields')
 const {
   setMove,
   setMoveWithEvents,
@@ -35,7 +30,6 @@ const {
 const {
   assign: assignSteps,
   cancel: cancelSteps,
-  review: reviewSteps,
   unassign: unassignSteps,
   update: updateSteps,
 } = require('./steps')
@@ -72,14 +66,11 @@ moveRouter.get(
 )
 moveRouter.use(personEscortRecordApp.mountpath, personEscortRecordApp.router)
 moveRouter.use(youthRiskAssessmentApp.mountpath, youthRiskAssessmentApp.router)
+moveRouter.use(reviewApp.mountpath, reviewApp.router)
 moveRouter.use(
   '/cancel',
   protectRoute(['move:cancel', 'move:cancel:proposed']),
   wizard(cancelSteps, cancelFields, cancelConfig, 'params.moveId')
-)
-moveRouter.use(
-  '/review',
-  wizard(reviewSteps, reviewFields, reviewConfig, 'params.moveId')
 )
 moveRouter.use(
   '/assign',

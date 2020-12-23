@@ -1,4 +1,4 @@
-const { Review } = require('../controllers')
+const { ReviewController } = require('./controllers')
 
 module.exports = {
   '/': {
@@ -9,7 +9,7 @@ module.exports = {
   },
   '/decision': {
     backLink: null,
-    template: 'move/views/review',
+    template: 'move/app/review/review',
     pageTitle: 'moves::review.steps.decision.heading',
     buttonText: 'actions::confirm_and_save',
     fields: [
@@ -19,6 +19,6 @@ module.exports = {
       'rebook',
       'review_decision',
     ],
-    controller: Review,
+    controller: ReviewController,
   },
 }

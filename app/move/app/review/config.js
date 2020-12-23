@@ -1,4 +1,4 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
 module.exports = function config(id) {
   return {

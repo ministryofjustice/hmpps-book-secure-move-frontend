@@ -1,9 +1,9 @@
 const { differenceInCalendarDays, parseISO } = require('date-fns')
 const { get, pick, set } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
-const filters = require('../../../config/nunjucks/filters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
+const filters = require('../../../../config/nunjucks/filters')
 
 class ReviewController extends FormWizardController {
   middlewareSetup() {
@@ -150,4 +150,6 @@ class ReviewController extends FormWizardController {
   }
 }
 
-module.exports = ReviewController
+module.exports = {
+  ReviewController,
+}
