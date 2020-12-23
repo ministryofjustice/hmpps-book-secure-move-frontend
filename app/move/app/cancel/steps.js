@@ -3,12 +3,14 @@ const { CancelController } = require('./controllers')
 module.exports = {
   '/': {
     entryPoint: true,
+    reset: true,
     resetJourney: true,
     skip: true,
     next: 'reason',
   },
   '/reason': {
     backLink: null,
+    checkJourney: false,
     template: 'move/app/cancel/cancel',
     pageTitle: 'moves::cancel.steps.reason.heading',
     buttonText: 'actions::confirm_cancellation',
