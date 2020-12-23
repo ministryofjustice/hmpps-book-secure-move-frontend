@@ -10,16 +10,12 @@ const wizard = require('../../common/middleware/unique-form-wizard')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
+const cancelApp = require('./app/cancel')
 const newApp = require('./app/new')
 const reviewApp = require('./app/review')
-const {
-  assignConfig,
-  cancelConfig,
-  unassignConfig,
-  updateConfig,
-} = require('./config')
+const { assignConfig, unassignConfig, updateConfig } = require('./config')
 const { confirmation, timeline, view } = require('./controllers')
-const { assignFields, cancelFields, updateFields } = require('./fields')
+const { assignFields, updateFields } = require('./fields')
 const {
   setMove,
   setMoveWithEvents,
@@ -29,7 +25,6 @@ const {
 } = require('./middleware')
 const {
   assign: assignSteps,
-  cancel: cancelSteps,
   unassign: unassignSteps,
   update: updateSteps,
 } = require('./steps')
@@ -67,11 +62,7 @@ moveRouter.get(
 moveRouter.use(personEscortRecordApp.mountpath, personEscortRecordApp.router)
 moveRouter.use(youthRiskAssessmentApp.mountpath, youthRiskAssessmentApp.router)
 moveRouter.use(reviewApp.mountpath, reviewApp.router)
-moveRouter.use(
-  '/cancel',
-  protectRoute(['move:cancel', 'move:cancel:proposed']),
-  wizard(cancelSteps, cancelFields, cancelConfig, 'params.moveId')
-)
+moveRouter.use(cancelApp.mountpath, cancelApp.router)
 moveRouter.use(
   '/assign',
   protectRoute('allocation:person:assign'),
@@ -80,7 +71,7 @@ moveRouter.use(
 moveRouter.use(
   '/unassign',
   protectRoute('allocation:person:assign'),
-  wizard(unassignSteps, cancelFields, unassignConfig, 'params.moveId')
+  wizard(unassignSteps, {}, unassignConfig, 'params.moveId')
 )
 
 updateSteps.forEach(updateJourney => {

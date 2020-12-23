@@ -1,7 +1,7 @@
 const { pick } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
 class CancelController extends FormWizardController {
   middlewareChecks() {
@@ -67,4 +67,6 @@ class CancelController extends FormWizardController {
   }
 }
 
-module.exports = CancelController
+module.exports = {
+  CancelController,
+}

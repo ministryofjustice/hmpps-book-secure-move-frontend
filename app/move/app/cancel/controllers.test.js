@@ -1,7 +1,7 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
-const CancelController = require('./cancel')
+const { CancelController } = require('./controllers')
 
 const controller = new CancelController({ route: '/' })
 const mockMove = {
