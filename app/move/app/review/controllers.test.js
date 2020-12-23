@@ -1,11 +1,11 @@
 const { addDays, format } = require('date-fns')
 const { cloneDeep } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
-const filters = require('../../../config/nunjucks/filters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
+const filters = require('../../../../config/nunjucks/filters')
 
-const ReviewController = require('./review')
+const { ReviewController } = require('./controllers')
 
 const controller = new ReviewController({ route: '/' })
 

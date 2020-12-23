@@ -1,12 +1,11 @@
 const { pick } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
 class CancelController extends FormWizardController {
-  middlewareChecks() {
-    super.middlewareChecks()
-    this.use(this.checkAllocation)
+  middlewareLocals() {
+    super.middlewareLocals()
     this.use(this.setAdditionalInfo)
   }
 
@@ -15,6 +14,22 @@ class CancelController extends FormWizardController {
     res.locals.moveSummary = presenters.moveToMetaListComponent(move)
     res.locals.person = move.profile.person || {}
     res.locals.move = move
+
+    next()
+  }
+
+  middlewareChecks() {
+    this.use(this.checkStatus)
+    this.use(this.checkAllocation)
+    super.middlewareChecks()
+  }
+
+  checkStatus(req, res, next) {
+    const { id, status } = req.move
+
+    if (!['proposed', 'requested', 'booked'].includes(status)) {
+      return res.redirect(`/move/${id}`)
+    }
 
     next()
   }
@@ -67,4 +82,6 @@ class CancelController extends FormWizardController {
   }
 }
 
-module.exports = CancelController
+module.exports = {
+  CancelController,
+}

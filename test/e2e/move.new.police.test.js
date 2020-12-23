@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe'
+import { ClientFunction, Selector } from 'testcafe'
 
 import { generatePerson, createPersonFixture } from './_helpers'
 import { policeUser } from './_roles'
@@ -209,6 +209,14 @@ test('Reason - `Supplier declined to move this person`', async t => {
     heading: 'Move cancelled',
     content: 'Reason — Supplier declined to move this person',
   })
+
+  // Check that navigating back doesn't produce journey error
+  const goBack = ClientFunction(() => window.history.back())
+  await goBack()
+
+  await t
+    .expect(moveDetailPage.getCurrentUrl())
+    .notContains('/cancel/reason', 'Should not show journey expired page')
 })
 
 test('Reason - `Another reason`', async t => {

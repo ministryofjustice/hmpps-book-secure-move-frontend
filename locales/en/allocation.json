@@ -21,6 +21,6 @@
   },
   "unassign": {
     "page_title": "Remove person from allocation",
-    "detail": "Remove {{name}} from the allocation for <a href=\"{{href}}\">$t(n_person)</a> from {{from_location}} to {{to_location}} on {{date}}"
+    "detail": "Remove <strong>{{name}}</strong> from the allocation for <a href=\"{{href}}\"><strong>$t(n_person)</strong></a> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong> on <strong>{{date}}</strong>."
   }
 }

@@ -1,7 +1,7 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
-const presenters = require('../../../common/presenters')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
-const CancelController = require('./cancel')
+const { CancelController } = require('./controllers')
 
 const controller = new CancelController({ route: '/' })
 const mockMove = {
@@ -23,7 +23,7 @@ describe('Move controllers', function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'checkAllocation')
-        sinon.stub(controller, 'setAdditionalInfo')
+        sinon.stub(controller, 'checkStatus')
 
         controller.middlewareChecks()
       })
@@ -33,20 +33,102 @@ describe('Move controllers', function () {
           .calledOnce
       })
 
-      it('should call checkAllocation middleware', function () {
+      it('should call checkStatus middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
-          controller.checkAllocation
+          controller.checkStatus
         )
       })
 
       it('should call checkAllocation middleware', function () {
         expect(controller.use.secondCall).to.have.been.calledWith(
-          controller.setAdditionalInfo
+          controller.checkAllocation
         )
       })
 
       it('should call correct number of middleware', function () {
         expect(controller.use.callCount).to.equal(2)
+      })
+    })
+
+    describe('#middlewareLocals()', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'setAdditionalInfo')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call setAdditionalInfo middleware', function () {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.setAdditionalInfo
+        )
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#checkStatus()', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          move: {
+            id: '12345',
+          },
+        }
+        mockRes = {
+          redirect: sinon.spy(),
+        }
+      })
+
+      const notAllowedStatuses = [
+        'accepted',
+        'in_transit',
+        'completed',
+        'cancelled',
+      ]
+      notAllowedStatuses.forEach(status => {
+        context(`with ${status} status`, function () {
+          beforeEach(function () {
+            mockReq.move.status = status
+            controller.checkStatus(mockReq, mockRes, nextSpy)
+          })
+
+          it('should redirect to move', function () {
+            expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+          })
+
+          it('should not call next', function () {
+            expect(nextSpy).not.to.be.called
+          })
+        })
+      })
+
+      const allowedStatuses = ['proposed', 'requested', 'booked']
+      allowedStatuses.forEach(status => {
+        context(`with ${status} status`, function () {
+          beforeEach(function () {
+            mockReq.move.status = status
+            controller.checkStatus(mockReq, mockRes, nextSpy)
+          })
+
+          it('should not redirect', function () {
+            expect(mockRes.redirect).not.to.be.called
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
       })
     })
 

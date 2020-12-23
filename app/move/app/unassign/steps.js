@@ -1,4 +1,4 @@
-const { Unassign } = require('../controllers')
+const { UnassignController } = require('./controllers')
 
 const unassignSteps = {
   '/': {
@@ -9,8 +9,9 @@ const unassignSteps = {
     next: 'remove',
   },
   '/remove': {
+    checkJourney: false,
     template: 'unassign',
-    controller: Unassign,
+    controller: UnassignController,
     pageTitle: 'allocation::unassign.page_title',
     buttonText: 'actions::person_unassign_confirmation',
     buttonClasses: 'govuk-button--warning',

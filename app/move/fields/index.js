@@ -1,9 +1,6 @@
 const { cloneDeep } = require('lodash')
 
 const additionalInformation = require('./additional-information')
-const cancellationReason = require('./cancellation-reason')
-const cancellationReasonCancelledByPMUComment = require('./cancellation-reason-cancelled-by-pmu-comment')
-const cancellationReasonOtherComment = require('./cancellation-reason-other-comment')
 const assessmentAnswer = require('./common.assessment-answer')
 const courtHearingComments = require('./court-hearing-comments')
 const courtHearingCourtCase = require('./court-hearing-court-case')
@@ -35,7 +32,6 @@ const policeNationalComputerUpdate = require('./police-national-computer.update'
 const prisonRecallComments = require('./prison-recall-comments')
 const prisonTransferComments = require('./prison-transfer-comments')
 const prisonTransferType = require('./prison-transfer-type')
-const reviewFields = require('./review')
 const servingYouthSentence = require('./serving-youth-sentence')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const specialVehicleCheck = require('./special-vehicle-check')
@@ -48,12 +44,6 @@ const toLocationPrisonTransfer = require('./to-location-prison-transfer')
 const toLocationSecureChildrensHomeTransfer = require('./to-location-secure-childrens-home')
 const toLocationSecureTrainingCentreTransfer = require('./to-location-secure-training-centre')
 const videoRemandComments = require('./video-remand-comments')
-
-const cancelFields = {
-  cancellation_reason: cancellationReason,
-  cancellation_reason_cancelled_by_pmu_comment: cancellationReasonCancelledByPMUComment,
-  cancellation_reason_other_comment: cancellationReasonOtherComment,
-}
 
 const createFields = {
   additional_information: additionalInformation,
@@ -134,8 +124,6 @@ const assignFields = {
 
 module.exports = {
   assignFields,
-  cancelFields,
   createFields,
-  reviewFields,
   updateFields,
 }

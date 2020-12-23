@@ -9,7 +9,7 @@ module.exports = function assessmentToUnconfirmedBanner({
   context,
 } = {}) {
   if (!assessment) {
-    return {}
+    return undefined
   }
 
   const taskList = frameworkToTaskListComponent({

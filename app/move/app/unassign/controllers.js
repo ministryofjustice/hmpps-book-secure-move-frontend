@@ -1,4 +1,4 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
 class UnassignController extends FormWizardController {
   middlewareChecks() {
@@ -75,4 +75,6 @@ class UnassignController extends FormWizardController {
   }
 }
 
-module.exports = UnassignController
+module.exports = {
+  UnassignController,
+}
