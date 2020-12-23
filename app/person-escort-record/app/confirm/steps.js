@@ -9,11 +9,12 @@ module.exports = {
     next: 'provide-confirmation',
   },
   '/provide-confirmation': {
+    checkJourney: false,
     controller: ConfirmPersonEscortRecordController,
     fields: ['confirm_person_escort_record'],
     buttonText: 'actions::confirm_and_complete_record',
     pageTitle: 'person-escort-record::journeys.confirm.heading',
     beforeFieldsContent: 'person-escort-record::journeys.confirm.content',
-    template: 'assessment-confirmation',
+    template: 'form-wizard',
   },
 }

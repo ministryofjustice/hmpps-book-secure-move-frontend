@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe'
+import { ClientFunction, Selector } from 'testcafe'
 
 import frameworksService from '../../common/services/frameworks'
 
@@ -110,4 +110,15 @@ test('Start new Record', async t => {
     )
     .expect(moveDetailPage.nodes.personEscortRecordSectionStatuses.count)
     .eql(0, 'Should not show PER sections')
+
+  // Check that navigating back doesn't produce journey error
+  const goBack = ClientFunction(() => window.history.back())
+  await goBack()
+
+  await t
+    .expect(moveDetailPage.getCurrentUrl())
+    .notContains(
+      '/person-escort-record/confirm/provide-confirmation',
+      'Should not show journey expired page'
+    )
 })

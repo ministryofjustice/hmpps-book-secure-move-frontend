@@ -9,11 +9,12 @@ module.exports = {
     next: 'provide-confirmation',
   },
   '/provide-confirmation': {
+    checkJourney: false,
     controller: ConfirmYouthRiskAssessmentController,
     fields: ['confirm_assessment'],
     buttonText: 'actions::confirm_and_complete_record',
     pageTitle: 'youth-risk-assessment::journeys.confirm.heading',
     beforeFieldsContent: 'youth-risk-assessment::journeys.confirm.content',
-    template: 'assessment-confirmation',
+    template: 'form-wizard',
   },
 }
