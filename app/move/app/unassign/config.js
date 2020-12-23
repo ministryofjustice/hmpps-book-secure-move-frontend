@@ -1,4 +1,4 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
 module.exports = function config(id) {
   return {
@@ -7,6 +7,6 @@ module.exports = function config(id) {
     journeyPageTitle: 'actions::cancel_allocation',
     name: `unassign-person-${id}`,
     template: '../../../form-wizard',
-    templatePath: 'move/views/',
+    templatePath: 'move/app/unassign',
   }
 }

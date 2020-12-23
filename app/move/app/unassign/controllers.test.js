@@ -1,6 +1,6 @@
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
-const UnassignController = require('./unassign')
+const { UnassignController } = require('./controllers')
 
 const controller = new UnassignController({ route: '/' })
 
