@@ -170,8 +170,11 @@ const summaryRoute = (req, res, next) => {
 
   const contentType = promster.getContentType()
   res.setHeader('Content-Type', contentType)
-  const summary = promster.getSummary()
-  res.end(summary)
+
+  promster
+    .getSummary()
+    .then(result => res.end(result))
+    .catch(next)
 }
 
 module.exports = {
