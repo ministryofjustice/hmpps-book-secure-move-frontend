@@ -208,6 +208,7 @@ describe('Monitoring', function () {
         })
       })
     })
+
     describe('#summaryRoute', function () {
       let req
       let res
@@ -215,7 +216,7 @@ describe('Monitoring', function () {
 
       beforeEach(function () {
         promster.getContentType.returns('metrics-content-type')
-        promster.getSummary.returns('metrics-summary')
+        promster.getSummary.resolves('metrics-summary')
         req = {
           get: sinon.stub(),
         }
@@ -225,10 +226,11 @@ describe('Monitoring', function () {
         }
         next = sinon.stub()
       })
+
       describe('When accessing the metrics endpoint', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           // invoke the summary route
-          metrics.summaryRoute(req, res, next)
+          await metrics.summaryRoute(req, res, next)
         })
 
         it('should set the metrics content type', function () {
@@ -244,9 +246,9 @@ describe('Monitoring', function () {
       })
 
       describe('When attempting to access the metrics endpoint from an external client', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           req.get.returns('external-ip')
-          metrics.summaryRoute(req, res, next)
+          await metrics.summaryRoute(req, res, next)
         })
 
         it('should return page not found', function () {
@@ -254,6 +256,23 @@ describe('Monitoring', function () {
           const error = next.firstCall.args[0]
           expect(error.message).to.equal('External metrics access')
           expect(error.statusCode).to.equal(404)
+        })
+      })
+
+      describe('When summary', function () {
+        const mockError = new Error('Summary error')
+        mockError.statusCode = 500
+
+        beforeEach(async function () {
+          promster.getSummary.rejects(mockError)
+          await metrics.summaryRoute(req, res, next)
+        })
+
+        it('should return error to next', function () {
+          expect(next).to.be.calledOnce
+          const error = next.firstCall.args[0]
+          expect(error.message).to.equal('Summary error')
+          expect(error.statusCode).to.equal(500)
         })
       })
     })
