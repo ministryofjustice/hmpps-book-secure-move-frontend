@@ -1,4 +1,4 @@
-FROM node:14.14.0-alpine as build-stage
+FROM node:15.5.0-alpine as build-stage
 
 WORKDIR /home/node/app
 
@@ -22,7 +22,7 @@ ENV API_VERSION default
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM node:14.14.0-alpine
+FROM node:15.5.0-alpine
 
 WORKDIR /home/node/app
 USER 1000
