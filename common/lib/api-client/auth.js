@@ -12,6 +12,7 @@ function getTimestamp() {
 }
 
 function Auth({ timeout = 10000, authUrl, username, password } = {}) {
+  this.refreshTokenPromise = null
   this.accessToken = null
   this.tokenExpiresAt = null
   this.config = {
@@ -23,12 +24,18 @@ function Auth({ timeout = 10000, authUrl, username, password } = {}) {
 }
 
 Auth.prototype = {
-  async getAccessToken() {
+  getAccessToken() {
     if (this.isExpired()) {
-      return this.refreshAccessToken().then(data => {
+      if (!this.fetchingTokenPromise) {
+        this.fetchingTokenPromise = this.refreshAccessToken().then(data => {
+          this.fetchingTokenPromise = null
+          return data
+        })
+      }
+
+      return this.fetchingTokenPromise.then(data => {
         this.accessToken = data.access_token
         this.tokenExpiresAt = data.expires_in + getTimestamp()
-
         return this.accessToken
       })
     }
@@ -42,6 +49,8 @@ Auth.prototype = {
   },
 
   refreshAccessToken() {
+    debug('Refreshing token')
+
     const data = {
       grant_type: 'client_credentials',
     }
@@ -89,9 +98,14 @@ Auth.prototype = {
   },
 
   isExpired() {
+    debug('Checking token')
+
     if (!this.accessToken || !this.tokenExpiresAt) {
+      debug('Invalid token')
       return true
     }
+
+    debug('Valid token')
 
     return this.tokenExpiresAt <= getTimestamp()
   },
