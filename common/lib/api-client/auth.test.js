@@ -74,23 +74,65 @@ describe('API Client', function () {
       })
 
       context('when expired', function () {
-        beforeEach(async function () {
-          authInstance.refreshAccessToken.resolves(mockTokenResponse)
-          authInstance.isExpired.returns(true)
+        context('when called once', function () {
+          beforeEach(async function () {
+            authInstance.refreshAccessToken.resolves(mockTokenResponse)
+            authInstance.isExpired.returns(true)
 
-          accessToken = await authInstance.getAccessToken()
+            accessToken = await authInstance.getAccessToken()
+          })
+
+          it('should refresh the token', function () {
+            expect(authInstance.refreshAccessToken).to.be.calledOnce
+          })
+
+          it('should set the access token', function () {
+            expect(authInstance.accessToken).to.be.equal('newMockToken')
+          })
+
+          it('should return access token', function () {
+            expect(accessToken).to.equal('newMockToken')
+          })
         })
 
-        it('should refresh the token', function () {
-          expect(authInstance.refreshAccessToken).to.be.calledOnce
-        })
+        context('when called simultaneously', function () {
+          let tokens
 
-        it('should set the access token', function () {
-          expect(authInstance.accessToken).to.be.equal('newMockToken')
-        })
+          beforeEach(async function () {
+            authInstance.refreshAccessToken.callsFake(() => {
+              return new Promise(resolve => {
+                setTimeout(
+                  () =>
+                    resolve({
+                      access_token: Math.random().toString(36).substring(7),
+                    }),
+                  200
+                )
+              })
+            })
+            authInstance.isExpired.returns(true)
 
-        it('should return access token', function () {
-          expect(accessToken).to.equal('newMockToken')
+            tokens = await Promise.all([
+              authInstance.getAccessToken(),
+              authInstance.getAccessToken(),
+              authInstance.getAccessToken(),
+              authInstance.getAccessToken(),
+            ])
+          })
+
+          it('should only call refresh promise once', function () {
+            expect(authInstance.refreshAccessToken).to.be.calledOnce
+          })
+
+          it('should set the access token', function () {
+            expect(authInstance.accessToken).to.be.equal(tokens[0])
+          })
+
+          it('should return the same access token for each call', function () {
+            tokens.forEach(token => {
+              expect(token).to.equal(tokens[0])
+            })
+          })
         })
       })
 
