@@ -39,7 +39,7 @@ There are a variety of generic middleware that are provided from within the [com
 - `setActions` - sets potential actions during the routing setup phase
 - `setContext` - sets the `context` used by [i18next](https://www.i18next.com/translation-function/context) to specific content within a generalised template
 - `setDateRange` - sets the `dateRange` used by the weekly views
-- `setPagination` - sets the pagination object used for day/week pagination. Note: This is not for numeric pagination of table data.
+- `setDatePagination` - sets the pagination object used for day/week pagination. Note: This is not for numeric pagination of table data.
 
 ## Orchestration
 
@@ -54,4 +54,4 @@ There are also three specific kinds of orchestration middleware used by this app
 - [Services](../common/services) are the only part of application that should have knowledge of the backend services. This means that  API specific properties, e.g. `filter[from_location]` should contained within this service and exposed in a different way, such as a paremter of `fromLocationId`. This also allows the rest of the application to maintain a consistency, while the API is changed and upgraded.
 - Properties should be added to `req` as needed, and other middleware functions can use these properties as required. `res.locals` should be reserved only for data that will definitely be rendered in some way - often data on the `req` object can replace this usage.
 - Filter properties are used for the filter component and not for specific filtering of service data. If non-configurable data filtering is required, this can usually be more carefully hidden behind a service convenience method.
- 
+

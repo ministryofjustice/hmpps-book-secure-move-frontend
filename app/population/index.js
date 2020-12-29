@@ -5,7 +5,7 @@ const FormWizardController = require('../../common/controllers/form-wizard')
 const {
   setContext,
   setDateRange,
-  setPagination,
+  setDatePagination,
 } = require('../../common/middleware/collection')
 const wizard = require('../../common/middleware/unique-form-wizard')
 
@@ -43,7 +43,7 @@ router.use(DAILY_PATH, setBreadcrumb, dailyRouter)
 router.get(
   BASE_PATH,
   setContext('population'),
-  setPagination(MOUNTPATH + BASE_PATH),
+  setDatePagination(MOUNTPATH + BASE_PATH),
   setResultsAsPopulationTables,
   dashboard
 )

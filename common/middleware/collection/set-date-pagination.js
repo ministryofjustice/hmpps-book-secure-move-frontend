@@ -5,7 +5,7 @@ const { DATE_FORMATS } = require('../../../config')
 const dateHelpers = require('../../helpers/date')
 const urlHelpers = require('../../helpers/url')
 
-function setPagination(route) {
+function setDatePagination(route) {
   return function handlePagination(req, res, next) {
     const { date, period } = req.params
 
@@ -14,7 +14,7 @@ function setPagination(route) {
     const prevDate = dateHelpers.getRelativeDate(date, -interval)
     const nextDate = dateHelpers.getRelativeDate(date, interval)
 
-    req.pagination = {
+    req.datePagination = {
       todayUrl: urlHelpers.compileFromRoute(route, req, { date: today }),
       nextUrl: urlHelpers.compileFromRoute(route, req, { date: nextDate }),
       prevUrl: urlHelpers.compileFromRoute(route, req, { date: prevDate }),
@@ -27,4 +27,4 @@ function setPagination(route) {
   }
 }
 
-module.exports = setPagination
+module.exports = setDatePagination
