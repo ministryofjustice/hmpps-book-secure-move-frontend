@@ -97,3 +97,31 @@
     }
   }
 }
+
+.app-pagination--split {
+  @include govuk-clearfix;
+
+  .app-pagination__list-item--prev {
+    float: left;
+    width: 49%;
+  }
+
+  .app-pagination__list-item--next {
+    float: right;
+    width: 49%;
+    text-align: right;
+
+    .app-pagination__link-text {
+      margin-left: 0;
+      margin-right: govuk-spacing(2);
+    }
+
+    .app-pagination__link-icon {
+      float: right;
+    }
+    .app-pagination__link-label {
+      margin-left: 0;
+      margin-right: 25px;
+    }
+  }
+}
