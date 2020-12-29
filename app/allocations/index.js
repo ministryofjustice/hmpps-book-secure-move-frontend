@@ -6,8 +6,8 @@ const {
   redirectView,
   setActions,
   setContext,
+  setDatePagination,
   setDateRange,
-  setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
@@ -36,7 +36,7 @@ router.get(
   COLLECTION_PATH,
   setActions(ACTIONS),
   setContext('allocations'),
-  setPagination(MOUNTPATH + COLLECTION_PATH),
+  setDatePagination(MOUNTPATH + COLLECTION_PATH),
   [
     setBodyAllocations,
     setResultsAllocations,

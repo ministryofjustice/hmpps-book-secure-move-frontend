@@ -1,7 +1,7 @@
 const { dateRegex, uuidRegex } = require('../../common/helpers/url')
 const {
   setActions,
-  setPagination,
+  setDatePagination,
 } = require('../../common/middleware/collection')
 
 const actions = [
@@ -20,7 +20,7 @@ const COLLECTION_VIEW_PATH = '/:view(outgoing|incoming|requested)'
 
 const COLLECTION_MIDDLEWARE = [
   setActions(actions),
-  setPagination(MOUNTPATH + COLLECTION_BASE_PATH + COLLECTION_VIEW_PATH),
+  setDatePagination(MOUNTPATH + COLLECTION_BASE_PATH + COLLECTION_VIEW_PATH),
 ]
 
 const DEFAULTS = {

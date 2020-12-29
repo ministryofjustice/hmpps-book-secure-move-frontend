@@ -22,7 +22,7 @@ describe('Collection controllers', function () {
         canAccess: sinon.stub().returns(false),
         actions: ['1', '2'],
         context: 'listContext',
-        pagination: mockPagination,
+        datePagination: mockPagination,
         params: {
           dateRange: ['2020-10-01', '2020-10-10'],
           period: 'day',
@@ -68,6 +68,12 @@ describe('Collection controllers', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('dateRange')
         expect(params.dateRange).to.deep.equal(req.params.dateRange)
+      })
+
+      it('should contain datePagination property', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('datePagination')
+        expect(params.datePagination).to.deep.equal(req.datePagination)
       })
 
       it('should contain period property', function () {
