@@ -47,11 +47,11 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
           return res
         })
         .catch(error => {
-          debug(
-            `${error.response.status} ${error.response.statusText}`,
-            `(${req.method} ${url})`,
-            error
-          )
+          const debugMessage = error.response
+            ? `${error.response.status} ${error.response.statusText}`
+            : error.message
+          debug(debugMessage, `(${req.method} ${url})`, error)
+
           // record error
           const duration = clientTimer()
           clientMetrics.recordError(req, error, duration)
