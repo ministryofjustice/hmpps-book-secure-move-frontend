@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.63.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.62.0...v2.63.0) (2020-12-29)
+
+
+### Features
+
+* Add breadcrumbs to PER and youth risk assessment ([ed5484d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ed5484dcbd4c94c6fc46b114f49cc40b55b29bb5))
+* Add step to check if person is serving a youth sentence ([ea9138d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ea9138d9541d5aac84e2598b6bed1ad5b1f3a814))
+* Show created by for move events ([c04a955](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c04a955855dc5cf1cab11fa1b142719f9c39a9fa))
+* **move:** Display the person's category on the move profile record ([5ae00b5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5ae00b5ac360686e51827b9198bf5890ffa76b58))
+
+
+### Bug Fixes
+
+* Check for profile in base create controller ([1aa4e95](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1aa4e956c2850b52108e3d7272d048864a170f4c))
+* Check move status earlier in review to prevent journey error ([6fe63c9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6fe63c96113020946a692f4e6b592b5e8fbaa687))
+* Prevent journey error on assessment confirmation ([ae6d1f6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ae6d1f60b04d90ddad7366575245a096b3e7b51d))
+* Prevent journey error when cancelled moves ([92de760](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/92de760f2252b5a90b525d454c2e8f032a845727))
+* Prevent metrics error from recent dep upgrade ([703d5cf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/703d5cf64159568dfba49daa07d27fb06355db5d))
+* Prevent multiple simultaneous API token refresh calls ([1a9cecf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1a9cecf3201bc45da04a0418629681c4f937ce06))
+* Prevent stray banner when move is cancelled without PER ([fd59634](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fd5963436c5d01214e4c20f6e6857742e65ad2c5))
+* Set current user header only when the username is present ([d95765e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d95765e8048f54e9b127aee4198d49851baa59b2))
+
 ## [2.62.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.61.0...v2.62.0) (2020-12-18)
 
 
