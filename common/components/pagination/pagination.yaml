@@ -73,13 +73,6 @@ examples:
       next:
         href: "/next-day"
         text: "Next day"
-  - name: inline variation
-    data:
-      classes: app-pagination--inline
-      previous:
-        href: "/previous-page"
-      next:
-        href: "/next-page"
   - name: with items
     data:
       previous:
@@ -93,27 +86,6 @@ examples:
           text: "two"
         - href: "/page-3"
           text: "three"
-  - name: with items with class
-    data:
-      previous:
-        href: "/previous-page"
-      next:
-        href: "/next-page"
-      items:
-        - href: "/page-1"
-          text: "one"
-          classes: "item-class"
-  - name: with items with attributes
-    data:
-      previous:
-        href: "/previous-page"
-      next:
-        href: "/next-page"
-      items:
-        - href: "/page-1"
-          text: "one"
-          attributes:
-            data-foo: "bar"
   - name: with inline items
     data:
       classes: app-pagination--inline
@@ -128,3 +100,19 @@ examples:
           text: "2"
         - href: "/page-3"
           text: "3"
+  - name: inline variation
+    data:
+      classes: app-pagination--inline
+      previous:
+        href: "/previous-page"
+      next:
+        href: "/next-page"
+  - name: split variation
+    data:
+      classes: app-pagination--split
+      previous:
+        href: "/previous-page"
+        label: "1 of 300"
+      next:
+        href: "/next-page"
+        label: "3 of 300"
