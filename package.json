@@ -203,7 +203,7 @@
     "sinon": "9.2.2",
     "sinon-chai": "3.5.0",
     "standard": "16.0.3",
-    "standard-version": "9.0.0",
+    "standard-version": "9.1.0",
     "style-loader": "2.0.0",
     "terser-webpack-plugin": "4.2.3",
     "testcafe": "1.9.4",
