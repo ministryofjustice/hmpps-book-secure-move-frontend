@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, omit } = require('lodash')
 const querystring = require('qs')
 
 const i18n = require('../../../config/i18n')
@@ -14,7 +14,7 @@ function setfilterAllocations(items = []) {
         })
         .then(value => {
           const query = querystring.stringify({
-            ...req.query,
+            ...omit(req.query, 'page'),
             status: item.status,
           })
 

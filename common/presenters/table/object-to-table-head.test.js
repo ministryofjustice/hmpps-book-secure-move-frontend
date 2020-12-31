@@ -186,6 +186,29 @@ describe('table head presenter', function () {
         )
       })
     })
+
+    context('with existing query containing `page`', function () {
+      beforeEach(function () {
+        output = objectToTableHead({
+          sortBy: 'date',
+          sortDirection: 'asc',
+          status: 'proposed',
+          page: 2,
+        })({
+          head: {
+            isSortable: true,
+            sortKey: 'moves_count',
+            html: 'moves_count::label-html',
+          },
+        })
+      })
+
+      it('should omit page number', function () {
+        expect(output.html).to.equal(
+          '<a aria-label="sort (translated)" class="sortable-table__button" role="button" href="?sortBy=moves_count&sortDirection=desc&status=proposed">moves_count::label-html (translated)</a>'
+        )
+      })
+    })
   })
   context('with isSortable set to false', function () {
     beforeEach(function () {
