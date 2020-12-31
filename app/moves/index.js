@@ -36,6 +36,7 @@ const {
   setBodySingleRequests,
   setBodyRequestFilters,
   setFilterSingleRequests,
+  setFilterMoves,
   setResultsSingleRequests,
   setResultsMoves,
 } = require('./middleware')
@@ -81,6 +82,7 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('outgoing', 'fromLocationId'),
+    setFilterMoves(FILTERS.outgoing, 'outgoing'),
     setResultsMoves('outgoing', 'to_location'),
   ],
   renderAsCards
@@ -102,6 +104,7 @@ viewRouter.get(
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('incoming', 'toLocationId'),
+    setFilterMoves(FILTERS.incoming, 'incoming'),
     setResultsMoves('incoming', 'from_location'),
   ],
   renderAsCards

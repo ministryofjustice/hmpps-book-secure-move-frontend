@@ -1,7 +1,7 @@
 {% extends "layouts/collection.njk" %}
 
 {% block pageContent %}
-  {% for group in resultsAsCards.active %}
+  {% for group in resultsAsCards %}
     <div class="
       govuk-!-margin-top-7
       app-border-top-2
@@ -31,22 +31,4 @@
       }
     }) }}
   {% endfor %}
-
-  {% if resultsAsCards.cancelled.length %}
-    <div class="govuk-!-margin-top-9">
-      {% set html %}
-        {% for result in resultsAsCards.cancelled %}
-          {{ appCard(result) }}
-        {% endfor %}
-      {% endset %}
-
-      {{ govukDetails({
-        html: html,
-        summaryText: t("collections::cancelled", {
-          context: context,
-          count: resultsAsCards.cancelled.length
-        })
-      }) }}
-    </div>
-  {% endif %}
 {% endblock %}

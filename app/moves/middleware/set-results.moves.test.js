@@ -8,10 +8,6 @@ const mockActiveMoves = [
   { id: '3', foo: 'bar', status: 'completed' },
   { id: '4', fizz: 'buzz', status: 'completed' },
 ]
-const mockCancelledMoves = [
-  { id: '5', foo: 'bar', status: 'cancelled' },
-  { id: '6', fizz: 'buzz', status: 'cancelled' },
-]
 const mockBodyKey = 'outgoing'
 const mockLocationKey = 'from_location'
 const errorStub = new Error('Problem')
@@ -23,7 +19,6 @@ describe('Moves middleware', function () {
     beforeEach(async function () {
       moveService = {
         getActive: sinon.stub(),
-        getCancelled: sinon.stub(),
       }
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
       sinon.stub(presenters, 'movesByLocation').returnsArg(0)
@@ -52,7 +47,6 @@ describe('Moves middleware', function () {
     context('when API call returns successfully', function () {
       beforeEach(function () {
         moveService.getActive.resolves(mockActiveMoves)
-        moveService.getCancelled.resolves(mockCancelledMoves)
       })
 
       context('without current location', function () {
@@ -65,10 +59,6 @@ describe('Moves middleware', function () {
           expect(moveService.getActive).to.not.be.called
         })
 
-        it('should not fetch the cancelled moves', function () {
-          expect(moveService.getCancelled).to.not.be.called
-        })
-
         it('should not call movesByLocation presenter', function () {
           expect(presenters.movesByLocation).to.not.be.called
         })
@@ -79,38 +69,21 @@ describe('Moves middleware', function () {
           await middleware(mockBodyKey)(req, res, nextSpy)
         })
 
-        it('should call API with move date and location ID', function () {
+        it('should call API with req body', function () {
           expect(moveService.getActive).to.be.calledOnceWithExactly(
-            req.body[mockBodyKey]
-          )
-          expect(moveService.getCancelled).to.be.calledOnceWithExactly(
             req.body[mockBodyKey]
           )
         })
 
         it('should set resultsAsCards on req', function () {
           expect(req).to.have.property('resultsAsCards')
-          expect(req.resultsAsCards).to.deep.equal({
-            active: mockActiveMoves,
-            cancelled: mockCancelledMoves,
-          })
+          expect(req.resultsAsCards).to.deep.equal(mockActiveMoves)
         })
 
         it('should call movesByLocation presenter without locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
             undefined
-          )
-        })
-
-        it('should call moveToCardComponent presenter', function () {
-          expect(presenters.moveToCardComponent).to.be.calledOnceWithExactly({
-            showMeta: false,
-            showTags: false,
-            showImage: false,
-          })
-          expect(moveToCardComponentMapStub.callCount).to.equal(
-            mockCancelledMoves.length
           )
         })
 
@@ -140,7 +113,6 @@ describe('Moves middleware', function () {
       })
 
       it('should not request properties', function () {
-        expect(req).not.to.have.property('results')
         expect(req).not.to.have.property('resultsAsCards')
       })
 

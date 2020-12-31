@@ -210,7 +210,7 @@ describe('Moves middleware', function () {
           await middleware(mockConfig, mockBodyKey)(req, res, next)
         })
 
-        it('should set current status to active', function () {
+        it('should set item that contains current status as active', function () {
           const filter = [
             {
               label: 'statuses::pending',

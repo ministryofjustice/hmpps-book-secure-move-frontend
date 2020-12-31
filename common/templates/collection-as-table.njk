@@ -1,14 +1,11 @@
 {% extends "layouts/collection.njk" %}
 
-{% block pageContent %}
-  {% if totalResults > 0 %}
-    {{ appFilter({
-      items: filter
-    }) }}
-  {% endif %}
-
+{% block filter %}
+  {{ super () }}
   {{ appRequestFilter(requestFilters) }}
+{% endblock %}
 
+{% block pageContent %}
   {% if totalResults > 0 %}
     {% if resultsAsTable.rows.length %}
       {{ govukTable(resultsAsTable) }}

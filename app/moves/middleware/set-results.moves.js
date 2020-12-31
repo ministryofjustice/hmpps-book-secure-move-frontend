@@ -10,21 +10,9 @@ function setResultsMoves(bodyKey, locationKey) {
       }
 
       const args = omitBy(req.body[bodyKey], isUndefined)
-      const [activeMoves, cancelledMoves] = await Promise.all([
-        req.services.move.getActive(args),
-        req.services.move.getCancelled(args),
-      ])
+      const activeMoves = await req.services.move.getActive(args)
 
-      req.resultsAsCards = {
-        active: presenters.movesByLocation(activeMoves, locationKey),
-        cancelled: cancelledMoves.map(
-          presenters.moveToCardComponent({
-            showMeta: false,
-            showTags: false,
-            showImage: false,
-          })
-        ),
-      }
+      req.resultsAsCards = presenters.movesByLocation(activeMoves, locationKey)
 
       next()
     } catch (error) {
