@@ -47,5 +47,10 @@
     "incoming": "Incoming",
     "allocations": "Allocations",
     "single_requests": "Single requests"
+  },
+  "pagination": {
+    "page_of": "{{current}} of {{total}}",
+    "previous_page": "Previous page",
+    "next_page": "Next page"
   }
 }
