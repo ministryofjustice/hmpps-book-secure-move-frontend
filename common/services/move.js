@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty, isNil } = require('lodash')
 
 const restClient = require('../lib/api-client/rest-client')
 
@@ -134,9 +134,51 @@ class MoveService extends BaseService {
     fromLocationId,
     toLocationId,
     supplierId,
+    status,
     isAggregation = false,
   } = {}) {
     const [startDate, endDate] = dateRange
+    let statusFilter
+
+    switch (status) {
+      case 'active':
+        statusFilter = {
+          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+        }
+        break
+      case 'incomplete':
+        statusFilter = {
+          'filter[status]': 'requested,accepted,booked',
+          'filter[ready_for_transit]': false,
+        }
+        break
+      case 'awaiting_collection':
+        statusFilter = {
+          'filter[status]': 'requested,accepted,booked',
+        }
+        break
+      case 'ready_for_transit':
+        statusFilter = {
+          'filter[status]': 'requested,accepted,booked',
+          'filter[ready_for_transit]': true,
+        }
+        break
+      case 'left_custody':
+        statusFilter = {
+          'filter[status]': 'in_transit,completed',
+        }
+        break
+      case 'cancelled':
+        statusFilter = {
+          'filter[status]': 'cancelled',
+        }
+        break
+      default:
+        statusFilter = {
+          'filter[status]': status,
+        }
+    }
+
     return this.getAll({
       isAggregation,
       include: [
@@ -150,14 +192,14 @@ class MoveService extends BaseService {
       ],
       filter: omitBy(
         {
-          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          ...statusFilter,
           'filter[date_from]': startDate,
           'filter[date_to]': endDate,
           'filter[from_location_id]': fromLocationId,
           'filter[to_location_id]': toLocationId,
           'filter[supplier_id]': supplierId,
         },
-        isEmpty
+        isNil
       ),
     })
   }
