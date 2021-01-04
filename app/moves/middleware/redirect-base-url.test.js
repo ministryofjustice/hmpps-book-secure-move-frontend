@@ -24,48 +24,27 @@ describe('Moves middleware', function () {
       context(
         "when user hasn't got permission to see the proposed moves",
         function () {
-          context('when the location type is prison', function () {
-            const mockLocation = {
-              id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
-              location_type: 'prison',
+          const mockLocation = {
+            id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
+            location_type: 'prison',
+          }
+
+          beforeEach(function () {
+            req.session = {
+              currentLocation: mockLocation,
             }
 
-            beforeEach(function () {
-              req.session = {
-                currentLocation: mockLocation,
-              }
-
-              middleware(req, res)
-            })
-
-            it('should redirect to outgoing moves by location', function () {
-              expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/day/${mockMoveDate}/${mockLocation.id}/outgoing`
-              )
-            })
+            middleware(req, res)
           })
-          context('when the location type is police', function () {
-            const mockLocation = {
-              id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
-              location_type: 'police',
-            }
 
-            beforeEach(function () {
-              req.session = {
-                currentLocation: mockLocation,
-              }
-
-              middleware(req, res)
-            })
-
-            it('should redirect to outgoing moves by location', function () {
-              expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/day/${mockMoveDate}/${mockLocation.id}/outgoing`
-              )
-            })
+          it('should redirect to outgoing moves by location', function () {
+            expect(res.redirect).to.have.been.calledOnceWithExactly(
+              '/moves/outgoing'
+            )
           })
         }
       )
+
       context(
         'when user has permission to see the proposed moves',
         function () {
@@ -83,12 +62,14 @@ describe('Moves middleware', function () {
 
               middleware(req, res)
             })
-            it('should redirect to the dashboard if the user can see them', function () {
+
+            it('should redirect to requested route', function () {
               expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/week/${mockMoveDate}/${mockLocation.id}/requested`
+                '/moves/requested'
               )
             })
           })
+
           context('when location type is not prison', function () {
             const mockLocation = {
               id: 'c249ed09-0cd5-4f52-8aee-0506e2dc7579',
@@ -103,29 +84,32 @@ describe('Moves middleware', function () {
 
               middleware(req, res)
             })
-            it('should redirect to the outgoing move view by day', function () {
+            it('should redirect to outgoing moves', function () {
               expect(res.redirect).to.have.been.calledOnceWithExactly(
-                `/moves/day/${mockMoveDate}/${mockLocation.id}/outgoing`
+                '/moves/outgoing'
               )
             })
           })
         }
       )
     })
+
     context('without current location', function () {
       beforeEach(function () {
         middleware(req, res)
       })
+
       context(
         "when user hasn't got permission to see the proposed moves",
         function () {
-          it('should redirect to moves without location', function () {
+          it('should redirect to outgoing moves', function () {
             expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/day/${mockMoveDate}/outgoing`
+              '/moves/outgoing'
             )
           })
         }
       )
+
       context(
         'when user has permission to see the proposed moves',
         function () {
@@ -134,9 +118,10 @@ describe('Moves middleware', function () {
             res.redirect.resetHistory()
             middleware(req, res)
           })
-          it('should redirect to moves without location', function () {
+
+          it('should redirect to outgoing moves', function () {
             expect(res.redirect).to.have.been.calledOnceWithExactly(
-              `/moves/day/${mockMoveDate}/outgoing`
+              '/moves/outgoing'
             )
           })
         }
