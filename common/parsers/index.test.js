@@ -11,16 +11,21 @@ const getExpectedDate = (
   return expectedDate
 }
 
-const marchCurrentYear = getExpectedDate()
-const octoberCurrentYear = getExpectedDate(undefined, '3 October')
-const march2019 = getExpectedDate(2019)
-const october2019 = getExpectedDate(2019, '3 October')
-
 describe('Parsers', function () {
   describe('#date', function () {
+    let marchCurrentYear
+    let octoberCurrentYear
+    let march2019
+    let october2019
+
     beforeEach(function () {
       const mockDate = new Date('2020-06-01')
       this.clock = sinon.useFakeTimers(mockDate.getTime())
+
+      marchCurrentYear = getExpectedDate()
+      octoberCurrentYear = getExpectedDate(undefined, '3 October')
+      march2019 = getExpectedDate(2019)
+      october2019 = getExpectedDate(2019, '3 October')
     })
 
     afterEach(function () {
