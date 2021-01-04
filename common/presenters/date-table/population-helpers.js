@@ -14,11 +14,11 @@ const dayConfig = function ({ cellType, date, populationIndex = 0 }) {
     },
     row: {
       date,
-      // html: data =>
-      // genericValueCellContent({ cellType, date, populationIndex })(data),
-      html: data => freeSpaceCellContent({ date, populationIndex })(data),
-      // htmlNw: data =>
-      //   cellBuilder({ date, populationIndex, cellType: freeSpace })(data),
+      html: genericValueCellContent({
+        cellType,
+        date,
+        populationIndex,
+      }),
     },
   }
 }
@@ -49,111 +49,94 @@ const freeSpacesCellData = {
     `/population/day/${format(date, 'yyyy-MM-dd')}/${locationId}${
       isNil(population?.free_spaces) ? '/edit' : ''
     }`,
-  html: ({ population }) => {
-    return isNil(population?.free_spaces)
-      ? i18n.t('population::add_space')
-      : i18n.t('population::spaces_with_count', {
-          count: population.free_spaces,
-        })
+  content: ({ population }) => {
+    if (isNil(population?.free_spaces) || population?.free_spaces === 0) {
+      return i18n.t('population::add_space')
+    }
+
+    return i18n.t('population::spaces_with_count', {
+      count: population.free_spaces,
+    })
   },
 }
 
 const transfersInCellData = {
-  url: ({ population, date, locationId }) =>
-    `/population/day/${format(date, 'yyyy-MM-dd')}/${locationId}/transfersOut`,
-  html: ({ population }) =>
-    isNil(population?.transfers_in)
-      ? i18n.t('population::no_transfers')
-      : i18n.t('population::transfers_in_with_count', {
-          count: population.transfers_in,
-        }),
+  url: ({ population, date, locationId }) => {
+    return isNil(population?.transfers_in) || population.transfers_in === 0
+      ? ''
+      : `/population/day/${format(
+          date,
+          'yyyy-MM-dd'
+        )}/${locationId}/transfersIn`
+  },
+  content: ({ population }) => {
+    if (isNil(population?.transfers_in) || population.transfers_in === 0) {
+      return i18n.t('population::no_transfers')
+    }
+
+    return i18n.t('population::transfers_in_with_count', {
+      count: population.transfers_in,
+    })
+  },
 }
 
 const transfersOutCellData = {
-  url: ({ population, date, locationId }) =>
-    `/population/day/${format(date, 'yyyy-MM-dd')}/${locationId}/transfersOut`,
-  html: ({ population }) =>
-    isNil(population?.transfers_out)
-      ? i18n.t('population::no_transfers')
-      : i18n.t('population::transfers_out_with_count', {
-          count: population.transfers_out,
-        }),
+  url: ({ population, date, locationId }) => {
+    return isNil(population?.transfers_out) || population.transfers_out === 0
+      ? ''
+      : `/population/day/${format(
+          date,
+          'yyyy-MM-dd'
+        )}/${locationId}/transfersOut`
+  },
+  content: ({ population }) => {
+    if (isNil(population?.transfers_out) || population.transfers_out === 0) {
+      return i18n.t('population::no_transfers')
+    }
+
+    return i18n.t('population::transfers_out_with_count', {
+      count: population.transfers_out,
+    })
+  },
 }
 
-const renderLookup = {
+const RENDER_LOOKUP = {
   transfersIn: transfersInCellData,
   transfersOut: transfersOutCellData,
   freeSpaces: freeSpacesCellData,
 }
+
 const genericValueCellContent = function ({
   cellType,
   date,
   populationIndex = 0,
 }) {
-  const cellRenderer = renderLookup[cellType]
+  const cellRenderer = RENDER_LOOKUP[cellType]
 
-  console.log(cellRenderer)
+  if (!cellRenderer) {
+    return () => ''
+  }
+
   return data => {
     const { id: locationId } = data
     const population = data?.meta?.populations?.[populationIndex] || {}
 
-    // console.log(population)
+    const content = cellRenderer.content({ population })
 
     const url = cellRenderer.url({ population, date, locationId })
-    const content = cellRenderer.html({ population })
+
+    if (!url) {
+      return `<span>${content}</span>`
+    }
 
     return `<a href="${url}">${content}</a>`
   }
 }
 
-const freeSpaceCellContent = function ({ date, populationIndex = 0 }) {
-  return data => {
-    const { id: locationId } = data
-    const { free_spaces: freeSpaces } =
-      data?.meta?.populations?.[populationIndex] || {}
-
-    const hasNoFreeSpaces = isNil(freeSpaces)
-    const link = hasNoFreeSpaces
-      ? i18n.t('population::add_space')
-      : i18n.t('population::spaces_with_count', { count: freeSpaces })
-
-    const editQuicklink = hasNoFreeSpaces ? '/edit' : ''
-
-    const url = `/population/day/${format(
-      date,
-      'yyyy-MM-dd'
-    )}/${locationId}${editQuicklink}`
-
-    return `<a href="${url}">${link}</a>`
-  }
-}
-
-// const transferCellContent = function ({ date, populationIndex = 0 }) {
-//   return data => {
-//     // const { id: locationId } = data
-//     // const { free_spaces: count } =
-//     //   data?.meta?.populations?.[populationIndex] || {}
-//     //
-//     // const link =
-//     //   count === undefined
-//     //     ? i18n.t('population::add_space')
-//     //     : i18n.t('population::spaces_with_count', { count })
-//     //
-//     // const editQuicklink = count === undefined ? '/edit' : ''
-//     //
-//     // const url = `/population/day/${format(
-//     //   date,
-//     //   'yyyy-MM-dd'
-//     // )}/${locationId}${editQuicklink}`
-//
-//     return 'None booked'
-//   }
-// }
-
 const headerRowConfig = function ({ title }) {
   return {
     head: {
-      text: '-',
+      text: '',
       attributes: {
         width: '220',
       },
@@ -170,6 +153,9 @@ const headerRowConfig = function ({ title }) {
 module.exports = {
   dayConfig,
   establishmentConfig,
-  freeSpaceCellContent,
+  // freeSpaceCellContent,
   headerRowConfig,
+  freeSpacesCellData,
+  transfersInCellData,
+  transfersOutCellData,
 }

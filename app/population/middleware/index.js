@@ -1,13 +1,13 @@
 const redirectBaseUrl = require('./redirect-base-url')
 const setBreadcrumb = require('./set-breadcrumb')
 const setPopulation = require('./set-population')
-const setResultsAsPopulationTables = require('./set-results.population-tables')
 const setResultsPopulationAndTransfers = require('./set-results.population-and-transfers')
+const setResultsAsPopulationTables = require('./set-results.population-tables')
 
 module.exports = {
   redirectBaseUrl,
   setBreadcrumb,
   setPopulation,
-  setResultsAsPopulationTables,
   setResultsPopulationAndTransfers,
+  setResultsAsPopulationTables,
 }
