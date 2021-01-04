@@ -38,6 +38,11 @@ export const ocaUser = Role(home, async t => {
 
 export const pmuUser = Role(home, async t => {
   await page.signIn(E2E.ROLES.PMU)
+  await page.chooseLocation()
+})
+
+export const pmuUserWithRegions = Role(home, async t => {
+  await page.signIn(E2E.ROLES.PMU)
   await page.chooseRegion()
 })
 

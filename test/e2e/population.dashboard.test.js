@@ -1,10 +1,10 @@
-import { pmuUser } from './_roles'
+import { pmuUserWithRegions } from './_roles'
 import { populationDashboard } from './_routes'
 import { populationDashboardPage } from './pages'
 
 fixture('Population dashboards')
 test.before(async t => {
-  await t.useRole(pmuUser).navigateTo(populationDashboard)
+  await t.useRole(pmuUserWithRegions).navigateTo(populationDashboard)
 })('Population dashboard navigation', async t => {
   await t
     .click(populationDashboardPage.nodes.pagination.previousLink)
