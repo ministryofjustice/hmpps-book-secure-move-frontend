@@ -104,6 +104,14 @@
     </header>
   {% endblock %}
 
+  {% block filter %}
+    {% if totalResults > 0 %}
+      {{ appFilter({
+        items: filter
+      }) }}
+    {% endif %}
+  {% endblock %}
+
   {% block pageContent %}{% endblock %}
 
 {% endblock %}

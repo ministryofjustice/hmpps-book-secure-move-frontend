@@ -26,8 +26,8 @@ const COLLECTION_MIDDLEWARE = [
 const DEFAULTS = {
   QUERY: {
     requested: { status: 'pending' },
-    outgoing: {},
-    incoming: {},
+    outgoing: { status: 'active' },
+    incoming: { status: 'active' },
   },
   TIME_PERIOD: {
     requested: 'week',
@@ -37,6 +37,50 @@ const DEFAULTS = {
 }
 
 const FILTERS = {
+  outgoing: [
+    {
+      label: 'dashboard::sections.outgoing.summary.total',
+      status: 'active',
+    },
+    {
+      label: 'statuses::incomplete',
+      status: 'incomplete',
+    },
+    {
+      label: 'statuses::ready_for_transit',
+      status: 'ready_for_transit',
+    },
+    {
+      label: 'statuses::left_custody',
+      status: 'left_custody',
+    },
+    {
+      label: 'statuses::cancelled_filter',
+      status: 'cancelled',
+    },
+  ],
+  incoming: [
+    {
+      label: 'dashboard::sections.incoming.summary.total',
+      status: 'active',
+    },
+    {
+      label: 'statuses::awaiting_collection',
+      status: 'awaiting_collection',
+    },
+    {
+      label: 'statuses::in_transit_filter',
+      status: 'in_transit',
+    },
+    {
+      label: 'statuses::arrived',
+      status: 'completed',
+    },
+    {
+      label: 'statuses::cancelled_filter',
+      status: 'cancelled',
+    },
+  ],
   requested: [
     {
       label: 'statuses::pending',

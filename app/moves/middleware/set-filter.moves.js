@@ -13,16 +13,21 @@ function setfilterMoves(items = [], bodyKey) {
               ...get(req, `body.${bodyKey}`, {}),
               isAggregation: true,
               supplierId: req.session?.user?.supplierId,
+              status: item.status,
             },
             isUndefined
           )
         )
         .then(value => {
-          const query = querystring.stringify(req.query)
+          const query = querystring.stringify({
+            ...req.query,
+            status: item.status,
+          })
 
           return {
             value,
             label: i18n.t(item.label, { count: value }).toLowerCase(),
+            active: item.status === get(req, `body.${bodyKey}.status`),
             href: `${item.href || req.baseUrl + req.path}?${query}`,
           }
         })

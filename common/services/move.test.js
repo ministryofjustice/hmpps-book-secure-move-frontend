@@ -649,9 +649,7 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'to_location',
           ],
-          filter: {
-            'filter[status]': 'requested,accepted,booked,in_transit,completed',
-          },
+          filter: {},
         })
       })
 
@@ -688,7 +686,6 @@ describe('Move Service', function () {
             'to_location',
           ],
           filter: {
-            'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[date_from]': mockDateRange[0],
             'filter[date_to]': mockDateRange[1],
             'filter[from_location_id]': mockFromLocationId,
@@ -726,7 +723,6 @@ describe('Move Service', function () {
             'to_location',
           ],
           filter: {
-            'filter[status]': 'requested,accepted,booked,in_transit,completed',
             'filter[to_location_id]': mockToLocationId,
           },
         })
@@ -734,6 +730,150 @@ describe('Move Service', function () {
 
       it('should return moves', function () {
         expect(moves).to.deep.equal(mockMoves)
+      })
+    })
+
+    describe('statuses', function () {
+      context('with no status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive()
+        })
+
+        it('should call moves.getAll without status', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({})
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with active status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'active',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with incomplete status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'incomplete',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'requested,accepted,booked',
+            'filter[ready_for_transit]': false,
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with awaiting_collection status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'awaiting_collection',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'requested,accepted,booked',
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with ready_for_transit status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'ready_for_transit',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'requested,accepted,booked',
+            'filter[ready_for_transit]': true,
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with left_custody status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'left_custody',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'in_transit,completed',
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with cancelled status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'cancelled',
+          })
+        })
+
+        it('should call moves.getAll with correct statuses', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'cancelled',
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
+      context('with any other status', function () {
+        beforeEach(async function () {
+          moves = await moveService.getActive({
+            status: 'other',
+          })
+        })
+
+        it('should call moves.getAll with correct filter', function () {
+          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
+            'filter[status]': 'other',
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
       })
     })
   })

@@ -18,7 +18,32 @@ describe('Moves middleware', function () {
       mockReq = {
         locations: ['1', '2', '3'],
         params: {},
+        query: {},
       }
+    })
+
+    context('with status query', function () {
+      beforeEach(function () {
+        mockReq.query.status = 'complete'
+        middleware(mockBodyProperty, mockLocationProperty)(
+          mockReq,
+          mockRes,
+          nextSpy
+        )
+      })
+
+      it('should assign req.body correctly', function () {
+        expect(mockReq.body[mockBodyProperty]).to.deep.equal({
+          status: 'complete',
+          dateRange: '#currentDayAsRange',
+          [mockLocationProperty]: mockReq.locations,
+          supplierId: undefined,
+        })
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
     })
 
     context('with dateRange param', function () {
@@ -36,6 +61,7 @@ describe('Moves middleware', function () {
           dateRange: ['2020-10-10', '2020-10-10'],
           [mockLocationProperty]: mockReq.locations,
           supplierId: undefined,
+          status: undefined,
         })
       })
 
@@ -58,6 +84,7 @@ describe('Moves middleware', function () {
           dateRange: '#currentDayAsRange',
           [mockLocationProperty]: mockReq.locations,
           supplierId: undefined,
+          status: undefined,
         })
       })
 
@@ -89,6 +116,7 @@ describe('Moves middleware', function () {
           dateRange: '#currentDayAsRange',
           [mockLocationProperty]: mockReq.locations,
           supplierId: '#supplier',
+          status: undefined,
         })
       })
 

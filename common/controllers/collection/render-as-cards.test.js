@@ -23,6 +23,15 @@ describe('Collection controllers', function () {
         actions: ['1', '2'],
         context: 'listContext',
         datePagination: mockPagination,
+        filter: [
+          { label: 'bar', value: 2 },
+          { label: 'foo', value: 6 },
+          { label: 'fizz', value: 3 },
+          { label: 'buzz', value: 7 },
+        ],
+        query: {
+          status: 'complete',
+        },
         params: {
           dateRange: ['2020-10-01', '2020-10-10'],
           period: 'day',
@@ -82,9 +91,27 @@ describe('Collection controllers', function () {
         expect(params.period).to.deep.equal(req.params.period)
       })
 
+      it('should contain filter property', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('filter')
+        expect(params.filter).to.deep.equal(req.filter)
+      })
+
+      it('should contain activeStatus property', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('activeStatus')
+        expect(params.activeStatus).to.deep.equal(req.query.status)
+      })
+
+      it('should contain total results property', function () {
+        const params = res.render.args[0][1]
+        expect(params).to.have.property('totalResults')
+        expect(params.totalResults).to.deep.equal(18)
+      })
+
       it('should contain correct number of properties', function () {
         const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(6)
+        expect(Object.keys(params)).to.have.length(9)
       })
     })
 
