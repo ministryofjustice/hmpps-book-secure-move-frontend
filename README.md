@@ -83,3 +83,4 @@ Unless stated otherwise, the codebase is released under the [MIT License](./LICE
 ## Contribution guidelines
 
 If you want to help us improve Book a secure move, view our [contribution guidelines](./CONTRIBUTING.md)
+
