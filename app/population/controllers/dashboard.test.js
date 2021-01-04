@@ -10,7 +10,7 @@ describe('Population controllers', function () {
       mockReq = {
         context: 'population',
         dateRange: ['2020-06-01', '2020-06-07'],
-        pagination: {
+        datePagination: {
           todayUrl: '/population/week/2020-06-01',
           nextUrl: '/population/week/2020-06/08',
           prevUrl: '/population/week/20202-05-23',
@@ -67,8 +67,8 @@ describe('Population controllers', function () {
         })
 
         it('should set pagination', function () {
-          expect(params).to.have.property('pagination')
-          expect(params.pagination).to.deep.equal(mockReq.pagination)
+          expect(params).to.have.property('datePagination')
+          expect(params.datePagination).to.deep.equal(mockReq.datePagination)
         })
 
         it('should set resultsAsPopulationTables', function () {
