@@ -31,7 +31,8 @@
               }),
               classes: "moj-add-another__remove-button govuk-button--secondary",
               name: "multiple-action",
-              value: "remove::" + params.name + "::" + loop.index0
+              value: "remove::" + params.name + "::" + loop.index0,
+              preventDoubleClick: true
             }) }}
           </div>
         {% endif %}
@@ -49,7 +50,8 @@
       }),
       classes: "moj-add-another__add-button govuk-button--secondary",
       name: "multiple-action",
-      value: "add::" + params.name
+      value: "add::" + params.name,
+      preventDoubleClick: true
     }) }}
   </div>
 </div>

@@ -1,4 +1,4 @@
-const { ConfirmPersonEscortRecordController } = require('./controllers')
+const ConfirmAssessmentController = require('../../../../common/controllers/framework/confirm-assessment')
 
 module.exports = {
   '/': {
@@ -10,7 +10,7 @@ module.exports = {
   },
   '/provide-confirmation': {
     checkJourney: false,
-    controller: ConfirmPersonEscortRecordController,
+    controller: ConfirmAssessmentController,
     fields: ['confirm_person_escort_record'],
     buttonText: 'actions::confirm_and_complete_record',
     pageTitle: 'person-escort-record::journeys.confirm.heading',
