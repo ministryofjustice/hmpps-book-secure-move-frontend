@@ -32,7 +32,8 @@
         classes: "govuk-button--secondary govuk-!-margin-bottom-0",
         name: "delete",
         attributes: { "data-dz-remove": "" },
-        value: params.id
+        value: params.id,
+        preventDoubleClick: true
       }) }}
     </dd>
   </div>
@@ -70,7 +71,8 @@
     text: "Upload",
     classes: "govuk-button--secondary app-js-hidden",
     name: "upload",
-    value: "upload"
+    value: "upload",
+    preventDoubleClick: true
   }) }}
 
   <p class="app-multi-file-upload__dropzone app-js-visible" data-dz-clickable data-dz-dropzone>

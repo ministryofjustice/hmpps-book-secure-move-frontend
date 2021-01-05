@@ -40,7 +40,7 @@ export default class Page {
    * @returns {Promise}
    */
   submitForm() {
-    return t.click(this.nodes.submitButton)
+    return t.doubleClick(this.nodes.submitButton)
   }
 
   /**
