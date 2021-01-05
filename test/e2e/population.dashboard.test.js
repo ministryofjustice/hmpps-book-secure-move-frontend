@@ -1,11 +1,12 @@
 import { pmuUserWithRegions } from './_roles'
 import { populationDashboard } from './_routes'
-import { populationDashboardPage } from './pages'
+import { populationDashboardPage, populationWeeklyPage } from './pages'
 
-fixture('Population dashboards')
-test.before(async t => {
+fixture('Population dashboards').beforeEach(async t => {
   await t.useRole(pmuUserWithRegions).navigateTo(populationDashboard)
-})('Population dashboard navigation', async t => {
+})
+
+test('Population dashboard navigation', async t => {
   await t
     .click(populationDashboardPage.nodes.pagination.previousLink)
     .expect(await populationDashboardPage.nodes.days.exists)
@@ -22,4 +23,12 @@ test.before(async t => {
     .ok()
     .expect(await populationDashboardPage.nodes.focusDay.exists)
     .notOk()
+})
+
+test('Population dashboard links', async t => {
+  await t
+    .click(populationDashboardPage.nodes.establishmentLink)
+    .expect(populationWeeklyPage.nodes.breadcrumbs.overview.exists)
+    .ok()
+    .click(populationWeeklyPage.nodes.breadcrumbs.overview)
 })
