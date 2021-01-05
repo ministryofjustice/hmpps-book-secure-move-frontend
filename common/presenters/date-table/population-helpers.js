@@ -1,12 +1,12 @@
-const { format } = require('date-fns')
-
 const {
+  establishmentCellData,
   freeSpacesCellData,
   transfersInCellData,
   transfersOutCellData,
 } = require('./cell-renderers')
 
 const RENDER_LOOKUP = {
+  establishment: establishmentCellData,
   transfersIn: transfersInCellData,
   transfersOut: transfersOutCellData,
   freeSpaces: freeSpacesCellData,
@@ -44,11 +44,10 @@ const establishmentConfig = function ({ date }) {
       attributes: {
         scope: 'row',
       },
-      html: data => {
-        return `<a href="/population/week/${format(date, 'yyyy-MM-dd')}/${
-          data.id
-        }">${data.title}</a>`
-      },
+      html: genericValueCellContent({
+        cellType: 'establishment',
+        date,
+      }),
     },
   }
 }
@@ -68,9 +67,9 @@ const genericValueCellContent = function ({
     const { id: locationId } = data
     const population = data?.meta?.populations?.[populationIndex] || {}
 
-    const content = cellRenderer.content({ population })
+    const content = cellRenderer.content({ population, data })
 
-    const url = cellRenderer.url({ population, date, locationId })
+    const url = cellRenderer.url({ population, date, locationId, data })
 
     if (!url) {
       return `<span>${content}</span>`

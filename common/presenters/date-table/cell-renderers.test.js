@@ -1,6 +1,7 @@
 const i18n = require('../../../config/i18n')
 
 const {
+  establishmentCellData,
   freeSpacesCellData,
   transfersInCellData,
   transfersOutCellData,
@@ -13,6 +14,39 @@ describe('cell renderers', function () {
 
   afterEach(function () {
     i18n.t.restore()
+  })
+
+  describe('establishmentCellData', function () {
+    it('should contain a url function', function () {
+      expect(establishmentCellData.url).to.be.a('function')
+    })
+
+    it('should contain a content function', function () {
+      expect(establishmentCellData.content).to.be.a('function')
+    })
+
+    describe('#url', function () {
+      it('should set a weekly url', function () {
+        expect(
+          establishmentCellData.url({
+            date: new Date(2020, 5, 1),
+            data: {
+              id: 'ABADCAFE',
+            },
+          })
+        ).to.equal('/population/week/2020-06-01/ABADCAFE')
+      })
+    })
+
+    describe('#content', function () {
+      it('should use data.title', function () {
+        expect(
+          establishmentCellData.content({
+            data: { title: 'Establishment' },
+          })
+        ).to.equal('Establishment')
+      })
+    })
   })
 
   describe('freeSpacesCellData', function () {

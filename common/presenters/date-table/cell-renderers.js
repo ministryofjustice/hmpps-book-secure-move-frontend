@@ -59,7 +59,17 @@ const transfersOutCellData = {
   },
 }
 
+const establishmentCellData = {
+  url: ({ date, data }) => {
+    return `/population/week/${format(date, 'yyyy-MM-dd')}/${data.id}`
+  },
+  content: ({ data }) => {
+    return data.title
+  },
+}
+
 module.exports = {
+  establishmentCellData,
   freeSpacesCellData,
   transfersInCellData,
   transfersOutCellData,
