@@ -81,6 +81,121 @@ describe('Framework controllers', function () {
       })
     })
 
+    describe('#saveValues', function () {
+      const mockPERId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
+      let req, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        req = {
+          assessment: {
+            id: mockPERId,
+            framework: {
+              name: 'person-escort-record',
+            },
+          },
+          services: {
+            personEscortRecord: {
+              confirm: sinon.stub().resolves({}),
+            },
+            youthRiskAssessment: {
+              confirm: sinon.stub().resolves({}),
+            },
+          },
+        }
+      })
+
+      context('when save is successful', function () {
+        beforeEach(async function () {
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should confirm person escort record', function () {
+          expect(
+            req.services.personEscortRecord.confirm
+          ).to.be.calledOnceWithExactly(mockPERId)
+        })
+
+        it('should not throw an error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when save fails', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function () {
+          req.services.personEscortRecord.confirm.throws(errorMock)
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+        })
+      })
+
+      context('with youth risk assessment', function () {
+        beforeEach(async function () {
+          req.assessment.framework.name = 'youth-risk-assessment'
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should call the correct service method', function () {
+          expect(
+            req.services.youthRiskAssessment.confirm
+          ).to.be.calledOnceWithExactly(req.assessment.id)
+        })
+      })
+    })
+
+    describe('#errorHandler', function () {
+      let nextSpy
+
+      beforeEach(async function () {
+        nextSpy = sinon.spy()
+      })
+
+      context('when assessment is already confirmed', function () {
+        const errorMock = new Error('Already confirmed')
+
+        beforeEach(function () {
+          errorMock.statusCode = 422
+          errorMock.errors = [
+            {
+              code: 'invalid_status',
+            },
+          ]
+
+          sinon.stub(controller, 'successHandler')
+          sinon.stub(FormWizardController.prototype, 'errorHandler')
+          controller.errorHandler(errorMock, {}, {}, nextSpy)
+        })
+
+        it('should not call parent error handler', function () {
+          expect(FormWizardController.prototype.errorHandler).not.to.be.called
+        })
+
+        it('should call success handler', function () {
+          expect(controller.successHandler).to.be.calledOnceWithExactly({}, {})
+        })
+      })
+
+      context('with any other error', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(function () {
+          sinon.stub(FormWizardController.prototype, 'errorHandler')
+          controller.errorHandler(errorMock, {}, {}, nextSpy)
+        })
+
+        it('should call parent error handler', function () {
+          expect(
+            FormWizardController.prototype.errorHandler
+          ).to.be.calledOnceWithExactly(errorMock, {}, {}, nextSpy)
+        })
+      })
+    })
+
     describe('#successHandler', function () {
       const mockMoveId = 'c756d3fb-d5c0-4cf4-9416-6691a89570f2'
       let req, res
