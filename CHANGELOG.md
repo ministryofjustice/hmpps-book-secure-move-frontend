@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.64.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.63.1...v2.64.0) (2021-01-05)
+
+
+### Features
+
+* Add filter to incoming and outgoing dashboards ([f4f752e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f4f752eaf2ced0ef8ee8dadaf898bbf156a8dab2))
+
+
+### Bug Fixes
+
+* Prevent users from submitting information more than once ([3d2aed3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3d2aed3815daf876cfca8bfa2acdbeef0112f723))
+* Prevent validation errors when users double click to confirm ([eacd7c1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/eacd7c155518aefd95f4cddde25cfd55528808b2))
+* Restore date pagination on population pages ([fe54275](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fe542757da8f2d1ae57f9337ce824a9b910cf59b))
+* Use youth risk assessment for hospital moves ([6cf4c74](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6cf4c748032ce1c79a855c52b6f58bbd10bca506))
+
 ### [2.63.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.63.0...v2.63.1) (2020-12-29)
 
 
