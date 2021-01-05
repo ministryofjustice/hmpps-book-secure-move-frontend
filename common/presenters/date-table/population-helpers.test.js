@@ -53,6 +53,7 @@ describe('population helpers', function () {
     let result
     beforeEach(function () {
       result = dayConfig({
+        cellType: 'freeSpaces',
         date: '2020-01-01',
         populationIndex: 0,
       })
@@ -61,19 +62,31 @@ describe('population helpers', function () {
       it('should contain a date', function () {
         expect(result.head.date).to.equal('2020-01-01')
       })
-      it('should contain other table properties', function () {
-        expect(result.head).to.deep.include({
-          attributes: {
-            width: '80',
-          },
-          text: 'Day 1',
+
+      it('should contain numerated heading', function () {
+        expect(result.head.text).to.equal('Day 1')
+      })
+
+      it('should contain attributes', function () {
+        expect(result.head.attributes).to.deep.equal({
+          width: '80',
+          scope: 'col',
         })
       })
     })
+
     context('row', function () {
       it('should contain a date', function () {
         expect(result.row.date).to.equal('2020-01-01')
       })
+
+      it('should contain attributes', function () {
+        expect(result.row.attributes).to.deep.equal({
+          scope: 'row',
+          'data-cell-type': 'freeSpaces',
+        })
+      })
+
       it('should contain html render', function () {
         expect(result.row.html).to.be.a('function')
       })
@@ -88,7 +101,6 @@ describe('population helpers', function () {
         const renderedResult = result.row.html(mockLocation)
         expect(renderedResult).to.contain('>population::spaces_with_count<')
       })
-      it('should display as spaces_with_count', function () {})
     })
   })
 

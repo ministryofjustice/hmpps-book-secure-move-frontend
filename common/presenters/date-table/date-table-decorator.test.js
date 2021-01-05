@@ -25,8 +25,6 @@ describe('dateTableDecorator', function () {
   let result
 
   describe('applyClasses', function () {
-    beforeEach(function () {})
-
     context('with no cell date and focusDate', function () {
       it('should return empty object', function () {
         result = dateTableDecorator.applyClasses({

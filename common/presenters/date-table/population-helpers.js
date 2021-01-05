@@ -18,11 +18,16 @@ const dayConfig = function ({ cellType, date, populationIndex = 0 }) {
       date,
       attributes: {
         width: '80',
+        scope: 'col',
       },
       text: `Day ${populationIndex + 1}`,
     },
     row: {
       date,
+      attributes: {
+        scope: 'row',
+        'data-cell-type': cellType,
+      },
       html: genericValueCellContent({
         cellType,
         date,
@@ -35,14 +40,16 @@ const dayConfig = function ({ cellType, date, populationIndex = 0 }) {
 const establishmentConfig = function ({ date }) {
   return {
     head: {
-      html: 'population::labels.establishment',
       attributes: {
         width: '220',
+        scope: 'col',
       },
+      html: 'population::labels.establishment',
     },
     row: {
       attributes: {
         scope: 'row',
+        'data-cell-type': 'establishment',
       },
       html: genericValueCellContent({
         cellType: 'establishment',
@@ -85,6 +92,7 @@ const headerRowConfig = function ({ title }) {
       text: '',
       attributes: {
         width: '220',
+        scope: 'row',
       },
     },
     row: {
