@@ -338,6 +338,10 @@ module.exports = {
           'release-status',
         ],
       },
+      {
+        fn: Base.prototype.requiresYouthAssessment,
+        next: 'save',
+      },
       'risk-information',
     ],
     fields: ['time_due', 'additional_information'],
