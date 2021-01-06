@@ -14,7 +14,7 @@ const configPaths = require('./config/paths')
 
 function transformManifestFile(transformMethod) {
   return (content, absolutePath) => {
-    const yaml = YAML.safeLoad(content)
+    const yaml = YAML.load(content)
     const basename = path.basename(absolutePath, '.yml')
     const transformed = transformMethod(basename, yaml)
 
