@@ -1,17 +1,8 @@
-const dateTableDecorator = { decorateAsDateTable: sinon.stub() }
 const locationsFreeSpacesService = {
   getPrisonFreeSpaces: sinon.stub(),
 }
-const locationsToPopulationComponent = {
-  locationsToPopulationAndTransfersTables: sinon.stub(),
-}
 
-const proxyquire = require('proxyquire')
-
-const middleware = proxyquire('./set-results.population-and-transfers', {
-  '../../../common/presenters/date-table/date-table-decorator': dateTableDecorator,
-  '../../../common/presenters/date-table/locations-to-population-table-component': locationsToPopulationComponent,
-})
+const middleware = require('./set-results.population')
 
 const mockLocations = ['ABADCAFE', 'BAADF00D']
 
@@ -22,12 +13,6 @@ const mockPopulationTables = [
     rows: [{ text: 'Value', date: '2020-06-01' }],
   },
 ]
-
-const mockDateTables = {
-  caption: 'Category Sigma',
-  head: { text: 'Title', date: '2020-06-01', classes: 'date-stying' },
-  rows: [{ text: 'Value', date: '2020-06-01', classes: 'date-styling' }],
-}
 
 describe('Population middleware', function () {
   beforeEach(function () {
@@ -40,11 +25,6 @@ describe('Population middleware', function () {
     let next
 
     beforeEach(function () {
-      locationsToPopulationComponent.locationsToPopulationAndTransfersTables.returns(
-        sinon.stub().returns(mockPopulationTables)
-      )
-      dateTableDecorator.decorateAsDateTable.returns(mockDateTables)
-
       next = sinon.stub()
       res = {
         locals: {
@@ -62,12 +42,14 @@ describe('Population middleware', function () {
 
     afterEach(function () {
       locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
-      locationsToPopulationComponent.locationsToPopulationAndTransfersTables.resetHistory()
-      dateTableDecorator.decorateAsDateTable.resetHistory()
     })
 
     context('when service resolves', function () {
       beforeEach(async function () {
+        locationsFreeSpacesService.getPrisonFreeSpaces.resolves(
+          mockPopulationTables
+        )
+
         await middleware(req, res, next)
       })
 
@@ -81,19 +63,9 @@ describe('Population middleware', function () {
         })
       })
 
-      it('should call locationsToPopulationTable presenter', function () {
-        expect(
-          locationsToPopulationComponent.locationsToPopulationAndTransfersTables
-        ).to.have.been.calledOnce
-      })
-
-      it('should call decorateAsDateTable decorator', function () {
-        expect(dateTableDecorator.decorateAsDateTable).to.have.been.calledOnce
-      })
-
       it('should set resultsAsPopulationTables on req', function () {
-        expect(req).to.have.property('resultsAsPopulationTables')
-        expect(req.resultsAsPopulationTables[0]).to.deep.equal(mockDateTables)
+        expect(req).to.have.property('resultsAsPopulation')
+        expect(req.resultsAsPopulation).to.deep.equal(mockPopulationTables)
       })
 
       it('should call next', function () {

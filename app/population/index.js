@@ -16,8 +16,9 @@ const {
   redirectBaseUrl,
   setBreadcrumb,
   setPopulation,
-  setResultsAsPopulationTables,
-  setResultsPopulationAndTransfers,
+  setResultsAsPopulation,
+  setResultsAsFreeSpacesTables,
+  setResultsAsFreeSpacesAndTransfersTables,
 } = require('./middleware')
 const { editSteps } = require('./steps')
 
@@ -45,7 +46,8 @@ router.get(
   BASE_PATH,
   setContext('population'),
   setDatePagination(MOUNTPATH + BASE_PATH),
-  setResultsAsPopulationTables,
+  setResultsAsPopulation,
+  setResultsAsFreeSpacesTables,
   dashboard
 )
 
@@ -55,7 +57,8 @@ router.get(
   setDatePagination(MOUNTPATH + WEEKLY_PATH),
   setPopulation,
   setBreadcrumb,
-  setResultsPopulationAndTransfers,
+  setResultsAsPopulation,
+  setResultsAsFreeSpacesAndTransfersTables,
   weekly
 )
 

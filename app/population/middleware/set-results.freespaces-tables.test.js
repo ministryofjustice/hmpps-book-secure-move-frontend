@@ -1,14 +1,11 @@
 const dateTableDecorator = { decorateAsDateTable: sinon.stub() }
-const locationsFreeSpacesService = {
-  getPrisonFreeSpaces: sinon.stub(),
-}
 const locationsToPopulationComponent = {
   locationsToPopulationTable: sinon.stub(),
 }
 
 const proxyquire = require('proxyquire')
 
-const middleware = proxyquire('./set-results.population-tables', {
+const middleware = proxyquire('./set-results.freespaces-tables', {
   '../../../common/presenters/date-table/date-table-decorator': dateTableDecorator,
   '../../../common/presenters/date-table/locations-to-population-table-component': locationsToPopulationComponent,
 })
@@ -30,10 +27,6 @@ const mockDateTables = {
 }
 
 describe('Population middleware', function () {
-  beforeEach(function () {
-    locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
-  })
-
   describe('#setResultsPopulationTables()', function () {
     let res
     let req
@@ -54,31 +47,18 @@ describe('Population middleware', function () {
       req = {
         dateRange: ['2020-06-01', '2020-06-05'],
         locations: mockLocations,
-        services: {
-          locationsFreeSpaces: locationsFreeSpacesService,
-        },
+        resultsAsPopulation: mockPopulationTables,
       }
     })
 
     afterEach(function () {
-      locationsFreeSpacesService.getPrisonFreeSpaces.resetHistory()
       locationsToPopulationComponent.locationsToPopulationTable.resetHistory()
       dateTableDecorator.decorateAsDateTable.resetHistory()
     })
 
-    context('when service resolves', function () {
+    context('by default', function () {
       beforeEach(async function () {
         await middleware(req, res, next)
-      })
-
-      it('should call the data service with request body', function () {
-        expect(
-          locationsFreeSpacesService.getPrisonFreeSpaces
-        ).to.have.been.calledOnceWith({
-          dateFrom: '2020-06-01',
-          dateTo: '2020-06-05',
-          locationIds: 'ABADCAFE,BAADF00D',
-        })
       })
 
       it('should call locationsToPopulationTable presenter', function () {
@@ -101,20 +81,33 @@ describe('Population middleware', function () {
       })
     })
 
-    context('when service rejects', function () {
-      const mockError = new Error('Error!')
+    context('on errors', function () {
+      it('should call next with missing resultsAsPopulation', async function () {
+        await middleware({}, res, next)
 
-      beforeEach(async function () {
-        locationsFreeSpacesService.getPrisonFreeSpaces.rejects(mockError)
+        expect(next).to.have.been.calledWith(
+          sinon.match(
+            sinon.match
+              .instanceOf(Error)
+              .and(sinon.match.has('message', 'missing resultsAsPopulation'))
+          )
+        )
+      })
+
+      it('should call next with presenter errors', async function () {
+        locationsToPopulationComponent.locationsToPopulationTable.throws(
+          new Error('Presenter error')
+        )
+
         await middleware(req, res, next)
-      })
 
-      it('should not request properties', function () {
-        expect(req).not.to.have.property('resultsAsPopulationTables')
-      })
-
-      it('should call next with error', function () {
-        expect(next).to.have.been.calledOnceWithExactly(mockError)
+        expect(next).to.have.been.calledWith(
+          sinon.match(
+            sinon.match
+              .instanceOf(Error)
+              .and(sinon.match.has('message', 'Presenter error'))
+          )
+        )
       })
     })
   })

@@ -5,24 +5,20 @@ const {
   locationsToPopulationAndTransfersTables,
 } = require('../../../common/presenters/date-table/locations-to-population-table-component')
 
-async function setResultsPopulationTable(req, res, next) {
+async function setResultsFreeSpaccesAndTransferTables(req, res, next) {
   try {
-    const { dateRange, locations, locationId, query } = req
+    const { dateRange, query } = req
 
-    const freeSpaces = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
-      {
-        dateFrom: dateRange[0],
-        dateTo: dateRange[1],
-        locationIds: locationId || locations?.join(),
-      }
-    )
+    if (!req.resultsAsPopulation) {
+      return next(new Error('missing resultsAsPopulation'))
+    }
 
     const populationAndTransferTables = locationsToPopulationAndTransfersTables(
       {
         query,
         startDate: dateRange[0],
       }
-    )(freeSpaces)
+    )(req.resultsAsPopulation)
 
     req.resultsAsPopulationTables = populationAndTransferTables.map(
       groupedPopulation => {
@@ -39,4 +35,4 @@ async function setResultsPopulationTable(req, res, next) {
   }
 }
 
-module.exports = setResultsPopulationTable
+module.exports = setResultsFreeSpaccesAndTransferTables
