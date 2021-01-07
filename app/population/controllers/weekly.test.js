@@ -69,8 +69,8 @@ describe('Population controllers', function () {
         })
 
         it('should set date pagination', function () {
-          expect(params).to.have.property('pagination')
-          expect(params.datePagination).to.deep.equal(mockReq.pagination)
+          expect(params).to.have.property('datePagination')
+          expect(params.datePagination).to.deep.equal(mockReq.datePagination)
         })
 
         it('should set resultsAsPopulationTables', function () {

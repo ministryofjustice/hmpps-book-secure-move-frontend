@@ -1,12 +1,12 @@
 function weekly(req, res) {
-  const { context, dateRange, pagination, resultsAsPopulationTables } = req
+  const { context, dateRange, datePagination, resultsAsPopulationTables } = req
 
   const { period } = req.params
 
   res.render('population/views/weekly', {
     context,
     pageTitle: 'dashboard::page_title',
-    pagination,
+    datePagination,
     resultsAsPopulationTables,
     period,
     dateRange,
