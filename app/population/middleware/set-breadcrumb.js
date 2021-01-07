@@ -6,7 +6,7 @@ const {
 } = require('../../../config/nunjucks/filters')
 
 function setBreadcrumb(req, res, next) {
-  const { date, locationName } = req
+  const { date, locationName, locationId } = req
 
   const weekOptions = {
     weekStartsOn: 1,
@@ -25,14 +25,19 @@ function setBreadcrumb(req, res, next) {
     dateSuffix = ` (${formatDate(dateAsStartOfWeekDate)})`
   }
 
+  const basePath = `/population/week/${format(
+    dateAsStartOfWeekDate,
+    'yyyy-MM-dd'
+  )}`
+
   res
     .breadcrumb({
       text: `${req.t('population::breadcrumbs.home')}${dateSuffix}`,
-      href: `/population/week/${format(dateAsStartOfWeekDate, 'yyyy-MM-dd')}`,
+      href: basePath,
     })
     .breadcrumb({
       text: locationName,
-      href: '',
+      href: `${basePath}/${locationId}`,
     })
     .breadcrumb({
       text: format(parseISO(req.date), 'EEEE d MMMM'),

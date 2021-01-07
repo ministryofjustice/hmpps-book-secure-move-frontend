@@ -40,5 +40,10 @@
   "breadcrumbs": {
     "home": "Population Overview"
   },
-  "no_population": "No population to display"
+  "no_population": "No population to display",
+  "no_transfers": "None booked",
+  "transfers_in_with_count": "{{count}} transfer in",
+  "transfers_in_with_count_plural": "{{count}} transfers in",
+  "transfers_out_with_count": "{{count}} transfer out",
+  "transfers_out_with_count_plural": "{{count}} transfers out"
 }

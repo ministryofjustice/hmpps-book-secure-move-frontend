@@ -9,14 +9,15 @@ const {
 } = require('../../common/middleware/collection')
 const wizard = require('../../common/middleware/unique-form-wizard')
 
-const { BASE_PATH, MOUNTPATH, DAILY_PATH } = require('./constants')
-const { dashboard, daily } = require('./controllers')
+const { BASE_PATH, MOUNTPATH, DAILY_PATH, WEEKLY_PATH } = require('./constants')
+const { dashboard, daily, weekly } = require('./controllers')
 const { editFields } = require('./fields')
 const {
   redirectBaseUrl,
   setBreadcrumb,
   setPopulation,
   setResultsAsPopulationTables,
+  setResultsPopulationAndTransfers,
 } = require('./middleware')
 const { editSteps } = require('./steps')
 
@@ -46,6 +47,16 @@ router.get(
   setDatePagination(MOUNTPATH + BASE_PATH),
   setResultsAsPopulationTables,
   dashboard
+)
+
+router.get(
+  WEEKLY_PATH,
+  setContext('population'),
+  setDatePagination(MOUNTPATH + WEEKLY_PATH),
+  setPopulation,
+  setBreadcrumb,
+  setResultsPopulationAndTransfers,
+  weekly
 )
 
 module.exports = {

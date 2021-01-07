@@ -18,6 +18,7 @@ describe('Population middleware', function () {
       req = {
         baseUrl: '/url-path',
         locationName: 'Lorem Ipsum',
+        locationId: 'ABADCAFE',
         date: '2020-07-29',
         t: sinon.stub().returnsArg(0),
       }
@@ -36,7 +37,7 @@ describe('Population middleware', function () {
     it('should format create second breadcrumb with location and text', function () {
       middleware(req, res, next)
       expect(breadcrumbSpy.secondCall).to.have.been.calledWithExactly({
-        href: '',
+        href: '/population/week/2020-07-27/ABADCAFE',
         text: req.locationName,
       })
     })

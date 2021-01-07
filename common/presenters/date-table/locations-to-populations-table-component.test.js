@@ -82,10 +82,15 @@ describe('#locationToPopulationTableComponent()', function () {
   beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     i18n.t.resetHistory()
+
+    const mockDate = new Date('2020-06-07')
+    this.clock = sinon.useFakeTimers(mockDate.getTime())
   })
 
   afterEach(function () {
     i18n.t.restore()
+
+    this.clock.restore()
   })
 
   describe('locationsToPopulationTable', function () {
@@ -266,7 +271,8 @@ describe('#locationToPopulationTableComponent()', function () {
               attributes: {
                 scope: 'row',
               },
-              html: '<a>Lorem</a>',
+              html:
+                '<a href="/population/week/2020-06-01/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
             })
           })
 
@@ -349,7 +355,8 @@ describe('#locationToPopulationTableComponent()', function () {
               attributes: {
                 scope: 'row',
               },
-              html: '<a>Ipsum</a>',
+              html:
+                '<a href="/population/week/2020-06-01/34d1c8c3-699e-4198-9218-f923a7f18149">Ipsum</a>',
             })
           })
 
@@ -452,7 +459,8 @@ describe('#locationToPopulationTableComponent()', function () {
             attributes: {
               scope: 'row',
             },
-            html: '<a>Lorem</a>',
+            html:
+              '<a href="/population/week/2020-06-07/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
           })
         })
 
