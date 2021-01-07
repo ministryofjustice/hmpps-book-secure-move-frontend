@@ -20,13 +20,8 @@ const freeSpacesCellData = {
 }
 
 const transfersInCellData = {
-  url: ({ population, date, locationId }) => {
-    return isNil(population?.transfers_in) || population.transfers_in === 0
-      ? ''
-      : `/population/day/${format(
-          date,
-          'yyyy-MM-dd'
-        )}/${locationId}/transfersIn`
+  url: () => {
+    return ''
   },
   content: ({ population }) => {
     if (isNil(population?.transfers_in) || population.transfers_in === 0) {
@@ -40,13 +35,8 @@ const transfersInCellData = {
 }
 
 const transfersOutCellData = {
-  url: ({ population, date, locationId }) => {
-    return isNil(population?.transfers_out) || population.transfers_out === 0
-      ? ''
-      : `/population/day/${format(
-          date,
-          'yyyy-MM-dd'
-        )}/${locationId}/transfersOut`
+  url: () => {
+    return ''
   },
   content: ({ population }) => {
     if (isNil(population?.transfers_out) || population.transfers_out === 0) {

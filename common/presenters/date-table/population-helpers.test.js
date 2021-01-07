@@ -123,7 +123,7 @@ describe('population helpers', function () {
       })
 
       expect(cellRenderer(mockLocation)).to.equal(
-        '<a href="/population/day/2020-01-01/54d1c8c3-699e-4198-9218-f923a7f18149/transfersIn">population::transfers_in_with_count</a>'
+        '<span>population::transfers_in_with_count</span>'
       )
     })
 
