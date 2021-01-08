@@ -386,6 +386,31 @@ describe('Move Service', function () {
         })
       })
 
+      context('with filter', function () {
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            metaQuery: {
+              meta:
+                'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+            },
+          })
+        })
+
+        it('should call the API client with filter', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
+            meta:
+              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+            page: 1,
+            per_page: 100,
+            include: undefined,
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockMoves)
+        })
+      })
+
       context('with from_location arguments as arrays', function () {
         beforeEach(async function () {
           moves = await moveService.getAll({
@@ -649,6 +674,10 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'to_location',
           ],
+          metaQuery: {
+            meta:
+              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+          },
           filter: {},
         })
       })
@@ -692,6 +721,10 @@ describe('Move Service', function () {
             'filter[to_location_id]': mockToLocationId,
             'filter[supplier_id]': mockSupplierId,
           },
+          metaQuery: {
+            meta:
+              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+          },
         })
       })
 
@@ -722,6 +755,10 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'to_location',
           ],
+          metaQuery: {
+            meta:
+              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+          },
           filter: {
             'filter[to_location_id]': mockToLocationId,
           },

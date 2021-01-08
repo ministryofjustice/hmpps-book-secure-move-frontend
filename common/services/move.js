@@ -40,6 +40,7 @@ const defaultInclude = [
 function getAll({
   apiClient,
   filter = {},
+  metaQuery = {},
   combinedData = [],
   page = 1,
   isAggregation = false,
@@ -48,6 +49,7 @@ function getAll({
   return apiClient
     .findAll('move', {
       ...filter,
+      ...metaQuery,
       include: isAggregation ? [] : include,
       page,
       per_page: isAggregation ? 1 : 100,
@@ -69,6 +71,7 @@ function getAll({
       return getAll({
         apiClient,
         filter,
+        metaQuery,
         combinedData: moves,
         page: page + 1,
         include,
@@ -190,6 +193,10 @@ class MoveService extends BaseService {
         'profile.person_escort_record.flags',
         'to_location',
       ],
+      metaQuery: {
+        meta:
+          'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+      },
       filter: omitBy(
         {
           ...statusFilter,
