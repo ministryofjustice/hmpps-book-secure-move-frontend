@@ -198,6 +198,8 @@ class MoveService extends BaseService {
           'filter[from_location_id]': fromLocationId,
           'filter[to_location_id]': toLocationId,
           'filter[supplier_id]': supplierId,
+          meta:
+            'vehicle_registration,expected_time_of_arrival,expected_collection_time',
         },
         isNil
       ),
