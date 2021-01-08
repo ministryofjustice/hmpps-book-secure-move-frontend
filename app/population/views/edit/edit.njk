@@ -22,13 +22,24 @@
 
 {% block fields %}
   <div class="govuk-grid-row">
-    {% call displayFieldGroup('total_space') %}
-    {% endcall %}
+    {{ displayFieldGroup('total_space') }}
 
     {% call displayFieldGroup('unavailable_space') %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="transfers_in">
+          {{ t('population::daily_view.labels.transfers_in') }}
+        </label>
+        <div id="transfers_in">{{  values.moves_to.length  }}</div>
+      </div>
     {% endcall %}
 
     {% call displayFieldGroup('available_space') %}
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="transfers_out">
+          {{ t('population::daily_view.labels.transfers_out') }}
+        </label>
+        <div id="transfers_out">{{  values.moves_from.length }}</div>
+      </div>
     {% endcall %}
   </div>
   {% endblock %}
