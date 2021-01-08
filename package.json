@@ -147,6 +147,7 @@
     "slashify": "1.0.0",
     "sticky-sidebar": "3.3.1",
     "stream-mock": "2.0.5",
+    "timeago.js": "4.0.2",
     "uuid": "8.3.2",
     "winston": "3.3.3",
     "yargs": "16.2.0"

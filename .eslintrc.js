@@ -9,6 +9,7 @@ module.exports = {
   plugins: ['prettier', 'import'],
   globals: {
     Atomics: 'readonly',
+    MutationObserver: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
