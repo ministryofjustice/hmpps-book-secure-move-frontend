@@ -1,65 +1,112 @@
-const { format } = require('date-fns')
-const { isNil } = require('lodash')
+const {
+  establishmentCellData,
+  freeSpacesCellData,
+  transfersInCellData,
+  transfersOutCellData,
+} = require('./cell-renderers')
 
-const i18n = require('../../../config/i18n')
+const RENDER_LOOKUP = {
+  establishment: establishmentCellData,
+  transfersIn: transfersInCellData,
+  transfersOut: transfersOutCellData,
+  freeSpaces: freeSpacesCellData,
+}
 
-const dayConfig = function ({ date, populationIndex = 0 }) {
+const dayConfig = function ({ cellType, date, populationIndex = 0 }) {
   return {
     head: {
       date,
       attributes: {
         width: '80',
+        scope: 'col',
       },
       text: `Day ${populationIndex + 1}`,
     },
     row: {
       date,
-      html: data => freeSpaceCellContent({ date, populationIndex })(data),
+      attributes: {
+        scope: 'row',
+        'data-cell-type': cellType,
+      },
+      html: genericValueCellContent({
+        cellType,
+        date,
+        populationIndex,
+      }),
     },
   }
 }
 
-const establishmentConfig = {
-  head: {
-    html: 'population::labels.establishment',
-    attributes: {
-      width: '220',
+const establishmentConfig = function ({ date }) {
+  return {
+    head: {
+      attributes: {
+        width: '220',
+        scope: 'col',
+      },
+      html: 'population::labels.establishment',
     },
-  },
-  row: {
-    attributes: {
-      scope: 'row',
+    row: {
+      attributes: {
+        scope: 'row',
+        'data-cell-type': 'establishment',
+      },
+      html: genericValueCellContent({
+        cellType: 'establishment',
+        date,
+      }),
     },
-    html: data => {
-      return `<a>${data.title}</a>`
-    },
-  },
+  }
 }
 
-const freeSpaceCellContent = function ({ date, populationIndex = 0 }) {
+const genericValueCellContent = function ({
+  cellType,
+  date,
+  populationIndex = 0,
+}) {
+  const cellRenderer = RENDER_LOOKUP[cellType]
+
+  if (!cellRenderer) {
+    return () => ''
+  }
+
   return data => {
     const { id: locationId } = data
-    const { free_spaces: freeSpaces } =
-      data?.meta?.populations?.[populationIndex] || {}
+    const population = data?.meta?.populations?.[populationIndex] || {}
 
-    const hasNoFreeSpaces = isNil(freeSpaces)
-    const link = hasNoFreeSpaces
-      ? i18n.t('population::add_space')
-      : i18n.t('population::spaces_with_count', { count: freeSpaces })
+    const content = cellRenderer.content({ population, data })
 
-    const editQuicklink = hasNoFreeSpaces ? '/edit' : ''
+    const url = cellRenderer.url({ population, date, locationId, data })
 
-    const url = `/population/day/${format(
-      date,
-      'yyyy-MM-dd'
-    )}/${locationId}${editQuicklink}`
+    if (!url) {
+      return `<span>${content}</span>`
+    }
 
-    return `<a href="${url}">${link}</a>`
+    return `<a href="${url}">${content}</a>`
+  }
+}
+
+const headerRowConfig = function ({ title }) {
+  return {
+    head: {
+      text: '',
+      attributes: {
+        width: '220',
+        scope: 'row',
+      },
+    },
+    row: {
+      attributes: {
+        scope: 'row',
+      },
+      html: () => `<b>${title}</b>`,
+    },
   }
 }
 
 module.exports = {
   dayConfig,
   establishmentConfig,
-  freeSpaceCellContent,
+  headerRowConfig,
+  genericValueCellContent,
 }

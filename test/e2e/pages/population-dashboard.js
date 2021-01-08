@@ -10,7 +10,8 @@ class PopulationDashboardPage extends Page {
       focusDay: Selector('td').filter('.date-table__td--focus'),
       focusDayLink: Selector('td').filter('.date-table__td--focus').find('a'),
       days: Selector('td').filter('.date-table__td--day'),
-      establishment: Selector('td').filter('date-table__td--establishment'),
+      establishment: Selector('[data-cell-type="establishment"]'),
+      establishmentLink: Selector('[data-cell-type="establishment"]').find('a'),
       pagination: {
         previousLink: Selector('.app-pagination__list-item--prev a'),
         thisWeekLink: Selector('.app-pagination__list-item a').withText(

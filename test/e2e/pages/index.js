@@ -8,6 +8,7 @@ import MovesDashboardPage from './moves-dashboard'
 import Page from './page'
 import PopulationDashboardPage from './population-dashboard'
 import PopulationEditPage from './population-edit'
+import PopulationWeeklyPage from './population-weekly'
 import UpdateMovePage from './update-move'
 
 const page = new Page()
@@ -20,6 +21,7 @@ const cancelMovePage = new CancelMovePage()
 const dashboardPage = new DashboardPage()
 const populationDashboardPage = new PopulationDashboardPage()
 const populationEditPage = new PopulationEditPage()
+const populationWeeklyPage = new PopulationWeeklyPage()
 
 export {
   page,
@@ -33,4 +35,5 @@ export {
   UpdateMovePage,
   populationDashboardPage,
   populationEditPage,
+  populationWeeklyPage,
 }

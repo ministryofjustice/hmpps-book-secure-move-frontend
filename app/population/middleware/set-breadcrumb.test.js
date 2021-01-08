@@ -17,36 +17,71 @@ describe('Population middleware', function () {
       }
       req = {
         baseUrl: '/url-path',
-        locationName: 'Lorem Ipsum',
         date: '2020-07-29',
+        locationName: 'Lorem Ipsum',
+        locationId: 'ABADCAFE',
+        params: {
+          period: 'week',
+        },
         t: sinon.stub().returnsArg(0),
       }
 
       breadcrumbSpy.returns(res)
     })
 
-    it('should format create first breadcrumb with location and text', function () {
-      middleware(req, res, next)
-      expect(breadcrumbSpy.firstCall).to.have.been.calledWithExactly({
-        href: '/population/week/2020-07-27',
-        text: 'population::breadcrumbs.home (27 Jul 2020)',
+    context('week is current week', function () {
+      beforeEach(function () {
+        this.clock = sinon.useFakeTimers(new Date('2020-07-28').getTime())
+      })
+
+      afterEach(function () {
+        this.clock.restore()
+      })
+
+      it('should format create first breadcrumb as relative week', function () {
+        middleware(req, res, next)
+        expect(breadcrumbSpy.firstCall).to.have.been.calledWithExactly({
+          href: '/population/week/2020-07-27',
+          text: 'population::breadcrumbs.home (This week)',
+        })
       })
     })
 
-    it('should format create second breadcrumb with location and text', function () {
+    context('week is any other week', function () {
+      it('should format create first breadcrumb start of week', function () {
+        middleware(req, res, next)
+        expect(breadcrumbSpy.firstCall).to.have.been.calledWithExactly({
+          href: '/population/week/2020-07-27',
+          text: 'population::breadcrumbs.home (27 Jul 2020)',
+        })
+      })
+    })
+
+    it('should format create second breadcrumb with location', function () {
       middleware(req, res, next)
       expect(breadcrumbSpy.secondCall).to.have.been.calledWithExactly({
-        href: '',
+        href: '/population/week/2020-07-27/ABADCAFE',
         text: req.locationName,
       })
     })
 
-    it('should create third breadcrumb with location and text', function () {
-      middleware(req, res, next)
+    describe('period is week', function () {
+      it('should not create third breadcrumb', function () {
+        middleware(req, res, next)
 
-      expect(breadcrumbSpy.thirdCall).to.have.been.calledWith({
-        href: req.baseUrl,
-        text: 'Wednesday 29 July',
+        expect(breadcrumbSpy).to.have.been.calledTwice
+      })
+    })
+
+    describe('period is day', function () {
+      it('should create third breadcrumb with date', function () {
+        req.params.period = 'day'
+        middleware(req, res, next)
+
+        expect(breadcrumbSpy.thirdCall).to.have.been.calledWith({
+          href: req.baseUrl,
+          text: 'Wednesday 29 July',
+        })
       })
     })
 
