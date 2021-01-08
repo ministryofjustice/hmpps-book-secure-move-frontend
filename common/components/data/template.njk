@@ -10,7 +10,7 @@
   {% endif %}
 
   <span class="app-data__value">
-    {{ params.value }}
+    {{ params.value | safe }}
   </span>
 
   {% if not params.inverted %}

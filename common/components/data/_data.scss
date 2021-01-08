@@ -27,3 +27,8 @@
     @include govuk-font($size: 80, $weight: bold);
   }
 }
+
+.app-data .govuk-tag {
+  position: relative;
+  top: -2px;
+}
