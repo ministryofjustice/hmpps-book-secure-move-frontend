@@ -2,6 +2,36 @@
 
 {% block pageContent %}
   {% for group in resultsAsCards %}
+    {% set expectedTime %}
+      {% if group.expectedTime %}
+        {{ appTime({
+          datetime: group.expectedTime,
+          text: group.expectedTime | formatTime
+        }) }}
+
+        {% if group.showRelativeTime %}
+          {{ appTime({
+            datetime: group.expectedTime,
+            text: group.expectedTime | formatTime,
+            relative: true,
+            displayAsTag: true,
+            imminentOffset: 60
+          }) }}
+        {% endif %}
+      {% else %}
+        {{ t("collections::labels.no_expected_time") }}
+      {% endif %}
+
+      {% if group.isComplete %}
+        {{ govukTag({
+          html: t("collections::labels.complete", {
+            context: group.context
+          }),
+          classes: "govuk-tag--green"
+        }) }}
+      {% endif %}
+    {% endset %}
+
     <div class="
       govuk-!-margin-top-7
       app-border-top-2

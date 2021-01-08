@@ -26,8 +26,8 @@ const COLLECTION_MIDDLEWARE = [
 const DEFAULTS = {
   QUERY: {
     requested: { status: 'pending' },
-    outgoing: { status: 'active' },
-    incoming: { status: 'active' },
+    outgoing: { status: 'active', group_by: 'location' },
+    incoming: { status: 'active', group_by: 'location' },
   },
   TIME_PERIOD: {
     requested: 'week',
