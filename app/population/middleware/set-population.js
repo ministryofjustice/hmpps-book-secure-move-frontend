@@ -1,17 +1,10 @@
 async function setPopulation(req, res, next) {
   try {
-    const { locationId, date } = req.params
-
-    const dailyFreeSpaceByCategory = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
-      {
-        dateFrom: date,
-        dateTo: date,
-        locationIds: locationId,
-      }
-    )
+    const { dateRange, resultsAsPopulation } = req
+    const { locationId } = req.params
 
     const dailyFreeSpace =
-      dailyFreeSpaceByCategory?.[Object.keys(dailyFreeSpaceByCategory)]
+      resultsAsPopulation?.[Object.keys(resultsAsPopulation)]
 
     req.locationName = dailyFreeSpace?.[0]?.title
 
@@ -35,7 +28,7 @@ async function setPopulation(req, res, next) {
     }
 
     req.locationId = locationId
-    req.date = date
+    req.date = dateRange[0]
     req.wizardKey = `${req.locationId}-${req.date}`
 
     next()

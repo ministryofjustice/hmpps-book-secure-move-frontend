@@ -14,20 +14,19 @@ const { dashboard, daily, weekly } = require('./controllers')
 const { editFields } = require('./fields')
 const {
   redirectBaseUrl,
-  setBreadcrumb,
+  setLocationFreeSpaces,
   setPopulation,
-  setResultsAsPopulation,
+  setBreadcrumb,
   setResultsAsFreeSpacesTables,
   setResultsAsFreeSpacesAndTransfersTables,
 } = require('./middleware')
 const { editSteps } = require('./steps')
 
 router.param('date', setDateRange)
-router.param('locationId', setPopulation)
 
 router.get('/', redirectBaseUrl)
 
-dailyRouter.get('/', daily)
+dailyRouter.get('/', setLocationFreeSpaces, setPopulation, setBreadcrumb, daily)
 
 const editConfig = {
   controller: FormWizardController,
@@ -38,15 +37,22 @@ const editConfig = {
   journeyPageTitle: 'actions::create_population',
 }
 
-dailyRouter.use('/edit', wizard(editSteps, editFields, editConfig, 'wizardKey'))
+dailyRouter.use(
+  '/edit',
+  setLocationFreeSpaces,
+  setPopulation,
+  setBreadcrumb,
+  wizard(editSteps, editFields, editConfig, 'wizardKey')
+)
 
-router.use(DAILY_PATH, setBreadcrumb, dailyRouter)
+router.use(DAILY_PATH, dailyRouter)
 
 router.get(
   BASE_PATH,
   setContext('population'),
   setDatePagination(MOUNTPATH + BASE_PATH),
-  setResultsAsPopulation,
+  setLocationFreeSpaces,
+  setPopulation,
   setResultsAsFreeSpacesTables,
   dashboard
 )
@@ -55,9 +61,9 @@ router.get(
   WEEKLY_PATH,
   setContext('population'),
   setDatePagination(MOUNTPATH + WEEKLY_PATH),
+  setLocationFreeSpaces,
   setPopulation,
   setBreadcrumb,
-  setResultsAsPopulation,
   setResultsAsFreeSpacesAndTransfersTables,
   weekly
 )
