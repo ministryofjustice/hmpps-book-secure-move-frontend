@@ -454,21 +454,21 @@
     "label": "Bedwatch"
   },
   "overnights_in": {
-    "label": "Overnights In"
+    "label": "Overnights in"
   },
   "overnights_out": {
-    "label": "Overnights Out"
+    "label": "Overnights out"
   },
   "out_of_area_courts": {
-    "label": "Out Of Area Courts"
+    "label": "Out of area courts"
   },
   "discharges": {
-    "label": "Discharges"
+    "label": "Discharges including immigration"
   },
   "operational_capacity": {
-    "label": "Operational Capacity"
+    "label": "Operational capacity"
   },
   "usable_capacity": {
-    "label": "Usable Capacity"
+    "label": "Usable capacity"
   }
 }
