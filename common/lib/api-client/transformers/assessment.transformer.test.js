@@ -149,6 +149,27 @@ describe('API Client', function () {
           })
         })
       })
+
+      context('when framework is an ID', function () {
+        beforeEach(function () {
+          item = {
+            id: '12345',
+            framework: '67890',
+          }
+          transformer(item)
+        })
+
+        it('should not get framework', function () {
+          expect(frameworksService.getFramework).not.to.have.been.called
+        })
+
+        it('should not add custom properties', function () {
+          expect(item).to.deep.equal({
+            id: '12345',
+            framework: '67890',
+          })
+        })
+      })
     })
   })
 })
