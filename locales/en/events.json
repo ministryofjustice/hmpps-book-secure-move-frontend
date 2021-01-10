@@ -403,6 +403,10 @@
     "heading": "Supplier vehicle systems failed",
     "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) has had a system failure $t(events::incident_reported_classified)"
   },
+  "PerConfirmation": {
+    "heading": "Person Escort Record confirmed",
+    "description": "All information in this Person Escort Record was confirmed"
+  },
   "StatusMoveBooked": {
     "statusChange": true,
     "heading": "$t(statuses::booked)",
