@@ -84,6 +84,7 @@ describe('populateResources', function () {
     })
     it('should lookup the move', function () {
       expect(moveService.getById).to.be.calledOnceWithExactly('move')
+      expect(moveService.getById).to.be.calledOn(moveService)
     })
     it('should populate with resolved move', function () {
       expect(data).to.deep.equal({
@@ -104,6 +105,9 @@ describe('populateResources', function () {
       expect(personEscortRecordService.getById).to.be.calledOnceWithExactly(
         'per'
       )
+      expect(personEscortRecordService.getById).to.be.calledOn(
+        personEscortRecordService
+      )
     })
     it('should populate with resolved PER', function () {
       expect(data).to.deep.equal({
@@ -123,6 +127,9 @@ describe('populateResources', function () {
     it('should lookup the location', function () {
       expect(referenceDataService.getLocationById).to.be.calledOnceWithExactly(
         'loc'
+      )
+      expect(referenceDataService.getLocationById).to.be.calledOn(
+        referenceDataService
       )
     })
     it('should populate with resolved location', function () {
