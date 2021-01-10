@@ -23,9 +23,10 @@ class PopulationDashboardPage extends Page {
   }
 
   async visitEditPage() {
+    const focusDays = await this.nodes.focusDay.count
     let dayCell
 
-    if (this.nodes.focusDay.exists) {
+    if (focusDays > 0) {
       // There is a population entry today
       dayCell = this.nodes.focusDay
     } else {
@@ -33,8 +34,7 @@ class PopulationDashboardPage extends Page {
       dayCell = this.nodes.days
     }
 
-    const link = await dayCell.find('a')
-    let href = await link.getAttribute('href')
+    let href = await dayCell.find('a').getAttribute('href')
 
     if (!href.endsWith('edit')) {
       href = `${href}/edit`
