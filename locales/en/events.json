@@ -197,7 +197,7 @@
     "description": ""
   },
   "MoveRedirect": {
-    "heading": "Redirected to {{move.to_location.title}}",
+    "heading": "Redirected to {{to_location.title}}",
     "description": "Move redirected $t(events::MoveRedirect.select_reason)",
     "select_reason": "$t(events::MoveRedirect.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
