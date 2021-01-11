@@ -29,9 +29,15 @@
       </p>
 
       <p>
-        <a href="/allocations">
-          {{ t("allocations::confirmation.view_all") }}
-        </a>
+        <a href="/allocations">{{ t("allocations::confirmation.view_all") }}</a>
+
+        {% if canAccess('dashboard:view:population') %}
+          {{ t("or") }}
+          {{ t("allocations::confirmation.view_by_from_location", {
+            href: '/population/week/' + allocation.date + '/' + allocation.from_location.id,
+            from_location: allocation.from_location.title
+          }) | safe }}
+        {% endif %}
       </p>
     </div>
   </div>
