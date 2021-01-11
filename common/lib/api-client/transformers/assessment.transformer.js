@@ -5,10 +5,13 @@ const mapQuestionToResponse = require('../../../helpers/frameworks/map-question-
 const frameworksService = require('../../../services/frameworks')
 
 module.exports = function assessmentTransformer(data = {}) {
-  if (data.framework) {
+  const { name: frameworkName, version: frameworkVersion } =
+    data.framework || {}
+
+  if (frameworkName && frameworkVersion) {
     const framework = frameworksService.getFramework({
-      framework: data.framework.name,
-      version: data.framework.version,
+      framework: frameworkName,
+      version: frameworkVersion,
     })
 
     data.responses = data.responses.map(mapQuestionToResponse(framework))

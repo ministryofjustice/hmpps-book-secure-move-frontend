@@ -1,10 +1,19 @@
 const findUnpopulatedResources = require('./find-unpopulated-resources')
 
 const populateResources = async (obj, req, options, processed = []) => {
-  const lookupMethods = {
-    locations: req.services.referenceData.getLocationById,
-    moves: req.services.move.getById,
-    person_escort_records: req.services.personEscortRecord.getById,
+  const services = {
+    locations: {
+      service: req.services.referenceData,
+      method: 'getLocationById',
+    },
+    moves: {
+      service: req.services.move,
+      method: 'getById',
+    },
+    person_escort_records: {
+      service: req.services.personEscortRecord,
+      method: 'getById',
+    },
   }
   const unpopulated = findUnpopulatedResources(obj, options).filter(
     resource => !processed.includes(resource)
@@ -15,10 +24,10 @@ const populateResources = async (obj, req, options, processed = []) => {
   }
 
   for (const resource of unpopulated) {
-    const lookupMethod = lookupMethods[resource.type]
+    const { service, method } = services[resource.type] || {}
 
-    if (lookupMethod) {
-      const newProp = await lookupMethod(resource.id)
+    if (service) {
+      const newProp = await service[method](resource.id)
       Object.keys(newProp).forEach(prop => {
         resource[prop] = newProp[prop]
       })
