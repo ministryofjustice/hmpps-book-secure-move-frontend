@@ -25,6 +25,7 @@ const AddAnother = require('../../components/add-another/add-another')
 const Header = require('../../components/internal-header/internal-header')
 const Message = require('../../components/message/message')
 const MultiFileUpload = require('../../components/multi-file-upload/multi-file-upload')
+const Time = require('../../components/time/time')
 
 const Analytics = require('./analytics')
 const { nodeListForEach } = require('./utils')
@@ -35,6 +36,11 @@ initAll()
 new AddAnother('.moj-add-another')
 
 new Analytics().init()
+
+const $times = document.querySelectorAll('[data-module="app-time"]')
+nodeListForEach($times, function ($module) {
+  new Time($module).init()
+})
 
 const $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()

@@ -11,6 +11,18 @@ params:
     type: string
     required: false
     description: Classes to add to the element.
+  - name: displayAsTag
+    type: boolean
+    required: false
+    description: Whether to display the time element within a GOV.UK Tag component
+  - name: relative
+    type: boolean
+    required: false
+    description: Whether to show a relative time
+  - name: imminentOffset
+    type: number
+    required: false
+    description: The offset (in minutes) at which to use a "yellow" tag instead of green. Inside this offset the tag will be yellow, outside of it green, and if the time has past, it will be red.
 
 examples:
   - name: default
@@ -20,3 +32,16 @@ examples:
     data:
       datetime: "2019-01-10"
       text: "Today"
+  - name: with relative time
+    data:
+      datetime: "2021-02-10"
+      relative: true
+  - name: shown as a tag
+    data:
+      datetime: "2021-02-10"
+      displayAsTag: true
+  - name: shown as a label with relative time
+    data:
+      datetime: "2021-02-10"
+      displayAsTag: true
+      relative: true

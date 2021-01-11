@@ -1,3 +1,22 @@
-<time class="{{ params.classes }}" datetime="{{ params.datetime }}">
-  {{ params.text or params.datetime }}
-</time>
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% set timeHTML %}
+  <time
+    data-module="app-time"
+    datetime="{{ params.datetime }}"
+    {% if params.displayAsTag %}data-has-tag="true" {% endif %}
+    {% if params.relative %}data-display-relative="true" {% endif %}
+    {% if params.imminentOffset %}data-imminent-offset="{{ params.imminentOffset }}" {% endif %}
+    class="{{ params.classes }}"
+    >
+    {{ params.text or params.datetime }}
+  </time>
+{% endset %}
+
+{% if params.displayAsTag %}
+  {{ govukTag({
+    html: timeHTML
+  }) }}
+{% else %}
+  {{ timeHTML | safe }}
+{% endif %}

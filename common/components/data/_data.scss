@@ -8,22 +8,39 @@
   @include govuk-font($size: 36, $weight: bold);
   display: block;
   margin: 0;
+
+  .govuk-tag {
+    position: relative;
+    top: -6px;
+  }
 }
 
 .app-data--s {
   .app-data__value {
     @include govuk-font($size: 24, $weight: bold);
+
+    .govuk-tag {
+      top: -2px;
+    }
   }
 }
 
 .app-data--l {
   .app-data__value {
     @include govuk-font($size: 48, $weight: bold);
+
+    .govuk-tag {
+      top: -10px;
+    }
   }
 }
 
 .app-data--xl {
   .app-data__value {
     @include govuk-font($size: 80, $weight: bold);
+
+    .govuk-tag {
+      top: -22px;
+    }
   }
 }
