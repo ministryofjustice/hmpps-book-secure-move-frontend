@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.65.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.64.0...v2.65.0) (2021-01-11)
+
+
+### Features
+
+* Allow time component to be rendered as a tag and show as relative ([689492d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/689492d7f77389bc3dd77e1da48dcb80218dcef2))
+* **pmu:** Add weekly location page ([cf120e9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cf120e97d27215db971b24f202c82c2804bd8189))
+
+
+### Bug Fixes
+
+* Add missing PER confirmed event description ([3204a08](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3204a08161ca72867098913f91c3f90a04d41502))
+* Ensure framework is only retrieved when available ([695f57d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/695f57daa4e7dacfba99dd5d20698daa72e17c21))
+* Ensure services are called with correct context ([6807a71](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6807a719119fdaaf42592fa3d50161e97bf5daf8))
+* Use the correct location for redirect events ([73a6413](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/73a64138a5012f8859332349f1aff279f86bcbee))
+* **pmu:** Remove links to population transfers ([a594e5a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a594e5ae1a4115303fd5be2de9474d6137d66c50))
+* **pmu:** Rename pagination to datePagination ([c0b83f2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c0b83f269b597f649d905bc754882f2a56791a9e))
+* **pmu:** Use correct breadcrumbs on all pages ([474df7f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/474df7f7b4559c838ef3b9ca72b02acc48b4eaa6))
+
 ## [2.64.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.63.1...v2.64.0) (2021-01-05)
 
 
