@@ -197,7 +197,7 @@
     "description": ""
   },
   "MoveRedirect": {
-    "heading": "Redirected to {{move.to_location.title}}",
+    "heading": "Redirected to {{to_location.title}}",
     "description": "Move redirected $t(events::MoveRedirect.select_reason)",
     "select_reason": "$t(events::MoveRedirect.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
@@ -402,6 +402,10 @@
   "PersonMoveVehicleSystemsFailed": {
     "heading": "Supplier vehicle systems failed",
     "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) has had a system failure $t(events::incident_reported_classified)"
+  },
+  "PerConfirmation": {
+    "heading": "Person Escort Record confirmed",
+    "description": "All information in this Person Escort Record was confirmed"
   },
   "StatusMoveBooked": {
     "statusChange": true,
