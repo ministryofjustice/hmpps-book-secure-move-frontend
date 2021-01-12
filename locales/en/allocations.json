@@ -3,7 +3,7 @@
     "page_title": "Allocation requested",
     "detail": "The request for <strong><a href=\"{{href}}\">{{moves_count}} {{people}}</a></strong> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong> on <strong>{{date}}</strong> has been sent.",
     "view_all": "View all allocations",
-    "view_by_from_location": "View {{from_location}} overview"
+    "view_by_from_location": "<a href=\"{{href}}\">view {{from_location}} overview</a>"
   },
   "allocation_details": {
     "page_title": "Allocation details"
