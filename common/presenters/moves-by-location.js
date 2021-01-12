@@ -4,30 +4,9 @@ const i18n = require('../../config/i18n')
 
 const moveToCardComponent = require('./move-to-card-component')
 
-function _emptyToLocation(move) {
-  if (move.to_location) {
-    return move
-  }
-
-  const hasOwnLabel = ['prison_recall', 'video_remand']
-
-  return {
-    ...move,
-    to_location: {
-      key: `unknown__${move.move_type}`,
-      title: hasOwnLabel.includes(move.move_type)
-        ? i18n.t(`fields::move_type.items.${move.move_type}.label`)
-        : i18n.t('fields::move_type.items.unknown.label'),
-    },
-  }
-}
-
 module.exports = function movesByLocation(data, locationKey = 'to_location') {
   const locations = []
-  const groupedByLocation = groupBy(
-    data.map(_emptyToLocation),
-    `${locationKey}.key`
-  )
+  const groupedByLocation = groupBy(data, `${locationKey}.key`)
 
   Object.entries(groupedByLocation).forEach(([locationId, moves]) => {
     locations.push({
