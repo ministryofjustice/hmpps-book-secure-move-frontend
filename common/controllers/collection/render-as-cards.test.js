@@ -194,58 +194,12 @@ describe('Collection controllers', function () {
       })
     })
 
-    describe('template', function () {
-      context(
-        'if user can view move and individual location requested',
-        function () {
-          beforeEach(function () {
-            req.location = {
-              id: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
-            }
-            req.params = {
-              dateRange: ['2020-10-01', '2020-10-10'],
-            }
-            req.canAccess.withArgs('move:view').returns(true)
+    it('should render list template', function () {
+      controller(req, res)
+      const template = res.render.args[0][0]
 
-            controller(req, res)
-          })
-
-          it('should render list template', function () {
-            const template = res.render.args[0][0]
-
-            expect(res.render).to.be.calledOnce
-            expect(template).to.equal('collection-as-cards')
-          })
-        }
-      )
-
-      context('if user can view move and all locations requested', function () {
-        beforeEach(function () {
-          req.canAccess.withArgs('move:view').returns(true)
-
-          controller(req, res)
-        })
-
-        it('should render download template', function () {
-          const template = res.render.args[0][0]
-
-          expect(res.render).to.be.calledOnce
-          expect(template).to.equal('moves/views/download')
-        })
-      })
-
-      context('if user cannot view move', function () {
-        beforeEach(function () {
-          controller(req, res)
-        })
-
-        it('should render download template', function () {
-          const template = res.render.args[0][0]
-
-          expect(res.render).to.be.calledOnce
-          expect(template).to.equal('moves/views/download')
-        })
-      })
+      expect(res.render).to.be.calledOnce
+      expect(template).to.equal('collection-as-cards')
     })
   })
 })

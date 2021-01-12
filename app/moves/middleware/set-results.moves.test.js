@@ -51,25 +51,6 @@ describe('Moves middleware', function () {
         moveService.getActive.resolves(mockActiveMoves)
       })
 
-      context('without current location', function () {
-        beforeEach(async function () {
-          req.location = undefined
-          await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
-        })
-
-        it('should not fetch the active moves', function () {
-          expect(moveService.getActive).to.not.be.called
-        })
-
-        it('should not call movesByLocation presenter', function () {
-          expect(presenters.movesByLocation).to.not.be.called
-        })
-
-        it('should not call movesByVehicle presenter', function () {
-          expect(presenters.movesByVehicle).to.not.be.called
-        })
-      })
-
       context('without `locationKey`', function () {
         beforeEach(async function () {
           await middleware(mockBodyKey)(req, res, nextSpy)
@@ -149,12 +130,28 @@ describe('Moves middleware', function () {
           beforeEach(async function () {
             await middleware(mockBodyKey, 'from_location')(req, res, nextSpy)
           })
+
           it('should call movesByVehicle presenter with locationKey', function () {
             expect(presenters.movesByVehicle).to.be.calledOnceWithExactly({
               moves: mockActiveMoves,
               context: 'incoming',
               showLocations: false,
               locationType: 'prison',
+            })
+          })
+        })
+
+        context('without current location', function () {
+          beforeEach(async function () {
+            req.session.currentLocation = undefined
+            await middleware(mockBodyKey)(req, res, nextSpy)
+          })
+
+          it('should call movesByVehicle presenter with locationKey', function () {
+            expect(presenters.movesByVehicle).to.be.calledOnceWithExactly({
+              moves: mockActiveMoves,
+              context: 'outgoing',
+              showLocations: true,
             })
           })
         })
