@@ -1,6 +1,38 @@
 const { get } = require('lodash')
 // Using get because testcafe barfs on optional chaining
 
+const i18n = require('../../../../config/i18n')
+
+const setMissingToLocation = data => {
+  if (!data.to_location) {
+    const typeKey = ['prison_recall', 'video_remand'].includes(data.move_type)
+      ? data.move_type
+      : 'unknown'
+
+    data.to_location = {
+      key: `unknown__${data.move_type}`,
+      title: i18n.t(`fields::move_type.items.${typeKey}.label`),
+    }
+  }
+}
+
+const setVehicleRegistration = data => {
+  data._vehicleRegistration =
+    get(data, 'meta.vehicle_registration') || undefined
+}
+
+const setExpectedTime = data => {
+  data._expectedCollectionTime =
+    get(data, 'meta.expected_collection_time') || undefined
+  data._expectedArrivalTime =
+    get(data, 'meta.expected_time_of_arrival') || undefined
+}
+
+const setExtraStates = data => {
+  data._hasLeftCustody = ['in_transit', 'completed'].includes(data.status)
+  data._hasArrived = ['completed'].includes(data.status)
+}
+
 const addImportantEvents = data => {
   // timeline_events and important_events are mutually exclusive at the BE
   // copy any event with a non-default classification to .important_events
@@ -41,4 +73,8 @@ const addEventCountToEvents = data => {
 module.exports = function moveTransformer(data) {
   addImportantEvents(data)
   addEventCountToEvents(data)
+  setMissingToLocation(data)
+  setVehicleRegistration(data)
+  setExpectedTime(data)
+  setExtraStates(data)
 }

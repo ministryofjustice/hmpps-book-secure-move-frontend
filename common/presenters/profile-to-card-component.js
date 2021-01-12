@@ -6,6 +6,7 @@ const filters = require('../../config/nunjucks/filters')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 
 function profileToCardComponent({
+  meta = [],
   showImage = true,
   showMeta = true,
   showTags = true,
@@ -38,6 +39,7 @@ function profileToCardComponent({
         date_of_birth: filters.formatDate(dateOfBirth),
       })
       const metaItems = [
+        ...meta,
         {
           label: i18n.t('fields::date_of_birth.label'),
           text: dateOfBirth ? dateOfBirthLabel : undefined,
@@ -54,8 +56,6 @@ function profileToCardComponent({
     }
 
     if (showTags) {
-      // let items
-
       const { flags, status } = personEscortRecord || {}
       const isComplete =
         personEscortRecord && !['not_started', 'in_progress'].includes(status)

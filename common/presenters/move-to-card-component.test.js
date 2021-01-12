@@ -11,6 +11,12 @@ const mockMove = {
       _fullname: 'Name, Full',
     },
   },
+  to_location: {
+    title: 'Pentonville',
+  },
+  from_location: {
+    title: 'Snaresbrook Court',
+  },
 }
 const mockPersonCardComponent = {
   href: '/move/12345',
@@ -53,6 +59,7 @@ describe('Presenters', function () {
               href: '/move/12345',
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
+              meta: [],
               showImage: true,
               showMeta: true,
               showTags: true,
@@ -122,6 +129,7 @@ describe('Presenters', function () {
           href: '/move/12345/path/to/somewhere',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: true,
           showMeta: true,
           showTags: true,
@@ -142,6 +150,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: false,
           showMeta: true,
           showTags: true,
@@ -162,6 +171,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: true,
           showMeta: false,
           showTags: true,
@@ -182,6 +192,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: true,
           showMeta: true,
           showTags: false,
@@ -202,6 +213,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: true,
           showMeta: true,
           showTags: true,
@@ -226,6 +238,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: false,
           showMeta: false,
           showTags: false,
@@ -260,6 +273,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          meta: [],
           showImage: false,
           showMeta: false,
           showTags: false,
@@ -359,6 +373,94 @@ describe('Presenters', function () {
               text: '__translated__',
             },
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
+          })
+        })
+      })
+    })
+
+    context('with locations', function () {
+      context('with to location', function () {
+        beforeEach(function () {
+          transformedResponse = moveToCardComponent({
+            showToLocation: true,
+            showMeta: true,
+          })(mockMove)
+        })
+
+        it('should call profile to card component correctly', function () {
+          expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+            ...mockMove.profile,
+            href: '/move/12345',
+          })
+          expect(profileToCardComponentStub).to.be.calledWithExactly({
+            meta: [
+              {
+                label: '__translated__',
+                text: mockMove.to_location.title,
+              },
+            ],
+            showImage: true,
+            showMeta: true,
+            showTags: true,
+          })
+        })
+      })
+
+      context('with from location', function () {
+        beforeEach(function () {
+          transformedResponse = moveToCardComponent({
+            showFromLocation: true,
+            showMeta: true,
+          })(mockMove)
+        })
+
+        it('should call profile to card component correctly', function () {
+          expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+            ...mockMove.profile,
+            href: '/move/12345',
+          })
+          expect(profileToCardComponentStub).to.be.calledWithExactly({
+            meta: [
+              {
+                label: '__translated__',
+                text: mockMove.from_location.title,
+              },
+            ],
+            showImage: true,
+            showMeta: true,
+            showTags: true,
+          })
+        })
+      })
+
+      context('with to location', function () {
+        beforeEach(function () {
+          transformedResponse = moveToCardComponent({
+            showToLocation: true,
+            showFromLocation: true,
+            showMeta: true,
+          })(mockMove)
+        })
+
+        it('should call profile to card component correctly', function () {
+          expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+            ...mockMove.profile,
+            href: '/move/12345',
+          })
+          expect(profileToCardComponentStub).to.be.calledWithExactly({
+            meta: [
+              {
+                label: '__translated__',
+                text: mockMove.from_location.title,
+              },
+              {
+                label: '__translated__',
+                text: mockMove.to_location.title,
+              },
+            ],
+            showImage: true,
+            showMeta: true,
+            showTags: true,
           })
         })
       })

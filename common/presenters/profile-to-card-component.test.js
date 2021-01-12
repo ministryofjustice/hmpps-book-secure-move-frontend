@@ -393,5 +393,49 @@ describe('Presenters', function () {
         expect(transformedResponse).to.deep.equal(noPersonResponse)
       })
     })
+
+    context('with existing meta', function () {
+      context('with mock person', function () {
+        beforeEach(function () {
+          transformedResponse = profileToCardComponent({
+            meta: [
+              {
+                label: 'Foo',
+                text: 'Bar',
+              },
+              {
+                label: 'Fizz',
+                text: 'Buzz',
+              },
+            ],
+          })(mockProfile)
+        })
+
+        it('should prepend existing meta', function () {
+          expect(transformedResponse).to.have.property('meta')
+          expect(transformedResponse.meta.items.length).to.equal(4)
+          expect(transformedResponse.meta).to.deep.equal({
+            items: [
+              {
+                label: 'Foo',
+                text: 'Bar',
+              },
+              {
+                label: 'Fizz',
+                text: 'Buzz',
+              },
+              {
+                label: '__translated__',
+                text: '__translated__',
+              },
+              {
+                label: '__translated__',
+                text: 'Male',
+              },
+            ],
+          })
+        })
+      })
+    })
   })
 })

@@ -29,7 +29,7 @@ describe('Presenters', function () {
 
       describe('location order', function () {
         it('should order correctly', function () {
-          const keys = transformedResponse.map(group => group.location)
+          const keys = transformedResponse.map(group => group.sortKey)
           expect(keys).to.deep.equal([
             'Axminster Crown Court',
             'Barnstaple Magistrates Court',
@@ -45,155 +45,30 @@ describe('Presenters', function () {
         })
       })
 
-      describe('labels', function () {
-        it('should translate correct amount of times', function () {
-          expect(i18n.t).to.be.callCount(transformedResponse.length)
+      describe('header', function () {
+        it('should set correct header labels', function () {
+          expect(
+            transformedResponse.every(
+              group =>
+                group.header[0].label === 'collections::labels.to_location'
+            )
+          ).to.be.true
         })
 
-        it('should contain correct label', function () {
-          const labels = transformedResponse.map(group => group.label)
-          labels.forEach(label => {
-            expect(label).to.equal('collections::labels.to_location')
-          })
+        it('should set header values', function () {
+          const keys = transformedResponse.map(group =>
+            group.header.map(item => item.value)
+          )
+          expect(keys).to.deep.equal([
+            ['Axminster Crown Court'],
+            ['Barnstaple Magistrates Court'],
+            ['Barrow in Furness County Court'],
+          ])
         })
       })
 
       it('should call card presenter', function () {
         expect(moveToCardComponentStub).to.be.calledWithExactly()
-      })
-    })
-
-    context('when to_location is missing', function () {
-      let transformedResponse
-
-      beforeEach(function () {
-        transformedResponse = movesByLocation([
-          {
-            id: '1',
-            move_type: 'court_appearance',
-          },
-          {
-            id: '2',
-            move_type: 'court_appearance',
-            to_location: {
-              id: '031818f0-3b69-4e7a-8b3f-9d51cc964dee',
-              type: 'locations',
-              key: 'barrow_in_furness_county_court',
-              title: 'Barrow in Furness County Court',
-              location_type: 'court',
-            },
-          },
-          {
-            id: '3',
-            move_type: 'prison_recall',
-          },
-          {
-            id: '4',
-            move_type: 'court_appearance',
-          },
-          {
-            id: '5',
-            move_type: 'prison_recall',
-            to_location: {
-              id: 'a9760a3c-5bc0-47fb-8841-b5d8d991bd34',
-              type: 'locations',
-              key: 'hmp_long_lartin',
-              title: 'HMP Long Lartin',
-              location_type: 'prison',
-            },
-          },
-          {
-            id: '6',
-            move_type: 'prison_recall',
-          },
-          {
-            id: '7',
-            move_type: 'prison_recall',
-          },
-          {
-            id: '8',
-            move_type: 'unknown_type',
-          },
-          {
-            id: '9',
-            move_type: 'video_remand',
-            to_location: {
-              id: 'a9760a3c-5bc0-47fb-8841-b5d8d991bd34',
-              type: 'locations',
-              key: 'hmp_long_lartin',
-              title: 'HMP Long Lartin',
-              location_type: 'prison',
-            },
-          },
-          {
-            id: '10',
-            move_type: 'video_remand',
-          },
-        ])
-      })
-
-      it('should contain correct number of locations', function () {
-        expect(transformedResponse.length).to.equal(6)
-      })
-
-      describe('location order', function () {
-        it('should order correctly', function () {
-          const keys = transformedResponse.map(group => group.location)
-          expect(keys).to.deep.equal([
-            'Barrow in Furness County Court',
-            'HMP Long Lartin',
-            'fields::move_type.items.prison_recall.label',
-            'fields::move_type.items.unknown.label',
-            'fields::move_type.items.unknown.label',
-            'fields::move_type.items.video_remand.label',
-          ])
-        })
-      })
-
-      describe('location count', function () {
-        it('should contain correct number of moves', function () {
-          const keys = transformedResponse.map(group => group.items.length)
-          expect(keys).to.deep.equal([1, 2, 3, 2, 1, 1])
-        })
-      })
-
-      describe('labels', function () {
-        it('should contain correct label', function () {
-          const labels = transformedResponse.map(group => group.label)
-          labels.forEach(label => {
-            expect(label).to.equal('collections::labels.to_location')
-          })
-        })
-      })
-
-      describe('translations', function () {
-        it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(13)
-        })
-
-        it('should translate titles correctly', function () {
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.unknown.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.prison_recall.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.unknown.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.prison_recall.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.prison_recall.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.video_remand.label'
-          )
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.unknown.label'
-          )
-        })
       })
     })
 
@@ -210,7 +85,7 @@ describe('Presenters', function () {
 
       describe('location order', function () {
         it('should order correctly', function () {
-          const keys = transformedResponse.map(group => group.location)
+          const keys = transformedResponse.map(group => group.sortKey)
           expect(keys).to.deep.equal([
             'HMIRC The Verne',
             'HMP Brockhill',
@@ -262,17 +137,91 @@ describe('Presenters', function () {
         })
       })
 
-      describe('labels', function () {
-        it('should translate correct amount of times', function () {
-          expect(i18n.t).to.be.callCount(transformedResponse.length)
+      describe('header', function () {
+        it('should set correct header labels', function () {
+          expect(
+            transformedResponse.every(
+              group =>
+                group.header[0].label === 'collections::labels.from_location'
+            )
+          ).to.be.true
         })
 
-        it('should contain correct label', function () {
-          const labels = transformedResponse.map(group => group.label)
-          labels.forEach(label => {
-            expect(label).to.equal('collections::labels.from_location')
-          })
+        it('should set header values', function () {
+          const keys = transformedResponse.map(group =>
+            group.header.map(item => item.value)
+          )
+          expect(keys).to.deep.equal([
+            ['HMIRC The Verne'],
+            ['HMP Brockhill'],
+            ['HMP Camp Hill'],
+            ['HMP Coldingley'],
+            ['HMP Dartmoor'],
+            ['HMP Kirkham'],
+            ['HMP Lindholme'],
+            ['HMP Long Lartin'],
+            ['HMP Reading'],
+            ['HMP The Mount'],
+            ['HMP/YOI Altcourse'],
+            ['HMP/YOI Belmarsh'],
+            ['HMP/YOI Bronzefield'],
+            ['HMP/YOI Eastwood Park'],
+            ['HMP/YOI Glen Parva'],
+            ['HMP/YOI Hewell'],
+            ['HMP/YOI Portland'],
+            ['HMP/YOI Sudbury'],
+            ['HMP/YOI Warren Hill'],
+          ])
         })
+      })
+    })
+
+    describe('item ordering', function () {
+      let transformedResponse
+      const mockMoves = [
+        {
+          id: 'id_1',
+          profile: {
+            person: {
+              _fullname: 'SMITH, JOHN',
+            },
+          },
+        },
+        {
+          id: 'id_2',
+          profile: {
+            person: {
+              _fullname: 'MILLAR, PAUL',
+            },
+          },
+        },
+        {
+          id: 'id_3',
+          profile: {
+            person: {
+              _fullname: 'STEVENS, ANDREW',
+            },
+          },
+        },
+        {
+          id: 'id_4',
+          profile: {
+            person: {
+              _fullname: 'DOE, JANE',
+            },
+          },
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = movesByLocation(mockMoves)
+      })
+
+      it('should order moves by name', function () {
+        const items = transformedResponse.map(group =>
+          group.items.map(move => move.id)
+        )
+        expect(items).to.deep.equal([['id_4', 'id_2', 'id_1', 'id_3']])
       })
     })
   })
