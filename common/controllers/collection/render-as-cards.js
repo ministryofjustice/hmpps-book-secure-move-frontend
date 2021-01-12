@@ -10,10 +10,7 @@ module.exports = function listAsCards(req, res) {
     resultsAsCards,
     query,
   } = req
-  const { dateRange, locationId, period } = params
-  const canViewMove = req.canAccess('move:view')
-  const template =
-    canViewMove && locationId ? 'collection-as-cards' : 'moves/views/download'
+  const { dateRange, period } = params
   const locals = {
     actions,
     context,
@@ -26,5 +23,5 @@ module.exports = function listAsCards(req, res) {
     totalResults: sumBy(filter, 'value'),
   }
 
-  res.render(template, locals)
+  res.render('collection-as-cards', locals)
 }

@@ -7,10 +7,6 @@ function setResultsMoves(bodyKey, locationKey) {
     const { group_by: groupBy } = req.query
 
     try {
-      if (!req.session?.currentLocation) {
-        return next()
-      }
-
       const args = omitBy(req.body[bodyKey], isUndefined)
       const activeMoves = await req.services.move.getActive(args)
 
@@ -21,10 +17,11 @@ function setResultsMoves(bodyKey, locationKey) {
           showLocations: !req.session?.currentLocation,
         })
       } else {
-        req.resultsAsCards = presenters.movesByLocation(
-          activeMoves,
-          locationKey
-        )
+        req.resultsAsCards = presenters.movesByLocation({
+          moves: activeMoves,
+          locationKey,
+          showLocations: !req.session?.currentLocation,
+        })
       }
 
       next()
