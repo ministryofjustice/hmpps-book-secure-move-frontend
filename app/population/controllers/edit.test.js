@@ -93,17 +93,21 @@ describe('Population controllers', function () {
       context('on first page visit', function () {
         beforeEach(async function () {
           req.population = {
-            moves_from: 'ABADCAFE',
-            moves_to: 'DEADBEEF',
+            moves_from: ['ABADCAFE', 'FACEFEED'],
+            moves_to: ['DEADBEEF'],
             ...sessionData,
           }
           req.journeyModel.get.returns('/')
 
           await controllerInstance.setInitialValues(req, res, next)
         })
-        it('should set session values', async function () {
+        it('should set session values and transfers', async function () {
           expect(req.journeyModel.get).to.have.been.calledWith('lastVisited')
-          expect(req.sessionModel.set).to.have.been.calledWith(sessionData)
+          expect(req.sessionModel.set).to.have.been.calledWith({
+            ...sessionData,
+            moves_from: ['ABADCAFE', 'FACEFEED'],
+            moves_to: ['DEADBEEF'],
+          })
         })
 
         it('should call next', async function () {

@@ -13,8 +13,7 @@ class DetailsController extends FormWizardController {
 
   setInitialValues(req, res, next) {
     if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
-      const values = omit(req.population, ['moves_from', 'moves_to'])
-      req.sessionModel.set(values)
+      req.sessionModel.set(req.population)
     }
 
     next()
