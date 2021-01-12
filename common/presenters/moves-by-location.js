@@ -1,4 +1,4 @@
-const { get, groupBy, sortBy } = require('lodash')
+const { groupBy, sortBy } = require('lodash')
 
 const i18n = require('../../config/i18n')
 
@@ -6,15 +6,22 @@ const moveToCardComponent = require('./move-to-card-component')
 
 module.exports = function movesByLocation(data, locationKey = 'to_location') {
   const locations = []
-  const groupedByLocation = groupBy(data, `${locationKey}.key`)
+  const groupedByLocation = groupBy(data, `${locationKey}.title`)
 
-  Object.entries(groupedByLocation).forEach(([locationId, moves]) => {
+  Object.entries(groupedByLocation).forEach(([location, moves]) => {
     locations.push({
-      items: moves.map(moveToCardComponent()),
-      label: i18n.t(`collections::labels.${locationKey}`),
-      location: get(moves[0], `${locationKey}.title`),
+      sortKey: location,
+      items: sortBy(moves, 'profile.person._fullname').map(
+        moveToCardComponent()
+      ),
+      header: [
+        {
+          label: i18n.t(`collections::labels.${locationKey}`),
+          value: location,
+        },
+      ],
     })
   })
 
-  return sortBy(locations, 'location')
+  return sortBy(locations, 'sortKey')
 }

@@ -29,7 +29,7 @@ describe('Presenters', function () {
 
       describe('location order', function () {
         it('should order correctly', function () {
-          const keys = transformedResponse.map(group => group.location)
+          const keys = transformedResponse.map(group => group.sortKey)
           expect(keys).to.deep.equal([
             'Axminster Crown Court',
             'Barnstaple Magistrates Court',
@@ -45,16 +45,25 @@ describe('Presenters', function () {
         })
       })
 
-      describe('labels', function () {
-        it('should translate correct amount of times', function () {
-          expect(i18n.t).to.be.callCount(transformedResponse.length)
+      describe('header', function () {
+        it('should set correct header labels', function () {
+          expect(
+            transformedResponse.every(
+              group =>
+                group.header[0].label === 'collections::labels.to_location'
+            )
+          ).to.be.true
         })
 
-        it('should contain correct label', function () {
-          const labels = transformedResponse.map(group => group.label)
-          labels.forEach(label => {
-            expect(label).to.equal('collections::labels.to_location')
-          })
+        it('should set header values', function () {
+          const keys = transformedResponse.map(group =>
+            group.header.map(item => item.value)
+          )
+          expect(keys).to.deep.equal([
+            ['Axminster Crown Court'],
+            ['Barnstaple Magistrates Court'],
+            ['Barrow in Furness County Court'],
+          ])
         })
       })
 
@@ -76,7 +85,7 @@ describe('Presenters', function () {
 
       describe('location order', function () {
         it('should order correctly', function () {
-          const keys = transformedResponse.map(group => group.location)
+          const keys = transformedResponse.map(group => group.sortKey)
           expect(keys).to.deep.equal([
             'HMIRC The Verne',
             'HMP Brockhill',
@@ -128,17 +137,91 @@ describe('Presenters', function () {
         })
       })
 
-      describe('labels', function () {
-        it('should translate correct amount of times', function () {
-          expect(i18n.t).to.be.callCount(transformedResponse.length)
+      describe('header', function () {
+        it('should set correct header labels', function () {
+          expect(
+            transformedResponse.every(
+              group =>
+                group.header[0].label === 'collections::labels.from_location'
+            )
+          ).to.be.true
         })
 
-        it('should contain correct label', function () {
-          const labels = transformedResponse.map(group => group.label)
-          labels.forEach(label => {
-            expect(label).to.equal('collections::labels.from_location')
-          })
+        it('should set header values', function () {
+          const keys = transformedResponse.map(group =>
+            group.header.map(item => item.value)
+          )
+          expect(keys).to.deep.equal([
+            ['HMIRC The Verne'],
+            ['HMP Brockhill'],
+            ['HMP Camp Hill'],
+            ['HMP Coldingley'],
+            ['HMP Dartmoor'],
+            ['HMP Kirkham'],
+            ['HMP Lindholme'],
+            ['HMP Long Lartin'],
+            ['HMP Reading'],
+            ['HMP The Mount'],
+            ['HMP/YOI Altcourse'],
+            ['HMP/YOI Belmarsh'],
+            ['HMP/YOI Bronzefield'],
+            ['HMP/YOI Eastwood Park'],
+            ['HMP/YOI Glen Parva'],
+            ['HMP/YOI Hewell'],
+            ['HMP/YOI Portland'],
+            ['HMP/YOI Sudbury'],
+            ['HMP/YOI Warren Hill'],
+          ])
         })
+      })
+    })
+
+    describe('item ordering', function () {
+      let transformedResponse
+      const mockMoves = [
+        {
+          id: 'id_1',
+          profile: {
+            person: {
+              _fullname: 'SMITH, JOHN',
+            },
+          },
+        },
+        {
+          id: 'id_2',
+          profile: {
+            person: {
+              _fullname: 'MILLAR, PAUL',
+            },
+          },
+        },
+        {
+          id: 'id_3',
+          profile: {
+            person: {
+              _fullname: 'STEVENS, ANDREW',
+            },
+          },
+        },
+        {
+          id: 'id_4',
+          profile: {
+            person: {
+              _fullname: 'DOE, JANE',
+            },
+          },
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = movesByLocation(mockMoves)
+      })
+
+      it('should order moves by name', function () {
+        const items = transformedResponse.map(group =>
+          group.items.map(move => move.id)
+        )
+        expect(items).to.deep.equal([['id_4', 'id_2', 'id_1', 'id_3']])
       })
     })
   })
