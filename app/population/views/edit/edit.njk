@@ -1,0 +1,34 @@
+{% extends "form-wizard.njk" %}
+
+{% macro displayFieldGroup(group) %}
+  {% set fields = options.fieldGroups[group] %}
+
+  {% set key = "population::daily_view.labels." + group %}
+
+  <div class="govuk-grid-column-full govuk-!-margin-bottom-2">
+    <h2 class="govuk-heading-m">{{ t(key) }}</h2>
+
+    {% for fieldKey in fields %}
+      {% set field = options.fields[fieldKey] %}
+
+      {% if field.component and not field.skip %}
+        {{ callAsMacro(field.component)(field) }}
+      {% endif %}
+    {% endfor %}
+
+    {{ caller() if caller }}
+  </div>
+{% endmacro %}
+
+{% block fields %}
+  <div class="govuk-grid-row">
+    {% call displayFieldGroup('total_space') %}
+    {% endcall %}
+
+    {% call displayFieldGroup('unavailable_space') %}
+    {% endcall %}
+
+    {% call displayFieldGroup('available_space') %}
+    {% endcall %}
+  </div>
+  {% endblock %}
