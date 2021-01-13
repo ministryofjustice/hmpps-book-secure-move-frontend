@@ -600,49 +600,112 @@ describe('Form wizard', function () {
 
       beforeEach(function () {
         errorMock.statusCode = 422
-        errorMock.errors = [
-          {
-            key: 'error-one',
-          },
-          {
-            key: 'error-two',
-          },
-        ]
         mockScope = {
+          setContext: sinon.stub(),
           setExtra: sinon.stub(),
         }
 
         nextSpy = sinon.spy()
         sinon.stub(Sentry, 'withScope')
-
-        controller.errorHandler(errorMock, {}, {}, nextSpy)
-
-        // run callback with mock scope
-        Sentry.withScope.args[0][0](mockScope)
       })
 
-      it('should call sentry with scope', function () {
-        expect(Sentry.withScope).to.be.calledOnce
+      context('with extra errors property', function () {
+        beforeEach(function () {
+          errorMock.errors = [
+            {
+              key: 'error-one',
+              title: 'This is the first error',
+            },
+            {
+              key: 'error-two',
+              title: 'This is the second error',
+            },
+          ]
+
+          controller.errorHandler(errorMock, {}, {}, nextSpy)
+
+          // run callback with mock scope
+          Sentry.withScope.args[0][0](mockScope)
+        })
+
+        it('should call sentry with scope', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+        })
+
+        it('should send error to sentry', function () {
+          expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should send contexts to sentry', function () {
+          const { title: title0, ...error0 } = errorMock.errors[0]
+          const { title: title1, ...error1 } = errorMock.errors[1]
+
+          expect(mockScope.setContext).to.be.calledTwice
+          expect(mockScope.setContext.getCall(0)).to.be.calledWithExactly(
+            'Error 1',
+            {
+              ...error0,
+              error_title: errorMock.errors[0].title,
+            }
+          )
+          expect(mockScope.setContext.getCall(1)).to.be.calledWithExactly(
+            'Error 2',
+            {
+              ...error1,
+              error_title: errorMock.errors[1].title,
+            }
+          )
+        })
+
+        it('should send extra data as JSON to sentry', function () {
+          expect(mockScope.setExtra).to.be.calledOnceWithExactly(
+            'Errors JSON',
+            JSON.stringify(errorMock.errors)
+          )
+        })
+
+        it('should call parent error handler', function () {
+          expect(FormController.prototype.errorHandler).to.be.calledWith(
+            errorMock,
+            {},
+            {},
+            nextSpy
+          )
+        })
       })
 
-      it('should send error to sentry', function () {
-        expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
-      })
+      context('without extra errors property', function () {
+        beforeEach(function () {
+          controller.errorHandler(errorMock, {}, {}, nextSpy)
 
-      it('should send extra data to sentry', function () {
-        expect(mockScope.setExtra).to.be.calledWithExactly(
-          'errors',
-          errorMock.errors
-        )
-      })
+          // run callback with mock scope
+          Sentry.withScope.args[0][0](mockScope)
+        })
 
-      it('should call parent error handler', function () {
-        expect(FormController.prototype.errorHandler).to.be.calledWith(
-          errorMock,
-          {},
-          {},
-          nextSpy
-        )
+        it('should call sentry with scope', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+        })
+
+        it('should send error to sentry', function () {
+          expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should not send contexts to sentry', function () {
+          expect(mockScope.setContext).not.to.be.called
+        })
+
+        it('should not send extra data to sentry', function () {
+          expect(mockScope.setExtra).not.to.be.called
+        })
+
+        it('should call parent error handler', function () {
+          expect(FormController.prototype.errorHandler).to.be.calledWith(
+            errorMock,
+            {},
+            {},
+            nextSpy
+          )
+        })
       })
     })
 
