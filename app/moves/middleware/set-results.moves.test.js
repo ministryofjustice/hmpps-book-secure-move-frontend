@@ -21,6 +21,7 @@ describe('Moves middleware', function () {
         getActive: sinon.stub(),
       }
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
+      sinon.stub(presenters, 'movesByVehicle').returnsArg(0)
       sinon.stub(presenters, 'movesByLocation').returnsArg(0)
       sinon
         .stub(presenters, 'moveToCardComponent')
@@ -28,6 +29,7 @@ describe('Moves middleware', function () {
       nextSpy = sinon.spy()
       res = {}
       req = {
+        query: {},
         canAccess: sinon.stub().returns(false),
         body: {
           [mockBodyKey]: {
@@ -62,6 +64,10 @@ describe('Moves middleware', function () {
         it('should not call movesByLocation presenter', function () {
           expect(presenters.movesByLocation).to.not.be.called
         })
+
+        it('should not call movesByVehicle presenter', function () {
+          expect(presenters.movesByVehicle).to.not.be.called
+        })
       })
 
       context('without `locationKey`', function () {
@@ -87,6 +93,10 @@ describe('Moves middleware', function () {
           )
         })
 
+        it('should not call movesByVehicle presenter', function () {
+          expect(presenters.movesByVehicle).to.not.be.called
+        })
+
         it('should call next with no argument', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
@@ -102,6 +112,47 @@ describe('Moves middleware', function () {
             mockActiveMoves,
             mockLocationKey
           )
+        })
+
+        it('should not call movesByVehicle presenter', function () {
+          expect(presenters.movesByVehicle).to.not.be.called
+        })
+      })
+
+      context('with group by vehicle', function () {
+        beforeEach(function () {
+          req.query.group_by = 'vehicle'
+        })
+
+        context('without location key', function () {
+          beforeEach(async function () {
+            await middleware(mockBodyKey)(req, res, nextSpy)
+          })
+
+          it('should call movesByVehicle presenter with locationKey', function () {
+            expect(presenters.movesByVehicle).to.be.calledOnceWithExactly({
+              moves: mockActiveMoves,
+              context: 'outgoing',
+              showLocations: false,
+            })
+          })
+
+          it('should not call movesByLocation presenter', function () {
+            expect(presenters.movesByLocation).to.not.be.called
+          })
+        })
+
+        context('with from_location key', function () {
+          beforeEach(async function () {
+            await middleware(mockBodyKey, 'from_location')(req, res, nextSpy)
+          })
+          it('should call movesByVehicle presenter with locationKey', function () {
+            expect(presenters.movesByVehicle).to.be.calledOnceWithExactly({
+              moves: mockActiveMoves,
+              context: 'incoming',
+              showLocations: false,
+            })
+          })
         })
       })
     })

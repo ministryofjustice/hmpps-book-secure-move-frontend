@@ -49,6 +49,13 @@
   "download_csv_incoming_moves": "Download moves (.csv)",
   "download_csv_single_requests": "Download moves (.csv)",
   "labels": {
+    "vehicle_registration": "Vehicle registration",
+    "awaiting_vehicle": "Awaiting vehicle",
+    "expected_time_incoming": "Expected arrival time",
+    "expected_time_outgoing": "Expected collection time",
+    "no_expected_time": "Not provided",
+    "complete_incoming": "Arrived",
+    "complete_outgoing": "Left custody",
     "from_location": "Move from",
     "to_location": "Move to",
     "earliest_move_date": "Earliest date of travel",
