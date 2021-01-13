@@ -114,7 +114,7 @@ describe('Moves middleware', function () {
         'when user has permission to see the proposed moves',
         function () {
           beforeEach(function () {
-            req.canAccess.withArgs('move:proposed:view').returns(true)
+            req.canAccess.withArgs('moves:view:proposed').returns(true)
             res.redirect.resetHistory()
             middleware(req, res)
           })
