@@ -44,9 +44,17 @@ function errorHandler(body) {
   return err => {
     Sentry.withScope(scope => {
       if (err.errors && err.errors.length > 0) {
-        err.errors.forEach((apiErr, idx) => {
-          scope.setContext(`error_${idx}`, apiErr)
+        err.errors.forEach(({ title, ...rest }, idx) => {
+          scope.setContext(`Error ${idx + 1}`, {
+            ...rest,
+            // `title` is a reserved property when using `setContext` and
+            // will override the title passed as the first argument so it is
+            // being set manually instead so that we don't lose the value
+            error_title: title,
+          })
         })
+
+        scope.setExtra('Errors JSON', JSON.stringify(err.errors))
       }
 
       scope.setContext('body', body)
