@@ -14,5 +14,6 @@ module.exports = function listAsTable(req, res) {
     resultsAsTable,
     activeStatus: req.query.status,
     totalResults: sumBy(filter, 'value'),
+    locationName: res.locals.locationName,
   })
 }

@@ -22,10 +22,12 @@ const {
   setBodyAllocations,
   setResultsAllocations,
   setFilterAllocations,
+  setLocation,
 } = require('./middleware')
 
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
+router.param('locationId', setLocation)
 
 router.use(protectRoute('allocations:view'))
 

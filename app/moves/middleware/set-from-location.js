@@ -11,7 +11,14 @@ function setFromLocation(req, res, next, locationId) {
     return next(error)
   }
 
+  req.locations = locationId
+
+  if (req.session?.currentLocation.id !== location?.id) {
+    res.locals.locationName = location.title
+  }
+
   res.locals.fromLocationId = locationId
+
   next()
 }
 

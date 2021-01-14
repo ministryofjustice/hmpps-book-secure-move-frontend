@@ -4,10 +4,10 @@ const dateHelpers = require('../../../common/helpers/date')
 
 function setBodyAllocations(req, res, next) {
   const { status, sortBy, sortDirection } = req.query
-  const { dateRange } = req.params
+  const { dateRange, locationId } = req.params
   const hasAssignerPermission = req.canAccess('allocation:person:assign')
   const locationType = hasAssignerPermission ? 'fromLocations' : 'locations'
-  const locations = req.locations
+  const locations = locationId ? [locationId] : req.locations
 
   set(req, 'body.allocations', {
     status,

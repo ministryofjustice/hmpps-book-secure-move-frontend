@@ -9,8 +9,9 @@ function setBodySingleRequests(req, res, next) {
     sortBy = useMoveDate ? 'date' : undefined,
     sortDirection = useMoveDate ? 'asc' : undefined,
   } = req.query
-  const { dateRange } = req.params
-  const locations = req.locations
+  const { dateRange, locationId } = req.params
+  const locations = locationId || req.locations
+
   const dateType = useMoveDate ? 'moveDate' : 'createdAtDate'
   const dateTypeRange = dateRange || dateHelpers.getCurrentWeekAsRange()
 
