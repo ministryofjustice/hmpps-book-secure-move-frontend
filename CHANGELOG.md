@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.66.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.65.0...v2.66.0) (2021-01-13)
+
+
+### Features
+
+* Group moves by vehicle on incoming and outgoing dashboards ([88ffe3d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/88ffe3d08ad2384ee741f8cd9a9c024b4c1d8d46))
+* **pmu:** Add weekly link on allocations confirm ([7ba8525](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7ba85254f40200a39b52842e7fbdbeae7e9e522b))
+* **pmu:** Show transfers in/out on edit page ([dcfbef6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dcfbef636bca4b7a6380132eea90278ce251e28c))
+
+
+### Bug Fixes
+
+* Ensure the form wizard uses the default controller ([397d7e2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/397d7e2f711b87b228d6af092bb65d823e09cfa8))
+* Handling of API auth errors ([48e49f3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/48e49f3563c4acb8f9a6ba420b26a63694366507))
+* Moves redirect when no current location is set ([33b3952](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/33b3952c8d6c75a574714da188780ab6e627a811))
+
 ## [2.65.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.64.0...v2.65.0) (2021-01-11)
 
 

@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const dailyRouter = require('express').Router({ mergeParams: true })
 
-const FormWizardController = require('../../common/controllers/form-wizard')
 const {
   setContext,
   setDateRange,
@@ -29,7 +28,6 @@ router.get('/', redirectBaseUrl)
 dailyRouter.get('/', setLocationFreeSpaces, setPopulation, setBreadcrumb, daily)
 
 const editConfig = {
-  controller: FormWizardController,
   name: 'edit-population',
   templatePath: 'population/views/edit/',
   template: '../../../form-wizard',

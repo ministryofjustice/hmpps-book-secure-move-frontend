@@ -84,11 +84,10 @@ Auth.prototype = {
         return response.data
       })
       .catch(error => {
-        debug(
-          `${error.response.status} ${error.response.statusText}`,
-          `(POST ${url})`,
-          error
-        )
+        const debugMessage = error.response
+          ? `${error.response.status} ${error.response.statusText}`
+          : error.message
+        debug(debugMessage, `(POST ${url})`, error)
         // record error
         const duration = authTimer()
         clientMetrics.recordError(reqLabels, error, duration)

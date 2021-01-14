@@ -6,6 +6,8 @@ const wizard = proxyquire('./unique-form-wizard', {
   'hmpo-form-wizard': hmpoFormWizardStub,
 })
 
+const FormWizardController = require('../controllers/form-wizard')
+
 const mockSteps = {
   '/step-one': {},
   '/step-two': {},
@@ -39,7 +41,10 @@ describe('#uniqueFormWizard', function () {
       expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
         mockSteps,
         mockFields,
-        { foo: 'bar' }
+        {
+          controller: FormWizardController,
+          foo: 'bar',
+        }
       )
     })
 
@@ -63,85 +68,184 @@ describe('#uniqueFormWizard', function () {
     })
 
     context('with key that exists', function () {
-      beforeEach(function () {
-        wizard(
-          mockSteps,
-          mockFields,
-          mockConfig,
-          'params.id'
-        )(req, res, nextSpy)
+      context('without custom controller', function () {
+        beforeEach(function () {
+          wizard(
+            mockSteps,
+            mockFields,
+            mockConfig,
+            'params.id'
+          )(req, res, nextSpy)
+        })
+
+        it('should call wizard correctly', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            {
+              controller: FormWizardController,
+              foo: 'bar',
+              id: '12345',
+            }
+          )
+        })
+
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+
+        it('should pass unique val to config', function () {
+          expect(mockConfig).to.be.calledOnceWithExactly('12345')
+        })
       })
 
-      it('should call wizard correctly', function () {
-        expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
-          mockSteps,
-          mockFields,
-          {
-            foo: 'bar',
-            id: '12345',
-          }
-        )
-      })
+      context('with custom controller', function () {
+        beforeEach(function () {
+          mockConfig = sinon.stub().callsFake((arg = '') => {
+            return { controller: { fizz: 'buzz' }, foo: 'bar', id: arg }
+          })
+          wizard(
+            mockSteps,
+            mockFields,
+            mockConfig,
+            'params.id'
+          )(req, res, nextSpy)
+        })
 
-      it('should wizard with middleware args', function () {
-        expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
-      })
+        it('should call wizard correctly', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            {
+              controller: { fizz: 'buzz' },
+              foo: 'bar',
+              id: '12345',
+            }
+          )
+        })
 
-      it('should pass unique val to config', function () {
-        expect(mockConfig).to.be.calledOnceWithExactly('12345')
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+
+        it('should pass unique val to config', function () {
+          expect(mockConfig).to.be.calledOnceWithExactly('12345')
+        })
       })
     })
 
     context('with key that does not exist', function () {
-      beforeEach(function () {
-        wizard(
-          mockSteps,
-          mockFields,
-          mockConfig,
-          'path.does.not.exist'
-        )(req, res, nextSpy)
+      context('without custom controller', function () {
+        beforeEach(function () {
+          wizard(
+            mockSteps,
+            mockFields,
+            mockConfig,
+            'path.does.not.exist'
+          )(req, res, nextSpy)
+        })
+
+        it('should call wizard correctly with default controller', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            {
+              controller: FormWizardController,
+              foo: 'bar',
+              id: '',
+            }
+          )
+        })
+
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+
+        it('should not pass unique val to config', function () {
+          expect(mockConfig).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call wizard correctly', function () {
-        expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
-          mockSteps,
-          mockFields,
-          {
-            foo: 'bar',
-            id: '',
-          }
-        )
-      })
+      context('with custom controller', function () {
+        beforeEach(function () {
+          mockConfig = sinon.stub().callsFake((arg = '') => {
+            return { controller: { fizz: 'buzz' }, foo: 'bar', id: arg }
+          })
+          wizard(
+            mockSteps,
+            mockFields,
+            mockConfig,
+            'path.does.not.exist'
+          )(req, res, nextSpy)
+        })
 
-      it('should wizard with middleware args', function () {
-        expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
-      })
+        it('should call wizard correctly with custom controller', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            {
+              controller: { fizz: 'buzz' },
+              foo: 'bar',
+              id: '',
+            }
+          )
+        })
 
-      it('should not pass unique val to config', function () {
-        expect(mockConfig).to.be.calledOnceWithExactly()
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
+
+        it('should not pass unique val to config', function () {
+          expect(mockConfig).to.be.calledOnceWithExactly()
+        })
       })
     })
 
     context('when config is an object', function () {
-      beforeEach(function () {
-        wizard(
-          mockSteps,
-          mockFields,
-          { foo: 'bar' },
-          'params.id'
-        )(req, res, nextSpy)
+      context('without custom controller', function () {
+        beforeEach(function () {
+          wizard(
+            mockSteps,
+            mockFields,
+            { foo: 'bar' },
+            'params.id'
+          )(req, res, nextSpy)
+        })
+
+        it('should call wizard correctly with default controller', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            { controller: FormWizardController, foo: 'bar' }
+          )
+        })
+
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
       })
 
-      it('should call wizard correctly', function () {
-        expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
-          mockSteps,
-          mockFields,
-          { foo: 'bar' }
-        )
-      })
+      context('with custom controller', function () {
+        beforeEach(function () {
+          wizard(
+            mockSteps,
+            mockFields,
+            { controller: { fizz: 'bar' }, foo: 'bar' },
+            'params.id'
+          )(req, res, nextSpy)
+        })
 
-      it('should wizard with middleware args', function () {
-        expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        it('should call wizard correctly with custom controller', function () {
+          expect(hmpoFormWizardStub).to.be.calledOnceWithExactly(
+            mockSteps,
+            mockFields,
+            { controller: { fizz: 'bar' }, foo: 'bar' }
+          )
+        })
+
+        it('should wizard with middleware args', function () {
+          expect(mwStub).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
       })
     })
   })

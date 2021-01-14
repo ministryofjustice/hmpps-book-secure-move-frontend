@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.65.0",
+  "version": "2.66.0",
   "main": "start.js",
   "contributors": [
     {
@@ -14,12 +14,12 @@
       "email": "github@alex.fu2k.org"
     },
     {
-      "name": "Ben Chidgey",
-      "email": "ben@feedmypixel.com"
-    },
-    {
       "name": "Robin Harrison",
       "email": "merlinc@courts.io"
+    },
+    {
+      "name": "Ben Chidgey",
+      "email": "ben@feedmypixel.com"
     },
     {
       "name": "barbaracassani",
@@ -92,7 +92,7 @@
     "@hmpps-book-secure-move-frameworks/2.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v2.1.0",
     "@ministryofjustice/frontend": "0.2.0",
     "@promster/express": "5.0.1",
-    "@sentry/node": "5.29.2",
+    "@sentry/node": "5.30.0",
     "accessible-autocomplete": "2.0.3",
     "axios": "0.21.1",
     "axios-debug-log": "0.8.2",
@@ -138,7 +138,7 @@
     "path-to-regexp": "6.2.0",
     "pluralize": "8.0.0",
     "prom-client": "13.0.0",
-    "qs": "6.9.4",
+    "qs": "6.9.6",
     "query-string": "6.13.8",
     "redis": "3.0.2",
     "response-time": "2.3.2",
@@ -182,12 +182,12 @@
     "faker": "5.1.0",
     "file-loader": "6.2.0",
     "finepack": "2.10.11",
-    "git-authors-cli": "1.0.32",
+    "git-authors-cli": "1.0.33",
     "glob": "7.1.6",
     "husky": "4.3.7",
     "imagemin-webpack-plugin": "2.4.2",
     "lint-staged": "10.5.3",
-    "mini-css-extract-plugin": "1.3.3",
+    "mini-css-extract-plugin": "1.3.4",
     "mocha": "8.2.1",
     "mocha-junit-reporter": "2.0.0",
     "mock-fs": "4.13.0",
@@ -211,7 +211,7 @@
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
     "timezone-mock": "1.1.3",
-    "webpack": "4.45.0",
+    "webpack": "4.46.0",
     "webpack-assets-manifest": "4.0.1",
     "webpack-cli": "3.3.12",
     "webpack-merge": "4.2.2"
