@@ -346,7 +346,7 @@ workflows:
       # Docker builds
       - hmpps/build_docker:
           <<: *only_master
-          name: build-docker
+          name: build-docker-image-master
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-release
