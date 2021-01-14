@@ -4,6 +4,7 @@ const setActions = require('./set-actions')
 const setContext = require('./set-context')
 const setDatePagination = require('./set-date-pagination')
 const setDateRange = require('./set-date-range')
+const setPagination = require('./set-pagination')
 
 module.exports = {
   redirectDefaultQuery,
@@ -12,4 +13,5 @@ module.exports = {
   setContext,
   setDatePagination,
   setDateRange,
+  setPagination,
 }
