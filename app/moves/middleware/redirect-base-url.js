@@ -6,7 +6,7 @@ function redirectBaseUrl(req, res) {
 
   if (
     canAccess('moves:view:proposed') &&
-    currentLocation.location_type === 'prison'
+    currentLocation?.location_type === 'prison'
   ) {
     return res.redirect(`${baseUrl}/requested`)
   }
