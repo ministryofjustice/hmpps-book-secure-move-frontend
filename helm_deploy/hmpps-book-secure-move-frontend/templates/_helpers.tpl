@@ -56,6 +56,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Selector labels
 */}}
 {{- define "app.selectorLabels" -}}
-app: {{ include "app.name" . }}
-release: {{ .Release.Name }}
+app.kubernetes.io/name: {{ include "app.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
