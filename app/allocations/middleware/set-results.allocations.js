@@ -9,12 +9,11 @@ async function setResultsAllocations(req, res, next) {
   }
 
   try {
-    const results = await req.services.allocation.getByDateAndLocation(
+    req.results = await req.services.allocation.getByDateAndLocation(
       req.body.allocations
     )
-
     req.resultsAsTable = presenters.allocationsToTableComponent(displayConfig)(
-      results
+      req.results.data
     )
 
     next()
