@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@3.4.2
-  hmpps: ministryofjustice/hmpps@2.1.0
+  hmpps: ministryofjustice/hmpps@2.2.0
 
 aliases:
   # Shared containers
