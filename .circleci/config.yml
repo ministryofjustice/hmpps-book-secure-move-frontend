@@ -340,11 +340,13 @@ workflows:
       - end-to-end-test:
           <<: *only_deploy_tags
           name: end-to-end-test-release
+      - hmpps/helm_lint:
+          name: helm_lint
+          chart_name: "prison-staff-hub"
       # Docker builds
-      - build-docker-image:
+      - hmpps/build_docker:
           <<: *only_master
-          name: build-docker-image-master
-          staging: 'true'
+          name: build-docker
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-release
