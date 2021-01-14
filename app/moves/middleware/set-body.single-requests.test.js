@@ -39,6 +39,7 @@ describe('Moves middleware', function () {
           fromLocationId: mockReq.locations,
           sortBy: undefined,
           sortDirection: undefined,
+          page: 1,
         })
       })
     })
@@ -59,6 +60,7 @@ describe('Moves middleware', function () {
           fromLocationId: mockReq.locations,
           sortBy: 'date',
           sortDirection: 'asc',
+          page: 1,
         })
       })
     })
@@ -76,6 +78,7 @@ describe('Moves middleware', function () {
           fromLocationId: mockReq.locations,
           sortBy: 'createdAtDate',
           sortDirection: 'asc',
+          page: 1,
         })
       })
 
@@ -98,7 +101,23 @@ describe('Moves middleware', function () {
           fromLocationId: mockReq.locations,
           sortBy: 'createdAtDate',
           sortDirection: 'asc',
+          page: 1,
         })
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with existing page number', function () {
+      beforeEach(function () {
+        mockReq.query.page = 5
+        middleware(mockReq, mockRes, nextSpy)
+      })
+
+      it('should assign req.body correctly', function () {
+        expect(mockReq.body.requested.page).to.equal(5)
       })
 
       it('should call next', function () {

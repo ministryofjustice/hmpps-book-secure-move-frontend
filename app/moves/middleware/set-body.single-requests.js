@@ -3,7 +3,7 @@ const { set } = require('lodash')
 const dateHelpers = require('../../../common/helpers/date')
 
 function setBodySingleRequests(req, res, next) {
-  const { status } = req.query
+  const { status, page = 1 } = req.query
   const useMoveDate = status === 'approved'
   const {
     sortBy = useMoveDate ? 'date' : undefined,
@@ -15,6 +15,7 @@ function setBodySingleRequests(req, res, next) {
   const dateTypeRange = dateRange || dateHelpers.getCurrentWeekAsRange()
 
   set(req, 'body.requested', {
+    page,
     status,
     sortBy,
     sortDirection,
