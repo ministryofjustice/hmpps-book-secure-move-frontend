@@ -34,7 +34,7 @@ env:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: sentry_dsn
 
-  - name: SESSION_SECRET_KEY
+  - name: SESSION_SECRET
     valueFrom:
       secretKeyRef:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
