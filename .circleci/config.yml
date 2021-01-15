@@ -359,10 +359,11 @@ workflows:
           name: deploy-staging
           env: 'staging'
           retrieve_secrets: 'none'
-          cluster-name: KUBE_ENV_STAGING_NAME
-          ca-cert: KUBE_ENV_STAGING_CACERT
-          kube-token: KUBE_ENV_STAGING_TOKEN
-          kube-namespace: KUBE_ENV_STAGING_NAMESPACE
+          hmpps/k8s_setup:
+            cluster-name: KUBE_ENV_STAGING_NAME
+            ca-cert: KUBE_ENV_STAGING_CACERT
+            kube-token: KUBE_ENV_STAGING_TOKEN
+            kube-namespace: KUBE_ENV_STAGING_NAMESPACE
           requires:
             - build-docker-image-master
             - end-to-end-test-master
