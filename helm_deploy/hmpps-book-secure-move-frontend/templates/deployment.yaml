@@ -50,7 +50,7 @@ spec:
             failureThreshold: 10
           readinessProbe:
             httpGet:
-              path: //healthcheck/ping
+              path: /healthcheck/ping
               port: {{ .Values.image.port }}
             periodSeconds: 20
             initialDelaySeconds: 60
