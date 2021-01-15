@@ -7,48 +7,48 @@ env:
   - name: API_CLIENT_ID_KEY
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: api_client_id_key
 
   - name: API_SECRET_KEY
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: api_secret_key
 
   - name: AUTH_PROVIDER_KEY_KEY
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: auth_provider_key_key
 
   - name: AUTH_PROVIDER_SECRET_KEY
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: auth_provider_secret_key
 
   - name: SENTRY_DSN
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: sentry_dsn
 
   - name: SESSION_SECRET_KEY
     valueFrom:
       secretKeyRef:
-        name: {{ .Release.Namespace }}
+        name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: session_secret_key
 
   - name: REDIS_AUTH_TOKEN
     valueFrom:
       secretKeyRef:
-        name: elasticache-hmpps-book-secure-move-frontend-staging
+        name: {{ .Values.env.REDIS_SECRETS | quote }}
         key: auth_token
   - name: REDIS_HOST
     valueFrom:
       secretKeyRef:
-        name: elasticache-hmpps-book-secure-move-frontend-staging
+        name: {{ .Values.env.REDIS_SECRETS | quote }}
         key: primary_endpoint_address
 
   - name: API_AUTH_PATH

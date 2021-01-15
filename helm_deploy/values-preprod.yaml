@@ -30,6 +30,8 @@ env:
   NOMIS_ELITE2_API_URL: "https://api-preprod.prison.service.justice.gov.uk"
   PROMETHEUS_MOUNTPATH: "/metrics"
   SENTRY_ENVIRONMENT: "preproduction"
+  NAMESPACE_SECRETS: "hmpps-book-secure-move-frontend-secrets-preprod"
+  REDIS_SECRETS: "elasticache-hmpps-book-secure-move-frontend-preprod"
   SERVER_HOST: "hmpps-book-secure-move-frontend-preprod.apps.live-1.cloud-platform.service.justice.gov.uk"
   SUPPORT_EMAIL: "bookasecuremove@digital.justice.gov.uk"
   FEATURE_FLAG_POPULATION_DASHBOARD: "true"
