@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@3.4.2
+  hmpps: ministryofjustice/hmpps@2.2.0
 
 aliases:
   # Shared containers
@@ -339,11 +340,13 @@ workflows:
       - end-to-end-test:
           <<: *only_deploy_tags
           name: end-to-end-test-release
+      - hmpps/helm_lint:
+          name: helm_lint
+          env: 'staging'
       # Docker builds
-      - build-docker-image:
+      - hmpps/build_docker:
           <<: *only_master
           name: build-docker-image-master
-          staging: 'true'
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-release
@@ -351,7 +354,7 @@ workflows:
           preprod: 'true'
           production: 'true'
       # Deployment
-      - deploy:
+      - hmpps/deploy_env:
           <<: *only_master
           name: deploy-staging
           env: 'staging'
