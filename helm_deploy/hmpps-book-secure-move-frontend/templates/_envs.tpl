@@ -4,25 +4,25 @@ Environment variables for web and worker containers
 */}}
 {{- define "deployment.envs" }}
 env:
-  - name: API_CLIENT_ID_KEY
+  - name: API_CLIENT_ID
     valueFrom:
       secretKeyRef:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: api_client_id_key
 
-  - name: API_SECRET_KEY
+  - name: API_SECRET
     valueFrom:
       secretKeyRef:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: api_secret_key
 
-  - name: AUTH_PROVIDER_KEY_KEY
+  - name: AUTH_PROVIDER_KEY
     valueFrom:
       secretKeyRef:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
         key: auth_provider_key_key
 
-  - name: AUTH_PROVIDER_SECRET_KEY
+  - name: AUTH_PROVIDER_SECRET
     valueFrom:
       secretKeyRef:
         name: {{ .Values.env.NAMESPACE_SECRETS | quote }}
