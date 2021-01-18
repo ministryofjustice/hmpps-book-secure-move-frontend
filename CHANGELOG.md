@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.67.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.66.0...v2.67.0) (2021-01-18)
+
+
+### Features
+
+* Use HMPPS orb deployment command to leverage helm ([44dfb92](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/44dfb92fe482565f84ded4eb3d1f8334c06542e7))
+
+
+### Bug Fixes
+
+* Change HMPPS Orb version ([77eca23](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/77eca23b8a6391c73da703377e44c7b365fd9fd1))
+* Custom k8s setup ([5f6f2e4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5f6f2e414ca77c083bf0e56f01f54f923e2ab05a))
+* Fix helm lint config ([0e39af1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0e39af15191b9d049e830061ecf631abb47c4bfe))
+* Fix secrets ([205e40c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/205e40c0f3c6a82ebdce769d9aa9a6c0579dc5db))
+* Fix session secret name ([e9a9581](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e9a958136cc7a18c84a764f0aac7b9b08b58b5c9))
+* Point to correct secrets space ([8ebe01e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8ebe01ecd5364508813fbc3d9f6b30180405f9c2))
+* Readiness probe url type :facepalm: ([01cb6b9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/01cb6b9108da6c9fa5caa404391d808a58f8fe89))
+* Remove broken parameters ([53333b8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/53333b8a444516c67fe8d7d47067594b14b356c2))
+* Remove unneeded files ([1bfef4d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1bfef4d5b562ca16885434f89054dd0b411599c8))
+* Update all secret names ([af71321](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/af71321b883bce1e47abbec6efab0744c2d692fe))
+* Use correct healthcheck path ([22ec025](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/22ec025c8f8328bb1eb1dd41c130b291e982d7d4))
+* Use proper secrets names ([abd958d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/abd958d69403e63e9fb67180cc4600d8d5bce5c8))
+
 ## [2.66.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.65.0...v2.66.0) (2021-01-13)
 
 
