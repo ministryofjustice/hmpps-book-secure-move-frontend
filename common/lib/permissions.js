@@ -102,6 +102,10 @@ const prisonPermissions = [
   'person_escort_record:create',
   'person_escort_record:update',
   'person_escort_record:confirm',
+  'youth_risk_assessment:view',
+  'youth_risk_assessment:create',
+  'youth_risk_assessment:update',
+  'youth_risk_assessment:confirm',
 ]
 const ocaPermissions = [
   'dashboard:view',
@@ -131,6 +135,7 @@ const pmuPermissions = [
   'move:review',
   'move:view',
   'person_escort_record:view',
+  'youth_risk_assessment:view',
 ]
 const courtPermissions = [
   'dashboard:view',
@@ -139,6 +144,7 @@ const courtPermissions = [
   'moves:download',
   'move:view',
   'person_escort_record:view',
+  'youth_risk_assessment:view',
 ]
 const personEscortRecordAuthorPermissions = [
   'person_escort_record:view',
