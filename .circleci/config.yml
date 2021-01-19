@@ -344,7 +344,7 @@ workflows:
           name: helm_lint
           env: 'staging'
       # Docker builds
-      - hmpps/build_docker:
+      - build-docker-image:
           <<: *only_master
           name: build-docker-image-master
       - build-docker-image:
@@ -354,11 +354,10 @@ workflows:
           preprod: 'true'
           production: 'true'
       # Deployment
-      - hmpps/deploy_env:
+      - deploy:
           <<: *only_master
           name: deploy-staging
           env: 'staging'
-          retrieve_secrets: 'none'
           requires:
             - build-docker-image-master
             - end-to-end-test-master
