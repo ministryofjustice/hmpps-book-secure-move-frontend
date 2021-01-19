@@ -1,6 +1,5 @@
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const presenters = require('../../../../../common/presenters')
-const { FEATURE_FLAGS } = require('../../../../../config')
 const filters = require('../../../../../config/nunjucks/filters')
 
 class CreateBaseController extends FormWizardController {
@@ -179,7 +178,6 @@ class CreateBaseController extends FormWizardController {
     const age = filters.calculateAge(dateOfBirth)
 
     if (
-      FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT_YOI &&
       fromLocationType === 'prison' &&
       isYoungOffenderInstitution &&
       age >= 18 &&
@@ -201,7 +199,6 @@ class CreateBaseController extends FormWizardController {
     const age = filters.calculateAge(person.date_of_birth)
 
     if (
-      FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT &&
       ['secure_training_centre', 'secure_childrens_home'].includes(
         fromLocationType
       )
@@ -210,7 +207,6 @@ class CreateBaseController extends FormWizardController {
     }
 
     if (
-      FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT_YOI &&
       fromLocationType === 'prison' &&
       isYoungOffenderInstitution &&
       age < 18
