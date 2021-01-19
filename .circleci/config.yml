@@ -347,6 +347,7 @@ workflows:
       - build-docker-image:
           <<: *only_master
           name: build-docker-image-master
+          staging: 'true'
       - build-docker-image:
           <<: *only_deploy_tags
           name: build-docker-image-release
