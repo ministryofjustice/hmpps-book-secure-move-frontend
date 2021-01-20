@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.67.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.67.0...v2.67.1) (2021-01-20)
+
+
+### Bug Fixes
+
+* Add missing config line ([94eff7a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/94eff7adeec314ef548879eeb5496a98d459426e))
+* Remove slashify ([fcfb473](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fcfb47349ab31353caf3588a8f9c750f7064652d))
+
 ## [2.67.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.66.0...v2.67.0) (2021-01-18)
 
 
