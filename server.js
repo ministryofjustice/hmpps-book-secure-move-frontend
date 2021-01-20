@@ -14,7 +14,6 @@ const i18nMiddleware = require('i18next-express-middleware')
 const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
-const slashify = require('slashify')
 
 // Local dependencies
 const healthcheckApp = require('./app/healthcheck')
@@ -78,8 +77,6 @@ if (config.SENTRY.DSN) {
 
 // Configure prometheus to handle metrics
 metrics.init(app, config)
-
-app.use(slashify())
 
 // Load the healthcheck app manually before anything
 // else to ensure it will return some kind of response
