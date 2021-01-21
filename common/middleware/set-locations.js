@@ -9,6 +9,20 @@ const pipe = functions => data => {
 }
 
 const getParamsLocation = data => {
+  // This function does not do anything
+  //
+  // https://expressjs.com/en/4x/api.html#app.param
+  // > Param callback functions are local to the router on which they are
+  // > defined. They are not inherited by mounted apps or routers. Hence, param
+  // > callbacks defined on app will be triggered only by route parameters
+  // > defined on app routes.
+  //
+  // We do not define our routes on the main app, therefore this means that this
+  // middleware is never used, as params are never configured at this level.
+  //
+  // A similar function will need to be applied at each level of router that
+  // requires it
+
   const { locationId } = data.req.params
 
   if (locationId) {
