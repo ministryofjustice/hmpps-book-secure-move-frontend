@@ -114,4 +114,13 @@
 
   {% block pageContent %}{% endblock %}
 
+  {% block pagination %}
+    {% if pagination %}
+      {{ appPagination({
+        classes: "app-pagination--split app-print--hide",
+        previous: pagination.previous,
+        next: pagination.next
+      }) }}
+    {% endif %}
+  {% endblock %}
 {% endblock %}

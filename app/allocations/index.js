@@ -8,6 +8,7 @@ const {
   setContext,
   setDatePagination,
   setDateRange,
+  setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 
@@ -41,6 +42,7 @@ router.get(
     setBodyAllocations,
     setResultsAllocations,
     setFilterAllocations(FILTERS.outgoing),
+    setPagination(MOUNTPATH + COLLECTION_PATH),
   ],
   renderAsTable
 )

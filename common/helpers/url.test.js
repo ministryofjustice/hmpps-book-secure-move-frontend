@@ -148,6 +148,28 @@ describe('URL Helpers', function () {
             expect(output).to.equal('/compiled/url?foo=bar&status=approved')
           })
         })
+
+        context('with query overrides', function () {
+          beforeEach(function () {
+            req.query = {
+              status: 'approved',
+              foo: 'bar',
+            }
+
+            output = helpers.compileFromRoute(
+              mockRoute,
+              req,
+              {},
+              {
+                foo: 'buzz',
+              }
+            )
+          })
+
+          it('should override the querystring', function () {
+            expect(output).to.equal('/compiled/url?foo=buzz&status=approved')
+          })
+        })
       })
     })
   })

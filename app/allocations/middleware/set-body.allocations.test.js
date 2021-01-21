@@ -36,6 +36,7 @@ describe('Allocations middleware', function () {
           locations: mockReq.locations,
           sortBy: 'moves_count',
           sortDirection: 'asc',
+          page: 1,
         })
       })
 
@@ -50,14 +51,26 @@ describe('Allocations middleware', function () {
         middleware(mockReq, mockRes, nextSpy)
       })
 
-      it('should assign req.body correctly', function () {
-        expect(mockReq.body.allocations).to.deep.equal({
-          status: 'pending',
-          moveDate: ['2020-10-10', '2020-10-10'],
-          locations: mockReq.locations,
-          sortBy: 'moves_count',
-          sortDirection: 'asc',
-        })
+      it('should set moveDate in req.body correctly', function () {
+        expect(mockReq.body.allocations.moveDate).to.deep.equal([
+          '2020-10-10',
+          '2020-10-10',
+        ])
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with existing page', function () {
+      beforeEach(function () {
+        mockReq.query.page = 5
+        middleware(mockReq, mockRes, nextSpy)
+      })
+
+      it('should include page in req.body correctly', function () {
+        expect(mockReq.body.allocations.page).to.equal(5)
       })
 
       it('should call next', function () {
@@ -78,6 +91,7 @@ describe('Allocations middleware', function () {
           fromLocations: mockReq.locations,
           sortBy: 'moves_count',
           sortDirection: 'asc',
+          page: 1,
         })
       })
 

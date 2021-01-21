@@ -9,6 +9,7 @@ const courtHearing = require('./court-hearing')
 const document = require('./document')
 const ethnicity = require('./ethnicity')
 const event = require('./event')
+const filtered = require('./filtered')
 const framework = require('./framework')
 const frameworkFlag = require('./framework-flag')
 const frameworkNomisMapping = require('./framework-nomis-mapping')
@@ -43,6 +44,7 @@ module.exports = {
   document,
   ethnicity,
   event,
+  filtered,
   framework,
   framework_flag: frameworkFlag,
   framework_nomis_mapping: frameworkNomisMapping,

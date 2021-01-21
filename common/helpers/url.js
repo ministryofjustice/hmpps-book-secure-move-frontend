@@ -7,8 +7,17 @@ const uuidRegex =
   '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 const dateRegex = '[0-9]{4}-[0-9]{2}-[0-9]{2}'
 
-function compileFromRoute(route, req = {}, overrides = {}) {
+function compileFromRoute(
+  route,
+  req = {},
+  overrides = {},
+  queryOverrides = {}
+) {
   const { baseUrl, path, query } = req
+  const combinedQuery = {
+    ...query,
+    ...queryOverrides,
+  }
   const matched = pathToRegexp.match(route)(baseUrl + path)
 
   if (!matched) {
@@ -16,7 +25,9 @@ function compileFromRoute(route, req = {}, overrides = {}) {
   }
 
   const compileUrl = pathToRegexp.compile(route)
-  const queryInUrl = !isEmpty(query) ? getQueryString(query) : ''
+  const queryInUrl = !isEmpty(combinedQuery)
+    ? getQueryString(combinedQuery)
+    : ''
 
   return compileUrl({ ...matched.params, ...overrides }) + queryInUrl
 }

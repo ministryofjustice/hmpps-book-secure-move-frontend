@@ -12,6 +12,7 @@ const {
   redirectView,
   setContext,
   setDateRange,
+  setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setRequestFilters = require('../../common/middleware/set-request-filters')
@@ -60,6 +61,7 @@ viewRouter.get(
     setBodyRequestFilters,
     setFilterSingleRequests(FILTERS.requested),
     setResultsSingleRequests,
+    setPagination(MOUNTPATH + COLLECTION_BASE_PATH + COLLECTION_VIEW_PATH),
   ],
   setRequestFilters(requestFilterFields),
   renderAsTable

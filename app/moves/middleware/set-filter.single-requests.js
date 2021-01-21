@@ -1,4 +1,4 @@
-const { omitBy, isUndefined } = require('lodash')
+const { omit, omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
 const i18n = require('../../../config/i18n')
@@ -6,7 +6,7 @@ const i18n = require('../../../config/i18n')
 const getItemFilterHref = (req, status, href) => {
   href = href || `${req.baseUrl}${req.path}`
   const query = querystring.stringify({
-    ...req.query,
+    ...omit(req.query, 'page'),
     status,
   })
 

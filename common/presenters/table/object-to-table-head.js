@@ -1,11 +1,11 @@
-const { pickBy } = require('lodash')
+const { omit, pickBy } = require('lodash')
 const queryString = require('query-string')
 
 const i18n = require('../../../config/i18n')
 
 function buildUrl({ sortKey }, query) {
   return queryString.stringify({
-    ...query,
+    ...omit(query, 'page'),
     sortBy: sortKey,
     sortDirection: query.sortDirection === 'asc' ? 'desc' : 'asc',
   })

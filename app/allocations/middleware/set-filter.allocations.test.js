@@ -215,6 +215,25 @@ describe('Allocations middleware', function () {
           expect(next).to.have.been.calledWithExactly()
         })
       })
+
+      context('with existing query containing `page`', function () {
+        beforeEach(async function () {
+          req.query = {
+            foo: 'bar',
+            page: 3,
+          }
+          await middleware(mockConfig)(req, res, next)
+        })
+
+        it('should remove page from each link', function () {
+          const links = req.filter.map(item => item.href)
+          expect(links).to.deep.equal([
+            '/moves/week/2010-09-07/123?foo=bar&status=pending',
+            '/moves/week/2010-09-07/123?foo=bar&status=approved',
+            '/moves/week/2010-09-07/123?foo=bar&status=rejected',
+          ])
+        })
+      })
     })
 
     context('when service fails', function () {
