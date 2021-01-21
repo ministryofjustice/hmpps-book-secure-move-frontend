@@ -28,7 +28,7 @@ There are a variety of generic middleware that are provided from within the [com
 ## Common Middleware
 
 - `permissions` - secures route access based upon user permissions
-- `setLocations` - sets locations on the current request
+- `setLocationsFromSession` - sets locations on the current request based u the current users available locations
 - `setPrimaryNaviation` - sets the primaryNavigation based upon the current users permissions
 - `setUser` - sets the user on the current request from the session
 

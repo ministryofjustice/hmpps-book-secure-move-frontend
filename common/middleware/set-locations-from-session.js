@@ -61,7 +61,7 @@ const getLocationIds = data => {
   return locations.map(location => location.id)
 }
 
-const setLocations = (req, res, next) => {
+const setLocationsFromSession = (req, res, next) => {
   const data = pipe([
     getParamsLocation,
     getCurrentLocation,
@@ -74,4 +74,4 @@ const setLocations = (req, res, next) => {
   next()
 }
 
-module.exports = setLocations
+module.exports = setLocationsFromSession

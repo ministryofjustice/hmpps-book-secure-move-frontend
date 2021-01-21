@@ -1,4 +1,4 @@
-const setLocations = require('./set-locations')
+const setLocations = require('./set-locations-from-session')
 
 describe('Set locations middleware', function () {
   describe('#setLocations', function () {

@@ -31,7 +31,7 @@ const processOriginalRequestBody = require('./common/middleware/process-original
 const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setApiClient = require('./common/middleware/set-api-client')
-const setLocations = require('./common/middleware/set-locations')
+const setLocationsFromSession = require('./common/middleware/set-locations-from-session')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
 const setServices = require('./common/middleware/set-services')
 const setTransactionId = require('./common/middleware/set-transaction-id')
@@ -175,7 +175,7 @@ app.use(
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
-app.use(setLocations)
+app.use(setLocationsFromSession)
 
 // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
 app.use(
