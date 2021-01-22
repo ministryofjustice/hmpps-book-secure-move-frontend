@@ -1,10 +1,33 @@
+const { isNil } = require('lodash')
+
 const DetailsController = require('../controllers/edit/details')
+const LoadPopulationController = require('../controllers/edit/load-population')
+const PopulateController = require('../controllers/edit/populate')
 
 module.exports = {
   '/': {
     entryPoint: true,
     reset: true,
     resetJourney: true,
+    skip: true,
+    forwardQuery: true,
+    next: [
+      {
+        fn: req => {
+          return isNil(req.population)
+        },
+        next: 'populate',
+      },
+      'load-population',
+    ],
+  },
+  '/load-population': {
+    controller: LoadPopulationController,
+    skip: true,
+    next: 'details',
+  },
+  '/populate': {
+    controller: PopulateController,
     skip: true,
     forwardQuery: true,
     next: 'details',

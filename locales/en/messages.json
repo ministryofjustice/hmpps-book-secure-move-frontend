@@ -55,5 +55,8 @@
       "heading": "Move requested",
       "content": "Move reference<br><strong>{{moveReference}}</strong>"
     }
+  },
+  "external_data": {
+    "nomis":"This number was originally from NOMIS"
   }
 }
