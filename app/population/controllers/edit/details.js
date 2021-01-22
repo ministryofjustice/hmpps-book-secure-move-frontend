@@ -1,6 +1,6 @@
 const { omit } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
 class DetailsController extends FormWizardController {
   middlewareLocals() {

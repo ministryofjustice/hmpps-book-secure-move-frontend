@@ -1,4 +1,4 @@
-const EditController = require('../controllers/edit')
+const DetailsController = require('../controllers/edit/details')
 
 module.exports = {
   '/': {
@@ -10,7 +10,7 @@ module.exports = {
     next: 'details',
   },
   '/details': {
-    controller: EditController,
+    controller: DetailsController,
     fields: [
       'operational_capacity',
       'usable_capacity',
@@ -27,6 +27,6 @@ module.exports = {
       available_space: ['overnights_out', 'out_of_area_courts', 'discharges'],
     },
     buttonText: 'actions::save_and_calculate',
-    template: 'edit',
+    template: 'details',
   },
 }
