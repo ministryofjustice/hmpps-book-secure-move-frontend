@@ -216,6 +216,79 @@ describe('Population Service', function () {
         })
       })
     })
+
+    describe('#populate', function () {
+      let populationData
+      let populationResponse
+
+      beforeEach(function () {
+        populationData = {
+          location: 'ABADCAFE',
+          date: '2020-06-01',
+          operational_capacity: 1,
+        }
+
+        populationResponse = {
+          date: '2020-06-01',
+          operational_capacity: 1,
+          relationships: {
+            location: {
+              id: 'ABADCAFE',
+            },
+          },
+        }
+
+        sinon.stub(apiClient, 'request').resolves({
+          data: populationResponse,
+        })
+        apiClient.apiUrl = 'http://example.com'
+      })
+
+      afterEach(function () {
+        apiClient.request.restore()
+      })
+
+      context('without location', function () {
+        it('should reject with error', function () {
+          delete populationData.location
+          return expect(
+            populationService.populate(populationData)
+          ).to.be.rejectedWith('No location ID supplied')
+        })
+      })
+
+      context('without date', function () {
+        it('should reject with error', function () {
+          delete populationData.date
+          return expect(
+            populationService.populate(populationData)
+          ).to.be.rejectedWith('No date supplied')
+        })
+      })
+
+      context('with full data', function () {
+        let response
+        beforeEach(async function () {
+          response = await populationService.populate(populationData)
+        })
+
+        it('should call populate', function () {
+          expect(apiClient.request).to.be.calledOnceWithExactly(
+            'http://example.com/populations/new',
+            'GET',
+            {
+              date: populationData.date,
+              location_id: 'ABADCAFE',
+            }
+          )
+        })
+
+        it('should return population data', function () {
+          expect(response).to.equal(populationResponse)
+        })
+      })
+    })
+
     describe('#update', function () {
       let populationData
       let populationResponse

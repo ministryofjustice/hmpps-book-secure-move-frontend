@@ -51,6 +51,25 @@ class PopulationService extends BaseService {
       .then(response => response.data)
   }
 
+  populate(data) {
+    const { location, date } = data
+
+    if (!location) {
+      return Promise.reject(new Error(noLocationIdMessage))
+    }
+
+    if (!date) {
+      return Promise.reject(new Error(noDateMessage))
+    }
+
+    return this.apiClient
+      .request(`${this.apiClient.apiUrl}/populations/new`, 'GET', {
+        location_id: location,
+        date: date,
+      })
+      .then(response => response.data)
+  }
+
   update(data) {
     const { id } = data
 
