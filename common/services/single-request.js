@@ -73,7 +73,7 @@ class SingleRequestService extends BaseService {
       ],
       filter: {
         ...statusFilter,
-        has_relationship_to_allocation: false,
+        has_relationship_to_allocation: 'false',
         from_location_id: fromLocationId.join(','),
         to_location_id: toLocationId.join(','),
         date_from: moveDateFrom,

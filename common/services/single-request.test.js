@@ -59,7 +59,7 @@ describe('Single request service', function () {
           ],
           filter: {
             status: undefined,
-            has_relationship_to_allocation: false,
+            has_relationship_to_allocation: 'false',
             from_location_id: '',
             to_location_id: '',
             date_from: undefined,
@@ -114,7 +114,7 @@ describe('Single request service', function () {
           expect(moveService.get.args[0][0]).to.deep.include({
             filter: {
               status: 'proposed',
-              has_relationship_to_allocation: false,
+              has_relationship_to_allocation: 'false',
               date_from: mockMoveDateRange[0],
               date_to: mockMoveDateRange[1],
               date_of_birth_from: mockDOBFrom,
