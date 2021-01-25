@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.68.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.67.1...v2.68.0) (2021-01-25)
+
+
+### Features
+
+* Paginate allocation results ([7cc37ff](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7cc37ff09f606a3ef9d6270adc67b61352d81568))
+* Paginate single request results ([b47ce7b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b47ce7b3a940ecdc7a9ab4bd18a6986858f228ea))
+
+
+### Bug Fixes
+
+* Single requests filter should not return allocations ([4fbfadd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4fbfadd1d0862d1d645739a7fac79c28a7b66839))
+
 ### [2.67.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.67.0...v2.67.1) (2021-01-20)
 
 
