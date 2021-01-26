@@ -2,19 +2,12 @@ const presenters = require('../../../common/presenters')
 
 const middleware = require('./set-results.single-requests')
 
-const mockActiveMoves = {
-  data: [
-    { id: '1', foo: 'bar', status: 'requested' },
-    { id: '2', fizz: 'buzz', status: 'requested' },
-    { id: '3', foo: 'bar', status: 'completed' },
-    { id: '4', fizz: 'buzz', status: 'completed' },
-  ],
-  meta: {
-    pagination: {
-      total_pages: 2,
-    },
-  },
-}
+const mockActiveMoves = [
+  { id: '1', foo: 'bar', status: 'requested' },
+  { id: '2', fizz: 'buzz', status: 'requested' },
+  { id: '3', foo: 'bar', status: 'completed' },
+  { id: '4', fizz: 'buzz', status: 'completed' },
+]
 
 describe('Moves middleware', function () {
   describe('#setResultsSingleRequests()', function () {
@@ -62,14 +55,9 @@ describe('Moves middleware', function () {
         })
       })
 
-      it('should set results on req', function () {
-        expect(req).to.have.property('results')
-        expect(req.results).to.deep.equal(mockActiveMoves)
-      })
-
       it('should set resultsAsTable on req', function () {
         expect(req).to.have.property('resultsAsTable')
-        expect(req.resultsAsTable).to.deep.equal(mockActiveMoves.data)
+        expect(req.resultsAsTable).to.deep.equal(mockActiveMoves)
       })
 
       it('should call presenter with correct config', function () {
@@ -80,7 +68,7 @@ describe('Moves middleware', function () {
         })
 
         expect(singleRequestsToTableStub).to.be.calledWithExactly(
-          mockActiveMoves.data
+          mockActiveMoves
         )
       })
 

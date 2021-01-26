@@ -4,10 +4,11 @@ async function setResultsSingleRequests(req, res, next) {
   const singleRequestService = req.services.singleRequest
 
   try {
-    req.results = await singleRequestService.getAll(req.body.requested)
+    const singleRequests = await singleRequestService.getAll(req.body.requested)
+
     req.resultsAsTable = presenters.singleRequestsToTableComponent({
       query: req.query,
-    })(req.results.data)
+    })(singleRequests)
 
     next()
   } catch (error) {
