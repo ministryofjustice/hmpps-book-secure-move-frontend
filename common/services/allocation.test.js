@@ -3,11 +3,20 @@ const proxyquire = require('proxyquire')
 const apiClient = require('../lib/api-client')()
 
 const formatISOStub = sinon.stub().returns('#timestamp')
+const mockBatchSize = 30
+
+const batchRequest = proxyquire('./batch-request', {
+  '../../config': {
+    LOCATIONS_BATCH_SIZE: mockBatchSize,
+  },
+})
+const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
 const AllocationService = proxyquire('./allocation', {
   'date-fns': {
     formatISO: formatISOStub,
   },
+  './batch-request': batchRequestStub,
 })
 const allocationService = new AllocationService({ apiClient })
 
@@ -430,7 +439,7 @@ describe('Allocation service', function () {
     })
   })
 
-  describe('#get()', function () {
+  describe('#getAll()', function () {
     const mockResponse = {
       data: mockAllocations,
       links: {},
@@ -440,154 +449,315 @@ describe('Allocation service', function () {
         },
       },
     }
+    const mockMultiPageResponse = {
+      data: mockAllocations,
+      links: {
+        next: 'http://next-page.com',
+      },
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
+      },
+    }
+    const mockEmptyPageResponse = {
+      data: [],
+      links: {
+        next: 'http://next-page.com',
+      },
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
+      },
+    }
+    const mockFilter = {
+      filterOne: 'foo',
+    }
     let moves, transformStub
 
     beforeEach(function () {
       transformStub = sinon.stub().returnsArg(0)
-      sinon.stub(AllocationService.prototype, 'removeInvalid').returnsArg(0)
       sinon.stub(AllocationService, 'transform').callsFake(() => transformStub)
-      sinon.stub(apiClient, 'all').returnsThis()
-      sinon.stub(apiClient, 'post')
+      sinon.stub(apiClient, 'findAll')
     })
 
-    beforeEach(function () {
-      apiClient.post.resolves(mockResponse)
-    })
-
-    context('by default', function () {
+    context('when batching the request', function () {
+      const props = { foo: 'bar', apiClient: apiClient }
       beforeEach(async function () {
-        moves = await allocationService.get()
+        apiClient.findAll.resolves(mockResponse)
+        await allocationService.getAll(props)
       })
 
-      it('should call the API client with default options', function () {
-        expect(apiClient.all.firstCall).to.be.calledWithExactly('allocation')
-        expect(apiClient.all.secondCall).to.be.calledWithExactly('filtered')
-        expect(apiClient.post).to.be.calledOnceWithExactly(
-          { filter: {} },
-          {
-            include: undefined,
+      it('should invoke batching correctly', async function () {
+        expect(batchRequestStub).to.be.calledOnce
+        const batchArgs = batchRequestStub.firstCall.args
+        expect(typeof batchArgs[0]).to.equal('function')
+        expect(batchArgs[1]).to.deep.equal(props)
+        expect(batchArgs[2]).to.deep.equal([
+          'from_locations',
+          'to_locations',
+          'locations',
+        ])
+      })
+    })
+
+    context('with only one page', function () {
+      beforeEach(function () {
+        apiClient.findAll.resolves(mockResponse)
+      })
+
+      context('by default', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll()
+        })
+
+        it('should call the API client once', function () {
+          expect(apiClient.findAll).to.be.calledOnce
+        })
+
+        it('should call the API client with default options', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              page: 1,
+              per_page: 100,
+              include: undefined,
+            }
+          )
+        })
+
+        it('should transform each person object', function () {
+          expect(transformStub.callCount).to.equal(mockAllocations.length)
+        })
+
+        it('should transform each person object not including cancelled', function () {
+          expect(AllocationService.transform).to.be.calledOnceWithExactly({
+            includeCancelled: false,
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with filter', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll({
+            filter: mockFilter,
+          })
+        })
+
+        it('should call the API client with filter', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              ...mockFilter,
+              page: 1,
+              per_page: 100,
+              include: undefined,
+            }
+          )
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with aggregation', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll({
+            filter: mockFilter,
+            isAggregation: true,
+          })
+        })
+
+        it('should call the API client with only one per page', function () {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('allocation', {
+            ...mockFilter,
             page: 1,
-            per_page: 20,
-            'sort[by]': undefined,
-            'sort[direction]': undefined,
-          }
-        )
-      })
+            per_page: 1,
+            include: [],
+          })
+        })
 
-      it('should transform each person object', function () {
-        expect(transformStub.callCount).to.equal(mockAllocations.length)
-      })
-
-      it('should transform each person object not including cancelled', function () {
-        expect(AllocationService.transform).to.be.calledOnceWithExactly({
-          includeCancelled: false,
+        it('should return a count', function () {
+          expect(moves).to.equal(10)
         })
       })
 
-      it('should return response', function () {
-        expect(moves).to.deep.equal(mockResponse)
-      })
-    })
-
-    describe('filter', function () {
-      beforeEach(async function () {
-        moves = await allocationService.get({
-          filter: {
-            foo: 'bar',
-          },
+      context('with including cancelled moves', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll({
+            includeCancelled: true,
+          })
         })
-      })
 
-      it('should use filter as payload', function () {
-        expect(apiClient.post.args[0][0]).to.deep.equal({
-          filter: {
-            foo: 'bar',
-          },
+        it('should call the API client with default options', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              page: 1,
+              per_page: 100,
+              include: undefined,
+            }
+          )
         })
-      })
-    })
 
-    describe('params', function () {
-      beforeEach(async function () {
-        moves = await allocationService.get({
-          include: ['moves'],
-          page: 3,
-          perPage: 50,
-          sort: {
-            by: 'name',
-            direction: 'asc',
-          },
+        it('should transform each person object', function () {
+          expect(transformStub.callCount).to.equal(mockAllocations.length)
         })
-      })
 
-      it('should use correct values for params', function () {
-        expect(apiClient.post.args[0][1]).to.deep.equal({
-          include: ['moves'],
-          page: 3,
-          per_page: 50,
-          'sort[by]': 'name',
-          'sort[direction]': 'asc',
+        it('should transform each person object and include cancelled', function () {
+          expect(AllocationService.transform).to.be.calledOnceWithExactly({
+            includeCancelled: true,
+          })
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal(mockAllocations)
         })
       })
     })
 
-    context('with aggregation', function () {
-      beforeEach(async function () {
-        moves = await allocationService.get({
-          isAggregation: true,
-          page: 5,
-          perPage: 50,
-          include: ['moves'],
+    context('with multiple pages', function () {
+      beforeEach(function () {
+        apiClient.findAll
+          .onFirstCall()
+          .resolves(mockMultiPageResponse)
+          .onSecondCall()
+          .resolves(mockResponse)
+      })
+
+      context('by default', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll()
+        })
+
+        it('should call the API client twice', function () {
+          expect(apiClient.findAll).to.be.calledTwice
+        })
+
+        it('should call API client with default options on first call', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              page: 1,
+              per_page: 100,
+              include: undefined,
+            }
+          )
+        })
+
+        it('should call API client with second page on second call', function () {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              page: 2,
+              per_page: 100,
+              include: undefined,
+            }
+          )
+        })
+
+        it('should transform each person object', function () {
+          expect(transformStub.callCount).to.equal(mockAllocations.length * 2)
+        })
+
+        it('should return moves', function () {
+          expect(moves).to.deep.equal([...mockAllocations, ...mockAllocations])
         })
       })
 
-      it('should call the API client with only one per page', function () {
-        expect(apiClient.post.args[0][1]).to.deep.include({
-          include: [],
-          page: 1,
-          per_page: 1,
+      context('with filter', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll({
+            filter: mockFilter,
+          })
+        })
+
+        it('should call API client with filter on first call', function () {
+          expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              ...mockFilter,
+              page: 1,
+              per_page: 100,
+              include: undefined,
+            }
+          )
+        })
+
+        it('should call API client with filter on second call', function () {
+          expect(apiClient.findAll.secondCall).to.be.calledWithExactly(
+            'allocation',
+            {
+              ...mockFilter,
+              page: 2,
+              per_page: 100,
+              include: undefined,
+            }
+          )
         })
       })
 
-      it('should return a count', function () {
-        expect(moves).to.equal(10)
+      context('with aggregation', function () {
+        beforeEach(async function () {
+          moves = await allocationService.getAll({
+            filter: mockFilter,
+            isAggregation: true,
+          })
+        })
+
+        it('should call the API client with only one per page', function () {
+          expect(apiClient.findAll).to.be.calledOnceWithExactly('allocation', {
+            ...mockFilter,
+            page: 1,
+            per_page: 1,
+            include: [],
+          })
+        })
+
+        it('should return a count', function () {
+          expect(moves).to.equal(10)
+        })
       })
     })
 
-    context('with including cancelled moves', function () {
+    context('with next but no data', function () {
       beforeEach(async function () {
-        moves = await allocationService.get({
-          includeCancelled: true,
-        })
+        apiClient.findAll.resolves(mockEmptyPageResponse)
+        moves = await allocationService.getAll()
       })
 
-      it('should transform each person object', function () {
-        expect(transformStub.callCount).to.equal(mockAllocations.length)
+      it('should call the API client once', function () {
+        expect(apiClient.findAll).to.be.calledOnce
       })
 
-      it('should transform each person object and include cancelled', function () {
-        expect(AllocationService.transform).to.be.calledOnceWithExactly({
-          includeCancelled: true,
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockResponse)
+      it('should return no moves', function () {
+        expect(moves).to.deep.equal([])
       })
     })
 
     context('when specifying include parameter', function () {
       beforeEach(async function () {
-        apiClient.post.resolves(mockResponse)
-        moves = await allocationService.get({
+        apiClient.findAll.resolves(mockResponse)
+        moves = await allocationService.getAll({
           include: ['foo', 'bar'],
         })
       })
 
       it('should pass include parameter to the API client', function () {
-        expect(apiClient.post.args[0][1]).to.be.deep.include({
-          include: ['foo', 'bar'],
-        })
+        expect(apiClient.findAll.firstCall).to.be.calledWithExactly(
+          'allocation',
+          {
+            page: 1,
+            per_page: 100,
+            include: ['foo', 'bar'],
+          }
+        )
       })
     })
   })
@@ -597,7 +767,7 @@ describe('Allocation service', function () {
     let results
 
     beforeEach(async function () {
-      sinon.stub(allocationService, 'get').resolves(mockAllocations)
+      sinon.stub(allocationService, 'getAll').resolves(mockAllocations)
     })
 
     context('without arguments', function () {
@@ -606,23 +776,11 @@ describe('Allocation service', function () {
       })
 
       it('should call getAll with default filter', function () {
-        expect(allocationService.get).to.be.calledOnceWithExactly({
+        expect(allocationService.getAll).to.be.calledOnceWithExactly({
           isAggregation: false,
-          page: undefined,
-          include: getAllInclude,
           includeCancelled: false,
-          filter: {
-            status: undefined,
-            from_locations: '',
-            to_locations: '',
-            locations: '',
-            date_from: undefined,
-            date_to: undefined,
-          },
-          sort: {
-            by: undefined,
-            direction: undefined,
-          },
+          include: getAllInclude,
+          filter: {},
         })
       })
 
@@ -643,31 +801,67 @@ describe('Allocation service', function () {
             fromLocations: [mockFromLocationId],
             toLocations: [mockToLocationId],
             locations: [mockFromLocationId, mockToLocationId],
-            status: 'active',
-            isAggregation: true,
-            page: 5,
-            sortBy: 'name',
-            sortDirection: 'asc',
           })
         })
 
         it('should call moves.getAll with correct args', function () {
-          expect(allocationService.get).to.be.calledOnceWithExactly({
-            isAggregation: true,
-            include: getAllInclude,
-            page: 5,
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
             includeCancelled: false,
+            include: getAllInclude,
             filter: {
-              status: 'active',
-              from_locations: mockFromLocationId,
-              to_locations: mockToLocationId,
-              locations: `${mockFromLocationId},${mockToLocationId}`,
-              date_from: mockMoveDateRange[0],
-              date_to: mockMoveDateRange[1],
+              'filter[date_from]': mockMoveDateRange[0],
+              'filter[date_to]': mockMoveDateRange[1],
+              'filter[from_locations]': mockFromLocationId,
+              'filter[to_locations]': mockToLocationId,
+              'filter[locations]': `${mockFromLocationId},${mockToLocationId}`,
             },
-            sort: {
-              by: 'name',
-              direction: 'asc',
+          })
+        })
+
+        it('should return results', function () {
+          expect(results).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with some arguments', function () {
+        beforeEach(async function () {
+          results = await allocationService.getByDateAndLocation({
+            locations: [mockFromLocationId],
+          })
+        })
+
+        it('should call moves.getAll with correct args', function () {
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: false,
+            includeCancelled: false,
+            include: getAllInclude,
+            filter: {
+              'filter[locations]': mockFromLocationId,
+            },
+          })
+        })
+
+        it('should return results', function () {
+          expect(results).to.deep.equal(mockAllocations)
+        })
+      })
+
+      context('with aggregation', function () {
+        beforeEach(async function () {
+          results = await allocationService.getByDateAndLocation({
+            isAggregation: true,
+            locations: [mockFromLocationId],
+          })
+        })
+
+        it('should call moves.getAll with correct args', function () {
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
+            isAggregation: true,
+            includeCancelled: false,
+            include: getAllInclude,
+            filter: {
+              'filter[locations]': mockFromLocationId,
             },
           })
         })
@@ -686,22 +880,13 @@ describe('Allocation service', function () {
         })
 
         it('should call moves.getAll with correct args', function () {
-          expect(allocationService.get).to.be.calledOnceWithExactly({
+          expect(allocationService.getAll).to.be.calledOnceWithExactly({
             isAggregation: false,
             includeCancelled: true,
-            page: undefined,
             include: getAllInclude,
             filter: {
-              status: 'cancelled',
-              from_locations: '',
-              to_locations: '',
-              locations: mockFromLocationId,
-              date_from: undefined,
-              date_to: undefined,
-            },
-            sort: {
-              by: undefined,
-              direction: undefined,
+              'filter[locations]': mockFromLocationId,
+              'filter[status]': 'cancelled',
             },
           })
         })
