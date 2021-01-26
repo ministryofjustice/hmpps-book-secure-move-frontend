@@ -1,6 +1,6 @@
 const { omit } = require('lodash')
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
 class DetailsController extends FormWizardController {
   middlewareLocals() {
@@ -9,14 +9,7 @@ class DetailsController extends FormWizardController {
     this.use(this.setBreadcrumbs)
     this.use(this.setCancelUrl)
     this.use(this.setPageTitle)
-  }
-
-  setInitialValues(req, res, next) {
-    if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
-      req.sessionModel.set(req.population)
-    }
-
-    next()
+    this.use(this.setHintText)
   }
 
   async successHandler(req, res, next) {
@@ -77,6 +70,20 @@ class DetailsController extends FormWizardController {
     req.form.options.pageTitle = req.population
       ? 'population::edit.page_title_update'
       : 'population::edit.page_title_new'
+
+    next()
+  }
+
+  setHintText(req, res, next) {
+    if (!req.population) {
+      const { unlock, discharges } = req.sessionModel.options.fields
+
+      unlock.hint = unlock.hint || {}
+      unlock.hint.text = req.t('messages::external_data.nomis')
+
+      discharges.hint = discharges.hint || {}
+      discharges.hint.text = req.t('messages::external_data.nomis')
+    }
 
     next()
   }

@@ -3,12 +3,12 @@ const mockPopulationService = {
   update: sinon.stub(),
 }
 
-const FormWizardController = require('../../../common/controllers/form-wizard')
+const FormWizardController = require('../../../../common/controllers/form-wizard')
 
-const Controller = require('./edit')
+const Controller = require('./details')
 
 describe('Population controllers', function () {
-  describe('#edit()', function () {
+  describe('details controller', function () {
     let req
     let res
     let next
@@ -29,6 +29,12 @@ describe('Population controllers', function () {
           toJSON: sinon.stub().returns(sessionData),
           reset: sinon.fake(),
           set: sinon.fake(),
+          options: {
+            fields: {
+              unlock: {},
+              discharges: {},
+            },
+          },
         },
         journeyModel: {
           reset: sinon.fake(),
@@ -42,9 +48,11 @@ describe('Population controllers', function () {
         services: {
           population: mockPopulationService,
         },
+        t: sinon.stub().returnsArg(0),
       }
       res = {
         redirect: sinon.fake(),
+        breadcrumb: sinon.fake(),
         locals: {},
       }
 
@@ -84,51 +92,14 @@ describe('Population controllers', function () {
         ).to.have.been.calledWithExactly(controllerInstance.setPageTitle)
       })
 
+      it('should call set hint text method', function () {
+        expect(
+          controllerInstance.use.getCall(3)
+        ).to.have.been.calledWithExactly(controllerInstance.setHintText)
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controllerInstance.use).to.be.callCount(3)
-      })
-    })
-
-    describe('setInitialValues', function () {
-      context('on first page visit', function () {
-        beforeEach(async function () {
-          req.population = {
-            moves_from: ['ABADCAFE', 'FACEFEED'],
-            moves_to: ['DEADBEEF'],
-            ...sessionData,
-          }
-          req.journeyModel.get.returns('/')
-
-          await controllerInstance.setInitialValues(req, res, next)
-        })
-        it('should set session values and transfers', async function () {
-          expect(req.journeyModel.get).to.have.been.calledWith('lastVisited')
-          expect(req.sessionModel.set).to.have.been.calledWith({
-            ...sessionData,
-            moves_from: ['ABADCAFE', 'FACEFEED'],
-            moves_to: ['DEADBEEF'],
-          })
-        })
-
-        it('should call next', async function () {
-          expect(next).to.have.been.calledWith()
-        })
-      })
-
-      context('on subsequent page visits', function () {
-        beforeEach(async function () {
-          req.journeyModel.get.returns('/details')
-
-          await controllerInstance.setInitialValues(req, res, next)
-        })
-
-        it('should not set session values', function () {
-          expect(req.sessionModel.set).not.to.have.been.called
-        })
-
-        it('should call next', function () {
-          expect(next).to.have.been.calledWith()
-        })
+        expect(controllerInstance.use).to.be.callCount(4)
       })
     })
 
@@ -225,6 +196,39 @@ describe('Population controllers', function () {
       })
     })
 
+    describe('setBreadcrumbs', function () {
+      context('with an existing population', function () {
+        beforeEach(function () {
+          req.population = {}
+          controllerInstance.setBreadcrumbs(req, res, next)
+        })
+        it('should use update page title', function () {
+          expect(req.t).to.have.been.calledWith(
+            'population::edit.page_title_update'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+
+      context('with an new population', function () {
+        beforeEach(async function () {
+          await controllerInstance.setBreadcrumbs(req, res, next)
+        })
+        it('should use new page title', function () {
+          expect(req.t).to.have.been.calledWith(
+            'population::edit.page_title_new'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+    })
+
     describe('setCancelUrl', function () {
       context('with an existing population', function () {
         beforeEach(function () {
@@ -284,6 +288,53 @@ describe('Population controllers', function () {
           expect(req.form.options.pageTitle).to.equal(
             'population::edit.page_title_new'
           )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+    })
+
+    describe('#setHintText', function () {
+      context('creating a new population', function () {
+        beforeEach(function () {
+          controllerInstance.setHintText(req, res, next)
+        })
+        it('should update the hint text for unlock', function () {
+          expect(req.sessionModel.options.fields.unlock.hint?.text).to.equal(
+            'messages::external_data.nomis'
+          )
+        })
+        it('should update the hint text for discharges', function () {
+          expect(req.sessionModel.options.fields.unlock.hint?.text).to.equal(
+            'messages::external_data.nomis'
+          )
+        })
+
+        it('should call next', function () {
+          expect(next).to.have.been.calledWith()
+        })
+      })
+
+      context('editing an existing population', function () {
+        beforeEach(function () {
+          req.population = {
+            id: 'ABADCAFE',
+          }
+
+          controllerInstance.setHintText(req, res, next)
+        })
+
+        it('should not update the hint text for unlock', function () {
+          expect(
+            req.sessionModel.options.fields.unlock.hint?.text
+          ).to.be.undefined
+        })
+        it('should not update the hint text for discharges', function () {
+          expect(
+            req.sessionModel.options.fields.discharges.hint?.text
+          ).to.be.undefined
         })
 
         it('should call next', function () {
