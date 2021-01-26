@@ -318,7 +318,6 @@
   },
   "documents": {
     "heading": "Only include documents that will help plan the move.",
-    "heading_upload_risk_assessment": "Upload the risk assessment document for this person.",
     "label": "Upload a file (optional)",
     "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
   },

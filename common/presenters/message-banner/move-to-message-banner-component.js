@@ -1,7 +1,5 @@
 const { isEmpty, kebabCase } = require('lodash')
 
-const { FEATURE_FLAGS } = require('../../../config')
-
 const assessmentToConfirmedBanner = require('./assessment-to-confirmed-banner')
 const assessmentToStartBanner = require('./assessment-to-start-banner')
 const assessmentToUnconfirmedBanner = require('./assessment-to-unconfirmed-banner')
@@ -12,11 +10,9 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
   }
 
   const assessmentType =
-    // TODO: Remove once enabled
     move.profile?.person_escort_record ||
     !move.profile?.requires_youth_risk_assessment ||
-    move.profile?.youth_risk_assessment?.status === 'confirmed' ||
-    !FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
+    move.profile?.youth_risk_assessment?.status === 'confirmed'
       ? 'person_escort_record'
       : 'youth_risk_assessment'
   const assessment = move.profile[assessmentType]

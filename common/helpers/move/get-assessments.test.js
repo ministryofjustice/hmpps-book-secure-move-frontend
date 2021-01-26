@@ -18,11 +18,6 @@ const getMoveUrl = sinon.stub().returns('move-url')
 const pathStubs = {
   '../../presenters': presenters,
   './get-move-url': getMoveUrl,
-  '../../../config': {
-    FEATURE_FLAGS: {
-      YOUTH_RISK_ASSESSMENT: true,
-    },
-  },
 }
 
 const getAssessments = proxyquire('./get-assessments', pathStubs)
@@ -342,57 +337,6 @@ describe('Move helpers', function () {
               youth: true,
             },
           ])
-        })
-      })
-
-      context('with feature flag disabled', function () {
-        beforeEach(function () {
-          const getAssessments = proxyquire('./get-assessments', {
-            ...pathStubs,
-            '../../../config': {
-              FEATURE_FLAGS: {
-                YOUTH_RISK_ASSESSMENT: false,
-              },
-            },
-          })
-          move.profile.youth_risk_assessment = null
-          move.profile.person_escort_record = {
-            ...mockYouthRiskAssessment,
-            _framework: {
-              sections: [
-                { key: 'one', order: 1 },
-                { key: 'three', order: 3 },
-                { key: 'two', order: 2 },
-              ],
-            },
-          }
-          assessments = getAssessments(move)
-        })
-
-        it('should render PER as assessment sections', function () {
-          expect(assessments).to.have.property('assessmentSections')
-          expect(assessments.assessmentSections).to.deep.equal([
-            {
-              key: 'one',
-              order: 1,
-              previousAssessment: undefined,
-            },
-            {
-              key: 'two',
-              order: 2,
-              previousAssessment: undefined,
-            },
-            {
-              key: 'three',
-              order: 3,
-              previousAssessment: undefined,
-            },
-          ])
-        })
-
-        it('should contain youthRiskAssessmentIsEnabled param', function () {
-          expect(assessments).to.have.property('youthRiskAssessmentIsEnabled')
-          expect(assessments.youthRiskAssessmentIsEnabled).to.be.false
         })
       })
     })

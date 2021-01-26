@@ -36,6 +36,7 @@ class CreateMovePage extends Page {
       ),
       policeLocation: Selector('#to_location_police_transfer'),
       prisonLocation: Selector('#to_location_prison_transfer'),
+      additionalInformation: Selector('#additional_information'),
       prisonRecallComments: Selector('#prison_recall_comments'),
       videoRemandComments: Selector('#video_remand_comments'),
       dateCustom: Selector('[name="date_custom"]'),
@@ -44,6 +45,7 @@ class CreateMovePage extends Page {
       hasDateTo: Selector('[name="has_date_to"]'),
       moveAgreed: Selector('[name="move_agreed"]'),
       moveAgreedBy: Selector('#move_agreed_by'),
+      timeDue: Selector('#time_due'),
       prisonTransferReason: Selector('[name="prison_transfer_type"]'),
       courtInformation: Selector('[name="court"]'),
       solicitor: Selector('#solicitor'),
@@ -262,6 +264,20 @@ class CreateMovePage extends Page {
       }
     }
 
+    if (moveType === 'Hospital') {
+      fields.hospitalLocation = {
+        selector: this.fields.hospitalLocation,
+        type: 'autocomplete',
+      }
+    }
+
+    if (moveType === 'SCH') {
+      fields.secureChildrensHomeLocation = {
+        selector: this.fields.secureChildrensHomeLocation,
+        type: 'autocomplete',
+      }
+    }
+
     return fillInForm(fields)
   }
 
@@ -361,6 +377,28 @@ class CreateMovePage extends Page {
     }
 
     return fillInForm(fields)
+  }
+
+  /**
+   * Fill in hospital information
+   *
+   * @returns {Promise}
+   */
+  async fillInHospitalDetails() {
+    await t.expect(this.getCurrentUrl()).contains('/move/new/hospital')
+
+    return fillInForm({
+      timeDue: {
+        selector: this.fields.timeDue,
+        // Time due is validated to be in the future.
+        // This ensures there's only 1 minute of the day this will fail
+        value: '23:59',
+      },
+      additionalInformation: {
+        selector: this.fields.additionalInformation,
+        value: faker.lorem.sentence(6),
+      },
+    })
   }
 
   /**

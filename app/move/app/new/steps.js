@@ -1,5 +1,3 @@
-const { FEATURE_FLAGS } = require('../../../../config')
-
 const {
   Assessment,
   Base,
@@ -42,16 +40,8 @@ const riskStep = {
       value: 'prison',
       next: 'special-vehicle',
     },
-    ...WhenYouthTransferMove({
-      goTo: 'travel-special-vehicle',
-      orElse: 'health-information',
-    }),
     'health-information',
   ],
-}
-
-function canUploadDocuments(fieldValue) {
-  return fieldValue && !FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
 }
 
 function createDateRangeStepForLocations({
@@ -81,20 +71,7 @@ const healthStep = {
   assessmentCategory: 'health',
   template: 'assessment',
   pageTitle: 'moves::steps.health_information.heading',
-  next: [
-    ...WhenYouthTransferMove({
-      goTo: FEATURE_FLAGS.YOUTH_RISK_ASSESSMENT
-        ? 'save'
-        : 'upload-risk-assessment',
-      orElse: 'save',
-    }),
-    {
-      field: 'can_upload_documents',
-      op: canUploadDocuments,
-      next: 'document',
-    },
-    'save',
-  ],
+  next: 'save',
 }
 
 module.exports = {
@@ -255,10 +232,10 @@ module.exports = {
     pageTitle: 'moves::agreement_status.heading',
     fields: ['move_agreed', 'move_agreed_by'],
     next: [
-      ...WhenYouthTransferMove({
-        goTo: 'travel-special-vehicle',
-        orElse: 'special-vehicle',
-      }),
+      {
+        fn: Base.prototype.requiresYouthAssessment,
+        next: 'save',
+      },
       'special-vehicle',
     ],
   },
@@ -387,21 +364,7 @@ module.exports = {
     pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
   },
-  '/travel-special-vehicle': {
-    ...healthStep,
-    showPreviousAssessment: false,
-    pageTitle: 'moves::steps.special_vehicle.heading',
-    fields: ['special_vehicle'],
-  },
   '/document': {
-    enctype: 'multipart/form-data',
-    controller: Document,
-    next: 'save',
-    pageTitle: 'moves::steps.document.heading',
-    fields: ['documents'],
-  },
-  '/upload-risk-assessment': {
-    key: 'upload_risk_assessment',
     enctype: 'multipart/form-data',
     controller: Document,
     next: 'save',
@@ -412,36 +375,4 @@ module.exports = {
     skip: true,
     controller: Save,
   },
-}
-
-function WhenYouthTransferMove({ goTo, orElse }) {
-  return [
-    {
-      field: 'to_location_type',
-      value: 'secure_childrens_home',
-      next: goTo,
-    },
-    {
-      field: 'to_location_type',
-      value: 'secure_training_centre',
-      next: goTo,
-    },
-    {
-      field: 'to_location_type',
-      value: 'prison',
-      next: [
-        {
-          field: 'from_location_type',
-          value: 'secure_childrens_home',
-          next: goTo,
-        },
-        {
-          field: 'from_location_type',
-          value: 'secure_training_centre',
-          next: goTo,
-        },
-        orElse,
-      ],
-    },
-  ]
 }

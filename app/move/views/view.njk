@@ -204,7 +204,7 @@
         {{ updateLink(updateLinks.personal_details) }}
       </section>
 
-      {% if personEscortRecord or (youthRiskAssessment and youthRiskAssessmentIsEnabled) %}
+      {% if personEscortRecord or youthRiskAssessment %}
         {% include "move/views/_includes/assessment-summary.njk" %}
       {% elif not move.profile.requires_youth_risk_assessment %}
         {% include "move/views/_includes/assessment.njk" %}
