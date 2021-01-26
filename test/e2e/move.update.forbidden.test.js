@@ -1,3 +1,4 @@
+import { getRandomLocation } from './_helpers'
 import {
   createCourtMove,
   checkNoUpdateLinks,
@@ -24,7 +25,11 @@ const users = [
 users.forEach(user => {
   fixture(`Existing move (As ${user.name})`).beforeEach(async t => {
     await t.useRole(user.role).navigateTo(home)
-    await createCourtMove()
+    await createCourtMove({
+      moveOverrides: {
+        from_location: await getRandomLocation('police', true),
+      },
+    })
   })
 
   test('User should not see any update links on move page', async () => {

@@ -214,7 +214,10 @@ export async function createProfileFixture(personId, overrides = {}) {
  *
  * @returns {string} - location id
  */
-const getRandomLocation = async (locationType, shouldHaveSupplier = false) => {
+export async function getRandomLocation(
+  locationType,
+  shouldHaveSupplier = false
+) {
   let locations
 
   if (locationType) {
