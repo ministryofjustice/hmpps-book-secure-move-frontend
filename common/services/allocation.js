@@ -1,7 +1,48 @@
 const dateFunctions = require('date-fns')
-const { mapValues, set } = require('lodash')
+const { mapValues, pickBy, set } = require('lodash')
 
 const BaseService = require('./base')
+const batchRequest = require('./batch-request')
+
+function getAll({
+  apiClient,
+  filter = {},
+  combinedData = [],
+  page = 1,
+  includeCancelled = false,
+  isAggregation = false,
+  include,
+} = {}) {
+  return apiClient
+    .findAll('allocation', {
+      ...filter,
+      page,
+      per_page: isAggregation ? 1 : 100,
+      include: isAggregation ? [] : include,
+    })
+    .then(response => {
+      const { data, links, meta } = response
+      const results = [...combinedData, ...data]
+
+      if (isAggregation) {
+        return meta.pagination.total_objects
+      }
+
+      const hasNext = links.next && data.length !== 0
+
+      if (!hasNext) {
+        return results.map(AllocationService.transform({ includeCancelled }))
+      }
+
+      return getAll({
+        apiClient,
+        filter,
+        combinedData: results,
+        page: page + 1,
+        include,
+      })
+    })
+}
 
 class AllocationService extends BaseService {
   cancel(id, { reason, comment } = {}) {
@@ -99,68 +140,34 @@ class AllocationService extends BaseService {
     status,
     sortBy,
     sortDirection,
-    page,
   } = {}) {
     const [moveDateFrom, moveDateTo] = moveDate
 
-    return this.get({
+    return this.getAll({
       isAggregation,
       include: ['from_location', 'to_location'],
-      page,
       // TODO: This can be removed once move count and progress are returned
       // by the API as resouce meta
       includeCancelled: status ? status.includes('cancelled') : false,
-      filter: {
-        status: status,
-        from_locations: fromLocations.join(','),
-        to_locations: toLocations.join(','),
-        locations: locations.join(','),
-        date_from: moveDateFrom,
-        date_to: moveDateTo,
-      },
-      sort: {
-        by: sortBy,
-        direction: sortDirection,
-      },
+      filter: pickBy({
+        'filter[status]': status,
+        'filter[from_locations]': fromLocations.join(','),
+        'filter[to_locations]': toLocations.join(','),
+        'filter[locations]': locations.join(','),
+        'filter[date_from]': moveDateFrom,
+        'filter[date_to]': moveDateTo,
+        'sort[by]': sortBy,
+        'sort[direction]': sortDirection,
+      }),
     })
   }
 
-  get({
-    filter = {},
-    sort = {},
-    page = 1,
-    perPage = 20,
-    includeCancelled = false,
-    isAggregation = false,
-    include,
-  } = {}) {
-    return this.apiClient
-      .all('allocation')
-      .all('filtered')
-      .post(
-        {
-          filter: this.removeInvalid(filter),
-        },
-        this.removeInvalid({
-          include: isAggregation ? [] : include,
-          page: isAggregation ? 1 : page,
-          per_page: isAggregation ? 1 : perPage,
-          'sort[by]': sort.by,
-          'sort[direction]': sort.direction,
-        })
-      )
-      .then(response => {
-        const { data, meta } = response
-
-        if (isAggregation) {
-          return meta.pagination.total_objects
-        }
-
-        return {
-          ...response,
-          data: data.map(AllocationService.transform({ includeCancelled })),
-        }
-      })
+  getAll(props) {
+    return batchRequest(getAll, { ...props, apiClient: this.apiClient }, [
+      'from_locations',
+      'to_locations',
+      'locations',
+    ])
   }
 
   getById(id) {

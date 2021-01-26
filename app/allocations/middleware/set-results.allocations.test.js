@@ -2,19 +2,12 @@ const presenters = require('../../../common/presenters')
 
 const middleware = require('./set-results.allocations')
 
-const mockActiveMoves = {
-  data: [
-    { id: '1', foo: 'bar', status: 'requested' },
-    { id: '2', fizz: 'buzz', status: 'requested' },
-    { id: '3', foo: 'bar', status: 'completed' },
-    { id: '4', fizz: 'buzz', status: 'completed' },
-  ],
-  meta: {
-    pagination: {
-      total_pages: 2,
-    },
-  },
-}
+const mockActiveMoves = [
+  { id: '1', foo: 'bar', status: 'requested' },
+  { id: '2', fizz: 'buzz', status: 'requested' },
+  { id: '3', foo: 'bar', status: 'completed' },
+  { id: '4', fizz: 'buzz', status: 'completed' },
+]
 
 describe('Allocations middleware', function () {
   describe('#setResultsAllocations()', function () {
@@ -81,13 +74,8 @@ describe('Allocations middleware', function () {
         })
 
         it('should set resultsAsTable on req', function () {
-          expect(req).to.have.property('results')
-          expect(req.results).to.deep.equal(mockActiveMoves)
-        })
-
-        it('should set resultsAsTable on req', function () {
           expect(req).to.have.property('resultsAsTable')
-          expect(req.resultsAsTable).to.deep.equal(mockActiveMoves.data)
+          expect(req.resultsAsTable).to.deep.equal(mockActiveMoves)
         })
 
         it('should call presenter correct number of times', function () {
@@ -106,7 +94,7 @@ describe('Allocations middleware', function () {
 
         it('should call presenter for active moves', function () {
           expect(allocationsToTableStub).to.have.been.calledWithExactly(
-            mockActiveMoves.data
+            mockActiveMoves
           )
         })
 
