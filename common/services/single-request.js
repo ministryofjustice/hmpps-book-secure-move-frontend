@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { isNil, isUndefined, mapValues, omitBy, pick } = require('lodash')
+const { mapValues, pick } = require('lodash')
 
 const BaseService = require('./base')
 const MoveService = require('./move')
@@ -17,12 +17,13 @@ class SingleRequestService extends BaseService {
     status,
     moveDate = [],
     createdAtDate = [],
-    fromLocationId,
-    toLocationId,
+    fromLocationId = [],
+    toLocationId = [],
     dateOfBirthFrom,
     dateOfBirthTo,
     include,
     isAggregation = false,
+    page,
     sortBy = 'created_at',
     sortDirection = 'desc',
   } = {}) {
@@ -34,35 +35,35 @@ class SingleRequestService extends BaseService {
     switch (status) {
       case 'pending':
         statusFilter = {
-          'filter[status]': 'proposed',
+          status: 'proposed',
         }
         break
       case 'approved':
         statusFilter = {
-          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          status: 'requested,accepted,booked,in_transit,completed',
         }
         break
       case 'rejected':
         statusFilter = {
-          'filter[status]': 'cancelled',
-          'filter[cancellation_reason]': 'rejected',
+          status: 'cancelled',
+          cancellation_reason: 'rejected',
         }
         break
       case 'cancelled':
         statusFilter = {
-          'filter[status]': 'cancelled',
+          status: 'cancelled',
           // TODO: Find a better filter for this. Currently we will need to add any new reasons from the API here.
-          'filter[cancellation_reason]':
+          cancellation_reason:
             'made_in_error,supplier_declined_to_move,cancelled_by_pmu,other',
         }
         break
       default:
         statusFilter = {
-          'filter[status]': status,
+          status: status,
         }
     }
 
-    return this.moveService.getAll({
+    return this.moveService.get({
       isAggregation,
       include: include || [
         'from_location',
@@ -70,71 +71,29 @@ class SingleRequestService extends BaseService {
         'profile.person',
         'prison_transfer_reason',
       ],
-      filter: omitBy(
-        {
-          ...statusFilter,
-          'filter[has_relationship_to_allocation]': false,
-          'filter[from_location_id]': fromLocationId,
-          'filter[to_location_id]': toLocationId,
-          'filter[date_from]': moveDateFrom,
-          'filter[date_to]': moveDateTo,
-          'filter[date_of_birth_from]': dateOfBirthFrom,
-          'filter[date_of_birth_to]': dateOfBirthTo,
-          'filter[created_at_from]': createdAtFrom,
-          'filter[created_at_to]': createdAtTo,
-          'filter[move_type]': 'prison_transfer',
-          'sort[by]': sortBy,
-          'sort[direction]': sortDirection,
-        },
-        isNil
-      ),
+      filter: {
+        ...statusFilter,
+        has_relationship_to_allocation: 'false',
+        from_location_id: fromLocationId.join(','),
+        to_location_id: toLocationId.join(','),
+        date_from: moveDateFrom,
+        date_to: moveDateTo,
+        date_of_birth_from: dateOfBirthFrom,
+        date_of_birth_to: dateOfBirthTo,
+        created_at_from: createdAtFrom,
+        created_at_to: createdAtTo,
+        move_type: 'prison_transfer',
+      },
+      sort: {
+        by: sortBy,
+        direction: sortDirection,
+      },
+      page,
     })
   }
 
   async getDownload(args) {
     return this.moveService.getDownload(args)
-  }
-
-  getCancelled({
-    moveDate = [],
-    createdAtDate = [],
-    fromLocationId,
-    include,
-    sortBy = 'created_at',
-    sortDirection = 'desc',
-  } = {}) {
-    const [moveDateFrom, moveDateTo] = moveDate
-    const [createdAtFrom, createdAtTo] = createdAtDate
-    const dateRanges = omitBy(
-      {
-        'filter[date_from]': moveDateFrom,
-        'filter[date_to]': moveDateTo,
-        'filter[created_at_from]': createdAtFrom,
-        'filter[created_at_to]': createdAtTo,
-      },
-      isUndefined
-    )
-
-    return this.moveService.getAll({
-      isAggregation: false,
-      include: include || [
-        'from_location',
-        'to_location',
-        'profile.person',
-        'prison_transfer_reason',
-      ],
-      filter: {
-        'filter[has_relationship_to_allocation]': false,
-        'filter[from_location_id]': fromLocationId,
-        'filter[status]': 'cancelled',
-        'filter[allocation]': false,
-        'filter[move_type]': 'prison_transfer',
-        'filter[rejection_reason]': undefined,
-        'sort[by]': sortBy,
-        'sort[direction]': sortDirection,
-        ...dateRanges,
-      },
-    })
   }
 
   approve(id, { date } = {}) {
