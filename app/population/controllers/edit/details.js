@@ -1,4 +1,4 @@
-const { omit } = require('lodash')
+const { omit, mapValues } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 
@@ -86,6 +86,30 @@ class DetailsController extends FormWizardController {
     }
 
     next()
+  }
+
+  stringifyValues({ fields, values }) {
+    return mapValues(values, (item, key) => {
+      if (fields[key] && fields[key].inputmode === 'numeric') {
+        return item.toString()
+      }
+
+      return item
+    })
+  }
+
+  getValues(req, res, cb) {
+    super.getValues(req, res, (err, values) => {
+      if (err) {
+        return cb(err, values)
+      }
+      const stringedValues = this.stringifyValues({
+        fields: req.form.options.fields,
+        values,
+      })
+
+      return cb(err, stringedValues)
+    })
   }
 }
 module.exports = DetailsController

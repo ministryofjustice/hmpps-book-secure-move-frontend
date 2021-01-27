@@ -342,5 +342,108 @@ describe('Population controllers', function () {
         })
       })
     })
+
+    describe('stringifyValues', function () {
+      it('should stringify numeric input values', function () {
+        expect(
+          controllerInstance.stringifyValues({
+            fields: {
+              numberField1: {
+                inputmode: 'numeric',
+              },
+            },
+            values: { numberField1: 0 },
+          })
+        ).to.deep.equal({ numberField1: '0' })
+      })
+
+      it('should not stringify non-numeric input values', function () {
+        expect(
+          controllerInstance.stringifyValues({
+            fields: {
+              numberField1: {},
+            },
+            values: { numberField1: 0 },
+          })
+        ).to.deep.equal({ numberField1: 0 })
+      })
+    })
+
+    describe('getValues', function () {
+      let cb
+      let values
+      let stringedValues
+
+      beforeEach(function () {
+        values = {
+          numberField1: 0,
+          textField1: 'string value',
+          numberField2: 1,
+        }
+        stringedValues = {
+          numberField1: '0',
+          textField1: 'string value',
+          numberField2: '1',
+        }
+        req.form.options.fields = {
+          numberField1: {
+            inputmode: 'numeric',
+          },
+          textField1: {},
+          numberField2: {
+            inputmode: 'numeric',
+          },
+        }
+        sinon.stub(FormWizardController.prototype, 'getValues')
+        sinon.stub(controllerInstance, 'stringifyValues')
+
+        cb = sinon.stub()
+      })
+
+      it('should call parent getValues', function () {
+        controllerInstance.getValues(req, res, cb)
+
+        expect(FormWizardController.prototype.getValues).to.have.been.calledOnce
+      })
+
+      context('on parent response with error', function () {
+        let err
+        beforeEach(function () {
+          err = new Error('Super error')
+          FormWizardController.prototype.getValues.callsArgWith(2, err, values)
+
+          controllerInstance.getValues(req, res, cb)
+        })
+        it('should not call stringifyValues', function () {
+          expect(controllerInstance.stringifyValues).not.to.have.been.called
+        })
+        it('should call callback with error and values', function () {
+          expect(cb).to.have.been.calledWith(err, values)
+        })
+      })
+      context('on parent response without error', function () {
+        beforeEach(function () {
+          controllerInstance.stringifyValues.returns(stringedValues)
+          FormWizardController.prototype.getValues.callsArgWith(2, null, values)
+
+          controllerInstance.getValues(req, res, cb)
+        })
+
+        it('should call stringifyValues', function () {
+          controllerInstance.getValues(req, res, cb)
+
+          expect(
+            controllerInstance.stringifyValues
+          ).to.have.been.calledWithExactly({
+            fields: req.form.options.fields,
+            values: values,
+          })
+        })
+
+        it('should call callback with error and stringed values', function () {
+          expect(cb).to.have.been.calledWith(null, stringedValues)
+        })
+      })
+    })
   })
 })
