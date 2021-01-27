@@ -1123,19 +1123,6 @@ describe('Move Service', function () {
           })
         })
       })
-
-      context('when called with preserveResourceRefs parameter', function () {
-        beforeEach(async function () {
-          move = await moveService._getById(mockId, {
-            preserveResourceRefs: true,
-          })
-        })
-        it('should pass preserveResourceRefs param on', function () {
-          expect(apiClient.find).to.be.calledOnceWithExactly('move', mockId, {
-            preserveResourceRefs: true,
-          })
-        })
-      })
     })
   })
 
@@ -1176,7 +1163,6 @@ describe('Move Service', function () {
             'timeline_events',
             'timeline_events.eventable',
           ],
-          preserveResourceRefs: true,
         })
       })
       it('should return move', function () {

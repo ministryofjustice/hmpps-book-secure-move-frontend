@@ -79,20 +79,6 @@ describe('API Client', function () {
       })
     })
 
-    context('when response’s resources should be populated', function () {
-      beforeEach(async function () {
-        payload.req.params.preserveResourceRefs = 'foo'
-        response = await requestMiddleware().req(payload)
-      })
-
-      it('should remove populateResources property from params', function () {
-        expect(response.req.params.preserveResourceRefs).to.be.undefined
-      })
-      it('should copy populateResources property to req object', function () {
-        expect(response.req.preserveResourceRefs).to.equal('foo')
-      })
-    })
-
     context('when response should not be cached', function () {
       beforeEach(async function () {
         response = await requestMiddleware({ useRedisCache: true }).req(payload)

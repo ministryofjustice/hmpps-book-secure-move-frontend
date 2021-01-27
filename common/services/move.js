@@ -305,7 +305,7 @@ class MoveService extends BaseService {
       'timeline_events.eventable',
     ]
 
-    return this._getById(id, { include, preserveResourceRefs: true })
+    return this._getById(id, { include })
   }
 
   create(data, { include } = {}) {

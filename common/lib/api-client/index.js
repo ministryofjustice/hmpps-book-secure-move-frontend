@@ -12,7 +12,6 @@ const {
   requestHeaders,
   requestInclude,
   requestTimeout,
-  processResponse,
 } = require('./middleware')
 const models = require('./models')
 
@@ -50,8 +49,6 @@ module.exports = function (req) {
   insertRequestMiddleware(requestTimeout(API.TIMEOUT))
   insertRequestMiddleware(requestHeaders(req))
   insertRequestMiddleware(requestInclude)
-
-  instance.insertMiddlewareAfter('app-request', processResponse)
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {
