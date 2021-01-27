@@ -79,7 +79,7 @@ describe('Population middleware', function () {
         middleware(req, res, next)
 
         expect(breadcrumbSpy.thirdCall).to.have.been.calledWith({
-          href: req.baseUrl,
+          href: '/population/day/2020-07-29/ABADCAFE',
           text: 'Wednesday 29 July',
         })
       })
