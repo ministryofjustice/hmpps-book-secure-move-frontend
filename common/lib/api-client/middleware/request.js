@@ -22,11 +22,6 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
 
       debug(req.method, url)
 
-      if (req.params.preserveResourceRefs) {
-        req.preserveResourceRefs = req.params.preserveResourceRefs
-        delete req.params.preserveResourceRefs
-      }
-
       // start timer for metrics and logging
       const clientTimer = timer()
 

@@ -187,18 +187,6 @@ describe('Back-end API client', function () {
             ).to.equal(6)
           })
 
-          it('should insert process response middleware', function () {
-            expect(
-              JsonApiStub.prototype.insertMiddlewareAfter.getCall(0)
-            ).to.be.calledWithExactly('app-request', processResponseStub)
-          })
-
-          it('should call insertMiddlewareAfter correct number of times', function () {
-            expect(
-              JsonApiStub.prototype.insertMiddlewareAfter.callCount
-            ).to.equal(1)
-          })
-
           it('should call replaceMiddleware correct number of times', function () {
             expect(JsonApiStub.prototype.replaceMiddleware.callCount).to.equal(
               3

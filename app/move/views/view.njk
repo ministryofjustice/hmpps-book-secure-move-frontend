@@ -44,7 +44,7 @@
 
       {% if canAccess("move:review") %}
         {{ govukButton({
-          href: move.id + "/review",
+          href: "/move/" + move.id + "/review",
           text: t("actions::review")
         }) }}
       {% endif %}
