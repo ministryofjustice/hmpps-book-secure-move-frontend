@@ -33,9 +33,8 @@ describe('Population middleware', function () {
       req = {
         body: {},
         dateRange: ['2020-08-01', '2020-08-01'],
-        params: {
-          locations: ['BAADF00D', 'ABADCAFE'],
-        },
+        params: {},
+        locations: ['BAADF00D', 'ABADCAFE'],
         services: {
           locationsFreeSpaces: locationsFreeSpacesService,
         },

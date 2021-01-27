@@ -1,7 +1,7 @@
 async function setLocationFreeSpaces(req, res, next) {
   try {
-    const { dateRange } = req
-    const { locationId, locations } = req.params
+    const { dateRange, locations } = req
+    const { locationId } = req.params
 
     const dailyFreeSpaceByCategory = await req.services.locationsFreeSpaces.getPrisonFreeSpaces(
       {
