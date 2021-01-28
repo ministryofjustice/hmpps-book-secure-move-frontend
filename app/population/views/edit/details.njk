@@ -29,7 +29,7 @@
         <label class="govuk-label govuk-label--s" for="transfers_in">
           {{ t('population::daily_view.labels.transfers_in') }}
         </label>
-        <div id="transfers_in">{{  values.moves_to.length  }}</div>
+        <div id="transfers_in" class="govuk-label">{{ values.moves_to.length }}</div>
       </div>
     {% endcall %}
 
@@ -38,7 +38,7 @@
         <label class="govuk-label govuk-label--s" for="transfers_out">
           {{ t('population::daily_view.labels.transfers_out') }}
         </label>
-        <div id="transfers_out">{{  values.moves_from.length }}</div>
+        <div id="transfers_out" class="govuk-label">{{ values.moves_from.length }}</div>
       </div>
     {% endcall %}
   </div>
