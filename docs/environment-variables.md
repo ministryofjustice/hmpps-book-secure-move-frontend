@@ -65,29 +65,6 @@
 | E2E_SKIP | Comma-delimited list of files to skip when running the end-to-end tests eg. test/e2/allocation.cancel.test.js | |
 | E2E_MOCK_AUTH | Whether to use the mock auth server | false |
 
-## E2E Users
-
-| Name                                | Description                                                                                                                                                                                                                        | Default                                                                             |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| E2E_COURT_USERNAME | Court user username used for acceptance testing | |
-| E2E_COURT_PASSWORD | Court user password used for acceptance testing | |
-| E2E_OCA_USERNAME | OCA user username used for acceptance testing | |
-| E2E_OCA_PASSWORD | OCA user password used for acceptance testing | |
-| E2E_PER_USERNAME | Person Escort Record user username used for acceptance testing | |
-| E2E_PER_PASSWORD | Person Escort Record user password used for acceptance testing | |
-| E2E_PMU_USERNAME | Population Management Unit user username used for acceptance testing | |
-| E2E_PMU_PASSWORD | Population Management Unit user password used for acceptance testing | |
-| E2E_POLICE_USERNAME | Police user username used for acceptance testing | |
-| E2E_POLICE_PASSWORD | Police user password used for acceptance testing | |
-| E2E_PRISON_USERNAME | Prison user username used for acceptance testing | |
-| E2E_PRISON_PASSWORD | Prison user password used for acceptance testing | |
-| E2E_SCH_USERNAME | Secure Children Homr user username used for acceptance testing | |
-| E2E_SCH_PASSWORD | Secure Children Home user password used for acceptance testing | |
-| E2E_STC_USERNAME | Secure Training user username used for acceptance testing | |
-| E2E_STC_PASSWORD | Secure Training user password used for acceptance testing | |
-| E2E_SUPPLIER_USERNAME | Supplier user username used for acceptance testing | |
-| E2E_SUPPLIER_PASSWORD | Supplier user username used for acceptance testing | |
-
 ## Feature Flags
 
 | Name                                    | Description                                                                  | Default |

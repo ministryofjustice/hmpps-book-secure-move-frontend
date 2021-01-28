@@ -3,76 +3,22 @@
 const compression = require('compression')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const { find } = require('lodash')
 
 const { decodeAccessToken } = require('../common/lib/access-token')
 const {
-  E2E: { ROLES },
+  E2E: { USERS },
 } = require('../config')
 
-const roleConfig = {
-  COURT: {
-    locations: ['ABDRCT', 'BDFRCT'],
-    name: 'End-to-End Test Court',
-    authorities: ['ROLE_PECS_COURT'],
-  },
-  POLICE: {
-    locations: ['SRY016', 'CLP1'],
-    name: 'End-to-End Test Police',
-    authorities: ['ROLE_PECS_POLICE'],
-  },
-  PRISON: {
-    locations: ['WYI'],
-    name: 'End-to-End Test Prison',
-    authorities: ['ROLE_PECS_PRISON'],
-  },
-  SCH: {
-    locations: ['SCH9'],
-    name: 'End-to-End Test Secure Childrens Home',
-    authorities: ['ROLE_PECS_SCH'],
-  },
-  STC: {
-    locations: ['STC3'],
-    name: 'End-to-End Test STC',
-    authorities: ['ROLE_PECS_STC'],
-  },
-  OCA: {
-    locations: ['WYI'],
-    name: 'End-to-end OCA',
-    authorities: ['ROLE_PECS_OCA'],
-  },
-  PMU: {
-    locations: ['BXI', 'BZI', 'NMI', 'PVI', 'TSI'],
-    name: 'End-to-End Test PMU',
-    authorities: ['ROLE_PECS_PMU', 'ROLE_PRISON', 'ROLE_PECS_PRISON'],
-    auth_source: 'nomis',
-  },
-  SUPPLIER: {
-    locations: ['GEOAMEY'],
-    name: 'End-to-End Test Supplier',
-    authorities: ['ROLE_PECS_SUPPLIER'],
-  },
-  PER: {
-    locations: ['SRY016', 'MPS2'],
-    name: 'E2E Person Escort Record',
-    authorities: ['ROLE_PECS_POLICE', 'ROLE_PECS_PER_AUTHOR'],
-  },
+const getUserFromToken = req => {
+  const token = req.headers.authorization.replace(/Bearer\s+/, '')
+  const decodedToken = decodeAccessToken(token)
+  return decodedToken
 }
 
-const users = Object.keys(ROLES).reduce((users, role) => {
-  const { username, password } = ROLES[role]
-  const { auth_source, locations: roleLocations } = roleConfig[role]
-  const locationProperty = auth_source === 'nomis' ? 'caseLoadId' : 'groupCode'
-  const locations = (roleLocations || []).map(loc => ({
-    [locationProperty]: loc,
-  }))
-  users[username] = {
-    ...roleConfig[role],
-    password,
-    role,
-    locations,
-  }
-  return users
-}, {})
+const getUserFromUsername = username => {
+  return find(USERS, { username }) || {}
+}
 
 const app = express()
 
@@ -95,7 +41,7 @@ app.get('/auth/oauth/authorize', (req, res) => {
 
 app.post('/auth/oauth/token', (req, res) => {
   const username = req.body.code
-  const { authorities, auth_source = 'auth' } = users[username]
+  const { authorities, auth_source = 'auth' } = getUserFromUsername(username)
   const token = {
     sub: username,
     user_name: username,
@@ -112,7 +58,7 @@ app.post('/auth/oauth/token', (req, res) => {
 app.post('/auth/login', (req, res) => {
   const { username, password, state, redirect_uri: redirectUri } = req.body
 
-  if (users[username].password === password) {
+  if (getUserFromUsername(username).password === password) {
     res.redirect(`${redirectUri}?state=${state}&code=${username}`)
   } else {
     res.status(401)
@@ -124,15 +70,10 @@ app.get('/auth/logout', (req, res) => {
   res.redirect(req.query.redirect_uri)
 })
 
-const getUserFromToken = req => {
-  const token = req.headers.authorization.replace(/Bearer\s+/, '')
-  const decodedToken = decodeAccessToken(token)
-  return decodedToken
-}
-
 app.get('/auth/api/user/me', (req, res) => {
   const { user_name: username } = getUserFromToken(req)
-  const name = users[username].name
+  const name = getUserFromUsername(username).name
+
   res.json({
     username,
     active: true,
@@ -143,18 +84,27 @@ app.get('/auth/api/user/me', (req, res) => {
 
 app.get('/auth/api/authuser/:ROLE/groups', (req, res) => {
   const { user_name: username } = getUserFromToken(req)
-  const groupCodes = users[username].locations
+  const { locations = [] } = getUserFromUsername(username)
+  const groupCodes = locations.map(location => {
+    return { groupCode: location }
+  })
+
   res.json(groupCodes)
 })
 
 app.get('/api/users/me/caseLoads', (req, res) => {
   const { user_name: username } = getUserFromToken(req)
-  const caseLoadIds = users[username].locations
+  const { locations = [] } = getUserFromUsername(username)
+  const caseLoadIds = locations.map(location => {
+    return { caseLoadId: location }
+  })
+
   res.json(caseLoadIds)
 })
 
 app.use('*', (req, res, next) => {
   const { url, query, body } = req
+
   res.send(`Received ${JSON.stringify({ url, query, body }, 2, null)}`)
 })
 
