@@ -1,10 +1,9 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined, isEmpty, isNil } = require('lodash')
+const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
 
 const restClient = require('../lib/api-client/rest-client')
 
 const BaseService = require('./base')
-const batchRequest = require('./batch-request')
 
 const defaultInclude = [
   'allocation',
@@ -36,49 +35,6 @@ const defaultInclude = [
   'supplier',
   'to_location',
 ]
-
-function getAll({
-  apiClient,
-  filter = {},
-  metaQuery = {},
-  combinedData = [],
-  page = 1,
-  isAggregation = false,
-  include,
-} = {}) {
-  return apiClient
-    .findAll('move', {
-      ...filter,
-      ...metaQuery,
-      include: isAggregation ? [] : include,
-      page,
-      per_page: isAggregation ? 1 : 100,
-    })
-    .then(response => {
-      const { data, links, meta } = response
-      const moves = [...combinedData, ...data]
-
-      if (isAggregation) {
-        return meta.pagination.total_objects
-      }
-
-      const hasNext = links.next && data.length !== 0
-
-      if (!hasNext) {
-        return moves
-      }
-
-      return getAll({
-        apiClient,
-        filter,
-        metaQuery,
-        combinedData: moves,
-        page: page + 1,
-        include,
-      })
-    })
-}
-
 const noMoveIdMessage = 'No move ID supplied'
 
 class MoveService extends BaseService {
@@ -118,24 +74,92 @@ class MoveService extends BaseService {
     })
   }
 
-  async getAll(props = {}) {
-    const results = await batchRequest(
-      getAll,
-      { ...props, apiClient: this.apiClient },
-      ['from_location_id', 'to_location_id']
-    )
+  get({
+    filter = {},
+    sort = {},
+    page = 1,
+    perPage = 20,
+    isAggregation = false,
+    include,
+  } = {}) {
+    return this.apiClient
+      .all('move')
+      .all('filtered')
+      .post(
+        {
+          filter: this.removeInvalid(filter),
+        },
+        this.removeInvalid({
+          include: isAggregation ? [] : include,
+          page: isAggregation ? 1 : page,
+          per_page: isAggregation ? 1 : perPage,
+          'sort[by]': sort.by,
+          'sort[direction]': sort.direction,
+        })
+      )
+      .then(response => {
+        if (isAggregation) {
+          return response.meta.pagination.total_objects
+        }
 
-    if (props.isAggregation) {
-      return results
-    }
+        return response
+      })
+  }
 
-    return results
+  getAll({
+    filter = {},
+    params = {},
+    combinedData = [],
+    page = 1,
+    isAggregation = false,
+    include,
+    sort = {},
+  } = {}) {
+    return this.apiClient
+      .all('move')
+      .all('filtered')
+      .post(
+        {
+          filter: this.removeInvalid(filter),
+        },
+        this.removeInvalid({
+          ...params,
+          include: isAggregation ? [] : include,
+          page: isAggregation ? 1 : page,
+          per_page: isAggregation ? 1 : 100,
+          'sort[by]': sort.by,
+          'sort[direction]': sort.direction,
+        })
+      )
+      .then(response => {
+        const { data, links, meta } = response
+        const moves = [...combinedData, ...data]
+
+        if (isAggregation) {
+          return meta.pagination.total_objects
+        }
+
+        const hasNext = links.next && data.length !== 0
+
+        if (!hasNext) {
+          return moves
+        }
+
+        return this.getAll({
+          filter,
+          sort,
+          combinedData: moves,
+          page: page + 1,
+          params,
+          include,
+        })
+      })
   }
 
   getActive({
     dateRange = [],
-    fromLocationId,
-    toLocationId,
+    fromLocationId = [],
+    toLocationId = [],
     supplierId,
     status,
     isAggregation = false,
@@ -146,39 +170,39 @@ class MoveService extends BaseService {
     switch (status) {
       case 'active':
         statusFilter = {
-          'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          status: 'requested,accepted,booked,in_transit,completed',
         }
         break
       case 'incomplete':
         statusFilter = {
-          'filter[status]': 'requested,accepted,booked',
-          'filter[ready_for_transit]': false,
+          status: 'requested,accepted,booked',
+          ready_for_transit: 'false',
         }
         break
       case 'awaiting_collection':
         statusFilter = {
-          'filter[status]': 'requested,accepted,booked',
+          status: 'requested,accepted,booked',
         }
         break
       case 'ready_for_transit':
         statusFilter = {
-          'filter[status]': 'requested,accepted,booked',
-          'filter[ready_for_transit]': true,
+          status: 'requested,accepted,booked',
+          ready_for_transit: 'true',
         }
         break
       case 'left_custody':
         statusFilter = {
-          'filter[status]': 'in_transit,completed',
+          status: 'in_transit,completed',
         }
         break
       case 'cancelled':
         statusFilter = {
-          'filter[status]': 'cancelled',
+          status: 'cancelled',
         }
         break
       default:
         statusFilter = {
-          'filter[status]': status,
+          status: status,
         }
     }
 
@@ -193,46 +217,18 @@ class MoveService extends BaseService {
         'profile.person_escort_record.flags',
         'to_location',
       ],
-      metaQuery: {
+      params: {
         meta:
           'vehicle_registration,expected_time_of_arrival,expected_collection_time',
       },
-      filter: omitBy(
-        {
-          ...statusFilter,
-          'filter[date_from]': startDate,
-          'filter[date_to]': endDate,
-          'filter[from_location_id]': fromLocationId,
-          'filter[to_location_id]': toLocationId,
-          'filter[supplier_id]': supplierId,
-        },
-        isNil
-      ),
-    })
-  }
-
-  getCancelled({
-    dateRange = [],
-    fromLocationId,
-    toLocationId,
-    supplierId,
-    isAggregation = false,
-  } = {}) {
-    const [startDate, endDate] = dateRange
-    return this.getAll({
-      isAggregation,
-      include: ['profile.person'],
-      filter: omitBy(
-        {
-          'filter[status]': 'cancelled',
-          'filter[date_from]': startDate,
-          'filter[date_to]': endDate,
-          'filter[from_location_id]': fromLocationId,
-          'filter[to_location_id]': toLocationId,
-          'filter[supplier_id]': supplierId,
-        },
-        isEmpty
-      ),
+      filter: {
+        ...statusFilter,
+        date_from: startDate,
+        date_to: endDate,
+        from_location_id: fromLocationId.join(','),
+        to_location_id: toLocationId.join(','),
+        supplier_id: supplierId,
+      },
     })
   }
 

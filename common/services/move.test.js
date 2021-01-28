@@ -3,14 +3,6 @@ const proxyquire = require('proxyquire')
 const apiClient = require('../lib/api-client')()
 
 const formatISOStub = sinon.stub().returns('#timestamp')
-const mockBatchSize = 30
-
-const batchRequest = proxyquire('./batch-request', {
-  '../../config': {
-    LOCATIONS_BATCH_SIZE: mockBatchSize,
-  },
-})
-const batchRequestStub = sinon.stub().callsFake(batchRequest)
 
 const restClient = sinon.stub()
 restClient.post = sinon.stub()
@@ -19,7 +11,6 @@ const MoveService = proxyquire('./move', {
   'date-fns': {
     formatISO: formatISOStub,
   },
-  './batch-request': batchRequestStub,
   '../lib/api-client/rest-client': restClient,
 })
 
@@ -278,6 +269,134 @@ describe('Move Service', function () {
     })
   })
 
+  describe('#get()', function () {
+    const mockResponse = {
+      data: mockMoves,
+      links: {},
+      meta: {
+        pagination: {
+          total_objects: 10,
+        },
+      },
+    }
+    let moves
+
+    beforeEach(function () {
+      sinon.stub(moveService, 'removeInvalid').returnsArg(0)
+      sinon.stub(apiClient, 'all').returnsThis()
+      sinon.stub(apiClient, 'post')
+    })
+
+    beforeEach(function () {
+      apiClient.post.resolves(mockResponse)
+    })
+
+    context('by default', function () {
+      beforeEach(async function () {
+        moves = await moveService.get()
+      })
+
+      it('should call the API client with default options', function () {
+        expect(apiClient.all.firstCall).to.be.calledWithExactly('move')
+        expect(apiClient.all.secondCall).to.be.calledWithExactly('filtered')
+        expect(apiClient.post).to.be.calledOnceWithExactly(
+          { filter: {} },
+          {
+            include: undefined,
+            page: 1,
+            per_page: 20,
+            'sort[by]': undefined,
+            'sort[direction]': undefined,
+          }
+        )
+      })
+
+      it('should return response', function () {
+        expect(moves).to.deep.equal(mockResponse)
+      })
+    })
+
+    describe('filter', function () {
+      const mockFilter = {
+        foo: 'bar',
+        'fizz[buzz]': 'bang',
+      }
+      beforeEach(async function () {
+        moves = await moveService.get({
+          filter: mockFilter,
+        })
+      })
+
+      it('should call with filter as payload', function () {
+        expect(apiClient.post.args[0][0]).to.deep.equal({
+          filter: mockFilter,
+        })
+      })
+    })
+
+    describe('params', function () {
+      beforeEach(async function () {
+        moves = await moveService.get({
+          include: ['moves'],
+          page: 3,
+          perPage: 50,
+          sort: {
+            by: 'name',
+            direction: 'asc',
+          },
+        })
+      })
+
+      it('should use correct values for query', function () {
+        expect(apiClient.post.args[0][1]).to.deep.equal({
+          include: ['moves'],
+          page: 3,
+          per_page: 50,
+          'sort[by]': 'name',
+          'sort[direction]': 'asc',
+        })
+      })
+    })
+
+    context('with aggregation', function () {
+      beforeEach(async function () {
+        moves = await moveService.get({
+          isAggregation: true,
+          page: 5,
+          perPage: 50,
+          include: ['moves'],
+        })
+      })
+
+      it('should call the API client with only one per page', function () {
+        expect(apiClient.post.args[0][1]).to.deep.include({
+          include: [],
+          page: 1,
+          per_page: 1,
+        })
+      })
+
+      it('should return a count', function () {
+        expect(moves).to.equal(10)
+      })
+    })
+
+    context('when specifying include parameter', function () {
+      beforeEach(async function () {
+        apiClient.post.resolves(mockResponse)
+        moves = await moveService.get({
+          include: ['foo', 'bar'],
+        })
+      })
+
+      it('should pass include param to the API client', function () {
+        expect(apiClient.post.args[0][1]).to.be.deep.include({
+          include: ['foo', 'bar'],
+        })
+      })
+    })
+  })
+
   describe('#getAll()', function () {
     const mockResponse = {
       data: mockMoves,
@@ -313,34 +432,21 @@ describe('Move Service', function () {
     const mockFilter = {
       filterOne: 'foo',
     }
+    const mockParams = {
+      meta:
+        'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+    }
     let moves
 
     beforeEach(function () {
-      sinon.stub(apiClient, 'findAll')
-    })
-
-    context('when batching the request', function () {
-      const props = { foo: 'bar' }
-      beforeEach(async function () {
-        apiClient.findAll.resolves(mockResponse)
-        await moveService.getAll(props)
-      })
-
-      it('should invoke batching correctly', async function () {
-        expect(batchRequestStub).to.be.calledOnce
-        const batchArgs = batchRequestStub.firstCall.args
-        expect(typeof batchArgs[0]).to.equal('function')
-        expect(batchArgs[1]).to.deep.equal({ ...props, apiClient: apiClient })
-        expect(batchArgs[2]).to.deep.equal([
-          'from_location_id',
-          'to_location_id',
-        ])
-      })
+      sinon.stub(moveService, 'removeInvalid').returnsArg(0)
+      sinon.stub(apiClient, 'all').returnsThis()
+      sinon.stub(apiClient, 'post')
     })
 
     context('with only one page', function () {
       beforeEach(function () {
-        apiClient.findAll.resolves(mockResponse)
+        apiClient.post.resolves(mockResponse)
       })
 
       context('by default', function () {
@@ -348,16 +454,23 @@ describe('Move Service', function () {
           moves = await moveService.getAll()
         })
 
-        it('should call the API client once', function () {
-          expect(apiClient.findAll).to.be.calledOnce
+        it('should call the API client correctly', function () {
+          expect(apiClient.all.firstCall).to.be.calledWithExactly('move')
+          expect(apiClient.all.secondCall).to.be.calledWithExactly('filtered')
+          expect(apiClient.post).to.be.calledOnce
         })
 
         it('should call the API client with default options', function () {
-          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-            page: 1,
-            per_page: 100,
-            include: undefined,
-          })
+          expect(apiClient.post).to.be.calledOnceWithExactly(
+            { filter: {} },
+            {
+              page: 1,
+              per_page: 100,
+              include: undefined,
+              'sort[by]': undefined,
+              'sort[direction]': undefined,
+            }
+          )
         })
 
         it('should return moves', function () {
@@ -373,93 +486,33 @@ describe('Move Service', function () {
         })
 
         it('should call the API client with filter', function () {
-          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-            ...mockFilter,
-            page: 1,
-            per_page: 100,
-            include: undefined,
-          })
-        })
-
-        it('should return moves', function () {
-          expect(moves).to.deep.equal(mockMoves)
-        })
-      })
-
-      context('with filter', function () {
-        beforeEach(async function () {
-          moves = await moveService.getAll({
-            metaQuery: {
-              meta:
-                'vehicle_registration,expected_time_of_arrival,expected_collection_time',
-            },
-          })
-        })
-
-        it('should call the API client with filter', function () {
-          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-            meta:
-              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
-            page: 1,
-            per_page: 100,
-            include: undefined,
-          })
-        })
-
-        it('should return moves', function () {
-          expect(moves).to.deep.equal(mockMoves)
-        })
-      })
-
-      context('with from_location arguments as arrays', function () {
-        beforeEach(async function () {
-          moves = await moveService.getAll({
-            filter: {
-              'filter[from_location_id]': ['a', 'b'],
-            },
-          })
-        })
-
-        it('should call the API client with comma-delimited arguments', function () {
-          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
-            'filter[from_location_id]': 'a,b',
-            page: 1,
-            per_page: 100,
-            include: undefined,
+          expect(apiClient.post.args[0][0]).to.deep.equal({
+            filter: mockFilter,
           })
         })
       })
 
-      context('with to_location arguments as arrays', function () {
+      context('with params', function () {
         beforeEach(async function () {
           moves = await moveService.getAll({
-            filter: {
-              'filter[to_location_id]': ['a', 'b'],
-            },
+            params: mockParams,
           })
         })
 
-        it('should call the API client with comma-delimited arguments', function () {
-          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
-            'filter[to_location_id]': 'a,b',
-            page: 1,
-            per_page: 100,
-            include: undefined,
-          })
+        it('should call the API client with params', function () {
+          expect(apiClient.post.args[0][1]).to.deep.include(mockParams)
         })
       })
 
       context('with aggregation', function () {
         beforeEach(async function () {
           moves = await moveService.getAll({
-            filter: mockFilter,
             isAggregation: true,
           })
         })
 
         it('should call the API client with only one per page', function () {
-          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
-            ...mockFilter,
+          expect(apiClient.post.args[0][1]).to.deep.include({
             page: 1,
             per_page: 1,
             include: [],
@@ -470,11 +523,43 @@ describe('Move Service', function () {
           expect(moves).to.equal(10)
         })
       })
+
+      context('with sort', function () {
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            sort: {
+              by: 'name',
+              direction: 'asc',
+            },
+          })
+        })
+
+        it('should call the API client with sort params', function () {
+          expect(apiClient.post.args[0][1]).to.deep.include({
+            'sort[by]': 'name',
+            'sort[direction]': 'asc',
+          })
+        })
+      })
+
+      context('with include', function () {
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            include: ['moves', 'people'],
+          })
+        })
+
+        it('should call the API client with include', function () {
+          expect(apiClient.post.args[0][1]).to.deep.include({
+            include: ['moves', 'people'],
+          })
+        })
+      })
     })
 
     context('with multiple pages', function () {
       beforeEach(function () {
-        apiClient.findAll
+        apiClient.post
           .onFirstCall()
           .resolves(mockMultiPageResponse)
           .onSecondCall()
@@ -486,24 +571,35 @@ describe('Move Service', function () {
           moves = await moveService.getAll()
         })
 
-        it('should call the API client twice', function () {
-          expect(apiClient.findAll).to.be.calledTwice
+        it('should call the API client correct number of times', function () {
+          expect(apiClient.all.callCount).to.equal(4)
+          expect(apiClient.post).to.be.calledTwice
         })
 
         it('should call API client with default options on first call', function () {
-          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-            page: 1,
-            per_page: 100,
-            include: undefined,
-          })
+          expect(apiClient.post.firstCall).to.be.calledWithExactly(
+            { filter: {} },
+            {
+              page: 1,
+              per_page: 100,
+              include: undefined,
+              'sort[by]': undefined,
+              'sort[direction]': undefined,
+            }
+          )
         })
 
         it('should call API client with second page on second call', function () {
-          expect(apiClient.findAll.secondCall).to.be.calledWithExactly('move', {
-            page: 2,
-            per_page: 100,
-            include: undefined,
-          })
+          expect(apiClient.post.secondCall).to.be.calledWithExactly(
+            { filter: {} },
+            {
+              page: 2,
+              per_page: 100,
+              include: undefined,
+              'sort[by]': undefined,
+              'sort[direction]': undefined,
+            }
+          )
         })
 
         it('should return moves', function () {
@@ -511,141 +607,89 @@ describe('Move Service', function () {
         })
       })
 
-      context('with filter', function () {
+      context('with filter and params', function () {
         beforeEach(async function () {
           moves = await moveService.getAll({
             filter: mockFilter,
+            params: mockParams,
           })
         })
 
-        it('should call API client with filter on first call', function () {
-          expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-            ...mockFilter,
-            page: 1,
-            per_page: 100,
-            include: undefined,
+        it('should pass filter and params to first call', function () {
+          expect(apiClient.post.args[0][0]).to.deep.include({
+            filter: mockFilter,
+          })
+          expect(apiClient.post.args[0][1]).to.deep.include(mockParams)
+        })
+
+        it('should pass filter and params to second call', function () {
+          expect(apiClient.post.args[1][0]).to.deep.include({
+            filter: mockFilter,
+          })
+          expect(apiClient.post.args[1][1]).to.deep.include(mockParams)
+        })
+      })
+
+      context('with sort', function () {
+        const mockSort = {
+          by: 'name',
+          direction: 'desc',
+        }
+        beforeEach(async function () {
+          moves = await moveService.getAll({
+            sort: mockSort,
           })
         })
 
-        it('should call API client with filter on second call', function () {
-          expect(apiClient.findAll.secondCall).to.be.calledWithExactly('move', {
-            ...mockFilter,
-            page: 2,
-            per_page: 100,
-            include: undefined,
+        it('should pass sort to first call', function () {
+          expect(apiClient.post.args[0][1]).to.deep.include({
+            'sort[by]': mockSort.by,
+            'sort[direction]': mockSort.direction,
+          })
+        })
+
+        it('should pass sort to second call', function () {
+          expect(apiClient.post.args[1][1]).to.deep.include({
+            'sort[by]': mockSort.by,
+            'sort[direction]': mockSort.direction,
           })
         })
       })
 
-      context('with aggregation', function () {
+      context('with include', function () {
+        const mockInclude = ['foo', 'bar']
         beforeEach(async function () {
           moves = await moveService.getAll({
-            filter: mockFilter,
-            isAggregation: true,
+            include: mockInclude,
           })
         })
 
-        it('should call the API client with only one per page', function () {
-          expect(apiClient.findAll).to.be.calledOnceWithExactly('move', {
-            ...mockFilter,
-            page: 1,
-            per_page: 1,
-            include: [],
+        it('should pass sort to first call', function () {
+          expect(apiClient.post.args[0][1]).to.deep.include({
+            include: mockInclude,
           })
         })
 
-        it('should return a count', function () {
-          expect(moves).to.equal(10)
-        })
-      })
-
-      context('with aggregation and batched requests', function () {
-        const mockLocations = Array(mockBatchSize * 2)
-          .fill()
-          .map((v, i) => i)
-        beforeEach(async function () {
-          moves = await moveService.getAll({
-            filter: {
-              'filter[from_location_id]': mockLocations.join(','),
-            },
-            isAggregation: true,
+        it('should pass sort to second call', function () {
+          expect(apiClient.post.args[1][1]).to.deep.include({
+            include: mockInclude,
           })
-        })
-
-        it('should return an combined count for all the batches', function () {
-          expect(moves).to.equal(mockResponse.meta.pagination.total_objects * 2)
         })
       })
     })
 
     context('with next but no data', function () {
       beforeEach(async function () {
-        apiClient.findAll.resolves(mockEmptyPageResponse)
+        apiClient.post.resolves(mockEmptyPageResponse)
         moves = await moveService.getAll()
       })
 
       it('should call the API client once', function () {
-        expect(apiClient.findAll).to.be.calledOnce
+        expect(apiClient.post).to.be.calledOnce
       })
 
       it('should return no moves', function () {
         expect(moves).to.deep.equal([])
-      })
-    })
-
-    const filters = ['filter[from_location_id]', 'filter[to_location_id]']
-    filters.forEach(function (filter) {
-      context(`when '${filter}' exceeds batch limit`, function () {
-        const mockLocations = Array(150)
-          .fill()
-          .map((v, i) => i)
-        const numberOfBatches = mockLocations.length / mockBatchSize
-
-        beforeEach(async function () {
-          apiClient.findAll.resolves(mockResponse)
-          moves = await moveService.getAll({
-            filter: {
-              [filter]: mockLocations.join(','),
-            },
-          })
-        })
-
-        it('should split into correct amount of calls', function () {
-          expect(apiClient.findAll).to.have.callCount(numberOfBatches)
-        })
-
-        for (let index = 0; index < numberOfBatches; index++) {
-          it(`should call batch ${index + 1}`, function () {
-            expect(apiClient.findAll).to.be.calledWithExactly('move', {
-              [filter]: mockLocations
-                .slice(
-                  index * mockBatchSize,
-                  index * mockBatchSize + mockBatchSize
-                )
-                .join(','),
-              page: 1,
-              per_page: 100,
-              include: undefined,
-            })
-          })
-        }
-      })
-    })
-
-    context('when specifying include parameter', function () {
-      beforeEach(async function () {
-        apiClient.findAll.resolves(mockResponse)
-        moves = await moveService.getAll({
-          include: ['foo', 'bar'],
-        })
-      })
-
-      it('should pass include parameter to the API client', function () {
-        expect(apiClient.findAll.firstCall).to.be.calledWithExactly('move', {
-          page: 1,
-          per_page: 100,
-          include: ['foo', 'bar'],
-        })
       })
     })
   })
@@ -674,11 +718,18 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'to_location',
           ],
-          metaQuery: {
+          params: {
             meta:
               'vehicle_registration,expected_time_of_arrival,expected_collection_time',
           },
-          filter: {},
+          filter: {
+            status: undefined,
+            date_from: undefined,
+            date_to: undefined,
+            from_location_id: '',
+            to_location_id: '',
+            supplier_id: undefined,
+          },
         })
       })
 
@@ -689,8 +740,14 @@ describe('Move Service', function () {
 
     context('with arguments', function () {
       const mockDateRange = ['2019-10-10', '2019-10-11']
-      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
-      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
+      const mockFromLocationId = [
+        'b695d0f0-af8e-4b97-891e-92020d6820b9',
+        '8fadb516-f10a-45b1-91b7-a256196829f9',
+      ]
+      const mockToLocationId = [
+        'b195d0f0-df8e-4b97-891e-92020d6820b9',
+        '8fadb516-f10a-45b1-91b7-a256196829f9',
+      ]
       const mockSupplierId = 'a595d0f0-11e4-3218-6d06-a5cba3ec75ea'
 
       beforeEach(async function () {
@@ -699,51 +756,11 @@ describe('Move Service', function () {
           fromLocationId: mockFromLocationId,
           toLocationId: mockToLocationId,
           supplierId: mockSupplierId,
-        })
-      })
-
-      it('should call getAll with active statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          isAggregation: false,
-          include: [
-            'from_location',
-            'important_events',
-            'profile',
-            'profile.person',
-            'profile.person.gender',
-            'profile.person_escort_record.flags',
-            'to_location',
-          ],
-          filter: {
-            'filter[date_from]': mockDateRange[0],
-            'filter[date_to]': mockDateRange[1],
-            'filter[from_location_id]': mockFromLocationId,
-            'filter[to_location_id]': mockToLocationId,
-            'filter[supplier_id]': mockSupplierId,
-          },
-          metaQuery: {
-            meta:
-              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
-          },
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockMoves)
-      })
-    })
-
-    context('with aggregation', function () {
-      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
-
-      beforeEach(async function () {
-        moves = await moveService.getActive({
-          toLocationId: mockToLocationId,
           isAggregation: true,
         })
       })
 
-      it('should call getAll with active statuses', function () {
+      it('should call getAll with correct args', function () {
         expect(moveService.getAll).to.be.calledOnceWithExactly({
           isAggregation: true,
           include: [
@@ -755,12 +772,17 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'to_location',
           ],
-          metaQuery: {
+          filter: {
+            status: undefined,
+            date_from: mockDateRange[0],
+            date_to: mockDateRange[1],
+            from_location_id: mockFromLocationId.join(','),
+            to_location_id: mockToLocationId.join(','),
+            supplier_id: mockSupplierId,
+          },
+          params: {
             meta:
               'vehicle_registration,expected_time_of_arrival,expected_collection_time',
-          },
-          filter: {
-            'filter[to_location_id]': mockToLocationId,
           },
         })
       })
@@ -777,7 +799,9 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll without status', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({})
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: undefined,
+          })
         })
 
         it('should return moves', function () {
@@ -793,8 +817,8 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'requested,accepted,booked,in_transit,completed',
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'requested,accepted,booked,in_transit,completed',
           })
         })
 
@@ -811,9 +835,9 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'requested,accepted,booked',
-            'filter[ready_for_transit]': false,
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'requested,accepted,booked',
+            ready_for_transit: 'false',
           })
         })
 
@@ -830,8 +854,8 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'requested,accepted,booked',
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'requested,accepted,booked',
           })
         })
 
@@ -848,9 +872,9 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'requested,accepted,booked',
-            'filter[ready_for_transit]': true,
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'requested,accepted,booked',
+            ready_for_transit: 'true',
           })
         })
 
@@ -867,8 +891,8 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'in_transit,completed',
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'in_transit,completed',
           })
         })
 
@@ -885,8 +909,8 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct statuses', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'cancelled',
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'cancelled',
           })
         })
 
@@ -903,104 +927,14 @@ describe('Move Service', function () {
         })
 
         it('should call moves.getAll with correct filter', function () {
-          expect(moveService.getAll.args[0][0].filter).to.deep.equal({
-            'filter[status]': 'other',
+          expect(moveService.getAll.args[0][0].filter).to.deep.include({
+            status: 'other',
           })
         })
 
         it('should return moves', function () {
           expect(moves).to.deep.equal(mockMoves)
         })
-      })
-    })
-  })
-
-  describe('#getCancelled()', function () {
-    const mockResponse = []
-    let moves
-
-    beforeEach(async function () {
-      sinon.stub(moveService, 'getAll').resolves(mockResponse)
-    })
-
-    context('without arguments', function () {
-      beforeEach(async function () {
-        moves = await moveService.getCancelled()
-      })
-
-      it('should call getAll methods', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          isAggregation: false,
-          include: ['profile.person'],
-          filter: {
-            'filter[status]': 'cancelled',
-          },
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockResponse)
-      })
-    })
-
-    context('with arguments', function () {
-      const mockDateRange = ['2019-10-10', '2019-10-11']
-      const mockFromLocationId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
-      const mockToLocationId = 'c195d0f0-df8e-4b97-891e-92020d6820b9'
-      const mockSupplierId = 'a595d0f0-11e4-3218-6d06-a5cba3ec75ea'
-
-      beforeEach(async function () {
-        moves = await moveService.getCancelled({
-          dateRange: mockDateRange,
-          fromLocationId: mockFromLocationId,
-          toLocationId: mockToLocationId,
-          supplierId: mockSupplierId,
-        })
-      })
-
-      it('should call getAll methods', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          isAggregation: false,
-          include: ['profile.person'],
-          filter: {
-            'filter[status]': 'cancelled',
-            'filter[date_from]': mockDateRange[0],
-            'filter[date_to]': mockDateRange[1],
-            'filter[from_location_id]': mockFromLocationId,
-            'filter[to_location_id]': mockToLocationId,
-            'filter[supplier_id]': mockSupplierId,
-          },
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockResponse)
-      })
-    })
-
-    context('with aggregation', function () {
-      const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
-
-      beforeEach(async function () {
-        moves = await moveService.getCancelled({
-          toLocationId: mockToLocationId,
-          isAggregation: true,
-        })
-      })
-
-      it('should call getAll with active statuses', function () {
-        expect(moveService.getAll).to.be.calledOnceWithExactly({
-          isAggregation: true,
-          include: ['profile.person'],
-          filter: {
-            'filter[status]': 'cancelled',
-            'filter[to_location_id]': mockToLocationId,
-          },
-        })
-      })
-
-      it('should return moves', function () {
-        expect(moves).to.deep.equal(mockResponse)
       })
     })
   })
