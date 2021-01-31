@@ -1,0 +1,25 @@
+{% extends "layouts/base.njk" %}
+
+{% block organisationSwitcher %}{% endblock %}
+
+{% block pageTitle %}
+  Data
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <span class="govuk-caption-xl">
+      Book a secure move
+    </span>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      {{ TODAY | formatDate("MMMM yyyy") }}
+    </h1>
+  </header>
+
+  <div id="container"></div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="{{ getAssetPath('data-viz.js') }}"></script>
+{% endblock %}

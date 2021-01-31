@@ -29,6 +29,7 @@ const commonConfig = {
     'styles-ie8': './common/assets/scss/application-ie8.scss',
     app: './common/assets/javascripts/application.js',
     'components.maps': './common/assets/javascripts/components.maps.js',
+    'data-viz': './common/assets/javascripts/data-viz.js',
   },
 
   output: {
@@ -56,8 +57,12 @@ const commonConfig = {
                 modules: false,
                 useBuiltIns: 'entry',
                 corejs: 3,
+                targets: {
+                  esmodules: true,
+                },
               },
             ],
+            '@babel/preset-react',
           ],
         },
       },

@@ -384,6 +384,10 @@ router.get('/', (req, res) => {
   res.render('data/views/data-viz')
 })
 
+router.get('/recharts', (req, res) => {
+  res.render('data/views/recharts')
+})
+
 router.get('/refresh', async (req, res, next) => {
   try {
     const moves = await moveService.getActive({
