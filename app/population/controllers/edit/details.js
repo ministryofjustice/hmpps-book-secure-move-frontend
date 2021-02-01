@@ -1,4 +1,4 @@
-const { omit, mapValues } = require('lodash')
+const { isNil, omit, mapValues } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 
@@ -91,7 +91,11 @@ class DetailsController extends FormWizardController {
   stringifyValues({ fields, values }) {
     return mapValues(values, (item, key) => {
       if (fields[key] && fields[key].inputmode === 'numeric') {
-        return item.toString()
+        if (isNil(item)) {
+          return ''
+        } else {
+          return item.toString()
+        }
       }
 
       return item
