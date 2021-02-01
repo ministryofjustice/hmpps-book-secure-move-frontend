@@ -107,6 +107,7 @@ class DetailsController extends FormWizardController {
       if (err) {
         return cb(err, values)
       }
+
       const stringedValues = this.stringifyValues({
         fields: req.form.options.fields,
         values,

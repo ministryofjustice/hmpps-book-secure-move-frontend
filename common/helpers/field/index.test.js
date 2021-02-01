@@ -862,6 +862,11 @@ describe('Form helpers', function () {
   describe('#populateAssessmentFields()', function () {
     let fields
 
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returns('__translated__')
+      sinon.stub(i18n, 'exists').returns(true)
+    })
+
     context('with only implicit fields', function () {
       const mockFields = {
         special_diet_or_allergy: {},
@@ -872,7 +877,7 @@ describe('Form helpers', function () {
         fields = populateAssessmentFields(mockFields, mockAssessmentQuestions)
       })
 
-      it('should create impicit field', function () {
+      it('should create implicit field', function () {
         expect(fields).to.contain.property('health')
         expect(fields.health).to.deep.equal({
           name: 'health',
@@ -881,13 +886,19 @@ describe('Form helpers', function () {
           items: [
             {
               value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-              text: 'Special diet or allergy',
+              text: 'fields::health.items.special_diet_or_allergy.label',
+              hint: {
+                text: 'fields::health.items.special_diet_or_allergy.hint',
+              },
               key: 'special_diet_or_allergy',
               conditional: 'special_diet_or_allergy',
             },
             {
               value: '7ac3ffc9-57ac-4d0f-aa06-ad15b55c3cee',
-              text: 'Medication',
+              text: 'fields::health.items.medication.label',
+              hint: {
+                text: 'fields::health.items.medication.hint',
+              },
               key: 'medication',
               conditional: 'medication',
             },
@@ -1036,13 +1047,19 @@ describe('Form helpers', function () {
           items: [
             {
               value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
-              text: 'Special diet or allergy',
+              text: 'fields::health.items.special_diet_or_allergy.label',
+              hint: {
+                text: 'fields::health.items.special_diet_or_allergy.hint',
+              },
               key: 'special_diet_or_allergy',
               conditional: 'special_diet_or_allergy',
             },
             {
               value: '1a73d31a-8dd4-47b6-90a0-15ce4e332539',
-              text: 'Requires special vehicle',
+              text: 'fields::health.items.special_vehicle.label',
+              hint: {
+                text: 'fields::health.items.special_vehicle.hint',
+              },
               key: 'special_vehicle',
               conditional: 'special_vehicle',
             },
@@ -1109,6 +1126,28 @@ describe('Form helpers', function () {
 
       it('should return the correct number of fields', function () {
         expect(Object.keys(fields).length).to.equal(5)
+      })
+    })
+
+    context('with missing translation keys', function () {
+      const mockFields = {
+        special_diet_or_allergy: {},
+      }
+
+      beforeEach(function () {
+        i18n.exists.returns(false)
+        fields = populateAssessmentFields(mockFields, mockAssessmentQuestions)
+      })
+
+      it('should not render translation keys', function () {
+        expect(fields.health.items).to.deep.equal([
+          {
+            value: 'e6faaf20-3072-4a65-91f7-93d52b16260f',
+            text: 'Special diet or allergy',
+            key: 'special_diet_or_allergy',
+            conditional: 'special_diet_or_allergy',
+          },
+        ])
       })
     })
 

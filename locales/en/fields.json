@@ -204,15 +204,35 @@
   },
   "risk": {
     "label": "Add risk information",
-    "hint": "Select all that apply"
+    "hint": "Select all that apply",
+    "items": {
+      "violent": {
+        "hint": "For example, past behaviour or current charges"
+      },
+      "self_harm": {
+        "hint": "For example, suicidal or a history of self-harm"
+      },
+      "hold_separately": {
+        "hint": "For example, vulnerable or threatening to others"
+      },
+      "other_risks": {
+        "hint": "Do not include health risks, you will be asked about these next"
+      }
+    }
   },
   "health": {
     "label": "Add health information",
-    "hint": "Select all that apply"
+    "hint": "Select all that apply",
+    "items": {
+      "other_health": {
+        "hint": "For example, broken bones, claustrophobia"
+      }
+    }
   },
   "court": {
     "label": "Add court information",
-    "hint": "Select all that apply"
+    "hint": "Select all that apply",
+    "items": {}
   },
   "assessment_comment": {
     "required": "Give details",
@@ -306,7 +326,7 @@
   "special_vehicle__explicit": {
     "label": "Does this person need to travel in a special vehicle?",
     "label_with_error": "Special vehicle needs",
-    "hint": "This could be a specially-adapted prison van (for example, to accomodate wheelchairs)"
+    "hint": "This could be a specially-adapted prison van. For example, to accomodate wheelchairs."
   },
   "not_to_be_released": {
     "label": "Release status details"
