@@ -30,25 +30,26 @@ function setBreadcrumb(req, res, next) {
     dateSuffix = ` (${formatDate(dateAsStartOfWeekDate)})`
   }
 
-  const basePath = `/population/week/${format(
+  const weeklyBasePath = `/population/week/${format(
     dateAsStartOfWeekDate,
     'yyyy-MM-dd'
   )}`
+  const dailyBasePath = `/population/${period}/${req.date}`
 
   res
     .breadcrumb({
       text: `${req.t('population::breadcrumbs.home')}${dateSuffix}`,
-      href: basePath,
+      href: weeklyBasePath,
     })
     .breadcrumb({
       text: locationName,
-      href: `${basePath}/${locationId}`,
+      href: `${weeklyBasePath}/${locationId}`,
     })
 
   if (period === 'day') {
     res.breadcrumb({
       text: format(parseISO(req.date), 'EEEE d MMMM'),
-      href: req.baseUrl,
+      href: `${dailyBasePath}/${locationId}`,
     })
   }
 
