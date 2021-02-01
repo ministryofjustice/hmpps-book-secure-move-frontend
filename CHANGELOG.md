@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.69.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.0...v2.69.1) (2021-02-01)
+
+
+### Bug Fixes
+
+* **pmu:** Render missing values as empty string ([c627fe0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c627fe07549ac4aefb6959efef9c70cfec51abd9))
+
 ## [2.69.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.68.0...v2.69.0) (2021-02-01)
 
 
