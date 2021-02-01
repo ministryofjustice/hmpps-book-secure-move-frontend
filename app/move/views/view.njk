@@ -192,6 +192,7 @@
 {% endmacro %}
 
 {% block contentMain %}
+  {{ tabs(urls, 'view') }}
   {% if move.profile %}
     <div class="govuk-!-margin-bottom-9">
       <section class="app-!-position-relative">
