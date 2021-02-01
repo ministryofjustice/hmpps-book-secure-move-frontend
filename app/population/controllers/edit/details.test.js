@@ -357,6 +357,19 @@ describe('Population controllers', function () {
         ).to.deep.equal({ numberField1: '0' })
       })
 
+      it('should stringify missing numeric input values', function () {
+        expect(
+          controllerInstance.stringifyValues({
+            fields: {
+              numberField1: {
+                inputmode: 'numeric',
+              },
+            },
+            values: { numberField1: null },
+          })
+        ).to.deep.equal({ numberField1: '' })
+      })
+
       it('should not stringify non-numeric input values', function () {
         expect(
           controllerInstance.stringifyValues({
