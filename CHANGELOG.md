@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.69.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.68.0...v2.69.0) (2021-02-01)
+
+
+### Features
+
+* **pmu:** Add populate to population service ([d4f39e5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d4f39e5a5b9149ac22ae0dd08de94d6627c18879))
+* **pmu:** Populate free spaces on add ([2d315bf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2d315bfc16be330366f0b074f4746028b4041251))
+
+
+### Bug Fixes
+
+* **pmu:** Correctly filter by regions ([8c7f693](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8c7f6936e100ccbd2e5629b17afe074c1b7fde62))
+* **pmu:** Show 0 values in numeric fields ([118082b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/118082b17808c4a77f1883ad381a59a7fe963514))
+* **pmu:** Use correct font sizing for transfers in/out ([69e98e7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/69e98e7145acb4c71280517f48ed3bcde9d44074))
+* **pmu:** Use link to daily page for breadcrumb ([cacd079](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cacd079e066e2fc3b52b8a6e232c5149ba76a310))
+* Ensure review URL is consistent across tabs ([919a09a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/919a09ae5ae26df76d40f82a28e05e57a007b25b))
+
 ## [2.68.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.67.1...v2.68.0) (2021-01-25)
 
 
