@@ -44,7 +44,7 @@ describe('Move controllers', function () {
       }
     })
 
-    context('', function () {
+    context('by default', function () {
       beforeEach(async function () {
         await timelineController(req, res)
       })
@@ -65,6 +65,28 @@ describe('Move controllers', function () {
             tabs: 'tab_urls',
           },
         })
+      })
+    })
+
+    context('when move is rejected single request', function () {
+      beforeEach(async function () {
+        req.move = {
+          status: 'cancelled',
+          cancellation_reason: 'rejected',
+          timeline_events: [
+            {
+              event_type: 'MoveReject',
+              details: {
+                rebook: true,
+              },
+            },
+          ],
+        }
+        await timelineController(req, res)
+      })
+
+      it('should copy rebook property from MoveReject event to move', function () {
+        expect(req.move.rebook).to.be.true
       })
     })
   })

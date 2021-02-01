@@ -98,37 +98,29 @@
     "description": "Completed Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
   },
   "MoveAccept": {
-    "triggers": "StatusMoveBooked",
-    "heading": "Move accepted by {{move.supplier.name}}",
-    "description": ""
+    "statusChange": true,
+    "heading": "$t(statuses::booked)",
+    "description": "Move has been accepted by {{move.supplier.name}}"
   },
   "MoveApprove": {
-    "triggers": "StatusMoveRequested",
-    "heading": "Approved by PMU",
-    "description": "Date of travel set to {{move.date, formatDateWithDay}}"
+    "statusChange": true,
+    "heading": "$t(statuses::requested)",
+    "description": "Move has been approved by PMU and requested with {{move.supplier.name}}. Date of travel set to {{move.date, formatDateWithDay}}."
   },
   "MoveCancel": {
-    "triggers": "StatusMoveCancelled",
-    "heading": "Move cancelled by $t(events::select_agency)",
-    "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} has been cancelled for the following reason: $t(events::MoveCancel.select_cancellation_reason) $t(events::MoveCancel.select_cancellation_reason_comment)",
-    "select_cancellation_reason": "$t(events::MoveCancel.cancellation_reason, {\"context\": \"{{cancellation_reason}}\"})",
-    "cancellation_reason_prefix": "<br>Cancellation reason - ",
-    "cancellation_reason": "",
-    "cancellation_reason_supplier_declined_to_move": "$t(events::MoveCancel.cancellation_reason_prefix) {{move.supplier.name}} declined to move this person",
-    "cancellation_reason_cancelled_by_pmu": "$t(events::MoveCancel.cancellation_reason_prefix) Cancelled by Population Management Unit (PMU)",
-    "cancellation_reason_other": "",
-    "select_cancellation_reason_comment": "$t(events::MoveCancel.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
-    "cancellation_reason_comment": "",
-    "cancellation_reason_comment_true": "<br>Additional comments:<br>{{cancellation_reason_comment}}"
+    "default_agency": "user",
+    "statusChange": true,
+    "heading": "$t(statuses::cancelled)",
+    "description": "Move has been cancelled"
   },
   "MoveCollectionByEscort": {
     "heading": "Handover to {{move.supplier.name}}",
     "description": "$t(events::person) has been received"
   },
   "MoveComplete": {
-    "triggers": "StatusMoveCompleted",
-    "heading": "Handover to {{move.to_location.title}}",
-    "description": "$t(events::person) has been received"
+    "statusChange": true,
+    "heading": "$t(statuses::completed)",
+    "description": "Move has been completed by {{move.supplier.name}}"
   },
   "MoveLockout": {
     "contextKey": "reason",
@@ -192,9 +184,9 @@
     "description": "$t(events::select_authorised_by)"
   },
   "MoveProposed": {
-    "triggers": "StatusMoveProposed",
-    "heading": "Proposed by user",
-    "description": ""
+    "statusChange": true,
+    "heading": "$t(statuses::proposed)",
+    "description": "Move has been proposed by OCA"
   },
   "MoveRedirect": {
     "heading": "Redirected to {{to_location.title}}",
@@ -209,33 +201,27 @@
     "reason_other": ""
   },
   "MoveReject": {
-    "triggers": "StatusMoveCancelled",
-    "alt_heading": "{{blammo, foo:gazi}} ",
-    "heading": "Rejected by $t(events::select_agency)",
-    "description": "Move from {{move.from_location.title}} to {{move.to_location.title}} rejected by $t(events::select_agency) $t(events::MoveReject.select_rejection_reason) $t(events::MoveReject.select_cancellation_reason_comment) $t(events::MoveReject.select_rebook)",
-    "select_rejection_reason": "$t(events::MoveReject.rejection_reason, {\"context\": \"{{rejection_reason}}\"})",
-    "rejection_reason_prefix": "<br>Rejection reason - ",
-    "rejection_reason": "",
-    "rejection_reason_no_space_at_receiving_prison": "$t(events::MoveReject.rejection_reason_prefix) There was no space at {{move.to_location.title}}",
-    "rejection_reason_no_transport_available": "$t(events::MoveReject.rejection_reason_prefix) There was no transport available",
+    "statusChange": true,
+    "heading": "Move cancelled",
+    "description": "Move has been rejected by $t(events::select_agency)",
     "select_rebook": "$t(events::MoveReject.rebook, {\"context\": \"{{rebook}}\"})",
     "rebook": "",
     "rebook_true": "<br>This move will be rebooked in 7 days",
     "rebook_false": "<br>This move may be rebooked in 7 days if still required",
     "select_cancellation_reason_comment": "$t(events::MoveReject.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
     "cancellation_reason_comment": "",
-    "cancellation_reason_comment_true": "<br>Additional information - {{cancellation_reason_comment}}"
+    "cancellation_reason_comment_true": "<br>Additional information — {{cancellation_reason_comment}}"
   },
   "MoveRequested": {
+    "statusChange": true,
     "default_agency": "user",
-    "triggers": "StatusMoveRequested",
-    "heading": "Requested by $t(events::select_agency)",
-    "description": ""
+    "heading": "$t(statuses::requested)",
+    "description": "Move has been requested with {{move.supplier.name}} by $t(events::select_agency)"
   },
   "MoveStart": {
-    "triggers": "StatusMoveInTransit",
-    "heading": "Move started by {{move.supplier.name}}",
-    "description": ""
+    "statusChange": true,
+    "heading": "$t(statuses::in_transit)",
+    "description": "Move started by {{move.supplier.name}}"
   },
   "MoveCrossSupplierPickUp": {
     "heading": "Crossdeck move",
@@ -406,35 +392,5 @@
   "PerConfirmation": {
     "heading": "Person Escort Record confirmed",
     "description": "All information in this Person Escort Record was confirmed"
-  },
-  "StatusMoveBooked": {
-    "statusChange": true,
-    "heading": "$t(statuses::booked)",
-    "description": "Move has been booked with {{move.supplier.name}}"
-  },
-  "StatusMoveCancelled": {
-    "statusChange": true,
-    "heading": "$t(statuses::cancelled)",
-    "description": "Move has been cancelled"
-  },
-  "StatusMoveCompleted": {
-    "statusChange": true,
-    "heading": "$t(statuses::completed)",
-    "description": "Move has been completed by {{move.supplier.name}}"
-  },
-  "StatusMoveInTransit": {
-    "statusChange": true,
-    "heading": "$t(statuses::in_transit)",
-    "description": "Move is in transit with {{move.supplier.name}}"
-  },
-  "StatusMoveProposed": {
-    "statusChange": true,
-    "heading": "$t(statuses::proposed)",
-    "description": "Move has been proposed by OCA"
-  },
-  "StatusMoveRequested": {
-    "statusChange": true,
-    "heading": "$t(statuses::requested)",
-    "description": "Move has been requested with {{move.supplier.name}}"
   }
 }

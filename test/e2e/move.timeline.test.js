@@ -12,6 +12,5 @@ fixture('Move timeline').beforeEach(async t => {
 test('Check timeline exists', async t => {
   const timelineUrl = getTimeline(t.ctx.move.id)
   await expectStatusCode(timelineUrl, 200)
-  // there should be the actual proposed event and a corresponding auto-inserted triggered event
-  await t.expect(moveTimelinePage.nodes.timelineItems.count).eql(2)
+  await t.expect(moveTimelinePage.nodes.timelineItems.count).eql(1)
 })
