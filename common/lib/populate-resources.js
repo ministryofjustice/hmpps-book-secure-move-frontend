@@ -1,37 +1,32 @@
+const Sentry = require('@sentry/node')
+const { pick } = require('lodash')
+
 const findUnpopulatedResources = require('./find-unpopulated-resources')
 
-const populateResources = async (obj, req, options, processed = []) => {
-  const services = {
-    locations: {
-      service: req.services.referenceData,
-      method: 'getLocationById',
-    },
-    moves: {
-      service: req.services.move,
-      method: 'getById',
-    },
-    person_escort_records: {
-      service: req.services.personEscortRecord,
-      method: 'getById',
-    },
-  }
+const populateResources = (obj, req, options, processed = []) => {
   const unpopulated = findUnpopulatedResources(obj, options).filter(
     resource => !processed.includes(resource)
   )
 
   if (!unpopulated.length) {
+    const unprocessedError = new Error('Missing resource')
+    const cleanedObj = obj.map(event => {
+      return {
+        ...pick(event, ['id', 'type', 'event_type', 'classification']),
+        eventable: pick(event.eventable, ['id', 'type']),
+      }
+    })
+
+    // TODO: Find way to deserialize missing resources properly
+    Sentry.withScope(scope => {
+      scope.setLevel('warning')
+      scope.setExtra('Events', cleanedObj)
+      scope.setExtra('Events raw', JSON.stringify(cleanedObj))
+      scope.setExtra('Unpopulated resources', processed)
+      Sentry.captureException(unprocessedError)
+    })
+
     return
-  }
-
-  for (const resource of unpopulated) {
-    const { service, method } = services[resource.type] || {}
-
-    if (service) {
-      const newProp = await service[method](resource.id)
-      Object.keys(newProp).forEach(prop => {
-        resource[prop] = newProp[prop]
-      })
-    }
   }
 
   return populateResources(obj, req, options, unpopulated)
