@@ -25,6 +25,19 @@ const policePermissions = [
   'person_escort_record:confirm',
 ]
 
+const contractDeliveryManagerPermissions = [
+  'allocations:view',
+  'dashboard:view',
+  'dashboard:view:population',
+  'locations:all',
+  'moves:view:outgoing',
+  'moves:view:incoming',
+  'moves:view:proposed',
+  'move:view',
+  'person_escort_record:view',
+  'youth_risk_assessment:view',
+]
+
 const secureChildrensHomePermissions = [
   'dashboard:view',
   'moves:view:outgoing',
@@ -168,6 +181,7 @@ const permissionsByRole = {
   ROLE_PECS_SUPPLIER: supplierPermissions,
   ROLE_PECS_COURT: courtPermissions,
   ROLE_PECS_PER_AUTHOR: personEscortRecordAuthorPermissions,
+  ROLE_PECS_CDM: contractDeliveryManagerPermissions,
 }
 
 module.exports = {
