@@ -30,7 +30,7 @@ const populateResources = proxyquire('./populate-resources', {
   './find-unpopulated-resources': findUnpopulatedResourcesStub,
 })
 
-describe('populateResources', function () {
+describe.skip('populateResources', function () {
   beforeEach(function () {
     moveService.getById.resetHistory()
     personEscortRecordService.getById.resetHistory()
@@ -158,37 +158,37 @@ describe('populateResources', function () {
       })
     })
   })
-})
 
-context('when data contains multiple refs to unpopulated move', function () {
-  let data
-  beforeEach(async function () {
-    data = {
-      move: { id: 'move', type: 'moves' },
-      anuthaMove: { id: 'move', type: 'moves' },
-    }
-    await populateResources(data, req)
-  })
-
-  it('should populate all refs with resolved move', function () {
-    expect(data).to.deep.equal({
-      move: { id: 'move', type: 'moves', foo: 'bar' },
-      anuthaMove: { id: 'move', type: 'moves', foo: 'bar' },
-    })
-  })
-
-  context('when passed options', function () {
+  context('when data contains multiple refs to unpopulated move', function () {
     let data
     beforeEach(async function () {
       data = {
         move: { id: 'move', type: 'moves' },
+        anuthaMove: { id: 'move', type: 'moves' },
       }
-      await populateResources(data, req, { exclude: ['moves'] })
+      await populateResources(data, req)
     })
 
-    it('should pass those options to findUnpopulatedResources', function () {
+    it('should populate all refs with resolved move', function () {
       expect(data).to.deep.equal({
-        move: { id: 'move', type: 'moves' },
+        move: { id: 'move', type: 'moves', foo: 'bar' },
+        anuthaMove: { id: 'move', type: 'moves', foo: 'bar' },
+      })
+    })
+
+    context('when passed options', function () {
+      let data
+      beforeEach(async function () {
+        data = {
+          move: { id: 'move', type: 'moves' },
+        }
+        await populateResources(data, req, { exclude: ['moves'] })
+      })
+
+      it('should pass those options to findUnpopulatedResources', function () {
+        expect(data).to.deep.equal({
+          move: { id: 'move', type: 'moves' },
+        })
       })
     })
   })
