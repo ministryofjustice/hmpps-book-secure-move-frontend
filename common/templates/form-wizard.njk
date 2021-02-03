@@ -118,9 +118,7 @@
           </h3>
 
           {% if person._image_url %}
-            <div class="govuk-!-width-one-half govuk-!-margin-bottom-3">
-              <img src="{{ person._image_url }}" alt="{{ person._fullname }}">
-            </div>
+            <img src="{{ person._image_url }}" alt="{{ person._fullname }}" height="190" class="govuk-!-margin-bottom-3">
           {% endif %}
 
           {{ appMetaList(moveSummary) }}
