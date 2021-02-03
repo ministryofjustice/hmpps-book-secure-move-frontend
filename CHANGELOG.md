@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.69.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.1...v2.69.2) (2021-02-03)
+
+
+### Bug Fixes
+
+* Prevent loop when accessing the timeline ([d4de672](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d4de672ab8e8d4e01e2656a48255ab3b3c1a32f3))
+* Prevent right hand panel overlapping footer content ([adb2775](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/adb2775144f15564354c849fc86fddcff9c6538f))
+
 ### [2.69.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.0...v2.69.1) (2021-02-01)
 
 
