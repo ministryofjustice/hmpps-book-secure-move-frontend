@@ -49,6 +49,16 @@ const nunjucks = require('./config/nunjucks')
 const { getAssetPath } = require('./config/nunjucks/globals')
 const configPaths = require('./config/paths')
 
+const unless = function (path, middleware) {
+  return function (req, res, next) {
+    if (req.path.startsWith(path)) {
+      return next()
+    } else {
+      return middleware(req, res, next)
+    }
+  }
+}
+
 let redisStore
 
 if (config.REDIS.SESSION) {
@@ -218,7 +228,7 @@ app.use(
     whitelist: config.AUTH_WHITELIST_URLS,
   })
 )
-app.use(setLocations)
+app.use(unless('/person', setLocations))
 app.use('.*(?<!image)$', setLocation)
 
 // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
@@ -256,13 +266,13 @@ app.use(
 )
 
 // Ensure body processed after reauthentication
-app.use(processOriginalRequestBody())
+app.use(unless('/person', processOriginalRequestBody()))
 
 // Add permission checker
 app.use(setCanAccess)
 
 // Routing
-app.use(setPrimaryNavigation)
+app.use(unless('/person', setPrimaryNavigation))
 
 if (config.ENABLE_DEVELOPMENT_TOOLS) {
   app.use(setDevelopmentTools)
