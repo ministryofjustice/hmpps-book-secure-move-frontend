@@ -44,6 +44,12 @@
         }) }}
       {% endif %}
 
+      {% if timestamp %}
+        <p>
+          {{ timestamp }}
+        </p>
+      {% endif %}
+
       {% if hasSelfHarmWarning %}
         {% set html %}
           {{ govukWarningText({

@@ -1,6 +1,8 @@
 const { filter, find, orderBy, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const i18n = require('../../../config/i18n')
+const filters = require('../../../config/nunjucks/filters')
 
 function _checkResponse({ responses = [], key, expectedValue }) {
   return (
@@ -107,6 +109,15 @@ function printRecord(req, res) {
       )
       .map(response => response.value)
   })
+  const timestampKey = personEscortRecord.amended_at
+    ? 'amended_at'
+    : 'completed_at'
+  const timestamp = i18n.t(timestampKey, {
+    date: filters.formatDateWithTimeAndDay(
+      personEscortRecord[timestampKey],
+      true
+    ),
+  })
 
   const locals = {
     moveId,
@@ -127,6 +138,7 @@ function printRecord(req, res) {
     personalDetailsSummary,
     personEscortRecordSections,
     personEscortRecordTagList,
+    timestamp,
   }
 
   res.render('person-escort-record/views/print-record', locals)

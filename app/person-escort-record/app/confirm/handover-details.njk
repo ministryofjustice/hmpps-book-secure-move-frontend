@@ -1,0 +1,56 @@
+{% extends "form-wizard.njk" %}
+
+{% macro renderField(name) %}
+  {{ callAsMacro(options.fields[name].component)(options.fields[name]) }}
+{% endmacro %}
+
+{% block fields %}
+
+  <h2 class="govuk-heading-m">
+    {{ t("assessment::handover.before_handover.heading") }}
+  </h2>
+
+  <div class="markdown govuk-!-margin-bottom-6">
+    {% markdown %}{{ t("assessment::handover.before_handover.content", { per_href: "/move/" + move.id + "/person-escort-record" }) | safe }}{% endmarkdown %}
+  </div>
+
+  {{ callAsMacro(options.fields.confirm_handover.component)(options.fields.confirm_handover) }}
+
+  {{ govukInsetText({
+    html: t("assessment::handover.not_fit_to_travel", {
+      cancel_href: "/move/" + move.id + "/cancel"
+    })
+  }) }}
+
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      {{ t("assessment::handover.dispatching_officer") }}
+    </legend>
+
+    {{ renderField("handover_dispatching_officer") }}
+    {{ renderField("handover_dispatching_officer_id") }}
+    {{ renderField("handover_dispatching_officer_contact") }}
+  </fieldset>
+
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      {{ t("assessment::handover.receiving_officer") }}
+    </legend>
+
+    {{ renderField("handover_receiving_officer") }}
+    {{ renderField("handover_receiving_officer_id") }}
+    {{ renderField("handover_receiving_officer_contact") }}
+    {{ renderField("handover_receiving_organisation") }}
+  </fieldset>
+
+  {{ renderField("handover_occurred_at") }}
+
+  {{ govukWarningText({
+    text: t("assessment::handover.warning_text"),
+    iconFallbackText: "Warning"
+  }) }}
+{% endblock %}
+
+{% block contentSidebar %}
+  {% include "includes/move-summary.njk" %}
+{% endblock %}

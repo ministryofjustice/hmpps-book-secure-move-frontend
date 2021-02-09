@@ -1,3 +1,5 @@
+const { pick } = require('lodash')
+
 const { FRAMEWORKS } = require('../../config')
 
 const BaseService = require('./base')
@@ -16,7 +18,19 @@ class PersonEscortRecordService extends BaseService {
       .then(response => response.data)
   }
 
-  confirm(id) {
+  confirm(
+    id,
+    {
+      handoverOccurredAt,
+      dispatchingOfficer,
+      dispatchingOfficerId,
+      dispatchingOfficerContact,
+      receivingOfficer,
+      receivingOfficerId,
+      receivingOfficerContact,
+      receivingOrganisation,
+    } = {}
+  ) {
     if (!id) {
       return Promise.reject(new Error(noIdMessage))
     }
@@ -25,6 +39,16 @@ class PersonEscortRecordService extends BaseService {
       .update('person_escort_record', {
         id,
         status: 'confirmed',
+        handover_occurred_at: handoverOccurredAt,
+        handover_details: {
+          dispatching_officer: dispatchingOfficer,
+          dispatching_officer_id: dispatchingOfficerId,
+          dispatching_officer_contact: dispatchingOfficerContact,
+          receiving_officer: receivingOfficer,
+          receiving_officer_id: receivingOfficerId,
+          receiving_officer_contact: receivingOfficerContact,
+          receiving_organisation: receivingOrganisation,
+        },
       })
       .then(response => response.data)
   }

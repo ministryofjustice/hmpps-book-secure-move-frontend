@@ -1,4 +1,5 @@
 const i18n = require('../../../config/i18n')
+const filters = require('../../../config/nunjucks/filters')
 const componentService = require('../../services/component')
 const frameworkToTaskListComponent = require('../framework-to-task-list-component')
 
@@ -23,6 +24,8 @@ module.exports = function assessmentToUnconfirmedBanner({
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         ${componentService.getComponent('appTaskList', taskList)}
+      </div>
+    </div>
   `
 
   // PER has been completed
@@ -32,18 +35,36 @@ module.exports = function assessmentToUnconfirmedBanner({
     canAccess(`${context}:confirm`)
   ) {
     content += `
-      <p>
-        ${i18n.t(`messages::assessment.${assessment.status}.content`, {
-          context,
-        })}
-      </p>
-
       ${componentService.getComponent('govukButton', {
-        href: `${baseUrl}/confirm`,
+        href: assessment.editable ? `${baseUrl}/confirm` : '',
         text: i18n.t('actions::provide_confirmation'),
         disabled: !assessment.editable,
       })}
+
+      <p>
+        <a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', {
+            context,
+          })}
+        </a>
+      </p>
     `
+
+    if (assessment.amended_at || assessment.completed_at) {
+      const timestampKey = assessment.amended_at ? 'amended_at' : 'completed_at'
+
+      content += `
+        <p class="govuk-!-font-size-16 govuk-!-margin-top-1">
+          ${i18n.t(timestampKey, {
+            context,
+            date: filters.formatDateWithTimeAndDay(
+              assessment[timestampKey],
+              true
+            ),
+          })}
+        </p>
+      `
+    }
 
     if (!assessment.editable) {
       content += `
@@ -57,11 +78,6 @@ module.exports = function assessmentToUnconfirmedBanner({
       `
     }
   }
-
-  content += `
-      </div>
-    </div>
-  `
 
   return {
     allowDismiss: false,

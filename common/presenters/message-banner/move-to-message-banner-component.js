@@ -1,6 +1,7 @@
 const { isEmpty, kebabCase } = require('lodash')
 
 const assessmentToConfirmedBanner = require('./assessment-to-confirmed-banner')
+const assessmentToHandedOverBanner = require('./assessment-to-handed-over-banner')
 const assessmentToStartBanner = require('./assessment-to-start-banner')
 const assessmentToUnconfirmedBanner = require('./assessment-to-unconfirmed-banner')
 
@@ -21,6 +22,10 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
 
   if (['requested', 'booked'].includes(move.status) && isEmpty(assessment)) {
     return assessmentToStartBanner({ baseUrl, canAccess, context })
+  }
+
+  if (assessment?.status === 'confirmed' && assessment.handover_occurred_at) {
+    return assessmentToHandedOverBanner({ assessment, baseUrl, context })
   }
 
   if (assessment?.status === 'confirmed') {
