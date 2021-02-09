@@ -1,7 +1,7 @@
 const Sentry = require('@sentry/node')
 
 module.exports = function sentryEnrichScope(req, res, next) {
-  const { currentLocation } = req.session
+  const currentLocation = req.location || req.session.currentLocation
 
   if (currentLocation) {
     const {

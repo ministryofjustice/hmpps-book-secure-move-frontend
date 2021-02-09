@@ -29,7 +29,7 @@
           <span class="govuk-caption-xl">
           {{ t("collections::subheading", {
             context: context
-          }) }}
+          }) }}{{ " " + location.title if location}}
           </span>
 
           <span class="govuk-!-display-block">{{ displayDate }}</span>

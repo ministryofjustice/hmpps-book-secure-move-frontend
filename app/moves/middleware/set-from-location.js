@@ -1,17 +1,9 @@
-const { find, get } = require('lodash')
-
-function setFromLocation(req, res, next, locationId) {
-  const userLocations = get(req.session, 'user.locations')
-  const location = find(userLocations, { id: locationId })
-
-  if (!location) {
-    const error = new Error('Location not found')
-    error.statusCode = 404
-
-    return next(error)
+function setFromLocation(req, res, next) {
+  if (!req.location) {
+    return next()
   }
 
-  res.locals.fromLocationId = locationId
+  res.locals.fromLocationId = req.location?.id
   next()
 }
 

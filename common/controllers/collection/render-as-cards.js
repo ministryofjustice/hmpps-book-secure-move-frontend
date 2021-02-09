@@ -9,13 +9,27 @@ module.exports = function listAsCards(req, res) {
     params,
     resultsAsCards,
     query,
+    location,
   } = req
-  const { dateRange, locationId, period } = params
+
+  const {
+    CURRENT_LOCATION: resLocation,
+    CURRENT_REGION: resRegion,
+  } = res.locals
+
+  const hasDifferentDisplayLocation =
+    resRegion || (resLocation && location && location?.id !== resLocation?.id)
+
+  const filteredActions = hasDifferentDisplayLocation
+    ? actions.filter(action => action.permission !== 'move:create')
+    : actions
+
+  const { dateRange, period } = params
   const canViewMove = req.canAccess('move:view')
   const template =
-    canViewMove && locationId ? 'collection-as-cards' : 'moves/views/download'
+    canViewMove && location?.id ? 'collection-as-cards' : 'moves/views/download'
   const locals = {
-    actions,
+    actions: filteredActions,
     context,
     filter,
     dateRange,
@@ -24,7 +38,7 @@ module.exports = function listAsCards(req, res) {
     resultsAsCards,
     activeStatus: query.status,
     totalResults: sumBy(filter, 'value'),
+    ...(hasDifferentDisplayLocation && { location }),
   }
-
   res.render(template, locals)
 }

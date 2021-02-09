@@ -63,7 +63,9 @@ describe('Population middleware', function () {
       })
 
       it('should call locationFreeSpaces service with date and locationId', async function () {
-        req.params.locationId = 'BAADF00D'
+        req.location = {
+          id: 'BAADF00D',
+        }
 
         await middleware(req, res, next)
 

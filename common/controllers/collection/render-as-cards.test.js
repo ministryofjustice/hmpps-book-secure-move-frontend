@@ -48,70 +48,108 @@ describe('Collection controllers', function () {
     })
 
     describe('template params', function () {
-      beforeEach(function () {
-        controller(req, res)
-      })
+      context('by default', function () {
+        beforeEach(function () {
+          controller(req, res)
+        })
 
-      it('should contain actions property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('actions')
-        expect(params.actions).to.deep.equal(['1', '2'])
-      })
+        it('should contain actions property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('actions')
+          expect(params.actions).to.deep.equal(['1', '2'])
+        })
 
-      it('should contain context property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('context')
-        expect(params.context).to.equal('listContext')
-      })
+        it('should contain context property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('context')
+          expect(params.context).to.equal('listContext')
+        })
 
-      it('should contain resultsAsCards property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('resultsAsCards')
-        expect(params.resultsAsCards).to.deep.equal({
-          active: mockActiveMovesByDate,
-          cancelled: mockCancelledMovesByDate,
+        it('should contain resultsAsCards property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('resultsAsCards')
+          expect(params.resultsAsCards).to.deep.equal({
+            active: mockActiveMovesByDate,
+            cancelled: mockCancelledMovesByDate,
+          })
+        })
+
+        it('should contain dateRange property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('dateRange')
+          expect(params.dateRange).to.deep.equal(req.params.dateRange)
+        })
+
+        it('should contain datePagination property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('datePagination')
+          expect(params.datePagination).to.deep.equal(req.datePagination)
+        })
+
+        it('should contain period property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('period')
+          expect(params.period).to.deep.equal(req.params.period)
+        })
+
+        it('should contain filter property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('filter')
+          expect(params.filter).to.deep.equal(req.filter)
+        })
+
+        it('should contain activeStatus property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('activeStatus')
+          expect(params.activeStatus).to.deep.equal(req.query.status)
+        })
+
+        it('should contain total results property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('totalResults')
+          expect(params.totalResults).to.deep.equal(18)
+        })
+
+        it('should contain correct number of properties', function () {
+          const params = res.render.args[0][1]
+          expect(Object.keys(params)).to.have.length(9)
         })
       })
 
-      it('should contain dateRange property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('dateRange')
-        expect(params.dateRange).to.deep.equal(req.params.dateRange)
-      })
+      context('with different display location', function () {
+        beforeEach(function () {
+          res.locals.CURRENT_LOCATION = {
+            id: 'FACEFEED',
+          }
 
-      it('should contain datePagination property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('datePagination')
-        expect(params.datePagination).to.deep.equal(req.datePagination)
-      })
+          req.location = {
+            id: 'ABADCAFE',
+          }
 
-      it('should contain period property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('period')
-        expect(params.period).to.deep.equal(req.params.period)
-      })
+          req.actions = [
+            { permission: 'move:create' },
+            { permission: 'move:view' },
+          ]
 
-      it('should contain filter property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('filter')
-        expect(params.filter).to.deep.equal(req.filter)
-      })
+          controller(req, res)
+        })
 
-      it('should contain activeStatus property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('activeStatus')
-        expect(params.activeStatus).to.deep.equal(req.query.status)
-      })
+        it('should contain location property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('location')
+          expect(params.location).to.deep.equal({ id: 'ABADCAFE' })
+        })
 
-      it('should contain total results property', function () {
-        const params = res.render.args[0][1]
-        expect(params).to.have.property('totalResults')
-        expect(params.totalResults).to.deep.equal(18)
-      })
+        it('should filter actions', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('actions')
+          expect(params.actions).to.deep.equal([{ permission: 'move:view' }])
+        })
 
-      it('should contain correct number of properties', function () {
-        const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(9)
+        it('should contain correct number of properties', function () {
+          const params = res.render.args[0][1]
+          expect(Object.keys(params)).to.have.length(10)
+        })
       })
     })
 
@@ -120,8 +158,10 @@ describe('Collection controllers', function () {
         'if user can view move and individual location requested',
         function () {
           beforeEach(function () {
+            req.location = {
+              id: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
+            }
             req.params = {
-              locationId: '83a4208b-21a5-4b1d-a576-5d9513e0b910',
               dateRange: ['2020-10-01', '2020-10-10'],
             }
             req.canAccess.withArgs('move:view').returns(true)

@@ -34,13 +34,15 @@ describe('Error middleware', function () {
 
   describe('#catchAll', function () {
     let nextSpy
-    const req = {}
+    let mockReq
+    // const req = {}
     let mockError
     let mockRes
 
     beforeEach(function () {
       nextSpy = sinon.spy()
       mockError = new Error('A mock error')
+      mockReq = {}
       mockRes = {
         status: sinon.stub().returnsThis(),
         render: sinon.spy(),
@@ -51,7 +53,7 @@ describe('Error middleware', function () {
     context('when headers have already been sent', function () {
       beforeEach(function () {
         mockRes.headersSent = true
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should call next middleware with error', function () {
@@ -67,7 +69,7 @@ describe('Error middleware', function () {
 
     context('when stack trace should be visible', function () {
       beforeEach(function () {
-        errors.catchAll(true)(mockError, req, mockRes, nextSpy)
+        errors.catchAll(true)(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -81,7 +83,7 @@ describe('Error middleware', function () {
 
     context('when stack trace should not be visible', function () {
       beforeEach(function () {
-        errors.catchAll(false)(mockError, req, mockRes, nextSpy)
+        errors.catchAll(false)(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -95,7 +97,7 @@ describe('Error middleware', function () {
 
     context('when show stack trace is not set', function () {
       beforeEach(function () {
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -110,7 +112,7 @@ describe('Error middleware', function () {
     context('with a 404 error status code', function () {
       beforeEach(function () {
         mockError.statusCode = errorCode404
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -153,7 +155,7 @@ describe('Error middleware', function () {
     context('with a standard 403 error status code', function () {
       beforeEach(function () {
         mockError.statusCode = errorCode403
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -197,7 +199,7 @@ describe('Error middleware', function () {
       beforeEach(function () {
         mockError.statusCode = errorCode403
         mockError.code = 'EBADCSRFTOKEN'
-        errors.catchAll()(mockError, req, mockRes, nextSpy)
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -244,7 +246,7 @@ describe('Error middleware', function () {
 
       context('without location', function () {
         beforeEach(function () {
-          errors.catchAll()(mockError, req, mockRes, nextSpy)
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should set correct status code on response', function () {
@@ -284,12 +286,37 @@ describe('Error middleware', function () {
         })
       })
 
-      context('with prison location', function () {
+      context('with req location', function () {
+        beforeEach(function () {
+          mockReq.location = {
+            location_type: 'prison',
+          }
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'hospital',
+          }
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should pass correct values to template', function () {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: true,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
+      })
+
+      context('with locals location', function () {
         beforeEach(function () {
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'prison',
           }
-          errors.catchAll()(mockError, req, mockRes, nextSpy)
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {
@@ -310,7 +337,7 @@ describe('Error middleware', function () {
     context('with no error status code', function () {
       context('without location', function () {
         beforeEach(function () {
-          errors.catchAll()(mockError, req, mockRes, nextSpy)
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should set correct status code on response', function () {
@@ -350,12 +377,37 @@ describe('Error middleware', function () {
         })
       })
 
-      context('with prison location', function () {
+      context('with req location', function () {
+        beforeEach(function () {
+          mockReq.location = {
+            location_type: 'prison',
+          }
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'hospital',
+          }
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should pass correct values to template', function () {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode500,
+            showStackTrace: false,
+            showNomisMessage: true,
+            message: {
+              heading: 'errors::default.heading',
+              content: 'errors::default.content',
+            },
+          })
+        })
+      })
+
+      context('with locals location', function () {
         beforeEach(function () {
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'prison',
           }
-          errors.catchAll()(mockError, req, mockRes, nextSpy)
+          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {

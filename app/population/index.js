@@ -6,6 +6,7 @@ const {
   setDateRange,
   setDatePagination,
 } = require('../../common/middleware/collection')
+const setLocation = require('../../common/middleware/set-location')
 const wizard = require('../../common/middleware/unique-form-wizard')
 
 const { BASE_PATH, MOUNTPATH, DAILY_PATH, WEEKLY_PATH } = require('./constants')
@@ -22,6 +23,7 @@ const {
 const { editSteps } = require('./steps')
 
 router.param('date', setDateRange)
+router.param('locationId', setLocation)
 
 router.get('/', redirectBaseUrl)
 
@@ -50,7 +52,6 @@ router.get(
   setContext('population'),
   setDatePagination(MOUNTPATH + BASE_PATH),
   setLocationFreeSpaces,
-  setPopulation,
   setResultsAsFreeSpacesTables,
   dashboard
 )

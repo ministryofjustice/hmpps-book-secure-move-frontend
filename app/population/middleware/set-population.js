@@ -1,7 +1,6 @@
 async function setPopulation(req, res, next) {
   try {
     const { dateRange, resultsAsPopulation } = req
-    const { locationId } = req.params
 
     const dailyFreeSpace =
       resultsAsPopulation?.[Object.keys(resultsAsPopulation)]
@@ -27,9 +26,8 @@ async function setPopulation(req, res, next) {
       )
     }
 
-    req.locationId = locationId
     req.date = dateRange[0]
-    req.wizardKey = `${req.locationId}-${req.date}`
+    req.wizardKey = `${req.location.id}-${req.date}`
 
     next()
   } catch (error) {

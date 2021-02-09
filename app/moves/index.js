@@ -15,6 +15,7 @@ const {
   setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
+const setLocation = require('../../common/middleware/set-location')
 const setRequestFilters = require('../../common/middleware/set-request-filters')
 const requestFilterFields = require('../filters/fields')
 
@@ -43,11 +44,10 @@ const {
 } = require('./middleware')
 
 // Define param middleware
-router.param('locationId', setFromLocation)
+router.param('locationId', setLocation)
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-// Define shared middleware
 router.use('^([^.]+)$', saveUrl)
 
 // Define routes
@@ -55,6 +55,7 @@ viewRouter.get(
   '/:view(requested)',
   protectRoute('moves:view:proposed'),
   setContext('single_requests'),
+  setFromLocation,
   COLLECTION_MIDDLEWARE,
   [
     setBodySingleRequests,
@@ -70,6 +71,7 @@ viewRouter.get(
   '/:view(requested)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
+  setFromLocation,
   [
     setBodySingleRequests,
     setBodyRequestFilters,
@@ -81,6 +83,7 @@ viewRouter.get(
   '/:view(outgoing)',
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
+  setFromLocation,
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('outgoing', 'fromLocationId'),
@@ -93,6 +96,7 @@ viewRouter.get(
   '/:view(outgoing)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
+  setFromLocation,
   [
     setBodyMoves('outgoing', 'fromLocationId'),
     setDownloadResultsMoves('outgoing'),
@@ -103,6 +107,7 @@ viewRouter.get(
   '/:view(incoming)',
   protectRoute('moves:view:incoming'),
   setContext('incoming_moves'),
+  setFromLocation,
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('incoming', 'toLocationId'),
@@ -115,6 +120,7 @@ viewRouter.get(
   '/:view(incoming)/download.:extension(csv|json)',
   protectRoute('moves:download'),
   protectRoute('moves:view:incoming'),
+  setFromLocation,
   [
     setBodyMoves('incoming', 'toLocationId'),
     setDownloadResultsMoves('incoming'),

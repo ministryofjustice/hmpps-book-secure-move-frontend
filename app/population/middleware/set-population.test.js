@@ -42,8 +42,10 @@ describe('Population middleware', function () {
         body: {},
         dateRange: ['2020-08-01', '2020-08-01'],
         resultsAsPopulation: mockFreeSpaces,
+        location: {
+          id: 'BAADF00D',
+        },
         params: {
-          locationId: 'BAADF00D',
           date: '2020-08-01',
         },
         services: {

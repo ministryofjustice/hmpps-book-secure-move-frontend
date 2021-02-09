@@ -11,6 +11,7 @@ const {
   setPagination,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
+const setLocation = require('../../common/middleware/set-location')
 
 const {
   ACTIONS,
@@ -27,6 +28,7 @@ const {
 
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
+router.param('locationId', setLocation)
 
 router.use(protectRoute('allocations:view'))
 
