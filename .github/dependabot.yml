@@ -28,5 +28,5 @@ updates:
       day: 'sunday'
     ignore:
       - dependency-name: 'node'
-        versions: ['15.x']
+        versions: ['>=15']
     open-pull-requests-limit: 1
