@@ -22,7 +22,9 @@ $_message-border-width: 5px;
     margin-top: 0;
   }
 
-  p {
+  p,
+  .govuk-warning-text,
+  .govuk-inset-text {
     @include app-reading-width;
   }
 
@@ -154,7 +156,7 @@ $_message-border-width: 5px;
     }
   }
 
-  * + * {
+  .app-message__content > * + * {
     margin-top: govuk-spacing(3);
   }
 }

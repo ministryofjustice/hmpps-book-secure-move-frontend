@@ -9,11 +9,15 @@ const assessmentToStartBannerStub = sinon
 const assessmentToUnconfirmedBannerStub = sinon
   .stub()
   .returns('__assessmentToUnconfirmedBanner__')
+const assessmentToHandedOverBanner = sinon
+  .stub()
+  .returns('__assessmentToHandedOverBanner__')
 
 const presenter = proxyquire('./move-to-message-banner-component', {
   './assessment-to-confirmed-banner': assessmentToConfirmedBannerStub,
   './assessment-to-start-banner': assessmentToStartBannerStub,
   './assessment-to-unconfirmed-banner': assessmentToUnconfirmedBannerStub,
+  './assessment-to-handed-over-banner': assessmentToHandedOverBanner,
 })
 
 describe('Presenters', function () {
@@ -25,6 +29,7 @@ describe('Presenters', function () {
         assessmentToConfirmedBannerStub.resetHistory()
         assessmentToStartBannerStub.resetHistory()
         assessmentToUnconfirmedBannerStub.resetHistory()
+        assessmentToHandedOverBanner.resetHistory()
       })
 
       context('without args', function () {
@@ -74,6 +79,44 @@ describe('Presenters', function () {
             })
 
             context('with assessment', function () {
+              context('with handed over assessment', function () {
+                beforeEach(function () {
+                  output = presenter({
+                    ...mockArgs,
+                    move: {
+                      ...mockMove,
+                      profile: {
+                        person_escort_record: {
+                          id: '12345',
+                          status: 'confirmed',
+                          handover_occurred_at: '2018-10-10T14:30:00Z',
+                        },
+                      },
+                    },
+                  })
+                })
+
+                it('should return unconfirmed banner', function () {
+                  expect(output).to.deep.equal(
+                    '__assessmentToHandedOverBanner__'
+                  )
+                })
+
+                it('should call presenter', function () {
+                  expect(
+                    assessmentToHandedOverBanner
+                  ).to.have.been.calledOnceWithExactly({
+                    assessment: {
+                      id: '12345',
+                      status: 'confirmed',
+                      handover_occurred_at: '2018-10-10T14:30:00Z',
+                    },
+                    baseUrl: '/move/12345/person-escort-record',
+                    context: 'person_escort_record',
+                  })
+                })
+              })
+
               context('with confirmed assessment', function () {
                 beforeEach(function () {
                   output = presenter({
