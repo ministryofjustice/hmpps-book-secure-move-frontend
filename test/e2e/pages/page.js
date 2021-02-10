@@ -1,3 +1,4 @@
+import { isUndefined } from 'lodash'
 import { ClientFunction, Selector, t } from 'testcafe'
 
 import { E2E } from '../../../config'
@@ -44,21 +45,24 @@ export default class Page {
   }
 
   /**
-   * Randomly select a location
+   * Select a location, choosing randomly if no position is provided
    *
+   * @param {Number} position Unbounded index of location to choose
    * @returns {Promise}
    */
-  async chooseLocation() {
+  async chooseLocation({ position } = {}) {
     await t
       .expect(this.getCurrentUrl())
       .contains('/locations')
       .expect(this.nodes.locationsList.count)
       .notEql(0, { timeout: 15000 })
 
-    const count = await this.nodes.locationsList.count
-    const randomItem = Math.floor(Math.random() * count)
+    if (isUndefined(position)) {
+      const count = await this.nodes.locationsList.count
+      position = Math.floor(Math.random() * count)
+    }
 
-    await t.click(this.nodes.locationsList.nth(randomItem))
+    await t.click(this.nodes.locationsList.nth(position))
 
     await t.expect(this.getCurrentUrl()).notContains('/locations')
   }
