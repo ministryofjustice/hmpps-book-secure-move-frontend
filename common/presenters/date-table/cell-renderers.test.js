@@ -134,6 +134,18 @@ describe('cell renderers', function () {
           })
         ).to.equal('')
       })
+
+      it('should return an transfersIn url when transfers_in data != 0', function () {
+        expect(
+          transfersInCellData.url({
+            population: { transfers_in: 1 },
+            date: new Date(2020, 5, 1),
+            locationId: 'DEADBEEF',
+          })
+        ).to.equal(
+          '/moves/day/2020-06-01/DEADBEEF/incoming?status=active&group_by=location'
+        )
+      })
     })
 
     describe('#content', function () {
@@ -189,6 +201,18 @@ describe('cell renderers', function () {
             locationId: 'DEADBEEF',
           })
         ).to.equal('')
+      })
+
+      it('should return an transfersIn url when transfers_out data != 0', function () {
+        expect(
+          transfersOutCellData.url({
+            population: { transfers_out: 1 },
+            date: new Date(2020, 5, 1),
+            locationId: 'DEADBEEF',
+          })
+        ).to.equal(
+          '/moves/day/2020-06-01/DEADBEEF/outgoing?status=active&group_by=location'
+        )
       })
     })
 
