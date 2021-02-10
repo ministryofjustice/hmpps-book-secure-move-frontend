@@ -139,7 +139,7 @@
     "pluralize": "8.0.0",
     "prom-client": "13.1.0",
     "qs": "6.9.6",
-    "query-string": "6.13.8",
+    "query-string": "6.14.0",
     "redis": "3.0.2",
     "response-time": "2.3.2",
     "semver-sort": "0.0.4",
