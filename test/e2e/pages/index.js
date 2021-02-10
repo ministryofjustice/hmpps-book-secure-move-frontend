@@ -1,5 +1,6 @@
 import AllocationJourney from './allocation-journey'
 import CancelMovePage from './cancel-move'
+import ConfirmPersonEscortRecordPage from './confirm-person-escort-record'
 import CreateMovePage from './create-move'
 import DashboardPage from './dashboard'
 import MoveDetailPage from './move-detail'
@@ -22,6 +23,7 @@ const dashboardPage = new DashboardPage()
 const populationDashboardPage = new PopulationDashboardPage()
 const populationEditPage = new PopulationEditPage()
 const populationWeeklyPage = new PopulationWeeklyPage()
+const confirmPersonEscortRecordPage = new ConfirmPersonEscortRecordPage()
 
 export {
   page,
@@ -36,4 +38,5 @@ export {
   populationDashboardPage,
   populationEditPage,
   populationWeeklyPage,
+  confirmPersonEscortRecordPage,
 }
