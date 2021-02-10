@@ -78,22 +78,63 @@ describe('Services', function () {
       })
 
       context('with ID', function () {
-        beforeEach(async function () {
-          output = await personEscortRecordService.confirm(mockId)
+        context('without handover details', function () {
+          beforeEach(async function () {
+            output = await personEscortRecordService.confirm(mockId)
+          })
+
+          it('calls the api service', function () {
+            expect(apiClient.update).to.have.been.calledOnceWithExactly(
+              'person_escort_record',
+              {
+                id: mockId,
+                status: 'confirmed',
+              }
+            )
+          })
+
+          it('returns the data', function () {
+            expect(output).to.deep.equal(mockRecord)
+          })
         })
 
-        it('calls the api service', function () {
-          expect(apiClient.update).to.have.been.calledOnceWithExactly(
-            'person_escort_record',
-            {
-              id: mockId,
-              status: 'confirmed',
-            }
-          )
-        })
+        context('with handover details', function () {
+          beforeEach(async function () {
+            output = await personEscortRecordService.confirm(mockId, {
+              handoverOccurredAt: '2020-10-10T14:00:00Z',
+              dispatchingOfficer: 'John Smith',
+              dispatchingOfficerId: '123',
+              dispatchingOfficerContact: '07777',
+              receivingOfficer: 'Steve Jones',
+              receivingOfficerId: '456',
+              receivingOfficerContact: '08888',
+              receivingOrganisation: 'Serco',
+            })
+          })
 
-        it('returns the data', function () {
-          expect(output).to.deep.equal(mockRecord)
+          it('calls the api service', function () {
+            expect(apiClient.update).to.have.been.calledOnceWithExactly(
+              'person_escort_record',
+              {
+                id: mockId,
+                status: 'confirmed',
+                handover_occurred_at: '2020-10-10T14:00:00Z',
+                handover_details: {
+                  dispatching_officer: 'John Smith',
+                  dispatching_officer_id: '123',
+                  dispatching_officer_contact: '07777',
+                  receiving_officer: 'Steve Jones',
+                  receiving_officer_id: '456',
+                  receiving_officer_contact: '08888',
+                  receiving_organisation: 'Serco',
+                },
+              }
+            )
+          })
+
+          it('returns the data', function () {
+            expect(output).to.deep.equal(mockRecord)
+          })
         })
       })
     })
