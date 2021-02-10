@@ -3,7 +3,8 @@
   "journeys": {
     "confirm": {
       "heading":"Confirm and complete this Person Escort Record",
-      "content":"Once you are confident the information below is correct and won’t change, provide your confirmation that this record is correct in order to complete it.\n\n!!! warning\nOnce you confirm and complete the Person Escort Record you will no longer be able to update the information.\n!!!"
+      "content":"!!! warning\nOnce handover is recorded for this person their Person Escort Record will no longer be able to be updated.\n!!!",
+      "before":"Check that:\n- the correct person is being moved\n- the property information is accurate\n- any risks are understood by receiving party\n!!! warning\nOnce handover is recorded for this person their Person Escort Record can no longer be updated.\n!!!"
     }
   },
   "nomis_mappings": {

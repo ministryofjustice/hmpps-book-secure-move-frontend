@@ -458,12 +458,12 @@
       "details": "Give details"
     }
   },
-  "confirm_person_escort_record": {
-    "label": "Check this box to confirm that, to the best your knowledge, all information provided in this Person Escort Record is correct",
+  "confirm_handover": {
+    "label": "Check this box to confirm that all the above tasks have been completed",
     "error_message": "You must provide confirmation"
   },
   "confirm_youth_risk_assessment": {
-    "label": "Check this box to confirm that, to the best your knowledge, all information provided in this assessment is correct",
+    "label": "Check this box to confirm that, to the best your knowledge, all information provided in the assessment is correct",
     "error_message": "You must provide confirmation"
   },
   "unlock": {
@@ -487,7 +487,55 @@
   "operational_capacity": {
     "label": "Operational capacity"
   },
-  "usable_capacity": {
-    "label": "Usable capacity"
+  "handover_dispatching_officer": {
+    "label": "Full name of dispatching officer"
+  },
+  "handover_dispatching_officer_id": {
+    "label": "ID of dispatching officer"
+  },
+  "handover_dispatching_officer_contact": {
+    "label": "Contact number of dispatching officer"
+  },
+  "handover_receiving_officer": {
+    "label": "Full name of receiving officer"
+  },
+  "handover_receiving_officer_id": {
+    "label": "ID of receiving officer"
+  },
+  "handover_receiving_officer_contact": {
+    "label": "Contact number of receiving officer"
+  },
+  "handover_receiving_organisation": {
+    "label": "Organisation of receiving officer",
+    "items": {
+      "supplier": {
+        "label": "Supplier"
+      },
+      "other": {
+        "label": "Another organisation"
+      }
+    }
+  },
+  "handover_other_organisation": {
+    "label": "Name of organisation"
+  },
+  "handover_occurred_at": {
+    "label": "Handover time",
+    "items": {
+      "now": {
+        "label": "Now"
+      },
+      "historic": {
+        "label": "Enter manually"
+      }
+    }
+  },
+  "handover_other_date": {
+    "label": "Date of handover"
+  },
+  "handover_other_time": {
+    "label": "Time of handover",
+    "hint": "For example 11:00 or 11am",
+    "error_message": "You must provide a valid handover time"
   }
 }
