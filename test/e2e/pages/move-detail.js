@@ -71,9 +71,6 @@ class MoveDetailPage extends Page {
       personEscortRecordConfirmationButton: this.nodes.instructionBanner
         .find('.govuk-button')
         .withText('Provide confirmation'),
-      personEscortRecordConfirmationCheckbox: Selector(
-        '[name="confirm_person_escort_record"]'
-      ),
       getCancelLink: Selector('.app-link--destructive'),
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
