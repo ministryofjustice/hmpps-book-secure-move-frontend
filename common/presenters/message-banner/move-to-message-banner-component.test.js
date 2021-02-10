@@ -96,7 +96,7 @@ describe('Presenters', function () {
                   })
                 })
 
-                it('should return unconfirmed banner', function () {
+                it('should return handed over banner', function () {
                   expect(output).to.deep.equal(
                     '__assessmentToHandedOverBanner__'
                   )
