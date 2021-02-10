@@ -48,7 +48,7 @@ describe('Presenters', function () {
             },
             content: {
               html:
-                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n\n    <p>\n      <a href="/base-url/print" class="app-icon app-icon--print">\n        actions::print_assessment\n      </a>\n    </p>\n  ',
+                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n\n    <p>\n      <a href="/base-url/print" class="app-icon app-icon--print">\n        actions::print_assessment\n      </a>\n    </p>\n\n    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n      handed_over_at\n    </p>\n  ',
             },
           })
         })
@@ -76,6 +76,9 @@ describe('Presenters', function () {
           )
           expect(i18n.t).to.be.calledWithExactly('actions::print_assessment', {
             context: 'person_escort_record',
+          })
+          expect(i18n.t).to.be.calledWithExactly('handed_over_at', {
+            date: mockArgs.assessment.handover_occurred_at,
           })
         })
 
