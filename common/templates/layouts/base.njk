@@ -129,20 +129,21 @@
       </div>
     {% endif %}
   {% endblock %}
+
+  {% set breadcrumbs = getBreadcrumbs() %}
+  {% if breadcrumbs|length > 1 %}
+    <div class="govuk-width-container">
+      {{ govukBreadcrumbs({
+        items: breadcrumbs,
+        attributes: {
+          'data-auto-id': 'breadcrumbs'
+        }
+      }) }}
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block beforeContent %}
-  {% set breadcrumbs = getBreadcrumbs() %}
-
-  {% if breadcrumbs|length > 1 %}
-    {{ govukBreadcrumbs({
-      items: breadcrumbs,
-      attributes: {
-        'data-auto-id': 'breadcrumbs'
-      }
-    }) }}
-  {% endif %}
-
   {% include "includes/messages.njk" %}
 {% endblock %}
 

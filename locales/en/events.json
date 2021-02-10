@@ -392,5 +392,9 @@
   "PerConfirmation": {
     "heading": "Person Escort Record confirmed",
     "description": "All information in this Person Escort Record was confirmed"
+  },
+  "PerHandover": {
+    "heading": "Person handed over",
+    "description": "This person was handed over to <strong>{{receiving_officer}} ({{receiving_officer_id}}), {{receiving_organisation}}</strong> by <strong>{{dispatching_officer}} ({{dispatching_officer_id}})</strong>"
   }
 }

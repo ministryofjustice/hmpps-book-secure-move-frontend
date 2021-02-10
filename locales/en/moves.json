@@ -108,7 +108,7 @@
     }
   },
   "detail": {
-    "page_title": "Move for {{name}}",
+    "page_title": "Move for {{-name}}",
     "court_hearings": {
       "heading": "Court hearing",
       "heading_plural": "Court hearings",

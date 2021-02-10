@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ t("person-escort-record::page_title", {
-    context: "with_name",
+  {{ t("assessment::page_title_with_name", {
+    context: "person_escort_record",
     name: fullname
   }) }}
   – {{ SERVICE_NAME }}
@@ -42,6 +42,12 @@
           text: t("actions::back_to_move"),
           href: "/move/" + moveId
         }) }}
+      {% endif %}
+
+      {% if timestamp %}
+        <p>
+          {{ timestamp }}
+        </p>
       {% endif %}
 
       {% if hasSelfHarmWarning %}
@@ -272,8 +278,36 @@
               {{ t("person-escort-record::sections.handover.subheading") }} {{ loop.index }}
             </h3>
 
+            {% set defaultValues = {
+              "to": ".................................................",
+              "time": "..........",
+              "date": "................",
+              "phone": "...................",
+              "dispatching_name": "........................................",
+              "dispatching_id": "........",
+              "receiving_name": "........................................",
+              "receiving_id": "........",
+              "singature": ".................................................."
+            } %}
+
+            {% if loop.first %}
+              {% set values = {
+                "to": handoverDetails.receiving_organisation or defaultValues.to,
+                "time": (handoverDetails.occurred_at or defaultValues.time) | formatTime,
+                "date": (handoverDetails.occurred_at or defaultValues.date) | formatDate,
+                "phone": handoverDetails.receiving_officer_contact or defaultValues.phone,
+                "dispatching_name": handoverDetails.dispatching_officer or defaultValues.dispatching_name,
+                "dispatching_id": handoverDetails.dispatching_officer_id or defaultValues.dispatching_id,
+                "receiving_name": handoverDetails.receiving_officer or defaultValues.receiving_name,
+                "receiving_id": handoverDetails.receiving_officer_id or defaultValues.receiving_id,
+                "singature": defaultValues.singature
+              } %}
+            {% else %}
+              {% set values = defaultValues %}
+            {% endif %}
+
             <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
-              {{ t("person-escort-record::sections.handover.fields.to") }}: .................................................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.time") }}: ..........&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: ................&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: ...................
+              {{ t("person-escort-record::sections.handover.fields.to") }}: {{ values.to }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.time") }}: {{ values.time }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: {{ values.date }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: {{ values.phone }}
             </p>
 
             <div class="govuk-grid-row">
@@ -283,10 +317,10 @@
                 </h4>
 
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
-                  {{ t("person-escort-record::sections.handover.fields.name") }}: ........................................&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: ........
+                  {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.dispatching_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.dispatching_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: ..................................................
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.singature }}
                 </p>
               </div>
 
@@ -296,10 +330,10 @@
                 </h4>
 
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
-                  {{ t("person-escort-record::sections.handover.fields.name") }}: ........................................&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: ........
+                  {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.receiving_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.receiving_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: ..................................................
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.singature }}
                 </p>
               </div>
             </div>

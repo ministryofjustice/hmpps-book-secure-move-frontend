@@ -12,7 +12,7 @@ module.exports = {
     checkJourney: false,
     controller: ConfirmAssessmentController,
     fields: ['confirm_assessment'],
-    buttonText: 'actions::confirm_and_complete_record',
+    buttonText: 'actions::confirm_youth_risk_assessment',
     pageTitle: 'youth-risk-assessment::journeys.confirm.heading',
     beforeFieldsContent: 'youth-risk-assessment::journeys.confirm.content',
     template: 'form-wizard',

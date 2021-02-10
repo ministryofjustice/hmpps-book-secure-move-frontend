@@ -163,8 +163,11 @@ function formatDateWithDay(value) {
  *
  * @example {{ "2019-02-21" | formatDateWithTimeAndDay }}
  */
-function formatDateWithTimeAndDay(value) {
-  return formatDate(value, DATE_FORMATS.WITH_TIME_AND_DAY)
+function formatDateWithTimeAndDay(value, includeSeconds = false) {
+  const timeFormat = includeSeconds
+    ? 'WITH_TIME_WITH_SECONDS_AND_DAY'
+    : 'WITH_TIME_AND_DAY'
+  return formatDate(value, DATE_FORMATS[timeFormat])
 }
 
 /**
