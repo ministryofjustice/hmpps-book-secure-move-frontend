@@ -1,11 +1,42 @@
+const proxyquire = require('proxyquire')
+
 const FormWizardController = require('../form-wizard')
 
-const ConfirmAssessmentController = require('./confirm-assessment')
+const setMoveWithSummary = sinon.stub()
+
+const ConfirmAssessmentController = proxyquire('./confirm-assessment', {
+  '../../middleware/set-move-with-summary': setMoveWithSummary,
+})
 
 const controller = new ConfirmAssessmentController({ route: '/' })
 
 describe('Framework controllers', function () {
   describe('ConfirmAssessmentController', function () {
+    describe('#middlewareLocals', function () {
+      beforeEach(function () {
+        sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'checkStatus')
+
+        controller.middlewareLocals()
+      })
+
+      it('should call parent method', function () {
+        expect(FormWizardController.prototype.middlewareLocals).to.have.been
+          .calledOnce
+      })
+
+      it('should call set move with summary', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          setMoveWithSummary
+        )
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
     describe('#middlewareChecks', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareChecks')
