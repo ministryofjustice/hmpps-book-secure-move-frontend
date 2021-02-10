@@ -1,6 +1,8 @@
 const { filter, find, orderBy, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
+const i18n = require('../../../config/i18n')
+const filters = require('../../../config/nunjucks/filters')
 
 function _checkResponse({ responses = [], key, expectedValue }) {
   return (
@@ -21,7 +23,7 @@ function _checkResponse({ responses = [], key, expectedValue }) {
 }
 
 function printRecord(req, res) {
-  const { personEscortRecord, move } = req
+  const { personEscortRecord = {}, move } = req
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
   const framework = personEscortRecord?._framework
@@ -107,6 +109,19 @@ function printRecord(req, res) {
       )
       .map(response => response.value)
   })
+  const handoverDetails = {
+    ...personEscortRecord.handover_details,
+    occurred_at: personEscortRecord.handover_occurred_at,
+  }
+  const timestampKey = personEscortRecord.amended_at
+    ? 'amended_at'
+    : 'completed_at'
+  const timestamp = i18n.t(timestampKey, {
+    date: filters.formatDateWithTimeAndDay(
+      personEscortRecord[timestampKey],
+      true
+    ),
+  })
 
   const locals = {
     moveId,
@@ -127,6 +142,8 @@ function printRecord(req, res) {
     personalDetailsSummary,
     personEscortRecordSections,
     personEscortRecordTagList,
+    timestamp,
+    handoverDetails,
   }
 
   res.render('person-escort-record/views/print-record', locals)

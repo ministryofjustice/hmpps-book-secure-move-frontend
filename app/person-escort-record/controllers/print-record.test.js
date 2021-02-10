@@ -22,7 +22,7 @@ describe('Person Escort Record controllers', function () {
     })
 
     it('should contain correct locals', function () {
-      expect(Object.keys(params)).to.have.length(18)
+      expect(Object.keys(params)).to.have.length(20)
       expect(Object.keys(params)).to.deep.equal([
         'moveId',
         'moveType',
@@ -42,6 +42,8 @@ describe('Person Escort Record controllers', function () {
         'personalDetailsSummary',
         'personEscortRecordSections',
         'personEscortRecordTagList',
+        'timestamp',
+        'handoverDetails',
       ])
     })
   })
