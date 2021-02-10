@@ -1,8 +1,8 @@
 const moveHelpers = require('../../../common/helpers/move')
 const presenters = require('../../../common/presenters')
 
-module.exports = async function view(req, res) {
-  const { move } = req
+module.exports = function view(req, res) {
+  const { move = {} } = req
   const { status, cancellation_reason: cancellationReason } = move
 
   // TODO: remove this second call when backend returns rebook info as part of move

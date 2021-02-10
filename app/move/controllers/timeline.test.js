@@ -24,14 +24,6 @@ describe('Move controllers', function () {
   describe('Timeline controller', function () {
     const res = { render: sinon.stub() }
     let req
-    const mockMove = {
-      id: 'moveId',
-      profile: {
-        id: 'profileId',
-        assessment_answers: ['answerA', 'answerB'],
-      },
-      timeline_events: [{ woo: 'haa' }],
-    }
     beforeEach(function () {
       res.render.resetHistory()
       presenters.moveToMetaListComponent.resetHistory()
@@ -39,18 +31,16 @@ describe('Move controllers', function () {
       presenters.moveToTimelineComponent.resetHistory()
       getLocals.resetHistory()
       getTabsUrls.resetHistory()
-      req = {
-        move: mockMove,
-      }
+      req = {}
     })
 
     context('by default', function () {
-      beforeEach(async function () {
-        await timelineController(req, res)
+      beforeEach(function () {
+        timelineController(req, res)
       })
 
       it('should get the tab urls', function () {
-        expect(getTabsUrls).to.be.calledOnceWithExactly(mockMove)
+        expect(getTabsUrls).to.be.calledOnceWithExactly({})
       })
 
       it('should transform the data for presentation', function () {
@@ -69,20 +59,25 @@ describe('Move controllers', function () {
     })
 
     context('when move is rejected single request', function () {
-      beforeEach(async function () {
-        req.move = {
-          status: 'cancelled',
-          cancellation_reason: 'rejected',
-          timeline_events: [
-            {
-              event_type: 'MoveReject',
-              details: {
-                rebook: true,
-              },
+      const mockMove = {
+        status: 'cancelled',
+        cancellation_reason: 'rejected',
+        timeline_events: [
+          {
+            event_type: 'MoveReject',
+            details: {
+              rebook: true,
             },
-          ],
-        }
-        await timelineController(req, res)
+          },
+        ],
+      }
+      beforeEach(function () {
+        req.move = mockMove
+        timelineController(req, res)
+      })
+
+      it('should get the tab urls', function () {
+        expect(getTabsUrls).to.be.calledOnceWithExactly(mockMove)
       })
 
       it('should copy rebook property from MoveReject event to move', function () {
