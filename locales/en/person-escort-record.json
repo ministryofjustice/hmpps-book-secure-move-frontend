@@ -25,7 +25,7 @@
         "phone": "Phone",
         "name": "Name",
         "id": "ID",
-        "signature": "Signature"
+        "signature": "Sign"
       }
     },
     "property_handover": {
