@@ -287,7 +287,7 @@
               "dispatching_id": "........",
               "receiving_name": "........................................",
               "receiving_id": "........",
-              "singature": ".................................................."
+              "signature": ".................................................."
             } %}
 
             {% if loop.first %}
@@ -300,7 +300,7 @@
                 "dispatching_id": handoverDetails.dispatching_officer_id or defaultValues.dispatching_id,
                 "receiving_name": handoverDetails.receiving_officer or defaultValues.receiving_name,
                 "receiving_id": handoverDetails.receiving_officer_id or defaultValues.receiving_id,
-                "singature": defaultValues.singature
+                "signature": defaultValues.signature
               } %}
             {% else %}
               {% set values = defaultValues %}
@@ -320,7 +320,7 @@
                   {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.dispatching_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.dispatching_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.singature }}
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
                 </p>
               </div>
 
@@ -333,7 +333,7 @@
                   {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.receiving_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.receiving_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.singature }}
+                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
                 </p>
               </div>
             </div>
