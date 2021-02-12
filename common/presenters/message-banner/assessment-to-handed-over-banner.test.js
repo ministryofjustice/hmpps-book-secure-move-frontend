@@ -48,7 +48,7 @@ describe('Presenters', function () {
             },
             content: {
               html:
-                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n\n    <p>\n      <a href="/base-url/print" class="app-icon app-icon--print">\n        actions::print_assessment\n      </a>\n    </p>\n  ',
+                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n\n    <p>\n      <a href="/base-url/print" class="app-icon app-icon--print">\n        actions::print_assessment\n      </a>\n\n      <p class="app-icon app-print--hide">\n        messages::assessment.handed_over.note\n      </p>\n\n    </p>\n  ',
             },
           })
         })

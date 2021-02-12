@@ -33,6 +33,17 @@ module.exports = function assessmentToHandedOverBanner({
           context,
         })}
       </a>
+
+      <p class="app-icon app-print--hide">
+        ${i18n.t('messages::assessment.handed_over.note', {
+          context,
+          date: filters.formatDateWithTimeAndDay(
+            assessment.handover_occurred_at
+          ),
+          details: assessment.handover_details,
+        })}
+      </p>
+
     </p>
   `
 
