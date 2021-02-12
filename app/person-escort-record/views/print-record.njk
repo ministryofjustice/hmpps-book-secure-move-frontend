@@ -274,7 +274,7 @@
 
         {% for handover in [1, 2, 3, 4, 5] %}
           <div class="app-border-bottom-1 govuk-!-padding-bottom-4{{ ' govuk-!-margin-bottom-4' if not loop.last }} ">
-            <h3 class="govuk-heading-s govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+            <h3 class="govuk-heading-s govuk-!-margin-top-0 govuk-!-margin-bottom-2">
               {{ t("person-escort-record::sections.handover.subheading") }} {{ loop.index }}
             </h3>
 
@@ -282,12 +282,13 @@
               "to": ".................................................",
               "time": "..........",
               "date": "................",
-              "phone": "...................",
               "dispatching_name": "........................................",
               "dispatching_id": "........",
+              "dispatching_contact": "..............",
               "receiving_name": "........................................",
               "receiving_id": "........",
-              "signature": ".................................................."
+              "receiving_contact": "..............",
+              "signature": "..........................."
             } %}
 
             {% if loop.first %}
@@ -295,11 +296,12 @@
                 "to": handoverDetails.receiving_organisation or defaultValues.to,
                 "time": (handoverDetails.occurred_at or defaultValues.time) | formatTime,
                 "date": (handoverDetails.occurred_at or defaultValues.date) | formatDate,
-                "phone": handoverDetails.receiving_officer_contact or defaultValues.phone,
                 "dispatching_name": handoverDetails.dispatching_officer or defaultValues.dispatching_name,
                 "dispatching_id": handoverDetails.dispatching_officer_id or defaultValues.dispatching_id,
+                "dispatching_contact": handoverDetails.dispatching_officer_contact or defaultValues.dispatching_contact,
                 "receiving_name": handoverDetails.receiving_officer or defaultValues.receiving_name,
                 "receiving_id": handoverDetails.receiving_officer_id or defaultValues.receiving_id,
+                "receiving_contact": handoverDetails.receiving_officer_contact or defaultValues.receiving_contact,
                 "signature": defaultValues.signature
               } %}
             {% else %}
@@ -307,7 +309,7 @@
             {% endif %}
 
             <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
-              {{ t("person-escort-record::sections.handover.fields.to") }}: {{ values.to }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.time") }}: {{ values.time }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: {{ values.date }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.phone") }}: {{ values.phone }}
+              {{ t("person-escort-record::sections.handover.fields.to") }}: {{ values.to }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.time") }}: {{ values.time }}&nbsp;&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.date") }}: {{ values.date }}&nbsp;&nbsp;&nbsp;
             </p>
 
             <div class="govuk-grid-row">
@@ -316,11 +318,11 @@
                   {{ t("person-escort-record::sections.handover.fields.dispatching_officer") }}
                 </h4>
 
-                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
                   {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.dispatching_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.dispatching_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
+                  {{ t("person-escort-record::sections.handover.fields.phone") }}: {{ values.dispatching_contact }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
                 </p>
               </div>
 
@@ -329,11 +331,11 @@
                   {{ t("person-escort-record::sections.handover.fields.receiving_officer") }}
                 </h4>
 
-                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-3">
+                <p class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
                   {{ t("person-escort-record::sections.handover.fields.name") }}: {{ values.receiving_name }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.id") }}: {{ values.receiving_id }}
                 </p>
                 <p class="govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                  {{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
+                  {{ t("person-escort-record::sections.handover.fields.phone") }}: {{ values.receiving_contact }}&nbsp;&nbsp;{{ t("person-escort-record::sections.handover.fields.signature") }}: {{ values.signature }}
                 </p>
               </div>
             </div>
