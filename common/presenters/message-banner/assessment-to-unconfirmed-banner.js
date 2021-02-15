@@ -34,7 +34,7 @@ module.exports = function assessmentToUnconfirmedBanner({
       content += `
         ${componentService.getComponent('govukButton', {
           href: assessment.editable ? `${baseUrl}/confirm` : '',
-          text: i18n.t('actions::provide_confirmation'),
+          text: i18n.t('actions::provide_confirmation', { context }),
           disabled: !assessment.editable,
         })}
       `

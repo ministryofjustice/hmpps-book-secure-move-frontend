@@ -70,7 +70,7 @@ class MoveDetailPage extends Page {
         .withText('Start Person Escort Record'),
       personEscortRecordConfirmationButton: this.nodes.instructionBanner
         .find('.govuk-button')
-        .withText('Provide confirmation'),
+        .withText('Record handover'),
       getCancelLink: Selector('.app-link--destructive'),
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
