@@ -39,7 +39,7 @@
     },
     "timetable": {
       "heading": "This court date may already exist in NOMIS",
-      "subheading": "{{name}}’s timetable for {{date}}"
+      "subheading": "{{-name}}’s timetable for {{date}}"
     },
     "court_information": {
       "heading": "Is there information for the court?"
@@ -148,7 +148,7 @@
       }
     },
     "page_title": "Cancel move for ‘{{-name}}’",
-    "warning": "You must also contact the supplier to cancel the move request for {{name}}"
+    "warning": "You must also contact the supplier to cancel the move request for {{-name}}"
   },
   "review": {
     "page_title": "Review request for ‘{{-name}}’",
@@ -159,9 +159,9 @@
     }
   },
   "confirmation": {
-    "page_title": "Move requested for {{name}}",
-    "page_title_assign": "{{name}} added to allocation",
-    "page_title_proposed": "Move sent for {{name}}",
+    "page_title": "Move requested for {{-name}}",
+    "page_title_assign": "{{-name}} added to allocation",
+    "page_title_proposed": "Move sent for {{-name}}",
     "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> on <strong>{{date}}</strong> has been requested with {{supplier}}.",
     "detail_proposed": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> to <strong>{{location}}</strong> has been sent to the Population Management Unit (PMU) for review.",
     "detail_assign": "<strong><a href=\"{{href}}\">{{name}}</a></strong> has been added to an allocation for <strong><a href=\"{{allocationHref}}\">$t(n_person) to {{location}}</a></strong> on <strong>{{date}}</strong>.",

@@ -1,6 +1,6 @@
 {
   "page_title": "$t({{context}})",
-  "page_title_with_name": "$t({{context}}) for {{name}}",
+  "page_title_with_name": "$t({{context}}) for {{-name}}",
   "section_overview": "{{section}} overview",
   "locked": "A $t({{context}}) cannot be updated once it has been confirmed or once the move has started.",
   "statuses": {
