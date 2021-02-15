@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.70.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.70.0...v2.70.1) (2021-02-15)
+
+
+### Bug Fixes
+
+* Use correct action content for digital handover in banner ([a26a1cf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a26a1cfa6a47192b1f6fadd4db2795a17fb7b608))
+* Validate times in past ([aa7a0ca](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/aa7a0ca1ec1bb198e16a2ec5837d9d93ed0d2681))
+
 ## [2.70.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.2...v2.70.0) (2021-02-15)
 
 
