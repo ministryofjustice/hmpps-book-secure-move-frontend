@@ -25,6 +25,7 @@
   "last_updated_at": "Last updated {{date}} at {{time}}",
   "amended_at": "Updated at {{date}}",
   "completed_at": "Completed at {{date}}",
+  "handed_over_at": "Handed over at {{date}}",
   "created_on": "Created on",
   "created_on_alert": "Alert created on",
   "created_on_personal_care_need": "Personal care need created on",

@@ -34,6 +34,15 @@ module.exports = function assessmentToHandedOverBanner({
         })}
       </a>
     </p>
+
+    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">
+      ${i18n.t('handed_over_at', {
+        date: filters.formatDateWithTimeAndDay(
+          assessment.handover_occurred_at,
+          true
+        ),
+      })}
+    </p>
   `
 
   return {
