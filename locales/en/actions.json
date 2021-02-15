@@ -47,6 +47,7 @@
   "print_assessment": "Print $t({{context}})",
   "view_assessment": "View $t({{context}})",
   "provide_confirmation": "Provide confirmation",
+  "provide_confirmation_person_escort_record": "Record handover",
   "confirm_handover": "Confirm handover",
   "confirm_and_complete_record": "Confirm and complete record",
   "confirm_youth_risk_assessment": "Confirm assessment",

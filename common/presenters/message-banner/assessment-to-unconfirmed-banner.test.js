@@ -190,7 +190,10 @@ describe('Presenters', function () {
                   }
                 )
                 expect(i18n.t).to.be.calledWithExactly(
-                  'actions::provide_confirmation'
+                  'actions::provide_confirmation',
+                  {
+                    context: 'person_escort_record',
+                  }
                 )
               })
 
