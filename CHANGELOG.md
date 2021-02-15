@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.70.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.2...v2.70.0) (2021-02-15)
+
+
+### Features
+
+* Capture handover details when confirming Person Escort Record ([76fcafd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/76fcafd31de1f30fb1480a341fcccc6ce16061e9))
+* Show handover details in move message banner ([66d53ac](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/66d53acc885bdf5993d143745ce808d89977057f))
+
+
+### Bug Fixes
+
+* Add "Back to move" link back to assessments ([43da112](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/43da1128b5425a4e22659ad29f473e7297552509))
+* Ensure names with special characters are displayed correctly ([af7b115](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/af7b1153905514f663587ece97ce2f63de2c517e))
+* Prevent special characters being escaped in the breadcrumb ([6f19c96](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6f19c96dcc78e6880f35edbaecddbcb53036da15))
+* Remove async from timeline function ([7cb24d0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7cb24d04ee85642ddd223be4c1e19a5b24827be3))
+
 ### [2.69.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.69.1...v2.69.2) (2021-02-03)
 
 
