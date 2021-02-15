@@ -1,20 +1,35 @@
-const ConfirmAssessmentController = require('../../../../common/controllers/framework/confirm-assessment')
+const { HandoverController } = require('./controllers')
 
-module.exports = {
+const single = {
   '/': {
     entryPoint: true,
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'provide-confirmation',
+    next: 'handover',
   },
-  '/provide-confirmation': {
+  '/handover': {
     checkJourney: false,
-    controller: ConfirmAssessmentController,
-    fields: ['confirm_person_escort_record'],
-    buttonText: 'actions::confirm_and_complete_record',
-    pageTitle: 'person-escort-record::journeys.confirm.heading',
-    beforeFieldsContent: 'person-escort-record::journeys.confirm.content',
-    template: 'form-wizard',
+    controller: HandoverController,
+    fields: [
+      'confirm_handover',
+      'handover_dispatching_officer',
+      'handover_dispatching_officer_id',
+      'handover_dispatching_officer_contact',
+      'handover_receiving_officer',
+      'handover_receiving_officer_id',
+      'handover_receiving_officer_contact',
+      'handover_receiving_organisation',
+      'handover_other_organisation',
+      'handover_occurred_at',
+      'handover_other_date',
+      'handover_other_time',
+    ],
+    buttonText: 'actions::confirm_handover',
+    pageTitle: 'assessment::handover.heading',
+    templatePath: 'person-escort-record/app/confirm',
+    template: 'handover-details',
   },
 }
+
+module.exports = single

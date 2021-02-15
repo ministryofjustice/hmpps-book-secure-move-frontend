@@ -1,6 +1,7 @@
 const proxyquire = require('proxyquire')
 
 const i18n = require('../../../config/i18n')
+const filters = require('../../../config/nunjucks/filters')
 const componentService = require('../../services/component')
 
 const frameworkToTaskListComponentStub = sinon.stub().returnsArg(0)
@@ -17,6 +18,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         sinon.stub(i18n, 't').returnsArg(0)
         sinon.stub(componentService, 'getComponent').returnsArg(0)
+        sinon.stub(filters, 'formatDateWithTimeAndDay').returnsArg(0)
         frameworkToTaskListComponentStub.resetHistory()
       })
 
@@ -28,19 +30,24 @@ describe('Presenters', function () {
       })
 
       context('with args', function () {
-        const mockArgs = {
-          assessment: {
-            status: 'in_progress',
-            _framework: {
-              sections: [],
+        let mockArgs
+
+        beforeEach(function () {
+          mockArgs = {
+            assessment: {
+              status: 'in_progress',
+              editable: true,
+              _framework: {
+                sections: [],
+              },
+              meta: {
+                section_progress: [],
+              },
             },
-            meta: {
-              section_progress: [],
-            },
-          },
-          baseUrl: '/base-url',
-          context: 'person_escort_record',
-        }
+            baseUrl: '/base-url',
+            context: 'person_escort_record',
+          }
+        })
 
         context('with incomplete assessment', function () {
           beforeEach(function () {
@@ -56,7 +63,7 @@ describe('Presenters', function () {
               },
               content: {
                 html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n  \n      </div>\n    </div>\n  ',
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
               },
             })
           })
@@ -104,7 +111,7 @@ describe('Presenters', function () {
                 },
                 content: {
                   html:
-                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n  \n      </div>\n    </div>\n  ',
+                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                 },
               })
             })
@@ -130,79 +137,31 @@ describe('Presenters', function () {
 
             beforeEach(function () {
               canAccessStub = sinon.stub().returns(true)
-              output = presenter({
-                ...mockArgs,
-                canAccess: canAccessStub,
-              })
             })
 
             context('with uneditable assessment', function () {
               beforeEach(function () {
+                mockArgs.assessment.editable = false
                 output = presenter({
                   ...mockArgs,
                   canAccess: canAccessStub,
                 })
               })
 
-              it('should return message component', function () {
-                expect(output).to.deep.equal({
-                  allowDismiss: false,
-                  classes: 'app-message--instruction govuk-!-padding-right-0',
-                  title: {
-                    text: `messages::assessment.${mockArgs.assessment.status}.heading`,
-                  },
-                  content: {
-                    html:
-                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n  \n      <p>\n        messages::assessment.completed.content\n      </p>\n\n      govukButton\n    \n        govukWarningText\n      \n      </div>\n    </div>\n  ',
-                  },
-                })
-              })
-
-              it('should translate with correct context', function () {
-                expect(i18n.t).to.be.calledWithExactly(
-                  `messages::assessment.${mockArgs.assessment.status}.heading`,
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-                expect(i18n.t).to.be.calledWithExactly(
-                  `messages::assessment.${mockArgs.assessment.status}.content`,
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-                expect(i18n.t).to.be.calledWithExactly(
-                  `messages::assessment.${mockArgs.assessment.status}.uneditable`,
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-                expect(i18n.t).to.be.calledWithExactly(
-                  'actions::provide_confirmation'
-                )
-              })
-
-              it('should call button component', function () {
+              it('should not set href on button component', function () {
                 expect(componentService.getComponent).to.be.calledWithExactly(
                   'govukButton',
                   {
-                    href: '/base-url/confirm',
+                    href: '',
                     text: 'actions::provide_confirmation',
                     disabled: true,
                   }
-                )
-              })
-
-              it('should check permissions', function () {
-                expect(canAccessStub).to.be.calledWithExactly(
-                  'person_escort_record:confirm'
                 )
               })
             })
 
             context('with editable assessment', function () {
               beforeEach(function () {
-                mockArgs.assessment.editable = true
                 output = presenter({
                   ...mockArgs,
                   canAccess: canAccessStub,
@@ -218,7 +177,7 @@ describe('Presenters', function () {
                   },
                   content: {
                     html:
-                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n  \n      <p>\n        messages::assessment.completed.content\n      </p>\n\n      govukButton\n    \n      </div>\n    </div>\n  ',
+                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                   },
                 })
               })
@@ -226,12 +185,6 @@ describe('Presenters', function () {
               it('should translate with correct context', function () {
                 expect(i18n.t).to.be.calledWithExactly(
                   `messages::assessment.${mockArgs.assessment.status}.heading`,
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-                expect(i18n.t).to.be.calledWithExactly(
-                  `messages::assessment.${mockArgs.assessment.status}.content`,
                   {
                     context: 'person_escort_record',
                   }
@@ -257,6 +210,126 @@ describe('Presenters', function () {
                   'person_escort_record:confirm'
                 )
               })
+            })
+          })
+        })
+
+        context('with uneditable assessment', function () {
+          beforeEach(function () {
+            mockArgs.assessment.editable = false
+            output = presenter({
+              ...mockArgs,
+            })
+          })
+
+          it('should return message component', function () {
+            expect(output).to.deep.equal({
+              allowDismiss: false,
+              classes: 'app-message--instruction govuk-!-padding-right-0',
+              title: {
+                text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+              },
+              content: {
+                html:
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      govukWarningText\n    ',
+              },
+            })
+          })
+
+          it('should translate with correct context', function () {
+            expect(i18n.t).to.be.calledWithExactly(
+              `messages::assessment.${mockArgs.assessment.status}.heading`,
+              {
+                context: 'person_escort_record',
+              }
+            )
+            expect(i18n.t).to.be.calledWithExactly(
+              `messages::assessment.${mockArgs.assessment.status}.uneditable`,
+              {
+                context: 'person_escort_record',
+              }
+            )
+          })
+        })
+
+        context('with completed timestamp', function () {
+          beforeEach(function () {
+            mockArgs.assessment.completed_at = '2020-10-12T14:30:00Z'
+            output = presenter(mockArgs)
+          })
+
+          it('should return message component', function () {
+            expect(output).to.deep.equal({
+              allowDismiss: false,
+              classes: 'app-message--instruction govuk-!-padding-right-0',
+              title: {
+                text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+              },
+              content: {
+                html:
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        completed_at\n      </p>\n    ',
+              },
+            })
+          })
+
+          it('should translate with correct context', function () {
+            expect(i18n.t).to.be.calledWithExactly('completed_at', {
+              date: '2020-10-12T14:30:00Z',
+            })
+          })
+        })
+
+        context('with amended timestamp', function () {
+          beforeEach(function () {
+            mockArgs.assessment.amended_at = '2020-10-12T16:30:00Z'
+            output = presenter(mockArgs)
+          })
+
+          it('should return message component', function () {
+            expect(output).to.deep.equal({
+              allowDismiss: false,
+              classes: 'app-message--instruction govuk-!-padding-right-0',
+              title: {
+                text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+              },
+              content: {
+                html:
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
+              },
+            })
+          })
+
+          it('should translate with correct context', function () {
+            expect(i18n.t).to.be.calledWithExactly('amended_at', {
+              date: '2020-10-12T16:30:00Z',
+            })
+          })
+        })
+
+        context('with completed and amended timestamp', function () {
+          beforeEach(function () {
+            mockArgs.assessment.amended_at = '2020-10-12T16:30:00Z'
+            mockArgs.assessment.completed_at = '2020-10-12T14:30:00Z'
+            output = presenter(mockArgs)
+          })
+
+          it('should return message component', function () {
+            expect(output).to.deep.equal({
+              allowDismiss: false,
+              classes: 'app-message--instruction govuk-!-padding-right-0',
+              title: {
+                text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+              },
+              content: {
+                html:
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
+              },
+            })
+          })
+
+          it('should translate with correct context', function () {
+            expect(i18n.t).to.be.calledWithExactly('amended_at', {
+              date: '2020-10-12T16:30:00Z',
             })
           })
         })

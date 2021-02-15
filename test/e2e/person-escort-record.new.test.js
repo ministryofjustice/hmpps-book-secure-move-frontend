@@ -6,7 +6,7 @@ import { fillInPersonEscortRecord } from './_helpers'
 import { createCourtMove } from './_move'
 import { personEscortRecordUser } from './_roles'
 import { home, getMove } from './_routes'
-import { moveDetailPage } from './pages'
+import { moveDetailPage, confirmPersonEscortRecordPage } from './pages'
 
 const latestFramework = frameworksService.getPersonEscortRecord()
 const numberOfSections = Object.keys(latestFramework.sections).length
@@ -96,8 +96,9 @@ test('Start new Record', async t => {
   await t
     .click(moveDetailPage.nodes.personEscortRecordConfirmationButton)
     .expect(moveDetailPage.getCurrentUrl())
-    .contains('/person-escort-record/confirm/provide-confirmation')
-    .click(moveDetailPage.nodes.personEscortRecordConfirmationCheckbox)
+    .contains('/person-escort-record/confirm/handover')
+
+  const handoverDetails = await confirmPersonEscortRecordPage.fillIn()
 
   await moveDetailPage.submitForm()
 
@@ -105,8 +106,23 @@ test('Start new Record', async t => {
   await t
     .expect(moveDetailPage.nodes.instructionBanner.innerText)
     .contains(
-      'Person Escort Record has been confirmed',
-      'Should contain confirmed PER banner'
+      'Person has been handed over',
+      'Should contain handed over PER banner'
+    )
+    .expect(moveDetailPage.nodes.instructionBanner.innerText)
+    .contains(
+      `${handoverDetails.handoverDispatchingOfficer} (${handoverDetails.handoverDispatchingOfficerId})`,
+      'Should contain dispatching officer'
+    )
+    .expect(moveDetailPage.nodes.instructionBanner.innerText)
+    .contains(
+      `${handoverDetails.handoverReceivingOfficer} (${handoverDetails.handoverReceivingOfficerId})`,
+      'Should contain receiving officer'
+    )
+    .expect(moveDetailPage.nodes.instructionBanner.innerText)
+    .contains(
+      handoverDetails.handoverOtherOrganisation,
+      'Should contain receiving organisation'
     )
     .expect(moveDetailPage.nodes.personEscortRecordSectionStatuses.count)
     .eql(0, 'Should not show PER sections')
