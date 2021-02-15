@@ -8,16 +8,6 @@ const pipe = functions => data => {
   }, data)
 }
 
-const getParamsLocation = data => {
-  const { locationId } = data.req.params
-
-  if (locationId) {
-    data.locations = [{ id: locationId }]
-  }
-
-  return data
-}
-
 const getCurrentLocation = data => {
   const currentLocation = data.req.session?.currentLocation
 
@@ -48,12 +38,9 @@ const getLocationIds = data => {
 }
 
 const setLocations = (req, res, next) => {
-  const data = pipe([
-    getParamsLocation,
-    getCurrentLocation,
-    getCurrentRegion,
-    getUserLocations,
-  ])({ req })
+  const data = pipe([getCurrentLocation, getCurrentRegion, getUserLocations])({
+    req,
+  })
 
   req.locations = getLocationIds(data)
 
