@@ -1,4 +1,4 @@
-const { formatISO, parseISO, set } = require('date-fns')
+const { formatISO, isFuture, parseISO, set } = require('date-fns')
 
 const ConfirmAssessmentController = require('../../../../common/controllers/framework/confirm-assessment')
 
@@ -34,6 +34,46 @@ class HandoverController extends ConfirmAssessmentController {
     }
 
     next()
+  }
+
+  validateFields(req, res, callback) {
+    super.validateFields(req, res, errors => {
+      // Don't apply this extra validation unless we have both date and time
+      if (
+        !req.form.values.handover_other_date ||
+        !req.form.values.handover_other_time
+      ) {
+        return callback(errors)
+      }
+
+      // If the date is in the future, don't confuse things with extra error messages
+      const parsedDate = parseISO(req.form.values.handover_other_date)
+      if (isFuture(parsedDate)) {
+        return callback(errors)
+      }
+
+      const timeParts = req.form.values.handover_other_time.split(':')
+      const handoverDate = set(parsedDate, {
+        hours: timeParts[0],
+        minutes: timeParts[1],
+      })
+
+      let handoverError
+
+      if (isFuture(handoverDate)) {
+        handoverError = new this.Error('handover_other_time', {
+          errorGroup: 'handoverOtherDateTime',
+          type: 'before',
+        })
+      }
+
+      const formErrors = {
+        ...(handoverError && { handover_other_time: handoverError }),
+        ...errors,
+      }
+
+      callback(formErrors)
+    })
   }
 
   async saveValues(req, res, next) {

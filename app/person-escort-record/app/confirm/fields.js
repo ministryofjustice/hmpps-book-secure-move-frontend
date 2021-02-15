@@ -142,17 +142,23 @@ const handoverTime = {
 const handoverOtherDate = {
   ...cloneDeep(commonDateField),
   validate: [...commonDateField.validate, 'required', 'before'],
+  errorGroup: 'handoverOtherDateTime',
   id: 'handover_other_date',
   name: 'handover_other_date',
   label: {
     text: 'fields::handover_other_date.label',
     classes: 'govuk-label--s',
   },
+  hint: {
+    html: 'fields::handover_other_date.hint',
+  },
+  invalidates: ['handover_other_time'],
 }
 const handoverOtherTime = {
   id: 'handover_other_time',
   name: 'handover_other_time',
   validate: ['required', timeValidator],
+  errorGroup: 'handoverOtherDateTime',
   formatter: [timeFormatter],
   component: 'govukInput',
   classes: 'govuk-input--width-5',

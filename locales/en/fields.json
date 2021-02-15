@@ -526,16 +526,20 @@
         "label": "Now"
       },
       "historic": {
-        "label": "Enter manually"
+        "label": "Handover occurred earlier"
       }
     }
   },
   "handover_other_date": {
-    "label": "Date of handover"
+    "label": "Date of handover",
+    "hint": "For example 28/11/2020, 28 November 2020"
   },
   "handover_other_time": {
     "label": "Time of handover",
     "hint": "For example 11:00 or 11am",
-    "error_message": "You must provide a valid handover time"
+    "error_message_required": "Enter Time of handover",
+    "error_message_past": "You must provide a valid handover time",
+
+    "unused_error_message": "You must provide a valid handover time"
   }
 }

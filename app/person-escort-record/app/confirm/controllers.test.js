@@ -164,6 +164,208 @@ describe('Person Escort Record controllers', function () {
       })
     })
 
+    describe('#validateFields', function () {
+      let clock
+      let mockReq
+      let callbackSpy
+      let fieldErrors
+
+      beforeEach(function () {
+        timezoneMock.register('UTC')
+        const now = new Date('2020-01-09T15:09:00Z')
+        clock = sinon.useFakeTimers(now.getTime())
+
+        sinon.stub(ConfirmAssessmentController.prototype, 'validateFields')
+
+        callbackSpy = sinon.spy()
+
+        mockReq = {
+          form: {
+            values: {
+              handover_dispatching_officer_id: '123',
+              handover_dispatching_officer_contact: '077777',
+              handover_receiving_officer: 'Jane Doe',
+              handover_receiving_officer_id: '456',
+              handover_receiving_officer_contact: '088888',
+              handover_receiving_organisation: 'Serco',
+            },
+          },
+          assessment: {
+            id: '12345',
+          },
+          services: {
+            personEscortRecord: {
+              confirm: sinon.stub().resolves({}),
+            },
+          },
+        }
+
+        const error = new Error('VALIDATION')
+        error.key = 'handover_dispatching_officer'
+        error.type = 'missing'
+        fieldErrors = { handover_dispatching_officer: error }
+      })
+
+      afterEach(function () {
+        clock.restore()
+        timezoneMock.unregister()
+      })
+
+      describe('when callback is called', function () {
+        context('when other_date and other_time are both missing', function () {
+          beforeEach(async function () {
+            ConfirmAssessmentController.prototype.validateFields.yields(
+              fieldErrors
+            )
+            await controller.validateFields(mockReq, {}, callbackSpy)
+          })
+
+          it('should call parent method', function () {
+            expect(
+              ConfirmAssessmentController.prototype.validateFields
+            ).to.have.been.calledOnce
+          })
+
+          it('should call callback with existing errors', function () {
+            expect(callbackSpy).to.have.been.calledOnceWithExactly(fieldErrors)
+          })
+        })
+
+        context(
+          'when other_date is missing and other_time is present',
+          function () {
+            beforeEach(async function () {
+              ConfirmAssessmentController.prototype.validateFields.yields(
+                fieldErrors
+              )
+              mockReq.form.values.handover_other_time = '14:20:00'
+
+              await controller.validateFields(mockReq, {}, callbackSpy)
+            })
+
+            it('should call parent method', function () {
+              expect(ConfirmAssessmentController.prototype.validateFields).to
+                .have.been.calledOnce
+            })
+
+            it('should call callback with existing errors', function () {
+              expect(callbackSpy).to.have.been.calledOnceWithExactly(
+                fieldErrors
+              )
+            })
+          }
+        )
+
+        context(
+          'when other_date is present and other_time is missing',
+          function () {
+            beforeEach(async function () {
+              ConfirmAssessmentController.prototype.validateFields.yields(
+                fieldErrors
+              )
+              mockReq.form.values.handover_other_date = '2020-01-07'
+
+              await controller.validateFields(mockReq, {}, callbackSpy)
+            })
+
+            it('should call parent method', function () {
+              expect(ConfirmAssessmentController.prototype.validateFields).to
+                .have.been.calledOnce
+            })
+
+            it('should call callback with existing errors', function () {
+              expect(callbackSpy).to.have.been.calledOnceWithExactly(
+                fieldErrors
+              )
+            })
+          }
+        )
+
+        context('when other_date in the future', function () {
+          beforeEach(async function () {
+            ConfirmAssessmentController.prototype.validateFields.yields(
+              fieldErrors
+            )
+            mockReq.form.values.handover_other_date = '2020-01-10'
+            mockReq.form.values.handover_other_time = '14:20:00'
+
+            await controller.validateFields(mockReq, {}, callbackSpy)
+          })
+
+          it('should call parent method', function () {
+            expect(
+              ConfirmAssessmentController.prototype.validateFields
+            ).to.have.been.calledOnce
+          })
+
+          it('should call callback with existing errors', function () {
+            expect(callbackSpy).to.have.been.calledOnceWithExactly(fieldErrors)
+          })
+        })
+
+        context(
+          'when other_date is in the past and other_time is in the past',
+          function () {
+            beforeEach(async function () {
+              ConfirmAssessmentController.prototype.validateFields.yields(
+                fieldErrors
+              )
+              mockReq.form.values.handover_other_date = '2020-01-09'
+              mockReq.form.values.handover_other_time = '15:08:00'
+
+              await controller.validateFields(mockReq, {}, callbackSpy)
+            })
+
+            it('should call parent method', function () {
+              expect(ConfirmAssessmentController.prototype.validateFields).to
+                .have.been.calledOnce
+            })
+
+            it('should call callback with existing errors', function () {
+              expect(callbackSpy).to.have.been.calledOnceWithExactly(
+                fieldErrors
+              )
+            })
+          }
+        )
+
+        context(
+          'when other_date is in the past and other_time is in the future',
+          function () {
+            beforeEach(async function () {
+              ConfirmAssessmentController.prototype.validateFields.yields(
+                fieldErrors
+              )
+              mockReq.form.values.handover_other_date = '2020-01-09'
+              mockReq.form.values.handover_other_time = '15:10:00'
+
+              await controller.validateFields(mockReq, {}, callbackSpy)
+            })
+
+            it('should call parent method', function () {
+              expect(ConfirmAssessmentController.prototype.validateFields).to
+                .have.been.calledOnce
+            })
+
+            it('should call callback with addition before error errors', function () {
+              expect(callbackSpy).to.have.been.calledOnce
+              const callbackErrors = callbackSpy.getCall(0).args[0]
+
+              expect(callbackErrors).to.have.keys([
+                'handover_dispatching_officer',
+                'handover_other_time',
+              ])
+
+              expect(callbackErrors.handover_other_time).to.deep.include({
+                errorGroup: 'handoverOtherDateTime',
+                type: 'before',
+              })
+            })
+          }
+        )
+      })
+    })
+
     describe('#saveValues', function () {
       let clock
       let mockReq
