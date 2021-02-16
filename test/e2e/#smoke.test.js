@@ -12,25 +12,25 @@ const users = [
   {
     name: 'Police user',
     role: policeUser,
-    username: 'End-to-End Test Police',
+    username: 'End-to-end Police',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'STC user',
     role: stcUser,
-    username: 'End-to-End Test STC',
+    username: 'End-to-end Secure Training Centre',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'Prison user',
     role: prisonUser,
-    username: 'End-to-End Test Prison',
+    username: 'End-to-end Prison',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'Supplier user',
     role: supplierUser,
-    username: 'End-to-End Test Supplier',
+    username: 'End-to-end Supplier',
     homeButton: movesDashboardPage.nodes.downloadMovesLink,
   },
 ]
@@ -39,7 +39,7 @@ const usersWhoHaveADashboard = [
   {
     name: 'OCA user',
     role: ocaUser,
-    username: 'End-to-end OCA',
+    username: 'End-to-end Operational Capacity Allocation',
     homeSection: dashboardPage.nodes.singleRequestsSection,
     homeButton: dashboardPage.nodes.singleRequestsLink,
     timePeriod: 'This week',
