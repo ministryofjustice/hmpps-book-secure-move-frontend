@@ -29,11 +29,30 @@ const mockSupplierLocations = [
   },
 ]
 
+const mockSecondSupplierLocation = [
+  {
+    id: '0987654-bc17-4ea1-bae3-4ef429f9081e',
+    title: 'b location',
+  },
+]
+
+const mockSuppliers = [
+  {
+    id: 'b95bfb7c-18cd-419d-8119-2dee1506726f',
+    name: 'GEOAmey',
+  },
+  {
+    id: '35660b02-243f-4df2-9337-e3ec49b6d70d',
+    name: 'Serco',
+  },
+]
+
 describe('Locations controllers', function () {
   let req, res
   const mockReferenceData = {
     getRegions: sinon.fake.returns(Promise.resolve([])),
     getLocationsBySupplierId: sinon.stub().resolves(mockSupplierLocations),
+    getSuppliers: sinon.stub().resolves(mockSuppliers),
   }
   const proxiedController = proxyquire('./controllers', {})
   let nextSpy
@@ -132,6 +151,32 @@ describe('Locations controllers', function () {
 
       it('should set the location on the user session', function () {
         expect(req.session.user.locations).to.deep.equal(mockSupplierLocations)
+      })
+    })
+
+    context('when the user is a Contract Delivery Manager', function () {
+      beforeEach(async function () {
+        req.session.user.permissions = ['locations:contract_delivery_manager']
+        mockReferenceData.getSuppliers = sinon.stub().resolves(mockSuppliers)
+        mockReferenceData.getLocationsBySupplierId = sinon
+          .stub()
+          .onFirstCall()
+          .returns(mockSupplierLocations)
+          .onSecondCall()
+          .returns(mockSecondSupplierLocation)
+        await proxiedController.locations(req, res)
+      })
+      it('should fetch locations for each supplier', async function () {
+        expect(mockReferenceData.getLocationsBySupplierId).to.be.calledTwice
+      })
+      it('should render template', function () {
+        expect(res.render).to.be.calledOnce
+      })
+
+      it('should set the location on the user session', function () {
+        expect(req.session.user.locations).to.deep.equal(
+          mockSupplierLocations.concat(mockSecondSupplierLocation)
+        )
       })
     })
   })
