@@ -24,7 +24,7 @@ async function locations(req, res, next) {
     req.session.user.locations = userLocations
   }
 
-  if (userPermissions.includes('contract_delivery_manager')) {
+  if (userPermissions.includes('locations:contract_delivery_manager')) {
     const suppliers = await req.services.referenceData.getSuppliers()
     const supplierLocations = await Promise.all(
       suppliers.map(async supplier => {

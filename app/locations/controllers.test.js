@@ -156,7 +156,7 @@ describe('Locations controllers', function () {
 
     context('when the user is a Contract Delivery Manager', function () {
       beforeEach(async function () {
-        req.session.user.permissions = ['contract_delivery_manager']
+        req.session.user.permissions = ['locations:contract_delivery_manager']
         mockReferenceData.getSuppliers = sinon.stub().resolves(mockSuppliers)
         mockReferenceData.getLocationsBySupplierId = sinon
           .stub()

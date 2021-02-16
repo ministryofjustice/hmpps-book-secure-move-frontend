@@ -27,7 +27,7 @@ const policePermissions = [
 
 const contractDeliveryManagerPermissions = [
   'allocations:view',
-  'contract_delivery_manager',
+  'locations:contract_delivery_manager',
   'locations:all',
   'moves:view:outgoing',
   'moves:view:incoming',
