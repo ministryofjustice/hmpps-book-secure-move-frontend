@@ -48,6 +48,7 @@ class HandoverController extends ConfirmAssessmentController {
 
       // If the date is in the future, don't confuse things with extra error messages
       const parsedDate = parseISO(req.form.values.handover_other_date)
+
       if (isFuture(parsedDate)) {
         return callback(errors)
       }
