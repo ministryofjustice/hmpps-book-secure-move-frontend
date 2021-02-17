@@ -7,21 +7,14 @@ describe('Moves middleware', function () {
 
     beforeEach(function () {
       res = { locals: {} }
-      req = {
-        query: {},
-        session: {},
-      }
+      req = {}
       nextSpy = sinon.spy()
     })
 
-    context('when location exists in users locations', function () {
+    context('when location exists in req', function () {
       beforeEach(function () {
-        req.session.user = {
-          locations: [
-            {
-              id: locationId,
-            },
-          ],
+        req.location = {
+          id: locationId,
         }
 
         middleware(req, res, nextSpy, locationId)
@@ -29,7 +22,7 @@ describe('Moves middleware', function () {
 
       it('should set from location to locals', function () {
         expect(res.locals).to.have.property('fromLocationId')
-        expect(res.locals.fromLocationId).to.equal(locationId)
+        expect(res.locals.fromLocationId).to.equal(req.location.id)
       })
 
       it('should call next', function () {
@@ -37,9 +30,9 @@ describe('Moves middleware', function () {
       })
     })
 
-    context('when location does not exist in users locations', function () {
+    context('when location does not exist in req', function () {
       beforeEach(function () {
-        middleware(req, res, nextSpy, locationId)
+        middleware(req, res, nextSpy)
       })
 
       it('should not set from location to locals', function () {
@@ -47,13 +40,7 @@ describe('Moves middleware', function () {
       })
 
       it('should call next with 404 error', function () {
-        const error = nextSpy.args[0][0]
-
-        expect(nextSpy).to.be.calledOnce
-
-        expect(error).to.be.an('error')
-        expect(error.message).to.equal('Location not found')
-        expect(error.statusCode).to.equal(404)
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
   })

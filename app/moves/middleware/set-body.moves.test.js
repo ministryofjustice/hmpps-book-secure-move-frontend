@@ -46,6 +46,32 @@ describe('Moves middleware', function () {
       })
     })
 
+    context('with location', function () {
+      beforeEach(function () {
+        mockReq.location = {
+          id: '1',
+        }
+        middleware(mockBodyProperty, mockLocationProperty)(
+          mockReq,
+          mockRes,
+          nextSpy
+        )
+      })
+
+      it('should assign req.body correctly', function () {
+        expect(mockReq.body[mockBodyProperty]).to.deep.equal({
+          dateRange: '#currentDayAsRange',
+          [mockLocationProperty]: ['1'],
+          supplierId: undefined,
+          status: undefined,
+        })
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
     context('with dateRange param', function () {
       beforeEach(function () {
         mockReq.params.dateRange = ['2020-10-10', '2020-10-10']

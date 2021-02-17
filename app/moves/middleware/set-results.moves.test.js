@@ -37,9 +37,7 @@ describe('Moves middleware', function () {
             locationId: '5555',
           },
         },
-        session: {
-          currentLocation: '#location',
-        },
+        location: '#location',
         services: {
           move: moveService,
         },
@@ -53,7 +51,7 @@ describe('Moves middleware', function () {
 
       context('without current location', function () {
         beforeEach(async function () {
-          req.session.currentLocation = undefined
+          req.location = undefined
           await middleware(mockBodyKey, mockLocationKey)(req, res, nextSpy)
         })
 

@@ -7,7 +7,7 @@ function setResultsMoves(bodyKey, locationKey) {
     const { group_by: groupBy } = req.query
 
     try {
-      if (!req.session?.currentLocation) {
+      if (!req.location) {
         return next()
       }
 
@@ -18,7 +18,7 @@ function setResultsMoves(bodyKey, locationKey) {
         req.resultsAsCards = presenters.movesByVehicle({
           moves: activeMoves,
           context: locationKey === 'from_location' ? 'incoming' : 'outgoing',
-          showLocations: !req.session?.currentLocation,
+          showLocations: !req.location,
         })
       } else {
         req.resultsAsCards = presenters.movesByLocation(

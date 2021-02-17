@@ -8,8 +8,7 @@ const {
 function setBreadcrumb(req, res, next) {
   const {
     date,
-    locationName,
-    locationId,
+    location,
     params: { period },
   } = req
 
@@ -42,14 +41,14 @@ function setBreadcrumb(req, res, next) {
       href: weeklyBasePath,
     })
     .breadcrumb({
-      text: locationName,
-      href: `${weeklyBasePath}/${locationId}`,
+      text: location?.title,
+      href: `${weeklyBasePath}/${location?.id}`,
     })
 
   if (period === 'day') {
     res.breadcrumb({
       text: format(parseISO(req.date), 'EEEE d MMMM'),
-      href: `${dailyBasePath}/${locationId}`,
+      href: `${dailyBasePath}/${location?.id}`,
     })
   }
 

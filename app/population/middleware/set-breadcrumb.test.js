@@ -18,8 +18,10 @@ describe('Population middleware', function () {
       req = {
         baseUrl: '/url-path',
         date: '2020-07-29',
-        locationName: 'Lorem Ipsum',
-        locationId: 'ABADCAFE',
+        location: {
+          title: 'Lorem Ipsum',
+          id: 'ABADCAFE',
+        },
         params: {
           period: 'week',
         },
@@ -61,7 +63,7 @@ describe('Population middleware', function () {
       middleware(req, res, next)
       expect(breadcrumbSpy.secondCall).to.have.been.calledWithExactly({
         href: '/population/week/2020-07-27/ABADCAFE',
-        text: req.locationName,
+        text: req.location.title,
       })
     })
 

@@ -9,13 +9,16 @@ function setBodyAllocations(req, res, next) {
   const locationType = hasAssignerPermission ? 'fromLocations' : 'locations'
   const locations = req.locations
 
+  const { location } = req
+  const bodyLocations = location?.id ? [location.id] : locations
+
   set(req, 'body.allocations', {
     page,
     status,
     sortBy,
     sortDirection,
     moveDate: dateRange || dateHelpers.getCurrentWeekAsRange(),
-    [locationType]: locations,
+    [locationType]: bodyLocations,
   })
 
   next()
