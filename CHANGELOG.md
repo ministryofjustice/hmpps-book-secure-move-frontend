@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.71.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.70.1...v2.71.0) (2021-02-17)
+
+
+### Features
+
+* [WIP] CDM role permissions ([fe2800a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fe2800a2727e3017919baaeb7c7a4b6788865d6e))
+* Add test for contract delivery manager locations ([beadb5f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/beadb5f0f6492287d4342f299b168734be96159c))
+* Allow contract delivery managers to see a combined list of all supplier locations ([0952178](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/09521784293fa4a6a36726ee3e18fa79007c53d6))
+* Rename CDM permission ([eca9d15](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/eca9d15ffccb6d1249cdfe1fbe1ac4236b8e87a6))
+
 ### [2.70.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.70.0...v2.70.1) (2021-02-15)
 
 
