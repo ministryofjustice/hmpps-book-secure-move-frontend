@@ -19,7 +19,7 @@ describe('Population controllers', function () {
       sessionData = { key: 'value' }
       req = {
         date: '2020-06-01',
-        locationId: 'DEADBEEF',
+        location: { id: 'DEADBEEF' },
         session: {
           user: {
             fullname: 'Lorem Ipsum',
@@ -110,7 +110,7 @@ describe('Population controllers', function () {
 
           expect(mockPopulationService.create).to.have.been.called
           expect(mockPopulationService.create).to.have.been.calledWith({
-            location: req.locationId,
+            location: req.location.id,
             date: req.date,
             updated_by: req.session.user.fullname,
             ...sessionData,
@@ -133,7 +133,7 @@ describe('Population controllers', function () {
           await controllerInstance.successHandler(req, res, next)
 
           expect(res.redirect).to.have.been.calledWith(
-            `/population/day/${req.date}/${req.locationId}`
+            `/population/day/${req.date}/${req.location.id}`
           )
         })
 
@@ -179,7 +179,7 @@ describe('Population controllers', function () {
           await controllerInstance.successHandler(req, res, next)
 
           expect(res.redirect).to.have.been.calledWith(
-            `/population/day/${req.date}/${req.locationId}`
+            `/population/day/${req.date}/${req.location.id}`
           )
         })
 
@@ -233,7 +233,7 @@ describe('Population controllers', function () {
       context('with an existing population', function () {
         beforeEach(function () {
           req.date = '2020-06-01'
-          req.locationId = 'ABADCAFE'
+          req.location.id = 'ABADCAFE'
           req.population = {}
           controllerInstance.setCancelUrl(req, res, next)
         })

@@ -4,7 +4,8 @@ async function daily(req, res) {
   const {
     population,
     transfers,
-    params: { date, locationId },
+    location: { id: locationId },
+    params: { date },
   } = req
   const spaces = populationToGrid({ population })
 
