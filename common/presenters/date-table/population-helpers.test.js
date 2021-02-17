@@ -122,8 +122,8 @@ describe('population helpers', function () {
         populationIndex: 0,
       })
 
-      expect(cellRenderer(mockLocation)).to.equal(
-        '<span>population::transfers_in_with_count</span>'
+      expect(cellRenderer(mockLocation)).to.contain(
+        'population::transfers_in_with_count'
       )
     })
 
