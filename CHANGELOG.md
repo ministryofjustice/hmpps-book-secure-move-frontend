@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.72.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.71.0...v2.72.0) (2021-02-18)
+
+
+### Features
+
+* **pmu:** Add links to population transfers ([9d10ae0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9d10ae0c3c4ec8146064cb45ae046cc7c483fccc))
+
+
+### Bug Fixes
+
+* **pmu:** Restore usable capacity label ([6ac2dc2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6ac2dc2b8ff988adda44c49e11b0303e29d40c2c))
+* **pmu:** Use req.location.id not req.locationId ([5cab42c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5cab42c62c769d890e97cc81f55221e4a9b2898f))
+* Use location from params on all specified routes ([40bee13](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/40bee13e666d9f0ac1dfb2e49cbc30fc99cbfec4))
+
 ## [2.71.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.70.1...v2.71.0) (2021-02-17)
 
 
