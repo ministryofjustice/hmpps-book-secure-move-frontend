@@ -7,6 +7,34 @@ class PopulationDashboardPage extends Page {
     super()
 
     this.nodes = {
+      dataCell: {
+        freeSpaces: {
+          add: Selector('td[data-cell-type="freeSpaces"]').withExactText(
+            'Add numbers'
+          ),
+          edit: Selector('td[data-cell-type="freeSpaces"]').withText('spaces'),
+        },
+        transfersIn: {
+          transfers: Selector('td[data-cell-type="transfersIn"]').withText(
+            'transfers in'
+          ),
+          none: Selector('td[data-cell-type="transfersIn"]').withExactText(
+            'None booked'
+          ),
+        },
+        transfersOut: {
+          transfers: Selector('td[data-cell-type="transfersOut"]').withText(
+            'transfers out'
+          ),
+          none: Selector('td[data-cell-type="transfersOut"]').withExactText(
+            'None booked'
+          ),
+        },
+      },
+
+      changeNumbersLink: Selector('a').withExactText('Change numbers'),
+      cancelLink: Selector('a').withExactText('Cancel'),
+
       focusDay: Selector('td').filter('.date-table__td--focus'),
       focusDayLink: Selector('td').filter('.date-table__td--focus').find('a'),
       days: Selector('td').filter('.date-table__td--day'),
@@ -22,19 +50,26 @@ class PopulationDashboardPage extends Page {
     }
   }
 
-  async visitEditPage() {
-    const focusDays = await this.nodes.focusDay.count
-    let dayCell
+  async visitAddOrEditPage() {
+    let freeSpaceCell
 
-    if (focusDays > 0) {
-      // There is a population entry today
-      dayCell = this.nodes.focusDay
+    const addNumbersDays = await this.nodes.dataCell.freeSpaces.add
+
+    if (await addNumbersDays.exists) {
+      const pos = Math.floor(Math.random() * (await addNumbersDays.count))
+      freeSpaceCell = addNumbersDays.nth(pos)
     } else {
-      // It's the weekend, or there is no entry
-      dayCell = this.nodes.days
+      const editNumbersDays = await this.nodes.dataCell.freeSpaces.edit
+
+      if (await editNumbersDays.exists) {
+        const pos = Math.floor(Math.random() * (await editNumbersDays.count))
+        freeSpaceCell = editNumbersDays.nth(pos)
+      }
     }
 
-    let href = await dayCell.find('a').getAttribute('href')
+    await t.expect(freeSpaceCell.exists).ok()
+
+    let href = await freeSpaceCell.find('a').getAttribute('href')
 
     if (!href.endsWith('edit')) {
       href = `${href}/edit`

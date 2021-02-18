@@ -487,6 +487,9 @@
   "operational_capacity": {
     "label": "Operational capacity"
   },
+  "usable_capacity": {
+    "label": "Usable capacity"
+  },
   "handover_dispatching_officer": {
     "label": "Full name of dispatching officer"
   },

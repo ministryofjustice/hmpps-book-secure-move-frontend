@@ -16,7 +16,7 @@ describe('Population controllers', function () {
     beforeEach(function () {
       req = {
         date: '2020-06-01',
-        locationId: 'DEADBEEF',
+        location: { id: 'DEADBEEF' },
         session: {
           user: {
             fullname: 'Lorem Ipsum',
@@ -54,7 +54,7 @@ describe('Population controllers', function () {
         await controllerInstance.saveValues(req, res, next)
 
         expect(mockPopulationService.populate).to.have.been.calledWith({
-          location: req.locationId,
+          location: req.location.id,
           date: req.date,
         })
       })

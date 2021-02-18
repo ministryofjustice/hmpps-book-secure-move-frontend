@@ -13,7 +13,10 @@ class DetailsController extends FormWizardController {
   }
 
   async successHandler(req, res, next) {
-    const { date, locationId } = req
+    const {
+      date,
+      location: { id: locationId },
+    } = req
 
     try {
       const sessionModel = req.sessionModel.toJSON()
@@ -27,7 +30,7 @@ class DetailsController extends FormWizardController {
         })
       } else {
         await req.services.population.create({
-          location: req.locationId,
+          location: locationId,
           date: req.date,
           ...data,
           updated_by: req.session.user.fullname,
@@ -58,7 +61,7 @@ class DetailsController extends FormWizardController {
 
   setCancelUrl(req, res, next) {
     if (req.population) {
-      res.locals.cancelUrl = `/population/day/${req.date}/${req.locationId}`
+      res.locals.cancelUrl = `/population/day/${req.date}/${req.location.id}`
     } else {
       res.locals.cancelUrl = `/population/week/${req.date}`
     }

@@ -10,12 +10,14 @@ describe('Population controllers', function () {
       mockReq = {
         params: {
           date: '2020-07-29',
-          locationId: 'C0DEC0DE',
         },
         population: {
           date: '2020-08-01',
           free_spaces: 0,
           updated_at: '2020-07-29',
+        },
+        location: {
+          id: 'C0DEC0DE',
         },
         transfers: {
           transfersIn: 1,
@@ -66,7 +68,7 @@ describe('Population controllers', function () {
 
         it('should set locationId', function () {
           expect(params).to.have.property('locationId')
-          expect(params.locationId).to.deep.equal(mockReq.params.locationId)
+          expect(params.locationId).to.deep.equal(mockReq.location.id)
         })
 
         it('should set editPath', function () {

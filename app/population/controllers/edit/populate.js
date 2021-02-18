@@ -4,7 +4,7 @@ class PopulateController extends FormWizardController {
   async saveValues(req, res, next) {
     try {
       const populate = await req.services.population.populate({
-        location: req.locationId,
+        location: req.location.id,
         date: req.date,
       })
 

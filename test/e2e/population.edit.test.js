@@ -5,8 +5,8 @@ import { page, populationDashboardPage, populationEditPage } from './pages'
 fixture('Population Editing').page(populationDashboard)
 test.before(async t => {
   await t.useRole(pmuUserWithRegions).navigateTo(populationDashboard)
-  await populationDashboardPage.visitEditPage()
 })('Editing Populations', async t => {
+  await populationDashboardPage.visitAddOrEditPage()
   await populationEditPage.fill()
 
   await page.submitForm()
