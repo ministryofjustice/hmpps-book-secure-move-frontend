@@ -148,6 +148,16 @@
 {% endblock %}
 
 {% block footer %}
+  {% if FEEDBACK_URL %}
+    {{ appFeedbackPrompt({
+      content: {
+        html: t("feedback_link", {
+          url: FEEDBACK_URL
+        })
+      }
+    }) }}
+  {% endif %}
+
   {{ govukFooter({
     meta: {
       items: FOOTER_ITEMS

@@ -58,7 +58,6 @@
     "title": "Some answers on this page need to be reviewed. They are from the last $t({{context}}) confirmed on {{date}}."
   },
   "prefilled_message": "This answer needs to be reviewed",
-  "feedback_prompt": "This is a new feature — <a href=\"{{url}}\">give us your feedback</a> to help us improve it",
   "handover": {
     "heading": "Handover",
     "before_handover": {
