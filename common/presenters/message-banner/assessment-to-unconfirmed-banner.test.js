@@ -247,7 +247,7 @@ describe('Presenters', function () {
               }
             )
             expect(i18n.t).to.be.calledWithExactly(
-              `messages::assessment.${mockArgs.assessment.status}.uneditable`,
+              'messages::assessment.completed.uneditable',
               {
                 context: 'person_escort_record',
               }
