@@ -20,7 +20,7 @@ updates:
     commit-message:
       prefix: 'build'
       include: 'scope'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
   - package-ecosystem: 'docker'
     directory: '/'
     schedule:
