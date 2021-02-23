@@ -132,6 +132,8 @@ module.exports = {
     '/healthcheck/ping',
     '/components',
     '/components/(.*)',
+    '/help',
+    '/help/(.*)',
   ],
   AUTH_PROVIDERS: {
     hmpps: {

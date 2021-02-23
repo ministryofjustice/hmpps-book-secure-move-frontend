@@ -21,6 +21,10 @@ const { manifest: manifestPath } = require('../paths')
 let webpackManifest = {}
 const footerItems = [
   {
+    href: '/help/accessibility-statement',
+    text: 'Accessibility statement',
+  },
+  {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
   },

@@ -1,0 +1,87 @@
+{% extends "layouts/base.njk" %}
+
+{% set heading = "Accessibility statement" %}
+
+{% block pageTitle %}
+  {{ heading }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ heading }}
+    </h1>
+  </header>
+
+  <div class="app-reading-width markdown">
+    {% markdown %}
+    This accessibility statement applies to [bookasecuremove.service.justice.gov.uk](https://bookasecuremove.service.justice.gov.uk).
+
+    This website is run by HMPPS. We want as many people as possible to be able to use this website. For example, that means you should be able to:
+
+    - change colours, contrast levels and fonts
+    - zoom in up to 300% without the text spilling off the screen
+    - navigate the website using just a keyboard
+
+    We’ve also made the website text as simple as possible to understand.
+
+    [AbilityNet](https://mcmw.abilitynet.org.uk/) has advice on making your device easier to use if you have a disability.
+
+    ## How accessible this website is
+
+    We know some parts of this website are not fully accessible:
+    - there is no timeout warning when the user’s session is about to expire
+    - there is only one way to navigate the site, for example there is no sitemap
+
+    ## Feedback and contact information
+
+    Any feedback for the service should be provided initially through:
+    - general feedback via Book a secure move [feedback survey]({{FEEDBACK_URL}})
+    - faults via CGI Helpdesk on 0800 917 5148
+
+    ## Reporting accessibility problems with this website
+
+    We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements contact Laura Roberts, Book a secure move product manager, on [laura.roberts@digital.justice.gov.uk](mailto:laura.roberts@digital.justice.gov.uk).
+
+    ## Enforcement procedure
+
+    The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, [contact the Equality Advisory and Support Service (EASS)](https://www.equalityadvisoryservice.com/).
+
+    ## Technical information about this website’s accessibility
+
+    HMPPS is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.
+
+    ### Compliance status
+
+    This website is partially compliant with the Web Content Accessibility Guidelines version 2.1 AA standard, due to ‘the non-compliances’ listed below.
+
+    ### Disproportionate burden
+
+    #### Navigation and accessing information
+
+    There is no timeout warning that would let the users know their session is about to expire.
+
+    There is no sitemap.
+
+    We’ve assessed the cost of fixing the issues with navigation and accessing information, and with interactive tools and transactions. We believe that doing so now would be a [disproportionate burden](http://www.legislation.gov.uk/uksi/2018/952/regulation/7/made) within the meaning of the accessibility regulations. We will make another assessment by December 30th 2021.
+
+    ## Content that’s not within the scope of the accessibility regulations
+
+    None
+
+    ## What we’re doing to improve accessibility
+
+    In addition to internal reviews already completed, we are completing an external accessibility review which will include an evaluation of assistive technologies (e.g. screen readers, screen enlargement applications, voice recognition programs) by December 30th 2021. Any actions identified will be reviewed and prioritised by the Book a secure move team.
+
+    ## Preparation of this accessibility statement
+
+    This statement was prepared on 18th February 2021. It was last reviewed on 18th February 2021.
+
+    This website was last tested in November 2020. The test was carried out by the team responsible for the site.
+
+    We used this approach to deciding on a sample of pages to test:
+    - high value pages
+    - all pages which have a unique layout
+    {% endmarkdown %}
+  </div>
+{% endblock %}
