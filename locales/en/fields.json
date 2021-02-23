@@ -398,10 +398,10 @@
     "items": {
       "adult_female": "Adult female",
       "adult_male": "Adult male",
-      "juvenile_female": "Juvenile female (age under 18)",
-      "juvenile_male": "Juvenile male (age under 18)",
-      "young_offender_female": "Youth offender female (age 18-21)",
-      "young_offender_male": "Youth offender male (age 18-21)",
+      "juvenile_female": "Juvenile female (ages under 18)",
+      "juvenile_male": "Juvenile male (ages under 18)",
+      "young_offender_female": "Youth offender female (ages 18 to 21)",
+      "young_offender_male": "Youth offender male (ages 18 to 21)",
       "other": "Other"
     }
   },
