@@ -21,10 +21,6 @@ const { manifest: manifestPath } = require('../paths')
 let webpackManifest = {}
 const footerItems = [
   {
-    href: FEEDBACK_URL,
-    text: i18n.t('feedback_link'),
-  },
-  {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
   },
@@ -50,6 +46,7 @@ module.exports = {
   FOOTER_ITEMS: footerItems.filter(item => item.href),
   PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
+  FEEDBACK_URL,
   SERVICE_NAME: 'Book a secure move',
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {

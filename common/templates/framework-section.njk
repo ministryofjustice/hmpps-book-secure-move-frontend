@@ -65,17 +65,3 @@
     }) }}
   {% endif %}
 {% endblock %}
-
-{% block footer %}
-  {% if PERSON_ESCORT_RECORD_FEEDBACK_URL %}
-    {{ appFeedbackPrompt({
-      content: {
-        html: t("assessment::feedback_prompt", {
-          url: PERSON_ESCORT_RECORD_FEEDBACK_URL
-        })
-      }
-    }) }}
-  {% endif %}
-
-  {{ super() }}
-{% endblock %}

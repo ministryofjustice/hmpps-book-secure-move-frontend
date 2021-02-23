@@ -24,17 +24,12 @@ describe('Nunjucks globals', function () {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: true,
             ENABLE_DEVELOPMENT_TOOLS: true,
-            FEEDBACK_URL: '/feedback-url',
           },
         })
       })
 
       it('should set footer items', function () {
         expect(globals.FOOTER_ITEMS).to.deep.equal([
-          {
-            href: '/feedback-url',
-            text: 'feedback_link',
-          },
           {
             href: componentsUrl,
             text: 'components::title',
@@ -52,7 +47,6 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: false,
-            FEEDBACK_URL: undefined,
           },
         })
       })
