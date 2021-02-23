@@ -126,7 +126,7 @@
     "js-yaml": "4.0.0",
     "json2csv": "5.0.6",
     "jsonwebtoken": "8.5.1",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "lru-cache": "6.0.0",
     "markdown-it": "12.0.4",
     "markdown-it-container": "3.0.0",
