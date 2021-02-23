@@ -40,7 +40,7 @@
       "heading": "$t({{context}}) has been completed",
       "content": "Once you are confident the information provided is correct and won’t change, provide your confirmation that this record is correct.",
       "content_person_escort_record": "Once you are confident the information provided is correct and won’t change, provide your confirmation that this record is correct in order to print it",
-      "uneditable": "A $t({{context}}) cannot be confirmed once the move has started."
+      "uneditable": "A $t({{context}}) cannot be confirmed once the move has started or cancelled."
     },
     "confirmed": {
       "heading": "$t({{context}}) has been confirmed",

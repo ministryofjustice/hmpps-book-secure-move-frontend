@@ -69,7 +69,7 @@ module.exports = function assessmentToUnconfirmedBanner({
   if (!assessment.editable) {
     content += `
       ${componentService.getComponent('govukWarningText', {
-        text: i18n.t(`messages::assessment.${assessment.status}.uneditable`, {
+        text: i18n.t('messages::assessment.completed.uneditable', {
           context,
         }),
         classes: 'govuk-!-padding-top-0 govuk-!-margin-top-5',
