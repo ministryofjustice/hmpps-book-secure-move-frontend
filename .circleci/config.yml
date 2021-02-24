@@ -382,14 +382,22 @@ workflows:
     jobs:
       # Tests
       - lint-and-unit-test:
+          context:
+            - hmpps-common-vars
           <<: *all_tags
       - end-to-end-test:
+          context:
+            - hmpps-common-vars
           <<: *ignore_master
           name: end-to-end-test-pr
       - end-to-end-test:
+          context:
+            - hmpps-common-vars
           <<: *only_master
           name: end-to-end-test-master
       - end-to-end-test:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           name: end-to-end-test-release
       - hmpps/helm_lint:
@@ -397,6 +405,8 @@ workflows:
           env: 'staging'
       # Docker builds
       - build-docker-image:
+          context:
+            - hmpps-common-vars
           <<: *only_master
           name: build-docker-image-master
           staging: 'true'
@@ -410,6 +420,8 @@ workflows:
           production: 'true'
       # Deployment
       - deploy:
+          context:
+            - hmpps-common-vars
           <<: *only_master
           name: deploy-staging
           env: 'staging'
@@ -418,6 +430,8 @@ workflows:
             - end-to-end-test-master
             - lint-and-unit-test
       - deploy:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           name: deploy-preproduction
           env: 'preprod'
@@ -426,6 +440,8 @@ workflows:
             - end-to-end-test-release
             - lint-and-unit-test
       - deploy:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           name: deploy-uat
           env: 'uat'
