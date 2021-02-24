@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  slack: circleci/slack@3.4.2
+  slack: circleci/slack@4.3.0
   hmpps: ministryofjustice/hmpps@2.2.0
 
 aliases:
@@ -35,8 +35,9 @@ aliases:
       command: |
         echo "export PACKAGE_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')" >> $BASH_ENV
   - &notify_slack_on_failure
-    slack/notify-on-failure:
-      only_for_branches: master
+    slack/notify:
+      event: fail
+      branch_pattern: master
   - &notify_slack_on_release_start
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
@@ -349,6 +350,8 @@ workflows:
           name: build-docker-image-master
           staging: 'true'
       - build-docker-image:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           name: build-docker-image-release
           uat: 'true'
@@ -380,6 +383,8 @@ workflows:
             - end-to-end-test-release
             - lint-and-unit-test
       - deploy:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           <<: *requires_production_approval
           name: deploy-production
@@ -387,6 +392,8 @@ workflows:
           notify_slack: 'true'
       # Production approval
       - approval:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           type: approval
           requires:
@@ -394,6 +401,8 @@ workflows:
             - end-to-end-test-release
             - lint-and-unit-test
       - notify-of-approval:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           requires:
             - build-docker-image-release
@@ -401,6 +410,8 @@ workflows:
             - lint-and-unit-test
       # Post release
       - publish-release-to-github:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           <<: *requires_production_approval
       - publish-release-to-sentry:
