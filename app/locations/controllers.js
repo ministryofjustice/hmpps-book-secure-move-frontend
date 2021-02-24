@@ -34,7 +34,7 @@ async function locations(req, res, next) {
       })
     )
 
-    userLocations = supplierLocations.flat()
+    userLocations = [...new Set(supplierLocations.flat())]
 
     req.session.user.locations = userLocations
   }

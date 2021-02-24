@@ -34,6 +34,10 @@ const mockSecondSupplierLocation = [
     id: '0987654-bc17-4ea1-bae3-4ef429f9081e',
     title: 'b location',
   },
+  {
+    id: '70923762-bc17-4ea1-bae3-4ef429f9081e',
+    title: 'a location',
+  },
 ]
 
 const mockSuppliers = [
