@@ -41,34 +41,85 @@ aliases:
   - &notify_slack_on_release_start
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      title: 'Frontend v${PACKAGE_VERSION} is being prepared for release :building_construction:'
-      title_link: 'https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md'
-      message: A new release was created by ${CIRCLE_USERNAME}
-      footer: Click the title to view the changes
-      include_project_field: false
-      include_job_number_field: false
-      include_visit_job_action: false
-      color: '#1d70b8'
+      custom: '{
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "Frontend v${PACKAGE_VERSION} is being prepared for release :building_construction:",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "A new release was created by ${CIRCLE_USERNAME}"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Changelog",
+                  "emoji": true
+                },
+                "value": "changelog",
+                "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md",
+                "action_id": "button-action"
+              }
+            }
+          ]
+        }'
       mentions: here
   - &notify_slack_of_approval
-    slack/approval:
+    slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      message: 'Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:'
-      include_project_field: false
-      include_job_number_field: false
-      color: '#912b88'
+      custom: '{
+          "blocks": [
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:"
+              }
+            }
+          ]
+        }'
       mentions: $BUILD_NOTIFICATIONS_MENTION_ID
   - &notify_slack_on_release_end
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      title: 'Frontend v${PACKAGE_VERSION} has been deployed :rocket:'
-      title_link: https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}
-      message: This release was successfully deployed to production
-      footer: Click the title to view the release notes
-      include_project_field: false
-      include_job_number_field: false
-      include_visit_job_action: false
-      color: '#28a197'
+      custom: '{
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "Frontend v${PACKAGE_VERSION} has been deployed :rocket:",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "This release was successfully deployed to production"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Release",
+                  "emoji": true
+                },
+                "value": "release",
+                "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}",
+                "action_id": "button-action"
+              }
+            }
+          ]
+        }'
       mentions: here
   # Common filters
   - &all_tags
