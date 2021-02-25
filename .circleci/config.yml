@@ -73,7 +73,7 @@ aliases:
         }'
       mentions: '@here'
   - &notify_slack_of_approval
-    slack/on-hold:
+    slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
       custom: '{
           "blocks": [
@@ -83,6 +83,19 @@ aliases:
                 "type": "mrkdwn",
                 "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:"
               }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "View Workflow"
+                  },
+                  "url": "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
+                }
+              ]
             }
           ]
         }'
