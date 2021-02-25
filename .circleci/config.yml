@@ -44,10 +44,10 @@ aliases:
       custom: '{
           "blocks": [
             {
-              "type": "header",
+              "type": "section",
               "text": {
                 "type": "plain_text",
-                "text": "Frontend v${PACKAGE_VERSION} is being prepared for release :building_construction:",
+                "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:",
                 "emoji": true
               }
             },
@@ -71,9 +71,9 @@ aliases:
             }
           ]
         }'
-      mentions: here
+      mentions: '@here'
   - &notify_slack_of_approval
-    slack/notify:
+    slack/on-hold:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
       custom: '{
           "blocks": [
@@ -93,10 +93,10 @@ aliases:
       custom: '{
           "blocks": [
             {
-              "type": "header",
+              "type": "section",
               "text": {
                 "type": "plain_text",
-                "text": "Frontend v${PACKAGE_VERSION} has been deployed :rocket:",
+                "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:",
                 "emoji": true
               }
             },
@@ -120,7 +120,7 @@ aliases:
             }
           ]
         }'
-      mentions: here
+      mentions: '@here'
   # Common filters
   - &all_tags
     filters:
