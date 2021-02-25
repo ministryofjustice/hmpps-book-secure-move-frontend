@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.73.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.72.0...v2.73.0) (2021-02-25)
+
+
+### Features
+
+* Add accessibility statement ([4978f63](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4978f635eb26b0a1cb988e1e3c733515aeb2681b))
+* Update feedback link position to banner above footer ([f80ad5c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f80ad5cc3da71850406e7f6aed87daa0b5d2b781))
+
+
+### Bug Fixes
+
+* De-duplicate list of locations for Contract Delivery Managers ([46b0ba0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/46b0ba073f8743223530bd83b729406bfe823465))
+* Ensure uneditable PER message is correct for cancelled moves ([02201d4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/02201d472f7588af7a914f7f188f766138aa451f))
+
 ## [2.72.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.71.0...v2.72.0) (2021-02-18)
 
 
