@@ -91,6 +91,12 @@ module.exports = {
     CACHE_EXPIRY: process.env.API_CACHE_EXPIRY || 60 * 60 * 24 * 7, // in seconds (7 days)
     USE_REDIS_CACHE: !!REDIS.SESSION,
   },
+  MAPPING: {
+    AUTH_URL: `${process.env.ORDNANCE_MAP_API_URL}/oauth2/token/v1`,
+    TILE_URL: `${process.env.ORDNANCE_MAP_API_URL}/maps/raster/v1/zxy/Road_3857/{z}/{x}/{y}`,
+    API_KEY: process.env.ORDNANCE_MAP_API_KEY,
+    API_SECRET: process.env.ORDNANCE_MAP_API_SECRET,
+  },
   PLACEHOLDER_IMAGES: {
     PERSON: 'images/person-fallback.png',
   },
