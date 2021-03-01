@@ -302,16 +302,10 @@ describe('Person Service', function () {
     })
 
     context('without ID', function () {
-      beforeEach(async function () {
-        person = await personService.update({})
-      })
-
-      it('should not call API', function () {
-        expect(apiClient.update).not.to.be.called
-      })
-
-      it('should not format data', function () {
-        expect(personService.format).not.to.be.called
+      it('should reject with error', function () {
+        return expect(personService.update()).to.be.rejectedWith(
+          'No person ID supplied'
+        )
       })
     })
 

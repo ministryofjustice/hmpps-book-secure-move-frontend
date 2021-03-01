@@ -24,10 +24,6 @@ describe('Move controllers', function () {
         expect(controller.configure).to.exist.and.equal(MixinProto.configure)
       })
 
-      it('should inherit savePerson from CreatePersonalDetails', function () {
-        expect(controller.savePerson).to.exist.and.equal(MixinProto.savePerson)
-      })
-
       it('should override saveValues', function () {
         expect(controller.saveValues).to.exist.and.equal(ownProto.saveValues)
       })

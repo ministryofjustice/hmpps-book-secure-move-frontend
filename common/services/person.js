@@ -39,9 +39,9 @@ class PersonService extends BaseService {
       .then(response => response.data)
   }
 
-  update(data) {
+  update(data = {}) {
     if (!data.id) {
-      return
+      return Promise.reject(new Error(noPersonIdMessage))
     }
 
     return this.apiClient

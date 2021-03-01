@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const { capitalize } = require('lodash')
 
 const analytics = require('../../../../../common/lib/analytics')
@@ -290,6 +291,69 @@ describe('Move controllers', function () {
                 true
               )
             })
+          })
+        })
+
+        context('without person ID on profile', function () {
+          let mockScope
+          const mockValuesWithoutProfile = {
+            ...mockValues,
+            profile: {
+              id: '12345',
+              foo: 'bar',
+            },
+          }
+
+          beforeEach(async function () {
+            mockScope = {
+              setExtra: sinon.stub(),
+              setLevel: sinon.stub(),
+            }
+            sinon.stub(Sentry, 'captureException')
+            sinon.stub(Sentry, 'withScope')
+
+            req.sessionModel.toJSON = () => mockValuesWithoutProfile
+
+            await controller.saveValues(req, {}, nextSpy)
+
+            // run callback with mock scope
+            Sentry.withScope.args[0][0](mockScope)
+          })
+
+          it('should filter out correct properties', function () {
+            expect(moveService.create).to.be.calledWith({
+              reference: '',
+              to_location: 'Court',
+              from_location: 'Prison',
+              person: mockValues.person,
+              profile: {
+                id: '12345',
+                foo: 'bar',
+              },
+            })
+          })
+
+          it('should not patch profile', function () {
+            expect(profileService.update).not.to.be.called
+          })
+
+          it('should call sentry with scope', function () {
+            expect(Sentry.withScope).to.be.calledOnce
+          })
+
+          it('should send warning to sentry', function () {
+            expect(Sentry.captureException).to.be.calledOnce
+          })
+
+          it('should send extra data to sentry', function () {
+            expect(mockScope.setExtra).to.be.calledWithExactly(
+              'Move ID',
+              '4444'
+            )
+            expect(mockScope.setExtra).to.be.calledWithExactly(
+              'Profile ID',
+              '12345'
+            )
           })
         })
       })
