@@ -18,13 +18,15 @@ const populateResources = (obj, req, options, processed = []) => {
     })
 
     // TODO: Find way to deserialize missing resources properly
-    Sentry.withScope(scope => {
-      scope.setLevel('warning')
-      scope.setExtra('Events', cleanedObj)
-      scope.setExtra('Events raw', JSON.stringify(cleanedObj))
-      scope.setExtra('Unpopulated resources', processed)
-      Sentry.captureException(unprocessedError)
-    })
+    if (processed.length > 1) {
+      Sentry.withScope(scope => {
+        scope.setLevel('warning')
+        scope.setExtra('Events', cleanedObj)
+        scope.setExtra('Events raw', JSON.stringify(cleanedObj))
+        scope.setExtra('Unpopulated resources', processed)
+        Sentry.captureException(unprocessedError)
+      })
+    }
 
     return
   }
