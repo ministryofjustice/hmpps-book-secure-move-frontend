@@ -1,7 +1,9 @@
-module.exports = {
-  name: 'create-an-allocation',
-  templatePath: 'allocation/views/create/',
-  template: '../../../form-wizard',
-  journeyName: 'create-an-allocation',
-  journeyPageTitle: 'actions::create_allocation',
+module.exports = function config(id) {
+  return {
+    name: `create-an-allocation-${id}`,
+    templatePath: 'allocation/views/create/',
+    template: '../../../form-wizard',
+    journeyName: `create-an-allocation-${id}`,
+    journeyPageTitle: 'actions::create_allocation',
+  }
 }
