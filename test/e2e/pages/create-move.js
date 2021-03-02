@@ -115,9 +115,7 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>}
    */
   async fillInPncSearch(searchTerm) {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/person-lookup-pnc`)
+    await t.expect(this.getCurrentUrl()).contains('/person-lookup-pnc')
 
     return fillInForm({
       pncNumberSearch: {
@@ -136,7 +134,7 @@ class CreateMovePage extends Page {
   async fillInPrisonNumberSearch(searchTerm) {
     await t
       .expect(this.getCurrentUrl())
-      .contains(`${this.url}/person-lookup-prison-number`)
+      .contains('/person-lookup-prison-number')
 
     return fillInForm({
       prisonNumberSearch: {
@@ -172,9 +170,7 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>} - filled in personal details
    */
   async fillInPersonalDetails(personalDetails, { include, exclude } = {}) {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/personal-details`)
+    await t.expect(this.getCurrentUrl()).contains('/personal-details')
 
     const person = await generatePerson(personalDetails)
     let data = {
@@ -226,7 +222,7 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInMoveDetails(moveType) {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-details`)
+    await t.expect(this.getCurrentUrl()).contains('/move-details')
 
     const fields = {
       moveType: {
@@ -290,7 +286,7 @@ class CreateMovePage extends Page {
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInDate(dateValue = 'Today') {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-date`)
+    await t.expect(this.getCurrentUrl()).contains('/move-date')
     let dateCustom
 
     let dateType = dateValue
@@ -322,7 +318,7 @@ class CreateMovePage extends Page {
    * Fill in date range
    */
   async fillInDateRange() {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/move-date-range`)
+    await t.expect(this.getCurrentUrl()).contains('/move-date-range')
 
     return fillInForm({
       dateFrom: {
@@ -346,9 +342,7 @@ class CreateMovePage extends Page {
     selectAll = true,
     fillInOptional = false,
   } = {}) {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/court-information`)
+    await t.expect(this.getCurrentUrl()).contains('/court-information')
 
     const fields = {
       selectedItems: {
@@ -385,7 +379,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInHospitalDetails() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/hospital')
+    await t.expect(this.getCurrentUrl()).contains('/hospital')
 
     return fillInForm({
       timeDue: {
@@ -407,7 +401,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInCourtHearings() {
-    await t.expect(this.getCurrentUrl()).contains('/move/new/court-hearings')
+    await t.expect(this.getCurrentUrl()).contains('/court-hearings')
 
     return fillInForm({
       hasCourtCase: {
@@ -427,9 +421,7 @@ class CreateMovePage extends Page {
     selectAll = true,
     fillInOptional = false,
   } = {}) {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/risk-information`)
+    await t.expect(this.getCurrentUrl()).contains('/risk-information')
 
     const fields = {
       selectedItems: {
@@ -478,7 +470,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInReleaseStatus() {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/release-status`)
+    await t.expect(this.getCurrentUrl()).contains('/release-status')
 
     return fillInForm({
       notToBeReleasedRadio: {
@@ -495,9 +487,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInAgreementStatus() {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/agreement-status`)
+    await t.expect(this.getCurrentUrl()).contains('/agreement-status')
 
     return fillInForm({
       moveAgreed: {
@@ -518,7 +508,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInPrisonTransferReasons() {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/transfer-reason`)
+    await t.expect(this.getCurrentUrl()).contains('/transfer-reason')
 
     return fillInForm({
       prisonTransferReason: {
@@ -537,9 +527,7 @@ class CreateMovePage extends Page {
     selectAll = true,
     fillInOptional = false,
   } = {}) {
-    await t
-      .expect(this.getCurrentUrl())
-      .contains(`${this.url}/health-information`)
+    await t.expect(this.getCurrentUrl()).contains('/health-information')
 
     if (!selectAll) {
       return fillInForm({
@@ -604,7 +592,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInSpecialVehicle() {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/special-vehicle`)
+    await t.expect(this.getCurrentUrl()).contains('/special-vehicle')
 
     return fillInForm({
       specialVehicleRadio: {
@@ -622,7 +610,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInDocumentUploads(files) {
-    await t.expect(this.getCurrentUrl()).contains(`${this.url}/document`)
+    await t.expect(this.getCurrentUrl()).contains('/document')
     await t.setFilesToUpload(
       '#documents',
       files.map(fileName => `../fixtures/files/${fileName}`)
@@ -655,7 +643,7 @@ class CreateMovePage extends Page {
   checkPersonLookupResults(count, searchTerm) {
     return t
       .expect(this.getCurrentUrl())
-      .contains(`${this.url}/person-lookup-results`)
+      .contains('/person-lookup-results')
       .expect(this.steps.personLookupResults.nodes.searchSummary.innerText)
       .contains(
         `${count} ${pluralize('person', count)} found for “${searchTerm}”`

@@ -1,10 +1,12 @@
 const CreateBaseController = require('./controllers/base')
 
-module.exports = {
-  controller: CreateBaseController,
-  journeyName: 'create-a-move',
-  journeyPageTitle: 'actions::create_move',
-  name: 'create-a-move',
-  template: '../../../form-wizard',
-  templatePath: 'move/views/create/',
+module.exports = function config(id) {
+  return {
+    controller: CreateBaseController,
+    journeyName: `create-a-move-${id}`,
+    journeyPageTitle: 'actions::create_move',
+    name: `create-a-move-${id}`,
+    template: '../../../form-wizard',
+    templatePath: 'move/views/create/',
+  }
 }

@@ -144,7 +144,7 @@ test('With a new person', async t => {
   // PNC lookup
   await t
     .expect(page.getCurrentUrl())
-    .contains('/move/new/person-lookup-pnc')
+    .contains('/person-lookup-pnc')
     .click(createMovePage.steps.personLookup.nodes.noIdentifierLink)
     .click(createMovePage.steps.personLookup.nodes.moveSomeoneNew)
 
