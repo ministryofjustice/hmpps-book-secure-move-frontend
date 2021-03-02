@@ -1,6 +1,7 @@
 const Sentry = require('@sentry/node')
 const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
+const { uuidRegex } = require('../../../../../common/helpers/url')
 const analytics = require('../../../../../common/lib/analytics')
 const filters = require('../../../../../config/nunjucks/filters')
 
@@ -116,16 +117,21 @@ class SaveController extends CreateBaseController {
 
   async successHandler(req, res, next) {
     const move = req.sessionModel.get('move')
-    const fromLocationType = req.sessionModel.get('from_location_type')
+    const timingCategory = capitalize(
+      req.sessionModel.get('from_location_type')
+    )
     const journeyDuration = Math.round(
       new Date().getTime() - req.sessionModel.get('journeyTimestamp')
+    )
+    const timingVariable = capitalize(
+      req.form.options.name.replace(new RegExp(`-${uuidRegex}`, 'g'), '')
     )
 
     try {
       await analytics.sendJourneyTime({
-        utv: capitalize(req.form.options.name),
+        utv: timingVariable,
         utt: journeyDuration,
-        utc: capitalize(fromLocationType),
+        utc: timingCategory,
       })
 
       req.journeyModel.reset()

@@ -887,6 +887,36 @@ describe('Move controllers', function () {
         })
       })
 
+      context('when journey contains UUID', function () {
+        const mockJourneyTimestamp = 12345
+        const mockCurrentTimestamp = new Date('2017-08-10').getTime()
+        const mockFromLocationType = 'police'
+
+        beforeEach(async function () {
+          this.clock = sinon.useFakeTimers(mockCurrentTimestamp)
+          analytics.sendJourneyTime.resolves({})
+          req.sessionModel.get.withArgs('move').returns(mockMove)
+          req.sessionModel.get
+            .withArgs('journeyTimestamp')
+            .returns(mockJourneyTimestamp)
+            .withArgs('from_location_type')
+            .returns(mockFromLocationType)
+          req.form.options.name =
+            'create-a-move-507b0fc0-6972-428c-bfc6-d26028de61ae'
+          await controller.successHandler(req, res, nextSpy)
+        })
+
+        afterEach(function () {
+          this.clock.restore()
+        })
+
+        it('should remove the UUID from timing variable', function () {
+          const args = analytics.sendJourneyTime.args[0][0]
+          expect(args).to.have.property('utv')
+          expect(args.utv).to.equal('Create-a-move')
+        })
+      })
+
       context('when send journey time fails', function () {
         const mockError = new Error('Error')
 
