@@ -178,8 +178,10 @@ describe('Locations controllers', function () {
       })
 
       it('should set the location on the user session', function () {
+        // The second location in the mockSecondSupplierLocation array
+        // is a duplicate, so should not be included
         expect(req.session.user.locations).to.deep.equal(
-          mockSupplierLocations.concat(mockSecondSupplierLocation)
+          mockSupplierLocations.concat(mockSecondSupplierLocation[0])
         )
       })
     })

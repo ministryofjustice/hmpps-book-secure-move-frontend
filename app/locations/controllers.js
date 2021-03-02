@@ -1,4 +1,4 @@
-const { get, sortBy } = require('lodash')
+const { get, sortBy, uniqBy } = require('lodash')
 
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
@@ -34,7 +34,9 @@ async function locations(req, res, next) {
       })
     )
 
-    userLocations = [...new Set(supplierLocations.flat())]
+    // The locations have been uniqued based on title to prevent
+    // duplicates when multiple suppliers have the same location
+    userLocations = uniqBy(supplierLocations.flat(), 'id')
 
     req.session.user.locations = userLocations
   }
