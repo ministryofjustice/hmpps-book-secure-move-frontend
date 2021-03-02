@@ -38,7 +38,11 @@ class AllocationCriteriaPage extends Page {
   }
 
   async fill() {
-    await t.expect(this.getCurrentUrl()).contains(this.url)
+    await t
+      .expect(this.getCurrentUrl())
+      .match(
+        /\/allocation\/new\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/allocation-criteria$/
+      )
 
     const fieldsToFill = {
       estate: {

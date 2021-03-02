@@ -193,6 +193,12 @@ app.use(
           'www.googletagmanager.com',
           'www.google-analytics.com',
         ],
+        connectSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'www.googletagmanager.com',
+          'www.google-analytics.com',
+        ],
         imgSrc: ["'self'", 'www.google-analytics.com'],
         fontSrc: ["'self'", 'fonts.googleapis.com'],
       },

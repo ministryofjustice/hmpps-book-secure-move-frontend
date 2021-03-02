@@ -29,9 +29,7 @@ test('With unfound person', async t => {
 
   await t.click(createMovePage.steps.personLookupResults.nodes.searchAgainLink)
 
-  await t
-    .expect(page.getCurrentUrl())
-    .contains('/move/new/person-lookup-prison-number')
+  await t.expect(page.getCurrentUrl()).contains('/person-lookup-prison-number')
 })
 
 test('With existing person', async t => {
