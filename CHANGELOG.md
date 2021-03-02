@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.73.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.0...v2.73.1) (2021-03-02)
+
+
+### Bug Fixes
+
+* Allow multiple allocations to be created in new tabs ([9d7dd63](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9d7dd63a0e8ec8d4f2b5a087cfcfbda79390b7f8))
+* Allow multiple moves to be created in new tabs ([52b77c5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/52b77c5efaa38e5a762766b8ba1aa37b795cf2ea))
+* Improve missing person ID error when creating a move ([4a0fa19](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4a0fa195c4392561a4fe5058af5397309f344f51))
+* Reduce Sentry warnings for missing resources to correct instances ([90b5e9a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/90b5e9ae71e35842a07c9c35fa5b31450cb5bd24))
+
 ## [2.73.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.72.0...v2.73.0) (2021-02-25)
 
 
