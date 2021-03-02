@@ -41,24 +41,24 @@ class PersonalDetailsController extends CreateBaseController {
     }
   }
 
-  savePerson(req, id, data) {
-    const personService = req.services.person
-
-    if (id) {
-      return personService.update({
-        id,
-        ...data,
-      })
-    }
-
-    return personService.create(data)
-  }
-
   async saveValues(req, res, next) {
     try {
-      const id = req.getPersonId()
+      const personService = req.services.person
+      const person = req.sessionModel.get('person')
+      const newPersonId = req.sessionModel.get('newPersonId')
+      const data = { ...req.form.values }
 
-      req.form.values.person = await this.savePerson(req, id, req.form.values)
+      if (person && person.id === newPersonId) {
+        req.form.values.person = await personService.update({
+          ...data,
+          id: newPersonId,
+        })
+      } else {
+        const newPerson = await personService.create(data)
+        req.form.values.person = newPerson
+        req.form.values.newPersonId = newPerson.id
+      }
+
       super.saveValues(req, res, next)
     } catch (error) {
       next(error)

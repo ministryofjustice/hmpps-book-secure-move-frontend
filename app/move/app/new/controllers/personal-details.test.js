@@ -1,12 +1,7 @@
-const FormController = require('hmpo-form-wizard').Controller
-
 const fieldHelpers = require('../../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../../common/helpers/reference-data')
-const personService = {
-  create: sinon.stub(),
-  update: sinon.stub().resolves(),
-}
 
+const CreateBaseController = require('./base')
 const Controller = require('./personal-details')
 
 const controller = new Controller({ route: '/' })
@@ -54,7 +49,7 @@ describe('Move controllers', function () {
             getGenders: sinon.stub().resolves(genderMock),
             getEthnicities: sinon.stub().resolves(ethnicityMock),
           }
-          sinon.spy(FormController.prototype, 'configure')
+          sinon.spy(CreateBaseController.prototype, 'configure')
           sinon.stub(fieldHelpers, 'insertItemConditional').callsFake(() => {
             return item => item
           })
@@ -109,8 +104,8 @@ describe('Move controllers', function () {
           })
 
           it('should call parent configure method', function () {
-            expect(FormController.prototype.configure).to.be.calledOnce
-            expect(FormController.prototype.configure).to.be.calledWith(
+            expect(CreateBaseController.prototype.configure).to.be.calledOnce
+            expect(CreateBaseController.prototype.configure).to.be.calledWith(
               req,
               {},
               nextSpy
@@ -170,121 +165,125 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('#savePerson()', function () {
-      const mockId = '1234567'
-      const fakeReq = {
-        services: {
-          person: personService,
-        },
-      }
-
-      beforeEach(function () {
-        personService.create.resolves().resetHistory()
-        personService.update.resetHistory()
-      })
-
-      context('without id', function () {
-        beforeEach(function () {
-          controller.savePerson(fakeReq, undefined, personMock)
-        })
-
-        it('should create a person via the personService', function () {
-          expect(personService.create).to.be.calledOnceWithExactly(personMock)
-        })
-
-        it('should not update a person via the personService', function () {
-          expect(personService.update).to.not.be.called
-        })
-      })
-
-      context('with id', function () {
-        beforeEach(function () {
-          controller.savePerson(fakeReq, mockId, personMock)
-        })
-
-        it('should update a person via the personService', function () {
-          expect(personService.update).to.be.calledOnceWithExactly({
-            id: mockId,
-            ...personMock,
-          })
-        })
-
-        it('should not create a person via the personService', function () {
-          expect(personService.create).to.not.be.called
-        })
-      })
-    })
-
     describe('#saveValues()', function () {
       let req, nextSpy
 
       beforeEach(function () {
+        sinon.stub(CreateBaseController.prototype, 'saveValues')
         nextSpy = sinon.spy()
         req = {
           form: {
-            values: {},
+            values: {
+              foo: 'bar',
+              fizz: 'buzz',
+            },
           },
-          getPerson: sinon.stub(),
-          getPersonId: sinon.stub(),
           services: {
-            person: personService,
+            person: {
+              create: sinon.stub(),
+              update: sinon.stub(),
+            },
+          },
+          sessionModel: {
+            get: sinon.stub(),
           },
         }
       })
 
       context('when save is successful', function () {
-        context('with a new person', function () {
-          beforeEach(async function () {
-            sinon.stub(controller, 'savePerson').resolves(personMock)
-            req.getPerson.returns(personMock)
-            req.getPersonId.returns(personMock.id)
+        beforeEach(function () {
+          req.services.person.create.returns(personMock)
+          req.services.person.update.returns({
+            ...personMock,
+            updated: true,
+          })
+        })
 
+        context('without an existing person', function () {
+          beforeEach(async function () {
             await controller.saveValues(req, {}, nextSpy)
           })
 
-          it('should save the persons data', function () {
-            expect(controller.savePerson).to.be.calledOnceWithExactly(
-              req,
-              personMock.id,
-              req.form.values
-            )
+          it('should create a new person', function () {
+            expect(req.services.person.create).to.be.calledOnceWithExactly({
+              foo: 'bar',
+              fizz: 'buzz',
+            })
           })
 
           it('should set person response on form values', function () {
             expect(req.form.values).to.have.property('person')
             expect(req.form.values.person).to.deep.equal(personMock)
+            expect(req.form.values.newPersonId).to.equal(personMock.id)
           })
 
-          it('should not throw an error', function () {
-            expect(nextSpy).to.be.calledOnce
-            expect(nextSpy).to.be.calledWith()
+          it('should call parent controller', function () {
+            expect(
+              CreateBaseController.prototype.saveValues
+            ).to.be.calledOnceWithExactly(req, {}, nextSpy)
           })
         })
 
         context('with a pre-existing person', function () {
-          beforeEach(async function () {
-            sinon.stub(controller, 'savePerson').resolves(personMock)
-            req.getPerson.returns(undefined)
-
-            await controller.saveValues(req, {}, nextSpy)
+          beforeEach(function () {
+            req.sessionModel.get.withArgs('person').returns(personMock)
           })
 
-          it('should save the persons data', function () {
-            expect(controller.savePerson).to.be.calledOnceWithExactly(
-              req,
-              undefined,
-              req.form.values
-            )
+          context('when existing person ID does match', function () {
+            beforeEach(async function () {
+              req.sessionModel.get
+                .withArgs('newPersonId')
+                .returns(personMock.id)
+              await controller.saveValues(req, {}, nextSpy)
+            })
+
+            it('should update the persons data', function () {
+              expect(req.services.person.update).to.be.calledOnceWithExactly({
+                foo: 'bar',
+                fizz: 'buzz',
+                id: personMock.id,
+              })
+            })
+
+            it('should set update response on form values', function () {
+              expect(req.form.values).to.have.property('person')
+              expect(req.form.values.person).to.deep.equal({
+                ...personMock,
+                updated: true,
+              })
+            })
+
+            it('should call parent controller', function () {
+              expect(
+                CreateBaseController.prototype.saveValues
+              ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+            })
           })
 
-          it('should set person response on form values', function () {
-            expect(req.form.values).to.have.property('person')
-            expect(req.form.values.person).to.deep.equal(personMock)
-          })
+          context('when existing person ID does not match', function () {
+            beforeEach(async function () {
+              req.sessionModel.get.withArgs('newPersonId').returns('12345')
+              await controller.saveValues(req, {}, nextSpy)
+            })
 
-          it('should not throw an error', function () {
-            expect(nextSpy).to.be.calledOnce
-            expect(nextSpy).to.be.calledWith()
+            it('should create a new person', function () {
+              expect(req.services.person.create).to.be.calledOnceWithExactly({
+                foo: 'bar',
+                fizz: 'buzz',
+              })
+            })
+
+            it('should set person response on form values', function () {
+              expect(req.form.values).to.have.property('person')
+              expect(req.form.values.person).to.deep.equal(personMock)
+              expect(req.form.values.newPersonId).to.equal(personMock.id)
+            })
+
+            it('should call parent controller', function () {
+              expect(
+                CreateBaseController.prototype.saveValues
+              ).to.be.calledOnceWithExactly(req, {}, nextSpy)
+            })
           })
         })
       })
@@ -293,7 +292,7 @@ describe('Move controllers', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
-          personService.create.throws(errorMock).resetHistory()
+          req.services.person.create.throws(errorMock).resetHistory()
           await controller.saveValues(req, {}, nextSpy)
         })
 

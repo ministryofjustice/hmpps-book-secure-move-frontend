@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const { get, omit, capitalize, flatten, values, some } = require('lodash')
 
 const analytics = require('../../../../../common/lib/analytics')
@@ -30,8 +31,7 @@ class SaveController extends CreateBaseController {
         'documents',
       ])
       const move = await req.services.move.create(data)
-
-      await Promise.all([
+      const promises = [
         // create hearings
         ...(data.court_hearings || []).map(hearing =>
           courtHearingService.create(
@@ -42,14 +42,26 @@ class SaveController extends CreateBaseController {
             data.should_save_court_hearings === 'false'
           )
         ),
-      ])
+      ]
 
-      await profileService.update({
-        ...data.profile,
-        requires_youth_risk_assessment: this.requiresYouthAssessment(req),
-        assessment_answers: assessment,
-        documents,
-      })
+      if (data.profile?.person?.id) {
+        promises.push(
+          profileService.update({
+            ...data.profile,
+            requires_youth_risk_assessment: this.requiresYouthAssessment(req),
+            assessment_answers: assessment,
+            documents,
+          })
+        )
+      } else {
+        Sentry.withScope(scope => {
+          scope.setExtra('Move ID', move.id)
+          scope.setExtra('Profile ID', data.profile.id)
+          Sentry.captureException(new Error('No Person ID supplied'))
+        })
+      }
+
+      await Promise.all(promises)
 
       req.sessionModel.set('move', move)
 
