@@ -1,0 +1,12 @@
+{% if journeySummary %}
+  <div class="sticky-sidebar">
+    <div class="sticky-sidebar__inner">
+      <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+        {{ t('moves::map.journey_overview') }}
+      </h3>
+
+      {{ appMetaList(journeySummary) }}
+
+    </div>
+  </div>
+{% endif %}
