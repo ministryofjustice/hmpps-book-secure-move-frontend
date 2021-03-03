@@ -1,0 +1,25 @@
+{% extends "./view.njk" %}
+
+{% set additionalContainerClass = "sticky-sidebar-container" %}
+{% set name = move.profile.person._fullname or t("awaiting_person") %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move details Map'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("moves::detail.page_title", {
+    name: name
+  }) }}
+  – {{ SERVICE_NAME }}
+{% endblock %}
+
+{% block contentMain %}
+  {{ tabs(urls, 'map') }}
+
+  {% include "includes/map.njk" %}
+{% endblock %}
+
+{% block contentSidebar %}
+  {% include "includes/journey-summary.njk" %}
+{% endblock %}

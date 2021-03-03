@@ -1,8 +1,8 @@
 // NPM dependencies
 const express = require('express')
+
 const router = express.Router()
 const moveRouter = express.Router({ mergeParams: true })
-
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
@@ -15,13 +15,19 @@ const editApp = require('./app/edit')
 const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
-const { confirmation, timeline, view } = require('./controllers')
+const {
+  confirmation,
+  map: { view: mapView, locationsGeoJSON, journeysGeoJSON },
+  timeline,
+  view,
+} = require('./controllers')
 const {
   setMove,
   setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
   setAllocation,
+  setJourneys,
 } = require('./middleware')
 
 // Define param middleware
@@ -37,6 +43,27 @@ router.get(
   setPersonEscortRecord,
   setYouthRiskAssessment,
   timeline
+)
+
+router.get(
+  `/:moveIdWithEvents(${uuidRegex})/map`,
+  protectRoute('move:view:maps'),
+  setJourneys,
+  mapView
+)
+
+router.get(
+  `/:moveIdWithEvents(${uuidRegex})/map/locations.geo.json`,
+  protectRoute('move:view:maps'),
+  setJourneys,
+  locationsGeoJSON
+)
+
+router.get(
+  `/:moveIdWithEvents(${uuidRegex})/map/journeys.geo.json`,
+  protectRoute('move:view:maps'),
+  setJourneys,
+  journeysGeoJSON
 )
 
 router.use(
