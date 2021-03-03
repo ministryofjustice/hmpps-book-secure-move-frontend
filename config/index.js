@@ -256,6 +256,12 @@ module.exports = {
         username: 'E2E_PERSON_ESCORT_RECORD',
         password: '102PF_PERSON_ESCORT_RECORD',
       },
+      CONTRACT_DELIVERY_MANAGER: {
+        name: 'End-to-end Contract Delivery Manager',
+        authorities: ['ROLE_PECS_CDM'],
+        username: 'E2E_CONTRACT_DELIVERY_MANAGER',
+        password: '102PF_CONTRACT_DELIVERY_MANAGER',
+      },
     },
   },
   FEATURE_FLAGS: {
