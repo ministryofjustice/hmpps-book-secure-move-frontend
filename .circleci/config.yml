@@ -46,7 +46,6 @@ aliases:
             {
               "type": "section",
               "text": {
-                "type": "plain_text",
                 "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:",
                 "emoji": true
               }
@@ -57,17 +56,24 @@ aliases:
                 "type": "mrkdwn",
                 "text": "A new release was created by ${CIRCLE_USERNAME}"
               },
-              "accessory": {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Changelog",
-                  "emoji": true
-                },
-                "value": "changelog",
-                "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md",
-                "action_id": "button-action"
-              }
+              "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
+                  }
+              ],
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "text": "Changelog"
+                  },
+                  "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md"
+                }
+              ]
             }
           ]
         }'
@@ -81,8 +87,15 @@ aliases:
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:"
-              }
+                "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:",
+                "emoji": true
+              },
+              "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
+                  }
+              ],
             },
             {
               "type": "actions",
@@ -90,7 +103,6 @@ aliases:
                 {
                   "type": "button",
                   "text": {
-                    "type": "plain_text",
                     "text": "View Workflow"
                   },
                   "url": "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
@@ -108,7 +120,7 @@ aliases:
             {
               "type": "section",
               "text": {
-                "type": "plain_text",
+                "type": "mrkdwn",
                 "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:",
                 "emoji": true
               }
@@ -119,17 +131,24 @@ aliases:
                 "type": "mrkdwn",
                 "text": "This release was successfully deployed to production"
               },
-              "accessory": {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Release",
-                  "emoji": true
-                },
-                "value": "release",
-                "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}",
-                "action_id": "button-action"
-              }
+              "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
+                  }
+              ],
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "text": "Release"
+                  },
+                  "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}"
+                }
+              ]
             }
           ]
         }'
