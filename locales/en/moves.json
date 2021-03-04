@@ -250,6 +250,47 @@
     "button": "Remove this spot"
   },
   "map": {
+    "page_title": "Move requested for {{-name}}",
+    "page_title_assign": "{{-name}} added to allocation",
+    "page_title_proposed": "Move sent for {{-name}}",
+    "heading_proposed": "Journey proposed",
+    "heading_rejected": "Journey rejected",
+    "heading_in_progress": "Vehicle {{ vehicle }}",
+    "heading_completed": "Vehicle {{ vehicle }}",
+    "heading_cancelled": "Journey cancelled",
+    "subheading_proposed": "",
+    "subheading_rejected": "Vehicle {{ vehicle }}",
+    "subheading_in_progress": "Expected arrival at {{ time }}",
+    "subheading_completed": "Arrived at {{ vehicle }}",
+    "subheading_cancelled": "Journey cancelled",
+    "categories": {
+      "date": {
+        "heading": "Date",
+        "message": "{{ date }}"
+      },
+      "state": {
+        "heading": "Status",
+        "message": "{{ state }}"
+      },
+      "start": {
+        "heading": "Start",
+        "message_completed": "{{ location }}",
+        "message_proposed": "{{ location }}",
+        "message_collected": "{{ location }}<br>Collected at {{ time }}",
+        "message_expected": "{{ location }}<br>Expected at {{ time }}"
+      },
+      "finish": {
+        "heading": "Finish",
+        "message_completed": "{{ location }}",
+        "message_proposed": "{{ location }}",
+        "message_collected": "{{ location }}<br>Collected at {{ time }}",
+        "message_expected": "{{ location }}<br>Expected at {{ time }}"
+      },
+      "vehicle": {
+        "heading": "Vehicle"
+      }
+    },
+    "journey_overview": "Journey Overview",
     "map_error": "An error occurred configuring the map"
   }
 }
