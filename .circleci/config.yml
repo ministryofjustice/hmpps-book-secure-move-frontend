@@ -42,42 +42,36 @@ aliases:
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
       custom: '{
-          "blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:"
-              }
-            },
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "A new release was created by ${CIRCLE_USERNAME}"
-              },
-              "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
-                  }
-              ]
-            },
-            {
-              "type": "actions",
-              "elements": [
-                {
-                  "type": "button",
-                  "text": {
-                    "type": "plain_text"
-                    "text": "Changelog"
-                  },
-                  "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md"
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:"
                 }
-              ]
-            }
-          ]
-        }'
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "${SLACK_PARAM_MENTIONS} A new release was created by ${CIRCLE_USERNAME}"
+                }
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Changelog"
+                    },
+                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md"
+                  }
+                ]
+              }
+            ]
+          }'
       mentions: '@here'
   - &notify_slack_of_approval
     slack/notify:
@@ -93,7 +87,7 @@ aliases:
                 "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
+                    "text": "${SLACK_PARAM_MENTIONS}"
                   }
                 ]
               },
@@ -117,42 +111,36 @@ aliases:
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
       custom: '{
-          "blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:"
-              }
-            },
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "This release was successfully deployed to production"
-              },
-              "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
-                  }
-              ]
-            },
-            {
-              "type": "actions",
-              "elements": [
-                {
-                  "type": "button",
-                  "text": {
-                    "type": "plain_text"
-                    "text": "Release"
-                  },
-                  "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}"
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:"
                 }
-              ]
-            }
-          ]
-        }'
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "${SLACK_PARAM_MENTIONS} This release was successfully deployed to production"
+                }
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Release"
+                    },
+                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}"
+                  }
+                ]
+              }
+            ]
+          }'
       mentions: '@here'
   # Common filters
   - &all_tags
