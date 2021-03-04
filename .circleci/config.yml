@@ -46,8 +46,8 @@ aliases:
             {
               "type": "section",
               "text": {
-                "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:",
-                "emoji": true
+                "type": "mrkdwn",
+                "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:"
               }
             },
             {
@@ -69,6 +69,7 @@ aliases:
                 {
                   "type": "button",
                   "text": {
+                    "type": "plain_text"
                     "text": "Changelog"
                   },
                   "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md"
@@ -82,35 +83,35 @@ aliases:
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
       custom: '{
-          "blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:",
-                "emoji": true
-              },
-              "fields": [
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:"
+                },
+                "fields": [
                   {
                     "type": "mrkdwn",
                     "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
                   }
-              ]
-            },
-            {
-              "type": "actions",
-              "elements": [
-                {
-                  "type": "button",
-                  "text": {
-                    "text": "View Workflow"
-                  },
-                  "url": "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
-                }
-              ]
-            }
-          ]
-        }'
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Workflow"
+                    },
+                    "url": "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
+                  }
+                ]
+              }
+            ]
+          }'
       mentions: $BUILD_NOTIFICATIONS_MENTION_ID
   - &notify_slack_on_release_end
     slack/notify:
@@ -121,8 +122,7 @@ aliases:
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:",
-                "emoji": true
+                "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:"
               }
             },
             {
@@ -144,6 +144,7 @@ aliases:
                 {
                   "type": "button",
                   "text": {
+                    "type": "plain_text"
                     "text": "Release"
                   },
                   "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}"
