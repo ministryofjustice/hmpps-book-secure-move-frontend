@@ -61,7 +61,7 @@ aliases:
                     "type": "mrkdwn",
                     "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
                   }
-              ],
+              ]
             },
             {
               "type": "actions",
@@ -95,7 +95,7 @@ aliases:
                     "type": "mrkdwn",
                     "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
                   }
-              ],
+              ]
             },
             {
               "type": "actions",
@@ -136,7 +136,7 @@ aliases:
                     "type": "mrkdwn",
                     "text": "*Mentions*:\\n${SLACK_PARAM_MENTIONS}"
                   }
-              ],
+              ]
             },
             {
               "type": "actions",
