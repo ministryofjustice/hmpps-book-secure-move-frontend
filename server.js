@@ -3,6 +3,10 @@ const path = require('path')
 
 // NPM dependencies
 const Sentry = require('@sentry/node')
+// Tracing needs to be imported for it to work
+// Source: https://docs.sentry.io/platforms/node/performance/
+// eslint-disable-next-line no-unused-vars
+const Tracing = require('@sentry/tracing')
 const compression = require('compression')
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
@@ -64,6 +68,8 @@ if (config.SENTRY.DSN) {
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.SENTRY.RELEASE,
+    // Half of all requests will be used for performance sampling
+    tracesSampleRate: 0.5,
   })
 
   app.use(
