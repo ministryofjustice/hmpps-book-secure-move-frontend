@@ -354,6 +354,10 @@ describe('Move controllers', function () {
               'Profile ID',
               '12345'
             )
+            expect(mockScope.setExtra).to.be.calledWithExactly(
+              'Person ID',
+              mockValues.person.id
+            )
           })
         })
       })
