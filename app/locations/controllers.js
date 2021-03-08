@@ -41,7 +41,9 @@ async function locations(req, res, next) {
     req.session.user.locations = userLocations
   }
 
-  const locations = sortBy(userLocations, 'title')
+  const locations = sortBy(userLocations, location => {
+    return location?.title?.toLowerCase()
+  })
 
   res.render('locations/views/locations.njk', {
     locations,

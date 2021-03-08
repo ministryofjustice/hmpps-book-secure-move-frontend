@@ -10,7 +10,7 @@ const mockUserLocations = [
   },
   {
     id: '9b56ca31-222b-4522-9d65-4ef429f9081e',
-    title: 'B location',
+    title: 'b location',
   },
   {
     id: 'd8e9cf86-55cd-4412-83b7-3562b7d1f8b6',
@@ -36,7 +36,7 @@ const mockSecondSupplierLocation = [
   },
   {
     id: '70923762-bc17-4ea1-bae3-4ef429f9081e',
-    title: 'a location',
+    title: 'A location',
   },
 ]
 
@@ -122,7 +122,9 @@ describe('Locations controllers', function () {
           const params = res.render.args[0][1]
           expect(params).to.have.property('locations')
           expect(params.locations).to.deep.equal(
-            sortBy(mockUserLocations, 'title')
+            sortBy(mockUserLocations, location => {
+              return location?.title?.toLowerCase()
+            })
           )
         })
       }
@@ -149,7 +151,9 @@ describe('Locations controllers', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('locations')
         expect(params.locations).to.deep.equal(
-          sortBy(mockSupplierLocations, 'title')
+          sortBy(mockSupplierLocations, location => {
+            return location?.title?.toLowerCase()
+          })
         )
       })
 
