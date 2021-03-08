@@ -57,7 +57,8 @@ class SaveController extends CreateBaseController {
       } else {
         Sentry.withScope(scope => {
           scope.setExtra('Move ID', move.id)
-          scope.setExtra('Profile ID', data.profile.id)
+          scope.setExtra('Profile ID', data.profile?.id)
+          scope.setExtra('Person ID', data.person?.id)
           Sentry.captureException(new Error('No Person ID supplied'))
         })
       }
