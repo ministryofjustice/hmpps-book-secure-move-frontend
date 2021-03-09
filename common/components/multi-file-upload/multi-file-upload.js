@@ -1,5 +1,7 @@
-const axios = require('axios')
-const Dropzone = require('dropzone')
+import axios from 'axios'
+import Dropzone from 'dropzone'
+
+Dropzone.autoDiscover = false
 
 const {
   dragAndDropAvailable,
@@ -153,4 +155,4 @@ MultiFileUpload.prototype = {
   },
 }
 
-module.exports = MultiFileUpload
+export default MultiFileUpload
