@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.74.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.4...v2.74.0) (2021-03-09)
+
+
+### Features
+
+* Add map as included template ([f6cbda2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f6cbda266da3b79ac8165060c23419f134093a28))
+
+
+### Bug Fixes
+
+* Fix reference to template path for assign journeys ([6c42fa6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6c42fa682801bb4ec6373bf49b3cd45b38541171))
+
 ### [2.73.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.3...v2.73.4) (2021-03-09)
 
 
