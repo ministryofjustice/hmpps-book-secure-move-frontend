@@ -1,4 +1,4 @@
-const updateSteps = require('../../../app/move/steps/update')
+const updateSteps = require('../../../app/move/app/edit/steps')
 const presenters = require('../../presenters')
 
 const getAssessments = require('./get-assessments')

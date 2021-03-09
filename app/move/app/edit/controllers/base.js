@@ -1,7 +1,7 @@
 const { get, isEqual, keys, pick } = require('lodash')
 
-const filters = require('../../../../config/nunjucks/filters')
-const CreateBaseController = require('../../app/new/controllers/base')
+const filters = require('../../../../../config/nunjucks/filters')
+const CreateBaseController = require('../../new/controllers/base')
 
 class UpdateBaseController extends CreateBaseController {
   middlewareLocals() {

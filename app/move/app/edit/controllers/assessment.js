@@ -1,6 +1,6 @@
 const { isEqual, pick, keys } = require('lodash')
 
-const Assessment = require('../../app/new/controllers/assessment')
+const Assessment = require('../../new/controllers/assessment')
 
 const UpdateBase = require('./base')
 

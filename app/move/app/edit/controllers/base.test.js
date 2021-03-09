@@ -4,8 +4,9 @@ const { cloneDeep } = require('lodash')
 const personService = {
   unformat: sinon.stub(),
 }
-const filters = require('../../../../config/nunjucks/filters')
-const CreateBaseController = require('../../app/new/controllers/base')
+const filters = require('../../../../../config/nunjucks/filters')
+const CreateBaseController = require('../../new/controllers/base')
+
 const BaseProto = CreateBaseController.prototype
 
 const UpdateBaseController = require('./base')

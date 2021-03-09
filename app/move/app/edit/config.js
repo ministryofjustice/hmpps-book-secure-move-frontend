@@ -1,4 +1,4 @@
-const UpdateBaseController = require('../controllers/update/base')
+const UpdateBaseController = require('./controllers/base')
 
 module.exports = function config(id) {
   return {

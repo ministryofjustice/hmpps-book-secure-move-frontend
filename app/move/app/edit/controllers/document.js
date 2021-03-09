@@ -1,6 +1,6 @@
 const { pick } = require('lodash')
 
-const DocumentUploadController = require('../../app/new/controllers/document')
+const DocumentUploadController = require('../../new/controllers/document')
 
 const UpdateBase = require('./base')
 

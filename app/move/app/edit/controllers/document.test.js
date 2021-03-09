@@ -1,4 +1,4 @@
-const CreateDocument = require('../../app/new/controllers/document')
+const CreateDocument = require('../../new/controllers/document')
 
 const UpdateBaseController = require('./base')
 const DocumentController = require('./document')

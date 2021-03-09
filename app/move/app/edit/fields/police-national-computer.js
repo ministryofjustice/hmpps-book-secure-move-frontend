@@ -1,7 +1,9 @@
-const policeNationalComputer = require('./police-national-computer')
+const { cloneDeep } = require('lodash')
+
+const policeNationalComputer = require('../../../fields/police-national-computer')
 
 const policeNationalComputerUpdate = {
-  ...policeNationalComputer,
+  ...cloneDeep(policeNationalComputer),
   readOnly: true,
   updateComponent: {
     component: 'appReadOnlyField',

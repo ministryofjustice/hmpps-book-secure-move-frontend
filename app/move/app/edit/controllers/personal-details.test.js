@@ -2,7 +2,7 @@ const personService = {
   unformat: sinon.stub(),
   update: sinon.stub(),
 }
-const CreatePersonalDetails = require('../../app/new/controllers/personal-details')
+const CreatePersonalDetails = require('../../new/controllers/personal-details')
 
 const MixinProto = CreatePersonalDetails.prototype
 const UpdateBaseController = require('./base')

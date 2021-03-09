@@ -1,4 +1,4 @@
-const CreateMoveDetails = require('../../app/new/controllers/move-details')
+const CreateMoveDetails = require('../../new/controllers/move-details')
 
 const UpdateBaseController = require('./base')
 const MoveDetailsController = require('./move-details')

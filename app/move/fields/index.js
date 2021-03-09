@@ -1,5 +1,3 @@
-const { cloneDeep } = require('lodash')
-
 const additionalInformation = require('./additional-information')
 const assessmentAnswer = require('./common.assessment-answer')
 const courtHearingComments = require('./court-hearing-comments')
@@ -26,7 +24,6 @@ const moveAgreedBy = require('./move-agreed-by')
 const moveType = require('./move-type')
 const people = require('./people')
 const policeNationalComputer = require('./police-national-computer')
-const policeNationalComputerUpdate = require('./police-national-computer.update')
 const prisonRecallComments = require('./prison-recall-comments')
 const prisonTransferComments = require('./prison-transfer-comments')
 const prisonTransferType = require('./prison-transfer-type')
@@ -107,12 +104,6 @@ const createFields = {
   violent: assessmentAnswer(),
 }
 
-const updateFields = {
-  ...cloneDeep(createFields),
-  police_national_computer: policeNationalComputerUpdate,
-}
-
 module.exports = {
   createFields,
-  updateFields,
 }

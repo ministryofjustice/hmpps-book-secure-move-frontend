@@ -1,4 +1,4 @@
-const CreateMoveDate = require('../../app/new/controllers/move-date')
+const CreateMoveDate = require('../../new/controllers/move-date')
 
 const UpdateBaseController = require('./base')
 const MoveDateController = require('./move-date')
