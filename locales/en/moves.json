@@ -248,5 +248,8 @@
     "heading": "Remove this empty spot from this allocation",
     "message": "This will reduce the number of prisoners for this allocation from {{movesCount}} to {{newMovesCount}}",
     "button": "Remove this spot"
+  },
+  "map": {
+    "map_error": "An error occurred configuring the map"
   }
 }
