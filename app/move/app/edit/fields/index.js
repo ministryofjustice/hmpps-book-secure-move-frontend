@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-const { createFields } = require('../../../fields')
+const createFields = require('../../new/fields')
 
 const policeNationalComputer = require('./police-national-computer')
 

@@ -3,7 +3,7 @@ const { capitalize } = require('lodash')
 
 const analytics = require('../../../../../common/lib/analytics')
 const filters = require('../../../../../config/nunjucks/filters')
-const shouldSaveCourtHearingsField = require('../../../fields/should-save-court-hearings')
+const shouldSaveCourtHearingsField = require('../fields/should-save-court-hearings')
 
 const BaseController = require('./base')
 const Controller = require('./save')

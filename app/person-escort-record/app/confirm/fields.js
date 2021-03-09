@@ -1,7 +1,7 @@
 const { cloneDeep } = require('lodash')
 
 const { time: timeFormatter } = require('../../../../common/formatters')
-const commonDateField = require('../../../move/fields/common.date')
+const commonDateField = require('../../../move/app/new/fields/common.date')
 const { time: timeValidator } = require('../../../move/validators')
 
 const confirmHandover = {

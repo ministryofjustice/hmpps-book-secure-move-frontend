@@ -1,5 +1,5 @@
-const { time: timeFormatter } = require('../../../common/formatters')
-const { datetime: datetimeValidator, after } = require('../validators')
+const { time: timeFormatter } = require('../../../../../common/formatters')
+const { datetime: datetimeValidator, after } = require('../../../validators')
 
 const courtHearingStartTime = {
   id: 'court_hearing__start_time',

@@ -39,7 +39,7 @@ const toLocationSecureChildrensHomeTransfer = require('./to-location-secure-chil
 const toLocationSecureTrainingCentreTransfer = require('./to-location-secure-training-centre')
 const videoRemandComments = require('./video-remand-comments')
 
-const createFields = {
+const fields = {
   additional_information: additionalInformation,
   concealed_items: assessmentAnswer(),
   court_hearing__comments: courtHearingComments,
@@ -104,6 +104,4 @@ const createFields = {
   violent: assessmentAnswer(),
 }
 
-module.exports = {
-  createFields,
-}
+module.exports = fields
