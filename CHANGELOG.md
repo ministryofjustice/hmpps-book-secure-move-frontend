@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.73.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.3...v2.73.4) (2021-03-09)
+
+
+### Bug Fixes
+
+* Don't assume property exists when logging profile error ([757016a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/757016a5a05398444610346086f6313d90816b4b))
+* Sort locations list by ignoring case ([1f8f632](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1f8f632529fbb0f6cf434db0b91c0bf22554c302))
+* Update content in assing journey inline with GOV.UK Style guide ([d270208](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d270208079db9794dfce1e30b5e3c5106e19c1fd))
+
 ### [2.73.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.2...v2.73.3) (2021-03-04)
 
 ### [2.73.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.73.1...v2.73.2) (2021-03-04)
