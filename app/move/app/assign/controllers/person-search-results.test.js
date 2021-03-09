@@ -1,4 +1,4 @@
-const CreatePersonSearchResults = require('../../app/new/controllers/person-search-results')
+const CreatePersonSearchResults = require('../../new/controllers/person-search-results')
 
 const MixinProto = CreatePersonSearchResults.prototype
 const AssignBaseController = require('./base')

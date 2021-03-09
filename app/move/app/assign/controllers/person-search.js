@@ -1,4 +1,4 @@
-const MoveCreatePersonSearchController = require('../../app/new/controllers/person-search')
+const MoveCreatePersonSearchController = require('../../new/controllers/person-search')
 
 const AssignBaseController = require('./base')
 

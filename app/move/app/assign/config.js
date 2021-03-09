@@ -1,4 +1,4 @@
-const AssignBaseController = require('../controllers/assign/base')
+const AssignBaseController = require('./controllers/base')
 
 module.exports = function config(id) {
   return {

@@ -1,7 +1,7 @@
 const { get, omit } = require('lodash')
 
-const filters = require('../../../../config/nunjucks/filters')
-const MoveCreateSaveController = require('../../app/new/controllers/save')
+const filters = require('../../../../../config/nunjucks/filters')
+const MoveCreateSaveController = require('../../new/controllers/save')
 
 const PersonAssignBase = require('./base')
 

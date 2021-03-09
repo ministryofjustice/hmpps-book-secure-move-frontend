@@ -1,5 +1,6 @@
-const create = require('../app/new/steps')
-const controllers = require('../controllers/assign')
+const createSteps = require('../new/steps')
+
+const controllers = require('./controllers')
 
 const assignSteps = {
   '/': {
@@ -10,30 +11,30 @@ const assignSteps = {
     next: 'person-lookup-prison-number',
   },
   '/person-lookup-prison-number': {
-    ...create['/person-lookup-prison-number'],
+    ...createSteps['/person-lookup-prison-number'],
     pageTitle: 'moves::steps.person_search.heading_assign',
     controller: controllers.PersonSearch,
     next: 'person-lookup-results',
   },
   '/person-lookup-results': {
-    ...create['/person-lookup-results'],
+    ...createSteps['/person-lookup-results'],
     controller: controllers.PersonSearchResults,
     next: 'agreement-status',
   },
   '/agreement-status': {
-    ...create['/agreement-status'],
+    ...createSteps['/agreement-status'],
     controller: controllers.AgreementStatus,
     fields: ['move_agreed', 'move_agreed_by', 'move_not_agreed_instruction'],
     next: 'release-status',
   },
   '/release-status': {
-    ...create['/release-status'],
+    ...createSteps['/release-status'],
     fields: [],
     controller: controllers.Assessment,
     next: 'special-vehicle',
   },
   '/special-vehicle': {
-    ...create['/special-vehicle'],
+    ...createSteps['/special-vehicle'],
     controller: controllers.Assessment,
     pageTitle: 'moves::steps.health_information.heading',
     fields: ['special_vehicle_check'],
@@ -47,7 +48,7 @@ const assignSteps = {
     ],
   },
   '/no-special-vehicle': {
-    templatePath: 'move/views/assign/',
+    templatePath: 'move/app/assign',
     template: 'no-special-vehicle',
     pageTitle: 'moves::steps.person_search.heading',
   },

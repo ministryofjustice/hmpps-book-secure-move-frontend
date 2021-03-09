@@ -1,5 +1,5 @@
-const presenters = require('../../../../common/presenters')
-const CreateBaseController = require('../../app/new/controllers/base')
+const presenters = require('../../../../../common/presenters')
+const CreateBaseController = require('../../new/controllers/base')
 
 class AssignBaseController extends CreateBaseController {
   middlewareLocals() {
