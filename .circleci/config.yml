@@ -54,7 +54,7 @@ aliases:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "${SLACK_PARAM_MENTIONS} A new release was created by ${CIRCLE_USERNAME}"
+                  "text": "@here A new release was created by ${CIRCLE_USERNAME}"
                 }
               },
               {
@@ -72,7 +72,6 @@ aliases:
               }
             ]
           }'
-      mentions: '@here'
   - &notify_slack_of_approval
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
@@ -87,7 +86,7 @@ aliases:
                 "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "${SLACK_PARAM_MENTIONS}"
+                    "text": "${BUILD_NOTIFICATIONS_MENTION_ID}"
                   }
                 ]
               },
@@ -106,7 +105,6 @@ aliases:
               }
             ]
           }'
-      mentions: $BUILD_NOTIFICATIONS_MENTION_ID
   - &notify_slack_on_release_end
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
@@ -123,7 +121,7 @@ aliases:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "${SLACK_PARAM_MENTIONS} This release was successfully deployed to production"
+                  "text": "@here This release was successfully deployed to production"
                 }
               },
               {
@@ -141,7 +139,6 @@ aliases:
               }
             ]
           }'
-      mentions: '@here'
   # Common filters
   - &all_tags
     filters:
