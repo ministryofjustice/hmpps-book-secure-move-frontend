@@ -6,7 +6,7 @@ module.exports = function config(id) {
     journeyName: `assign-person-${id}`,
     journeyPageTitle: 'allocation::person:assign',
     name: `assign-person-${id}`,
-    template: '../../../form-wizard',
-    templatePath: 'move/views/create/',
+    template: '../../../../form-wizard',
+    templatePath: 'move/app/new/views/',
   }
 }
