@@ -8,8 +8,8 @@ const {
   set,
 } = require('lodash')
 
-const assessmentCheckboxes = require('../../../app/move/fields/common.assessment-checkboxes')
-const explicitAssessmentAnswer = require('../../../app/move/fields/common.explicit-assessment-answer')
+const assessmentCheckboxes = require('../../../app/move/app/new/fields/common.assessment-checkboxes')
+const explicitAssessmentAnswer = require('../../../app/move/app/new/fields/common.explicit-assessment-answer')
 const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 

@@ -6,17 +6,16 @@ const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
-const wizard = require('../../common/middleware/unique-form-wizard')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
+const assignApp = require('./app/assign')
 const cancelApp = require('./app/cancel')
+const editApp = require('./app/edit')
 const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
-const { assignConfig, updateConfig } = require('./config')
 const { confirmation, timeline, view } = require('./controllers')
-const { assignFields, updateFields } = require('./fields')
 const {
   setMove,
   setMoveWithEvents,
@@ -24,7 +23,6 @@ const {
   setYouthRiskAssessment,
   setAllocation,
 } = require('./middleware')
-const { assign: assignSteps, update: updateSteps } = require('./steps')
 
 // Define param middleware
 router.param('moveId', setMove)
@@ -61,25 +59,8 @@ moveRouter.use(youthRiskAssessmentApp.mountpath, youthRiskAssessmentApp.router)
 moveRouter.use(reviewApp.mountpath, reviewApp.router)
 moveRouter.use(cancelApp.mountpath, cancelApp.router)
 moveRouter.use(unassignApp.mountpath, unassignApp.router)
-moveRouter.use(
-  '/assign',
-  protectRoute('allocation:person:assign'),
-  wizard(assignSteps, assignFields, assignConfig, 'params.moveId')
-)
-
-updateSteps.forEach(updateJourney => {
-  const { key, steps } = updateJourney
-  const updateStepConfig = {
-    ...updateConfig(),
-    name: `update-move-${key}`,
-    journeyName: `update-move-${key}`,
-  }
-  moveRouter.use(
-    '/edit',
-    protectRoute(updateJourney.permission),
-    wizard(steps, updateFields, updateStepConfig)
-  )
-})
+moveRouter.use(assignApp.mountpath, assignApp.router)
+moveRouter.use(editApp.mountpath, editApp.router)
 
 // Export
 module.exports = {

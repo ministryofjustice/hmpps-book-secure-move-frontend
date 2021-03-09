@@ -1,6 +1,6 @@
 const { get, isNil } = require('lodash')
 
-const moveAgreedField = require('../../app/move/fields/move-agreed')
+const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const getUpdateLinks = require('../helpers/move/get-update-links')

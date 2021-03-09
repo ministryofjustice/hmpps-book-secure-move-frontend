@@ -32,7 +32,7 @@ const updateSteps = []
 
 const pathStubs = {
   '../../presenters': presenters,
-  '../../../app/move/steps/update': updateSteps,
+  '../../../app/move/app/edit/steps': updateSteps,
   './get-assessments': getAssessments,
   './get-court-hearings': getCourtHearings,
   './get-message': getMessage,

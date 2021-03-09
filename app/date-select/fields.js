@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const { cloneDeep } = require('lodash')
 
-const commonDateField = require('../move/fields/common.date')
+const commonDateField = require('../move/app/new/fields/common.date')
 
 const date_select = {
   ...cloneDeep(commonDateField),

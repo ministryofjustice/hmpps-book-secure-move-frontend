@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-const commonDateField = require('../../../fields/common.date')
+const commonDateField = require('../../new/fields/common.date')
 
 const moveDate = {
   ...cloneDeep(commonDateField),
