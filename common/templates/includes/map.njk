@@ -71,8 +71,10 @@
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
-    var path = features[0];
-    journeysSource.addFeature(path);
+
+    for(var i=0; i<= features.length; i++) {
+      journeysSource.addFeature(features[i]);
+    }
   }
 
   // Features - Locations
@@ -83,9 +85,9 @@
       featureProjection: 'EPSG:3857'
     });
 
-    placesFeatures.map(feature => {
-      locationsSource.addFeature(feature)
-    })
+    for(var i=0; i<placesFeatures.length; i++) {
+      locationsSource.addFeature(placesFeatures[i])
+    }
 
     var allExtent = buffer(
       boundingExtent(
