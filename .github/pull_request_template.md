@@ -49,7 +49,7 @@ Has been tested in the following browsers:
 - [ ] No environment variables were added or changed
 
 <!--- Delete if changes DO NOT include new environment variables -->
-- [ ] Documented in the [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/master/README.md)
+- [ ] Documented in the [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/main/README.md)
 - [ ] Added to [continous integration](https://app.circleci.com/pipelines/github/ministryofjustice/hmpps-book-secure-move-frontend)
 - [ ] Added to staging environment (deployment repository)
 - [ ] Added to preproduction environment (deployment repository)
@@ -57,9 +57,9 @@ Has been tested in the following browsers:
 
 ### Other considerations
 
-Commit messages with a `fix` or `feat` type are automatically used to generate the [changelog](ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md) and
+Commit messages with a `fix` or `feat` type are automatically used to generate the [changelog](ministryofjustice/hmpps-book-secure-move-frontend/blob/main/CHANGELOG.md) and
 [GitHub release notes](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases) during the release task. Please make sure they will read well on their own in a
 summary of changes and that the commit body gives a more detailed description of those changes if necessary.
 
 - [ ] No new [Personally Identifiable Information (PII)](https://support.google.com/analytics/answer/6366371?hl=en) is being sent via analytics
-- [ ] Update [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/master/README.md) with any new instructions or tasks
+- [ ] Update [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/main/README.md) with any new instructions or tasks

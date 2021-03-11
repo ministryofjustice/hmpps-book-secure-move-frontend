@@ -22,7 +22,7 @@ npm run watch:test
 
 Acceptance (end-to-end) tests run using [TestCafe](https://devexpress.github.io/testcafe/) framework
 and configured in CircleCI to run against `$E2E_BASE_URL` variable (staging) when the app is merged to
-`master` and deployed to staging.
+`main` and deployed to staging.
 
 To run the CI tests locally run:
 
