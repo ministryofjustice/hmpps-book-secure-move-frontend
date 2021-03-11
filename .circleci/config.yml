@@ -37,7 +37,7 @@ aliases:
   - &notify_slack_on_failure
     slack/notify:
       event: fail
-      branch_pattern: master
+      branch_pattern: main
   - &notify_slack_on_release_start
     slack/notify:
       channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
@@ -66,7 +66,7 @@ aliases:
                       "type": "plain_text",
                       "text": "Changelog"
                     },
-                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/master/CHANGELOG.md"
+                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/main/CHANGELOG.md"
                   }
                 ]
               }
@@ -144,20 +144,20 @@ aliases:
     filters:
       tags:
         only: /.*/
-  - &only_master
+  - &only_main
     filters:
       branches:
-        only: master
-  - &ignore_master
+        only: main
+  - &ignore_main
     filters:
       branches:
-        ignore: master
-  - &only_master_and_tags
+        ignore: main
+  - &only_main_and_tags
     filters:
       tags:
         only: /.*/
       branches:
-        only: master
+        only: main
   - &only_deploy_tags
     filters:
       tags:
@@ -406,13 +406,13 @@ workflows:
       - end-to-end-test:
           context:
             - hmpps-common-vars
-          <<: *ignore_master
+          <<: *ignore_main
           name: end-to-end-test-pr
       - end-to-end-test:
           context:
             - hmpps-common-vars
-          <<: *only_master
-          name: end-to-end-test-master
+          <<: *only_main
+          name: end-to-end-test-main
       - end-to-end-test:
           context:
             - hmpps-common-vars
@@ -425,8 +425,8 @@ workflows:
       - build-docker-image:
           context:
             - hmpps-common-vars
-          <<: *only_master
-          name: build-docker-image-master
+          <<: *only_main
+          name: build-docker-image-main
           staging: 'true'
       - build-docker-image:
           context:
@@ -440,12 +440,12 @@ workflows:
       - deploy:
           context:
             - hmpps-common-vars
-          <<: *only_master
+          <<: *only_main
           name: deploy-staging
           env: 'staging'
           requires:
-            - build-docker-image-master
-            - end-to-end-test-master
+            - build-docker-image-main
+            - end-to-end-test-main
             - lint-and-unit-test
       - deploy:
           context:
@@ -500,7 +500,7 @@ workflows:
           <<: *only_deploy_tags
           <<: *requires_production_approval
       - publish-release-to-sentry:
-          <<: *only_master
+          <<: *only_main
           name: publish-release-to-sentry-staging
           sentry_env: staging
           requires:

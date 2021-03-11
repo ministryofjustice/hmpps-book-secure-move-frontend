@@ -6,7 +6,7 @@ const mockConfig = {
   },
   APP_BUILD_DATE: '2019-10-10',
   APP_BUILD_TAG: '5226',
-  APP_BUILD_BRANCH: 'master',
+  APP_BUILD_BRANCH: 'main',
   APP_GIT_SHA: 'gbe34155ae5edfade5107bd5629d0c159dc37d19',
   APP_VERSION: '1.0.0',
 }
