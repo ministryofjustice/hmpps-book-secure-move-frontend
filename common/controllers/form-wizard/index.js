@@ -151,6 +151,7 @@ class BaseController extends Controller {
         'EBADCSRFTOKEN',
         'MISSING_PREREQ',
         'MISSING_LOCATION',
+        'DISABLED_LOCATION',
       ].includes(err.code)
     ) {
       const journeyName = snakeCase(

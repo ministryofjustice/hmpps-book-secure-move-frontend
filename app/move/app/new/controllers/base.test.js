@@ -587,6 +587,24 @@ describe('Move controllers', function () {
           expect(nextSpy.args[0][0].code).to.equal('MISSING_LOCATION')
         })
       })
+
+      context('when current location is disabled', function () {
+        beforeEach(function () {
+          req.session = {
+            currentLocation: { disabled_at: '1999-10-10' },
+          }
+          controller.checkCurrentLocation(req, {}, nextSpy)
+        })
+
+        it('should call next with error', function () {
+          expect(nextSpy).to.be.calledOnce
+          expect(nextSpy.args[0][0]).to.be.an('error')
+          expect(nextSpy.args[0][0].message).to.equal(
+            'Current location is disabled'
+          )
+          expect(nextSpy.args[0][0].code).to.equal('DISABLED_LOCATION')
+        })
+      })
     })
 
     describe('#setModels()', function () {

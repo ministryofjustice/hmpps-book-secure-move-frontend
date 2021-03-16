@@ -11,6 +11,10 @@
     "heading": "Location not chosen",
     "content": "You must <a href=\"/locations\">choose a location</a> to create a new move."
   },
+  "disabled_location": {
+    "heading": "You cannot create a move from this location",
+    "content": "Moves can only be created from active locations."
+  },
   "not_found": {
     "heading": "Page not found",
     "content": "If you entered a web address check it was correct."
