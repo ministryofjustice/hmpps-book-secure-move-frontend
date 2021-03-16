@@ -32,6 +32,15 @@ function catchAll(showStackTrace = false) {
       return next(error)
     }
 
+    // Remove potentially sensitive data from error
+    if (error.config?.data) {
+      delete error.config.data
+    }
+
+    if (error.config?.headers) {
+      delete error.config.headers.Authorization
+    }
+
     const statusCode = error.statusCode || 500
     logger[statusCode < 500 ? 'info' : 'error'](error)
 
