@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const proxyquire = require('proxyquire').noPreserveCache()
 
 const cache = {
@@ -43,6 +44,8 @@ describe('API Client', function () {
           params: {},
         },
       }
+
+      sinon.stub(Sentry, 'addBreadcrumb')
 
       cache.set.resetHistory()
       clientMetrics.recordSuccess.resetHistory()
@@ -148,31 +151,134 @@ describe('API Client', function () {
     })
 
     context('when endpoint returns an error', function () {
-      const error = new Error()
-      error.response = {
-        status: 404,
-        statusText: 'NOT FOUND',
-      }
       let thrownError
-      beforeEach(async function () {
-        payload.jsonApi.axios.rejects(error)
-        await requestMiddleware()
-          .req(payload)
-          .catch(e => {
-            thrownError = e
+      let error
+
+      context('without response', function () {
+        beforeEach(async function () {
+          error = new Error()
+
+          payload.jsonApi.axios.rejects(error)
+
+          await requestMiddleware()
+            .req(payload)
+            .catch(e => {
+              thrownError = e
+            })
+        })
+
+        it('should stop recording metrics for the call', function () {
+          expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+            payload.req,
+            error,
+            23
+          )
+        })
+
+        it('should add a Sentry breadcrumb', function () {
+          expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
+            type: 'http',
+            category: 'http',
+            data: {
+              method: 'GET',
+              url: undefined,
+              status_code: 500,
+            },
+            level: Sentry.Severity.Info,
           })
+        })
+
+        it('should rethrow error', function () {
+          expect(thrownError).to.equal(error)
+        })
       })
 
-      it('should stop recording metrics for the call', function () {
-        expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
-          payload.req,
-          error,
-          23
-        )
-      })
+      context('with response', function () {
+        context('with aborted connection', function () {
+          beforeEach(async function () {
+            error = new Error()
+            error.code = 'ECONNABORTED'
+            error.request = {
+              _currentUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+            }
 
-      it('should rethrow error', function () {
-        expect(thrownError).to.equal(error)
+            payload.jsonApi.axios.rejects(error)
+
+            await requestMiddleware()
+              .req(payload)
+              .catch(e => {
+                thrownError = e
+              })
+          })
+
+          it('should stop recording metrics for the call', function () {
+            expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+              payload.req,
+              error,
+              23
+            )
+          })
+
+          it('should add a Sentry breadcrumb', function () {
+            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
+              type: 'http',
+              category: 'http',
+              data: {
+                method: 'GET',
+                url: 'http://host.com/path?foo&bar,fizz,buzz',
+                status_code: 408,
+              },
+              level: Sentry.Severity.Info,
+            })
+          })
+
+          it('should rethrow error', function () {
+            expect(thrownError).to.equal(error)
+          })
+        })
+
+        context('with status code', function () {
+          beforeEach(async function () {
+            error = new Error()
+            error.response = {
+              status: 502,
+              statusText: 'Bad gateway',
+            }
+
+            payload.jsonApi.axios.rejects(error)
+
+            await requestMiddleware()
+              .req(payload)
+              .catch(e => {
+                thrownError = e
+              })
+          })
+
+          it('should stop recording metrics for the call', function () {
+            expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+              payload.req,
+              error,
+              23
+            )
+          })
+
+          it('should add a Sentry breadcrumb', function () {
+            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
+              type: 'http',
+              category: 'http',
+              data: {
+                method: 'GET',
+                url: undefined,
+                status_code: 502,
+              },
+              level: Sentry.Severity.Info,
+            })
+          })
+
+          it('should rethrow error', function () {
+            expect(thrownError).to.equal(error)
+          })
+        })
       })
     })
   })
