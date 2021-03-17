@@ -144,6 +144,18 @@ class BaseController extends Controller {
       return res.redirect(err.redirect)
     }
 
+    const journeyName = req.form?.options?.journeyName || ''
+    const normalisedJourneyName = snakeCase(
+      journeyName.replace(new RegExp(uuidRegex, 'g'), '')
+    )
+
+    Sentry.setContext('Journey', {
+      'Original name': journeyName,
+      'Normalised name': normalisedJourneyName,
+      history: JSON.stringify(req.journeyModel?.get('history')),
+      lastVisited: req.journeyModel?.get('lastVisited'),
+    })
+
     if (
       [
         'SESSION_TIMEOUT',
@@ -154,10 +166,6 @@ class BaseController extends Controller {
         'DISABLED_LOCATION',
       ].includes(err.code)
     ) {
-      const journeyName = snakeCase(
-        req.form.options.journeyName.replace(new RegExp(uuidRegex, 'g'), '')
-      )
-
       if (err.code === 'CSRF_ERROR' || err.code === 'EBADCSRFTOKEN') {
         Sentry.captureException(err)
       }
@@ -165,14 +173,12 @@ class BaseController extends Controller {
       if (err.code === 'MISSING_PREREQ') {
         Sentry.withScope(scope => {
           scope.setLevel('warning')
-          scope.setExtra('Original journey name', req.form.options.journeyName)
-          scope.setExtra('Normalised journey name', journeyName)
           Sentry.captureException(err)
         })
       }
 
       return res.render('form-wizard-error', {
-        journeyName,
+        journeyName: normalisedJourneyName,
         journeyBaseUrl: req.baseUrl,
         errorKey: err.code.toLowerCase(),
       })
@@ -191,7 +197,9 @@ class BaseController extends Controller {
             })
           })
 
-          scope.setExtra('Errors JSON', JSON.stringify(err.errors))
+          scope.setContext('Errors', {
+            json: JSON.stringify(err.errors),
+          })
         }
 
         Sentry.captureException(err)
