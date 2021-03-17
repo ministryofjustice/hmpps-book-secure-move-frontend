@@ -334,6 +334,43 @@ describe('Error middleware', function () {
       })
     })
 
+    context('with sensitive data', function () {
+      beforeEach(function () {
+        mockError.config = {
+          url: 'http://host.com',
+          data: {
+            foo: 'bar',
+          },
+          headers: {
+            Authorization: 'Bearer ABCD1234',
+            'User-Agent': 'mocha',
+            'Content-Type': 'application/vnd.api+json',
+          },
+        }
+        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+      })
+
+      it('should log unauthorized message to logger error level', function () {
+        expect(logger.error).to.have.been.calledOnce
+        expect(logger.error).to.have.been.calledWith(mockError)
+      })
+
+      it('should remove sensitive properties from error', function () {
+        const thrownError = logger.error.args[0][0]
+
+        expect(thrownError).to.be.an.instanceOf(Error)
+
+        expect(thrownError).to.have.property('config')
+        expect(thrownError.config).not.to.have.property('data')
+
+        expect(thrownError.config).to.have.property('headers')
+        expect(Object.keys(thrownError.config.headers).length).to.equal(2)
+        expect(thrownError.config.headers).not.to.have.property('Authorization')
+        expect(thrownError.config.headers).to.have.property('Content-Type')
+        expect(thrownError.config.headers).to.have.property('User-Agent')
+      })
+    })
+
     context('with no error status code', function () {
       context('without location', function () {
         beforeEach(function () {
