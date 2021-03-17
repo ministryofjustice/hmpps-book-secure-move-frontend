@@ -136,6 +136,12 @@ class CreateBaseController extends FormWizardController {
       return next(error)
     }
 
+    if (req.session.currentLocation.disabled_at) {
+      const error = new Error('Current location is disabled')
+      error.code = 'DISABLED_LOCATION'
+      return next(error)
+    }
+
     next()
   }
 

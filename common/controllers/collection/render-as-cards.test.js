@@ -151,6 +151,47 @@ describe('Collection controllers', function () {
           expect(Object.keys(params)).to.have.length(10)
         })
       })
+
+      context('with disabled display location', function () {
+        beforeEach(function () {
+          res.locals.CURRENT_LOCATION = {
+            id: 'FACEFEED',
+            disabled_at: '1999-10-10',
+          }
+
+          req.location = {
+            id: 'FACEFEED',
+            disabled_at: '1999-10-10',
+          }
+
+          req.actions = [
+            { permission: 'move:create' },
+            { permission: 'move:view' },
+          ]
+
+          controller(req, res)
+        })
+
+        it('should contain location property', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('location')
+          expect(params.location).to.deep.equal({
+            id: 'FACEFEED',
+            disabled_at: '1999-10-10',
+          })
+        })
+
+        it('should filter actions', function () {
+          const params = res.render.args[0][1]
+          expect(params).to.have.property('actions')
+          expect(params.actions).to.deep.equal([{ permission: 'move:view' }])
+        })
+
+        it('should contain correct number of properties', function () {
+          const params = res.render.args[0][1]
+          expect(Object.keys(params)).to.have.length(10)
+        })
+      })
     })
 
     describe('template', function () {

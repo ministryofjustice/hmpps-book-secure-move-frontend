@@ -519,6 +519,44 @@ describe('Form wizard', function () {
       })
     })
 
+    context('when it returns disabled location error', function () {
+      let reqMock
+
+      beforeEach(function () {
+        errorMock.code = 'DISABLED_LOCATION'
+        reqMock = {
+          baseUrl: '/journey-base-url-other',
+          form: {
+            options: {
+              journeyName: 'mock-journey',
+            },
+          },
+        }
+
+        controller.errorHandler(errorMock, reqMock, resMock)
+      })
+
+      it('should not send error to sentry', function () {
+        expect(Sentry.captureException).not.to.be.called
+      })
+
+      it('should render the timeout template', function () {
+        expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+      })
+
+      it('should pass the correct data to the view', function () {
+        expect(resMock.render.args[0][1]).to.deep.equal({
+          journeyBaseUrl: reqMock.baseUrl,
+          errorKey: errorMock.code.toLowerCase(),
+          journeyName: 'mock_journey',
+        })
+      })
+
+      it('should not call parent error handler', function () {
+        expect(FormController.prototype.errorHandler).not.to.be.called
+      })
+    })
+
     context('when it returns a CSRF error', function () {
       let reqMock
 

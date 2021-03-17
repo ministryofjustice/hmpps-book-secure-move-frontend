@@ -17,10 +17,15 @@ module.exports = function listAsCards(req, res) {
     CURRENT_REGION: resRegion,
   } = res.locals
 
-  const hasDifferentDisplayLocation =
-    resRegion || (resLocation && location && location?.id !== resLocation?.id)
+  const disabledLocation =
+    resLocation && location && (resLocation.disabled_at || location.disabled_at)
 
-  const filteredActions = hasDifferentDisplayLocation
+  const hasDifferentOrDisabledDisplayLocation =
+    resRegion ||
+    (resLocation && location && location?.id !== resLocation?.id) ||
+    disabledLocation
+
+  const filteredActions = hasDifferentOrDisabledDisplayLocation
     ? actions.filter(action => action.permission !== 'move:create')
     : actions
 
@@ -38,7 +43,7 @@ module.exports = function listAsCards(req, res) {
     resultsAsCards,
     activeStatus: query.status,
     totalResults: sumBy(filter, 'value'),
-    ...(hasDifferentDisplayLocation && { location }),
+    ...(hasDifferentOrDisabledDisplayLocation && { location }),
   }
   res.render(template, locals)
 }
