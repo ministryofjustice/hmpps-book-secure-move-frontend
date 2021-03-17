@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.74.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.74.1...v2.74.2) (2021-03-17)
+
+
+### Bug Fixes
+
+* Hide create move button if disabled location and add error handling ([88b4229](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/88b42293632ac8118a4d9bd589c3ca14fa28c7f1))
+
 ### [2.74.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.74.0...v2.74.1) (2021-03-17)
 
 
