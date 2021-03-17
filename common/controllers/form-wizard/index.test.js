@@ -352,16 +352,46 @@ describe('Form wizard', function () {
   })
 
   describe('#errorHandler()', function () {
-    let errorMock, resMock
+    let errorMock, resMock, reqMock, nextSpy
 
     beforeEach(function () {
+      const journeyGetStub = sinon.stub()
+      journeyGetStub
+        .withArgs('history')
+        .returns([{ foo: 'bar' }, { fizz: 'buzz' }])
+        .withArgs('lastVisited')
+        .returns('/foo')
+      nextSpy = sinon.spy()
       errorMock = new Error()
       resMock = {
         redirect: sinon.spy(),
         render: sinon.spy(),
       }
+      reqMock = {
+        journeyModel: {
+          get: journeyGetStub,
+        },
+        baseUrl: '/journey-base-url',
+        form: {
+          options: {
+            journeyName: 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
+          },
+        },
+      }
       sinon.stub(Sentry, 'captureException')
+      sinon.stub(Sentry, 'setContext')
       sinon.spy(FormController.prototype, 'errorHandler')
+    })
+
+    it('should send journey data to sentry', function () {
+      controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+
+      expect(Sentry.setContext).to.be.calledWithExactly('Journey', {
+        'Original name': 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
+        'Normalised name': 'mock_journey',
+        history: '[{"foo":"bar"},{"fizz":"buzz"}]',
+        lastVisited: '/foo',
+      })
     })
 
     context('when a redirect property is set', function () {
@@ -369,7 +399,7 @@ describe('Form wizard', function () {
         errorMock.code = 'MISSING_PREREQ'
         errorMock.redirect = '/error-redirect-path/'
 
-        controller.errorHandler(errorMock, {}, resMock)
+        controller.errorHandler(errorMock, reqMock, resMock)
       })
 
       it('redirect to specified value', function () {
@@ -382,18 +412,8 @@ describe('Form wizard', function () {
     })
 
     context('when it returns session timeout error', function () {
-      let reqMock
-
       beforeEach(function () {
         errorMock.code = 'SESSION_TIMEOUT'
-        reqMock = {
-          baseUrl: '/journey-base-url',
-          form: {
-            options: {
-              journeyName: 'mock-journey',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
       })
@@ -420,23 +440,14 @@ describe('Form wizard', function () {
     })
 
     context('when it returns missing prereq error', function () {
-      let reqMock, mockScope
+      let mockScope
 
       beforeEach(function () {
         mockScope = {
-          setExtra: sinon.stub(),
           setLevel: sinon.stub(),
         }
         sinon.stub(Sentry, 'withScope')
         errorMock.code = 'MISSING_PREREQ'
-        reqMock = {
-          baseUrl: '/journey-base-url-other',
-          form: {
-            options: {
-              journeyName: 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
 
@@ -451,17 +462,6 @@ describe('Form wizard', function () {
       it('should send warning to sentry', function () {
         expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
         expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
-      })
-
-      it('should send extra data to sentry', function () {
-        expect(mockScope.setExtra).to.be.calledWithExactly(
-          'Original journey name',
-          'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557'
-        )
-        expect(mockScope.setExtra).to.be.calledWithExactly(
-          'Normalised journey name',
-          'mock_journey'
-        )
       })
 
       it('should render the timeout template', function () {
@@ -482,18 +482,8 @@ describe('Form wizard', function () {
     })
 
     context('when it returns missing location error', function () {
-      let reqMock
-
       beforeEach(function () {
         errorMock.code = 'MISSING_LOCATION'
-        reqMock = {
-          baseUrl: '/journey-base-url-other',
-          form: {
-            options: {
-              journeyName: 'mock-journey',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
       })
@@ -520,18 +510,8 @@ describe('Form wizard', function () {
     })
 
     context('when it returns disabled location error', function () {
-      let reqMock
-
       beforeEach(function () {
         errorMock.code = 'DISABLED_LOCATION'
-        reqMock = {
-          baseUrl: '/journey-base-url-other',
-          form: {
-            options: {
-              journeyName: 'mock-journey',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
       })
@@ -558,18 +538,8 @@ describe('Form wizard', function () {
     })
 
     context('when it returns a CSRF error', function () {
-      let reqMock
-
       beforeEach(function () {
         errorMock.code = 'CSRF_ERROR'
-        reqMock = {
-          baseUrl: '/journey-base-url-other',
-          form: {
-            options: {
-              journeyName: 'mock-journey',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
       })
@@ -596,18 +566,8 @@ describe('Form wizard', function () {
     })
 
     context('when it returns a csurf CSRF error', function () {
-      let reqMock
-
       beforeEach(function () {
         errorMock.code = 'EBADCSRFTOKEN'
-        reqMock = {
-          baseUrl: '/journey-base-url-other',
-          form: {
-            options: {
-              journeyName: 'mock-journey',
-            },
-          },
-        }
 
         controller.errorHandler(errorMock, reqMock, resMock)
       })
@@ -640,7 +600,6 @@ describe('Form wizard', function () {
         errorMock.statusCode = 422
         mockScope = {
           setContext: sinon.stub(),
-          setExtra: sinon.stub(),
         }
 
         nextSpy = sinon.spy()
@@ -660,7 +619,7 @@ describe('Form wizard', function () {
             },
           ]
 
-          controller.errorHandler(errorMock, {}, {}, nextSpy)
+          controller.errorHandler(errorMock, reqMock, {}, nextSpy)
 
           // run callback with mock scope
           Sentry.withScope.args[0][0](mockScope)
@@ -678,7 +637,7 @@ describe('Form wizard', function () {
           const { title: title0, ...error0 } = errorMock.errors[0]
           const { title: title1, ...error1 } = errorMock.errors[1]
 
-          expect(mockScope.setContext).to.be.calledTwice
+          expect(mockScope.setContext).to.be.calledThrice
           expect(mockScope.setContext.getCall(0)).to.be.calledWithExactly(
             'Error 1',
             {
@@ -696,16 +655,15 @@ describe('Form wizard', function () {
         })
 
         it('should send extra data as JSON to sentry', function () {
-          expect(mockScope.setExtra).to.be.calledOnceWithExactly(
-            'Errors JSON',
-            JSON.stringify(errorMock.errors)
-          )
+          expect(mockScope.setContext).to.be.calledWithExactly('Errors', {
+            json: JSON.stringify(errorMock.errors),
+          })
         })
 
         it('should call parent error handler', function () {
           expect(FormController.prototype.errorHandler).to.be.calledWith(
             errorMock,
-            {},
+            reqMock,
             {},
             nextSpy
           )
@@ -714,7 +672,7 @@ describe('Form wizard', function () {
 
       context('without extra errors property', function () {
         beforeEach(function () {
-          controller.errorHandler(errorMock, {}, {}, nextSpy)
+          controller.errorHandler(errorMock, reqMock, {}, nextSpy)
 
           // run callback with mock scope
           Sentry.withScope.args[0][0](mockScope)
@@ -732,14 +690,10 @@ describe('Form wizard', function () {
           expect(mockScope.setContext).not.to.be.called
         })
 
-        it('should not send extra data to sentry', function () {
-          expect(mockScope.setExtra).not.to.be.called
-        })
-
         it('should call parent error handler', function () {
           expect(FormController.prototype.errorHandler).to.be.calledWith(
             errorMock,
-            {},
+            reqMock,
             {},
             nextSpy
           )
@@ -751,16 +705,18 @@ describe('Form wizard', function () {
       let nextSpy
 
       beforeEach(function () {
+        reqMock.journeyModel = undefined
+        reqMock.form = undefined
         errorMock.code = 'OTHER_ERROR'
         nextSpy = sinon.spy()
       })
 
       it('should call parent error handler', function () {
-        controller.errorHandler(errorMock, {}, {}, nextSpy)
+        controller.errorHandler(errorMock, reqMock, {}, nextSpy)
 
         expect(FormController.prototype.errorHandler).to.be.calledWith(
           errorMock,
-          {},
+          reqMock,
           {},
           nextSpy
         )

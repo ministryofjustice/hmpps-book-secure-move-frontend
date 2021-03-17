@@ -1,4 +1,3 @@
-const FormController = require('hmpo-form-wizard').Controller
 const FormError = require('hmpo-form-wizard/lib/error')
 const multer = require('multer')
 const proxyquire = require('proxyquire').noCallThru()
@@ -26,7 +25,7 @@ describe('Move controllers', function () {
       let req, nextSpy
 
       beforeEach(async function () {
-        sinon.spy(FormController.prototype, 'configure')
+        sinon.spy(BaseController.prototype, 'configure')
         nextSpy = sinon.spy()
         req = {
           originalUrl: '/xhr-url',
@@ -47,7 +46,7 @@ describe('Move controllers', function () {
       })
 
       it('should call parent configure method', function () {
-        expect(FormController.prototype.configure).to.be.calledOnceWithExactly(
+        expect(BaseController.prototype.configure).to.be.calledOnceWithExactly(
           req,
           {},
           nextSpy
@@ -256,7 +255,7 @@ describe('Move controllers', function () {
           send: sinon.stub(),
         }
         nextSpy = sinon.spy()
-        sinon.stub(FormController.prototype, 'errorHandler')
+        sinon.stub(BaseController.prototype, 'errorHandler')
       })
 
       context('with standard error', function () {
@@ -272,7 +271,7 @@ describe('Move controllers', function () {
 
         it('should call parent error handler', function () {
           expect(
-            FormController.prototype.errorHandler
+            BaseController.prototype.errorHandler
           ).to.be.calledOnceWithExactly(err, req, res, nextSpy)
         })
       })
@@ -295,7 +294,7 @@ describe('Move controllers', function () {
 
           it('should call parent error handler', function () {
             expect(
-              FormController.prototype.errorHandler
+              BaseController.prototype.errorHandler
             ).to.be.calledOnceWithExactly(uploadErr, req, res, nextSpy)
           })
         })
@@ -318,7 +317,7 @@ describe('Move controllers', function () {
 
           it('should not call parent error handler', function () {
             expect(
-              FormController.prototype.errorHandler
+              BaseController.prototype.errorHandler
             ).not.to.have.been.called
           })
         })
@@ -340,7 +339,7 @@ describe('Move controllers', function () {
           json: sinon.stub(),
         }
         nextSpy = sinon.spy()
-        sinon.stub(FormController.prototype, 'successHandler')
+        sinon.stub(BaseController.prototype, 'successHandler')
       })
 
       context('when request is not XHR', function () {
@@ -354,7 +353,7 @@ describe('Move controllers', function () {
 
         it('should call parent success handler', function () {
           expect(
-            FormController.prototype.successHandler
+            BaseController.prototype.successHandler
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
       })
@@ -379,7 +378,7 @@ describe('Move controllers', function () {
 
           it('should not call parent success handler', function () {
             expect(
-              FormController.prototype.successHandler
+              BaseController.prototype.successHandler
             ).not.to.have.been.called
           })
         })
@@ -401,7 +400,7 @@ describe('Move controllers', function () {
 
             it('should not call parent success handler', function () {
               expect(
-                FormController.prototype.successHandler
+                BaseController.prototype.successHandler
               ).not.to.have.been.called
             })
           })
@@ -422,7 +421,7 @@ describe('Move controllers', function () {
 
             it('should not call parent success handler', function () {
               expect(
-                FormController.prototype.successHandler
+                BaseController.prototype.successHandler
               ).not.to.have.been.called
             })
           })
