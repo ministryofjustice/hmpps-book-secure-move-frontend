@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
 
@@ -28,7 +29,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
       const response = await jsonApi
         .axios(req)
         .then(async res => {
-          debug(`${res.status} ${res.statusText}`, `(${req.method} ${url})`)
+          debug(`[${res.status}] ${res.statusText}`, `(${req.method} ${url})`)
 
           // record successful request
           const duration = clientTimer()
@@ -42,14 +43,29 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
           return res
         })
         .catch(error => {
-          const debugMessage = error.response
-            ? `${error.response.status} ${error.response.statusText}`
-            : error.message
-          debug(debugMessage, `(${req.method} ${url})`, error)
+          const { response: errResponse = {}, request: errRequest = {} } = error
+          const text = errResponse.statusText || error.message
+          const status =
+            error.code === 'ECONNABORTED' ? 408 : errResponse.status || 500
+
+          debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
 
           // record error
           const duration = clientTimer()
           clientMetrics.recordError(req, error, duration)
+
+          Sentry.addBreadcrumb({
+            type: 'http',
+            category: 'http',
+            data: {
+              method: req.method,
+              url: errRequest._currentUrl
+                ? decodeURIComponent(errRequest._currentUrl)
+                : undefined,
+              status_code: status,
+            },
+            level: Sentry.Severity.Info,
+          })
 
           throw error
         })
