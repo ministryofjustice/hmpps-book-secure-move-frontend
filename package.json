@@ -179,7 +179,7 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-promise": "4.3.1",
     "eslint-plugin-testcafe": "0.2.1",
-    "faker": "5.4.0",
+    "faker": "5.5.1",
     "file-loader": "6.2.0",
     "finepack": "2.10.11",
     "git-authors-cli": "1.0.33",
