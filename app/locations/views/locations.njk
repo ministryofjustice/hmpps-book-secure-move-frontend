@@ -15,7 +15,7 @@
     </h1>
   </header>
 
-  {% if locations | length or canAccess("locations:all") %}
+  {% if activeLocations | length or canAccess("locations:all") %}
     {% if canAccess("locations:all") %}
       <p class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold">
         <a href="/locations/all">{{ t("locations::view_all_locations") }}</a>
@@ -44,13 +44,34 @@
         <h2 class="govuk-heading-l">Locations</h2>
         {% endif %}
         <ul class="govuk-list govuk-!-font-size-24 govuk-!-font-weight-bold" data-location-type="locations">
-          {% for location in locations %}
+          {% for location in activeLocations %}
             <li>
               <a href="/locations/{{ location.id }}">
                 {{ location.title }}
               </a>
             </li>
           {% endfor %}
+
+          {% if inactiveLocations | length %}
+            <br>
+
+            <details class="govuk-details" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  {{ inactiveLocations | length }} inactive locations
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                {% for location in inactiveLocations %}
+                  <li>
+                    <a href="/locations/{{ location.id }}">
+                      {{ location.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </div>
+            </details>
+          {% endif %}
         </ul>
       </div>
     </div>
