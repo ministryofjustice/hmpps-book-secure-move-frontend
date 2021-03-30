@@ -243,6 +243,14 @@
     }) }}
   {% endif %}
 
+  {% if canAccess("move:view:journeys") %}
+    <p class="govuk-!-margin-bottom-2">
+      <a href="{{ move.id }}/journeys">
+        {{ t("actions::view_journeys") }}
+      </a>
+    </p>
+  {% endif %}
+
   {% if canAccess("youth_risk_assessment:view") and youthRiskAssessment %}
     <p class="govuk-!-margin-bottom-2">
       <a href="{{ move.id }}/youth-risk-assessment">
