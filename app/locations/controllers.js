@@ -21,32 +21,40 @@ async function locations(req, res, next) {
     userLocations = await req.services.referenceData.getLocationsBySupplierId(
       supplierId
     )
-    req.session.user.locations = userLocations
   }
 
   if (userPermissions.includes('locations:contract_delivery_manager')) {
     const suppliers = await req.services.referenceData.getSuppliers()
     const supplierLocations = await Promise.all(
       suppliers.map(async supplier => {
-        return await req.services.referenceData.getLocationsBySupplierId(
+        const locations = await req.services.referenceData.getLocationsBySupplierId(
           supplier.id
         )
+        return locations
       })
     )
 
     // The locations have been uniqued based on title to prevent
     // duplicates when multiple suppliers have the same location
     userLocations = uniqBy(supplierLocations.flat(), 'id')
-
-    req.session.user.locations = userLocations
   }
 
-  const locations = sortBy(userLocations, location => {
+  req.session.user.locations = userLocations
+
+  userLocations = sortBy(userLocations, location => {
     return location?.title?.toLowerCase()
   })
 
+  const activeLocations = userLocations.filter(
+    location => location.disabled_at === null
+  )
+  const inactiveLocations = userLocations.filter(
+    location => location.disabled_at !== null
+  )
+
   res.render('locations/views/locations.njk', {
-    locations,
+    activeLocations,
+    inactiveLocations,
     regions,
   })
 }
