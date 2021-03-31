@@ -63,17 +63,4 @@ module.exports = {
       next(error)
     }
   },
-
-  setJourneys: async (req, res, next) => {
-    if (!req.move) {
-      return next()
-    }
-
-    try {
-      req.journeys = await req.services.journey.getByMoveId(req.move.id)
-      next()
-    } catch (error) {
-      next(error)
-    }
-  },
 }

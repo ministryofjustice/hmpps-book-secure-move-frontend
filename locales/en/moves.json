@@ -250,18 +250,6 @@
     "button": "Remove this spot"
   },
   "map": {
-    "labels": {
-      "route": {
-        "heading": "Route",
-        "text": "{{from}} to {{to}}"
-      },
-      "vehicle": {
-        "heading": "Vehicle",
-        "text": "{{registration}} ({{id}})"
-      }
-    },
-    "journey_overview": "Journeys for {{name}}",
-    "journey_heading": "Journey {{index}}",
     "map_error": "An error occurred configuring the map"
   }
 }
