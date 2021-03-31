@@ -209,7 +209,7 @@
     "standard-version": "9.1.1",
     "style-loader": "2.0.0",
     "terser-webpack-plugin": "4.2.3",
-    "testcafe": "1.9.4",
+    "testcafe": "1.13.0",
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
     "timezone-mock": "1.1.3",
