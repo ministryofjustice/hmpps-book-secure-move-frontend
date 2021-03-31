@@ -1,0 +1,22 @@
+params:
+  - name: tileUrl
+    type: string
+    required: true
+    description: Tile URL for loading the map tiles
+  - name: geoData
+    type: object
+    required: false
+    description: GEO JSON data to load onto the map component
+    params:
+      - name: lines
+        type: JSON
+        required: false
+        description: Lines to display on the map
+      - name: points
+        type: JSON
+        required: false
+        description: Points to display on the map
+
+examples:
+  - name: default
+    data:

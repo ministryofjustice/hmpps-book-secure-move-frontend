@@ -33,6 +33,7 @@ const contractDeliveryManagerPermissions = [
   'moves:view:incoming',
   'moves:view:proposed',
   'move:view',
+  'move:view:journeys',
   'person_escort_record:view',
   'youth_risk_assessment:view',
 ]
