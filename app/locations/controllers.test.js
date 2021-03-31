@@ -19,6 +19,7 @@ const mockUserLocations = [
   {
     id: '10923762-bc17-4ea1-bae3-68ea709ee23e',
     title: 'C location',
+    disabled_at: '123',
   },
 ]
 const mockSupplierLocations = [
@@ -120,11 +121,23 @@ describe('Locations controllers', function () {
         it('should return locations sorted by title', function () {
           controllers.locations(req, res)
           const params = res.render.args[0][1]
-          expect(params).to.have.property('locations')
-          expect(params.locations).to.deep.equal(
-            sortBy(mockUserLocations, location => {
-              return location?.title?.toLowerCase()
-            })
+          expect(params).to.have.property('activeLocations')
+          expect(params.activeLocations).to.deep.equal(
+            sortBy(
+              mockUserLocations.filter(l => l.disabled_at === null),
+              location => {
+                return location?.title?.toLowerCase()
+              }
+            )
+          )
+          expect(params).to.have.property('inactiveLocations')
+          expect(params.inactiveLocations).to.deep.equal(
+            sortBy(
+              mockUserLocations.filter(l => l.disabled_at !== null),
+              location => {
+                return location?.title?.toLowerCase()
+              }
+            )
           )
         })
       }
@@ -149,11 +162,23 @@ describe('Locations controllers', function () {
 
       it('should return locations sorted by title', function () {
         const params = res.render.args[0][1]
-        expect(params).to.have.property('locations')
-        expect(params.locations).to.deep.equal(
-          sortBy(mockSupplierLocations, location => {
-            return location?.title?.toLowerCase()
-          })
+        expect(params).to.have.property('activeLocations')
+        expect(params.activeLocations).to.deep.equal(
+          sortBy(
+            mockSupplierLocations.filter(l => l.disabled_at === null),
+            location => {
+              return location?.title?.toLowerCase()
+            }
+          )
+        )
+        expect(params).to.have.property('inactiveLocations')
+        expect(params.inactiveLocations).to.deep.equal(
+          sortBy(
+            mockSupplierLocations.filter(l => l.disabled_at !== null),
+            location => {
+              return location?.title?.toLowerCase()
+            }
+          )
         )
       })
 
