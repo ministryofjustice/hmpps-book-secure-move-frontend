@@ -93,7 +93,7 @@
     "@ministryofjustice/frontend": "0.2.1",
     "@promster/express": "5.0.2",
     "@sentry/node": "6.2.3",
-    "@sentry/tracing": "6.2.3",
+    "@sentry/tracing": "6.2.4",
     "accessible-autocomplete": "2.0.3",
     "axios": "0.21.1",
     "axios-debug-log": "0.8.2",
