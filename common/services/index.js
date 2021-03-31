@@ -2,7 +2,6 @@ const allocation = require('./allocation')
 const courtHearing = require('./court-hearing')
 const document = require('./document')
 const frameworks = require('./frameworks')
-const journey = require('./journey')
 const locationsFreeSpaces = require('./locations-free-spaces')
 const move = require('./move')
 const person = require('./person')
@@ -18,7 +17,6 @@ module.exports = {
   courtHearing,
   document,
   frameworks,
-  journey,
   locationsFreeSpaces,
   move,
   person,

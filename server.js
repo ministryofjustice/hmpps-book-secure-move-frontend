@@ -198,7 +198,7 @@ app.use(
           'cdnjs.cloudflare.com',
           'www.googletagmanager.com',
           'www.google-analytics.com',
-          'cdn.jsdelivr.net',
+          'api.os.uk',
         ],
         connectSrc: [
           "'self'",
@@ -214,7 +214,7 @@ app.use(
           'data: blob:',
         ],
         fontSrc: ["'self'", 'fonts.googleapis.com'],
-        styleSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
       },
     },
   })

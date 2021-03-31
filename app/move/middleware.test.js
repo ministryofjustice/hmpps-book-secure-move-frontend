@@ -14,7 +14,6 @@ const moveWithAllocationStub = {
   allocation: { id: '#allocationId', fizz: 'buzz' },
 }
 const allocationStub = { fizz: 'buzz' }
-const journeysStub = { id: 'FACEFEED' }
 const mockMoveId = '6904dea1-017f-48d8-a5ad-2723dee9d146'
 const errorStub = new Error('Problem')
 
@@ -376,85 +375,6 @@ describe('Move middleware', function () {
           it('should send error to next function', function () {
             expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
           })
-        })
-      })
-    })
-  })
-
-  describe('#setJourneys()', function () {
-    let req, res, nextSpy, journeyService
-
-    beforeEach(function () {
-      journeyService = {
-        getByMoveId: sinon.stub(),
-      }
-
-      req = {
-        services: {
-          journey: journeyService,
-        },
-      }
-      res = {}
-      nextSpy = sinon.spy()
-    })
-
-    context('when no move exists', function () {
-      beforeEach(async function () {
-        await middleware.setJourneys(req, res, nextSpy)
-      })
-
-      it('should call next with no argument', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-
-      it('should not call service', function () {
-        expect(journeyService.getByMoveId).not.to.be.called
-      })
-
-      it('should not set response data on request object', function () {
-        expect(req).not.to.have.property('allocation')
-      })
-    })
-
-    context('when move exists', function () {
-      beforeEach(function () {
-        req.move = { ...moveStub, id: 'ABADCAFE' }
-      })
-
-      context('when API call returns succesfully', function () {
-        beforeEach(async function () {
-          journeyService.getByMoveId = sinon.stub().resolves(journeysStub)
-          await middleware.setJourneys(req, res, nextSpy)
-        })
-
-        it('should call API with allocation ID', function () {
-          expect(journeyService.getByMoveId).to.be.calledOnceWithExactly(
-            'ABADCAFE'
-          )
-        })
-
-        it('should set response data to req.journeys', function () {
-          expect(req).to.have.property('journeys')
-          expect(req.journeys).to.equal(journeysStub)
-        })
-
-        it('should call next with no argument', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-
-      context('when API call returns an error', function () {
-        beforeEach(async function () {
-          journeyService.getByMoveId = sinon.stub().throws(errorStub)
-          await middleware.setJourneys(req, res, nextSpy)
-        })
-
-        it('should not set response data on request object', function () {
-          expect(req).not.to.have.property('journeys')
-        })
-
-        it('should send error to next function', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
         })
       })
     })

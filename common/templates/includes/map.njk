@@ -1,0 +1,219 @@
+<div class="govuk-grid-column-full" style="height: 600px; position: relative">
+  <div id="map" class="map" class="govuk-grid-column-full" style="height: 600px"></div>
+  <div id="message" class="govuk-grid-column-full govuk-heading-l" style="position: absolute; top: 100px; height: 200px; text-align: center"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js" integrity="sha512-O7kHS9ooekX8EveiC94z9xSvD/4xt10Qigl6uEKvspYykdux3Ci5QNu5fwi4ca0ZkZI/oCgx5ja8RklWUEqzxQ==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css" integrity="sha512-D2c/nmSVlwoZk29SLwJK8GkLyCyPuNbZ/vZQL/lNzw+o+yXzsbnJt7lK/iCfdBmgyLRDi0qx27gpE8Zb1C6I7g==" crossorigin="anonymous" />
+{#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.css" integrity="sha512-hBSieZLd5rse9gdkfv4n0pDU4D04SxpqBtwDzRy/QiXRBhczDyfCTDTnHCada73ubNqiQv6BLgCRXHAJPUwC5w==" crossorigin="anonymous" />#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js" integrity="sha512-RGRzp3Gfp9l+vkKXNjm45LxXEujXIZBIur2l2CRqIYDiZ+QLe2hprjK7YZBKo1RrfbF/pBvg2431gHU7pjjJ1A==" crossorigin="anonymous"></script>#}
+
+<script>
+  const Map = ol.Map;
+  const View = ol.View;
+  const XYZ = ol.source.XYZ;
+  const VectorSource = ol.source.Vector;
+  const Tile = ol.layer.Tile;
+  const TileState = ol.TileState
+  const {Circle: CircleStyle, Fill, Stroke, Style, Text} = ol.style;
+  const {boundingExtent, buffer} = ol.extent;
+  const {Vector: VectorLayer} = ol.layer;
+  const GeoJSON = ol.format.GeoJSON;
+
+  // EXTERNAL TEMPLATED VARIABLES
+  const journeysUrl = "{{  journeysUrl }}";
+  const locationsUrl = "{{  locationsUrl }}";
+  const mapErrorMessage = "{{ mapErrorMessage }}";
+
+  // STYLING FUNCTIONS
+  var createTextStyle = function (feature, resolution) {
+    return new Text({
+      textAlign: 'center',
+      textBaseline: 'middle',
+      font: 'bold 12px Inter-Bold',
+      text: feature.get('name'),
+      fill: new Fill({color: 'black'}),
+      stroke: new Stroke({color: 'white', width: 2}),
+      offsetX: 0,
+      offsetY: 0,
+    });
+  };
+
+  var pointStyleFunction = function pointStyleFunction(feature, resolution) {
+    let fill
+    let stroke
+
+    if(feature.get('start')) {
+      fill = new Fill({color: 'white'})
+      stroke = new Stroke({color: 'blue', width: 2})
+    } else if (feature.get('destination')) {
+      fill = new Fill({color: 'white'})
+      stroke = new Stroke({color: 'orange', width: 2})
+    } else {
+      fill = new Fill({color: 'blue'})
+      stroke = new Stroke({color: 'blue', width: 2})
+    }
+
+    return new Style({
+      image: new CircleStyle({
+        radius: 10,
+        fill: fill,
+        stroke: stroke,
+      }),
+      text: createTextStyle(feature, resolution),
+    });
+  }
+
+  // Features - Journey
+  const addJourneysToLayer = function(journey) {
+    var format = new GeoJSON();
+    var features = format.readFeatures(journey, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857'
+    });
+    var path = features[0];
+    journeysSource.addFeature(path);
+  }
+
+  // Features - Locations
+  const addLocationsToLayer = function (places) {
+    var placesFormat = new GeoJSON();
+    var placesFeatures = placesFormat.readFeatures(places,{
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857'
+    });
+
+    placesFeatures.map(feature => {
+      locationsSource.addFeature(feature)
+    })
+
+    var allExtent = buffer(
+      boundingExtent(
+        placesFeatures.map(feature=> {
+          return feature.getGeometry().getCoordinates()
+        })
+      ),
+      100
+    )
+    map.getView().fit(allExtent, map.getSize())
+  }
+
+  // Error container
+  var messageDiv = document.getElementById('message');
+  var mapDiv = document.getElementById('map');
+
+  // Auth
+  let currentToken;
+  function getToken() {
+    return fetch('/map/token')
+      .then(response => response.json())
+      .then(result => {
+        if(result.access_token) {
+          // Store this token
+          currentToken = result.access_token;
+
+          // Get a new token 30 seconds before this one expires
+          const timeoutMS = (result.expires_in - 30) * 1000;
+          setTimeout(getToken, timeoutMS);
+        } else {
+          // We failed to get the token
+          return Promise.reject(error);
+        }
+      })
+      .catch(() => {
+        mapDiv.style.opacity = 0.25;
+        messageDiv.textContent = mapErrorMessage || 'Error configuring map'
+        return Promise.reject();
+      });
+  }
+
+  const ordnanceTileLoader = function (tile, src) {
+    fetch(src, {
+      headers: {
+        Authorization: 'Bearer ' + currentToken
+      },
+    }).then(response => response.blob())
+    .then(data => {
+      if (data !== undefined) {
+        tile.getImage().src = URL.createObjectURL(data);
+      } else {
+        tile.setState(TileState.ERROR);
+      }
+    })
+  }
+
+  // Mapping tiles
+  var ordnanceLayer = new Tile({
+    source: new XYZ({
+      url: "{{ tileUrl }}",
+      tileLoadFunction: ordnanceTileLoader
+    }),
+  })
+
+  // Locations as points
+  var locationsSource = new VectorSource();
+  var locationsLayer = new VectorLayer({
+    source: locationsSource,
+    style: pointStyleFunction,
+  });
+
+  // Journeys as paths
+  var journeysSource = new VectorSource();
+  var journeysLayer = new VectorLayer({
+    source: journeysSource,
+    style:
+      new Style({
+        stroke: new Stroke({
+          width: 6,
+          color: [0, 212, 237, 0.4],
+        }),
+      })
+
+  });
+
+  // View & Projection
+  var view = new View({
+    projection: 'EPSG:3857',
+    minZoom: 7,
+    maxZoom: 20,
+    zoom: 14,
+  })
+
+  // Initialize the map object.
+  var map = new Map({
+    layers: [
+      ordnanceLayer,
+      journeysLayer,
+      locationsLayer
+    ],
+    target: 'map',
+    view: view
+  });
+
+  map.render()
+</script>
+
+<script>
+  // Load all data
+  getToken()
+
+  if(locationsUrl) {
+    fetch(locationsUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        addLocationsToLayer(json)
+      })
+  }
+
+  if(journeysUrl) {
+    fetch(journeysUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        addJourneysToLayer(json)
+      })
+  }
+</script>
