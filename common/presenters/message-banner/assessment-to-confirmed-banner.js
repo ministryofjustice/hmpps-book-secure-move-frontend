@@ -4,28 +4,33 @@ const filters = require('../../../config/nunjucks/filters')
 module.exports = function assessmentToConfirmedBanner({
   assessment,
   baseUrl,
+  canAccess,
   context,
 } = {}) {
   if (!assessment) {
     return {}
   }
 
-  const content = `
+  let content = `
     <p>
       ${i18n.t(`messages::assessment.${assessment.status}.content`, {
         context,
         date: filters.formatDateWithTimeAndDay(assessment.confirmed_at),
       })}
     </p>
-
-    <p>
-      <a href="${baseUrl}/print" class="app-icon app-icon--print">
-        ${i18n.t('actions::print_assessment', {
-          context,
-        })}
-      </a>
-    </p>
   `
+
+  if (canAccess && canAccess(`${context}:print`)) {
+    content += `
+      <p>
+        <a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', {
+            context,
+          })}
+        </a>
+      </p>
+    `
+  }
 
   return {
     allowDismiss: false,

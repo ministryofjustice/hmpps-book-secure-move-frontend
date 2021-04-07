@@ -5,13 +5,14 @@ const componentService = require('../../services/component')
 module.exports = function assessmentToHandedOverBanner({
   assessment,
   baseUrl,
+  canAccess,
   context,
 } = {}) {
   if (!assessment) {
     return {}
   }
 
-  const content = `
+  let content = `
     <p>
       ${i18n.t('messages::assessment.handed_over.content', {
         context,
@@ -26,15 +27,21 @@ module.exports = function assessmentToHandedOverBanner({
       }),
       iconFallbackText: 'Warning',
     })}
+    `
 
-    <p>
-      <a href="${baseUrl}/print" class="app-icon app-icon--print">
-        ${i18n.t('actions::print_assessment', {
-          context,
-        })}
-      </a>
-    </p>
+  if (canAccess && canAccess(`${context}:print`)) {
+    content += `
+      <p>
+        <a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', {
+            context,
+          })}
+        </a>
+      </p>
+    `
+  }
 
+  content += `
     <p class="govuk-!-font-size-16 govuk-!-margin-top-1">
       ${i18n.t('handed_over_at', {
         date: filters.formatDateWithTimeAndDay(

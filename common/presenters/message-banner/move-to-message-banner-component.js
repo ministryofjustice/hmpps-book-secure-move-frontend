@@ -25,11 +25,21 @@ function moveToMessageBannerComponent({ move = {}, moveUrl, canAccess } = {}) {
   }
 
   if (assessment?.status === 'confirmed' && assessment.handover_occurred_at) {
-    return assessmentToHandedOverBanner({ assessment, baseUrl, context })
+    return assessmentToHandedOverBanner({
+      assessment,
+      baseUrl,
+      canAccess,
+      context,
+    })
   }
 
   if (assessment?.status === 'confirmed') {
-    return assessmentToConfirmedBanner({ assessment, baseUrl, context })
+    return assessmentToConfirmedBanner({
+      assessment,
+      baseUrl,
+      canAccess,
+      context,
+    })
   }
 
   if (assessment?.status !== 'confirmed') {

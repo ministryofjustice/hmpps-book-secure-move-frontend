@@ -40,15 +40,17 @@ module.exports = function assessmentToUnconfirmedBanner({
       `
     }
 
-    content += `
-      <p>
-        <a href="${baseUrl}/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_assessment', {
-            context,
-          })}
-        </a>
-      </p>
-    `
+    if (canAccess && canAccess(`${context}:print`)) {
+      content += `
+        <p>
+          <a href="${baseUrl}/print" class="app-icon app-icon--print">
+            ${i18n.t('actions::print_assessment', {
+              context,
+            })}
+          </a>
+        </p>
+      `
+    }
   }
 
   if (assessment.amended_at || assessment.completed_at) {
