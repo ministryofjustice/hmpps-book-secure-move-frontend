@@ -533,6 +533,6 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: pecs_dev
+          slack_channel: pecs-dev
           context:
             - hmpps-common-vars
