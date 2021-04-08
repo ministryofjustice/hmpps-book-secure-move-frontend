@@ -112,6 +112,7 @@ describe('Presenters', function () {
                       handover_occurred_at: '2018-10-10T14:30:00Z',
                     },
                     baseUrl: '/move/12345/person-escort-record',
+                    canAccess: mockArgs.canAccess,
                     context: 'person_escort_record',
                   })
                 })
@@ -148,6 +149,7 @@ describe('Presenters', function () {
                       status: 'confirmed',
                     },
                     baseUrl: '/move/12345/person-escort-record',
+                    canAccess: mockArgs.canAccess,
                     context: 'person_escort_record',
                   })
                 })
@@ -260,8 +262,8 @@ describe('Presenters', function () {
                   status: 'in_progress',
                 },
                 baseUrl: '/move/12345/youth-risk-assessment',
-                context: 'youth_risk_assessment',
                 canAccess: mockArgs.canAccess,
+                context: 'youth_risk_assessment',
               })
             })
           })
@@ -289,8 +291,8 @@ describe('Presenters', function () {
                 assessmentToStartBannerStub
               ).to.have.been.calledOnceWithExactly({
                 baseUrl: '/move/12345/person-escort-record',
-                context: 'person_escort_record',
                 canAccess: mockArgs.canAccess,
+                context: 'person_escort_record',
               })
             })
           })
@@ -322,8 +324,8 @@ describe('Presenters', function () {
                   status: 'in_progress',
                 },
                 baseUrl: '/move/12345/person-escort-record',
-                context: 'person_escort_record',
                 canAccess: mockArgs.canAccess,
+                context: 'person_escort_record',
               })
             })
           })

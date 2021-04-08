@@ -149,6 +149,7 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
         ]
 
         expect(permissions).to.have.members(policePermissions)
@@ -174,10 +175,12 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -210,10 +213,12 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'youth_risk_assessment:print',
         ]
 
         expect(permissions).to.have.members(stcPermissions)
@@ -248,10 +253,12 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -275,10 +282,12 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -305,6 +314,7 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
         ])
       })
     })
@@ -326,7 +336,9 @@ describe('User class', function () {
           'move:review',
           'move:view',
           'person_escort_record:view',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -344,7 +356,9 @@ describe('User class', function () {
           'moves:download',
           'move:view',
           'person_escort_record:view',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -363,6 +377,7 @@ describe('User class', function () {
           'move:view',
           'person_escort_record:view',
           'youth_risk_assessment:view',
+          'youth_risk_assessment:print',
         ])
       })
     })
@@ -378,6 +393,7 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'dashboard:view',
           'moves:view:outgoing',
           'moves:view:incoming',
@@ -441,10 +457,12 @@ describe('User class', function () {
           'person_escort_record:create',
           'person_escort_record:update',
           'person_escort_record:confirm',
+          'person_escort_record:print',
           'youth_risk_assessment:view',
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'youth_risk_assessment:print',
         ]
 
         expect(permissions).to.have.members(allPermissions)
