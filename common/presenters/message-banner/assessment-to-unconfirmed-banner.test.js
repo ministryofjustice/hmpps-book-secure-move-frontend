@@ -116,7 +116,7 @@ describe('Presenters', function () {
                 },
                 content: {
                   html:
-                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        <p>\n          <a href="/base-url/print" class="app-icon app-icon--print">\n            actions::print_assessment\n          </a>\n        </p>\n      ',
+                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                 },
               })
             })
@@ -208,7 +208,7 @@ describe('Presenters', function () {
                   },
                   content: {
                     html:
-                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n        <p>\n          <a href="/base-url/print" class="app-icon app-icon--print">\n            actions::print_assessment\n          </a>\n        </p>\n      ',
+                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                   },
                 })
               })

@@ -1,6 +1,7 @@
 const i18n = require('../../../config/i18n')
 const filters = require('../../../config/nunjucks/filters')
 const componentService = require('../../services/component')
+const assessmentPrintButton = require('../assessment-print-button')
 const frameworkToTaskListComponent = require('../framework-to-task-list-component')
 
 module.exports = function assessmentToUnconfirmedBanner({
@@ -40,17 +41,7 @@ module.exports = function assessmentToUnconfirmedBanner({
       `
     }
 
-    if (canAccess && canAccess(`${context}:print`)) {
-      content += `
-        <p>
-          <a href="${baseUrl}/print" class="app-icon app-icon--print">
-            ${i18n.t('actions::print_assessment', {
-              context,
-            })}
-          </a>
-        </p>
-      `
-    }
+    content += assessmentPrintButton({ baseUrl, canAccess, context })
   }
 
   if (assessment.amended_at || assessment.completed_at) {

@@ -1,6 +1,7 @@
 const i18n = require('../../../config/i18n')
 const filters = require('../../../config/nunjucks/filters')
 const componentService = require('../../services/component')
+const assessmentPrintButton = require('../assessment-print-button')
 
 module.exports = function assessmentToHandedOverBanner({
   assessment,
@@ -29,17 +30,7 @@ module.exports = function assessmentToHandedOverBanner({
     })}
     `
 
-  if (canAccess && canAccess(`${context}:print`)) {
-    content += `
-      <p>
-        <a href="${baseUrl}/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_assessment', {
-            context,
-          })}
-        </a>
-      </p>
-    `
-  }
+  content += assessmentPrintButton({ baseUrl, canAccess, context })
 
   content += `
     <p class="govuk-!-font-size-16 govuk-!-margin-top-1">

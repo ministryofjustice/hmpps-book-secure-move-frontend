@@ -1,5 +1,6 @@
 const i18n = require('../../../config/i18n')
 const filters = require('../../../config/nunjucks/filters')
+const assessmentPrintButton = require('../assessment-print-button')
 
 module.exports = function assessmentToConfirmedBanner({
   assessment,
@@ -20,17 +21,7 @@ module.exports = function assessmentToConfirmedBanner({
     </p>
   `
 
-  if (canAccess && canAccess(`${context}:print`)) {
-    content += `
-      <p>
-        <a href="${baseUrl}/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_assessment', {
-            context,
-          })}
-        </a>
-      </p>
-    `
-  }
+  content += assessmentPrintButton({ baseUrl, canAccess, context })
 
   return {
     allowDismiss: false,
