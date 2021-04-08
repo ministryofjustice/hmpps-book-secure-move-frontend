@@ -45,6 +45,7 @@ describe('Presenters', function () {
               },
             },
             baseUrl: '/base-url',
+            canAccess: sinon.stub().returns(true),
             context: 'person_escort_record',
           }
         })
@@ -97,6 +98,10 @@ describe('Presenters', function () {
 
           context('without confirm access', function () {
             beforeEach(function () {
+              mockArgs.canAccess
+                .withArgs('person_escort_record:confirm')
+                .returns(false)
+
               output = presenter({
                 ...mockArgs,
               })
@@ -111,7 +116,7 @@ describe('Presenters', function () {
                 },
                 content: {
                   html:
-                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        <p>\n          <a href="/base-url/print" class="app-icon app-icon--print">\n            actions::print_assessment\n          </a>\n        </p>\n      ',
                 },
               })
             })
@@ -129,6 +134,32 @@ describe('Presenters', function () {
               expect(componentService.getComponent).not.to.be.calledWith(
                 'govukButton'
               )
+            })
+          })
+
+          context('without print access', function () {
+            beforeEach(function () {
+              mockArgs.canAccess
+                .withArgs('person_escort_record:print')
+                .returns(false)
+
+              output = presenter({
+                ...mockArgs,
+              })
+            })
+
+            it('should return message component', function () {
+              expect(output).to.deep.equal({
+                allowDismiss: false,
+                classes: 'app-message--instruction govuk-!-padding-right-0',
+                title: {
+                  text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+                },
+                content: {
+                  html:
+                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      ',
+                },
+              })
             })
           })
 
@@ -177,7 +208,7 @@ describe('Presenters', function () {
                   },
                   content: {
                     html:
-                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n        <p>\n          <a href="/base-url/print" class="app-icon app-icon--print">\n            actions::print_assessment\n          </a>\n        </p>\n      ',
                   },
                 })
               })
