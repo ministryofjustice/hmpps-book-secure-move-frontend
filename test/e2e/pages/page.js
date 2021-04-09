@@ -31,6 +31,7 @@ export default class Page {
       ).withAttribute('href', /\/locations\/.+/),
       locationValue: Selector('.moj-organisation-nav__title'),
       dateSelectInput: '[name="date_select"]',
+      inactiveLocations: Selector('.govuk-details__summary-text'),
     }
     this.getCurrentUrl = ClientFunction(() => window.location.href)
   }
@@ -56,6 +57,10 @@ export default class Page {
       .contains('/locations')
       .expect(this.nodes.locationsList.count)
       .notEql(0, { timeout: 15000 })
+
+    if (await this.nodes.inactiveLocations.exists) {
+      await t.click(this.nodes.inactiveLocations)
+    }
 
     if (isUndefined(position)) {
       const count = await this.nodes.locationsList.count
