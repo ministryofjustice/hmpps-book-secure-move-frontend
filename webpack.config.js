@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 
 const frameworksService = require('./common/services/frameworks')
 const { IS_DEV, IS_PRODUCTION } = require('./config')
@@ -124,12 +124,14 @@ const commonConfig = {
       chunks: 'async',
       minChunks: 1,
       minSize: 30000,
-      name: true,
+      name: 'true',
     },
   },
 
   plugins: [
-    new WebpackAssetsManifest(),
+    new WebpackAssetsManifest({
+      output: 'manifest.json',
+    }),
     new CopyPlugin({
       patterns: [
         {
@@ -155,6 +157,6 @@ const commonConfig = {
 
 const webpackEnvironment = IS_PRODUCTION ? 'production' : 'develop'
 const environmentConfig = require(`./webpack.config.${webpackEnvironment}`)
-const webpackConfig = merge.smart(commonConfig, environmentConfig)
+const webpackConfig = merge(commonConfig, environmentConfig)
 
 module.exports = webpackConfig
