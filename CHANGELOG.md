@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.75.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.74.2...v2.75.0) (2021-04-13)
+
+
+### Features
+
+* Add journey service ([de4e5ac](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/de4e5acf3a356f25941bf938e4a24daaab74d434))
+* Add map to individual move page ([dd2018f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dd2018f867ac4be4b5aaa036979540050f24132e))
+
+
+### Bug Fixes
+
+* Display multiple journey paths on map ([c8fafd4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c8fafd4e41cbef68db9675d38fb5c82f99edc531))
+
 ### [2.74.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.74.1...v2.74.2) (2021-03-17)
 
 
