@@ -27,10 +27,20 @@ Auth.prototype = {
   getAccessToken() {
     if (this.isExpired()) {
       if (!this.fetchingTokenPromise) {
-        this.fetchingTokenPromise = this.refreshAccessToken().then(data => {
-          this.fetchingTokenPromise = null
-          return data
-        })
+        this.fetchingTokenPromise = this.refreshAccessToken()
+          .then(data => {
+            this.fetchingTokenPromise = null
+            return data
+          })
+          .catch(e => {
+            debug('getAccessToken: error refreshing token')
+
+            this.fetchingTokenPromise = null
+            this.accessToken = null
+            this.tokenExpiresAt = null
+
+            return e
+          })
       }
 
       return this.fetchingTokenPromise.then(data => {
