@@ -155,6 +155,7 @@ describe('API Client', function () {
         beforeEach(async function () {
           authInstance.isExpired.returns(true)
           authInstance.refreshAccessToken.rejects(new Error('Server on fire'))
+
           try {
             accessToken = await authInstance.getAccessToken()
           } catch (e) {}
