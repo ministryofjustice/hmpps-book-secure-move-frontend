@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.75.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.0...v2.75.1) (2021-04-16)
+
+
+### Bug Fixes
+
+* Don't cache failed authentication ([1e0edb2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1e0edb26bbc4ef3d634b494a0d08d318187a55d0))
+
 ## [2.75.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.74.2...v2.75.0) (2021-04-13)
 
 

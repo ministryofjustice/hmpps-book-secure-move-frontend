@@ -150,6 +150,46 @@ describe('API Client', function () {
           expect(accessToken).to.equal('mockToken')
         })
       })
+
+      context('on initial error', function () {
+        beforeEach(async function () {
+          authInstance.isExpired.returns(true)
+          authInstance.refreshAccessToken.rejects(new Error('Server on fire'))
+
+          try {
+            accessToken = await authInstance.getAccessToken()
+          } catch (e) {}
+        })
+
+        it('should attempt to refresh the token', function () {
+          expect(authInstance.refreshAccessToken).to.be.calledOnce
+        })
+
+        it('should clear the access token', function () {
+          expect(authInstance.accessToken).to.be.undefined
+        })
+
+        describe('on subsequent calls', function () {
+          beforeEach(async function () {
+            authInstance.refreshAccessToken.resolves(mockTokenResponse)
+            authInstance.isExpired.returns(true)
+
+            accessToken = await authInstance.getAccessToken()
+          })
+
+          it('should refresh the token', function () {
+            expect(authInstance.refreshAccessToken).to.be.calledTwice
+          })
+
+          it('should set the access token', function () {
+            expect(authInstance.accessToken).to.be.equal('newMockToken')
+          })
+
+          it('should return access token', function () {
+            expect(accessToken).to.equal('newMockToken')
+          })
+        })
+      })
     })
 
     describe('#refreshAccessToken()', function () {
