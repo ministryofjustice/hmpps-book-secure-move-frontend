@@ -15,7 +15,13 @@ This will:
 - create a new git tag
 - push commit and tags to remote
 
-**Note:** This will require your github user to be in a team with write access to the repo. Contact a maintainer if you require this permission.
+**Note:** This will require your github user to be in a team with write access to the repo. If you do not see the [Settings tab](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/settings) on the project you will need to contact a maintainer.
+
+- If you do not have the write permission, one of the steps of the deployment job will fail. This step can be manually repeated once the permission has been applied
+- ```
+  ! [remote rejected]   HEAD -> main (protected branch hook declined)
+  error: failed to push some refs to 'github.com:ministryofjustice/hmpps-book-secure-move-frontend.git'
+  ```
 
 It will also start a new deployment specific [job on CircleCI](https://app.circleci.com/github/ministryofjustice/hmpps-book-secure-move-frontend/pipelines) which will run the full suite of automated tests and create a [release on GitHub](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases).
 
