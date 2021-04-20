@@ -169,7 +169,7 @@
     "conventional-github-releaser": "3.1.5",
     "copy-webpack-plugin": "8.1.1",
     "coveralls": "3.1.0",
-    "css-loader": "5.2.2",
+    "css-loader": "5.2.4",
     "del-cli": "3.0.1",
     "eslint": "7.24.0",
     "eslint-config-prettier": "8.2.0",
