@@ -183,9 +183,8 @@ describe('Presenters', function () {
                 expect(componentService.getComponent).to.be.calledWithExactly(
                   'govukButton',
                   {
-                    href: '',
+                    href: '/base-url/confirm',
                     text: 'actions::provide_confirmation',
-                    disabled: true,
                   }
                 )
               })
@@ -234,7 +233,6 @@ describe('Presenters', function () {
                   {
                     href: '/base-url/confirm',
                     text: 'actions::provide_confirmation',
-                    disabled: false,
                   }
                 )
               })
@@ -265,7 +263,7 @@ describe('Presenters', function () {
               },
               content: {
                 html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      govukWarningText\n    ',
+                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
               },
             })
           })
@@ -273,12 +271,6 @@ describe('Presenters', function () {
           it('should translate with correct context', function () {
             expect(i18n.t).to.be.calledWithExactly(
               `messages::assessment.${mockArgs.assessment.status}.heading`,
-              {
-                context: 'person_escort_record',
-              }
-            )
-            expect(i18n.t).to.be.calledWithExactly(
-              'messages::assessment.completed.uneditable',
               {
                 context: 'person_escort_record',
               }

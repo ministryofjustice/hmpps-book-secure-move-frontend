@@ -34,9 +34,8 @@ module.exports = function assessmentToUnconfirmedBanner({
     if (canAccess && canAccess(`${context}:confirm`)) {
       content += `
         ${componentService.getComponent('govukButton', {
-          href: assessment.editable ? `${baseUrl}/confirm` : '',
+          href: `${baseUrl}/confirm`,
           text: i18n.t('actions::provide_confirmation', { context }),
-          disabled: !assessment.editable,
         })}
       `
     }
@@ -56,18 +55,6 @@ module.exports = function assessmentToUnconfirmedBanner({
           ),
         })}
       </p>
-    `
-  }
-
-  if (!assessment.editable) {
-    content += `
-      ${componentService.getComponent('govukWarningText', {
-        text: i18n.t('messages::assessment.completed.uneditable', {
-          context,
-        }),
-        classes: 'govuk-!-padding-top-0 govuk-!-margin-top-5',
-        iconFallbackText: 'Warning',
-      })}
     `
   }
 
