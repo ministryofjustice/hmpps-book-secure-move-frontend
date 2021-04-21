@@ -38,7 +38,7 @@ describe('Request library', function () {
 
           const querystring = getQueryString(requestQuery, newQuery)
 
-          expect(querystring).to.equal('?foo=bar&hello=world')
+          expect(querystring).to.equal('?hello=world&foo=bar')
         })
       })
 
@@ -54,7 +54,7 @@ describe('Request library', function () {
 
           const querystring = getQueryString(target, source)
 
-          expect(querystring).to.equal('?foo=world&hello=world')
+          expect(querystring).to.equal('?hello=world&foo=world')
         })
       })
     })

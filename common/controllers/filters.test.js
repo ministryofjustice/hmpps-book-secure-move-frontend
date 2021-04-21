@@ -34,9 +34,9 @@ describe('Filters controllers', function () {
   })
 
   describe('#getReferrerValues()', function () {
-    it('should return arrayified values for referrer', function () {
+    it('should return values for referrer', function () {
       const values = getReferrerValues(fields, { a: '1' })
-      expect(values).to.deep.equal({ a: ['1'] })
+      expect(values).to.deep.equal({ a: '1' })
     })
 
     it('should not remove filter args', function () {

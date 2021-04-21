@@ -94,7 +94,7 @@ describe('#setRequestFilters()', function () {
       expect(res.locals.requestFilters).to.deep.equal({
         categories: ['fake_categories'],
         links: {
-          editFilters: '/filters?filterA=x&foo=bar&referrer=%2Ffoo',
+          editFilters: '/filters?foo=bar&filterA=x&referrer=%2Ffoo',
           clearFilters: '/foo?foo=bar',
         },
       })

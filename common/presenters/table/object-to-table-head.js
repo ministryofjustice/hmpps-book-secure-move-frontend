@@ -1,5 +1,5 @@
 const { omit, pickBy } = require('lodash')
-const queryString = require('query-string')
+const queryString = require('qs')
 
 const i18n = require('../../../config/i18n')
 

@@ -48,61 +48,69 @@ describe('Presenters', function () {
         ])
       })
     })
-  })
 
-  context('when passed an array value', function () {
-    it('should return the expected categories ', function () {
-      const values = {
-        foo: ['bar', 'baz'],
-      }
-      const categories = filtersToCategoriesListComponent(
-        fields,
-        values,
-        pageUrl
-      )
-      expect(categories).to.deep.equal([
-        {
-          heading: {
-            text: 'filters::foo.legend',
+    context('when passed an array value', function () {
+      it('should return the expected categories ', function () {
+        const values = {
+          foo: ['bar', 'baz', 'fizz', 'buzz'],
+        }
+        const categories = filtersToCategoriesListComponent(
+          fields,
+          values,
+          pageUrl
+        )
+        expect(categories).to.deep.equal([
+          {
+            heading: {
+              text: 'filters::foo.legend',
+            },
+            items: [
+              {
+                href: '/page?foo=baz%2Cfizz%2Cbuzz',
+                text: 'filters::foo.bar.label',
+              },
+              {
+                href: '/page?foo=bar%2Cfizz%2Cbuzz',
+                text: 'filters::foo.baz.label',
+              },
+              {
+                href: '/page?foo=bar%2Cbaz%2Cbuzz',
+                text: 'filters::foo.fizz.label',
+              },
+              {
+                href: '/page?foo=bar%2Cbaz%2Cfizz',
+                text: 'filters::foo.buzz.label',
+              },
+            ],
           },
-          items: [
-            {
-              href: '/page?foo=baz',
-              text: 'filters::foo.bar.label',
-            },
-            {
-              href: '/page?foo=bar',
-              text: 'filters::foo.baz.label',
-            },
-          ],
-        },
-      ])
+        ])
+      })
     })
-  })
 
-  context('when passed an undefined value', function () {
-    it('should return no categories ', function () {
-      const values = {}
-      const categories = filtersToCategoriesListComponent(
-        fields,
-        values,
-        pageUrl
-      )
-      expect(categories).to.deep.equal([])
+    context('when passed an undefined value', function () {
+      it('should return no categories ', function () {
+        const values = {}
+        const categories = filtersToCategoriesListComponent(
+          fields,
+          values,
+          pageUrl
+        )
+        expect(categories).to.deep.equal([])
+      })
     })
-  })
 
-  context('when passed an explicit default value', function () {
-    it('should return no categories ', function () {
-      const values = {
-        foo: 'default',
-      }
-      const categories = filtersToCategoriesListComponent(
-        fields,
-        values,
-        pageUrl
-      )
-      expect(categories).to.deep.equal([])
+    context('when passed an explicit default value', function () {
+      it('should return no categories ', function () {
+        const values = {
+          foo: 'default',
+        }
+        const categories = filtersToCategoriesListComponent(
+          fields,
+          values,
+          pageUrl
+        )
+        expect(categories).to.deep.equal([])
+      })
     })
   })
 })
