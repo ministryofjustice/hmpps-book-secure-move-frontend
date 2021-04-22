@@ -1,6 +1,7 @@
 const path = require('path')
 
 const CopyPlugin = require('copy-webpack-plugin')
+const ImageminPlugin = require('imagemin-webpack-plugin').default
 const YAML = require('js-yaml')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -31,7 +32,7 @@ const commonConfig = {
 
   output: {
     path: configPaths.build,
-    filename: 'javascripts/[name].js',
+    filename: `javascripts/[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.js`,
     publicPath: '/',
   },
 
@@ -90,7 +91,7 @@ const commonConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]',
+              name: `[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.[ext]`,
               outputPath: 'fonts/',
             },
           },
@@ -102,7 +103,7 @@ const commonConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]',
+              name: `[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.[ext]`,
               outputPath: 'images/',
             },
           },
@@ -129,6 +130,12 @@ const commonConfig = {
   },
 
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: `stylesheets/[name]${
+        IS_PRODUCTION ? '.[contenthash:8]' : ''
+      }.css`,
+      chunkFilename: '[id].css',
+    }),
     new WebpackAssetsManifest({
       output: 'manifest.json',
     }),
@@ -151,6 +158,10 @@ const commonConfig = {
           transform: transformManifestFile(frameworksService.transformManifest),
         },
       ],
+    }),
+    new ImageminPlugin({
+      disable: !IS_PRODUCTION,
+      test: 'images/**',
     }),
   ],
 }
