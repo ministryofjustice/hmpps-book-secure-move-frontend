@@ -116,7 +116,7 @@
     "dropzone": "5.9.2",
     "express": "4.17.1",
     "express-session": "1.17.1",
-    "filesize": "6.2.6",
+    "filesize": "6.3.0",
     "form-data": "4.0.0",
     "govuk-frontend": "3.9.0",
     "grant-express": "5.4.8",
