@@ -107,7 +107,7 @@
     "connect-redis": "5.1.0",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.5",
-    "core-js": "3.10.2",
+    "core-js": "3.11.0",
     "csurf": "1.11.0",
     "date-fns": "2.21.1",
     "debug": "4.3.1",
