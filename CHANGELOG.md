@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.75.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.2...v2.75.3) (2021-04-22)
+
+
+### Bug Fixes
+
+* Allow handover to occur after a person has left custody ([6b5aa04](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6b5aa040d6fb9e7f91a7ecddbbff7f7867c98f41))
+* Ensure production assets are built and revisioned correctly ([95fd331](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/95fd33153b385f3b0d2cabc2d604fe5b51a0db4e))
+
 ### [2.75.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.1...v2.75.2) (2021-04-19)
 
 ### [2.75.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.0...v2.75.1) (2021-04-16)
