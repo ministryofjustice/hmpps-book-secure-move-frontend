@@ -18,7 +18,7 @@ updates:
       - dependency-name: 'webpack-merge'
         versions: ['>=5']
       - dependency-name: 'convert-hrtime'
-        versions: ['>= 5']
+        versions: ['>=4']
     commit-message:
       prefix: 'build'
       include: 'scope'
