@@ -3,6 +3,7 @@
   "page_title_with_name": "$t({{context}}) for {{-name}}",
   "section_overview": "{{section}} overview",
   "locked": "A $t({{context}}) cannot be updated once it has been confirmed or once the move has started.",
+  "locked_person_escort_record": "A $t({{context}}) cannot be updated once handover has been recorded or once the move has started.",
   "statuses": {
     "not_started": "Not started",
     "in_progress": "In progress",
