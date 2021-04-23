@@ -246,7 +246,7 @@
     "release:github": "conventional-github-releaser -p angular",
     "release:tags": "git push --follow-tags origin HEAD:main",
     "security_audit": "npx audit-ci --config audit-ci.json",
-    "start": "node start.js",
+    "start": "node --use-strict start.js",
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js'",
     "test-e2e": "node test/e2e/parallel-runner.js",
     "test-e2e:browserstack:ie": "testcafe 'browserstack:IE@11.0:Windows 10' test/e2e/*.test.js",
@@ -258,7 +258,7 @@
     "update:check": "ncu -- --error-level 2",
     "update:minor": "ncu --upgrade --target minor",
     "watch:js:client": "webpack --watch --progress",
-    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect",
+    "watch:js:server": "nodemon $NODE_DEBUG_OPTION --inspect --use-strict",
     "watch:test": "npm test -- --reporter=min --watch"
   },
   "license": "MIT",
