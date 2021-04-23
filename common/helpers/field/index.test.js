@@ -755,13 +755,21 @@ describe('Form helpers', function () {
       },
     ]
 
-    context('with default label', function () {
-      it('should insert default option at the front', function () {
-        const items = insertInitialOption(mockItems)
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returns('-- Label --')
+    })
 
+    context('with default label', function () {
+      let items
+
+      beforeEach(function () {
+        items = insertInitialOption(mockItems)
+      })
+
+      it('should insert default option at the front', function () {
         expect(items).to.deep.equal([
           {
-            text: '--- Choose option ---',
+            text: '-- Label --',
           },
           {
             value: 'foo',
@@ -773,15 +781,25 @@ describe('Form helpers', function () {
           },
         ])
       })
+
+      it('should translate label', function () {
+        expect(i18n.t).to.be.called.calledOnceWithExactly('initial_option', {
+          label: 'option',
+        })
+      })
     })
 
     context('with custom label', function () {
-      it('should insert custom option at the front', function () {
-        const items = insertInitialOption(mockItems, 'gender')
+      let items
 
+      beforeEach(function () {
+        items = insertInitialOption(mockItems, 'gender')
+      })
+
+      it('should insert custom option at the front', function () {
         expect(items).to.deep.equal([
           {
-            text: '--- Choose gender ---',
+            text: '-- Label --',
           },
           {
             value: 'foo',
@@ -792,6 +810,12 @@ describe('Form helpers', function () {
             text: 'Bar',
           },
         ])
+      })
+
+      it('should translate label', function () {
+        expect(i18n.t).to.be.called.calledOnceWithExactly('initial_option', {
+          label: 'gender',
+        })
       })
     })
   })
