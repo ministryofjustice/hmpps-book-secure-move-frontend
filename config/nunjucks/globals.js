@@ -15,6 +15,7 @@ const {
   routes: toolsRoutes,
 } = require('../../app/tools')
 const i18n = require('../i18n')
+const { AUTH_BASE_URL } = require('../index.js')
 const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
 
@@ -52,6 +53,7 @@ module.exports = {
   SUPPORT_EMAIL,
   FEEDBACK_URL,
   SERVICE_NAME: 'Book a secure move',
+  AUTH_BASE_URL,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {
     const macro = this.ctx[name]
