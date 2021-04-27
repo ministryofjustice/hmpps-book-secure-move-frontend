@@ -145,7 +145,7 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url with query', function () {
-            expect(output).to.equal('/compiled/url?foo=bar&status=approved')
+            expect(output).to.equal('/compiled/url?status=approved&foo=bar')
           })
         })
 
@@ -167,7 +167,7 @@ describe('URL Helpers', function () {
           })
 
           it('should override the querystring', function () {
-            expect(output).to.equal('/compiled/url?foo=buzz&status=approved')
+            expect(output).to.equal('/compiled/url?status=approved&foo=buzz')
           })
         })
       })
