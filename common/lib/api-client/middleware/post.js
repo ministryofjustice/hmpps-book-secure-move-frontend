@@ -5,14 +5,7 @@ module.exports = function post(maxFileSize) {
   return {
     name: 'app-post',
     req: payload => {
-      if (payload.res) {
-        return payload
-      }
-
       const { req, jsonApi } = payload
-      const originalMiddleware = find(jsonApi._originalMiddleware, {
-        name: 'POST',
-      })
 
       if (req.method === 'POST' && req.data instanceof FormData) {
         req.maxContentLength = maxFileSize
@@ -24,6 +17,10 @@ module.exports = function post(maxFileSize) {
 
         return payload
       }
+
+      const originalMiddleware = find(jsonApi._originalMiddleware, {
+        name: 'POST',
+      })
 
       return originalMiddleware.req(payload)
     },

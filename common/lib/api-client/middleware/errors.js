@@ -9,10 +9,10 @@ module.exports = {
       return null
     }
 
-    const { status, statusText, data = {} } = payload.response
-    const error = new Error(data.error_description || statusText)
-    error.statusCode = status || 500
-    error.errors = data.errors
+    const { statusCode, statusMessage, body = {} } = payload.response
+    const error = new Error(body.error_description || statusMessage)
+    error.statusCode = statusCode || 500
+    error.errors = body.errors
 
     return error
   },

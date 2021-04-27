@@ -2,20 +2,22 @@ const auth = require('./auth')
 const cacheKey = require('./cache-key')
 const errors = require('./errors')
 const getCache = require('./get-cache')
+const gotRequest = require('./got-request')
+const gotTransformer = require('./got-transformer')
 const post = require('./post')
-const request = require('./request')
 const requestHeaders = require('./request-headers')
 const requestInclude = require('./request-include')
-const requestTimeout = require('./request-timeout')
+const response = require('./response')
 
 module.exports = {
   auth,
-  errors,
-  post,
-  request,
   cacheKey,
+  errors,
   getCache,
+  gotRequest,
+  gotTransformer,
+  post,
   requestHeaders,
   requestInclude,
-  requestTimeout,
+  response,
 }
