@@ -1,7 +1,7 @@
-const errorMiddleware = require('./errors')
+const errorMiddleware = require('./got-errors')
 
 describe('API Client', function () {
-  describe('Error middleware', function () {
+  describe('Got errors middleware', function () {
     describe('#error()', function () {
       context('when payload does not include a response', function () {
         context('when payload is an Error', function () {
@@ -25,12 +25,12 @@ describe('API Client', function () {
 
         before(function () {
           response = {
-            statusText: 'API Error',
+            statusMessage: 'API Error',
           }
         })
 
         context('without error description', function () {
-          it('should set message to statusText', function () {
+          it('should set message to statusMessage', function () {
             const error = errorMiddleware.error({ response })
 
             expect(error).to.be.an.instanceOf(Error)
@@ -43,7 +43,7 @@ describe('API Client', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,
-                data: {
+                body: {
                   error_description: 'Error description',
                 },
               },
@@ -68,7 +68,7 @@ describe('API Client', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,
-                status: 422,
+                statusCode: 422,
               },
             })
 
@@ -91,7 +91,7 @@ describe('API Client', function () {
             const error = errorMiddleware.error({
               response: {
                 ...response,
-                data: {
+                body: {
                   errors: [
                     {
                       name: 'Error 1',

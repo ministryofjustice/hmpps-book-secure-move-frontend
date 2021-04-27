@@ -16,28 +16,33 @@ const getDuration = sinon.stub().callsFake(() => {
 })
 const timer = () => getDuration
 
-const requestMiddleware = proxyquire('./request', {
+const mockResponse = {
+  body: {
+    data: {
+      foo: 'bar',
+    },
+    meta: {
+      fizz: 'buzz',
+    },
+  },
+}
+
+const gotStub = sinon.stub().resolves(mockResponse)
+
+const requestMiddleware = proxyquire('./got-request', {
+  got: gotStub,
   '../cache': cache,
   '../client-metrics': clientMetrics,
   '../../timer': timer,
 })
 
-const mockResponse = {
-  data: {
-    foo: 'bar',
-  },
-}
-
 describe('API Client', function () {
-  describe('Request middleware', function () {
+  describe('Got request middleware', function () {
     let payload
     let response
 
     beforeEach(function () {
       payload = {
-        jsonApi: {
-          axios: sinon.stub().resolves(mockResponse),
-        },
         req: {
           url: 'http://localhost:3030/path/to/endpoint',
           method: 'GET',
@@ -47,6 +52,7 @@ describe('API Client', function () {
 
       sinon.stub(Sentry, 'addBreadcrumb')
 
+      gotStub.resetHistory()
       cache.set.resetHistory()
       clientMetrics.recordSuccess.resetHistory()
       clientMetrics.recordError.resetHistory()
@@ -61,24 +67,42 @@ describe('API Client', function () {
     })
 
     context('when calling api endpoint', function () {
-      beforeEach(async function () {
-        response = await requestMiddleware().req(payload)
+      context('without specified timeout', function () {
+        beforeEach(async function () {
+          response = await requestMiddleware().req(payload)
+        })
+
+        it('should make request using Got library with payload', function () {
+          expect(gotStub).to.be.calledOnceWithExactly({
+            ...payload.req,
+            timeout: undefined,
+          })
+        })
+
+        it('should return response', function () {
+          expect(response).to.deep.equal(mockResponse)
+        })
+
+        it('should recording metrics for the call', function () {
+          expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
+            payload.req,
+            mockResponse,
+            23
+          )
+        })
       })
 
-      it('should make request using axios library with payload', function () {
-        expect(payload.jsonApi.axios).to.be.calledOnceWithExactly(payload.req)
-      })
+      context('with specified timeout', function () {
+        beforeEach(async function () {
+          response = await requestMiddleware({ timeout: 50000 }).req(payload)
+        })
 
-      it('should return response', function () {
-        expect(response).to.deep.equal(mockResponse)
-      })
-
-      it('should recording metrics for the call', function () {
-        expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
-          payload.req,
-          mockResponse,
-          23
-        )
+        it('should make request using Got library using timeout', function () {
+          expect(gotStub).to.be.calledOnceWithExactly({
+            ...payload.req,
+            timeout: 50000,
+          })
+        })
       })
     })
 
@@ -107,7 +131,7 @@ describe('API Client', function () {
         it('should set cache using in-memory cache', function () {
           expect(cache.set).to.be.calledOnceWithExactly(
             payload.cacheKey,
-            mockResponse.data,
+            mockResponse.body,
             60,
             false
           )
@@ -124,7 +148,7 @@ describe('API Client', function () {
         it('should set cache using redis', function () {
           expect(cache.set).to.be.calledOnceWithExactly(
             payload.cacheKey,
-            mockResponse.data,
+            mockResponse.body,
             60,
             true
           )
@@ -142,7 +166,7 @@ describe('API Client', function () {
         it('should set cache using explicit cacheExpiry value', function () {
           expect(cache.set).to.be.calledOnceWithExactly(
             payload.cacheKey,
-            mockResponse.data,
+            mockResponse.body,
             200,
             false
           )
@@ -158,7 +182,7 @@ describe('API Client', function () {
         beforeEach(async function () {
           error = new Error()
 
-          payload.jsonApi.axios.rejects(error)
+          gotStub.rejects(error)
 
           await requestMiddleware()
             .req(payload)
@@ -198,11 +222,11 @@ describe('API Client', function () {
           beforeEach(async function () {
             error = new Error()
             error.code = 'ECONNABORTED'
-            error.request = {
-              _currentUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+            error.response = {
+              requestUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
             }
 
-            payload.jsonApi.axios.rejects(error)
+            gotStub.rejects(error)
 
             await requestMiddleware()
               .req(payload)
@@ -241,11 +265,11 @@ describe('API Client', function () {
           beforeEach(async function () {
             error = new Error()
             error.response = {
-              status: 502,
-              statusText: 'Bad gateway',
+              statusCode: 502,
+              statusMessage: 'Bad gateway',
             }
 
-            payload.jsonApi.axios.rejects(error)
+            gotStub.rejects(error)
 
             await requestMiddleware()
               .req(payload)

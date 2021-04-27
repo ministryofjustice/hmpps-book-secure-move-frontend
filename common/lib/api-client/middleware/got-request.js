@@ -1,52 +1,62 @@
 const Sentry = require('@sentry/node')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
+const got = require('got')
 
 const timer = require('../../timer')
 const cache = require('../cache')
 const clientMetrics = require('../client-metrics')
 
-function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
+function requestMiddleware({
+  cacheExpiry = 60,
+  useRedisCache = false,
+  timeout,
+} = {}) {
   return {
-    name: 'app-request',
+    name: 'got-request',
     req: async function req(payload) {
+      // If payload already contains a response, bypass and call next middleware
+      // This usecase is currently for cached requests
+      // TODO: Remove if we switch to Got cache API
       if (payload.res) {
         return payload.res
       }
 
-      const { req, jsonApi, cacheKey } = payload
+      const { req, cacheKey } = payload
       const urlObj = new URL(req.url)
-      const searchString = new URLSearchParams(req.params).toString()
+      const searchString = new URLSearchParams(req.searchParams).toString()
       const url = decodeURI(
         `${urlObj.pathname}${searchString ? `?${searchString}` : ''}`
       )
 
-      debug(req.method, url)
+      debug(`Got:${req.method}`, url)
 
       // start timer for metrics and logging
       const clientTimer = timer()
 
-      const response = await jsonApi
-        .axios(req)
+      const response = await got({ ...req, timeout })
         .then(async res => {
-          debug(`[${res.status}] ${res.statusText}`, `(${req.method} ${url})`)
+          debug(
+            `[${res.statusCode}] ${res.statusMessage}`,
+            `(${req.method} ${url})`
+          )
 
           // record successful request
           const duration = clientTimer()
           clientMetrics.recordSuccess(req, res, duration)
 
           if (cacheKey) {
-            cacheDebug('SAVING', cacheKey, res.data)
-            await cache.set(cacheKey, res.data, cacheExpiry, useRedisCache)
+            cacheDebug('SAVING', cacheKey, res.body)
+            await cache.set(cacheKey, res.body, cacheExpiry, useRedisCache)
           }
 
           return res
         })
         .catch(error => {
-          const { response: errResponse = {}, request: errRequest = {} } = error
-          const text = errResponse.statusText || error.message
+          const { response: errResponse = {} } = error
+          const text = errResponse.statusMessage || error.message
           const status =
-            error.code === 'ECONNABORTED' ? 408 : errResponse.status || 500
+            error.code === 'ECONNABORTED' ? 408 : errResponse.statusCode || 500
 
           debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
 
@@ -59,8 +69,8 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
             category: 'http',
             data: {
               method: req.method,
-              url: errRequest._currentUrl
-                ? decodeURIComponent(errRequest._currentUrl)
+              url: errResponse.requestUrl
+                ? decodeURIComponent(errResponse.requestUrl)
                 : undefined,
               status_code: status,
             },

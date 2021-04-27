@@ -4,14 +4,15 @@ const { API, FILE_UPLOADS } = require('../../../config')
 
 const {
   auth,
-  errors,
-  post,
-  request,
   cacheKey,
   getCache,
+  gotErrors,
+  gotRequest,
+  gotRequestTransformer,
+  gotResponse,
+  post,
   requestHeaders,
   requestInclude,
-  requestTimeout,
 } = require('./middleware')
 const models = require('./models')
 
@@ -21,18 +22,20 @@ module.exports = function (req) {
     logger: false,
   })
 
-  instance.replaceMiddleware('errors', errors)
+  instance.replaceMiddleware('errors', gotErrors)
+  instance.replaceMiddleware('response', gotResponse)
   instance.replaceMiddleware('POST', post(FILE_UPLOADS.MAX_FILE_SIZE))
   instance.replaceMiddleware(
     'axios-request',
-    request({
+    gotRequest({
       cacheExpiry: API.CACHE_EXPIRY,
       useRedisCache: API.USE_REDIS_CACHE,
+      timeout: API.TIMEOUT,
     })
   )
 
   const insertRequestMiddleware = middleware => {
-    instance.insertMiddlewareBefore('app-request', middleware)
+    instance.insertMiddlewareBefore('got-request', middleware)
   }
 
   insertRequestMiddleware(cacheKey({ apiVersion: API.VERSION }))
@@ -46,9 +49,9 @@ module.exports = function (req) {
     insertRequestMiddleware(auth)
   }
 
-  insertRequestMiddleware(requestTimeout(API.TIMEOUT))
   insertRequestMiddleware(requestHeaders(req))
   insertRequestMiddleware(requestInclude)
+  insertRequestMiddleware(gotRequestTransformer)
 
   // define models
   Object.entries(models).forEach(([modelName, model]) => {
