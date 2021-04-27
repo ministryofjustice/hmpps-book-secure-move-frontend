@@ -1,3 +1,5 @@
+const { omit } = require('lodash')
+
 const getDefaultValues = fields => {
   return Object.keys(fields).reduce((values, key) => {
     if (fields[key].defaultValue !== undefined) {
@@ -22,17 +24,9 @@ const removeDefaultFilterValues = (fields, values) => {
 }
 
 const getReferrerValues = (fields, values) => {
-  const referrerValues = { ...values }
-  Object.keys(fields).forEach(filter => {
-    delete referrerValues[filter]
-  })
-  Object.keys(referrerValues).forEach(key => {
-    if (!Array.isArray(referrerValues[key])) {
-      referrerValues[key] = [referrerValues[key]]
-    }
-  })
+  const omittedKeys = Object.keys(fields)
 
-  return referrerValues
+  return omit(values, omittedKeys)
 }
 
 module.exports = {

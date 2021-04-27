@@ -17,10 +17,8 @@
 
   <form method="POST">
     <input type="hidden" name="referrer" value="{{filters.referrer.url}}">
-    {% for name, values in filters.referrer.values %}
-      {% for value in values %}
-        <input type="hidden" name="{{name}}" value="{{value}}">
-      {% endfor %}
+    {% for name, value in filters.referrer.values %}
+      <input type="hidden" name="{{name}}" value="{{value}}">
     {% endfor %}
     {% for key, filterComponent in filters.components %}
       {% if filterComponent.component and not filterComponent.skip %}

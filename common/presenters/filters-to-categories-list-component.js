@@ -1,5 +1,11 @@
+const queryString = require('qs')
+
 const i18n = require('../../config/i18n')
-const request = require('../lib/request')
+
+function getUrl(page, args) {
+  const stringified = queryString.stringify(args, { arrayFormat: 'comma' })
+  return `${page}${stringified ? `?${stringified}` : ''}`
+}
 
 const getCategoryItems = (fieldValues, values, pageUrl, key) => {
   const items = (Array.isArray(fieldValues) ? fieldValues : [fieldValues]).map(
@@ -12,7 +18,7 @@ const getCategoryItems = (fieldValues, values, pageUrl, key) => {
         delete removeValues[key]
       }
 
-      const href = request.getUrl(pageUrl, removeValues)
+      const href = getUrl(pageUrl, removeValues)
       return {
         href,
         text: i18n.t(`filters::${key}.${value}.label`),
