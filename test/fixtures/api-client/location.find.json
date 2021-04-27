@@ -8,6 +8,13 @@
       "title": "Axminster Crown Court",
       "location_type": "court",
       "young_offender_institution": false,
+      "latitude": "",
+      "longitude": "",
+      "premise": "",
+      "locality": "",
+      "city": "",
+      "country": "",
+      "postcode": "",
       "can_upload_documents": false,
       "nomis_agency_id": null,
       "suppliers": [
