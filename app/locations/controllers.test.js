@@ -1,7 +1,4 @@
-const { sortBy } = require('lodash')
-const proxyquire = require('proxyquire').noCallThru()
-
-const controllers = require('./controllers')
+const { locations: locationsController } = require('./controllers')
 
 const mockUserLocations = [
   {
@@ -53,14 +50,12 @@ const mockSuppliers = [
 ]
 
 describe('Locations controllers', function () {
-  let req, res
+  let req, res, nextSpy
   const mockReferenceData = {
     getRegions: sinon.fake.returns(Promise.resolve([])),
     getLocationsBySupplierId: sinon.stub().resolves(mockSupplierLocations),
     getSuppliers: sinon.stub().resolves(mockSuppliers),
   }
-  const proxiedController = proxyquire('./controllers', {})
-  let nextSpy
 
   describe('#locations', function () {
     beforeEach(function () {
@@ -93,7 +88,7 @@ describe('Locations controllers', function () {
             mockReferenceData.getRegions = sinon.fake.returns(
               Promise.resolve([])
             )
-            await proxiedController.locations(req, res, nextSpy)
+            await locationsController(req, res, nextSpy)
             expect(res.render).to.be.calledOnce
           })
         })
@@ -103,7 +98,7 @@ describe('Locations controllers', function () {
             req.services.referenceData.getRegions = sinon.fake.returns(
               Promise.reject(new Error())
             )
-            await proxiedController.locations(req, res, nextSpy)
+            await locationsController(req, res, nextSpy)
             expect(nextSpy).to.be.calledOnce
           })
         })
@@ -113,31 +108,23 @@ describe('Locations controllers', function () {
     context(
       'when the user is not assigned a `allocation:create` permission',
       function () {
+        beforeEach(async function () {
+          await locationsController(req, res)
+        })
+
         it('should render template', function () {
-          controllers.locations(req, res)
           expect(res.render).to.be.calledOnce
         })
 
-        it('should return locations sorted by title', function () {
-          controllers.locations(req, res)
+        it('should return locations', function () {
           const params = res.render.args[0][1]
           expect(params).to.have.property('activeLocations')
           expect(params.activeLocations).to.deep.equal(
-            sortBy(
-              mockUserLocations.filter(l => l.disabled_at === null),
-              location => {
-                return location?.title?.toLowerCase()
-              }
-            )
+            mockUserLocations.filter(l => l.disabled_at === null)
           )
           expect(params).to.have.property('inactiveLocations')
           expect(params.inactiveLocations).to.deep.equal(
-            sortBy(
-              mockUserLocations.filter(l => l.disabled_at !== null),
-              location => {
-                return location?.title?.toLowerCase()
-              }
-            )
+            mockUserLocations.filter(l => l.disabled_at !== null)
           )
         })
       }
@@ -149,36 +136,29 @@ describe('Locations controllers', function () {
           .stub()
           .resolves(mockSupplierLocations)
         req.session.user.supplierId = 'aussiemanandvan'
-        await proxiedController.locations(req, res)
+
+        await locationsController(req, res)
       })
+
       it('should fetch user locations', async function () {
         expect(
           mockReferenceData.getLocationsBySupplierId
         ).to.be.calledOnceWithExactly('aussiemanandvan')
       })
+
       it('should render template', function () {
         expect(res.render).to.be.calledOnce
       })
 
-      it('should return locations sorted by title', function () {
+      it('should return locations', function () {
         const params = res.render.args[0][1]
         expect(params).to.have.property('activeLocations')
         expect(params.activeLocations).to.deep.equal(
-          sortBy(
-            mockSupplierLocations.filter(l => l.disabled_at === null),
-            location => {
-              return location?.title?.toLowerCase()
-            }
-          )
+          mockSupplierLocations.filter(l => l.disabled_at === null)
         )
         expect(params).to.have.property('inactiveLocations')
         expect(params.inactiveLocations).to.deep.equal(
-          sortBy(
-            mockSupplierLocations.filter(l => l.disabled_at !== null),
-            location => {
-              return location?.title?.toLowerCase()
-            }
-          )
+          mockSupplierLocations.filter(l => l.disabled_at !== null)
         )
       })
 
@@ -197,11 +177,14 @@ describe('Locations controllers', function () {
           .returns(mockSupplierLocations)
           .onSecondCall()
           .returns(mockSecondSupplierLocation)
-        await proxiedController.locations(req, res)
+
+        await locationsController(req, res)
       })
+
       it('should fetch locations for each supplier', async function () {
         expect(mockReferenceData.getLocationsBySupplierId).to.be.calledTwice
       })
+
       it('should render template', function () {
         expect(res.render).to.be.calledOnce
       })

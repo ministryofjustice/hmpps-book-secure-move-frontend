@@ -7,6 +7,10 @@ const BaseService = require('./base')
 const locationInclude = ['suppliers']
 const regionInclude = ['locations']
 
+function sortLocations(locations) {
+  return sortBy(locations, ({ title = '' }) => title.toUpperCase())
+}
+
 class ReferenceDataService extends BaseService {
   getGenders() {
     return this.apiClient.findAll('gender').then(response => response.data)
@@ -41,7 +45,8 @@ class ReferenceDataService extends BaseService {
         const hasNext = links.next && data.length !== 0
 
         if (!hasNext) {
-          return sortBy(locations, 'title')
+          return sortLocations(locations)
+          // return sortBy(locations, location => location?.title?.toUpperCase())
         }
 
         return this.getLocations({
@@ -95,7 +100,8 @@ class ReferenceDataService extends BaseService {
         ...attributes,
       }
     })
-    return locations
+
+    return sortLocations(locations)
   }
 
   getRegionById(id) {
@@ -134,9 +140,9 @@ class ReferenceDataService extends BaseService {
     const locationPromises = ids.map(id => {
       return callback(id).catch(() => false)
     })
-    return Promise.all(locationPromises).then(locations =>
-      locations.filter(Boolean)
-    )
+    return Promise.all(locationPromises)
+      .then(locations => locations.filter(Boolean))
+      .then(locations => sortLocations(locations))
   }
 
   getSuppliers() {

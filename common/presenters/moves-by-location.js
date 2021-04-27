@@ -23,5 +23,5 @@ module.exports = function movesByLocation(data, locationKey = 'to_location') {
     })
   })
 
-  return sortBy(locations, 'sortKey')
+  return sortBy(locations, location => location?.sortKey?.toUpperCase())
 }
