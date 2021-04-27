@@ -10,7 +10,7 @@ const controller = proxyquire('./view', {
 
 describe('Move controllers', function () {
   describe('#view()', function () {
-    let req, res, params, moveService
+    let req, res, params, moveService, nextSpy
 
     beforeEach(function () {
       moveService = {
@@ -31,6 +31,8 @@ describe('Move controllers', function () {
       res = {
         render: sinon.spy(),
       }
+
+      nextSpy = sinon.spy()
     })
 
     context('by default', function () {
@@ -76,6 +78,20 @@ describe('Move controllers', function () {
 
       it('should copy rebook property from MoveReject event to move', function () {
         expect(req.move.rebook).to.be.true
+      })
+    })
+
+    context('when there is an API error', function () {
+      it('should fail gracefully', async function () {
+        req.move = {
+          status: 'cancelled',
+          cancellation_reason: 'rejected',
+        }
+        req.services.move.getByIdWithEvents = sinon.fake.returns(
+          Promise.reject(new Error())
+        )
+        await controller(req, res, nextSpy)
+        expect(nextSpy).to.be.calledOnce
       })
     })
   })
