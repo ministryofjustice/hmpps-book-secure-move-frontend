@@ -1,4 +1,4 @@
-const { get, sortBy, uniqBy } = require('lodash')
+const { get, uniqBy } = require('lodash')
 
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
@@ -40,10 +40,6 @@ async function locations(req, res, next) {
   }
 
   req.session.user.locations = userLocations
-
-  userLocations = sortBy(userLocations, location => {
-    return location?.title?.toLowerCase()
-  })
 
   const activeLocations = userLocations.filter(
     location => location.disabled_at === null
