@@ -6,6 +6,13 @@ module.exports = {
     nomis_agency_id: '',
     can_upload_documents: '',
     young_offender_institution: '',
+    latitude: '',
+    longitude: '',
+    premise: '',
+    locality: '',
+    city: '',
+    country: '',
+    postcode: '',
     disabled_at: '',
     suppliers: {
       jsonApi: 'hasMany',
