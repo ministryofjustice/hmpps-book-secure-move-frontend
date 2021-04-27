@@ -178,7 +178,7 @@ function translateField([key, field]) {
 
 function insertInitialOption(items, label = 'option') {
   const initialOption = {
-    text: `--- Choose ${label} ---`,
+    text: i18n.t('initial_option', { label }),
   }
 
   return [initialOption, ...items]
