@@ -1,4 +1,8 @@
 params:
+  - name: organisationHomepageUrl
+    type: string
+    required: false
+    description: The url of the organisation's homepage. Defaults to /
   - name: homepageUrl
     type: string
     required: false
@@ -80,8 +84,7 @@ accessibilityCriteria: |
 examples:
   - name: default
     description: The standard header as used on information pages on GOV.UK
-    data:
-      {}
+    data: {}
 
   - name: with service name
     description: If your service is more than a few pages long, you can help users understand where they are by adding the service name.

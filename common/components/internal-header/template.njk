@@ -1,9 +1,9 @@
-<header class="app-header {{ params.classes if params.classes }}" role="banner" data-module="header"
+<header class="app-header {{ params.classes }}" role="banner" data-module="header"
         {%- for attribute, value in params.attributes %} {{attribute}}="{{value}}"{% endfor %}>
-  <div class="app-header__container {{ params.containerClasses if params.containerClasses }}">
+  <div class="app-header__container {{ params.containerClasses }}">
 
     <div class="app-header__logo">
-      <a href="{{ AUTH_BASE_URL }}/auth" class="app-header__link app-header__organisation-name">
+      <a href="{{ params.organisationHomepageUrl | default('/') }}" class="app-header__link app-header__organisation-name">
         <span class="app-header__logotype">
           {# We use an inline SVG for the crown so that we can cascade the
           currentColor into the crown whilst continuing to support older browsers
@@ -50,14 +50,14 @@
 
     {% if params.navigation %}
     <nav>
-      <ul id="navigation" class="app-header__navigation {{ params.navigationClasses if params.navigationClasses }}" aria-label="Top Level Navigation">
+      <ul id="navigation" class="app-header__navigation {{ params.navigationClasses }}" aria-label="Top Level Navigation">
         {% for item in params.navigation %}
           {% if item.href and item.text %}
             <li class="app-header__navigation-item{{ ' app-header__navigation-item--active' if item.active }}">
               <a class="app-header__link" href="{{ item.href }}"{% for attribute, value in item.attributes %} {{attribute}}="{{value}}"{% endfor %}>
                 {{ item.text }}
                 {% if item.subtext %}
-                  <span class="app-header__link__sub-text">
+                  <span class="app-header__link-sub-text">
                     {{ item.subtext }}
                   </span>
                 {% endif %}

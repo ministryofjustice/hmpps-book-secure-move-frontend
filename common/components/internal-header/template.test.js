@@ -1,4 +1,3 @@
-const { AUTH_BASE_URL } = require('../../../config/index.js')
 const {
   renderComponentHtmlToCheerio,
   getExamples,
@@ -49,13 +48,14 @@ describe('Internal header component', function () {
 
   it('renders home page URL', function () {
     const $ = renderComponentHtmlToCheerio('internal-header', {
+      organisationHomepageUrl: 'auth.url/auth',
       homepageUrl: '/',
       productName: 'Product Name',
     })
 
     const $component = $('.app-header')
     const $authLink = $component.find('.app-header__organisation-name')
-    expect($authLink.attr('href')).to.equal(`${AUTH_BASE_URL}/auth`)
+    expect($authLink.attr('href')).to.equal('auth.url/auth')
     const $productLink = $component.find('.app-header__product-name')
     expect($productLink.attr('href')).to.equal('/')
   })

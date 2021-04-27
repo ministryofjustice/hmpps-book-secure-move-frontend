@@ -1,9 +1,11 @@
-$govuk-header-background: govuk-colour('black');
+$govuk-header-background: govuk-colour("black");
 $govuk-header-border-color: $govuk-brand-colour;
 $govuk-header-border-width: govuk-spacing(2);
-$govuk-header-text: govuk-colour('white');
-$govuk-header-link: govuk-colour('white');
-$govuk-header-link-hover: govuk-colour('white');
+$govuk-header-text: govuk-colour("white");
+$govuk-header-crest: govuk-colour("white");
+$govuk-header-link-separator: govuk-colour("white");
+$govuk-header-link: govuk-colour("white");
+$govuk-header-link-hover: govuk-colour("white");
 $govuk-header-link-active: #1d8feb;
 $govuk-header-nav-item-border-color: #2e3133;
 
@@ -24,7 +26,7 @@ $govuk-header-nav-item-border-color: #2e3133;
 }
 
 .app-header__container {
-  max-width: 1170px;
+  max-width: $govuk-page-width;
   margin-right: govuk-spacing(3);
   margin-left: govuk-spacing(3);
   display: flex;
@@ -36,24 +38,24 @@ $govuk-header-nav-item-border-color: #2e3133;
     margin-left: govuk-spacing(6);
   }
 
-  @supports (margin: Max(calc(0px))) {
+  @supports (margin: Max(Calc(0px))) {
     margin-right: Max(
       govuk-spacing(3),
-      calc(govuk-spacing(3) + env(safe-area-inset-right))
+      Calc(govuk-spacing(3) + #{env(safe-area-inset-right)})
     );
     margin-left: Max(
       govuk-spacing(3),
-      calc(govuk-spacing(3) + env(safe-area-inset-left))
+      Calc(govuk-spacing(3) + #{env(safe-area-inset-left)})
     );
 
     @media (min-width: 40.0625em) {
       margin-right: Max(
         govuk-spacing(6),
-        calc(govuk-spacing(3) + env(safe-area-inset-right))
+        Calc(govuk-spacing(3) + #{env(safe-area-inset-right)})
       );
       margin-left: Max(
         govuk-spacing(6),
-        calc(govuk-spacing(3) + env(safe-area-inset-left))
+        Calc(govuk-spacing(3) + #{env(safe-area-inset-left)})
       );
     }
   }
@@ -68,7 +70,7 @@ $govuk-header-nav-item-border-color: #2e3133;
   margin-right: govuk-spacing(2);
   position: relative;
   top: -2px;
-  fill: #fff;
+  fill: $govuk-header-crest;
 }
 
 .app-header__logo {
@@ -90,7 +92,7 @@ $govuk-header-nav-item-border-color: #2e3133;
   &:link,
   &:visited,
   &:active {
-    color: #fff;
+    color: $govuk-header-link;
     text-decoration: none;
   }
 
@@ -99,19 +101,15 @@ $govuk-header-nav-item-border-color: #2e3133;
   }
 
   &:focus {
-    outline: 3px solid transparent;
-    color: $govuk-header-background;
-    background-color: #fd0;
-    box-shadow: 0 -2px #fd0, 0 4px $govuk-header-background;
-    text-decoration: none;
+    @include govuk-focused-text;
 
     svg {
-      fill: $govuk-header-background;
+      fill: currentColor;
     }
   }
 }
 
-.app-header__link__sub-text {
+.app-header__link-sub-text {
   @include govuk-font($size: 16);
   display: none;
 
@@ -152,7 +150,7 @@ $govuk-header-nav-item-border-color: #2e3133;
     margin-right: govuk-spacing(4);
     padding-right: govuk-spacing(4);
     margin-bottom: 0;
-    border-right: 1px solid #fff;
+    border-right: 1px solid $govuk-header-link-separator;
   }
 
   a {
@@ -172,7 +170,7 @@ $govuk-header-nav-item-border-color: #2e3133;
   display: flex;
   margin-right: govuk-spacing(4);
   padding-right: govuk-spacing(4);
-  border-right: 1px solid #fff;
+  border-right: 1px solid $govuk-header-link-separator;
 
   &:last-child {
     margin-right: 0;

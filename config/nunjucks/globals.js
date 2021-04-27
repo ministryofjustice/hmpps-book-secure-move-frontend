@@ -3,6 +3,7 @@ const { isFunction } = require('lodash')
 const {
   ANALYTICS,
   ASSETS_HOST,
+  AUTH_BASE_URL,
   ENABLE_COMPONENTS_LIBRARY,
   ENABLE_DEVELOPMENT_TOOLS,
   FEEDBACK_URL,
@@ -15,7 +16,6 @@ const {
   routes: toolsRoutes,
 } = require('../../app/tools')
 const i18n = require('../i18n')
-const { AUTH_BASE_URL } = require('../index.js')
 const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
 

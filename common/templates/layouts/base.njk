@@ -93,6 +93,7 @@
 
 {% block header %}
   {{ appInternalHeader({
+    organisationHomepageUrl: AUTH_BASE_URL + "/auth",
     homepageUrl: "/",
     siteName: "HMPPS",
     fallbackImagePath: getAssetPath('images/app-logotype-crest@2x.png'),

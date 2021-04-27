@@ -63,7 +63,7 @@ users.forEach(user => {
       .expect(page.nodes.appHeaderProduct.exists)
       .ok()
       .expect(page.nodes.username.innerText)
-      .eql(`${user.displayName}\nManage your details`)
+      .contains(user.displayName)
       .expect(user.homeButton.exists)
       .ok()
       // Navigate
@@ -91,7 +91,7 @@ usersWhoHaveADashboard.forEach(user => {
       .expect(page.nodes.appHeaderProduct.exists)
       .ok()
       .expect(page.nodes.username.innerText)
-      .eql(`${user.displayName}\nManage your details`)
+      .contains(user.displayName)
       .expect(page.nodes.pageHeading.innerText)
       .eql('Your overview')
       .expect(user.homeSection.exists)
