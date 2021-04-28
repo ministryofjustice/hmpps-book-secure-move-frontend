@@ -92,16 +92,6 @@ describe('Locations controllers', function () {
             expect(res.render).to.be.calledOnce
           })
         })
-
-        context('when the region API is *not* available', function () {
-          it('should fail gracefully', async function () {
-            req.services.referenceData.getRegions = sinon.fake.returns(
-              Promise.reject(new Error())
-            )
-            await locationsController(req, res, nextSpy)
-            expect(nextSpy).to.be.calledOnce
-          })
-        })
       }
     )
 
@@ -195,6 +185,26 @@ describe('Locations controllers', function () {
         expect(req.session.user.locations).to.deep.equal(
           mockSupplierLocations.concat(mockSecondSupplierLocation[0])
         )
+      })
+    })
+
+    context('when there is an API error', function () {
+      it('should fail gracefully for regions API', async function () {
+        req.session.user.permissions = ['allocation:create']
+        req.services.referenceData.getRegions = sinon.fake.returns(
+          Promise.reject(new Error())
+        )
+        await locationsController(req, res, nextSpy)
+        expect(nextSpy).to.be.calledOnce
+      })
+
+      it('should fail gracefully for locations by supplier API', async function () {
+        req.session.user.permissions = ['locations:contract_delivery_manager']
+        req.services.referenceData.getLocationsBySupplierId = sinon.fake.returns(
+          Promise.reject(new Error())
+        )
+        await locationsController(req, res, nextSpy)
+        expect(nextSpy).to.be.calledOnce
       })
     })
   })
