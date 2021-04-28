@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.76.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.3...v2.76.0) (2021-04-28)
+
+
+### Features
+
+* Align header with HMPPS Digital Services ([3eb4ddd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3eb4ddd325c1bdd6b3a69ce51998d068e860882d))
+
+
+### Bug Fixes
+
+* Ensure locations are sorted correctly ([1621d5a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1621d5aaca480425ba30a9cef7c464b2f1a602e3)), closes [#744](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/issues/744)
+
 ### [2.75.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.2...v2.75.3) (2021-04-22)
 
 
