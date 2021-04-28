@@ -59,6 +59,22 @@ const mockLocations = [
     id: '2c952ca0-f750-4ac3-ac76-fb631445f974',
     title: 'Axminster Crown Court',
   },
+  {
+    id: '5e5da09d-a1b3-46c2-9f62-87c458893c21',
+    title: 'AYLESBURY (HMP)',
+  },
+  {
+    id: 'a4817921-1091-4a02-8757-c491e476e364',
+    title: 'BERWYN (HMP)',
+  },
+  {
+    id: '48e9427a-8c9d-4c45-a015-a35df05b119b',
+    title: 'ALTCOURSE (HMP)',
+  },
+  {
+    id: '4f867e1d-e2bd-48ad-ad54-57a94dc38ee5',
+    title: 'Blackpool Custody Suite',
+  },
 ]
 const mockRegions = [
   {
@@ -252,7 +268,9 @@ describe('Reference Data Service', function () {
         })
 
         it('should return locations sorted by title', function () {
-          expect(locations).to.deep.equal(sortBy(mockLocations, 'title'))
+          expect(locations).to.deep.equal(
+            sortBy(locations, location => location?.title?.toUpperCase())
+          )
         })
       })
 
@@ -319,7 +337,9 @@ describe('Reference Data Service', function () {
 
         it('should return locations sorted by title', function () {
           expect(locations).to.deep.equal(
-            sortBy([...mockLocations, ...mockLocations], 'title')
+            sortBy([...mockLocations, ...mockLocations], location =>
+              location?.title?.toUpperCase()
+            )
           )
         })
       })
@@ -451,7 +471,7 @@ describe('Reference Data Service', function () {
         )
       })
 
-      it('should call getLocations methods', function () {
+      it('should call et methods', function () {
         expect(referenceDataService.getLocations).to.be.calledOnce
       })
 
@@ -487,7 +507,12 @@ describe('Reference Data Service', function () {
         beforeEach(async function () {
           sinon
             .stub(referenceDataService, 'getLocationByNomisAgencyId')
-            .resolvesArg(0)
+            .onFirstCall()
+            .resolves({ key: 'GCS', title: 'Guildford Custody Suite' })
+            .onSecondCall()
+            .resolves({ key: 'PNT', title: 'GREATER MANCHESTER HMP' })
+            .onThirdCall()
+            .resolves({ key: 'AFR', title: 'Aylesbury Court' })
 
           locations = await referenceDataService.getLocationsByNomisAgencyId(
             mockAgencyIds
@@ -503,8 +528,12 @@ describe('Reference Data Service', function () {
           ).to.equal(mockAgencyIds.length)
         })
 
-        it('should return an list of locations', function () {
-          expect(locations).to.deep.equal(mockAgencyIds)
+        it('should return an list of locations sorted by title', function () {
+          expect(locations).to.deep.equal([
+            { key: 'AFR', title: 'Aylesbury Court' },
+            { key: 'PNT', title: 'GREATER MANCHESTER HMP' },
+            { key: 'GCS', title: 'Guildford Custody Suite' },
+          ])
         })
       })
 
@@ -635,8 +664,10 @@ describe('Reference Data Service', function () {
         )
       })
 
-      it('should return locations', function () {
-        expect(locations).to.deep.equal(mockResponse)
+      it('should return locations sorted by title', function () {
+        expect(locations).to.deep.equal(
+          sortBy(mockResponse, location => location?.title?.toUpperCase())
+        )
       })
     })
   })

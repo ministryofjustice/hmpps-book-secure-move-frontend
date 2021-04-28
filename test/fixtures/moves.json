@@ -1333,7 +1333,7 @@
       "id": "ad78dbc3-6d08-475a-b5c5-39dcd463b624",
       "type": "locations",
       "key": "hmp_kirkham",
-      "title": "HMP Kirkham",
+      "title": "HMP KIRKHAM",
       "location_type": "prison",
       "nomis_agency_id": null
     },
@@ -1538,7 +1538,7 @@
       "id": "6ee51bfe-217a-421f-8874-9e2b9b03cc53",
       "type": "locations",
       "key": "hmp_brockhill",
-      "title": "HMP Brockhill",
+      "title": "HMP BROCKHILL",
       "location_type": "prison",
       "nomis_agency_id": null
     },

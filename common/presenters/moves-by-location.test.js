@@ -88,11 +88,11 @@ describe('Presenters', function () {
           const keys = transformedResponse.map(group => group.sortKey)
           expect(keys).to.deep.equal([
             'HMIRC The Verne',
-            'HMP Brockhill',
+            'HMP BROCKHILL',
             'HMP Camp Hill',
             'HMP Coldingley',
             'HMP Dartmoor',
-            'HMP Kirkham',
+            'HMP KIRKHAM',
             'HMP Lindholme',
             'HMP Long Lartin',
             'HMP Reading',
@@ -153,11 +153,11 @@ describe('Presenters', function () {
           )
           expect(keys).to.deep.equal([
             ['HMIRC The Verne'],
-            ['HMP Brockhill'],
+            ['HMP BROCKHILL'],
             ['HMP Camp Hill'],
             ['HMP Coldingley'],
             ['HMP Dartmoor'],
-            ['HMP Kirkham'],
+            ['HMP KIRKHAM'],
             ['HMP Lindholme'],
             ['HMP Long Lartin'],
             ['HMP Reading'],
