@@ -94,14 +94,16 @@
 
 {% block header %}
   {{ appInternalHeader({
+    organisationHomepageUrl: AUTH_BASE_URL + "/auth",
     homepageUrl: "/",
     siteName: "HMPPS",
     fallbackImagePath: getAssetPath('images/app-logotype-crest@2x.png'),
     productName: SERVICE_NAME,
-    containerClasses: "govuk-width-container",
     navigation: [
       {
-        text: USER.fullname
+        href: AUTH_BASE_URL + "/auth/account-details",
+        text: USER.displayName,
+        subtext: "Manage your details"
       },
       {
         href: "/auth/sign-out",

@@ -48,12 +48,16 @@ describe('Internal header component', function () {
 
   it('renders home page URL', function () {
     const $ = renderComponentHtmlToCheerio('internal-header', {
+      organisationHomepageUrl: 'auth.url/auth',
       homepageUrl: '/',
+      productName: 'Product Name',
     })
 
     const $component = $('.app-header')
-    const $homepageLink = $component.find('.app-header__link--homepage')
-    expect($homepageLink.attr('href')).to.equal('/')
+    const $authLink = $component.find('.app-header__organisation-name')
+    expect($authLink.attr('href')).to.equal('auth.url/auth')
+    const $productLink = $component.find('.app-header__product-name')
+    expect($productLink.attr('href')).to.equal('/')
   })
 
   describe('with product name', function () {
@@ -141,19 +145,6 @@ describe('Internal header component', function () {
 
       expect($lastItem.html().trim()).to.equal('Item 2')
       expect($lastItem.find('a').length).to.equal(0)
-    })
-
-    describe('menu button', function () {
-      it('has an explicit type="button" so it does not act as a submit button', function () {
-        const $ = renderComponentHtmlToCheerio(
-          'internal-header',
-          examples['with navigation']
-        )
-
-        const $button = $('.app-header__menu-button')
-
-        expect($button.attr('type')).to.equal('button')
-      })
     })
   })
 

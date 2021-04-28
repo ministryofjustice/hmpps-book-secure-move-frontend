@@ -12,25 +12,25 @@ const users = [
   {
     name: 'Police user',
     role: policeUser,
-    username: 'End-to-end Police',
+    displayName: 'E. Police',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'STC user',
     role: stcUser,
-    username: 'End-to-end Secure Training Centre',
+    displayName: 'E. Centre',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'Prison user',
     role: prisonUser,
-    username: 'End-to-end Prison',
+    displayName: 'E. Prison',
     homeButton: movesDashboardPage.nodes.createMoveButton,
   },
   {
     name: 'Supplier user',
     role: supplierUser,
-    username: 'End-to-end Supplier',
+    displayName: 'E. Supplier',
     homeButton: movesDashboardPage.nodes.downloadMovesLink,
   },
 ]
@@ -39,7 +39,7 @@ const usersWhoHaveADashboard = [
   {
     name: 'OCA user',
     role: ocaUser,
-    username: 'End-to-end Operational Capacity Allocation',
+    displayName: 'E. Allocation',
     homeSection: dashboardPage.nodes.singleRequestsSection,
     homeButton: dashboardPage.nodes.singleRequestsLink,
     timePeriod: 'This week',
@@ -53,10 +53,12 @@ users.forEach(user => {
     await t.useRole(user.role).navigateTo(movesByDay)
   })(`As ${user.name}`, async t => {
     await t
-      .expect(page.nodes.appHeader.exists)
+      .expect(page.nodes.appHeaderOrganisation.exists)
+      .ok()
+      .expect(page.nodes.appHeaderProduct.exists)
       .ok()
       .expect(page.nodes.username.innerText)
-      .eql(user.username)
+      .contains(user.displayName)
       .expect(user.homeButton.exists)
       .ok()
       // Navigate
@@ -79,10 +81,12 @@ usersWhoHaveADashboard.forEach(user => {
     await t.useRole(user.role).navigateTo(home)
   })(`As ${user.name}`, async t => {
     await t
-      .expect(page.nodes.appHeader.exists)
+      .expect(page.nodes.appHeaderOrganisation.exists)
+      .ok()
+      .expect(page.nodes.appHeaderProduct.exists)
       .ok()
       .expect(page.nodes.username.innerText)
-      .contains(user.username)
+      .contains(user.displayName)
       .expect(page.nodes.pageHeading.innerText)
       .eql('Your overview')
       .expect(user.homeSection.exists)

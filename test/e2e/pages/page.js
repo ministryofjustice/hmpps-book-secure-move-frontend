@@ -9,8 +9,11 @@ export default class Page {
     this.uuidRegex = /[\w]{8}(-[\w]{4}){3}-[\w]{12}/
     this.nodes = {
       locationMeta: Selector('meta').withAttribute('name', 'location'),
-      appHeader: Selector('.app-header__logo').withExactText(
-        'HMPPS Book a secure move'
+      appHeaderOrganisation: Selector('.app-header__logotype').withExactText(
+        'HMPPS'
+      ),
+      appHeaderProduct: Selector('.app-header__product-name').withExactText(
+        'Book a secure move'
       ),
       signInHeader: Selector('.govuk-header__logo').withExactText(
         'HMPPS Digital Services'

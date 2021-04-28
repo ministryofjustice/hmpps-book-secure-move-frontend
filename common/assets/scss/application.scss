@@ -6,6 +6,9 @@ $govuk-font-family: "Inter", system-ui, sans-serif;
 $govuk-assets-path: "govuk-frontend/govuk/assets/";
 $moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
 
+$govuk-page-width: 1170px;
+$moj-page-width: 1170px;
+
 // Import GOV.UK Frontend
 @import "govuk-frontend/govuk/base";
 

@@ -3,6 +3,7 @@ const { isFunction } = require('lodash')
 const {
   ANALYTICS,
   ASSETS_HOST,
+  AUTH_BASE_URL,
   ENABLE_COMPONENTS_LIBRARY,
   ENABLE_DEVELOPMENT_TOOLS,
   FEEDBACK_URL,
@@ -52,6 +53,7 @@ module.exports = {
   SUPPORT_EMAIL,
   FEEDBACK_URL,
   SERVICE_NAME: 'Book a secure move',
+  AUTH_BASE_URL,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {
     const macro = this.ctx[name]

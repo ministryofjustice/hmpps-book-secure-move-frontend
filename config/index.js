@@ -62,6 +62,7 @@ function _authUrl(path) {
 }
 
 module.exports = {
+  AUTH_BASE_URL,
   IS_DEV,
   IS_PRODUCTION,
   SESSION,

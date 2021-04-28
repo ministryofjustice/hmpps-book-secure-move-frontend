@@ -2,273 +2,189 @@ $govuk-header-background: govuk-colour("black");
 $govuk-header-border-color: $govuk-brand-colour;
 $govuk-header-border-width: govuk-spacing(2);
 $govuk-header-text: govuk-colour("white");
+$govuk-header-crest: govuk-colour("white");
+$govuk-header-link-separator: govuk-colour("white");
 $govuk-header-link: govuk-colour("white");
 $govuk-header-link-hover: govuk-colour("white");
 $govuk-header-link-active: #1d8feb;
 $govuk-header-nav-item-border-color: #2e3133;
 
 .app-header {
-  @include govuk-font($size: 16);
+  padding-top: govuk-spacing(3);
+  padding-bottom: govuk-spacing(3);
+  background-color: $govuk-header-background;
 
-  color: $govuk-header-text;
-  background: $govuk-header-background;
+  // @include govuk-media-query($media-type: print) {
+  //   display: none;
+  // }
 }
 
-.app-header__container--full-width {
-  padding: 0 govuk-spacing(3);
-  border-color: $govuk-header-border-color;
-
-  .app-header__menu-button {
-    right: govuk-spacing(3);
-  }
-}
-
-.app-header__container--with-border {
-  margin-bottom: -$govuk-header-border-width;
-  border-bottom: $govuk-header-border-width solid $govuk-header-border-color;
+.app-header__content {
+  flex-direction: row;
+  display: flex;
+  align-self: stretch;
 }
 
 .app-header__container {
-  @include govuk-clearfix;
-  position: relative;
-  padding-top: govuk-spacing(2);
-}
+  max-width: $govuk-page-width;
+  margin-right: govuk-spacing(3);
+  margin-left: govuk-spacing(3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-.app-header__logotype {
-  margin-right: govuk-spacing(1);
+  @media (min-width: 40.0625em) {
+    margin-right: govuk-spacing(6);
+    margin-left: govuk-spacing(6);
+  }
+
+  @supports (margin: Max(Calc(0px))) {
+    margin-right: Max(
+      govuk-spacing(3),
+      Calc(govuk-spacing(3) + #{env(safe-area-inset-right)})
+    );
+    margin-left: Max(
+      govuk-spacing(3),
+      Calc(govuk-spacing(3) + #{env(safe-area-inset-left)})
+    );
+
+    @media (min-width: 40.0625em) {
+      margin-right: Max(
+        govuk-spacing(6),
+        Calc(govuk-spacing(3) + #{env(safe-area-inset-right)})
+      );
+      margin-left: Max(
+        govuk-spacing(6),
+        Calc(govuk-spacing(3) + #{env(safe-area-inset-left)})
+      );
+    }
+  }
+
+  @media (min-width: 1230px) {
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 .app-header__logotype-crest {
-  margin-right: 1px;
-  fill: currentColor;
-  vertical-align: middle;
+  margin-right: govuk-spacing(2);
+  position: relative;
+  top: -2px;
+  fill: $govuk-header-crest;
 }
 
-.app-header__logotype-crest-fallback-image {
-  width: 42px;
-  height: 35px;
-  border: 0;
-  vertical-align: middle;
+.app-header__logo {
+  padding-right: govuk-spacing(3);
+  display: flex;
+  align-items: center;
 }
 
-.app-header__product-name {
-  @include govuk-font($size: 24);
-  display: inline-table;
+.app-header__logotype {
+  margin-right: govuk-spacing(2);
+  @include govuk-font($size: 24, $weight: bold);
+  display: flex;
+  align-items: center;
 }
 
 .app-header__link {
-  text-decoration: none;
+  @include govuk-font($size: 19);
 
   &:link,
-  &:visited {
+  &:visited,
+  &:active {
     color: $govuk-header-link;
+    text-decoration: none;
   }
 
   &:hover {
     text-decoration: underline;
   }
 
-  // When focussed, the text colour needs to be darker to ensure that colour
-  // contrast is still acceptable
   &:focus {
     @include govuk-focused-text;
-  }
 
-  // alphagov/govuk_template includes a specific a:link:focus selector
-  // designed to make unvisited links a slightly darker blue when focussed, so
-  // we need to override the text colour for that combination of selectors.
-  @include govuk-compatibility(govuk_template) {
-    &:link:focus {
-      @include govuk-text-colour;
+    svg {
+      fill: currentColor;
     }
   }
 }
 
-.app-header__link--homepage {
-  // Font size needs to be set on the link so that the box sizing is correct
-  // in Firefox
-  @include govuk-font($size: false, $weight: bold);
+.app-header__link-sub-text {
+  @include govuk-font($size: 16);
+  display: none;
 
-  display: inline;
-  font-size: 30px; // We don't have a mixin that produces 30px font size
-  line-height: 1;
+  @media (min-width: 40.0625em) {
+    display: block;
+  }
+}
 
-  @include mq ($from: desktop) {
+.app-header__product-name {
+  display: none;
+  @include govuk-font($size: 24);
+
+  @media (min-width: 48.0625em) {
     display: inline-block;
   }
 
-  &:link,
-  &:visited {
-    text-decoration: none;
-  }
-
-  &:hover,
-  &:active {
-    // Negate the added border
-    margin-bottom: -1px;
-    // Omitting colour will use default value of currentColor – if we
-    // specified currentColor explicitly IE8 would ignore this rule.
-    border-bottom: 1px solid;
-  }
-
-  // Remove any borders that show when focused and hovered.
-  &:focus {
-    margin-bottom: 0;
-    border-bottom: 0;
-  }
-}
-
-.app-header__link--service-name {
-  display: inline-block;
-  margin-bottom: govuk-spacing(2);
-  @include govuk-font($size: 24, $weight: bold);
-}
-
-.app-header__logo,
-.app-header__content {
-  box-sizing: border-box;
-}
-
-.app-header__logo {
-  padding-bottom: govuk-spacing(2);
-  padding-right: govuk-spacing(9);
-
-  @include mq ($from: desktop) {
-    width: 50%;
-    padding-right: $govuk-gutter-half;
-    float: left;
-    vertical-align: top;
-  }
-}
-
-.app-header__content {
-  @include mq ($from: desktop) {
-    width: 50%;
-    padding-left: $govuk-gutter-half;
-    float: left;
-  }
-}
-
-.app-header__menu-button {
-  @include govuk-font($size: 16);
-  display: none;
-  position: absolute;
-  top: govuk-spacing(4);
-  right: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  color: $govuk-header-link;
-  background: none;
-
-  &:focus {
-    background-color: $govuk-focus-colour;
-    box-shadow: 0 -2px $govuk-focus-colour, 0 4px $govuk-focus-text-colour;
-    color: $govuk-focus-text-colour;
-    outline: 3px solid transparent;
-  }
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &::after {
-    @include govuk-shape-arrow($direction: down, $base: 10px, $display: inline-block);
-    content: "";
-    margin-left: govuk-spacing(1);
-  }
-
-  @include mq ($from: tablet) {
-    top: govuk-spacing(3);
-  }
-}
-
-.app-header__menu-button--open {
-  &::after {
-    @include govuk-shape-arrow($direction: up, $base: 10px, $display: inline-block);
+  @include govuk-media-query($media-type: print) {
+    display: inline-block;
   }
 }
 
 .app-header__navigation {
-  @include govuk-responsive-margin(2, "bottom");
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  list-style: none;
   margin: 0;
   padding: 0;
-  list-style: none;
 
-  @include mq ($from: desktop) {
-    float: right;
-  }
-}
-
-.js-enabled {
-  .app-header__menu-button {
-    display: block;
-    @include mq ($from: desktop) {
-      display: none;
-    }
+  @media (min-width: 40.0625em) {
+    flex-direction: row;
+    align-items: center;
   }
 
-  .app-header__navigation {
+  @include govuk-media-query($media-type: print) {
     display: none;
-    @include mq ($from: desktop) {
-      display: block;
-    }
   }
-
-  .app-header__navigation--open {
-    display: block;
-  }
-}
-
-
-.app-header__navigation--end {
-  @include mq ($from: desktop) {
-    margin: 0;
-    padding: govuk-spacing(1) 0;
-    text-align: right;
-  }
-}
-
-.app-header__navigation--no-service-name {
-  padding-top: govuk-spacing(7);
 }
 
 .app-header__navigation-item {
-  padding: govuk-spacing(2) 0;
-  border-bottom: 1px solid $govuk-header-nav-item-border-color;
+  @include govuk-font($size: 19);
+  margin-bottom: govuk-spacing(1);
+  text-align: right;
 
-  @include mq ($from: desktop) {
+  @media (min-width: 40.0625em) {
+    margin-right: govuk-spacing(4);
+    padding-right: govuk-spacing(4);
+    margin-bottom: 0;
+    border-right: 1px solid $govuk-header-link-separator;
+  }
+
+  a {
     display: inline-block;
-    margin-right: govuk-spacing(3);
-    padding: govuk-spacing(1) 0;
-    border: 0;
   }
 
-  a {
-    @include govuk-font($size: 16, $weight: bold);
-    white-space: nowrap;
+  &:last-child {
+    margin-right: 0;
+    border-right: 0;
+    padding-right: 0;
   }
 }
 
-.app-header__navigation-item--active {
-  a {
-    &:link,
-    &:hover,
-    &:visited {
-      color: $govuk-header-link-active;
-    }
+.app-header__link--service-name {
+  height: 100%;
+  align-items: center;
+  display: flex;
+  margin-right: govuk-spacing(4);
+  padding-right: govuk-spacing(4);
+  border-right: 1px solid $govuk-header-link-separator;
 
-    // When focussed, the text colour needs to be darker to ensure that colour
-    // contrast is still acceptable
-    &:focus {
-      color: $govuk-focus-text-colour;
-    }
+  &:last-child {
+    margin-right: 0;
+    border-right: 0;
+    padding-right: 0;
   }
-}
-
-.app-header__navigation-item:last-child {
-  margin-right: 0;
 }
 
 @include govuk-media-query($media-type: print) {
@@ -276,6 +192,10 @@ $govuk-header-nav-item-border-color: #2e3133;
     border-bottom-width: 0;
     color: govuk-colour("black");
     background: transparent;
+  }
+
+  .app-header__logotype-crest {
+    fill: $govuk-header-background;
   }
 
   // Hide the inverted crown when printing in browsers that don't support SVG.
@@ -295,17 +215,3 @@ $govuk-header-nav-item-border-color: #2e3133;
     }
   }
 }
-
-// Begin adjustments for font baseline offset
-// These should be removed when the font is updated with the correct baseline
-.app-header__logotype-crest,
-.app-header__logotype-crest-fallback-image {
-  position: relative;
-  top: -3px;
-}
-
-.app-header {
-  $offset: 4px;
-  padding-top: $offset;
-}
-// End adjustments
