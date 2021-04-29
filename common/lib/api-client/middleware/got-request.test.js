@@ -1,5 +1,8 @@
 const Sentry = require('@sentry/node')
+const HttpAgent = require('agentkeepalive')
 const proxyquire = require('proxyquire').noPreserveCache()
+
+const { HttpsAgent } = HttpAgent
 
 const cache = {
   set: sinon.stub(),
@@ -77,10 +80,21 @@ describe('API Client', function () {
         })
 
         it('should make request using Got library with payload', function () {
-          expect(gotStub).to.be.calledOnceWithExactly({
+          expect(gotStub).to.be.calledOnce
+          expect(gotStub.args[0][0]).to.have.all.keys({
             ...payload.req,
-            timeout: undefined,
+            agent: {},
+            timeout: 5000,
           })
+        })
+
+        it('should not set timeout', function () {
+          expect(gotStub.args[0][0].timeout).to.be.undefined
+        })
+
+        it('should use custom agent', function () {
+          expect(gotStub.args[0][0].agent.http).to.an.instanceof(HttpAgent)
+          expect(gotStub.args[0][0].agent.https).to.an.instanceof(HttpsAgent)
         })
 
         it('should return response', function () {
@@ -101,11 +115,17 @@ describe('API Client', function () {
           response = await requestMiddleware({ timeout: 50000 }).req(payload)
         })
 
-        it('should make request using Got library using timeout', function () {
-          expect(gotStub).to.be.calledOnceWithExactly({
+        it('should make request using Got library', function () {
+          expect(gotStub).to.be.calledOnce
+          expect(gotStub.args[0][0]).to.have.all.keys({
             ...payload.req,
-            timeout: 50000,
+            agent: {},
+            timeout: 5000,
           })
+        })
+
+        it('should use correct timeout', function () {
+          expect(gotStub.args[0][0].timeout).to.equal(50000)
         })
       })
 

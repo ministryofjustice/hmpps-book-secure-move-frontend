@@ -1,10 +1,13 @@
 const Sentry = require('@sentry/node')
+const HttpAgent = require('agentkeepalive')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
 const got = require('got')
 
 const cache = require('../cache')
 const clientMetrics = require('../client-metrics')
+
+const { HttpsAgent } = HttpAgent
 
 function requestMiddleware({
   cacheExpiry = 60,
@@ -30,7 +33,14 @@ function requestMiddleware({
 
       debug(`Got:${req.method}`, url)
 
-      const response = await got({ ...req, timeout })
+      const response = await got({
+        ...req,
+        agent: {
+          http: new HttpAgent(),
+          https: new HttpsAgent(),
+        },
+        timeout,
+      })
         .then(async res => {
           debug(
             `[${res.statusCode}] ${res.statusMessage}`,
