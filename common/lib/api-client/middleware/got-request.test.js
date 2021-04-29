@@ -25,6 +25,10 @@ const mockResponse = {
       fizz: 'buzz',
     },
   },
+  timings: {
+    start: 1619711962865,
+    end: 1619711962968,
+  },
 }
 
 const gotStub = sinon.stub().resolves(mockResponse)
@@ -87,7 +91,7 @@ describe('API Client', function () {
           expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
             payload.req,
             mockResponse,
-            23
+            (mockResponse.timings.end - mockResponse.timings.start) / 1000
           )
         })
       })
@@ -195,7 +199,7 @@ describe('API Client', function () {
           expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
             payload.req,
             error,
-            23
+            NaN
           )
         })
 
@@ -239,7 +243,7 @@ describe('API Client', function () {
             expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
               payload.req,
               error,
-              23
+              NaN
             )
           })
 
@@ -267,6 +271,10 @@ describe('API Client', function () {
             error.response = {
               statusCode: 502,
               statusMessage: 'Bad gateway',
+              timings: {
+                start: 1619711962865,
+                end: 1619711962968,
+              },
             }
 
             gotStub.rejects(error)
@@ -282,7 +290,7 @@ describe('API Client', function () {
             expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
               payload.req,
               error,
-              23
+              (error.response.timings.end - error.response.timings.start) / 1000
             )
           })
 

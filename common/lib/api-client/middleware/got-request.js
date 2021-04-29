@@ -3,7 +3,6 @@ const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
 const got = require('got')
 
-const timer = require('../../timer')
 const cache = require('../cache')
 const clientMetrics = require('../client-metrics')
 
@@ -31,9 +30,6 @@ function requestMiddleware({
 
       debug(req.method, url)
 
-      // start timer for metrics and logging
-      const clientTimer = timer()
-
       const response = await got({ ...req, timeout })
         .then(async res => {
           debug(
@@ -42,7 +38,7 @@ function requestMiddleware({
           )
 
           // record successful request
-          const duration = clientTimer()
+          const duration = (res.timings?.end - res.timings?.start) / 1000
           clientMetrics.recordSuccess(req, res, duration)
 
           if (cacheKey) {
@@ -61,7 +57,8 @@ function requestMiddleware({
           debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
 
           // record error
-          const duration = clientTimer()
+          const duration =
+            (errResponse.timings?.end - errResponse.timings?.start) / 1000
           clientMetrics.recordError(req, error, duration)
 
           Sentry.addBreadcrumb({
