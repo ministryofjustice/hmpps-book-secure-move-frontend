@@ -29,15 +29,20 @@ class ReferenceDataService extends BaseService {
   }
 
   getLocations({ filter, combinedData, page = 1 } = {}) {
+    console.log('getLocations')
     return this.apiClient
       .findAll('location', {
         ...filter,
-        page,
-        per_page: 100,
+        // page,
         include: locationInclude,
+        per_page: 100,
+        paginate: true,
       })
       .then(response => {
         const { data, links } = response
+
+        return sortLocations(data)
+
         const locations = combinedData
           ? flattenDeep([combinedData, ...response.data])
           : data

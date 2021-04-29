@@ -1,6 +1,8 @@
+const KeyvRedis = require('@keyv/redis')
 const JsonApi = require('devour-client')
 
 const { API, FILE_UPLOADS } = require('../../../config')
+const redis = require('../../../config/redis-store')
 
 const {
   auth,
@@ -15,6 +17,9 @@ const {
   response,
 } = require('./middleware')
 const models = require('./models')
+
+// const keyvRedis = new KeyvRedis(redis)
+const map = new Map()
 
 module.exports = function (req) {
   const instance = new JsonApi({
@@ -31,6 +36,7 @@ module.exports = function (req) {
       cacheExpiry: API.CACHE_EXPIRY,
       useRedisCache: API.USE_REDIS_CACHE,
       timeout: API.TIMEOUT,
+      cacheAdapter: map,
     })
   )
 
@@ -38,12 +44,12 @@ module.exports = function (req) {
     instance.insertMiddlewareBefore('got-request', middleware)
   }
 
-  insertRequestMiddleware(cacheKey({ apiVersion: API.VERSION }))
-  insertRequestMiddleware(
-    getCache({
-      useRedisCache: API.USE_REDIS_CACHE,
-    })
-  )
+  // insertRequestMiddleware(cacheKey({ apiVersion: API.VERSION }))
+  // insertRequestMiddleware(
+  //   getCache({
+  //     useRedisCache: API.USE_REDIS_CACHE,
+  //   })
+  // )
 
   if (API.CLIENT_ID && API.SECRET) {
     insertRequestMiddleware(auth)

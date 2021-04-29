@@ -10,6 +10,7 @@ function requestMiddleware({
   cacheExpiry = 60,
   useRedisCache = false,
   timeout,
+  cacheAdapter,
 } = {}) {
   return {
     name: 'got-request',
@@ -28,9 +29,20 @@ function requestMiddleware({
         `${urlObj.pathname}${searchString ? `?${searchString}` : ''}`
       )
 
+      // let testResponse = await got('https://sindresorhus.com', {
+      //   cache: cacheAdapter,
+      // })
+      // console.log(testResponse.isFromCache)
+
+      // testResponse = await got('https://sindresorhus.com', {
+      //   cache: cacheAdapter,
+      // })
+      // console.log(testResponse.isFromCache)
+
       debug(req.method, url)
 
-      const response = await got({ ...req, timeout })
+      const response = await await got.paginate
+        .all({ ...req, cache: cacheAdapter, timeout })
         .then(async res => {
           debug(
             `[${res.statusCode}] ${res.statusMessage}`,
@@ -41,20 +53,20 @@ function requestMiddleware({
           const duration = (res.timings?.end - res.timings?.start) / 1000
           clientMetrics.recordSuccess(req, res, duration)
 
-          if (cacheKey) {
-            cacheDebug('SAVING', cacheKey, res.body)
-            await cache.set(cacheKey, res.body, cacheExpiry, useRedisCache)
-          }
+          //   // if (cacheKey) {
+          //   //   cacheDebug('SAVING', cacheKey, res.body)
+          //   //   await cache.set(cacheKey, res.body, cacheExpiry, useRedisCache)
+          //   // }
 
           return res
         })
         .catch(error => {
           const { response: errResponse = {}, request: errRequest = {} } = error
-          const text = errResponse.statusMessage || error.message
+          const message = errResponse.statusMessage || error.message
           const status =
             error.code === 'ECONNABORTED' ? 408 : errResponse.statusCode || 500
 
-          debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
+          debug(`[${status}] ${message}`, `(${req.method} ${url})`, error)
 
           // record error
           const duration =
@@ -76,6 +88,8 @@ function requestMiddleware({
 
           throw error
         })
+
+      // console.log(response.isFromCache, url)
 
       response.req = req
       return response
