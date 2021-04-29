@@ -13,6 +13,7 @@ function requestMiddleware({
   cacheExpiry = 60,
   useRedisCache = false,
   timeout,
+  cacheAdapter,
 } = {}) {
   return {
     name: 'got-request',
@@ -31,21 +32,33 @@ function requestMiddleware({
         `${urlObj.pathname}${searchString ? `?${searchString}` : ''}`
       )
 
+      // let testResponse = await got('https://sindresorhus.com', {
+      //   cache: cacheAdapter,
+      // })
+      // console.log(testResponse.isFromCache)
+
+      // testResponse = await got('https://sindresorhus.com', {
+      //   cache: cacheAdapter,
+      // })
+      // console.log(testResponse.isFromCache)
+
       debug(`Got:${req.method}`, url)
 
-      const response = await got({
-        ...req,
-        agent: {
-          http: new HttpAgent(),
-          https: new HttpsAgent(),
-        },
-        retry: {
-          limit: 1,
-          methods: ['GET'],
-          statusCodes: [502, 504],
-        },
-        timeout,
-      })
+      const response = await await got.paginate
+        .all({
+          ...req,
+          cache: cacheAdapter,
+          agent: {
+            http: new HttpAgent(),
+            https: new HttpsAgent(),
+          },
+          retry: {
+            limit: 1,
+            methods: ['GET'],
+            statusCodes: [502, 504],
+          },
+          timeout,
+        })
         .then(async res => {
           debug(
             `[${res.statusCode}] ${res.statusMessage}`,
@@ -58,10 +71,10 @@ function requestMiddleware({
             clientMetrics.recordSuccess(req, res, duration)
           }
 
-          if (cacheKey) {
-            cacheDebug('SAVING', cacheKey, res.body)
-            await cache.set(cacheKey, res.body, cacheExpiry, useRedisCache)
-          }
+          //   // if (cacheKey) {
+          //   //   cacheDebug('SAVING', cacheKey, res.body)
+          //   //   await cache.set(cacheKey, res.body, cacheExpiry, useRedisCache)
+          //   // }
 
           return res
         })
@@ -72,7 +85,7 @@ function requestMiddleware({
           const text = statusMessage || error.message
           const status = error.code === 'ETIMEDOUT' ? 408 : statusCode || 500
 
-          debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
+          debug(`[${status}] ${message}`, `(${req.method} ${url})`, error)
 
           // TODO: Remove once we've figured out what timing is missing
           Sentry.setContext('Timings', {
@@ -94,6 +107,8 @@ function requestMiddleware({
 
           throw error
         })
+
+      // console.log(response.isFromCache, url)
 
       response.req = req
       return response

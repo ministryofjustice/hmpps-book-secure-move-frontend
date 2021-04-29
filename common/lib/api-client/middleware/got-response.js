@@ -14,6 +14,12 @@ module.exports = {
     const { jsonApi, res, req } = payload
     const { data, errors, meta, links, included } = res.body || {}
 
+    if (isArray(res)) {
+      return {
+        data: res,
+      }
+    }
+
     let deserializedData = null
 
     if (res.status !== 204 && needsDeserialization(req.method)) {
