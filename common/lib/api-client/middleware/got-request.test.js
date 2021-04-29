@@ -25,6 +25,10 @@ const mockResponse = {
       fizz: 'buzz',
     },
   },
+  timings: {
+    start: 1619711962865,
+    end: 1619711962968,
+  },
 }
 
 const gotStub = sinon.stub().resolves(mockResponse)
@@ -87,7 +91,7 @@ describe('API Client', function () {
           expect(clientMetrics.recordSuccess).to.be.calledOnceWithExactly(
             payload.req,
             mockResponse,
-            23
+            (mockResponse.timings.end - mockResponse.timings.start) / 1000
           )
         })
       })
@@ -102,6 +106,20 @@ describe('API Client', function () {
             ...payload.req,
             timeout: 50000,
           })
+        })
+      })
+
+      context('without response timing', function () {
+        beforeEach(async function () {
+          gotStub.resolves({
+            ...mockResponse,
+            timings: undefined,
+          })
+          response = await requestMiddleware().req(payload)
+        })
+
+        it('should not record metrics for the call', function () {
+          expect(clientMetrics.recordSuccess).not.to.be.called
         })
       })
     })
@@ -191,12 +209,8 @@ describe('API Client', function () {
             })
         })
 
-        it('should stop recording metrics for the call', function () {
-          expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
-            payload.req,
-            error,
-            23
-          )
+        it('should not record metrics', function () {
+          expect(clientMetrics.recordError).not.to.be.called
         })
 
         it('should add a Sentry breadcrumb', function () {
@@ -218,13 +232,21 @@ describe('API Client', function () {
       })
 
       context('with response', function () {
+        beforeEach(function () {
+          error = new Error()
+          error.response = {
+            timings: {
+              start: 1619711962865,
+              end: 1619711962968,
+            },
+          }
+        })
+
         context('with aborted connection', function () {
           beforeEach(async function () {
-            error = new Error()
             error.code = 'ECONNABORTED'
-            error.response = {
-              requestUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
-            }
+            error.response.requestUrl =
+              'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz'
 
             gotStub.rejects(error)
 
@@ -239,7 +261,7 @@ describe('API Client', function () {
             expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
               payload.req,
               error,
-              23
+              (error.response.timings.end - error.response.timings.start) / 1000
             )
           })
 
@@ -263,11 +285,8 @@ describe('API Client', function () {
 
         context('with status code', function () {
           beforeEach(async function () {
-            error = new Error()
-            error.response = {
-              statusCode: 502,
-              statusMessage: 'Bad gateway',
-            }
+            error.response.statusCode = 502
+            error.response.statusMessage = 'Bad gateway'
 
             gotStub.rejects(error)
 
@@ -282,7 +301,7 @@ describe('API Client', function () {
             expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
               payload.req,
               error,
-              23
+              (error.response.timings.end - error.response.timings.start) / 1000
             )
           })
 
