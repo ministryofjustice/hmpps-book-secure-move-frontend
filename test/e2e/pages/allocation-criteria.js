@@ -63,7 +63,7 @@ class AllocationCriteriaPage extends Page {
       complexCases: {
         selector: this.fields.complexCases,
         type: 'checkbox',
-        value: Array(faker.random.number(4))
+        value: Array(faker.datatype.number(4))
           .fill()
           .map((v, i) => i),
       },

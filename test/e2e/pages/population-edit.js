@@ -26,7 +26,7 @@ class PopulationEditPage extends Page {
   }
 
   async fill() {
-    const operationalCapacityValue = faker.random.number({
+    const operationalCapacityValue = faker.datatype.number({
       min: 950,
       max: 1000,
     })
@@ -39,32 +39,32 @@ class PopulationEditPage extends Page {
       usableCapacity: {
         selector: this.fields.usableCapacity,
         value: (
-          operationalCapacityValue - faker.random.number({ max: 10 })
+          operationalCapacityValue - faker.datatype.number({ max: 10 })
         ).toString(),
       },
       unlock: {
         selector: this.fields.unlock,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
       bedwatch: {
         selector: this.fields.bedwatch,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
       overnightsIn: {
         selector: this.fields.overnightsIn,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
       overnightsOut: {
         selector: this.fields.overnightsOut,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
       outOfAreaCourts: {
         selector: this.fields.outOfAreaCourts,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
       discharges: {
         selector: this.fields.discharges,
-        value: faker.random.number({ max: 10 }).toString(),
+        value: faker.datatype.number({ max: 10 }).toString(),
       },
     }
 
