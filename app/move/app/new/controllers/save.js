@@ -1,5 +1,13 @@
 const Sentry = require('@sentry/node')
-const { get, omit, capitalize, flatten, values, some } = require('lodash')
+const {
+  get,
+  omit,
+  capitalize,
+  flatten,
+  values,
+  some,
+  snakeCase,
+} = require('lodash')
 
 const { uuidRegex } = require('../../../../../common/helpers/url')
 const analytics = require('../../../../../common/lib/analytics')
@@ -32,6 +40,10 @@ class SaveController extends CreateBaseController {
         'documents',
       ])
       const move = await req.services.move.create(data)
+
+      // set before promises so it can be used for error handling
+      req.sessionModel.set('move', move)
+
       const promises = [
         // create hearings
         ...(data.court_hearings || []).map(hearing =>
@@ -55,17 +67,32 @@ class SaveController extends CreateBaseController {
           })
         )
       } else {
-        Sentry.withScope(scope => {
-          scope.setExtra('Move ID', move.id)
-          scope.setExtra('Profile ID', data.profile?.id)
-          scope.setExtra('Person ID', data.person?.id)
-          Sentry.captureException(new Error('No Person ID supplied'))
+        const journeyName = req.form?.options?.journeyName || ''
+        const normalisedJourneyName = snakeCase(
+          journeyName.replace(new RegExp(uuidRegex, 'g'), '')
+        )
+
+        Sentry.setContext('Move data', {
+          'Move ID': move.id,
+          'Person ID': move.person?.id,
+          'Profile ID': move.profile?.id,
+          'Profile -> Person ID': move.profile?.person?.id,
         })
+        Sentry.setContext('Session data', {
+          'Person ID': data.person?.id,
+          'Profile ID': data.profile?.id,
+          'Profile -> Person ID': data.profile?.person?.id,
+        })
+        Sentry.setContext('Journey', {
+          'Original name': journeyName,
+          'Normalised name': normalisedJourneyName,
+          history: JSON.stringify(req.journeyModel?.get('history')),
+          lastVisited: req.journeyModel?.get('lastVisited'),
+        })
+        Sentry.captureException(new Error('No Person ID supplied'))
       }
 
       await Promise.all(promises)
-
-      req.sessionModel.set('move', move)
 
       next()
     } catch (error) {
@@ -145,6 +172,8 @@ class SaveController extends CreateBaseController {
   }
 
   errorHandler(err, req, res, next) {
+    const move = req.sessionModel.get('move')
+    const sessionData = req.sessionModel.toJSON()
     const apiErrorCode = get(err, 'errors[0].code')
 
     if (err.statusCode === 422 && apiErrorCode === 'taken') {
@@ -167,6 +196,18 @@ class SaveController extends CreateBaseController {
         }),
       })
     }
+
+    Sentry.setContext('Move data', {
+      'Move ID': move.id,
+      'Person ID': move.person?.id,
+      'Profile ID': move.profile?.id,
+      'Profile -> Person ID': move.profile?.person?.id,
+    })
+    Sentry.setContext('Session data', {
+      'Person ID': sessionData.person?.id,
+      'Profile ID': sessionData.profile?.id,
+      'Profile -> Person ID': sessionData.profile?.person?.id,
+    })
 
     super.errorHandler(err, req, res, next)
   }
