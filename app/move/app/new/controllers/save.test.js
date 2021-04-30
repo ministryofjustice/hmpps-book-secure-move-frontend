@@ -24,6 +24,13 @@ const mockMove = {
     id: '3333',
     _fullname: 'Full name',
   },
+  profile: {
+    id: '5555',
+    person: {
+      id: '6666',
+      _fullname: 'Full name',
+    },
+  },
 }
 const mockDocuments = [
   {
@@ -92,6 +99,13 @@ describe('Move controllers', function () {
       let req, nextSpy, courtHearingService, profileService, moveService
 
       beforeEach(function () {
+        const journeyGetStub = sinon.stub()
+        journeyGetStub
+          .withArgs('history')
+          .returns([{ foo: 'bar' }, { fizz: 'buzz' }])
+          .withArgs('lastVisited')
+          .returns('/foo')
+
         sinon
           .stub(BaseController.prototype, 'requiresYouthAssessment')
           .returns(true)
@@ -108,7 +122,11 @@ describe('Move controllers', function () {
         req = {
           form: {
             values: {},
+            options: {
+              journeyName: 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
+            },
           },
+          journeyModel: { get: journeyGetStub },
           sessionModel: {
             set: sinon.stub(),
             toJSON: () => mockValues,
@@ -294,8 +312,7 @@ describe('Move controllers', function () {
           })
         })
 
-        context('without person ID on profile', function () {
-          let mockScope
+        context('without person ID on profile person', function () {
           const mockValuesWithoutProfile = {
             ...mockValues,
             profile: {
@@ -305,19 +322,12 @@ describe('Move controllers', function () {
           }
 
           beforeEach(async function () {
-            mockScope = {
-              setExtra: sinon.stub(),
-              setLevel: sinon.stub(),
-            }
             sinon.stub(Sentry, 'captureException')
-            sinon.stub(Sentry, 'withScope')
+            sinon.stub(Sentry, 'setContext')
 
             req.sessionModel.toJSON = () => mockValuesWithoutProfile
 
             await controller.saveValues(req, {}, nextSpy)
-
-            // run callback with mock scope
-            Sentry.withScope.args[0][0](mockScope)
           })
 
           it('should filter out correct properties', function () {
@@ -337,37 +347,48 @@ describe('Move controllers', function () {
             expect(profileService.update).not.to.be.called
           })
 
-          it('should call sentry with scope', function () {
-            expect(Sentry.withScope).to.be.calledOnce
-          })
-
           it('should send warning to sentry', function () {
             expect(Sentry.captureException).to.be.calledOnce
           })
 
-          it('should send extra data to sentry', function () {
-            expect(mockScope.setExtra).to.be.calledWithExactly(
-              'Move ID',
-              '4444'
-            )
-            expect(mockScope.setExtra).to.be.calledWithExactly(
-              'Profile ID',
-              '12345'
-            )
-            expect(mockScope.setExtra).to.be.calledWithExactly(
-              'Person ID',
-              mockValues.person.id
-            )
+          it('should send move data to sentry', function () {
+            expect(Sentry.setContext).to.be.calledWithExactly('Move data', {
+              'Move ID': mockMove.id,
+              'Person ID': mockMove.person.id,
+              'Profile ID': mockMove.profile.id,
+              'Profile -> Person ID': mockMove.profile.person.id,
+            })
+          })
+
+          it('should send session data to sentry', function () {
+            expect(Sentry.setContext).to.be.calledWithExactly('Session data', {
+              'Person ID': mockValuesWithoutProfile.person.id,
+              'Profile ID': mockValuesWithoutProfile.profile.id,
+              'Profile -> Person ID': undefined,
+            })
+          })
+
+          it('should send journey data to sentry', function () {
+            expect(Sentry.setContext).to.be.calledWithExactly('Journey', {
+              'Original name': req.form.options.journeyName,
+              'Normalised name': 'mock_journey',
+              history: '[{"foo":"bar"},{"fizz":"buzz"}]',
+              lastVisited: '/foo',
+            })
           })
         })
       })
 
-      context('when save fails', function () {
+      context('when move save fails', function () {
         const errorMock = new Error('Problem')
 
         beforeEach(async function () {
           req.services.move.create = sinon.stub().throws(errorMock)
           await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should not save move to session model', function () {
+          expect(req.sessionModel.set).not.to.be.called
         })
 
         it('should call next with the error', function () {
@@ -380,6 +401,27 @@ describe('Move controllers', function () {
 
         it('should not save court hearings', function () {
           expect(courtHearingService.create).not.to.be.called
+        })
+      })
+
+      context('when profile update fails', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function () {
+          profileService.update.throws(errorMock)
+          await controller.saveValues(req, {}, nextSpy)
+        })
+
+        it('should save move to session model', function () {
+          expect(req.sessionModel.set).to.be.calledWith('move', mockMove)
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledWith(errorMock)
+        })
+
+        it('should call next once', function () {
+          expect(nextSpy).to.be.calledOnce
         })
       })
     })
@@ -945,6 +987,7 @@ describe('Move controllers', function () {
       let reqMock, resMock, errorMock, nextSpy
 
       beforeEach(function () {
+        sinon.stub(Sentry, 'setContext')
         sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
         sinon.stub(BaseController.prototype, 'errorHandler')
         nextSpy = sinon.spy()
@@ -955,11 +998,20 @@ describe('Move controllers', function () {
               date: '2020-10-10',
               person: {
                 _fullname: 'DOE, JOHN',
+                id: '105e849c-b4d6-47dd-b697-779c0d7109bf',
+              },
+              profile: {
+                id: '4f7bca27-c34e-4c82-806b-80dc3f77ae21',
+                person: {
+                  id: '3b1ec8e4-74bc-4781-8e19-09964cb49334',
+                  _fullname: 'DOE, JOHN',
+                },
               },
               to_location: {
                 title: 'BRIXTON',
               },
             }),
+            get: sinon.stub().withArgs('move').returns(mockMove),
           },
           t: sinon.stub().returnsArg(0),
         }
@@ -972,6 +1024,26 @@ describe('Move controllers', function () {
         beforeEach(function () {
           errorMock.statusCode = 500
           controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+        })
+
+        it('should send extra data to Sentry', function () {
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Move data',
+            {
+              'Move ID': mockMove.id,
+              'Person ID': mockMove.person.id,
+              'Profile ID': mockMove.profile.id,
+              'Profile -> Person ID': mockMove.profile.person.id,
+            }
+          )
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Session data',
+            {
+              'Person ID': '105e849c-b4d6-47dd-b697-779c0d7109bf',
+              'Profile ID': '4f7bca27-c34e-4c82-806b-80dc3f77ae21',
+              'Profile -> Person ID': '3b1ec8e4-74bc-4781-8e19-09964cb49334',
+            }
+          )
         })
 
         it('should call parent error handler', function () {
@@ -1009,6 +1081,10 @@ describe('Move controllers', function () {
                 },
               ]
               controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+            })
+
+            it('should not send extra data to Sentry', function () {
+              expect(Sentry.setContext).not.to.have.been.called
             })
 
             it('should not call parent error handler', function () {
@@ -1076,6 +1152,10 @@ describe('Move controllers', function () {
               controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
             })
 
+            it('should not send extra data to Sentry', function () {
+              expect(Sentry.setContext).not.to.have.been.called
+            })
+
             it('should not call parent error handler', function () {
               expect(
                 BaseController.prototype.errorHandler
@@ -1129,6 +1209,26 @@ describe('Move controllers', function () {
         context('with any other error code', function () {
           beforeEach(function () {
             controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+          })
+
+          it('should send extra data to Sentry', function () {
+            expect(Sentry.setContext).to.have.been.calledWithExactly(
+              'Move data',
+              {
+                'Move ID': mockMove.id,
+                'Person ID': mockMove.person.id,
+                'Profile ID': mockMove.profile.id,
+                'Profile -> Person ID': mockMove.profile.person.id,
+              }
+            )
+            expect(Sentry.setContext).to.have.been.calledWithExactly(
+              'Session data',
+              {
+                'Person ID': '105e849c-b4d6-47dd-b697-779c0d7109bf',
+                'Profile ID': '4f7bca27-c34e-4c82-806b-80dc3f77ae21',
+                'Profile -> Person ID': '3b1ec8e4-74bc-4781-8e19-09964cb49334',
+              }
+            )
           })
 
           it('should call parent error handler', function () {
