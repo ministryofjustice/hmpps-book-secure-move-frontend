@@ -68,7 +68,9 @@ describe('Presenters', function () {
       })
 
       it('should call card presenter', function () {
-        expect(moveToCardComponentStub).to.be.calledWithExactly()
+        expect(moveToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
+        })
       })
     })
 

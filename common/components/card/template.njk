@@ -42,7 +42,7 @@
           {% if item.label and (item.html or item.text) %}
             <div class="app-card__meta-list-item">
               <dt class="app-card__meta-list-key{% if item.hideLabel %} govuk-visually-hidden{% endif %}">
-                {{ item.label }}
+                {{ item.label.html | safe if item.label.html else item.label.text }}
               </dt>
               <dd class="app-card__meta-list-value">
                 {{ item.html | safe if item.html else item.text }}

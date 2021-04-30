@@ -52,9 +52,18 @@ params:
         description: Array of meta item objects.
         params:
           - name: label
-            type: string
+            type: object
             required: true
             description: Label to use for meta item.
+            params:
+              - name: text
+                type: string
+                required: false
+                description: Text label to use for the meta item.
+              - name: html
+                type: string
+                required: false
+                description: HTML label to use for the meta item.
           - name: hideLabel
             type: boolean
             required: false
@@ -111,11 +120,14 @@ examples:
         text: Card with meta data
       meta:
         items:
-        - label: Date of birth
+        - label:
+            text: Date of birth
           text: 10/10/1970
-        - label: HTML
+        - label:
+            text: HTML
           html: <em>Foo</em>
-        - label: Escaped HTML
+        - label: 
+            text: Escaped HTML
           text: <em>Bar</em>
   - name: with tags
     data:
@@ -147,11 +159,14 @@ examples:
         classes: app-tag--inactive
       meta:
         items:
-          - label: Date of birth
+          - label:
+              text: Date of birth
             text: 10/10/1970
-          - label: Gender
+          - label:
+              text: Gender
             html: Female
-          - label: Location
+          - label:
+              text: Location
             text: C1203A
       tags:
         items:

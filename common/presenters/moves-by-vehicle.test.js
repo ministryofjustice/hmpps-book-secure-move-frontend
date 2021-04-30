@@ -315,6 +315,7 @@ describe('Presenters', function () {
           expect(moveToCardComponentStub).to.be.calledWithExactly({
             showToLocation: true,
             showFromLocation: false,
+            locationType: undefined,
           })
         })
 
@@ -346,6 +347,7 @@ describe('Presenters', function () {
           expect(moveToCardComponentStub).to.be.calledWithExactly({
             showToLocation: false,
             showFromLocation: true,
+            locationType: undefined,
           })
         })
 
@@ -373,6 +375,7 @@ describe('Presenters', function () {
           expect(moveToCardComponentStub).to.be.calledWithExactly({
             showToLocation: true,
             showFromLocation: true,
+            locationType: undefined,
           })
         })
       })

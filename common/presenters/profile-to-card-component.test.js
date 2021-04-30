@@ -19,6 +19,8 @@ const mockProfile = {
     gender: {
       title: 'Male',
     },
+    prison_number: 'ABC123',
+    police_national_computer: '321CBA',
   },
 }
 
@@ -74,11 +76,11 @@ describe('Presenters', function () {
             expect(transformedResponse.meta).to.deep.equal({
               items: [
                 {
-                  label: '__translated__',
-                  text: '__translated__',
+                  label: { text: '__translated__' },
+                  html: '__translated__',
                 },
                 {
-                  label: '__translated__',
+                  label: { text: '__translated__' },
                   text: mockProfile.person.gender.title,
                 },
               ],
@@ -187,7 +189,7 @@ describe('Presenters', function () {
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: mockProfile.person.gender.title,
               },
             ],
@@ -400,11 +402,11 @@ describe('Presenters', function () {
           transformedResponse = profileToCardComponent({
             meta: [
               {
-                label: 'Foo',
+                label: { text: 'Foo' },
                 text: 'Bar',
               },
               {
-                label: 'Fizz',
+                label: { text: 'Fizz' },
                 text: 'Buzz',
               },
             ],
@@ -417,22 +419,97 @@ describe('Presenters', function () {
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
-                label: 'Foo',
+                label: { text: 'Foo' },
                 text: 'Bar',
               },
               {
-                label: 'Fizz',
+                label: { text: 'Fizz' },
                 text: 'Buzz',
               },
               {
-                label: '__translated__',
-                text: '__translated__',
+                label: { text: '__translated__' },
+                html: '__translated__',
               },
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: 'Male',
               },
             ],
+          })
+        })
+      })
+    })
+    ;[
+      {
+        property: 'prison_number',
+        locationType: 'prison',
+        meta: { label: { text: '__translated__' }, text: 'ABC123' },
+        undefinedMeta: {
+          label: { text: '__translated__' },
+          text: '__translated__',
+        },
+      },
+      {
+        property: 'police_national_computer',
+        locationType: 'other',
+        meta: { label: { html: '__translated__' }, text: '321CBA' },
+        undefinedMeta: {
+          label: { html: '__translated__' },
+          text: '__translated__',
+        },
+      },
+    ].forEach(({ property, locationType, meta, undefinedMeta }) => {
+      context(`when locationType is "${locationType}"`, function () {
+        context(`when profile.${property} is populated`, function () {
+          beforeEach(function () {
+            transformedResponse = profileToCardComponent({ locationType })(
+              mockProfile
+            )
+          })
+
+          it('adds the correct meta items', function () {
+            expect(transformedResponse).to.have.property('meta')
+            expect(transformedResponse.meta.items.length).to.equal(3)
+            expect(transformedResponse.meta).to.deep.equal({
+              items: [
+                meta,
+                {
+                  label: { text: '__translated__' },
+                  html: '__translated__',
+                },
+                {
+                  label: { text: '__translated__' },
+                  text: 'Male',
+                },
+              ],
+            })
+          })
+        })
+
+        context(`when profile.${property} is undefined`, function () {
+          beforeEach(function () {
+            mockProfile.person[property] = undefined
+            transformedResponse = profileToCardComponent({ locationType })(
+              mockProfile
+            )
+          })
+
+          it('adds the correct meta items', function () {
+            expect(transformedResponse).to.have.property('meta')
+            expect(transformedResponse.meta.items.length).to.equal(3)
+            expect(transformedResponse.meta).to.deep.equal({
+              items: [
+                undefinedMeta,
+                {
+                  label: { text: '__translated__' },
+                  html: '__translated__',
+                },
+                {
+                  label: { text: '__translated__' },
+                  text: 'Male',
+                },
+              ],
+            })
           })
         })
       })

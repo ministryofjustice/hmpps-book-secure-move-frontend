@@ -46,7 +46,7 @@ $_image-width: 80px;
   display: inline-block;
   margin-bottom: govuk-spacing(2);
 
-  @include mq ($from: desktop) {
+  @include mq($from: desktop) {
     float: right;
     margin-bottom: 0;
     margin-left: govuk-spacing(3);
@@ -89,9 +89,9 @@ $_image-width: 80px;
   width: 100%;
   margin: govuk-spacing(2) 0 0;
 
-  @include mq ($from: desktop) {
+  @include mq($from: desktop) {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: govuk-spacing(3);
   }
 }
@@ -100,7 +100,7 @@ $_image-width: 80px;
   & + & {
     margin-top: govuk-spacing(2);
 
-    @include mq ($from: desktop) {
+    @include mq($from: desktop) {
       margin-top: 0;
     }
   }

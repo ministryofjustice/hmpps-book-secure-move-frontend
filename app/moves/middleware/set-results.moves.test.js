@@ -37,7 +37,9 @@ describe('Moves middleware', function () {
             locationId: '5555',
           },
         },
-        location: '#location',
+        location: {
+          location_type: 'prison',
+        },
         services: {
           move: moveService,
         },
@@ -87,7 +89,8 @@ describe('Moves middleware', function () {
         it('should call movesByLocation presenter without locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
-            undefined
+            undefined,
+            'prison'
           )
         })
 
@@ -108,7 +111,8 @@ describe('Moves middleware', function () {
         it('should call movesByLocation presenter with locationKey', function () {
           expect(presenters.movesByLocation).to.be.calledOnceWithExactly(
             mockActiveMoves,
-            mockLocationKey
+            mockLocationKey,
+            'prison'
           )
         })
 
@@ -132,6 +136,7 @@ describe('Moves middleware', function () {
               moves: mockActiveMoves,
               context: 'outgoing',
               showLocations: false,
+              locationType: 'prison',
             })
           })
 
@@ -149,6 +154,7 @@ describe('Moves middleware', function () {
               moves: mockActiveMoves,
               context: 'incoming',
               showLocations: false,
+              locationType: 'prison',
             })
           })
         })
