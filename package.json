@@ -151,7 +151,7 @@
     "timeago.js": "4.0.2",
     "uuid": "8.3.2",
     "winston": "3.3.3",
-    "yargs": "16.2.0"
+    "yargs": "17.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
