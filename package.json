@@ -95,7 +95,7 @@
     "@sentry/node": "6.3.4",
     "@sentry/tracing": "6.3.5",
     "accessible-autocomplete": "2.0.3",
-    "audit-ci": "3.2.0",
+    "audit-ci": "4.0.0",
     "axios": "0.21.1",
     "axios-debug-log": "0.8.2",
     "bluebird": "3.7.2",
