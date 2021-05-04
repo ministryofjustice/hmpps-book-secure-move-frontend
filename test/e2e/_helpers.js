@@ -117,9 +117,9 @@ export async function generatePerson(overrides = {}) {
       .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
       .toUpperCase(),
     prisonNumber: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
-    criminalRecordsOffice: faker.fake('CRO/{{random.number}}'),
-    nicheReference: faker.fake('NI/{{random.number}}'),
-    athenaReference: faker.fake('AT/{{random.number}}'),
+    criminalRecordsOffice: faker.fake('CRO/{{datatype.number}}'),
+    nicheReference: faker.fake('NI/{{datatype.number}}'),
+    athenaReference: faker.fake('AT/{{datatype.number}}'),
     dateOfBirth: format(
       faker.date.between('01-01-1940', '01-01-1990'),
       'yyyy-MM-dd'

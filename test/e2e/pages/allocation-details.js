@@ -38,7 +38,7 @@ class AllocationDetailsPage extends Page {
     const fieldsToFill = {
       movesCount: {
         selector: this.fields.movesCount,
-        value: faker.random.number({ min: 2, max: 10 }).toString(),
+        value: faker.datatype.number({ min: 2, max: 10 }).toString(),
       },
       fromLocation: {
         value: locationValue,
