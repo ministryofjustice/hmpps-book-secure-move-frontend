@@ -23,7 +23,7 @@
     "heading": "Journey expired",
     "heading_create_a_move": "This move has been requested",
     "content": "Your journey has been completed.",
-    "content_create_a_move": "You can view upcoming moves or create a new move from the dashboard."
+    "content_create_a_move": "You can <a href=\"/move/new\">create a new move</a> or <a href=\"/\">view upcoming moves</a> from the dashboard."
   },
   "tampered_with": {
     "heading": "This form has been tampered with",
