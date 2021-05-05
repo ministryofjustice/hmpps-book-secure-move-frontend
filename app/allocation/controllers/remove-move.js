@@ -2,6 +2,25 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 
 class RemoveMoveController extends FormWizardController {
+  middlewareChecks() {
+    this.use(this.checkStatus)
+    super.middlewareChecks()
+  }
+
+  checkStatus(req, res, next) {
+    const { status: moveStatus } = req.move
+    const { id: allocationId, status: allocationStatus } = req.allocation
+
+    if (
+      !['proposed', 'requested', 'booked'].includes(moveStatus) ||
+      ['cancelled'].includes(allocationStatus)
+    ) {
+      return res.redirect(`/allocation/${allocationId}`)
+    }
+
+    next()
+  }
+
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setAdditionalLocals)

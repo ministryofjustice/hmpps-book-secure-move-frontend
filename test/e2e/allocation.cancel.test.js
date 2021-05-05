@@ -1,13 +1,15 @@
+import { ClientFunction } from 'testcafe'
+
 import { pmuUser } from './_roles'
 import { newAllocation } from './_routes'
-import { allocationJourney } from './pages/'
+import { allocationJourney, page } from './pages/'
 
 fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
 
-  const allocation = await allocationJourney.createAllocation()
+  t.ctx.allocation = await allocationJourney.createAllocation()
   const confirmationLink = allocationJourney.allocationViewPage.nodes.confirmationLink(
-    allocation.movesCount
+    t.ctx.allocation.movesCount
   )
 
   await t
@@ -27,6 +29,18 @@ test('Reason — `Made in error`', async t => {
   await allocationJourney.allocationCancelPage.checkCancellation({
     reason: filledForm.cancellationReason,
   })
+
+  const goBack = ClientFunction(() => window.history.back())
+  await goBack()
+
+  await t
+    .expect(page.getCurrentUrl())
+    .match(
+      new RegExp(`/allocation/${t.ctx.allocation.id}`),
+      'Should redirect back to allocation'
+    )
+    .expect(page.getCurrentUrl())
+    .notContains('/cancel', 'Should not display cancel journey')
 })
 
 test('Reason — `Another reason`', async t => {

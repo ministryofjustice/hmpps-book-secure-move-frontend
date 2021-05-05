@@ -3,6 +3,21 @@ const { omit } = require('lodash')
 const FormWizardController = require('../../../common/controllers/form-wizard')
 
 class CancelController extends FormWizardController {
+  middlewareChecks() {
+    this.use(this.checkStatus)
+    super.middlewareChecks()
+  }
+
+  checkStatus(req, res, next) {
+    const { id, status } = req.allocation
+
+    if (['cancelled'].includes(status)) {
+      return res.redirect(`/allocation/${id}`)
+    }
+
+    next()
+  }
+
   async successHandler(req, res, next) {
     const { id } = req.allocation
     const data = omit(req.sessionModel.toJSON(), [

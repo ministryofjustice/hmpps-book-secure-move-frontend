@@ -1,3 +1,5 @@
+const FormWizardController = require('../../../common/controllers/form-wizard')
+
 const CancelController = require('./cancel')
 
 const controller = new CancelController({ route: '/' })
@@ -5,6 +7,85 @@ const mockAllocation = {
   id: '123',
 }
 describe('Cancel controller', function () {
+  describe('#middlewareChecks()', function () {
+    beforeEach(function () {
+      sinon.stub(FormWizardController.prototype, 'middlewareChecks')
+      sinon.stub(controller, 'use')
+      sinon.stub(controller, 'checkStatus')
+
+      controller.middlewareChecks()
+    })
+
+    it('should call parent method', function () {
+      expect(FormWizardController.prototype.middlewareChecks).to.have.been
+        .calledOnce
+    })
+
+    it('should call checkStatus middleware', function () {
+      expect(controller.use.firstCall).to.have.been.calledWith(
+        controller.checkStatus
+      )
+    })
+
+    it('should call correct number of middleware', function () {
+      expect(controller.use.callCount).to.equal(1)
+    })
+  })
+
+  describe('#checkStatus()', function () {
+    let mockReq, mockRes, nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      mockReq = {
+        allocation: {
+          id: '12345',
+        },
+      }
+      mockRes = {
+        redirect: sinon.spy(),
+      }
+    })
+
+    const notAllowedStatuses = ['cancelled']
+    notAllowedStatuses.forEach(status => {
+      context(`with ${status} status`, function () {
+        beforeEach(function () {
+          mockReq.allocation.status = status
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should redirect to allocation', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly(
+            '/allocation/12345'
+          )
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+    })
+
+    const allowedStatuses = ['filled', 'unfilled']
+    allowedStatuses.forEach(status => {
+      context(`with ${status} status`, function () {
+        beforeEach(function () {
+          mockReq.allocation.status = status
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+  })
+
   describe('#successHandler()', function () {
     let req, res, nextSpy, allocationService
 
