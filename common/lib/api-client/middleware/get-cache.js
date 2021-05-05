@@ -19,6 +19,8 @@ function getCacheMiddleware({ useRedisCache = false } = {}) {
         debug('RETURNING', cacheKey, body)
         payload.res = {
           body,
+          // To support backwards compatibility with axios
+          data: body,
         }
       }
 

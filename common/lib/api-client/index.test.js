@@ -13,6 +13,9 @@ const mockConfig = {
   FILE_UPLOADS: {
     MAX_FILE_SIZE: 2000,
   },
+  FEATURE_FLAGS: {
+    GOT: true,
+  },
 }
 const mockModels = {
   withoutOptions: {
@@ -49,15 +52,18 @@ describe('Back-end API client', function () {
         auth: sinon.stub(),
         post: sinon.stub(),
         cacheKey: sinon.stub().returnsArg(0),
+        errors: sinon.stub(),
         getCache: sinon.stub().returnsArg(0),
         gotErrors: sinon.stub(),
         gotRequest: sinon.stub(),
         gotRequestTransformer: sinon.stub(),
         gotResponse: sinon.stub(),
+        request: sinon.stub(),
         requestInclude: sinon.stub(),
         requestHeaders: sinon
           .stub()
           .returns({ 'X-Test-Header': 'headervalue' }),
+        requestTimeout: sinon.stub().returnsArg(0),
       }
 
       jsonApi = proxyquire('./', {
@@ -281,6 +287,60 @@ describe('Back-end API client', function () {
           expect(
             JsonApiStub.prototype.insertMiddlewareBefore.callCount
           ).to.equal(5)
+        })
+      })
+
+      context('with Got feature disabled', function () {
+        beforeEach(function () {
+          jsonApi = proxyquire('./', {
+            'devour-client': JsonApiStub,
+            '../../../config': {
+              ...mockConfig,
+              FEATURE_FLAGS: {
+                GOT: false,
+              },
+            },
+            './models': mockModels,
+            './middleware': middlewareMock,
+          })
+
+          client = jsonApi()
+        })
+
+        it('should replace error middleware', function () {
+          expect(
+            JsonApiStub.prototype.replaceMiddleware.firstCall
+          ).to.be.calledWithExactly('errors', middlewareMock.errors)
+        })
+
+        it('should not replace response middleware', function () {
+          expect(JsonApiStub.prototype.replaceMiddleware).not.to.be.calledWith(
+            'response'
+          )
+        })
+
+        it('should replace request middleware with axios request', function () {
+          expect(
+            JsonApiStub.prototype.replaceMiddleware.getCall(2)
+          ).to.be.calledWithExactly(
+            'axios-request',
+            middlewareMock.request(mockConfig.API.CACHE_EXPIRY)
+          )
+        })
+
+        it('should not insert request transform middleware', function () {
+          expect(
+            JsonApiStub.prototype.insertMiddlewareBefore
+          ).not.to.be.calledWithExactly(
+            'got-request',
+            middlewareMock.gotRequestTransformer
+          )
+        })
+
+        it('should insert request timeout', function () {
+          expect(
+            JsonApiStub.prototype.insertMiddlewareBefore.getCall(5)
+          ).to.be.calledWithExactly('app-request', mockConfig.API.TIMEOUT)
         })
       })
     })

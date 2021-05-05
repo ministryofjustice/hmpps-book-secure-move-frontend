@@ -47,7 +47,10 @@ describe('API Client', function () {
         context('and a value has been cached', function () {
           beforeEach(async function () {
             cache.get.resolves(mockResponse)
-            expectedPayload = { ...payload, res: { body: mockResponse } }
+            expectedPayload = {
+              ...payload,
+              res: { body: mockResponse, data: mockResponse },
+            }
             middleware().req(payload)
           })
 
