@@ -1,8 +1,23 @@
 const { omit } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const presenters = require('../../../common/presenters')
 
 class CancelController extends FormWizardController {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setAdditionalLocals)
+  }
+
+  setAdditionalLocals(req, res, next) {
+    const { allocation } = req
+
+    res.locals.allocation = allocation
+    res.locals.summary = presenters.allocationToMetaListComponent(allocation)
+
+    next()
+  }
+
   middlewareChecks() {
     this.use(this.checkStatus)
     super.middlewareChecks()

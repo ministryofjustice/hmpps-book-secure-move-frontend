@@ -1,4 +1,5 @@
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const presenters = require('../../../common/presenters')
 
 const CancelController = require('./cancel')
 
@@ -83,6 +84,76 @@ describe('Cancel controller', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
+    })
+  })
+
+  describe('#middlewareLocals()', function () {
+    beforeEach(function () {
+      sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+      sinon.stub(controller, 'use')
+      sinon.stub(controller, 'setAdditionalLocals')
+
+      controller.middlewareLocals()
+    })
+
+    it('should call parent method', function () {
+      expect(FormWizardController.prototype.middlewareLocals).to.have.been
+        .calledOnce
+    })
+
+    it('should call setAdditionalLocals middleware', function () {
+      expect(controller.use.firstCall).to.have.been.calledWith(
+        controller.setAdditionalLocals
+      )
+    })
+
+    it('should call correct number of middleware', function () {
+      expect(controller.use.callCount).to.equal(1)
+    })
+  })
+
+  describe('#setAdditionalLocals', function () {
+    let req, res, next
+
+    beforeEach(function () {
+      req = {
+        allocation: { id: 123, status: 'unfilled' },
+      }
+      res = {
+        locals: {},
+      }
+      sinon
+        .stub(presenters, 'allocationToMetaListComponent')
+        .returns({ ...req.allocation, transformed: true })
+      next = sinon.stub()
+      controller.setAdditionalLocals(req, res, next)
+    })
+
+    it('sets allocation on the locals', function () {
+      expect(res.locals.allocation).to.exist
+      expect(res.locals.allocation).to.deep.equal({
+        id: 123,
+        status: 'unfilled',
+      })
+    })
+
+    it('passes the move to allocationToMetaListComponent', function () {
+      expect(
+        presenters.allocationToMetaListComponent
+      ).to.have.been.calledWithExactly({ id: 123, status: 'unfilled' })
+    })
+
+    it('sets moveSummary on the locals', function () {
+      expect(res.locals.summary).to.exist
+      expect(res.locals.summary).to.deep.equal({
+        id: 123,
+        status: 'unfilled',
+        transformed: true,
+      })
+    })
+
+    it('calls next', function () {
+      expect(next).to.have.been.calledWithExactly()
     })
   })
 

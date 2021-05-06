@@ -27,14 +27,10 @@ class RemoveMoveController extends FormWizardController {
   }
 
   setAdditionalLocals(req, res, next) {
-    const movesCount = req.allocation.moves.length
+    const { allocation } = req
 
-    res.locals.moveSummary = presenters.moveToMetaListComponent(req.allocation)
-    res.locals.sidebarHeading = req.t('allocation::view.summary.heading')
-    res.locals.pageText = req.t('moves::remove_from_allocation.message', {
-      movesCount,
-      newMovesCount: movesCount - 1,
-    })
+    res.locals.allocation = allocation
+    res.locals.summary = presenters.allocationToMetaListComponent(allocation)
 
     next()
   }

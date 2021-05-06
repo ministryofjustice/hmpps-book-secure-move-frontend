@@ -9,7 +9,7 @@ module.exports = {
     next: 'confirm',
   },
   '/confirm': {
-    template: 'cancel-reason',
+    template: 'remove-move',
     controller: RemoveMoveController,
     pageTitle: 'moves::remove_from_allocation.heading',
     buttonText: 'moves::remove_from_allocation.button',
