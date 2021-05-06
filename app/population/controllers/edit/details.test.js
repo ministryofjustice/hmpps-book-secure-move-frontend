@@ -18,6 +18,7 @@ describe('Population controllers', function () {
     beforeEach(function () {
       sessionData = { key: 'value' }
       req = {
+        baseUrl: '/base-url',
         date: '2020-06-01',
         location: { id: 'DEADBEEF' },
         session: {
@@ -192,6 +193,50 @@ describe('Population controllers', function () {
           expect(req.journeyModel.reset).not.to.have.been.called
           expect(req.sessionModel.reset).not.to.have.been.called
           expect(next).to.have.been.calledWith(error)
+        })
+      })
+    })
+
+    describe('errorHandler', function () {
+      const errorMock = new Error('Mock error!')
+
+      beforeEach(function () {
+        sinon.spy(FormWizardController.prototype, 'errorHandler')
+      })
+
+      context('when it returns missing prereq error', function () {
+        beforeEach(function () {
+          errorMock.code = 'MISSING_PREREQ'
+
+          controllerInstance.errorHandler(errorMock, req, res, next)
+        })
+
+        it('should redirect to base URL', function () {
+          expect(res.redirect).to.be.calledOnceWithExactly(req.baseUrl)
+        })
+
+        it('should not call parent error handler', function () {
+          expect(FormWizardController.prototype.errorHandler).not.to.be.called
+        })
+      })
+
+      context('when any other error', function () {
+        beforeEach(function () {
+          errorMock.code = 'ERROR_CODE'
+          controllerInstance.errorHandler(errorMock, req, res, next)
+        })
+
+        it('should not redirect', function () {
+          expect(res.redirect).not.to.be.called
+        })
+
+        it('should call parent error handler', function () {
+          expect(FormWizardController.prototype.errorHandler).to.be.calledWith(
+            errorMock,
+            req,
+            res,
+            next
+          )
         })
       })
     })

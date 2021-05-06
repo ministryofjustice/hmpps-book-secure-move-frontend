@@ -1,8 +1,38 @@
 const { omit } = require('lodash')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
+const presenters = require('../../../common/presenters')
 
 class CancelController extends FormWizardController {
+  middlewareLocals() {
+    super.middlewareLocals()
+    this.use(this.setAdditionalLocals)
+  }
+
+  setAdditionalLocals(req, res, next) {
+    const { allocation } = req
+
+    res.locals.allocation = allocation
+    res.locals.summary = presenters.allocationToMetaListComponent(allocation)
+
+    next()
+  }
+
+  middlewareChecks() {
+    this.use(this.checkStatus)
+    super.middlewareChecks()
+  }
+
+  checkStatus(req, res, next) {
+    const { id, status } = req.allocation
+
+    if (['cancelled'].includes(status)) {
+      return res.redirect(`/allocation/${id}`)
+    }
+
+    next()
+  }
+
   async successHandler(req, res, next) {
     const { id } = req.allocation
     const data = omit(req.sessionModel.toJSON(), [

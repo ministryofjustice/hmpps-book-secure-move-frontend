@@ -144,16 +144,17 @@ class BaseController extends Controller {
       return res.redirect(err.redirect)
     }
 
+    const history = req.journeyModel?.get('history')
     const journeyName = req.form?.options?.journeyName || ''
     const normalisedJourneyName = snakeCase(
       journeyName.replace(new RegExp(uuidRegex, 'g'), '')
     )
 
     Sentry.setContext('Journey', {
-      'Original name': journeyName,
-      'Normalised name': normalisedJourneyName,
-      history: JSON.stringify(req.journeyModel?.get('history')),
+      history: JSON.stringify(history),
       lastVisited: req.journeyModel?.get('lastVisited'),
+      'Normalised name': normalisedJourneyName,
+      'Original name': journeyName,
     })
 
     if (
@@ -171,6 +172,14 @@ class BaseController extends Controller {
       }
 
       if (err.code === 'MISSING_PREREQ') {
+        const steps = Object.keys(req.form.options.steps)
+        const lastStep = steps[steps.length - 1]
+        const nextStep = this.getNextStep(req, res)
+
+        if (!history && nextStep.includes(lastStep)) {
+          return res.redirect(req.baseUrl)
+        }
+
         Sentry.withScope(scope => {
           scope.setLevel('warning')
           Sentry.captureException(err)

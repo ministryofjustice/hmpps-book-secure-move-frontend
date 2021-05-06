@@ -119,5 +119,13 @@ class DetailsController extends FormWizardController {
       return cb(err, stringedValues)
     })
   }
+
+  errorHandler(err, req, res, next) {
+    if (err.code === 'MISSING_PREREQ') {
+      return res.redirect(req.baseUrl)
+    }
+
+    super.errorHandler(err, req, res, next)
+  }
 }
 module.exports = DetailsController

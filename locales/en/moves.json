@@ -245,9 +245,9 @@
   "allocation_relationship": "This move is part of an allocation for $t(n_person)",
   "allocation_relationship_with_link": "This move is part of <a href=\"{{href}}\">an allocation for $t(n_person)</a>",
   "remove_from_allocation": {
-    "heading": "Remove this empty spot from this allocation",
-    "message": "This will reduce the number of prisoners for this allocation from {{movesCount}} to {{newMovesCount}}",
-    "button": "Remove this spot"
+    "heading": "Remove this empty spot",
+    "message": "This will reduce the number of prisoners for this allocation from {{movesCount}} to {{newMovesCount}}.",
+    "button": "Confirm removal"
   },
   "map": {
     "labels": {

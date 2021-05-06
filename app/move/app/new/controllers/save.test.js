@@ -1247,6 +1247,35 @@ describe('Move controllers', function () {
           })
         })
       })
+
+      context('without session model data', function () {
+        beforeEach(function () {
+          reqMock.sessionModel.toJSON.returns()
+          reqMock.sessionModel.get.withArgs('move').returns()
+          errorMock.statusCode = 500
+          controller.errorHandler(errorMock, reqMock, resMock, nextSpy)
+        })
+
+        it('should send empty data to Sentry', function () {
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Move data',
+            {
+              'Move ID': undefined,
+              'Person ID': undefined,
+              'Profile ID': undefined,
+              'Profile -> Person ID': undefined,
+            }
+          )
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Session data',
+            {
+              'Person ID': undefined,
+              'Profile ID': undefined,
+              'Profile -> Person ID': undefined,
+            }
+          )
+        })
+      })
     })
   })
 })

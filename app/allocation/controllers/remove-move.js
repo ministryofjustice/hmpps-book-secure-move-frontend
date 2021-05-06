@@ -2,20 +2,35 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 
 class RemoveMoveController extends FormWizardController {
+  middlewareChecks() {
+    this.use(this.checkStatus)
+    super.middlewareChecks()
+  }
+
+  checkStatus(req, res, next) {
+    const { status: moveStatus } = req.move
+    const { id: allocationId, status: allocationStatus } = req.allocation
+
+    if (
+      !['proposed', 'requested', 'booked'].includes(moveStatus) ||
+      ['cancelled'].includes(allocationStatus)
+    ) {
+      return res.redirect(`/allocation/${allocationId}`)
+    }
+
+    next()
+  }
+
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setAdditionalLocals)
   }
 
   setAdditionalLocals(req, res, next) {
-    const movesCount = req.allocation.moves.length
+    const { allocation } = req
 
-    res.locals.moveSummary = presenters.moveToMetaListComponent(req.allocation)
-    res.locals.sidebarHeading = req.t('allocation::view.summary.heading')
-    res.locals.pageText = req.t('moves::remove_from_allocation.message', {
-      movesCount,
-      newMovesCount: movesCount - 1,
-    })
+    res.locals.allocation = allocation
+    res.locals.summary = presenters.allocationToMetaListComponent(allocation)
 
     next()
   }

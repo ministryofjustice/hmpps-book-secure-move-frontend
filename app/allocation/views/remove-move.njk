@@ -1,14 +1,21 @@
 {% extends "form-wizard.njk" %}
 
-{% block customGtagConfig %}
-  gtag('set', {'page_title': 'Cancel allocation'});
-{% endblock %}
-
 {% block beforeContent %}
   {{ govukBackLink({
     text: t("actions::back_to_allocation"),
     href: "/allocation/" + allocation.id
   }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block contentMain %}
+  <p class="govuk-!-font-size-19">
+    {{ t('moves::remove_from_allocation.message', {
+      movesCount: allocation.totalSlots,
+      newMovesCount: allocation.totalSlots - 1
+    }) }}
+  </p>
 
   {{ super() }}
 {% endblock %}

@@ -375,12 +375,18 @@ describe('Form wizard', function () {
         form: {
           options: {
             journeyName: 'mock-journey-a369bd4e-09da-40fc-bd26-f41c0d695557',
+            steps: {
+              '/': {},
+              '/step-one': {},
+              '/last-step': {},
+            },
           },
         },
       }
       sinon.stub(Sentry, 'captureException')
       sinon.stub(Sentry, 'setContext')
       sinon.spy(FormController.prototype, 'errorHandler')
+      sinon.stub(FormController.prototype, 'getNextStep')
     })
 
     it('should send journey data to sentry', function () {
@@ -448,36 +454,112 @@ describe('Form wizard', function () {
         }
         sinon.stub(Sentry, 'withScope')
         errorMock.code = 'MISSING_PREREQ'
-
-        controller.errorHandler(errorMock, reqMock, resMock)
-
-        // run callback with mock scope
-        Sentry.withScope.args[0][0](mockScope)
       })
 
-      it('should call sentry with scope', function () {
-        expect(Sentry.withScope).to.be.calledOnce
-      })
+      context('without history', function () {
+        beforeEach(function () {
+          reqMock.journeyModel.get.withArgs('history').returns()
+        })
 
-      it('should send warning to sentry', function () {
-        expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
-        expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
-      })
+        context('when step is the last step', function () {
+          beforeEach(function () {
+            FormController.prototype.getNextStep.returns('/last-step')
 
-      it('should render the timeout template', function () {
-        expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
-      })
+            controller.errorHandler(errorMock, reqMock, resMock)
+          })
 
-      it('should pass the correct data to the view', function () {
-        expect(resMock.render.args[0][1]).to.deep.equal({
-          journeyBaseUrl: reqMock.baseUrl,
-          errorKey: errorMock.code.toLowerCase(),
-          journeyName: 'mock_journey',
+          it('should redirect to base URL', function () {
+            expect(resMock.redirect).to.be.calledOnceWithExactly(
+              '/journey-base-url'
+            )
+          })
+
+          it('should not call sentry with scope', function () {
+            expect(Sentry.withScope).not.to.be.called
+          })
+
+          it('should not render template', function () {
+            expect(resMock.render).not.to.be.called
+          })
+
+          it('should not call parent error handler', function () {
+            expect(FormController.prototype.errorHandler).not.to.be.called
+          })
+        })
+
+        context('when step is not the last step', function () {
+          beforeEach(function () {
+            FormController.prototype.getNextStep.returns('/')
+
+            controller.errorHandler(errorMock, reqMock, resMock)
+
+            // run callback with mock scope
+            Sentry.withScope.args[0][0](mockScope)
+          })
+
+          it('should call sentry with scope', function () {
+            expect(Sentry.withScope).to.be.calledOnce
+          })
+
+          it('should send warning to sentry', function () {
+            expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
+            expect(Sentry.captureException).to.be.calledOnceWithExactly(
+              errorMock
+            )
+          })
+
+          it('should render the timeout template', function () {
+            expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+          })
+
+          it('should pass the correct data to the view', function () {
+            expect(resMock.render.args[0][1]).to.deep.equal({
+              journeyBaseUrl: reqMock.baseUrl,
+              errorKey: errorMock.code.toLowerCase(),
+              journeyName: 'mock_journey',
+            })
+          })
+
+          it('should not call parent error handler', function () {
+            expect(FormController.prototype.errorHandler).not.to.be.called
+          })
         })
       })
 
-      it('should not call parent error handler', function () {
-        expect(FormController.prototype.errorHandler).not.to.be.called
+      context('with history', function () {
+        beforeEach(function () {
+          reqMock.journeyModel.get.withArgs('history').returns(['one', 'two'])
+
+          controller.errorHandler(errorMock, reqMock, resMock)
+
+          // run callback with mock scope
+          Sentry.withScope.args[0][0](mockScope)
+        })
+
+        it('should call sentry with scope', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+        })
+
+        it('should send warning to sentry', function () {
+          expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
+          expect(Sentry.captureException).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should render the timeout template', function () {
+          expect(resMock.render.args[0][0]).to.equal('form-wizard-error')
+        })
+
+        it('should pass the correct data to the view', function () {
+          expect(resMock.render.args[0][1]).to.deep.equal({
+            journeyBaseUrl: reqMock.baseUrl,
+            errorKey: errorMock.code.toLowerCase(),
+            journeyName: 'mock_journey',
+          })
+        })
+
+        it('should not call parent error handler', function () {
+          expect(FormController.prototype.errorHandler).not.to.be.called
+        })
       })
     })
 

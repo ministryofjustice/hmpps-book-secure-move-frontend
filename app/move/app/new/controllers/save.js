@@ -162,6 +162,7 @@ class SaveController extends CreateBaseController {
         utc: timingCategory,
       })
 
+      // this.resetJourneyHistory(req, res)
       req.journeyModel.reset()
       req.sessionModel.reset()
 
@@ -172,8 +173,8 @@ class SaveController extends CreateBaseController {
   }
 
   errorHandler(err, req, res, next) {
-    const move = req.sessionModel.get('move')
-    const sessionData = req.sessionModel.toJSON()
+    const move = req.sessionModel.get('move') || {}
+    const sessionData = req.sessionModel.toJSON() || {}
     const apiErrorCode = get(err, 'errors[0].code')
 
     if (err.statusCode === 422 && apiErrorCode === 'taken') {

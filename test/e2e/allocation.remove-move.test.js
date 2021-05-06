@@ -1,3 +1,5 @@
+import { ClientFunction } from 'testcafe'
+
 import { pmuUser } from './_roles'
 import { newAllocation } from './_routes'
 import { allocationJourney, page } from './pages/'
@@ -43,4 +45,16 @@ test('Remove move', async t => {
       ).count
     )
     .eql(0, 'Should not contain removed move')
+
+  const goBack = ClientFunction(() => window.history.back())
+  await goBack()
+
+  await t
+    .expect(page.getCurrentUrl())
+    .match(
+      new RegExp(`/allocation/${t.ctx.allocation.id}`),
+      'Should redirect back to allocation'
+    )
+    .expect(page.getCurrentUrl())
+    .notContains('/remove', 'Should not display remove journey')
 })
