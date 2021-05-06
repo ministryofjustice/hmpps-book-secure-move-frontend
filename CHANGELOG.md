@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.76.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.1...v2.76.2) (2021-05-06)
+
+
+### Bug Fixes
+
+* Ensure allocation details are present on journeys ([43bbd50](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/43bbd508eb108473fb76d21c72ac6403cfd2cf1a))
+* Handle Sentry data when not session data ([e6af498](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e6af498024a38d100847b5c750fc3de616b243a4))
+* Handle user navigating back on allocation journeys ([c7b1f99](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c7b1f993021144c145cb87ed5bf1ed8d70174d7c))
+* Prevent prereq error when user navigates back on end of journey ([890d88c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/890d88c550e9c19d68f4db4c0393e3c21964194c))
+* Reset form journey if user visits population edit ([22af012](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/22af012903ba4c9b8c18782b5af84f4243884b98))
+
 ### [2.76.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.0...v2.76.1) (2021-05-04)
 
 ## [2.76.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.75.3...v2.76.0) (2021-04-28)
