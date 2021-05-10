@@ -70,7 +70,10 @@ module.exports = {
   SERVER_HOST,
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),
-  NO_CACHE: process.env.CACHE_ASSETS ? false : IS_DEV,
+  STATIC_ASSETS: {
+    CACHE_MAX_AGE:
+      process.env.STATIC_ASSETS_CACHE_MAX_AGE || (IS_PRODUCTION ? '1w' : false),
+  },
   PERSON_ESCORT_RECORD_FEEDBACK_URL:
     process.env.PERSON_ESCORT_RECORD_FEEDBACK_URL,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
