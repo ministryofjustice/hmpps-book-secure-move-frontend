@@ -35,6 +35,7 @@ const processOriginalRequestBody = require('./common/middleware/process-original
 const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setApiClient = require('./common/middleware/set-api-client')
+const setCacheControl = require('./common/middleware/set-cache-control')
 const setLocation = require('./common/middleware/set-location')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
@@ -99,16 +100,29 @@ app.use(compression())
 app.use(
   favicon(path.join(configPaths.build, getAssetPath('images/favicon.ico')))
 )
-app.use(express.static(configPaths.build))
+app.use(
+  express.static(configPaths.build, {
+    maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE,
+  })
+)
 app.use(
   '/assets',
   express.static(
-    path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets')
+    path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets'),
+    { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }
   ),
   express.static(
-    path.join(__dirname, '/node_modules/@ministryofjustice/frontend/moj/assets')
+    path.join(
+      __dirname,
+      '/node_modules/@ministryofjustice/frontend/moj/assets'
+    ),
+    { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }
   )
 )
+
+// Cache control headers should be set after static assets but
+// before other requests
+app.use(setCacheControl)
 
 // ensure i18n is loaded early as needed for error template
 app.use(i18nMiddleware.handle(i18n))
