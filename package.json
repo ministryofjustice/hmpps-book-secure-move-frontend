@@ -112,7 +112,7 @@
     "date-fns": "2.21.2",
     "debug": "4.3.1",
     "devour-client": "3.0.0",
-    "dotenv": "9.0.0",
+    "dotenv": "9.0.1",
     "dropzone": "5.9.2",
     "express": "4.17.1",
     "express-session": "1.17.1",
