@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.76.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.2...v2.76.3) (2021-05-10)
+
+
+### Bug Fixes
+
+* Ensure we don't allow the browser to cache the majority of pages ([79b2fe3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/79b2fe3c11660826d785f0cad42b8cfac88781e6))
+
 ### [2.76.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.1...v2.76.2) (2021-05-06)
 
 
