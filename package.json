@@ -196,7 +196,7 @@
     "nock": "13.0.11",
     "node-sass": "6.0.0",
     "nodemon": "2.0.7",
-    "npm-check-updates": "11.5.10",
+    "npm-check-updates": "11.5.11",
     "nyc": "15.1.0",
     "open-cli": "6.0.1",
     "optimize-css-assets-webpack-plugin": "5.0.4",
