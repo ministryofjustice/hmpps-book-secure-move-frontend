@@ -22,9 +22,10 @@ async function locations(req, res, next) {
       const suppliers = await req.services.referenceData.getSuppliers()
       const supplierLocations = await Promise.all(
         suppliers.map(async supplier => {
-          const locations = await req.services.referenceData.getLocationsBySupplierId(
-            supplier.id
-          )
+          const locations =
+            await req.services.referenceData.getLocationsBySupplierId(
+              supplier.id
+            )
           return locations
         })
       )

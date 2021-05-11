@@ -12,10 +12,8 @@ module.exports = function listAsCards(req, res) {
     location,
   } = req
 
-  const {
-    CURRENT_LOCATION: resLocation,
-    CURRENT_REGION: resRegion,
-  } = res.locals
+  const { CURRENT_LOCATION: resLocation, CURRENT_REGION: resRegion } =
+    res.locals
 
   const disabledLocation =
     resLocation && location && (resLocation.disabled_at || location.disabled_at)

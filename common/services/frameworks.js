@@ -36,8 +36,12 @@ function buildCommentField(
   followupComment = {}
 ) {
   const component = uiComponentMap[followupComment.type] || 'govukTextarea'
-  const { rows = 4, character_width: charWidth, prefix, suffix } =
-    followupComment.display || {}
+  const {
+    rows = 4,
+    character_width: charWidth,
+    prefix,
+    suffix,
+  } = followupComment.display || {}
   const field = {
     rows,
     component,

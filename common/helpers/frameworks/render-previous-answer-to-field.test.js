@@ -86,8 +86,7 @@ describe('#renderPreviousAnswerToField', function () {
 
       it('should append message to hint content', function () {
         expect(output[1].hint).to.deep.equal({
-          html:
-            '\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
+          html: '\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
         })
       })
 
@@ -119,8 +118,7 @@ describe('#renderPreviousAnswerToField', function () {
 
       it('should append message to existing hint content', function () {
         expect(output[1].hint).to.deep.equal({
-          html:
-            'EXISTING_HINT\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
+          html: 'EXISTING_HINT\n      <span class="app-form-group__message-text">\n        assessment::prefilled_message\n      </span>\n    ',
         })
       })
     })

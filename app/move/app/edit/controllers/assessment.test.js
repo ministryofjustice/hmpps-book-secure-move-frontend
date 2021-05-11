@@ -121,9 +121,10 @@ describe('Move controllers', function () {
       context('When assessment answers are unchanged', function () {
         it('should not update the profile data', async function () {
           await controller.getUpdateValues(req, res)
-          expect(
-            profileService.unformat
-          ).to.be.calledOnceWithExactly(mockProfile, ['violent', 'escape'])
+          expect(profileService.unformat).to.be.calledOnceWithExactly(
+            mockProfile,
+            ['violent', 'escape']
+          )
         })
       })
     })

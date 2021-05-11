@@ -3,7 +3,8 @@ const proxyquire = require('proxyquire')
 const filtersToCategoriesListStub = sinon.stub().returns(['fake_categories'])
 
 const setRequestFilters = proxyquire('./set-request-filters', {
-  '../presenters/filters-to-categories-list-component': filtersToCategoriesListStub,
+  '../presenters/filters-to-categories-list-component':
+    filtersToCategoriesListStub,
 })
 
 describe('#setRequestFilters()', function () {

@@ -72,20 +72,17 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html:
-                '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet.</span></div>',
+              html: '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet.</span></div>',
             },
           },
           {
             value: {
-              html:
-                '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
+              html: '<div><span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
             },
           },
           {
             value: {
-              html:
-                '<div><span class="app-!-text-colour-black">Comments</span></div>',
+              html: '<div><span class="app-!-text-colour-black">Comments</span></div>',
             },
           },
         ])
@@ -115,8 +112,7 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html:
-                '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
+              html: '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Risk to Public - Community\n      </h4>\n    <span class="app-!-text-colour-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></div>',
             },
           },
         ])
@@ -187,8 +183,7 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html:
-                '<div><span class="app-secondary-text-colour">No details</span></div>',
+              html: '<div><span class="app-secondary-text-colour">No details</span></div>',
             },
           },
         ])
@@ -321,8 +316,7 @@ describe('Presenters', function () {
         expect(transformedResponse.items).to.deep.equal([
           {
             value: {
-              html:
-                '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Pregnant\n      </h4>\n    <span class="app-!-text-colour-black">Baby boy</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Started on Mon 10 Aug\n        and ended on Mon 10 Aug\n      </div>\n    </div>',
+              html: '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Pregnant\n      </h4>\n    <span class="app-!-text-colour-black">Baby boy</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Started on Mon 10 Aug\n        and ended on Mon 10 Aug\n      </div>\n    </div>',
             },
           },
         ])

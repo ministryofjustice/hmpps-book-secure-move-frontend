@@ -299,8 +299,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 scope: 'row',
                 'data-cell-type': 'establishment',
               },
-              html:
-                '<a href="/population/week/2020-06-01/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
+              html: '<a href="/population/week/2020-06-01/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
             })
           })
 
@@ -405,8 +404,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 scope: 'row',
                 'data-cell-type': 'establishment',
               },
-              html:
-                '<a href="/population/week/2020-06-01/34d1c8c3-699e-4198-9218-f923a7f18149">Ipsum</a>',
+              html: '<a href="/population/week/2020-06-01/34d1c8c3-699e-4198-9218-f923a7f18149">Ipsum</a>',
             })
           })
 
@@ -530,8 +528,7 @@ describe('#locationToPopulationTableComponent()', function () {
               scope: 'row',
               'data-cell-type': 'establishment',
             },
-            html:
-              '<a href="/population/week/2020-06-07/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
+            html: '<a href="/population/week/2020-06-07/54d1c8c3-699e-4198-9218-f923a7f18149">Lorem</a>',
           })
         })
 

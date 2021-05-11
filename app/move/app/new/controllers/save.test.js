@@ -768,7 +768,8 @@ describe('Move controllers', function () {
                 req.getProfile = sinon
                   .stub()
                   .returns({ assessment_answers: mockExistingAssessment })
-                req.form.values.assessment = mockCurrentAssessmentWithoutExplicit
+                req.form.values.assessment =
+                  mockCurrentAssessmentWithoutExplicit
                 controller.process(req, {}, {})
               })
 

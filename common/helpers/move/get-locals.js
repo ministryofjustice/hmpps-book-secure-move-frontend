@@ -35,9 +35,8 @@ function getLocals(req) {
     personWithProfileCategory
   )
   // move
-  const additionalInfoSummary = presenters.moveToAdditionalInfoListComponent(
-    move
-  )
+  const additionalInfoSummary =
+    presenters.moveToAdditionalInfoListComponent(move)
   const courtHearings = getCourtHearings(move)
   const message = getMessage(move)
   const tagLists = getTagLists(move)

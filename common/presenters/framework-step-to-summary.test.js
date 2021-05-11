@@ -30,7 +30,8 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returnsArg(0)
 
       frameworkStepToSummary = proxyquire('./framework-step-to-summary', {
-        './framework-field-summary-list-row': frameworkFieldToSummaryListRowStub,
+        './framework-field-summary-list-row':
+          frameworkFieldToSummaryListRowStub,
       })
     })
 

@@ -23,8 +23,7 @@ describe('Presenters', function () {
               text: 'messages::assessment.pending.heading',
             },
             content: {
-              html:
-                '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  ',
+              html: '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  ',
             },
           })
         })
@@ -49,8 +48,7 @@ describe('Presenters', function () {
                 text: 'messages::assessment.pending.heading',
               },
               content: {
-                html:
-                  '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  ',
+                html: '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  ',
               },
             })
           })
@@ -93,8 +91,7 @@ describe('Presenters', function () {
                 text: 'messages::assessment.pending.heading',
               },
               content: {
-                html:
-                  '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  \n      govukButton\n    ',
+                html: '\n    <p>\n      messages::assessment.pending.content\n    </p>\n  \n      govukButton\n    ',
               },
             })
           })

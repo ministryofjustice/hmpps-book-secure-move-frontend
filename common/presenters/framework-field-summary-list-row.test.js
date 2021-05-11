@@ -7,7 +7,8 @@ const frameworkNomisMappingsToPanelStub = sinon.stub().returns('NOMIS_HTML')
 const frameworkFieldToSummaryListRow = proxyquire(
   './framework-field-summary-list-row',
   {
-    '../presenters/framework-nomis-mappings-to-panel': frameworkNomisMappingsToPanelStub,
+    '../presenters/framework-nomis-mappings-to-panel':
+      frameworkNomisMappingsToPanelStub,
   }
 )
 

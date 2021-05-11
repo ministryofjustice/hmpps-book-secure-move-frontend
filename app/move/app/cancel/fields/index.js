@@ -4,6 +4,7 @@ const cancellationReasonOtherComment = require('./cancellation-reason-other-comm
 
 module.exports = {
   cancellation_reason: cancellationReason,
-  cancellation_reason_cancelled_by_pmu_comment: cancellationReasonCancelledByPMUComment,
+  cancellation_reason_cancelled_by_pmu_comment:
+    cancellationReasonCancelledByPMUComment,
   cancellation_reason_other_comment: cancellationReasonOtherComment,
 }

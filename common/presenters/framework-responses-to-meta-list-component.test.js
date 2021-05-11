@@ -61,20 +61,17 @@ describe('Presenters', function () {
           items: [
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">String</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">String</h4>__getComponent__',
               },
             },
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Object</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Object</h4>__getComponent__',
               },
             },
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Array</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Array</h4>__getComponent__',
               },
             },
           ],
@@ -137,20 +134,17 @@ describe('Presenters', function () {
           items: [
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">String</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">String</h4>__getComponent__',
               },
             },
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Object</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Object</h4>__getComponent__',
               },
             },
             {
               value: {
-                html:
-                  '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Array</h4>__getComponent__',
+                html: '<h4 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-font-size-16">Array</h4>__getComponent__',
               },
             },
           ],

@@ -43,8 +43,7 @@ describe('Presenters', function () {
               text: 'messages::assessment.completed.heading',
             },
             content: {
-              html:
-                '\n    <p>\n      messages::assessment.completed.content\n    </p>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+              html: '\n    <p>\n      messages::assessment.completed.content\n    </p>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
             },
           })
         })
@@ -102,8 +101,7 @@ describe('Presenters', function () {
               text: 'messages::assessment.completed.heading',
             },
             content: {
-              html:
-                '\n    <p>\n      messages::assessment.completed.content\n    </p>\n  ',
+              html: '\n    <p>\n      messages::assessment.completed.content\n    </p>\n  ',
             },
           })
         })

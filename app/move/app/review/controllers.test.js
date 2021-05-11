@@ -293,12 +293,10 @@ describe('Move controllers', function () {
         })
 
         it('should check permissions', function () {
-          expect(
-            mockRes.locals.canAccess
-          ).to.be.calledOnceWithExactly('move:review', [
+          expect(mockRes.locals.canAccess).to.be.calledOnceWithExactly(
             'move:review',
-            'move:view',
-          ])
+            ['move:review', 'move:view']
+          )
         })
 
         it('should not redirect', function () {
@@ -316,9 +314,10 @@ describe('Move controllers', function () {
         })
 
         it('should check permissions', function () {
-          expect(
-            mockRes.locals.canAccess
-          ).to.be.calledOnceWithExactly('move:review', ['move:view'])
+          expect(mockRes.locals.canAccess).to.be.calledOnceWithExactly(
+            'move:review',
+            ['move:view']
+          )
         })
 
         it('should redirect', function () {

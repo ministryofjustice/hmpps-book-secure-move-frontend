@@ -7,9 +7,8 @@ function getCourtHearings(move) {
     courtHearing => {
       return {
         ...courtHearing,
-        summaryList: presenters.courtHearingToSummaryListComponent(
-          courtHearing
-        ),
+        summaryList:
+          presenters.courtHearingToSummaryListComponent(courtHearing),
       }
     }
   )

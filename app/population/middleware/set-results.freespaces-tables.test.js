@@ -6,8 +6,10 @@ const locationsToPopulationComponent = {
 const proxyquire = require('proxyquire')
 
 const middleware = proxyquire('./set-results.freespaces-tables', {
-  '../../../common/presenters/date-table/date-table-decorator': dateTableDecorator,
-  '../../../common/presenters/date-table/locations-to-population-table-component': locationsToPopulationComponent,
+  '../../../common/presenters/date-table/date-table-decorator':
+    dateTableDecorator,
+  '../../../common/presenters/date-table/locations-to-population-table-component':
+    locationsToPopulationComponent,
 })
 
 const mockLocations = ['ABADCAFE', 'BAADF00D']

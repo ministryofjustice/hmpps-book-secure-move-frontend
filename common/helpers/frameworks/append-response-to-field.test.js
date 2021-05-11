@@ -71,9 +71,8 @@ describe('Helpers', function () {
             }
 
             beforeEach(function () {
-              response = appendResponseToField(mockResponses)(
-                mockFieldWithItems
-              )
+              response =
+                appendResponseToField(mockResponses)(mockFieldWithItems)
             })
 
             it('should return empty response object', function () {
