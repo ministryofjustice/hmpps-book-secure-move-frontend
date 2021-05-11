@@ -105,10 +105,8 @@ class PersonService extends BaseService {
       .one('person', personId)
       .all('timetable_entry')
       .get({
-        filter: {
-          date_from: date,
-          date_to: date,
-        },
+        'filter[date_from]': date,
+        'filter[date_to]': date,
         include: ['location'],
       })
       .then(response => response.data)

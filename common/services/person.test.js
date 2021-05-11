@@ -456,10 +456,8 @@ describe('Person Service', function () {
           expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
           expect(apiClient.all).to.be.calledOnceWithExactly('timetable_entry')
           expect(apiClient.get).to.be.calledOnceWithExactly({
-            filter: {
-              date_from: mockDate,
-              date_to: mockDate,
-            },
+            'filter[date_from]': mockDate,
+            'filter[date_to]': mockDate,
             include: ['location'],
           })
         })
@@ -478,10 +476,8 @@ describe('Person Service', function () {
           expect(apiClient.one).to.be.calledOnceWithExactly('person', mockId)
           expect(apiClient.all).to.be.calledOnceWithExactly('timetable_entry')
           expect(apiClient.get).to.be.calledOnceWithExactly({
-            filter: {
-              date_from: undefined,
-              date_to: undefined,
-            },
+            'filter[date_from]': undefined,
+            'filter[date_to]': undefined,
             include: ['location'],
           })
         })
