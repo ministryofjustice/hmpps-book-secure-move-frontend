@@ -13,7 +13,7 @@ const mockResponse = {
 }
 
 describe('API Client', function () {
-  describe('Cache key middleware', function () {
+  describe('Get cache middleware', function () {
     describe('#cache-key', function () {
       let expectedPayload
       let payload
@@ -47,7 +47,10 @@ describe('API Client', function () {
         context('and a value has been cached', function () {
           beforeEach(async function () {
             cache.get.resolves(mockResponse)
-            expectedPayload = { ...payload, res: { data: mockResponse } }
+            expectedPayload = {
+              ...payload,
+              res: { body: mockResponse, data: mockResponse },
+            }
             middleware().req(payload)
           })
 

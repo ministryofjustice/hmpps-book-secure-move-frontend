@@ -13,12 +13,14 @@ function getCacheMiddleware({ useRedisCache = false } = {}) {
       }
 
       debug('SEARCHING', cacheKey)
-      const data = await cache.get(cacheKey, useRedisCache)
+      const body = await cache.get(cacheKey, useRedisCache)
 
-      if (data) {
-        debug('RETURNING', cacheKey, data)
+      if (body) {
+        debug('RETURNING', cacheKey, body)
         payload.res = {
-          data,
+          body,
+          // To support backwards compatibility with axios
+          data: body,
         }
       }
 

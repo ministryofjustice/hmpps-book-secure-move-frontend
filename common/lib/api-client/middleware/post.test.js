@@ -33,13 +33,6 @@ describe('API Client', function () {
         }
       })
 
-      context('when payload includes a response', function () {
-        it('should return payload as is', function () {
-          const payload = { res: {} }
-          expect(postMiddleware(MAX_FILE_SIZE).req(payload)).to.equal(payload)
-        })
-      })
-
       context('when request method is POST', function () {
         beforeEach(function () {
           payload.req.method = 'POST'

@@ -72,6 +72,7 @@
 
 | Name                                    | Description                                                                  | Default |
 | :-------------------------------------- | :--------------------------------------------------------------------------- | :------ |
+| FEATURE_FLAG_GOT | This will enable Got as the request library for the API instead of axios. | false |
 
 ## Development specific
 

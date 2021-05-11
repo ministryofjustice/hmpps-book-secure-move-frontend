@@ -21,7 +21,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
         `${urlObj.pathname}${searchString ? `?${searchString}` : ''}`
       )
 
-      debug(req.method, url)
+      debug(`axios:${req.method}`, url)
 
       // start timer for metrics and logging
       const clientTimer = timer()
