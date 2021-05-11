@@ -24,9 +24,8 @@ class CourtHearingsController extends CreateBaseController {
       const courtCases = await req.services.person.getActiveCourtCases(
         person.id
       )
-      const {
-        court_hearing__court_case: courtCaseField,
-      } = req.form.options.fields
+      const { court_hearing__court_case: courtCaseField } =
+        req.form.options.fields
 
       courtCaseField.items = courtCases.map(courtCase => {
         const card = presenters.courtCaseToCardComponent(courtCase)

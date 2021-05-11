@@ -8,7 +8,8 @@ const CreateAllocationBaseController = require('./base')
 class AllocationCriteriaController extends CreateAllocationBaseController {
   async configure(req, res, next) {
     try {
-      const allocationComplexCases = await req.services.referenceData.getAllocationComplexCases()
+      const allocationComplexCases =
+        await req.services.referenceData.getAllocationComplexCases()
       const filteredCases = allocationComplexCases
         .filter(referenceDataHelpers.filterDisabled())
         .map(item => {

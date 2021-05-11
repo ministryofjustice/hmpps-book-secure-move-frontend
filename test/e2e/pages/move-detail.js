@@ -31,9 +31,8 @@ class MoveDetailPage extends Page {
       noCourtInformationMessage: Selector('.app-message').withText(
         'No information for the court'
       ),
-      noCourtHearingsMessage: Selector('.app-message').withText(
-        'No court hearings'
-      ),
+      noCourtHearingsMessage:
+        Selector('.app-message').withText('No court hearings'),
       riskInformation: Selector('#main-content h2')
         .withText('Risk information')
         .parent('section'),
@@ -58,12 +57,10 @@ class MoveDetailPage extends Page {
       noDocumentsMessage: Selector('.app-message').withText(
         'No documents uploaded'
       ),
-      personEscortRecordSectionStatuses: this.nodes.instructionBanner.find(
-        '.govuk-tag'
-      ),
-      personEscortRecordSectionLinks: Selector('#main-content a').withText(
-        'Review'
-      ),
+      personEscortRecordSectionStatuses:
+        this.nodes.instructionBanner.find('.govuk-tag'),
+      personEscortRecordSectionLinks:
+        Selector('#main-content a').withText('Review'),
       personEscortRecordWarnings: Selector('#main-content strong.app-tag'),
       personEscortRecordStartButton: this.nodes.instructionBanner
         .find('.govuk-button')

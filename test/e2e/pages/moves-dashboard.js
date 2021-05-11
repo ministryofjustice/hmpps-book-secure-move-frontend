@@ -10,9 +10,8 @@ class MovesDashboardPage extends Page {
       moves: Selector('.app-card'),
       movesLinks: Selector('.app-card .app-card__link'),
       downloadMovesLink: Selector('a').withText('Download moves'),
-      createMoveButton: Selector('.govuk-button').withExactText(
-        'Create a move'
-      ),
+      createMoveButton:
+        Selector('.govuk-button').withExactText('Create a move'),
       filterContainer: Selector('.app-filter'),
       locationGroup: title => Selector('[data-location-group]').withText(title),
       pagination: {

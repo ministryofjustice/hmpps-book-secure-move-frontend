@@ -200,9 +200,8 @@ describe('Locations controllers', function () {
 
       it('should fail gracefully for locations by supplier API', async function () {
         req.session.user.permissions = ['locations:contract_delivery_manager']
-        req.services.referenceData.getLocationsBySupplierId = sinon.fake.returns(
-          Promise.reject(new Error())
-        )
+        req.services.referenceData.getLocationsBySupplierId =
+          sinon.fake.returns(Promise.reject(new Error()))
         await locationsController(req, res, nextSpy)
         expect(nextSpy).to.be.calledOnce
       })

@@ -12,8 +12,11 @@ function profileToCardComponent({
   showTags = true,
 } = {}) {
   return function item(profile) {
-    const { href, person = {}, person_escort_record: personEscortRecord } =
-      profile || {}
+    const {
+      href,
+      person = {},
+      person_escort_record: personEscortRecord,
+    } = profile || {}
     const {
       id,
       gender,

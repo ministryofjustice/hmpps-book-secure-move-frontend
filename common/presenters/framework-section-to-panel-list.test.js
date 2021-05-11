@@ -27,7 +27,8 @@ const frameworkResponseToMetaListComponentStub = sinon
   .returns('__frameworkResponseToMetaListComponent__')
 const frameworkFlagsToTagListStub = sinon.stub()
 const presenter = proxyquire('./framework-section-to-panel-list', {
-  './framework-responses-to-meta-list-component': frameworkResponseToMetaListComponentStub,
+  './framework-responses-to-meta-list-component':
+    frameworkResponseToMetaListComponentStub,
   './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
 })
 
@@ -141,8 +142,7 @@ const expectedOutput = {
   count: 3,
   order: 4,
   context: 'framework',
-  url:
-    '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information',
+  url: '/move/0568d216-4e1c-4b06-bd22-13c221368384/person-escort-record/risk-information',
   panels: [
     {
       tag: {

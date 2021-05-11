@@ -157,7 +157,8 @@ export async function createPersonFixture(overrides = {}) {
 
       return {
         ...response,
-        fullname: `${response.last_name}, ${response.first_names}`.toUpperCase(),
+        fullname:
+          `${response.last_name}, ${response.first_names}`.toUpperCase(),
         lastName: response.last_name,
         firstNames: response.first_names,
         dateOfBirth: response.date_of_birth,

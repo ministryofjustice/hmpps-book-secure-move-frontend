@@ -510,15 +510,11 @@ export async function checkPoliceNationalComputerReadOnly() {
   const { person } = t.ctx.move
   const personalDetailsPage = await clickUpdateLink('personal_details')
 
-  const {
-    policeNationalComputer,
-    policeNationalComputerReadOnly,
-  } = personalDetailsPage.fields
+  const { policeNationalComputer, policeNationalComputerReadOnly } =
+    personalDetailsPage.fields
 
-  const {
-    policeNationalComputerHeading,
-    policeNationalComputerValue,
-  } = personalDetailsPage.nodes
+  const { policeNationalComputerHeading, policeNationalComputerValue } =
+    personalDetailsPage.nodes
   await t.expect(policeNationalComputer.exists).notOk()
   await t.expect(policeNationalComputerReadOnly.exists).ok()
   await t.expect(policeNationalComputerHeading.exists).ok()

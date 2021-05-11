@@ -9,9 +9,10 @@ fixture('Remove a move from an allocation').beforeEach(async t => {
 
   t.ctx.allocation = await allocationJourney.createAllocation()
 
-  const confirmationLink = allocationJourney.allocationViewPage.nodes.confirmationLink(
-    t.ctx.allocation.movesCount
-  )
+  const confirmationLink =
+    allocationJourney.allocationViewPage.nodes.confirmationLink(
+      t.ctx.allocation.movesCount
+    )
 
   await t
     .expect(confirmationLink.exists)
@@ -24,9 +25,10 @@ test('Remove move', async t => {
   // choose an item to remove
   const itemToRemove = Math.floor(Math.random() * movesCount)
   // store reference for future assertion
-  const itemReference = await allocationJourney.allocationViewPage.nodes.allocatedMovesReferences.nth(
-    itemToRemove
-  ).innerText
+  const itemReference =
+    await allocationJourney.allocationViewPage.nodes.allocatedMovesReferences.nth(
+      itemToRemove
+    ).innerText
 
   await t.click(
     allocationJourney.allocationViewPage.nodes.allocatedMovesRemoveLinks.nth(

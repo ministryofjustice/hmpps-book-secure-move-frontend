@@ -48,8 +48,7 @@ describe('Presenters', function () {
               text: 'messages::assessment.handed_over.heading',
             },
             content: {
-              html:
-                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n    \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    \n    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n      handed_over_at\n    </p>\n  ',
+              html: '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n    \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    \n    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n      handed_over_at\n    </p>\n  ',
             },
           })
         })
@@ -120,8 +119,7 @@ describe('Presenters', function () {
               text: 'messages::assessment.handed_over.heading',
             },
             content: {
-              html:
-                '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n    \n    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n      handed_over_at\n    </p>\n  ',
+              html: '\n    <p>\n      messages::assessment.handed_over.content\n    </p>\n\n    govukWarningText\n    \n    <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n      handed_over_at\n    </p>\n  ',
             },
           })
         })

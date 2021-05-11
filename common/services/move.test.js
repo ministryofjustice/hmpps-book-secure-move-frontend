@@ -433,8 +433,7 @@ describe('Move Service', function () {
       filterOne: 'foo',
     }
     const mockParams = {
-      meta:
-        'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+      meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
     }
     let moves
 
@@ -719,8 +718,7 @@ describe('Move Service', function () {
             'to_location',
           ],
           params: {
-            meta:
-              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+            meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
           },
           filter: {
             status: undefined,
@@ -781,8 +779,7 @@ describe('Move Service', function () {
             supplier_id: mockSupplierId,
           },
           params: {
-            meta:
-              'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+            meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
           },
         })
       })

@@ -8,9 +8,10 @@ fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
 
   t.ctx.allocation = await allocationJourney.createAllocation()
-  const confirmationLink = allocationJourney.allocationViewPage.nodes.confirmationLink(
-    t.ctx.allocation.movesCount
-  )
+  const confirmationLink =
+    allocationJourney.allocationViewPage.nodes.confirmationLink(
+      t.ctx.allocation.movesCount
+    )
 
   await t
     .expect(confirmationLink.exists)

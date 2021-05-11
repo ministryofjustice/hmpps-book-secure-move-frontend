@@ -63,8 +63,7 @@ describe('Presenters', function () {
                 text: `messages::assessment.${mockArgs.assessment.status}.heading`,
               },
               content: {
-                html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
+                html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
               },
             })
           })
@@ -115,8 +114,7 @@ describe('Presenters', function () {
                   text: `messages::assessment.${mockArgs.assessment.status}.heading`,
                 },
                 content: {
-                  html:
-                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                 },
               })
             })
@@ -156,8 +154,7 @@ describe('Presenters', function () {
                   text: `messages::assessment.${mockArgs.assessment.status}.heading`,
                 },
                 content: {
-                  html:
-                    '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      ',
+                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      ',
                 },
               })
             })
@@ -206,8 +203,7 @@ describe('Presenters', function () {
                     text: `messages::assessment.${mockArgs.assessment.status}.heading`,
                   },
                   content: {
-                    html:
-                      '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+                    html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                   },
                 })
               })
@@ -262,8 +258,7 @@ describe('Presenters', function () {
                 text: `messages::assessment.${mockArgs.assessment.status}.heading`,
               },
               content: {
-                html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
+                html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
               },
             })
           })
@@ -292,8 +287,7 @@ describe('Presenters', function () {
                 text: `messages::assessment.${mockArgs.assessment.status}.heading`,
               },
               content: {
-                html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        completed_at\n      </p>\n    ',
+                html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        completed_at\n      </p>\n    ',
               },
             })
           })
@@ -319,8 +313,7 @@ describe('Presenters', function () {
                 text: `messages::assessment.${mockArgs.assessment.status}.heading`,
               },
               content: {
-                html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
+                html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
               },
             })
           })
@@ -347,8 +340,7 @@ describe('Presenters', function () {
                 text: `messages::assessment.${mockArgs.assessment.status}.heading`,
               },
               content: {
-                html:
-                  '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
+                html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n      <p class="govuk-!-font-size-16 govuk-!-margin-top-1">\n        amended_at\n      </p>\n    ',
               },
             })
           })

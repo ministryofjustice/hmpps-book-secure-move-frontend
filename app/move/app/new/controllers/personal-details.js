@@ -25,10 +25,8 @@ class PersonalDetailsController extends CreateBaseController {
       const pncSearchTerm = req.query.police_national_computer_search_term || ''
 
       req.form.options.fields.gender.items = genderOptions
-      req.form.options.fields.ethnicity.items = fieldHelpers.insertInitialOption(
-        ethnicityOptions,
-        'ethnicity'
-      )
+      req.form.options.fields.ethnicity.items =
+        fieldHelpers.insertInitialOption(ethnicityOptions, 'ethnicity')
       set(
         req,
         'form.options.fields.police_national_computer.default',

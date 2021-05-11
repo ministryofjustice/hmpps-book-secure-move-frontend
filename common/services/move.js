@@ -218,8 +218,7 @@ class MoveService extends BaseService {
         'to_location',
       ],
       params: {
-        meta:
-          'vehicle_registration,expected_time_of_arrival,expected_collection_time',
+        meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
       },
       filter: {
         ...statusFilter,

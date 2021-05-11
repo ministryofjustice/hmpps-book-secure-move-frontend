@@ -21,8 +21,7 @@ const cancellationReason = {
       value: 'supplier_declined_to_move',
       text: 'fields::cancellation_reason.items.supplier_declined_to_move.label',
       hint: {
-        text:
-          'fields::cancellation_reason.items.supplier_declined_to_move.hint',
+        text: 'fields::cancellation_reason.items.supplier_declined_to_move.hint',
       },
     },
     {

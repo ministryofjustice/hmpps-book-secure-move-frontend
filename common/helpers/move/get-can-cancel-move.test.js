@@ -62,9 +62,8 @@ describe('Move helpers', function () {
           let expected = false
 
           if (matchedPermutation?.allocation?.[allocation]) {
-            expected = matchedPermutation.allocation[allocation].includes(
-              status
-            )
+            expected =
+              matchedPermutation.allocation[allocation].includes(status)
           }
 
           const move = {

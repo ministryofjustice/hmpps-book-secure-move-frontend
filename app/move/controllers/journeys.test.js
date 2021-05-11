@@ -10,9 +10,12 @@ const config = {
 }
 
 const controller = proxyquire('./journeys', {
-  '../../../common/presenters/journeys-to-meta-list-component': journeysToSummaryList,
-  '../../../common/presenters/journeys-to-geo-json-lines': journeysToGeoJsonLines,
-  '../../../common/presenters/locations-to-geo-json-points': locationsToGeoJsonPoints,
+  '../../../common/presenters/journeys-to-meta-list-component':
+    journeysToSummaryList,
+  '../../../common/presenters/journeys-to-geo-json-lines':
+    journeysToGeoJsonLines,
+  '../../../common/presenters/locations-to-geo-json-points':
+    locationsToGeoJsonPoints,
   '../../../config': config,
 })
 

@@ -21,7 +21,8 @@ const mapItemToSectionStub = sinon.stub().callsFake(data => {
 
 const transformer = proxyquire('./assessment.transformer', {
   '../../../helpers/frameworks/map-item-to-section': mapItemToSectionStub,
-  '../../../helpers/frameworks/map-question-to-response': mapQuestionToResponseStub,
+  '../../../helpers/frameworks/map-question-to-response':
+    mapQuestionToResponseStub,
 })
 
 describe('API Client', function () {

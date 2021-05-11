@@ -47,10 +47,12 @@ prometheusClient = {
   },
 }
 
-const uuidRegex = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi
+const uuidRegex =
+  /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/gi
 const dateRegex = /\d{4}-\d{2}-\d{2}/g
 const authCallbackRegex = /(callback\?code)=.*/
-const lookupValueRegex = /(filter\[(prison_number|police_national_computer)\])=[^&]+/g
+const lookupValueRegex =
+  /(filter\[(prison_number|police_national_computer)\])=[^&]+/g
 const assetRegex = /\.[0-9a-f]{8}\.(js|css|woff.*|svg|png|jpg|gif)$/
 
 /**
@@ -87,14 +89,8 @@ const normalizeUrlToPath = url => {
 }
 
 const getDefaultLabels = config => {
-  const {
-    SENTRY,
-    SERVER_HOST,
-    API,
-    APP_GIT_SHA,
-    APP_VERSION,
-    FEATURE_FLAGS,
-  } = config
+  const { SENTRY, SERVER_HOST, API, APP_GIT_SHA, APP_VERSION, FEATURE_FLAGS } =
+    config
 
   // add feature flags if any to labels
   const flags = Object.keys(FEATURE_FLAGS).reduce((acc, key) => {

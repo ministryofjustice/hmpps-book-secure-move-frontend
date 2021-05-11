@@ -9,9 +9,8 @@ function getTagLists(move) {
   const moveUrl = getMoveUrl(move.id)
 
   const tagLists = {
-    importantEventsTagList: presenters.moveToImportantEventsTagListComponent(
-      move
-    ),
+    importantEventsTagList:
+      presenters.moveToImportantEventsTagListComponent(move),
     tagList: presenters.assessmentToTagList(assessmentAnswers, moveUrl),
   }
 

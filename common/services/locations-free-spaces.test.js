@@ -81,12 +81,11 @@ describe('Locations Free Spaces Service', function () {
 
       context('by default', function () {
         beforeEach(async function () {
-          locationsFreeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces(
-            {
+          locationsFreeSpaces =
+            await locationsFreeSpacesService.getLocationsFreeSpaces({
               dateFrom,
               dateTo,
-            }
-          )
+            })
         })
 
         it('should call the API client once', function () {
@@ -109,13 +108,12 @@ describe('Locations Free Spaces Service', function () {
 
       context('with filter', function () {
         beforeEach(async function () {
-          locationsFreeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces(
-            {
+          locationsFreeSpaces =
+            await locationsFreeSpacesService.getLocationsFreeSpaces({
               dateFrom,
               dateTo,
               filter: mockFilter,
-            }
-          )
+            })
         })
 
         it('should call the API client with filter', function () {
@@ -145,12 +143,11 @@ describe('Locations Free Spaces Service', function () {
 
       context('by default', function () {
         beforeEach(async function () {
-          locationsFreeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces(
-            {
+          locationsFreeSpaces =
+            await locationsFreeSpacesService.getLocationsFreeSpaces({
               dateFrom,
               dateTo,
-            }
-          )
+            })
         })
 
         it('should call the API client twice', function () {
@@ -186,13 +183,12 @@ describe('Locations Free Spaces Service', function () {
 
       context('with filter', function () {
         beforeEach(async function () {
-          locationsFreeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces(
-            {
+          locationsFreeSpaces =
+            await locationsFreeSpacesService.getLocationsFreeSpaces({
               dateFrom,
               dateTo,
               filter: mockFilter,
-            }
-          )
+            })
         })
 
         it('should call API client with filter on first call', function () {
@@ -228,12 +224,11 @@ describe('Locations Free Spaces Service', function () {
     context('with next but no data', function () {
       beforeEach(async function () {
         apiClient.findAll.resolves(mockEmptyPageResponse)
-        locationsFreeSpaces = await locationsFreeSpacesService.getLocationsFreeSpaces(
-          {
+        locationsFreeSpaces =
+          await locationsFreeSpacesService.getLocationsFreeSpaces({
             dateFrom,
             dateTo,
-          }
-        )
+          })
       })
 
       it('should call the API client once', function () {
@@ -281,12 +276,11 @@ describe('Locations Free Spaces Service', function () {
           .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
           .resolves(mockResponse)
 
-        locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
-          {
+        locationsFreeSpaces =
+          await locationsFreeSpacesService.getPrisonFreeSpaces({
             dateFrom,
             dateTo,
-          }
-        )
+          })
       })
 
       afterEach(function () {
@@ -331,13 +325,12 @@ describe('Locations Free Spaces Service', function () {
           .stub(locationsFreeSpacesService, 'getLocationsFreeSpaces')
           .resolves(mockResponse)
 
-        locationsFreeSpaces = await locationsFreeSpacesService.getPrisonFreeSpaces(
-          {
+        locationsFreeSpaces =
+          await locationsFreeSpacesService.getPrisonFreeSpaces({
             dateFrom,
             dateTo,
             locationIds: 'ABADFEED',
-          }
-        )
+          })
       })
 
       afterEach(function () {

@@ -226,9 +226,9 @@ describe('Move controllers', function () {
           expect(
             presenters.profileToCardComponent.secondCall
           ).to.be.calledWithExactly({ showTags: false })
-          expect(
-            profileToCardComponentStub.secondCall
-          ).to.be.calledWithExactly({ person: mockPeople[1] })
+          expect(profileToCardComponentStub.secondCall).to.be.calledWithExactly(
+            { person: mockPeople[1] }
+          )
         })
 
         it('should call component service correct number of times', function () {

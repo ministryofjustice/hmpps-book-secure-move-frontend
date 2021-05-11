@@ -321,7 +321,8 @@ describe('Move controllers', function () {
           mockValues.cancellation_reason = 'cancelled_by_pmu'
           mockValues.cancellation_reason_cancelled_by_pmu_comment =
             'cancelled by pmu comment'
-          req.form.options.allFields.cancellation_reason_cancelled_by_pmu_comment = {}
+          req.form.options.allFields.cancellation_reason_cancelled_by_pmu_comment =
+            {}
           req.services.move.cancel = sinon.stub().resolves({})
           await controller.successHandler(req, res, nextSpy)
 

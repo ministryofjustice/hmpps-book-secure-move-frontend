@@ -3,7 +3,8 @@ const proxyquire = require('proxyquire')
 const i18n = require('../../../config/i18n')
 const frameworkNomisMappingsToPanelStub = sinon.stub().returns('STUB_MAPPINGS')
 const helper = proxyquire('./render-nomis-mappings-to-field', {
-  '../../presenters/framework-nomis-mappings-to-panel': frameworkNomisMappingsToPanelStub,
+  '../../presenters/framework-nomis-mappings-to-panel':
+    frameworkNomisMappingsToPanelStub,
 })
 
 describe('#renderNomisMappingsToField', function () {

@@ -28,9 +28,10 @@ function setUserLocations(locations) {
     req.session.user = req.session.user || {}
 
     if (locations && !req.session.user.locations) {
-      req.session.user.locations = await req.services.referenceData.getLocationsByNomisAgencyId(
-        locations.split(',')
-      )
+      req.session.user.locations =
+        await req.services.referenceData.getLocationsByNomisAgencyId(
+          locations.split(',')
+        )
     }
 
     next()

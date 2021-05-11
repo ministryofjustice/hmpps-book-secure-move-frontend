@@ -14,7 +14,8 @@ class PrisonTransferReasonController extends CreateBaseController {
 
   async getPrisonTransferReason(req, res, next) {
     try {
-      req.prisonTransferReasons = await req.services.referenceData.getPrisonTransferReasons()
+      req.prisonTransferReasons =
+        await req.services.referenceData.getPrisonTransferReasons()
 
       next()
     } catch (error) {

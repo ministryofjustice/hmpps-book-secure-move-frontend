@@ -7,7 +7,8 @@ const componentService = require('../services/component')
 const assessmentCategoryToSummaryListComponent = proxyquire(
   './assessment-category-to-summary-list-component',
   {
-    './assessment-answers-to-meta-list-component': assessmentAnswersToMetaListComponentStub,
+    './assessment-answers-to-meta-list-component':
+      assessmentAnswersToMetaListComponentStub,
   }
 )
 

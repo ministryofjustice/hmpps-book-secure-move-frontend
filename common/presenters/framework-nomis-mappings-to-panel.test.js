@@ -4,7 +4,8 @@ const assessmentAnswersToMetaListComponentStub = sinon.stub().returnsArg(0)
 const frameworkNomisMappingsToPanel = proxyquire(
   './framework-nomis-mappings-to-panel',
   {
-    './assessment-answers-to-meta-list-component': assessmentAnswersToMetaListComponentStub,
+    './assessment-answers-to-meta-list-component':
+      assessmentAnswersToMetaListComponentStub,
   }
 )
 

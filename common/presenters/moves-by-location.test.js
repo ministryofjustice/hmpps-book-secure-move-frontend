@@ -114,25 +114,7 @@ describe('Presenters', function () {
         it('should contain correct number of moves', function () {
           const keys = transformedResponse.map(group => group.items.length)
           expect(keys).to.deep.equal([
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            2,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
+            1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
           ])
         })
       })

@@ -42,7 +42,8 @@ describe('Presenters', function () {
       sinon.stub(i18n, 't').returns('__translated__')
       moveToCardComponent = proxyquire('./move-to-card-component', {
         './profile-to-card-component': profileToCardComponentStub,
-        './move-to-important-events-tag-list-component': moveToImportantEventsTagListComponent,
+        './move-to-important-events-tag-list-component':
+          moveToImportantEventsTagListComponent,
       })
     })
 
@@ -334,7 +335,8 @@ describe('Presenters', function () {
               classes: mockClasses,
             })
           ),
-          './move-to-important-events-tag-list-component': moveToImportantEventsTagListComponent,
+          './move-to-important-events-tag-list-component':
+            moveToImportantEventsTagListComponent,
         })
       })
 
