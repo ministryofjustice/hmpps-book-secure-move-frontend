@@ -61,17 +61,18 @@ function requestMiddleware({
           return res
         })
         .catch(error => {
-          const { response: errResponse = {} } = error
-          const text = errResponse.statusMessage || error.message
-          const status =
-            error.code === 'ECONNABORTED' ? 408 : errResponse.statusCode || 500
+          const { requestUrl, statusCode, statusMessage, timings } =
+            error.response || error.request || {}
+
+          const text = statusMessage || error.message
+          const status = error.code === 'ETIMEDOUT' ? 408 : statusCode || 500
 
           debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
 
           // record error
-          if (errResponse.timings) {
+          if (timings) {
             const duration =
-              (errResponse.timings.end - errResponse.timings.start) / 1000
+              ((timings.error || timings.end) - timings.start) / 1000
             clientMetrics.recordError(req, error, duration)
           }
 
@@ -80,9 +81,7 @@ function requestMiddleware({
             category: 'http',
             data: {
               method: req.method,
-              url: errResponse.requestUrl
-                ? decodeURIComponent(errResponse.requestUrl)
-                : undefined,
+              url: requestUrl ? decodeURIComponent(requestUrl) : undefined,
               status_code: status,
             },
             level: Sentry.Severity.Info,
