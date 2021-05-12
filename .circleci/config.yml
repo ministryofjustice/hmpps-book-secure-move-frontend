@@ -418,9 +418,6 @@ workflows:
             - hmpps-common-vars
           <<: *only_deploy_tags
           name: end-to-end-test-release
-      - hmpps/helm_lint:
-          name: helm_lint
-          env: 'staging'
       # Docker builds
       - build-docker-image:
           context:
