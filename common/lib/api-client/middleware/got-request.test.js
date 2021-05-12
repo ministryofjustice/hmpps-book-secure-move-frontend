@@ -36,8 +36,15 @@ const mockResponse = {
 
 const gotStub = sinon.stub().resolves(mockResponse)
 
+const requestDebugStub = sinon.stub()
+const cacheDebugStub = sinon.stub()
+const debugStub = sinon.stub()
+debugStub.withArgs('app:api-client:request').callsFake(() => requestDebugStub)
+debugStub.withArgs('app:api-client:cache').callsFake(arg => cacheDebugStub)
+
 const requestMiddleware = proxyquire('./got-request', {
   got: gotStub,
+  debug: debugStub,
   '../cache': cache,
   '../client-metrics': clientMetrics,
   '../../timer': timer,
@@ -59,6 +66,8 @@ describe('API Client', function () {
 
       sinon.stub(Sentry, 'addBreadcrumb')
 
+      requestDebugStub.resetHistory()
+      cacheDebugStub.resetHistory()
       gotStub.resetHistory()
       cache.set.resetHistory()
       clientMetrics.recordSuccess.resetHistory()
@@ -216,10 +225,12 @@ describe('API Client', function () {
       let thrownError
       let error
 
-      context('without response', function () {
-        beforeEach(async function () {
-          error = new Error()
+      beforeEach(async function () {
+        error = new Error('Mock error')
+      })
 
+      context('without response or request', function () {
+        beforeEach(async function () {
           gotStub.rejects(error)
 
           await requestMiddleware()
@@ -227,6 +238,14 @@ describe('API Client', function () {
             .catch(e => {
               thrownError = e
             })
+        })
+
+        it('should add debugging', function () {
+          expect(requestDebugStub).to.be.calledWithExactly(
+            '[500] Mock error',
+            '(GET /path/to/endpoint)',
+            error
+          )
         })
 
         it('should not record metrics', function () {
@@ -251,22 +270,21 @@ describe('API Client', function () {
         })
       })
 
-      context('with response', function () {
+      context('with only response', function () {
         beforeEach(function () {
-          error = new Error()
           error.response = {
             timings: {
               start: 1619711962865,
               end: 1619711962968,
             },
+            requestUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
           }
         })
 
-        context('with aborted connection', function () {
+        context('with timeout error code', function () {
           beforeEach(async function () {
-            error.code = 'ECONNABORTED'
-            error.response.requestUrl =
-              'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz'
+            error.message = 'Timeout error'
+            error.code = 'ETIMEDOUT'
 
             gotStub.rejects(error)
 
@@ -275,6 +293,14 @@ describe('API Client', function () {
               .catch(e => {
                 thrownError = e
               })
+          })
+
+          it('should add debugging', function () {
+            expect(requestDebugStub).to.be.calledWithExactly(
+              '[408] Timeout error',
+              '(GET /path/to/endpoint)',
+              error
+            )
           })
 
           it('should stop recording metrics for the call', function () {
@@ -303,10 +329,10 @@ describe('API Client', function () {
           })
         })
 
-        context('with status code', function () {
+        context('with bad request', function () {
           beforeEach(async function () {
-            error.response.statusCode = 502
-            error.response.statusMessage = 'Bad gateway'
+            error.response.statusCode = 400
+            error.response.statusMessage = 'Bad request'
 
             gotStub.rejects(error)
 
@@ -315,6 +341,14 @@ describe('API Client', function () {
               .catch(e => {
                 thrownError = e
               })
+          })
+
+          it('should add debugging', function () {
+            expect(requestDebugStub).to.be.calledWithExactly(
+              '[400] Bad request',
+              '(GET /path/to/endpoint)',
+              error
+            )
           })
 
           it('should stop recording metrics for the call', function () {
@@ -331,8 +365,8 @@ describe('API Client', function () {
               category: 'http',
               data: {
                 method: 'GET',
-                url: undefined,
-                status_code: 502,
+                url: 'http://host.com/path?foo&bar,fizz,buzz',
+                status_code: 400,
               },
               level: Sentry.Severity.Info,
             })
@@ -341,6 +375,135 @@ describe('API Client', function () {
           it('should rethrow error', function () {
             expect(thrownError).to.equal(error)
           })
+        })
+      })
+
+      context('with only request', function () {
+        beforeEach(function () {
+          error.request = {
+            timings: {
+              start: 1619711962865,
+              // Note, failed requests contain an `error` key instead of `end`
+              error: 1619711962968,
+            },
+            requestUrl: 'http://host.com/path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+          }
+        })
+
+        context('with timeout error code', function () {
+          beforeEach(async function () {
+            error.message = 'Timeout error'
+            error.code = 'ETIMEDOUT'
+
+            gotStub.rejects(error)
+
+            await requestMiddleware()
+              .req(payload)
+              .catch(e => {
+                thrownError = e
+              })
+          })
+
+          it('should add debugging', function () {
+            expect(requestDebugStub).to.be.calledWithExactly(
+              '[408] Timeout error',
+              '(GET /path/to/endpoint)',
+              error
+            )
+          })
+
+          it('should stop recording metrics for the call', function () {
+            expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+              payload.req,
+              error,
+              (error.request.timings.error - error.request.timings.start) / 1000
+            )
+          })
+
+          it('should add a Sentry breadcrumb', function () {
+            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
+              type: 'http',
+              category: 'http',
+              data: {
+                method: 'GET',
+                url: 'http://host.com/path?foo&bar,fizz,buzz',
+                status_code: 408,
+              },
+              level: Sentry.Severity.Info,
+            })
+          })
+
+          it('should rethrow error', function () {
+            expect(thrownError).to.equal(error)
+          })
+        })
+      })
+
+      context('with both response and request', function () {
+        beforeEach(async function () {
+          error.request = {
+            statusCode: 408,
+            statusMessage: 'Timeout',
+            timings: {
+              start: 1619711962865,
+              // Note, failed requests contain an `error` key instead of `end`
+              error: 1619711962968,
+            },
+            requestUrl:
+              'http://host.com/request-path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+          }
+          error.response = {
+            statusCode: 400,
+            statusMessage: 'Bad request',
+            timings: {
+              start: 2619711962865,
+              // Note, failed requests contain an `error` key instead of `end`
+              end: 2619711962968,
+            },
+            requestUrl:
+              'http://host.com/response-path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+          }
+
+          gotStub.rejects(error)
+
+          await requestMiddleware()
+            .req(payload)
+            .catch(e => {
+              thrownError = e
+            })
+        })
+
+        it('should add debugging', function () {
+          expect(requestDebugStub).to.be.calledWithExactly(
+            '[400] Bad request',
+            '(GET /path/to/endpoint)',
+            error
+          )
+        })
+
+        it('should stop recording metrics for the call', function () {
+          expect(clientMetrics.recordError).to.be.calledOnceWithExactly(
+            payload.req,
+            error,
+            (error.response.timings.end - error.response.timings.start) / 1000
+          )
+        })
+
+        it('should add a Sentry breadcrumb', function () {
+          expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
+            type: 'http',
+            category: 'http',
+            data: {
+              method: 'GET',
+              url: 'http://host.com/response-path?foo&bar,fizz,buzz',
+              status_code: 400,
+            },
+            level: Sentry.Severity.Info,
+          })
+        })
+
+        it('should rethrow error', function () {
+          expect(thrownError).to.equal(error)
         })
       })
     })
