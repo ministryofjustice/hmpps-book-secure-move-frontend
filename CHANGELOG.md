@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.77.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.5...v2.77.0) (2021-05-12)
+
+
+### Features
+
+* Add keep-alive to api client ([07f2ee8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/07f2ee8a091322719f5277c4e5bf35999f9e3697))
+
+
+### Bug Fixes
+
+* Handle Got errors correctly depending on request or response ([02588a5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/02588a52994725a83571bd99f45f1ede45f79b38))
+
 ### [2.76.5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.4...v2.76.5) (2021-05-11)
 
 
