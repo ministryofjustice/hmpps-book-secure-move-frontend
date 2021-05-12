@@ -95,6 +95,7 @@
     "@sentry/node": "6.3.6",
     "@sentry/tracing": "6.3.6",
     "accessible-autocomplete": "2.0.3",
+    "agentkeepalive": "4.1.4",
     "audit-ci": "4.0.0",
     "axios": "0.21.1",
     "axios-debug-log": "0.8.2",
