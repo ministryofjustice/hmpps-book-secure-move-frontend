@@ -210,7 +210,7 @@
     "standard": "16.0.3",
     "standard-version": "9.3.0",
     "style-loader": "2.0.0",
-    "terser-webpack-plugin": "5.1.1",
+    "terser-webpack-plugin": "5.1.2",
     "testcafe": "1.9.4",
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
