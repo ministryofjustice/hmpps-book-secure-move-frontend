@@ -7,6 +7,7 @@ const getUpdateLinks = require('../helpers/move/get-update-links')
 
 function moveToMetaListComponent(
   {
+    _hasLeftCustody,
     id,
     date,
     date_from: dateFrom,
@@ -52,7 +53,7 @@ function moveToMetaListComponent(
       : notAgreedLabel
 
   const actions = getUpdateLinks(
-    { id, move_type: moveType },
+    { _hasLeftCustody, id, move_type: moveType },
     canAccess,
     updateSteps
   )

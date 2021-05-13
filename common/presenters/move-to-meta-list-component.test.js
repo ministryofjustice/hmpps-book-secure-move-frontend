@@ -10,6 +10,7 @@ const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
 })
 
 const mockMove = {
+  _hasLeftCustody: false,
   date: '2019-06-09',
   time_due: '2000-01-01T14:00:00Z',
   move_type: 'court_appearance',
@@ -51,7 +52,11 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should get the actions', function () {
           expect(getUpdateLinks).to.be.calledOnceWithExactly(
-            { id: mockMove.id, move_type: mockMove.move_type },
+            {
+              _hasLeftCustody: false,
+              id: mockMove.id,
+              move_type: mockMove.move_type,
+            },
             canAccess,
             updateSteps
           )

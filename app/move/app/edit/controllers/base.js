@@ -4,6 +4,21 @@ const filters = require('../../../../../config/nunjucks/filters')
 const CreateBaseController = require('../../new/controllers/base')
 
 class UpdateBaseController extends CreateBaseController {
+  middlewareChecks() {
+    this.use(this.canEdit)
+    super.middlewareChecks()
+  }
+
+  canEdit(req, res, next) {
+    const { id, _hasLeftCustody } = req.move
+
+    if (_hasLeftCustody) {
+      return res.redirect(`/move/${id}`)
+    }
+
+    next()
+  }
+
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setNextStep)
