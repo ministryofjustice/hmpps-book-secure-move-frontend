@@ -14,7 +14,7 @@
   "time": "must be a valid time, for example 12:00 or 12pm",
   "time_with_label": "{{label}} must be a valid time, for example 12:00 or 12pm",
   "datetime": "$t(validation::time)",
-  "datetime_with_label": "{{label}} $t(validation::time)",
+  "datetime_with_label": "$t(validation::time)",
   "after": "must be in the future",
   "after_with_label": "{{label}} must be in the future",
   "before": "must be in the past",
