@@ -3,6 +3,10 @@ const getMoveUrl = require('./get-move-url')
 const getUpdateUrls = (move, canAccess = () => false, updateSteps = []) => {
   const updateUrls = {}
 
+  if (move._hasLeftCustody) {
+    return updateUrls
+  }
+
   if (!canAccess(`move:update:${move.move_type}`)) {
     return updateUrls
   }

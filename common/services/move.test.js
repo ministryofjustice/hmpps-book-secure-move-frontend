@@ -1332,4 +1332,169 @@ describe('Move Service', function () {
       })
     })
   })
+
+  describe('#accept()', function () {
+    const mockId = '#moveId'
+    const mockResponse = {
+      data: mockMove,
+    }
+
+    context('without move ID', function () {
+      it('should reject with error', function () {
+        return expect(moveService.accept()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function () {
+      const currentDate = new Date(2020, 1, 1, 0, 0)
+      let clock
+      beforeEach(async function () {
+        clock = sinon.useFakeTimers({
+          now: currentDate,
+        })
+        formatISOStub.resetHistory()
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        sinon.spy(apiClient, 'all')
+        sinon.spy(apiClient, 'one')
+
+        await moveService.accept(mockId)
+      })
+      afterEach(function () {
+        clock.restore()
+      })
+
+      it('should add the timestamp', function () {
+        expect(formatISOStub).to.be.calledOnceWithExactly(currentDate)
+      })
+
+      it('should call accept method with data', function () {
+        expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
+        expect(apiClient.all).to.be.calledOnceWithExactly('accept')
+        expect(apiClient.post).to.be.calledOnceWithExactly({
+          timestamp: '#timestamp',
+        })
+      })
+    })
+  })
+
+  describe('#complete()', function () {
+    const mockId = '#moveId'
+    const mockResponse = {
+      data: mockMove,
+    }
+
+    context('without move ID', function () {
+      it('should reject with error', function () {
+        return expect(moveService.complete()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function () {
+      const currentDate = new Date(2020, 1, 1, 0, 0)
+      let clock
+
+      beforeEach(function () {
+        clock = sinon.useFakeTimers({
+          now: currentDate,
+        })
+        formatISOStub.resetHistory()
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        sinon.spy(apiClient, 'all')
+        sinon.spy(apiClient, 'one')
+      })
+
+      afterEach(function () {
+        clock.restore()
+      })
+
+      context('without data', function () {
+        beforeEach(async function () {
+          await moveService.complete(mockId)
+        })
+
+        it('should add the timestamp', function () {
+          expect(formatISOStub).to.be.calledOnceWithExactly(currentDate)
+        })
+
+        it('should call complete method with timestamp', function () {
+          expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
+          expect(apiClient.all).to.be.calledOnceWithExactly('complete')
+          expect(apiClient.post).to.be.calledOnceWithExactly({
+            timestamp: '#timestamp',
+          })
+        })
+      })
+
+      context('with data', function () {
+        beforeEach(async function () {
+          await moveService.complete(mockId, {
+            notes: 'Lorem ipsum',
+          })
+        })
+
+        it('should add the timestamp', function () {
+          expect(formatISOStub).to.be.calledOnceWithExactly(currentDate)
+        })
+
+        it('should call complete method with data', function () {
+          expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
+          expect(apiClient.all).to.be.calledOnceWithExactly('complete')
+          expect(apiClient.post).to.be.calledOnceWithExactly({
+            timestamp: '#timestamp',
+            notes: 'Lorem ipsum',
+          })
+        })
+      })
+    })
+  })
+
+  describe('#start()', function () {
+    const mockId = '#moveId'
+    const mockResponse = {
+      data: mockMove,
+    }
+
+    context('without move ID', function () {
+      it('should reject with error', function () {
+        return expect(moveService.start()).to.be.rejectedWith(
+          'No move ID supplied'
+        )
+      })
+    })
+
+    context('with move ID', function () {
+      const currentDate = new Date(2020, 1, 1, 0, 0)
+      let clock
+      beforeEach(async function () {
+        clock = sinon.useFakeTimers({
+          now: currentDate,
+        })
+        formatISOStub.resetHistory()
+        sinon.stub(apiClient, 'post').resolves(mockResponse)
+        sinon.spy(apiClient, 'all')
+        sinon.spy(apiClient, 'one')
+
+        await moveService.start(mockId)
+      })
+      afterEach(function () {
+        clock.restore()
+      })
+
+      it('should add the timestamp', function () {
+        expect(formatISOStub).to.be.calledOnceWithExactly(currentDate)
+      })
+
+      it('should call start method', function () {
+        expect(apiClient.one).to.be.calledOnceWithExactly('move', '#moveId')
+        expect(apiClient.all).to.be.calledOnceWithExactly('start')
+        expect(apiClient.post).to.be.calledOnceWithExactly({
+          timestamp: '#timestamp',
+        })
+      })
+    })
+  })
 })

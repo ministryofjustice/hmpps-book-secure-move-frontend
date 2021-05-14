@@ -1,5 +1,5 @@
 const dateFunctions = require('date-fns')
-const { mapValues, omitBy, isUndefined, isEmpty } = require('lodash')
+const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 
 const restClient = require('../lib/api-client/rest-client')
 
@@ -332,6 +332,45 @@ class MoveService extends BaseService {
         timestamp,
         ...data,
       })
+  }
+
+  accept(id) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    const timestamp = dateFunctions.formatISO(new Date())
+
+    return this.apiClient.one('move', id).all('accept').post({
+      timestamp,
+    })
+  }
+
+  complete(id, { notes } = {}) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    const timestamp = dateFunctions.formatISO(new Date())
+
+    return this.apiClient.one('move', id).all('complete').post(
+      pickBy({
+        timestamp,
+        notes,
+      })
+    )
+  }
+
+  start(id) {
+    if (!id) {
+      return Promise.reject(new Error(noMoveIdMessage))
+    }
+
+    const timestamp = dateFunctions.formatISO(new Date())
+
+    return this.apiClient.one('move', id).all('start').post({
+      timestamp,
+    })
   }
 
   unassign(id) {

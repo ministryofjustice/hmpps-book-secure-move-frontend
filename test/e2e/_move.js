@@ -262,6 +262,22 @@ export async function checkUpdatePagesForbidden() {
 }
 
 /**
+ * Check all update pages are redirect
+ *
+ * @returns {undefined}
+ */
+export async function checkUpdatePagesRedirected(moveId, pages = updatePages) {
+  for await (const updatePage of pages) {
+    const url = getUpdateMove(t.ctx.move.id, updatePage)
+
+    await t
+      .navigateTo(url)
+      .expect(page.getCurrentUrl())
+      .match(/\/move\/[\w]{8}(-[\w]{4}){3}-[\w]{12}$/)
+  }
+}
+
+/**
  * Click link to update page
  *
  * @param {string} page - page key

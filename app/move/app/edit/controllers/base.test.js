@@ -16,10 +16,72 @@ const controller = new UpdateBaseController({ route: '/' })
 describe('Move controllers', function () {
   describe('Update base controller', function () {
     describe('#middlewareChecks()', function () {
-      it('should inherit middlewareChecks from CreateBaseController', function () {
-        expect(controller.middlewareChecks).to.exist.and.equal(
-          BaseProto.middlewareChecks
+      beforeEach(function () {
+        sinon.stub(BaseProto, 'middlewareChecks')
+        sinon.stub(controller, 'use')
+        sinon.stub(controller, 'canEdit')
+
+        controller.middlewareChecks()
+      })
+
+      it('should call parent method', function () {
+        expect(BaseProto.middlewareChecks).to.have.been.calledOnce
+      })
+
+      it('should call canEdit middleware', function () {
+        expect(controller.use.firstCall).to.have.been.calledWith(
+          controller.canEdit
         )
+      })
+
+      it('should call correct number of middleware', function () {
+        expect(controller.use.callCount).to.equal(1)
+      })
+    })
+
+    describe('#canEdit()', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          move: {
+            id: '12345',
+          },
+        }
+        mockRes = {
+          redirect: sinon.spy(),
+        }
+      })
+
+      context('when move has left custody', function () {
+        beforeEach(function () {
+          mockReq.move._hasLeftCustody = true
+          controller.canEdit(mockReq, mockRes, nextSpy)
+        })
+
+        it('should redirect to move', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+
+      context('when move has not left custody', function () {
+        beforeEach(function () {
+          mockReq.move._hasLeftCustody = false
+          controller.canEdit(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(mockRes.redirect).not.to.be.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

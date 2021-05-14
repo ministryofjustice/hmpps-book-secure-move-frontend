@@ -313,6 +313,18 @@ export async function createMoveFixture({
     .catch(errorHandler(data))
 }
 
+export function acceptMove(moveId) {
+  return moveService.accept(moveId)
+}
+
+export function startMove(moveId) {
+  return moveService.start(moveId)
+}
+
+export function completeMove(moveId) {
+  return moveService.complete(moveId)
+}
+
 export async function fillInPersonEscortRecord(moveId) {
   const move = await moveService.getById(moveId)
   const personEscortRecord = move.profile.person_escort_record
