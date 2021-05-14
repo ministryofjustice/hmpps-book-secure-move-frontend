@@ -9,7 +9,8 @@
   },
   "filter": {
     "police_national_computer": {
-      "label": "Police National Computer (PNC) number"
+      "label": "Police National Computer (PNC) number",
+      "hint": "For example, ‘08/012345P’"
     },
     "prison_number": {
       "label": "Prison number",
@@ -22,6 +23,7 @@
   },
   "police_national_computer": {
     "label": "<abbr title=\"Police National Computer\">PNC</abbr> number",
+    "hint": "For example, ‘08/012345P’",
     "details": {
       "summaryHtml": "I need to change the PNC number",
       "html": "If you have created the move for the wrong person cancel this request and create a new one"
