@@ -133,33 +133,75 @@ describe('Validators', function () {
       })
     })
   })
-})
 
-describe('#prisonNumber()', function () {
-  describe('invalid values', function () {
-    const inputs = [
-      796507,
-      '796507',
-      null,
-      'AA/BBBBBB',
-      'AA/183716',
-      'ABCDEF',
-      'A12345BC',
-    ]
+  describe('#prisonNumber()', function () {
+    describe('invalid values', function () {
+      const inputs = [
+        796507,
+        '796507',
+        null,
+        'AA/BBBBBB',
+        'AA/183716',
+        'ABCDEF',
+        'A12345BC',
+      ]
 
-    inputs.forEach(i => {
-      it(`test for: "${i}"`, function () {
-        expect(validators.prisonNumber(i)).not.to.be.ok
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.prisonNumber(i)).not.to.be.ok
+        })
+      })
+    })
+
+    describe('valid values', function () {
+      const inputs = ['', 'A1234BC', 'a1234bc']
+
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.prisonNumber(i)).to.be.ok
+        })
       })
     })
   })
 
-  describe('valid values', function () {
-    const inputs = ['', 'A1234BC', 'a1234bc']
+  describe('#policeNationalComputerNumber()', function () {
+    describe('invalid values', function () {
+      const inputs = [
+        796507,
+        '796507',
+        null,
+        '996/0607652B',
+        '08012345P',
+        '08/012345',
+        '012345P',
+        'ABCDEF',
+        '08/P',
+      ]
 
-    inputs.forEach(i => {
-      it(`test for: "${i}"`, function () {
-        expect(validators.prisonNumber(i)).to.be.ok
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.policeNationalComputerNumber(i)).not.to.be.ok
+        })
+      })
+    })
+
+    describe('valid values', function () {
+      const inputs = [
+        '',
+        '96/2663652J',
+        '1996/2663652J',
+        '14/2400766Q',
+        '2014/2400766Q',
+        '06/0000222G',
+        '2006/0000222G',
+        '06/4169X',
+        '2006/4169X',
+      ]
+
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.policeNationalComputerNumber(i)).to.be.ok
+        })
       })
     })
   })
