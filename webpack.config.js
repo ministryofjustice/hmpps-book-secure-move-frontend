@@ -1,10 +1,10 @@
 const path = require('path')
 
 const CopyPlugin = require('copy-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const YAML = require('js-yaml')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const { merge } = require('webpack-merge')
@@ -114,7 +114,7 @@ const commonConfig = {
   },
 
   optimization: {
-    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin({})],
     splitChunks: {
       cacheGroups: {
         vendors: {
