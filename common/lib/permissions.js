@@ -1,4 +1,5 @@
 const policePermissions = [
+  'dashboard:view',
   'moves:view:outgoing',
   'moves:view:incoming',
   'moves:download',
@@ -27,6 +28,7 @@ const policePermissions = [
 ]
 
 const contractDeliveryManagerPermissions = [
+  'dashboard:view',
   'allocations:view',
   'locations:contract_delivery_manager',
   'locations:all',
@@ -112,6 +114,7 @@ const supplierPermissions = [
   'youth_risk_assessment:print',
 ]
 const prisonPermissions = [
+  'dashboard:view',
   'moves:view:outgoing',
   'moves:view:incoming',
   'moves:download',
