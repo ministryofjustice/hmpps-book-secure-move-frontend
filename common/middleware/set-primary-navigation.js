@@ -1,6 +1,4 @@
-const { omit, get } = require('lodash')
-
-const { FEATURE_FLAGS } = require('../../config')
+const { omit } = require('lodash')
 
 function setPrimaryNavigation(req, res, next) {
   const items = [
@@ -9,13 +7,6 @@ function setPrimaryNavigation(req, res, next) {
       text: req.t('primary_navigation.home'),
       href: '/',
       active: req.path === '/',
-    },
-    {
-      permission: 'dashboard:view:population',
-      text: req.t('primary_navigation.population'),
-      href: '/population',
-      active: req.path.startsWith('/population'),
-      featureFlag: FEATURE_FLAGS.POPULATION_DASHBOARD,
     },
     {
       permission: 'moves:view:outgoing',
@@ -42,13 +33,17 @@ function setPrimaryNavigation(req, res, next) {
       active:
         req.path.startsWith('/allocations') && req.path.endsWith('/outgoing'),
     },
+    {
+      permission: 'dashboard:view:population',
+      text: req.t('primary_navigation.population'),
+      href: '/population',
+      active: req.path.startsWith('/population'),
+    },
   ]
 
   res.locals.primaryNavigation = items
     .filter(item => req.canAccess(item.permission))
-    .filter(item => get(item, 'featureFlag', true))
     .map(item => omit(item, 'permission'))
-    .map(item => omit(item, 'featureFlag'))
 
   next()
 }

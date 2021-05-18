@@ -275,9 +275,6 @@ module.exports = {
     },
   },
   FEATURE_FLAGS: {
-    POPULATION_DASHBOARD: /true/i.test(
-      process.env.FEATURE_FLAG_POPULATION_DASHBOARD
-    ),
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
   },
   FRAMEWORKS: {
