@@ -33,6 +33,10 @@
     "incident": "Serious incident",
     "medical": "Medical incident"
   },
+  "JourneyAdmitToReception": {
+    "heading": "Admitted to reception",
+    "description": "Vehicle {{journey.vehicle.registration}} admitted to reception of {{journey.to_location.title}}"
+  },
   "JourneyAdmitThroughOuterGate": {
     "heading": "Admitted through outer gate",
     "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{journey.to_location.title}}"
@@ -65,7 +69,11 @@
     "heading": "Handover to establishment",
     "description": "$t(events::person) handed over by {{move.supplier.name}} (Personnel number {{supplier_personnel_number}}) at {{journey.to_location.title}}"
   },
-  "JourneyPersonBoardVehicle": {
+  "JourneyHandoverToSupplier": {
+    "heading": "Handover to supplier",
+    "description": "$t(events::person) handed over to {{move.supplier.name}}"
+  },
+  "JourneyPersonBoardsVehicle": {
     "heading": "Boarded escort vehicle",
     "description": "$t(events::person) boarded escort vehicle {{journey.vehicle.registration}}"
   },
@@ -96,6 +104,10 @@
   "JourneyUncomplete": {
     "heading": "Journey uncompleted",
     "description": "Completed Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
+  },
+  "MoveDateChanged": {
+    "heading": "Move date changed",
+    "description": "The move date has been updated"
   },
   "MoveAccept": {
     "statusChange": true,
@@ -301,7 +313,7 @@
   },
   "PerCourtTask": {
     "heading": "Court task",
-    "description": "{{notes}}, completed by {{supplier_personnel_id}}"
+    "description": "{{notes}}, completed by {{supplier_personnel_number}}"
   },
   "PerGeneric": {
     "heading": "{{move.supplier.name}} has logged a generic event note",
@@ -310,7 +322,7 @@
   "PerMedicalAid": {
     "flag": "medical",
     "heading": "Medical attention requested",
-    "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} on {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} on {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
+    "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
     "location_vehicle": "at {{location.title}}",
     "location_vehicle_true": "inside the vehicle {{vehicle_reg}}"
