@@ -64,7 +64,7 @@
     "uncategorised": "Pending category"
   },
   "serving_youth_sentence": {
-    "label": "Is this person serving their sentence in the Secure Youth Estate?"
+    "label": "Is this person serving a sentence or on remand within the Secure Youth Estate?"
   },
   "from_location": {
     "label": "Move from",
