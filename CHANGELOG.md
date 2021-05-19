@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.77.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.77.0...v2.77.1) (2021-05-19)
+
+
+### Bug Fixes
+
+* Bring organisation switcher inline with wider HMPPS estate ([bfdc5d9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bfdc5d90bb47f21de5474cd301f4dbb0810a8b5f))
+* Correct events timeline content ([75a3bf4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/75a3bf44b88b58c69cb1af0e4a110b4c3b7df904))
+* Ensure all user roles have access to the homepage ([c34f9d2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c34f9d26885485d3b0464113ea52499b22f525b2))
+* Prevent move information being updated once it has left custody ([2fcb9b2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2fcb9b2272ef184cd1fba3e4e732f6a18dca3830))
+* Remove double label in datetime validation messages ([fc56f03](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fc56f03efdaf0d849f55aa8e72bb7cb0d46892fa))
+* Update wording of secure youth estate triage question ([88aeaf5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/88aeaf5187acc0ad14b4c64d8a07738b362bda1d))
+
 ## [2.77.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.76.5...v2.77.0) (2021-05-12)
 
 
