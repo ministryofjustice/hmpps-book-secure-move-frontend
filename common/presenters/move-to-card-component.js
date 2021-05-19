@@ -12,6 +12,7 @@ function moveToCardComponent({
   showToLocation = false,
   showFromLocation = false,
   hrefSuffix = '',
+  locationType,
 } = {}) {
   return function item(move) {
     const {
@@ -31,14 +32,14 @@ function moveToCardComponent({
 
     if (showFromLocation) {
       moveMetaItems.push({
-        label: i18n.t('fields::from_location.label'),
+        label: { text: i18n.t('fields::from_location.label') },
         text: fromLocation?.title,
       })
     }
 
     if (showToLocation) {
       moveMetaItems.push({
-        label: i18n.t('fields::to_location.label'),
+        label: { text: i18n.t('fields::to_location.label') },
         text: toLocation?.title,
       })
     }
@@ -49,6 +50,7 @@ function moveToCardComponent({
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
     const personCardComponent = profileToCardComponent({
+      locationType,
       meta: moveMetaItems,
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,

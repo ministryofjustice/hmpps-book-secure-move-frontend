@@ -25,10 +25,12 @@
     "details": {
       "summaryHtml": "I need to change the PNC number",
       "html": "If you have created the move for the wrong person cancel this request and create a new one"
-    }
+    },
+    "empty": "Not provided"
   },
   "prison_number": {
-    "label": "Prison number"
+    "label": "Prison number",
+    "empty": "Not provided"
   },
   "criminal_records_office": {
     "label": "<abbr title=\"Criminal Records Office\">CRO</abbr> number"

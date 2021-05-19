@@ -19,11 +19,13 @@ function setResultsMoves(bodyKey, locationKey) {
           moves: activeMoves,
           context: locationKey === 'from_location' ? 'incoming' : 'outgoing',
           showLocations: !req.location,
+          locationType: req.location.location_type,
         })
       } else {
         req.resultsAsCards = presenters.movesByLocation(
           activeMoves,
-          locationKey
+          locationKey,
+          req.location.location_type
         )
       }
 

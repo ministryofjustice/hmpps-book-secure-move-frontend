@@ -47,11 +47,11 @@ describe('Presenters', function () {
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
-                label: 'moves::court_case.items.start_date.label',
+                label: { text: 'moves::court_case.items.start_date.label' },
                 text: mockCourtCase.case_start_date,
               },
               {
-                label: 'moves::court_case.items.case_type.label',
+                label: { text: 'moves::court_case.items.case_type.label' },
                 text: mockCourtCase.case_type,
               },
             ],

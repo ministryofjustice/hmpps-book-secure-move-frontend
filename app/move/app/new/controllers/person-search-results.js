@@ -34,9 +34,13 @@ class PersonSearchResultsController extends PersonController {
   }
 
   setPeopleItems(req, res, next) {
+    const { from_location_type: locationType } = req.sessionModel.toJSON()
     const { people } = req.form.options.fields
     people.items = req.people.map(person => {
-      const card = presenters.profileToCardComponent({ showTags: false })({
+      const card = presenters.profileToCardComponent({
+        locationType,
+        showTags: false,
+      })({
         person,
       })
       return {

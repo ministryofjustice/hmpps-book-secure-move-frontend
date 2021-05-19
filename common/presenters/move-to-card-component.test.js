@@ -9,6 +9,8 @@ const mockMove = {
   profile: {
     person: {
       _fullname: 'Name, Full',
+      prison_number: 'A1234BC',
+      police_national_computer: 'A1BC2D/E3',
     },
   },
   to_location: {
@@ -60,6 +62,7 @@ describe('Presenters', function () {
               href: '/move/12345',
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
+              locationType: undefined,
               meta: [],
               showImage: true,
               showMeta: true,
@@ -130,6 +133,7 @@ describe('Presenters', function () {
           href: '/move/12345/path/to/somewhere',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: true,
           showMeta: true,
@@ -151,6 +155,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: false,
           showMeta: true,
@@ -172,6 +177,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: true,
           showMeta: false,
@@ -193,6 +199,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: true,
           showMeta: true,
@@ -214,6 +221,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: true,
           showMeta: true,
@@ -239,6 +247,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: false,
           showMeta: false,
@@ -274,6 +283,7 @@ describe('Presenters', function () {
           href: '/move/12345',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
           meta: [],
           showImage: false,
           showMeta: false,
@@ -395,9 +405,10 @@ describe('Presenters', function () {
             href: '/move/12345',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
+            locationType: undefined,
             meta: [
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: mockMove.to_location.title,
               },
             ],
@@ -422,9 +433,10 @@ describe('Presenters', function () {
             href: '/move/12345',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
+            locationType: undefined,
             meta: [
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: mockMove.from_location.title,
               },
             ],
@@ -450,16 +462,44 @@ describe('Presenters', function () {
             href: '/move/12345',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
+            locationType: undefined,
             meta: [
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: mockMove.from_location.title,
               },
               {
-                label: '__translated__',
+                label: { text: '__translated__' },
                 text: mockMove.to_location.title,
               },
             ],
+            showImage: true,
+            showMeta: true,
+            showTags: true,
+          })
+        })
+      })
+
+      context('when locationType is provided', function () {
+        beforeEach(function () {
+          mockMove.to_location.location_type = 'prison'
+        })
+
+        beforeEach(function () {
+          transformedResponse = moveToCardComponent({
+            showMeta: true,
+            locationType: 'prison',
+          })(mockMove)
+        })
+
+        it('should call profile to card component correctly', function () {
+          expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+            ...mockMove.profile,
+            href: '/move/12345',
+          })
+          expect(profileToCardComponentStub).to.be.calledWithExactly({
+            locationType: 'prison',
+            meta: [],
             showImage: true,
             showMeta: true,
             showTags: true,

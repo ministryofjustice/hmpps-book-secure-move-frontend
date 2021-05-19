@@ -11,6 +11,7 @@ module.exports = function movesByVehicle({
   moves,
   context = 'outgoing',
   showLocations = false,
+  locationType,
 } = {}) {
   const groups = []
   const grouped = groupBy(moves, '_vehicleRegistration')
@@ -29,6 +30,7 @@ module.exports = function movesByVehicle({
       moveToCardComponent({
         showToLocation: showLocations || context === 'outgoing',
         showFromLocation: showLocations || context === 'incoming',
+        locationType,
       })
     )
     const timeData = {

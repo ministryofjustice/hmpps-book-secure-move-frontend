@@ -11,11 +11,15 @@ function courtCaseToCardComponent({
 }) {
   const metaItems = [
     {
-      label: i18n.t('moves::court_case.items.start_date.label'),
+      label: {
+        text: i18n.t('moves::court_case.items.start_date.label'),
+      },
       text: filters.formatDate(startDate),
     },
     {
-      label: i18n.t('moves::court_case.items.case_type.label'),
+      label: {
+        text: i18n.t('moves::court_case.items.case_type.label'),
+      },
       text: caseType,
     },
   ]

@@ -4,12 +4,13 @@ const presenters = require('../../../common/presenters')
 
 function viewAllocation(req, res) {
   const { allocation, canAccess } = req
-  const { moves, status, totalSlots } = allocation
+  const { moves, status, totalSlots, from_location: fromLocation } = allocation
   const bannerStatuses = ['cancelled']
   const movesWithoutProfile = moves.filter(move => !move.profile)
   const movesWithProfile = moves.filter(move => move.profile)
   const moveToCardComponent = presenters.moveToCardComponent({
     showStatus: false,
+    locationType: fromLocation.location_type,
   })
 
   const removeUnassignedMoves = move => {

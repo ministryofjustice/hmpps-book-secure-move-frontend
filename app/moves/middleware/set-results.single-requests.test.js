@@ -46,6 +46,11 @@ describe('Moves middleware', function () {
         services: {
           singleRequest: singleRequestService,
         },
+        session: {
+          currentLocation: {
+            location_type: 'prison',
+          },
+        },
       }
     })
 
@@ -75,9 +80,7 @@ describe('Moves middleware', function () {
       it('should call presenter with correct config', function () {
         expect(
           presenters.singleRequestsToTableComponent
-        ).to.be.calledWithExactly({
-          query: { status: 'filled' },
-        })
+        ).to.be.calledWithExactly({ query: { status: 'filled' } })
 
         expect(singleRequestsToTableStub).to.be.calledWithExactly(
           mockActiveMoves.data

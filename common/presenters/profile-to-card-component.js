@@ -6,6 +6,7 @@ const filters = require('../../config/nunjucks/filters')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 
 function profileToCardComponent({
+  locationType,
   meta = [],
   showImage = true,
   showMeta = true,
@@ -41,20 +42,41 @@ function profileToCardComponent({
         age: filters.calculateAge(dateOfBirth),
         date_of_birth: filters.formatDate(dateOfBirth),
       })
+
+      if (profile?.person && locationType) {
+        if (locationType === 'prison') {
+          meta.push({
+            label: { text: i18n.t('fields::prison_number.label') },
+            text:
+              profile?.person?.prison_number ||
+              i18n.t('fields::prison_number.empty'),
+          })
+        } else {
+          meta.push({
+            label: {
+              html: i18n.t('fields::police_national_computer.label'),
+            },
+            text:
+              profile?.person?.police_national_computer ||
+              i18n.t('fields::police_national_computer.empty'),
+          })
+        }
+      }
+
       const metaItems = [
         ...meta,
         {
-          label: i18n.t('fields::date_of_birth.label'),
-          text: dateOfBirth ? dateOfBirthLabel : undefined,
+          label: { text: i18n.t('fields::date_of_birth.label') },
+          html: dateOfBirth ? dateOfBirthLabel : undefined,
         },
         {
-          label: i18n.t('fields::gender.label'),
+          label: { text: i18n.t('fields::gender.label') },
           text: gender ? gender.title : undefined,
         },
       ]
 
       card.meta = {
-        items: filter(metaItems, 'text'),
+        items: filter(metaItems, item => item.text || item.html),
       }
     }
 
