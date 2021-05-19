@@ -1,3 +1,13 @@
 .moj-badge {
   background-color: govuk-colour("white");
 }
+
+/* Changes to display the action inline */
+.moj-organisation-nav__title {
+  width: auto;
+}
+
+.moj-organisation-nav__link {
+  float: left;
+  margin-left: govuk-spacing(3);
+}
