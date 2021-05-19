@@ -2,7 +2,7 @@ const path = require('path')
 
 const CopyPlugin = require('copy-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const YAML = require('js-yaml')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -99,7 +99,11 @@ const commonConfig = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif|ico)$/,
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        type: 'asset',
+      },
+      {
+        test: /\.(png|svg|jpe?g|gif|ico)$/,
         use: [
           {
             loader: 'file-loader',
@@ -160,9 +164,26 @@ const commonConfig = {
         },
       ],
     }),
-    new ImageminPlugin({
-      disable: !IS_PRODUCTION,
-      test: 'images/**',
+    new ImageMinimizerPlugin({
+      minimizerOptions: {
+        // Lossless optimization with custom option
+        plugins: [
+          ['gifsicle', { interlaced: true }],
+          ['jpegtran', { progressive: true }],
+          ['optipng', { optimizationLevel: 5 }],
+          [
+            'svgo',
+            {
+              plugins: [
+                {
+                  name: 'removeViewBox',
+                  active: false,
+                },
+              ],
+            },
+          ],
+        ],
+      },
     }),
   ],
 }
