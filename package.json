@@ -117,7 +117,7 @@
     "dotenv": "9.0.2",
     "dropzone": "5.9.2",
     "express": "4.17.1",
-    "express-session": "1.17.1",
+    "express-session": "1.17.2",
     "filesize": "6.3.0",
     "form-data": "4.0.0",
     "got": "11.8.2",
