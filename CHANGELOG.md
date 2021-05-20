@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.78.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.77.1...v2.78.0) (2021-05-20)
+
+
+### Features
+
+* Add prison/PNC number on in/out moves ([5de3562](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5de35624087bd45926d6e40273450ed63a419b72))
+
+
+### Bug Fixes
+
+* Replace imagemin webpack plugin ([c0c7e26](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c0c7e269ab1af43d2f1d205a025acd7d36a43af5))
+* Use correct location property for journey events ([f43c53c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f43c53c1c7cc45156fad28052fc900a3ed734fbc))
+
 ### [2.77.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.77.0...v2.77.1) (2021-05-19)
 
 
