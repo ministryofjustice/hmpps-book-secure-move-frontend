@@ -35,15 +35,15 @@
   },
   "JourneyAdmitToReception": {
     "heading": "Admitted to reception",
-    "description": "Vehicle {{journey.vehicle.registration}} admitted to reception of {{journey.to_location.title}}"
+    "description": "Vehicle {{journey.vehicle.registration}} admitted to reception of {{location.title}}"
   },
   "JourneyAdmitThroughOuterGate": {
     "heading": "Admitted through outer gate",
-    "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{journey.to_location.title}}"
+    "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{location.title}}"
   },
   "JourneyArriveAtOuterGate": {
     "heading": "Arrived at outer gate",
-    "description": "Vehicle {{journey.vehicle.registration}} arrived at outer gate of {{journey.to_location.title}}"
+    "description": "Vehicle {{journey.vehicle.registration}} arrived at outer gate of {{location.title}}"
   },
   "JourneyCancel": {
     "heading": "Journey cancelled",
