@@ -99,10 +99,6 @@ const commonConfig = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        type: 'asset',
-      },
-      {
         test: /\.(png|svg|jpe?g|gif|ico)$/,
         use: [
           {
@@ -110,6 +106,29 @@ const commonConfig = {
             options: {
               name: `[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.[ext]`,
               outputPath: 'images/',
+            },
+          },
+          {
+            loader: ImageMinimizerPlugin.loader,
+            options: {
+              minimizerOptions: {
+                plugins: [
+                  ['gifsicle', { interlaced: true }],
+                  ['jpegtran', { progressive: true }],
+                  ['optipng', { optimizationLevel: 5 }],
+                  [
+                    'svgo',
+                    {
+                      plugins: [
+                        {
+                          name: 'removeViewBox',
+                          active: false,
+                        },
+                      ],
+                    },
+                  ],
+                ],
+              },
             },
           },
         ],
@@ -163,27 +182,6 @@ const commonConfig = {
           transform: transformManifestFile(frameworksService.transformManifest),
         },
       ],
-    }),
-    new ImageMinimizerPlugin({
-      minimizerOptions: {
-        // Lossless optimization with custom option
-        plugins: [
-          ['gifsicle', { interlaced: true }],
-          ['jpegtran', { progressive: true }],
-          ['optipng', { optimizationLevel: 5 }],
-          [
-            'svgo',
-            {
-              plugins: [
-                {
-                  name: 'removeViewBox',
-                  active: false,
-                },
-              ],
-            },
-          ],
-        ],
-      },
     }),
   ],
 }
