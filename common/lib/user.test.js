@@ -429,6 +429,29 @@ describe('User class', function () {
       })
     })
 
+    context('when user has ROLE_PECS_READ_ONLY role', function () {
+      beforeEach(function () {
+        permissions = user.getPermissions(['ROLE_PECS_READ_ONLY'])
+      })
+
+      it('should contain correct permission', function () {
+        expect(permissions).to.have.members([
+          'dashboard:view',
+          'allocations:view',
+          'locations:contract_delivery_manager',
+          'locations:all',
+          'moves:view:outgoing',
+          'moves:view:incoming',
+          'moves:view:proposed',
+          'move:view',
+          'person_escort_record:view',
+          'person_escort_record:print',
+          'youth_risk_assessment:view',
+          'youth_risk_assessment:print',
+        ])
+      })
+    })
+
     context('when user has all roles', function () {
       beforeEach(function () {
         permissions = user.getPermissions([
@@ -443,6 +466,7 @@ describe('User class', function () {
           'ROLE_PECS_COURT',
           'ROLE_PECS_PER_AUTHOR',
           'ROLE_PECS_CDM',
+          'ROLE_PECS_READ_ONLY',
         ])
       })
 

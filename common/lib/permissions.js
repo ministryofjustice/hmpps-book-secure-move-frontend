@@ -43,6 +43,21 @@ const contractDeliveryManagerPermissions = [
   'youth_risk_assessment:print',
 ]
 
+const readOnlyPermissions = [
+  'dashboard:view',
+  'allocations:view',
+  'locations:contract_delivery_manager',
+  'locations:all',
+  'moves:view:outgoing',
+  'moves:view:incoming',
+  'moves:view:proposed',
+  'move:view',
+  'person_escort_record:view',
+  'person_escort_record:print',
+  'youth_risk_assessment:view',
+  'youth_risk_assessment:print',
+]
+
 const secureChildrensHomePermissions = [
   'dashboard:view',
   'moves:view:outgoing',
@@ -201,6 +216,7 @@ const permissionsByRole = {
   ROLE_PECS_COURT: courtPermissions,
   ROLE_PECS_PER_AUTHOR: personEscortRecordAuthorPermissions,
   ROLE_PECS_CDM: contractDeliveryManagerPermissions,
+  ROLE_PECS_READ_ONLY: readOnlyPermissions,
 }
 
 module.exports = {

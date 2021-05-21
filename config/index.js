@@ -272,6 +272,12 @@ module.exports = {
         username: 'E2E_CONTRACT_DELIVERY_MANAGER',
         password: '102PF_CONTRACT_DELIVERY_MANAGER',
       },
+      READ_ONLY: {
+        name: 'Read Only',
+        authorities: ['ROLE_PECS_READ_ONLY'],
+        username: 'E2E_READ_ONLY',
+        password: '102PF_READ_ONLY',
+      },
     },
   },
   FEATURE_FLAGS: {
