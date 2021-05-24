@@ -87,32 +87,46 @@ describe('API Client', function () {
         })
 
         context('with data errors', function () {
-          it('should append errors to error class', function () {
-            const error = errorMiddleware.error({
+          let error
+
+          beforeEach(function () {
+            error = errorMiddleware.error({
               response: {
                 ...response,
+                statusCode: 422,
                 body: {
                   errors: [
                     {
                       name: 'Error 1',
+                      title: 'Error title 1',
                     },
                     {
                       name: 'Error 2',
+                      title: 'Error title 2',
                     },
                   ],
                 },
               },
             })
+          })
 
+          it('should append errors to error class', function () {
             expect(error).to.be.an.instanceOf(Error)
             expect(error.errors).to.deep.equal([
               {
                 name: 'Error 1',
+                title: 'Error title 1',
               },
               {
                 name: 'Error 2',
+                title: 'Error title 2',
               },
             ])
+          })
+
+          it('should update error message', function () {
+            expect(error).to.be.an.instanceOf(Error)
+            expect(error.message).to.deep.equal('API Error: Error title 1')
           })
         })
       })
