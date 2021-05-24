@@ -69,6 +69,14 @@ if (config.SENTRY.DSN) {
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.SENTRY.RELEASE,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Tracing.Integrations.Express({
+        app,
+      }),
+    ],
     // Half of all requests will be used for performance sampling
     tracesSampleRate: 0.5,
   })
@@ -81,6 +89,7 @@ if (config.SENTRY.DSN) {
     })
   )
   app.use(sentryRequestId)
+  app.use(Sentry.Handlers.tracingHandler())
 }
 
 // Configure prometheus to handle metrics
