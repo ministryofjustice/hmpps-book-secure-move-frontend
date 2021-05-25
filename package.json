@@ -103,7 +103,7 @@
     "chrono-node": "2.2.6",
     "compression": "1.7.4",
     "concat-stream": "2.0.0",
-    "concurrently": "6.1.0",
+    "concurrently": "6.2.0",
     "connect-flash": "0.1.1",
     "connect-redis": "5.2.0",
     "convert-hrtime": "3.0.0",
