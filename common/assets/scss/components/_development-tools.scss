@@ -1,0 +1,57 @@
+$_tools-border-colour: govuk-colour("bright-purple");
+$_tools-background-colour: govuk-tint($_tools-border-colour, 95);
+$_tools-horizontal-spacing: govuk-spacing(3);
+$_tools-vertical-spacing: govuk-spacing(2);
+
+.app-development-tools {
+  @include govuk-font($size: 16);
+  border-top: 2px solid $_tools-border-colour;
+  background: $_tools-background-colour;
+  bottom: 0;
+  left: 0;
+  padding: $_tools-vertical-spacing $_tools-horizontal-spacing;
+  position: fixed;
+  right: 0;
+}
+
+.app-development-tools__heading {
+  @include govuk-font($size: 16, $weight: bold);
+  background: $_tools-background-colour;
+  border-right: 2px solid $_tools-border-colour;
+  border-top: 2px solid $_tools-border-colour;
+  left: 0;
+  margin: 0;
+  padding: govuk-spacing(2) $_tools-horizontal-spacing govuk-spacing(1);
+  position: absolute;
+  top: -37px;
+}
+
+.app-development-tools__items {
+  @include govuk-clearfix;
+  @include govuk-font($size: 16);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-development-tools__item {
+  display: block;
+  float: left;
+  font-weight: bold;
+
+  & + & {
+    margin-left: govuk-spacing(4);
+  }
+
+  a {
+    font-weight: normal;
+  }
+
+  a:link,
+  a:hover,
+  a:active,
+  a:visited,
+  a:focus {
+    color: $govuk-text-colour;
+  }
+}

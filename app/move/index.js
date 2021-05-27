@@ -6,6 +6,7 @@ const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
@@ -23,6 +24,7 @@ const {
   setYouthRiskAssessment,
   setAllocation,
   setJourneys,
+  setDevelopmentTools,
 } = require('./middleware')
 
 // Define param middleware
@@ -46,6 +48,10 @@ router.use(
   setYouthRiskAssessment,
   moveRouter
 )
+
+if (ENABLE_DEVELOPMENT_TOOLS) {
+  moveRouter.use(setDevelopmentTools)
+}
 
 moveRouter.get('/', protectRoute('move:view'), view)
 

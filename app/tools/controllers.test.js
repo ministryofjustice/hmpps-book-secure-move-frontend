@@ -22,6 +22,7 @@ describe('Development tools controllers', function () {
       redirect: sinon.stub(),
     }
     reqMock = {
+      params: {},
       session: {},
     }
   })
@@ -128,6 +129,117 @@ describe('Development tools controllers', function () {
 
       it('should redirect', function () {
         expect(resMock.redirect).to.have.been.calledOnceWithExactly('/')
+      })
+    })
+  })
+
+  describe('#updateMoveStatus()', function () {
+    let nextSpy
+
+    beforeEach(function () {
+      nextSpy = sinon.spy()
+      reqMock.params.moveId = '12345'
+      reqMock.services = {
+        move: {
+          accept: sinon.stub().resolves(),
+          start: sinon.stub().resolves(),
+          complete: sinon.stub().resolves(),
+        },
+      }
+    })
+
+    context('without permitted action', function () {
+      beforeEach(async function () {
+        reqMock.params.currentStatus = 'missing_action'
+        await controllers.updateMoveStatus(reqMock, resMock, nextSpy)
+      })
+
+      it('should not call service', function () {
+        expect(reqMock.services.move.accept).not.to.have.been.called
+        expect(reqMock.services.move.start).not.to.have.been.called
+        expect(reqMock.services.move.complete).not.to.have.been.called
+      })
+
+      it('should redirect to move', function () {
+        expect(resMock.redirect).to.have.been.calledOnceWithExactly(
+          '/move/12345'
+        )
+      })
+
+      it('should not call next', function () {
+        expect(nextSpy).not.to.have.been.called
+      })
+    })
+
+    context('with permitted action', function () {
+      const testCases = [
+        {
+          status: 'requested',
+          method: 'accept',
+        },
+        {
+          status: 'booked',
+          method: 'start',
+        },
+        {
+          status: 'in_transit',
+          method: 'complete',
+          data: {
+            notes: 'Fake notes',
+          },
+        },
+      ]
+
+      testCases.forEach(testCase => {
+        describe(testCase.status, function () {
+          beforeEach(async function () {
+            reqMock.params.currentStatus = testCase.status
+            await controllers.updateMoveStatus(reqMock, resMock, nextSpy)
+          })
+
+          it('should call correct service', function () {
+            expect(
+              reqMock.services.move[testCase.method]
+            ).to.have.been.calledOnce
+            expect(reqMock.services.move[testCase.method].args[0][0]).to.equal(
+              '12345'
+            )
+
+            if (testCase.data) {
+              expect(
+                reqMock.services.move[testCase.method].args[0][1]
+              ).to.have.keys(Object.keys(testCase.data))
+            }
+          })
+
+          it('should redirect to move', function () {
+            expect(resMock.redirect).to.have.been.calledOnceWithExactly(
+              '/move/12345'
+            )
+          })
+
+          it('should not call next', function () {
+            expect(nextSpy).not.to.have.been.called
+          })
+        })
+      })
+
+      context('when action fails', function () {
+        const mockError = new Error('Error')
+
+        beforeEach(async function () {
+          reqMock.params.currentStatus = 'requested'
+          reqMock.services.move.accept.rejects(mockError)
+          await controllers.updateMoveStatus(reqMock, resMock, nextSpy)
+        })
+
+        it('should redirect to move', function () {
+          expect(resMock.redirect).not.to.have.been.called
+        })
+
+        it('should call next with error', function () {
+          expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
+        })
       })
     })
   })

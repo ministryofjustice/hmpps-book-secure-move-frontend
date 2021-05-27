@@ -1,3 +1,7 @@
+const {
+  mountpath: toolsMountpath,
+  routes: toolsRoutes,
+} = require('../../app/tools')
 const populateResources = require('../../common/lib/populate-resources')
 
 module.exports = {
@@ -75,5 +79,30 @@ module.exports = {
     } catch (error) {
       next(error)
     }
+  },
+
+  setDevelopmentTools: (req, res, next) => {
+    if (!res.locals.DEVELOPMENT_TOOLS) {
+      return next()
+    }
+
+    if (!req.move) {
+      return next()
+    }
+
+    const items = res.locals.DEVELOPMENT_TOOLS.items || []
+
+    res.locals.DEVELOPMENT_TOOLS.items = [
+      ...items,
+      {
+        text: 'Move:',
+      },
+      {
+        href: `${toolsMountpath}${toolsRoutes.moveChangeStatus}/${req.move.id}/${req.move.status}`,
+        text: 'Progress status',
+      },
+    ]
+
+    next()
   },
 }
