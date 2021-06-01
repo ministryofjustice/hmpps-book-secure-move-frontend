@@ -111,7 +111,7 @@
     "core-js": "3.13.1",
     "css-minimizer-webpack-plugin": "3.0.0",
     "csurf": "1.11.0",
-    "date-fns": "2.21.3",
+    "date-fns": "2.22.1",
     "debug": "4.3.1",
     "devour-client": "3.0.0",
     "dotenv": "10.0.0",
