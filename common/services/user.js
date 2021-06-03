@@ -1,4 +1,12 @@
 const axios = require('axios')
+const rax = require('retry-axios')
+
+const axiosInstance = axios.create()
+axiosInstance.defaults.raxConfig = {
+  instance: axiosInstance,
+  retry: 1,
+}
+rax.attach(axiosInstance)
 
 const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 const { decodeAccessToken } = require('../lib/access-token')
@@ -9,8 +17,10 @@ const referenceDataService = new ReferenceDataService()
 const getAuthHeader = token => ({ Authorization: `Bearer ${token}` })
 
 function getFullname(token) {
-  return axios
-    .get(AUTH_PROVIDERS.hmpps.user_url, { headers: getAuthHeader(token) })
+  return axiosInstance
+    .get(AUTH_PROVIDERS.hmpps.user_url, {
+      headers: getAuthHeader(token),
+    })
     .then(response => response.data)
     .then(userDetails => userDetails.name)
 }
@@ -58,7 +68,7 @@ async function getSupplierId(token) {
 function getAuthGroups(token) {
   const { user_name: userName } = decodeAccessToken(token)
 
-  return axios
+  return axiosInstance
     .get(AUTH_PROVIDERS.hmpps.groups_url(userName), {
       headers: getAuthHeader(token),
     })
@@ -80,7 +90,7 @@ async function getAuthLocations(token) {
 }
 
 function getNomisLocations(token) {
-  return axios
+  return axiosInstance
     .get(NOMIS_ELITE2_API.user_caseloads_url, {
       headers: getAuthHeader(token),
     })

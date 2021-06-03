@@ -1,3 +1,4 @@
+const axios = require('axios')
 const proxyquire = require('proxyquire')
 
 const encodeToken = data =>
@@ -61,7 +62,10 @@ const mockUserCaseloads = [
   },
 ]
 
+const axiosInstanceStub = sinon.spy(axios.create())
+const axiosStub = { create: () => axiosInstanceStub }
 const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
+  axios: axiosStub,
   './reference-data': function () {
     return referenceDataStub
   },
@@ -69,6 +73,10 @@ const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
 })
 
 describe('User service', function () {
+  it('sets the retry-axios config to retry once', function () {
+    expect(axiosInstanceStub.defaults.raxConfig.retry).to.eq(1)
+  })
+
   describe('#getFullname()', function () {
     let result
 
