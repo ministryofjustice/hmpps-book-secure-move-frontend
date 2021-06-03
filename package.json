@@ -93,7 +93,7 @@
     "@ministryofjustice/frontend": "0.2.4",
     "@promster/express": "5.0.2",
     "@sentry/node": "6.5.1",
-    "@sentry/tracing": "6.5.0",
+    "@sentry/tracing": "6.5.1",
     "accessible-autocomplete": "2.0.3",
     "agentkeepalive": "4.1.4",
     "audit-ci": "4.0.0",
