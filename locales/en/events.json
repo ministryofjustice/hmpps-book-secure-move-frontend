@@ -172,16 +172,16 @@
     "description": "{{move.supplier.name}} will arrive at {{move.to_location.title}} in 30 minutes"
   },
   "MoveNotifyPremisesOfEta": {
-    "heading": "{{move.to_location.title}} notified of expected time of arrival",
-    "description": "Expected arrival at {{expected_at, formatTime}}"
+    "heading": "Destination notified of expected time of arrival",
+    "description": "{{move.to_location.title}} was notified of an expected arrival time of {{expected_at, formatTime}}"
   },
   "MoveNotifyPremisesOfDropOffEta": {
-    "heading": "{{move.to_location.title}} notified of expected time of arrival",
-    "description": "Expected arrival at {{expected_at, formatTime}}"
+    "heading": "Destination notified of expected time of arrival",
+    "description": "{{move.to_location.title}} was notified of an expected arrival time of {{expected_at, formatTime}}"
   },
   "MoveNotifyPremisesOfPickupEta": {
-    "heading": "{{move.from_location.title}} notified of expected time of arrival",
-    "description": "Expected arrival at {{expected_at, formatTime}}"
+    "heading": "Pickup location notified of expected time of arrival",
+    "description": "{{move.from_location.title}} was notified of an expected arrival time of {{expected_at, formatTime}}"
   },
   "MoveNotifyPremisesOfExpectedCollectionTime": {
     "heading": "{{move.from_location.title}} notified of expected collection time",
