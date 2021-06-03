@@ -175,6 +175,14 @@
     "heading": "{{move.to_location.title}} notified of expected time of arrival",
     "description": "Expected arrival at {{expected_at, formatTime}}"
   },
+  "MoveNotifyPremisesOfDropOffEta": {
+    "heading": "{{move.to_location.title}} notified of expected time of arrival",
+    "description": "Expected arrival at {{expected_at, formatTime}}"
+  },
+  "MoveNotifyPremisesOfPickupEta": {
+    "heading": "{{move.from_location.title}} notified of expected time of arrival",
+    "description": "Expected arrival at {{expected_at, formatTime}}"
+  },
   "MoveNotifyPremisesOfExpectedCollectionTime": {
     "heading": "{{move.from_location.title}} notified of expected collection time",
     "description": "Expected collection at {{expected_at, formatTime}}"
