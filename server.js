@@ -36,6 +36,7 @@ const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
 const sentryRequestId = require('./common/middleware/sentry-request-id')
 const setApiClient = require('./common/middleware/set-api-client')
 const setCacheControl = require('./common/middleware/set-cache-control')
+const setDevelopmentTools = require('./common/middleware/set-development-tools')
 const setLocation = require('./common/middleware/set-location')
 const setLocations = require('./common/middleware/set-locations')
 const setPrimaryNavigation = require('./common/middleware/set-primary-navigation')
@@ -206,7 +207,6 @@ app.use(
   })
 )
 app.use(setLocations)
-// app.use(setLocation)
 app.use('.*(?<!image)$', setLocation)
 
 // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
@@ -251,6 +251,11 @@ app.use(setCanAccess)
 
 // Routing
 app.use(setPrimaryNavigation)
+
+if (config.ENABLE_DEVELOPMENT_TOOLS) {
+  app.use(setDevelopmentTools)
+}
+
 app.use(router)
 
 // error handling

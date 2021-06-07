@@ -4,6 +4,12 @@ const populateResources = sinon.stub()
 
 const middleware = proxyquire('./middleware', {
   '../../common/lib/populate-resources': populateResources,
+  '../../app/tools': {
+    mountpath: '/tools-path',
+    routes: {
+      moveChangeStatus: '/move-path',
+    },
+  },
 })
 
 const moveStub = { foo: 'bar' }
@@ -455,6 +461,122 @@ describe('Move middleware', function () {
 
         it('should send error to next function', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
+        })
+      })
+    })
+  })
+
+  context('#setDevelopmentTools', function () {
+    let req, res, nextSpy
+
+    beforeEach(function () {
+      req = {}
+      res = {
+        locals: {},
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('without existing development tools', function () {
+      beforeEach(function () {
+        middleware.setDevelopmentTools(req, res, nextSpy)
+      })
+
+      it('should not append to locals', function () {
+        expect(res.locals).to.deep.equal({})
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('with existing development tools', function () {
+      beforeEach(function () {
+        res.locals.DEVELOPMENT_TOOLS = {}
+      })
+
+      context('without move', function () {
+        beforeEach(function () {
+          middleware.setDevelopmentTools(req, res, nextSpy)
+        })
+
+        it('should not append to locals', function () {
+          expect(res.locals).to.deep.equal({
+            DEVELOPMENT_TOOLS: {},
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with move', function () {
+        beforeEach(function () {
+          req.move = {
+            id: '12345',
+            status: 'booked',
+          }
+        })
+
+        context('without existing items', function () {
+          beforeEach(function () {
+            middleware.setDevelopmentTools(req, res, nextSpy)
+          })
+
+          it('should add items to locals', function () {
+            expect(res.locals.DEVELOPMENT_TOOLS).to.deep.equal({
+              items: [
+                {
+                  text: 'Move:',
+                },
+                {
+                  text: 'Progress status',
+                  href: '/tools-path/move-path/12345/booked',
+                },
+              ],
+            })
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('with existing items', function () {
+          beforeEach(function () {
+            res.locals.DEVELOPMENT_TOOLS.items = [
+              {
+                name: 'foo',
+                href: '#bar',
+              },
+            ]
+
+            middleware.setDevelopmentTools(req, res, nextSpy)
+          })
+
+          it('should append to locals', function () {
+            expect(res.locals.DEVELOPMENT_TOOLS).to.deep.equal({
+              items: [
+                {
+                  name: 'foo',
+                  href: '#bar',
+                },
+                {
+                  text: 'Move:',
+                },
+                {
+                  text: 'Progress status',
+                  href: '/tools-path/move-path/12345/booked',
+                },
+              ],
+            })
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
         })
       })
     })

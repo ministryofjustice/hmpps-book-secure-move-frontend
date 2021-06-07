@@ -5,13 +5,21 @@ const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 
 const routes = {
   permissions: '/permissions',
+  moveChangeStatus: '/progress-move',
 }
 
 // Local dependencies
-const { updatePermissions, renderPermissions } = require('./controllers')
+const {
+  updatePermissions,
+  renderPermissions,
+  updateMoveStatus,
+} = require('./controllers')
 
 // Define routes
 router.route(routes.permissions).get(renderPermissions).post(updatePermissions)
+router
+  .route(`${routes.moveChangeStatus}/:moveId/:currentStatus`)
+  .all(updateMoveStatus)
 
 // Export
 module.exports = {
