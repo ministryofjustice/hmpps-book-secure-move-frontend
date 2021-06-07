@@ -108,7 +108,7 @@
     "connect-redis": "6.0.0",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.5",
-    "core-js": "3.13.1",
+    "core-js": "3.14.0",
     "css-minimizer-webpack-plugin": "3.0.1",
     "csurf": "1.11.0",
     "date-fns": "2.22.1",
