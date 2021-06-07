@@ -38,6 +38,11 @@ function requestMiddleware({
           http: new HttpAgent(),
           https: new HttpsAgent(),
         },
+        retry: {
+          limit: 1,
+          methods: ['GET'],
+          statusCodes: [502, 504],
+        },
         timeout,
       })
         .then(async res => {
