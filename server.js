@@ -70,16 +70,19 @@ if (config.SENTRY.DSN) {
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.SENTRY.RELEASE,
-    integrations: [
-      // enable HTTP calls tracing
-      new Sentry.Integrations.Http({ tracing: true }),
-      // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({
-        app,
-      }),
-    ],
+    integrations:
+      config.SENTRY.ENVIRONMENT === 'production'
+        ? [
+            // enable HTTP calls tracing
+            new Sentry.Integrations.Http({ tracing: true }),
+            // enable Express.js middleware tracing
+            new Tracing.Integrations.Express({
+              app,
+            }),
+          ]
+        : [],
     // Half of all requests will be used for performance sampling
-    tracesSampleRate: 0.5,
+    tracesSampleRate: config.SENTRY.ENVIRONMENT === 'production' ? 0.5 : 0,
   })
 
   app.use(
@@ -90,7 +93,10 @@ if (config.SENTRY.DSN) {
     })
   )
   app.use(sentryRequestId)
-  app.use(Sentry.Handlers.tracingHandler())
+
+  if (config.SENTRY.ENVIRONMENT === 'production') {
+    app.use(Sentry.Handlers.tracingHandler())
+  }
 }
 
 // Configure prometheus to handle metrics
