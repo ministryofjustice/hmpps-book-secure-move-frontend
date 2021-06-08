@@ -1,7 +1,8 @@
 const faker = require('faker')
-const { uniq } = require('lodash')
+const { camelCase, uniq } = require('lodash')
 
 const { permissionsByRole } = require('../../common/lib/permissions')
+const { generateAssessmentRespones } = require('../../test/fixtures/assessment')
 
 const permittedActions = {
   requested: {
@@ -55,8 +56,29 @@ async function updateMoveStatus(req, res, next) {
   }
 }
 
+async function completeAssessment(req, res, next) {
+  try {
+    const { services = {} } = req
+    const { assessmentId, type = '' } = req.params
+    const service = services[camelCase(type)]
+
+    if (!service) {
+      return res.redirect('/')
+    }
+
+    const assessment = await service.getById(assessmentId)
+    const responses = generateAssessmentRespones(assessment.responses)
+    await service.respond(assessmentId, responses)
+
+    res.redirect(`/move/${assessment.move.id}`)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   renderPermissions,
   updatePermissions,
   updateMoveStatus,
+  completeAssessment,
 }

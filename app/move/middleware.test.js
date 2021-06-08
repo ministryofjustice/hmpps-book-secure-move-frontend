@@ -8,6 +8,7 @@ const middleware = proxyquire('./middleware', {
     mountpath: '/tools-path',
     routes: {
       moveChangeStatus: '/move-path',
+      completeAssessment: '/assessment-path',
     },
   },
 })
@@ -563,6 +564,80 @@ describe('Move middleware', function () {
                   name: 'foo',
                   href: '#bar',
                 },
+                {
+                  text: 'Move:',
+                },
+                {
+                  text: 'Progress status',
+                  href: '/tools-path/move-path/12345/booked',
+                },
+              ],
+            })
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('with unconfirmed assessments', function () {
+          beforeEach(function () {
+            req.move.profile = {
+              person_escort_record: {
+                id: 'per12345',
+              },
+              youth_risk_assessment: {
+                id: 'youth12345',
+              },
+            }
+            middleware.setDevelopmentTools(req, res, nextSpy)
+          })
+
+          it('should append assessment links', function () {
+            expect(res.locals.DEVELOPMENT_TOOLS).to.deep.equal({
+              items: [
+                {
+                  text: 'Move:',
+                },
+                {
+                  text: 'Progress status',
+                  href: '/tools-path/move-path/12345/booked',
+                },
+                {
+                  text: 'Complete Person Escort Record',
+                  href: '/tools-path/assessment-path/person-escort-record/per12345',
+                },
+                {
+                  text: 'Complete Youth Risk Assessment',
+                  href: '/tools-path/assessment-path/youth-risk-assessment/youth12345',
+                },
+              ],
+            })
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('with confirmed assessments', function () {
+          beforeEach(function () {
+            req.move.profile = {
+              person_escort_record: {
+                id: 'per12345',
+                status: 'confirmed',
+              },
+              youth_risk_assessment: {
+                id: 'youth12345',
+                status: 'confirmed',
+              },
+            }
+            middleware.setDevelopmentTools(req, res, nextSpy)
+          })
+
+          it('should not append assessment links', function () {
+            expect(res.locals.DEVELOPMENT_TOOLS).to.deep.equal({
+              items: [
                 {
                   text: 'Move:',
                 },

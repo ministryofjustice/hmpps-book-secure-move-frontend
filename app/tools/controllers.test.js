@@ -8,15 +8,21 @@ const permissionsStub = {
     buzz: ['two', 'three', 'one', 'four'],
   },
 }
+const mockDataStub = {
+  generateAssessmentRespones: sinon.stub().returns(['fizz', 'buzz']),
+}
 
 const controllers = proxyquire('./controllers', {
   '../../common/lib/permissions': permissionsStub,
+  '../../test/fixtures/assessment': mockDataStub,
 })
 
 describe('Development tools controllers', function () {
-  let resMock, reqMock
+  let resMock, reqMock, nextSpy
 
   beforeEach(function () {
+    nextSpy = sinon.spy()
+    mockDataStub.generateAssessmentRespones.resetHistory()
     resMock = {
       render: sinon.stub(),
       redirect: sinon.stub(),
@@ -235,6 +241,104 @@ describe('Development tools controllers', function () {
 
         it('should redirect to move', function () {
           expect(resMock.redirect).not.to.have.been.called
+        })
+
+        it('should call next with error', function () {
+          expect(nextSpy).to.have.been.calledOnceWithExactly(mockError)
+        })
+      })
+    })
+  })
+
+  describe('#completeAssessment()', function () {
+    context('without valid service', function () {
+      beforeEach(async function () {
+        await controllers.completeAssessment(reqMock, resMock, nextSpy)
+      })
+
+      it('should not generate mock responses', function () {
+        expect(mockDataStub.generateAssessmentRespones).not.to.be.called
+      })
+
+      it('should redirect to root', function () {
+        expect(resMock.redirect).to.be.calledOnceWithExactly('/')
+      })
+
+      it('should not call next', function () {
+        expect(nextSpy).not.to.be.called
+      })
+    })
+
+    context('with valid service', function () {
+      const mockAssessment = {
+        id: '12345',
+        move: {
+          id: 'move12345',
+        },
+        response: ['foo', 'bar'],
+      }
+
+      beforeEach(function () {
+        reqMock.params = {
+          assessmentId: '12345',
+          type: 'assessment-type',
+        }
+        reqMock.services = {
+          assessmentType: {
+            getById: sinon.stub().resolves(mockAssessment),
+            respond: sinon.stub().resolves({}),
+          },
+        }
+      })
+
+      context('with assessment', function () {
+        beforeEach(async function () {
+          await controllers.completeAssessment(reqMock, resMock, nextSpy)
+        })
+
+        it('should get assessment', function () {
+          expect(
+            reqMock.services.assessmentType.getById
+          ).to.be.calledOnceWithExactly(reqMock.params.assessmentId)
+        })
+
+        it('should generate mock responses', function () {
+          expect(
+            mockDataStub.generateAssessmentRespones
+          ).to.be.calledOnceWithExactly(mockAssessment.responses)
+        })
+
+        it('should respond to questions', function () {
+          expect(
+            reqMock.services.assessmentType.respond
+          ).to.be.calledOnceWithExactly(reqMock.params.assessmentId, [
+            'fizz',
+            'buzz',
+          ])
+        })
+
+        it('should redirect to move', function () {
+          expect(resMock.redirect).to.be.calledOnceWithExactly(
+            `/move/${mockAssessment.move.id}`
+          )
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+
+      context('without assessment', function () {
+        const mockError = new Error('Missing')
+        mockError.statusCode = 404
+
+        beforeEach(async function () {
+          reqMock.services.assessmentType.getById.rejects(mockError)
+          await controllers.completeAssessment(reqMock, resMock, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(resMock.redirect).not.to.be.called
         })
 
         it('should call next with error', function () {
