@@ -82,7 +82,21 @@ if (config.SENTRY.DSN) {
           ]
         : [],
     // Half of all requests will be used for performance sampling
-    tracesSampleRate: config.SENTRY.ENVIRONMENT === 'production' ? 0.5 : 0,
+    tracesSampler: samplingContext => {
+      const transactionName =
+        samplingContext &&
+        samplingContext.transactionContext &&
+        samplingContext.transactionContext.name
+
+      if (config.SENTRY.ENVIRONMENT !== 'production') {
+        return 0
+      } else if (transactionName && transactionName.includes('ping')) {
+        return 0
+      } else {
+        // Default sample rate
+        return 0.5
+      }
+    },
   })
 
   app.use(
