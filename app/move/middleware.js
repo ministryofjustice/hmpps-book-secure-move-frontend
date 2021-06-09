@@ -103,6 +103,25 @@ module.exports = {
       },
     ]
 
+    const {
+      person_escort_record: personEscortRecord,
+      youth_risk_assessment: youthRiskAssessment,
+    } = req.move.profile || {}
+
+    if (personEscortRecord && personEscortRecord.status !== 'confirmed') {
+      res.locals.DEVELOPMENT_TOOLS.items.push({
+        href: `${toolsMountpath}${toolsRoutes.completeAssessment}/person-escort-record/${personEscortRecord.id}`,
+        text: 'Complete Person Escort Record',
+      })
+    }
+
+    if (youthRiskAssessment && youthRiskAssessment.status !== 'confirmed') {
+      res.locals.DEVELOPMENT_TOOLS.items.push({
+        href: `${toolsMountpath}${toolsRoutes.completeAssessment}/youth-risk-assessment/${youthRiskAssessment.id}`,
+        text: 'Complete Youth Risk Assessment',
+      })
+    }
+
     next()
   },
 }

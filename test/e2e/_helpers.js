@@ -17,6 +17,7 @@ import ProfileService from '../../common/services/profile'
 import ReferenceDataService from '../../common/services/reference-data'
 import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
+import assessmentFixtures from '../fixtures/assessment'
 
 const personService = new PersonService()
 const personEscortRecordService = new PersonEscortRecordService()
@@ -328,45 +329,9 @@ export function completeMove(moveId) {
 export async function fillInPersonEscortRecord(moveId) {
   const move = await moveService.getById(moveId)
   const personEscortRecord = move.profile.person_escort_record
-  const responses = personEscortRecord.responses.map(response => {
-    const options = response.question.options
-    let value
-
-    if (response.value_type === 'string') {
-      if (options.length > 0) {
-        value = options.includes('No')
-          ? 'No'
-          : faker.random.arrayElement(options)
-      } else {
-        value = faker.lorem.sentence()
-      }
-    }
-
-    if (response.value_type === 'array') {
-      value = [faker.random.arrayElement(options)]
-    }
-
-    if (response.value_type === 'object::followup_comment') {
-      value = {
-        option: faker.random.arrayElement(options),
-        details: faker.lorem.sentence(),
-      }
-    }
-
-    if (response.value_type === 'collection::followup_comment') {
-      value = options.map(option => {
-        return {
-          option,
-          details: faker.lorem.sentence(),
-        }
-      })
-    }
-
-    return {
-      value,
-      id: response.id,
-    }
-  })
+  const responses = assessmentFixtures.generateAssessmentRespones(
+    personEscortRecord.responses
+  )
 
   return personEscortRecordService
     .respond(personEscortRecord.id, responses)
