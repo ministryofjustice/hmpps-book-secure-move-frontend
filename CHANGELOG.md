@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.79.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.78.3...v2.79.0) (2021-06-14)
+
+
+### Features
+
+* Separate development helpers and add move features ([6cae104](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6cae104d292be2b064b74c5fc1c4903e69c1540d))
+
+
+### Bug Fixes
+
+* Prevent Sentry tracing in all non-production environments ([399bde4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/399bde44f1d11c2a9556aee43fa493bce015a235))
+
 ### [2.78.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.78.2...v2.78.3) (2021-06-03)
 
 ### [2.78.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.78.1...v2.78.2) (2021-05-27)
