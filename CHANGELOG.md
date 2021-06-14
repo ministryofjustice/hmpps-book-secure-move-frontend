@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.79.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.79.0...v2.79.1) (2021-06-14)
+
+
+### Bug Fixes
+
+* Ensure assessment mocks are copied to docker container ([0c9409f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0c9409f7ff9dbda110a0feb180860d964fcf6d18))
+
 ## [2.79.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.78.3...v2.79.0) (2021-06-14)
 
 
