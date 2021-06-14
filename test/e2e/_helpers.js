@@ -17,7 +17,7 @@ import ProfileService from '../../common/services/profile'
 import ReferenceDataService from '../../common/services/reference-data'
 import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
-import assessmentFixtures from '../fixtures/assessment'
+import assessmentFixtures from '../../mocks/assessment'
 
 const personService = new PersonService()
 const personEscortRecordService = new PersonEscortRecordService()
