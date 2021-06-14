@@ -14,7 +14,7 @@ const mockDataStub = {
 
 const controllers = proxyquire('./controllers', {
   '../../common/lib/permissions': permissionsStub,
-  '../../test/fixtures/assessment': mockDataStub,
+  '../../mocks/assessment': mockDataStub,
 })
 
 describe('Development tools controllers', function () {

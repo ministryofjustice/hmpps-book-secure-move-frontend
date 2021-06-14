@@ -2,7 +2,7 @@ const faker = require('faker')
 const { camelCase, uniq } = require('lodash')
 
 const { permissionsByRole } = require('../../common/lib/permissions')
-const { generateAssessmentRespones } = require('../../test/fixtures/assessment')
+const { generateAssessmentRespones } = require('../../mocks/assessment')
 
 const permittedActions = {
   requested: {

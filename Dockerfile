@@ -15,6 +15,7 @@ COPY --chown=node:node config config
 COPY --chown=node:node common/services/frameworks.js common/services/frameworks.js
 COPY --chown=node:node common/assets common/assets
 COPY --chown=node:node common/components common/components
+COPY --chown=node:node mocks/assessment.js mocks/assessment.js
 
 # needed until hard-coded
 ENV API_VERSION default
