@@ -38,6 +38,28 @@ describe('Component Service', function () {
       })
     })
 
+    context('with MOJ Design System component', function () {
+      let component
+
+      beforeEach(function () {
+        component = componentService.getComponent('mojBadge', params)
+      })
+
+      it('should use correct filename', function () {
+        expect(component).to.contain('from "moj/components/badge/macro.njk"')
+      })
+
+      it('should use correct macro name', function () {
+        expect(component).to.contain('import mojBadge')
+      })
+
+      it('should format params', function () {
+        expect(component).to.contain(
+          `mojBadge(${JSON.stringify(params, null, 2)})`
+        )
+      })
+    })
+
     context('with app component', function () {
       let component
 
