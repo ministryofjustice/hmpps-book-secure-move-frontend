@@ -5,7 +5,9 @@ const {
 const populateResources = require('../../common/lib/populate-resources')
 
 module.exports = {
-  setMove: async (req, res, next, moveId) => {
+  setMove: async (req, res, next) => {
+    const moveId = req.params.moveId
+
     if (!moveId) {
       return next()
     }
@@ -18,13 +20,15 @@ module.exports = {
     }
   },
 
-  setMoveWithEvents: async (req, res, next, moveIdWithEvents) => {
-    if (!moveIdWithEvents) {
+  setMoveWithEvents: async (req, res, next) => {
+    const moveId = req.params.moveIdWithEvents
+
+    if (!moveId) {
       return next()
     }
 
     try {
-      const move = await req.services.move.getByIdWithEvents(moveIdWithEvents)
+      const move = await req.services.move.getByIdWithEvents(moveId)
       populateResources(move.timeline_events, req)
       req.move = move
       next()
