@@ -1,7 +1,7 @@
 const { isFunction } = require('lodash')
 
 const {
-  ANALYTICS,
+  ANALYTICS = {},
   ASSETS_HOST,
   AUTH_BASE_URL,
   ENABLE_COMPONENTS_LIBRARY,
@@ -36,7 +36,7 @@ try {
 }
 
 module.exports = {
-  GA_ID: ANALYTICS?.GA_ID,
+  GA_ID: ANALYTICS.GA_ID,
   FOOTER_ITEMS: footerItems.filter(item => item.href),
   PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,

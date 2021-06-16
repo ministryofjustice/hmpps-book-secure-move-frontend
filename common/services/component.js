@@ -14,6 +14,10 @@ function _macroNameToFilepath(macroName) {
     return 'govuk/components/' + kebabCase(macroName.replace(/^\b(govuk)/, ''))
   }
 
+  if (macroName.includes('moj')) {
+    return 'moj/components/' + kebabCase(macroName.replace(/^\b(moj)/, ''))
+  }
+
   return kebabCase(macroName.replace(/^\b(app)/, ''))
 }
 
