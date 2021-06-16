@@ -99,7 +99,12 @@
 {% endblock %}
 
 {% block contentHeader %}
-  <header class="govuk-!-margin-bottom-8">
+  <header class="govuk-!-margin-bottom-8 govuk-grid-row">
+    <div class="govuk-grid-column-one-sixth">
+      <img src="{{ move.profile.person._image_url }}" alt="{{ move.profile.person._fullname }}" height="215" width="172" class="govuk-!-margin-bottom-2">
+    </div>
+
+    <div class="govuk-grid-column-five-sixths">
     {% if not messageTitle and move.status != "proposed" %}
       <div class="govuk-!-margin-bottom-2">
         {{ mojBadge({
@@ -139,6 +144,7 @@
         {% endfor %}
       </div>
     {% endif %}
+    </div>
   </header>
 {% endblock %}
 

@@ -792,8 +792,9 @@ describe('Move controllers', function () {
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         nextSpy = sinon.spy()
         req = {
-          getMove: sinon.stub().returns(mockSessionModel),
-          getPerson: sinon.stub().returns(mockSessionModel.person),
+          sessionModel: {
+            toJSON: sinon.stub().returns(mockSessionModel),
+          },
           session: {
             currentLocation: {
               title: 'Mock current location',
@@ -805,76 +806,33 @@ describe('Move controllers', function () {
             existing_key: 'foo',
           },
         }
+
+        controller.setMoveSummary(req, res, nextSpy)
       })
 
-      context('with move_type', function () {
-        beforeEach(function () {
-          req.getMove.returns({
-            ...mockSessionModel,
-            move_type: 'court_appearance',
-          })
-
-          controller.setMoveSummary(req, res, nextSpy)
-        })
-
-        it('should call presenter correctly', function () {
-          expect(
-            presenters.moveToMetaListComponent
-          ).to.be.calledOnceWithExactly({
-            ...mockSessionModel,
-            move_type: 'court_appearance',
-            from_location: {
-              title: 'Mock current location',
-            },
-          })
-        })
-
-        it('should set locals as expected', function () {
-          expect(res.locals).to.deep.equal({
-            existing_key: 'foo',
-            person: mockSessionModel.person,
-            moveSummary: {
-              ...mockSessionModel,
-              move_type: 'court_appearance',
-              from_location: {
-                title: 'Mock current location',
-              },
-            },
-          })
-        })
-
-        it('should call next without error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
+      it('should call presenter correctly', function () {
+        expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly({
+          ...mockSessionModel,
+          from_location: {
+            title: 'Mock current location',
+          },
         })
       })
 
-      context('without move_type', function () {
-        beforeEach(function () {
-          controller.setMoveSummary(req, res, nextSpy)
-        })
-
-        it('should call presenter correctly', function () {
-          expect(
-            presenters.moveToMetaListComponent
-          ).to.be.calledOnceWithExactly({
+      it('should set locals as expected', function () {
+        expect(res.locals).to.deep.equal({
+          existing_key: 'foo',
+          moveSummary: {
             ...mockSessionModel,
             from_location: {
               title: 'Mock current location',
             },
-          })
+          },
         })
+      })
 
-        it('should set locals as expected', function () {
-          expect(res.locals).to.deep.equal({
-            existing_key: 'foo',
-            person: mockSessionModel.person,
-            moveSummary: {},
-          })
-        })
-
-        it('should call next without error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 

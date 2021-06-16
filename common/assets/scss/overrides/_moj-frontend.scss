@@ -8,6 +8,8 @@
 }
 
 .moj-organisation-nav__link {
-  float: left;
-  margin-left: govuk-spacing(3);
+  @include mq ($from: tablet) {
+    float: left;
+    margin-left: govuk-spacing(3);
+  }
 }

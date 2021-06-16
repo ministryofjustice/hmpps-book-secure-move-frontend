@@ -113,7 +113,8 @@ describe('Move helpers', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
             canAccess,
-            updateSteps
+            updateSteps,
+            false
           )
         })
 

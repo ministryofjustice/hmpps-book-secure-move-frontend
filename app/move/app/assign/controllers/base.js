@@ -33,7 +33,11 @@ class AssignBaseController extends CreateBaseController {
   }
 
   setMoveSummary(req, res, next) {
-    res.locals.moveSummary = presenters.moveToMetaListComponent(req.move)
+    const sessionData = req.sessionModel.toJSON()
+    res.locals.moveSummary = presenters.moveToMetaListComponent({
+      ...req.move,
+      ...sessionData,
+    })
     next()
   }
 

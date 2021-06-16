@@ -147,14 +147,13 @@ class CreateBaseController extends FormWizardController {
 
   setMoveSummary(req, res, next) {
     const currentLocation = req.session.currentLocation
-    const move = req.getMove()
+    const move = req.sessionModel.toJSON()
     const moveSummary = presenters.moveToMetaListComponent({
       ...move,
       from_location: currentLocation,
     })
 
-    res.locals.person = req.getPerson()
-    res.locals.moveSummary = move.move_type ? moveSummary : {}
+    res.locals.moveSummary = moveSummary
 
     next()
   }

@@ -4,7 +4,7 @@
   {% if timetable.rows.length %}
     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
       {{ t("moves::steps.timetable.subheading", {
-        name: person._fullname,
+        name: values.profile.person._fullname,
         date: values.date | formatDateWithDay
       }) }}
     </h2>

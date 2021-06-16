@@ -9,6 +9,19 @@ $moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
 $govuk-page-width: 1170px;
 $moj-page-width: 1170px;
 
+$govuk-grid-widths: (
+  one-quarter: 25%,
+  one-third: 33.3333%,
+  one-half: 50%,
+  one-sixth: 16.6667%,
+  two-thirds: 66.6666%,
+  two-sixths: 33.3334%,
+  three-quarters: 75%,
+  four-sixths: 66.6668%,
+  five-sixths: 83.3335%,
+  full: 100%
+);
+
 // Import GOV.UK Frontend
 @import "govuk-frontend/govuk/base";
 
