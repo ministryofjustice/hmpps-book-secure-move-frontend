@@ -109,17 +109,13 @@
 {% set sidebarHeading = sidebarHeading or person._fullname or t("awaiting_person") %}
 
 {% block contentSidebar %}
-  {% if person.id or move.id and not options.hideSidebar %}
+  {% if not options.hideSidebar %}
     <div class="sticky-sidebar">
       <div class="sticky-sidebar__inner">
         {% block summaryPanelContent %}
           <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-            {{ sidebarHeading }}
+            {{ t("moves::move_details") }}
           </h3>
-
-          {% if person._image_url %}
-            <img src="{{ person._image_url }}" alt="{{ person._fullname }}" height="190" class="govuk-!-margin-bottom-3">
-          {% endif %}
 
           {{ appMetaList(moveSummary) }}
         {% endblock %}

@@ -51,7 +51,8 @@ function getLocals(req) {
   const moveSummary = presenters.moveToMetaListComponent(
     move,
     canAccess,
-    updateSteps
+    updateSteps,
+    false
   )
   // move, userPermissions
   const canCancelMove = getCanCancelMove(move, userPermissions)

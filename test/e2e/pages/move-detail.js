@@ -1,6 +1,5 @@
 import { Selector, t } from 'testcafe'
 
-import moveToMetaListComponent from '../../../common/presenters/move-to-meta-list-component'
 import filters from '../../../config/nunjucks/filters'
 
 import Page from './page'
@@ -11,8 +10,8 @@ class MoveDetailPage extends Page {
 
     this.nodes = {
       ...this.nodes,
-      title: Selector('#main-content > header > h1'),
-      subTitle: Selector('#main-content > header > span'),
+      title: Selector('#main-content > header h1.govuk-heading-xl'),
+      subTitle: Selector('#main-content > header span.govuk-caption-xl'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
@@ -104,7 +103,7 @@ class MoveDetailPage extends Page {
   }
 
   async checkMoveDetails(move = {}) {
-    const { moveType, additionalInformation } = move
+    const { date, moveType, additionalInformation } = move
     let { toLocation } = move
 
     if (moveType === 'prison_recall') {
@@ -119,12 +118,10 @@ class MoveDetailPage extends Page {
       toLocation += ` — ${additionalInformation}`
     }
 
-    const metaListedItems = moveToMetaListComponent(move).items
-    const date = metaListedItems.filter(item => item.key.text === 'Date')[0]
-      .value.text
+    const formattedDate = filters.formatDateWithRelativeDay(date)
     await this.checkSummaryList(this.nodes.moveDetails, {
       To: toLocation,
-      Date: date,
+      Date: formattedDate,
     })
   }
 

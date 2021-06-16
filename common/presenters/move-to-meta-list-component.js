@@ -1,18 +1,24 @@
 const { get, isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
+const componentService = require('../../common/services/component')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const getUpdateLinks = require('../helpers/move/get-update-links')
 
 function moveToMetaListComponent(
-  {
+  move,
+  canAccess,
+  updateSteps,
+  showPerson = true
+) {
+  const {
     _hasLeftCustody,
+    _vehicleRegistration,
     id,
     date,
     date_from: dateFrom,
     date_to: dateTo,
-    time_due: timeDue,
     move_type: moveType,
     from_location: fromLocation,
     to_location: toLocation,
@@ -20,10 +26,10 @@ function moveToMetaListComponent(
     prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
     move_agreed_by: moveAgreedBy,
-  } = {},
-  canAccess,
-  updateSteps
-) {
+    profile = {},
+    reference,
+    status,
+  } = move || {}
   const destination = get(toLocation, 'title', 'Unknown')
   const useLabel = ['prison_recall', 'video_remand']
   const hasAdditionalInfo = useLabel
@@ -57,6 +63,9 @@ function moveToMetaListComponent(
     canAccess,
     updateSteps
   )
+  const statusBadge = componentService.getComponent('mojBadge', {
+    text: i18n.t(`statuses::${status}`),
+  })
 
   Object.keys(actions).forEach(key => {
     actions[key] = {
@@ -65,6 +74,23 @@ function moveToMetaListComponent(
     }
   })
   const items = [
+    {
+      key: {
+        text: i18n.t('reference'),
+      },
+      value: {
+        html: reference ? `${reference} ${statusBadge}` : undefined,
+      },
+    },
+    {
+      key: {
+        text: i18n.t('person_noun'),
+      },
+      value: {
+        text:
+          showPerson && profile.person ? profile.person._fullname : undefined,
+      },
+    },
     {
       key: {
         text: i18n.t('fields::from_location.short_label'),
@@ -78,7 +104,7 @@ function moveToMetaListComponent(
         text: i18n.t('fields::move_type.short_label'),
       },
       value: {
-        text: destinationLabel + destinationSuffix,
+        text: moveType ? destinationLabel + destinationSuffix : undefined,
       },
       action: actions.move,
     },
@@ -125,10 +151,18 @@ function moveToMetaListComponent(
         text: !isNil(moveAgreed) ? agreementLabel : undefined,
       },
     },
+    {
+      key: {
+        text: i18n.t('collections::vehicle_registration'),
+      },
+      value: {
+        text: _vehicleRegistration,
+      },
+    },
   ]
 
   return {
-    items,
+    items: items.filter(item => item.value.text || item.value.html),
   }
 }
 
