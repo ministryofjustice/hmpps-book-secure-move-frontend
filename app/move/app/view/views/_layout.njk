@@ -1,0 +1,79 @@
+{% extends "layouts/base.njk" %}
+
+{% set name = move.profile.person._fullname or t("awaiting_person") %}
+
+{% macro updateLink(link) %}
+  {% if link.href %}
+    <p class="app-!-position-top-right">
+      <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+        {{ link.html | safe }}
+      </a>
+    </p>
+  {% endif %}
+{% endmacro %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move details'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("moves::detail.page_title", { name: name }) }}
+  – {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+  {% block contentHeader %}{% endblock %}
+
+  {% block contentContainer %}
+  <div class="govuk-grid-row">
+
+    <aside class="govuk-grid-column-one-third">
+
+      {% block contentSidebar %}
+
+        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-3">
+          {{ t("moves::move_details") }}
+        </h3>
+
+        {{ appMetaList(moveDetails) }}
+
+        {% for action in actions %}
+          <ul class="govuk-list govuk-!-margin-top-3 govuk-!-margin-bottom-0">
+            <li>
+              <a href="{{ action.url }}" class="{{ action.classes }}">
+                {{ t(action.text) }}
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+      {% endblock %}
+
+    </aside>
+
+    <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
+
+      {% block tabsBar %}
+        {% if tabs %}
+          <div class="govuk-tabs">
+            <ul class="govuk-tabs__list">
+              {% for item in tabs %}
+                <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}">
+                  <a class="govuk-tabs__tab" href="{{ item.url }}">
+                    {{ t(item.text) }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {% block contentMain %}{% endblock %}
+
+    </div>
+
+  </div>
+  {% endblock %}
+{% endblock %}

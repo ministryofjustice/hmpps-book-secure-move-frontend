@@ -16,6 +16,7 @@ const editApp = require('./app/edit')
 const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
+const viewApp = require('./app/view')
 const { confirmation, journeys, timeline, view } = require('./controllers')
 const {
   setMove,
@@ -31,6 +32,7 @@ const {
 
 // Define routes
 router.use(newApp.mountpath, newApp.router)
+router.use(viewApp.mountpath, viewApp.router)
 
 router.get(
   `/:moveIdWithEvents(${uuidRegex})/timeline`,
