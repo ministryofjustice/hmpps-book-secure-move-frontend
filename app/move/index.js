@@ -28,8 +28,6 @@ const {
 } = require('./middleware')
 
 // Define param middleware
-router.param('moveId', setMove)
-router.param('moveIdWithEvents', setMoveWithEvents)
 
 // Define routes
 router.use(newApp.mountpath, newApp.router)
@@ -37,6 +35,7 @@ router.use(newApp.mountpath, newApp.router)
 router.get(
   `/:moveIdWithEvents(${uuidRegex})/timeline`,
   protectRoute('move:view'),
+  setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
   timeline
@@ -44,6 +43,7 @@ router.get(
 
 router.use(
   `/:moveId(${uuidRegex})`,
+  setMove,
   setPersonEscortRecord,
   setYouthRiskAssessment,
   moveRouter

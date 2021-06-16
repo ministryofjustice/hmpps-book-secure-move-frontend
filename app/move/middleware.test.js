@@ -30,7 +30,9 @@ describe('Move middleware', function () {
     let req, res, nextSpy, moveService
 
     beforeEach(function () {
-      req = {}
+      req = {
+        params: {},
+      }
       res = {}
       nextSpy = sinon.spy()
       moveService = {
@@ -62,7 +64,8 @@ describe('Move middleware', function () {
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware.setMove(req, res, nextSpy, mockMoveId)
+          req.params.moveId = mockMoveId
+          await middleware.setMove(req, res, nextSpy)
         })
 
         it('should call API with move ID', function () {
@@ -82,10 +85,14 @@ describe('Move middleware', function () {
       context('when API call returns an error', function () {
         beforeEach(async function () {
           await middleware.setMove(
-            { services: { move: { getById: sinon.stub().throws(errorStub) } } },
+            {
+              params: {
+                moveId: mockMoveId,
+              },
+              services: { move: { getById: sinon.stub().throws(errorStub) } },
+            },
             res,
-            nextSpy,
-            mockMoveId
+            nextSpy
           )
         })
 
@@ -104,7 +111,9 @@ describe('Move middleware', function () {
     let req, res, nextSpy, moveService
 
     beforeEach(function () {
-      req = {}
+      req = {
+        params: {},
+      }
       res = {}
       nextSpy = sinon.spy()
 
@@ -137,7 +146,8 @@ describe('Move middleware', function () {
     context('when move ID exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
-          await middleware.setMoveWithEvents(req, res, nextSpy, mockMoveId)
+          req.params.moveIdWithEvents = mockMoveId
+          await middleware.setMoveWithEvents(req, res, nextSpy)
         })
 
         it('should call API with move ID', function () {
@@ -162,13 +172,15 @@ describe('Move middleware', function () {
         beforeEach(async function () {
           await middleware.setMoveWithEvents(
             {
+              params: {
+                moveIdWithEvents: mockMoveId,
+              },
               services: {
                 move: { getByIdWithEvents: sinon.stub().throws(errorStub) },
               },
             },
             res,
-            nextSpy,
-            mockMoveId
+            nextSpy
           )
         })
 
