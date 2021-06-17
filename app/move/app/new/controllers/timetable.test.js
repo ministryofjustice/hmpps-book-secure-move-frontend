@@ -92,8 +92,11 @@ describe('Move controllers', function () {
     })
 
     describe('#getTimetable()', function () {
-      const mockPerson = {
+      const mockProfile = {
         id: '12345',
+        person: {
+          id: '67890',
+        },
       }
       const mockTimetable = [
         {
@@ -122,7 +125,7 @@ describe('Move controllers', function () {
         }
       })
 
-      context('without person ID', function () {
+      context('without profile', function () {
         beforeEach(async function () {
           await controller.getTimetable(mockReq, {}, nextSpy)
         })
@@ -140,9 +143,9 @@ describe('Move controllers', function () {
         })
       })
 
-      context('with person ID', function () {
+      context('with profile', function () {
         beforeEach(function () {
-          mockReq.sessionModel.get.withArgs('person').returns(mockPerson)
+          mockReq.sessionModel.get.withArgs('profile').returns(mockProfile)
           mockReq.sessionModel.get.withArgs('date').returns(mockMoveDate)
         })
 
@@ -157,7 +160,7 @@ describe('Move controllers', function () {
           it('should call person service', function () {
             expect(
               personService.getTimetableByDate
-            ).to.be.calledOnceWithExactly(mockPerson.id, mockMoveDate)
+            ).to.be.calledOnceWithExactly(mockProfile.person.id, mockMoveDate)
           })
 
           it('should not set timetable', function () {
@@ -178,7 +181,7 @@ describe('Move controllers', function () {
           it('should call person service', function () {
             expect(
               personService.getTimetableByDate
-            ).to.be.calledOnceWithExactly(mockPerson.id, mockMoveDate)
+            ).to.be.calledOnceWithExactly(mockProfile.person.id, mockMoveDate)
           })
 
           it('should set timetable', function () {

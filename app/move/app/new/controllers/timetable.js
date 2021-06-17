@@ -19,16 +19,16 @@ class TimetableController extends CreateBaseController {
   }
 
   async getTimetable(req, res, next) {
-    const person = req.sessionModel.get('person') || {}
+    const profile = req.sessionModel.get('profile') || {}
     const moveDate = req.sessionModel.get('date')
 
-    if (!person.id) {
+    if (!profile.person?.id) {
       return next()
     }
 
     try {
       req.timetable = await req.services.person.getTimetableByDate(
-        person.id,
+        profile.person.id,
         moveDate
       )
       next()
