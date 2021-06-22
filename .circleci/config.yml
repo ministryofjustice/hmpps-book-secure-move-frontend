@@ -219,7 +219,7 @@ jobs:
 
   end-to-end-test:
     <<: *circle_container
-    resource_class: large
+    resource_class: xlarge
     steps:
       - checkout
       - browser-tools/install-browser-tools
