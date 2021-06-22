@@ -38,13 +38,19 @@ describe('Assign controllers', function () {
 
       beforeEach(function () {
         next = sinon.stub()
-        sinon
-          .stub(presenters, 'moveToMetaListComponent')
-          .returns({ summary: {} })
+        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
         req = {
           move: {
             to_location: 'b',
             other_prop: 'c',
+            profile: null,
+          },
+          sessionModel: {
+            toJSON: sinon.stub().returns({
+              profile: {
+                id: '12345',
+              },
+            }),
           },
         }
         res = {
@@ -55,13 +61,24 @@ describe('Assign controllers', function () {
 
       it('creates moveSummary on the locals', function () {
         expect(res.locals.moveSummary).to.exist
-        expect(res.locals.moveSummary).to.deep.equal({ summary: {} })
+        expect(res.locals.moveSummary).to.deep.equal({
+          to_location: 'b',
+          other_prop: 'c',
+          profile: {
+            id: '12345',
+          },
+        })
       })
 
       it('invokes moveToMetaListComponent with move', function () {
         expect(
           presenters.moveToMetaListComponent
-        ).to.have.been.calledWithExactly(req.move)
+        ).to.have.been.calledWithExactly({
+          ...req.move,
+          profile: {
+            id: '12345',
+          },
+        })
       })
     })
 

@@ -1,4 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
+const presenters = require('../../../../common/presenters')
 
 const { UnassignController } = require('./controllers')
 
@@ -37,6 +38,8 @@ describe('Move controllers', function () {
     describe('#middlewareLocals()', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
+        sinon.stub(controller, 'setMoveRelationships')
+        sinon.stub(controller, 'setMoveSummary')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -53,8 +56,14 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call setMoveRelationships middleware', function () {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setMoveSummary
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
@@ -263,6 +272,55 @@ describe('Move controllers', function () {
 
       it('should call next', function () {
         expect(next).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#setMoveSummary()', function () {
+      let req, res, next
+
+      beforeEach(function () {
+        next = sinon.stub()
+        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
+        req = {
+          move: {
+            to_location: 'b',
+            other_prop: 'c',
+            profile: null,
+          },
+          sessionModel: {
+            toJSON: sinon.stub().returns({
+              profile: {
+                id: '12345',
+              },
+            }),
+          },
+        }
+        res = {
+          locals: {},
+        }
+        controller.setMoveSummary(req, res, next)
+      })
+
+      it('creates moveSummary on the locals', function () {
+        expect(res.locals.moveSummary).to.exist
+        expect(res.locals.moveSummary).to.deep.equal({
+          to_location: 'b',
+          other_prop: 'c',
+          profile: {
+            id: '12345',
+          },
+        })
+      })
+
+      it('invokes moveToMetaListComponent with move', function () {
+        expect(
+          presenters.moveToMetaListComponent
+        ).to.have.been.calledWithExactly({
+          ...req.move,
+          profile: {
+            id: '12345',
+          },
+        })
       })
     })
 

@@ -3,8 +3,7 @@ import { Selector, t } from 'testcafe'
 
 import { createMoveFixture, fillInForm, expectStatusCode } from './_helpers'
 import { getMove, getUpdateMove } from './_routes'
-import { page, moveDetailPage } from './pages'
-import UpdateMovePage from './pages/update-move'
+import { page, moveDetailPage, createMovePage } from './pages'
 
 /**
  * Create a move
@@ -278,20 +277,6 @@ export async function checkUpdatePagesRedirected(moveId, pages = updatePages) {
 }
 
 /**
- * Click link to update page
- *
- * @param {string} page - page key
- *
- * @returns {updateMovePage} - UpdateMovePage instance
- */
-export async function clickUpdateLink(page) {
-  const { move } = t.ctx
-
-  await moveDetailPage.clickUpdateLink(page)
-  return new UpdateMovePage(move.id)
-}
-
-/**
  * Change personal details and confirm changes on move view page
  *
  * @param {object} options - same options as can be passed to updateMovePage.fillInPersonalDetails
@@ -300,15 +285,15 @@ export async function clickUpdateLink(page) {
  */
 export async function checkUpdatePersonalDetails(options) {
   const { person } = t.ctx.move
-  const updateMovePage = await clickUpdateLink('personal_details')
+  await moveDetailPage.clickUpdateLink('personal_details')
   const gender = person.gender === 'Female' ? 'Male' : 'Female'
-  const updatedFields = await updateMovePage.fillInPersonalDetails(
+  const updatedFields = await createMovePage.fillInPersonalDetails(
     { gender },
     options
   )
   const updatedDetails = { ...person, ...updatedFields }
 
-  await updateMovePage.submitForm()
+  await createMovePage.submitForm()
 
   await moveDetailPage.checkPersonalDetails(updatedDetails)
 }
@@ -337,14 +322,14 @@ export async function checkUpdatePage(
   { selectAll = true, fillInOptional = true } = {}
 ) {
   const { profile } = t.ctx.move
-  const updateMovePage = await clickUpdateLink(page)
-  const updatedFields = await updateMovePage[fillInMethod]({
+  await moveDetailPage.clickUpdateLink(page)
+  const updatedFields = await createMovePage[fillInMethod]({
     selectAll,
     fillInOptional,
   })
   const updatedDetails = { ...profile, ...updatedFields }
 
-  await updateMovePage.submitForm()
+  await createMovePage.submitForm()
 
   await moveDetailPage[checkMethod](updatedDetails)
 }
@@ -403,7 +388,7 @@ export async function checkUpdateCourtInformation(options) {
  * @returns {undefined}
  */
 export async function checkUpdateMoveDetails() {
-  const updateMovePage = await clickUpdateLink('move')
+  await moveDetailPage.clickUpdateLink('move')
 
   const { moveType } = t.ctx.move
 
@@ -411,23 +396,23 @@ export async function checkUpdateMoveDetails() {
 
   if (moveType === 'prison_recall') {
     data.additionalInformation = {
-      selector: updateMovePage.fields.prisonRecallComments,
+      selector: createMovePage.fields.prisonRecallComments,
       value: faker.lorem.sentence(6),
     }
   } else if (moveType === 'video_remand') {
     data.additionalInformation = {
-      selector: updateMovePage.fields.videoRemandComments,
+      selector: createMovePage.fields.videoRemandComments,
       value: faker.lorem.sentence(6),
     }
   } else {
     const locationSelectors = {
-      court_appearance: updateMovePage.fields.courtLocation,
-      prison_transfer: updateMovePage.fields.prisonLocation,
-      police_transfer: updateMovePage.fields.policeLocation,
-      hospital: updateMovePage.fields.hospitalLocation,
-      secure_childrens_home: updateMovePage.fields.secureChildrensHomeLocation,
+      court_appearance: createMovePage.fields.courtLocation,
+      prison_transfer: createMovePage.fields.prisonLocation,
+      police_transfer: createMovePage.fields.policeLocation,
+      hospital: createMovePage.fields.hospitalLocation,
+      secure_childrens_home: createMovePage.fields.secureChildrensHomeLocation,
       secure_training_centre:
-        updateMovePage.fields.secureTrainingCentreLocation,
+        createMovePage.fields.secureTrainingCentreLocation,
     }
     const selector =
       locationSelectors[moveType] || Selector(`#to_location_${moveType}`)
@@ -440,7 +425,7 @@ export async function checkUpdateMoveDetails() {
   const fields = await fillInForm(data)
   const updatedMove = { moveType, ...fields }
 
-  await updateMovePage.submitForm()
+  await createMovePage.submitForm()
 
   await moveDetailPage.checkMoveDetails(updatedMove)
 }
@@ -451,11 +436,11 @@ export async function checkUpdateMoveDetails() {
  * @returns {undefined}
  */
 export async function checkUpdateMoveDate(date = 'Tomorrow') {
-  const updateMovePage = await clickUpdateLink('date')
+  await moveDetailPage.clickUpdateLink('date')
 
-  const updatedMove = await updateMovePage.fillInDate(date)
+  const updatedMove = await createMovePage.fillInDate(date)
 
-  await updateMovePage.submitForm()
+  await createMovePage.submitForm()
 
   await moveDetailPage.checkMoveDetails(updatedMove)
 }
@@ -486,23 +471,23 @@ export async function checkUpdateDocuments() {
   }
 
   const addDocuments = async files => {
-    const updateMovePage = await clickUpdateLink('document')
+    await moveDetailPage.clickUpdateLink('document')
 
-    await updateMovePage.fillInDocumentUploads(files)
+    await createMovePage.fillInDocumentUploads(files)
     documentCount += files.length
 
-    await updateMovePage.submitForm()
+    await createMovePage.submitForm()
 
     await checkDocumentList()
   }
 
   const deleteDocument = async () => {
-    const updateMovePage = await clickUpdateLink('document')
+    await moveDetailPage.clickUpdateLink('document')
 
     await t.click(deleteDocumentButton)
     documentCount--
 
-    await updateMovePage.submitForm()
+    await createMovePage.submitForm()
 
     await checkDocumentList()
   }
@@ -524,13 +509,13 @@ export async function checkUpdateDocuments() {
  */
 export async function checkPoliceNationalComputerReadOnly() {
   const { person } = t.ctx.move
-  const personalDetailsPage = await clickUpdateLink('personal_details')
+  await moveDetailPage.clickUpdateLink('personal_details')
 
   const { policeNationalComputer, policeNationalComputerReadOnly } =
-    personalDetailsPage.fields
+    createMovePage.fields
 
   const { policeNationalComputerHeading, policeNationalComputerValue } =
-    personalDetailsPage.nodes
+    createMovePage.nodes
   await t.expect(policeNationalComputer.exists).notOk()
   await t.expect(policeNationalComputerReadOnly.exists).ok()
   await t.expect(policeNationalComputerHeading.exists).ok()

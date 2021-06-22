@@ -1,9 +1,11 @@
-import { format } from 'date-fns'
+import { addDays, format } from 'date-fns'
 import faker from 'faker'
 import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
 import { Selector, t } from 'testcafe'
 
+import parsers from '../../../common/parsers'
+import filters from '../../../config/nunjucks/filters'
 import { fillInForm, generatePerson } from '../_helpers'
 
 import Page from './page'
@@ -23,6 +25,9 @@ class CreateMovePage extends Page {
       lastName: Selector('#last_name'),
       dateOfBirth: Selector('#date_of_birth'),
       policeNationalComputer: Selector('#police_national_computer'),
+      policeNationalComputerReadOnly: Selector(
+        '[type=hidden][name=police_national_computer]'
+      ),
       ethnicity: Selector('#ethnicity'),
       gender: Selector('[name="gender"]'),
       moveType: Selector('[name="move_type"]'),
@@ -70,6 +75,12 @@ class CreateMovePage extends Page {
       notToBeReleased: Selector('#not_to_be_released'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
+    }
+
+    this.nodes = {
+      ...this.nodes,
+      policeNationalComputerHeading: Selector('.app-read-only-field__heading'),
+      policeNationalComputerValue: Selector('.app-read-only-field__value'),
     }
 
     this.steps = {
@@ -287,8 +298,8 @@ class CreateMovePage extends Page {
    */
   async fillInDate(dateValue = 'Today') {
     await t.expect(this.getCurrentUrl()).contains('/move-date')
-    let dateCustom
 
+    let dateCustom
     let dateType = dateValue
 
     if (dateType !== 'Today' && dateType !== 'Tomorrow') {
@@ -311,7 +322,22 @@ class CreateMovePage extends Page {
       }
     }
 
-    return fillInForm(data)
+    return fillInForm(data).then(filledInData => {
+      let date
+
+      if (dateValue === 'Today') {
+        date = new Date()
+      } else if (dateValue === 'Tomorrow') {
+        date = addDays(new Date(), 1)
+      } else {
+        date = parsers.date(dateCustom)
+      }
+
+      return {
+        ...filledInData,
+        date: filters.formatDate(date, 'yyyy-MM-dd'),
+      }
+    })
   }
 
   /**
