@@ -100,7 +100,7 @@ describe('Nunjucks filters', function () {
   describe('#formatDateWithTimeAndDay()', function () {
     it('should return config date with day and time format', function () {
       const formattedDate = filters.formatDateWithTimeAndDay(
-        '2000-01-05T13:46:00Z'
+        '2000-01-05T13:46:00.00Z'
       )
 
       expect(formattedDate).to.equal('1:46 p.m. on Wednesday 5 Jan 2000')
@@ -108,7 +108,7 @@ describe('Nunjucks filters', function () {
 
     it('should return config date with day and noon format', function () {
       const formattedDate = filters.formatDateWithTimeAndDay(
-        '2000-01-05T12:00:00Z'
+        '2000-01-05T12:00:00.00Z'
       )
 
       expect(formattedDate).to.equal('12:00 noon on Wednesday 5 Jan 2000')
@@ -655,31 +655,31 @@ describe('Nunjucks filters', function () {
 
         context('when the time is 12am', function () {
           it('should midnight as a string', function () {
-            const time = filters.formatTime('2000-01-01T00:00:00Z')
+            const time = filters.formatTime('2000-01-01T00:00:00.00Z')
             expect(time).to.equal('Midnight')
           })
         })
 
         context('when time is in the morning', function () {
           it('should return correct format', function () {
-            const time = filters.formatTime('2000-01-01T08:00:00Z')
+            const time = filters.formatTime('2000-01-01T08:00:00.00Z')
             expect(time).to.equal('8am')
           })
 
           it('should return correct format', function () {
-            const time = filters.formatTime('2000-01-01T10:00:00Z')
+            const time = filters.formatTime('2000-01-01T10:00:00.00Z')
             expect(time).to.equal('10am')
           })
         })
 
         context('when time is in the afternoon', function () {
           it('should return correct format', function () {
-            const time = filters.formatTime('2000-01-01T14:00:00Z')
+            const time = filters.formatTime('2000-01-01T14:00:00.00Z')
             expect(time).to.equal('2pm')
           })
 
           it('should return correct format', function () {
-            const time = filters.formatTime('2000-01-01T17:00:00Z')
+            const time = filters.formatTime('2000-01-01T17:00:00.00Z')
             expect(time).to.equal('5pm')
           })
         })
@@ -696,18 +696,18 @@ describe('Nunjucks filters', function () {
           })
 
           it('should return correct format', function () {
-            const time = filters.formatTime('2000-01-01T09:30:00Z')
+            const time = filters.formatTime('2000-01-01T09:30:00.00Z')
             expect(time).to.equal('9:30am')
           })
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2000-01-01T01:00:00Z')
+          const time = filters.formatTime('2000-01-01T01:00:00.00Z')
           expect(time).to.equal('1am')
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2000-06-01T01:00:00Z')
+          const time = filters.formatTime('2000-06-01T01:00:00.00Z')
           expect(time).to.equal('1am')
         })
 
@@ -732,12 +732,12 @@ describe('Nunjucks filters', function () {
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2000-01-01T01:00:00Z')
-          expect(time).to.equal('5pm')
+          const time = filters.formatTime('2000-01-01T01:00:00.000Z')
+          expect(time).to.equal('6pm')
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2000-06-01T01:00:00Z')
+          const time = filters.formatTime('2000-06-01T01:00:00.000Z')
           expect(time).to.equal('6pm')
         })
       })
@@ -752,12 +752,12 @@ describe('Nunjucks filters', function () {
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2018-01-01T01:00:00Z')
-          expect(time).to.equal('11pm')
+          const time = filters.formatTime('2018-01-01T01:00:00.000Z')
+          expect(time).to.equal('10pm')
         })
 
         it('should return correct format', function () {
-          const time = filters.formatTime('2018-06-01T01:00:00Z')
+          const time = filters.formatTime('2018-06-01T01:00:00.000Z')
           expect(time).to.equal('10pm')
         })
       })
