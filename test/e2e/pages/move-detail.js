@@ -242,7 +242,7 @@ class MoveDetailPage extends Page {
     await this.checkUpdateLink(category, false)
   }
 
-  async clickUpdateLink(category, exists = true) {
+  async clickUpdateLink(category) {
     const selector = this.nodes.getUpdateLink(category)
     await t.click(selector)
   }

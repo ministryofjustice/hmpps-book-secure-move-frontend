@@ -10,7 +10,6 @@ import Page from './page'
 import PopulationDashboardPage from './population-dashboard'
 import PopulationEditPage from './population-edit'
 import PopulationWeeklyPage from './population-weekly'
-import UpdateMovePage from './update-move'
 
 const page = new Page()
 const allocationJourney = new AllocationJourney()
@@ -34,7 +33,6 @@ export {
   createMovePage,
   cancelMovePage,
   dashboardPage,
-  UpdateMovePage,
   populationDashboardPage,
   populationEditPage,
   populationWeeklyPage,

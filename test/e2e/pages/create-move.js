@@ -25,6 +25,9 @@ class CreateMovePage extends Page {
       lastName: Selector('#last_name'),
       dateOfBirth: Selector('#date_of_birth'),
       policeNationalComputer: Selector('#police_national_computer'),
+      policeNationalComputerReadOnly: Selector(
+        '[type=hidden][name=police_national_computer]'
+      ),
       ethnicity: Selector('#ethnicity'),
       gender: Selector('[name="gender"]'),
       moveType: Selector('[name="move_type"]'),
@@ -72,6 +75,12 @@ class CreateMovePage extends Page {
       notToBeReleased: Selector('#not_to_be_released'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
+    }
+
+    this.nodes = {
+      ...this.nodes,
+      policeNationalComputerHeading: Selector('.app-read-only-field__heading'),
+      policeNationalComputerValue: Selector('.app-read-only-field__value'),
     }
 
     this.steps = {
