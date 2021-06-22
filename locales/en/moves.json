@@ -190,6 +190,8 @@
   },
   "tabs": {
     "view": "Record",
+    "warnings": "Warnings",
+    "assessments": "Assessments",
     "timeline": "History of events"
   },
   "update_link": {
