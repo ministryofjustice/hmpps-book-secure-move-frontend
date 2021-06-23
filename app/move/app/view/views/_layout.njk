@@ -2,16 +2,6 @@
 
 {% set name = move.profile.person._fullname or t("awaiting_person") %}
 
-{% macro updateLink(link) %}
-  {% if link.href %}
-    <p class="app-!-position-top-right">
-      <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
-        {{ link.html | safe }}
-      </a>
-    </p>
-  {% endif %}
-{% endmacro %}
-
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
 {% endblock %}
@@ -54,23 +44,28 @@
 
     <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
 
-      {% block tabsBar %}
-        {% if tabs %}
-          <div class="govuk-tabs">
-            <ul class="govuk-tabs__list">
-              {% for item in tabs %}
-                <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}">
-                  <a class="govuk-tabs__tab" href="{{ item.url }}">
-                    {{ t(item.text) }}
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-      {% endblock %}
+      {% block contentMain %}
 
-      {% block contentMain %}{% endblock %}
+        {% block tabsList %}
+          {% if tabs %}
+            <div class="govuk-tabs">
+              <ul class="govuk-tabs__list">
+                {% for item in tabs %}
+                  <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}">
+                    <a class="govuk-tabs__tab" href="{{ item.url }}">
+                      {{ t(item.text) }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endblock %}
+
+        {% block tabContent %}
+        {% endblock %}
+
+      {% endblock %}
 
     </div>
 
