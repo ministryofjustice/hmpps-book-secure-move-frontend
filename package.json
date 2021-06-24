@@ -201,7 +201,7 @@
     "mocha-junit-reporter": "2.0.0",
     "mock-fs": "5.0.0",
     "nock": "13.1.0",
-    "node-sass": "6.0.0",
+    "node-sass": "6.0.1",
     "nodemon": "2.0.7",
     "npm-check-updates": "11.7.1",
     "nyc": "15.1.0",
