@@ -143,7 +143,33 @@ describe('Move middleware', function () {
       })
     })
 
-    context('when move ID exists', function () {
+    context('when moveId exists', function () {
+      context('when API call returns succesfully', function () {
+        beforeEach(async function () {
+          req.params.moveId = mockMoveId
+          await middleware.setMoveWithEvents(req, res, nextSpy)
+        })
+
+        it('should call API with move ID', function () {
+          expect(moveService.getByIdWithEvents).to.be.calledWith(mockMoveId)
+        })
+
+        it('should populate timeline events', function () {
+          expect(populateResources).to.be.calledWith(moveEvents, req)
+        })
+
+        it('should set response data to request object', function () {
+          expect(req).to.have.property('move')
+          expect(req.move).to.equal(moveWithEventsStub)
+        })
+
+        it('should call next with no argument', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    context('when moveIdWithEvents exists', function () {
       context('when API call returns succesfully', function () {
         beforeEach(async function () {
           req.params.moveIdWithEvents = mockMoveId

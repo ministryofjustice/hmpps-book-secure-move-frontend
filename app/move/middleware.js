@@ -21,7 +21,7 @@ module.exports = {
   },
 
   setMoveWithEvents: async (req, res, next) => {
-    const moveId = req.params.moveIdWithEvents
+    const moveId = req.params.moveId || req.params.moveIdWithEvents
 
     if (!moveId) {
       return next()
