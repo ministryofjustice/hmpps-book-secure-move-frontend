@@ -1,4 +1,20 @@
 {% extends "./_layout.njk" %}
 
-{% block contentMain %}
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Move history of events'});
+{% endblock %}
+
+{% block tabContent %}
+  {% if timeline.items.length %}
+    {{ appTimeline(timeline) }}
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted",
+      allowDismiss: false,
+      content: {
+        html: t("events::no_events")
+      }
+    }) }}
+  {% endif %}
+
 {% endblock %}
