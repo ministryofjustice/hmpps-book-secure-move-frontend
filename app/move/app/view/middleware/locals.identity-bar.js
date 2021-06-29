@@ -8,6 +8,7 @@ function localsIdentityCard(req, res, next) {
   }
 
   const identityBar = {
+    classes: 'sticky',
     caption: {
       text: req.t('moves::detail.page_caption'),
     },

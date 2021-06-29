@@ -76,6 +76,7 @@ describe('Move view app', function () {
 
         it('should set identity bar on locals', function () {
           expect(res.locals.identityBar).to.be.deep.equal({
+            classes: 'sticky',
             caption: {
               text: 'moves::detail.page_caption',
             },

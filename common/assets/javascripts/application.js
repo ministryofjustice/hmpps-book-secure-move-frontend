@@ -20,6 +20,7 @@ import MultiFileUpload from '../../components/multi-file-upload/multi-file-uploa
 
 const accessibleAutocomplete = require('accessible-autocomplete')
 const { initAll } = require('govuk-frontend')
+const HcSticky = require('hc-sticky')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
 
 const AddAnother = require('../../components/add-another/add-another')
@@ -70,6 +71,24 @@ if ($stickySidebars.length) {
     bottomSpacing: 20,
     containerSelector: '.sticky-sidebar-container',
     innerWrapperSelector: '.sticky-sidebar__inner',
+  })
+}
+
+const elements = document.querySelectorAll('.sticky')
+
+for (let i = 0; i < elements.length; i++) {
+  const element = elements[i]
+  // eslint-disable-next-line no-undef
+  const computedStyle = getComputedStyle(element)
+  const verticalPadding =
+    parseFloat(computedStyle.paddingTop) +
+    parseFloat(computedStyle.paddingBottom)
+  const elementHeight = element.offsetHeight - verticalPadding
+
+  // eslint-disable-next-line no-new
+  new HcSticky(elements[i], {
+    stickyClass: 'is-sticky',
+    innerTop: elementHeight,
   })
 }
 
