@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block content %}
-  {% block contentHeader %}{% endblock %}
+  {% block contentHeader %}
+    {{ appCard(identityCard) }}
+  {% endblock %}
 
   {% block contentContainer %}
   <div class="govuk-grid-row">

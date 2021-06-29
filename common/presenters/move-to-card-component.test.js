@@ -327,7 +327,7 @@ describe('Presenters', function () {
       it('should contain correct output', function () {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: ' app-card--primary',
+          classes: ' app-card--identity-card',
           status: undefined,
           caption: {
             text: '__translated__',
@@ -363,7 +363,7 @@ describe('Presenters', function () {
       it('should contain correct output', function () {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: ' app-card--primary',
+          classes: ' app-card--identity-card',
           status: undefined,
           caption: {
             text: '__translated__',

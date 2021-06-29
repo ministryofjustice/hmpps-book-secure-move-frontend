@@ -79,7 +79,7 @@ function moveToCardComponent({
     }
 
     if (isIdentityCard) {
-      classes += ' app-card--primary'
+      classes += ' app-card--identity-card'
     }
 
     return {
