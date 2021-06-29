@@ -1,4 +1,5 @@
 $_image-width: 80px;
+$_image-height: 100px;
 
 .app-card {
   @include govuk-clearfix;
@@ -17,6 +18,14 @@ $_image-width: 80px;
   .govuk-inset-text {
     margin: govuk-spacing(3) 0 0;
   }
+
+
+.app-card--identity-card {
+  border-top: 0;
+  border-bottom: 1px solid $govuk-border-colour;
+  padding-top: 0;
+  padding-bottom: govuk-spacing(5);
+  margin-bottom: govuk-spacing(5);
 }
 
 .app-card--compact {
@@ -40,6 +49,12 @@ $_image-width: 80px;
 .app-card__image {
   display: block;
   width: $_image-width;
+  height: $_image-height;
+
+  .app-card--identity-card & {
+    width: $_image-width * 1.5;
+    height: $_image-height * 1.5;
+  }
 }
 
 .app-card__badge {
@@ -57,11 +72,29 @@ $_image-width: 80px;
 .app-card__caption {
   @include govuk-font($size: 16);
   color: govuk-colour("dark-grey");
+
+  .app-card--identity-card & {
+    @include govuk-font($size: 36, $weight: bold);
+    color: govuk-colour("black");
+    display: inline-block;
+
+    &:before {
+      content: "/";
+      display: inline-block;
+      font-weight: normal;
+      margin: 0 govuk-spacing(2);
+    }
+  }
 }
 
 .app-card__title {
   @include govuk-font($size: 19, $weight: bold);
   margin: 0;
+
+  .app-card--identity-card & {
+    @include govuk-font($size: 36, $weight: bold);
+    display: inline-block;
+  }
 
   .govuk-checkboxes &,
   .govuk-radios & {
@@ -69,9 +102,19 @@ $_image-width: 80px;
   }
 }
 
+.app-card__header {
+  .app-card--identity-card & {
+    margin-bottom: govuk-spacing(5);
+  }
+}
+
 .app-card__content {
   .app-card--with-aside & {
     margin-left: $_image-width + govuk-spacing(3);
+  }
+
+  .app-card--identity-card & {
+    margin-left: $_image-width * 1.5 + govuk-spacing(3);
   }
 
   .app-card--placeholder & {
@@ -91,8 +134,9 @@ $_image-width: 80px;
 
   @include mq($from: desktop) {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: govuk-spacing(3);
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    grid-gap: govuk-spacing(5);
   }
 }
 

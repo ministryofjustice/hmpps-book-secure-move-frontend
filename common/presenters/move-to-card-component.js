@@ -5,6 +5,7 @@ const profileToCardComponent = require('./profile-to-card-component')
 
 function moveToCardComponent({
   isCompact = false,
+  isIdentityCard = false,
   showImage = true,
   showMeta = true,
   showTags = true,
@@ -26,7 +27,7 @@ function moveToCardComponent({
     const href = profile ? `/move/${id}${hrefSuffix}` : ''
     const excludedBadgeStatuses = ['cancelled']
 
-    showTags = isCompact ? false : showTags
+    showTags = isCompact || isIdentityCard ? false : showTags
 
     const moveMetaItems = []
 
@@ -45,7 +46,10 @@ function moveToCardComponent({
     }
 
     const showStatusBadge =
-      showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
+      showStatus &&
+      !excludedBadgeStatuses.includes(status) &&
+      !isCompact &&
+      !isIdentityCard
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
@@ -57,7 +61,7 @@ function moveToCardComponent({
       showTags,
     })({
       ...profile,
-      href,
+      href: isIdentityCard ? undefined : href,
     })
 
     let tags
@@ -68,17 +72,23 @@ function moveToCardComponent({
       tags.push({ items: importantEventsTagList })
     }
 
+    let classes = personCardComponent.classes || ''
+
+    if (isCompact) {
+      classes += ' app-card--compact'
+    }
+
+    if (isIdentityCard) {
+      classes += ' app-card--primary'
+    }
+
     return {
       ...personCardComponent,
-      status: statusBadge,
-      classes: isCompact
-        ? `app-card--compact ${personCardComponent.classes || ''}`
-        : personCardComponent.classes || '',
       caption: {
-        text: i18n.t('moves::move_reference', {
-          reference,
-        }),
+        text: i18n.t('moves::move_reference', { reference }),
       },
+      classes,
+      status: statusBadge,
       ...(tags ? { tags } : undefined),
     }
   }

@@ -258,7 +258,7 @@ describe('Presenters', function () {
       it('should contain correct output', function () {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: 'app-card--compact ',
+          classes: ' app-card--compact',
           status: undefined,
           caption: {
             text: '__translated__',
@@ -267,7 +267,7 @@ describe('Presenters', function () {
       })
     })
 
-    context('with compact design and all others disabled', function () {
+    context('with compact design and all others enabled', function () {
       beforeEach(function () {
         transformedResponse = moveToCardComponent({
           isCompact: true,
@@ -294,7 +294,76 @@ describe('Presenters', function () {
       it('should contain correct output', function () {
         expect(transformedResponse).to.deep.equal({
           ...mockPersonCardComponent,
-          classes: 'app-card--compact ',
+          classes: ' app-card--compact',
+          status: undefined,
+          caption: {
+            text: '__translated__',
+          },
+        })
+      })
+    })
+
+    context('with indentity card design', function () {
+      beforeEach(function () {
+        transformedResponse = moveToCardComponent({
+          isIdentityCard: true,
+        })(mockMove)
+      })
+
+      it('should call profile to card component correctly', function () {
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.profile,
+          href: undefined,
+        })
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
+          meta: [],
+          showImage: true,
+          showMeta: true,
+          showTags: false,
+        })
+      })
+
+      it('should contain correct output', function () {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: ' app-card--primary',
+          status: undefined,
+          caption: {
+            text: '__translated__',
+          },
+        })
+      })
+    })
+
+    context('with indentity card design and all others enabled', function () {
+      beforeEach(function () {
+        transformedResponse = moveToCardComponent({
+          isIdentityCard: true,
+          showImage: true,
+          showMeta: true,
+          showTags: true,
+        })(mockMove)
+      })
+
+      it('should call profile to card component correctly', function () {
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+          ...mockMove.profile,
+          href: undefined,
+        })
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
+          meta: [],
+          showImage: true,
+          showMeta: true,
+          showTags: false,
+        })
+      })
+
+      it('should contain correct output', function () {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: ' app-card--primary',
           status: undefined,
           caption: {
             text: '__translated__',
@@ -360,7 +429,7 @@ describe('Presenters', function () {
         it('should combine with card classes', function () {
           expect(transformedResponse).to.deep.equal({
             ...mockPersonCardComponent,
-            classes: `app-card--compact ${mockClasses}`,
+            classes: `${mockClasses} app-card--compact`,
             status: undefined,
             caption: {
               text: '__translated__',

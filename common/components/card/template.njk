@@ -20,18 +20,14 @@
       {% endif %}
 
       <h2 class="app-card__title">
-        {% if params.href %}
-          <a href="{{ params.href }}"  class="app-card__link">
-        {% endif %}
-        {{ params.title.html | safe if params.title.html else params.title.text }}
-        {% if params.href %}
-          </a>
-        {% endif %}
+        {% if params.href %}<a href="{{ params.href }}"  class="app-card__link">{% endif %}
+        {{- params.title.html | safe if params.title.html else params.title.text -}}
+        {% if params.href %}</a>{% endif %}
       </h2>
 
       {% if params.caption.html or params.caption.text %}
         <span class="app-card__caption">
-          {{ params.caption.html | safe if params.caption.html else params.caption.text }}
+          {{- params.caption.html | safe if params.caption.html else params.caption.text -}}
         </span>
       {% endif %}
     </header>
