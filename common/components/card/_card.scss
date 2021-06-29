@@ -19,6 +19,15 @@ $_image-height: 100px;
     margin: govuk-spacing(3) 0 0;
   }
 
+  // &.sticky,
+  // &.js-is-sticky {
+  .sticky & {
+    padding-top: govuk-spacing(3);
+    padding-bottom: govuk-spacing(3);
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+}
 
 .app-card--identity-card {
   border-top: 0;
@@ -55,6 +64,11 @@ $_image-height: 100px;
     width: $_image-width * 1.5;
     height: $_image-height * 1.5;
   }
+
+  .js-is-sticky &,
+  .sticky & {
+    display: none;
+  }
 }
 
 .app-card__badge {
@@ -85,6 +99,11 @@ $_image-height: 100px;
       margin: 0 govuk-spacing(2);
     }
   }
+
+  .js-is-sticky &,
+  .sticky & {
+    @include govuk-font($size: 16, $weight: bold);
+  }
 }
 
 .app-card__title {
@@ -96,6 +115,11 @@ $_image-height: 100px;
     display: inline-block;
   }
 
+  .js-is-sticky &,
+  .sticky & {
+    @include govuk-font($size: 16, $weight: bold);
+  }
+
   .govuk-checkboxes &,
   .govuk-radios & {
     margin-top: 8px;
@@ -105,6 +129,11 @@ $_image-height: 100px;
 .app-card__header {
   .app-card--identity-card & {
     margin-bottom: govuk-spacing(5);
+  }
+
+  .js-is-sticky &,
+  .sticky & {
+    margin-bottom: govuk-spacing(2);
   }
 }
 
@@ -123,6 +152,11 @@ $_image-height: 100px;
     padding-bottom: govuk-spacing(3);
     padding-left: govuk-spacing(3);
     padding-top: govuk-spacing(3);
+    margin-left: 0;
+  }
+
+  .js-is-sticky &,
+  .sticky & {
     margin-left: 0;
   }
 }
