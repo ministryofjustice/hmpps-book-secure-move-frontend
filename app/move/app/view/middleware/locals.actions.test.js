@@ -13,6 +13,7 @@ describe('Move view app', function () {
 
       beforeEach(function () {
         req = {
+          canAccess: sinon.stub(),
           move: {
             id: '12345',
           },
@@ -37,15 +38,11 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
         })
 
-        it('should add actions to locals', function () {
-          expect(res.locals).to.deep.equal({
-            actions: [
-              {
-                text: 'actions::cancel_move',
-                classes: 'app-link--destructive',
-                url: '/move/12345/cancel',
-              },
-            ],
+        it('should add cancel action to locals', function () {
+          expect(res.locals.actions).to.deep.include({
+            text: 'actions::cancel_move',
+            classes: 'app-link--destructive',
+            url: '/move/12345/cancel',
           })
         })
       })
@@ -57,9 +54,41 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
         })
 
-        it('should not add any actions', function () {
-          expect(res.locals).to.deep.equal({
-            actions: [],
+        it('should not add cancel actions', function () {
+          expect(res.locals.actions).not.to.deep.include({
+            text: 'actions::cancel_move',
+            classes: 'app-link--destructive',
+            url: '/move/12345/cancel',
+          })
+        })
+      })
+
+      context('when user can view journeys', function () {
+        beforeEach(function () {
+          req.canAccess.withArgs('move:view:journeys').returns(true)
+
+          middleware(req, res, nextSpy)
+        })
+
+        it('should add cancel action to locals', function () {
+          expect(res.locals.actions).to.deep.include({
+            text: 'actions::view_journeys',
+            url: '/move/12345/journeys',
+          })
+        })
+      })
+
+      context('when user cannot view journeys', function () {
+        beforeEach(function () {
+          req.canAccess.withArgs('move:view:journeys').returns(false)
+
+          middleware(req, res, nextSpy)
+        })
+
+        it('should not add cancel actions', function () {
+          expect(res.locals.actions).not.to.deep.include({
+            text: 'actions::view_journeys',
+            url: '/move/12345/journeys',
           })
         })
       })

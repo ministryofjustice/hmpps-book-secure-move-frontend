@@ -24,15 +24,17 @@
 
         {{ appMetaList(moveDetails) }}
 
-        {% for action in actions %}
-          <ul class="govuk-list govuk-!-margin-top-3 govuk-!-margin-bottom-0">
-            <li>
-              <a href="{{ action.url }}" class="{{ action.classes }}">
-                {{ t(action.text) }}
-              </a>
-            </li>
+        {% if actions | length %}
+          <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+            {% for action in actions %}
+              <li>
+                <a href="{{ action.url }}" class="{{ action.classes }}">
+                  {{ t(action.text) }}
+                </a>
+              </li>
+            {% endfor %}
           </ul>
-        {% endfor %}
+        {% endif %}
 
       {% endblock %}
 
