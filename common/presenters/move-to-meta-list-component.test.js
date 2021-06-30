@@ -74,7 +74,7 @@ describe('Presenters', function () {
 
         it('should contain correct number of items', function () {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
+          expect(transformedResponse.items.length).to.equal(7)
         })
 
         it('should contain correct key ordering', function () {
@@ -82,6 +82,7 @@ describe('Presenters', function () {
             item => item.key.text || item.key.html
           )
           expect(keys).deep.equal([
+            'status',
             'reference',
             'person_noun',
             'fields::from_location.short_label',
@@ -96,7 +97,8 @@ describe('Presenters', function () {
             item => item.value.text || item.value.html
           )
           expect(values).deep.equal([
-            'ABC12345 mojBadge',
+            'mojBadge',
+            'ABC12345',
             'BLOGGS, JOE',
             'HMP Leeds',
             'Barrow in Furness County Court',
@@ -114,6 +116,7 @@ describe('Presenters', function () {
             undefined,
             undefined,
             undefined,
+            undefined,
           ])
         })
 
@@ -122,7 +125,7 @@ describe('Presenters', function () {
         })
 
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(13)
+          expect(i18n.t).to.be.callCount(14)
         })
       })
 
@@ -151,7 +154,7 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should contain correct number of items', function () {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(5)
+          expect(transformedResponse.items.length).to.equal(6)
         })
 
         it('should not contain person key', function () {
@@ -159,6 +162,7 @@ describe('Presenters', function () {
             item => item.key.text || item.key.html
           )
           expect(keys).deep.equal([
+            'status',
             'reference',
             'fields::from_location.short_label',
             'fields::move_type.short_label',
@@ -172,7 +176,8 @@ describe('Presenters', function () {
             item => item.value.text || item.value.html
           )
           expect(values).deep.equal([
-            'ABC12345 mojBadge',
+            'mojBadge',
+            'ABC12345',
             'HMP Leeds',
             'Barrow in Furness County Court',
             '2019-06-09',
@@ -333,12 +338,13 @@ describe('Presenters', function () {
 
       it('should contain correct number of items', function () {
         expect(transformedResponse).to.have.property('items')
-        expect(transformedResponse.items.length).to.equal(6)
+        expect(transformedResponse.items.length).to.equal(7)
       })
 
       it('should contain correct actions', function () {
         const actions = transformedResponse.items.map(item => item.action)
         expect(actions).deep.equal([
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -369,37 +375,20 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain correct number of items', function () {
-          expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
-        })
-
-        it('should contain correct key ordering', function () {
+        it('should contain correct key', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys).deep.equal([
-            'reference',
-            'person_noun',
-            'fields::from_location.short_label',
-            'fields::move_type.short_label',
-            'fields::date_type.label',
-            'collections::vehicle_registration',
-          ])
+          expect(keys).to.include('fields::move_type.short_label')
         })
 
-        it('should contain correct values', function () {
+        it('should contain correct value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values).deep.equal([
-            'ABC12345 mojBadge',
-            'BLOGGS, JOE',
-            'HMP Leeds',
-            'fields::move_type.items.prison_recall.label — Some additional information about this move',
-            '2019-06-09',
-            'GG01 AJY',
-          ])
+          expect(values).to.include(
+            'fields::move_type.items.prison_recall.label — Some additional information about this move'
+          )
         })
       })
 
@@ -412,37 +401,20 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain correct number of items', function () {
-          expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
-        })
-
-        it('should contain correct key ordering', function () {
+        it('should contain correct key', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys).deep.equal([
-            'reference',
-            'person_noun',
-            'fields::from_location.short_label',
-            'fields::move_type.short_label',
-            'fields::date_type.label',
-            'collections::vehicle_registration',
-          ])
+          expect(keys).to.include('fields::move_type.short_label')
         })
 
-        it('should contain correct values', function () {
+        it('should contain correct value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values).deep.equal([
-            'ABC12345 mojBadge',
-            'BLOGGS, JOE',
-            'HMP Leeds',
-            'fields::move_type.items.video_remand.label — Some additional information about this move',
-            '2019-06-09',
-            'GG01 AJY',
-          ])
+          expect(values).to.include(
+            'fields::move_type.items.video_remand.label — Some additional information about this move'
+          )
         })
       })
 
@@ -460,39 +432,22 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain correct number of items', function () {
-          expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(7)
-        })
-
-        it('should contain correct key ordering', function () {
+        it('should contain correct key', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys).deep.equal([
-            'reference',
-            'person_noun',
-            'fields::from_location.short_label',
-            'fields::move_type.short_label',
-            'fields::date_type.label',
-            'fields::prison_transfer_type.label',
-            'collections::vehicle_registration',
-          ])
+          expect(keys).to.include('fields::move_type.short_label')
+          expect(keys).to.include('fields::prison_transfer_type.label')
         })
 
-        it('should contain correct values', function () {
+        it('should contain correct value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values).deep.equal([
-            'ABC12345 mojBadge',
-            'BLOGGS, JOE',
-            'HMP Leeds',
-            'Barrow in Furness County Court',
-            '2019-06-09',
-            'Parole — Some additional information about this move',
-            'GG01 AJY',
-          ])
+          expect(values).to.include('Barrow in Furness County Court')
+          expect(values).to.include(
+            'Parole — Some additional information about this move'
+          )
         })
       })
 
@@ -504,43 +459,25 @@ describe('Presenters', function () {
           })
         })
 
-        it('should contain correct number of items', function () {
-          expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
-        })
-
-        it('should contain correct key ordering', function () {
+        it('should contain correct key', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys).deep.equal([
-            'reference',
-            'person_noun',
-            'fields::from_location.short_label',
-            'fields::move_type.short_label',
-            'fields::date_type.label',
-            'collections::vehicle_registration',
-          ])
+          expect(keys).to.include('fields::move_type.short_label')
         })
 
-        it('should contain correct values', function () {
+        it('should contain correct value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values).deep.equal([
-            'ABC12345 mojBadge',
-            'BLOGGS, JOE',
-            'HMP Leeds',
-            'Barrow in Furness County Court',
-            '2019-06-09',
-            'GG01 AJY',
-          ])
+          expect(values).to.include('Barrow in Furness County Court')
         })
       })
     })
 
     context('with agreement status', function () {
       let transformedResponse
+      const keyIndex = 6
 
       context('with `true` value', function () {
         context('without name', function () {
@@ -555,14 +492,14 @@ describe('Presenters', function () {
             const keys = transformedResponse.items.map(
               item => item.key.text || item.key.html
             )
-            expect(keys[5]).to.equal('fields::move_agreed.label')
+            expect(keys[keyIndex]).to.equal('fields::move_agreed.label')
           })
 
           it('should contain agreement status value', function () {
             const values = transformedResponse.items.map(
               item => item.value.text || item.value.html
             )
-            expect(values[5]).deep.equal(
+            expect(values[keyIndex]).deep.equal(
               'moves::detail.agreement_status.agreed'
             )
           })
@@ -591,14 +528,14 @@ describe('Presenters', function () {
             const keys = transformedResponse.items.map(
               item => item.key.text || item.key.html
             )
-            expect(keys[5]).to.equal('fields::move_agreed.label')
+            expect(keys[keyIndex]).to.equal('fields::move_agreed.label')
           })
 
           it('should contain agreement status value', function () {
             const values = transformedResponse.items.map(
               item => item.value.text || item.value.html
             )
-            expect(values[5]).deep.equal(
+            expect(values[keyIndex]).deep.equal(
               'moves::detail.agreement_status.agreed'
             )
           })
@@ -628,14 +565,14 @@ describe('Presenters', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys[5]).to.equal('fields::move_agreed.label')
+          expect(keys[keyIndex]).to.equal('fields::move_agreed.label')
         })
 
         it('should contain agreement status value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values[5]).deep.equal(
+          expect(values[keyIndex]).deep.equal(
             'moves::detail.agreement_status.not_agreed'
           )
         })
@@ -664,14 +601,16 @@ describe('Presenters', function () {
           const keys = transformedResponse.items.map(
             item => item.key.text || item.key.html
           )
-          expect(keys[5]).to.equal('fields::move_agreed.label')
+          expect(keys[keyIndex]).to.equal('fields::move_agreed.label')
         })
 
         it('should contain agreement status value', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values[5]).deep.equal('moves::detail.agreement_status.agreed')
+          expect(values[keyIndex]).deep.equal(
+            'moves::detail.agreement_status.agreed'
+          )
         })
 
         it('should translate agreed label correctly', function () {

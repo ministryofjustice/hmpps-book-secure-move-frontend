@@ -76,10 +76,18 @@ function moveToMetaListComponent(
   const items = [
     {
       key: {
+        text: i18n.t('status'),
+      },
+      value: {
+        html: status ? statusBadge : undefined,
+      },
+    },
+    {
+      key: {
         text: i18n.t('reference'),
       },
       value: {
-        html: reference ? `${reference} ${statusBadge}` : undefined,
+        text: reference,
       },
     },
     {

@@ -9,6 +9,7 @@
   "type": "Type",
   "or": "or",
   "none_provided": "None provided",
+  "status": "Status",
   "reference": "Reference",
   "reason": "Reason",
   "location": "Location",
