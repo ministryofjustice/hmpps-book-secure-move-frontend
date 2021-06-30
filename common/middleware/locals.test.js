@@ -81,6 +81,10 @@ describe('Locals', function () {
         expect(res.locals.MOVES_URL).to.equal('moves-url')
       })
 
+      it('should set SERVICE_NAME', function () {
+        expect(res.locals.SERVICE_NAME).to.equal('Book a secure move')
+      })
+
       it('should create getLocal method', function () {
         expect(res.locals.getLocal('foo')).to.equal('bar')
       })
@@ -152,6 +156,45 @@ describe('Locals', function () {
           { text: 'A', href: '/a' },
           { text: 'B', href: null },
         ])
+      })
+    })
+
+    context('getPageTitle', function () {
+      beforeEach(function () {
+        setLocals(req, res, next)
+      })
+
+      it('return return breadcrumb text in reverse with service name', function () {
+        res.breadcrumb = sinon.stub().returns([
+          { text: 'A', href: '/a' },
+          { text: 'B', href: '/b' },
+        ])
+
+        expect(res.locals.getPageTitle()).to.deep.equal([
+          'B',
+          'A',
+          'Book a secure move',
+        ])
+      })
+
+      context('if breadcrumbs have not been initialised', function () {
+        it('should return empty array', function () {
+          delete res.breadcrumb
+
+          expect(res.locals.getPageTitle()).to.deep.equal([])
+        })
+      })
+
+      context('with home item', function () {
+        it('should filter home item out', function () {
+          res.breadcrumb = sinon.stub().returns([
+            { text: 'Home', href: '/', _home: true },
+            { text: 'A', href: '/a' },
+            { text: 'B', href: '/b' },
+          ])
+
+          expect(res.locals.getPageTitle()).not.to.contain('Home')
+        })
       })
     })
   })

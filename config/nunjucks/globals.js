@@ -41,7 +41,6 @@ module.exports = {
   PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
   FEEDBACK_URL,
-  SERVICE_NAME: 'Book a secure move',
   AUTH_BASE_URL,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {

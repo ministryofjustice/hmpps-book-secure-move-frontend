@@ -1,6 +1,7 @@
 const { startOfTomorrow } = require('date-fns')
 
 const movesApp = require('../../app/moves')
+const SERVICE_NAME = 'Book a secure move'
 
 module.exports = function setLocals(req, res, next) {
   const protocol = req.encrypted ? 'https' : req.protocol
@@ -14,6 +15,7 @@ module.exports = function setLocals(req, res, next) {
     CURRENT_LOCATION: req.session.currentLocation,
     CURRENT_REGION: req.session.currentRegion,
     MOVES_URL: req.session.movesUrl || movesApp.mountpath,
+    SERVICE_NAME,
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),
     canAccess: permission => {
@@ -35,6 +37,18 @@ module.exports = function setLocals(req, res, next) {
           href: i === breadcrumbs.length - 1 ? null : href,
         }
       })
+    },
+    getPageTitle() {
+      if (!res.breadcrumb) {
+        return []
+      }
+
+      const items = res
+        .breadcrumb()
+        .filter(item => !item._home)
+        .map(item => item.text)
+
+      return [SERVICE_NAME, ...items].reverse()
     },
   }
 

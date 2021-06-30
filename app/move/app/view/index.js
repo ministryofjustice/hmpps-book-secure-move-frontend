@@ -2,6 +2,7 @@
 const router = require('express').Router({ mergeParams: true })
 
 const { uuidRegex } = require('../../../../common/helpers/url')
+const breadcrumbs = require('../../../../common/middleware/breadcrumbs')
 const {
   setMove,
   setMoveWithEvents,
@@ -19,6 +20,7 @@ const {
   localsMoveDetails,
   localsTabs,
   localsWarnings,
+  setBreadcrumb,
 } = require('./middleware')
 
 router.get('/', (req, res) => res.redirect(`${req.baseUrl}/warnings`))
@@ -30,8 +32,10 @@ router.use(/\/((?!timeline).)*/, setMove)
 // For all timeline route use move events middleware
 router.use('/timeline', setMoveWithEvents)
 
+router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
+router.use(setBreadcrumb)
 router.use(localsActions)
 router.use(localsMoveDetails)
 router.use(localsTabs)

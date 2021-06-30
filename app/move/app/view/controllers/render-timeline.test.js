@@ -14,8 +14,10 @@ describe('Move view app', function () {
           move: {
             id: '12345',
           },
+          t: sinon.stub().returnsArg(0),
         }
         res = {
+          breadcrumb: sinon.stub().returnsThis(),
           render: sinon.stub(),
         }
       })
@@ -29,6 +31,13 @@ describe('Move view app', function () {
           expect(
             presenters.moveToTimelineComponent
           ).to.be.calledOnceWithExactly(req.move)
+        })
+
+        it('should set breadcrumb', function () {
+          expect(req.t).to.be.calledOnce
+          expect(res.breadcrumb).to.be.calledOnceWithExactly({
+            text: 'moves::tabs.timeline',
+          })
         })
 
         it('should pass correct locals', function () {
