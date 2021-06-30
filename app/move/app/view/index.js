@@ -14,7 +14,12 @@ const {
   renderTimeline,
   renderWarnings,
 } = require('./controllers')
-const { localsActions, localsMoveDetails, localsTabs } = require('./middleware')
+const {
+  localsActions,
+  localsMoveDetails,
+  localsTabs,
+  localsWarnings,
+} = require('./middleware')
 
 router.get('/', (req, res) => res.redirect(`${req.baseUrl}/warnings`))
 
@@ -32,7 +37,7 @@ router.use(localsMoveDetails)
 router.use(localsTabs)
 
 // Define routes
-router.get('/warnings', renderWarnings)
+router.get('/warnings', localsWarnings, renderWarnings)
 router.get('/assessments', renderAssessments)
 router.get('/timeline', renderTimeline)
 
