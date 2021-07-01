@@ -1,23 +1,19 @@
 const proxyquire = require('proxyquire')
 
-const assessmentToConfirmedBannerStub = sinon
-  .stub()
-  .returns('__assessmentToConfirmedBanner__')
 const assessmentToStartBannerStub = sinon
   .stub()
   .returns('__assessmentToStartBanner__')
 const assessmentToUnconfirmedBannerStub = sinon
   .stub()
   .returns('__assessmentToUnconfirmedBanner__')
-const assessmentToHandedOverBanner = sinon
+const assessmentToHandedOverBannerStub = sinon
   .stub()
   .returns('__assessmentToHandedOverBanner__')
 
 const presenter = proxyquire('./move-to-message-banner-component', {
-  './assessment-to-confirmed-banner': assessmentToConfirmedBannerStub,
   './assessment-to-start-banner': assessmentToStartBannerStub,
   './assessment-to-unconfirmed-banner': assessmentToUnconfirmedBannerStub,
-  './assessment-to-handed-over-banner': assessmentToHandedOverBanner,
+  './assessment-to-handed-over-banner': assessmentToHandedOverBannerStub,
 })
 
 describe('Presenters', function () {
@@ -26,10 +22,9 @@ describe('Presenters', function () {
       let output
 
       beforeEach(function () {
-        assessmentToConfirmedBannerStub.resetHistory()
         assessmentToStartBannerStub.resetHistory()
         assessmentToUnconfirmedBannerStub.resetHistory()
-        assessmentToHandedOverBanner.resetHistory()
+        assessmentToHandedOverBannerStub.resetHistory()
       })
 
       context('without args', function () {
@@ -104,7 +99,7 @@ describe('Presenters', function () {
 
                 it('should call presenter', function () {
                   expect(
-                    assessmentToHandedOverBanner
+                    assessmentToHandedOverBannerStub
                   ).to.have.been.calledOnceWithExactly({
                     assessment: {
                       id: '12345',
@@ -136,13 +131,13 @@ describe('Presenters', function () {
 
                 it('should return unconfirmed banner', function () {
                   expect(output).to.deep.equal(
-                    '__assessmentToConfirmedBanner__'
+                    '__assessmentToUnconfirmedBanner__'
                   )
                 })
 
                 it('should call presenter', function () {
                   expect(
-                    assessmentToConfirmedBannerStub
+                    assessmentToUnconfirmedBannerStub
                   ).to.have.been.calledOnceWithExactly({
                     assessment: {
                       id: '12345',
@@ -151,6 +146,45 @@ describe('Presenters', function () {
                     baseUrl: '/move/12345/person-escort-record',
                     canAccess: mockArgs.canAccess,
                     context: 'person_escort_record',
+                  })
+                })
+
+                context('with handover', function () {
+                  beforeEach(function () {
+                    output = presenter({
+                      ...mockArgs,
+                      move: {
+                        ...mockMove,
+                        profile: {
+                          person_escort_record: {
+                            id: '12345',
+                            status: 'confirmed',
+                            handover_occurred_at: '2020-10-10T14:20:00Z',
+                          },
+                        },
+                      },
+                    })
+                  })
+
+                  it('should return handed over banner', function () {
+                    expect(output).to.deep.equal(
+                      '__assessmentToHandedOverBanner__'
+                    )
+                  })
+
+                  it('should call presenter', function () {
+                    expect(
+                      assessmentToHandedOverBannerStub
+                    ).to.have.been.calledOnceWithExactly({
+                      assessment: {
+                        id: '12345',
+                        status: 'confirmed',
+                        handover_occurred_at: '2020-10-10T14:20:00Z',
+                      },
+                      baseUrl: '/move/12345/person-escort-record',
+                      canAccess: mockArgs.canAccess,
+                      context: 'person_escort_record',
+                    })
                   })
                 })
               })
