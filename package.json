@@ -202,7 +202,7 @@
     "mock-fs": "5.0.0",
     "nock": "13.1.0",
     "node-sass": "6.0.1",
-    "nodemon": "2.0.8",
+    "nodemon": "2.0.9",
     "npm-check-updates": "11.7.1",
     "nyc": "15.1.0",
     "open-cli": "7.0.0",
