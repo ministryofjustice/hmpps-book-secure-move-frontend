@@ -21,6 +21,13 @@ class AllocationViewPage extends Page {
       summaryPanel: Selector('#main-content h3')
         .withText('Allocation details')
         .sibling('dl'),
+      addPersonButton: Selector('a').withText('Add'),
+      removePersonButton: name =>
+        Selector('.app-card')
+          .withText(name)
+          .parent()
+          .find('a.govuk-button')
+          .withText('Remove'),
       allocatedMoves: Selector('.app-card'),
       allocatedMovesReferences: Selector('.app-card__caption'),
       allocatedMovesRemoveLinks: Selector('a').withText(
