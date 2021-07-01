@@ -1,4 +1,4 @@
-async function setTabs(req, res, next) {
+function setTabs(req, res, next) {
   const tabs = [
     {
       text: 'moves::tabs.warnings',

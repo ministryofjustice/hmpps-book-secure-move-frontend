@@ -1,18 +1,14 @@
 {% extends "layouts/base.njk" %}
 
-{% set name = move.profile.person._fullname or t("awaiting_person") %}
-
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
 {% endblock %}
 
 {% block pageTitle %}
-  {{ t("moves::detail.page_title", { name: name }) }}
-  – {{ super() }}
+  {{ getPageTitle() | join(' – ') if getPageTitle }}
 {% endblock %}
 
 {% block content %}
-
   {% block contentHeader %}{% endblock %}
 
   {% block contentContainer %}
@@ -28,15 +24,17 @@
 
         {{ appMetaList(moveDetails) }}
 
-        {% for action in actions %}
-          <ul class="govuk-list govuk-!-margin-top-3 govuk-!-margin-bottom-0">
-            <li>
-              <a href="{{ action.url }}" class="{{ action.classes }}">
-                {{ t(action.text) }}
-              </a>
-            </li>
+        {% if actions | length %}
+          <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+            {% for action in actions %}
+              <li>
+                <a href="{{ action.url }}" class="{{ action.classes }}">
+                  {{ t(action.text) }}
+                </a>
+              </li>
+            {% endfor %}
           </ul>
-        {% endfor %}
+        {% endif %}
 
       {% endblock %}
 

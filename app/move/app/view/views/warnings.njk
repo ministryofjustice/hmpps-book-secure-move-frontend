@@ -1,5 +1,9 @@
 {% extends "./_layout.njk" %}
 
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Warnings – Move details'});
+{% endblock %}
+
 {% macro renderAssessmentComponent(assessment) %}
   {% if assessment.isCompleted == false %}
     {{ govukInsetText({
