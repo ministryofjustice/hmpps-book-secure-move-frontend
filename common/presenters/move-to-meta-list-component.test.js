@@ -10,38 +10,40 @@ const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
   '../helpers/move/get-update-links': getUpdateLinks,
 })
 
-const mockMove = {
-  _hasLeftCustody: false,
-  _vehicleRegistration: 'GG01 AJY',
-  reference: 'ABC12345',
-  status: 'booked',
-  date: '2019-06-09',
-  time_due: '2000-01-01T14:00:00Z',
-  move_type: 'court_appearance',
-  profile: {
-    person: {
-      _fullname: 'BLOGGS, JOE',
-    },
-  },
-  from_location: {
-    title: 'HMP Leeds',
-  },
-  to_location: {
-    title: 'Barrow in Furness County Court',
-  },
-}
-
 const canAccess = sinon.stub()
 const updateSteps = ['a', 'b']
 
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
+    let mockMove
+
     beforeEach(function () {
       timezoneMock.register('UTC')
       sinon.stub(componentService, 'getComponent').returnsArg(0)
       sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returnsArg(0)
       getUpdateLinks.resetHistory()
+
+      mockMove = {
+        _hasLeftCustody: false,
+        _vehicleRegistration: 'GG01 AJY',
+        reference: 'ABC12345',
+        status: 'booked',
+        date: '2019-06-09',
+        time_due: '2000-01-01T14:00:00Z',
+        move_type: 'court_appearance',
+        profile: {
+          person: {
+            _fullname: 'BLOGGS, JOE',
+          },
+        },
+        from_location: {
+          title: 'HMP Leeds',
+        },
+        to_location: {
+          title: 'Barrow in Furness County Court',
+        },
+      }
     })
 
     afterEach(function () {
@@ -621,6 +623,48 @@ describe('Presenters', function () {
               name: 'Jon Doe',
             }
           )
+        })
+      })
+
+      context('without profile', function () {
+        beforeEach(function () {
+          delete mockMove.profile
+          transformedResponse = moveToMetaListComponent(mockMove)
+        })
+
+        it('should not contain person key', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).not.to.include('person_noun')
+        })
+      })
+
+      context('without person', function () {
+        beforeEach(function () {
+          mockMove.profile = {}
+          transformedResponse = moveToMetaListComponent(mockMove)
+        })
+
+        it('should not contain person key', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).not.to.include('person_noun')
+        })
+      })
+
+      context('with null profile', function () {
+        beforeEach(function () {
+          mockMove.profile = null
+          transformedResponse = moveToMetaListComponent(mockMove)
+        })
+
+        it('should not contain person key', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).not.to.include('person_noun')
         })
       })
     })

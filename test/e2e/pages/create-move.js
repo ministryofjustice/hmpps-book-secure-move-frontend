@@ -71,7 +71,7 @@ class CreateMovePage extends Page {
       pregnant: Selector('#pregnant'),
       otherHealth: Selector('#other_health'),
       specialVehicle: Selector('#special_vehicle'),
-      specialVehicleRadio: Selector('[name="special_vehicle__explicit"]'),
+      specialVehicleRadio: Selector('[name^="special_vehicle"]'),
       notToBeReleased: Selector('#not_to_be_released'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),

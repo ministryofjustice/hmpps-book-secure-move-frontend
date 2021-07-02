@@ -26,7 +26,7 @@ function moveToMetaListComponent(
     prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
     move_agreed_by: moveAgreedBy,
-    profile = {},
+    profile,
     reference,
     status,
   } = move || {}
@@ -96,7 +96,7 @@ function moveToMetaListComponent(
       },
       value: {
         text:
-          showPerson && profile.person ? profile.person._fullname : undefined,
+          showPerson && profile?.person ? profile.person._fullname : undefined,
       },
     },
     {

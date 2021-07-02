@@ -23,6 +23,7 @@ export const getTimeline = id => `${E2E.BASE_URL}/move/${id}/timeline`
 export const getUpdateMove = (id, page) =>
   `${E2E.BASE_URL}/move/${id}/edit/${getUpdatePageStub(page)}`
 export const newAllocation = `${E2E.BASE_URL}/allocation/new`
+export const allocation = id => `${E2E.BASE_URL}/allocation/${id}`
 export const allocations = `${E2E.BASE_URL}/allocations`
 export const allocationsWithDate = date =>
   `${E2E.BASE_URL}/allocations/week/${date}/outgoing`
