@@ -187,7 +187,7 @@
     "eslint-plugin-testcafe": "0.2.1",
     "file-loader": "6.2.0",
     "finepack": "2.10.11",
-    "git-authors-cli": "1.0.34",
+    "git-authors-cli": "1.0.35",
     "glob": "7.1.7",
     "husky": "6.0.0",
     "image-minimizer-webpack-plugin": "2.2.0",
