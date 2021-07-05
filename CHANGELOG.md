@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.80.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.79.1...v2.80.0) (2021-07-05)
+
+
+### Features
+
+* Add breadcrumbs and page titles to new move page designs ([28b5da9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/28b5da9057baf2beecba72932af4950b901e36cf))
+* Add history of events timeline to move redesign ([986dfbc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/986dfbcd32a78de1aac454f2638a959d428e39f8))
+* Add warnings tab to new move page design ([0d50866](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0d508663b90e017511128e24137a5f4d73d4fbd8))
+* Enable journeys to be viewed from a move ([f540c58](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f540c588b3c78cb337625e46e35da736a715a463))
+* Update move details with information for re-design ([c79d23d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c79d23db7866f08b9d9fc53c89fbcea18ffa5786))
+
+
+### Bug Fixes
+
+* Prevent move details erroring with null profile ([9c5cfb1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9c5cfb13737038dd1c86f8eb51ece972c98abcdc))
+
 ### [2.79.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.79.0...v2.79.1) (2021-06-14)
 
 
