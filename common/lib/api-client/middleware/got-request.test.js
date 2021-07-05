@@ -90,7 +90,16 @@ describe('API Client', function () {
           expect(gotStub.args[0][0]).to.have.all.keys({
             ...payload.req,
             agent: {},
+            retry: {},
             timeout: 5000,
+          })
+        })
+
+        it('should set retry options', function () {
+          expect(gotStub.args[0][0].retry).to.deep.equal({
+            limit: 1,
+            methods: ['GET'],
+            statusCodes: [502, 504],
           })
         })
 
@@ -126,6 +135,7 @@ describe('API Client', function () {
           expect(gotStub.args[0][0]).to.have.all.keys({
             ...payload.req,
             agent: {},
+            retry: 2,
             timeout: 5000,
           })
         })
