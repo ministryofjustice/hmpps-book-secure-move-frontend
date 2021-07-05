@@ -1,4 +1,3 @@
-const Sentry = require('@sentry/node')
 const HttpAgent = require('agentkeepalive')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
@@ -61,7 +60,7 @@ function requestMiddleware({
           return res
         })
         .catch(error => {
-          const { requestUrl, statusCode, statusMessage, timings } =
+          const { statusCode, statusMessage, timings } =
             error.response || error.request || {}
 
           const text = statusMessage || error.message
@@ -75,17 +74,6 @@ function requestMiddleware({
               ((timings.error || timings.end) - timings.start) / 1000
             clientMetrics.recordError(req, error, duration)
           }
-
-          Sentry.addBreadcrumb({
-            type: 'http',
-            category: 'http',
-            data: {
-              method: req.method,
-              url: requestUrl ? decodeURIComponent(requestUrl) : undefined,
-              status_code: status,
-            },
-            level: Sentry.Severity.Info,
-          })
 
           throw error
         })
