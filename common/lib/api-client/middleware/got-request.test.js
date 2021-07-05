@@ -1,4 +1,3 @@
-const Sentry = require('@sentry/node')
 const HttpAgent = require('agentkeepalive')
 const proxyquire = require('proxyquire').noPreserveCache()
 
@@ -63,8 +62,6 @@ describe('API Client', function () {
           params: {},
         },
       }
-
-      sinon.stub(Sentry, 'addBreadcrumb')
 
       requestDebugStub.resetHistory()
       cacheDebugStub.resetHistory()
@@ -252,19 +249,6 @@ describe('API Client', function () {
           expect(clientMetrics.recordError).not.to.be.called
         })
 
-        it('should add a Sentry breadcrumb', function () {
-          expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
-            type: 'http',
-            category: 'http',
-            data: {
-              method: 'GET',
-              url: undefined,
-              status_code: 500,
-            },
-            level: Sentry.Severity.Info,
-          })
-        })
-
         it('should rethrow error', function () {
           expect(thrownError).to.equal(error)
         })
@@ -311,19 +295,6 @@ describe('API Client', function () {
             )
           })
 
-          it('should add a Sentry breadcrumb', function () {
-            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
-              type: 'http',
-              category: 'http',
-              data: {
-                method: 'GET',
-                url: 'http://host.com/path?foo&bar,fizz,buzz',
-                status_code: 408,
-              },
-              level: Sentry.Severity.Info,
-            })
-          })
-
           it('should rethrow error', function () {
             expect(thrownError).to.equal(error)
           })
@@ -357,19 +328,6 @@ describe('API Client', function () {
               error,
               (error.response.timings.end - error.response.timings.start) / 1000
             )
-          })
-
-          it('should add a Sentry breadcrumb', function () {
-            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
-              type: 'http',
-              category: 'http',
-              data: {
-                method: 'GET',
-                url: 'http://host.com/path?foo&bar,fizz,buzz',
-                status_code: 400,
-              },
-              level: Sentry.Severity.Info,
-            })
           })
 
           it('should rethrow error', function () {
@@ -418,19 +376,6 @@ describe('API Client', function () {
               error,
               (error.request.timings.error - error.request.timings.start) / 1000
             )
-          })
-
-          it('should add a Sentry breadcrumb', function () {
-            expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
-              type: 'http',
-              category: 'http',
-              data: {
-                method: 'GET',
-                url: 'http://host.com/path?foo&bar,fizz,buzz',
-                status_code: 408,
-              },
-              level: Sentry.Severity.Info,
-            })
           })
 
           it('should rethrow error', function () {
@@ -487,19 +432,6 @@ describe('API Client', function () {
             error,
             (error.response.timings.end - error.response.timings.start) / 1000
           )
-        })
-
-        it('should add a Sentry breadcrumb', function () {
-          expect(Sentry.addBreadcrumb).to.be.calledOnceWithExactly({
-            type: 'http',
-            category: 'http',
-            data: {
-              method: 'GET',
-              url: 'http://host.com/response-path?foo&bar,fizz,buzz',
-              status_code: 400,
-            },
-            level: Sentry.Severity.Info,
-          })
         })
 
         it('should rethrow error', function () {
