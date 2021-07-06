@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.80.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.80.0...v2.80.1) (2021-07-06)
+
+
+### Bug Fixes
+
+* Retry 502 and 504 errors on the API ([140ae58](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/140ae585360534d7b4b1fee3f540bf97f2de519b))
+
 ## [2.80.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.79.1...v2.80.0) (2021-07-05)
 
 
