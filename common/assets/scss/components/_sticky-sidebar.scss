@@ -11,3 +11,15 @@
     position: static !important;
   }
 }
+
+.sticky-header.sticky {
+  background: govuk-colour("white");
+  border-bottom: 1px solid $govuk-border-colour;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 100;
+
+  .sticky-header__inner {
+    @include govuk-width-container();
+  }
+}

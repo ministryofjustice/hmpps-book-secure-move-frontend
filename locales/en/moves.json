@@ -1,7 +1,7 @@
 {
   "download_filename": "Moves on {{date}} (Downloaded {{timestamp}})",
   "move_details": "Move details",
-  "move_reference": "Reference: {{reference}}",
+  "move_reference": "{{reference}}",
   "move_reference_compact": "<span class=\"govuk-visally-hidden\">Reference: </span>{{reference}}",
   "steps": {
     "person_search": {

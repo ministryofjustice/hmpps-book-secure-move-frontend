@@ -20,7 +20,9 @@ import MultiFileUpload from '../../components/multi-file-upload/multi-file-uploa
 
 const accessibleAutocomplete = require('accessible-autocomplete')
 const { initAll } = require('govuk-frontend')
+const HcSticky = require('hc-sticky')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
+// const stickybits = require('stickybits/dist/stickybits')
 
 const AddAnother = require('../../components/add-another/add-another')
 const Header = require('../../components/internal-header/internal-header')
@@ -72,6 +74,31 @@ if ($stickySidebars.length) {
     innerWrapperSelector: '.sticky-sidebar__inner',
   })
 }
+
+// stickybits('.stickybits', {
+//   useStickyClasses: true,
+// })
+
+const elements = document.querySelectorAll('.sticky-header')
+
+for (let i = 0; i < elements.length; i++) {
+  // eslint-disable-next-line no-new
+  new HcSticky(elements[i], {
+    // stickTo: '#main-wrapper',
+    stickTo: elements[i].parentNode,
+    // top: 20,
+    // bottomEnd: 30,
+  })
+}
+
+// const $stickybits = document.querySelectorAll('.hs-sticky')
+
+// if ($stickybits.length) {
+//   // eslint-disable-next-line no-new
+//   const Sticky = new HcSticky('.hs-sticky', {
+//     stickTo: 'body',
+//   })
+// }
 
 const $multiFileUploads = document.querySelectorAll(
   '[data-module="app-multi-file-upload"]'

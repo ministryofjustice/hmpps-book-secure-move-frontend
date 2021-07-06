@@ -21,7 +21,7 @@
   "person_plural": "people",
   "n_person": "{{count}} person",
   "n_person_plural": "{{count}} people",
-  "age_with_date_of_birth": "{{date_of_birth}}<br>(Age {{age}})",
+  "age_with_date_of_birth": "{{date_of_birth}} (Age {{age}})",
   "supplier_fallback": "the supplier",
   "opens_new_window": "Opens in a new window",
   "last_updated_at": "Last updated {{date}} at {{time}}",

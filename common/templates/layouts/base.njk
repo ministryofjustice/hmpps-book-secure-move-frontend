@@ -150,6 +150,12 @@
   {% include "includes/messages.njk" %}
 {% endblock %}
 
+{% block main %}
+  <div id="main-wrapper">
+  {{ super() }}
+  </div>
+{% endblock %}
+
 {% block footer %}
   {% if FEEDBACK_URL %}
     {{ appFeedbackPrompt({

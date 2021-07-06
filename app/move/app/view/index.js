@@ -17,6 +17,7 @@ const {
 } = require('./controllers')
 const {
   localsActions,
+  localsIdentityCard,
   localsMoveDetails,
   localsTabs,
   localsWarnings,
@@ -37,6 +38,7 @@ router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
 router.use(setBreadcrumb)
 router.use(localsActions)
+router.use(localsIdentityCard)
 router.use(localsMoveDetails)
 router.use(localsTabs)
 

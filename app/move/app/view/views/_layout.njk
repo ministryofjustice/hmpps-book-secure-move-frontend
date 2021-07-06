@@ -1,5 +1,7 @@
 {% extends "layouts/base.njk" %}
 
+{# {% set containerClass = ["govuk-grid-row"].concat(additionalContainerClass) | join(" ") %} #}
+
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Move details'});
 {% endblock %}
@@ -9,7 +11,14 @@
 {% endblock %}
 
 {% block content %}
-  {% block contentHeader %}{% endblock %}
+  {# <div class="sticky-sidebar-container"> #}
+  {% block contentHeader %}
+    <div class="sticky-header">
+      <div class="sticky-header__inner">
+        {{ appCard(identityCard) }}
+      </div>
+    </div>
+  {% endblock %}
 
   {% block contentContainer %}
   <div class="govuk-grid-row">
@@ -69,4 +78,5 @@
 
   </div>
   {% endblock %}
+  {# </div> #}
 {% endblock %}
