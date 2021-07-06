@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const { find, flatMapDeep } = require('lodash')
 
 // If we want to also use this as normal middleware, we can't have an extra property
@@ -40,6 +41,11 @@ async function setLocation(req, res, next) {
   if (!location) {
     const error = new Error('Location not found')
     error.statusCode = 404
+
+    Sentry.withScope(scope => {
+      scope.setLevel('warning')
+      Sentry.captureException(error)
+    })
 
     return next(error)
   }
