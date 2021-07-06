@@ -55,7 +55,9 @@ function errorHandler(body) {
           })
         })
 
-        scope.setExtra('Errors JSON', JSON.stringify(err.errors))
+        scope.setContext('Errors', {
+          Stringified: JSON.stringify(err.errors),
+        })
       }
 
       scope.setContext('body', body)
