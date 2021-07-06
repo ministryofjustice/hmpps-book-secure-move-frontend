@@ -1,3 +1,5 @@
+const Sentry = require('@sentry/node')
+
 const setLocation = require('./set-location')
 
 describe('Set location middleware', function () {
@@ -17,6 +19,9 @@ describe('Set location middleware', function () {
         },
       }
       next = sinon.stub()
+
+      sinon.stub(Sentry, 'captureException')
+      sinon.stub(Sentry, 'withScope')
     })
 
     context('without a param or session location', function () {
@@ -108,8 +113,28 @@ describe('Set location middleware', function () {
       })
 
       context('not found', function () {
+        let mockScope
+
         beforeEach(async function () {
+          mockScope = {
+            setLevel: sinon.stub(),
+          }
+
           await setLocation(req, res, next)
+
+          // run callback with mock scope
+          Sentry.withScope.args[0][0](mockScope)
+        })
+
+        it('should send warning to sentry', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+
+          expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
+
+          expect(Sentry.captureException).to.have.been.calledOnceWith(
+            sinon.match.instanceOf(Error)
+          )
+          expect(Sentry.captureException.args[0][0].statusCode).to.equal(404)
         })
 
         it('should call next', function () {
@@ -204,8 +229,28 @@ describe('Set location middleware', function () {
       })
 
       context('not found', function () {
+        let mockScope
+
         beforeEach(async function () {
+          mockScope = {
+            setLevel: sinon.stub(),
+          }
+
           await setLocation(req, res, next)
+
+          // run callback with mock scope
+          Sentry.withScope.args[0][0](mockScope)
+        })
+
+        it('should send warning to sentry', function () {
+          expect(Sentry.withScope).to.be.calledOnce
+
+          expect(mockScope.setLevel).to.be.calledOnceWithExactly('warning')
+
+          expect(Sentry.captureException).to.have.been.calledOnceWith(
+            sinon.match.instanceOf(Error)
+          )
+          expect(Sentry.captureException.args[0][0].statusCode).to.equal(404)
         })
 
         it('should call next', function () {
