@@ -39,6 +39,7 @@ class SaveController extends CreateBaseController {
         'assessment',
         'documents',
       ])
+      delete data.profile
       const move = await req.services.move.create(data)
 
       // set before promises so it can be used for error handling
