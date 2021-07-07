@@ -135,14 +135,15 @@ describe('Presenters', function () {
             })
           })
 
-          context('without print access', function () {
+          context('with confirm access', function () {
+            let canAccessStub
+
             beforeEach(function () {
-              mockArgs.canAccess
-                .withArgs('person_escort_record:print')
-                .returns(false)
+              canAccessStub = sinon.stub().returns(true)
 
               output = presenter({
                 ...mockArgs,
+                canAccess: canAccessStub,
               })
             })
 
@@ -154,90 +155,143 @@ describe('Presenters', function () {
                   text: `messages::assessment.${mockArgs.assessment.status}.heading`,
                 },
                 content: {
-                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      ',
+                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
                 },
               })
             })
+
+            it('should translate with correct context', function () {
+              expect(i18n.t).to.be.calledWithExactly(
+                `messages::assessment.${mockArgs.assessment.status}.heading`,
+                {
+                  context: 'person_escort_record',
+                }
+              )
+              expect(i18n.t).to.be.calledWithExactly(
+                'actions::provide_confirmation',
+                {
+                  context: 'person_escort_record',
+                }
+              )
+            })
+
+            it('should call button component', function () {
+              expect(componentService.getComponent).to.be.calledWithExactly(
+                'govukButton',
+                {
+                  href: '/base-url/confirm',
+                  text: 'actions::provide_confirmation',
+                }
+              )
+            })
+
+            it('should check permissions', function () {
+              expect(canAccessStub).to.be.calledWithExactly(
+                'person_escort_record:confirm'
+              )
+            })
+          })
+        })
+
+        context('with confirmed assessment', function () {
+          let canAccessStub
+          beforeEach(function () {
+            canAccessStub = sinon.stub().returns(true)
+            mockArgs.assessment.status = 'confirmed'
           })
 
-          context('with confirm access', function () {
-            let canAccessStub
-
+          context('with `handover_occurred_at`', function () {
             beforeEach(function () {
-              canAccessStub = sinon.stub().returns(true)
-            })
-
-            context('with uneditable assessment', function () {
-              beforeEach(function () {
-                mockArgs.assessment.editable = false
-                output = presenter({
-                  ...mockArgs,
-                  canAccess: canAccessStub,
-                })
-              })
-
-              it('should not set href on button component', function () {
-                expect(componentService.getComponent).to.be.calledWithExactly(
-                  'govukButton',
-                  {
-                    href: '/base-url/confirm',
-                    text: 'actions::provide_confirmation',
-                  }
-                )
+              mockArgs.assessment.handover_occurred_at = '2020-10-10T14:00:00Z'
+              output = presenter({
+                ...mockArgs,
+                canAccess: canAccessStub,
               })
             })
 
-            context('with editable assessment', function () {
-              beforeEach(function () {
-                output = presenter({
-                  ...mockArgs,
-                  canAccess: canAccessStub,
-                })
+            it('should return message component', function () {
+              expect(output).to.deep.equal({
+                allowDismiss: false,
+                classes: 'app-message--instruction govuk-!-padding-right-0',
+                title: {
+                  text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+                },
+                content: {
+                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  ',
+                },
               })
+            })
 
-              it('should return message component', function () {
-                expect(output).to.deep.equal({
-                  allowDismiss: false,
-                  classes: 'app-message--instruction govuk-!-padding-right-0',
-                  title: {
-                    text: `messages::assessment.${mockArgs.assessment.status}.heading`,
-                  },
-                  content: {
-                    html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
-                  },
-                })
-              })
+            it('should translate with correct context', function () {
+              expect(i18n.t).to.be.calledWithExactly(
+                `messages::assessment.${mockArgs.assessment.status}.heading`,
+                {
+                  context: 'person_escort_record',
+                }
+              )
+              expect(i18n.t).not.to.be.calledWith(
+                'actions::provide_confirmation'
+              )
+            })
 
-              it('should translate with correct context', function () {
-                expect(i18n.t).to.be.calledWithExactly(
-                  `messages::assessment.${mockArgs.assessment.status}.heading`,
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-                expect(i18n.t).to.be.calledWithExactly(
-                  'actions::provide_confirmation',
-                  {
-                    context: 'person_escort_record',
-                  }
-                )
-              })
+            it('should not call button component', function () {
+              expect(componentService.getComponent).not.to.be.calledWith(
+                'govukButton'
+              )
+            })
+          })
 
-              it('should call button component', function () {
-                expect(componentService.getComponent).to.be.calledWithExactly(
-                  'govukButton',
-                  {
-                    href: '/base-url/confirm',
-                    text: 'actions::provide_confirmation',
-                  }
-                )
+          context('without `handover_occurred_at`', function () {
+            beforeEach(function () {
+              mockArgs.assessment.handover_occurred_at = undefined
+              output = presenter({
+                ...mockArgs,
+                canAccess: canAccessStub,
               })
+            })
 
-              it('should check permissions', function () {
-                expect(canAccessStub).to.be.calledWithExactly(
-                  'person_escort_record:confirm'
-                )
+            it('should return message component', function () {
+              expect(output).to.deep.equal({
+                allowDismiss: false,
+                classes: 'app-message--instruction govuk-!-padding-right-0',
+                title: {
+                  text: `messages::assessment.${mockArgs.assessment.status}.heading`,
+                },
+                content: {
+                  html: '\n    <div class="govuk-grid-row">\n      <div class="govuk-grid-column-two-thirds">\n        appTaskList\n      </div>\n    </div>\n  \n        govukButton\n      \n      <p>\n        <a href="/base-url/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>\n      </p>\n    ',
+                },
               })
+            })
+
+            it('should translate with correct context', function () {
+              expect(i18n.t).to.be.calledWithExactly(
+                `messages::assessment.${mockArgs.assessment.status}.heading`,
+                {
+                  context: 'person_escort_record',
+                }
+              )
+              expect(i18n.t).to.be.calledWithExactly(
+                'actions::provide_confirmation',
+                {
+                  context: 'person_escort_record',
+                }
+              )
+            })
+
+            it('should call button component', function () {
+              expect(componentService.getComponent).to.be.calledWithExactly(
+                'govukButton',
+                {
+                  href: '/base-url/confirm',
+                  text: 'actions::provide_confirmation',
+                }
+              )
+            })
+
+            it('should check permissions', function () {
+              expect(canAccessStub).to.be.calledWithExactly(
+                'person_escort_record:confirm'
+              )
             })
           })
         })

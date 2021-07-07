@@ -30,7 +30,10 @@ module.exports = function assessmentToUnconfirmedBanner({
   `
 
   // PER has been completed
-  if (assessment.status === 'completed') {
+  if (
+    assessment.status === 'completed' ||
+    (assessment.status === 'confirmed' && !assessment.handover_occurred_at)
+  ) {
     if (canAccess && canAccess(`${context}:confirm`)) {
       content += `
         ${componentService.getComponent('govukButton', {

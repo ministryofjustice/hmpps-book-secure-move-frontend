@@ -93,11 +93,42 @@ describe('Framework controllers', function () {
         })
       })
 
-      const statuses = ['incomplete', 'confirmed']
-      statuses.forEach(status => {
-        context(`with ${status} status`, function () {
+      context('with incomplete status', function () {
+        beforeEach(function () {
+          mockReq.assessment.status = 'incomplete'
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should redirect to move', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
+
+      context('with confirmed status', function () {
+        beforeEach(function () {
+          mockReq.assessment.status = 'confirmed'
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(mockRes.redirect).to.not.be.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.called
+        })
+      })
+
+      context(
+        'with confirmed status and handover_occurred_at set',
+        function () {
           beforeEach(function () {
-            mockReq.assessment.status = status
+            mockReq.assessment.status = 'confirmed'
+            mockReq.assessment.handover_occurred_at = '123'
             controller.checkStatus(mockReq, mockRes, nextSpy)
           })
 
@@ -108,8 +139,8 @@ describe('Framework controllers', function () {
           it('should not call next', function () {
             expect(nextSpy).not.to.be.called
           })
-        })
-      })
+        }
+      )
     })
 
     describe('#saveValues', function () {
