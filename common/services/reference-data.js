@@ -81,10 +81,10 @@ class ReferenceDataService extends BaseService {
     )
   }
 
-  getLocationsByType(type) {
+  getLocationsByType(types = []) {
     return this.getLocations({
       filter: {
-        'filter[location_type]': type,
+        'filter[location_type]': types.length ? types.join(',') : undefined,
       },
     })
   }

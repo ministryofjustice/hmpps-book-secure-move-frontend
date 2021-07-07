@@ -69,7 +69,7 @@ describe('#setLocationItems()', function () {
       it('should call reference data service', function () {
         expect(
           referenceDataService.getLocationsByType
-        ).to.be.calledOnceWithExactly(mockLocationType)
+        ).to.be.calledOnceWithExactly([mockLocationType])
       })
 
       it('populates the move type items', function () {
@@ -154,10 +154,10 @@ describe('#setLocationItems()', function () {
           expect(referenceDataService.getLocationsByType).to.be.calledTwice
           expect(
             referenceDataService.getLocationsByType
-          ).to.be.calledWithExactly(mockLocationType[0])
+          ).to.be.calledWithExactly([mockLocationType[0]])
           expect(
             referenceDataService.getLocationsByType
-          ).to.be.calledWithExactly(mockLocationType[1])
+          ).to.be.calledWithExactly([mockLocationType[1]])
         })
 
         it('populates the move type items and sorts them', function () {

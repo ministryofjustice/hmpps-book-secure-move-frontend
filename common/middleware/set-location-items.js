@@ -6,7 +6,7 @@ const referenceDataHelpers = require('../helpers/reference-data')
 const getLocations = async (locationTypes, req) => {
   const locations = (
     await Promise.all(
-      locationTypes.map(x => req.services.referenceData.getLocationsByType(x))
+      locationTypes.map(x => req.services.referenceData.getLocationsByType([x]))
     )
   )
     .reduce((acc, val) => acc.concat(val))
