@@ -225,7 +225,7 @@ export async function getRandomLocation(
   let locations
 
   if (locationType) {
-    locations = await referenceDataService.getLocationsByType(locationType)
+    locations = await referenceDataService.getLocationsByType([locationType])
   } else {
     locations = await referenceDataService.getLocations()
   }

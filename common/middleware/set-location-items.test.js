@@ -69,7 +69,7 @@ describe('#setLocationItems()', function () {
       it('should call reference data service', function () {
         expect(
           referenceDataService.getLocationsByType
-        ).to.be.calledOnceWithExactly(mockLocationType)
+        ).to.be.calledOnceWithExactly([mockLocationType])
       })
 
       it('populates the move type items', function () {
@@ -137,11 +137,9 @@ describe('#setLocationItems()', function () {
 
       context('when service resolves', function () {
         beforeEach(async function () {
-          req.services.referenceData.getLocationsByType = sinon.stub()
-          req.services.referenceData.getLocationsByType.resolves(courtsMock)
-          req.services.referenceData.getLocationsByType
-            .onCall(1)
-            .resolves(courtsMock2)
+          req.services.referenceData.getLocationsByType = sinon
+            .stub()
+            .resolves(courtsMock.concat(courtsMock2))
 
           await setLocationItems(mockLocationType, mockFieldName)(
             req,
@@ -150,36 +148,32 @@ describe('#setLocationItems()', function () {
           )
         })
 
-        it('should call reference data service for each location type', function () {
-          expect(referenceDataService.getLocationsByType).to.be.calledTwice
+        it('should call reference data service for the location types', function () {
           expect(
             referenceDataService.getLocationsByType
-          ).to.be.calledWithExactly(mockLocationType[0])
-          expect(
-            referenceDataService.getLocationsByType
-          ).to.be.calledWithExactly(mockLocationType[1])
+          ).to.be.calledOnceWithExactly(mockLocationType)
         })
 
-        it('populates the move type items and sorts them', function () {
+        it('populates the move type items', function () {
           expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
             {
               text: `--- Choose ${mockLocationType[0]} ---`,
-            },
-            {
-              text: 'Court 7777',
-              value: '7777',
             },
             {
               text: 'Court 8888',
               value: '8888',
             },
             {
+              text: 'Court 9999',
+              value: '9999',
+            },
+            {
               text: 'Court 8888',
               value: '8888-dupe',
             },
             {
-              text: 'Court 9999',
-              value: '9999',
+              text: 'Court 7777',
+              value: '7777',
             },
             {
               text: 'Court AAAA',
@@ -199,7 +193,6 @@ describe('#setLocationItems()', function () {
         beforeEach(async function () {
           req.services.referenceData.getLocationsByType = sinon
             .stub()
-            .onCall(1)
             .throws(errorMock)
 
           await setLocationItems(mockLocationType, mockFieldName)(
