@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const axios = require('axios')
 const proxyquire = require('proxyquire')
 
@@ -293,6 +294,8 @@ describe('User service', function () {
 
       context('User authentication source indeterminate', function () {
         beforeEach(async function () {
+          sinon.stub(Sentry, 'captureException')
+
           tokenData = {
             user_name: 'test',
           }
@@ -304,6 +307,13 @@ describe('User service', function () {
 
         it('defaults to an empty list of locations', function () {
           expect(result).to.be.an('array').that.is.empty
+        })
+
+        it('should send a warning to Sentry', function () {
+          expect(Sentry.captureException).to.have.been.calledOnceWith(
+            sinon.match.instanceOf(Error),
+            { tags: { authSource: undefined }, level: 'warning' }
+          )
         })
       })
     })
