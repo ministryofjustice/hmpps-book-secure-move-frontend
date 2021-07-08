@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const axios = require('axios')
 const rax = require('retry-axios')
 
@@ -34,6 +35,11 @@ function getLocations(token) {
     case 'nomis':
       return getNomisLocations(token)
     default:
+      Sentry.captureException(new Error('Unknown auth source'), {
+        level: Sentry.Severity.Warning,
+        tags: { authSource },
+      })
+
       return Promise.resolve([])
   }
 }
