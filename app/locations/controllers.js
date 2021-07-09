@@ -4,14 +4,19 @@ async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
 
   let regions = []
-  let userLocations = req.userLocations
-  const supplierId = req.session.user.supplierId
 
   try {
     if (userPermissions.includes('allocation:create')) {
       regions = await req.services.referenceData.getRegions()
     }
+  } catch (error) {
+    return next(error)
+  }
 
+  const supplierId = req.session.user.supplierId
+  let userLocations = req.userLocations
+
+  try {
     if (supplierId) {
       userLocations = await req.services.referenceData.getLocationsBySupplierId(
         supplierId
