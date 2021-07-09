@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.81.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.80.1...v2.81.0) (2021-07-09)
+
+
+### Features
+
+* Allow getLocationsByType to accept multiple types ([c488e16](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c488e166cb314d7d95da1a48d6c6dceb9327ac6d))
+
+
+### Bug Fixes
+
+* Fix auto-confirmed PERs inability to handover ([5c90ecf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5c90ecf8ec2865f44e0f2310acfe160c5746aa8d))
+
 ### [2.80.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.80.0...v2.80.1) (2021-07-06)
 
 
