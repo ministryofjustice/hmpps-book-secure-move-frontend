@@ -1,5 +1,6 @@
 const Sentry = require('@sentry/node')
 const axios = require('axios')
+const { uniqBy } = require('lodash')
 const rax = require('retry-axios')
 
 const axiosInstance = axios.create()
@@ -107,8 +108,32 @@ function getNomisLocations(token) {
     )
 }
 
+async function populateSupplierLocations(user) {
+  const { supplierId, permissions } = user
+
+  if (supplierId) {
+    user.locations = await referenceDataService.getLocationsBySupplierId(
+      supplierId
+    )
+  }
+
+  if (permissions.includes('locations:contract_delivery_manager')) {
+    const suppliers = await referenceDataService.getSuppliers()
+    const supplierLocations = await Promise.all(
+      suppliers.map(supplier =>
+        referenceDataService.getLocationsBySupplierId(supplier.id)
+      )
+    )
+
+    // The locations have been uniqued based on title to prevent
+    // duplicates when multiple suppliers have the same location
+    user.locations = uniqBy(supplierLocations.flat(), 'id')
+  }
+}
+
 module.exports = {
   getLocations,
   getFullname,
   getSupplierId,
+  populateSupplierLocations,
 }

@@ -1,4 +1,6 @@
-const { get, uniqBy } = require('lodash')
+const { get } = require('lodash')
+
+const { populateSupplierLocations } = require('../../common/services/user')
 
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
@@ -13,33 +15,13 @@ async function locations(req, res, next) {
     return next(error)
   }
 
-  const supplierId = req.session.user.supplierId
-  let userLocations = req.userLocations
+  const userLocations = req.userLocations
 
   try {
-    if (supplierId) {
-      userLocations = await req.services.referenceData.getLocationsBySupplierId(
-        supplierId
-      )
-    }
-
-    if (userPermissions.includes('locations:contract_delivery_manager')) {
-      const suppliers = await req.services.referenceData.getSuppliers()
-      const supplierLocations = await Promise.all(
-        suppliers.map(supplier =>
-          req.services.referenceData.getLocationsBySupplierId(supplier.id)
-        )
-      )
-
-      // The locations have been uniqued based on title to prevent
-      // duplicates when multiple suppliers have the same location
-      userLocations = uniqBy(supplierLocations.flat(), 'id')
-    }
+    await populateSupplierLocations(req.session.user)
   } catch (error) {
     return next(error)
   }
-
-  req.session.user.locations = userLocations
 
   const activeLocations = userLocations.filter(
     location => location.disabled_at === null
