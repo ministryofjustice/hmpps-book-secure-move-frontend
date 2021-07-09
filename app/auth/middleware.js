@@ -6,6 +6,7 @@ const {
   getFullname,
   getLocations,
   getSupplierId,
+  populateSupplierLocations,
 } = require('../../common/services/user')
 
 function processAuthResponse() {
@@ -29,20 +30,24 @@ function processAuthResponse() {
 
       const previousSession = { ...req.session }
 
+      const user = new User({
+        fullname,
+        locations,
+        roles: decodedAccessToken.authorities,
+        username,
+        userId,
+        supplierId,
+      })
+
+      await populateSupplierLocations(user)
+
       req.session.regenerate(error => {
         if (error) {
           return next(error)
         }
 
         req.session.authExpiry = decodedAccessToken.exp
-        req.session.user = new User({
-          fullname,
-          locations,
-          roles: decodedAccessToken.authorities,
-          username,
-          userId,
-          supplierId,
-        })
+        req.session.user = user
 
         // copy any previous session properties ignoring grant or any that already exist
         Object.keys(previousSession).forEach(key => {

@@ -1,7 +1,5 @@
 const { get } = require('lodash')
 
-const { populateSupplierLocations } = require('../../common/services/user')
-
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
   const userLocations = get(req.session, 'user.locations', [])
@@ -12,12 +10,6 @@ async function locations(req, res, next) {
     if (userPermissions.includes('allocation:create')) {
       regions = await req.services.referenceData.getRegions()
     }
-  } catch (error) {
-    return next(error)
-  }
-
-  try {
-    await populateSupplierLocations(req.session.user)
   } catch (error) {
     return next(error)
   }
