@@ -26,13 +26,9 @@ async function locations(req, res, next) {
     if (userPermissions.includes('locations:contract_delivery_manager')) {
       const suppliers = await req.services.referenceData.getSuppliers()
       const supplierLocations = await Promise.all(
-        suppliers.map(async supplier => {
-          const locations =
-            await req.services.referenceData.getLocationsBySupplierId(
-              supplier.id
-            )
-          return locations
-        })
+        suppliers.map(supplier =>
+          req.services.referenceData.getLocationsBySupplierId(supplier.id)
+        )
       )
 
       // The locations have been uniqued based on title to prevent
