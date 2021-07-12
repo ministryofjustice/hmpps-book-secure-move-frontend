@@ -7,15 +7,12 @@ const { redirect } = require('../auth/controllers')
 
 const { locations } = require('./controllers')
 const {
-  setUserLocations,
   checkLocationsLength,
   setLocation,
   setRegion,
   setAllLocations,
   setHasSelectedLocation,
 } = require('./middleware')
-
-router.use(setUserLocations)
 
 // Define routes
 router.get('/', checkLocationsLength, locations)

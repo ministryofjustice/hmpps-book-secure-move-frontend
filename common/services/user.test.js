@@ -30,6 +30,7 @@ errorStub.statusCode = 500
 const referenceDataStub = {
   getLocationsByNomisAgencyId: sinon.stub().resolves(locationsStub),
   getLocationsBySupplierId: sinon.stub().resolves(locationsStub),
+  getSuppliers: sinon.stub().resolves([supplierStub]),
   getSupplierByKey: sinon.stub(),
 }
 referenceDataStub.getSupplierByKey
@@ -65,13 +66,14 @@ const mockUserCaseloads = [
 
 const axiosInstanceStub = sinon.spy(axios.create())
 const axiosStub = { create: () => axiosInstanceStub }
-const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
-  axios: axiosStub,
-  './reference-data': function () {
-    return referenceDataStub
-  },
-  '../../config': configStub,
-})
+const { getLocations, getFullname, getSupplierId, populateSupplierLocations } =
+  proxyquire('./user', {
+    axios: axiosStub,
+    './reference-data': function () {
+      return referenceDataStub
+    },
+    '../../config': configStub,
+  })
 
 describe('User service', function () {
   it('sets the retry-axios config to retry once', function () {
@@ -315,6 +317,57 @@ describe('User service', function () {
             { tags: { authSource: undefined }, level: 'warning' }
           )
         })
+      })
+    })
+  })
+
+  describe('#populateSupplierLocations', function () {
+    let user
+
+    context('with a supplier user', function () {
+      beforeEach(async function () {
+        user = { supplierId: supplierStub.id, permissions: [] }
+      })
+
+      it('looks up locations for the supplier', async function () {
+        await populateSupplierLocations(user)
+        expect(
+          referenceDataStub.getLocationsBySupplierId
+        ).to.be.calledWithExactly(supplierStub.id)
+        expect(user.locations).to.deep.equal(locationsStub)
+      })
+    })
+
+    context('with a contract delivery manager user', function () {
+      beforeEach(async function () {
+        user = {
+          supplierId: undefined,
+          permissions: ['locations:contract_delivery_manager'],
+        }
+      })
+
+      it('looks up locations for the supplier', async function () {
+        await populateSupplierLocations(user)
+        expect(referenceDataStub.getSuppliers).to.be.calledOnce
+        expect(
+          referenceDataStub.getLocationsBySupplierId
+        ).to.be.calledWithExactly(supplierStub.id)
+        expect(user.locations).to.deep.equal(locationsStub)
+      })
+    })
+
+    context('with an unsuitable user', function () {
+      beforeEach(async function () {
+        user = {
+          supplierId: undefined,
+          permissions: [],
+          locations: 'unchanged',
+        }
+      })
+
+      it("doesn't change the locations", async function () {
+        await populateSupplierLocations(user)
+        expect(user.locations).to.equal('unchanged')
       })
     })
   })
