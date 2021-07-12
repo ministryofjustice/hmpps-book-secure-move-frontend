@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.81.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.81.0...v2.81.1) (2021-07-12)
+
+
+### Bug Fixes
+
+* Populate supplier user locations on session regeneration ([23d252f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/23d252fc6b9055cb7404357fa2711ff54812f072))
+
 ## [2.81.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.80.1...v2.81.0) (2021-07-09)
 
 
