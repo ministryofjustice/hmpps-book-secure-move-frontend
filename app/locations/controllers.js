@@ -4,6 +4,7 @@ const { populateSupplierLocations } = require('../../common/services/user')
 
 async function locations(req, res, next) {
   const userPermissions = get(req.session, 'user.permissions', [])
+  const userLocations = get(req.session, 'user.locations', [])
 
   let regions = []
 
@@ -14,8 +15,6 @@ async function locations(req, res, next) {
   } catch (error) {
     return next(error)
   }
-
-  const userLocations = req.userLocations
 
   try {
     await populateSupplierLocations(req.session.user)

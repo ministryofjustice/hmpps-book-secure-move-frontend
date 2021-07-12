@@ -63,9 +63,9 @@ describe('Locations controllers', function () {
         session: {
           user: {
             permissions: [],
+            locations: mockUserLocations,
           },
         },
-        userLocations: mockUserLocations,
         services: {
           referenceData: mockReferenceData,
         },

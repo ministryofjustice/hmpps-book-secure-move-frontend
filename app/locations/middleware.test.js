@@ -24,58 +24,15 @@ const mockUserLocations = [
 describe('Locations middleware', function () {
   let req, res, nextSpy
 
-  describe('#setUserLocations', function () {
-    beforeEach(function () {
-      req = {
-        session: {},
-      }
-      res = {
-        redirect: sinon.spy(),
-      }
-      nextSpy = sinon.spy()
-    })
-
-    context('when no user exists on session', function () {
-      beforeEach(function () {
-        middleware.setUserLocations(req, res, nextSpy)
-      })
-
-      it('should set empty user locations on request', function () {
-        expect(req).to.have.property('userLocations')
-        expect(req.userLocations).to.be.an('array').that.is.empty
-      })
-
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-
-    context('when locations exists on user', function () {
-      beforeEach(function () {
-        req.session.user = {
-          locations: mockUserLocations,
-        }
-
-        middleware.setUserLocations(req, res, nextSpy)
-      })
-
-      it('should set locations on request', function () {
-        expect(req).to.have.property('userLocations')
-        expect(req.userLocations).to.deep.equal(mockUserLocations)
-      })
-
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-  })
-
   describe('#checkLocationsLength', function () {
     const baseUrl = '/locations'
 
     beforeEach(function () {
       req = {
         baseUrl,
+        session: {
+          user: {},
+        },
       }
       res = {
         redirect: sinon.spy(),
@@ -85,13 +42,13 @@ describe('Locations middleware', function () {
 
     context('when user only has one location', function () {
       beforeEach(function () {
-        req.userLocations = mockUserLocations.slice(0, 1)
+        req.session.user.locations = mockUserLocations.slice(0, 1)
         middleware.checkLocationsLength(req, res, nextSpy)
       })
 
       it('should redirect to location ID', function () {
         expect(res.redirect).to.be.calledOnceWithExactly(
-          `${baseUrl}/${req.userLocations[0].id}`
+          `${baseUrl}/${req.session.user.locations[0].id}`
         )
       })
 
@@ -102,7 +59,7 @@ describe('Locations middleware', function () {
 
     context('when user has multiple locations', function () {
       beforeEach(function () {
-        req.userLocations = mockUserLocations
+        req.session.user.locations = mockUserLocations
         middleware.checkLocationsLength(req, res, nextSpy)
       })
 
@@ -117,7 +74,7 @@ describe('Locations middleware', function () {
 
     context('when user has no locations', function () {
       beforeEach(function () {
-        req.userLocations = []
+        req.session.user.locations = []
         middleware.checkLocationsLength(req, res, nextSpy)
       })
 
@@ -134,7 +91,7 @@ describe('Locations middleware', function () {
   describe('#setLocation', function () {
     let nextSpy
 
-    const originalSession = {}
+    const originalSession = { user: {} }
     beforeEach(function () {
       sinon.stub(middleware, 'setSelectedLocation')
       req = {
@@ -148,7 +105,7 @@ describe('Locations middleware', function () {
     context('when locationId is not found in user locations', function () {
       beforeEach(function () {
         req.params.locationId = 'not_authorised'
-        req.userLocations = mockUserLocations
+        req.session.user.locations = mockUserLocations
 
         middleware.setLocation(req, {}, nextSpy)
       })
@@ -166,7 +123,7 @@ describe('Locations middleware', function () {
     context('when locationId is found in user locations', function () {
       beforeEach(function () {
         req.params.locationId = mockUserLocations[0].id
-        req.userLocations = mockUserLocations
+        req.session.user.locations = mockUserLocations
 
         middleware.setLocation(req, {}, nextSpy)
       })

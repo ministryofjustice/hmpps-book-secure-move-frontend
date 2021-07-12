@@ -1,13 +1,10 @@
 const { find, get } = require('lodash')
 
-function setUserLocations(req, res, next) {
-  req.userLocations = get(req.session, 'user.locations', [])
-  next()
-}
-
 function checkLocationsLength(req, res, next) {
-  if (req.userLocations.length === 1) {
-    return res.redirect(`${req.baseUrl}/${req.userLocations[0].id}`)
+  const userLocations = get(req.session, 'user.locations', [])
+
+  if (userLocations.length === 1) {
+    return res.redirect(`${req.baseUrl}/${userLocations[0].id}`)
   }
 
   next()
@@ -34,7 +31,8 @@ function setSelectedLocation(req, locationKey, locationValue) {
 function setLocation(req, res, next) {
   const { locationId } = req.params
 
-  const location = find(req.userLocations, { id: locationId })
+  const userLocations = get(req.session, 'user.locations', [])
+  const location = find(userLocations, { id: locationId })
 
   if (!location) {
     return next(getError('Location'))
@@ -76,7 +74,6 @@ function setHasSelectedLocation(req, res, next) {
 }
 
 const external = {
-  setUserLocations,
   checkLocationsLength,
   setLocation,
   setRegion,
