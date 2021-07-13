@@ -243,7 +243,7 @@ describe('User service', function () {
               .get('/')
               .reply(200, JSON.stringify(authGroups))
 
-            result = await getLocations(encodeToken(tokenData))
+            result = await getLocations(encodeToken(tokenData), null, [])
           })
 
           it('requests the user’s groups from HMPPS SSO', function () {
@@ -269,7 +269,7 @@ describe('User service', function () {
             .get('/')
             .reply(200, JSON.stringify(mockUserCaseloads))
 
-          result = await getLocations(token)
+          result = await getLocations(token, null, [])
         })
 
         it('requests the user’s caseloads from the NOMIS Elite 2 API', function () {
@@ -291,7 +291,7 @@ describe('User service', function () {
 
           token = encodeToken(tokenData)
 
-          result = await getLocations(token)
+          result = await getLocations(token, null, [])
         })
 
         it('defaults to an empty list of locations', function () {
@@ -309,7 +309,7 @@ describe('User service', function () {
 
     context('with a supplier ID', function () {
       beforeEach(async function () {
-        result = await getLocations(null, supplierStub.id)
+        result = await getLocations(null, supplierStub.id, [])
       })
 
       it('looks up locations for the supplier', async function () {

@@ -28,10 +28,7 @@ function getFullname(token) {
 }
 
 async function getLocations(token, supplierId, permissions) {
-  const supplierLocations = await getSupplierLocations({
-    supplierId,
-    permissions,
-  })
+  const supplierLocations = await getSupplierLocations(supplierId, permissions)
 
   if (supplierLocations) {
     return supplierLocations
@@ -109,7 +106,7 @@ function getNomisLocations(token) {
     )
 }
 
-async function getSupplierLocations({ supplierId = null, permissions = [] }) {
+async function getSupplierLocations(supplierId, permissions) {
   if (supplierId) {
     return await referenceDataService.getLocationsBySupplierId(supplierId)
   }
