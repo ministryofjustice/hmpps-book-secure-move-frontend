@@ -2,8 +2,7 @@ const proxyquire = require('proxyquire')
 
 const getCanCancelMoveStub = sinon.stub()
 const middleware = proxyquire('./locals.actions', {
-  '../../../../../common/helpers/move/get-can-cancel-move':
-    getCanCancelMoveStub,
+  '../../../../../common/helpers/move/can-cancel-move': getCanCancelMoveStub,
 })
 
 describe('Move view app', function () {

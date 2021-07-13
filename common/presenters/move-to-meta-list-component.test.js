@@ -4,14 +4,11 @@ const timezoneMock = require('timezone-mock')
 const componentService = require('../../common/services/component')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
-const getUpdateLinks = sinon.stub().returns({})
+const mapUpdateLinkStub = sinon.stub().returnsArg(0)
 
 const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
-  '../helpers/move/get-update-links': getUpdateLinks,
+  '../helpers/move/map-update-link': mapUpdateLinkStub,
 })
-
-const canAccess = sinon.stub()
-const updateSteps = ['a', 'b']
 
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
@@ -22,7 +19,7 @@ describe('Presenters', function () {
       sinon.stub(componentService, 'getComponent').returnsArg(0)
       sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(i18n, 't').returnsArg(0)
-      getUpdateLinks.resetHistory()
+      mapUpdateLinkStub.resetHistory()
 
       mockMove = {
         _hasLeftCustody: false,
@@ -54,26 +51,10 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(
-          mockMove,
-          canAccess,
-          updateSteps
-        )
+        transformedResponse = moveToMetaListComponent(mockMove)
       })
 
       describe('response', function () {
-        it('should get the actions', function () {
-          expect(getUpdateLinks).to.be.calledOnceWithExactly(
-            {
-              _hasLeftCustody: false,
-              id: mockMove.id,
-              move_type: mockMove.move_type,
-            },
-            canAccess,
-            updateSteps
-          )
-        })
-
         it('should contain correct number of items', function () {
           expect(transformedResponse).to.have.property('items')
           expect(transformedResponse.items.length).to.equal(7)
@@ -145,12 +126,9 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(
-          mockMove,
-          canAccess,
-          updateSteps,
-          false
-        )
+        transformedResponse = moveToMetaListComponent(mockMove, {
+          showPerson: false,
+        })
       })
 
       describe('response', function () {
@@ -193,11 +171,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(
-          undefined,
-          canAccess,
-          updateSteps
-        )
+        transformedResponse = moveToMetaListComponent()
       })
 
       describe('response', function () {
@@ -314,27 +288,39 @@ describe('Presenters', function () {
       })
     })
 
-    context('when provided with actions', function () {
+    context('when provided with updateUrls', function () {
       let transformedResponse
-      const moveAction = {
-        href: '/move',
-        html: 'Update move',
-      }
-      const dateAction = {
-        href: '/date',
-        html: 'Update date',
-      }
+      let mockUpdateUrls
 
       beforeEach(function () {
-        getUpdateLinks.returns({
-          move: moveAction,
-          date: dateAction,
-        })
+        mockUpdateUrls = {
+          move: {
+            href: '/move',
+            html: 'Update move',
+          },
+          date: {
+            href: '/date',
+            html: 'Update date',
+          },
+        }
 
-        transformedResponse = moveToMetaListComponent(
-          mockMove,
-          canAccess,
-          updateSteps
+        transformedResponse = moveToMetaListComponent(mockMove, {
+          updateUrls: mockUpdateUrls,
+        })
+      })
+
+      it('should map update links', function () {
+        expect(mapUpdateLinkStub.callCount).to.equal(
+          Object.keys(mockUpdateUrls).length
+        )
+
+        expect(mapUpdateLinkStub).to.have.been.calledWithExactly(
+          mockUpdateUrls.move,
+          'move'
+        )
+        expect(mapUpdateLinkStub).to.have.been.calledWithExactly(
+          mockUpdateUrls.date,
+          'date'
         )
       })
 
@@ -351,11 +337,11 @@ describe('Presenters', function () {
           undefined,
           undefined,
           {
-            ...moveAction,
+            ...mockUpdateUrls.move,
             classes: 'app-meta-list__action--sidebar',
           },
           {
-            ...dateAction,
+            ...mockUpdateUrls.date,
             classes: 'app-meta-list__action--sidebar',
           },
           undefined,
