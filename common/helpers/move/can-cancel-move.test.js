@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-const getCanCancelMove = require('./get-can-cancel-move')
+const getCanCancelMove = require('./can-cancel-move')
 
 describe('Move helpers', function () {
   describe('#getCanCancelMove', function () {

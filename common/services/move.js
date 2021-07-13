@@ -286,6 +286,7 @@ class MoveService extends BaseService {
 
       return {
         ...move,
+        _canCancel: moveHelpers.canCancelMove(move, canAccess),
         _canEdit: moveHelpers.canEditMove(move, canAccess),
       }
     })

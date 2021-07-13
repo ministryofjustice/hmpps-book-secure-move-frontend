@@ -1,8 +1,5 @@
-const getCanCancelMove = require('../../../../../common/helpers/move/get-can-cancel-move')
-
 function setActions(req, res, next) {
   const { canAccess, move = {} } = req
-  const userPermissions = req.session?.user?.permissions
 
   const actions = [
     {
@@ -14,9 +11,7 @@ function setActions(req, res, next) {
     {
       text: 'actions::cancel_move',
       classes: 'app-link--destructive',
-      url: getCanCancelMove(move, userPermissions)
-        ? `/move/${move.id}/cancel`
-        : undefined,
+      url: move._canCancel ? `/move/${move.id}/cancel` : undefined,
     },
   ]
 

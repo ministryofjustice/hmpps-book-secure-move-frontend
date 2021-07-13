@@ -3,7 +3,6 @@ const { mapValues } = require('lodash')
 const presenters = require('../../presenters')
 
 const getAssessments = require('./get-assessments')
-const getCanCancelMove = require('./get-can-cancel-move')
 const getCourtHearings = require('./get-court-hearings')
 const getMessage = require('./get-message')
 const getMessageBanner = require('./get-message-banner')
@@ -15,7 +14,6 @@ const mapUpdateLink = require('./map-update-link')
 
 function getLocals(req) {
   const { move, canAccess } = req
-  const userPermissions = req.session?.user?.permissions
   const profile = move.profile || {}
   const { person } = profile
 
@@ -51,8 +49,6 @@ function getLocals(req) {
     showPerson: false,
     updateUrls,
   })
-  // move, userPermissions
-  const canCancelMove = getCanCancelMove(move, userPermissions)
 
   const urls = {
     tabs: tabsUrls,
@@ -63,7 +59,6 @@ function getLocals(req) {
     move,
     additionalInfoSummary,
     ...assessments,
-    canCancelMove,
     courtHearings,
     ...message,
     messageBanner,
