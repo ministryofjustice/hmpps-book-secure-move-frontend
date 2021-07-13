@@ -1,90 +1,66 @@
-const User = require('./user')
+const proxyquire = require('proxyquire')
 
-describe('User class', function () {
-  describe('when instantiated', function () {
+const userServicesStub = {
+  getLocations: () => Promise.resolve(['location']),
+  getFullname: () => Promise.resolve('Mr Benn'),
+  getSupplierId: () => Promise.resolve('undefined'),
+}
+
+const permissionsLibStub = {
+  rolesToPermissions: () => ['permission'],
+}
+
+const accessTokenPayload = {
+  user_name: 'test',
+  user_id: 'id',
+  authorities: ['test'],
+}
+
+const encodedAccessTokenPayload = Buffer.from(
+  JSON.stringify(accessTokenPayload)
+).toString('base64')
+
+const accessToken = `test.${encodedAccessTokenPayload}.test`
+
+describe('User', function () {
+  describe('#loadUser', function () {
     let user
-    let fullname
 
-    context('with fullname', function () {
-      it('should set fullname', function () {
-        fullname = 'Mr Benn'
-        user = new User({ fullname })
-
-        expect(user.fullname).to.equal(fullname)
+    beforeEach(async function () {
+      const { loadUser } = proxyquire('./user', {
+        '../../common/services/user': userServicesStub,
+        './permissions': permissionsLibStub,
       })
+
+      user = await loadUser(accessToken)
     })
 
-    context('without fullname', function () {
-      it('should not set fullname', function () {
-        user = new User()
-
-        expect(user.fullname).to.be.undefined
-      })
+    it('sets the userId', function () {
+      expect(user.userId).to.equal('id')
     })
 
-    context('with roles', function () {
-      beforeEach(function () {
-        user = new User({
-          roles: ['ROLE_PECS_SUPPLIER'],
-        })
-      })
-
-      it('should set permissions', function () {
-        expect(user.permissions).to.not.be.empty
-      })
+    it('sets the username', function () {
+      expect(user.username).to.equal('test')
     })
 
-    context('without roles', function () {
-      beforeEach(function () {
-        user = new User({ roles: [] })
-      })
-
-      it('should set permissions to empty array', function () {
-        expect(user.permissions).to.be.an('array').that.is.empty
-      })
+    it('sets the fullname', function () {
+      expect(user.fullname).to.equal('Mr Benn')
     })
 
-    context("with a role that isn't expected", function () {
-      beforeEach(function () {
-        user = new User({
-          roles: ['ROLE_PECS_UNKNOWN'],
-        })
-      })
-
-      it('should set permissions to an empty array for unknown roles', function () {
-        expect(user.permissions).to.be.an('array').that.is.empty
-      })
+    it('sets the supplierId', function () {
+      expect(user.supplierId).to.equal('undefined')
     })
 
-    it('should set locations to empty array', function () {
-      expect(new User().locations).to.be.an('array').that.is.empty
+    it('sets the displayName', function () {
+      expect(user.displayName).to.equal('M. Benn')
     })
 
-    context('with username', function () {
-      const username = 'user1'
-
-      it('should set username', function () {
-        user = new User({ name: 'USERNAME', username })
-        expect(user.username).to.deep.equal(username)
-      })
+    it('sets the permissions', function () {
+      expect(user.permissions).to.deep.equal(['permission'])
     })
 
-    context('with userId', function () {
-      const userId = 'uuid'
-
-      it('should set userId', function () {
-        user = new User({ name: 'USERNAME', userId })
-        expect(user.id).to.deep.equal(userId)
-      })
-    })
-
-    context('with supplierId', function () {
-      const supplierId = 'uuid'
-
-      it('should set supplierId', function () {
-        user = new User({ name: 'USERNAME', supplierId })
-        expect(user.supplierId).to.deep.equal(supplierId)
-      })
+    it('sets the locations', function () {
+      expect(user.locations).to.deep.equal(['location'])
     })
   })
 })
