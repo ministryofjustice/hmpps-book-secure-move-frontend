@@ -11,6 +11,12 @@
 }
 
 @include govuk-media-query($from: tablet) {
+  .app-\!-position-tab-offset {
+    margin-top: 54px;
+  }
+}
+
+@include govuk-media-query($from: tablet) {
   .app-\!-position-top-right {
     position: absolute;
     top: 0;

@@ -1,29 +1,16 @@
+const editSteps = require('../../../app/move/app/edit/steps')
+
 const getMoveUrl = require('./get-move-url')
 
-const getUpdateUrls = (move, canAccess = () => false, updateSteps = []) => {
-  const updateUrls = {}
-
-  if (move._hasLeftCustody) {
-    return updateUrls
-  }
-
-  if (!canAccess(`move:update:${move.move_type}`)) {
-    return updateUrls
-  }
-
-  updateSteps.forEach(updateJourney => {
-    if (!canAccess(updateJourney.permission)) {
-      return
-    }
-
-    const steps = updateJourney.steps
-    const entryPointUrl = Object.keys(steps).filter(
-      step => steps[step].entryPoint
-    )[0]
-    const key = updateJourney.key
-    updateUrls[key] = getMoveUrl(move.id, 'update', { entryPointUrl })
-  })
-  return updateUrls
+function getUpdateUrls(move = {}, canAccess = () => false) {
+  return editSteps
+    .filter(() => move._canEdit)
+    .filter(step => canAccess(step.permission))
+    .reduce((acc, current) => {
+      const entryPointUrl = Object.keys(current.steps)[0]
+      acc[current.key] = getMoveUrl(move.id, 'update', { entryPointUrl })
+      return acc
+    }, {})
 }
 
 module.exports = getUpdateUrls

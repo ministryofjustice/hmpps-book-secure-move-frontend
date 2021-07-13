@@ -261,7 +261,7 @@
     </p>
   {% endif %}
 
-  {% if canCancelMove %}
+  {% if move._canCancel %}
     <p class="govuk-!-margin-bottom-0">
       <a href="{{ move.id }}/cancel" class="app-link--destructive">
         {{ t("actions::cancel_move") }}

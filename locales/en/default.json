@@ -8,6 +8,7 @@
   "time": "Time",
   "type": "Type",
   "or": "or",
+  "not_provided": "Not provided",
   "none_provided": "None provided",
   "status": "Status",
   "reference": "Reference",

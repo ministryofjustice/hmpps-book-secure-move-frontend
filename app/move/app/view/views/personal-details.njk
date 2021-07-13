@@ -1,0 +1,25 @@
+{% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Personal details – Assessments – Move details'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ getPageTitle() | join(' – ') if getPageTitle }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <header>
+        <h1 class="govuk-heading-xl">
+          Personal details
+        </h1>
+      </header>
+
+      {{ govukSummaryList(personalDetailsSummary) }}
+    </div>
+  </div>
+
+{% endblock %}

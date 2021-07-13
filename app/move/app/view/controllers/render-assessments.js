@@ -1,5 +1,13 @@
+const presenters = require('../../../../../common/presenters')
+
 function renderAssessments(req, res) {
-  const locals = {}
+  const taskList = presenters.moveToTaskListComponent(req.move, {
+    baseUrl: req.originalUrl,
+  })
+
+  const locals = {
+    taskList,
+  }
 
   res
     .breadcrumb({ text: req.t('moves::tabs.assessments') })

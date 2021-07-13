@@ -21,6 +21,10 @@ class NewAssessmentController extends FormWizardController {
     req.journeyModel.reset()
     req.sessionModel.reset()
 
+    if (req.query.returnUrl) {
+      return res.redirect(decodeURI(req.query.returnUrl))
+    }
+
     res.redirect(`/move/${req.move.id}`)
   }
 }

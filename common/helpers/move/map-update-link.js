@@ -1,8 +1,4 @@
-const { mapValues } = require('lodash')
-
 const i18n = require('../../../config/i18n')
-
-const getUpdateUrls = require('./get-update-urls')
 
 const mapUpdateLink = (href, category) => {
   const categoryText = i18n.t(`moves::update_link.categories.${category}`)
@@ -24,10 +20,4 @@ const mapUpdateLink = (href, category) => {
   }
 }
 
-const getUpdateLinks = (move, canAccess, updateSteps) => {
-  const urls = getUpdateUrls(move, canAccess, updateSteps)
-
-  return mapValues(urls, mapUpdateLink)
-}
-
-module.exports = getUpdateLinks
+module.exports = mapUpdateLink
