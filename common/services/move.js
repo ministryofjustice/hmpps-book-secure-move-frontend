@@ -1,6 +1,8 @@
 const dateFunctions = require('date-fns')
 const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 
+const canCancelMove = require('../helpers/move/can-cancel-move')
+const canEditMove = require('../helpers/move/can-edit-move')
 const restClient = require('../lib/api-client/rest-client')
 
 const BaseService = require('./base')
@@ -278,9 +280,17 @@ class MoveService extends BaseService {
       return Promise.reject(new Error(noMoveIdMessage))
     }
 
-    return this.apiClient
-      .find('move', id, options)
-      .then(response => response.data)
+    const { canAccess } = this.req
+
+    return this.apiClient.find('move', id, options).then(response => {
+      const move = response.data
+
+      return {
+        ...move,
+        _canCancel: canCancelMove(move, canAccess),
+        _canEdit: canEditMove(move, canAccess),
+      }
+    })
   }
 
   getById(id) {

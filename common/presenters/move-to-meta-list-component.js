@@ -4,18 +4,14 @@ const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
 const componentService = require('../../common/services/component')
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
-const getUpdateLinks = require('../helpers/move/get-update-links')
+const mapUpdateLink = require('../helpers/move/map-update-link')
 
 function moveToMetaListComponent(
   move,
-  canAccess,
-  updateSteps,
-  showPerson = true
+  { updateUrls = {}, showPerson = true } = {}
 ) {
   const {
-    _hasLeftCustody,
     _vehicleRegistration,
-    id,
     date,
     date_from: dateFrom,
     date_to: dateTo,
@@ -58,21 +54,10 @@ function moveToMetaListComponent(
       ? agreedLabel
       : notAgreedLabel
 
-  const actions = getUpdateLinks(
-    { _hasLeftCustody, id, move_type: moveType },
-    canAccess,
-    updateSteps
-  )
   const statusBadge = componentService.getComponent('mojBadge', {
     text: i18n.t(`statuses::${status}`),
   })
 
-  Object.keys(actions).forEach(key => {
-    actions[key] = {
-      classes: 'app-meta-list__action--sidebar',
-      ...actions[key],
-    }
-  })
   const items = [
     {
       key: {
@@ -114,7 +99,7 @@ function moveToMetaListComponent(
       value: {
         text: moveType ? destinationLabel + destinationSuffix : undefined,
       },
-      action: actions.move,
+      action: 'move',
     },
     {
       key: {
@@ -123,7 +108,7 @@ function moveToMetaListComponent(
       value: {
         text: filters.formatDateWithRelativeDay(date),
       },
-      action: actions.date,
+      action: 'date',
     },
     {
       key: {
@@ -168,9 +153,23 @@ function moveToMetaListComponent(
       },
     },
   ]
+    .filter(item => item.value.text || item.value.html)
+    .map(item => {
+      if (!item.action || !updateUrls[item.action]) {
+        return item
+      }
+
+      return {
+        ...item,
+        action: {
+          ...mapUpdateLink(updateUrls[item.action], item.action),
+          classes: 'app-meta-list__action--sidebar',
+        },
+      }
+    })
 
   return {
-    items: items.filter(item => item.value.text || item.value.html),
+    items,
   }
 }
 
