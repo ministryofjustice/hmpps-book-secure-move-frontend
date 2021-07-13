@@ -108,13 +108,9 @@ function getNomisLocations(token) {
     )
 }
 
-async function populateSupplierLocations(user) {
-  const { supplierId, permissions } = user
-
+async function getSupplierLocations({ supplierId = null, permissions = [] }) {
   if (supplierId) {
-    user.locations = await referenceDataService.getLocationsBySupplierId(
-      supplierId
-    )
+    return await referenceDataService.getLocationsBySupplierId(supplierId)
   }
 
   if (permissions.includes('locations:contract_delivery_manager')) {
@@ -127,7 +123,7 @@ async function populateSupplierLocations(user) {
 
     // The locations have been uniqued based on title to prevent
     // duplicates when multiple suppliers have the same location
-    user.locations = uniqBy(supplierLocations.flat(), 'id')
+    return uniqBy(supplierLocations.flat(), 'id')
   }
 }
 
@@ -135,5 +131,5 @@ module.exports = {
   getLocations,
   getFullname,
   getSupplierId,
-  populateSupplierLocations,
+  getSupplierLocations,
 }

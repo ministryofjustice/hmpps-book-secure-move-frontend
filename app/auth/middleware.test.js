@@ -5,25 +5,25 @@ const userSuccessStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: async user => user.locations.push('SUPPLIER_TEST'),
+  getSupplierLocations: () => Promise.resolve(['SUPPLIER_TEST']),
 }
 const userLocationsFailureStub = {
   getLocations: () => Promise.reject(userFailureError),
   getFullname: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.resolve(),
+  getSupplierLocations: () => Promise.resolve(null),
 }
 const userFullNameFailureStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.reject(userFailureError),
   getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.resolve(),
+  getSupplierLocations: () => Promise.resolve(null),
 }
 const userSupplierLocationsFailureStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.reject(userFailureError),
   getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.reject(userFailureError),
+  getSupplierLocations: () => Promise.reject(userFailureError),
 }
 
 function UserStub({
@@ -221,10 +221,7 @@ describe('Authentication middleware', function () {
 
           it('sets the user info on the session', function () {
             expect(Array.isArray(req.session.user.permissions)).to.be.true
-            expect(req.session.user.locations).to.deep.equal([
-              'TEST',
-              'SUPPLIER_TEST',
-            ])
+            expect(req.session.user.locations).to.deep.equal(['SUPPLIER_TEST'])
             expect(req.session.user.fullname).to.equal('Mr Benn')
           })
 

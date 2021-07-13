@@ -6,7 +6,7 @@ const {
   getFullname,
   getLocations,
   getSupplierId,
-  populateSupplierLocations,
+  getSupplierLocations,
 } = require('../../common/services/user')
 
 function processAuthResponse() {
@@ -39,7 +39,11 @@ function processAuthResponse() {
         supplierId,
       })
 
-      await populateSupplierLocations(user)
+      const supplierLocations = await getSupplierLocations(user)
+
+      if (supplierLocations) {
+        user.locations = supplierLocations
+      }
 
       req.session.regenerate(error => {
         if (error) {
