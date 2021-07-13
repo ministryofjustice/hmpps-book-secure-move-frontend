@@ -26,20 +26,6 @@ const userSupplierLocationsFailureStub = {
   getSupplierLocations: () => Promise.reject(userFailureError),
 }
 
-function UserStub({
-  fullname,
-  roles = [],
-  locations = [],
-  username,
-  userId,
-} = {}) {
-  this.fullname = fullname
-  this.permissions = []
-  this.locations = locations
-  this.username = username
-  this.userId = userId
-}
-
 const expiryTime = 1000
 const payload = {
   user_name: 'test',
@@ -70,7 +56,6 @@ describe('Authentication middleware', function () {
     context('when there is no grant in session', function () {
       beforeEach(async function () {
         const authentication = proxyquire('./middleware', {
-          '../../common/lib/user': UserStub,
           '../../common/services/user': userSuccessStub,
         })
 
@@ -94,7 +79,6 @@ describe('Authentication middleware', function () {
       beforeEach(async function () {
         req.session.grant = {}
         const authentication = proxyquire('./middleware', {
-          '../../common/lib/user': UserStub,
           '../../common/services/user': userSuccessStub,
         })
 
@@ -140,7 +124,6 @@ describe('Authentication middleware', function () {
       context('when the user fullname lookup fails', function () {
         beforeEach(async function () {
           const authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
             '../../common/services/user': userFullNameFailureStub,
           })
 
@@ -159,7 +142,6 @@ describe('Authentication middleware', function () {
       context('when the user supplier locations lookup fails', function () {
         beforeEach(async function () {
           const authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
             '../../common/services/user': userSupplierLocationsFailureStub,
           })
 
@@ -180,7 +162,6 @@ describe('Authentication middleware', function () {
 
         beforeEach(function () {
           authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
             '../../common/services/user': userSuccessStub,
           })
         })
