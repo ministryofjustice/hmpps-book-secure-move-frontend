@@ -1,7 +1,45 @@
 .app-task-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @include govuk-media-query($from: tablet) {
+    min-width: 550px;
+  }
+}
+
+.app-task-list__section {
+  & + & {
+    @include govuk-responsive-margin(9, "top");
+  }
+}
+
+.app-task-list__section-heading {
+  @include govuk-font($size:24, $weight: bold);
+  display: table;
+  margin: 0 0 govuk-spacing(3) 0;
+}
+
+.app-task-list__section-number {
+  display: table-cell;
+
+  @include govuk-media-query($from: tablet) {
+    min-width: govuk-spacing(6);
+    padding-right: 0;
+  }
+}
+
+.app-task-list__items {
   padding-left: 0;
   margin: 0;
   list-style-type: none;
+
+  .app-task-list__section & {
+    @include govuk-media-query($from: tablet) {
+      padding-left: govuk-spacing(6);
+    }
+  }
 
   .app-message--instruction & {
     background: govuk-colour('white');

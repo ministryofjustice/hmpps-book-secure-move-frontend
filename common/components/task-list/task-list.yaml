@@ -2,7 +2,7 @@ params:
   - name: items
     type: array
     required: true
-    description: Array of task items. See items
+    description: If `sections` is set, this is not required. Array of task items. Will render only items without surrounding sections. If `sections` is provided, the `items` argument will be ignored.
     params:
       - name: text
         type: string
@@ -19,6 +19,28 @@ params:
       - name: tag
         type: object
         description: See GOV.UK Design System tag component
+  - name: sections
+    type: array
+    required: true
+    description: If `items` is set, this is not required. Array of sections. Will render numbered sections and items nested within each section. If `sections` is provided, the `items` argument will be ignored.
+    params:
+      - name: heading
+        type: object
+        required: true
+        description: Heading for this section
+        params:
+          - name: text
+            type: string
+            required: true
+            description: If `html` is set, this is not required. Text to use within the task item. If `html` is provided, the `text` argument will be ignored.
+          - name: html
+            type: string
+            required: true
+            description: If `text` is set, this is not required. HTML to use within the task item. If `html` is provided, the `text` argument will be ignored.
+      - name: items
+        type: array
+        required: true
+        description: Same as top level `items` param.
 
 examples:
   - name: default
@@ -58,3 +80,41 @@ examples:
           tag:
             text: Cannot start yet
             classes: 'govuk-tag--grey'
+  - name: with sections
+    data:
+      sections:
+        -
+          heading:
+            text: Request a move
+          items:
+            -
+              text: Personal details
+              href: '/personal-details'
+              tag:
+                text: Completed
+            -
+              text: Provide booking information
+              href: '/booking-information'
+              tag:
+                text: Completed
+        -
+          heading:
+            text: Complete assessment
+          items:
+            -
+              text: Health information
+              href: '/health-information'
+              tag:
+                text: Incomplete
+                classes: 'govuk-tag--blue'
+            -
+              text: Risk information
+              href: '/risk-information'
+              tag:
+                text: Not started
+                classes: 'govuk-tag--grey'
+            -
+              text: Confirm answers
+              tag:
+                text: Cannot start yet
+                classes: 'govuk-tag--grey'

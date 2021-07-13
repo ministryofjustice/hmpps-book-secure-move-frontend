@@ -1,29 +1,47 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
-<ul class="app-task-list">
-  {% for item in params.items %}
-    <li class="app-task-list__item">
-      <span class="app-task-list__task-name">
-        {% if item.href %}
-          <a href="{{ item.href }}" aria-described-by="{{ item.text | urlencode }}-status">
+{% macro taskListItems(items) %}
+  <ul class="app-task-list__items">
+    {% for item in items %}
+      <li class="app-task-list__item">
+        <span class="app-task-list__task-name">
+          {% if item.href %}
+            <a href="{{ item.href }}" aria-described-by="{{ item.text | urlencode }}-status">
+          {% endif %}
+
+          {{ item.html | safe if item.html else item.text }}
+
+          {% if item.href %}
+            </a>
+          {% endif %}
+        </span>
+
+        {% if item.tag %}
+          {{ govukTag({
+            attributes: {
+              id: item.text | urlencode + "-status"
+            },
+            text: item.tag.text,
+            classes: (item.tag.classes or "") + " app-task-list__tag"
+          }) }}
         {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
 
-        {{ item.html | safe if item.html else item.text }}
+{% if params.sections %}
+  <ol class="app-task-list">
+    {% for section in params.sections %}
+      <li class="app-task-list__section">
+        <h2 class="app-task-list__section-heading">
+          <span class="app-task-list__section-number">{{ loop.index }}. </span>{{ section.heading.html | safe if section.heading.html else section.heading.text }}
+        </h2>
 
-        {% if item.href %}
-          </a>
-        {% endif %}
-      </span>
-
-      {% if item.tag %}
-        {{ govukTag({
-          attributes: {
-            id: item.text | urlencode + "-status"
-          },
-          text: item.tag.text,
-          classes: (item.tag.classes or "") + " app-task-list__tag"
-        }) }}
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
+        {{ taskListItems(section.items) }}
+      </li>
+    {% endfor %}
+  </ol>
+{% elif params.items %}
+  {{ taskListItems(params.items) }}
+{% endif %}
