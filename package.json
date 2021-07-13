@@ -186,7 +186,7 @@
     "conventional-github-releaser": "3.1.5",
     "copy-webpack-plugin": "9.0.1",
     "coveralls": "3.1.1",
-    "css-loader": "5.2.6",
+    "css-loader": "5.2.7",
     "del-cli": "4.0.0",
     "eslint": "7.30.0",
     "eslint-config-prettier": "8.3.0",
