@@ -1,6 +1,7 @@
 const dateFunctions = require('date-fns')
 const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 
+const canCancelMove = require('../helpers/move/can-cancel-move')
 const canEditMove = require('../helpers/move/can-edit-move')
 const restClient = require('../lib/api-client/rest-client')
 
@@ -286,6 +287,7 @@ class MoveService extends BaseService {
 
       return {
         ...move,
+        _canCancel: canCancelMove(move, canAccess),
         _canEdit: canEditMove(move, canAccess),
       }
     })

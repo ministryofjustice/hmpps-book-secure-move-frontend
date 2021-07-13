@@ -309,7 +309,6 @@ describe('Move helpers', function () {
         expect(Object.keys(params).sort()).to.deep.equal([
           'additionalInfoSummary',
           'assessments',
-          'canCancelMove',
           'courtHearings',
           'messageBanner',
           'messageContent',
@@ -342,7 +341,6 @@ describe('Move helpers', function () {
         expect(Object.keys(params).sort()).to.deep.equal([
           'additionalInfoSummary',
           'assessments',
-          'canCancelMove',
           'courtHearings',
           'messageBanner',
           'messageContent',
@@ -355,145 +353,6 @@ describe('Move helpers', function () {
           'updateLinks',
           'urls',
         ])
-      })
-    })
-
-    describe('cancelling a move', function () {
-      let params
-
-      beforeEach(function () {
-        req.move = {
-          ...mockMove,
-          person: undefined,
-        }
-      })
-
-      context('with proposed state', function () {
-        beforeEach(function () {
-          req.move = {
-            ...req.move,
-            status: 'proposed',
-          }
-        })
-
-        context('without permission to cancel proposed moves', function () {
-          beforeEach(function () {
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
-
-        context('with permission to cancel proposed moves', function () {
-          beforeEach(function () {
-            req.session.user.permissions = ['move:cancel:proposed']
-
-            params = getLocals(req)
-          })
-
-          it('should be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.true
-          })
-        })
-      })
-
-      const cancellableStates = ['requested', 'booked']
-      cancellableStates.forEach(status => {
-        context(`with ${status} state`, function () {
-          beforeEach(function () {
-            req.move = {
-              ...req.move,
-              status,
-            }
-          })
-
-          context('allocation move', function () {
-            beforeEach(function () {
-              req.move = {
-                ...req.move,
-                allocation: {
-                  id: '123',
-                },
-              }
-            })
-
-            context('without permission to cancel move', function () {
-              beforeEach(function () {
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-
-            context('with permission to cancel move', function () {
-              beforeEach(function () {
-                req.session.user.permissions = ['move:cancel']
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-          })
-
-          context('non-allocation move', function () {
-            context('without permission to cancel move', function () {
-              beforeEach(function () {
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-
-            context('with permission to cancel move', function () {
-              beforeEach(function () {
-                req.session.user.permissions = ['move:cancel']
-                params = getLocals(req)
-              })
-
-              it('should be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.true
-              })
-            })
-          })
-        })
-      })
-
-      context('with other state', function () {
-        beforeEach(function () {
-          req.move = {
-            ...req.move,
-            status: 'completed',
-          }
-        })
-
-        context('without permission to cancel move', function () {
-          beforeEach(function () {
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
-
-        context('with permission to cancel move', function () {
-          beforeEach(function () {
-            req.session.user.permissions = ['move:cancel']
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
       })
     })
   })

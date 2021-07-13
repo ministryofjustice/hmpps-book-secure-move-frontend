@@ -1,9 +1,4 @@
-const proxyquire = require('proxyquire')
-
-const getCanCancelMoveStub = sinon.stub()
-const middleware = proxyquire('./locals.actions', {
-  '../../../../../common/helpers/move/can-cancel-move': getCanCancelMoveStub,
-})
+const middleware = require('./locals.actions')
 
 describe('Move view app', function () {
   describe('Middleware', function () {
@@ -26,13 +21,11 @@ describe('Move view app', function () {
           locals: {},
         }
         nextSpy = sinon.spy()
-
-        getCanCancelMoveStub.resetHistory()
       })
 
       context('when move can be cancelled', function () {
         beforeEach(function () {
-          getCanCancelMoveStub.returns(true)
+          req.move._canCancel = true
 
           middleware(req, res, nextSpy)
         })
@@ -48,7 +41,7 @@ describe('Move view app', function () {
 
       context('when move cannot be cancelled', function () {
         beforeEach(function () {
-          getCanCancelMoveStub.returns(false)
+          req.move._canCancel = false
 
           middleware(req, res, nextSpy)
         })
@@ -90,15 +83,6 @@ describe('Move view app', function () {
             url: '/move/12345/journeys',
           })
         })
-      })
-
-      it('should call cancel move helper', function () {
-        middleware(req, res, nextSpy)
-
-        expect(getCanCancelMoveStub).to.be.calledOnceWithExactly(req.move, [
-          'foo',
-          'bar',
-        ])
       })
 
       it('should call next', function () {
