@@ -1,7 +1,10 @@
 const faker = require('faker')
-const { camelCase, uniq } = require('lodash')
+const { camelCase } = require('lodash')
 
-const { permissionsByRole } = require('../../common/lib/permissions')
+const {
+  permissionsByRole,
+  rolesToPermissions,
+} = require('../../common/lib/permissions')
 const { generateAssessmentRespones } = require('../../mocks/assessment')
 
 const permittedActions = {
@@ -30,7 +33,7 @@ function renderPermissions(req, res) {
 
 function updatePermissions(req, res) {
   const roles = req.body.roles || []
-  const permissions = uniq(roles.map(role => permissionsByRole[role]).flat())
+  const permissions = rolesToPermissions(roles)
 
   req.session.activeRoles = roles
 

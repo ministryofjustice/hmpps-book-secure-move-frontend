@@ -1,6 +1,4 @@
-const { uniq } = require('lodash')
-
-const { permissionsByRole } = require('./permissions')
+const { rolesToPermissions } = require('./permissions')
 
 const forenameToInitial = name => {
   if (!name) {
@@ -20,21 +18,11 @@ function User({
 } = {}) {
   this.fullname = fullname
   this.displayName = forenameToInitial(fullname)
-  this.permissions = this.getPermissions(roles)
+  this.permissions = rolesToPermissions(roles)
   this.locations = locations
   this.username = username
   this.id = userId
   this.supplierId = supplierId
-}
-
-User.prototype = {
-  getPermissions(roles = []) {
-    const permissions = roles.reduce((accumulator, role) => {
-      const additionalPermissions = permissionsByRole[role] || []
-      return [...accumulator, ...additionalPermissions]
-    }, [])
-    return uniq(permissions)
-  },
 }
 
 module.exports = User
