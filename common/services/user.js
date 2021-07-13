@@ -27,7 +27,16 @@ function getFullname(token) {
     .then(userDetails => userDetails.name)
 }
 
-function getLocations(token) {
+async function getLocations(token, supplierId, permissions) {
+  const supplierLocations = await getSupplierLocations({
+    supplierId,
+    permissions,
+  })
+
+  if (supplierLocations) {
+    return supplierLocations
+  }
+
   const { auth_source: authSource } = decodeAccessToken(token)
 
   switch (authSource) {
@@ -84,15 +93,7 @@ function getAuthGroups(token) {
 }
 
 async function getAuthLocations(token) {
-  const { authorities = [] } = decodeAccessToken(token)
-
-  // supplier locations are dynamic and set in app/locations/controllers.js
-  if (authorities.includes('ROLE_PECS_SUPPLIER')) {
-    return []
-  }
-
   const groups = await getAuthGroups(token)
-
   return referenceDataService.getLocationsByNomisAgencyId(groups)
 }
 
@@ -131,5 +132,4 @@ module.exports = {
   getLocations,
   getFullname,
   getSupplierId,
-  getSupplierLocations,
 }

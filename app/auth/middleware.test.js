@@ -5,25 +5,16 @@ const userSuccessStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
-  getSupplierLocations: () => Promise.resolve(['SUPPLIER_TEST']),
 }
 const userLocationsFailureStub = {
   getLocations: () => Promise.reject(userFailureError),
   getFullname: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
-  getSupplierLocations: () => Promise.resolve(null),
 }
 const userFullNameFailureStub = {
   getLocations: () => Promise.resolve(['TEST']),
   getFullname: () => Promise.reject(userFailureError),
   getSupplierId: () => Promise.resolve('undefined'),
-  getSupplierLocations: () => Promise.resolve(null),
-}
-const userSupplierLocationsFailureStub = {
-  getLocations: () => Promise.resolve(['TEST']),
-  getFullname: () => Promise.reject(userFailureError),
-  getSupplierId: () => Promise.resolve('undefined'),
-  getSupplierLocations: () => Promise.reject(userFailureError),
 }
 
 const expiryTime = 1000
@@ -139,24 +130,6 @@ describe('Authentication middleware', function () {
         })
       })
 
-      context('when the user supplier locations lookup fails', function () {
-        beforeEach(async function () {
-          const authentication = proxyquire('./middleware', {
-            '../../common/services/user': userSupplierLocationsFailureStub,
-          })
-
-          await authentication.processAuthResponse()(req, {}, nextSpy)
-        })
-
-        it('calls with with error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
-        })
-
-        it('doesn’t regenerate the session', function () {
-          expect(req.session.regenerate).not.to.be.called
-        })
-      })
-
       context('when the user locations lookup succeeds', function () {
         let authentication
 
@@ -202,7 +175,7 @@ describe('Authentication middleware', function () {
 
           it('sets the user info on the session', function () {
             expect(Array.isArray(req.session.user.permissions)).to.be.true
-            expect(req.session.user.locations).to.deep.equal(['SUPPLIER_TEST'])
+            expect(req.session.user.locations).to.deep.equal(['TEST'])
             expect(req.session.user.fullname).to.equal('Mr Benn')
           })
 

@@ -3,7 +3,6 @@ const User = require('./user')
 describe('User class', function () {
   describe('when instantiated', function () {
     let user
-    let locations
     let fullname
 
     context('with fullname', function () {
@@ -57,23 +56,8 @@ describe('User class', function () {
       })
     })
 
-    context('with locations', function () {
-      beforeEach(function () {
-        locations = ['PECS_TEST']
-      })
-
-      it('should set locations', function () {
-        user = new User({ name: 'USERNAME', roles: [], locations })
-        expect(user.locations).to.deep.equal(locations)
-      })
-    })
-
-    context('without locations', function () {
-      it('should set locations to empty array', function () {
-        user = new User()
-
-        expect(user.locations).to.deep.equal([])
-      })
+    it('should set locations to empty array', function () {
+      expect(new User().locations).to.be.an('array').that.is.empty
     })
 
     context('with username', function () {

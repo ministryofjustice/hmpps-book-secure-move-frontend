@@ -66,14 +66,13 @@ const mockUserCaseloads = [
 
 const axiosInstanceStub = sinon.spy(axios.create())
 const axiosStub = { create: () => axiosInstanceStub }
-const { getLocations, getFullname, getSupplierId, getSupplierLocations } =
-  proxyquire('./user', {
-    axios: axiosStub,
-    './reference-data': function () {
-      return referenceDataStub
-    },
-    '../../config': configStub,
-  })
+const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
+  axios: axiosStub,
+  './reference-data': function () {
+    return referenceDataStub
+  },
+  '../../config': configStub,
+})
 
 describe('User service', function () {
   it('sets the retry-axios config to retry once', function () {
@@ -226,28 +225,16 @@ describe('User service', function () {
     })
   })
 
-  describe('#getLocations()', function () {
+  describe('#getLocations', function () {
     let tokenData, token, result
 
-    context('with valid bearer token', function () {
+    context('with valid bearer token and no supplier information', function () {
       context('User authenticated from HMPPS SSO', function () {
         beforeEach(function () {
           tokenData = {
             user_name: 'test',
             auth_source: 'auth',
           }
-        })
-
-        context('with supplier role', function () {
-          beforeEach(async function () {
-            tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-
-            result = await getLocations(encodeToken(tokenData))
-          })
-
-          it('returns an empty Array', function () {
-            expect(result).to.deep.equal([])
-          })
         })
 
         context('with other roles', function () {
@@ -319,29 +306,25 @@ describe('User service', function () {
         })
       })
     })
-  })
-
-  describe('#getSupplierLocations', function () {
-    let locations
 
     context('with a supplier ID', function () {
       beforeEach(async function () {
-        locations = await getSupplierLocations({ supplierId: supplierStub.id })
+        result = await getLocations(null, supplierStub.id)
       })
 
       it('looks up locations for the supplier', async function () {
         expect(
           referenceDataStub.getLocationsBySupplierId
         ).to.be.calledWithExactly(supplierStub.id)
-        expect(locations).to.deep.equal(locationsStub)
+        expect(result).to.deep.equal(locationsStub)
       })
     })
 
     context('with a contract delivery manager permission', function () {
       beforeEach(async function () {
-        locations = await getSupplierLocations({
-          permissions: ['locations:contract_delivery_manager'],
-        })
+        result = await getLocations(null, null, [
+          'locations:contract_delivery_manager',
+        ])
       })
 
       it('looks up locations for the supplier', async function () {
@@ -349,17 +332,7 @@ describe('User service', function () {
         expect(
           referenceDataStub.getLocationsBySupplierId
         ).to.be.calledWithExactly(supplierStub.id)
-        expect(locations).to.deep.equal(locationsStub)
-      })
-    })
-
-    context('without supplier information', function () {
-      beforeEach(async function () {
-        locations = await getSupplierLocations({})
-      })
-
-      it("doesn't return any locations", async function () {
-        expect(locations).to.be.undefined
+        expect(result).to.deep.equal(locationsStub)
       })
     })
   })
