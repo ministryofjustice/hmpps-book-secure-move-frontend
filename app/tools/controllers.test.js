@@ -1,5 +1,7 @@
 const proxyquire = require('proxyquire')
 
+const { rolesToPermissions } = require('../../common/lib/permissions')
+
 const permissionsStub = {
   permissionsByRole: {
     foo: ['one', 'two'],
@@ -7,6 +9,8 @@ const permissionsStub = {
     fizz: ['two'],
     buzz: ['two', 'three', 'one', 'four'],
   },
+  rolesToPermissions: roles =>
+    rolesToPermissions(roles, permissionsStub.permissionsByRole),
 }
 const mockDataStub = {
   generateAssessmentRespones: sinon.stub().returns(['fizz', 'buzz']),

@@ -1,6 +1,11 @@
-const { uniq } = require('lodash')
+const {
+  getFullname,
+  getSupplierId,
+  getLocations,
+} = require('../../common/services/user')
 
-const { permissionsByRole } = require('./permissions')
+const { decodeAccessToken } = require('./access-token')
+const { rolesToPermissions } = require('./permissions')
 
 const forenameToInitial = name => {
   if (!name) {
@@ -10,31 +15,33 @@ const forenameToInitial = name => {
   return `${name.charAt()}. ${name.split(' ').pop()}`
 }
 
-function User({
-  fullname,
-  roles = [],
-  locations = [],
-  username,
-  userId,
-  supplierId,
-} = {}) {
-  this.fullname = fullname
-  this.displayName = forenameToInitial(fullname)
-  this.permissions = this.getPermissions(roles)
-  this.locations = locations
-  this.username = username
-  this.id = userId
-  this.supplierId = supplierId
+async function loadUser(accessToken) {
+  const {
+    user_id: userId,
+    user_name: username,
+    authorities,
+  } = decodeAccessToken(accessToken)
+
+  const [fullname, supplierId] = await Promise.all([
+    getFullname(accessToken),
+    getSupplierId(accessToken),
+  ])
+
+  const displayName = forenameToInitial(fullname)
+
+  const permissions = rolesToPermissions(authorities)
+
+  const locations = await getLocations(accessToken, supplierId, permissions)
+
+  return {
+    userId,
+    username,
+    fullname,
+    supplierId,
+    displayName,
+    permissions,
+    locations,
+  }
 }
 
-User.prototype = {
-  getPermissions(roles = []) {
-    const permissions = roles.reduce((accumulator, role) => {
-      const additionalPermissions = permissionsByRole[role] || []
-      return [...accumulator, ...additionalPermissions]
-    }, [])
-    return uniq(permissions)
-  },
-}
-
-module.exports = User
+module.exports = { loadUser }

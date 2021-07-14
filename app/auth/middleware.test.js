@@ -1,53 +1,16 @@
 const proxyquire = require('proxyquire')
 
+const userSuccessStub = { loadUser: () => Promise.resolve('user') }
 const userFailureError = new Error('test')
-const userSuccessStub = {
-  getLocations: () => Promise.resolve(['TEST']),
-  getFullname: () => Promise.resolve('Mr Benn'),
-  getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: async user => user.locations.push('SUPPLIER_TEST'),
-}
-const userLocationsFailureStub = {
-  getLocations: () => Promise.reject(userFailureError),
-  getFullname: () => Promise.resolve('Mr Benn'),
-  getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.resolve(),
-}
-const userFullNameFailureStub = {
-  getLocations: () => Promise.resolve(['TEST']),
-  getFullname: () => Promise.reject(userFailureError),
-  getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.resolve(),
-}
-const userSupplierLocationsFailureStub = {
-  getLocations: () => Promise.resolve(['TEST']),
-  getFullname: () => Promise.reject(userFailureError),
-  getSupplierId: () => Promise.resolve('undefined'),
-  populateSupplierLocations: () => Promise.reject(userFailureError),
-}
-
-function UserStub({
-  fullname,
-  roles = [],
-  locations = [],
-  username,
-  userId,
-} = {}) {
-  this.fullname = fullname
-  this.permissions = []
-  this.locations = locations
-  this.username = username
-  this.userId = userId
-}
+const userFailureStub = { loadUser: () => Promise.reject(userFailureError) }
 
 const expiryTime = 1000
-const payload = {
-  user_name: 'test',
-  test: 'test',
-  authorities: ['test'],
-  exp: expiryTime,
-}
-const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64')
+
+const encodedAccessTokenPayload = Buffer.from(
+  JSON.stringify({ exp: expiryTime })
+).toString('base64')
+
+const accessToken = `test.${encodedAccessTokenPayload}.test`
 
 describe('Authentication middleware', function () {
   describe('#processAuthResponse', function () {
@@ -70,8 +33,7 @@ describe('Authentication middleware', function () {
     context('when there is no grant in session', function () {
       beforeEach(async function () {
         const authentication = proxyquire('./middleware', {
-          '../../common/lib/user': UserStub,
-          '../../common/services/user': userSuccessStub,
+          '../../common/lib/user': userSuccessStub,
         })
 
         await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -94,8 +56,7 @@ describe('Authentication middleware', function () {
       beforeEach(async function () {
         req.session.grant = {}
         const authentication = proxyquire('./middleware', {
-          '../../common/lib/user': UserStub,
-          '../../common/services/user': userSuccessStub,
+          '../../common/lib/user': userSuccessStub,
         })
 
         await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -116,38 +77,19 @@ describe('Authentication middleware', function () {
 
     context('when there is a grant response', function () {
       beforeEach(function () {
-        req.session.grant = {
-          response: {
-            access_token: `test.${encodedPayload}.test`,
-          },
-        }
+        req.session.grant = { response: { access_token: accessToken } }
       })
 
-      context('when the user locations lookup fails', function () {
+      context('when the user lookup fails', function () {
         beforeEach(async function () {
           const authentication = proxyquire('./middleware', {
-            '../../common/services/user': userLocationsFailureStub,
+            '../../common/lib/user': userFailureStub,
           })
 
           await authentication.processAuthResponse()(req, {}, nextSpy)
         })
 
-        it('returns next', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
-        })
-      })
-
-      context('when the user fullname lookup fails', function () {
-        beforeEach(async function () {
-          const authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
-            '../../common/services/user': userFullNameFailureStub,
-          })
-
-          await authentication.processAuthResponse()(req, {}, nextSpy)
-        })
-
-        it('calls with with error', function () {
+        it('calls next with error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
         })
 
@@ -156,32 +98,12 @@ describe('Authentication middleware', function () {
         })
       })
 
-      context('when the user supplier locations lookup fails', function () {
-        beforeEach(async function () {
-          const authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
-            '../../common/services/user': userSupplierLocationsFailureStub,
-          })
-
-          await authentication.processAuthResponse()(req, {}, nextSpy)
-        })
-
-        it('calls with with error', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(userFailureError)
-        })
-
-        it('doesn’t regenerate the session', function () {
-          expect(req.session.regenerate).not.to.be.called
-        })
-      })
-
-      context('when the user locations lookup succeeds', function () {
+      context('when the user lookup succeeds', function () {
         let authentication
 
         beforeEach(function () {
           authentication = proxyquire('./middleware', {
-            '../../common/lib/user': UserStub,
-            '../../common/services/user': userSuccessStub,
+            '../../common/lib/user': userSuccessStub,
           })
         })
 
@@ -220,12 +142,7 @@ describe('Authentication middleware', function () {
           })
 
           it('sets the user info on the session', function () {
-            expect(Array.isArray(req.session.user.permissions)).to.be.true
-            expect(req.session.user.locations).to.deep.equal([
-              'TEST',
-              'SUPPLIER_TEST',
-            ])
-            expect(req.session.user.fullname).to.equal('Mr Benn')
+            expect(req.session.user).to.equal('user')
           })
 
           it('sets the redirect URL in the session', function () {

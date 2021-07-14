@@ -1,3 +1,5 @@
+const { uniq } = require('lodash')
+
 const policePermissions = [
   'dashboard:view',
   'moves:view:outgoing',
@@ -219,6 +221,10 @@ const permissionsByRole = {
   ROLE_PECS_READ_ONLY: readOnlyPermissions,
 }
 
+const rolesToPermissions = (roles, mapping = permissionsByRole) =>
+  uniq(roles.map(role => mapping[role] || []).flat())
+
 module.exports = {
   permissionsByRole,
+  rolesToPermissions,
 }

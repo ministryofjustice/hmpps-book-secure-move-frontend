@@ -66,14 +66,13 @@ const mockUserCaseloads = [
 
 const axiosInstanceStub = sinon.spy(axios.create())
 const axiosStub = { create: () => axiosInstanceStub }
-const { getLocations, getFullname, getSupplierId, populateSupplierLocations } =
-  proxyquire('./user', {
-    axios: axiosStub,
-    './reference-data': function () {
-      return referenceDataStub
-    },
-    '../../config': configStub,
-  })
+const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
+  axios: axiosStub,
+  './reference-data': function () {
+    return referenceDataStub
+  },
+  '../../config': configStub,
+})
 
 describe('User service', function () {
   it('sets the retry-axios config to retry once', function () {
@@ -226,10 +225,10 @@ describe('User service', function () {
     })
   })
 
-  describe('#getLocations()', function () {
+  describe('#getLocations', function () {
     let tokenData, token, result
 
-    context('with valid bearer token', function () {
+    context('with valid bearer token and no supplier information', function () {
       context('User authenticated from HMPPS SSO', function () {
         beforeEach(function () {
           tokenData = {
@@ -238,25 +237,13 @@ describe('User service', function () {
           }
         })
 
-        context('with supplier role', function () {
-          beforeEach(async function () {
-            tokenData.authorities = ['ROLE_PECS_SUPPLIER']
-
-            result = await getLocations(encodeToken(tokenData))
-          })
-
-          it('returns an empty Array', function () {
-            expect(result).to.deep.equal([])
-          })
-        })
-
         context('with other roles', function () {
           beforeEach(async function () {
             nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
               .get('/')
               .reply(200, JSON.stringify(authGroups))
 
-            result = await getLocations(encodeToken(tokenData))
+            result = await getLocations(encodeToken(tokenData), null, [])
           })
 
           it('requests the user’s groups from HMPPS SSO', function () {
@@ -282,7 +269,7 @@ describe('User service', function () {
             .get('/')
             .reply(200, JSON.stringify(mockUserCaseloads))
 
-          result = await getLocations(token)
+          result = await getLocations(token, null, [])
         })
 
         it('requests the user’s caseloads from the NOMIS Elite 2 API', function () {
@@ -304,7 +291,7 @@ describe('User service', function () {
 
           token = encodeToken(tokenData)
 
-          result = await getLocations(token)
+          result = await getLocations(token, null, [])
         })
 
         it('defaults to an empty list of locations', function () {
@@ -319,55 +306,33 @@ describe('User service', function () {
         })
       })
     })
-  })
 
-  describe('#populateSupplierLocations', function () {
-    let user
-
-    context('with a supplier user', function () {
+    context('with a supplier ID', function () {
       beforeEach(async function () {
-        user = { supplierId: supplierStub.id, permissions: [] }
+        result = await getLocations(null, supplierStub.id, [])
       })
 
       it('looks up locations for the supplier', async function () {
-        await populateSupplierLocations(user)
         expect(
           referenceDataStub.getLocationsBySupplierId
         ).to.be.calledWithExactly(supplierStub.id)
-        expect(user.locations).to.deep.equal(locationsStub)
+        expect(result).to.deep.equal(locationsStub)
       })
     })
 
-    context('with a contract delivery manager user', function () {
+    context('with a contract delivery manager permission', function () {
       beforeEach(async function () {
-        user = {
-          supplierId: undefined,
-          permissions: ['locations:contract_delivery_manager'],
-        }
+        result = await getLocations(null, null, [
+          'locations:contract_delivery_manager',
+        ])
       })
 
       it('looks up locations for the supplier', async function () {
-        await populateSupplierLocations(user)
         expect(referenceDataStub.getSuppliers).to.be.calledOnce
         expect(
           referenceDataStub.getLocationsBySupplierId
         ).to.be.calledWithExactly(supplierStub.id)
-        expect(user.locations).to.deep.equal(locationsStub)
-      })
-    })
-
-    context('with an unsuitable user', function () {
-      beforeEach(async function () {
-        user = {
-          supplierId: undefined,
-          permissions: [],
-          locations: 'unchanged',
-        }
-      })
-
-      it("doesn't change the locations", async function () {
-        await populateSupplierLocations(user)
-        expect(user.locations).to.equal('unchanged')
+        expect(result).to.deep.equal(locationsStub)
       })
     })
   })

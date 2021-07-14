@@ -1,13 +1,7 @@
 const { get } = require('lodash')
 
 const { decodeAccessToken } = require('../../common/lib/access-token')
-const User = require('../../common/lib/user')
-const {
-  getFullname,
-  getLocations,
-  getSupplierId,
-  populateSupplierLocations,
-} = require('../../common/services/user')
+const { loadUser } = require('../../common/lib/user')
 
 function processAuthResponse() {
   return async function middleware(req, res, next) {
@@ -21,25 +15,9 @@ function processAuthResponse() {
 
     try {
       const decodedAccessToken = decodeAccessToken(accessToken)
-      const { user_name: username, user_id: userId } = decodedAccessToken
-      const [locations, fullname, supplierId] = await Promise.all([
-        getLocations(accessToken),
-        getFullname(accessToken),
-        getSupplierId(accessToken),
-      ])
-
       const previousSession = { ...req.session }
 
-      const user = new User({
-        fullname,
-        locations,
-        roles: decodedAccessToken.authorities,
-        username,
-        userId,
-        supplierId,
-      })
-
-      await populateSupplierLocations(user)
+      const user = await loadUser(accessToken)
 
       req.session.regenerate(error => {
         if (error) {
