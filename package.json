@@ -215,7 +215,7 @@
     "nock": "13.1.1",
     "node-sass": "6.0.1",
     "nodemon": "2.0.12",
-    "npm-check-updates": "11.8.2",
+    "npm-check-updates": "11.8.3",
     "nyc": "15.1.0",
     "open-cli": "7.0.0",
     "pinst": "2.1.6",
