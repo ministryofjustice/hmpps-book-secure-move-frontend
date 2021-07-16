@@ -12,6 +12,8 @@ const MoveService = proxyquire('./move', {
     formatISO: formatISOStub,
   },
   '../lib/api-client/rest-client': restClient,
+  '../helpers/move/can-cancel-move': sinon.stub().returns(true),
+  '../helpers/move/can-edit-move': sinon.stub().returns(true),
 })
 
 const moveService = new MoveService({ apiClient: apiClient })
@@ -1038,7 +1040,11 @@ describe('Move Service', function () {
         })
 
         it('should return move', function () {
-          expect(move).to.deep.equal(mockResponse.data)
+          expect(move).to.deep.equal({
+            ...mockResponse.data,
+            _canCancel: true,
+            _canEdit: true,
+          })
         })
       })
 

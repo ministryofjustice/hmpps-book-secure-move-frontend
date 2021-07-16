@@ -14,6 +14,11 @@ const presenters = {
   moveToMetaListComponent,
 }
 
+const mockUpdateUrls = {
+  stepOne: '/',
+  stepTwo: '/step-two',
+  stepThree: '/step-three',
+}
 const getAssessments = sinon.stub().returns({ assessments: '__assessments__' })
 const getCourtHearings = sinon.stub().returns({ content: '__court-hearings__' })
 const getMessage = sinon.stub().returns({
@@ -24,15 +29,11 @@ const getMessageBanner = sinon.stub().returns({ content: '__message-banner__' })
 const getPerDetails = sinon.stub().returns({ perDetails: '__per-details__' })
 const getTabsUrls = sinon.stub().returns('__tabs-urls__')
 const getTagLists = sinon.stub().returns({ tagLists: '__tag-lists__' })
-const getUpdateUrls = sinon.stub().returns('__update-urls__')
-const mockUpdateLinks = '__update-links__'
-const getUpdateLinks = sinon.stub().returns(mockUpdateLinks)
-
-const updateSteps = []
+const getUpdateUrls = sinon.stub().returns(mockUpdateUrls)
+const mapUpdateLink = sinon.stub().returnsArg(0)
 
 const pathStubs = {
   '../../presenters': presenters,
-  '../../../app/move/app/edit/steps': updateSteps,
   './get-assessments': getAssessments,
   './get-court-hearings': getCourtHearings,
   './get-message': getMessage,
@@ -41,7 +42,7 @@ const pathStubs = {
   './get-tabs-urls': getTabsUrls,
   './get-tag-lists': getTagLists,
   './get-update-urls': getUpdateUrls,
-  './get-update-links': getUpdateLinks,
+  './map-update-link': mapUpdateLink,
 }
 
 const getLocals = proxyquire('./get-locals', pathStubs)
@@ -78,7 +79,7 @@ describe('Move helpers', function () {
       getTagLists.resetHistory()
       getTabsUrls.resetHistory()
       getUpdateUrls.resetHistory()
-      getUpdateLinks.resetHistory()
+      mapUpdateLink.resetHistory()
       personToSummaryListComponent.resetHistory()
       moveToAdditionalInfoListComponent.resetHistory()
       moveToMetaListComponent.resetHistory()
@@ -112,9 +113,10 @@ describe('Move helpers', function () {
         it('should get the move summary', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
-            canAccess,
-            updateSteps,
-            false
+            {
+              updateUrls: mockUpdateUrls,
+              showPerson: false,
+            }
           )
         })
 
@@ -244,18 +246,12 @@ describe('Move helpers', function () {
 
       describe('update urls and links', function () {
         it('should call getUpdateUrls with expected args', function () {
-          expect(getUpdateUrls).to.be.calledOnceWithExactly(
-            mockMove,
-            canAccess,
-            updateSteps
-          )
+          expect(getUpdateUrls).to.be.calledOnceWithExactly(mockMove, canAccess)
         })
 
-        it('should call getUpdateLinks with expected args', function () {
-          expect(getUpdateLinks).to.be.calledOnceWithExactly(
-            mockMove,
-            canAccess,
-            updateSteps
+        it('should call mapUpdateLink helper', function () {
+          expect(mapUpdateLink.callCount).to.equal(
+            Object.keys(mockUpdateUrls).length
           )
         })
 
@@ -264,7 +260,7 @@ describe('Move helpers', function () {
         })
 
         it('should pass update links in locals to render', function () {
-          expect(params.updateLinks).to.deep.equal(mockUpdateLinks)
+          expect(params.updateLinks).to.deep.equal(mockUpdateUrls)
         })
       })
     })
@@ -313,7 +309,6 @@ describe('Move helpers', function () {
         expect(Object.keys(params).sort()).to.deep.equal([
           'additionalInfoSummary',
           'assessments',
-          'canCancelMove',
           'courtHearings',
           'messageBanner',
           'messageContent',
@@ -346,7 +341,6 @@ describe('Move helpers', function () {
         expect(Object.keys(params).sort()).to.deep.equal([
           'additionalInfoSummary',
           'assessments',
-          'canCancelMove',
           'courtHearings',
           'messageBanner',
           'messageContent',
@@ -359,145 +353,6 @@ describe('Move helpers', function () {
           'updateLinks',
           'urls',
         ])
-      })
-    })
-
-    describe('cancelling a move', function () {
-      let params
-
-      beforeEach(function () {
-        req.move = {
-          ...mockMove,
-          person: undefined,
-        }
-      })
-
-      context('with proposed state', function () {
-        beforeEach(function () {
-          req.move = {
-            ...req.move,
-            status: 'proposed',
-          }
-        })
-
-        context('without permission to cancel proposed moves', function () {
-          beforeEach(function () {
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
-
-        context('with permission to cancel proposed moves', function () {
-          beforeEach(function () {
-            req.session.user.permissions = ['move:cancel:proposed']
-
-            params = getLocals(req)
-          })
-
-          it('should be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.true
-          })
-        })
-      })
-
-      const cancellableStates = ['requested', 'booked']
-      cancellableStates.forEach(status => {
-        context(`with ${status} state`, function () {
-          beforeEach(function () {
-            req.move = {
-              ...req.move,
-              status,
-            }
-          })
-
-          context('allocation move', function () {
-            beforeEach(function () {
-              req.move = {
-                ...req.move,
-                allocation: {
-                  id: '123',
-                },
-              }
-            })
-
-            context('without permission to cancel move', function () {
-              beforeEach(function () {
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-
-            context('with permission to cancel move', function () {
-              beforeEach(function () {
-                req.session.user.permissions = ['move:cancel']
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-          })
-
-          context('non-allocation move', function () {
-            context('without permission to cancel move', function () {
-              beforeEach(function () {
-                params = getLocals(req)
-              })
-
-              it('should not be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.false
-              })
-            })
-
-            context('with permission to cancel move', function () {
-              beforeEach(function () {
-                req.session.user.permissions = ['move:cancel']
-                params = getLocals(req)
-              })
-
-              it('should be able to cancel move', function () {
-                expect(params.canCancelMove).to.be.true
-              })
-            })
-          })
-        })
-      })
-
-      context('with other state', function () {
-        beforeEach(function () {
-          req.move = {
-            ...req.move,
-            status: 'completed',
-          }
-        })
-
-        context('without permission to cancel move', function () {
-          beforeEach(function () {
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
-
-        context('with permission to cancel move', function () {
-          beforeEach(function () {
-            req.session.user.permissions = ['move:cancel']
-            params = getLocals(req)
-          })
-
-          it('should not be able to cancel move', function () {
-            expect(params.canCancelMove).to.be.false
-          })
-        })
       })
     })
   })

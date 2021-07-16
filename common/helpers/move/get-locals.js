@@ -1,22 +1,19 @@
-const updateSteps = require('../../../app/move/app/edit/steps')
+const { mapValues } = require('lodash')
+
 const presenters = require('../../presenters')
 
 const getAssessments = require('./get-assessments')
-const getCanCancelMove = require('./get-can-cancel-move')
 const getCourtHearings = require('./get-court-hearings')
 const getMessage = require('./get-message')
 const getMessageBanner = require('./get-message-banner')
 const getPerDetails = require('./get-per-details')
 const getTabsUrls = require('./get-tabs-urls')
 const getTagLists = require('./get-tag-lists')
-const getUpdateLinks = require('./get-update-links')
 const getUpdateUrls = require('./get-update-urls')
+const mapUpdateLink = require('./map-update-link')
 
-// TODO: pass updateSteps in so {updateSteps} = {}
-// or maybe not, if view controller does this instead
 function getLocals(req) {
   const { move, canAccess } = req
-  const userPermissions = req.session?.user?.permissions
   const profile = move.profile || {}
   const { person } = profile
 
@@ -45,17 +42,13 @@ function getLocals(req) {
   const perDetails = getPerDetails(move)
   // move, canAccess
   const messageBanner = getMessageBanner(move, canAccess)
-  // move, canAccess, updateSteps
-  const updateUrls = getUpdateUrls(move, canAccess, updateSteps)
-  const updateLinks = getUpdateLinks(move, canAccess, updateSteps)
-  const moveSummary = presenters.moveToMetaListComponent(
-    move,
-    canAccess,
-    updateSteps,
-    false
-  )
-  // move, userPermissions
-  const canCancelMove = getCanCancelMove(move, userPermissions)
+  const updateUrls = getUpdateUrls(move, canAccess)
+
+  const updateLinks = mapValues(updateUrls, mapUpdateLink)
+  const moveSummary = presenters.moveToMetaListComponent(move, {
+    showPerson: false,
+    updateUrls,
+  })
 
   const urls = {
     tabs: tabsUrls,
@@ -66,7 +59,6 @@ function getLocals(req) {
     move,
     additionalInfoSummary,
     ...assessments,
-    canCancelMove,
     courtHearings,
     ...message,
     messageBanner,

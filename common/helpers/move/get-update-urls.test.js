@@ -1,4 +1,4 @@
-const getUpdateUrls = require('./get-update-urls')
+const proxyquire = require('proxyquire')
 
 const updateSteps = [
   {
@@ -9,7 +9,7 @@ const updateSteps = [
   {
     key: 'bar',
     permission: 'move:allowed',
-    steps: { '/another-step': {}, '/bar-details': { entryPoint: true } },
+    steps: { '/another-step': { entryPoint: true } },
   },
   {
     key: 'baz',
@@ -18,6 +18,10 @@ const updateSteps = [
   },
 ]
 
+const getUpdateUrls = proxyquire('./get-update-urls', {
+  '../../../app/move/app/edit/steps': updateSteps,
+})
+
 describe('Move helpers', function () {
   describe('#getUpdateUrls', function () {
     let updateUrls
@@ -25,41 +29,36 @@ describe('Move helpers', function () {
     let canAccess
 
     beforeEach(function () {
+      move = { _canEdit: true, id: 'moveId' }
       canAccess = sinon.stub().returns(false)
     })
 
     describe('when permision matches', function () {
       beforeEach(function () {
-        move = { id: 'moveId', move_type: 'prison_transfer' }
-        canAccess
-          .withArgs('move:update:prison_transfer')
-          .returns(true)
-          .withArgs('move:allowed')
-          .returns(true)
+        canAccess.withArgs('move:allowed').returns(true)
       })
 
-      context('when move has not left custody', function () {
+      context('when move is editable', function () {
         beforeEach(function () {
-          updateUrls = getUpdateUrls(move, canAccess, updateSteps)
+          updateUrls = getUpdateUrls(move, canAccess)
         })
 
-        it('should get expected value for key', function () {
-          expect(updateUrls.foo).to.equal('/move/moveId/edit/foo')
+        it('should get expected values for key', function () {
+          expect(updateUrls).to.deep.equal({
+            foo: '/move/moveId/edit/foo',
+            bar: '/move/moveId/edit/another-step',
+          })
         })
 
-        it('should get expected value for key when multiple steps exist', function () {
-          expect(updateUrls.bar).to.equal('/move/moveId/edit/bar-details')
-        })
-
-        it('should return undefined if the route is inaccessible', function () {
-          expect(updateUrls.baz).to.be.undefined
+        it('should remove keys with missing permissions', function () {
+          expect(Object.keys(updateUrls)).not.to.contain('baz')
         })
       })
 
-      context('when move has left custody', function () {
+      context('when move is not editable', function () {
         beforeEach(function () {
-          move._hasLeftCustody = true
-          updateUrls = getUpdateUrls(move, canAccess, updateSteps)
+          move._canEdit = false
+          updateUrls = getUpdateUrls(move, canAccess)
         })
 
         it('should not expose any urls', function () {
@@ -68,38 +67,11 @@ describe('Move helpers', function () {
       })
     })
 
-    describe('when permission does not match', function () {
-      beforeEach(function () {
-        move = { id: 'moveId', move_type: 'hospital' }
-        canAccess
-          .withArgs('move:update:prison_transfer')
-          .returns(true)
-          .withArgs('move:allowed')
-          .returns(true)
-        updateUrls = getUpdateUrls(move, canAccess, updateSteps)
-      })
-      it('should not expose urls', function () {
-        expect(updateUrls).to.deep.equal({})
-      })
-    })
-
     describe('when called without canAccess function', function () {
       beforeEach(function () {
-        move = { id: 'moveId', move_type: 'hospital' }
-        canAccess = undefined
-        updateUrls = getUpdateUrls(move, canAccess, updateSteps)
+        updateUrls = getUpdateUrls(move)
       })
-      it('should not expose any urls', function () {
-        expect(updateUrls).to.deep.equal({})
-      })
-    })
 
-    describe('when called without update steps', function () {
-      beforeEach(function () {
-        move = { id: 'moveId', move_type: 'hospital' }
-        canAccess.returns(true)
-        updateUrls = getUpdateUrls(move, canAccess)
-      })
       it('should not expose any urls', function () {
         expect(updateUrls).to.deep.equal({})
       })
