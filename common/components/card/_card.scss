@@ -1,4 +1,5 @@
 $_image-width: 80px;
+$_image-height: 100px;
 
 .app-card {
   @include govuk-clearfix;
@@ -40,6 +41,7 @@ $_image-width: 80px;
 .app-card__image {
   display: block;
   width: $_image-width;
+  height: $_image-height;
 }
 
 .app-card__badge {
@@ -91,8 +93,9 @@ $_image-width: 80px;
 
   @include mq($from: desktop) {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: govuk-spacing(3);
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    grid-gap: govuk-spacing(5);
   }
 }
 
