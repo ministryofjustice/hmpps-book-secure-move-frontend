@@ -1,0 +1,84 @@
+params:
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the component.
+  - name: caption
+    type: object
+    required: true
+    description: Caption to show above the main title.
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the caption. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the caption. If `html` is provided, the `text` argument will be ignored.
+  - name: heading
+    type: object
+    required: true
+    description: Caption to show above the main title.
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the title. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the title. If `html` is provided, the `text` argument will be ignored.
+  - name: summary
+    type: object
+    required: true
+    description: Summary text to show above the underneath the title.
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the summary. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the summary. If `html` is provided, the `text` argument will be ignored.
+  - name: actions
+    type: array
+    required: true
+    description: Array of actions to display on the right hand side.
+    params:
+      - name: text
+        type: string
+        required: true
+        description: If `html` is set, this is not required. Text to use within the item. If `html` is provided, the `text` argument will be ignored.
+      - name: html
+        type: string
+        required: true
+        description: If `text` is set, this is not required. HTML to use within the item. If `html` is provided, the `text` argument will be ignored.
+
+examples:
+  - name: default
+    data:
+      heading:
+        text: Identity bar heading
+  - name: with caption
+    data:
+      heading:
+        text: Identity bar with caption
+      caption:
+        text: Page caption
+  - name: with summary text
+    data:
+      heading:
+        text: Identity bar with summary
+      summary:
+        text: A short summary of this item
+  - name: with actions
+    data:
+      heading:
+        text: With actions
+      actions:
+        -
+          html: <a href="">Action one</a>
+        -
+          html: <a href="">Action two</a>

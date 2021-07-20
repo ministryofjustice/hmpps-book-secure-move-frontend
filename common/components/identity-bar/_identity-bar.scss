@@ -1,0 +1,74 @@
+.app-identity-bar {
+  padding-bottom: govuk-spacing(9);
+
+  &.is-sticky {
+    top: 0 !important;
+    background: govuk-colour("white");
+    border-bottom: 1px solid $govuk-border-colour;
+    left: 0 !important;
+    padding: govuk-spacing(3) 0;
+    width: 100% !important;
+    z-index: 100;
+    box-shadow: 2px -1px 6px govuk-colour("mid-grey");
+  }
+}
+
+.app-identity-bar__inner {
+  .is-sticky & {
+    @include govuk-width-container();
+  }
+}
+
+.app-identity-bar__caption {
+  margin: 0;
+
+  .is-sticky & {
+    font-size: 19px;
+    display: inline;
+    color: govuk-colour("black");
+  }
+}
+
+.app-identity-bar__heading {
+  margin: 0;
+
+  .is-sticky & {
+    @include govuk-font($size: 19, $weight: bold);
+    display: inline;
+  }
+}
+
+.app-identity-bar__summary {
+  @include govuk-font($size: 19);
+  margin: govuk-spacing(1) 0 0;
+
+  .is-sticky & {
+    @include govuk-font($size: 16);
+  }
+}
+
+.app-identity-bar__actions {
+  margin: 0;
+  padding: govuk-spacing(6) 0 0;
+  list-style: none;
+
+  @include mq($from: desktop) {
+    float: right;
+  }
+
+  .govuk-button {
+    margin-bottom: 0;
+  }
+
+  .is-sticky & {
+    padding: 0;
+  }
+}
+
+.app-identity-bar__action-item {
+  display: block;
+
+  & + & {
+    margin-top: govuk-spacing(2);
+  }
+}

@@ -1,0 +1,35 @@
+<div class="app-identity-bar{%- if params.classes %} {{ params.classes }}{% endif %}">
+  <div class="app-identity-bar__inner">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {% if params.caption.html or params.caption.text %}
+          <span class="govuk-caption-l app-identity-bar__caption">
+            {{ params.caption.html | safe if params.caption.html else params.caption.text }}
+          </span>
+        {% endif %}
+
+        <h1 class="govuk-heading-xl app-identity-bar__heading">
+          {{ params.heading.html | safe if params.heading.html else params.heading.text }}
+        </h1>
+
+        {% if params.summary.html or params.summary.text %}
+          <p class="app-identity-bar__summary">
+            {{ params.summary.html | safe if params.summary.html else params.summary.text }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if params.actions | length %}
+        <div class="govuk-grid-column-one-third">
+          <ul class="app-identity-bar__actions">
+            {% for action in params.actions %}
+              <li class="app-identity-bar__action-item">
+                {{ action.html | safe if action.html else action.text }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
