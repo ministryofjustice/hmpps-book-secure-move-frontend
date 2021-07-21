@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.82.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.81.1...v2.82.0) (2021-07-21)
+
+
+### Features
+
+* Add identity card to new move page design ([4ed8892](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4ed8892fc9dba54cba6e786c38475b5ea05d2eae))
+* Extend task list component to support sections ([bf35a15](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bf35a15c032fc9093864b8b4a7fce5ae9a563633))
+* Pin move identity bar to top of page on scroll ([188f5bc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/188f5bc15eeda625e18287fe2231ad64940b2263))
+
+
+### Bug Fixes
+
+* Prevent metrics library from erroring without correct type ([7a61c37](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7a61c37fc6a937d8a9212f87496065a09cb0ffdb))
+
 ### [2.81.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.81.0...v2.81.1) (2021-07-12)
 
 
