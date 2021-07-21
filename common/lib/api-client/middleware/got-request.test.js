@@ -261,6 +261,7 @@ describe('API Client', function () {
 
         it('should rethrow error', function () {
           expect(thrownError).to.equal(error)
+          expect(thrownError.statusCode).to.equal(500)
         })
       })
 
@@ -307,6 +308,7 @@ describe('API Client', function () {
 
           it('should rethrow error', function () {
             expect(thrownError).to.equal(error)
+            expect(thrownError.statusCode).to.equal(408)
           })
         })
 
@@ -342,6 +344,7 @@ describe('API Client', function () {
 
           it('should rethrow error', function () {
             expect(thrownError).to.equal(error)
+            expect(thrownError.statusCode).to.equal(400)
           })
         })
       })
@@ -390,6 +393,7 @@ describe('API Client', function () {
 
           it('should rethrow error', function () {
             expect(thrownError).to.equal(error)
+            expect(thrownError.statusCode).to.equal(408)
           })
         })
       })
@@ -412,7 +416,6 @@ describe('API Client', function () {
             statusMessage: 'Bad request',
             timings: {
               start: 2619711962865,
-              // Note, failed requests contain an `error` key instead of `end`
               end: 2619711962968,
             },
             requestUrl:
@@ -446,6 +449,69 @@ describe('API Client', function () {
 
         it('should rethrow error', function () {
           expect(thrownError).to.equal(error)
+          expect(thrownError.statusCode).to.equal(400)
+        })
+      })
+
+      context('without request end timing', function () {
+        beforeEach(async function () {
+          error.response = {
+            statusCode: 400,
+            statusMessage: 'Bad request',
+            timings: {
+              start: 2619711962865,
+            },
+            requestUrl:
+              'http://host.com/response-path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+          }
+
+          gotStub.rejects(error)
+
+          await requestMiddleware()
+            .req(payload)
+            .catch(e => {
+              thrownError = e
+            })
+        })
+
+        it('should not record metrics for the call', function () {
+          expect(clientMetrics.recordError).not.to.be.called
+        })
+
+        it('should rethrow error', function () {
+          expect(thrownError).to.equal(error)
+          expect(thrownError.statusCode).to.equal(400)
+        })
+      })
+
+      context('without response error timing', function () {
+        beforeEach(async function () {
+          error.request = {
+            statusCode: 408,
+            statusMessage: 'Timeout',
+            timings: {
+              start: 1619711962865,
+            },
+            requestUrl:
+              'http://host.com/request-path%3Ffoo%26bar%2Cfizz%2Cbuzz',
+          }
+
+          gotStub.rejects(error)
+
+          await requestMiddleware()
+            .req(payload)
+            .catch(e => {
+              thrownError = e
+            })
+        })
+
+        it('should not record metrics for the call', function () {
+          expect(clientMetrics.recordError).not.to.be.called
+        })
+
+        it('should rethrow error', function () {
+          expect(thrownError).to.equal(error)
+          expect(thrownError.statusCode).to.equal(408)
         })
       })
     })
