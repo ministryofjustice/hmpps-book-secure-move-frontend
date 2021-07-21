@@ -136,6 +136,7 @@
     "got": "11.8.2",
     "govuk-frontend": "3.9.0",
     "grant-express": "5.4.8",
+    "hc-sticky": "2.2.7",
     "helmet": "4.6.0",
     "hmpo-form-wizard": "11.11.0",
     "i18next": "20.3.4",

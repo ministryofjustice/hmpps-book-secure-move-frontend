@@ -9,36 +9,12 @@
 {% endblock %}
 
 {% block content %}
-  {% block contentHeader %}{% endblock %}
+  {% block contentHeader %}
+    {{ appIdentityBar(identityBar) }}
+  {% endblock %}
 
   {% block contentContainer %}
   <div class="govuk-grid-row">
-
-    <aside class="govuk-grid-column-one-third">
-
-      {% block contentSidebar %}
-
-        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-3">
-          {{ t("moves::move_details") }}
-        </h3>
-
-        {{ appMetaList(moveDetails) }}
-
-        {% if actions | length %}
-          <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0">
-            {% for action in actions %}
-              <li>
-                <a href="{{ action.url }}" class="{{ action.classes }}">
-                  {{ t(action.text) }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-
-      {% endblock %}
-
-    </aside>
 
     <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
 
@@ -66,6 +42,32 @@
       {% endblock %}
 
     </div>
+
+    <aside class="govuk-grid-column-one-third app-!-tabs-offset">
+
+      {% block contentSidebar %}
+
+        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-3">
+          {{ t("moves::move_details") }}
+        </h3>
+
+        {{ appMetaList(moveDetails) }}
+
+        {% if actions | length %}
+          <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+            {% for action in actions %}
+              <li>
+                <a href="{{ action.url }}" class="{{ action.classes }}">
+                  {{ t(action.text) }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+      {% endblock %}
+
+    </aside>
 
   </div>
   {% endblock %}

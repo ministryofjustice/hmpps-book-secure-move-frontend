@@ -11,6 +11,12 @@
 }
 
 @include govuk-media-query($from: tablet) {
+  // vertical offset used to align a side column to the keyline
+  // of the GOV.UK tabs component
+  .app-\!-tabs-offset {
+    padding-top: 55px;
+  }
+
   .app-\!-position-top-right {
     position: absolute;
     top: 0;
