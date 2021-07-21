@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const HttpAgent = require('agentkeepalive')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
@@ -73,12 +74,23 @@ function requestMiddleware({
 
           debug(`[${status}] ${text}`, `(${req.method} ${url})`, error)
 
+          // TODO: Remove once we've figured out what timing is missing
+          Sentry.setContext('Timings', {
+            request: error.request ? error.request.timings : {},
+            response: error.response ? error.response.timings : {},
+          })
+
           // record error
           if (timings) {
-            const duration =
-              ((timings.error || timings.end) - timings.start) / 1000
-            clientMetrics.recordError(req, error, duration)
+            const timingEnd = timings.error || timings.end
+
+            if (timingEnd) {
+              const duration = (timingEnd - timings.start) / 1000
+              clientMetrics.recordError(req, error, duration)
+            }
           }
+
+          error.statusCode = status
 
           throw error
         })
