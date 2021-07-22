@@ -55,7 +55,7 @@ class ProfileService extends BaseService {
       .then(response => response.data)
   }
 
-  async update(data) {
+  update(data) {
     const personId = get(data, 'person.id')
 
     if (!personId) {

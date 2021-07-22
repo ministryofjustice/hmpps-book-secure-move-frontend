@@ -202,7 +202,7 @@ describe('User service', function () {
     })
 
     context('when supplier call errors', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
           .get('/')
           .reply(
@@ -312,7 +312,7 @@ describe('User service', function () {
         result = await getLocations(null, supplierStub.id, [])
       })
 
-      it('looks up locations for the supplier', async function () {
+      it('looks up locations for the supplier', function () {
         expect(
           referenceDataStub.getLocationsBySupplierId
         ).to.be.calledWithExactly(supplierStub.id)
@@ -327,7 +327,7 @@ describe('User service', function () {
         ])
       })
 
-      it('looks up locations for the supplier', async function () {
+      it('looks up locations for the supplier', function () {
         expect(referenceDataStub.getSuppliers).to.be.calledOnce
         expect(
           referenceDataStub.getLocationsBySupplierId

@@ -41,7 +41,8 @@ describe('Move controllers', function () {
       let req
       const res = {}
       let nextSpy
-      beforeEach(async function () {
+
+      beforeEach(function () {
         sinon.stub(controller, 'setFlash')
         personService.unformat.returns({}).resetHistory()
         personService.update.resolves().resetHistory()
@@ -76,15 +77,15 @@ describe('Move controllers', function () {
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should not call update', async function () {
+        it('should not call update', function () {
           expect(personService.update).to.not.be.called
         })
 
-        it('should set the confirmation message', async function () {
+        it('should set the confirmation message', function () {
           expect(controller.setFlash).to.not.be.called
         })
 
-        it('should invoke next with no error', async function () {
+        it('should invoke next with no error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
@@ -93,7 +94,8 @@ describe('Move controllers', function () {
         beforeEach(async function () {
           await controller.saveValues(req, res, nextSpy)
         })
-        it('should call unformat with expected field keys', async function () {
+
+        it('should call unformat with expected field keys', function () {
           expect(personService.unformat).to.be.calledOnceWithExactly(
             {
               id: '#personId',
@@ -103,7 +105,7 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should call update with expected data', async function () {
+        it('should call update with expected data', function () {
           expect(personService.update).to.be.calledOnceWithExactly({
             id: '#personId',
             foo: 'a',
@@ -111,23 +113,25 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should set the confirmation message', async function () {
+        it('should set the confirmation message', function () {
           expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
 
-        it('should invoke next with no error', async function () {
+        it('should invoke next with no error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
       context('when an error is thrown', function () {
         let error
+
         beforeEach(async function () {
           error = new Error()
           personService.update.rejects(error)
           await controller.saveValues(req, res, nextSpy)
         })
-        it('should invoke next with the error', async function () {
+
+        it('should invoke next with the error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(error)
         })
       })

@@ -93,7 +93,7 @@ describe('API Client', function () {
     })
 
     context('when response should be cached', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         payload.cacheKey = 'cache-key'
       })
 

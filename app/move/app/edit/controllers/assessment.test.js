@@ -133,6 +133,7 @@ describe('Move controllers', function () {
       let req, profileService
       const res = {}
       let nextSpy
+
       beforeEach(function () {
         profileService = {
           update: sinon.stub().resolves(),
@@ -235,7 +236,8 @@ describe('Move controllers', function () {
           req.form.values.violent = '#violent'
           await controller.saveValues(req, res, nextSpy)
         })
-        it('should update the profile data', async function () {
+
+        it('should update the profile data', function () {
           expect(profileService.update).to.be.calledOnceWithExactly({
             assessment_answers: [
               {
@@ -248,7 +250,7 @@ describe('Move controllers', function () {
           })
         })
 
-        it('should set the confirmation message', async function () {
+        it('should set the confirmation message', function () {
           expect(controller.setFlash).to.be.calledOnceWithExactly(req)
         })
       })
@@ -257,6 +259,7 @@ describe('Move controllers', function () {
         beforeEach(function () {
           req.form.values.violent = ''
         })
+
         it('should remove the comment from the assessment answer', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(profileService.update).to.be.calledOnceWithExactly({
@@ -277,6 +280,7 @@ describe('Move controllers', function () {
           req.form.values.risk.push('56826f64-da5d-42eb-b360-131e60bcc3d3')
           req.form.values.risk.push('4e7e54b4-a40c-488f-bdff-c6b2268ca4eb')
         })
+
         it('should add the assessment answer and order the assessments', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(profileService.update).to.be.calledOnceWithExactly({
@@ -306,6 +310,7 @@ describe('Move controllers', function () {
         beforeEach(function () {
           req.getProfile.returns({ id: '#profileId' })
         })
+
         it('should update the person data', async function () {
           await controller.saveValues(req, res, nextSpy)
           expect(profileService.update).to.be.calledOnceWithExactly({
@@ -327,6 +332,7 @@ describe('Move controllers', function () {
           req.form.values.violent = '#changeme'
           profileService.update.throws(err)
         })
+
         it('should call next with the error thrown', async function () {
           try {
             await controller.saveValues(req, res, nextSpy)

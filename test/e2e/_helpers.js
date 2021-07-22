@@ -186,7 +186,7 @@ export async function createPersonFixture(overrides = {}) {
  *
  * @returns {object} - profile data
  */
-export async function generateProfile(personId, overrides = {}) {
+export function generateProfile(personId, overrides = {}) {
   return {
     assessment_answers: [],
     person: {
@@ -421,7 +421,7 @@ export async function fillAutocomplete({ selector, value }) {
  *
  * @returns {string|array} - value of the selected item or array of items selected
  */
-export async function fillRadioOrCheckbox({ selector, value }) {
+export function fillRadioOrCheckbox({ selector, value }) {
   const options = selector
     .parent('fieldset')
     .nth(0)

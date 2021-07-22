@@ -1,6 +1,6 @@
 const populationToGrid = require('../../../common/presenters/population-to-grid')
 
-async function daily(req, res) {
+function daily(req, res) {
   const {
     population,
     transfers,

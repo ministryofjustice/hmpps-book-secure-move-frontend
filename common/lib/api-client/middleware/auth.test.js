@@ -52,7 +52,7 @@ describe('API Client', function () {
     })
 
     context('when access token rejects', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         MockAuth.prototype.getAuthorizationHeader.rejects(new Error())
       })
 

@@ -15,17 +15,16 @@ const mockResponse = {
 describe('API Client', function () {
   describe('Get cache middleware', function () {
     describe('#cache-key', function () {
-      let expectedPayload
       let payload
+
       beforeEach(function () {
         payload = {}
-        expectedPayload = { ...payload }
         cache.get.resetHistory()
       })
 
       context('when payload has no cache key', function () {
-        beforeEach(function () {
-          middleware().req(payload)
+        beforeEach(async function () {
+          await middleware().req(payload)
         })
 
         it('should not get the cached value', function () {
@@ -33,7 +32,7 @@ describe('API Client', function () {
         })
 
         it('should leave payload untouched', function () {
-          expect(payload).to.deep.equal(expectedPayload)
+          expect(payload).to.deep.equal({})
         })
       })
 
@@ -47,11 +46,7 @@ describe('API Client', function () {
         context('and a value has been cached', function () {
           beforeEach(async function () {
             cache.get.resolves(mockResponse)
-            expectedPayload = {
-              ...payload,
-              res: { body: mockResponse, data: mockResponse },
-            }
-            middleware().req(payload)
+            await middleware().req(payload)
           })
 
           it('should get the cached value', function () {
@@ -59,14 +54,18 @@ describe('API Client', function () {
           })
 
           it('should add the cached value as response to the payload', function () {
-            expect(payload).to.deep.equal(expectedPayload)
+            expect(payload).to.deep.equal({
+              cacheKey: 'cache-key',
+              res: { body: mockResponse, data: mockResponse },
+            })
           })
         })
 
         context('but no value has been cached', function () {
-          beforeEach(function () {
-            expectedPayload = { ...payload }
-            middleware().req(payload)
+          beforeEach(async function () {
+            await middleware().req({
+              cacheKey: 'cache-key',
+            })
           })
 
           it('should get the cached value', function () {
@@ -74,13 +73,15 @@ describe('API Client', function () {
           })
 
           it('should leave payload untouched', function () {
-            expect(payload).to.deep.equal(expectedPayload)
+            expect(payload).to.deep.equal({
+              cacheKey: 'cache-key',
+            })
           })
         })
 
         context('and redis is enabled', function () {
-          beforeEach(function () {
-            middleware({ useRedisCache: true }).req(payload)
+          beforeEach(async function () {
+            await middleware({ useRedisCache: true }).req(payload)
           })
 
           it('should tell cache module to use redis', function () {

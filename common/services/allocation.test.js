@@ -596,7 +596,7 @@ describe('Allocation service', function () {
     const getAllInclude = ['from_location', 'to_location']
     let results
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(allocationService, 'get').resolves(mockAllocations)
     })
 

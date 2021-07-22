@@ -37,6 +37,7 @@ describe('Move controllers', function () {
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
         )
+
         expect(ownProps).to.deep.equal(ownMethods)
       })
     })
@@ -46,6 +47,7 @@ describe('Move controllers', function () {
       const res = {}
       const values = {}
       const mockMove = {}
+
       beforeEach(function () {
         req = {
           getMove: sinon.stub().returns(mockMove),
@@ -62,6 +64,7 @@ describe('Move controllers', function () {
         beforeEach(function () {
           req.initialStep = true
         })
+
         it('should return the move', function () {
           expect(controller.getUpdateValues(req, res, values)).to.equal(
             mockMove
@@ -74,19 +77,20 @@ describe('Move controllers', function () {
       const req = {}
       const res = {}
       let nextSpy
-      beforeEach(async function () {
+
+      beforeEach(function () {
         sinon.stub(UpdateBaseController.prototype, 'saveMove')
         nextSpy = sinon.spy()
-        await controller.saveValues(req, res, nextSpy)
+        controller.saveValues(req, res, nextSpy)
       })
 
-      it('should call base’s saveMove', async function () {
+      it('should call base’s saveMove', function () {
         expect(
           UpdateBaseController.prototype.saveMove
         ).to.be.calledOnceWithExactly(req, res, nextSpy)
       })
 
-      it('should not invoke next itself', async function () {
+      it('should not invoke next itself', function () {
         expect(nextSpy).to.not.be.called
       })
     })

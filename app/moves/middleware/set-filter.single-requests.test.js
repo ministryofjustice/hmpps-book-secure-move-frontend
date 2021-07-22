@@ -80,7 +80,7 @@ describe('Moves middleware', function () {
           ])
         })
 
-        it('calls the servive with correct arguments', async function () {
+        it('calls the servive with correct arguments', function () {
           expect(singleRequestService.getAll).to.have.been.calledWithExactly({
             isAggregation: true,
             status: 'pending',
@@ -101,7 +101,7 @@ describe('Moves middleware', function () {
           })
         })
 
-        it('calls the service on each item', async function () {
+        it('calls the service on each item', function () {
           expect(singleRequestService.getAll.callCount).to.equal(3)
         })
 

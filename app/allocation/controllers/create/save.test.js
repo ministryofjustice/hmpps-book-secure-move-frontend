@@ -98,7 +98,7 @@ describe('the save controller', function () {
     let journeyModel
     let redirect
     context('happy path', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         sessionModel = {
           toJSON: sinon.stub().returns(mockData),
           get: sinon.stub().returns(123),
@@ -108,7 +108,7 @@ describe('the save controller', function () {
           reset: sinon.stub(),
         }
         redirect = sinon.stub()
-        await controller.successHandler(
+        controller.successHandler(
           {
             sessionModel,
             journeyModel,
@@ -129,14 +129,14 @@ describe('the save controller', function () {
     })
     context('unhappy path', function () {
       const error = new Error('error')
-      beforeEach(async function () {
+      beforeEach(function () {
         next = sinon.stub()
         sessionModel = {
           get: sinon.stub().returns({
             id: 1,
           }),
         }
-        await controller.successHandler(
+        controller.successHandler(
           {
             sessionModel,
             journeyModel: {

@@ -5,7 +5,7 @@ const {
   locationsToPopulationTable,
 } = require('../../../common/presenters/date-table/locations-to-population-table-component')
 
-async function setResultsPopulationTables(req, res, next) {
+function setResultsPopulationTables(req, res, next) {
   try {
     const { dateRange, query } = req
 

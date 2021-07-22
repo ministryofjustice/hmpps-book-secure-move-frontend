@@ -92,7 +92,7 @@ class SingleRequestService extends BaseService {
     })
   }
 
-  async getDownload(args) {
+  getDownload(args) {
     return this.moveService.getDownload(args)
   }
 

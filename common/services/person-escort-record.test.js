@@ -63,7 +63,7 @@ describe('Services', function () {
       let output
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'update').resolves({
           data: mockRecord,
         })
@@ -143,7 +143,7 @@ describe('Services', function () {
       let output
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'find').resolves({
           data: mockRecord,
         })
@@ -194,7 +194,7 @@ describe('Services', function () {
       const mockId = '8567f1a5-2201-4bc2-b655-f6526401303a'
       const mockResponses = [{ id: '1' }, { id: '2' }]
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'patch').resolves({
           data: [],
         })

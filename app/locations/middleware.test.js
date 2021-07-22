@@ -184,7 +184,7 @@ describe('Locations middleware', function () {
       nextSpy = sinon.spy()
     })
 
-    context('when the region is found', async function () {
+    context('when the region is found', function () {
       beforeEach(async function () {
         await proxiedMiddleware.setRegion(req, {}, nextSpy)
       })
@@ -200,7 +200,7 @@ describe('Locations middleware', function () {
       })
     })
 
-    context('when the region is not found', async function () {
+    context('when the region is not found', function () {
       const error = new Error()
       beforeEach(async function () {
         req.services.referenceData.getRegionById = sinon.fake.returns(
@@ -218,7 +218,7 @@ describe('Locations middleware', function () {
       })
     })
 
-    context('when no region is returned', async function () {
+    context('when no region is returned', function () {
       beforeEach(async function () {
         mockReferenceData.getRegionById = sinon.fake.returns(Promise.resolve())
         await proxiedMiddleware.setRegion(req, {}, nextSpy)
@@ -246,17 +246,17 @@ describe('Locations middleware', function () {
       await middleware.setHasSelectedLocation(req, {}, nextSpy)
     })
 
-    it('should not set hasSelectedLocation property', async function () {
+    it('should not set hasSelectedLocation property', function () {
       expect(req.session.hasSelectedLocation).to.equal(true)
     })
 
-    it('should call next', async function () {
+    it('should call next', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
 
   describe('#setSelectedLocation', function () {
-    beforeEach(async function () {
+    beforeEach(function () {
       req = {
         session: {
           currentLocation: 'currentLocation',
@@ -266,43 +266,43 @@ describe('Locations middleware', function () {
     })
 
     context('when called with no location type', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         middleware.setSelectedLocation(req)
       })
 
-      it('it should delete the currentLocation', async function () {
+      it('it should delete the currentLocation', function () {
         expect(req.session).to.not.have.property('currentLocation')
       })
 
-      it('it should delete the currentRegion', async function () {
+      it('it should delete the currentRegion', function () {
         expect(req.session).to.not.have.property('currentRegion')
       })
     })
 
     context('when called with currentLocation as location type', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         middleware.setSelectedLocation(req, 'currentLocation', 'foo')
       })
 
-      it('it should set the currentLocation', async function () {
+      it('it should set the currentLocation', function () {
         expect(req.session.currentLocation).to.equal('foo')
       })
 
-      it('it should delete the currentRegion', async function () {
+      it('it should delete the currentRegion', function () {
         expect(req.session).to.not.have.property('currentRegion')
       })
     })
 
     context('when called with currentRegion as location type', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         middleware.setSelectedLocation(req, 'currentRegion', 'foo')
       })
 
-      it('it should set the currentRegion', async function () {
+      it('it should set the currentRegion', function () {
         expect(req.session.currentRegion).to.equal('foo')
       })
 
-      it('it should delete the currentLocation', async function () {
+      it('it should delete the currentLocation', function () {
         expect(req.session).to.not.have.property('currentLocation')
       })
     })

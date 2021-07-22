@@ -60,8 +60,8 @@ describe('Population middleware', function () {
     })
 
     context('by default', function () {
-      beforeEach(async function () {
-        await middleware(req, res, next)
+      beforeEach(function () {
+        middleware(req, res, next)
       })
 
       it('should call locationsToPopulationTable presenter', function () {
@@ -85,8 +85,8 @@ describe('Population middleware', function () {
     })
 
     context('on errors', function () {
-      it('should call next with missing resultsAsPopulation', async function () {
-        await middleware({}, res, next)
+      it('should call next with missing resultsAsPopulation', function () {
+        middleware({}, res, next)
 
         expect(next).to.have.been.calledWith(
           sinon.match(
@@ -97,12 +97,12 @@ describe('Population middleware', function () {
         )
       })
 
-      it('should call next with presenter errors', async function () {
+      it('should call next with presenter errors', function () {
         locationsToPopulationComponent.locationsToPopulationAndTransfersTables.throws(
           new Error('Presenter error')
         )
 
-        await middleware(req, res, next)
+        middleware(req, res, next)
 
         expect(next).to.have.been.calledWith(
           sinon.match(

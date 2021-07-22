@@ -171,7 +171,7 @@ describe('API Client', function () {
     })
 
     context('when response should be cached', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         payload.cacheKey = 'cache-key'
       })
 
@@ -232,7 +232,7 @@ describe('API Client', function () {
       let thrownError
       let error
 
-      beforeEach(async function () {
+      beforeEach(function () {
         error = new Error('Mock error')
       })
 

@@ -106,7 +106,7 @@ describe('Framework middleware', function () {
     })
 
     context('when record ID exists', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         mockReq.params = {
           resourceId: mockRecordId,
         }

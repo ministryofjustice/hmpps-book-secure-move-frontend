@@ -57,7 +57,7 @@ describe('Move controllers', function () {
       }
       const res = {}
       let nextSpy
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(MixinProto, 'configure')
         nextSpy = sinon.spy()
       })
@@ -187,7 +187,7 @@ describe('Move controllers', function () {
       const profile = { id: '#profile', person: { id: '#person' } }
       const mockProfile = { ...profile, foo: 'bar' }
 
-      beforeEach(async function () {
+      beforeEach(function () {
         profileService = {
           update: sinon.stub().resolves({}),
         }
@@ -214,35 +214,37 @@ describe('Move controllers', function () {
         beforeEach(async function () {
           await controller.successHandler(req, res, nextSpy)
         })
-        it('should update the move', async function () {
+
+        it('should update the move', function () {
           expect(profileService.update).to.be.calledOnceWithExactly({
             ...profile,
             documents,
           })
         })
 
-        it('should redirect back to the move view', async function () {
+        it('should redirect back to the move view', function () {
           expect(controller.getBaseUrl).to.be.calledOnceWithExactly(req)
           expect(res.redirect).to.be.calledOnceWithExactly('__url__')
         })
 
-        it('should not invoke mixin’s successHandler', async function () {
+        it('should not invoke mixin’s successHandler', function () {
           expect(MixinProto.successHandler).not.to.be.called
         })
 
-        it('should not invoke next', async function () {
+        it('should not invoke next', function () {
           expect(nextSpy).not.to.be.called
         })
       })
 
       context('When saving fails', function () {
         const error = new Error('boom')
+
         beforeEach(async function () {
           profileService.update.throws(error)
           await controller.successHandler(req, res, nextSpy)
         })
 
-        it('should invoke next with error', async function () {
+        it('should invoke next with error', function () {
           expect(nextSpy).to.be.calledOnceWithExactly(error)
         })
       })
@@ -253,11 +255,11 @@ describe('Move controllers', function () {
           await controller.successHandler(req, res, nextSpy)
         })
 
-        it('should not update the move', async function () {
+        it('should not update the move', function () {
           expect(profileService.update).not.to.be.called
         })
 
-        it('should invoke mixin’s successHandler', async function () {
+        it('should invoke mixin’s successHandler', function () {
           expect(MixinProto.successHandler).to.be.calledOnceWithExactly(
             req,
             res,
@@ -265,7 +267,7 @@ describe('Move controllers', function () {
           )
         })
 
-        it('should not invoke next', async function () {
+        it('should not invoke next', function () {
           expect(nextSpy).not.to.be.called
         })
       })

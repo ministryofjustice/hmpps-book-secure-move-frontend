@@ -268,12 +268,14 @@ describe('Move controllers', function () {
       })
 
       context('When a valid ', function () {
-        this.beforeEach(function () {
+        beforeEach(function () {
           controller.getUpdateValues(req)
         })
+
         it('should get person data', function () {
           expect(req.getPerson).to.be.calledOnceWithExactly()
         })
+
         it('should get person data', function () {
           expect(personService.unformat).to.be.calledOnceWithExactly(person, [
             'field1',
@@ -287,6 +289,7 @@ describe('Move controllers', function () {
       let req
       let nextSpy
       const res = {}
+
       beforeEach(function () {
         req = {
           get: sinon.stub(),
@@ -340,6 +343,7 @@ describe('Move controllers', function () {
           },
         },
       }
+
       beforeEach(function () {
         req = {
           models: {},
@@ -699,10 +703,12 @@ describe('Move controllers', function () {
       beforeEach(function () {
         req.initialStep = true
       })
+
       it('should call the getUpdateValues method with the correct args', function () {
         controller.getValues(req, res, callback)
         expect(controller.getUpdateValues).to.be.calledOnceWithExactly(req, res)
       })
+
       it('should call the protectReadOnlyFields method with the correct args', function () {
         controller.getValues(req, res, callback)
         expect(controller.protectReadOnlyFields).to.be.calledOnceWithExactly(
@@ -723,6 +729,7 @@ describe('Move controllers', function () {
 
     context('when super.getUpdateValues passes an error', function () {
       let err
+
       beforeEach(function () {
         err = new Error()
         getValuesStub.callsFake((req, res, valuesCallback) => {
@@ -738,6 +745,7 @@ describe('Move controllers', function () {
 
     context('when this.getUpdateValues throws an error', function () {
       let err
+
       beforeEach(function () {
         req.initialStep = true
         req.form.options.update = true
@@ -755,10 +763,12 @@ describe('Move controllers', function () {
 
   describe('#getUpdateValues()', function () {
     const req = { services: { person: personService } }
+
     beforeEach(function () {
       req.getPerson = sinon.stub()
       personService.unformat.resetHistory().returns({})
     })
+
     context('when default getUpdateValues method invoked', function () {
       it('should return an empty object', function () {
         const values = controller.getUpdateValues(req, {})
@@ -792,6 +802,7 @@ describe('Move controllers', function () {
       protectedNull: null,
       protected: 'protected-value',
     }
+
     beforeEach(function () {
       req = {
         form: {
@@ -807,16 +818,19 @@ describe('Move controllers', function () {
       const { unprotected } = req.form.options.fields
       expect(unprotected).to.deep.equal(fields.unprotected)
     })
+
     it('should leave protected fields that have no value unchanged', function () {
       controller.protectReadOnlyFields(req, values)
       const { protectedUndef } = req.form.options.fields
       expect(protectedUndef).to.deep.equal(fields.protectedUndef)
     })
+
     it('should leave protected fields that have null value unchanged', function () {
       controller.protectReadOnlyFields(req, values)
       const { protectedNull } = req.form.options.fields
       expect(protectedNull).to.deep.equal(fields.protectedNull)
     })
+
     it('should update component of protected fields that have a value', function () {
       controller.protectReadOnlyFields(req, values)
       const { protected: protectedField } = req.form.options.fields
@@ -830,7 +844,8 @@ describe('Move controllers', function () {
     let req
     const res = {}
     let nextSpy, moveService
-    beforeEach(async function () {
+
+    beforeEach(function () {
       sinon.stub(controller, 'setFlash')
       moveService = {
         update: sinon.stub().resolves(),
@@ -906,11 +921,13 @@ describe('Move controllers', function () {
 
     context('when an error is thrown', function () {
       let error
+
       beforeEach(async function () {
         error = new Error()
         req.services.move.update = sinon.stub().rejects(error)
         await controller.saveMove(req, res, nextSpy)
       })
+
       it('should invoke next with the error', function () {
         expect(nextSpy).to.be.calledOnceWithExactly(error)
       })
@@ -919,7 +936,8 @@ describe('Move controllers', function () {
 
   describe('#setFlash', function () {
     let req
-    beforeEach(async function () {
+
+    beforeEach(function () {
       req = {
         t: sinon.stub().returnsArg(0),
         flash: sinon.spy(),
@@ -937,8 +955,8 @@ describe('Move controllers', function () {
     })
 
     context('when the supplier is known', function () {
-      beforeEach(async function () {
-        await controller.setFlash(req, 'categoryKey')
+      beforeEach(function () {
+        controller.setFlash(req, 'categoryKey')
       })
 
       it('should output localised strings containing the suppliers', function () {
@@ -954,9 +972,9 @@ describe('Move controllers', function () {
     })
 
     context('when the supplier is not known', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         req.getMove = sinon.stub().returns({})
-        await controller.setFlash(req, 'categoryKey')
+        controller.setFlash(req, 'categoryKey')
       })
 
       it('should output localised strings containing generic supplier info', function () {
@@ -975,9 +993,9 @@ describe('Move controllers', function () {
     })
 
     context('when passed an explicit key', function () {
-      beforeEach(async function () {
+      beforeEach(function () {
         controller.flashKey = 'flashKey'
-        await controller.setFlash(req, 'categoryKey')
+        controller.setFlash(req, 'categoryKey')
       })
 
       it('should set confirmation message using explicit key', function () {
@@ -991,9 +1009,9 @@ describe('Move controllers', function () {
     context(
       'when passed no explicit key but has a flashKey property',
       function () {
-        beforeEach(async function () {
+        beforeEach(function () {
           controller.flashKey = 'flashKey'
-          await controller.setFlash(req)
+          controller.setFlash(req)
         })
 
         it('should set confirmation message using explicit key', function () {
@@ -1008,9 +1026,9 @@ describe('Move controllers', function () {
     context(
       'when passed no explicit key and has no flashKey property',
       function () {
-        beforeEach(async function () {
+        beforeEach(function () {
           delete controller.flashKey
-          await controller.setFlash(req)
+          controller.setFlash(req)
         })
 
         it('should set confirmation message using explicit key', function () {

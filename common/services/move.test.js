@@ -698,7 +698,7 @@ describe('Move Service', function () {
   describe('#getActive()', function () {
     let moves
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(moveService, 'getAll').resolves(mockMoves)
     })
 
@@ -941,7 +941,7 @@ describe('Move Service', function () {
   describe('#getDownload()', function () {
     let moves
 
-    beforeEach(async function () {
+    beforeEach(function () {
       restClient.post.resetHistory()
       restClient.post.resolves('#download')
     })
@@ -1027,7 +1027,7 @@ describe('Move Service', function () {
       }
       let move
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'find').resolves(mockResponse)
       })
 
@@ -1067,7 +1067,7 @@ describe('Move Service', function () {
     const mockId = 'b695d0f0-af8e-4b97-891e-92020d6820b9'
     let move
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(moveService, '_getById').resolves(mockMove)
     })
 
@@ -1117,7 +1117,7 @@ describe('Move Service', function () {
     }
     let move
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
       sinon.stub(moveService, 'format').returnsArg(0)
     })
@@ -1181,7 +1181,7 @@ describe('Move Service', function () {
       }
       let move
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'post').resolves(mockResponse)
         sinon.spy(apiClient, 'one')
         sinon.spy(apiClient, 'all')
@@ -1264,7 +1264,7 @@ describe('Move Service', function () {
         },
       }
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(moveService, 'update').resolves(mockResponse)
       })
 

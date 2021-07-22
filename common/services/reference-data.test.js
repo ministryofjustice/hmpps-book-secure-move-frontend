@@ -149,7 +149,7 @@ describe('Reference Data Service', function () {
     }
     let response
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'findAll')
     })
 
@@ -431,7 +431,7 @@ describe('Reference Data Service', function () {
     const mockResponse = mockLocations
     let locations
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
     })
 
@@ -578,7 +578,7 @@ describe('Reference Data Service', function () {
     const mockResponse = mockLocations
     let locations
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(referenceDataService, 'getLocations').resolves(mockResponse)
     })
 
@@ -672,7 +672,7 @@ describe('Reference Data Service', function () {
     const mockResponse = mockLocations
     let locations
 
-    beforeEach(async function () {
+    beforeEach(function () {
       restClient.resetHistory()
       restClient.resolves({ data: mockResponse })
     })
