@@ -1,6 +1,29 @@
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
+function generateDateHtmlString({
+  startDate,
+  endDate,
+  startDateKey = 'started_on',
+  endDateKey = 'and_ended_on',
+  codeType,
+}) {
+  if (startDate) {
+    return `
+      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
+        ${i18n.t(startDateKey, {
+          context: codeType,
+        })} ${filters.formatDateWithDay(startDate)}
+        ${
+          endDate
+            ? `${i18n.t(endDateKey)} ${filters.formatDateWithDay(endDate)}`
+            : ''
+        }
+      </div>
+    `
+  }
+}
+
 function _mapAnswer({
   comments,
   created_at: createdAt,
@@ -32,45 +55,25 @@ function _mapAnswer({
       )}</span>`
 
   if (description && created) {
-    html += `
-      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
-        ${i18n.t('created_on', {
-          context: codeType,
-        })} ${filters.formatDateWithDay(created)}
-      </div>
-    `
+    html += generateDateHtmlString({
+      startDate: created,
+      startDateKey: 'created_on',
+      codeType,
+    })
   }
 
   if (startDate) {
-    html += `
-      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
-        ${i18n.t('started_on', {
-          context: codeType,
-        })} ${filters.formatDateWithDay(startDate)}
-        ${
-          endDate
-            ? `${i18n.t('and_ended_on')} ${filters.formatDateWithDay(endDate)}`
-            : ''
-        }
-      </div>
-    `
+    html += generateDateHtmlString({ startDate, endDate, codeType })
   }
 
   if (approvalDate) {
-    html += `
-      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
-        ${i18n.t('approved_on', {
-          context: codeType,
-        })} ${filters.formatDateWithDay(approvalDate)}
-        ${
-          nextReviewDate
-            ? `${i18n.t('and_next_review_on')} ${filters.formatDateWithDay(
-                nextReviewDate
-              )}`
-            : ''
-        }
-      </div>
-    `
+    html += generateDateHtmlString({
+      startDate: approvalDate,
+      endDate: nextReviewDate,
+      startDateKey: 'approved_on',
+      endDateKey: 'and_next_review_on',
+      codeType,
+    })
   }
 
   return {
