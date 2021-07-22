@@ -19,6 +19,10 @@ describe('Presenters', function () {
         .returns('Started on')
         .withArgs('and_ended_on')
         .returns('and ended on')
+        .withArgs('approved_on')
+        .returns('Approved on')
+        .withArgs('and_next_review_on')
+        .returns('and next review on')
       sinon.stub(filters, 'formatDateWithDay').returns(mockFormatDateWithDay)
     })
 
@@ -317,6 +321,44 @@ describe('Presenters', function () {
           {
             value: {
               html: '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Pregnant\n      </h4>\n    <span class="app-!-text-colour-black">Baby boy</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Started on Mon 10 Aug\n        and ended on Mon 10 Aug\n      </div>\n    </div>',
+            },
+          },
+        ])
+      })
+    })
+
+    context('with framework response NOMIS assessment', function () {
+      const mockAssessmentAnswers = [
+        {
+          comments: 'Standard',
+          code_description: 'Cell Share Risk Assessment',
+          approval_date: '2019-01-01',
+          next_review_date: '2019-09-01',
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = assessmentAnswersToMetaListComponent(
+          mockAssessmentAnswers
+        )
+      })
+
+      it('should format dates', function () {
+        expect(filters.formatDateWithDay).to.have.been.calledTwice
+        expect(filters.formatDateWithDay).to.have.been.calledWithExactly(
+          '2019-01-01'
+        )
+        expect(filters.formatDateWithDay).to.have.been.calledWithExactly(
+          '2019-09-01'
+        )
+      })
+
+      it('should include date', function () {
+        expect(transformedResponse).to.contain.property('items')
+        expect(transformedResponse.items).to.deep.equal([
+          {
+            value: {
+              html: '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Cell Share Risk Assessment\n      </h4>\n    <span class="app-!-text-colour-black">Standard</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">\n        Approved on Mon 10 Aug\n        and next review on Mon 10 Aug\n      </div>\n    </div>',
             },
           },
         ])

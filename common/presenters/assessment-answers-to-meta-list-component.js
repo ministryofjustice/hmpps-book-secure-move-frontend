@@ -7,6 +7,8 @@ function _mapAnswer({
   creation_date: creationDate,
   start_date: startDate,
   end_date: endDate,
+  approval_date: approvalDate,
+  next_review_date: nextReviewDate,
   nomis_alert_description: nomisAlertDescription,
   code_type: codeType,
   code_description: codeDescription,
@@ -48,6 +50,23 @@ function _mapAnswer({
         ${
           endDate
             ? `${i18n.t('and_ended_on')} ${filters.formatDateWithDay(endDate)}`
+            : ''
+        }
+      </div>
+    `
+  }
+
+  if (approvalDate) {
+    html += `
+      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
+        ${i18n.t('approved_on', {
+          context: codeType,
+        })} ${filters.formatDateWithDay(approvalDate)}
+        ${
+          nextReviewDate
+            ? `${i18n.t('and_next_review_on')} ${filters.formatDateWithDay(
+                nextReviewDate
+              )}`
             : ''
         }
       </div>

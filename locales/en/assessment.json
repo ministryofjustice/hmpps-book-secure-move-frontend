@@ -47,6 +47,7 @@
       "message": "The following information could not be included. Check NOMIS for the most up to date information:",
       "resource_types": {
         "alerts": "alerts",
+        "assessments": "assessments",
         "personal_care_needs": "personal care needs",
         "reasonable_adjustments": "reasonable adjustments"
       }

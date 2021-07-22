@@ -367,6 +367,10 @@ describe('Framework controllers', function () {
                 status: 'success',
               },
               {
+                resource_type: 'assessments',
+                status: 'success',
+              },
+              {
                 resource_type: 'personal_care_needs',
                 status: 'success',
               },
@@ -403,7 +407,7 @@ describe('Framework controllers', function () {
         })
 
         it('should set an empty array', function () {
-          expect(mockRes.locals.syncFailures).to.deep.equal([])
+          expect(mockRes.locals.syncFailures).to.be.an('array').that.is.empty
         })
 
         it('should call next without error', function () {
@@ -417,6 +421,10 @@ describe('Framework controllers', function () {
             {
               resource_type: 'alerts',
               status: 'failed',
+            },
+            {
+              resource_type: 'assessments',
+              status: 'success',
             },
             {
               resource_type: 'personal_care_needs',
