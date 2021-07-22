@@ -96,7 +96,7 @@ describe('Court Hearing Service', function () {
     }
     let courtHearing
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'create').resolves(mockResponse)
       sinon.stub(courtHearingService, 'format').returns(mockData)
     })

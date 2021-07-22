@@ -116,7 +116,7 @@ export default class Page {
    *
    * @returns {Promise}
    */
-  async chooseAllLocations() {
+  chooseAllLocations() {
     const allLocationsLink = Selector('a').withAttribute(
       'href',
       '/locations/all'

@@ -39,7 +39,7 @@ describe('Single request service', function () {
   describe('#getAll()', function () {
     let moves
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(moveService, 'get').resolves(mockMoves)
     })
 
@@ -285,7 +285,7 @@ describe('Single request service', function () {
   describe('#getDownload()', function () {
     let moves
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(moveService, 'getDownload').resolves('#download')
     })
 
@@ -327,7 +327,7 @@ describe('Single request service', function () {
       }
       let move
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'all').returns(apiClient)
         sinon.stub(apiClient, 'one').returns(apiClient)
         sinon.stub(apiClient, 'post').resolves(mockResponse)
@@ -393,7 +393,7 @@ describe('Single request service', function () {
       }
       let move
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'all').returns(apiClient)
         sinon.stub(apiClient, 'one').returns(apiClient)
         sinon.stub(apiClient, 'post').resolves(mockResponse)

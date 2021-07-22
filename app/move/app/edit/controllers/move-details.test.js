@@ -177,6 +177,7 @@ describe('Move controllers', function () {
             },
           ])
         })
+
         it('should call the next method', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
@@ -187,7 +188,8 @@ describe('Move controllers', function () {
       let req = {}
       const res = {}
       let nextSpy, moveService
-      beforeEach(async function () {
+
+      beforeEach(function () {
         moveService = {
           redirect: sinon.stub(),
           update: sinon.stub(),
@@ -233,14 +235,14 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should call set the notes property', async function () {
+            it('should call set the notes property', function () {
               expect(req.t).to.be.calledOnceWithExactly(
                 'moves::redirect_notes',
                 req.session.user
               )
             })
 
-            it('should call move service’s redirect method', async function () {
+            it('should call move service’s redirect method', function () {
               expect(moveService.redirect).to.be.calledOnceWithExactly({
                 id: '#moveId',
                 notes: 'moves::redirect_notes',
@@ -250,7 +252,7 @@ describe('Move controllers', function () {
               })
             })
 
-            it('should invoke next', async function () {
+            it('should invoke next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
@@ -266,11 +268,11 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should not call move service’s redirect method', async function () {
+            it('should not call move service’s redirect method', function () {
               expect(moveService.redirect).to.not.be.called
             })
 
-            it('should invoke next', async function () {
+            it('should invoke next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
@@ -282,7 +284,7 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should invoke next with error', async function () {
+            it('should invoke next with error', function () {
               expect(nextSpy).to.be.calledOnceWithExactly(error)
             })
           })
@@ -300,14 +302,14 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should call move service’s update method', async function () {
+            it('should call move service’s update method', function () {
               expect(moveService.update).to.be.calledOnceWithExactly({
                 id: '#moveId',
                 additional_information: '#additionalInformation',
               })
             })
 
-            it('should invoke next', async function () {
+            it('should invoke next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
@@ -321,17 +323,18 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should not call move service’s update method', async function () {
+            it('should not call move service’s update method', function () {
               expect(moveService.update).to.not.be.called
             })
 
-            it('should invoke next', async function () {
+            it('should invoke next', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
           })
 
           context('and the move service errors', function () {
             const error = new Error()
+
             beforeEach(async function () {
               req.getMove.returns({
                 move_type: moveType,
@@ -341,7 +344,7 @@ describe('Move controllers', function () {
               await controller.saveValues(req, res, nextSpy)
             })
 
-            it('should invoke next with error', async function () {
+            it('should invoke next with error', function () {
               expect(nextSpy).to.be.calledOnceWithExactly(error)
             })
           })
@@ -360,7 +363,7 @@ describe('Move controllers', function () {
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should not call move service’s update method', async function () {
+        it('should not call move service’s update method', function () {
           expect(moveService.update).to.not.be.called
         })
       })

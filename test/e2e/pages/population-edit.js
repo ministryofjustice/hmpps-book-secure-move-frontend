@@ -25,7 +25,7 @@ class PopulationEditPage extends Page {
     }
   }
 
-  async fill() {
+  fill() {
     const operationalCapacityValue = faker.datatype.number({
       min: 950,
       max: 1000,

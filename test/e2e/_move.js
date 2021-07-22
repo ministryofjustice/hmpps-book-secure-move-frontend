@@ -96,7 +96,7 @@ export function createCourtMove(options = {}) {
  *
  * @returns {undefined}
  */
-export async function checkUpdateLink(page) {
+export function checkUpdateLink(page) {
   return moveDetailPage.checkUpdateLink(page)
 }
 
@@ -107,7 +107,7 @@ export async function checkUpdateLink(page) {
  *
  * @returns {undefined}
  */
-export async function checkNoUpdateLink(page) {
+export function checkNoUpdateLink(page) {
   return moveDetailPage.checkNoUpdateLink(page)
 }
 
@@ -118,7 +118,7 @@ export async function checkNoUpdateLink(page) {
  *
  * @returns {undefined}
  */
-export async function checkCancelLink() {
+export function checkCancelLink() {
   return moveDetailPage.checkCancelLink()
 }
 
@@ -129,7 +129,7 @@ export async function checkCancelLink() {
  *
  * @returns {undefined}
  */
-export async function checkNoCancelLink() {
+export function checkNoCancelLink() {
   return moveDetailPage.checkCancelLink(false)
 }
 

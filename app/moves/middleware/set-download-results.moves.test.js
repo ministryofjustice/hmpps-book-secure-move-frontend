@@ -13,7 +13,7 @@ describe('Moves middleware', function () {
   describe('#setDownloadResultsMoves()', function () {
     let req, res, nextSpy, moveService
 
-    beforeEach(async function () {
+    beforeEach(function () {
       moveService = {
         getDownload: sinon.stub().resolves(mockMoves),
       }

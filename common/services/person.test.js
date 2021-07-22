@@ -218,7 +218,7 @@ describe('Person Service', function () {
       }
       let person
 
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(apiClient, 'find').resolves(mockResponse)
       })
 
@@ -296,7 +296,7 @@ describe('Person Service', function () {
     }
     let person
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'update').resolves(mockResponse)
       sinon.stub(personService, 'format').returnsArg(0)
     })
@@ -337,7 +337,7 @@ describe('Person Service', function () {
     }
     let imageUrl
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'one').returnsThis()
       sinon.stub(apiClient, 'all').returnsThis()
       sinon.stub(apiClient, 'get').resolves(mockResponse)
@@ -382,7 +382,7 @@ describe('Person Service', function () {
     }
     let imageUrl
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'one').returnsThis()
       sinon.stub(apiClient, 'all').returnsThis()
       sinon.stub(apiClient, 'get').resolves(mockResponse)
@@ -430,7 +430,7 @@ describe('Person Service', function () {
     }
     let imageUrl
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'one').returnsThis()
       sinon.stub(apiClient, 'all').returnsThis()
       sinon.stub(apiClient, 'get').resolves(mockResponse)
@@ -495,7 +495,7 @@ describe('Person Service', function () {
     }
     let person
 
-    beforeEach(async function () {
+    beforeEach(function () {
       sinon.stub(apiClient, 'findAll').resolves(mockResponse)
     })
 

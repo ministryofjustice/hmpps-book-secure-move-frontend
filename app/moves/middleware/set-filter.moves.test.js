@@ -81,17 +81,19 @@ describe('Moves middleware', function () {
           expect(req.filterBodyKey).to.deep.equal(filter)
         })
 
-        it('calls the servive with correct arguments', async function () {
+        it('calls the servive with correct arguments', function () {
           expect(moveService.getActive).to.have.been.calledWithExactly({
             ...req.body[mockBodyKey],
             isAggregation: true,
             status: 'pending',
           })
+
           expect(moveService.getActive).to.have.been.calledWithExactly({
             ...req.body[mockBodyKey],
             isAggregation: true,
             status: 'approved',
           })
+
           expect(moveService.getActive).to.have.been.calledWithExactly({
             ...req.body[mockBodyKey],
             isAggregation: true,
@@ -99,7 +101,7 @@ describe('Moves middleware', function () {
           })
         })
 
-        it('calls the service on each item', async function () {
+        it('calls the service on each item', function () {
           expect(moveService.getActive.callCount).to.equal(3)
         })
 

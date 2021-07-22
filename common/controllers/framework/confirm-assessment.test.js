@@ -213,7 +213,7 @@ describe('Framework controllers', function () {
     describe('#errorHandler', function () {
       let nextSpy
 
-      beforeEach(async function () {
+      beforeEach(function () {
         nextSpy = sinon.spy()
       })
 

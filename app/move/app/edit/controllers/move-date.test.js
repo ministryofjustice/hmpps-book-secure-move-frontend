@@ -45,6 +45,7 @@ describe('Move controllers', function () {
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
         )
+
         expect(ownProps).to.deep.equal(ownMethods)
       })
     })
@@ -59,6 +60,7 @@ describe('Move controllers', function () {
           TOMORROW: tomorrow,
         },
       }
+
       beforeEach(function () {
         req = {
           form: {
@@ -78,9 +80,11 @@ describe('Move controllers', function () {
 
       context('When a move exists without a move type', function () {
         const move = { id: '#move', date: '2019-10-04' }
+
         beforeEach(function () {
           req.getMove.returns(move)
         })
+
         context('When not today or tomorrow', function () {
           it('should return just the move type', function () {
             expect(controller.getUpdateValues(req, res)).to.deep.equal({
@@ -89,10 +93,12 @@ describe('Move controllers', function () {
             })
           })
         })
+
         context('When a today', function () {
           beforeEach(function () {
             move.date = today
           })
+
           it('should return just the move type', function () {
             expect(controller.getUpdateValues(req, res)).to.deep.equal({
               date_type: 'today',
@@ -103,6 +109,7 @@ describe('Move controllers', function () {
           beforeEach(function () {
             move.date = tomorrow
           })
+
           it('should return just the move type', function () {
             expect(controller.getUpdateValues(req, res)).to.deep.equal({
               date_type: 'tomorrow',
@@ -116,19 +123,20 @@ describe('Move controllers', function () {
       const req = {}
       const res = {}
       let nextSpy
-      beforeEach(async function () {
+
+      beforeEach(function () {
         sinon.stub(UpdateBaseController.prototype, 'saveMove')
         nextSpy = sinon.spy()
-        await controller.saveValues(req, res, nextSpy)
+        controller.saveValues(req, res, nextSpy)
       })
 
-      it('should call base’s saveMove', async function () {
+      it('should call base’s saveMove', function () {
         expect(
           UpdateBaseController.prototype.saveMove
         ).to.be.calledOnceWithExactly(req, res, nextSpy)
       })
 
-      it('should not invoke next itself', async function () {
+      it('should not invoke next itself', function () {
         expect(nextSpy).to.not.be.called
       })
     })

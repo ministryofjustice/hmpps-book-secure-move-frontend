@@ -16,7 +16,7 @@ describe('Moves middleware', function () {
   describe('#setResultsMoves()', function () {
     let req, res, nextSpy, moveToCardComponentMapStub, moveService
 
-    beforeEach(async function () {
+    beforeEach(function () {
       moveService = {
         getActive: sinon.stub(),
       }

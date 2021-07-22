@@ -21,7 +21,7 @@ class SaveController extends CreateAllocationBaseController {
     }
   }
 
-  async successHandler(req, res, next) {
+  successHandler(req, res, next) {
     const { id } = req.sessionModel.get('allocation')
 
     try {

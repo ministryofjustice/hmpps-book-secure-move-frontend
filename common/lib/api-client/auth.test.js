@@ -197,7 +197,7 @@ describe('API Client', function () {
       const mockResponse = {
         data: mockTokenResponse,
       }
-      beforeEach(async function () {
+      beforeEach(function () {
         sinon.stub(axios, 'post').resolves(mockResponse)
         sinon.stub(clientMetrics, 'recordSuccess')
         sinon.stub(clientMetrics, 'recordError')

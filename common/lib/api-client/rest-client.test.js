@@ -22,16 +22,17 @@ const restClient = proxyquire('./rest-client', {
   axios: axiosStub,
 })
 
-describe('API Client', async function () {
-  describe('Rest client', async function () {
+describe('API Client', function () {
+  describe('Rest client', function () {
     beforeEach(function () {
       axiosStub.resetHistory()
       getAuthorizationHeaderStub.resetHistory()
       getRequestHeadersStub.resetHistory()
     })
 
-    context('when calling the API', async function () {
+    context('when calling the API', function () {
       let data
+
       beforeEach(async function () {
         data = await restClient('/foo')
       })
@@ -61,7 +62,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when calling the API with params', async function () {
+    context('when calling the API with params', function () {
       beforeEach(async function () {
         await restClient('/foo', { bar: 'baz' })
       })
@@ -80,7 +81,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when calling the API as a post with no data', async function () {
+    context('when calling the API as a post with no data', function () {
       beforeEach(async function () {
         await restClient('/foo', null, { method: 'post' })
       })
@@ -99,7 +100,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when calling the API as a post with data', async function () {
+    context('when calling the API as a post with data', function () {
       beforeEach(async function () {
         await restClient('/foo', { bar: 'baz' }, { method: 'post' })
       })
@@ -119,7 +120,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when calling the API - format', async function () {
+    context('when calling the API - format', function () {
       beforeEach(async function () {
         await restClient('/foo', { bar: 'baz' }, { format: 'application/foo' })
       })
@@ -131,7 +132,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when using get method', async function () {
+    context('when using get method', function () {
       beforeEach(async function () {
         await restClient.get('/foo', { bar: 'baz' })
       })
@@ -150,7 +151,7 @@ describe('API Client', async function () {
       })
     })
 
-    context('when using post method', async function () {
+    context('when using post method', function () {
       beforeEach(async function () {
         await restClient.post('/foo', { bar: 'baz' })
       })

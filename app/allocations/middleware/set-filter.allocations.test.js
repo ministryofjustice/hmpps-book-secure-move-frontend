@@ -79,7 +79,7 @@ describe('Allocations middleware', function () {
           ])
         })
 
-        it('calls the servive with correct arguments', async function () {
+        it('calls the servive with correct arguments', function () {
           expect(
             allocationService.getByDateAndLocation
           ).to.have.been.calledWithExactly({
@@ -106,15 +106,15 @@ describe('Allocations middleware', function () {
           })
         })
 
-        it('calls the service on each item', async function () {
+        it('calls the service on each item', function () {
           expect(allocationService.getByDateAndLocation.callCount).to.equal(3)
         })
 
-        it('translate each item', async function () {
+        it('translate each item', function () {
           expect(i18n.t.callCount).to.equal(3)
         })
 
-        it('translates with count', async function () {
+        it('translates with count', function () {
           expect(i18n.t).to.be.calledWithExactly('statuses::pending', {
             count: 4,
           })

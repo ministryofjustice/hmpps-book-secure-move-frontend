@@ -30,7 +30,7 @@ const restClient = async (url, args, options = {}) => {
 
 restClient.get = restClient
 
-restClient.post = async (url, data, options) =>
+restClient.post = (url, data, options) =>
   restClient(url, data, { ...options, method: 'post' })
 
 module.exports = restClient

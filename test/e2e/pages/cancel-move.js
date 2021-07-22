@@ -24,7 +24,7 @@ class CancelMovePage extends Page {
    *
    * @returns {Promise}
    */
-  async selectReason(reason, comment) {
+  selectReason(reason, comment) {
     const fields = {
       cancellation_reason: {
         selector: this.fields.cancellationReason,

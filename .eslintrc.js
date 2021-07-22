@@ -59,6 +59,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'block-like' },
       { blankLine: 'always', prev: 'block-like', next: '*' },
     ],
+    'require-await': 'error',
   },
   overrides: [
     {
