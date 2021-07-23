@@ -1,0 +1,24 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Person profile'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ getPageTitle() | join(' – ') if getPageTitle }}
+{% endblock %}
+
+{% block contentHeader %}
+  {{ appIdentityBar(identityBar) }}
+{% endblock %}
+
+{% block contentMain %}
+  <h2 class="govuk-heading-m">
+    {{ t("person::personal_details.heading") }}
+  </h2>
+
+  {{ govukSummaryList(personalDetailsSummary) }}
+{% endblock %}
+
+{% block contentSidebar %}
+{% endblock %}

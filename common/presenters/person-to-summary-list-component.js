@@ -74,6 +74,7 @@ module.exports = function personToSummaryListComponent(props) {
         text: i18n.t('fields::category.label'),
       },
       value: {
+        classes: !props.category?.title ? 'app-secondary-text-colour' : '',
         text: props.category?.title ?? i18n.t('fields::category.uncategorised'),
       },
     })

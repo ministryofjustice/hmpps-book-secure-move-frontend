@@ -94,6 +94,18 @@ describe('Presenters', function () {
             value: { text: mockPerson.ethnicity.title },
           })
         })
+
+        it('should contain security category with fallback', function () {
+          const row = transformedResponse.rows[6]
+
+          expect(row).to.deep.equal({
+            key: { text: 'fields::category.label' },
+            value: {
+              text: 'fields::category.uncategorised',
+              classes: 'app-secondary-text-colour',
+            },
+          })
+        })
       })
 
       describe('translations', function () {
@@ -212,15 +224,31 @@ describe('Presenters', function () {
       })
     })
 
-    describe('when person has category', function () {
+    context('without prison number', function () {
+      let transformedResponse
+
+      beforeEach(function () {
+        transformedResponse = personToSummaryListComponent({
+          ...mockPerson,
+          prison_number: undefined,
+        })
+      })
+
+      it('should not contain security category', function () {
+        const rows = transformedResponse.rows.map(row => row.key.text)
+
+        expect(rows).not.to.include('fields::category.label')
+      })
+    })
+
+    context('when person has category', function () {
       let transformedResponse
       let row
 
       describe('and has a prison number', function () {
         beforeEach(function () {
           transformedResponse = personToSummaryListComponent({
-            id: '12345',
-            prison_number: 'AA/183716',
+            ...mockPerson,
             category: {
               title: 'Category X',
             },
@@ -233,26 +261,8 @@ describe('Presenters', function () {
         it('should return the person’s category', function () {
           expect(row).to.deep.equal({
             key: { text: 'fields::category.label' },
-            value: { text: 'Category X' },
+            value: { text: 'Category X', classes: '' },
           })
-        })
-      })
-
-      describe('and has no prison number', function () {
-        beforeEach(function () {
-          transformedResponse = personToSummaryListComponent({
-            id: '12345',
-            category: {
-              title: 'Category X',
-            },
-          })
-          row = transformedResponse.rows.filter(
-            row => row.key.text === 'fields::category.label'
-          )[0]
-        })
-
-        it('should not return the person’s category', function () {
-          expect(row).to.be.undefined
         })
       })
     })
