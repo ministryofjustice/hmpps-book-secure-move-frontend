@@ -11,8 +11,6 @@ updates:
       interval: 'daily'
     ignore:
       - dependency-name: '@hmpps-book-secure-move-frameworks*'
-      - dependency-name: 'govuk-frontend'
-      - dependency-name: 'moj-frontend'
       - dependency-name: 'webpack-cli'
         versions: ['>=4']
       - dependency-name: 'webpack-merge'
