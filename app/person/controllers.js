@@ -1,5 +1,6 @@
 const axios = require('axios')
 
+const presenters = require('../../common/presenters')
 const nunjucksGlobals = require('../../config/nunjucks/globals')
 
 module.exports = {
@@ -22,5 +23,32 @@ module.exports = {
         res.redirect(imagePath)
       }
     }
+  },
+  renderPerson: (req, res) => {
+    const fullname = req.person._fullname
+    const personalDetailsSummary = presenters.personToSummaryListComponent(
+      req.person
+    )
+    const identityBar = {
+      classes: 'sticky',
+      caption: {
+        text: req.t('person::page_caption'),
+      },
+      heading: {
+        html: req.t('person::page_heading', {
+          name: fullname,
+        }),
+      },
+    }
+
+    res
+      .breadcrumb({
+        text: fullname,
+      })
+      .render('person/views/render-person', {
+        fullname,
+        identityBar,
+        personalDetailsSummary,
+      })
   },
 }

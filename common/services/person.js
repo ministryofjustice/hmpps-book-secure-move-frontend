@@ -60,7 +60,7 @@ class PersonService extends BaseService {
   }
 
   getById(id) {
-    return this._getById(id, { include: ['ethnicity', 'gender'] })
+    return this._getById(id, { include: ['ethnicity', 'gender', 'category'] })
   }
 
   getCategory(id) {

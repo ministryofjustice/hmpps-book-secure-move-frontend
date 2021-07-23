@@ -262,7 +262,7 @@ describe('Person Service', function () {
     })
     it('should call find method with data', function () {
       expect(personService._getById).to.be.calledOnceWithExactly(mockId, {
-        include: ['ethnicity', 'gender'],
+        include: ['ethnicity', 'gender', 'category'],
       })
     })
     it('should return person', function () {
