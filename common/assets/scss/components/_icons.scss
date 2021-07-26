@@ -6,6 +6,7 @@ $_icon-height: 20px;
   vertical-align: middle;
   background-repeat: no-repeat;
   background-size: $_icon-width $_icon-height;
+  background-position: left center;
   padding-left: $_icon-width + govuk-spacing(2);
   min-height: $_icon-height;
 }
