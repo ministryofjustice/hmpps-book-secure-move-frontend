@@ -7,7 +7,7 @@ class CreateAllocationBaseController extends FormWizardController {
   }
 
   setCancelUrl(req, res, next) {
-    res.locals.cancelUrl = '/allocation'
+    res.locals.cancelUrl = '/allocations'
     next()
   }
 }
