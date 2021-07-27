@@ -796,7 +796,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Free spaces</b>',
+                html: 'Free spaces',
               })
             })
 
@@ -885,7 +885,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Transfers in</b>',
+                html: 'Transfers in',
               })
             })
 
@@ -980,7 +980,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Transfers out</b>',
+                html: 'Transfers out',
               })
             })
 
@@ -1079,7 +1079,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Free spaces</b>',
+                html: 'Free spaces',
               })
             })
 
@@ -1168,7 +1168,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Transfers in</b>',
+                html: 'Transfers in',
               })
             })
 
@@ -1267,7 +1267,7 @@ describe('#locationToPopulationTableComponent()', function () {
                 attributes: {
                   scope: 'row',
                 },
-                html: '<b>Transfers out</b>',
+                html: 'Transfers out',
               })
             })
 
