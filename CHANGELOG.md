@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.83.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.82.0...v2.83.0) (2021-07-27)
+
+
+### Features
+
+* Add view to render a person's profile ([43aed71](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/43aed71424345175a3bce0a416c187f05aede883))
+* Support assessment NOMIS mappings ([73c0255](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/73c025551c9ae91b957851b7017aba6b8c50121d))
+
+
+### Bug Fixes
+
+* Button of new allocation journey final step should say so ([e97c7be](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e97c7be8d628dcd08806ddf2a2f3913e68a2f3af))
+* Correct broken cancel link for new allocations journey ([f4ff52f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f4ff52fe957b0ec02af69b497391394dc6b27d70))
+* Ensure cache is cleared on errors during deserialization ([48fc85b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/48fc85be157f820c49abd92a4a932e266c55463c))
+* Ensure move details aren't shown on form wizard unless present ([8d32b54](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8d32b54f31f8fb76508f304b6db5a9ddd21f3757))
+* Fix missing background images ([04be977](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/04be9777017558a7bea900437879e2be587f35c5))
+
 ## [2.82.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.81.1...v2.82.0) (2021-07-21)
 
 
