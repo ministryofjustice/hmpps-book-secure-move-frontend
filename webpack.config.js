@@ -88,26 +88,22 @@ const commonConfig = {
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: `[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.[ext]`,
-              outputPath: 'fonts/',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: `fonts/[name]${
+            IS_PRODUCTION ? '.[contenthash:8]' : ''
+          }[ext][query]`,
+        },
       },
       {
         test: /\.(png|svg|jpe?g|gif|ico)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: `images/[name]${
+            IS_PRODUCTION ? '.[contenthash:8]' : ''
+          }[ext][query]`,
+        },
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: `[name]${IS_PRODUCTION ? '.[contenthash:8]' : ''}.[ext]`,
-              outputPath: 'images/',
-            },
-          },
           {
             loader: ImageMinimizerPlugin.loader,
             options: {
