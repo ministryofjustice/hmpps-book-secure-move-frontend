@@ -3,7 +3,12 @@ const { isEmpty, map, sortBy } = require('lodash')
 const presenters = require('../../../../../common/presenters')
 
 function setWarnings(req, res, next) {
-  const { profile = {}, id: moveId } = req.move || {}
+  const { profile, id: moveId } = req.move || {}
+
+  if (!profile) {
+    return next()
+  }
+
   const assessmentAnswers = profile.assessment_answers || []
   const personEscortRecord = profile.person_escort_record
   const youthRiskAssessment = profile.youth_risk_assessment

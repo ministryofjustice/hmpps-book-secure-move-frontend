@@ -181,18 +181,6 @@ describe('Move view app', function () {
             }
           )
         })
-
-        context('without profile', function () {
-          beforeEach(function () {
-            delete req.move.profile
-            middleware(req, res, nextSpy)
-          })
-
-          it('should set sections variable as empty array', function () {
-            expect(res.locals.warnings).to.have.property('sections')
-            expect(res.locals.warnings.sections).to.deep.equal([])
-          })
-        })
       })
 
       describe('tagList', function () {
@@ -257,21 +245,35 @@ describe('Move view app', function () {
             expect(res.locals.warnings.tagList).to.be.undefined
           })
         })
+      })
 
-        context('without profile', function () {
-          beforeEach(function () {
-            req.move.profile = undefined
-            middleware(req, res, nextSpy)
-          })
+      context('with undefined profile', function () {
+        beforeEach(function () {
+          delete req.move.profile
+          middleware(req, res, nextSpy)
+        })
 
-          it('should call correct presenter', function () {
-            expect(presenters.frameworkFlagsToTagList).not.to.have.been.called
-          })
+        it('should not set warnings', function () {
+          expect(res.locals).not.to.have.property('warnings')
+        })
 
-          it('should set tagList variable as undefined', function () {
-            expect(res.locals.warnings).to.have.property('tagList')
-            expect(res.locals.warnings.tagList).to.be.undefined
-          })
+        it('should not set warnings', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with null profile', function () {
+        beforeEach(function () {
+          req.move.profile = null
+          middleware(req, res, nextSpy)
+        })
+
+        it('should not set warnings', function () {
+          expect(res.locals).not.to.have.property('warnings')
+        })
+
+        it('should not set warnings', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
