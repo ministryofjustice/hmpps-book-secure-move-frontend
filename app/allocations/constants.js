@@ -5,7 +5,7 @@ const MOUNTPATH = '/allocations'
 const ACTIONS = [
   {
     permission: 'allocation:create',
-    text: 'actions::create_allocation',
+    text: 'actions::create_an_allocation',
     href: '/allocation/new',
   },
 ]
