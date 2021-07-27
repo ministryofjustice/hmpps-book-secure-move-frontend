@@ -15,6 +15,7 @@ function allocationToMetaListComponent(allocation) {
       )} ${requestedBy}`
     : fromLocation.title
   return {
+    classes: 'govuk-!-font-size-16',
     items: [
       {
         key: {

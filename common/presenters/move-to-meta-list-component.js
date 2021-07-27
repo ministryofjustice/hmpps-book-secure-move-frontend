@@ -186,6 +186,7 @@ function moveToMetaListComponent(
     })
 
   return {
+    classes: 'govuk-!-font-size-16',
     items,
   }
 }

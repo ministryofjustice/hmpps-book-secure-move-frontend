@@ -1,0 +1,24 @@
+<h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+  {{ t("person::summary_panel_heading") }}
+</h3>
+
+{% if person._image_url %}
+  <img src="{{ person._image_url }}" alt="{{ person._fullname }}" width="100" height="125" class="govuk-!-margin-left-2 govuk-!-margin-bottom-2 app-!-float-right">
+{% endif %}
+
+{% if personSummary %}
+  {{ appMetaList(personSummary) }}
+{% else %}
+  {{ govukInsetText({
+    classes: "govuk-inset-text--compact govuk-!-margin-0",
+    text: t("awaiting_person")
+  }) }}
+{% endif %}
+
+{% if person.id %}
+  <p class="govuk-!-margin-top-3 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+    <a href="/person/{{ person.id }}">
+      {{ t("actions::view_profile") }}
+    </a>
+  </p>
+{% endif %}

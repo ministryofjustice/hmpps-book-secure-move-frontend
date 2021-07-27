@@ -19,6 +19,7 @@ const {
   localsActions,
   localsIdentityBar,
   localsMoveDetails,
+  localsPersonSummary,
   localsTabs,
   localsWarnings,
   setBreadcrumb,
@@ -40,6 +41,7 @@ router.use(setBreadcrumb)
 router.use(localsActions)
 router.use(localsIdentityBar)
 router.use(localsMoveDetails)
+router.use(localsPersonSummary)
 router.use(localsTabs)
 
 // Define routes

@@ -55,6 +55,11 @@ describe('Presenters', function () {
       })
 
       describe('response', function () {
+        it('should contain classes', function () {
+          expect(transformedResponse).to.have.property('classes')
+          expect(transformedResponse.classes).to.equal('govuk-!-font-size-16')
+        })
+
         it('should contain correct number of items', function () {
           expect(transformedResponse).to.have.property('items')
           expect(transformedResponse.items.length).to.equal(7)
