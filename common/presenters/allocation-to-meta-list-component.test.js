@@ -40,16 +40,24 @@ describe('allocation to meta list component', function () {
     ],
   }
   let output
+
   beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
     output = presenter(mockParams)
   })
+
+  it('should contain classes', function () {
+    expect(output).to.have.property('classes')
+    expect(output.classes).to.equal('govuk-!-font-size-16')
+  })
+
   it('outputs an array', function () {
     expect(output.items).to.exist
     expect(output.items).to.be.an('array')
     expect(output.items.length).to.equal(4)
   })
+
   it('has the number of prisoners as first item', function () {
     expect(output.items[0]).to.deep.equal({
       key: {
@@ -60,6 +68,7 @@ describe('allocation to meta list component', function () {
       },
     })
   })
+
   it('has the move from as second item', function () {
     expect(output.items[1]).to.deep.equal({
       key: {
@@ -70,6 +79,7 @@ describe('allocation to meta list component', function () {
       },
     })
   })
+
   it('has the move to as third item', function () {
     expect(output.items[2]).to.deep.equal({
       key: {
@@ -80,6 +90,7 @@ describe('allocation to meta list component', function () {
       },
     })
   })
+
   it('has the date as fourth item', function () {
     expect(output.items[3]).to.deep.equal({
       key: {
