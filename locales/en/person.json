@@ -3,5 +3,6 @@
   "page_heading": "{{name}}",
   "personal_details": {
     "heading": "Personal details"
-  }
+  },
+  "summary_panel_heading":"Personal details"
 }

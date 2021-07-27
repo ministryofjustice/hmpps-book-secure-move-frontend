@@ -8,6 +8,14 @@
   {{ getPageTitle() | join(' – ') if getPageTitle }}
 {% endblock %}
 
+{% macro _sidebarSection(params) %}
+  {% set borderClasses = "app-border-top-2 app-border--blue" if params.first else "app-border-top-1" %}
+
+  <section class="{{ borderClasses }} govuk-!-padding-top-3 govuk-!-margin-bottom-7">
+    {{ caller() if caller }}
+  </section>
+{% endmacro %}
+
 {% block content %}
   {% block contentHeader %}
     {{ appIdentityBar(identityBar) }}
@@ -47,22 +55,30 @@
 
       {% block contentSidebar %}
 
-        <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-3">
-          {{ t("moves::move_details") }}
-        </h3>
+        {% call _sidebarSection({ first: true }) %}
+          {% include "includes/person-summary.njk" %}
+        {% endcall %}
 
-        {{ appMetaList(moveDetails) }}
+        {% call _sidebarSection() %}
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+            {{ t("moves::move_details") }}
+          </h3>
+
+          {{ appMetaList(moveDetails) }}
+        {% endcall %}
 
         {% if actions | length %}
-          <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0">
-            {% for action in actions %}
-              <li>
-                <a href="{{ action.url }}" class="{{ action.classes }}">
-                  {{ t(action.text) }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
+          {% call _sidebarSection() %}
+            <ul class="govuk-list govuk-!-margin-0 govuk-!-font-size-16">
+              {% for action in actions %}
+                <li>
+                  <a href="{{ action.url }}" class="{{ action.classes }}">
+                    {{ t(action.text) }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endcall %}
         {% endif %}
 
       {% endblock %}
