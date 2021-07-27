@@ -46,7 +46,8 @@ function locationsToPopulationAndTransfersTables({
     const groupedLocations = locationKeys.map(groupedLocation => {
       return {
         caption: groupedLocation,
-        captionClasses: 'govuk-heading-m',
+        captionClasses: 'govuk-table__caption--m',
+        firstCellIsHeader: true,
         classes: 'population-table',
         head: populationConfig.map(tablePresenters.objectToTableHead(query)),
         rows: locations[groupedLocation].reduce((acc, value) => {
@@ -91,7 +92,8 @@ function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
     const groupedLocations = locationKeys.map(groupedLocation => {
       return {
         caption: groupedLocation,
-        captionClasses: 'govuk-heading-m',
+        captionClasses: 'govuk-table__caption--m',
+        firstCellIsHeader: true,
         classes: 'population-table',
         head: tableConfig.map(tablePresenters.objectToTableHead(query)),
         rows: locations[groupedLocation].map(

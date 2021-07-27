@@ -135,7 +135,7 @@
     "filesize": "7.0.0",
     "form-data": "4.0.0",
     "got": "11.8.2",
-    "govuk-frontend": "3.9.0",
+    "govuk-frontend": "3.13.0",
     "grant-express": "5.4.8",
     "hc-sticky": "2.2.7",
     "helmet": "4.6.0",

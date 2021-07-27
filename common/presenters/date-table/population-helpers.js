@@ -99,7 +99,7 @@ const headerRowConfig = function ({ title }) {
       attributes: {
         scope: 'row',
       },
-      html: () => `<b>${title}</b>`,
+      html: () => `${title}`,
     },
   }
 }

@@ -85,24 +85,26 @@
       {% endif %}
     {% endblock %}
 
-    {% block formActions %}
-      {% block submitAction %}
-        {{ govukButton({
-          text: t(options.buttonText or "actions::continue"),
-          classes: options.buttonClasses,
-          preventDoubleClick: true,
-          type: "submit"
-        }) }}
-      {% endblock %}
+    <div class="govuk-button-group">
+      {% block formActions %}
+        {% block submitAction %}
+          {{ govukButton({
+            text: t(options.buttonText or "actions::continue"),
+            classes: options.buttonClasses,
+            preventDoubleClick: true,
+            type: "submit"
+          }) }}
+        {% endblock %}
 
-      {% block cancelAction %}
-        {% if cancelUrl %}
-          <a href="{{ cancelUrl }}" class="govuk-button govuk-button--text">
-            {{ t("actions::cancel") }}
-          </a>
-        {% endif %}
+        {% block cancelAction %}
+          {% if cancelUrl %}
+            <a href="{{ cancelUrl }}" class="govuk-link">
+              {{ t("actions::cancel") }}
+            </a>
+          {% endif %}
+        {% endblock %}
       {% endblock %}
-    {% endblock %}
+    </div>
   </form>
 {% endblock %}
 
