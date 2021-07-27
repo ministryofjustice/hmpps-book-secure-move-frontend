@@ -8,5 +8,7 @@ module.exports = {
     end_date: '',
     creation_date: '',
     expiry_date: '',
+    approval_date: '',
+    next_review_date: '',
   },
 }
