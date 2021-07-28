@@ -35,9 +35,11 @@ describe('Presenters', function () {
           },
         },
         from_location: {
+          id: '12345',
           title: 'HMP Leeds',
         },
         to_location: {
+          id: '67890',
           title: 'Barrow in Furness County Court',
         },
       }
@@ -383,7 +385,57 @@ describe('Presenters', function () {
             'fields::move_type.items.prison_recall.label — Some additional information about this move'
           )
         })
+
+        it('should call translation correctly', function () {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.prison_recall.label',
+            {
+              context: 'with_location',
+              location: 'Barrow in Furness County Court',
+            }
+          )
+        })
       })
+
+      context(
+        'with prison recall move type and without to_location',
+        function () {
+          beforeEach(function () {
+            transformedResponse = moveToMetaListComponent({
+              ...mockMove,
+              to_location: null,
+              move_type: 'prison_recall',
+              additional_information: mockAdditionalInformation,
+            })
+          })
+
+          it('should contain correct key', function () {
+            const keys = transformedResponse.items.map(
+              item => item.key.text || item.key.html
+            )
+            expect(keys).to.include('fields::move_type.short_label')
+          })
+
+          it('should contain correct value', function () {
+            const values = transformedResponse.items.map(
+              item => item.value.text || item.value.html
+            )
+            expect(values).to.include(
+              'fields::move_type.items.prison_recall.label — Some additional information about this move'
+            )
+          })
+
+          it('should call translation correctly', function () {
+            expect(i18n.t).to.be.calledWithExactly(
+              'fields::move_type.items.prison_recall.label',
+              {
+                context: '',
+                location: 'Unknown',
+              }
+            )
+          })
+        }
+      )
 
       context('with video remand move type', function () {
         beforeEach(function () {

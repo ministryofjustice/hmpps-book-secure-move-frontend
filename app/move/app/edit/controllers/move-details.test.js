@@ -27,10 +27,6 @@ describe('Move controllers', function () {
         )
       })
 
-      it('should copy process from CreateMoveDetails', function () {
-        expect(controller.process).to.exist.and.equal(MixinProto.process)
-      })
-
       it('should copy successHandler from CreateMoveDetails', function () {
         expect(controller.successHandler).to.exist.and.equal(
           MixinProto.successHandler
@@ -42,6 +38,7 @@ describe('Move controllers', function () {
           'middlewareSetup',
           'getUpdateValues',
           'filterMoveTypes',
+          'process',
           'saveValues',
         ]
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
@@ -161,6 +158,13 @@ describe('Move controllers', function () {
                     },
                   ],
                 },
+                to_location_foo: {},
+                to_location_bar: {},
+                'to_location_#moveType': {},
+                '#moveType_comments': {},
+                foo_comments: {},
+                bar_comments: {},
+                baz: {},
               },
             },
           },
@@ -178,9 +182,101 @@ describe('Move controllers', function () {
           ])
         })
 
+        it('should remove the irrelevant fields', function () {
+          expect(req.form.options.fields).to.have.all.keys([
+            'move_type',
+            'to_location_#moveType',
+            '#moveType_comments',
+            'baz',
+          ])
+        })
+
         it('should call the next method', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
+      })
+    })
+
+    describe('#process()', function () {
+      let req, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        req = {
+          form: {
+            values: {},
+          },
+        }
+      })
+
+      context('with only `to_location`', function () {
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'court_appearance',
+            to_location: '',
+            to_location_court_appearance: '12345',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function () {
+          expect(req.form.values.to_location).to.equal('12345')
+        })
+
+        it('should not set additional_information', function () {
+          expect(req.form.values.additional_information).to.be.undefined
+        })
+      })
+
+      context('with only `additional_information`', function () {
+        const mockComments = 'Some prison recall specific information'
+
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'prison_recall',
+            prison_recall_comments: mockComments,
+            to_location: '',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should not set to_location', function () {
+          expect(req.form.values.to_location).to.be.undefined
+        })
+
+        it('should set additional_information', function () {
+          expect(req.form.values.additional_information).to.equal(mockComments)
+        })
+      })
+
+      context('with `to_location` and `additional_information`', function () {
+        const mockComments = 'Some prison recall specific information'
+
+        beforeEach(function () {
+          req.form.values = {
+            move_type: 'prison_recall',
+            prison_recall_comments: mockComments,
+            to_location_prison_recall: '12345',
+            to_location: '',
+          }
+
+          controller.process(req, {}, nextSpy)
+        })
+
+        it('should set to_location based on location type', function () {
+          expect(req.form.values.to_location).to.equal('12345')
+        })
+
+        it('should set additional_information', function () {
+          expect(req.form.values.additional_information).to.equal(mockComments)
+        })
+      })
+
+      it('should call the next method', function () {
+        controller.process(req, {}, nextSpy)
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
@@ -207,11 +303,7 @@ describe('Move controllers', function () {
             move_type: 'faraway',
           }),
           form: {
-            values: {
-              prison_recall_comments: '#additionalInformation',
-              video_remand_comments: '#additionalInformation',
-              to_location_faraway: '#toLocation',
-            },
+            values: {},
           },
           t: sinon.stub().returnsArg(0),
           services: {
@@ -221,15 +313,57 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
       })
 
-      context(
-        'When the move_type is not prison_recall or video_remand',
-        function () {
-          context('and the to location has changed', function () {
+      it('should call the next method', async function () {
+        await controller.saveValues(req, res, nextSpy)
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      context('without values', function () {
+        beforeEach(async function () {
+          await controller.saveValues(req, res, nextSpy)
+        })
+
+        it('should not call move service’s redirect method', function () {
+          expect(moveService.redirect).to.not.be.called
+        })
+
+        it('should not call move service’s update method', function () {
+          expect(moveService.update).to.not.be.called
+        })
+      })
+
+      context('with to location value', function () {
+        beforeEach(function () {
+          req.form.values.to_location = '#toLocation'
+        })
+
+        context('if the information has not changed', function () {
+          beforeEach(async function () {
+            req.getMove.returns({
+              move_type: 'move-type',
+              to_location: {
+                id: '#toLocation',
+              },
+            })
+            await controller.saveValues(req, res, nextSpy)
+          })
+
+          it('should not call move service’s redirect method', function () {
+            expect(moveService.redirect).to.not.be.called
+          })
+
+          it('should not call move service’s update method', function () {
+            expect(moveService.update).to.not.be.called
+          })
+        })
+
+        context('if the information has changed', function () {
+          context('with existing information', function () {
             beforeEach(async function () {
               req.getMove.returns({
-                move_type: 'faraway',
+                move_type: 'move-type',
                 to_location: {
-                  id: '#originalLocation',
+                  id: '#oldId',
                 },
               })
               await controller.saveValues(req, res, nextSpy)
@@ -252,18 +386,73 @@ describe('Move controllers', function () {
               })
             })
 
-            it('should invoke next', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly()
+            it('should not call move service’s update method', function () {
+              expect(moveService.update).to.not.be.called
             })
           })
 
-          context('and the to location has not changed', function () {
+          context('without existing information', function () {
             beforeEach(async function () {
               req.getMove.returns({
-                move_type: 'faraway',
+                move_type: 'move-type',
+                to_location: null,
+              })
+              await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should call set the notes property', function () {
+              expect(req.t).to.be.calledOnceWithExactly(
+                'moves::redirect_notes',
+                req.session.user
+              )
+            })
+
+            it('should call move service’s redirect method', function () {
+              expect(moveService.redirect).to.be.calledOnceWithExactly({
+                id: '#moveId',
+                notes: 'moves::redirect_notes',
                 to_location: {
                   id: '#toLocation',
                 },
+              })
+            })
+
+            it('should not call move service’s update method', function () {
+              expect(moveService.update).to.not.be.called
+            })
+          })
+        })
+      })
+
+      context('with additional information value', function () {
+        beforeEach(function () {
+          req.form.values.additional_information = '#additionalInformation'
+        })
+
+        context('if the information has not changed', function () {
+          beforeEach(async function () {
+            req.getMove.returns({
+              move_type: 'move-type',
+              additional_information: '#additionalInformation',
+            })
+            await controller.saveValues(req, res, nextSpy)
+          })
+
+          it('should not call move service’s redirect method', function () {
+            expect(moveService.redirect).to.not.be.called
+          })
+
+          it('should not call move service’s update method', function () {
+            expect(moveService.update).to.not.be.called
+          })
+        })
+
+        context('if the information has changed', function () {
+          context('with existing information', function () {
+            beforeEach(async function () {
+              req.getMove.returns({
+                move_type: 'move-type',
+                additional_information: 'Existing information',
               })
               await controller.saveValues(req, res, nextSpy)
             })
@@ -272,34 +461,25 @@ describe('Move controllers', function () {
               expect(moveService.redirect).to.not.be.called
             })
 
-            it('should invoke next', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly()
+            it('should call move service’s update method', function () {
+              expect(moveService.update).to.be.calledOnceWithExactly({
+                id: '#moveId',
+                additional_information: '#additionalInformation',
+              })
             })
           })
 
-          context('and the move service errors', function () {
-            const error = new Error()
-            beforeEach(async function () {
-              req.services.move.redirect = sinon.stub().throws(error)
-              await controller.saveValues(req, res, nextSpy)
-            })
-
-            it('should invoke next with error', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly(error)
-            })
-          })
-        }
-      )
-
-      const checkMoveTypeWithAdditionalInfo = moveType => {
-        context(`When the move_type is ${moveType}`, function () {
-          context('and the comments has changed', function () {
+          context('without existing information', function () {
             beforeEach(async function () {
               req.getMove.returns({
-                move_type: moveType,
-                additional_information: '#oldInfo',
+                move_type: 'move-type',
+                additional_information: null,
               })
               await controller.saveValues(req, res, nextSpy)
+            })
+
+            it('should not call move service’s redirect method', function () {
+              expect(moveService.redirect).to.not.be.called
             })
 
             it('should call move service’s update method', function () {
@@ -308,63 +488,71 @@ describe('Move controllers', function () {
                 additional_information: '#additionalInformation',
               })
             })
-
-            it('should invoke next', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly()
-            })
-          })
-
-          context('and the additional comments have not changed', function () {
-            beforeEach(async function () {
-              req.getMove.returns({
-                move_type: moveType,
-                additional_information: '#additionalInformation',
-              })
-              await controller.saveValues(req, res, nextSpy)
-            })
-
-            it('should not call move service’s update method', function () {
-              expect(moveService.update).to.not.be.called
-            })
-
-            it('should invoke next', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly()
-            })
-          })
-
-          context('and the move service errors', function () {
-            const error = new Error()
-
-            beforeEach(async function () {
-              req.getMove.returns({
-                move_type: moveType,
-                additional_information: '#oldInformation',
-              })
-              req.services.move.update = sinon.stub().throws(error)
-              await controller.saveValues(req, res, nextSpy)
-            })
-
-            it('should invoke next with error', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly(error)
-            })
           })
         })
-      }
+      })
 
-      checkMoveTypeWithAdditionalInfo('prison_recall')
-      checkMoveTypeWithAdditionalInfo('video_remand')
-
-      context('when no additional_info field is present', function () {
-        beforeEach(async function () {
-          req.getMove.returns({
-            move_type: 'move-type',
-            additional_information: null,
+      context(
+        'with both additional information and to location value',
+        function () {
+          beforeEach(function () {
+            req.form.values.to_location = '#toLocation'
+            req.form.values.additional_information = '#additionalInformation'
           })
+
+          context('if the information has changed', function () {
+            context('with existing information', function () {
+              beforeEach(async function () {
+                req.getMove.returns({
+                  move_type: 'move-type',
+                  to_location: {
+                    id: '#oldId',
+                  },
+                  additional_information: 'Existing information',
+                })
+                await controller.saveValues(req, res, nextSpy)
+              })
+
+              it('should call set the notes property', function () {
+                expect(req.t).to.be.calledOnceWithExactly(
+                  'moves::redirect_notes',
+                  req.session.user
+                )
+              })
+
+              it('should call move service’s redirect method', function () {
+                expect(moveService.redirect).to.be.calledOnceWithExactly({
+                  id: '#moveId',
+                  notes: 'moves::redirect_notes',
+                  to_location: {
+                    id: '#toLocation',
+                  },
+                })
+              })
+
+              it('should call move service’s update method', function () {
+                expect(moveService.update).to.be.calledOnceWithExactly({
+                  id: '#moveId',
+                  additional_information: '#additionalInformation',
+                })
+              })
+            })
+          })
+        }
+      )
+
+      context('when async calls fail', function () {
+        const mockError = new Error('Failure')
+
+        beforeEach(async function () {
+          req.form.values.additional_information = '#additionalInformation'
+          moveService.update.rejects(mockError)
+
           await controller.saveValues(req, res, nextSpy)
         })
 
-        it('should not call move service’s update method', function () {
-          expect(moveService.update).to.not.be.called
+        it('should call with error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(mockError)
         })
       })
     })
