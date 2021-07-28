@@ -109,6 +109,9 @@ describe('Presenters', function () {
         transformedResponse = moveToSummaryListComponent({
           ...mockMove,
           move_type: 'prison_recall',
+          to_location: {
+            title: 'Prison recall',
+          },
         })
       })
 
@@ -117,18 +120,10 @@ describe('Presenters', function () {
           const keys = transformedResponse.rows.map(row => row.value.text)
           expect(keys).to.deep.equal([
             mockMove.from_location.title,
-            'fields::move_type.items.prison_recall.label',
+            'Prison recall',
             mockMove.date,
             mockMove.time_due,
           ])
-        })
-      })
-
-      describe('translataion', function () {
-        it('should translate label', function () {
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.prison_recall.label'
-          )
         })
       })
     })
@@ -138,6 +133,9 @@ describe('Presenters', function () {
         transformedResponse = moveToSummaryListComponent({
           ...mockMove,
           move_type: 'video_remand',
+          to_location: {
+            title: 'Video remand',
+          },
         })
       })
 
@@ -146,36 +144,7 @@ describe('Presenters', function () {
           const keys = transformedResponse.rows.map(row => row.value.text)
           expect(keys).to.deep.equal([
             mockMove.from_location.title,
-            'fields::move_type.items.video_remand.label',
-            mockMove.date,
-            mockMove.time_due,
-          ])
-        })
-      })
-
-      describe('translataion', function () {
-        it('should translate label', function () {
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.video_remand.label'
-          )
-        })
-      })
-    })
-
-    context('with unknown to location', function () {
-      beforeEach(function () {
-        transformedResponse = moveToSummaryListComponent({
-          ...mockMove,
-          to_location: null,
-        })
-      })
-
-      describe('response', function () {
-        it('should contain unknown as destination label', function () {
-          const keys = transformedResponse.rows.map(row => row.value.text)
-          expect(keys).to.deep.equal([
-            mockMove.from_location.title,
-            'Unknown',
+            'Video remand',
             mockMove.date,
             mockMove.time_due,
           ])

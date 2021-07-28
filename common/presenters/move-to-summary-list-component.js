@@ -9,11 +9,6 @@ function moveToSummaryListComponent({
   to_location: toLocation,
 } = {}) {
   const pickup = fromLocation?.title
-  const destination = toLocation?.title || 'Unknown'
-  const useLabel = ['prison_recall', 'video_remand']
-  const destinationLabel = useLabel.includes(moveType)
-    ? i18n.t(`fields::move_type.items.${moveType}.label`)
-    : destination
 
   const rows = [
     {
@@ -29,7 +24,7 @@ function moveToSummaryListComponent({
         text: i18n.t('fields::to_location.label'),
       },
       value: {
-        text: pickup ? destinationLabel : undefined,
+        text: pickup ? toLocation?.title : undefined,
       },
     },
     {

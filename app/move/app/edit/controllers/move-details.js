@@ -1,4 +1,4 @@
-const { pick } = require('lodash')
+const { omitBy, pick } = require('lodash')
 
 const CreateMoveDetailsController = require('../../new/controllers/move-details')
 
@@ -41,19 +41,38 @@ class UpdateMoveDetailsController extends UpdateBase {
     moveTypeField.items = moveTypeField.items.filter(
       item => item.value === moveType
     )
+
+    // remove any fields that are no longer needed
+    req.form.options.fields = omitBy(req.form.options.fields, (value, key) => {
+      return (
+        (key.startsWith('to_location_') || key.endsWith('_comments')) &&
+        !key.includes(moveType)
+      )
+    })
+
+    next()
+  }
+
+  process(req, res, next) {
+    const { move_type: moveType } = req.form.values
+
+    req.form.values.to_location = req.form.values[`to_location_${moveType}`]
+    req.form.values.additional_information =
+      req.form.values[`${moveType}_comments`]
+
     next()
   }
 
   async saveValues(req, res, next) {
     try {
-      const moveId = req.getMoveId()
-      const { values } = req.form
       const move = req.getMove()
-      const moveType = move.move_type
-      const toLocation = values[`to_location_${moveType}`]
-      const additionalInformation = values[`${moveType}_comments`]
+      const moveId = req.getMoveId()
+      const {
+        additional_information: additionalInformation,
+        to_location: toLocation,
+      } = req.form.values
 
-      if (toLocation !== move.to_location?.id) {
+      if (toLocation !== undefined && toLocation !== move.to_location?.id) {
         const notes = req.t('moves::redirect_notes', req.session.user)
 
         await req.services.move.redirect({
@@ -63,7 +82,9 @@ class UpdateMoveDetailsController extends UpdateBase {
             id: toLocation,
           },
         })
-      } else if (
+      }
+
+      if (
         // API can return null or string for additional_information
         // form value can be string or undefined depending on move type
         additionalInformation !== undefined &&

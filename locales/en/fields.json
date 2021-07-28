@@ -83,7 +83,8 @@
         "label": "Prison or young offender institution (YOI)"
       },
       "prison_recall": {
-        "label": "Prison recall"
+        "label": "Prison recall",
+        "label_with_location": "Prison recall to {{location}}"
       },
       "police_transfer": {
         "label": "Police custody (In force moves only)"
