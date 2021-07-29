@@ -233,6 +233,23 @@ class MoveService extends BaseService {
     })
   }
 
+  search({ reference } = {}) {
+    return this.getAll({
+      include: [
+        'from_location',
+        'important_events',
+        'profile',
+        'profile.person',
+        'profile.person.gender',
+        'profile.person_escort_record.flags',
+        'to_location',
+      ],
+      filter: {
+        reference,
+      },
+    })
+  }
+
   async getDownload({
     status = 'requested,accepted,booked,in_transit,completed,cancelled',
     dateRange = [],

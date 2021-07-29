@@ -1,0 +1,35 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t("search::results.page_title") }}
+  —
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      {{ t("search::results.heading") }}
+    </h1>
+  </header>
+
+  {# {{results|dump(1)}} #}
+  {# {{requestFilters|dump(1)}} #}
+
+  {% if resultsAsTable.rows.length %}
+    {{ govukTable(resultsAsTable) }}
+  {% else %}
+    {{ appMessage({
+      classes: "app-message--muted govuk-!-margin-top-7",
+      allowDismiss: false,
+      content: {
+        html: t("collections::no_results", {
+          context: context + ("_" + activeStatus if activeStatus)
+        })
+      }
+    }) }}
+  {% endif %}
+
+  <a href="{{ requestFilters.links.editFilters }}">Search again</a>
+
+{% endblock %}

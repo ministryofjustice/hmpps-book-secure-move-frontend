@@ -1,0 +1,38 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t("search::form.page_title") }}
+  —
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header class="govuk-!-margin-bottom-8">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
+      {{ t("search::form.heading") }}
+    </h1>
+  </header>
+
+  <form method="GET" action="/search/results">
+    <input type="hidden" name="referrer" value="{{filters.referrer.url}}">
+    {% for name, value in filters.referrer.values %}
+      <input type="hidden" name="{{name}}" value="{{value}}">
+    {% endfor %}
+
+    {% for key, filterComponent in filters.components %}
+      {% if filterComponent.component and not filterComponent.skip %}
+        {{ callAsMacro(filterComponent.component)(filterComponent) }}
+      {% endif %}
+    {% endfor %}
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+          text: t("actions::search"),
+          preventDoubleClick: true,
+          type: "submit"
+        })
+      }}
+    </div>
+  </form>
+
+{% endblock %}

@@ -28,6 +28,7 @@ i18next.use(Backend).init({
     'person-escort-record',
     'person',
     'population',
+    'search',
     'statuses',
     'validation',
     'youth-risk-assessment',
