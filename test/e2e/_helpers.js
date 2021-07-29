@@ -95,6 +95,16 @@ const getEthnicities = async () => {
   return ethnicities
 }
 
+const generatePNCNumber = () => {
+  const mod23chars = 'ZABCDEFGHJKLMNPQRTUVWXY'.split('')
+  const date = new Date()
+  const year = date.getFullYear().toString().substring(2)
+  const number = faker.fake('{{helpers.replaceSymbols("#######")}}')
+  const i = Number.parseInt(`${year}${number}`) % 23
+
+  return `${year}/${number}${mod23chars[i]}`
+}
+
 export async function generatePerson(overrides = {}) {
   const firstNames = faker.name.firstName()
   const lastName = faker.name.lastName()
@@ -116,9 +126,7 @@ export async function generatePerson(overrides = {}) {
     gender,
     ethnicity,
     fullname: `${lastName}, ${firstNames}`.toUpperCase(),
-    policeNationalComputer: faker
-      .fake('{{random.alphaNumeric(6)}}/{{random.alphaNumeric(2)}}')
-      .toUpperCase(),
+    policeNationalComputer: generatePNCNumber(),
     prisonNumber: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
     criminalRecordsOffice: faker.fake('CRO/{{datatype.number}}'),
     nicheReference: faker.fake('NI/{{datatype.number}}'),
