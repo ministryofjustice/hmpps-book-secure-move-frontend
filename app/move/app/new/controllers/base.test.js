@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const FormController = require('hmpo-form-wizard').Controller
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
@@ -1184,6 +1185,107 @@ describe('Move controllers', function () {
             is_young_offender_institution: false,
           })
           expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+    })
+
+    describe('#validateFields', function () {
+      let mockReq, mockRes, nextSpy
+      const errorMessage = 'PNC validation failed'
+      const mockErrors = {
+        foo: {
+          url: '/step-url',
+          key: 'foo',
+          type: '#foo',
+        },
+        bar: {
+          url: '/step-url',
+          key: 'bar',
+          type: '#bar',
+        },
+        fizz: {
+          url: '/step-url',
+          key: 'fizz',
+          type: 'policeNationalComputerNumber',
+        },
+        buzz: {
+          url: '/step-url',
+          key: 'buzz',
+          type: 'policeNationalComputerNumber',
+        },
+      }
+
+      beforeEach(function () {
+        sinon.stub(Sentry, 'captureException')
+        sinon
+          .stub(FormController.prototype, 'validateFields')
+          .callsFake((req, res, callback) => {
+            callback(mockErrors)
+          })
+
+        mockReq = {}
+        mockRes = {}
+        nextSpy = sinon.spy()
+
+        controller.validateFields(mockReq, mockRes, nextSpy)
+      })
+
+      it('should remove keys that only need a warning', function () {
+        expect(nextSpy).to.have.been.calledOnce
+        expect(nextSpy.args[0][0]).to.have.all.key(['foo', 'bar'])
+      })
+
+      describe('Sentry warnings', function () {
+        it('should send correct number of warnings', function () {
+          expect(Sentry.captureException).to.have.been.calledTwice
+        })
+
+        it('should send warning for each field', function () {
+          expect(Sentry.captureException.args[0][0]).to.be.an.instanceOf(Error)
+          expect(Sentry.captureException.args[0][0].message).to.equal(
+            errorMessage
+          )
+          expect(Sentry.captureException.args[0][1].level).to.equal(
+            Sentry.Severity.Warning
+          )
+
+          expect(Sentry.captureException.args[1][0]).to.be.an.instanceOf(Error)
+          expect(Sentry.captureException.args[1][0].message).to.equal(
+            errorMessage
+          )
+          expect(Sentry.captureException.args[1][1].level).to.equal(
+            Sentry.Severity.Warning
+          )
+        })
+
+        it('should send correct data for filter field', function () {
+          expect(Sentry.captureException.args[0][1].tags).to.deep.equal({
+            'validation_error.key': 'fizz',
+            'validation_error.path': '/step-url',
+            'validation_error.type': 'policeNationalComputerNumber',
+          })
+
+          expect(Sentry.captureException.args[0][1].contexts).to.deep.equal({
+            'Form wizard error': {
+              ...mockErrors.fizz,
+              validationType: 'policeNationalComputerNumber',
+            },
+          })
+        })
+
+        it('should send correct data for PNC field', function () {
+          expect(Sentry.captureException.args[1][1].tags).to.deep.equal({
+            'validation_error.key': 'buzz',
+            'validation_error.path': '/step-url',
+            'validation_error.type': 'policeNationalComputerNumber',
+          })
+
+          expect(Sentry.captureException.args[1][1].contexts).to.deep.equal({
+            'Form wizard error': {
+              ...mockErrors.buzz,
+              validationType: 'policeNationalComputerNumber',
+            },
+          })
         })
       })
     })

@@ -1,3 +1,6 @@
+const Sentry = require('@sentry/node')
+const { forEach, omitBy, pickBy } = require('lodash')
+
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const presenters = require('../../../../../common/presenters')
 const filters = require('../../../../../config/nunjucks/filters')
@@ -224,6 +227,36 @@ class CreateBaseController extends FormWizardController {
     }
 
     return false
+  }
+
+  // TODO: Temporary data collection to understand impact of
+  // adding PNC number validation
+  validateFields(req, res, callback) {
+    super.validateFields(req, res, errors => {
+      const PNCPredicate = error =>
+        error.type === 'policeNationalComputerNumber'
+
+      forEach(pickBy(errors, PNCPredicate), (error, key) => {
+        Sentry.captureException(new Error('PNC validation failed'), {
+          level: Sentry.Severity.Warning,
+          tags: {
+            'validation_error.key': key,
+            'validation_error.path': error.url,
+            'validation_error.type': error.type,
+          },
+          contexts: {
+            'Form wizard error': {
+              ...error,
+              // `type` is reserved in Sentry so we need to set an
+              // alternative property
+              validationType: error.type,
+            },
+          },
+        })
+      })
+
+      callback(omitBy(errors, PNCPredicate))
+    })
   }
 }
 
